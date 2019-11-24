@@ -50,14 +50,23 @@
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+
+#include "MDIViewPage.h"
+#include "QGVPage.h"
+#include "QGITemplate.h"
+#include "ViewProviderTemplate.h"
+#include "ViewProviderPage.h"
+
 
 using namespace TechDrawGui;
 
@@ -76,7 +85,11 @@ ViewProviderPage::ViewProviderPage()
     m_pageName("")
 {
     sPixmap = "TechDraw_Tree_Page";
+    static const char *group = "Base";
 
+    ADD_PROPERTY_TYPE(ShowFrames ,(true),group,App::Prop_None,"NonGui! Show or hide View frames and Labels on this Page");
+
+    ShowFrames.setStatus(App::Property::Hidden,true);
     Visibility.setStatus(App::Property::Hidden,true);
     DisplayMode.setStatus(App::Property::Hidden,true);
 }
@@ -146,25 +159,35 @@ void ViewProviderPage::removeMDIView(void)
 
 void ViewProviderPage::updateData(const App::Property* prop)
 {
-    if (prop == &(getDrawPage()->KeepUpdated)) {
+    auto page = getDrawPage();
+    if(!page) {
+        Gui::ViewProviderDocumentObject::updateData(prop);
+        return;
+    }
+    if (prop == &(page->KeepUpdated)) {
        if (getDrawPage()->KeepUpdated.getValue()) {
            sPixmap = "TechDraw_Tree_Page";
        } else {
            sPixmap = "TechDraw_Tree_Page_Unsync";
        }
+       signalChangeIcon();
     //if the template is changed, rebuild the visual
-    } else if (prop == &(getDrawPage()->Template)) {
+    } else if (prop == &(page->Template)) {
        if(m_mdiView && 
-          !getDrawPage()->isUnsetting()) {
+          !page->isUnsetting()) {
             m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
-    } else if (prop == &(getDrawPage()->Label)) {
+    } else if (prop == &(page->Label)) {
        if(m_mdiView && 
-          !getDrawPage()->isUnsetting()) {
-           m_mdiView->setTabText(getDrawPage()->Label.getValue());
+          !page->isUnsetting()) {
+           m_mdiView->setTabText(page->Label.getValue());
        }
+    } else if (prop == &page->Views) {
+        if(m_mdiView && !page->isUnsetting()) 
+            m_mdiView->updateDrawing();
     }
+
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
@@ -206,8 +229,7 @@ bool ViewProviderPage::setEdit(int ModNum)
 
 bool ViewProviderPage::doubleClicked(void)
 {
-    Visibility.setValue(true);
-    showMDIViewPage();
+    show();
     Gui::getMainWindow()->setActiveWindow(m_mdiView);
     return true;
 }
@@ -233,12 +255,14 @@ bool ViewProviderPage::showMDIViewPage()
 
         m_mdiView->setWindowTitle(tabTitle + QString::fromLatin1("[*]"));
         m_mdiView->setWindowIcon(Gui::BitmapFactory().pixmap("TechDraw_Tree_Page"));
-        m_mdiView->updateDrawing();
+        m_mdiView->updateDrawing(true);
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();  //this is empty function
         m_mdiView->showMaximized();
+//        if(!getDrawPage()->KeepUpdated.getValue())
+//            getDrawPage()->KeepUpdated.setValue(true);
     } else {
-        m_mdiView->updateDrawing();
+        m_mdiView->updateDrawing(true);
         m_mdiView->redrawAllViews();
         m_mdiView->updateTemplate(true);
     }
@@ -259,8 +283,12 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     // Collect any child views
     // for Page, valid children are any View except: DrawProjGroupItem
     //                                               DrawViewDimension
+    //                                               DrawViewBalloon
+    //                                               DrawLeaderLine
+    //                                               DrawRichAnno 
     //                                               any FeatuerView in a DrawViewClip
     //                                               DrawHatch
+    //                                               DrawWeldSymbol
 
     const std::vector<App::DocumentObject *> &views = getDrawPage()->Views.getValues();
 
@@ -268,10 +296,25 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
       for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
           TechDraw::DrawView* featView = dynamic_cast<TechDraw::DrawView*> (*it);
           App::DocumentObject *docObj = *it;
+          //DrawRichAnno with no parent is child of Page
+          TechDraw::DrawRichAnno* dra = dynamic_cast<TechDraw::DrawRichAnno*> (*it);
+          if (dra != nullptr) {
+              if (dra->AnnoParent.getValue() != nullptr) {
+                  continue;                   //has a parent somewhere else
+              } else {
+                  temp.push_back(*it);        //no parent, belongs to page
+                  continue;
+              }
+          }
+
           // Don't collect if dimension, projection group item, hatch or member of ClipGroup as these should be grouped elsewhere
           if(docObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())    ||
              docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())    ||
              docObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())            ||
+             docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())      ||
+             docObj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())         ||
+             docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())       ||
+             docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())       ||
              (featView && featView->isInClip()) )
               continue;
           else
@@ -339,6 +382,47 @@ bool ViewProviderPage::isShow(void) const
     return Visibility.getValue();
 }
 
+bool ViewProviderPage::getFrameState(void)
+{
+    bool result = ShowFrames.getValue();
+    return result;
+}
+
+void ViewProviderPage::setFrameState(bool state)
+{
+    ShowFrames.setValue(state);
+}
+
+void ViewProviderPage::toggleFrameState(void)
+{
+//    Base::Console().Message("VPP::toggleFrameState()\n");
+    if (m_graphicsView != nullptr) {
+        setFrameState(!getFrameState());
+        m_graphicsView->refreshViews();
+        setTemplateMarkers(getFrameState());
+    }
+}
+
+void ViewProviderPage::setTemplateMarkers(bool state)
+{
+//    Base::Console().Message("VPP::setTemplateMarkers(%d)\n",state);
+    App::DocumentObject *templateFeat = nullptr;
+    templateFeat = getDrawPage()->Template.getValue();
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(templateFeat->getDocument());
+    Gui::ViewProvider* vp = guiDoc->getViewProvider(templateFeat);
+    ViewProviderTemplate* vpt = dynamic_cast<ViewProviderTemplate*>(vp);
+    vpt->setMarkers(state);
+    QGITemplate* t = vpt->getQTemplate();
+    if (t != nullptr) {
+        t->updateView(true);
+    }
+}
+
+void ViewProviderPage::setGraphicsView(QGVPage* gv)
+{
+    m_graphicsView = gv;
+}
+
 //! Redo the whole visual page
 void ViewProviderPage::onGuiRepaint(const TechDraw::DrawPage* dp) 
 {
@@ -358,4 +442,9 @@ TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
         return nullptr;
     }
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);
+}
+
+Gui::MDIView *ViewProviderPage::getMDIView() {
+    showMDIViewPage();
+    return m_mdiView.data();
 }

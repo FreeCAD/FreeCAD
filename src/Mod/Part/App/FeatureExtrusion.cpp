@@ -44,7 +44,6 @@
 # include <BRepLib_FindSurface.hxx>
 #endif
 
-
 #include "FeatureExtrusion.h"
 #include <Base/Tools.h>
 #include <Base/Exception.h>
@@ -103,16 +102,13 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
     if (!axisLink.getValue())
         return false;
 
-    if (!axisLink.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::TypeError("AxisLink has no OCC shape");
-
-    Part::Feature* linked = static_cast<Part::Feature*>(axisLink.getValue());
+    auto linked = axisLink.getValue();
 
     TopoDS_Shape axEdge;
     if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
-        axEdge = linked->Shape.getShape().getSubShape(axisLink.getSubValues()[0].c_str());
+        axEdge = Feature::getTopoShape(linked).getSubShape(axisLink.getSubValues()[0].c_str());
     } else {
-        axEdge = linked->Shape.getValue();
+        axEdge = Feature::getShape(linked);
     }
 
     if (axEdge.IsNull())
@@ -197,25 +193,21 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 
 Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLink)
 {
-    if (!shapeLink.getValue())
+    App::DocumentObject* docobj = 0;
+    Base::Matrix4D mat;
+    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(),0,false, &mat,&docobj);
+
+    if (!docobj)
         throw Base::ValueError("calculateShapeNormal: link is empty");
-    const App::DocumentObject* docobj = shapeLink.getValue();
 
     //special case for sketches and the like: no matter what shape they have, use their local Z axis.
     if (docobj->isDerivedFrom(Part::Part2DObject::getClassTypeId())){
-        const Part::Part2DObject* p2do = static_cast<const Part::Part2DObject*>(docobj);
         Base::Vector3d OZ (0.0, 0.0, 1.0);
         Base::Vector3d result;
-        p2do->Placement.getValue().getRotation().multVec(OZ, result);
+        Base::Rotation(mat).multVec(OZ, result);
         return result;
     }
 
-    //extract the shape
-    if (! docobj->isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::TypeError("Linked object doesn't have shape.");
-
-    const TopoShape &tsh = static_cast<const Part::Feature*>(docobj)->Shape.getShape();
-    TopoDS_Shape sh = tsh.getShape();
     if (sh.IsNull())
         throw NullShapeException("calculateShapeNormal: link points to a valid object, but its shape is null.");
 
@@ -328,13 +320,10 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
     App::DocumentObject* link = Base.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
 
     try {
         Extrusion::ExtrusionParameters params = computeFinalParameters();
-        TopoShape result = extrudeShape(base->Shape.getShape(),params);
+        TopoShape result = extrudeShape(Feature::getShape(link),params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

@@ -283,7 +283,7 @@ class ControlWidget(QtGui.QWidget):
         self._timeLbl.setText(timeStr)
 
     def time(self):
-        if (self._timeLbl.text() == ""):
+        if self._timeLbl.text() == "":
             return None
         return float(self._timeLbl.text())
 

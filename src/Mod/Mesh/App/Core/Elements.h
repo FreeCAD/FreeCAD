@@ -75,6 +75,8 @@ struct MeshExport EdgeCollapse
 {
   unsigned long _fromPoint;
   unsigned long _toPoint;
+  std::vector<unsigned long> _adjacentFrom; // adjacent points to _fromPoint
+  std::vector<unsigned long> _adjacentTo;   // adjacent points to _toPoint
   std::vector<unsigned long> _removeFacets;
   std::vector<unsigned long> _changeFacets;
 };
@@ -119,11 +121,11 @@ public:
    */
   //@{
   void SetFlag (TFlagType tF) const
-  { const_cast<MeshPoint*>(this)->_ucFlag |= (unsigned char)(tF); }
+  { const_cast<MeshPoint*>(this)->_ucFlag |= static_cast<unsigned char>(tF); }
   void ResetFlag (TFlagType tF) const
-  { const_cast<MeshPoint*>(this)->_ucFlag &= ~(unsigned char)(tF); }
+  { const_cast<MeshPoint*>(this)->_ucFlag &= ~static_cast<unsigned char>(tF); }
   bool IsFlag (TFlagType tF) const
-  { return (_ucFlag & (unsigned char)(tF)) == (unsigned char)(tF);  }
+  { return (_ucFlag & static_cast<unsigned char>(tF)) == static_cast<unsigned char>(tF);  }
   void ResetInvalid (void) const
   { ResetFlag(INVALID); }
   void  SetInvalid (void) const
@@ -162,6 +164,26 @@ public:
   Base::BoundBox3f GetBoundBox () const;
   /** Checks if the edge intersects with the given bounding box. */
   bool IntersectBoundingBox (const Base::BoundBox3f &rclBB) const;
+  /** Calculates the intersection point of the line defined by the base \a rclPt and the direction \a rclDir
+   * with the edge. The intersection must be inside the edge. If there is no intersection false is returned.
+   */
+  bool IntersectWithLine (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes) const;
+  /** Calculates the intersection point of the plane defined by the base \a rclPt and the direction \a rclDir
+   * with the edge. The intersection must be inside the edge. If there is no intersection false is returned.
+   */
+  bool IntersectWithPlane (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes) const;
+  /**
+   * Calculates the projection of a point onto the line defined by the edge. The caller must check if
+   * the projection point is inside the edge.
+   */
+  void ProjectPointToLine (const Base::Vector3f &rclPoint, Base::Vector3f &rclProj) const;
+  /**
+   * Get the closest points \a rclPnt1 and \a rclPnt2 of the line defined by this edge and the line
+   * defined by \a rclPt and \a rclDir.
+   * If the two points are identical then both lines intersect each other.
+   */
+  void ClosestPointsToLine(const Base::Vector3f &linePt, const Base::Vector3f &lineDir,
+                           Base::Vector3f& rclPnt1, Base::Vector3f& rclPnt2) const;
 
 public:
   Base::Vector3f _aclPoints[2];  /**< Corner points */
@@ -204,11 +226,11 @@ public:
    */
   //@{
   void SetFlag (TFlagType tF) const
-  { const_cast<MeshFacet*>(this)->_ucFlag |= (unsigned char)(tF); }
+  { const_cast<MeshFacet*>(this)->_ucFlag |= static_cast<unsigned char>(tF); }
   void ResetFlag (TFlagType tF) const
-  { const_cast<MeshFacet*>(this)->_ucFlag &= ~(unsigned char)(tF); }
+  { const_cast<MeshFacet*>(this)->_ucFlag &= ~static_cast<unsigned char>(tF); }
   bool IsFlag (TFlagType tF) const
-  { return (_ucFlag & (unsigned char)(tF)) == (unsigned char)(tF); }
+  { return (_ucFlag & static_cast<unsigned char>(tF)) == static_cast<unsigned char>(tF); }
   void ResetInvalid (void) const
   { ResetFlag(INVALID); }
   void SetProperty(unsigned long uP) const
@@ -369,7 +391,7 @@ public:
    */
   bool IsDegenerated(float epsilon) const;
   /**
-   * Checks whether the triangle is deformed. A triangle is deformed if the an angle
+   * Checks whether the triangle is deformed. A triangle is deformed if an angle
    * exceeds a given maximum angle or falls below a given minimum angle.
    * For performance reasons the cosine of minimum and maximum angle is expected.
    */
@@ -390,17 +412,17 @@ public:
    * Adjusts the facet's orientation to its normal.
    */
   inline void AdjustCirculationDirection (void);
-  /** Checks if the normal is not yet calculated. */
+  /** Invalidate the normal. It will be recomputed when querying it. */
   void NormalInvalid (void) { _bNormalCalculated = false; }
   /** Query the flag state of the facet. */
   bool IsFlag (MeshFacet::TFlagType tF) const
-  { return (_ucFlag & (unsigned char)(tF)) == (unsigned char)(tF); }
+  { return (_ucFlag & static_cast<unsigned char>(tF)) == static_cast<unsigned char>(tF); }
     /** Set flag state */
   void SetFlag (MeshFacet::TFlagType tF)
-  { _ucFlag |= (unsigned char)(tF); }
+  { _ucFlag |= static_cast<unsigned char>(tF); }
   /** Reset flag state */
   void ResetFlag (MeshFacet::TFlagType tF)
-  { _ucFlag &= ~(unsigned char)(tF); }
+  { _ucFlag &= ~static_cast<unsigned char>(tF); }
   /** Calculates the facet's gravity point. */
   inline Base::Vector3f GetGravityPoint (void) const;
   /** Returns the normal of the facet. */
@@ -415,6 +437,8 @@ public:
   inline float Area () const;
   /** Calculates the maximum angle of a facet. */
   float MaximumAngle () const;
+  /** Calculates the minimum angle of a facet. */
+  float MinimumAngle () const;
   /** Checks if the facet is inside the bounding box or intersects with it. */
   inline bool ContainedByOrIntersectBoundingBox (const Base::BoundBox3f &rcBB) const;
   /** Checks if the facet intersects with the given bounding box. */
@@ -484,9 +508,18 @@ public:
    * If one of the facet's points is inside the sphere true is returned, otherwise false.
    */
   bool IsPointOfSphere(const MeshGeomFacet& rFacet) const;
-  /** The aspect ratio is the ratio of the radius of the circum-circle to the shortest edge length.
+  /** The aspect ratio is the longest edge length divided by its height.
    */
   float AspectRatio() const;
+  /** The alternative aspect ration is the ratio of the radius of the circum-circle and twice the radius of the in-circle.
+   */
+  float AspectRatio2() const;
+  /** The roundness is in the range between 0.0 (colinear) and 1.0 (equilateral).
+   */
+  float Roundness() const;
+  /** Apply a transformation on the triangle.
+   */
+  void Transform(const Base::Matrix4D&);
 
 protected:
   Base::Vector3f  _clNormal; /**< Normal of the facet. */

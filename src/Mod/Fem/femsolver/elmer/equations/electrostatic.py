@@ -26,13 +26,13 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 from ... import equationbase
 from . import linear
 
 
 def create(doc, name="Electrostatic"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
@@ -54,14 +54,14 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
         obj.addProperty(
             "App::PropertyBool", "CalculateSurfaceCharge",
             "Electrostatic", "Select type of solver for linear system")
-        '''
+        """
         #obj.addProperty(
             #"App::PropertyBool", "CalculateCapacitanceMatrix",
             #"Electrostatic", "Select type of solver for linear system")
         #obj.addProperty(
             #"App::PropertyInteger", "CapacitanceBodies",
             #"Electrostatic", "Select type of solver for linear system")
-        '''
+        """
 
         obj.Priority = 10
 

@@ -51,18 +51,18 @@ namespace GCS
         LevenbergMarquardt = 1,
         DogLeg = 2
     };
-    
+
     enum DogLegGaussStep {
         FullPivLU = 0,
         LeastNormFullPivLU = 1,
         LeastNormLdlt = 2
     };
-    
+
     enum QRAlgorithm {
         EigenDenseQR = 0,
         EigenSparseQR = 1
     };
-    
+
     enum DebugMode {
         NoDebug = 0,
         Minimal = 1,
@@ -77,7 +77,7 @@ namespace GCS
         VEC_pD plist; // list of the unknown parameters
         VEC_pD pdrivenlist; // list of parameters of driven constraints
         MAP_pD_I pIndex;
-        
+
         VEC_pD pdependentparameters; // list of dependent parameters by the system
 
         std::vector<Constraint *> clist;
@@ -107,6 +107,8 @@ namespace GCS
         int solve_LM(SubSystem *subsys, bool isRedundantsolving=false);
         int solve_DL(SubSystem *subsys, bool isRedundantsolving=false);
 
+        void makeReducedJacobian(Eigen::MatrixXd &J, std::map<int,int> &jacobianconstraintmap, GCS::VEC_pD &pdiagnoselist, std::map< int , int> &tagmultiplicity);
+
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         void extractSubsystem(SubSystem *subsys, bool isRedundantsolving);
         #endif
@@ -122,18 +124,18 @@ namespace GCS
         double qrpivotThreshold;
         DebugMode debugMode;
         double LM_eps;
-        double LM_eps1;          
+        double LM_eps1;
         double LM_tau;
         double DL_tolg;
-        double DL_tolx;          
+        double DL_tolx;
         double DL_tolf;
         double LM_epsRedundant;
-        double LM_eps1Redundant;          
+        double LM_eps1Redundant;
         double LM_tauRedundant;
         double DL_tolgRedundant;
-        double DL_tolxRedundant;          
-        double DL_tolfRedundant;        
-    
+        double DL_tolxRedundant;
+        double DL_tolfRedundant;
+
     public:
         System();
         /*System(std::vector<Constraint *> clist_);*/
@@ -227,7 +229,7 @@ namespace GCS
                                    double* n1, double* n2,
                                    bool flipn1, bool flipn2,
                                    int tagId, bool driving = true);
-        
+
         // internal alignment constraints
         int addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId=0, bool driving = true);
         int addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId=0, bool driving = true);
@@ -251,7 +253,7 @@ namespace GCS
         // If there's only one, a signed value is returned.
         // Effectively, it calculates the error of a UI constraint
         double calculateConstraintErrorByTag(int tagId);
-        
+
         void rescaleConstraint(int id, double coeff);
 
         void declareUnknowns(VEC_pD &params);

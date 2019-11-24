@@ -119,7 +119,7 @@ class _CommandPipe:
         s = FreeCADGui.Selection.getSelection()
         if s:
             for obj in s:
-                if obj.isDerivedFrom("Part::Feature"):
+                if hasattr(obj,'Shape'):
                     if len(obj.Shape.Wires) == 1:
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Pipe"))
                         FreeCADGui.addModule("Arch")
@@ -185,7 +185,7 @@ class _ArchPipe(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Pipe Segment"
+        obj.IfcType = "Pipe Segment"
 
     def setProperties(self,obj):
 
@@ -234,7 +234,11 @@ class _ArchPipe(ArchComponent.Component):
         # move and rotate the profile to the first point
         delta = w.Vertexes[0].Point-p.CenterOfMass
         p.translate(delta)
-        v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
+        import Draft
+        if Draft.getType(obj.Base) == "BezCurve":
+            v1 = obj.Base.Placement.multVec(obj.Base.Points[1])-w.Vertexes[0].Point
+        else: 
+            v1 = w.Vertexes[1].Point-w.Vertexes[0].Point
         v2 = DraftGeomUtils.getNormal(p)
         rot = FreeCAD.Rotation(v2,v1)
         p.rotate(p.CenterOfMass,rot.Axis,math.degrees(rot.Angle))
@@ -253,7 +257,7 @@ class _ArchPipe(ArchComponent.Component):
 
         import Part
         if obj.Base:
-            if not obj.Base.isDerivedFrom("Part::Feature"):
+            if not hasattr(obj.Base,'Shape'):
                 FreeCAD.Console.PrintError(translate("Arch","The base object is not a Part")+"\n")
                 return
             if len(obj.Base.Shape.Wires) != 1:
@@ -273,7 +277,7 @@ class _ArchPipe(ArchComponent.Component):
 
         import Part
         if obj.Profile:
-            if not obj.Profile.isDerivedFrom("Part::Part2DObject"):
+            if not obj.Profile.getLinkedObject().isDerivedFrom("Part::Part2DObject"):
                 FreeCAD.Console.PrintError(translate("Arch","The profile is not a 2D Part")+"\n")
                 return
             if len(obj.Profile.Shape.Wires) != 1:
@@ -314,7 +318,7 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Pipe Fitting"
+        obj.IfcType = "Pipe Fitting"
 
     def setProperties(self,obj):
 

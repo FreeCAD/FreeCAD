@@ -27,6 +27,7 @@
 
 #include <CXX/Objects.hxx>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -43,9 +44,9 @@
 
 using namespace Mesh;
 
-TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists);
-TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists);
-TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData);
+TYPESYSTEM_SOURCE(Mesh::PropertyNormalList, App::PropertyLists)
+TYPESYSTEM_SOURCE(Mesh::PropertyCurvatureList , App::PropertyLists)
+TYPESYSTEM_SOURCE(Mesh::PropertyMeshKernel , App::PropertyComplexGeoData)
 
 PropertyNormalList::PropertyNormalList()
 {

@@ -97,7 +97,7 @@ void ScriptFactorySingleton::Destruct (void)
 
 const char* ScriptFactorySingleton::ProduceScript (const char* sScriptName) const
 {
-  const char* script = (const char*)Produce(sScriptName);
+  const char* script = static_cast<const char*>(Produce(sScriptName));
 
   if ( !script )
   {

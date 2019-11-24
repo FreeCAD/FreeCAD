@@ -37,7 +37,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintPlaneRotation, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintPlaneRotation, Fem::Constraint)
 
 ConstraintPlaneRotation::ConstraintPlaneRotation()
 {

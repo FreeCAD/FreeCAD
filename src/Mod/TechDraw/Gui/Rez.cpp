@@ -55,16 +55,16 @@ double Rez::guiX(double x)
    return getRezFactor() * x;
 }
 
-Base::Vector2d Rez::guiX(Base::Vector2d v)
-{
-    Base::Vector2d result(guiX(v.y),guiX(v.y));
-    return result;
-}
-
 Base::Vector3d Rez::guiX(Base::Vector3d v)
 {
     Base::Vector3d result(guiX(v.x),guiX(v.y),guiX(v.z));
     return result;
+}
+
+Base::Vector2d Rez::guiX(Base::Vector3d v, bool planar)
+{
+    Q_UNUSED(planar);
+    return Base::Vector2d(guiX(v.x), guiX(v.y));
 }
 
 //turn Gui side value to App side value
@@ -73,16 +73,15 @@ double Rez::appX(double x)
    return x / getRezFactor();
 }
 
-Base::Vector2d Rez::appX(Base::Vector2d v)
-{
-    Base::Vector2d result(appX(v.y),appX(v.y));
-    return result;
-}
-
 Base::Vector3d Rez::appX(Base::Vector3d v)
 {
     Base::Vector3d result(appX(v.x),appX(v.y),appX(v.z));
     return result;
+}
+
+QPointF Rez::appX(QPointF p)
+{
+    return appPt(p);
 }
 
 

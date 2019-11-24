@@ -117,7 +117,7 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
 
     SpreadsheetGui::ViewProviderSheet::init();
     SpreadsheetGui::Workbench::init();
-//    SpreadsheetGui::SheetView::init();
+    SpreadsheetGui::SheetView::init();
 
     // add resources and reloads the translators
     loadSpreadsheetResource();

@@ -65,6 +65,16 @@ DlgGeneralImp::DlgGeneralImp( QWidget* parent )
         menuText[text] = *it;
     }
 
+    {   // add special workbench to selection
+        QPixmap px = Application::Instance->workbenchIcon(QString::fromLatin1("NoneWorkbench"));
+        QString key = QString::fromLatin1("<last>");
+        QString value = QString::fromLatin1("$LastModule");
+        if (px.isNull())
+            ui->AutoloadModuleCombo->addItem(key, QVariant(value));
+        else
+            ui->AutoloadModuleCombo->addItem(px, key, QVariant(value));
+    }
+
     for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it) {
         QPixmap px = Application::Instance->workbenchIcon(it.value());
         if (px.isNull())
@@ -133,6 +143,8 @@ void DlgGeneralImp::saveSettings()
     int pixel = size.toInt();
     hGrp->SetInt("ToolbarIconSize", pixel);
     getMainWindow()->setIconSize(QSize(pixel,pixel));
+
+    hGrp->SetInt("TreeViewMode",ui->treeMode->currentIndex());
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
@@ -247,6 +259,14 @@ void DlgGeneralImp::loadSettings()
         index = ui->toolbarIconSize->findData(QVariant(current));
     } 
     ui->toolbarIconSize->setCurrentIndex(index);
+
+    ui->treeMode->addItem(tr("CombiView"));
+    ui->treeMode->addItem(tr("TreeView + PropertyView"));
+    ui->treeMode->addItem(tr("Both"));
+    index = hGrp->GetInt("TreeViewMode");
+    if (index<0 || index>2)
+        index=0;
+    ui->treeMode->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));

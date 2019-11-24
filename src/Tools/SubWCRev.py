@@ -4,8 +4,8 @@
 #
 # FreeCAD RevInfo script to get the revision information from Subversion, Bazaar, and Git.
 #
-# Under Linux the Subversion tool SubWCRev shipped with TortoiseSVN isn't 
-# available which is provided by this script. 
+# Under Linux the Subversion tool SubWCRev shipped with TortoiseSVN isn't
+# available which is provided by this script.
 # 2012/02/01: The script was extended to support git
 # 2011/02/05: The script was extended to support also Bazaar
 
@@ -33,7 +33,7 @@ class SvnHandler(xml.sax.handler.ContentHandler):
             self.inUrl = 1
         elif name == "date":
             self.inDate = 1
- 
+
     def characters(self, data):
         if self.inUrl:
             self.buffer += data
@@ -56,7 +56,7 @@ class VersionControl:
         self.date = ""
         self.url = ""
 
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         return False
 
     def printInfo(self):
@@ -72,9 +72,9 @@ class VersionControl:
         return content
 
 class UnknownControl(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(srcdir+"/src/Build/Version.h.out"):
+        if os.path.exists(bindir+"/src/Build/Version.h.out"):
             return False
         self.rev = "Unknown"
         self.date = "Unknown"
@@ -85,9 +85,9 @@ class UnknownControl(VersionControl):
         print("Unknown version control")
 
 class DebianChangelog(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(srcdir+"/src/Build/Version.h.out"):
+        if os.path.exists(bindir+"/src/Build/Version.h.out"):
             return False
         try:
             f = open(srcdir+"/debian/changelog")
@@ -98,7 +98,7 @@ class DebianChangelog(VersionControl):
         r=re.search("bzr(\\d+)",c)
         if r != None:
             self.rev = r.groups()[0] + " (Launchpad)"
-        
+
         t = time.localtime()
         self.date = ("%d/%02d/%02d %02d:%02d:%02d") % (t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
         self.url = "https://code.launchpad.net/~vcs-imports/freecad/trunk"
@@ -108,7 +108,7 @@ class DebianChangelog(VersionControl):
         print("debian/changelog")
 
 class BazaarControl(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         info=os.popen("bzr log -l 1 %s" % (srcdir)).read()
         if len(info) == 0:
             return False
@@ -175,11 +175,10 @@ class GitControl(VersionControl):
     def revisionNumber(self, srcdir,origin=None):
         """sets the revision number
         for master and release branches all commits are counted
-        for other branches the version numver is split in two parts
-        the first number reflects the number of commits in common with the
-        blessed master repository.
-        the second part, separated by " +" reflects the number of commits that are
-        different from the master repository"""
+        for other branches. The version number is split in to two parts:
+        The first number reflects the number of commits in common with the
+        blessed master repository. The second part (separated by " +") reflects
+        the number of commits that are different from the master repository"""
         referencecommit="7d8e53aaab17961d85c5009de34f69f2af084e8b"
         referencerevision=14555
 
@@ -233,7 +232,7 @@ class GitControl(VersionControl):
             if hasnames >=2: # merging master into dev is not enough
                 self.branch=','.join(names)
 
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         self.hash=os.popen("git log -1 --pretty=format:%H").read().strip()
         if self.hash == "":
             return False # not a git repo
@@ -246,7 +245,7 @@ class GitControl(VersionControl):
                 float(info.strip().split(' ',1)[0])))
         for self.branch in os.popen("git branch --no-color").read().split('\n'):
             if re.match( "\*", self.branch ) != None:
-                break 
+                break
         self.branch=self.branch[2:]
         self.getremotes() #setup self.remotes and branchlst
 
@@ -275,7 +274,7 @@ class GitControl(VersionControl):
                 self.branch = '(%s)' % \
                     os.popen("git describe --all --dirty").read().strip()
         #if the branch name contained any slashes but was not a remote
-        #there might be not result by now. Hence we assume origin
+        #there might be no result by now. Hence we assume origin
         if self.url == "Unknown":
             for i in info:
                 r = re.match("origin\\W+(\\S+)",i)
@@ -295,14 +294,14 @@ class GitControl(VersionControl):
         return content
 
 class MercurialControl(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         return False
 
     def printInfo(self):
         print("mercurial")
 
 class Subversion(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         parser=xml.sax.make_parser()
         handler=SvnHandler()
         parser.setContentHandler(handler)
@@ -377,7 +376,7 @@ def main():
 
     vcs=[GitControl(), BazaarControl(), Subversion(), MercurialControl(), DebianChangelog(), UnknownControl()]
     for i in vcs:
-        if i.extractInfo(srcdir):
+        if i.extractInfo(srcdir, bindir):
             # Open the template file and the version file
             inp = open("%s/src/Build/Version.h.in" % (bindir))
             lines = inp.readlines()
@@ -393,4 +392,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

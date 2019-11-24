@@ -31,10 +31,12 @@
 #include "Console.h"
 #include <CXX/Objects.hxx>
 
+FC_LOG_LEVEL_INIT("Exception", true, true)
+
 using namespace Base;
 
 
-TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass);
+TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass)
 
 
 Exception::Exception(void)
@@ -88,32 +90,17 @@ const char* Exception::what(void) const throw()
 void Exception::ReportException (void) const
 {
     if (!_isReported) {
-        std::string str = "";
-
-        if (!_sErrMsg.empty())
-            str+= (_sErrMsg + " ");
-
-        if (!_function.empty()) {
-            str+="In ";
-            str+=_function;
-            str+= " ";
-        }
-
-        std::string _linestr = std::to_string(_line);
-
-        if (!_file.empty() && !_linestr.empty()) {
-            // strip absolute path
-            std::size_t pos = _file.find("src");
-
-            if (pos!=std::string::npos) {
-                str+="in ";
-                str+= _file.substr(pos);
-                str+= ":";
-                str+=_linestr;
-            }
-        }
-
-        Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+        const char *msg;
+        if(_sErrMsg.empty())
+            msg = typeid(*this).name();
+        else
+            msg = _sErrMsg.c_str();
+#ifdef FC_DEBUG
+        if(_function.size()) {
+            _FC_ERR(_file.c_str(),_line, _function << " -- " << msg);
+        }else
+#endif
+            _FC_ERR(_file.c_str(),_line,msg);
         _isReported = true;
     }
 }
@@ -164,6 +151,7 @@ void Exception::setPyObject( PyObject * pydict)
 
 // ---------------------------------------------------------
 
+TYPESYSTEM_SOURCE(Base::AbortException,Base::Exception)
 
 AbortException::AbortException(const char * sMessage)
   : Exception( sMessage )
@@ -315,32 +303,17 @@ const char* FileException::what() const throw()
 void FileException::ReportException (void) const
 {
     if (!_isReported) {
-        std::string str = "";
-        
-        if (!_sErrMsgAndFileName.empty())
-            str+= (_sErrMsgAndFileName + " ");
-        
-        if (!_function.empty()) {
-            str+="In ";
-            str+=_function;
-            str+= " ";
-        }
-        
-        std::string _linestr = std::to_string(_line);
-        
-        if (!_file.empty() && !_linestr.empty()) {
-            // strip absolute path
-            std::size_t pos = _file.find("src");
-            
-            if (pos!=std::string::npos) {
-                str+="in ";
-                str+= _file.substr(pos);
-                str+= ":";
-                str+=_linestr;
-            }
-        }
-        
-        Console().Error("Exception (%s): %s \n",Console().Time(),str.c_str());
+        const char *msg;
+        if(_sErrMsgAndFileName.empty())
+            msg = typeid(*this).name();
+        else
+            msg = _sErrMsgAndFileName.c_str();
+#ifdef FC_DEBUG
+        if(_function.size()) {
+            _FC_ERR(_file.c_str(),_line, _function << " -- " << msg);
+        }else
+#endif
+            _FC_ERR(_file.c_str(),_line,msg);
         _isReported = true;
     }
 }
@@ -361,6 +334,10 @@ void FileException::setPyObject( PyObject * pydict)
         if (edict.hasKey("filename"))
             file.setFile(static_cast<std::string>(Py::String(edict.getItem("filename"))));
     }
+}
+
+PyObject * FileException::getPyExceptionType() const {
+    return PyExc_IOError;
 }
 
 // ---------------------------------------------------------
@@ -544,6 +521,10 @@ TypeError::TypeError(const TypeError &inst)
 {
 }
 
+PyObject *TypeError::getPyExceptionType() const {
+    return PyExc_TypeError;
+}
+
 // ---------------------------------------------------------
 
 ValueError::ValueError()
@@ -564,6 +545,10 @@ ValueError::ValueError(const std::string& sMessage)
 ValueError::ValueError(const ValueError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *ValueError::getPyExceptionType() const {
+    return PyExc_ValueError;
 }
 
 // ---------------------------------------------------------
@@ -588,6 +573,62 @@ IndexError::IndexError(const IndexError &inst)
 {
 }
 
+PyObject *IndexError::getPyExceptionType() const {
+    return PyExc_IndexError;
+}
+
+// ---------------------------------------------------------
+
+NameError::NameError()
+  : Exception()
+{
+}
+
+NameError::NameError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+NameError::NameError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+NameError::NameError(const NameError &inst)
+ : Exception(inst)
+{
+}
+
+PyObject *NameError::getPyExceptionType() const {
+    return PyExc_NameError;
+}
+
+// ---------------------------------------------------------
+
+ImportError::ImportError()
+  : Exception()
+{
+}
+
+ImportError::ImportError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ImportError::ImportError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ImportError::ImportError(const ImportError &inst)
+ : Exception(inst)
+{
+}
+
+PyObject *ImportError::getPyExceptionType() const {
+    return PyExc_ImportError;
+}
+
 // ---------------------------------------------------------
 
 AttributeError::AttributeError()
@@ -610,6 +651,10 @@ AttributeError::AttributeError(const AttributeError &inst)
 {
 }
 
+PyObject *AttributeError::getPyExceptionType() const {
+    return PyExc_AttributeError;
+}
+
 // ---------------------------------------------------------
 
 RuntimeError::RuntimeError()
@@ -630,6 +675,10 @@ RuntimeError::RuntimeError(const std::string& sMessage)
 RuntimeError::RuntimeError(const RuntimeError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *RuntimeError::getPyExceptionType() const {
+    return PyExc_RuntimeError;
 }
 
 // ---------------------------------------------------------
@@ -676,6 +725,10 @@ NotImplementedError::NotImplementedError(const NotImplementedError &inst)
 {
 }
 
+PyObject *NotImplementedError::getPyExceptionType() const {
+    return PyExc_NotImplementedError;
+}
+
 // ---------------------------------------------------------
 
 DivisionByZeroError::DivisionByZeroError()
@@ -698,6 +751,10 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
 {
 }
 
+PyObject *DivisionByZeroError::getPyExceptionType() const {
+    return PyExc_ZeroDivisionError;
+}
+
 // ---------------------------------------------------------
 
 ReferencesError::ReferencesError()
@@ -718,6 +775,10 @@ ReferencesError::ReferencesError(const std::string& sMessage)
 ReferencesError::ReferencesError(const ReferencesError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *ReferencesError::getPyExceptionType() const {
+    return PyExc_ReferenceError;
 }
 
 // ---------------------------------------------------------
@@ -786,6 +847,10 @@ UnicodeError::UnicodeError(const UnicodeError &inst)
 {
 }
 
+PyObject *UnicodeError::getPyExceptionType() const {
+    return PyExc_UnicodeError;
+}
+
 // ---------------------------------------------------------
 
 OverflowError::OverflowError()
@@ -806,6 +871,10 @@ OverflowError::OverflowError(const std::string& sMessage)
 OverflowError::OverflowError(const OverflowError &inst)
  : Exception(inst)
 {
+}
+
+PyObject *OverflowError::getPyExceptionType() const {
+    return PyExc_OverflowError;
 }
 
 // ---------------------------------------------------------
@@ -830,6 +899,10 @@ UnderflowError::UnderflowError(const UnderflowError &inst)
 {
 }
 
+PyObject *UnderflowError::getPyExceptionType() const {
+    return PyExc_ArithmeticError;
+}
+
 // ---------------------------------------------------------
 
 UnitsMismatchError::UnitsMismatchError()
@@ -850,6 +923,10 @@ UnitsMismatchError::UnitsMismatchError(const std::string& sMessage)
 UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *UnitsMismatchError::getPyExceptionType() const {
+    return PyExc_ArithmeticError;
 }
 
 // ---------------------------------------------------------

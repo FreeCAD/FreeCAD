@@ -218,7 +218,7 @@ std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
         // In the currently visited component we have found less than 40% as correct
         // oriented and the rest as false oriented. So, we decide that it should be the other
         // way round and swap the indices of this component.
-        if (uComplement.size() < (unsigned long)(0.4f*(float)ulVisited)) {
+        if (uComplement.size() < static_cast<unsigned long>(0.4f*static_cast<float>(ulVisited))) {
             uIndices.erase(uIndices.begin()+wrongFacets, uIndices.end());
             uIndices.insert(uIndices.end(), uComplement.begin(), uComplement.end());
         }
@@ -373,7 +373,7 @@ bool MeshEvalTopology::Evaluate ()
         else {
             if (count > 2) {
                 // Edge that is shared by more than 2 facets
-                nonManifoldList.push_back(std::make_pair(p0, p1));
+                nonManifoldList.emplace_back(p0, p1);
                 nonManifoldFacets.push_back(facets);
             }
 
@@ -681,7 +681,7 @@ void MeshEvalSelfIntersection::GetIntersections(const std::vector<std::pair<unsi
         if (box1 && box2) {
             int ret = cMF1->IntersectWithFacet(*cMF2, pt1, pt2);
             if (ret == 2) {
-                intersection.push_back(std::make_pair(pt1, pt2));
+                intersection.emplace_back(pt1, pt2);
             }
         }
     }
@@ -749,7 +749,7 @@ void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<unsigned l
                     facet2 = *cMFI;
                     int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
                     if (ret == 2) {
-                        intersection.push_back(std::make_pair (*it,*jt));
+                        intersection.emplace_back (*it,*jt);
                     }
                 }
             }
@@ -840,7 +840,7 @@ bool MeshEvalNeighbourhood::Evaluate ()
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 const MeshFacet& rFace0 = rclFAry[f0];
                 const MeshFacet& rFace1 = rclFAry[f1];
@@ -906,7 +906,7 @@ std::vector<unsigned long> MeshEvalNeighbourhood::GetIndices() const
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 const MeshFacet& rFace0 = rclFAry[f0];
                 const MeshFacet& rFace1 = rclFAry[f1];
@@ -982,7 +982,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
         }
         else {
             // we handle only the cases for 1 and 2, for all higher
-            // values we have a non-manifold that is ignorned here
+            // values we have a non-manifold that is ignored here
             if (count == 2) {
                 MeshFacet& rFace0 = this->_aclFacetArray[f0];
                 MeshFacet& rFace1 = this->_aclFacetArray[f1];
@@ -1005,7 +1005,7 @@ void MeshKernel::RebuildNeighbours (unsigned long index)
     }
 
     // we handle only the cases for 1 and 2, for all higher
-    // values we have a non-manifold that is ignorned here
+    // values we have a non-manifold that is ignored here
     if (count == 2) {
         MeshFacet& rFace0 = this->_aclFacetArray[f0];
         MeshFacet& rFace1 = this->_aclFacetArray[f1];
@@ -1050,16 +1050,16 @@ Base::Matrix4D MeshEigensystem::Transform() const
     // x = Q * y - Q * c
     Base::Matrix4D clTMat;
     // rotation part
-    clTMat[0][0] = _cU.x; clTMat[0][1] = _cU.y; clTMat[0][2] = _cU.z; clTMat[0][3] = 0.0f;
-    clTMat[1][0] = _cV.x; clTMat[1][1] = _cV.y; clTMat[1][2] = _cV.z; clTMat[1][3] = 0.0f;
-    clTMat[2][0] = _cW.x; clTMat[2][1] = _cW.y; clTMat[2][2] = _cW.z; clTMat[2][3] = 0.0f;
-    clTMat[3][0] =  0.0f; clTMat[3][1] =  0.0f; clTMat[3][2] =  0.0f; clTMat[3][3] = 1.0f;
+    clTMat[0][0] = double(_cU.x); clTMat[0][1] = double(_cU.y); clTMat[0][2] = double(_cU.z); clTMat[0][3] = 0.0;
+    clTMat[1][0] = double(_cV.x); clTMat[1][1] = double(_cV.y); clTMat[1][2] = double(_cV.z); clTMat[1][3] = 0.0;
+    clTMat[2][0] = double(_cW.x); clTMat[2][1] = double(_cW.y); clTMat[2][2] = double(_cW.z); clTMat[2][3] = 0.0;
+    clTMat[3][0] =  0.0; clTMat[3][1] =  0.0; clTMat[3][2] =  0.0; clTMat[3][3] = 1.0;
 
     Base::Vector3f c(_cC);
     c = clTMat * c;
 
     // translation part
-    clTMat[0][3] = -c.x; clTMat[1][3] = -c.y; clTMat[2][3] = -c.z;
+    clTMat[0][3] = double(-c.x); clTMat[1][3] = double(-c.y); clTMat[2][3] = double(-c.z);
 
     return clTMat;
 }

@@ -22,51 +22,59 @@
 
 
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
+# include <algorithm>
+# include <iterator>
+# include <Geom_Surface.hxx>
+# include <Geom_RectangularTrimmedSurface.hxx>
+# include <GeomAdaptor_Surface.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <gp_Ax3.hxx>
+# include <Geom_BSplineSurface.hxx>
+# include <gp_Pln.hxx>
+# include <gp_Cylinder.hxx>
+# include <TColgp_Array2OfPnt.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Compound.hxx>
+# include <TopoDS.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepLib_MakeWire.hxx>
+# include <BRepLib_FuseEdges.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
+# include <Geom_Conic.hxx>
+# include <ShapeBuild_ReShape.hxx>
+# include <ShapeFix_Face.hxx>
+# include <TopTools_ListOfShape.hxx>
+# include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
+# include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
+# include <BRep_Builder.hxx>
+# include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <ShapeAnalysis_Edge.hxx>
+# include <ShapeAnalysis_Curve.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <TColgp_SequenceOfPnt.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <BRepGProp.hxx>
+# include <GProp_GProps.hxx>
+# include <Standard_Version.hxx>
+#endif // _PreComp_
+
 #include <Base/Tools.h>
-#include <algorithm>
-#include <iterator>
-#include <Geom_Surface.hxx>
-#include <Geom_RectangularTrimmedSurface.hxx>
-#include <GeomAdaptor_Surface.hxx>
-#include <Geom_Plane.hxx>
-#include <Geom_CylindricalSurface.hxx>
-#include <gp_Ax3.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <gp_Pln.hxx>
-#include <gp_Cylinder.hxx>
-#include <TColgp_Array2OfPnt.hxx>
-#include <TColStd_Array1OfReal.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Compound.hxx>
-#include <TopoDS.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepLib_MakeWire.hxx>
-#include <BRepLib_FuseEdges.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeSolid.hxx>
-#include <BRepBuilderAPI_Sewing.hxx>
-#include <Geom_Conic.hxx>
-#include <ShapeBuild_ReShape.hxx>
-#include <ShapeFix_Face.hxx>
-#include <TopTools_ListOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfShapeShape.hxx>
-#include <TopTools_DataMapIteratorOfDataMapOfIntegerListOfShape.hxx>
-#include <BRep_Builder.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <ShapeAnalysis_Edge.hxx>
-#include <ShapeAnalysis_Curve.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <TColgp_SequenceOfPnt.hxx>
-#include <GeomAPI_ProjectPointOnSurf.hxx>
-#include <BRepGProp.hxx>
-#include <GProp_GProps.hxx>
-#include <Standard_Version.hxx>
+
 #include <Base/Console.h>
+#include <Base/Tools.h>
+
 #include "modelRefine.h"
+
 
 using namespace ModelRefine;
 
@@ -464,7 +472,7 @@ bool FaceTypedCylinder::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &f
         return false;//probably need an error
     gp_Cylinder cylinderOne = surfaceOne->Cylinder();
     gp_Cylinder cylinderTwo = surfaceTwo->Cylinder();
-    
+
     if (fabs(cylinderOne.Radius() - cylinderTwo.Radius()) > Precision::Confusion())
         return false;
     if (!cylinderOne.Axis().IsCoaxial(cylinderTwo.Axis(), Precision::Angular(), Precision::Confusion()) &&
@@ -615,7 +623,7 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
 }
 
 TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
-{    
+{
     static TopoDS_Face dummy;
     std::vector<EdgeVectorType> boundaries;
     boundarySplit(faces, boundaries);
@@ -647,7 +655,7 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
     if (surface.IsNull())
       return dummy;
     std::vector<TopoDS_Wire> innerWires, encirclingWires;
-    std::vector<TopoDS_Wire>::iterator wireIt;    
+    std::vector<TopoDS_Wire>::iterator wireIt;
     for (wireIt = allWires.begin(); wireIt != allWires.end(); ++wireIt) {
         if (wireEncirclesAxis(*wireIt, surface))
             encirclingWires.push_back(*wireIt);
@@ -787,7 +795,7 @@ void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &ma
 {
   TopTools_IndexedMapOfShape edges;
   TopExp::MapShapes(shell, TopAbs_EDGE, edges);
-  
+
   for (int index = 1; index <= edges.Extent(); ++index)
   {
     const TopoDS_Edge &currentEdge = TopoDS::Edge(edges.FindKey(index));
@@ -940,7 +948,7 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
     stream << "FaceTypedBSpline::isEqual: Unknown Error" << std::endl;
     Base::Console().Message(stream.str().c_str());
   }
-  
+
   return false;
 }
 
@@ -1066,7 +1074,7 @@ bool FaceUniter::process()
                     if (!temp.empty())
                     {
                         for (FaceVectorType::iterator f = temp.begin(); f != temp.end(); ++f)
-                              modifiedShapes.push_back(std::make_pair(*f, newFace));
+                              modifiedShapes.emplace_back(*f, newFace);
                     }
                 }
             }
@@ -1116,7 +1124,7 @@ bool FaceUniter::process()
             for(sewIt = facesToSew.begin(); sewIt != facesToSew.end(); ++sewIt)
                 builder.Add(workShell, *sewIt);
         }
-        
+
         BRepLib_FuseEdges edgeFuse(workShell);
 // TODO: change this version after occ fix. Freecad Mantis 1450
 #if OCC_VERSION_HEX <= 0x7fffff
@@ -1152,7 +1160,7 @@ bool FaceUniter::process()
                 // Catch faces that were not united but whose boundary was changed (probably because
                 // several adjacent faces were united)
                 // See https://sourceforge.net/apps/mantisbt/free-cad/view.php?id=873
-                modifiedShapes.push_back(std::make_pair(mapIt.Key(), mapIt.Value()));
+                modifiedShapes.emplace_back(mapIt.Key(), mapIt.Value());
             }
         }
         // Handle edges that were fused. See https://sourceforge.net/apps/mantisbt/free-cad/view.php?id=873
@@ -1169,7 +1177,7 @@ bool FaceUniter::process()
             for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
             {
                 if (newEdges.IsBound(idx))
-                    modifiedShapes.push_back(std::make_pair(edgeIt.Value(), newEdges(idx)));
+                    modifiedShapes.emplace_back(edgeIt.Value(), newEdges(idx));
             }
             // TODO: Handle vertices that have disappeared in the fusion of the edges
         }

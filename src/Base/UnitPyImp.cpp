@@ -76,8 +76,14 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
         QString qstr = QString::fromUtf8(string);
         PyMem_Free(string);
-        *self = Quantity::parse(qstr).getUnit();
-        return 0;
+        try {
+            *self = Quantity::parse(qstr).getUnit();
+            return 0;
+        }
+        catch (const Base::Exception& e) {
+            PyErr_SetString(PyExc_RuntimeError, e.what());
+            return -1;
+        }
     }
 
     PyErr_SetString(PyExc_TypeError, "Either string, (float,8 ints), Unit() or Quantity()");

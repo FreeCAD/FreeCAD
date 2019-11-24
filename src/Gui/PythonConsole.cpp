@@ -92,7 +92,7 @@ struct PythonConsoleP
     InteractiveInterpreter* interpreter;
     CallTipsList* callTipsList;
     ConsoleHistory history;
-    QString output, error, info;
+    QString output, error, info, historyFile;
     QStringList statements;
     bool interactive;
     QMap<QString, QColor> colormap; // Color map
@@ -106,6 +106,7 @@ struct PythonConsoleP
         interpreter = 0;
         callTipsList = 0;
         interactive = false;
+        historyFile = QString::fromUtf8((App::Application::getUserAppDataDir() + "PythonHistory.log").c_str());
         colormap[QLatin1String("Text")] = Qt::black;
         colormap[QLatin1String("Bookmark")] = Qt::cyan;
         colormap[QLatin1String("Breakpoint")] = Qt::red;
@@ -323,7 +324,8 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
         if (PyErr_Occurred()) {                   /* get latest python exception information */
             PyObject *errobj, *errdata, *errtraceback;
             PyErr_Fetch(&errobj, &errdata, &errtraceback);
-            if (PyDict_Check(errdata)) {
+            // the error message can be empty so errdata will be null
+            if (errdata && PyDict_Check(errdata)) {
                 PyObject* value = PyDict_GetItemString(errdata, "swhat");
                 if (value) {
                     Base::RuntimeError e;
@@ -471,11 +473,13 @@ PythonConsole::PythonConsole(QWidget *parent)
     .arg(QString::fromLatin1(version), QString::fromLatin1(platform));
     d->output = d->info;
     printPrompt(PythonConsole::Complete);
+    loadHistory();
 }
 
 /** Destroys the object and frees any allocated resources */
 PythonConsole::~PythonConsole()
 {
+    saveHistory();
     Base::PyGILStateLocker lock;
     getWindowParameter()->Detach( this );
     delete pythonSyntax;
@@ -1231,6 +1235,9 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction *a;
     bool mayPasteHere = cursorBeyond( this->textCursor(), this->inputBegin() );
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+
     a = menu.addAction(tr("&Copy"), this, SLOT(copy()), Qt::CTRL+Qt::Key_C);
     a->setEnabled(textCursor().hasSelection());
 
@@ -1242,6 +1249,11 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     a = menu.addAction( tr("Save history as..."), this, SLOT(onSaveHistoryAs()));
     a->setEnabled(!d->history.isEmpty());
+
+    QAction* saveh = menu.addAction(tr("Save history"));
+    saveh->setToolTip(tr("Saves Python history across %1 sessions").arg(qApp->applicationName()));
+    saveh->setCheckable(true);
+    saveh->setChecked(hGrp->GetBool("SavePythonHistory", false));
 
     menu.addSeparator();
 
@@ -1262,8 +1274,6 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
     QAction* wrap = menu.addAction(tr("Word wrap"));
     wrap->setCheckable(true);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
     if (hGrp->GetBool("PythonWordWrap", true)) {
         wrap->setChecked(true);
         this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
@@ -1281,6 +1291,8 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
             this->setWordWrapMode(QTextOption::NoWrap);
             hGrp->SetBool("PythonWordWrap", false);
         }
+    } else if (exec == saveh) {
+        hGrp->SetBool("SavePythonHistory", saveh->isChecked());
     }
 }
 
@@ -1360,6 +1372,56 @@ QString PythonConsole::readline( void )
       { PyErr_SetInterrupt(); }            //< send SIGINT to python
     this->_sourceDrain = NULL;             //< disable source drain
     return inputBuffer.append(QChar::fromLatin1('\n')); //< pass a newline here, since the readline-caller may need it!
+}
+
+/**
+ * loads history contents from the default history file
+ */
+void PythonConsole::loadHistory() const
+{
+    // only load contents if history is empty, to not overwrite anything
+    if (!d->history.isEmpty())
+        return;
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    if (!hGrp->GetBool("SavePythonHistory", false))
+        return;
+    QFile f(d->historyFile);
+    if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QString l;
+        while (!f.atEnd()) {
+            l = QString::fromUtf8(f.readLine());
+            if (!l.isEmpty()) {
+                l.chop(1); // removes the last \n
+                d->history.append(l);
+            }
+        }
+        f.close();
+    }
+}
+
+/**
+ * saves the current history to the default history file
+ */
+void PythonConsole::saveHistory() const
+{
+    if (d->history.isEmpty())
+        return;
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    if (!hGrp->GetBool("SavePythonHistory", false))
+        return;
+    QFile f(d->historyFile);
+    if (f.open(QIODevice::WriteOnly)) {
+        QTextStream t (&f);
+        QStringList hist = d->history.values();
+        // only save last 100 entries so we don't inflate forever...
+        if (hist.length() > 100)
+            hist = hist.mid(hist.length()-100);
+        for (QStringList::ConstIterator it = hist.begin(); it != hist.end(); ++it)
+            t << *it << "\n";
+        f.close();
+    }
 }
 
 // ---------------------------------------------------------------------

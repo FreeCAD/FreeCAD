@@ -45,10 +45,8 @@
 # include <Inventor/nodes/SoSwitch.h>
 # include <QAction>
 # include <QMenu>
+# include <boost/bind.hpp>
 #endif
-
-#include <boost/bind.hpp>
-
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -95,7 +93,7 @@ void ViewProviderSpline::updateData(const App::Property* prop)
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && strcmp(prop->getName(), "Shape") == 0) {
         // update control points if there
         if (pcControlPoints) {
-            pcControlPoints->removeAllChildren();
+            Gui::coinRemoveAllChildren(pcControlPoints);
             showControlPoints(this->ControlPoints.getValue(), prop);
         }
     }

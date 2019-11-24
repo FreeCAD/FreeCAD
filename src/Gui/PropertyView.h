@@ -64,22 +64,35 @@ public:
 
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;
     Gui::PropertyEditor::PropertyEditor* propertyEditorData;
+    void clearPropertyItemSelection();
+    static bool showAll();
+    static void setShowAll(bool);
+    static bool isPropertyHidden(const App::Property *);
 
 public Q_SLOTS:
     /// Stores a preference for the last tab selected
     void tabChanged(int index);
+    void onTimer();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
+    void showEvent(QShowEvent *) override;
+    void hideEvent(QHideEvent *) override;
 
 private:
-    void onSelectionChanged(const SelectionChanges& msg);
+    void onSelectionChanged(const SelectionChanges& msg) override;
     void slotChangePropertyData(const App::DocumentObject&, const App::Property&);
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
     void slotAppendDynamicProperty(const App::Property&);
     void slotRemoveDynamicProperty(const App::Property&);
-    void slotChangePropertyEditor(const App::Property&);
+    void slotChangePropertyEditor(const App::Document&, const App::Property&);
+    void slotRollback();
     void slotActiveDocument(const Gui::Document&);
+    void slotDeleteDocument(const Gui::Document&);
+    void slotDeletedViewObject(const Gui::ViewProvider&);
+    void slotDeletedObject(const App::DocumentObject&);
+
+    void checkEnable(const char *doc = 0);
 
 private:
     struct PropInfo;
@@ -90,8 +103,14 @@ private:
     Connection connectPropAppend;
     Connection connectPropRemove;
     Connection connectPropChange;
+    Connection connectUndoDocument;
+    Connection connectRedoDocument;
     Connection connectActiveDoc;
+    Connection connectDelDocument;
+    Connection connectDelObject;
+    Connection connectDelViewObject;
     QTabWidget* tabs;
+    QTimer* timer;
 };
 
 namespace DockWnd {

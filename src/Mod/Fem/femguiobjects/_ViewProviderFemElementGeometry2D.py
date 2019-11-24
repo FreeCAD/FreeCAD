@@ -31,11 +31,12 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
-False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 # for the panel
 from PySide import QtCore
 from . import FemSelectionWidgets
+
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemElementGeometry2D:
@@ -83,14 +84,15 @@ class _ViewProviderFemElementGeometry2D:
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -101,19 +103,28 @@ class _ViewProviderFemElementGeometry2D:
 
 
 class _TaskPanelFemElementGeometry2D:
-    '''The TaskPanel for editing References property of FemElementGeometry2D objects'''
+    """The TaskPanel for editing References property of FemElementGeometry2D objects"""
 
     def __init__(self, obj):
 
         self.obj = obj
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry2D.ui")
-        QtCore.QObject.connect(self.parameterWidget.if_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.thickness_changed)
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElementGeometry2D.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_thickness,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.thickness_changed
+        )
         self.init_parameter_widget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Face'])
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References,
+            ["Face"]
+        )
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]

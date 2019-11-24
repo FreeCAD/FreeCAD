@@ -30,14 +30,15 @@ __date__ = "04/08/2016"
 #  \brief FreeCAD INP file reader for FEM workbench
 
 import FreeCAD
+from FreeCAD import Console
 import os
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
@@ -60,8 +61,8 @@ def insert(filename, docname):
 
 # ********* module specific methods *********
 def read(filename):
-    '''read a FemMesh from a inp mesh file and return the FemMesh
-    '''
+    """read a FemMesh from a inp mesh file and return the FemMesh
+    """
     # no document object is created, just the FemMesh is returned
     mesh_data = read_inp(filename)
     from . import importToolsFem
@@ -69,17 +70,17 @@ def read(filename):
 
 
 def import_inp(filename):
-    '''read a FEM mesh from a Z88 mesh file and insert a FreeCAD FEM Mesh object in the ActiveDocument
-    '''
+    """read a FEM mesh from a Z88 mesh file and insert a FreeCAD FEM Mesh object in the ActiveDocument
+    """
     femmesh = read(filename)
     mesh_name = os.path.splitext(os.path.basename(filename))[0]
     if femmesh:
-        mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObject", mesh_name)
         mesh_object.FemMesh = femmesh
 
 
 def read_inp(file_name):
-    '''read .inp file '''
+    """read .inp file """
     # ATM only mesh reading is supported (no boundary conditions)
 
     class elements():
@@ -113,10 +114,10 @@ def read_inp(file_name):
                 line = f.readline()
         else:
             line = f.readline()
-        if line.strip() == '':
+        if line.strip() == "":
             continue
-        elif line[0] == '*':  # start/end of a reading set
-            if line[0:2] == '**':  # comments
+        elif line[0] == "*":  # start/end of a reading set
+            if line[0:2] == "**":  # comments
                 continue
             if line[:8].upper() == "*INCLUDE":
                 start = 1 + line.index("=")
@@ -137,7 +138,7 @@ def read_inp(file_name):
         if (line[:5].upper() == "*NODE") and (model_definition is True):
             read_node = True
         elif read_node is True:
-            line_list = line.split(',')
+            line_list = line.split(",")
             number = int(line_list[0])
             x = float(line_list[1])
             y = float(line_list[2])
@@ -146,10 +147,10 @@ def read_inp(file_name):
 
         # reading elements
         elif line[:8].upper() == "*ELEMENT":
-            line_list = line[8:].upper().split(',')
+            line_list = line[8:].upper().split(",")
             for line_part in line_list:
                 if line_part.lstrip()[:4] == "TYPE":
-                    elm_type = line_part.split('=')[1].strip()
+                    elm_type = line_part.split("=")[1].strip()
 
             if elm_type in ["S3", "CPS3", "CPE3", "CAX3"]:
                 elm_category = elements.tria3
@@ -192,7 +193,7 @@ def read_inp(file_name):
                 error_seg3 = True  # to print "not supported"
 
         elif elm_category != []:
-            line_list = line.split(',')
+            line_list = line.split(",")
             if elm_2nd_line is False:
                 number = int(line_list[0])
                 elm_category[number] = []
@@ -211,7 +212,7 @@ def read_inp(file_name):
         elif line[:5].upper() == "*STEP":
             model_definition = False
     if error_seg3 is True:  # to print "not supported"
-        FreeCAD.Console.PrintError("Error: seg3 (3-node beam element type) not supported, yet.\n")
+        Console.PrintError("Error: seg3 (3-node beam element type) not supported, yet.\n")
     f.close()
 
     # switch from the CalculiX node numbering to the FreeCAD node numbering
@@ -244,17 +245,17 @@ def read_inp(file_name):
         elements.seg3[en] = [n[0], n[2], n[1]]
 
     return {
-        'Nodes': nodes,
-        'Seg2Elem': elements.seg2,
-        'Seg3Elem': elements.seg3,
-        'Tria3Elem': elements.tria3,
-        'Tria6Elem': elements.tria6,
-        'Quad4Elem': elements.quad4,
-        'Quad8Elem': elements.quad8,
-        'Tetra4Elem': elements.tetra4,
-        'Tetra10Elem': elements.tetra10,
-        'Hexa8Elem': elements.hexa8,
-        'Hexa20Elem': elements.hexa20,
-        'Penta6Elem': elements.penta6,
-        'Penta15Elem': elements.penta15
+        "Nodes": nodes,
+        "Seg2Elem": elements.seg2,
+        "Seg3Elem": elements.seg3,
+        "Tria3Elem": elements.tria3,
+        "Tria6Elem": elements.tria6,
+        "Quad4Elem": elements.quad4,
+        "Quad8Elem": elements.quad8,
+        "Tetra4Elem": elements.tetra4,
+        "Tetra10Elem": elements.tetra10,
+        "Hexa8Elem": elements.hexa8,
+        "Hexa20Elem": elements.hexa20,
+        "Penta6Elem": elements.penta6,
+        "Penta15Elem": elements.penta15
     }

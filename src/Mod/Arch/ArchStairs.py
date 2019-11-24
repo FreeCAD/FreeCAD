@@ -186,7 +186,7 @@ def makeRailing(stairs):
                     railList.append(lrRail)
                     stair.Additions = railList
 
-    if stairs == None:
+    if stairs is None:
         sel = FreeCADGui.Selection.getSelection()
         sel0 = sel[0]
         stairs = []
@@ -262,7 +262,7 @@ class _Stairs(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Stair"
+        obj.IfcType = "Stair"
 
     def setProperties(self,obj):
 
@@ -285,7 +285,8 @@ class _Stairs(ArchComponent.Component):
         if not "WidthOfLanding" in pl:
             obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (Second edge and after - First edge follows Width property)"))
 
-        # steps properties
+        # steps and risers properties
+
         if not "NumberOfSteps" in pl:
             obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",QT_TRANSLATE_NOOP("App::Property","The number of risers in these stairs"))
         if not "TreadDepth" in pl:
@@ -301,6 +302,9 @@ class _Stairs(ArchComponent.Component):
         if not "BlondelRatio" in pl:
             obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in"))
             obj.setEditorMode("BlondelRatio",1)
+
+        if not "RiserThickness" in pl:
+            obj.addProperty("App::PropertyLength","RiserThickness","Steps",QT_TRANSLATE_NOOP("App::Property","The thickness of the risers"))
 
         if not hasattr(obj,"LandingDepth"):
             obj.addProperty("App::PropertyLength","LandingDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the landing of these stairs"))
@@ -328,7 +332,7 @@ class _Stairs(ArchComponent.Component):
             obj.setEditorMode("OutlineRight",1)
 
         # Can't accept 'None' in list, need NaN
-        #if not hasattr(obj,"OutlineRailArcLeft"): 
+        #if not hasattr(obj,"OutlineRailArcLeft"):
             #obj.addProperty("App::PropertyVectorList","OutlineRailArcLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' 'arc points' of stairs railing"))
             #obj.setEditorMode("OutlineRailArcLeft",1)
         #if not hasattr(obj,"OutlineRailArcRight"):
@@ -422,6 +426,8 @@ class _Stairs(ArchComponent.Component):
             return
 
         self.steps = []
+        self.risers = []
+
         self.pseudosteps = []
         self.structures = []
         pl = obj.Placement
@@ -438,7 +444,7 @@ class _Stairs(ArchComponent.Component):
         # special case NumberOfSteps = 1 : multi-edges landing
         if (not base) and obj.Width.Value and obj.Height.Value and (obj.NumberOfSteps > 0):
             if obj.Base:
-                if not obj.Base.isDerivedFrom("Part::Feature"):
+                if not hasattr(obj.Base,'Shape'):
                     return
                 if obj.Base.Shape.Solids:
                     obj.Shape = obj.Base.Shape.copy()
@@ -484,8 +490,9 @@ class _Stairs(ArchComponent.Component):
 
                 self.makeStraightStairsWithLanding(obj,edge)
 
-        if self.structures or self.steps:
-            base = Part.makeCompound(self.structures + self.steps)
+        if self.structures or self.steps or self.risers:
+            base = Part.makeCompound(self.structures + self.steps + self.risers)
+
         elif self.pseudosteps:
             shape = Part.makeCompound(self.pseudosteps)
             obj.Shape = shape
@@ -553,7 +560,7 @@ class _Stairs(ArchComponent.Component):
             l = obj.Length.Value
             h = obj.Height.Value
             if obj.Base:
-                if obj.Base.isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Base,'Shape'):
                     l = obj.Base.Shape.Length
                     if obj.Base.Shape.BoundBox.ZLength:
                         h = obj.Base.Shape.BoundBox.ZLength
@@ -694,7 +701,7 @@ class _Stairs(ArchComponent.Component):
                 #vBase2vec = (vBase2-vBase[i]) # - would not be correct if Align is not Left
 
             ''' (1a) calc & append vLength - Need v (vec) '''
-            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d 
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d
 
 
             ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI '''
@@ -938,7 +945,7 @@ class _Stairs(ArchComponent.Component):
         if obj.RiserHeightEnforce != 0:
             h = obj.RiserHeightEnforce * numberofsteps
         elif obj.Base: # TODO - should this happen? - though in original code
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 #l = obj.Base.Shape.Length
                 #if obj.Base.Shape.BoundBox.ZLength:
                 if round(obj.Base.Shape.BoundBox.ZLength,Draft.precision()) != 0: # ? - need precision
@@ -958,7 +965,7 @@ class _Stairs(ArchComponent.Component):
                 else:
                     l += obj.Width.Value
         elif obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 l = obj.Base.Shape.Length #.Value?
         elif obj.Length.Value != 0:
             l = obj.Length.Value
@@ -1136,15 +1143,23 @@ class _Stairs(ArchComponent.Component):
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
         a = math.atan(vHeight.Length/vLength.Length)
 
-        # steps
-        for i in range(numberofsteps-1):
-            p1 = vBase.add((Vector(vLength).multiply(i)).add(Vector(vHeight).multiply(i+1)))
+        vBasedAligned = self.align(vBase,obj.Align,vWidth)
+        vRiserThickness = DraftVecUtils.scaleTo(vLength,obj.RiserThickness.Value)	# 50)
 
-            p1 = self.align(p1,obj.Align,vWidth)
-            p1 = p1.add(vNose).add(Vector(0,0,-abs(obj.TreadThickness.Value)))
+        # steps and risers
+        for i in range(numberofsteps-1):
+
+            #p1 = vBase.add((Vector(vLength).multiply(i)).add(Vector(vHeight).multiply(i+1)))
+            p1 = vBasedAligned.add((Vector(vLength).multiply(i)).add(Vector(vHeight).multiply(i+1)))
+            #p1 = self.align(p1,obj.Align,vWidth)
+            #p1 = p1.add(vNose).add(Vector(0,0,-abs(obj.TreadThickness.Value)))
+            p1 = p1.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
+            r1 = p1
+            p1 = p1.add(vNose)
             p2 = p1.add(DraftVecUtils.neg(vNose)).add(vLength)
             p3 = p2.add(vWidth)
             p4 = p3.add(DraftVecUtils.neg(vLength)).add(vNose)
+
             step = Part.Face(Part.makePolygon([p1,p2,p3,p4,p1]))
             if obj.TreadThickness.Value:
                 step = step.extrude(Vector(0,0,abs(obj.TreadThickness.Value)))
@@ -1152,33 +1167,58 @@ class _Stairs(ArchComponent.Component):
             else:
                 self.pseudosteps.append(step)
 
+            ''' risers - add to steps or pseudosteps in the meantime before adding self.risers / self.pseudorisers '''
+
+            #vResHeight = vHeight.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
+            r2 = r1.add(DraftVecUtils.neg(vHeight))	#vResHeight
+            if i == 0:
+                r2 = r2.add(Vector(0,0,abs(obj.TreadThickness.Value)))
+            r3 = r2.add(vWidth)
+            r4 = r3.add(vHeight)	#vResHeight
+            if i == 0:
+                r4 = r4.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
+            riser = Part.Face(Part.makePolygon([r1,r2,r3,r4,r1]))
+
+            if obj.RiserThickness.Value:
+                riser = riser.extrude(vRiserThickness)	#Vector(0,100,0))
+                self.steps.append(riser)
+            else:
+                self.pseudosteps.append(riser)
+
+        ##
+
+
         # structure
         lProfile = []
         struct = None
         if obj.Structure == "Massive":
             if obj.StructureThickness.Value:
 
-                # Massive Structure to respect 'align' attribute
-
-                vBasedAligned = self.align(vBase,obj.Align,vWidth)
-                vBase = vBasedAligned
+                # '# Massive Structure to respect 'align' attribute'
+                vBase = vBasedAligned.add(vRiserThickness)
 
                 for i in range(numberofsteps-1):
                     if not lProfile:
                         lProfile.append(vBase)
                     last = lProfile[-1]
+
                     if len(lProfile) == 1:
                         last = last.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
+
                     lProfile.append(last.add(vHeight))
                     lProfile.append(lProfile[-1].add(vLength))
+
+                lProfile[-1] = lProfile[-1].add(-vRiserThickness)
+
                 resHeight1 = obj.StructureThickness.Value/math.cos(a)
                 lProfile.append(lProfile[-1].add(Vector(0,0,-resHeight1)))
                 resHeight2 = ((numberofsteps-1)*vHeight.Length)-(resHeight1+obj.TreadThickness.Value)
                 resLength = (vLength.Length/vHeight.Length)*resHeight2
                 h = DraftVecUtils.scaleTo(vLength,-resLength)
                 lProfile.append(lProfile[-1].add(Vector(h.x,h.y,-resHeight2)))
+
                 lProfile.append(vBase)
-                #print(lProfile)
+
                 pol = Part.makePolygon(lProfile)
                 struct = Part.Face(pol)
                 evec = vWidth
@@ -1261,7 +1301,6 @@ class _Stairs(ArchComponent.Component):
                 vLength = DraftVecUtils.scaleTo(v,treadDepth)
             else:
                 reslength = edge.Length
-                #
                 treadDepth = float(reslength)/(obj.NumberOfSteps-1)		# why needs 'float'?
                 obj.TreadDepth = treadDepth
                 vLength = DraftVecUtils.scaleTo(v,treadDepth)
@@ -1363,7 +1402,7 @@ class _Stairs(ArchComponent.Component):
             if obj.LastSegment.Proxy.OutlineRailArcLeftAll: # need if?
                 outlineRailArcLeftAll.extend(obj.LastSegment.Proxy.OutlineRailArcLeftAll)
 
-            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow tolerence Part.LineSegment / edge.toShape() allow?
+            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow tolerance Part.LineSegment / edge.toShape() allow?
                 # no need abs() after .Length right?
                 del outlineLeftAll[-1]
                 del outlineRailArcLeftAll[-1]

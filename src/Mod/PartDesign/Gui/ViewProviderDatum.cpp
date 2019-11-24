@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMessageBox>
 # include <QAction>
 # include <QMenu>
@@ -61,6 +62,7 @@
 #include <Gui/ViewProviderOrigin.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/BitmapFactory.h>
 
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -76,13 +78,15 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderDatum,Gui::ViewProviderGeometryObject)
 
 // static data
 const double ViewProviderDatum::defaultSize = Gui::ViewProviderOrigin::defaultSize ();
 
 ViewProviderDatum::ViewProviderDatum()
 {
+    PartGui::ViewProviderAttachExtension::initExtension(this);
+
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
     pPickStyle = new SoPickStyle();
@@ -279,26 +283,29 @@ bool ViewProviderDatum::setEdit(int ModNum)
 
 bool ViewProviderDatum::doubleClicked(void)
 {
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if(!activeDoc)
+        activeDoc = getDocument();
+    auto activeView = activeDoc->getActiveView();
+    if(!activeView) return false;
+
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
-    
+
     Part::Datum* pcDatum = static_cast<Part::Datum*>(getObject());
-    PartDesign::Body* activeBody = getActiveView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body* activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     auto datumBody = PartDesignGui::getBodyFor(pcDatum, false);
-    
+
     if (datumBody != NULL) {
         if (datumBody != activeBody) {
             Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                datumBody->getDocument()->getName(),
-                PDBODYKEY,
-                datumBody->getDocument()->getName(),
-                datumBody->getNameInDocument());
+                    "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
+                    PDBODYKEY, Gui::Command::getObjectCmd(datumBody).c_str());
+            activeBody = datumBody;
         }
     }
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s',0)",this->pcObject->getNameInDocument());
-    return true;
+    return PartDesignGui::setEdit(pcObject,activeBody);
 }
 
 void ViewProviderDatum::unsetEdit(int ModNum)
@@ -339,7 +346,7 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox () const {
 
         if(group) {
             auto* ext = group->getExtensionByType<App::GroupExtension>();
-            if(ext) 
+            if(ext)
                 objs = ext->getObjects ();
         } else {
             // Fallback to whole document

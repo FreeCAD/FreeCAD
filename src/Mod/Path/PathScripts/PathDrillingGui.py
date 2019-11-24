@@ -30,14 +30,17 @@ import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
 
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
 __title__ = "Path Drilling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "UI and Command for Path Drilling Operation."
+__contributors__ = "IMBack!"
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -46,17 +49,47 @@ else:
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     '''Controller for the drilling operation's page'''
+    
+    def initPage(self, obj):
+        self.peckDepthSpinBox = PathGui.QuantitySpinBox(self.form.peckDepth, obj, 'PeckDepth')
+        self.peckRetractSpinBox = PathGui.QuantitySpinBox(self.form.peckRetractHeight, obj, 'RetractHeight')
+        self.dwellTimeSpinBox = PathGui.QuantitySpinBox(self.form.dwellTime, obj, 'DwellTime')
+            
+    def registerSignalHandlers(self, obj):
+        self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
+        self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
+        
+        self.form.dwellEnabled.toggled.connect(self.form.dwellTime.setEnabled)
+        self.form.dwellEnabled.toggled.connect(self.form.dwellTimelabel.setEnabled)
+        self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
+        
+        self.form.peckRetractHeight.setEnabled(True)
+        self.form.retractLabel.setEnabled(True)
+        
+        if self.form.peckEnabled.isChecked():
+            self.form.dwellEnabled.setEnabled(False)
+            self.form.peckDepth.setEnabled(True)
+            self.form.peckDepthLabel.setEnabled(True)
+        elif self.form.dwellEnabled.isChecked():
+            self.form.peckEnabled.setEnabled(False)
+            self.form.dwellTime.setEnabled(True)
+            self.form.dwellTimelabel.setEnabled(True)
 
     def getForm(self):
         '''getForm() ... return UI'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
+    
+    def updateQuantitySpinBoxes(self, index = None):
+        self.peckDepthSpinBox.updateSpinBox()
+        self.peckRetractSpinBox.updateSpinBox()
+        self.dwellTimeSpinBox.updateSpinBox()
 
     def getFields(self, obj):
         '''setFields(obj) ... update obj's properties with values from the UI'''
         PathLog.track()
-        PathGui.updateInputField(obj, 'PeckDepth', self.form.peckDepth)
-        PathGui.updateInputField(obj, 'RetractHeight', self.form.retractHeight)
-        PathGui.updateInputField(obj, 'DwellTime', self.form.dwellTime)
+        self.peckDepthSpinBox.updateProperty()
+        self.peckRetractSpinBox.updateProperty()
+        self.dwellTimeSpinBox.updateProperty()
 
         if obj.DwellEnabled != self.form.dwellEnabled.isChecked():
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
@@ -66,14 +99,12 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.AddTipLength = self.form.useTipLength.isChecked()
 
         self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         '''setFields(obj) ... update UI with obj properties' values'''
         PathLog.track()
-
-        self.form.peckDepth.setText(FreeCAD.Units.Quantity(obj.PeckDepth.Value, FreeCAD.Units.Length).UserString)
-        self.form.retractHeight.setText(FreeCAD.Units.Quantity(obj.RetractHeight.Value, FreeCAD.Units.Length).UserString)
-        self.form.dwellTime.setText(str(obj.DwellTime))
+        self.updateQuantitySpinBoxes()
 
         if obj.DwellEnabled:
             self.form.dwellEnabled.setCheckState(QtCore.Qt.Checked)
@@ -91,20 +122,28 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.useTipLength.setCheckState(QtCore.Qt.Unchecked)
 
         self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
+
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model'''
         signals = []
 
-        signals.append(self.form.retractHeight.editingFinished)
+        signals.append(self.form.peckRetractHeight.editingFinished)
         signals.append(self.form.peckDepth.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)
         signals.append(self.form.dwellEnabled.stateChanged)
         signals.append(self.form.peckEnabled.stateChanged)
         signals.append(self.form.useTipLength.stateChanged)
         signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
 
         return signals
+    
+    def updateData(self, obj, prop):
+        if prop in ['PeckDepth', 'RetractHeight'] and not prop in ['Base', 'Disabled']:
+            self.updateQuantitySpinBoxes()
 
 Command = PathOpGui.SetupOperation('Drilling',
         PathDrilling.Create,

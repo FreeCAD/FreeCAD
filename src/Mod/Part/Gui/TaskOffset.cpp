@@ -33,7 +33,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -178,21 +178,14 @@ void OffsetWidget::on_updateView_toggled(bool on)
 
 bool OffsetWidget::accept()
 {
-    std::string name = d->offset->getNameInDocument();
-
     try {
         double offsetValue = d->ui.spinOffset->value().getValue();
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
-            name.c_str(),offsetValue);
+        Gui::cmdAppObjectArgs(d->offset, "Value = %f", offsetValue);
         d->ui.spinOffset->apply();
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
-            name.c_str(),d->ui.modeType->currentIndex());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
-            name.c_str(),d->ui.joinType->currentIndex());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Intersection = %s",
-            name.c_str(),d->ui.intersection->isChecked() ? "True" : "False");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.SelfIntersection = %s",
-            name.c_str(),d->ui.selfIntersection->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(d->offset, "Mode = %i", d->ui.modeType->currentIndex());
+        Gui::cmdAppObjectArgs(d->offset, "Join = %i", d->ui.joinType->currentIndex());
+        Gui::cmdAppObjectArgs(d->offset, "Intersection = %s", d->ui.intersection->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(d->offset, "SelfIntersection = %s", d->ui.selfIntersection->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->offset->isValid())

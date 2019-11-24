@@ -44,7 +44,7 @@
 
 using namespace std;
 
-DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive);
+DEF_STD_CMD_ACL(CmdPrimtiveCompAdditive)
 
 static const char * primitiveIntToName(int id)
 {
@@ -59,7 +59,7 @@ static const char * primitiveIntToName(int id)
         case 7:  return "Wedge";
         default: return nullptr;
     };
-};
+}
 
 CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
   : Command("PartDesign_CompPrimitiveAdditive")
@@ -98,7 +98,6 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
     auto shapeType( primitiveIntToName(iMsg) );
-    auto FeatName( getUniqueObjectName(shapeType) );
 
     Gui::Command::openCommand( (std::string("Make additive ") + shapeType).c_str() );
     if (shouldMakeBody) {
@@ -109,26 +108,29 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         return;
     }
 
-    Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.addObject(\'PartDesign::Additive%s\',\'%s\')",
-            shapeType, FeatName.c_str() );
+    auto FeatName( getUniqueObjectName(shapeType, pcActiveBody) );
 
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
+    FCMD_OBJ_DOC_CMD(pcActiveBody,"addObject('PartDesign::Additive"<<shapeType<<"','"<<FeatName<<"')");
+
+    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(
+            pcActiveBody->getDocument()->getObject(FeatName.c_str()));
+
+    if(!prm) return;
+    FCMD_OBJ_CMD(pcActiveBody,"addObject("<<getObjectCmd(prm)<<")");
     Gui::Command::updateActive();
 
-    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(getDocument()->getObject(FeatName.c_str()));
-    if (prm->BaseFeature.getValue())
-       doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prm->BaseFeature.getValue()->getNameInDocument());
+    auto base = prm->BaseFeature.getValue();
+    FCMD_OBJ_HIDE(base);
 
-    copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
-    copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
-    copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
-    copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
-    copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
-
-    Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
+    if(!base)
+        base = pcActiveBody;
+    copyVisual(prm, "ShapeColor", base);
+    copyVisual(prm, "LineColor", base);
+    copyVisual(prm, "PointColor", base);
+    copyVisual(prm, "Transparency", base);
+    copyVisual(prm, "DisplayMode", base);
+    
+    PartDesignGui::setEdit(prm,pcActiveBody);
 }
 
 Gui::Action * CmdPrimtiveCompAdditive::createAction(void)
@@ -228,7 +230,7 @@ bool CmdPrimtiveCompAdditive::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_ACL(CmdPrimtiveCompSubtractive);
+DEF_STD_CMD_ACL(CmdPrimtiveCompSubtractive)
 
 CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
   : Command("PartDesign_CompPrimitiveSubtractive")
@@ -266,32 +268,25 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     }
 
     auto shapeType( primitiveIntToName(iMsg) );
-    auto FeatName( getUniqueObjectName(shapeType) );
+    auto FeatName( getUniqueObjectName(shapeType, pcActiveBody) );
 
     Gui::Command::openCommand( (std::string("Make subtractive ") + shapeType).c_str() );
-    Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.ActiveDocument.addObject(\'PartDesign::Subtractive%s\',\'%s\')",
-            shapeType, FeatName.c_str() );
-
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
+    FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Subtractive"<<shapeType<<"','"<<FeatName<<"')");
     Gui::Command::updateActive();
+
+    auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    copyVisual(Feat, "ShapeColor", prevSolid);
+    copyVisual(Feat, "LineColor", prevSolid);
+    copyVisual(Feat, "PointColor", prevSolid);
+    copyVisual(Feat, "Transparency", prevSolid);
+    copyVisual(Feat, "DisplayMode", prevSolid);
 
     if ( isActiveObjectValid() ) {
         // TODO  (2015-08-05, Fat-Zer)
-        if (prevSolid) {
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolid->getNameInDocument());
-        }
+        FCMD_OBJ_HIDE(prevSolid);
     }
 
-    copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
-    copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
-    copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
-    copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
-    copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
-
-    Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
+    PartDesignGui::setEdit(Feat,pcActiveBody);
 }
 
 Gui::Action * CmdPrimtiveCompSubtractive::createAction(void)

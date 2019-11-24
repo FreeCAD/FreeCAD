@@ -165,8 +165,8 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 
                     Part::GeomBoundedCurve * bcurve = static_cast<Part::GeomBoundedCurve *>(geomlist[id]);
 
-                    points.push_back(gp_Pnt2d (bcurve->getStartPoint().x,bcurve->getStartPoint().y));
-                    points.push_back(gp_Pnt2d (bcurve->getEndPoint().x,bcurve->getEndPoint().y));
+                    points.emplace_back(bcurve->getStartPoint().x,bcurve->getStartPoint().y);
+                    points.emplace_back(bcurve->getEndPoint().x,bcurve->getEndPoint().y);
                 }
 
                 Intersector.Init(primaryCurve, secondaryCurve, 1.0e-12);

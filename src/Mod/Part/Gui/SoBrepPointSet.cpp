@@ -25,12 +25,12 @@
 
 #ifndef _PreComp_
 # ifdef FC_OS_WIN32
-# include <windows.h>
+#  include <windows.h>
 # endif
 # ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
+#  include <OpenGL/gl.h>
 # else
-# include <GL/gl.h>
+#  include <GL/gl.h>
 # endif
 # include <float.h>
 # include <algorithm>
@@ -64,8 +64,7 @@
 
 using namespace PartGui;
 
-
-SO_NODE_SOURCE(SoBrepPointSet);
+SO_NODE_SOURCE(SoBrepPointSet)
 
 void SoBrepPointSet::initClass()
 {
@@ -73,33 +72,80 @@ void SoBrepPointSet::initClass()
 }
 
 SoBrepPointSet::SoBrepPointSet()
+    :selContext(std::make_shared<SelContext>())
+    ,selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepPointSet);
-    SO_NODE_ADD_FIELD(highlightIndex, (-1));
-    SO_NODE_ADD_FIELD(selectionIndex, (-1));
-    selectionIndex.setNum(0);
 }
 
 void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 {
-    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
+    auto state = action->getState();
+    selCounter.checkRenderCache(state);
+
+    const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
     int num = coords->getNum() - this->startIndex.getValue();
     if (num < 0) {
         // Fixes: #0000545: Undo revolve causes crash 'illegal storage'
         return;
     }
-    if (this->selectionIndex.getNum() > 0)
-        renderSelection(action);
-    if (this->highlightIndex.getValue() >= 0)
-        renderHighlight(action);
-    inherited::GLRender(action);
+    SelContextPtr ctx2;
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
+    if(ctx2 && ctx2->selectionIndex.empty())
+        return;
+    if(selContext2->checkGlobal(ctx))
+        ctx = selContext2;
+
+    if(ctx && ctx->highlightIndex==INT_MAX) {
+        if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
+            if(ctx2) {
+                ctx2->selectionColor = ctx->highlightColor;
+                renderSelection(action,ctx2); 
+            } else
+                renderHighlight(action,ctx);
+        }else{
+            if(!action->isRenderingDelayedPaths())
+                renderSelection(action,ctx); 
+            if(ctx2) {
+                ctx2->selectionColor = ctx->highlightColor;
+                renderSelection(action,ctx2); 
+            } else
+                renderHighlight(action,ctx);
+            if(action->isRenderingDelayedPaths())
+                renderSelection(action,ctx); 
+        }
+        return;
+    }
+
+    if(!action->isRenderingDelayedPaths())
+        renderHighlight(action,ctx);
+    if(ctx && ctx->selectionIndex.size()) {
+        if(ctx->isSelectAll()) {
+            if(ctx2 && ctx2->selectionIndex.size()) {
+                ctx2->selectionColor = ctx->selectionColor;
+                renderSelection(action,ctx2); 
+            }else
+                renderSelection(action,ctx); 
+            if(action->isRenderingDelayedPaths())
+                renderHighlight(action,ctx);
+            return;
+        }
+        if(!action->isRenderingDelayedPaths())
+            renderSelection(action,ctx); 
+    }
+    if(ctx2 && ctx2->selectionIndex.size())
+        renderSelection(action,ctx2,false);
+    else
+        inherited::GLRender(action);
 
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
-    if (this->highlightIndex.getValue() >= 0)
-        renderHighlight(action);
-    if (this->selectionIndex.getNum() > 0)
-        renderSelection(action);
+    if(!action->isRenderingDelayedPaths())
+        renderHighlight(action,ctx);
+    if(ctx && ctx->selectionIndex.size())
+        renderSelection(action,ctx);
+    if(action->isRenderingDelayedPaths())
+        renderHighlight(action,ctx);
 //#endif
 }
 
@@ -108,35 +154,46 @@ void SoBrepPointSet::GLRenderBelowPath(SoGLRenderAction * action)
     inherited::GLRenderBelowPath(action);
 }
 
-void SoBrepPointSet::renderShape(const SoGLCoordinateElement * const coords, 
-                                 const int32_t *cindices,
-                                 int numindices)
-{
-    const SbVec3f * coords3d = coords->getArrayPtr3();
-    if(coords3d == nullptr)
+void SoBrepPointSet::getBoundingBox(SoGetBoundingBoxAction * action) {
+
+    SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
+    if(!ctx2 || ctx2->isSelectAll()) {
+        inherited::getBoundingBox(action);
+        return;
+    }
+
+    if(ctx2->selectionIndex.empty())
         return;
 
-    int previ;
-    const int32_t *end = cindices + numindices;
-    glBegin(GL_POINTS);
-    while (cindices < end) {
-        previ = *cindices++;
-        glVertex3fv((const GLfloat*) (coords3d + previ));
+    auto state = action->getState();
+    auto coords = SoCoordinateElement::getInstance(state);
+    const SbVec3f *coords3d = coords->getArrayPtr3();
+    int numverts = coords->getNum();
+    int startIndex = this->startIndex.getValue();
+
+    SbBox3f bbox;
+    for(auto idx : ctx2->selectionIndex) {
+        if(idx >= startIndex && idx < numverts)
+            bbox.extendBy(coords3d[idx]);
     }
-    glEnd();
+
+    if(!bbox.isEmpty())
+        action->extendBy(bbox);
 }
 
-void SoBrepPointSet::renderHighlight(SoGLRenderAction *action)
+void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 {
+    if(!ctx || ctx->highlightIndex<0)
+        return;
+
     SoState * state = action->getState();
     state->push();
     float ps = SoPointSizeElement::get(state);
     if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
 
-    SoLazyElement::setEmissive(state, &this->highlightColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, true);
-    SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, true);
+    SoLazyElement::setEmissive(state, &ctx->highlightColor);
+    packedColor = ctx->highlightColor.getPackedValue(0.0);
+    SoLazyElement::setPacked(state, this,1, &packedColor,false);
 
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
@@ -146,128 +203,165 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action)
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
 
-    int32_t id = this->highlightIndex.getValue();
-    if (id < this->startIndex.getValue() || id >= coords->getNum()) {
-        SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
-    }
-    else {
-        renderShape(static_cast<const SoGLCoordinateElement*>(coords), &id, 1);
-    }
-    state->pop();
-}
-
-void SoBrepPointSet::renderSelection(SoGLRenderAction *action)
-{
-    SoState * state = action->getState();
-    state->push();
-    float ps = SoPointSizeElement::get(state);
-    if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
-
-    SoLazyElement::setEmissive(state, &this->selectionColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, true);
-    SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, true);
-
-    const SoCoordinateElement * coords;
-    const SbVec3f * normals;
-    const int32_t * cindices;
-    int numcindices;
-
-    this->getVertexData(state, coords, normals, false);
-
-    SoMaterialBundle mb(action);
-    mb.sendFirst(); // make sure we have the correct material
-
-    cindices = this->selectionIndex.getValues(0);
-    numcindices = this->selectionIndex.getNum();
-
-    if (!validIndexes(coords, this->startIndex.getValue(), cindices, numcindices)) {
-        SoDebugError::postWarning("SoBrepPointSet::renderSelection", "selectionIndex out of range");
-    }
-    else {
-        renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
-    }
-    state->pop();
-}
-
-bool SoBrepPointSet::validIndexes(const SoCoordinateElement* coords, int32_t startIndex, const int32_t * cindices, int numcindices) const
-{
-    for (int i=0; i<numcindices; i++) {
-        int32_t id = cindices[i];
-        if (id < startIndex || id >= coords->getNum()) {
-            return false;
+    int id = ctx->highlightIndex;
+    const SbVec3f * coords3d = coords->getArrayPtr3();
+    if(coords3d) {
+        if(id == INT_MAX) {
+            glBegin(GL_POINTS);
+            for(int idx=startIndex.getValue();idx<coords->getNum();++idx)
+                glVertex3fv((const GLfloat*) (coords3d + idx));
+            glEnd();
+        }else if (id < this->startIndex.getValue() || id >= coords->getNum()) {
+            SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
+        }
+        else {
+            glBegin(GL_POINTS);
+            glVertex3fv((const GLfloat*) (coords3d + id));
+            glEnd();
         }
     }
-    return true;
+    state->pop();
+}
+
+void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
+{
+    SoState * state = action->getState();
+    if(push) {
+        state->push();
+        float ps = SoPointSizeElement::get(state);
+        if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
+
+        SoLazyElement::setEmissive(state, &ctx->selectionColor);
+        packedColor = ctx->selectionColor.getPackedValue(0.0);
+        SoLazyElement::setPacked(state, this,1, &packedColor,false);
+    }
+
+    const SoCoordinateElement * coords;
+    const SbVec3f * normals;
+
+    this->getVertexData(state, coords, normals, false);
+
+    SoMaterialBundle mb(action);
+    mb.sendFirst(); // make sure we have the correct material
+
+    bool warn = false;
+    int startIndex = this->startIndex.getValue();
+    const SbVec3f * coords3d = coords->getArrayPtr3();
+    if(coords3d) {
+        glBegin(GL_POINTS);
+        if(ctx->isSelectAll()) {
+            for(int idx=startIndex;idx<coords->getNum();++idx)
+                glVertex3fv((const GLfloat*) (coords3d + idx));
+        }else{
+            for(auto idx : ctx->selectionIndex) {
+                if(idx >= startIndex && idx < coords->getNum())
+                    glVertex3fv((const GLfloat*) (coords3d + idx));
+                else
+                    warn = true;
+            }
+        }
+        glEnd();
+    }
+    if(warn)
+        SoDebugError::postWarning("SoBrepPointSet::renderSelection", "selectionIndex out of range");
+    if(push) state->pop();
 }
 
 void SoBrepPointSet::doAction(SoAction* action)
 {
     if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
         Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
+        selCounter.checkAction(hlaction);
         if (!hlaction->isHighlighted()) {
-            this->highlightIndex = -1;
+            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
+            if(ctx) {
+                ctx->highlightIndex = -1;
+                touch();
+            }
             return;
         }
+        SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
         const SoDetail* detail = hlaction->getElement();
-        if (detail) {
-            if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
-                this->highlightIndex = -1;
-                return;
-            }
-
-            int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
-            this->highlightIndex.setValue(index);
-            this->highlightColor = hlaction->getColor();
+        if (!detail) {
+            ctx->highlightIndex = INT_MAX;
+            ctx->highlightColor = hlaction->getColor();
+            touch();
+            return;
+        }else if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
+            ctx->highlightIndex = -1;
+            touch();
+            return;
         }
+
+        int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
+        if(index!=ctx->highlightIndex) {
+            ctx->highlightIndex = index;
+            ctx->highlightColor = hlaction->getColor();
+            touch();
+        }
+        return;
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
         Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
-        this->selectionColor = selaction->getColor();
-        if (selaction->getType() == Gui::SoSelectionElementAction::All) {
-            const SoCoordinateElement* coords = SoCoordinateElement::getInstance(action->getState());
-            int num = coords->getNum() - this->startIndex.getValue();
-            this->selectionIndex.setNum(num);
-            int32_t* v = this->selectionIndex.startEditing();
-            int32_t s = this->startIndex.getValue();
-            for (int i=0; i<num;i++)
-                v[i] = i + s;
-            this->selectionIndex.finishEditing();
+        switch(selaction->getType()) {
+        case Gui::SoSelectionElementAction::All: {
+            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+            selCounter.checkAction(selaction,ctx);
+            ctx->selectionColor = selaction->getColor();
+            ctx->selectionIndex.clear();
+            ctx->selectionIndex.insert(-1);
+            touch();
             return;
-        }
-        else if (selaction->getType() == Gui::SoSelectionElementAction::None) {
-            this->selectionIndex.setNum(0);
+        } case Gui::SoSelectionElementAction::None:
+            if(selaction->isSecondary()) {
+                if(Gui::SoFCSelectionRoot::removeActionContext(action,this))
+                    touch();
+            } else {
+                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
+                if(ctx) {
+                    ctx->selectionIndex.clear();
+                    touch();
+                }
+            }
             return;
-        }
-
-        const SoDetail* detail = selaction->getElement();
-        if (detail) {
-            if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
+        case Gui::SoSelectionElementAction::Remove:
+        case Gui::SoSelectionElementAction::Append: {
+            const SoDetail* detail = selaction->getElement();
+            if (!detail || !detail->isOfType(SoPointDetail::getClassTypeId())) {
+                if(selaction->isSecondary()) {
+                    // For secondary context, a detail of different type means
+                    // the user may want to partial render only other type of
+                    // geometry. So we call below to obtain a action context.
+                    // If no secondary context exist, it will create an empty
+                    // one, and an empty secondary context inhibites drawing
+                    // here.
+                    auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                    selCounter.checkAction(selaction,ctx);
+                    touch();
+                }
                 return;
             }
-
             int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
-            switch (selaction->getType()) {
-            case Gui::SoSelectionElementAction::Append:
-                {
-                    if (this->selectionIndex.find(index) < 0) {
-                        int start = this->selectionIndex.getNum();
-                        this->selectionIndex.set1Value(start, index);
-                    }
-                }
-                break;
-            case Gui::SoSelectionElementAction::Remove:
-                {
-                    int start = this->selectionIndex.find(index);
-                    if (start >= 0)
-                        this->selectionIndex.deleteValues(start,1);
-                }
-                break;
-            default:
-                break;
+            if(selaction->getType() == Gui::SoSelectionElementAction::Append) {
+                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
+                selCounter.checkAction(selaction,ctx);
+                ctx->selectionColor = selaction->getColor();
+                if(ctx->isSelectAll()) 
+                    ctx->selectionIndex.clear();
+                if(ctx->selectionIndex.insert(index).second)
+                    touch();
+            } else {
+                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
+                if(ctx && ctx->removeIndex(index))
+                    touch();
             }
+            break;
+        } default:
+            break;
         }
+        return;
     }
 
     inherited::doAction(action);
 }
+

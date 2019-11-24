@@ -606,7 +606,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
     gp_Pnt s,ePt;
 
     Standard_Real tol3D = 0.001;
-    Standard_Integer maxDegree = 3, maxSegment = 100;
+    Standard_Integer maxDegree = 3, maxSegment = 200;
     Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
     Approx_Curve3d approx(hCurve, tol3D, GeomAbs_C0, maxSegment, maxDegree);
     if (approx.IsDone() && approx.HasResult()) {

@@ -745,20 +745,20 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
       <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Azaleraren tangentea (U)</translation>
+      <translation>Gainazalaren tangentea (U)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="237"/>
       <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Azalera baten tangentea, U parametroan zehar. Erpin-esteka batek definituko du zein puntutan.</translation>
+      <translation>Gainazal baten tangentea, U parametroan zehar. Erpin-esteka batek definituko du zein puntutan.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Azaleraren tangentea (V)</translation>
+      <translation>Gainazalaren tangentea (V)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="242"/>
@@ -836,13 +836,13 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
       <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Normaletik azalerara</translation>
+      <translation>Normaletik gainazalera</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Erpinaren arabera ezarritako puntuan azalerarekiko perpendikularra den lerroa.</translation>
+      <translation>Erpinaren arabera ezarritako puntuan gainazalarekiko perpendikularra den lerroa.</translation>
     </message>
   </context>
   <context>
@@ -923,13 +923,13 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
       <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Azaleraren tangentea</translation>
+      <translation>Gainazalaren tangentea</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="144"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planoa azaleraren tangentea da erpinean.</translation>
+      <translation>Planoa gainazalaren tangentea da erpinean.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
@@ -1120,13 +1120,13 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Azaleraren XY tangentea</translation>
+      <translation>Gainazalaren XY tangentea</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="69"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y' planoa azaleraren tangentea da erpinean.</translation>
+      <translation>X' Y' planoa gainazalaren tangentea da erpinean.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="71"/>
@@ -2488,7 +2488,7 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="210"/>
       <source>Yaw:</source>
-      <translation>Keinadatzea:</translation>
+      <translation>Keinada:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="223"/>
@@ -2498,7 +2498,7 @@ Sakatu 'Jarraitu' elementua sortzeko, edo 'Abortatu' eragiketa uzteko.</translat
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="236"/>
       <source>Roll:</source>
-      <translation>Kulunkatzea:</translation>
+      <translation>Kulunka:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
@@ -3180,7 +3180,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Idatzi kurbak azaleraren espazio parametrikoan</translation>
+      <translation>Idatzi kurbak gainazalaren espazio parametrikoan</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3845,12 +3845,12 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Uneko azaleraren teselazio-desbideratzea definitzen du</translation>
+      <translation>Uneko gainazalaren teselazio-desbideratzea definitzen du</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselazioa&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Teselatutako sareak azalerarekiko duen gehienezko desbideratzea definitzen du. Balioa txikiagoa bada, errendatze-abiadura motelagoa izango da eta xehetasunak/bereizmena hobea izango da.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselazioa&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Teselatutako sareak gainazalarekiko duen gehienezko desbideratzea definitzen du. Balioa txikiagoa bada, errendatze-abiadura motelagoa izango da eta xehetasunak/bereizmena hobea izango da.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -4373,7 +4373,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="210"/>
       <source>Yaw:</source>
-      <translation>Keinadatzea:</translation>
+      <translation>Keinada:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="223"/>
@@ -4383,7 +4383,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="236"/>
       <source>Roll:</source>
-      <translation>Kulunkatzea:</translation>
+      <translation>Kulunka:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
@@ -4930,12 +4930,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid Point On Curve On Surface</source>
-      <translation>Kurbako edo azalerako puntu baliogabea</translation>
+      <translation>Kurbako edo gainazaleko puntu baliogabea</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
       <source>Invalid Point On Surface</source>
-      <translation>Azalerako puntu baliogabea</translation>
+      <translation>Gainazaleko puntu baliogabea</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="105"/>
@@ -4955,17 +4955,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No Curve On Surface</source>
-      <translation>Kurbarik ez azaleran</translation>
+      <translation>Kurbarik ez gainazalean</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Invalid Curve On Surface</source>
-      <translation>Kurba baliogabea azaleran</translation>
+      <translation>Kurba baliogabea gainazalean</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid Curve On Closed Surface</source>
-      <translation>Kurba baliogabea azalera itxian</translation>
+      <translation>Kurba baliogabea gainazal itxian</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
@@ -5015,7 +5015,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>No Surface</source>
-      <translation>Azalerarik ez</translation>
+      <translation>Gainazalik ez</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
@@ -5150,7 +5150,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo - Baliogabeko kurba azaleran</translation>
+      <translation>BOPAlgo - Baliogabeko kurba gainazalean</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="171"/>

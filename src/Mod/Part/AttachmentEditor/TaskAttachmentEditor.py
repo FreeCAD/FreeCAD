@@ -30,7 +30,7 @@ Q = App.Units.Quantity
 
 from AttachmentEditor.FrozenClass import FrozenClass
 try:
-    from Show.TempoVis import TempoVis
+    from Show import TempoVis
     from Show.DepGraphTools import getAllDependent
 except ImportError as err:
     def TempoVis(doc):
@@ -285,7 +285,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.updatePreview()
         self.updateRefButtons()
 
-        self.tv = TempoVis(self.obj.Document)
+        self.tv = TempoVis(self.obj.Document, tag= "PartGui.TaskAttachmentEditor")
         if self.tv: # tv will still be None if Show module is unavailable
             self.tv.hide_all_dependent(self.obj)
             self.tv.show(self.obj)

@@ -86,22 +86,24 @@ bool ViewProviderPart::doubleClicked(void)
 
     //first, check if the part is already active.
     App::DocumentObject* activePart = nullptr;
-    MDIView* activeView = this->getActiveView();
-    if ( activeView ) {
-        activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);
-    }
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if(!activeDoc)
+        activeDoc = getDocument();
+    auto activeView = activeDoc->setActiveView(this);
+    if(!activeView) 
+        return false;
+
+    activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);
 
     if (activePart == this->getObject()){
         //active part double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', None)",
-                this->getObject()->getDocument()->getName(),
+                "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)",
                 PARTKEY);
     } else {
         //set new active part
         Gui::Command::doCommand(Gui::Command::Gui,
-                "Gui.getDocument('%s').ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
-                this->getObject()->getDocument()->getName(),
+                "Gui.ActiveDocument.ActiveView.setActiveObject('%s', App.getDocument('%s').getObject('%s'))",
                 PARTKEY,
                 this->getObject()->getDocument()->getName(),
                 this->getObject()->getNameInDocument());

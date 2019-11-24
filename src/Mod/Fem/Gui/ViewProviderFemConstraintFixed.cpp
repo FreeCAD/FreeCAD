@@ -25,11 +25,13 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
-# include <Precision.hxx>
+
 # include <QMessageBox>
 #endif
 
@@ -141,7 +143,7 @@ void ViewProviderFemConstraintFixed::updateData(const App::Property* prop)
         int idx = 0;
 #else
         // Note: Points and Normals are always updated together
-        pShapeSep->removeAllChildren();
+        Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {

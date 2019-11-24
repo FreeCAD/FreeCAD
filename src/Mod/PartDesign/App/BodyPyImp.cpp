@@ -23,10 +23,14 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
 #include <cstring>
+#endif
+
 
 #include "Mod/Part/App/Part2DObject.h"
 #include "Mod/PartDesign/App/Body.h"
+#include "Mod/PartDesign/App/Feature.h"
 
 // inclusion of the generated files (generated out of ItemPy.xml)
 #include "BodyPy.h"
@@ -86,3 +90,12 @@ PyObject* BodyPy::insertObject(PyObject *args)
 
     Py_Return;
 }
+
+Py::Object BodyPy::getVisibleFeature() const {
+    for(auto obj : getBodyPtr()->Group.getValues()) {
+        if(obj->Visibility.getValue() && obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            return Py::Object(obj->getPyObject(),true);
+    }
+    return Py::Object();
+}
+

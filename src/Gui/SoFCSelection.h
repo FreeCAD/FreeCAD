@@ -41,6 +41,9 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/fields/SoSFBool.h>
+#include <memory>
+#include "SoFCSelectionContext.h"
 
 class SoFullPath;
 class SoPickedPoint;
@@ -94,6 +97,7 @@ public:
     SoSFString documentName;
     SoSFString objectName;
     SoSFString subElementName;
+    SoSFBool useNewSelection;
 
     virtual void doAction(SoAction *action);
     virtual void GLRender(SoGLRenderAction * action);
@@ -105,13 +109,20 @@ public:
 
 protected:
     virtual ~SoFCSelection();
+
+    typedef SoFCSelectionContext SelContext;
+    typedef std::shared_ptr<SelContext> SelContextPtr;
+    SelContextPtr selContext;
+    SelContextPtr selContext2;
+
     virtual void redrawHighlighted(SoAction * act, SbBool flag);
+
     virtual SbBool readInstance(SoInput *  in, unsigned short  flags); 
 
 private:
     static int getPriority(const SoPickedPoint*);
     static void turnoffcurrent(SoAction * action);
-    void setOverride(SoGLRenderAction * action);
+    bool setOverride(SoGLRenderAction * action, SelContextPtr);
     SbBool isHighlighted(SoAction *action);
     SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
     const SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;

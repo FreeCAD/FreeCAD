@@ -39,7 +39,7 @@ class MySpring:
 
 def makeMySpring():
    doc = FreeCAD.activeDocument()
-   if doc == None:
+   if doc is None:
       doc = FreeCAD.newDocument()
    spring=doc.addObject("Part::FeaturePython","My_Spring")
    spring.Label = "My Spring"

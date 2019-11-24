@@ -45,7 +45,7 @@ class Constraint;
 
 class SketcherExport PropertyConstraintList : public App::PropertyLists
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -60,10 +60,10 @@ public:
      */
     virtual ~PropertyConstraintList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    virtual void setSize(int newSize) override;
+    virtual int getSize(void) const override;
     
-    const char* getEditorName(void) const {
+    const char* getEditorName(void) const override {
         return "SketcherGui::PropertyConstraintListItem";
     }
 
@@ -87,6 +87,13 @@ public:
     void setValues(const std::vector<Constraint*>&);
 
     /*!
+      Sets a vector of constraint to the property.
+      The values of the array are moved, and the ownership of constraints
+      inside are taken by this property
+    */
+    void setValues(std::vector<Constraint*>&&);
+
+    /*!
      Index operator
      \note If the geometry is invalid then the index operator
            returns null. This must be checked by the caller.
@@ -102,16 +109,16 @@ public:
         return  _lValueList;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save(Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const App::Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const App::Property &from) override;
 
-    virtual unsigned int getMemSize(void) const;
+    virtual unsigned int getMemSize(void) const override;
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
     void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
@@ -122,10 +129,12 @@ public:
 
 
     const Constraint *getConstraint(const App::ObjectIdentifier &path) const;
-    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const;
-    virtual const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
-    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
+    virtual App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const override;
+    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
+
+    virtual bool getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const override;
 
     typedef std::pair<int, const Constraint*> ConstraintInfo ;
 
@@ -153,7 +162,7 @@ private:
     std::vector<unsigned int> validGeometryKeys;
     bool invalidGeometry;
 
-    void applyValues(const std::vector<Constraint*>&);
+    void applyValues(std::vector<Constraint*>&&);
     void applyValidGeometryKeys(const std::vector<unsigned int> &keys);
 
     static std::vector<Constraint *> _emptyValueList;

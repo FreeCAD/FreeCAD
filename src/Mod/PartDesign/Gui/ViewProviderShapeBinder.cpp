@@ -24,8 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMessageBox>
-#include <QMenu>
+# include <QMenu>
 # include <Inventor/nodes/SoSeparator.h>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -34,11 +35,14 @@
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ViewProviderShapeBinder.h"
 #include "TaskShapeBinder.h"
+
+FC_LOG_LEVEL_INIT("ShapeBinder",true,true)
 
 using namespace PartDesignGui;
 
@@ -59,13 +63,13 @@ ViewProviderShapeBinder::ViewProviderShapeBinder()
     PointSize.setStatus(App::Property::Hidden, true);
     DisplayMode.setStatus(App::Property::Hidden, true);
 
-    //get the datum coloring sheme
+    //get the datum coloring scheme
     // set default color for datums (golden yellow with 60% transparency)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
             "User parameter:BaseApp/Preferences/Mod/PartDesign");
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
     App::Color col ( (uint32_t) shcol );
-    
+
     ShapeColor.setValue(col);
     LineColor.setValue(col);
     PointColor.setValue(col);
@@ -80,7 +84,7 @@ ViewProviderShapeBinder::~ViewProviderShapeBinder()
 
 bool ViewProviderShapeBinder::setEdit(int ModNum) {
     // TODO Share code with other view providers (2015-09-11, Fat-Zer)
-    
+
     if (ModNum == ViewProvider::Default || ModNum == 1) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
@@ -118,18 +122,22 @@ bool ViewProviderShapeBinder::setEdit(int ModNum) {
 }
 
 void ViewProviderShapeBinder::unsetEdit(int ModNum) {
-    
+
     PartGui::ViewProviderPart::unsetEdit(ModNum);
 }
 
 void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliary*/)
 {
-    Part::Feature* obj;
+    App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
 
-    if(getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
+    if (getObject()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()))
         PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(getObject())->Support, obj, subs);
     else
+        return;
+
+    // stop if not a Part feature was found
+    if (!obj || !obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return;
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
@@ -139,12 +147,12 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliar
     if (on) {
          if (!subs.empty() && originalLineColors.empty()) {
             TopTools_IndexedMapOfShape eMap;
-            TopExp::MapShapes(obj->Shape.getValue(), TopAbs_EDGE, eMap);
+            TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_EDGE, eMap);
             originalLineColors = svp->LineColorArray.getValues();
             std::vector<App::Color> lcolors = originalLineColors;
             lcolors.resize(eMap.Extent(), svp->LineColor.getValue());
 
-            TopExp::MapShapes(obj->Shape.getValue(), TopAbs_FACE, eMap);
+            TopExp::MapShapes(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_FACE, eMap);
             originalFaceColors = svp->DiffuseColor.getValues();
             std::vector<App::Color> fcolors = originalFaceColors;
             fcolors.resize(eMap.Extent(), svp->ShapeColor.getValue());
@@ -171,16 +179,173 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliar
         if (!subs.empty() && !originalLineColors.empty()) {
             svp->LineColorArray.setValues(originalLineColors);
             originalLineColors.clear();
-            
+
             svp->DiffuseColor.setValues(originalFaceColors);
             originalFaceColors.clear();
         }
     }
 }
 
-void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) 
+void ViewProviderShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
     act = menu->addAction(QObject::tr("Edit shape binder"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
 }
+
+//=====================================================================================
+
+PROPERTY_SOURCE(PartDesignGui::ViewProviderSubShapeBinder,PartGui::ViewProviderPart)
+
+ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
+    sPixmap = "PartDesign_SubShapeBinder.svg";
+
+    //get the datum coloring scheme
+    // set default color for datums (golden yellow with 60% transparency)
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
+            "User parameter:BaseApp/Preferences/Mod/PartDesign");
+    unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
+    App::Color col ( (uint32_t) shcol );
+    
+    ShapeColor.setValue(col);
+    LineColor.setValue(col);
+    PointColor.setValue(col);
+    Transparency.setValue(60);
+    LineWidth.setValue(1);
+}
+
+bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject *, 
+        App::DocumentObject *, const char *, const std::vector<std::string> &) const
+{
+    return true;
+}
+
+std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
+        const char *subname, const std::vector<std::string> &elements)
+{
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if(!self) return std::string();
+    std::map<App::DocumentObject *, std::vector<std::string> > values;
+    if(!subname) subname = "";
+    std::string sub(subname);
+    if(sub.empty()) 
+        values[owner?owner:obj] = elements;
+    else {
+        std::vector<std::string> subs;
+        if(elements.size()) {
+            subs.reserve(elements.size());
+            for(auto &element : elements)
+                subs.push_back(sub+element);
+        }else
+            subs.push_back(sub);
+        values[owner?owner:obj] = std::move(subs);
+    }
+
+    self->setLinks(std::move(values),QApplication::keyboardModifiers()==Qt::ControlModifier);
+    if(self->Relative.getValue())
+        updatePlacement(false);
+    return std::string();
+}
+
+
+bool ViewProviderSubShapeBinder::doubleClicked() {
+    updatePlacement(true);
+    return true;
+}
+
+void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) 
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Synchronize"), receiver, member);
+    act->setData(QVariant((int)0));
+    act = menu->addAction(QObject::tr("Select bound object"), receiver, member);
+    act->setData(QVariant((int)1));
+}
+
+bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
+    
+    switch(ModNum) {
+    case 0:
+        updatePlacement(true);
+        break;
+    case 1: {
+        auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+        if(!self || !self->Support.getValue())
+            break;
+
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearSelection();
+        for(auto &link : self->Support.getSubListValues()) {
+            auto obj = link.getValue();
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            const auto &subs = link.getSubValues();
+            if(subs.size())
+                Gui::Selection().addSelections(obj->getDocument()->getName(),
+                        obj->getNameInDocument(),subs);
+            else
+                Gui::Selection().addSelection(obj->getDocument()->getName(),
+                        obj->getNameInDocument());
+        }
+        Gui::Selection().selStackPush();
+        break;
+    }}
+    return false;
+}
+
+void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if(!self || !self->Support.getValue())
+        return;
+
+    std::vector<Base::Matrix4D> mats;
+    bool relative = self->Relative.getValue();
+    App::DocumentObject *parent = 0;
+    std::string parentSub;
+    if(relative && self->getParents().size()) {
+        const auto &sel = Gui::Selection().getSelection("",0);
+        if(sel.size()!=1 || !sel[0].pObject ||
+            sel[0].pObject->getSubObject(sel[0].SubName)!=self) 
+        {
+            FC_WARN("invalid selection");
+        } else {
+            parent = sel[0].pObject;
+            parentSub = sel[0].SubName;
+        }
+    }
+
+    if(!transaction) {
+        if(relative)
+            self->Context.setValue(parent,parentSub.c_str());
+        self->update();
+        return;
+    }
+
+    App::GetApplication().setActiveTransaction("Sync binder");
+    try{
+        if(relative)
+            self->Context.setValue(parent,parentSub.c_str());
+        self->update();
+        App::GetApplication().closeActiveTransaction();
+        return;
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }catch(Standard_Failure &e) {
+        std::ostringstream str;
+        Standard_CString msg = e.GetMessageString();
+        str << typeid(e).name() << " ";
+        if (msg) {str << msg;}
+        else     {str << "No OCCT Exception Message";}
+        FC_ERR(str.str());
+    }
+    App::GetApplication().closeActiveTransaction(true);
+}
+
+std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void) const {
+    std::vector<App::DocumentObject *> ret;
+    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+    if(self && self->ClaimChildren.getValue() && self->Support.getValue())
+        ret.push_back(self->Support.getValue());
+    return ret;
+}
+

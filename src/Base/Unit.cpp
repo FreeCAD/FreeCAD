@@ -433,6 +433,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::Angle                       )       return QString::fromLatin1("Angle");
     if(*this == Unit::Density                     )       return QString::fromLatin1("Density");
     if(*this == Unit::TimeSpan                    )       return QString::fromLatin1("TimeSpan");
+    if(*this == Unit::Frequency                   )       return QString::fromLatin1("Frequency");
     if(*this == Unit::Velocity                    )       return QString::fromLatin1("Velocity");
     if(*this == Unit::Acceleration                )       return QString::fromLatin1("Acceleration");
     if(*this == Unit::Temperature                 )       return QString::fromLatin1("Temperature");
@@ -452,6 +453,7 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::HeatFlux                    )       return QString::fromLatin1("HeatFlux");
     if(*this == Unit::DynamicViscosity            )       return QString::fromLatin1("DynamicViscosity");
     if(*this == Unit::KinematicViscosity          )       return QString::fromLatin1("KinematicViscosity");
+    if(*this == Unit::VacuumPermittivity          )       return QString::fromLatin1("VacuumPermittivity");
 
     return QString();
 
@@ -461,10 +463,15 @@ Unit Unit::Length(1);
 Unit Unit::Area(2);
 Unit Unit::Volume(3);
 Unit Unit::Mass(0,1);
-Unit Unit::Angle(0,0,0,0,0,0,0,1);
+
+// Angle, deg
+Unit Unit::Angle           (0,0,0,0,0,0,0,1);
+Unit Unit::AngleOfFriction (0,0,0,0,0,0,0,1);
+
 Unit Unit::Density(-3,1);
 
 Unit Unit::TimeSpan(0,0,1);
+Unit Unit::Frequency(0,0,-1);
 Unit Unit::Velocity(1,0,-1);
 Unit Unit::Acceleration(1,0,-2);
 Unit Unit::Temperature(0,0,0,0,1);
@@ -495,3 +502,4 @@ Unit Unit::ThermalTransferCoefficient  (0,1,-3,0,-1);
 Unit Unit::HeatFlux                    (0,1,-3,0,0);
 Unit Unit::DynamicViscosity            (-1,1,-1);  // SI unit: kg/m/s
 Unit Unit::KinematicViscosity          (2,0,-1);  // SI unit: m^2/s, https://en.wikipedia.org/wiki/Viscosity#Kinematic_viscosity
+Unit Unit::VacuumPermittivity          (-3,-1,4,2); // SI unit: A²*s⁴/kg/m³ https://en.wikipedia.org/wiki/Permittivity#Vacuum_permittivity

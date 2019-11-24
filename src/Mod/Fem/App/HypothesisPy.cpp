@@ -22,47 +22,51 @@
 
 #include "PreCompiled.h"
 #include "HypothesisPy.h"
+
+#ifndef _PreComp_
+# include <sstream>
+
+# include <StdMeshers_Arithmetic1D.hxx>
+# include <StdMeshers_AutomaticLength.hxx>
+# include <StdMeshers_MaxLength.hxx>
+# include <StdMeshers_LocalLength.hxx>
+# include <StdMeshers_MaxElementArea.hxx>
+# include <StdMeshers_NotConformAllowed.hxx>
+# include <StdMeshers_QuadranglePreference.hxx>
+# include <StdMeshers_Quadrangle_2D.hxx>
+# include <StdMeshers_Regular_1D.hxx>
+# include <StdMeshers_UseExisting_1D2D.hxx>
+# include <StdMeshers_CompositeSegment_1D.hxx>
+# include <StdMeshers_Deflection1D.hxx>
+# include <StdMeshers_Hexa_3D.hxx>
+# include <StdMeshers_LayerDistribution.hxx>
+# include <StdMeshers_LengthFromEdges.hxx>
+# include <StdMeshers_MaxElementVolume.hxx>
+# include <StdMeshers_MEFISTO_2D.hxx>
+# include <StdMeshers_NumberOfLayers.hxx>
+# include <StdMeshers_NumberOfSegments.hxx>
+# include <StdMeshers_Prism_3D.hxx>
+# include <StdMeshers_Projection_1D.hxx>
+# include <StdMeshers_Projection_2D.hxx>
+# include <StdMeshers_Projection_3D.hxx>
+# include <StdMeshers_QuadraticMesh.hxx>
+# include <StdMeshers_RadialPrism_3D.hxx>
+# include <StdMeshers_SegmentAroundVertex_0D.hxx>
+# include <StdMeshers_ProjectionSource1D.hxx>
+# include <StdMeshers_ProjectionSource2D.hxx>
+# include <StdMeshers_ProjectionSource3D.hxx>
+# include <StdMeshers_SegmentLengthAroundVertex.hxx>
+# include <StdMeshers_StartEndLength.hxx>
+# include <StdMeshers_CompositeHexa_3D.hxx>
+# if SMESH_VERSION_MAJOR < 7
+#  include <StdMeshers_TrianglePreference.hxx>
+# endif
+#endif
+
 #include "FemMeshPy.h"
 #include <Base/Interpreter.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
-#include <sstream>
-#include <StdMeshers_Arithmetic1D.hxx>
-#include <StdMeshers_AutomaticLength.hxx>
-#include <StdMeshers_MaxLength.hxx>
-#include <StdMeshers_LocalLength.hxx>
-#include <StdMeshers_MaxElementArea.hxx>
-#include <StdMeshers_NotConformAllowed.hxx>
-#include <StdMeshers_QuadranglePreference.hxx>
-#include <StdMeshers_Quadrangle_2D.hxx>
-#include <StdMeshers_Regular_1D.hxx>
-#include <StdMeshers_UseExisting_1D2D.hxx>
-#include <StdMeshers_CompositeSegment_1D.hxx>
-#include <StdMeshers_Deflection1D.hxx>
-#include <StdMeshers_Hexa_3D.hxx>
-#include <StdMeshers_LayerDistribution.hxx>
-#include <StdMeshers_LengthFromEdges.hxx>
-#include <StdMeshers_MaxElementVolume.hxx>
-#include <StdMeshers_MEFISTO_2D.hxx>
-#include <StdMeshers_NumberOfLayers.hxx>
-#include <StdMeshers_NumberOfSegments.hxx>
-#include <StdMeshers_Prism_3D.hxx>
-#include <StdMeshers_Projection_1D.hxx>
-#include <StdMeshers_Projection_2D.hxx>
-#include <StdMeshers_Projection_3D.hxx>
-#include <StdMeshers_QuadraticMesh.hxx>
-#include <StdMeshers_RadialPrism_3D.hxx>
-#include <StdMeshers_SegmentAroundVertex_0D.hxx>
-#if SMESH_VERSION_MAJOR < 7
-#include <StdMeshers_TrianglePreference.hxx>
-#endif
-#include <StdMeshers_ProjectionSource1D.hxx>
-#include <StdMeshers_ProjectionSource2D.hxx>
-#include <StdMeshers_ProjectionSource3D.hxx>
-#include <StdMeshers_SegmentLengthAroundVertex.hxx>
-#include <StdMeshers_StartEndLength.hxx>
-//#include <StdMeshers_Propagation.hxx>
-#include <StdMeshers_CompositeHexa_3D.hxx>
 
 using namespace Fem;
 

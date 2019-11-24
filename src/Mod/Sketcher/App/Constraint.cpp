@@ -24,13 +24,14 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
+# include <QDateTime>
 #endif
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <App/Property.h>
-#include <QDateTime>
+
 
 #include "Constraint.h"
 #include "ConstraintPy.h"
@@ -59,7 +60,8 @@ Constraint::Constraint()
   LabelPosition(0.f),
   isDriving(true),
   InternalAlignmentIndex(-1),
-  isInVirtualSpace(false)
+  isInVirtualSpace(false),
+  isActive(true)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     static boost::mt19937 ran;
@@ -72,30 +74,6 @@ Constraint::Constraint()
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
 
     tag = gen();
-}
-
-Constraint::Constraint(const Constraint& from)
-: Value(from.Value),
-  Type(from.Type),
-  AlignmentType(from.AlignmentType),
-  Name(from.Name),
-  First(from.First),
-  FirstPos(from.FirstPos),
-  Second(from.Second),
-  SecondPos(from.SecondPos),
-  Third(from.Third),
-  ThirdPos(from.ThirdPos),
-  LabelDistance(from.LabelDistance),
-  LabelPosition(from.LabelPosition),
-  isDriving(from.isDriving),
-  InternalAlignmentIndex(from.InternalAlignmentIndex),
-  isInVirtualSpace(from.isInVirtualSpace),
-  tag(from.tag)
-{
-}
-
-Constraint::~Constraint()
-{
 }
 
 Constraint *Constraint::clone(void) const
@@ -121,6 +99,7 @@ Constraint *Constraint::copy(void) const
     temp->isDriving = this->isDriving;
     temp->InternalAlignmentIndex = this->InternalAlignmentIndex;
     temp->isInVirtualSpace = this->isInVirtualSpace;
+    temp->isActive = this->isActive;
     // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
     return temp;
 }
@@ -188,7 +167,8 @@ void Constraint::Save (Writer &writer) const
     << "LabelDistance=\""               <<  LabelDistance           << "\" "
     << "LabelPosition=\""               <<  LabelPosition           << "\" "
     << "IsDriving=\""                   <<  (int)isDriving          << "\" "
-    << "IsInVirtualSpace=\""            <<  (int)isInVirtualSpace   << "\" />"
+    << "IsInVirtualSpace=\""            <<  (int)isInVirtualSpace   << "\" "
+    << "IsActive=\""                    <<  (int)isActive           << "\" />"
 
     << std::endl;
 }
@@ -232,4 +212,7 @@ void Constraint::Restore(XMLReader &reader)
 
     if (reader.hasAttribute("IsInVirtualSpace"))
         isInVirtualSpace = reader.getAttributeAsInteger("IsInVirtualSpace") ? true : false;
+
+    if (reader.hasAttribute("IsActive"))
+        isActive = reader.getAttributeAsInteger("IsActive") ? true : false;
 }

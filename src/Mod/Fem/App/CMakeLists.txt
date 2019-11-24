@@ -1,4 +1,14 @@
 
+# Many warnings caused by vtk
+if(CMAKE_COMPILER_IS_CLANGXX)
+    add_compile_options(-Wno-pedantic) # needed for vtk headers
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.0)
+        add_compile_options(-Wno-inconsistent-missing-override)
+    endif()
+elseif(CMAKE_COMPILER_IS_GNUCXX)
+    add_compile_options(-Wno-pedantic) # needed for vtk headers
+endif()
+
 if(MSVC)
     add_definitions(-DFCAppFem -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
@@ -179,6 +189,11 @@ SET(Fem_SRCS
     ${Python_SRCS}
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" Fem_CPP_SRCS ${Fem_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(Fem PreCompiled.h PreCompiled.cpp Fem_CPP_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(Fem SHARED ${Fem_SRCS})
 target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})

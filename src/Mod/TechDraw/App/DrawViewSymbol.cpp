@@ -25,16 +25,24 @@
 
 #ifndef _PreComp_
 # include <sstream>
+#include <QDomDocument>
 #endif
 
 #include <iomanip>
 #include <iterator>
+
 #include <boost/regex.hpp>
+
+#include <QXmlQuery>
+#include <QXmlResultItems>
 
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
+#include "QDomNodeModel.h"
+#include "DrawUtil.h"
 #include "DrawPage.h"
 #include "DrawViewSymbol.h"
 
@@ -66,61 +74,108 @@ DrawViewSymbol::~DrawViewSymbol()
 
 void DrawViewSymbol::onChanged(const App::Property* prop)
 {
+//    Base::Console().Message("DVS::onChanged(%s) \n",prop->getName());
     if (prop == &Symbol) {
-        if (!isRestoring()) {
+        if (!isRestoring() && Symbol.getValue()[0]) {
             //this pulls the initial values from svg into editabletexts
             // should only happen first time?? extra loop onChanged->execute->onChanged
-            std::vector<string> eds;
-            std::string svg = Symbol.getValue();
-            if (!svg.empty()) {
-                boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
-                std::string::const_iterator tbegin, tend;
-                tbegin = svg.begin();
-                tend = svg.end();
-                boost::match_results<std::string::const_iterator> twhat;
-                while (boost::regex_search(tbegin, tend, twhat, e)) {
-                    eds.push_back(twhat[2]);
-                    tbegin = twhat[0].second;
+
+            std::vector<string> editables;
+            QDomDocument symbolDocument;
+
+            if (symbolDocument.setContent(QString::fromUtf8(Symbol.getValue()))) {
+                QDomElement symbolDocElem = symbolDocument.documentElement();
+
+                QXmlQuery query(QXmlQuery::XQuery10);
+                QDomNodeModel model(query.namePool(), symbolDocument);
+                query.setFocus(QXmlItem(model.fromDomNode(symbolDocElem)));
+
+                // XPath query to select all <tspan> nodes whose <text> parent
+                // has "freecad:editable" attribute
+                query.setQuery(QString::fromUtf8(
+                    "declare default element namespace \"" SVG_NS_URI "\"; "
+                    "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+                    "//text[@freecad:editable]/tspan"));
+
+                QXmlResultItems queryResult;
+                query.evaluateTo(&queryResult);
+
+                while (!queryResult.next().isNull())
+                {
+                    QDomElement tspanElement = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+                    editables.push_back(Base::Tools::escapedUnicodeFromUtf8(tspanElement.text().toStdString().c_str()));
                 }
-                EditableTexts.setValues(eds);
-                requestPaint();
             }
+            else {
+                Base::Console().Warning("DrawViewSymbol:onChanged - SVG for Symbol is not a valid document\n");
+            }
+
+            EditableTexts.setValues(editables);
+//            requestPaint();
         }
     }
+
     TechDraw::DrawView::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 {
-    if (!keepUpdated()) {
-        return App::DocumentObject::StdReturn;
-    }
+//    Base::Console().Message("DVS::execute() \n");
+//    //dvs::execute is pretty fast. doesn't need to be blocked?
+//    if (!keepUpdated()) {
+//        return App::DocumentObject::StdReturn;
+//    }
 
     std::string svg = Symbol.getValue();
     const std::vector<std::string>& editText = EditableTexts.getValues();
 
-    //this pushes the editabletexts into the svg
-    std::string newsvg = svg;
     if (!editText.empty()) {
-        boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
-        string::const_iterator begin, end;
-        begin = svg.begin();
-        end = svg.end();
-        boost::match_results<std::string::const_iterator> what;
-        std::size_t count = 0;
+        QDomDocument symbolDocument;
 
-        while (boost::regex_search(begin, end, what, e1)) {
-            if (count < editText.size()) {
-                boost::regex e2 ("(<text.*?freecad:editable=\"" + what[1].str() + "\".*?<tspan.*?)>(.*?)(</tspan>)");
-                newsvg = boost::regex_replace(newsvg, e2, "$1>" + editText[count] + "$3");
+        if (symbolDocument.setContent(QString::fromUtf8(Symbol.getValue()))) {
+            QDomElement symbolDocElem = symbolDocument.documentElement();
+
+            QXmlQuery query(QXmlQuery::XQuery10);
+            QDomNodeModel model(query.namePool(), symbolDocument);
+            query.setFocus(QXmlItem(model.fromDomNode(symbolDocElem)));
+
+            // XPath query to select all <tspan> nodes whose <text> parent
+            // has "freecad:editable" attribute
+            query.setQuery(QString::fromUtf8(
+                "declare default element namespace \"" SVG_NS_URI "\"; "
+                "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+                "//text[@freecad:editable]/tspan"));
+
+            QXmlResultItems queryResult;
+            query.evaluateTo(&queryResult);
+
+            unsigned int count = 0;
+            while (!queryResult.next().isNull())
+            {
+                QDomElement tspanElement = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+
+                // Keep all spaces in the text node
+                tspanElement.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
+
+                // Remove all child nodes (if any)
+                while (!tspanElement.lastChild().isNull()) {
+                    tspanElement.removeChild(tspanElement.lastChild());
+                }
+
+                // Finally append text node with editable replacement as the only <tspan> descendant
+                tspanElement.appendChild(symbolDocument.createTextNode(
+                                 QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(editText[count]).c_str())));
+                ++count;
             }
-            count++;
-            begin = what[0].second;
-        }
 
+            Symbol.setValue(symbolDocument.toString(1).toStdString());
+        }
+        else {
+            Base::Console().Warning("DrawViewSymbol:execute - SVG for Symbol is not a valid document\n");
+        }
     }
-    Symbol.setValue(newsvg);
-    requestPaint();
+
+//    requestPaint();
     return DrawView::execute();
 }
 

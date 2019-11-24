@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TechDrawGui::TaskLineDecor</class>
+ <widget class="QWidget" name="TechDrawGui::TaskLineDecor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>395</width>
+    <height>294</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>250</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Line Decoration</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="le_Lines">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Lines</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>View</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="le_View">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="mouseTracking">
+           <bool>false</bool>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="acceptDrops">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_4" columnstretch="0,0,1">
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Weight</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::ColorButton" name="cc_Color">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QDoubleSpinBox" name="dsb_Weight">
+          <property name="toolTip">
+           <string>Thickness of pattern lines.</string>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Visible</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QComboBox" name="cb_Visible">
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="maxVisibleItems">
+           <number>2</number>
+          </property>
+          <property name="maxCount">
+           <number>2</number>
+          </property>
+          <property name="minimumContentsLength">
+           <number>2</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>False</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>True</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QComboBox" name="cb_Style">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Solid</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Dash</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Dot</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DashDot</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DashDotDot</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Resources/TechDraw.qrc"/>
+ </resources>
+ <connections/>
+</ui>

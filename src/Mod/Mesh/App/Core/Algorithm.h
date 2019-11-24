@@ -116,6 +116,14 @@ public:
    */
   float GetAverageEdgeLength() const;
   /**
+   * Calculates the minimum length of edges.
+   */
+  float GetMinimumEdgeLength() const;
+  /**
+   * Calculates the maximum length of edges.
+   */
+  float GetMaximumEdgeLength() const;
+  /**
    * Calculates the gravity point of the mesh.
    */
   Base::Vector3f GetGravityPoint() const;
@@ -373,8 +381,11 @@ public:
     /// Rebuilds up data structure
     void Rebuild (void);
     const std::set<unsigned long>& operator[] (unsigned long) const;
+    std::vector<unsigned long> GetIndices(unsigned long, unsigned long) const;
+    std::vector<unsigned long> GetIndices(unsigned long, unsigned long, unsigned long) const;
     MeshFacetArray::_TConstIterator GetFacet (unsigned long) const;
     std::set<unsigned long> NeighbourPoints(const std::vector<unsigned long>& , int level) const;
+    std::set<unsigned long> NeighbourPoints(unsigned long) const;
     void Neighbours (unsigned long ulFacetInd, float fMaxDist, MeshCollector& collect) const;
     Base::Vector3f GetNormal(unsigned long) const;
     void AddNeighbour(unsigned long, unsigned long);
@@ -411,6 +422,8 @@ public:
     /// Returns a set of facets sharing one or more points with the facet with
     /// index \a ulFacetIndex.
     const std::set<unsigned long>& operator[] (unsigned long) const;
+    /// Returns an array of common facets of the passed facet indexes.
+    std::vector<unsigned long> GetIndices(unsigned long, unsigned long) const;
 
 protected:
     const MeshKernel  &_rclMesh; /**< The mesh kernel. */
@@ -510,6 +523,6 @@ protected:
     std::vector<Base::Vector3f> _norm;
 };
 
-}; // namespace MeshCore 
+} // namespace MeshCore 
 
 #endif  // MESH_ALGORITHM_H 

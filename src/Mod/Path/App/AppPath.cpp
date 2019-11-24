@@ -34,6 +34,7 @@
 #include "CommandPy.h"
 #include "Path.h"
 #include "PathPy.h"
+#include "Tool.h"
 #include "Tooltable.h"
 #include "ToolPy.h"
 #include "TooltablePy.h"

@@ -24,6 +24,7 @@
 #define PARAMS_HELPER_H
 
 /** \page ParamPage Parameter helper macros
+ * \ingroup PATH
  * Collections of macros for managing groups of parameters.
  *
  * \section Motivation 
@@ -178,6 +179,7 @@
 #include <boost/preprocessor/comparison/greater.hpp>
 
 /** \defgroup ParamHelper Parameters helper macros
+ * \ingroup PATH
  * Collections of macros for managing groups of parameters */
 
 /**
@@ -321,7 +323,7 @@
     PARAM_TYPE(_param) _src(_param);
 
 /**
- * Delcares parameters using the given field as name
+ * Declares parameters using the given field as name
  *
  * \arg \c _src: \anchor ParamSrc Macro to generate source variable. The
  * signature must be <tt>_src(_param)<\tt>, where \c _param is the tuple
@@ -349,7 +351,7 @@
     PARAM_TYPE(_param) _src(_param) = PARAM_FDEF(_param);
 
 /**
- * Delcares parameters with initialization to default using the given field as
+ * Declares parameters with initialization to default using the given field as
  * name
  *
  * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
@@ -635,7 +637,7 @@
 #define PARAM_ARGS_DEF_(_,_src,_i,_param) \
     BOOST_PP_COMMA_IF(_i) PARAM_TYPE(_param) _src(_param)=PARAM_FDEF(_param)
 
-/** Delcare the parameters as function argument list with defaults.
+/** Declare the parameters as function argument list with defaults.
  *
  * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
  * more details
@@ -654,7 +656,7 @@
 #define PARAM_ARGS_(_,_src,_i,_param) \
     BOOST_PP_COMMA_IF(_i) PARAM_TYPE(_param) _src(_param)
 
-/** Delcare the parameters as function argument list without defaults. 
+/** Declare the parameters as function argument list without defaults. 
  *
  * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
  * more details

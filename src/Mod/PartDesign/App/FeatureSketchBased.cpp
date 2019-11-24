@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <sstream>
 # include <functional>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
@@ -34,6 +35,7 @@
 # include <BRep_Tool.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
+# include <BRepFeat_MakePrism.hxx>
 # include <BRepProj_Projection.hxx>
 # include <Geom_Plane.hxx>
 # include <TopoDS.hxx>
@@ -61,13 +63,12 @@
 # include <Standard_Version.hxx>
 # include <GProp_GProps.hxx>
 # include <BRepGProp.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <TopExp.hxx>
+# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+# include <BRepLProp_SLProps.hxx>
+# include <BRepGProp_Face.hxx>
 #endif
-
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <TopExp.hxx>
-#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <BRepLProp_SLProps.hxx>
-#include <BRepGProp_Face.hxx>
 
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
@@ -181,7 +182,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
         err = "No profile linked";
     } else {
         if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-            
+
             auto wires = getProfileWires();
             return Part::FaceMakerCheese::makeFace(wires);
         }
@@ -189,13 +190,13 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
             if(Profile.getSubValues().empty())
                 err = "Linked object has no subshape specified";
             else {
-                
+
                 const Part::TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
                 TopoDS_Shape sub = shape.getSubShape(Profile.getSubValues()[0].c_str());
-                if(sub.ShapeType() == TopAbs_FACE) 
+                if(sub.ShapeType() == TopAbs_FACE)
                     return TopoDS::Face(sub);
                 else if(sub.ShapeType() == TopAbs_WIRE) {
-                
+
                     auto wire = TopoDS::Wire(sub);
                     if(!wire.Closed())
                         err = "Linked wire is not closed";
@@ -203,13 +204,13 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
                         BRepBuilderAPI_MakeFace mk(wire);
                         mk.Build();
                         return TopoDS::Face(mk.Shape());
-                    }                        
+                    }
                 }
-                else 
+                else
                     err = "Linked Subshape cannot be used";
             }
         }
-        else 
+        else
             err = "Linked object is neither Sketch, Part2DObject or Part::Feature";
     }
 
@@ -226,17 +227,17 @@ std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
 
     if(!Profile.getValue() || !Profile.getValue()->isDerivedFrom(Part::Feature::getClassTypeId()))
         throw Base::TypeError("No valid profile linked");
-    
+
     TopoDS_Shape shape;
     if(Profile.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
     else {
-        if(Profile.getSubValues().empty()) 
+        if(Profile.getSubValues().empty())
             throw Base::ValueError("No valid subelement linked in Part::Feature");
 
         shape = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShape(Profile.getSubValues().front().c_str());
     }
-    
+
     if (shape.IsNull())
         throw Base::ValueError("Linked shape object is empty");
 
@@ -323,7 +324,7 @@ Part::Feature *ProfileBased::getBaseObject(bool silent) const
 
     if(!obj)
         return nullptr;
-    
+
     if (!obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         return obj;
 
@@ -537,12 +538,50 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
         // resulting shape creates problems with Pocket
         BRepPrimAPI_MakePrism PrismMaker(from, Ltotal*gp_Vec(dir), 0,1); // finite prism
         if (!PrismMaker.IsDone())
-            throw Base::RuntimeError("SketchBased: Length: Could not extrude the sketch!");
+            throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
         prism = PrismMaker.Shape();
-    } else {
-        throw Base::RuntimeError("SketchBased: Internal error: Unknown method for generatePrism()");
+    }
+    else {
+        std::stringstream str;
+        str << "ProfileBased: Internal error: Unknown method '"
+            << method << "' for generatePrism()";
+        throw Base::RuntimeError(str.str());
     }
 
+}
+
+void ProfileBased::generatePrism(TopoDS_Shape& prism,
+                                 const std::string& method,
+                                 const TopoDS_Shape& baseshape,
+                                 const TopoDS_Shape& profileshape,
+                                 const TopoDS_Face& supportface,
+                                 const TopoDS_Face& uptoface,
+                                 const gp_Dir& direction,
+                                 Standard_Integer Mode,
+                                 Standard_Boolean Modify)
+{
+    if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
+        BRepFeat_MakePrism PrismMaker;
+        TopoDS_Shape base = baseshape;
+        for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
+            PrismMaker.Init(base, xp.Current(), supportface, direction, Mode, Modify);
+            PrismMaker.Perform(uptoface);
+            if (!PrismMaker.IsDone())
+                throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
+
+            base = PrismMaker.Shape();
+            if (Mode == 2)
+                Mode = 1;
+        }
+
+        prism = base;
+    }
+    else {
+        std::stringstream str;
+        str << "ProfileBased: Internal error: Unknown method '"
+            << method << "' for generatePrism()";
+        throw Base::RuntimeError(str.str());
+    }
 }
 
 bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
@@ -1041,13 +1080,13 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 
     Base::Vector3d SketchVector(0,0,1);
     auto obj = getVerifiedObject(true);
-    if(!obj) 
+    if(!obj)
         return SketchVector;
 
     // get the Sketch plane
     if(obj->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         Base::Placement SketchPos = obj->Placement.getValue();
-        Base::Rotation SketchOrientation = SketchPos.getRotation();    
+        Base::Rotation SketchOrientation = SketchPos.getRotation();
         SketchOrientation.multVec(SketchVector,SketchVector);
     }
     else {
@@ -1068,13 +1107,13 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
             }
         }
     }
-    
+
     return SketchVector;
 }
 
 
 void ProfileBased::Restore(Base::XMLReader& reader) {
-   
+
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
 
@@ -1090,14 +1129,14 @@ void ProfileBased::Restore(Base::XMLReader& reader) {
         try {
             //check if we load the old sketch property
             if(!prop && (strcmp("Sketch", PropName) == 0) && (strcmp("App::PropertyLink", TypeName) == 0)) {
-                
+
                 std::vector<std::string> vec;
                 // read my element
                 reader.readElement("Link");
                 // get the value of my attribute
                 std::string name = reader.getAttribute("value");
 
-                if (name != "") {                    
+                if (name != "") {
                     App::Document* document = getDocument();
                     DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
                     Profile.setValue(object, vec);

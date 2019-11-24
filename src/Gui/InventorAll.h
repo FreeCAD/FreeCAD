@@ -66,6 +66,7 @@
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/draggers/SoTrackballDragger.h>
+#include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -76,7 +77,10 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoTextureEnabledElement.h>
 #include <Inventor/engines/SoComposeVec3f.h>
+#include <Inventor/engines/SoComposeRotationFromTo.h>
+#include <Inventor/engines/SoComposeRotation.h>
 #include <Inventor/errors/SoDebugError.h> 
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/events/SoEvent.h>
@@ -112,6 +116,7 @@
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoIndexedPointSet.h>
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoLineSet.h>
@@ -120,6 +125,7 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/nodes/SoMultipleCopy.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoNurbsSurface.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -152,6 +158,7 @@
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/system/inttypes.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 
 #endif

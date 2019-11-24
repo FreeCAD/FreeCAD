@@ -67,7 +67,7 @@ AxisDefinition KukaIR500[6] = {
 };
 
 
-TYPESYSTEM_SOURCE(Robot::Robot6Axis , Base::Persistence);
+TYPESYSTEM_SOURCE(Robot::Robot6Axis , Base::Persistence)
 
 Robot6Axis::Robot6Axis()
 {
@@ -75,7 +75,7 @@ Robot6Axis::Robot6Axis()
     Min = JntArray(6);
     Max = JntArray(6);
 
-	// Create joint array
+    // Create joint array
     Actuall = JntArray(6);
 
     // set to default kuka 500
@@ -89,7 +89,7 @@ Robot6Axis::~Robot6Axis()
 
 void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
 {
-	Chain temp;
+    Chain temp;
 
 
     for(int i=0 ; i<6 ;i++){
@@ -100,11 +100,11 @@ void Robot6Axis::setKinematic(const AxisDefinition KinDef[6])
         Velocity[i] = KinDef[i].velocity;
     }
 
-	// for now and testing
+    // for now and testing
     Kinematic = temp;
 
-	// get the actual TCP out of the axis
-	calcTcp();
+    // get the actual TCP out of the axis
+    calcTcp();
 }
 
 double Robot6Axis::getMaxAngle(int Axis)
@@ -121,7 +121,7 @@ void split(std::string const& string, const char delimiter, std::vector<std::str
 {
     std::string::size_type  last_position(0);
     std::string::size_type  position(0);
-         
+
     for (std::string::const_iterator it(string.begin()); it != string.end(); ++it, ++position)
     {
         if (*it == delimiter )
@@ -161,23 +161,22 @@ void Robot6Axis::readKinematic(const char * FileName)
     }
 
     setKinematic(temp);
-
 }
 
 unsigned int Robot6Axis::getMemSize (void) const
 {
-	return 0;
+    return 0;
 }
 
 void Robot6Axis::Save (Writer &writer) const
 {
     for(unsigned int i=0;i<6;i++){
         Base::Placement Tip = toPlacement(Kinematic.getSegment(i).getFrameToTip());
-	    writer.Stream() << writer.ind() << "<Axis "
+        writer.Stream() << writer.ind() << "<Axis "
                         << "Px=\""          <<  Tip.getPosition().x  << "\" " 
                         << "Py=\""          <<  Tip.getPosition().y  << "\" "
                         << "Pz=\""          <<  Tip.getPosition().z  << "\" "
-					    << "Q0=\""          <<  Tip.getRotation()[0] << "\" "
+                        << "Q0=\""          <<  Tip.getRotation()[0] << "\" "
                         << "Q1=\""          <<  Tip.getRotation()[1] << "\" "
                         << "Q2=\""          <<  Tip.getRotation()[2] << "\" "
                         << "Q3=\""          <<  Tip.getRotation()[3] << "\" "
@@ -186,10 +185,8 @@ void Robot6Axis::Save (Writer &writer) const
                         << "minAngle=\""    <<  Min(i)*(180.0/M_PI)  << "\" "
                         << "AxisVelocity=\""<<  Velocity[i]          << "\" "
                         << "Pos=\""         <<  Actuall(i)           << "\"/>"
-					                      
                         << std::endl;
     }
-
 }
 
 void Robot6Axis::Restore(XMLReader &reader)
@@ -227,69 +224,66 @@ void Robot6Axis::Restore(XMLReader &reader)
     Kinematic = Temp;
 
     calcTcp();
-
 }
-
-
 
 bool Robot6Axis::setTo(const Placement &To)
 {
-	//Creation of the solvers:
-	ChainFkSolverPos_recursive fksolver1(Kinematic);//Forward position solver
-	ChainIkSolverVel_pinv iksolver1v(Kinematic);//Inverse velocity solver
-	ChainIkSolverPos_NR_JL iksolver1(Kinematic,Min,Max,fksolver1,iksolver1v,100,1e-6);//Maximum 100 iterations, stop at accuracy 1e-6
-	 
-	//Creation of jntarrays:
-	JntArray result(Kinematic.getNrOfJoints());
-	 
-	//Set destination frame
-	Frame F_dest = Frame(KDL::Rotation::Quaternion(To.getRotation()[0],To.getRotation()[1],To.getRotation()[2],To.getRotation()[3]),KDL::Vector(To.getPosition()[0],To.getPosition()[1],To.getPosition()[2]));
-	 
-	// solve
-	if(iksolver1.CartToJnt(Actuall,F_dest,result) < 0)
-		return false;
-	else{
-		Actuall = result;
-		Tcp = F_dest;
-		return true;
-	}
+    //Creation of the solvers:
+    ChainFkSolverPos_recursive fksolver1(Kinematic);//Forward position solver
+    ChainIkSolverVel_pinv iksolver1v(Kinematic);//Inverse velocity solver
+    ChainIkSolverPos_NR_JL iksolver1(Kinematic,Min,Max,fksolver1,iksolver1v,100,1e-6);//Maximum 100 iterations, stop at accuracy 1e-6
+
+    //Creation of jntarrays:
+    JntArray result(Kinematic.getNrOfJoints());
+
+    //Set destination frame
+    Frame F_dest = Frame(KDL::Rotation::Quaternion(To.getRotation()[0],To.getRotation()[1],To.getRotation()[2],To.getRotation()[3]),KDL::Vector(To.getPosition()[0],To.getPosition()[1],To.getPosition()[2]));
+
+    // solve
+    if (iksolver1.CartToJnt(Actuall,F_dest,result) < 0) {
+        return false;
+    }
+    else {
+        Actuall = result;
+        Tcp = F_dest;
+        return true;
+    }
 }
 
 Base::Placement Robot6Axis::getTcp(void)
 {
-	double x,y,z,w;
-	Tcp.M.GetQuaternion(x,y,z,w);
-	return Base::Placement(Base::Vector3d(Tcp.p[0],Tcp.p[1],Tcp.p[2]),Base::Rotation(x,y,z,w));
+    double x,y,z,w;
+    Tcp.M.GetQuaternion(x,y,z,w);
+    return Base::Placement(Base::Vector3d(Tcp.p[0],Tcp.p[1],Tcp.p[2]),Base::Rotation(x,y,z,w));
 }
 
 bool Robot6Axis::calcTcp(void)
 {
     // Create solver based on kinematic chain
     ChainFkSolverPos_recursive fksolver = ChainFkSolverPos_recursive(Kinematic);
- 
+
      // Create the frame that will contain the results
     KDL::Frame cartpos;    
  
     // Calculate forward position kinematics
     int kinematics_status;
     kinematics_status = fksolver.JntToCart(Actuall,cartpos);
-    if(kinematics_status>=0){
+    if (kinematics_status>=0) {
         Tcp = cartpos;
-		return true;
-    }else{
+        return true;
+    }
+    else {
         return false;
     }
 }
 
 bool Robot6Axis::setAxis(int Axis,double Value)
 {
-	Actuall(Axis) = RotDir[Axis] * Value * (M_PI/180); // degree to radiants
-
-	return calcTcp();
+    Actuall(Axis) = RotDir[Axis] * Value * (M_PI/180); // degree to radiants
+    return calcTcp();
 }
 
 double Robot6Axis::getAxis(int Axis)
 {
-	return RotDir[Axis] * (Actuall(Axis)/(M_PI/180)); // radian to degree
+    return RotDir[Axis] * (Actuall(Axis)/(M_PI/180)); // radian to degree
 }
-

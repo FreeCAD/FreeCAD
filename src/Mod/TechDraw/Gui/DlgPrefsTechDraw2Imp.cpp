@@ -57,10 +57,12 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     pcbArrow->onSave();
     cbGlobalDecimals->onSave();
     sbAltDecimals->onSave();
+    leformatSpec->onSave();
     plsb_ArrowSize->onSave();
     leLineGroup->onSave();
     pdsb_VertexScale->onSave();
     pcb_VertexColor->onSave();
+    pcbStandardAndStyle->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
@@ -77,10 +79,12 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     pcbArrow->onRestore();
     cbGlobalDecimals->onRestore();
     sbAltDecimals->onRestore();
+    leformatSpec->onRestore();
     plsb_ArrowSize->onRestore();
     leLineGroup->onRestore();
     pdsb_VertexScale->onRestore();
     pcb_VertexColor->onRestore();
+    pcbStandardAndStyle->onRestore();
 }
 
 /**

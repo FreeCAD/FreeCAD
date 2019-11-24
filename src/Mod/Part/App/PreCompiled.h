@@ -57,10 +57,23 @@
 #include <fcntl.h>
 #include <assert.h>
 
+#include <array>
 #include <vector>
 #include <list>
 #include <set>
 #include <map>
+
+#include <fstream>
+#include <string>
+#include <cstdio>
+#include <cstdlib>
+#include <stdexcept>
+
+#include <cmath>
+#include <ctime>
+
+// QT
+#include <QtGlobal>
 
 // Boost
 #include <boost/signals2.hpp>
@@ -76,6 +89,8 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
+
+#include <boost/uuid/uuid_io.hpp>
 
 #include "OpenCascadeAll.h"
 

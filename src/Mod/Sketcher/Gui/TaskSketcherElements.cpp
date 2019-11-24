@@ -29,6 +29,7 @@
 # include <QRegExp>
 # include <QShortcut>
 # include <QString>
+# include <boost/bind.hpp>
 #endif
 
 #include "TaskSketcherElements.h"
@@ -48,7 +49,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/BitmapFactory.h>
-#include <boost/bind.hpp>
+
 #include <Gui/Command.h>
 
 using namespace SketcherGui;
@@ -77,7 +78,7 @@ class ElementItem : public QListWidgetItem
 public:
     ElementItem(const QIcon & icon, const QString & text, int elementnr,
                 int startingVertex, int midVertex, int endVertex,
-                Base::Type geometryType)
+                Base::Type geometryType, bool construction, bool external)
         : QListWidgetItem(icon,text)
         , ElementNbr(elementnr)
         , StartingVertex(startingVertex)
@@ -88,12 +89,14 @@ public:
         , isEndPointSelected(false)
         , isMidPointSelected(false)
         , GeometryType(geometryType)
+        , isConstruction(construction)
+        , isExternal(external)
     {
 
     }
     ElementItem(const QString & text,int elementnr,
                 int startingVertex, int midVertex, int endVertex,
-                Base::Type geometryType)
+                Base::Type geometryType, bool construction, bool external)
         : QListWidgetItem(text)
         , ElementNbr(elementnr)
         , StartingVertex(startingVertex)
@@ -104,6 +107,8 @@ public:
         , isEndPointSelected(false)
         , isMidPointSelected(false)
         , GeometryType(geometryType)
+        , isConstruction(construction)
+        , isExternal(external)
     {
 
     }
@@ -120,6 +125,8 @@ public:
     bool isEndPointSelected;
     bool isMidPointSelected;
     Base::Type GeometryType;
+    bool isConstruction;
+    bool isExternal;
 };
 
 ElementView::ElementView(QWidget *parent)
@@ -284,6 +291,10 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
         this                     , SLOT  (on_listWidgetElements_currentFilterChanged(int))
        );
     QObject::connect(
+        ui->comboBoxModeFilter, SIGNAL(currentIndexChanged(int)),
+        this                     , SLOT  (on_listWidgetElements_currentModeFilterChanged(int))
+    );
+    QObject::connect(
         ui->namingBox, SIGNAL(stateChanged(int)),
         this                     , SLOT  (on_namingBox_stateChanged(int))
        );
@@ -298,6 +309,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     this->groupLayout()->addWidget(proxy);
 
     ui->comboBoxElementFilter->setCurrentIndex(0);
+    ui->comboBoxModeFilter->setCurrentIndex(0);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
 
@@ -305,6 +317,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     ui->namingBox->setChecked(hGrp->GetBool("Extended Naming", false));
 
     ui->comboBoxElementFilter->setEnabled(!isautoSwitchBoxChecked);
+    ui->comboBoxModeFilter->setEnabled(true);
 
     slotElementsChanged();
 }
@@ -686,6 +699,7 @@ void TaskSketcherElements::slotElementsChanged(void)
     ui->listWidgetElements->clear();
 
     int element = ui->comboBoxElementFilter->currentIndex();
+    int mode = ui->comboBoxModeFilter->currentIndex();
 
     int i=1;
     for(std::vector< Part::Geometry * >::const_iterator it= vals.begin();it!=vals.end();++it,++i){
@@ -764,7 +778,11 @@ void TaskSketcherElements::slotElementsChanged(void)
         sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::start),
         sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::mid),
         sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::end),
-        type));
+        type,
+        construction,
+        false));
+
+        setItemVisibility(i-1, mode);
     }
 
     const std::vector< Part::Geometry * > &ext_vals = sketchView->getSketchObject()->getExternalGeometry();
@@ -825,39 +843,44 @@ void TaskSketcherElements::slotElementsChanged(void)
             none,
             type == Part::GeomPoint::getClassTypeId()         ? ( isNamingBoxChecked ?
                                                                 (tr("Point") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Point")))         :
             type == Part::GeomLineSegment::getClassTypeId()        ? ( isNamingBoxChecked ?
                                                                 (tr("Line") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Line")))         :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Line")))         :
             type == Part::GeomArcOfCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
                                                                 (tr("Arc") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Arc")))         :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Arc")))         :
             type == Part::GeomCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
                                                                 (tr("Circle") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Circle")))         :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Circle")))         :
             type == Part::GeomEllipse::getClassTypeId()         ? ( isNamingBoxChecked ?
                                                                 (tr("Ellipse") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Ellipse")))   :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Ellipse")))   :
             type == Part::GeomArcOfEllipse::getClassTypeId()    ? ( isNamingBoxChecked ?
                                                                 (tr("Elliptical Arc") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Elliptical Arc")))   :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Elliptical Arc")))   :
             type == Part::GeomArcOfHyperbola::getClassTypeId()    ? ( isNamingBoxChecked ?
                                                                 (tr("Hyperbolic Arc") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Hyperbolic Arc")))   :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Hyperbolic Arc")))   :
             type == Part::GeomArcOfParabola::getClassTypeId()    ? ( isNamingBoxChecked ?
                                                                 (tr("Parabolic Arc") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("Parabolic Arc")))   :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("Parabolic Arc")))   :
             type == Part::GeomBSplineCurve::getClassTypeId()    ? ( isNamingBoxChecked ?
                                                                 (tr("BSpline") + linkname):
-                                                                (QString::fromLatin1("%1-").arg(i)+tr("BSpline")))   :
+                                                                (QString::fromLatin1("%1-").arg(i-2)+tr("BSpline")))   :
             ( isNamingBoxChecked ?
             (tr("Other") + linkname):
-            (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
+            (QString::fromLatin1("%1-").arg(i-2)+tr("Other"))),
             -j,
             sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::start),
             sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::mid),
             sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::end),
-            type));
+            type,
+            false, // externals are not construction geometry in the sense of the sketcher ui
+            true // yes, external geometry
+            ));
+
+        setItemVisibility(i-3, mode); // i is 1 based and H and V axes get ignored.
       }
     }
 }
@@ -947,6 +970,12 @@ void TaskSketcherElements::on_listWidgetElements_currentFilterChanged ( int inde
 
 }
 
+void TaskSketcherElements::on_listWidgetElements_currentModeFilterChanged ( int index )
+{
+    updateVisibility(index);
+}
+
+
 void TaskSketcherElements::updatePreselection()
 {
     inhibitSelectionUpdate=true;
@@ -968,6 +997,37 @@ void TaskSketcherElements::clearWidget()
       item->isStartingPointSelected=false;
       item->isEndPointSelected=false;
       item->isMidPointSelected=false;
+    }
+}
+
+void TaskSketcherElements::setItemVisibility(int elementindex,int filterindex)
+{
+    // index
+    // 0 => all
+    // 1 => Normal
+    // 2 => Construction
+    // 3 => External
+
+    ElementItem* item = static_cast<ElementItem *>(ui->listWidgetElements->item(elementindex));
+
+    if (filterindex == 0)
+        item->setHidden(false);
+    else {
+        if( (!item->isConstruction && !item->isExternal && filterindex == 1)  ||
+            (item->isConstruction  && filterindex == 2)  ||
+            (item->isExternal && filterindex == 3) ) {
+            item->setHidden(false);
+            }
+            else {
+                item->setHidden(true);
+            }
+    }
+}
+
+void TaskSketcherElements::updateVisibility(int filterindex)
+{
+    for (int i=0;i<ui->listWidgetElements->count(); i++) {
+        setItemVisibility(i,filterindex);
     }
 }
 

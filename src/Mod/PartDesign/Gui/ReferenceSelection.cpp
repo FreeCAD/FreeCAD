@@ -37,6 +37,7 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -130,15 +131,15 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return false;
     }
 
-    // Handle selection of geometry elements
-    if (!sSubName || sSubName[0] == '\0')
-        return false;
     if (!allowOtherBody) {
         if (support == NULL)
             return false;
         if (pObj != support)
             return false;
     }
+    // Handle selection of geometry elements
+    if (!sSubName || sSubName[0] == '\0')
+        return whole;
     std::string subName(sSubName);
     if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
         const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
@@ -211,7 +212,7 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     
     //check if the selection is an external reference and ask the user what to do
     //of course only if thisObj is in a body, as otherwise the old workflow would not 
-    //be supportet
+    //be supported
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
     bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
     if (!originfeature && body) {
@@ -289,9 +290,9 @@ std::string buildLinkSingleSubPythonStr(const App::DocumentObject* obj,
         return "None";
 
     if (PartDesign::Feature::isDatum(obj))
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"\"])";
+        return Gui::Command::getObjectCmd(obj,"(",", [''])");
     else
-        return std::string("(App.ActiveDocument.") + obj->getNameInDocument() + ", [\"" + subs.front() + "\"])";
+        return Gui::Command::getObjectCmd(obj,"(",", ['") + subs.front() + "'])";
 }
 
 std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & objs)
@@ -303,7 +304,7 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
     std::string result("[");
 
     for (std::vector<App::DocumentObject*>::const_iterator o = objs.begin(); o != objs.end(); o++)
-        result += std::string("App.activeDocument().") + (*o)->getNameInDocument() + ",";
+        result += Gui::Command::getObjectCmd(*o,0,",");
     result += "]";
 
     return result;
@@ -323,7 +324,7 @@ std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & 
     for (size_t i=0, objs_sz=objs.size(); i < objs_sz; i++) {
         if (objs[i] ) {
             result += '(';
-            result += std::string("App.activeDocument().").append( objs[i]->getNameInDocument () );
+            result += Gui::Command::getObjectCmd(objs[i]);
             result += ",\"";
             result += subs[i];
             result += "\"),";

@@ -81,6 +81,9 @@ ViewProviderPoints::ViewProviderPoints()
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
 
+    // BBOX
+    SelectionStyle.setValue(1);
+
     pcPointsCoord = new SoCoordinate3();
     pcPointsCoord->ref();
     pcPointsNormal = new SoNormal();
@@ -107,6 +110,10 @@ void ViewProviderPoints::onChanged(const App::Property* prop)
 {
     if (prop == &PointSize) {
         pcPointStyle->pointSize = PointSize.getValue();
+    }
+    else if (prop == &SelectionStyle) {
+        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else {
         ViewProviderGeometryObject::onChanged(prop);
@@ -304,6 +311,8 @@ bool ViewProviderPoints::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform)
         return ViewProviderGeometryObject::setEdit(ModNum);
+    else if (ModNum == ViewProvider::Cutting)
+        return true;
     return false;
 }
 
@@ -327,7 +336,7 @@ void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderPoints::getClassTypeId());
     for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
         ViewProviderPoints* that = static_cast<ViewProviderPoints*>(*it);
         if (that->getEditingMode() > -1) {

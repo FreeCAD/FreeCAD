@@ -90,7 +90,7 @@ public:
     //@}
 
     /// Construction
-    explicit Vector3 (_Precision fx = 0.0f, _Precision fy = 0.0f, _Precision fz = 0.0f);
+    explicit Vector3 (_Precision fx = 0.0, _Precision fy = 0.0, _Precision fz = 0.0);
     /// Construction
     Vector3 (const Vector3<_Precision>& rcVct);
 
@@ -217,7 +217,7 @@ template <class _Precision>
 inline _Precision Distance (const Vector3<_Precision> &v1, const Vector3<_Precision> &v2)
 {
     _Precision x=v1.x-v2.x, y=v1.y-v2.y, z=v1.z-v2.z;
-    return (_Precision)sqrt((x * x) + (y * y) + (z * z));
+    return static_cast<_Precision>(sqrt((x * x) + (y * y) + (z * z)));
 }
 
 /// Returns the squared distance between two points
@@ -238,51 +238,11 @@ inline Vector3<_Precision> operator * (_Precision fFac, const Vector3<_Precision
 template <class _Pr1, class _Pr2>
 inline Vector3<_Pr1> toVector(const Vector3<_Pr2>& v)
 {
-    return Vector3<_Pr1>((_Pr1)v.x,(_Pr1)v.y,(_Pr1)v.z);
+    return Vector3<_Pr1>(static_cast<_Pr1>(v.x),static_cast<_Pr1>(v.y),static_cast<_Pr1>(v.z));
 }
 
 typedef Vector3<float>  Vector3f;
 typedef Vector3<double> Vector3d;
-
-template <class vecT>
-struct vec_traits { };
-
-template <>
-struct vec_traits<Vector3f> {
-    typedef Vector3f vec_type;
-    typedef float float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.x; }
-    inline float_type y() { return v.y; }
-    inline float_type z() { return v.z; }
-private:
-    const vec_type& v;
-};
-
-template <>
-struct vec_traits<Vector3d> {
-    typedef Vector3d vec_type;
-    typedef double float_type;
-    vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.x; }
-    inline float_type y() { return v.y; }
-    inline float_type z() { return v.z; }
-private:
-    const vec_type& v;
-};
-
-template <class _Vec1, class _Vec2>
-inline _Vec1 convertTo(const _Vec2& v)
-{
-    typedef _Vec1 out_type;
-    typedef _Vec2 inp_type;
-    typedef vec_traits<inp_type> traits_type;
-    typedef vec_traits<out_type> traits_out;
-    typedef typename traits_out::float_type float_type;
-    traits_type t(v);
-    return _Vec1((float_type)t.x(),(float_type)t.y(),(float_type)t.z());
-}
-
 
 } // namespace Base
 

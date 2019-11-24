@@ -45,7 +45,7 @@ using namespace Gui;
 //===========================================================================
 // Std_ArrangeIcons
 //===========================================================================
-DEF_STD_CMD_A(StdCmdArrangeIcons);
+DEF_STD_CMD_A(StdCmdArrangeIcons)
 
 StdCmdArrangeIcons::StdCmdArrangeIcons()
   : Command("Std_ArrangeIcons")
@@ -72,7 +72,7 @@ bool StdCmdArrangeIcons::isActive(void)
 //===========================================================================
 // Std_TileWindows
 //===========================================================================
-DEF_STD_CMD_A(StdCmdTileWindows);
+DEF_STD_CMD_A(StdCmdTileWindows)
 
 StdCmdTileWindows::StdCmdTileWindows()
   : Command("Std_TileWindows")
@@ -100,7 +100,7 @@ bool StdCmdTileWindows::isActive(void)
 //===========================================================================
 // Std_CascadeWindows
 //===========================================================================
-DEF_STD_CMD_A(StdCmdCascadeWindows);
+DEF_STD_CMD_A(StdCmdCascadeWindows)
 
 StdCmdCascadeWindows::StdCmdCascadeWindows()
   : Command("Std_CascadeWindows")
@@ -128,7 +128,7 @@ bool StdCmdCascadeWindows::isActive(void)
 //===========================================================================
 // Std_CloseActiveWindow
 //===========================================================================
-DEF_STD_CMD_A(StdCmdCloseActiveWindow);
+DEF_STD_CMD_A(StdCmdCloseActiveWindow)
 
 StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
   : Command("Std_CloseActiveWindow")
@@ -142,7 +142,7 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
     // collide with this shortcut. Thus the shortcut of QMdiSubWindow will be
     // reset in MainWindow::addWindow() (#0002631)
     sAccel        = keySequenceToAccel(QKeySequence::Close);
-    eType         = 0;
+    eType         = NoTransaction;
 }
 
 void StdCmdCloseActiveWindow::activated(int iMsg)
@@ -159,7 +159,7 @@ bool StdCmdCloseActiveWindow::isActive(void)
 //===========================================================================
 // Std_CloseAllWindows
 //===========================================================================
-DEF_STD_CMD_A(StdCmdCloseAllWindows);
+DEF_STD_CMD_A(StdCmdCloseAllWindows)
 
 StdCmdCloseAllWindows::StdCmdCloseAllWindows()
   : Command("Std_CloseAllWindows")
@@ -169,24 +169,24 @@ StdCmdCloseAllWindows::StdCmdCloseAllWindows()
     sToolTipText  = QT_TR_NOOP("Close all windows");
     sWhatsThis    = "Std_CloseAllWindows";
     sStatusTip    = QT_TR_NOOP("Close all windows");
-    eType         = 0;
+    eType         = NoTransaction;
 }
 
 void StdCmdCloseAllWindows::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    getMainWindow()->closeAllWindows();
+    getMainWindow()->closeAllDocuments();
 }
 
 bool StdCmdCloseAllWindows::isActive(void)
 {
-    return !(getMainWindow()->windows().isEmpty());
+    return !(getMainWindow()->windows().isEmpty()) || App::GetApplication().getDocuments().size();
 }
 
 //===========================================================================
 // Std_ActivateNextWindow
 //===========================================================================
-DEF_STD_CMD_A(StdCmdActivateNextWindow);
+DEF_STD_CMD_A(StdCmdActivateNextWindow)
 
 StdCmdActivateNextWindow::StdCmdActivateNextWindow()
   : Command("Std_ActivateNextWindow")
@@ -215,7 +215,7 @@ bool StdCmdActivateNextWindow::isActive(void)
 //===========================================================================
 // Std_ActivatePrevWindow
 //===========================================================================
-DEF_STD_CMD_A(StdCmdActivatePrevWindow);
+DEF_STD_CMD_A(StdCmdActivatePrevWindow)
 
 StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
   : Command("Std_ActivatePrevWindow")
@@ -244,7 +244,7 @@ bool StdCmdActivatePrevWindow::isActive(void)
 //===========================================================================
 // Std_Windows
 //===========================================================================
-DEF_STD_CMD(StdCmdWindows);
+DEF_STD_CMD(StdCmdWindows)
 
 StdCmdWindows::StdCmdWindows()
   : Command("Std_Windows")
@@ -268,7 +268,7 @@ void StdCmdWindows::activated(int iMsg)
 //===========================================================================
 // Std_UserInterface
 //===========================================================================
-DEF_STD_CMD(StdCmdUserInterface);
+DEF_STD_CMD(StdCmdUserInterface)
 
 StdCmdUserInterface::StdCmdUserInterface()
   : Command("Std_UserInterface")
@@ -290,7 +290,7 @@ void StdCmdUserInterface::activated(int)
 // Std_DockWindowMenu
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdDockViewMenu);
+DEF_STD_CMD_AC(StdCmdDockViewMenu)
 
 StdCmdDockViewMenu::StdCmdDockViewMenu()
   : Command("Std_DockViewMenu")
@@ -326,7 +326,7 @@ Action * StdCmdDockViewMenu::createAction(void)
 // Std_ToolBarMenu
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdToolBarMenu);
+DEF_STD_CMD_AC(StdCmdToolBarMenu)
 
 StdCmdToolBarMenu::StdCmdToolBarMenu()
   : Command("Std_ToolBarMenu")
@@ -362,7 +362,7 @@ Action * StdCmdToolBarMenu::createAction(void)
 // Std_ViewStatusBar
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdStatusBar);
+DEF_STD_CMD_AC(StdCmdStatusBar)
 
 StdCmdStatusBar::StdCmdStatusBar()
   : Command("Std_ViewStatusBar")
@@ -406,7 +406,7 @@ bool StdCmdStatusBar::isActive()
 // Std_WindowsMenu
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdWindowsMenu );
+DEF_STD_CMD_AC(StdCmdWindowsMenu)
 
 StdCmdWindowsMenu::StdCmdWindowsMenu()
   : Command("Std_WindowsMenu")

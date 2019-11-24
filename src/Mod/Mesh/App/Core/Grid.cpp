@@ -231,9 +231,9 @@ unsigned long MeshGrid::Inside (const Base::BoundBox3f &rclBB, std::set<unsigned
 
 bool MeshGrid::CheckPosition (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const
 {
-  rulX = (unsigned long)((rclPoint.x - _fMinX) / _fGridLenX);
-  rulY = (unsigned long)((rclPoint.y - _fMinY) / _fGridLenY);
-  rulZ = (unsigned long)((rclPoint.z - _fMinZ) / _fGridLenZ);
+  rulX = static_cast<unsigned long>((rclPoint.x - _fMinX) / _fGridLenX);
+  rulY = static_cast<unsigned long>((rclPoint.y - _fMinY) / _fGridLenY);
+  rulZ = static_cast<unsigned long>((rclPoint.z - _fMinZ) / _fGridLenZ);
 
   if ( (rulX < _ulCtGridsX) && (rulY < _ulCtGridsY) && (rulZ < _ulCtGridsZ) )
     return true;
@@ -246,17 +246,17 @@ void MeshGrid::Position (const Base::Vector3f &rclPoint, unsigned long &rulX, un
   if (rclPoint.x <= _fMinX)
     rulX = 0;
   else
-    rulX = std::min<unsigned long>((unsigned long)((rclPoint.x - _fMinX) / _fGridLenX), _ulCtGridsX - 1);
+    rulX = std::min<unsigned long>(static_cast<unsigned long>((rclPoint.x - _fMinX) / _fGridLenX), _ulCtGridsX - 1);
 
   if (rclPoint.y <= _fMinY)
     rulY = 0;
   else
-    rulY = std::min<unsigned long>((unsigned long)((rclPoint.y - _fMinY) / _fGridLenY), _ulCtGridsY - 1);
+    rulY = std::min<unsigned long>(static_cast<unsigned long>((rclPoint.y - _fMinY) / _fGridLenY), _ulCtGridsY - 1);
 
   if (rclPoint.z <= _fMinZ)
     rulZ = 0;
   else
-    rulZ = std::min<unsigned long>((unsigned long)((rclPoint.z - _fMinZ) / _fGridLenZ), _ulCtGridsZ - 1);
+    rulZ = std::min<unsigned long>(static_cast<unsigned long>((rclPoint.z - _fMinZ) / _fGridLenZ), _ulCtGridsZ - 1);
 }
 
 void MeshGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxGrids)
@@ -365,13 +365,13 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
       float fVolumenGrid = (fVolumen * ulGridsFacets) / (fFactorVolumen * _ulCtElements);
 
       if ((fVolumenGrid * iMaxGrids) < fVolumen)
-        fVolumenGrid = fVolumen / (float)iMaxGrids;
+        fVolumenGrid = fVolumen / static_cast<float>(iMaxGrids);
 
-      float fLengthGrid = float(pow((float)fVolumenGrid,(float) 1.0f / 3.0f));
+      float fLengthGrid = pow(fVolumenGrid, 1.0f / 3.0f);
 
-      _ulCtGridsX = std::max<unsigned long>((unsigned long)(fLenghtX / fLengthGrid), 1);
-      _ulCtGridsY = std::max<unsigned long>((unsigned long)(fLenghtY / fLengthGrid), 1);
-      _ulCtGridsZ = std::max<unsigned long>((unsigned long)(fLenghtZ / fLengthGrid), 1);
+      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
+      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
+      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1);
       
     } break;
   case 1:
@@ -383,12 +383,12 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
 
       if ((fAreaGrid * iMaxGrids) < fArea)
-        fAreaGrid = fArea / (float)iMaxGrids;
+        fAreaGrid = fArea / static_cast<float>(iMaxGrids);
 
       float fLengthGrid = float(sqrt(fAreaGrid));
 
-      _ulCtGridsY = std::max<unsigned long>((unsigned long)(fLenghtY / fLengthGrid), 1);
-      _ulCtGridsZ = std::max<unsigned long>((unsigned long)(fLenghtZ / fLengthGrid), 1);
+      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
+      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1);
     } break;
   case 2:
     {
@@ -399,18 +399,18 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
 
       if ((fAreaGrid * iMaxGrids) < fArea)
-        fAreaGrid = fArea / (float)iMaxGrids;
+        fAreaGrid = fArea / static_cast<float>(iMaxGrids);
 
       float fLengthGrid = float(sqrt(fAreaGrid));
 
-      _ulCtGridsX = std::max<unsigned long>((unsigned long)(fLenghtX / fLengthGrid), 1);
-      _ulCtGridsZ = std::max<unsigned long>((unsigned long)(fLenghtZ / fLengthGrid), 1);
+      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
+      _ulCtGridsZ = std::max<unsigned long>(static_cast<unsigned long>(fLenghtZ / fLengthGrid), 1);
     } break;
   case 3:
     {
       _ulCtGridsX = 1; // bLenghtXisZero
       _ulCtGridsY = 1; // bLenghtYisZero
-      _ulCtGridsZ = iMaxGrids; // bLenghtYisZero
+      _ulCtGridsZ = static_cast<unsigned long>(iMaxGrids); // bLenghtYisZero
     } break;
   case 4:
     {
@@ -421,30 +421,30 @@ void MeshGrid::CalculateGridLength (int iCtGridPerAxis)
       float fAreaGrid = (fArea * ulGridsFacets) / (fFactorArea * _ulCtElements);
 
       if ((fAreaGrid * iMaxGrids) < fArea)
-        fAreaGrid = fArea / (float)iMaxGrids;
+        fAreaGrid = fArea / static_cast<float>(iMaxGrids);
 
       float fLengthGrid = float(sqrt(fAreaGrid));
 
-      _ulCtGridsX = std::max<unsigned long>((unsigned long)(fLenghtX / fLengthGrid), 1);
-      _ulCtGridsY = std::max<unsigned long>((unsigned long)(fLenghtY / fLengthGrid), 1);
+      _ulCtGridsX = std::max<unsigned long>(static_cast<unsigned long>(fLenghtX / fLengthGrid), 1);
+      _ulCtGridsY = std::max<unsigned long>(static_cast<unsigned long>(fLenghtY / fLengthGrid), 1);
     } break;
   case 5:
     {
       _ulCtGridsX = 1; // bLenghtXisZero
       _ulCtGridsZ = 1; // bLenghtZisZero
-      _ulCtGridsY = iMaxGrids; // bLenghtYisZero
+      _ulCtGridsY = static_cast<unsigned long>(iMaxGrids); // bLenghtYisZero
     } break;
   case 6:
     {
       _ulCtGridsY = 1; // bLenghtYisZero
       _ulCtGridsZ = 1; // bLenghtZisZero
-      _ulCtGridsX = iMaxGrids; // bLenghtYisZero
+      _ulCtGridsX = static_cast<unsigned long>(iMaxGrids); // bLenghtYisZero
     } break;
   case 7:
     {
-      _ulCtGridsX = iMaxGrids; // bLenghtXisZero
-      _ulCtGridsY = iMaxGrids; // bLenghtYisZero
-      _ulCtGridsZ = iMaxGrids; // bLenghtZisZero
+      _ulCtGridsX = static_cast<unsigned long>(iMaxGrids); // bLenghtXisZero
+      _ulCtGridsY = static_cast<unsigned long>(iMaxGrids); // bLenghtYisZero
+      _ulCtGridsZ = static_cast<unsigned long>(iMaxGrids); // bLenghtZisZero
     } break;
   }
 }
@@ -486,8 +486,8 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
       }
       case Base::BoundBox3f::LEFT:
       {
-        int nX = _ulCtGridsX - 1;
-        while (raclInd.empty() && nX >= 0)
+        unsigned long nX = _ulCtGridsX - 1;
+        while (raclInd.empty() && nX < _ulCtGridsX)
         {
           for (unsigned long i = 0; i < _ulCtGridsY; i++)
           {
@@ -514,8 +514,8 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
       }
       case Base::BoundBox3f::BOTTOM:
       {
-        int nY = _ulCtGridsY - 1;
-        while (raclInd.empty() && nY >= 0)
+        unsigned long nY = _ulCtGridsY - 1;
+        while (raclInd.empty() && nY < _ulCtGridsY)
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -542,8 +542,8 @@ void MeshGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt, std::set<uns
       }
       case Base::BoundBox3f::FRONT:
       {
-        int nZ = _ulCtGridsZ - 1;
-        while (raclInd.empty() && nZ >= 0)
+        unsigned long nZ = _ulCtGridsZ - 1;
+        while (raclInd.empty() && nZ < _ulCtGridsZ)
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -577,37 +577,67 @@ void MeshGrid::GetHull (unsigned long ulX, unsigned long ulY, unsigned long ulZ,
   for (i = nX1; i <= nX2; i++)
   {
     for (j = nY1; j <= nY2; j++)
-      GetElements(i, j, nZ1, raclInd);
+    {
+      GetElements(static_cast<unsigned long>(i),
+                  static_cast<unsigned long>(j),
+                  static_cast<unsigned long>(nZ1),
+                  raclInd);
+    }
   }
   // bottom plane
   for (i = nX1; i <= nX2; i++)
   {
     for (j = nY1; j <= nY2; j++)
-      GetElements(i, j, nZ2, raclInd);
+    {
+      GetElements(static_cast<unsigned long>(i),
+                  static_cast<unsigned long>(j),
+                  static_cast<unsigned long>(nZ2),
+                  raclInd);
+    }
   }
   // left plane
   for (i = nY1; i <= nY2; i++)
   {
     for (j = (nZ1+1); j <= (nZ2-1); j++)
-      GetElements(nX1, i, j, raclInd);
+    {
+      GetElements(static_cast<unsigned long>(nX1),
+                  static_cast<unsigned long>(i),
+                  static_cast<unsigned long>(j),
+                  raclInd);
+    }
   }
   // right plane
   for (i = nY1; i <= nY2; i++)
   {
     for (j = (nZ1+1); j <= (nZ2-1); j++)
-      GetElements(nX2, i, j, raclInd);
+    {
+      GetElements(static_cast<unsigned long>(nX2),
+                  static_cast<unsigned long>(i),
+                  static_cast<unsigned long>(j),
+                  raclInd);
+    }
   }
   // front plane
   for (i = (nX1+1); i <= (nX2-1); i++)
   {
     for (j = (nZ1+1); j <= (nZ2-1); j++)
-      GetElements(i, nY1, j, raclInd);
+    {
+      GetElements(static_cast<unsigned long>(i),
+                  static_cast<unsigned long>(nY1),
+                  static_cast<unsigned long>(j),
+                  raclInd);
+    }
   }
   // back plane
   for (i = (nX1+1); i <= (nX2-1); i++)
   {
     for (j = (nZ1+1); j <= (nZ2-1); j++)
-      GetElements(i, nY2, j, raclInd);
+    {
+      GetElements(static_cast<unsigned long>(i),
+                  static_cast<unsigned long>(nY2),
+                  static_cast<unsigned long>(j),
+                  raclInd);
+    }
   }
 }
 
@@ -684,9 +714,9 @@ MeshFacetGrid::MeshFacetGrid (const MeshKernel &rclM, float fGridLen)
 : MeshGrid(rclM)
 {
   Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox();
-  Rebuild(std::max<unsigned long>((unsigned long)(clBBMesh.LengthX() / fGridLen), 1),
-          std::max<unsigned long>((unsigned long)(clBBMesh.LengthY() / fGridLen), 1),
-          std::max<unsigned long>((unsigned long)(clBBMesh.LengthZ() / fGridLen), 1));
+  Rebuild(std::max<unsigned long>(static_cast<unsigned long>(clBBMesh.LengthX() / fGridLen), 1),
+          std::max<unsigned long>(static_cast<unsigned long>(clBBMesh.LengthY() / fGridLen), 1),
+          std::max<unsigned long>(static_cast<unsigned long>(clBBMesh.LengthZ() / fGridLen), 1));
 }
 
 void MeshFacetGrid::Validate (const MeshKernel &rclMesh)
@@ -774,8 +804,8 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
     {
       case Base::BoundBox3f::RIGHT:
       {
-        int nX = 0;
-        while ((fMinDist > ((clBB.MinX - rclPt.x) + ((float)(nX) * _fGridLenX))) && ((unsigned long)(nX) < _ulCtGridsX))
+        unsigned long nX = 0;
+        while ((fMinDist > ((clBB.MinX - rclPt.x) + (float(nX) * _fGridLenX))) && (nX < _ulCtGridsX))
         {
           for (unsigned long i = 0; i < _ulCtGridsY; i++)
           {
@@ -788,8 +818,8 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
       }
       case Base::BoundBox3f::LEFT:
       {
-        int nX = _ulCtGridsX - 1;
-        while ((fMinDist > ((rclPt.x - clBB.MinX) + (float(nX) * _fGridLenX))) && (nX >= 0))
+        unsigned long nX = _ulCtGridsX - 1;
+        while ((fMinDist > ((rclPt.x - clBB.MinX) + (float(nX) * _fGridLenX))) && (nX < _ulCtGridsX))
         {
           for (unsigned long i = 0; i < _ulCtGridsY; i++)
           {
@@ -802,8 +832,8 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
       }
       case Base::BoundBox3f::TOP:
       {
-        int nY = 0;
-        while ((fMinDist > ((clBB.MinY - rclPt.y) + ((float)(nY) * _fGridLenY))) && ((unsigned long)(nY) < _ulCtGridsY))
+        unsigned long nY = 0;
+        while ((fMinDist > ((clBB.MinY - rclPt.y) + (float(nY) * _fGridLenY))) && (nY < _ulCtGridsY))
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -816,8 +846,8 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
       }
       case Base::BoundBox3f::BOTTOM:
       {
-        int nY = _ulCtGridsY - 1;
-        while ((fMinDist > ((rclPt.y - clBB.MinY) + (float(nY) * _fGridLenY))) && (nY >= 0))
+        unsigned long nY = _ulCtGridsY - 1;
+        while ((fMinDist > ((rclPt.y - clBB.MinY) + (float(nY) * _fGridLenY))) && (nY < _ulCtGridsY))
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -830,8 +860,8 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
       }
       case Base::BoundBox3f::BACK:
       {
-        int nZ = 0;
-        while ((fMinDist > ((clBB.MinZ - rclPt.z) + ((float)(nZ) * _fGridLenZ))) && ((unsigned long)(nZ) < _ulCtGridsZ))
+        unsigned long nZ = 0;
+        while ((fMinDist > ((clBB.MinZ - rclPt.z) + (float(nZ) * _fGridLenZ))) && (nZ < _ulCtGridsZ))
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -844,8 +874,8 @@ unsigned long MeshFacetGrid::SearchNearestFromPoint (const Base::Vector3f &rclPt
       }
       case Base::BoundBox3f::FRONT:
       {
-        int nZ = _ulCtGridsZ - 1;
-        while ((fMinDist > ((rclPt.z - clBB.MinZ) + ((float)(nZ) * _fGridLenZ))) && (nZ >= 0))
+        unsigned long nZ = _ulCtGridsZ - 1;
+        while ((fMinDist > ((rclPt.z - clBB.MinZ) + (float(nZ) * _fGridLenZ))) && (nZ < _ulCtGridsZ))
         {
           for (unsigned long i = 0; i < _ulCtGridsX; i++)
           {
@@ -908,37 +938,67 @@ void MeshFacetGrid::SearchNearestFacetInHull (unsigned long ulX, unsigned long u
   for (i = nX1; i <= nX2; i++)
   {
     for (j = nY1; j <= nY2; j++)
-      SearchNearestFacetInGrid(i, j, nZ1, rclPt, rfMinDist, rulFacetInd);
+    {
+      SearchNearestFacetInGrid(static_cast<unsigned long>(i),
+                               static_cast<unsigned long>(j),
+                               static_cast<unsigned long>(nZ1),
+                               rclPt, rfMinDist, rulFacetInd);
+    }
   }
   // bottom plane
   for (i = nX1; i <= nX2; i++)
   {
     for (j = nY1; j <= nY2; j++)
-      SearchNearestFacetInGrid(i, j, nZ2, rclPt, rfMinDist, rulFacetInd);
+    {
+      SearchNearestFacetInGrid(static_cast<unsigned long>(i),
+                               static_cast<unsigned long>(j),
+                               static_cast<unsigned long>(nZ2),
+                               rclPt, rfMinDist, rulFacetInd);
+    }
   }
   // left plane
   for (i = nY1; i <= nY2; i++)
   {
     for (j = (nZ1+1); j <= (nZ2-1); j++)
-      SearchNearestFacetInGrid(nX1, i, j, rclPt, rfMinDist, rulFacetInd);
+    {
+      SearchNearestFacetInGrid(static_cast<unsigned long>(nX1),
+                               static_cast<unsigned long>(i),
+                               static_cast<unsigned long>(j),
+                               rclPt, rfMinDist, rulFacetInd);
+    }
   }
   // right plane
   for (i = nY1; i <= nY2; i++)
   {
     for (j = (nZ1+1); j <= (nZ2-1); j++)
-      SearchNearestFacetInGrid(nX2, i, j, rclPt, rfMinDist, rulFacetInd);
+    {
+      SearchNearestFacetInGrid(static_cast<unsigned long>(nX2),
+                               static_cast<unsigned long>(i),
+                               static_cast<unsigned long>(j),
+                               rclPt, rfMinDist, rulFacetInd);
+    }
   }
   // front plane
   for (i = (nX1+1); i <= (nX2-1); i++)
   {
     for (j = (nZ1+1); j <= (nZ2-1); j++)
-      SearchNearestFacetInGrid(i, nY1, j, rclPt, rfMinDist, rulFacetInd);
+    {
+      SearchNearestFacetInGrid(static_cast<unsigned long>(i),
+                               static_cast<unsigned long>(nY1),
+                               static_cast<unsigned long>(j),
+                               rclPt, rfMinDist, rulFacetInd);
+    }
   }
   // back plane
   for (i = (nX1+1); i <= (nX2-1); i++)
   {
     for (j = (nZ1+1); j <= (nZ2-1); j++)
-      SearchNearestFacetInGrid(i, nY2, j, rclPt, rfMinDist, rulFacetInd);
+    {
+      SearchNearestFacetInGrid(static_cast<unsigned long>(i),
+                               static_cast<unsigned long>(nY2),
+                               static_cast<unsigned long>(j),
+                               rclPt, rfMinDist, rulFacetInd);
+    }
   }
 }
 
@@ -987,9 +1047,9 @@ MeshPointGrid::MeshPointGrid (const MeshKernel &rclM, float fGridLen)
   : MeshGrid(rclM)
 {
   Base::BoundBox3f clBBMesh = _pclMesh->GetBoundBox();
-  Rebuild(std::max<unsigned long>((unsigned long)(clBBMesh.LengthX() / fGridLen), 1),
-          std::max<unsigned long>((unsigned long)(clBBMesh.LengthY() / fGridLen), 1),
-          std::max<unsigned long>((unsigned long)(clBBMesh.LengthZ() / fGridLen), 1));
+  Rebuild(std::max<unsigned long>(static_cast<unsigned long>(clBBMesh.LengthX() / fGridLen), 1),
+          std::max<unsigned long>(static_cast<unsigned long>(clBBMesh.LengthY() / fGridLen), 1),
+          std::max<unsigned long>(static_cast<unsigned long>(clBBMesh.LengthZ() / fGridLen), 1));
 }
 
 void MeshPointGrid::AddPoint (const MeshPoint &rclPt, unsigned long ulPtIndex, float fEpsilon)
@@ -1061,9 +1121,9 @@ void MeshPointGrid::RebuildGrid (void)
 
 void MeshPointGrid::Pos (const Base::Vector3f &rclPoint, unsigned long &rulX, unsigned long &rulY, unsigned long &rulZ) const
 {
-  rulX = (unsigned long)((rclPoint.x - _fMinX) / _fGridLenX);
-  rulY = (unsigned long)((rclPoint.y - _fMinY) / _fGridLenY);
-  rulZ = (unsigned long)((rclPoint.z - _fMinZ) / _fGridLenZ);
+  rulX = static_cast<unsigned long>((rclPoint.x - _fMinX) / _fGridLenX);
+  rulY = static_cast<unsigned long>((rclPoint.y - _fMinY) / _fGridLenY);
+  rulZ = static_cast<unsigned long>((rclPoint.z - _fMinZ) / _fGridLenZ);
 }
 
 unsigned long MeshPointGrid::FindElements (const Base::Vector3f &rclPoint, std::set<unsigned long>& aulElements) const

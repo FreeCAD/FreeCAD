@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - 2D helper functions"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = ["https://www.freecadweb.org"]
 
 '''
 This Script includes python functions to find out the most basic shape type
@@ -37,7 +37,7 @@ def shapeset(shapelst):
     return set([shape.hashCode() for shape in shapelst])
 
 def mostbasiccompound(comp):
-    '''searches fo the most basic shape in a Compound'''
+    '''searches for the most basic shape in a Compound'''
     solids=shapeset(comp.Solids)
     shells=shapeset(comp.Shells)
     faces=shapeset(comp.Faces)

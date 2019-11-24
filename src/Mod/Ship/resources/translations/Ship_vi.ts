@@ -129,7 +129,7 @@
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="319"/>
       <source>Displacement</source>
-      <translation>Trọng lượng nước rẽ của tàu</translation>
+      <translation>Chuyển vị</translation>
     </message>
     <message>
       <location filename="../../shipAreasCurve/TaskPanel.py" line="344"/>

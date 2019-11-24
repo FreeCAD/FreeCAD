@@ -7,9 +7,9 @@ SET(SMESH_VERSION_PATCH 1)
 SET(SMESH_VERSION_TWEAK 0)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-unused-parameter -Wno-empty-body -Wno-pedantic")
 elseif(CMAKE_COMPILER_IS_CLANGXX)
-    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-private-field -Wno-unused-function -Wno-sometimes-uninitialized -Wno-overloaded-virtual -Wno-dynamic-class-memaccess -Wno-comment -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-private-field -Wno-unused-function -Wno-sometimes-uninitialized -Wno-overloaded-virtual -Wno-dynamic-class-memaccess -Wno-comment -Wno-unused-parameter -Wno-extra-semi")
 endif()
 
 if(CMAKE_COMPILER_IS_CLANGXX)
@@ -403,8 +403,8 @@ endif (BUILD_FEM_NETGEN)
 
 if(WIN32)
     INSTALL(TARGETS SMDS Driver DriverSTL DriverDAT DriverUNV SMESHDS SMESH MEFISTO2 StdMeshers
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)
     INSTALL(TARGETS SMDS Driver DriverSTL DriverDAT DriverUNV SMESHDS SMESH MEFISTO2 StdMeshers
@@ -415,8 +415,8 @@ endif(WIN32)
 if (BUILD_FEM_NETGEN)
     if(WIN32)
         INSTALL(TARGETS NETGENPlugin
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION lib
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     else(WIN32)
         INSTALL(TARGETS NETGENPlugin

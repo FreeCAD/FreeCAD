@@ -76,13 +76,13 @@ class PathWorkbench (Workbench):
 
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post"]
-        toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop"]
+        toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop", "Path_OpActiveToggle"]
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom"]
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix", "Path_Adaptive" ]
         threedopcmdlist = ["Path_Pocket_3D"]
         engravecmdlist = ["Path_Engrave", "Path_Deburr"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
+        dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupPathBoundary", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
@@ -90,17 +90,20 @@ class PathWorkbench (Workbench):
         engravecmdgroup = ['Path_EngraveTools']
         FreeCADGui.addCommand('Path_EngraveTools', PathCommandGroup(engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", 'Engraving Operations')))
 
+        threedcmdgroup = threedopcmdlist
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
 
-            threedopcmdlist.append("Path_Surface")
-            threedcmdgroup = ['Path_3dTools']
-            FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'3D Operations')))
-
-        else:
-            threedcmdgroup = threedopcmdlist
+            try:
+                import ocl # pylint: disable=unused-variable
+                from PathScripts import PathSurfaceGui
+                threedopcmdlist.append("Path_Surface")
+                threedcmdgroup = ['Path_3dTools']
+                FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'3D Operations')))
+            except ImportError:
+                FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
@@ -151,7 +154,7 @@ class PathWorkbench (Workbench):
                 if "Job" in selectedName:
                     self.appendContextMenu("", ["Path_ExportTemplate"])
             if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
-                self.appendContextMenu("", ["Path_OperationCopy"])
+                self.appendContextMenu("", ["Path_OperationCopy", "Path_OpActiveToggle"])
             if obj.isDerivedFrom("Path::Feature"):
                 if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
                     self.appendContextMenu("", "Separator")
@@ -164,6 +167,6 @@ Gui.addWorkbench(PathWorkbench())
 
 FreeCAD.addImportType(
     "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
-FreeCAD.addExportType(
-    "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
+# FreeCAD.addExportType(
+#     "GCode (*.nc *.gc *.ncc *.ngc *.cnc *.tap *.gcode)", "PathGui")
 

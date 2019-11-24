@@ -34,6 +34,7 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoVertexProperty.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <cfloat>
 #endif
 
@@ -69,7 +70,7 @@ ViewProvider2DObject::ViewProvider2DObject()
     ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
     ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
 
-    GridRoot = new SoSeparator();
+    GridRoot = new SoAnnotation();
     GridRoot->ref();
     GridRoot->setName("GridRoot");
     MinX = MinY = -100;
@@ -79,7 +80,7 @@ ViewProvider2DObject::ViewProvider2DObject()
 
     pcRoot->addChild(GridRoot);
 
-    sPixmap = "PartFeatureImport";
+    sPixmap = "Tree_Part2D";
 }
 
 ViewProvider2DObject::~ViewProvider2DObject()
@@ -128,7 +129,7 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     double zGrid = 0.0;                     // carpet-grid separation
 
     SoGroup *parent = new Gui::SoSkipBoundingGroup();
-    GridRoot->removeAllChildren();
+    Gui::coinRemoveAllChildren(GridRoot);
     GridRoot->addChild(parent);
     SoBaseColor *mycolor;
     SoVertexProperty *vts;
@@ -150,9 +151,18 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     carpet->vertexProperty = vts;
     parent->addChild(carpet);*/
 
+    // It seems that SoDepthBuffer will mess up with other object's
+    // pre-selection highlight. No idea why the setting can leak out of a
+    // separator.
+    //
+    // What's the purpose of using SoDepthBuffer here anyway? If the intention
+    // is to render grid always on top, shouldn't it be better to use
+    // SoAnnotation?
+#if 0
     SoDepthBuffer *depth = new SoDepthBuffer;
     depth->function = SoDepthBuffer::ALWAYS;
     parent->addChild(depth);
+#endif
 
     // gridlines
     mycolor = new SoBaseColor;
@@ -228,7 +238,7 @@ void ViewProvider2DObject::updateData(const App::Property* prop)
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
         if (!bbox.IsValid()) return;
-        GridRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(GridRoot);
         Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
         place.invert();
         Base::ViewProjMatrix proj(place.toMatrix());
@@ -252,11 +262,11 @@ void ViewProvider2DObject::onChanged(const App::Property* prop)
         if (ShowGrid.getValue())
             createGrid();
         else
-            GridRoot->removeAllChildren();
+            Gui::coinRemoveAllChildren(GridRoot);
     }
     if ((prop == &GridSize) || (prop == &GridStyle) || (prop == &TightGrid)) {
         if (ShowGrid.getValue()) {
-            GridRoot->removeAllChildren();
+            Gui::coinRemoveAllChildren(GridRoot);
             createGrid();
         }
     }

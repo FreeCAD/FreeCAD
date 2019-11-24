@@ -26,7 +26,10 @@
 
 #include <map>
 #include <climits>
+#include <cstring>
 #include <Base/Persistence.h>
+
+#include "DynamicProperty.h"
 
 namespace Base {
 class Writer;
@@ -37,7 +40,6 @@ namespace App
 {
 class Property;
 class PropertyContainer;
-class DynamicProperty;
 class DocumentObject;
 class Extension;
 
@@ -45,20 +47,25 @@ enum PropertyType
 {
   Prop_None        = 0, /*!< No special property type */
   Prop_ReadOnly    = 1, /*!< Property is read-only in the editor */
-  Prop_Transient   = 2, /*!< Property won't be saved to file */
+  Prop_Transient   = 2, /*!< Property content won't be saved to file, but still saves name, type and status */
   Prop_Hidden      = 4, /*!< Property won't appear in the editor */
   Prop_Output      = 8, /*!< Modified property doesn't touch its parent container */
-  Prop_NoRecompute = 16 /*!< Modified property doesn't touch its container for recompute */
+  Prop_NoRecompute = 16,/*!< Modified property doesn't touch its container for recompute */
+  Prop_NoPersist   = 32,/*!< Property won't be saved to file at all */
 };
 
 struct AppExport PropertyData
 {
   struct PropertySpec
   {
-    const char* Name;
+    const char * Name;
     const char * Group;
     const char * Docu;
-    short Offset,Type;
+    short Offset, Type;
+
+    inline PropertySpec(const char *name, const char *group, const char *doc, short offset, short type)
+        :Name(name),Group(group),Docu(doc),Offset(offset),Type(type)
+    {}
   };
   
   //purpose of this struct is to be constructible from all acceptable container types and to 
@@ -82,10 +89,30 @@ struct AppExport PropertyData
   private:
       const void* m_container;
   };
-  
-  // vector of all properties
-  std::vector<PropertySpec>  propertyData;
-  const PropertyData*        parentPropertyData;
+
+  // A multi index container for holding the property spec, with the following
+  // index,
+  // * a sequence, to preserve creation order
+  // * hash index on property name
+  // * hash index on property pointer offset
+  mutable bmi::multi_index_container<
+      PropertySpec,
+      bmi::indexed_by<
+          bmi::sequenced<>,
+          bmi::hashed_unique<
+              bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
+              CStringHasher,
+              CStringHasher
+          >,
+          bmi::hashed_unique<
+              bmi::member<PropertySpec, short, &PropertySpec::Offset>
+          >
+      >
+  > propertyData;
+
+  mutable bool parentMerged = false;
+
+  const PropertyData*     parentPropertyData;
 
   void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
   
@@ -103,6 +130,9 @@ struct AppExport PropertyData
   Property *getPropertyByName(OffsetBase offsetBase,const char* name) const;
   void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
+
+  void merge(PropertyData *other=0) const;
+  void split(PropertyData *other);
 };
 
 
@@ -127,6 +157,8 @@ public:
   virtual ~PropertyContainer();
 
   virtual unsigned int getMemSize (void) const;
+
+  virtual std::string getFullName() const {return std::string();}
 
   /// find a property by its name
   virtual Property *getPropertyByName(const char* name) const;
@@ -162,33 +194,34 @@ public:
   virtual App::Property* addDynamicProperty(
         const char* type, const char* name=0,
         const char* group=0, const char* doc=0,
-        short attr=0, bool ro=false, bool hidden=false){
-        (void)type;
-        (void)name;
-        (void)group;
-        (void)doc;
-        (void)attr;
-        (void)ro;
-        (void)hidden;
-        return 0;
+        short attr=0, bool ro=false, bool hidden=false);
+
+  DynamicProperty::PropData getDynamicPropertyData(const Property* prop) const {
+      return dynamicProps.getDynamicPropertyData(prop);
   }
+
   virtual bool removeDynamicProperty(const char* name) {
-      (void)name;
-      return false;
+      return dynamicProps.removeDynamicProperty(name);
   }
   virtual std::vector<std::string> getDynamicPropertyNames() const {
-      return std::vector<std::string>();
+      return dynamicProps.getDynamicPropertyNames();
   }
   virtual App::Property *getDynamicPropertyByName(const char* name) const {
-      (void)name;
-      return 0;
+      return dynamicProps.getDynamicPropertyByName(name);
   }
-  virtual void addDynamicProperties(const PropertyContainer*) {
-  }
+
+  virtual void onPropertyStatusChanged(const Property &prop, unsigned long oldStatus);
 
   virtual void Save (Base::Writer &writer) const;
   virtual void Restore(Base::XMLReader &reader);
 
+  const char *getPropertyPrefix() const {
+      return _propertyPrefix.c_str();
+  }
+
+  void setPropertyPrefix(const char *prefix) {
+      _propertyPrefix = prefix;
+  }
 
   friend class Property;
   friend class DynamicProperty;
@@ -200,7 +233,7 @@ protected:
   /// get called before the value is changed
   virtual void onBeforeChange(const Property* /*prop*/){}
 
-  //void hasChanged(Propterty* prop);
+  //void hasChanged(Property* prop);
   static const  PropertyData * getPropertyDataPtr(void); 
   virtual const PropertyData& getPropertyData(void) const; 
 
@@ -212,25 +245,34 @@ private:
   PropertyContainer(const PropertyContainer&);
   PropertyContainer& operator = (const PropertyContainer&);
 
+protected:
+  DynamicProperty dynamicProps;
+
 private: 
+  std::string _propertyPrefix;
   static PropertyData propertyData; 
 };
 
 /// Property define 
-#define ADD_PROPERTY(_prop_, _defaultval_) \
+#define _ADD_PROPERTY(_name,_prop_, _defaultval_) \
   do { \
     this->_prop_.setValue _defaultval_;\
     this->_prop_.setContainer(this); \
-    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), #_prop_, &this->_prop_); \
+    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), _name, &this->_prop_); \
+  } while (0)
+
+#define ADD_PROPERTY(_prop_, _defaultval_) \
+    _ADD_PROPERTY(#_prop_, _prop_, _defaultval_)
+
+#define _ADD_PROPERTY_TYPE(_name,_prop_, _defaultval_, _group_,_type_,_Docu_) \
+  do { \
+    this->_prop_.setValue _defaultval_;\
+    this->_prop_.setContainer(this); \
+    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), _name, &this->_prop_, (_group_),(_type_),(_Docu_)); \
   } while (0)
 
 #define ADD_PROPERTY_TYPE(_prop_, _defaultval_, _group_,_type_,_Docu_) \
-  do { \
-    this->_prop_.setValue _defaultval_;\
-    this->_prop_.setContainer(this); \
-    propertyData.addProperty(static_cast<App::PropertyContainer*>(this), #_prop_, &this->_prop_, (_group_),(_type_),(_Docu_)); \
-  } while (0)
-
+    _ADD_PROPERTY_TYPE(#_prop_,_prop_,_defaultval_,_group_,_type_,_Docu_)
 
 
 #define PROPERTY_HEADER(_class_) \
@@ -251,7 +293,7 @@ private: \
   static App::PropertyData propertyData 
 /// 
 #define PROPERTY_SOURCE(_class_, _parentclass_) \
-TYPESYSTEM_SOURCE_P(_class_);\
+TYPESYSTEM_SOURCE_P(_class_)\
 const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
 const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
 App::PropertyData _class_::propertyData; \
@@ -261,7 +303,7 @@ void _class_::init(void){\
 }
 
 #define PROPERTY_SOURCE_ABSTRACT(_class_, _parentclass_) \
-TYPESYSTEM_SOURCE_ABSTRACT_P(_class_);\
+TYPESYSTEM_SOURCE_ABSTRACT_P(_class_)\
 const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
 const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
 App::PropertyData _class_::propertyData; \
@@ -279,7 +321,7 @@ template<> void * _class_::create(void){\
 }
 
 #define PROPERTY_SOURCE_TEMPLATE(_class_, _parentclass_) \
-TYPESYSTEM_SOURCE_TEMPLATE(_class_);\
+TYPESYSTEM_SOURCE_TEMPLATE(_class_)\
 template<> App::PropertyData _class_::propertyData = App::PropertyData(); \
 template<> const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
 template<> const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \

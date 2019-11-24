@@ -57,6 +57,7 @@ known issues:
 import zipfile
 import xml.dom.minidom
 import FreeCAD as App
+import sys
 
 try: import FreeCADGui
 except ValueError: gui = False
@@ -225,13 +226,13 @@ class FormulaTranslator(object):
     if theExpr[0] in sepToken:
       branch = sepToken[theExpr[0]]
       
-      if branch == None:
+      if branch is None:
         keyToken = True
       else:
         #print('There is a branch. look up: ', theExpr[1])
         if (lenExpr > 1) and (theExpr[1] in treeDict[branch]):
           branch = treeDict[branch][theExpr[0]]
-          if branch == None:
+          if branch is None:
             keyToken = True
           else:
             if (lenExpr > 2) and (theExpr[2] in treeDict[branch]):
@@ -371,7 +372,10 @@ def handleCells(cellList, actCellSheet, sList):
           if cellType == 'n':
             actCellSheet.set(ref, theValue)
           if cellType == 's':
-            actCellSheet.set(ref, (sList[int(theValue)]).encode('utf8'))
+            if sys.version_info.major >= 3:
+                actCellSheet.set(ref, (sList[int(theValue)]))
+            else:
+                actCellSheet.set(ref, (sList[int(theValue)]).encode('utf8'))
 
 
 def handleWorkBook(theBook, sheetDict, Doc):

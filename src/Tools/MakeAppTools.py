@@ -1,4 +1,4 @@
-import os, sys, re,string,FCFileTools
+import os, sys, re,FCFileTools
 verbose = 0
 dcount = fcount = 0
 
@@ -16,8 +16,8 @@ def replaceTemplate(dirName, oldName, newName):
 				origFile.close()											# ... and close it
 				output = open(pathName,"w")									# open the file again
 				for line in lines:
-					if (string.find(line, oldName) != -1):					# search for 'oldName' and replace it
-						line = string.replace(line, oldName, newName)
+					if (line.find(oldName) != -1):							# search for 'oldName' and replace it
+						line = line.replace(oldName, newName)
 					output.write(line)										# write the modified line back
 				output.close												# close the file
 			except:
@@ -40,8 +40,8 @@ def copyTemplate(dirFrom, dirTo, oldName, newName, MatchFile, MatchDir):
 		print(file)
 		pathFrom = os.path.join(dirFrom, file)
 		pathTo   = os.path.join(dirTo,   file)								# extend both paths
-		if (string.find(pathTo, oldName) != -1):
-			pathTo = string.replace(pathTo, oldName, newName)				# rename file if 'oldName' is found
+		if (pathTo.find(oldName) != -1):
+			pathTo = pathTo.replace(oldName, newName)						# rename file if 'oldName' is found
 		if not os.path.isdir(pathFrom):										# copy simple files
 			hit = 0
 			for matchpat in MatchFile:

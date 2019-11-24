@@ -46,6 +46,8 @@
 
 #include <Base/Console.h>
 
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
+
 
 namespace PartDesign {
 
@@ -55,6 +57,8 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 Feature::Feature()
 {
     ADD_PROPERTY(BaseFeature,(0));
+    ADD_PROPERTY_TYPE(_Body,(0),"Base",(App::PropertyType)(
+                App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
 }
@@ -136,7 +140,9 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
 const TopoDS_Shape& Feature::getBaseShape() const {
     const Part::Feature* BaseObject = getBaseObject();
 
-    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())) {
+    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
+        BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+    {
         throw Base::ValueError("Base shape of shape binder cannot be used");
     }
 
@@ -201,7 +207,11 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
     return builder.Shape();
 }
 
-Body* Feature::getFeatureBody() {
+Body* Feature::getFeatureBody() const {
+
+    auto body = Base::freecad_dynamic_cast<Body>(_Body.getValue());
+    if(body)
+        return body;
 
     auto list = getInList();
     for (auto in : list) {
@@ -213,7 +223,7 @@ Body* Feature::getFeatureBody() {
     }
     
     return nullptr;
-};
+}
 
 }//namespace PartDesign
 

@@ -141,7 +141,7 @@ void ViewProviderMeshTransformDemolding::calcNormalVector(void)
     const MeshGeomFacet& rFace = *cFIt;
 
     Base::Vector3f norm(rFace.GetNormal());
-    normalVector.push_back(SbVec3f(norm.x,norm.y,norm.z));
+    normalVector.emplace_back(norm.x,norm.y,norm.z);
   }
 }
 
@@ -200,7 +200,7 @@ void ViewProviderMeshTransformDemolding::valueChangedCallback(void)
   temp.setTransform( SbVec3f(0,0,0),    // no transformation
                      rot,               // rotation from the dragger
                      SbVec3f(1,1,1),    // no scaling
-                     SbRotation() ,     // no scaling oriantation
+                     SbRotation() ,     // no scaling orientation
                      SbVec3f(center.x,center.y,center.z)); // center of rotation
   pcTransformDrag->setMatrix( temp );
 }

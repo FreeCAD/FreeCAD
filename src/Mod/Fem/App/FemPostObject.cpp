@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <vtkPointData.h>
+# include <vtkCellData.h>
 #endif
 
 #include "FemPostObject.h"
@@ -31,8 +33,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
-#include <vtkPointData.h>
-#include <vtkCellData.h>
+
 
 using namespace Fem;
 using namespace App;

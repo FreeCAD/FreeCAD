@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation>Sekcja zawiera materiały dla programistów: Jak skompilować samodzielnie FreeCAD, jaka jest struktura kodu FreeCAD + jak się po nim poruszać, jak rozwijać nowe środowiska lub jak osadzać FreeCAD we własnej aplikacji.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
+      <translation>Podręcznik FreeCAD jest kolejnym, bardziej liniowym sposobem prezentacji informacji zawartych na tej stronie wiki. Jest stworzony tak by można go było czytać jak książkę oraz by wstępnie wprowadzić Cie do treści innych stron z powyższej listy. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;Wersja w postaci e-booka&lt;/a&gt; jest również dostępna.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation>Dokumentacja Środowisk</translation>
+      <translation>Dokumentacja środowisk</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
@@ -154,9 +154,9 @@
       <translation>Przejrzyj wszystkie zmiany na github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>See all commits on github</source>
-      <translation>Przejrzyj wszystkie zmiany na github</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -208,22 +208,12 @@
       <source>Notes</source>
       <translation>Uwagi</translation>
     </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>Notes</source>
-      <translation>Uwagi</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
-      <source>Start page</source>
-      <translation>Strona startowa</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Strona startowa</translation>
     </message>
@@ -341,7 +331,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
       <source>The color of the version text</source>
-      <translation type="unfinished">The color of the version text</translation>
+      <translation>Kolor tekstu wersji</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
@@ -351,7 +341,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation type="unfinished">An optional image to display as background</translation>
+      <translation>Opcjonalny obraz do wyświetlania w tle</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
@@ -376,12 +366,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
       <source>Page text color</source>
-      <translation type="unfinished">Page text color</translation>
+      <translation>Kolor czcionki na stronie</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
       <source>The color of the links</source>
-      <translation type="unfinished">The color of the links</translation>
+      <translation>Kolor linków</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
@@ -391,12 +381,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="407"/>
       <source>Box background color</source>
-      <translation type="unfinished">Box background color</translation>
+      <translation>Kolor tła strony</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
       <source>The background color behind the panels</source>
-      <translation type="unfinished">The background color behind the panels</translation>
+      <translation>Kolor tła za panelami</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
@@ -406,17 +396,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
       <source>Open links</source>
-      <translation type="unfinished">Open links</translation>
+      <translation>Otwórz odnośniki</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation type="unfinished">Background text color</translation>
+      <translation>Kolor tekstu tła</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation type="unfinished">Use FreeCAD style sheet</translation>
+      <translation>Użyj styl strony FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
@@ -431,7 +421,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
       <source>Arial,Helvetica,sans</source>
-      <translation type="unfinished">Arial,Helvetica,sans</translation>
+      <translation>Arial,Helvetica,bezszeryfowa</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
@@ -446,7 +436,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="542"/>
       <source>Use gradient for New File icon</source>
-      <translation type="unfinished">Use gradient for New File icon</translation>
+      <translation>Użyj gradientu dla ikony Nowy Plik</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="568"/>
@@ -456,7 +446,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="577"/>
       <source>Should the start page be closed after loading?</source>
-      <translation type="unfinished">Should the start page be closed after loading?</translation>
+      <translation>Czy strona startowa ma być zamknięta po załadowaniu?</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
@@ -466,7 +456,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>Zamknij stronę startową po załadowaniu</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>

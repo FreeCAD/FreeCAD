@@ -25,6 +25,11 @@
 #define GUI_PROGRESSBAR_H
 
 #include <QProgressBar>
+#ifdef QT_WINEXTRAS_LIB
+#include <QWinTaskbarProgress>
+#include <QWinTaskbarButton>
+#endif
+
 
 #include <Base/Sequencer.h>
 
@@ -95,12 +100,14 @@ public:
     * to indicate that the user can click on the dialog. Every pause() must eventually be followed 
     * by a corresponding @ref resume().
     */
-    void pause();
+    void pause() override;
     /** This sets the wait cursor again and grabs the keyboard. @see pause() */
-    void resume();
-    bool isBlocking() const;
+    void resume() override;
+    bool isBlocking() const override;
     /** Returns an instance of the progress bar. It creates one if needed. */
     QProgressBar* getProgressBar(QWidget* parent=0);
+
+    virtual void checkAbort() override;
 
 protected:
     /** Construction */
@@ -109,15 +116,15 @@ protected:
     ~Sequencer ();
 
     /** Puts text to the status bar */
-    void setText (const char* pszTxt);
+    void setText (const char* pszTxt) override;
     /** Starts the progress bar */
-    void startStep();
+    void startStep() override;
     /** Increase the progress bar. */
-    void nextStep(bool canAbort);
+    void nextStep(bool canAbort) override;
     /** Sets the progress indicator to a certain position. */
-    void setProgress(size_t);
+    void setProgress(size_t) override;
     /** Resets the sequencer */
-    void resetData();
+    void resetData() override;
     void showRemainingTime();
 
 private:
@@ -151,6 +158,13 @@ public:
     */
     int minimumDuration() const;
 
+    void reset();
+    void setRange(int minimum, int maximum);
+    void setMinimum(int minimum);
+    void setMaximum(int maximum);
+    void setValue(int value);
+
+
 public Q_SLOTS:
     /** Sets the time that must pass before the progress bar appears to \a ms.
     */
@@ -168,6 +182,7 @@ protected Q_SLOTS:
     */
     void delayedShow();
     void aboutToShow();
+    void aboutToHide();
 
 private:
     /** @name for internal use only */
@@ -177,10 +192,18 @@ private:
     void enterControlEvents();
     /** Loses the control over incoming events*/
     void leaveControlEvents();
+
+
     //@}
     ProgressBarPrivate* d;
     Sequencer* sequencer;
-
+    
+#ifdef QT_WINEXTRAS_LIB
+    /* Set up the taskbar progress in windows */
+    void setupTaskBarProgress(void);
+    QWinTaskbarProgress* m_taskbarProgress;
+    QWinTaskbarButton* m_taskbarButton;
+#endif
     friend class Sequencer;
 };
 

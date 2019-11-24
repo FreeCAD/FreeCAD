@@ -1,115 +1,119 @@
 <RCC>
-    <qresource> 
-        <file>icons/PartFeature.svg</file>
-        <file>icons/PartFeature.xpm</file>
-        <file>icons/PartFeatureImport.xpm</file>
+    <qresource>
         <file>icons/Part_Attachment.svg</file>
-        <file>icons/Part_Booleans.svg</file>
         <file>icons/Part_BooleanFragments.svg</file>
+        <file>icons/Part_Booleans.svg</file>
         <file>icons/Part_Box.svg</file>
+        <file>icons/Part_BoxSelection.svg</file>
         <file>icons/Part_Chamfer.svg</file>
+        <file>icons/Part_CheckGeometry.svg</file>
+        <file>icons/Part_Circle_Parametric.svg</file>
         <file>icons/Part_Common.svg</file>
         <file>icons/Part_Compound.svg</file>
         <file>icons/Part_CompoundFilter.svg</file>
         <file>icons/Part_Cone.svg</file>
-        <file>icons/Part_Cut.svg</file>
-        <file>icons/Part_CreatePrimitives.png</file>
         <file>icons/Part_CreatePrimitives.svg</file>
+        <file>icons/Part_CrossSections.svg</file>
+        <file>icons/Part_Cut.svg</file>
         <file>icons/Part_Cylinder.svg</file>
-        <file>icons/Part_Extrude.svg</file>
+        <file>icons/Part_Defeaturing.svg</file>
+        <file>icons/Part_Element_Copy.svg</file>
+        <file>icons/Part_Ellipse_Parametric.svg</file>
         <file>icons/Part_ExplodeCompound.svg</file>
+        <file>icons/Part_Export.svg</file>
+        <file>icons/Part_Extrude.svg</file>
+        <file>icons/Part_Feature.svg</file>
+        <file>icons/Part_FeatureImport.svg</file>
         <file>icons/Part_Fillet.svg</file>
         <file>icons/Part_Fuse.svg</file>
-        <file>icons/Part_Import.svg</file>
-        <file>icons/Part_Export.svg</file>
-        <file>icons/Part_Loft.svg</file>
-        <file>icons/Part_Mirror.svg</file>
-        <file>icons/Part_MirrorPNG.png</file>
-        <file>icons/Part_Offset.svg</file>
-        <file>icons/Part_Offset2D.svg</file>
-        <file>icons/Part_Revolve.svg</file>
-        <file>icons/Part_RuledSurface.svg</file>
-        <file>icons/Part_Section.svg</file>
-        <file>icons/Part_CrossSections.svg</file>
-        <file>icons/Part_Shapebuilder.png</file>
-        <file>icons/Part_ShapeInfo.svg</file>
-        <file>icons/Part_Slice.svg</file>
-        <file>icons/Part_SliceApart.svg</file>
-        <file>icons/Part_Sphere.svg</file>
-        <file>icons/Part_Sweep.svg</file>
-        <file>icons/Part_Thickness.svg</file>
-        <file>icons/Part_Torus.svg</file>
-        <file>icons/Part_XOR.svg</file>
-        <file>icons/preferences-part_design.svg</file>
-        <file>icons/Tree_Part.svg</file>
-        <file>icons/Part_CheckGeometry.svg</file>
-        <file>icons/Part_Defeaturing.svg</file>
-        <file>icons/Part_Ellipse_Parametric.svg</file>
         <file>icons/Part_Helix_Parametric.svg</file>
-        <file>icons/Part_Spiral_Parametric.svg</file>
-        <file>icons/Part_Line_Parametric.svg</file>
-        <file>icons/Part_Circle_Parametric.svg</file>
-        <file>icons/Part_Point_Parametric.svg</file>
-        <file>icons/Part_Polygon_Parametric.svg</file>
-        <file>icons/Part_Spline_Parametric.svg</file>
-        <file>icons/Part_Measure_Linear.svg</file>
-        <file>icons/Part_Measure_Angular.svg</file>
-        <file>icons/Part_Measure_Toggle_3d.svg</file>
-        <file>icons/Part_Measure_Toggle_Delta.svg</file>
-        <file>icons/Part_Measure_Step_Active.svg</file>
-        <file>icons/Part_Measure_Step_Done.svg</file>
-        <file>icons/Part_Refine_Shape.svg</file>
-        <file>icons/Tree_Part_Box_Parametric.svg</file>
-        <file>icons/Tree_Part_Cylinder_Parametric.svg</file>
-        <file>icons/Tree_Part_Cone_Parametric.svg</file>
-        <file>icons/Tree_Part_Sphere_Parametric.svg</file>
-        <file>icons/Tree_Part_Ellipsoid_Parametric.svg</file>
-        <file>icons/Tree_Part_Torus_Parametric.svg</file>
-        <file>icons/Tree_Part_Plane_Parametric.svg</file>
-        <file>icons/Tree_Part_Prism.svg</file>
-        <file>icons/Tree_Part_Wedge.svg</file>
-        <file>icons/Part_Shape_from_Mesh.svg</file>
+        <file>icons/Part_Import.svg</file>
         <file>icons/Part_JoinBypass.svg</file>
         <file>icons/Part_JoinConnect.svg</file>
         <file>icons/Part_JoinCutout.svg</file>
         <file>icons/Part_JoinEmbed.svg</file>
+        <file>icons/Part_Line_Parametric.svg</file>
+        <file>icons/Part_Loft.svg</file>
+        <file>icons/Part_Measure_Angular.svg</file>
+        <file>icons/Part_Measure_Linear.svg</file>
+        <file>icons/Part_Measure_Refresh.svg</file>
+        <file>icons/Part_Measure_Step_Active.svg</file>
+        <file>icons/Part_Measure_Step_Done.svg</file>
+        <file>icons/Part_Measure_Toggle_3d.svg</file>
+        <file>icons/Part_Measure_Toggle_Delta.svg</file>
+        <file>icons/Part_Mirror.svg</file>
+        <file>icons/Part_Offset.svg</file>
+        <file>icons/Part_Offset2D.svg</file>
+        <file>icons/Part_Point_Parametric.svg</file>
+        <file>icons/Part_Points_from_Mesh.svg</file>
+        <file>icons/Part_Polygon_Parametric.svg</file>
+        <file>icons/Part_ProjectionOnSurface.svg</file>
+        <file>icons/Part_Refine_Shape.svg</file>
+        <file>icons/Part_Revolve.svg</file>
+        <file>icons/Part_RuledSurface.svg</file>
+        <file>icons/Part_Section.svg</file>
+        <file>icons/Part_Shapebuilder.svg</file>
+        <file>icons/Part_Shape_from_Mesh.svg</file>
+        <file>icons/Part_ShapeInfo.svg</file>
+        <file>icons/Part_Slice.svg</file>
+        <file>icons/Part_SliceApart.svg</file>
+        <file>icons/Part_Sphere.svg</file>
+        <file>icons/Part_Spiral_Parametric.svg</file>
+        <file>icons/Part_Spline_Parametric.svg</file>
+        <file>icons/Part_Sweep.svg</file>
+        <file>icons/Part_Thickness.svg</file>
+        <file>icons/Part_Torus.svg</file>
+        <file>icons/Part_Transformed_Copy.svg</file>
         <file>icons/PartWorkbench.svg</file>
+        <file>icons/Part_XOR.svg</file>
+        <file>icons/preferences-part_design.svg</file>
+        <file>icons/Tree_Part.svg</file>
+        <file>icons/Tree_Part2D.svg</file>
+        <file>icons/Tree_Part_Box_Parametric.svg</file>
+        <file>icons/Tree_Part_Cone_Parametric.svg</file>
+        <file>icons/Tree_Part_Cylinder_Parametric.svg</file>
+        <file>icons/Tree_Part_Ellipsoid_Parametric.svg</file>
+        <file>icons/Tree_Part_Plane_Parametric.svg</file>
+        <file>icons/Tree_Part_Prism.svg</file>
+        <file>icons/Tree_Part_Sphere_Parametric.svg</file>
+        <file>icons/Tree_Part_Torus_Parametric.svg</file>
+        <file>icons/Tree_Part_Wedge.svg</file>
         <file>translations/Part_af.qm</file>
+        <file>translations/Part_ar.qm</file>
+        <file>translations/Part_ca.qm</file>
+        <file>translations/Part_cs.qm</file>
         <file>translations/Part_de.qm</file>
+        <file>translations/Part_el.qm</file>
+        <file>translations/Part_es-ES.qm</file>
+        <file>translations/Part_eu.qm</file>
         <file>translations/Part_fi.qm</file>
+        <file>translations/Part_fil.qm</file>
         <file>translations/Part_fr.qm</file>
+        <file>translations/Part_gl.qm</file>
         <file>translations/Part_hr.qm</file>
+        <file>translations/Part_hu.qm</file>
+        <file>translations/Part_id.qm</file>
         <file>translations/Part_it.qm</file>
+        <file>translations/Part_ja.qm</file>
+        <file>translations/Part_kab.qm</file>
+        <file>translations/Part_ko.qm</file>
+        <file>translations/Part_lt.qm</file>
         <file>translations/Part_nl.qm</file>
         <file>translations/Part_no.qm</file>
         <file>translations/Part_pl.qm</file>
-        <file>translations/Part_ru.qm</file>
-        <file>translations/Part_uk.qm</file>
-        <file>translations/Part_tr.qm</file>
-        <file>translations/Part_sv-SE.qm</file>
-        <file>translations/Part_zh-TW.qm</file>
         <file>translations/Part_pt-BR.qm</file>
-        <file>translations/Part_cs.qm</file>
-        <file>translations/Part_sk.qm</file>
-        <file>translations/Part_es-ES.qm</file>
-        <file>translations/Part_zh-CN.qm</file>
-        <file>translations/Part_ja.qm</file>
-        <file>translations/Part_ro.qm</file>
-        <file>translations/Part_hu.qm</file>
         <file>translations/Part_pt-PT.qm</file>
-        <file>translations/Part_sr.qm</file>
-        <file>translations/Part_el.qm</file>
+        <file>translations/Part_ro.qm</file>
+        <file>translations/Part_ru.qm</file>
+        <file>translations/Part_sk.qm</file>
         <file>translations/Part_sl.qm</file>
-        <file>translations/Part_eu.qm</file>
-        <file>translations/Part_ca.qm</file>
-        <file>translations/Part_gl.qm</file>
-        <file>translations/Part_kab.qm</file>
-        <file>translations/Part_ko.qm</file>
-        <file>translations/Part_fil.qm</file>
-        <file>translations/Part_id.qm</file>
-        <file>translations/Part_lt.qm</file>
+        <file>translations/Part_sr.qm</file>
+        <file>translations/Part_sv-SE.qm</file>
+        <file>translations/Part_tr.qm</file>
+        <file>translations/Part_uk.qm</file>
         <file>translations/Part_val-ES.qm</file>
-        <file>translations/Part_ar.qm</file>
         <file>translations/Part_vi.qm</file>
+        <file>translations/Part_zh-CN.qm</file>
+        <file>translations/Part_zh-TW.qm</file>
     </qresource>
-</RCC> 
+</RCC>

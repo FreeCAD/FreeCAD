@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Calculix DAT reader for FEM workbench
 
 import FreeCAD
+from FreeCAD import Console
 import os
 
 
@@ -36,21 +37,26 @@ EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
 
-def open(filename):
+def open(
+    filename
+):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
 
-def insert(filename, docname):
+def insert(
+    filename,
+    docname
+):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -61,15 +67,19 @@ def insert(filename, docname):
 
 
 # ********* module specific methods *********
-def import_dat(filename, Analysis=None):
+def import_dat(
+    filename,
+    Analysis=None
+):
     r = readResult(filename)
-    # print("Results {}".format(r))
     return r
 
 
 # read a calculix result file and extract the data
-def readResult(dat_input):
-    print('Read ccx results from dat file: ' + dat_input)
+def readResult(
+    dat_input
+):
+    Console.PrintMessage("Read ccx results from dat file: {}\n".format(dat_input))
     dat_file = pyopen(dat_input, "r")
     eigenvalue_output_section_found = False
     mode_reading = False
@@ -84,8 +94,8 @@ def readResult(dat_input):
                 mode = int(line[0:7])
                 mode_frequency = float(line[39:55])
                 m = {}
-                m['eigenmode'] = mode
-                m['frequency'] = mode_frequency
+                m["eigenmode"] = mode
+                m["frequency"] = mode_frequency
                 results.append(m)
                 mode_reading = True
             except:

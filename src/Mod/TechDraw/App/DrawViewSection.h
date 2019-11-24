@@ -39,8 +39,9 @@ class Bnd_Box;
 class gp_Pln;
 class gp_Pnt;
 class TopoDS_Face;
+class gp_Ax2;
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class Face;
 }
@@ -65,9 +66,13 @@ public:
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
     App::PropertyEnumeration SectionDirection;
+ 
+    App::PropertyEnumeration CutSurfaceDisplay;        //new v019
     App::PropertyFile   FileHatchPattern;
+    App::PropertyFile   FileGeomPattern;               //new v019
     App::PropertyString NameGeomPattern;
     App::PropertyFloat  HatchScale;
+
     App::PropertyString SectionSymbol;
     App::PropertyBool   FuseBeforeCut;
 
@@ -83,10 +88,20 @@ public:
     }
 
 public:
-    std::vector<TechDrawGeometry::Face*> getFaceGeometry();
+    std::vector<TechDraw::Face*> getFaceGeometry();
+
     Base::Vector3d getSectionVector (const std::string sectionName);
-    TechDraw::DrawViewPart* getBaseDVP();
-    TechDraw::DrawProjGroupItem* getBaseDPGI();
+    void setNormalFromBase(const std::string sectionName);
+
+    gp_Ax2 rotateCSCardinal(gp_Ax2 oldCS, int cardinal) const;
+    gp_Ax2 rotateCSArbitrary(gp_Ax2 oldCS,
+                             Base::Vector3d axis,
+                             double degAngle) const;
+    gp_Ax2 getSectionCS(const std::string dirName) const;
+    gp_Ax2 getSectionCS() const;
+
+    TechDraw::DrawViewPart* getBaseDVP() const;
+    TechDraw::DrawProjGroupItem* getBaseDPGI() const;
     virtual void unsetupObject();
 
     virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
@@ -99,6 +114,7 @@ public:
     TopoDS_Shape getCutShape(void) {return m_cutShape;}
 
     static const char* SectionDirEnums[];
+    static const char* CutSurfaceEnums[];
 
 protected:
     TopoDS_Compound sectionFaces;

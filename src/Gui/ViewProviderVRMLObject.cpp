@@ -216,7 +216,7 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
         QString fn = QString::fromUtf8(filename);
         QFile file(fn);
         SoInput in;
-        pcVRML->removeAllChildren();
+        coinRemoveAllChildren(pcVRML);
         if (!fn.isEmpty() && file.open(QFile::ReadOnly)) {
             QFileInfo fi(fn);
             QByteArray filepath = fi.absolutePath().toUtf8();

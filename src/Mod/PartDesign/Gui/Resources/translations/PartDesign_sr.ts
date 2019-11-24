@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Additive pipe</source>
-      <translation type="unfinished">Additive pipe</translation>
+      <translation>Dodatna cev</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
       <source>Create body</source>
-      <translation type="unfinished">Create body</translation>
+      <translation>Kreirajte telo</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="93"/>
       <source>Create a new body and make it active</source>
-      <translation type="unfinished">Create a new body and make it active</translation>
+      <translation>Kreirajte novo telo i aktiviraj</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Kreirajte nov lokalni kordinatni sistem</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Kreiraj nov klon</translation>
     </message>
   </context>
   <context>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
       <source>Duplicate selected object</source>
-      <translation type="unfinished">Duplicate selected object</translation>
+      <translation>Dupliraj izabrani objekat</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="634"/>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1130"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Rupa</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1131"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>Kreirajte rupu sa izabranom skicom</translation>
     </message>
   </context>
   <context>

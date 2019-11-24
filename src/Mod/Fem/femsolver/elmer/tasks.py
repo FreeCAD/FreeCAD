@@ -28,6 +28,9 @@ __url__ = "http://www.freecadweb.org"
 
 import subprocess
 import os.path
+import sys
+
+import FreeCAD
 import femtools.femutils as femutils
 
 from .. import run
@@ -67,7 +70,7 @@ class Prepare(run.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
-        print("Prepare testmode: " + str(self.testmode))
+        FreeCAD.Console.PrintMessage("Machine testmode: {}".format(self.testmode))
         if self.testmode:
             w = writer.Writer(self.solver, self.directory, True)  # test mode
         else:
@@ -93,7 +96,7 @@ class Solve(run.Solve):
 
     def run(self):
         self.pushStatus("Executing solver...\n")
-        binary = settings.getBinary("ElmerSolver")
+        binary = settings.get_binary("ElmerSolver")
         if binary is not None:
             self._process = subprocess.Popen(
                 [binary], cwd=self.directory,
@@ -112,7 +115,10 @@ class Solve(run.Solve):
     def _updateOutput(self, output):
         if self.solver.ElmerOutput is None:
             self._createOutput()
-        self.solver.ElmerOutput.Text = output.decode("utf-8")
+        if sys.version_info.major >= 3:
+            self.solver.ElmerOutput.Text = output
+        else:
+            self.solver.ElmerOutput.Text = output.decode("utf-8")
 
     def _createOutput(self):
         self.solver.ElmerOutput = self.analysis.Document.addObject(

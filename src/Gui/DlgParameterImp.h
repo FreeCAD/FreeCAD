@@ -29,11 +29,13 @@
 #include <QTreeWidgetItem>
 #include <QTreeWidget>
 #include <QDialog>
+#include <QPointer>
 
 namespace Gui {
 namespace Dialog {
 
 class Ui_DlgParameter;
+class DlgParameterFind;
 
 /**
  * The DlgParameterImp class implements a dialog showing all parameters in a list view.
@@ -54,6 +56,7 @@ public:
 
 protected Q_SLOTS:
     void onChangeParameterSet(int);
+    void on_buttonFind_clicked();
     void on_buttonSaveToDisk_clicked();
 
     void onGroupSelected(QTreeWidgetItem *);
@@ -68,6 +71,7 @@ protected:
     QTreeWidget* paramGroup;
     QTreeWidget* paramValue;
     Ui_DlgParameter* ui;
+    QPointer<DlgParameterFind> finder;
 };
 
 // --------------------------------------------------------------------
@@ -139,6 +143,8 @@ public:
 
     /** Sets the current parameter group that is displayed. */
     void setCurrentGroup( const Base::Reference<ParameterGrp>& _hcGrp );
+    /** Returns the current parameter group that is displayed. */
+    Base::Reference<ParameterGrp> currentGroup() const;
 
 protected:
     /** Shows the context menu. */

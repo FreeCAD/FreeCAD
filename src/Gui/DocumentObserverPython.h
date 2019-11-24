@@ -75,17 +75,24 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef boost::signals2::connection Connection;
-    Connection connectApplicationCreatedDocument;
-    Connection connectApplicationDeletedDocument;
-    Connection connectApplicationRelabelDocument;
-    Connection connectApplicationRenameDocument;
-    Connection connectApplicationActivateDocument;
-    Connection connectDocumentCreatedObject;
-    Connection connectDocumentDeletedObject;
-    Connection connectDocumentChangedObject;
-    Connection connectDocumentObjectInEdit;
-    Connection connectDocumentObjectResetEdit;
+    typedef struct {
+       boost::signals2::scoped_connection slot;
+       Py::Object py;
+       PyObject* ptr() {
+           return py.ptr();
+       }
+    } Connection;
+
+    Connection pyCreatedDocument;
+    Connection pyDeletedDocument;
+    Connection pyRelabelDocument;
+    Connection pyRenameDocument;
+    Connection pyActivateDocument;
+    Connection pyCreatedObject;
+    Connection pyDeletedObject;
+    Connection pyChangedObject;
+    Connection pyInEdit;
+    Connection pyResetEdit;
 };
 
 } //namespace Gui

@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - Parametric Features"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = ["https://www.freecadweb.org"]
 
 try:
     long
@@ -340,7 +340,7 @@ class Frustum:
                 pts.append(pts[0])
                 shape = Part.makePolygon(pts)
                 face = Part.Face(shape)
-                if ir==1: #top face
+                if ir==0: #top face
                     face.reverse()
                 wires.append(shape)
                 faces.append(face)

@@ -31,13 +31,15 @@
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <Precision.hxx>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
 # include <TopoDS.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
+
+# include <QMessageBox>
+# include <QRegExp>
+# include <QTextStream>
+
 # include <sstream>
 #endif
 

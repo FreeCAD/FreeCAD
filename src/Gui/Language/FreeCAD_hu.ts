@@ -68,7 +68,7 @@
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation>&lt;empty&gt;</translation>
+      <translation>&lt;üres&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Felugró ablak bekapcsolása a kezdő oldalon</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Váltás a jelentés ablakra:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Modul automatikus betöltése indulás után:</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Legutóbbi fájlok listájának mérete</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Ablakstílus:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1625,6 +1617,53 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>Bezárás</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Keresés...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Keresés</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Keres valamit:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Megvizsgál</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Csoportok</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Nevek</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Értékek</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Csak teljes karakterláncra egyezés</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Következő keresése</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Nem talált</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Nem található szöveg: %1</translation>
     </message>
   </context>
   <context>
@@ -2721,10 +2760,6 @@ Kérem válasszon másik könyvtárat.</translation>
       <translation>GUI parancsok</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>GUI parancsok rögzítése</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Rögzítés megjegyzésként</translation>
     </message>
@@ -2739,6 +2774,10 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Makró futtatása a helyi környezetben</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>GUI parancsok rögzítése</translation>
     </message>
   </context>
   <context>
@@ -2766,10 +2805,6 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>Unit</source>
       <translation>Egység</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Felhasználó rendszer:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2834,6 +2869,10 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Mértékegységrendszer:</translation>
     </message>
   </context>
   <context>
@@ -3413,7 +3452,7 @@ Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</trans
     </message>
     <message>
       <source>Pitch:</source>
-      <translation>Döntés:</translation>
+      <translation>Emelkedés:</translation>
     </message>
     <message>
       <source>Roll:</source>
@@ -3880,12 +3919,12 @@ El akarja menteni a változásokat?</translation>
       <translation>Húzza a képernyőn két ujjal VAGY nyomja meg az egér jobb oldali gombját.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Húzza a képernyőn egy ujjal VAGY nyomja meg a bal egérgombot. Vázlatkészítőben és más szerkesztési módokban ezen kívül tartsa lenyomva az Alt billentyűt is.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Csípje (helyezze két ujját a képernyőn, és húzza őket egymáshoz vagy el egymástól) VAGY görgesse a középső egér gombot VAGY a billentyűzet PgUp/PgDown gombjával.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4538,12 +4577,12 @@ Meg szeretne adni egy másik könyvtárat?</translation>
       <translation>Növekmény</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Fordítás növelés: </translation>
+      <source>Translation Increment:</source>
+      <translation>Eltolás növelése:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Forgatás növelés: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Elforgatás növelése:</translation>
     </message>
   </context>
   <context>

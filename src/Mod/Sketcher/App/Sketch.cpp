@@ -28,6 +28,11 @@
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS_Compound.hxx>
 # include <Standard_Version.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <cmath>
+# include <iostream>
 #endif
 
 #include <Base/Writer.h>
@@ -50,15 +55,8 @@
 #include <Mod/Part/App/LineSegmentPy.h>
 #include <Mod/Part/App/BSplineCurvePy.h>
 
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-
 #include "Sketch.h"
 #include "Constraint.h"
-#include <cmath>
-
-#include <iostream>
 
 using namespace Sketcher;
 using namespace Base;
@@ -1488,9 +1486,15 @@ int Sketch::addConstraint(const Constraint *constraint)
 int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
 {
     int rtn = -1;
+    int cid = 0;
 
-    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it)
+    for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
         rtn = addConstraint (*it);
+
+        if(rtn == -1) {
+            Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+        }
+    }
 
     return rtn;
 }
@@ -1502,8 +1506,12 @@ int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList,
 
     int cid = 0;
     for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it,++cid) {
-        if (!unenforceableConstraints[cid] && (*it)->Type != Block) {
+        if (!unenforceableConstraints[cid] && (*it)->Type != Block && (*it)->isActive == true) {
             rtn = addConstraint (*it);
+
+            if(rtn == -1) {
+                Base::Console().Error("Sketcher constraint number %d is malformed!\n",cid);
+            }
         }
         else {
             ++ConstraintsCounter; // For correct solver redundant reporting
@@ -3013,7 +3021,7 @@ bool Sketch::updateGeometry()
                 std::vector<double *>::const_iterator it2;
 
                 for( it1 = mybsp.poles.begin(), it2 = mybsp.weights.begin(); it1 != mybsp.poles.end() && it2 != mybsp.weights.end(); ++it1, ++it2) {
-                    poles.push_back(Vector3d( *(*it1).x , *(*it1).y , 0.0));
+                    poles.emplace_back( *(*it1).x , *(*it1).y , 0.0);
                     weights.push_back(*(*it2));
                 }
 

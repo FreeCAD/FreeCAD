@@ -122,8 +122,8 @@ void Rotation::evaluateVector()
     //
     // Note: -1 < w < +1 (|w| == 1 not allowed, with w:=quat[3])
     if((this->quat[3] > -1.0) && (this->quat[3] < 1.0)) {
-        double rfAngle = double(acos(this->quat[3])) * 2.0;
-        double scale = (double)sin(rfAngle / 2.0);
+        double rfAngle = acos(this->quat[3]) * 2.0;
+        double scale = sin(rfAngle / 2.0);
         // Get a normalized vector 
         double l = this->_axis.Length();
         if (l < Base::Vector3d::epsilon()) l = 1;
@@ -211,32 +211,32 @@ void Rotation::setValue(const double q[4])
 
 void Rotation::setValue(const Matrix4D & m)
 {
-    double trace = (double)(m[0][0] + m[1][1] + m[2][2]);
+    double trace = (m[0][0] + m[1][1] + m[2][2]);
     if (trace > 0.0) {
         double s = sqrt(1.0+trace);
         this->quat[3] = 0.5 * s;
         s = 0.5 / s;
-        this->quat[0] = (double)((m[2][1] - m[1][2]) * s);
-        this->quat[1] = (double)((m[0][2] - m[2][0]) * s);
-        this->quat[2] = (double)((m[1][0] - m[0][1]) * s);
+        this->quat[0] = ((m[2][1] - m[1][2]) * s);
+        this->quat[1] = ((m[0][2] - m[2][0]) * s);
+        this->quat[2] = ((m[1][0] - m[0][1]) * s);
     }
     else {
         // Described in RotationIssues.pdf from <http://www.geometrictools.com>
         //
         // Get the max. element of the trace
-        int i = 0;
+        unsigned short i = 0;
         if (m[1][1] > m[0][0]) i = 1;
         if (m[2][2] > m[i][i]) i = 2;
 
-        int j = (i+1)%3;
-        int k = (i+2)%3;
+        unsigned short j = (i+1)%3;
+        unsigned short k = (i+2)%3;
 
-        double s = (double)sqrt((m[i][i] - (m[j][j] + m[k][k])) + 1.0);
+        double s = sqrt((m[i][i] - (m[j][j] + m[k][k])) + 1.0);
         this->quat[i] = s * 0.5;
         s = 0.5 / s;
-        this->quat[3] = (double)((m[k][j] - m[j][k]) * s);
-        this->quat[j] = (double)((m[j][i] + m[i][j]) * s);
-        this->quat[k] = (double)((m[k][i] + m[i][k]) * s);
+        this->quat[3] = ((m[k][j] - m[j][k]) * s);
+        this->quat[j] = ((m[j][i] + m[i][j]) * s);
+        this->quat[k] = ((m[k][i] + m[i][k]) * s);
     }
 
     this->evaluateVector();
@@ -249,7 +249,7 @@ void Rotation::setValue(const Vector3d & axis, const double fAngle)
     // normalization of the angle to be in [0, 2pi[
     _angle = fAngle;
     double theAngle = fAngle - floor(fAngle / (2.0 * D_PI))*(2.0 * D_PI);
-    this->quat[3] = (double)cos(theAngle/2.0);
+    this->quat[3] = cos(theAngle/2.0);
 
     Vector3d norm = axis;
     norm.Normalize();
@@ -263,7 +263,7 @@ void Rotation::setValue(const Vector3d & axis, const double fAngle)
         norm.Normalize();
     }
 
-    double scale = (double)sin(theAngle/2.0);
+    double scale = sin(theAngle/2.0);
     this->quat[0] = norm.x * scale;
     this->quat[1] = norm.y * scale;
     this->quat[2] = norm.z * scale;
@@ -295,18 +295,18 @@ void Rotation::setValue(const Vector3d & rotateFrom, const Vector3d & rotateTo)
     else { // Vectors are not parallel
         // Note: A quaternion is not well-defined by specifying a point and its transformed point.
         // Every quaternion with a rotation axis having the same angle to the vectors of both points is okay.
-        double angle = (double)acos(dot);
+        double angle = acos(dot);
         this->setValue(w, angle);
     }
 }
 
 void Rotation::normalize()
 {
-    double len = (double)sqrt(this->quat[0]*this->quat[0]+
-                              this->quat[1]*this->quat[1]+
-                              this->quat[2]*this->quat[2]+
-                              this->quat[3]*this->quat[3]);
-    if (len != 0) {
+    double len = sqrt(this->quat[0]*this->quat[0]+
+                      this->quat[1]*this->quat[1]+
+                      this->quat[2]*this->quat[2]+
+                      this->quat[3]*this->quat[3]);
+    if (len > 0.0) {
         this->quat[0] /= len;
         this->quat[1] /= len;
         this->quat[2] /= len;
@@ -396,6 +396,26 @@ bool Rotation::isSame(const Rotation& q) const
     return false;
 }
 
+bool Rotation::isSame(const Rotation& q, double tol) const
+{
+    // This follows the implementation of Coin3d where the norm
+    // (x1-y1)**2 + ... + (x4-y4)**2 is computed.
+    // This term can be simplified to
+    // 2 - 2*(x1*y1 + ... + x4*y4) so that for the equality we have to check
+    // 1 - tol/2 <= x1*y1 + ... + x4*y4
+    // Because a quaternion (x1,x2,x3,x4) is equal to (-x1,-x2,-x3,-x4) we use the
+    // absolute value of the scalar product
+    double dot = q.quat[0]*quat[0]+q.quat[1]*quat[1]+q.quat[2]*quat[2]+q.quat[3]*quat[3];
+    return fabs(dot) >= 1.0 - tol/2;
+}
+
+Vector3d Rotation::multVec(const Vector3d & src) const
+{
+    Vector3d dst;
+    multVec(src,dst);
+    return dst;
+}
+
 void Rotation::multVec(const Vector3d & src, Vector3d & dst) const
 {
     double x = this->quat[0];
@@ -441,8 +461,8 @@ Rotation Rotation::slerp(const Rotation & q0, const Rotation & q1, double t)
     }
 
     if ((1.0 - dot) > Base::Vector3d::epsilon()) {
-        double angle = (double)acos(dot);
-        double sinangle = (double)sin(angle);
+        double angle = acos(dot);
+        double sinangle = sin(angle);
         // If possible calculate spherical interpolation, otherwise use linear interpolation
         if (sinangle > Base::Vector3d::epsilon()) {
             scale0 = double(sin((1.0 - t) * angle)) / sinangle;
@@ -533,7 +553,7 @@ Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdi
         if (i == 1)
             hintDir = Vector3d(); //no vector can be used as hint direction. Zero it out, to indicate that a guess is needed.
     }
-    if (hintDir.Length() == 0){
+    if (hintDir.Length() == 0.0){
         switch (order[0]){
         case X: { //xdir is main
             //align zdir to OZ
@@ -651,9 +671,24 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
     double q23 = quat[2]*quat[3];
     double qd2 = 2.0*(q13-q02);
 
-    y = atan2(2.0*(q01+q23),(q00+q33)-(q11+q22));
-    p = qd2 > 1.0 ? D_PI/2.0 : (qd2 < -1.0 ? -D_PI/2.0 : asin (qd2));
-    r = atan2(2.0*(q12+q03),(q22+q33)-(q00+q11));
+    // handle gimbal lock
+    if (fabs(qd2-1.0) < DBL_EPSILON) {
+        // north pole
+        y = 0.0;
+        p = D_PI/2.0;
+        r = 2.0 * atan2(quat[0],quat[3]);
+    }
+    else if (fabs(qd2+1.0) < DBL_EPSILON) {
+        // south pole
+        y = 0.0;
+        p = -D_PI/2.0;
+        r = -2.0 * atan2(quat[0],quat[3]);
+    }
+    else {
+        y = atan2(2.0*(q01+q23),(q00+q33)-(q11+q22));
+        p = qd2 > 1.0 ? D_PI/2.0 : (qd2 < -1.0 ? -D_PI/2.0 : asin (qd2));
+        r = atan2(2.0*(q12+q03),(q22+q33)-(q00+q11));
+    }
 
     // convert to degree
     y = (y/D_PI)*180;
@@ -663,17 +698,17 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
 
 bool Rotation::isIdentity() const
 {
-    return ((this->quat[0] == 0  &&
-             this->quat[1] == 0  &&
-             this->quat[2] == 0) &&
-            (this->quat[3] == 1 ||
-             this->quat[3] == -1));
+    return ((this->quat[0] == 0.0  &&
+             this->quat[1] == 0.0  &&
+             this->quat[2] == 0.0) &&
+            (this->quat[3] == 1.0 ||
+             this->quat[3] == -1.0));
 }
 
 bool Rotation::isNull() const
 {
-    return (this->quat[0] == 0 &&
-            this->quat[1] == 0 &&
-            this->quat[2] == 0 &&
-            this->quat[3] == 0);
+    return (this->quat[0] == 0.0 &&
+            this->quat[1] == 0.0 &&
+            this->quat[2] == 0.0 &&
+            this->quat[3] == 0.0);
 }

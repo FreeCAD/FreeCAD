@@ -256,6 +256,18 @@ PyObject* RotationPy::multVec(PyObject * args)
     return new VectorPy(new Vector3d(vec));
 }
 
+PyObject* RotationPy::slerp(PyObject * args)
+{
+    PyObject *rot;
+    double t;
+    if (!PyArg_ParseTuple(args, "O!d", &(RotationPy::Type), &rot, &t))
+        return 0;
+    Rotation *rot0 = this->getRotationPtr();
+    Rotation *rot1 = static_cast<RotationPy*>(rot)->getRotationPtr();
+    Rotation sl = Rotation::slerp(*rot0, *rot1, t);
+    return new RotationPy(new Rotation(sl));
+}
+
 PyObject* RotationPy::toEuler(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -270,14 +282,24 @@ PyObject* RotationPy::toEuler(PyObject * args)
     return Py::new_reference_to(tuple);
 }
 
+PyObject* RotationPy::toMatrix(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    Base::Matrix4D mat;
+    getRotationPtr()->getValue(mat);
+    return new MatrixPy(new Matrix4D(mat));
+}
+
 PyObject* RotationPy::isSame(PyObject *args)
 {
     PyObject *rot;
-    if (!PyArg_ParseTuple(args, "O!", &(RotationPy::Type), &rot))
+    double tol = 0.0;
+    if (!PyArg_ParseTuple(args, "O!|d", &(RotationPy::Type), &rot, &tol))
         return NULL;
     Base::Rotation rot1 = * getRotationPtr();
     Base::Rotation rot2 = * static_cast<RotationPy*>(rot)->getRotationPtr();
-    bool same = rot1.isSame(rot2);
+    bool same = tol > 0.0 ? rot1.isSame(rot2, tol) : rot1.isSame(rot2);
     return Py_BuildValue("O", (same ? Py_True : Py_False));
 }
 
@@ -317,6 +339,13 @@ void RotationPy::setQ(Py::Tuple arg)
     double q2 = (double)Py::Float(arg.getItem(2));
     double q3 = (double)Py::Float(arg.getItem(3));
     this->getRotationPtr()->setValue(q0,q1,q2,q3);
+}
+
+Py::Object RotationPy::getRawAxis(void) const
+{
+    Base::Vector3d axis; double angle;
+    this->getRotationPtr()->getRawValue(axis, angle);
+    return Py::Vector(axis);
 }
 
 Py::Object RotationPy::getAxis(void) const
@@ -383,4 +412,194 @@ int RotationPy::setCustomAttributes(const char* attr, PyObject* obj)
     return 0; 
 }
 
+PyObject* RotationPy::number_multiply_handler(PyObject *self, PyObject *other)
+{
+    if (PyObject_TypeCheck(self, &(RotationPy::Type))) {
+        auto a = static_cast<RotationPy*>(self)->value();
 
+        if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
+            Vector3d res;
+            a.multVec(static_cast<VectorPy*>(other)->value(),res);
+            return new VectorPy(res);
+        }
+
+        if (PyObject_TypeCheck(other, &(PlacementPy::Type))) {
+            const auto &b = static_cast<PlacementPy*>(other)->value();
+            return new PlacementPy(Placement(Vector3d(),a)*b);
+        }
+
+        if (PyObject_TypeCheck(other, &(RotationPy::Type))) {
+            const auto &b = static_cast<RotationPy*>(other)->value();
+            return new RotationPy(a*b);
+        }
+
+        if (PyObject_TypeCheck(other, &(MatrixPy::Type))) {
+            const auto &b = static_cast<MatrixPy*>(other)->value();
+            Matrix4D mat;
+            a.getValue(mat);
+            return new MatrixPy(mat*b);
+        }
+    }
+
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, PyObject* arg)
+{
+    if (!PyObject_TypeCheck(self, &(RotationPy::Type)) ||
+
+#if PY_MAJOR_VERSION < 3
+            !PyInt_Check(other)
+#else
+            !PyLong_Check(other)
+#endif
+            || arg != Py_None
+       )
+    {
+        PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+        return 0;
+    }
+
+    Rotation a = static_cast<RotationPy*>(self)->value();
+    long b = Py::Int(other);
+
+    Vector3d axis;
+    double rfAngle;
+
+    a.getRawValue(axis, rfAngle);
+    rfAngle *= b;
+    a.setValue(axis, rfAngle);
+
+    return new RotationPy(a);
+}
+
+PyObject* RotationPy::number_add_handler(PyObject * /*self*/, PyObject * /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject* RotationPy::number_subtract_handler(PyObject * /*self*/, PyObject * /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_negative_handler (PyObject* /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_positive_handler (PyObject* /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_absolute_handler (PyObject* /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+int RotationPy::number_nonzero_handler (PyObject* /*self*/)
+{
+    return 1;
+}
+
+PyObject * RotationPy::number_invert_handler (PyObject* /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+#if PY_MAJOR_VERSION < 3
+int RotationPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
+{
+    return 1;
+}
+#endif
+
+PyObject * RotationPy::number_int_handler (PyObject * /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+#if PY_MAJOR_VERSION < 3
+PyObject * RotationPy::number_long_handler (PyObject * /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+#endif
+
+PyObject * RotationPy::number_float_handler (PyObject * /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+#if PY_MAJOR_VERSION < 3
+PyObject * RotationPy::number_oct_handler (PyObject * /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+
+PyObject * RotationPy::number_hex_handler (PyObject * /*self*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
+    return 0;
+}
+#endif

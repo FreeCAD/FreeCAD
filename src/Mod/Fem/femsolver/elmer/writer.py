@@ -32,8 +32,9 @@ import subprocess
 import tempfile
 
 from FreeCAD import Units
+from FreeCAD import Console
 import Fem
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 import femmesh.gmshtools as gmshtools
 from .. import settings
 from . import sifio
@@ -92,7 +93,7 @@ def getConstant(name, dimension):
 class Writer(object):
 
     def __init__(self, solver, directory, testmode=False):
-        self.analysis = FemUtils.findAnalysisOfMember(solver)
+        self.analysis = femutils.findAnalysisOfMember(solver)
         self.solver = solver
         self.directory = directory
         self.testmode = testmode
@@ -124,9 +125,9 @@ class Writer(object):
         groups.extend(self._builder.getBoundaryNames())
         self._exportToUnv(groups, mesh, unvPath)
         if self.testmode:
-            print("We are in testmode ElmerGrid may not be installed!")
+            Console.PrintMessage("We are in testmode ElmerGrid may not be installed.\n")
         else:
-            binary = settings.getBinary("ElmerGrid")
+            binary = settings.get_binary("ElmerGrid")
             if binary is None:
                 raise WriteError("Couldn't find ElmerGrid binary.")
             args = [binary,
@@ -134,11 +135,11 @@ class Writer(object):
                     _ELMERGRID_OFORMAT,
                     unvPath,
                     "-out", self.directory]
-            subprocess.call(args)
+            subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             f.write(_SIF_NAME)
 
     def _exportToUnv(self, groups, mesh, meshPath):
@@ -164,7 +165,7 @@ class Writer(object):
         tools.write_part_file()
         tools.write_geo()
         if self.testmode:
-            print("We are in testmode, GMSH may not be installed!")
+            Console.PrintMessage("We are in testmode, Gmsh may not be installed.\n")
             import shutil
             shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
         else:
@@ -197,7 +198,7 @@ class Writer(object):
     def _handleHeat(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerHeat"):
+            if femutils.is_of_type(equation, "Fem::FemEquationElmerHeat"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -266,7 +267,8 @@ class Writer(object):
         if obj is not None:
             for name in bodies:
                 heatSource = getFromUi(obj.HeatSource, "W/kg", "L^2*T^-3")
-                # according Elmer forum W/kg is correct, http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
+                # according Elmer forum W/kg is correct
+                # http://www.elmerfem.org/forum/viewtopic.php?f=7&t=1765
                 # 1 watt = kg * m2 / s3 ... W/kg = m2 / s3
                 self._bodyForce(name, "Heat Source", heatSource)
             self._handled(obj)
@@ -297,7 +299,7 @@ class Writer(object):
     def _handleElectrostatic(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerElectrostatic"):
+            if femutils.is_of_type(equation, "Fem::FemEquationElmerElectrostatic"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -361,7 +363,7 @@ class Writer(object):
     def _handleFluxsolver(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerFluxsolver"):
+            if femutils.is_of_type(equation, "Fem::FemEquationElmerFluxsolver"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -382,7 +384,7 @@ class Writer(object):
     def _handleElasticity(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerElasticity"):
+            if femutils.is_of_type(equation, "Fem::FemEquationElmerElasticity"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -479,7 +481,9 @@ class Writer(object):
                 densityQuantity = Units.Quantity(m["Density"])
                 dimension = "M/L^3"
                 if name.startswith("Edge"):
-                    density = None  # not tested, but it seems needed because denisty does not exist (IMHO, bernd)
+                    # not tested, but it seems needed
+                    # because density does not exist (IMHO, bernd)
+                    density = None
                     if density:
                         density.Unit = Units.Unit(-2, 1)
                     dimension = "M/L^2"
@@ -540,7 +544,7 @@ class Writer(object):
     def _handleFlow(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerFlow"):
+            if femutils.is_of_type(equation, "Fem::FemEquationElmerFlow"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -738,7 +742,7 @@ class Writer(object):
 
     def _writeSif(self):
         sifPath = os.path.join(self.directory, _SIF_NAME)
-        with open(sifPath, 'w') as fstream:
+        with open(sifPath, "w") as fstream:
             sif = sifio.Sif(self._builder)
             sif.write(fstream)
 
@@ -773,10 +777,10 @@ class Writer(object):
         self._builder.addSection(section)
 
     def _getMember(self, t):
-        return FemUtils.get_member(self.analysis, t)
+        return femutils.get_member(self.analysis, t)
 
     def _getSingleMember(self, t):
-        return FemUtils.get_single_member(self.analysis, t)
+        return femutils.get_single_member(self.analysis, t)
 
 
 class WriteError(Exception):

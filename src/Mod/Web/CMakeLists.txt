@@ -7,7 +7,7 @@ set(Web_Scripts
 )
 
 if(BUILD_GUI)
-    if(Qt5WebKitWidgets_FOUND OR QT_QTWEBKIT_FOUND)
+    if(Qt5WebEngineWidgets_FOUND OR Qt5WebKitWidgets_FOUND OR QT_QTWEBKIT_FOUND)
         add_subdirectory(Gui)
         list (APPEND Web_Scripts InitGui.py)
     endif()

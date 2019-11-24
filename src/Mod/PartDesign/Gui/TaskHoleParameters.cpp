@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskHoleParameters.h"
@@ -37,7 +38,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureHole.h>
-#include <QMessageBox>
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -114,8 +115,9 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole *HoleView, QWidget *pare
     ui->Depth->bind(pcHole->Depth);
     ui->DrillPointAngle->bind(pcHole->DrillPointAngle);
     ui->TaperedAngle->bind(pcHole->TaperedAngle);
-    
-    connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(boost::bind(&TaskHoleParameters::changedObject, this, _1));
+
+    connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
+            boost::bind(&TaskHoleParameters::changedObject, this, _1, _2));
 
     this->groupLayout()->addWidget(proxy);
 }
@@ -327,12 +329,12 @@ void TaskHoleParameters::changeEvent(QEvent *e)
     }
 }
 
-void TaskHoleParameters::changedObject(const App::Property &Prop)
+void TaskHoleParameters::changedObject(const App::Document&, const App::Property &Prop)
 {
     // happens when aborting the command
     if (vp == nullptr)
         return;
-    
+
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
     bool ro = Prop.isReadOnly();
 
@@ -389,7 +391,7 @@ void TaskHoleParameters::changedObject(const App::Property &Prop)
     }
     else if (&Prop == &pcHole->ThreadType) {
         ui->ThreadType->setEnabled(true);
-        
+
         ui->ThreadSize->blockSignals(true);
         ui->ThreadSize->clear();
         const char ** cursor = pcHole->ThreadSize.getEnums();
@@ -399,7 +401,7 @@ void TaskHoleParameters::changedObject(const App::Property &Prop)
         }
         ui->ThreadSize->setCurrentIndex(pcHole->ThreadSize.getValue());
         ui->ThreadSize->blockSignals(false);
-        
+
         // Thread type also updates HoleCutType and ThreadClass
         ui->HoleCutType->blockSignals(true);
         ui->HoleCutType->clear();
@@ -410,7 +412,7 @@ void TaskHoleParameters::changedObject(const App::Property &Prop)
         }
         ui->HoleCutType->setCurrentIndex(pcHole->HoleCutType.getValue());
         ui->HoleCutType->blockSignals(false);
-        
+
         ui->ThreadClass->blockSignals(true);
         ui->ThreadClass->clear();
         cursor = pcHole->ThreadClass.getEnums();
@@ -418,9 +420,9 @@ void TaskHoleParameters::changedObject(const App::Property &Prop)
             ui->ThreadClass->addItem(tr(*cursor));
             ++cursor;
         }
-        ui->ThreadClass->setCurrentIndex(pcHole->ThreadClass.getValue());        
+        ui->ThreadClass->setCurrentIndex(pcHole->ThreadClass.getValue());
         ui->ThreadClass->blockSignals(false);
-        
+
         if (ui->ThreadType->currentIndex() != pcHole->ThreadType.getValue()) {
             ui->ThreadType->blockSignals(true);
             ui->ThreadType->setCurrentIndex(pcHole->ThreadType.getValue());
@@ -690,12 +692,11 @@ Base::Quantity TaskHoleParameters::getTaperedAngle() const
 
 void TaskHoleParameters::apply()
 {
-    std::string name = vp->getObject()->getNameInDocument();
-    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());    
-    const char * cname = name.c_str();
+    auto obj = vp->getObject();
+    PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(vp->getObject());
 
     isApplying = true;
-            
+
     ui->ThreadPitch->apply();
     ui->ThreadAngle->apply();
     ui->ThreadCutOffInner->apply();
@@ -707,30 +708,30 @@ void TaskHoleParameters::apply()
     ui->Depth->apply();
     ui->DrillPointAngle->apply();
     ui->TaperedAngle->apply();
-   
+
     if (!pcHole->Threaded.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Threaded = %u", cname, getThreaded() ? 1 : 0);
+        FCMD_OBJ_CMD(obj,"Threaded = " << (getThreaded() ? 1 : 0));
     if (!pcHole->ModelActualThread.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ModelActualThread = %u", cname, getThreaded() ? 1 : 0);
+        FCMD_OBJ_CMD(obj,"ModelActualThread = " << (getThreaded() ? 1 : 0));
     if (!pcHole->ThreadType.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadType = %u", cname, getThreadType());
+        FCMD_OBJ_CMD(obj,"ThreadType = " << getThreadType());
     if (!pcHole->ThreadSize.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadSize = %u", cname, getThreadSize());
+        FCMD_OBJ_CMD(obj,"ThreadSize = " << getThreadSize());
     if (!pcHole->ThreadClass.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadClass = %u", cname, getThreadClass());
+        FCMD_OBJ_CMD(obj,"ThreadClass = " << getThreadClass());
     if (!pcHole->ThreadFit.isReadOnly())    
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadFit = %u", cname, getThreadFit());
+        FCMD_OBJ_CMD(obj,"ThreadFit = " << getThreadFit());
     if (!pcHole->ThreadDirection.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ThreadDirection = %u", cname, getThreadDirection());
+        FCMD_OBJ_CMD(obj,"ThreadDirection = " << getThreadDirection());
     if (!pcHole->HoleCutType.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.HoleCutType = %u", cname, getHoleCutType());
+        FCMD_OBJ_CMD(obj,"HoleCutType = " << getHoleCutType());
     if (!pcHole->DepthType.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.DepthType = %u", cname, getDepthType());
+        FCMD_OBJ_CMD(obj,"DepthType = " << getDepthType());
     if (!pcHole->DrillPoint.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.DrillPoint = %u", cname, getDrillPoint());
+        FCMD_OBJ_CMD(obj,"DrillPoint = " << getDrillPoint());
     if (!pcHole->Tapered.isReadOnly())
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Tapered = %u", cname, getTapered());
-    
+        FCMD_OBJ_CMD(obj,"Tapered = " << getTapered());
+
     isApplying = false;
 }
 
@@ -766,6 +767,7 @@ void TaskHoleParameters::Observer::slotChangedObject(const App::DocumentObject &
 {
     if (&Obj == hole) {
         Base::Console().Log("Parameter %s was updated with a new value\n", Prop.getName());
-        owner->changedObject(Prop);
+        if(Obj.getDocument())
+            owner->changedObject(*Obj.getDocument(),Prop);
     }
 }

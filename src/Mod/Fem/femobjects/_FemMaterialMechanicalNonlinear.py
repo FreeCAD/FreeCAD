@@ -35,20 +35,45 @@ class _FemMaterialMechanicalNonlinear:
         obj.Proxy = self
         self.Type = "Fem::MaterialMechanicalNonlinear"
 
-        obj.addProperty("App::PropertyLink", "LinearBaseMaterial", "Base", "Set the linear material the nonlinear builds upon.")
+        obj.addProperty(
+            "App::PropertyLink",
+            "LinearBaseMaterial",
+            "Base",
+            "Set the linear material the nonlinear builds upon."
+        )
 
         choices_nonlinear_material_models = ["simple hardening"]
-        obj.addProperty("App::PropertyEnumeration", "MaterialModelNonlinearity", "Fem", "Set the type on nonlinear material model")
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "MaterialModelNonlinearity",
+            "Fem",
+            "Set the type on nonlinear material model"
+        )
         obj.MaterialModelNonlinearity = choices_nonlinear_material_models
         obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
 
-        obj.addProperty("App::PropertyString", "YieldPoint1", "Fem", "Set stress and strain for yield point one, separated by a comma.")
+        obj.addProperty(
+            "App::PropertyString",
+            "YieldPoint1",
+            "Fem",
+            "Set stress and strain for yield point one, separated by a comma."
+        )
         obj.YieldPoint1 = "235.0, 0.0"
 
-        obj.addProperty("App::PropertyString", "YieldPoint2", "Fem", "Set stress and strain for yield point two, separated by a comma.")
+        obj.addProperty(
+            "App::PropertyString",
+            "YieldPoint2",
+            "Fem",
+            "Set stress and strain for yield point two, separated by a comma."
+        )
         obj.YieldPoint2 = "241.0, 0.025"
 
-        obj.addProperty("App::PropertyString", "YieldPoint3", "Fem", "Set stress and strain for yield point three, separated by a comma.")
+        obj.addProperty(
+            "App::PropertyString",
+            "YieldPoint3",
+            "Fem",
+            "Set stress and strain for yield point three, separated by a comma."
+        )
         obj.YieldPoint3 = ""
 
     def execute(self, obj):

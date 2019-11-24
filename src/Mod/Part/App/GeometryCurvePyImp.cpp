@@ -28,6 +28,7 @@
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Pln.hxx>
+# include <gp_Quaternion.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_TangentialDeflection.hxx>
@@ -768,7 +769,7 @@ PyObject* GeometryCurvePy::intersectCS(PyObject *args)
             Py::List points;
             for (int i = 1; i <= intersector.NbPoints(); i++) {
                 gp_Pnt p = intersector.Point(i);
-                points.append(Py::Object(new PointPy(new GeomPoint(Base::Vector3d(p.X(), p.Y(), p.Z())))));
+                points.append(Py::asObject(new PointPy(new GeomPoint(Base::Vector3d(p.X(), p.Y(), p.Z())))));
             }
             Py::List segments;
             for (int i = 1; i <= intersector.NbSegments(); i++) {
@@ -849,6 +850,17 @@ PyObject* GeometryCurvePy::intersect(PyObject *args)
 
     PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
     return 0;
+}
+
+Py::Object GeometryCurvePy::getRotation(void) const
+{
+    Handle(Geom_Conic) s = Handle(Geom_Conic)::DownCast(getGeometryPtr()->handle());
+    if(!s)
+        return Py::Object();
+    gp_Trsf trsf;
+    trsf.SetTransformation(s->Position(),gp_Ax3());
+    auto q = trsf.GetRotation();
+    return Py::Rotation(Base::Rotation(q.X(),q.Y(),q.Z(),q.W()));
 }
 
 PyObject* GeometryCurvePy::reverse(PyObject *args)

@@ -48,7 +48,7 @@ public:
     SoSFBool  render;
 
 protected:
-    virtual ~SoPolygon() {};
+    virtual ~SoPolygon() {}
     virtual void GLRender(SoGLRenderAction *action);
     virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
     virtual void rayPick (SoRayPickAction *action);

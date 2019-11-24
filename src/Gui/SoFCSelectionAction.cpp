@@ -95,7 +95,7 @@
 using namespace Gui;
 
 
-SO_ACTION_SOURCE(SoFCHighlightAction);
+SO_ACTION_SOURCE(SoFCHighlightAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
@@ -181,7 +181,7 @@ void SoFCHighlightAction::callDoAction(SoAction *action,SoNode *node)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCSelectionAction);
+SO_ACTION_SOURCE(SoFCSelectionAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -267,7 +267,7 @@ void SoFCSelectionAction::callDoAction(SoAction *action,SoNode *node)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCEnableSelectionAction);
+SO_ACTION_SOURCE(SoFCEnableSelectionAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -349,7 +349,7 @@ void SoFCEnableSelectionAction::callDoAction(SoAction *action,SoNode *node)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCEnableHighlightAction);
+SO_ACTION_SOURCE(SoFCEnableHighlightAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -431,7 +431,7 @@ void SoFCEnableHighlightAction::callDoAction(SoAction *action,SoNode *node)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCSelectionColorAction);
+SO_ACTION_SOURCE(SoFCSelectionColorAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -513,7 +513,7 @@ void SoFCSelectionColorAction::callDoAction(SoAction *action,SoNode *node)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCHighlightColorAction);
+SO_ACTION_SOURCE(SoFCHighlightColorAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -595,7 +595,7 @@ void SoFCHighlightColorAction::callDoAction(SoAction *action,SoNode *node)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCDocumentAction);
+SO_ACTION_SOURCE(SoFCDocumentAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -678,7 +678,7 @@ void SoFCDocumentAction::callDoAction(SoAction *action,SoNode *node)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCDocumentObjectAction);
+SO_ACTION_SOURCE(SoFCDocumentObjectAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -763,7 +763,7 @@ SbBool SoFCDocumentObjectAction::isHandled() const
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoGLSelectAction);
+SO_ACTION_SOURCE(SoGLSelectAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -839,7 +839,7 @@ SbBool SoGLSelectAction::isHandled() const
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoVisibleFaceAction);
+SO_ACTION_SOURCE(SoVisibleFaceAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base 
@@ -909,7 +909,7 @@ SbBool SoVisibleFaceAction::isHandled() const
 // ---------------------------------------------------------------
 
 
-SO_ACTION_SOURCE(SoUpdateVBOAction);
+SO_ACTION_SOURCE(SoUpdateVBOAction)
 
 /**
  * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
@@ -1108,7 +1108,7 @@ SoBoxSelectionRenderActionP::updateBbox(const SoPath * path)
     this->localRoot->removeChild(0);
 }
 
-SO_ACTION_SOURCE(SoBoxSelectionRenderAction);
+SO_ACTION_SOURCE(SoBoxSelectionRenderAction)
 
 // Overridden from parent class.
 void
@@ -1142,7 +1142,8 @@ SoBoxSelectionRenderAction::constructorCommon(void)
     // Initialize local variables
     PRIVATE(this)->initBoxGraph();
 
-    this->hlVisible = true;
+    // this->hlVisible = true;
+    this->hlVisible = false;
 
     PRIVATE(this)->basecolor->rgb.setValue(1.0f, 0.0f, 0.0f);
     PRIVATE(this)->drawstyle->linePattern = 0xffff;
@@ -1233,20 +1234,6 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                     }
                     PRIVATE(this)->selectsearch->reset();
                 }
-            }
-        }
-        PRIVATE(this)->searchaction->reset();
-
-        // Search for selections of SoFCUnifiedSelection
-        PRIVATE(this)->searchaction->setType(SoFCUnifiedSelection::getClassTypeId());
-        PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
-        PRIVATE(this)->searchaction->apply(node);
-        SoFullPath * path = static_cast<SoFullPath *>(PRIVATE(this)->searchaction->getPath());
-        if (path) {
-            SoFCUnifiedSelection * selection = static_cast<SoFCUnifiedSelection *>(path->getTail());
-            if (selection->getNumSelected()) {
-                PRIVATE(this)->basecolor->rgb.setValue(selection->colorSelection.getValue());
-                this->drawBoxes(path, selection->getList());
             }
         }
         PRIVATE(this)->searchaction->reset();

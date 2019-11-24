@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Amosar a páxina de benvida o iniciar</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Troca para a lapela da xanela de informes:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Despois do arrinque cargar automaticamente o módulo:</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Tamaño da listaxe de ficheiros recentes</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Estilo de fiestra:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1627,6 +1619,53 @@ Por favor, especifique outro directorio.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Pechar</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Buscar...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Buscar</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Atopar o que:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Procurar</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Grupos</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Nomes</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Valores</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Coincidir a cadea completa</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Procurar Seguinte</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Non atopado</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Non atopado o texto: %1</translation>
     </message>
   </context>
   <context>
@@ -2723,10 +2762,6 @@ Por favor, especifique outro directorio.</translation>
       <translation>Comandos da interface gráfica</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Gravación dos comandos da interface gráfica</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Gravar como un comentario</translation>
     </message>
@@ -2741,6 +2776,10 @@ Por favor, especifique outro directorio.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Executar macros no entorno local</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Gravar comandos GUI</translation>
     </message>
   </context>
   <context>
@@ -2768,10 +2807,6 @@ Por favor, especifique outro directorio.</translation>
     <message>
       <source>Unit</source>
       <translation>Unidade</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Sistema do usuario:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2836,6 +2871,10 @@ Por favor, especifique outro directorio.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Sistema de unidades:</translation>
     </message>
   </context>
   <context>
@@ -3882,12 +3921,12 @@ Quere gardar os cambios?</translation>
       <translation>Arrastrar con dous dedos OU prema o botón dereito do rato.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastrar cun dedo OU prema o botón esquerdo do rato. No Esbozador mais noutros modos de edición, manteña premido Alt ao mesmo tempo.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Belisque (poña dous dedos na pantalla e arrástreos xuntándoos ou afastándoos un do outro) OU role a roda do rato OU use Avpáx/Repáx no teclado.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4543,12 +4582,12 @@ Quere especificar outro directorio?</translation>
       <translation>Incrementos</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Incremento de traslación: </translation>
+      <source>Translation Increment:</source>
+      <translation>Incremento de tradución:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Incremento de rotación: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Incremento de rotación:</translation>
     </message>
   </context>
   <context>

@@ -22,6 +22,7 @@
 
 #include <vector>
 
+#include <Base/Tools.h>
 #include <App/PropertyGeo.h>
 
 #include <Gui/Action.h>
@@ -50,7 +51,7 @@ using namespace std;
 // CmdDrawingOpen
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingOpen);
+DEF_STD_CMD(CmdDrawingOpen)
 
 CmdDrawingOpen::CmdDrawingOpen()
   : Command("Drawing_Open")
@@ -72,6 +73,7 @@ void CmdDrawingOpen::activated(int iMsg)
         QString::fromLatin1("%1 (*.svg *.svgz)").arg(QObject::tr("Scalable Vector Graphic")));
     if (!filename.isEmpty())
     {
+        filename = Base::Tools::escapeEncodeFilename(filename);
         // load the file with the module
         Command::doCommand(Command::Gui, "import Drawing, DrawingGui");
 #if PY_MAJOR_VERSION < 3
@@ -86,7 +88,7 @@ void CmdDrawingOpen::activated(int iMsg)
 // Drawing_NewPage
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdDrawingNewPage);
+DEF_STD_CMD_ACL(CmdDrawingNewPage)
 
 CmdDrawingNewPage::CmdDrawingNewPage()
   : Command("Drawing_NewPage")
@@ -108,9 +110,10 @@ void CmdDrawingNewPage::activated(int iMsg)
 
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
+        QString filename = Base::Tools::escapeEncodeFilename(tfi.filePath());
         openCommand("Create page");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
+        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)filename.toUtf8());
         doCommand(Doc,"App.activeDocument().recompute()");
         doCommand(Doc,"Gui.activeDocument().getObject('%s').show()",FeatName.c_str());
         commitCommand();
@@ -263,7 +266,7 @@ bool CmdDrawingNewPage::isActive(void)
 // Drawing_NewA3Landscape
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingNewA3Landscape);
+DEF_STD_CMD_A(CmdDrawingNewA3Landscape)
 
 CmdDrawingNewA3Landscape::CmdDrawingNewA3Landscape()
   : Command("Drawing_NewA3Landscape")
@@ -302,7 +305,7 @@ bool CmdDrawingNewA3Landscape::isActive(void)
 // Drawing_NewView
 //===========================================================================
 
-DEF_STD_CMD(CmdDrawingNewView);
+DEF_STD_CMD(CmdDrawingNewView)
 
 CmdDrawingNewView::CmdDrawingNewView()
   : Command("Drawing_NewView")
@@ -381,7 +384,7 @@ void CmdDrawingNewView::activated(int iMsg)
 // Drawing_OrthoView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingOrthoViews);
+DEF_STD_CMD_A(CmdDrawingOrthoViews)
 
 CmdDrawingOrthoViews::CmdDrawingOrthoViews()
   : Command("Drawing_OrthoViews")
@@ -431,7 +434,7 @@ bool CmdDrawingOrthoViews::isActive(void)
 // Drawing_OpenBrowserView
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingOpenBrowserView);
+DEF_STD_CMD_A(CmdDrawingOpenBrowserView)
 
 CmdDrawingOpenBrowserView::CmdDrawingOpenBrowserView()
   : Command("Drawing_OpenBrowserView")
@@ -469,7 +472,7 @@ bool CmdDrawingOpenBrowserView::isActive(void)
 // Drawing_Annotation
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingAnnotation);
+DEF_STD_CMD_A(CmdDrawingAnnotation)
 
 CmdDrawingAnnotation::CmdDrawingAnnotation()
   : Command("Drawing_Annotation")
@@ -517,7 +520,7 @@ bool CmdDrawingAnnotation::isActive(void)
 // Drawing_Clip
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingClip);
+DEF_STD_CMD_A(CmdDrawingClip)
 
 CmdDrawingClip::CmdDrawingClip()
   : Command("Drawing_Clip")
@@ -562,7 +565,7 @@ bool CmdDrawingClip::isActive(void)
 // Drawing_Symbol
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingSymbol);
+DEF_STD_CMD_A(CmdDrawingSymbol)
 
 CmdDrawingSymbol::CmdDrawingSymbol()
   : Command("Drawing_Symbol")
@@ -595,6 +598,7 @@ void CmdDrawingSymbol::activated(int iMsg)
     {
         std::string PageName = pages.front()->getNameInDocument();
         std::string FeatName = getUniqueObjectName("Symbol");
+        filename = Base::Tools::escapeEncodeFilename(filename);
         openCommand("Create Symbol");
         doCommand(Doc,"import Drawing");
 #if PY_MAJOR_VERSION < 3
@@ -622,7 +626,7 @@ bool CmdDrawingSymbol::isActive(void)
 // Drawing_ExportPage
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingExportPage);
+DEF_STD_CMD_A(CmdDrawingExportPage)
 
 CmdDrawingExportPage::CmdDrawingExportPage()
   : Command("Drawing_ExportPage")
@@ -657,6 +661,7 @@ void CmdDrawingExportPage::activated(int iMsg)
 
         doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
         std::string fname = (const char*)fn.toUtf8();
+        fname = Base::Tools::escapeEncodeFilename(fname);
 #if PY_MAJOR_VERSION < 3
         doCommand(Doc,"OutFile = open(unicode(\"%s\",'utf-8'),'w')",fname.c_str());
 #else
@@ -678,7 +683,7 @@ bool CmdDrawingExportPage::isActive(void)
 // Drawing_ProjectShape
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingProjectShape);
+DEF_STD_CMD_A(CmdDrawingProjectShape)
 
 CmdDrawingProjectShape::CmdDrawingProjectShape()
   : Command("Drawing_ProjectShape")
@@ -714,7 +719,7 @@ bool CmdDrawingProjectShape::isActive(void)
 // Drawing_Draft_View
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingDraftView);
+DEF_STD_CMD_A(CmdDrawingDraftView)
 
 CmdDrawingDraftView::CmdDrawingDraftView()
   : Command("Drawing_DraftView")
@@ -745,7 +750,7 @@ bool CmdDrawingDraftView::isActive(void)
 // Drawing_Spreadheet_View
 //===========================================================================
 
-DEF_STD_CMD_A(CmdDrawingSpreadsheetView);
+DEF_STD_CMD_A(CmdDrawingSpreadsheetView)
 
 CmdDrawingSpreadsheetView::CmdDrawingSpreadsheetView()
   : Command("Drawing_SpreadsheetView")

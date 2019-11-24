@@ -39,6 +39,8 @@ namespace Gui {
 
 class GuiExport TextDocumentEditorView : public MDIView {
     Q_OBJECT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     TextDocumentEditorView(
             App::TextDocument* textDocument,

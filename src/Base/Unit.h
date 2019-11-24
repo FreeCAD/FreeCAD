@@ -93,13 +93,17 @@ public:
     static Unit Length;
     /// Mass unit
     static Unit Mass;
+
     /// Angle
     static Unit Angle;
+    static Unit AngleOfFriction;
+    
     static Unit Density;
 
     static Unit Area;
     static Unit Volume;
     static Unit TimeSpan;
+    static Unit Frequency;
     static Unit Velocity;
     static Unit Acceleration;
     static Unit Temperature;
@@ -130,6 +134,7 @@ public:
     static Unit HeatFlux;
     static Unit DynamicViscosity;
     static Unit KinematicViscosity;
+    static Unit VacuumPermittivity;
 
     //@}
 protected:

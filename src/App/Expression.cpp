@@ -25,6 +25,14 @@
 # include <unistd.h>
 #endif
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+#endif
+
+#include <boost/algorithm/string/predicate.hpp>
+
+#include <Base/Console.h>
 #include "Base/Exception.h"
 #include <Base/Interpreter.h>
 #include <App/Application.h>
@@ -33,6 +41,10 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyUnits.h>
 #include <Base/QuantityPy.h>
+#include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
+#include <Base/RotationPy.h>
+#include <Base/VectorPy.h>
 #include <QStringList>
 #include <string>
 #include <sstream>
@@ -41,12 +53,22 @@
 #include <stack>
 #include <deque>
 #include <algorithm>
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include <Base/Unit.h>
 #include <App/PropertyUnits.h>
 #include <App/ObjectIdentifier.h>
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
+
+/** \defgroup Expression Expressions framework
+    \ingroup APP
+    \brief The expression system allows users to write expressions and formulas that produce values
+*/
+
+using namespace Base;
+using namespace App;
+
+FC_LOG_LEVEL_INIT("Expression",true,true)
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -67,8 +89,104 @@
 #pragma warning(disable : 4065)
 #endif
 
-using namespace Base;
-using namespace App;
+#define __EXPR_THROW(_e,_msg,_expr) do {\
+    std::ostringstream ss;\
+    ss << _msg << (_expr);\
+    throw _e(ss.str().c_str());\
+}while(0)
+
+#define _EXPR_THROW(_msg,_expr) __EXPR_THROW(ExpressionError,_msg,_expr)
+
+#define __EXPR_SET_MSG(_e,_msg,_expr) do {\
+    std::ostringstream ss;\
+    ss << _msg << _e.what() << (_expr);\
+    _e.setMessage(ss.str());\
+}while(0)
+
+#define _EXPR_RETHROW(_e,_msg,_expr) do {\
+    __EXPR_SET_MSG(_e,_msg,_expr);\
+    throw;\
+}while(0)
+
+#define _EXPR_PY_THROW(_msg,_expr) do {\
+    Base::PyException _e;\
+    __EXPR_SET_MSG(_e,_msg,_expr);\
+    _e.raiseException();\
+}while(0)
+
+#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("",_expr)
+
+#define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
+
+#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, (Expression*)0)
+
+#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, (Expression*)0)
+
+#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
+
+#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
+
+static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
+    if(expr) {
+        os << std::endl;
+        expr->toString(os);
+    }
+    return os;
+}
+
+template<typename T>
+void copy_vector(T &dst, const T& src) {
+    dst.clear();
+    dst.reserve(src.size());
+    for(auto &s : src) {
+        if(s)
+            dst.push_back(s->copy());
+        else
+            dst.emplace_back();
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// WARNING! The following define enables slightly faster any type comparison which
+// is not standard conforming, and may break in some rare cases (although not likely)
+//
+// #define USE_FAST_ANY
+
+static inline bool is_type(const App::any &value, const std::type_info& t) {
+#ifdef USE_FAST_ANY
+    return &value.type() == &t;
+#else
+    return value.type() == t;
+#endif
+}
+
+template<class T>
+static inline const T &cast(const App::any &value) {
+#ifdef USE_FAST_ANY
+    return *value.cast<T>();
+#else
+    return App::any_cast<const T&>(value);
+#endif
+}
+
+template<class T>
+static inline T &cast(App::any &value) {
+#ifdef USE_FAST_ANY
+    return *value.cast<T>();
+#else
+    return App::any_cast<T&>(value);
+#endif
+}
+
+template<class T>
+static inline T &&cast(App::any &&value) {
+#ifdef USE_FAST_ANY
+    return std::move(*value.cast<T>());
+#else
+    return App::any_cast<T&&>(std::move(value));
+#endif
+}
 
 std::string unquote(const std::string & input)
 {
@@ -117,20 +235,690 @@ std::string unquote(const std::string & input)
     return output;
 }
 
+////////////////////////////////////////////////////////////////////////////////////
+//
+// ExpressionVistor
+//
+void ExpressionVisitor::getDeps(Expression &e, ExpressionDeps &deps) {
+    e._getDeps(deps);
+}
+
+void ExpressionVisitor::getDepObjects(Expression &e, 
+        std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels) 
+{
+    e._getDepObjects(deps,labels);
+}
+
+void ExpressionVisitor::getIdentifiers(Expression &e, std::set<App::ObjectIdentifier> &ids) {
+    e._getIdentifiers(ids);
+}
+
+bool ExpressionVisitor::adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList) {
+    return e._adjustLinks(inList,*this);
+}
+
+void ExpressionVisitor::importSubNames(Expression &e, const ObjectIdentifier::SubNameMap &subNameMap) {
+    e._importSubNames(subNameMap);
+}
+
+void ExpressionVisitor::updateLabelReference(Expression &e, 
+        DocumentObject *obj, const std::string &ref, const char *newLabel) 
+{
+    e._updateLabelReference(obj,ref,newLabel);
+}
+
+bool ExpressionVisitor::updateElementReference(Expression &e, App::DocumentObject *feature, bool reverse) {
+    return e._updateElementReference(feature,reverse,*this);
+}
+
+bool ExpressionVisitor::relabeledDocument(
+        Expression &e, const std::string &oldName, const std::string &newName) 
+{
+    return e._relabeledDocument(oldName,newName,*this);
+}
+
+bool ExpressionVisitor::renameObjectIdentifier(Expression &e,
+        const std::map<ObjectIdentifier,ObjectIdentifier> &paths, const ObjectIdentifier &path)
+{
+    return e._renameObjectIdentifier(paths,path,*this);
+}
+
+void ExpressionVisitor::collectReplacement(Expression &e, 
+        std::map<ObjectIdentifier,ObjectIdentifier> &paths,
+        const App::DocumentObject *parent, App::DocumentObject *oldObj, App::DocumentObject *newObj) const
+{
+    return e._collectReplacement(paths,parent,oldObj,newObj);
+}
+
+void ExpressionVisitor::moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount) {
+    e._moveCells(address,rowCount,colCount,*this);
+}
+
+void ExpressionVisitor::offsetCells(Expression &e, int rowOffset, int colOffset) {
+    e._offsetCells(rowOffset,colOffset,*this);
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Helper functions
+
+/* The following definitions are from The art of computer programming by Knuth
+ * (copied from http://stackoverflow.com/questions/17333/most-effective-way-for-float-and-double-comparison)
+ */
+
+/*
+static bool approximatelyEqual(double a, double b, double epsilon)
+{
+    return fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+*/
+
+template<class T>
+static inline bool essentiallyEqual(T a, T b)
+{
+    static const T _epsilon = std::numeric_limits<T>::epsilon();
+    return std::fabs(a - b) <= ( (std::fabs(a) > std::fabs(b) ? std::fabs(b) : std::fabs(a)) * _epsilon);
+}
+
+template<class T>
+inline bool essentiallyZero(T a) {
+    return !a;
+}
+
+template<>
+inline bool essentiallyZero(double a) {
+    return essentiallyEqual(a, 0.0);
+}
+
+template<>
+inline bool essentiallyZero(float a) {
+    return essentiallyEqual(a, 0.0f);
+}
+
+template<class T>
+static inline bool definitelyGreaterThan(T a, T b)
+{
+    static const T _epsilon = std::numeric_limits<T>::epsilon();
+    return (a - b) > ( (std::fabs(a) < std::fabs(b) ? std::fabs(b) : std::fabs(a)) * _epsilon);
+}
+
+template<class T>
+static inline bool definitelyLessThan(T a, T b)
+{
+    static const T _epsilon = std::numeric_limits<T>::epsilon();
+    return (b - a) > ( (std::fabs(a) < std::fabs(b) ? std::fabs(b) : std::fabs(a)) * _epsilon);
+}
+
+static inline int essentiallyInteger(double a, long &l, int &i) {
+    double intpart;
+    if(std::modf(a,&intpart) == 0.0) {
+        if(intpart<0.0) {
+            if(intpart >= INT_MIN) {
+                i = (int)intpart;
+                l = i;
+                return 1;
+            }
+            if(intpart >= LONG_MIN) {
+                l = (long)intpart;
+                return 2;
+            }
+        }else if(intpart <= INT_MAX) {
+            i = (int)intpart;
+            l = i;
+            return 1;
+        }else if(intpart <= LONG_MAX) {
+            l = (int)intpart;
+            return 2;
+        }
+    }
+    return 0;
+}
+
+static inline bool essentiallyInteger(double a, long &l) {
+    double intpart;
+    if(std::modf(a,&intpart) == 0.0) {
+        if(intpart<0.0) {
+            if(intpart >= LONG_MIN) {
+                l = (long)intpart;
+                return true;
+            }
+        }else if(intpart <= LONG_MAX) {
+            l = (long)intpart;
+            return true;
+        }
+    }
+    return false;
+}
+
+// This class is intended to be contained inside App::any (via a shared_ptr)
+// without holding Python global lock
+struct PyObjectWrapper {
+public:
+    typedef std::shared_ptr<PyObjectWrapper> Pointer;
+
+    PyObjectWrapper(PyObject *obj):pyobj(obj) {
+        Py::_XINCREF(pyobj);
+    }
+    ~PyObjectWrapper() {
+        if(pyobj) {
+            Base::PyGILStateLocker lock;
+            Py::_XDECREF(pyobj);
+        }
+    }
+    PyObjectWrapper(const PyObjectWrapper &) = delete;
+    PyObjectWrapper &operator=(const PyObjectWrapper &) = delete;
+
+    Py::Object get() const {
+        if(!pyobj)
+            return Py::Object();
+        return Py::Object(const_cast<PyObject*>(pyobj));
+    }
+
+private:
+    PyObject *pyobj;
+};
+
+static inline PyObjectWrapper::Pointer pyObjectWrap(PyObject *obj) {
+    return std::make_shared<PyObjectWrapper>(obj);
+}
+
+static inline bool isAnyPyObject(const App::any &value) {
+    return is_type(value,typeid(PyObjectWrapper::Pointer));
+}
+
+static inline Py::Object __pyObjectFromAny(const App::any &value) {
+    return cast<PyObjectWrapper::Pointer>(value)->get();
+}
+
+static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
+    if(value.empty())
+        return Py::Object();
+    else if (isAnyPyObject(value))
+        return __pyObjectFromAny(value);
+    if (is_type(value,typeid(Quantity)))
+        return Py::asObject(new QuantityPy(new Quantity(cast<Quantity>(value))));
+    else if (is_type(value,typeid(double)))
+        return Py::Float(cast<double>(value));
+    else if (is_type(value,typeid(float)))
+        return Py::Float(cast<float>(value));
+    else if (is_type(value,typeid(int))) 
+#if PY_MAJOR_VERSION < 3
+        return Py::Int(cast<int>(value));
+#else
+        return Py::Long(cast<int>(value));
+#endif
+    else if (is_type(value,typeid(long))) {
+#if PY_MAJOR_VERSION < 3
+        long l = cast<long>(value);
+        if(std::abs(l)<=INT_MAX)
+            return Py::Int(int(l));
+#endif
+        return Py::Long(cast<long>(value));
+    } else if (is_type(value,typeid(bool)))
+        return Py::Boolean(cast<bool>(value));
+    else if (is_type(value,typeid(std::string)))
+        return Py::String(cast<string>(value));
+    else if (is_type(value,typeid(const char*)))
+        return Py::String(cast<const char*>(value));
+
+    _EXPR_THROW("Unknown type", e);
+}
+
+namespace App {
+Py::Object pyObjectFromAny(const App::any &value) {
+    return _pyObjectFromAny(value,0);
+}
+
+App::any pyObjectToAny(Py::Object value, bool check) {
+
+    if(value.isNone())
+        return App::any();
+
+    PyObject *pyvalue = value.ptr();
+
+    if(!check)
+        return App::any(pyObjectWrap(pyvalue));
+
+    if (PyObject_TypeCheck(pyvalue, &Base::QuantityPy::Type)) {
+        Base::QuantityPy * qp = static_cast<Base::QuantityPy*>(pyvalue);
+        Base::Quantity * q = qp->getQuantityPtr();
+
+        return App::any(*q);
+    }
+    if (PyFloat_Check(pyvalue))
+        return App::any(PyFloat_AsDouble(pyvalue));
+#if PY_MAJOR_VERSION < 3
+    if (PyInt_Check(pyvalue))
+        return App::any(PyInt_AsLong(pyvalue));
+#endif
+    if (PyLong_Check(pyvalue))
+        return App::any(PyLong_AsLong(pyvalue));
+#if PY_MAJOR_VERSION < 3
+    else if (PyString_Check(pyvalue))
+        return App::any(std::string(PyString_AsString(pyvalue)));
+#endif
+    else if (PyUnicode_Check(pyvalue)) {
+        PyObject * s = PyUnicode_AsUTF8String(pyvalue);
+        if(!s) 
+            FC_THROWM(Base::ValueError,"Invalid unicode string");
+        Py::Object o(s,true);
+
+#if PY_MAJOR_VERSION >= 3
+        return App::any(std::string(PyUnicode_AsUTF8(s)));
+#else
+        return App::any(std::string(PyString_AsString(s)));
+#endif
+    }
+    else {
+        return App::any(pyObjectWrap(pyvalue));
+    }
+}
+
+bool pyToQuantity(Quantity &q, const Py::Object &pyobj) {
+    if (PyObject_TypeCheck(*pyobj, &Base::QuantityPy::Type))
+        q = *static_cast<Base::QuantityPy*>(*pyobj)->getQuantityPtr();
+    else if (PyFloat_Check(*pyobj))
+        q = Quantity(PyFloat_AsDouble(*pyobj));
+#if PY_MAJOR_VERSION < 3
+    else if (PyInt_Check(*pyobj))
+        q = Quantity(PyInt_AsLong(*pyobj));
+#endif
+    else if (PyLong_Check(*pyobj))
+        q = Quantity(PyLong_AsLong(*pyobj));
+    else
+        return false;
+    return true;
+}
+
+static inline Quantity pyToQuantity(const Py::Object &pyobj, 
+        const Expression *e, const char *msg=0) 
+{
+    Quantity q;
+    if(!pyToQuantity(q,pyobj)) {
+        if(!msg)
+            msg = "Failed to convert to Quantity.";
+        __EXPR_THROW(TypeError,msg,e);
+    }
+    return q;
+}
+
+Py::Object pyFromQuantity(const Quantity &quantity) {
+    if(!quantity.getUnit().isEmpty())
+        return Py::asObject(new QuantityPy(new Quantity(quantity)));
+    double v = quantity.getValue();
+    long l;
+    int i;
+    switch(essentiallyInteger(v,l,i)) {
+    case 1:
+#if PY_MAJOR_VERSION < 3
+        return Py::Int(i);
+#endif
+    case 2:
+        return Py::Long(l);
+    default:
+        return Py::Float(v);
+    }
+}
+
+Quantity anyToQuantity(const App::any &value, const char *msg) {
+    if (is_type(value,typeid(Quantity))) {
+        return cast<Quantity>(value);
+    } else if (is_type(value,typeid(bool))) {
+        return Quantity(cast<bool>(value)?1.0:0.0);
+    } else if (is_type(value,typeid(int))) {
+        return Quantity(cast<int>(value));
+    } else if (is_type(value,typeid(long))) {
+        return Quantity(cast<long>(value));
+    } else if (is_type(value,typeid(float))) {
+        return Quantity(cast<float>(value));
+    } else if (is_type(value,typeid(double))) {
+        return Quantity(cast<double>(value));
+    }
+    if(!msg)
+        msg = "Failed to convert to Quantity";
+    TYPE_THROW(msg);
+}
+
+static inline bool anyToLong(long &res, const App::any &value) {
+    if (is_type(value,typeid(int))) {
+        res = cast<int>(value);
+    } else if (is_type(value,typeid(long))) {
+        res = cast<long>(value);
+    } else if (is_type(value,typeid(bool)))
+        res = cast<bool>(value)?1:0;
+    else
+        return false;
+    return true;
+}
+
+static inline bool anyToDouble(double &res, const App::any &value) {
+    if (is_type(value,typeid(double)))
+        res = cast<double>(value);
+    else if (is_type(value,typeid(float)))
+        res = cast<float>(value);
+    else if (is_type(value,typeid(long)))
+        res = cast<long>(value);
+    else if (is_type(value,typeid(int)))
+        res = cast<int>(value);
+    else if (is_type(value,typeid(bool)))
+        res = cast<bool>(value)?1:0;
+    else
+        return false;
+    return true;
+}
+
+bool isAnyEqual(const App::any &v1, const App::any &v2) {
+    if(v1.empty()) 
+        return v2.empty();
+    else if(v2.empty())
+        return false;
+
+    if(!is_type(v1,v2.type())) {
+        if(is_type(v1,typeid(Quantity))) 
+            return cast<Quantity>(v1) == anyToQuantity(v2);
+        else if(is_type(v2,typeid(Quantity)))
+            return anyToQuantity(v1) == cast<Quantity>(v2);
+
+        long l1,l2;
+        double d1,d2;
+        if(anyToLong(l1,v1)) {
+            if(anyToLong(l2,v2)) 
+                return l1==l2;
+            else if(anyToDouble(d2,v2))
+                return essentiallyEqual((double)l1,d2);
+            else
+                return false;
+        }else if(anyToDouble(d1,v1))
+           return anyToDouble(d2,v2) && essentiallyEqual(d1,d2);
+
+        if(is_type(v1,typeid(std::string))) {
+            if(is_type(v2,typeid(const char*))) {
+                auto c = cast<const char*>(v2);
+                return c && cast<std::string>(v1)==c;
+            }
+            return false;
+        }else if(is_type(v1,typeid(const char*))) {
+            if(is_type(v2,typeid(std::string))) {
+                auto c = cast<const char*>(v1);
+                return c && cast<std::string>(v2)==c;
+            }
+            return false;
+        }
+    }
+
+    if (is_type(v1,typeid(int)))
+        return cast<int>(v1) == cast<int>(v2);
+    if (is_type(v1,typeid(long)))
+        return cast<long>(v1) == cast<long>(v2);
+    if (is_type(v1,typeid(std::string))) 
+        return cast<std::string>(v1) == cast<std::string>(v2);
+    if (is_type(v1,typeid(const char*))) {
+        auto c1 = cast<const char*>(v1);
+        auto c2 = cast<const char*>(v2);
+        return c1==c2 || (c1 && c2 && strcmp(c1,c2)==0);
+    }
+    if (is_type(v1,typeid(bool))) 
+        return cast<bool>(v1) == cast<bool>(v2);
+    if (is_type(v1,typeid(double))) 
+        return essentiallyEqual(cast<double>(v1), cast<double>(v2));
+    if (is_type(v1,typeid(float))) 
+        return essentiallyEqual(cast<float>(v1), cast<float>(v2));
+
+    if (is_type(v1,typeid(Quantity))) 
+        return cast<Quantity>(v1) == cast<Quantity>(v2);
+
+    if (!isAnyPyObject(v1))
+        throw Base::TypeError("Unknown type");
+
+    Base::PyGILStateLocker lock;
+    Py::Object o1 = __pyObjectFromAny(v1);
+    Py::Object o2 = __pyObjectFromAny(v2);
+    if(!o1.isType(o2.type()))
+        return false;
+    int res = PyObject_RichCompareBool(o1.ptr(),o2.ptr(),Py_EQ);
+    if(res<0)
+        PyException::ThrowException();
+    return !!res;
+}
+
+Expression* expressionFromPy(const DocumentObject *owner, const Py::Object &value) {
+    if (value.isNone()) 
+        return new PyObjectExpression(owner);
+    if(value.isString()) {
+        return new StringExpression(owner,value.as_string());
+    } else if (PyObject_TypeCheck(value.ptr(),&QuantityPy::Type)) {
+        return new NumberExpression(owner,
+                *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr());
+    } else if (value.isBoolean()) {
+        if(value.isTrue())
+            return new ConstantExpression(owner,"True",Quantity(1.0));
+        else
+            return new ConstantExpression(owner,"False",Quantity(0.0));
+    } else {
+        Quantity q;
+        if(pyToQuantity(q,value))
+            return new NumberExpression(owner,q);
+    }
+    return new PyObjectExpression(owner,value.ptr());
+}
+
+} // namespace App
+
+//
+// Expression component
+//
+Expression::Component::Component(const std::string &n)
+    :comp(ObjectIdentifier::SimpleComponent(n))
+    ,e1(0) ,e2(0) ,e3(0)
+{}
+
+Expression::Component::Component(Expression *_e1, Expression *_e2, Expression *_e3, bool isRange)
+    :e1(_e1) ,e2(_e2) ,e3(_e3)
+{
+    if(isRange || e2 || e3) 
+        comp = ObjectIdentifier::RangeComponent(0);
+}
+
+Expression::Component::Component(const ObjectIdentifier::Component &comp)
+    :comp(comp)
+    ,e1(0) ,e2(0) ,e3(0)
+{}
+
+Expression::Component::Component(const Component &other)
+    :comp(other.comp)
+    ,e1(other.e1?other.e1->copy():0)
+    ,e2(other.e2?other.e2->copy():0)
+    ,e3(other.e3?other.e3->copy():0)
+{}
+
+Expression::Component::~Component() 
+{
+    delete e1;
+    delete e2;
+    delete e3;
+}
+
+Expression::Component* Expression::Component::copy() const {
+    return new Component(*this);
+}
+
+Expression::Component* Expression::Component::eval() const {
+    auto res = new Component(comp);
+    if(e1) res->e1 = e1->eval();
+    if(e2) res->e2 = e2->eval();
+    if(e3) res->e3 = e3->eval();
+    return res;
+}
+
+Py::Object Expression::Component::get(const Expression *owner, const Py::Object &pyobj) const {
+    try {
+        if(!e1 && !e2 && !e3)
+            return comp.get(pyobj);
+        if(!comp.isRange() && !e2 && !e3) {
+            auto index = e1->getPyValue();
+            Py::Object res;
+            if(pyobj.isMapping())
+                res = Py::Mapping(pyobj).getItem(index);
+            else {
+                Py_ssize_t i = PyNumber_AsSsize_t(index.ptr(), PyExc_IndexError);
+                if(PyErr_Occurred())
+                    throw Py::Exception();
+                res = Py::Sequence(pyobj).getItem(i);
+            }
+            if(!res.ptr())
+                throw Py::Exception();
+            return res;
+        }else{
+            Py::Object v1,v2,v3;
+            if(e1) v1 = e1->getPyValue();
+            if(e2) v2 = e2->getPyValue();
+            if(e3) v3 = e3->getPyValue();
+            PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
+                                      e2?v2.ptr():nullptr,
+                                      e3?v3.ptr():nullptr);
+            if(!s)
+                throw Py::Exception();
+            Py::Object slice(s,true);
+            PyObject *res = PyObject_GetItem(pyobj.ptr(),slice.ptr());
+            if(!res)
+                throw Py::Exception();
+            return Py::asObject(res);
+        }
+    }catch(Py::Exception &) {
+        EXPR_PY_THROW(owner);
+    }
+    return Py::Object();
+}
+
+void Expression::Component::set(const Expression *owner, Py::Object &pyobj, const Py::Object &value) const 
+{
+    if(!e1 && !e2 && !e3)
+        return comp.set(pyobj,value);
+    try {
+        if(!comp.isRange() && !e2 && !e3) {
+            auto index = e1->getPyValue();
+            if(pyobj.isMapping())
+                Py::Mapping(pyobj).setItem(index,value);
+            else {
+                Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
+                if(PyErr_Occurred() || PySequence_SetItem(pyobj.ptr(),i,value.ptr())==-1)
+                    throw Py::Exception();
+            }
+        }else{
+            Py::Object v1,v2,v3;
+            if(e1) v1 = e1->getPyValue();
+            if(e2) v2 = e2->getPyValue();
+            if(e3) v3 = e3->getPyValue();
+            PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
+                                      e2?v2.ptr():nullptr,
+                                      e3?v3.ptr():nullptr);
+            if(!s)
+                throw Py::Exception();
+            Py::Object slice(s,true);
+            if(PyObject_SetItem(pyobj.ptr(),slice.ptr(),value.ptr())<0)
+                throw Py::Exception();
+        }
+    }catch(Py::Exception &) {
+        EXPR_PY_THROW(owner);
+    }
+}
+
+void Expression::Component::del(const Expression *owner, Py::Object &pyobj) const {
+    try {
+        if(!e1 && !e2 && !e3) {
+            comp.del(pyobj);
+        } if(!comp.isRange() && !e2 && !e3) {
+            auto index = e1->getPyValue();
+            if(pyobj.isMapping())
+                Py::Mapping(pyobj).delItem(index);
+            else {
+                Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
+                if(PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
+                    throw Py::Exception();
+            }
+        }else{
+            Py::Object v1,v2,v3;
+            if(e1) v1 = e1->getPyValue();
+            if(e2) v2 = e2->getPyValue();
+            if(e3) v3 = e3->getPyValue();
+            PyObject *s = PySlice_New(e1?v1.ptr():nullptr,
+                                      e2?v2.ptr():nullptr,
+                                      e3?v3.ptr():nullptr);
+            if(!s)
+                throw Py::Exception();
+            Py::Object slice(s,true);
+            if(PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
+                throw Py::Exception();
+        }
+    }catch(Py::Exception &) {
+        EXPR_PY_THROW(owner);
+    }
+}
+
+void Expression::Component::visit(ExpressionVisitor &v) {
+    if(e1) e1->visit(v);
+    if(e2) e2->visit(v);
+    if(e3) e3->visit(v);
+}
+
+bool Expression::Component::isTouched() const {
+    return (e1&&e1->isTouched()) || 
+            (e2&&e2->isTouched()) ||
+            (e3&&e3->isTouched());
+}
+
+void Expression::Component::toString(std::ostream &ss, bool persistent) const {
+    if(!e1 && !e2 && !e3) {
+        if(comp.isSimple())
+            ss << '.';
+        comp.toString(ss,!persistent);
+        return;
+    }
+    ss << '[';
+    if(e1)
+        e1->toString(ss,persistent);
+    if(e2 || comp.isRange())
+        ss << ':';
+    if(e2)
+        e2->toString(ss,persistent);
+    if(e3) {
+        ss << ':';
+        e3->toString(ss,persistent);
+    }
+    ss << ']';
+}
+
+
 //
 // Expression base-class
 //
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::Expression, Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(App::Expression, Base::BaseClass)
 
 Expression::Expression(const DocumentObject *_owner)
-    : owner(_owner)
+    : owner(const_cast<App::DocumentObject*>(_owner)) 
 {
 
 }
 
 Expression::~Expression()
 {
+    for(auto c : components)
+        delete c;
+}
+
+Expression::Component* Expression::createComponent(const std::string &n) {
+    return new Component(n);
+}
+
+Expression::Component* Expression::createComponent(
+        Expression* e1, Expression* e2, Expression* e3, bool isRange) 
+{
+    return new Component(e1,e2,e3,isRange);
+}
+
+
+int Expression::priority() const {
+    return 20;
 }
 
 Expression * Expression::parse(const DocumentObject *owner, const std::string &buffer)
@@ -138,17 +926,326 @@ Expression * Expression::parse(const DocumentObject *owner, const std::string &b
     return ExpressionParser::parse(owner, buffer.c_str());
 }
 
+class GetDepsExpressionVisitor : public ExpressionVisitor {
+public:
+    GetDepsExpressionVisitor(ExpressionDeps &deps)
+        :deps(deps)
+    {}
+
+    virtual void visit(Expression &e) {
+        this->getDeps(e,deps);
+    }
+
+    ExpressionDeps &deps;
+};
+
+void Expression::getDeps(ExpressionDeps &deps)  const {
+    GetDepsExpressionVisitor v(deps);
+    const_cast<Expression*>(this)->visit(v);
+}
+
+ExpressionDeps Expression::getDeps()  const {
+    ExpressionDeps deps;
+    getDeps(deps);
+    return deps;
+}
+
+class GetDepObjsExpressionVisitor : public ExpressionVisitor {
+public:
+    GetDepObjsExpressionVisitor(std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)
+        :deps(deps),labels(labels)
+    {}
+
+    virtual void visit(Expression &e) {
+        this->getDepObjects(e,deps,labels);
+    }
+
+    std::set<App::DocumentObject*> &deps;
+    std::vector<std::string> *labels;
+};
+
+void Expression::getDepObjects(std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)  const {
+    GetDepObjsExpressionVisitor v(deps,labels);
+    const_cast<Expression *>(this)->visit(v);
+}
+
+std::set<App::DocumentObject*> Expression::getDepObjects(std::vector<std::string> *labels)  const {
+    std::set<App::DocumentObject*> deps;
+    getDepObjects(deps,labels);
+    return deps;
+}
+
+class GetIdentifiersExpressionVisitor : public ExpressionVisitor {
+public:
+    GetIdentifiersExpressionVisitor(std::set<App::ObjectIdentifier> &deps)
+        :deps(deps)
+    {}
+
+    virtual void visit(Expression &e) {
+        this->getIdentifiers(e,deps);
+    }
+
+    std::set<App::ObjectIdentifier> &deps;
+};
+
+void Expression::getIdentifiers(std::set<App::ObjectIdentifier> &deps)  const {
+    GetIdentifiersExpressionVisitor v(deps);
+    const_cast<Expression*>(this)->visit(v);
+}
+
+std::set<App::ObjectIdentifier> Expression::getIdentifiers()  const {
+    std::set<App::ObjectIdentifier> deps;
+    getIdentifiers(deps);
+    return deps;
+}
+
+class AdjustLinksExpressionVisitor : public ExpressionVisitor {
+public:
+    AdjustLinksExpressionVisitor(const std::set<App::DocumentObject*> &inList)
+        :inList(inList),res(false)
+    {}
+
+    virtual void visit(Expression &e) {
+        if(this->adjustLinks(e,inList))
+            res = true;
+    }
+
+    const std::set<App::DocumentObject*> &inList;
+    bool res;
+};
+
+bool Expression::adjustLinks(const std::set<App::DocumentObject*> &inList) {
+    AdjustLinksExpressionVisitor v(inList);
+    visit(v);
+    return v.res;
+}
+
+class ImportSubNamesExpressionVisitor : public ExpressionVisitor {
+public:
+    ImportSubNamesExpressionVisitor(const ObjectIdentifier::SubNameMap &subNameMap)
+        :subNameMap(subNameMap)
+    {}
+
+    virtual void visit(Expression &e) {
+        this->importSubNames(e,subNameMap);
+    }
+
+    const ObjectIdentifier::SubNameMap &subNameMap;
+};
+
+ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string> &nameMap) const {
+    if(!owner || !owner->getDocument())
+        return 0;
+    ObjectIdentifier::SubNameMap subNameMap;
+    for(auto &dep : getDeps()) {
+        for(auto &info : dep.second) {
+            for(auto &path : info.second) {
+                auto obj = path.getDocumentObject();
+                if(!obj)
+                    continue;
+                auto it = nameMap.find(obj->getExportName(true));
+                if(it!=nameMap.end())
+                    subNameMap.emplace(std::make_pair(obj,std::string()),it->second);
+                auto key = std::make_pair(obj,path.getSubObjectName());
+                if(key.second.empty() || subNameMap.count(key))
+                    continue;
+                std::string imported = PropertyLinkBase::tryImportSubName(
+                               obj,key.second.c_str(),owner->getDocument(), nameMap);
+                if(imported.size())
+                    subNameMap.emplace(std::move(key),std::move(imported));
+            }
+        }
+    }
+    if(subNameMap.empty())
+        return 0;
+    ImportSubNamesExpressionVisitor v(subNameMap);
+    auto res = copy();
+    res->visit(v);
+    return ExpressionPtr(res);
+}
+
+class UpdateLabelExpressionVisitor : public ExpressionVisitor {
+public:
+    UpdateLabelExpressionVisitor(App::DocumentObject *obj, const std::string &ref, const char *newLabel)
+        :obj(obj),ref(ref),newLabel(newLabel)
+    {}
+
+    virtual void visit(Expression &e) {
+        this->updateLabelReference(e,obj,ref,newLabel);
+    }
+
+    App::DocumentObject *obj;
+    const std::string &ref;
+    const char *newLabel;
+};
+
+ExpressionPtr Expression::updateLabelReference(
+        App::DocumentObject *obj, const std::string &ref, const char *newLabel) const 
+{
+    if(ref.size()<=2)
+        return ExpressionPtr();
+    std::vector<std::string> labels;
+    getDepObjects(&labels);
+    for(auto &label : labels) {
+        // ref contains something like $label. and we need to strip '$' and '.'
+        if(ref.compare(1,ref.size()-2,label)==0) {
+            UpdateLabelExpressionVisitor v(obj,ref,newLabel);
+            auto expr = copy();
+            expr->visit(v);
+            return ExpressionPtr(expr);
+        }
+    }
+    return ExpressionPtr();
+}
+
+class ReplaceObjectExpressionVisitor : public ExpressionVisitor {
+public:
+    ReplaceObjectExpressionVisitor(const DocumentObject *parent,
+            DocumentObject *oldObj, DocumentObject *newObj)
+        : parent(parent),oldObj(oldObj),newObj(newObj)
+    {
+    }
+
+    void visit(Expression &e) {
+        if(collect) 
+            this->collectReplacement(e,paths,parent,oldObj,newObj);
+        else 
+            this->renameObjectIdentifier(e,paths,dummy);
+    }
+
+    const DocumentObject *parent;
+    DocumentObject *oldObj;
+    DocumentObject *newObj;
+    ObjectIdentifier dummy;
+    std::map<ObjectIdentifier, ObjectIdentifier> paths;
+    bool collect = true;
+};
+
+ExpressionPtr Expression::replaceObject(const DocumentObject *parent, 
+        DocumentObject *oldObj, DocumentObject *newObj) const 
+{
+    ReplaceObjectExpressionVisitor v(parent,oldObj,newObj);
+
+    // First pass, collect any changes. We have to const_cast it, as visit() is
+    // not const. This is ugly...
+    const_cast<Expression*>(this)->visit(v);
+
+    if(v.paths.empty())
+        return ExpressionPtr();
+
+    // Now make a copy and do the actual replacement
+    auto expr = copy();
+    v.collect = false;
+    expr->visit(v);
+    return ExpressionPtr(expr);
+}
+
+App::any Expression::getValueAsAny() const {
+    Base::PyGILStateLocker lock;
+    return pyObjectToAny(getPyValue());
+}
+
+Py::Object Expression::getPyValue() const {
+    try {
+        Py::Object pyobj = _getPyValue();
+        if(components.size()) {
+            for(auto &c : components)
+                pyobj = c->get(this,pyobj);
+        }
+        return pyobj;
+    }catch(Py::Exception &) {
+        EXPR_PY_THROW(this);
+    }
+    return Py::Object();
+}
+
+void Expression::addComponent(Component *component) {
+    assert(component);
+    components.push_back(component);
+}
+
+void Expression::visit(ExpressionVisitor &v) {
+    _visit(v);
+    for(auto &c : components)
+        c->visit(v);
+    v.visit(*this);
+}
+
+Expression* Expression::eval() const {
+    Base::PyGILStateLocker lock;
+    return expressionFromPy(owner,getPyValue());
+}
+
+bool Expression::isSame(const Expression &other) const {
+    if(&other == this)
+        return true;
+    if(getTypeId()!=other.getTypeId())
+        return false;
+    return comment==other.comment && toString(true,true) == other.toString(true,true);
+}
+
+std::string Expression::toString(bool persistent, bool checkPriority, int indent) const {
+    std::ostringstream ss;
+    toString(ss,persistent,checkPriority,indent);
+    return ss.str();
+}
+
+void Expression::toString(std::ostream &ss, bool persistent, bool checkPriority, int indent) const {
+    if(components.empty()) {
+        bool needsParens = checkPriority && priority()<20;
+        if(needsParens)
+            ss << '(';
+        _toString(ss,persistent,indent);
+        if(needsParens)
+            ss << ')';
+        return;
+    }
+    if(!_isIndexable()) {
+        ss << '(';
+        _toString(ss,persistent,indent);
+        ss << ')';
+    }else
+        _toString(ss,persistent,indent);
+    for(auto &c : components)
+        c->toString(ss,persistent);
+}
+
+Expression* Expression::copy() const {
+    auto expr = _copy();
+    copy_vector(expr->components,components);
+    expr->comment = comment;
+    return expr;
+}
+
+
 //
 // UnitExpression class
 //
 
-TYPESYSTEM_SOURCE(App::UnitExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::UnitExpression, App::Expression)
 
 UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantity & _quantity, const std::string &_unitStr)
     : Expression(_owner)
     , quantity(_quantity)
     , unitStr(_unitStr)
 {
+}
+
+UnitExpression::~UnitExpression() {
+    if(cache) {
+        Base::PyGILStateLocker lock;
+        Py::_XDECREF(cache);
+    }
+}
+
+void UnitExpression::setQuantity(const Quantity &_quantity)
+{
+    quantity = _quantity;
+    if(cache) {
+        Base::PyGILStateLocker lock;
+        Py::_XDECREF(cache);
+        cache = 0;
+    }
 }
 
 /**
@@ -162,17 +1259,11 @@ UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantit
 void UnitExpression::setUnit(const Quantity &_quantity)
 {
     quantity = _quantity;
-}
-
-/**
-  * Evaulate the expression
-  *
-  * @returns A NumberExpression set to 1.0.
-  */
-
-Expression *UnitExpression::eval() const
-{
-    return new NumberExpression(owner, quantity);
+    if(cache) {
+        Base::PyGILStateLocker lock;
+        Py::_XDECREF(cache);
+        cache = 0;
+    }
 }
 
 /**
@@ -193,43 +1284,35 @@ Expression *UnitExpression::simplify() const
   * Return a string representation of the expression.
   */
 
-std::string UnitExpression::toString() const
+void UnitExpression::_toString(std::ostream &ss, bool,int) const
 {
-    return unitStr;
+    ss << unitStr;
 }
 
 /**
   * Return a copy of the expression.
   */
 
-Expression *UnitExpression::copy() const
+Expression *UnitExpression::_copy() const
 {
     return new UnitExpression(owner, quantity, unitStr);
 }
 
-int UnitExpression::priority() const
-{
-    return 20;
+Py::Object UnitExpression::_getPyValue() const {
+    if(!cache) 
+        cache = Py::new_reference_to(pyFromQuantity(quantity));
+    return Py::Object(cache);
 }
 
 //
 // NumberExpression class
 //
 
-TYPESYSTEM_SOURCE(App::NumberExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::NumberExpression, App::Expression)
 
 NumberExpression::NumberExpression(const DocumentObject *_owner, const Quantity &_quantity)
     : UnitExpression(_owner, _quantity)
 {
-}
-
-/**
-  * Evaluate the expression. For NumberExpressions, it is a simply copy().
-  */
-
-Expression * NumberExpression::eval() const
-{
-    return copy();
 }
 
 /**
@@ -246,14 +1329,9 @@ Expression *NumberExpression::simplify() const
   * Create and return a copy of the expression.
   */
 
-Expression *NumberExpression::copy() const
+Expression *NumberExpression::_copy() const
 {
-    return new NumberExpression(owner, quantity);
-}
-
-int NumberExpression::priority() const
-{
-    return 20;
+    return new NumberExpression(owner, getQuantity());
 }
 
 /**
@@ -262,26 +1340,30 @@ int NumberExpression::priority() const
 
 void NumberExpression::negate()
 {
-    quantity.setValue(-quantity.getValue());
+    setQuantity(-getQuantity());
 }
 
-std::string NumberExpression::toString() const
+void NumberExpression::_toString(std::ostream &ss, bool,int) const
 {
-    std::stringstream s;
-    s << std::setprecision(std::numeric_limits<double>::digits10 + 1) << quantity.getValue();
+    ss << std::setprecision(std::numeric_limits<double>::digits10 + 2) << getValue();
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')
 //        s.erase(s.size() - 1);
+}
 
-   return s.str();
+bool NumberExpression::isInteger(long *l) const {
+    long _l;
+    if(!l)
+        l = &_l;
+    return essentiallyInteger(getValue(),*l);
 }
 
 //
 // OperatorExpression class
 //
 
-TYPESYSTEM_SOURCE(App::OperatorExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::OperatorExpression, App::Expression)
 
 OperatorExpression::OperatorExpression(const App::DocumentObject *_owner, Expression * _left, Operator _op, Expression * _right)
     : UnitExpression(_owner)
@@ -307,117 +1389,151 @@ bool OperatorExpression::isTouched() const
     return left->isTouched() || right->isTouched();
 }
 
-/* The following definitions are from The art of computer programming by Knuth
- * (copied from http://stackoverflow.com/questions/17333/most-effective-way-for-float-and-double-comparison)
- */
-
-/*
-static bool approximatelyEqual(double a, double b, double epsilon)
+static Py::Object calc(const Expression *expr, int op,
+                 const Expression *left, const Expression *right, bool inplace) 
 {
-    return fabs(a - b) <= ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
-}
-*/
+    Py::Object l = left->getPyValue();
 
-static bool essentiallyEqual(double a, double b, double epsilon)
-{
-    return fabs(a - b) <= ( (fabs(a) > fabs(b) ? fabs(b) : fabs(a)) * epsilon);
-}
-
-static bool definitelyGreaterThan(double a, double b, double epsilon)
-{
-    return (a - b) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
-}
-
-static bool definitelyLessThan(double a, double b, double epsilon)
-{
-    return (b - a) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
-}
-
-/**
-  * Evaluate the expression. Returns a new Expression with the result, or throws
-  * an exception if something is wrong, i.e the expression cannot be evaluated.
-  */
-
-Expression * OperatorExpression::eval() const
-{
-    std::unique_ptr<Expression> e1(left->eval());
-    NumberExpression * v1;
-    std::unique_ptr<Expression> e2(right->eval());
-    NumberExpression * v2;
-    Expression * output;
-    const double epsilon = std::numeric_limits<double>::epsilon();
-
-    v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
-    v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
-
-    if (v1 == 0 || v2 == 0)
-        throw ExpressionError("Invalid expression");
-
-    switch (op) {
-    case ADD:
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for + operator");
-        output = new NumberExpression(owner, v1->getQuantity() + v2->getQuantity());
-        break;
-    case SUB:
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for - operator");
-        output = new NumberExpression(owner, v1->getQuantity()- v2->getQuantity());
-        break;
-    case MUL:
-    case UNIT:
-        output = new NumberExpression(owner, v1->getQuantity() * v2->getQuantity());
-        break;
-    case DIV:
-        output = new NumberExpression(owner, v1->getQuantity() / v2->getQuantity());
-        break;
-    case POW:
-        output = new NumberExpression(owner, v1->getQuantity().pow(v2->getQuantity()) );
-        break;
-    case EQ:
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for the = operator");
-        output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
-        break;
-    case NEQ:
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for the != operator");
-        output = new BooleanExpression(owner, !essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
-        break;
-    case LT:
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for the < operator");
-        output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) );
-        break;
-    case GT:
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for the > operator");
-        output = new BooleanExpression(owner, definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon) );
-        break;
-    case LTE:
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for the <= operator");
-        output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) ||
-                                       essentiallyEqual(v1->getValue(), v2->getValue(), epsilon));
-        break;
-    case GTE:
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Incompatible units for the >= operator");
-        output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) ||
-                                       definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon));
-        break;
-    case NEG:
-        output = new NumberExpression(owner, -v1->getQuantity() );
-        break;
-    case POS:
-        output = new NumberExpression(owner, v1->getQuantity() );
-        break;
-    default:
-        output = 0;
-        assert(0);
+    // For security reason, restrict supported types
+    if(!PyObject_TypeCheck(l.ptr(),&PyObjectBase::Type)
+            && !l.isNumeric() && !l.isString() && !l.isList() && !l.isDict())
+    {
+        __EXPR_THROW(Base::TypeError,"Unsupported operator", expr);
     }
 
-    return output;
+    // check possible unary operation first
+    switch(op) {
+    case OperatorExpression::POS:{
+        PyObject *res = PyNumber_Positive(l.ptr());
+        if(!res) EXPR_PY_THROW(expr);
+        return Py::asObject(res);
+    }
+    case OperatorExpression::NEG:{
+        PyObject *res = PyNumber_Negative(l.ptr());
+        if(!res) EXPR_PY_THROW(expr);
+        return Py::asObject(res);
+    } default:
+        break;
+    }
+
+    Py::Object r = right->getPyValue();
+    // For security reason, restrict supported types
+    if((op!=OperatorExpression::MOD || !l.isString())
+            && !PyObject_TypeCheck(r.ptr(),&PyObjectBase::Type)
+                && !r.isNumeric()
+                && !r.isString()
+                && !r.isList()
+                && !r.isDict()) 
+    {
+        __EXPR_THROW(Base::TypeError,"Unsupported operator", expr);
+    }
+
+    switch(op) {
+#define RICH_COMPARE(_op,_pyop) \
+    case OperatorExpression::_op: {\
+        int res = PyObject_RichCompareBool(l.ptr(),r.ptr(),Py_##_pyop);\
+        if(res<0) EXPR_PY_THROW(expr);\
+        return Py::Boolean(!!res);\
+    }
+    RICH_COMPARE(LT,LT)
+    RICH_COMPARE(LTE,LE)
+    RICH_COMPARE(GT,GT)
+    RICH_COMPARE(GTE,GE)
+    RICH_COMPARE(EQ,EQ)
+    RICH_COMPARE(NEQ,NE)
+
+#define _BINARY_OP(_pyop) \
+        res = inplace?PyNumber_InPlace##_pyop(l.ptr(),r.ptr()):\
+                       PyNumber_##_pyop(l.ptr(),r.ptr());\
+        if(!res) EXPR_PY_THROW(expr);\
+        return Py::asObject(res);
+
+#define BINARY_OP(_op,_pyop) \
+    case OperatorExpression::_op: {\
+        PyObject *res;\
+        _BINARY_OP(_pyop);\
+    }
+
+    BINARY_OP(SUB,Subtract)
+    BINARY_OP(MUL,Multiply)
+    BINARY_OP(UNIT,Multiply)
+    BINARY_OP(DIV,TrueDivide)
+    case OperatorExpression::ADD: {
+        PyObject *res;
+#if PY_MAJOR_VERSION < 3
+        if (PyString_CheckExact(*l) && PyString_CheckExact(*r)) {
+            Py_ssize_t v_len = PyString_GET_SIZE(*l);
+            Py_ssize_t w_len = PyString_GET_SIZE(*r);
+            Py_ssize_t new_len = v_len + w_len;
+            if (new_len < 0)
+                __EXPR_THROW(OverflowError, "strings are too large to concat", expr);
+
+            if (l.ptr()->ob_refcnt==1 && !PyString_CHECK_INTERNED(l.ptr())) {
+                res = Py::new_reference_to(l);
+                // Must make sure ob_refcnt is still 1
+                l = Py::Object();
+                if (_PyString_Resize(&res, new_len) != 0)
+                    EXPR_PY_THROW(expr);
+                memcpy(PyString_AS_STRING(res) + v_len, PyString_AS_STRING(*r), w_len);
+            }else{
+                res = Py::new_reference_to(l);
+                l = Py::Object();
+                PyString_Concat(&res,*r);
+                if(!res) EXPR_PY_THROW(expr);
+            }
+            return Py::asObject(res);
+        }
+#else
+        if (PyUnicode_CheckExact(*l) && PyUnicode_CheckExact(*r)) {
+            if(inplace) {
+                res = Py::new_reference_to(l);
+                // Try to make sure ob_refcnt is 1, although unlike
+                // PyString_Resize above, PyUnicode_Append can handle other
+                // cases.
+                l = Py::Object();
+                PyUnicode_Append(&res, r.ptr());
+            }else
+                res = PyUnicode_Concat(l.ptr(),r.ptr());
+            if(!res) EXPR_PY_THROW(expr);
+            return Py::asObject(res);
+        }
+#endif
+        _BINARY_OP(Add);
+    }
+    case OperatorExpression::POW: {
+        PyObject *res;
+        if(inplace)
+            res = PyNumber_InPlacePower(l.ptr(),r.ptr(),Py::None().ptr());
+        else
+            res = PyNumber_Power(l.ptr(),r.ptr(),Py::None().ptr());
+        if(!res) EXPR_PY_THROW(expr);
+        return Py::asObject(res);
+    }
+    case OperatorExpression::MOD: {
+        PyObject *res;
+#if PY_MAJOR_VERSION < 3
+        if (PyString_CheckExact(l.ptr()) && 
+                (!PyString_Check(r.ptr()) || PyString_CheckExact(r.ptr()))) 
+            res = PyString_Format(l.ptr(), r.ptr());
+#else
+        if (PyUnicode_CheckExact(l.ptr()) && 
+                (!PyUnicode_Check(r.ptr()) || PyUnicode_CheckExact(r.ptr())))
+            res = PyUnicode_Format(l.ptr(), r.ptr());
+#endif
+        else if(inplace)
+            res = PyNumber_InPlaceRemainder(l.ptr(),r.ptr());
+        else
+            res = PyNumber_InPlaceRemainder(l.ptr(),r.ptr());
+        if(!res) EXPR_PY_THROW(expr);
+        return Py::asObject(res);
+    }
+    default:
+        __EXPR_THROW(RuntimeError,"Unsupported operator",expr);
+    }
+}
+
+Py::Object OperatorExpression::_getPyValue() const {
+    return calc(this,op,left,right,false);
 }
 
 /**
@@ -449,9 +1565,8 @@ Expression *OperatorExpression::simplify() const
   * @returns A string representing the expression.
   */
 
-std::string OperatorExpression::toString() const
+void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
 {
-    std::stringstream s;
     bool needsParens;
     Operator leftOperator(NONE), rightOperator(NONE);
 
@@ -469,19 +1584,19 @@ std::string OperatorExpression::toString() const
 
     switch (op) {
     case NEG:
-        s << "-" << (needsParens ? "(" : "") << left->toString() << (needsParens ? ")" : "");
-        return s.str();
+        s << "-" << (needsParens ? "(" : "") << left->toString(persistent) << (needsParens ? ")" : "");
+        return;
     case POS:
-        s << "+" << (needsParens ? "(" : "") << left->toString() << (needsParens ? ")" : "");
-        return s.str();
+        s << "+" << (needsParens ? "(" : "") << left->toString(persistent) << (needsParens ? ")" : "");
+        return;
     default:
         break;
     }
 
     if (needsParens)
-        s << "(" << left->toString() << ")";
+        s << "(" << left->toString(persistent) << ")";
     else
-        s << left->toString();
+        s << left->toString(persistent);
 
     switch (op) {
     case ADD:
@@ -495,6 +1610,9 @@ std::string OperatorExpression::toString() const
         break;
     case DIV:
         s << " / ";
+        break;
+    case MOD:
+        s << " % ";
         break;
     case POW:
         s << " ^ ";
@@ -539,19 +1657,19 @@ std::string OperatorExpression::toString() const
             needsParens = true;
     }
 
-    if (needsParens)
-        s << "(" << right->toString() << ")";
-    else
-        s << right->toString();
-
-    return s.str();
+    if (needsParens) {
+        s << "(";
+        right->toString(s,persistent);
+        s << ")";
+    }else
+        right->toString(s,persistent);
 }
 
 /**
   * A deep copy of the expression.
   */
 
-Expression *OperatorExpression::copy() const
+Expression *OperatorExpression::_copy() const
 {
     return new OperatorExpression(owner, left->copy(), op, right->copy());
 }
@@ -578,6 +1696,7 @@ int OperatorExpression::priority() const
         return 3;
     case MUL:
     case DIV:
+    case MOD:
         return 4;
     case POW:
         return 5;
@@ -591,25 +1710,12 @@ int OperatorExpression::priority() const
     }
 }
 
-/**
-  * Compute the expressions dependencies, i.e the properties it relies on.
-  *
-  * @param props A set of strings. Each string contains the name of a property that this expression depends on.
-  */
-
-void OperatorExpression::getDeps(std::set<ObjectIdentifier> &props) const
-{
-    left->getDeps(props);
-    right->getDeps(props);
-}
-
-void OperatorExpression::visit(ExpressionVisitor &v)
+void OperatorExpression::_visit(ExpressionVisitor &v)
 {
     if (left)
         left->visit(v);
     if (right)
         right->visit(v);
-    v.visit(this);
 }
 
 bool OperatorExpression::isCommutative() const
@@ -645,7 +1751,7 @@ bool OperatorExpression::isRightAssociative() const
 // FunctionExpression class. This class handles functions with one or two parameters.
 //
 
-TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression);
+TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression)
 
 FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::vector<Expression *> _args)
     : UnitExpression(_owner)
@@ -671,19 +1777,20 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case TRUNC:
     case CEIL:
     case FLOOR:
+    case MINVERT:
         if (args.size() != 1)
-            throw ExpressionError("Invalid number of arguments: exactly one required.");
+            EXPR_THROW("Invalid number of arguments: exactly one required.");
         break;
     case MOD:
     case ATAN2:
     case POW:
         if (args.size() != 2)
-            throw ExpressionError("Invalid number of arguments: exactly two required.");
+            EXPR_THROW("Invalid number of arguments: exactly two required.");
         break;
     case HYPOT:
     case CATH:
         if (args.size() < 2 || args.size() > 3)
-            throw ExpressionError("Invalid number of arguments: exactly two, or three required.");
+            EXPR_THROW("Invalid number of arguments: exactly two, or three required.");
         break;
     case STDDEV:
     case SUM:
@@ -691,14 +1798,20 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case COUNT:
     case MIN:
     case MAX:
+    case CREATE:
+    case MSCALE:
         if (args.size() == 0)
-            throw ExpressionError("Invalid number of arguments: at least one required.");
+            EXPR_THROW("Invalid number of arguments: at least one required.");
+        break;
+    case LIST:
+    case TUPLE:
         break;
     case NONE:
     case AGGREGATES:
     case LAST:
     default:
-        throw ExpressionError("Unknown function");
+        EXPR_THROW("Unknown function");
+        break;
     }
 }
 
@@ -849,42 +1962,43 @@ public:
     }
 };
 
-Expression * FunctionExpression::evalAggregate() const
+Py::Object FunctionExpression::evalAggregate(
+        const Expression *owner, int f, const std::vector<Expression*> &args)
 {
-    boost::shared_ptr<Collector> c;
+    std::unique_ptr<Collector> c;
 
     switch (f) {
     case SUM:
-        c = boost::shared_ptr<Collector>(new SumCollector());
+        c.reset(new SumCollector);
         break;
     case AVERAGE:
-        c = boost::shared_ptr<Collector>(new AverageCollector());
+        c.reset(new AverageCollector);
         break;
     case STDDEV:
-        c = boost::shared_ptr<Collector>(new StdDevCollector());
+        c.reset(new StdDevCollector);
         break;
     case COUNT:
-        c = boost::shared_ptr<Collector>(new CountCollector());
+        c.reset(new CountCollector);
         break;
     case MIN:
-        c = boost::shared_ptr<Collector>(new MinCollector());
+        c.reset(new MinCollector);
         break;
     case MAX:
-        c = boost::shared_ptr<Collector>(new MaxCollector());
+        c.reset(new MaxCollector);
         break;
     default:
         assert(false);
     }
 
-    for (size_t i = 0; i< args.size(); ++i) {
-        if (args[i]->isDerivedFrom(RangeExpression::getClassTypeId())) {
-            RangeExpression * v = static_cast<RangeExpression*>(args[i]);
-            Range range(v->getRange());
+    for (auto &arg : args) {
+        if (arg->isDerivedFrom(RangeExpression::getClassTypeId())) {
+            Range range(static_cast<const RangeExpression&>(*arg).getRange());
 
             do {
-                Property * p = owner->getPropertyByName(range.address().c_str());
+                Property * p = owner->getOwner()->getPropertyByName(range.address().c_str());
                 PropertyQuantity * qp;
                 PropertyFloat * fp;
+                PropertyInteger * ip;
 
                 if (!p)
                     continue;
@@ -893,57 +2007,156 @@ Expression * FunctionExpression::evalAggregate() const
                     c->collect(qp->getQuantityValue());
                 else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
                     c->collect(Quantity(fp->getValue()));
+                else if ((ip = freecad_dynamic_cast<PropertyInteger>(p)) != 0)
+                    c->collect(Quantity(ip->getValue()));
                 else
-                    throw Exception("Invalid property type for aggregate");
+                    _EXPR_THROW("Invalid property type for aggregate.", owner);
             } while (range.next());
         }
         else {
-            std::unique_ptr<Expression> e(args[i]->eval());
-            NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
-
-            if (n)
-                c->collect(n->getQuantity());
+            Quantity q;
+            if(pyToQuantity(q,arg->getPyValue())) 
+                c->collect(q);
         }
     }
 
-    return new NumberExpression(owner, c->getQuantity());
+    return pyFromQuantity(c->getQuantity());
 }
 
-/**
-  * Evaluate function. Returns a NumberExpression if evaluation is successful.
-  * Throws an ExpressionError exception if something fails.
-  *
-  * @returns A NumberExpression with the result.
-  */
-
-Expression * FunctionExpression::eval() const
+Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std::vector<Expression*> &args) 
 {
+    if(!expr || !expr->getOwner())
+        _EXPR_THROW("Invalid owner.", expr);
+
     // Handle aggregate functions
     if (f > AGGREGATES)
-        return evalAggregate();
+        return evalAggregate(expr, f, args);
 
-    std::unique_ptr<Expression> e1(args[0]->eval());
-    std::unique_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
-    std::unique_ptr<Expression> e3(args.size() > 2 ? args[2]->eval() : 0);
-    NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
-    NumberExpression * v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
-    NumberExpression * v3 = freecad_dynamic_cast<NumberExpression>(e3.get());
+    if(f == LIST) {
+        if(args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
+            return args[0]->getPyValue();
+        Py::List list(args.size());
+        int i=0;
+        for(auto &arg : args)
+            list.setItem(i++,arg->getPyValue());
+        return list;
+    } else if (f == TUPLE) {
+        if(args.size() == 1 && args[0]->isDerivedFrom(RangeExpression::getClassTypeId()))
+            return Py::Tuple(args[0]->getPyValue());
+        Py::Tuple tuple(args.size());
+        int i=0;
+        for(auto &arg : args)
+            tuple.setItem(i++,arg->getPyValue());
+        return tuple;
+    } else if (f == MSCALE) {
+        if(args.size() < 2)
+            _EXPR_THROW("Function requires at least two arguments.",expr);
+        Py::Object pymat = args[0]->getPyValue();
+        Py::Object pyscale;
+        if(PyObject_TypeCheck(pymat.ptr(),&Base::MatrixPy::Type)) {
+            if(args.size() == 2) {
+                Py::Object obj = args[1]->getPyValue();
+                if(obj.isSequence() && PySequence_Size(obj.ptr())==3)
+                    pyscale = Py::Tuple(Py::Sequence(obj));
+            } else if(args.size() == 4) {
+                Py::Tuple tuple(3);
+                tuple.setItem(0,args[1]->getPyValue());
+                tuple.setItem(1,args[2]->getPyValue());
+                tuple.setItem(2,args[3]->getPyValue());
+                pyscale = tuple;
+            }
+        }
+        if(!pyscale.isNone()) {
+            Base::Vector3d vec;
+            if (!PyArg_ParseTuple(pyscale.ptr(), "ddd", &vec.x,&vec.y,&vec.z))
+                PyErr_Clear();
+            else {
+                auto mat = static_cast<Base::MatrixPy*>(pymat.ptr())->value();
+                mat.scale(vec);
+                return Py::asObject(new Base::MatrixPy(mat));
+            }
+        }
+        _EXPR_THROW("Function requires arguments to be either "
+                "(matrix,vector) or (matrix,number,number,number).", expr);
+    }
+
+    if(args.empty())
+        _EXPR_THROW("Function requires at least one argument.",expr);
+
+    if (f == MINVERT) {
+        Py::Object pyobj = args[0]->getPyValue();
+        Py::Tuple args;
+        if (PyObject_TypeCheck(pyobj.ptr(),&Base::MatrixPy::Type)) {
+            auto m = static_cast<Base::MatrixPy*>(pyobj.ptr())->value();
+            if (fabs(m.determinant()) <= DBL_EPSILON)
+                _EXPR_THROW("Cannot invert singular matrix.",expr);
+            m.inverseGauss();
+            return Py::asObject(new Base::MatrixPy(m));
+
+        } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::PlacementPy::Type)) {
+            const auto &pla = *static_cast<Base::PlacementPy*>(pyobj.ptr())->getPlacementPtr();
+            return Py::asObject(new Base::PlacementPy(pla.inverse()));
+
+        } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::RotationPy::Type)) {
+            const auto &rot = *static_cast<Base::RotationPy*>(pyobj.ptr())->getRotationPtr();
+            return Py::asObject(new Base::RotationPy(rot.inverse()));
+        }
+         _EXPR_THROW("Function requires the first argument to be either Matrix, Placement or Rotation.",expr);
+
+    } else if (f == CREATE) {
+        Py::Object pytype = args[0]->getPyValue();
+        if(!pytype.isString())
+            _EXPR_THROW("Function requires the first argument to be a string.",expr);
+        std::string type(pytype.as_string());
+        Py::Object res;
+        if(boost::iequals(type,"matrix")) 
+            res = Py::asObject(new Base::MatrixPy(Base::Matrix4D()));
+        else if(boost::iequals(type,"vector"))
+            res = Py::asObject(new Base::VectorPy(Base::Vector3d()));
+        else if(boost::iequals(type,"placement"))
+            res = Py::asObject(new Base::PlacementPy(Base::Placement()));
+        else if(boost::iequals(type,"rotation"))
+            res = Py::asObject(new Base::RotationPy(Base::Rotation()));
+        else
+            _EXPR_THROW("Unknown type '" << type << "'.",expr);
+        if(args.size()>1) {
+            Py::Tuple tuple(args.size()-1);
+            for(unsigned i=1;i<args.size();++i)
+                tuple.setItem(i-1,args[i]->getPyValue());
+            Py::Dict dict;
+            PyObjectBase::__PyInit(res.ptr(),tuple.ptr(),dict.ptr());
+        }
+        return res;
+    }
+
+    Py::Object e1 = args[0]->getPyValue();
+    Quantity v1 = pyToQuantity(e1,expr,"Invalid first argument.");
+    Py::Object e2;
+    Quantity v2;
+    if(args.size()>1) {
+        e2 = args[1]->getPyValue();
+        v2 = pyToQuantity(e2,expr,"Invalid second argument.");
+    }
+    Py::Object e3;
+    Quantity v3;
+    if(args.size()>2) {
+        e3 = args[2]->getPyValue();
+        v3 = pyToQuantity(e3,expr,"Invalid third argument.");
+    }
+
     double output;
     Unit unit;
     double scaler = 1;
 
-    if (v1 == 0)
-        throw ExpressionError("Invalid argument.");
-
-    double value = v1->getValue();
+    double value = v1.getValue();
 
     /* Check units and arguments */
     switch (f) {
     case COS:
     case SIN:
     case TAN:
-        if (!(v1->getUnit() == Unit::Angle || v1->getUnit().isEmpty()))
-            throw ExpressionError("Unit must be either empty or an angle.");
+        if (!(v1.getUnit() == Unit::Angle || v1.getUnit().isEmpty()))
+            _EXPR_THROW("Unit must be either empty or an angle.",expr);
 
         // Convert value to radians
         value *= M_PI / 180.0;
@@ -952,8 +2165,8 @@ Expression * FunctionExpression::eval() const
     case ACOS:
     case ASIN:
     case ATAN:
-        if (!v1->getUnit().isEmpty())
-            throw ExpressionError("Unit must be empty.");
+        if (!v1.getUnit().isEmpty())
+            _EXPR_THROW("Unit must be empty.",expr);
         unit = Unit::Angle;
         scaler = 180.0 / M_PI;
         break;
@@ -963,8 +2176,8 @@ Expression * FunctionExpression::eval() const
     case SINH:
     case TANH:
     case COSH:
-        if (!v1->getUnit().isEmpty())
-            throw ExpressionError("Unit must be empty.");
+        if (!v1.getUnit().isEmpty())
+            _EXPR_THROW("Unit must be empty.",expr);
         unit = Unit();
         break;
     case ROUND:
@@ -972,10 +2185,10 @@ Expression * FunctionExpression::eval() const
     case CEIL:
     case FLOOR:
     case ABS:
-        unit = v1->getUnit();
+        unit = v1.getUnit();
         break;
     case SQRT: {
-        unit = v1->getUnit();
+        unit = v1.getUnit();
 
         // All components of unit must be either zero or dividable by 2
         UnitSignature s = unit.getSignature();
@@ -987,7 +2200,7 @@ Expression * FunctionExpression::eval() const
               ((s.AmountOfSubstance % 2) == 0) &&
               ((s.LuminousIntensity % 2) == 0) &&
               ((s.Angle % 2) == 0))
-            throw ExpressionError("All dimensions must be even to compute the square root.");
+            _EXPR_THROW("All dimensions must be even to compute the square root.",expr);
 
         unit = Unit(s.Length /2,
                     s.Mass / 2,
@@ -1000,53 +2213,53 @@ Expression * FunctionExpression::eval() const
         break;
     }
     case ATAN2:
-        if (v2 == 0)
-            throw ExpressionError("Invalid second argument.");
+        if (e2.isNone())
+            _EXPR_THROW("Invalid second argument.",expr);
 
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Units must be equal");
+        if (v1.getUnit() != v2.getUnit())
+            _EXPR_THROW("Units must be equal.",expr);
         unit = Unit::Angle;
         scaler = 180.0 / M_PI;
         break;
     case MOD:
-        if (v2 == 0)
-            throw ExpressionError("Invalid second argument.");
-        unit = v1->getUnit() / v2->getUnit();
+        if (e2.isNone())
+            _EXPR_THROW("Invalid second argument.",expr);
+        unit = v1.getUnit() / v2.getUnit();
         break;
     case POW: {
-        if (v2 == 0)
-            throw ExpressionError("Invalid second argument.");
+        if (e2.isNone())
+            _EXPR_THROW("Invalid second argument.",expr);
 
-        if (!v2->getUnit().isEmpty())
-            throw ExpressionError("Exponent is not allowed to have a unit.");
+        if (!v2.getUnit().isEmpty())
+            _EXPR_THROW("Exponent is not allowed to have a unit.",expr);
 
         // Compute new unit for exponentiation
-        double exponent = v2->getValue();
-        if (!v1->getUnit().isEmpty()) {
+        double exponent = v2.getValue();
+        if (!v1.getUnit().isEmpty()) {
             if (exponent - boost::math::round(exponent) < 1e-9)
-                unit = v1->getUnit().pow(exponent);
+                unit = v1.getUnit().pow(exponent);
             else
-                throw ExpressionError("Exponent must be an integer when used with a unit");
+                _EXPR_THROW("Exponent must be an integer when used with a unit.",expr);
         }
         break;
     }
     case HYPOT:
     case CATH:
-        if (v2 == 0)
-            throw ExpressionError("Invalid second argument.");
-        if (v1->getUnit() != v2->getUnit())
-            throw ExpressionError("Units must be equal");
+        if (e2.isNone())
+            _EXPR_THROW("Invalid second argument.",expr);
+        if (v1.getUnit() != v2.getUnit())
+            _EXPR_THROW("Units must be equal.",expr);
 
         if (args.size() > 2) {
-            if (v3 == 0)
-                throw ExpressionError("Invalid second argument.");
-            if (v2->getUnit() != v3->getUnit())
-                throw ExpressionError("Units must be equal");
+            if (e3.isNone())
+                _EXPR_THROW("Invalid second argument.",expr);
+            if (v2.getUnit() != v3.getUnit())
+                _EXPR_THROW("Units must be equal.",expr);
         }
-        unit = v1->getUnit();
+        unit = v1.getUnit();
         break;
     default:
-        assert(0);
+        _EXPR_THROW("Unknown function: " << f,expr);
     }
 
     /* Compute result */
@@ -1094,23 +2307,23 @@ Expression * FunctionExpression::eval() const
         output = cosh(value);
         break;
     case MOD: {
-        output = fmod(value, v2->getValue());
+        output = fmod(value, v2.getValue());
         break;
     }
     case ATAN2: {
-        output = atan2(value, v2->getValue());
+        output = atan2(value, v2.getValue());
         break;
     }
     case POW: {
-        output = pow(value, v2->getValue());
+        output = pow(value, v2.getValue());
         break;
     }
     case HYPOT: {
-        output = sqrt(pow(v1->getValue(), 2) + pow(v2->getValue(), 2) + (v3 ? pow(v3->getValue(), 2) : 0));
+        output = sqrt(pow(v1.getValue(), 2) + pow(v2.getValue(), 2) + (!e3.isNone() ? pow(v3.getValue(), 2) : 0));
         break;
     }
     case CATH: {
-        output = sqrt(pow(v1->getValue(), 2) - pow(v2->getValue(), 2) - (v3 ? pow(v3->getValue(), 2) : 0));
+        output = sqrt(pow(v1.getValue(), 2) - pow(v2.getValue(), 2) - (!e3.isNone() ? pow(v3.getValue(), 2) : 0));
         break;
     }
     case ROUND:
@@ -1126,11 +2339,14 @@ Expression * FunctionExpression::eval() const
         output = floor(value);
         break;
     default:
-        output = 0;
-        assert(0);
+        _EXPR_THROW("Unknown function: " << f,expr);
     }
 
-    return new NumberExpression(owner, Quantity(scaler * output, unit));
+    return Py::asObject(new QuantityPy(new Quantity(scaler * output, unit)));
+}
+
+Py::Object FunctionExpression::_getPyValue() const {
+    return evaluate(this,f,args);
 }
 
 /**
@@ -1172,79 +2388,86 @@ Expression *FunctionExpression::simplify() const
   * @returns A string representing the expression.
   */
 
-std::string FunctionExpression::toString() const
+void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 {
-    std::stringstream ss;
-
+    switch (f) {
+    case ACOS:
+        ss << "acos("; break;;
+    case ASIN:
+        ss << "asin("; break;;
+    case ATAN:
+        ss << "atan("; break;;
+    case ABS:
+        ss << "abs("; break;;
+    case EXP:
+        ss << "exp("; break;;
+    case LOG:
+        ss << "log("; break;;
+    case LOG10:
+        ss << "log10("; break;;
+    case SIN:
+        ss << "sin("; break;;
+    case SINH:
+        ss << "sinh("; break;;
+    case TAN:
+        ss << "tan("; break;;
+    case TANH:
+        ss << "tanh("; break;;
+    case SQRT:
+        ss << "sqrt("; break;;
+    case COS:
+        ss << "cos("; break;;
+    case COSH:
+        ss << "cosh("; break;;
+    case MOD:
+        ss << "mod("; break;;
+    case ATAN2:
+        ss << "atan2("; break;;
+    case POW:
+        ss << "pow("; break;;
+    case HYPOT:
+        ss << "hypot("; break;;
+    case CATH:
+        ss << "cath("; break;;
+    case ROUND:
+        ss << "round("; break;;
+    case TRUNC:
+        ss << "trunc("; break;;
+    case CEIL:
+        ss << "ceil("; break;;
+    case FLOOR:
+        ss << "floor("; break;;
+    case SUM:
+        ss << "sum("; break;;
+    case COUNT:
+        ss << "count("; break;;
+    case AVERAGE:
+        ss << "average("; break;;
+    case STDDEV:
+        ss << "stddev("; break;;
+    case MIN:
+        ss << "min("; break;;
+    case MAX:
+        ss << "max("; break;;
+    case LIST:
+        ss << "list("; break;;
+    case TUPLE:
+        ss << "tuple("; break;;
+    case MSCALE:
+        ss << "mscale("; break;;
+    case MINVERT:
+        ss << "minvert("; break;;
+    case CREATE:
+        ss << "create("; break;;
+    default:
+        assert(0);
+    }
     for (size_t i = 0; i < args.size(); ++i) {
-        ss << args[i]->toString();
+        ss << args[i]->toString(persistent);
         if (i != args.size() - 1)
             ss << "; ";
     }
-
-    switch (f) {
-    case ACOS:
-        return "acos(" + ss.str() + ")";
-    case ASIN:
-        return "asin(" + ss.str() + ")";
-    case ATAN:
-        return "atan(" + ss.str() + ")";
-    case ABS:
-        return "abs(" + ss.str() + ")";
-    case EXP:
-        return "exp(" + ss.str() + ")";
-    case LOG:
-        return "log(" + ss.str() + ")";
-    case LOG10:
-        return "log10(" + ss.str() + ")";
-    case SIN:
-        return "sin(" + ss.str() + ")";
-    case SINH:
-        return "sinh(" + ss.str() + ")";
-    case TAN:
-        return "tan(" + ss.str() + ")";
-    case TANH:
-        return "tanh(" + ss.str() + ")";
-    case SQRT:
-        return "sqrt(" + ss.str() + ")";
-    case COS:
-        return "cos(" + ss.str() + ")";
-    case COSH:
-        return "cosh(" + ss.str() + ")";
-    case MOD:
-        return "mod(" + ss.str() + ")";
-    case ATAN2:
-        return "atan2(" + ss.str() + ")";
-    case POW:
-        return "pow(" + ss.str() + ")";
-    case HYPOT:
-        return "hypot(" + ss.str() + ")";
-    case CATH:
-        return "cath(" + ss.str() + ")";
-    case ROUND:
-        return "round(" + ss.str() + ")";
-    case TRUNC:
-        return "trunc(" + ss.str() + ")";
-    case CEIL:
-        return "ceil(" + ss.str() + ")";
-    case FLOOR:
-        return "floor(" + ss.str() + ")";
-    case SUM:
-        return "sum(" + ss.str() + ")";
-    case COUNT:
-        return "count(" + ss.str() + ")";
-    case AVERAGE:
-        return "average(" + ss.str() + ")";
-    case STDDEV:
-        return "stddev(" + ss.str() + ")";
-    case MIN:
-        return "min(" + ss.str() + ")";
-    case MAX:
-        return "max(" + ss.str() + ")";
-    default:
-        assert(0);
-        return std::string();
-    }
+    ss << ')';
 }
 
 /**
@@ -1253,7 +2476,7 @@ std::string FunctionExpression::toString() const
   * @returns A deep copy of the expression.
   */
 
-Expression *FunctionExpression::copy() const
+Expression *FunctionExpression::_copy() const
 {
     std::vector<Expression*>::const_iterator i = args.begin();
     std::vector<Expression*> a;
@@ -1265,27 +2488,7 @@ Expression *FunctionExpression::copy() const
     return new FunctionExpression(owner, f, a);
 }
 
-int FunctionExpression::priority() const
-{
-    return 20;
-}
-
-/**
-  * Compute the dependency set of the expression. The set contains the names
-  * of all Property objects this expression relies on.
-  */
-
-void FunctionExpression::getDeps(std::set<ObjectIdentifier> &props) const
-{
-    std::vector<Expression*>::const_iterator i = args.begin();
-
-    while (i != args.end()) {
-        (*i)->getDeps(props);
-        ++i;
-    }
-}
-
-void FunctionExpression::visit(ExpressionVisitor &v)
+void FunctionExpression::_visit(ExpressionVisitor &v)
 {
     std::vector<Expression*>::const_iterator i = args.begin();
 
@@ -1293,14 +2496,13 @@ void FunctionExpression::visit(ExpressionVisitor &v)
         (*i)->visit(v);
         ++i;
     }
-    v.visit(this);
 }
 
 //
 // VariableExpression class
 //
 
-TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression);
+TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression)
 
 VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdentifier _var)
     : UnitExpression(_owner)
@@ -1321,12 +2523,7 @@ VariableExpression::~VariableExpression()
 
 bool VariableExpression::isTouched() const
 {
-    try {
-        return getProperty()->isTouched();
-    }
-    catch (...) {
-        return false;
-    }
+    return var.isTouched();
 }
 
 /**
@@ -1351,72 +2548,65 @@ const Property * VariableExpression::getProperty() const
         throw Expression::Exception(var.resolveErrorString().c_str());
 }
 
-/**
-  * Evaluate the expression. For a VariableExpression, this means to return the
-  * value of the referenced Property. Quantities are converted to NumberExpression with unit,
-  * int and floats are converted to a NumberExpression without unit. Strings properties
-  * are converted to StringExpression objects.
-  *
-  * @returns The result of the evaluation, i.e a new (Number|String)Expression object.
-  */
+void VariableExpression::addComponent(Component *c) {
+    do {
+        if(components.size())
+            break;
+        if(!c->e1 && !c->e2) {
+            var << c->comp;
+            return;
+        }
+        long l1=0,l2=0,l3=1;
+        if(c->e3) {
+            auto n3 = freecad_dynamic_cast<NumberExpression>(c->e3);
+            if(!n3 || !essentiallyEqual(n3->getValue(),(double)l3))
+                break;
+        }
+        if(c->e1) {
+            auto n1 = freecad_dynamic_cast<NumberExpression>(c->e1);
+            if(!n1) {
+                if(c->e2 || c->e3)
+                    break;
+                auto s = freecad_dynamic_cast<StringExpression>(c->e1);
+                if(!s)
+                    break;
+                var << ObjectIdentifier::MapComponent(
+                        ObjectIdentifier::String(s->getText(),true));
+                return;
+            }
+            if(!essentiallyInteger(n1->getValue(),l1))
+                break;
+            if(!c->comp.isRange()) {
+                var << ObjectIdentifier::ArrayComponent(l1);
+                return;
+            } else if(!c->e2) {
+                var << ObjectIdentifier::RangeComponent(l1,l2,l3);
+                return;
+            }
+        }
+        auto n2 = freecad_dynamic_cast<NumberExpression>(c->e2);
+        if(n2 && essentiallyInteger(n2->getValue(),l2)) {
+            var << ObjectIdentifier::RangeComponent(l1,l2,l3);
+            return;
+        }
+    }while(0);
 
-Expression * VariableExpression::eval() const
-{
-    const Property * prop = getProperty();
-    PropertyContainer * parent = prop->getContainer();
+    Expression::addComponent(c);
+}
 
-    if (!parent->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-        throw ExpressionError("Property must belong to a document object.");
+bool VariableExpression::_isIndexable() const {
+    return true;
+}
 
-    boost::any value = prop->getPathValue(var);
+Py::Object VariableExpression::_getPyValue() const {
+    return var.getPyValue(true);
+}
 
-    if (value.type() == typeid(Quantity)) {
-        Quantity qvalue = boost::any_cast<Quantity>(value);
-
-        return new NumberExpression(owner, qvalue);
-    }
-    else if (value.type() == typeid(double)) {
-        double dvalue = boost::any_cast<double>(value);
-
-        return new NumberExpression(owner, Quantity(dvalue));
-    }
-    else if (value.type() == typeid(float)) {
-        double fvalue = boost::any_cast<float>(value);
-
-        return new NumberExpression(owner, Quantity(fvalue));
-    }
-    else if (value.type() == typeid(int)) {
-        int ivalue = boost::any_cast<int>(value);
-
-        return new NumberExpression(owner, Quantity(ivalue));
-    }
-    else if (value.type() == typeid(long)) {
-        long lvalue = boost::any_cast<long>(value);
-
-        return new NumberExpression(owner, Quantity(lvalue));
-    }
-    else if (value.type() == typeid(bool)) {
-        double bvalue = boost::any_cast<bool>(value) ? 1.0 : 0.0;
-
-        return new NumberExpression(owner, Quantity(bvalue));
-    }
-    else if (value.type() == typeid(std::string)) {
-        std::string svalue = boost::any_cast<std::string>(value);
-
-        return new StringExpression(owner, svalue);
-    }
-    else if (value.type() == typeid(char*)) {
-        char* svalue = boost::any_cast<char*>(value);
-
-        return new StringExpression(owner, svalue);
-    }
-    else if (value.type() == typeid(const char*)) {
-        const char* svalue = boost::any_cast<const char*>(value);
-
-        return new StringExpression(owner, svalue);
-    }
-
-    throw ExpressionError("Property is of invalid type.");
+void VariableExpression::_toString(std::ostream &ss, bool persistent,int) const {
+    if(persistent)
+        ss << var.toPersistentString();
+    else
+        ss << var.toString();
 }
 
 /**
@@ -1435,28 +2625,124 @@ Expression *VariableExpression::simplify() const
   * Return a copy of the expression.
   */
 
-Expression *VariableExpression::copy() const
+Expression *VariableExpression::_copy() const
 {
     return new VariableExpression(owner, var);
 }
 
-int VariableExpression::priority() const
+void VariableExpression::_getDeps(ExpressionDeps &deps) const
 {
-    return 20;
+    auto dep = var.getDep();
+    if(dep.first)
+        deps[dep.first][dep.second].push_back(var);
 }
 
-/**
-  * Compute the dependency of the expression. In this case \a props
-  * is a set of strings, i.e the names of the Property objects, and
-  * the variable name this expression relies on is inserted into the set.
-  * Notice that the variable may be unqualified, i.e without any reference
-  * to the owning object. This must be taken into consideration when using
-  * the set.
-  */
-
-void VariableExpression::getDeps(std::set<ObjectIdentifier> &props) const
+void VariableExpression::_getDepObjects(
+        std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels) const
 {
-    props.insert(var);
+    auto dep = var.getDep(labels);
+    if(dep.first)
+        deps.insert(dep.first);
+}
+
+void VariableExpression::_getIdentifiers(std::set<App::ObjectIdentifier> &deps) const
+{
+    deps.insert(var);
+}
+
+bool VariableExpression::_relabeledDocument(const std::string &oldName,
+        const std::string &newName, ExpressionVisitor &v)
+{
+    return var.relabeledDocument(v, oldName, newName);
+}
+
+bool VariableExpression::_adjustLinks(
+        const std::set<App::DocumentObject *> &inList, ExpressionVisitor &v) 
+{
+    return var.adjustLinks(v,inList);
+}
+
+void VariableExpression::_importSubNames(const ObjectIdentifier::SubNameMap &subNameMap) 
+{
+    var.importSubNames(subNameMap);
+}
+
+void VariableExpression::_updateLabelReference(
+        App::DocumentObject *obj, const std::string &ref, const char *newLabel)
+{
+    var.updateLabelReference(obj,ref,newLabel);
+}
+
+bool VariableExpression::_updateElementReference(
+        App::DocumentObject *feature, bool reverse, ExpressionVisitor &v) 
+{
+    return var.updateElementReference(v,feature,reverse);
+}
+
+bool VariableExpression::_renameObjectIdentifier(
+        const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 
+        const ObjectIdentifier &path, ExpressionVisitor &v)
+{
+    const auto &oldPath = var.canonicalPath();
+    auto it = paths.find(oldPath);
+    if (it != paths.end()) {
+        v.aboutToChange();
+        if(path.getOwner())
+            var = it->second.relativeTo(path);
+        else
+            var = it->second;
+        return true;
+    }
+    return false;
+}
+
+void VariableExpression::_collectReplacement(
+        std::map<ObjectIdentifier,ObjectIdentifier> &paths,
+        const App::DocumentObject *parent, 
+        App::DocumentObject *oldObj, 
+        App::DocumentObject *newObj) const
+{
+    ObjectIdentifier path;
+    if(var.replaceObject(path,parent,oldObj,newObj))
+        paths[var.canonicalPath()] = std::move(path);
+}
+
+void VariableExpression::_moveCells(const CellAddress &address, 
+        int rowCount, int colCount, ExpressionVisitor &v) 
+{
+    if(var.hasDocumentObjectName(true))
+        return;
+
+    auto &comp = var.getPropertyComponent(0);
+    CellAddress addr = stringToAddress(comp.getName().c_str(),true);
+    if(!addr.isValid())
+        return;
+
+    int thisRow = addr.row();
+    int thisCol = addr.col();
+    if (thisRow >= address.row() || thisCol >= address.col()) {
+        v.aboutToChange();
+        addr.setRow(thisRow + rowCount);
+        addr.setCol(thisCol + colCount);
+        comp = ObjectIdentifier::SimpleComponent(addr.toString());
+    }
+}
+
+void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVisitor &v) {
+    if(var.hasDocumentObjectName(true))
+        return;
+
+    auto &comp = var.getPropertyComponent(0);
+    CellAddress addr = stringToAddress(comp.getName().c_str(),true);
+    if(!addr.isValid() || (addr.isAbsoluteCol() && addr.isAbsoluteRow()))
+        return;
+
+    v.aboutToChange();
+    if(!addr.isAbsoluteCol())
+        addr.setCol(addr.col()+colOffset);
+    if(!addr.isAbsoluteRow())
+        addr.setRow(addr.row()+rowOffset);
+    comp = ObjectIdentifier::SimpleComponent(addr.toString());
 }
 
 void VariableExpression::setPath(const ObjectIdentifier &path)
@@ -1464,31 +2750,60 @@ void VariableExpression::setPath(const ObjectIdentifier &path)
      var = path;
 }
 
-bool VariableExpression::validDocumentObjectRename(const std::string &oldName, const std::string &newName)
-{
-    return var.validDocumentObjectRename(oldName, newName);
+//
+// PyObjectExpression class
+//
+
+TYPESYSTEM_SOURCE(App::PyObjectExpression, App::Expression)
+
+PyObjectExpression::~PyObjectExpression() {
+    if(pyObj) {
+        Base::PyGILStateLocker lock;
+        Py::_XDECREF(pyObj);
+    }
 }
 
-bool VariableExpression::renameDocumentObject(const std::string &oldName, const std::string &newName)
-{
-    return var.renameDocumentObject(oldName, newName);
+Py::Object PyObjectExpression::_getPyValue() const {
+    if(!pyObj)
+        return Py::Object();
+    return Py::Object(pyObj);
 }
 
-bool VariableExpression::validDocumentRename(const std::string &oldName, const std::string &newName)
-{
-    return var.validDocumentRename(oldName, newName);
+void PyObjectExpression::setPyValue(Py::Object obj) {
+    Py::_XDECREF(pyObj);
+    pyObj = obj.ptr();
+    Py::_XINCREF(pyObj);
 }
 
-bool VariableExpression::renameDocument(const std::string &oldName, const std::string &newName)
+void PyObjectExpression::setPyValue(PyObject *obj, bool owned) {
+    if(pyObj == obj)
+        return;
+    Py::_XDECREF(pyObj);
+    pyObj = obj;
+    if(!owned)
+        Py::_XINCREF(pyObj);
+}
+
+void PyObjectExpression::_toString(std::ostream &ss, bool,int) const
 {
-    return var.renameDocument(oldName, newName);
+    if(!pyObj)
+        ss << "None";
+    else {
+        Base::PyGILStateLocker lock;
+        ss << Py::Object(pyObj).as_string();
+    }
+}
+
+Expression* PyObjectExpression::_copy() const
+{
+    return new PyObjectExpression(owner,pyObj,false);
 }
 
 //
 // StringExpression class
 //
 
-TYPESYSTEM_SOURCE(App::StringExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::StringExpression, App::Expression)
 
 StringExpression::StringExpression(const DocumentObject *_owner, const std::string &_text)
     : Expression(_owner)
@@ -1496,13 +2811,11 @@ StringExpression::StringExpression(const DocumentObject *_owner, const std::stri
 {
 }
 
-/**
-  * Evaluate the string. For strings, this is a simple copy of the object.
-  */
-
-Expression * StringExpression::eval() const
-{
-    return copy();
+StringExpression::~StringExpression() {
+    if(cache) {
+        Base::PyGILStateLocker lock;
+        Py::_XDECREF(cache);
+    }
 }
 
 /**
@@ -1514,26 +2827,25 @@ Expression *StringExpression::simplify() const
     return copy();
 }
 
-std::string StringExpression::toString() const
+void StringExpression::_toString(std::ostream &ss, bool,int) const
 {
-    return quote(text);
-}
-
-int StringExpression::priority() const
-{
-    return 20;
+    ss << quote(text);
 }
 
 /**
   * Return a copy of the expression.
   */
 
-Expression *StringExpression::copy() const
+Expression *StringExpression::_copy() const
 {
     return new StringExpression(owner, text);
 }
 
-TYPESYSTEM_SOURCE(App::ConditionalExpression, App::Expression);
+Py::Object StringExpression::_getPyValue() const {
+    return Py::String(text);
+}
+
+TYPESYSTEM_SOURCE(App::ConditionalExpression, App::Expression)
 
 ConditionalExpression::ConditionalExpression(const DocumentObject *_owner, Expression *_condition, Expression *_trueExpr, Expression *_falseExpr)
     : Expression(_owner)
@@ -1555,18 +2867,11 @@ bool ConditionalExpression::isTouched() const
     return condition->isTouched() || trueExpr->isTouched() || falseExpr->isTouched();
 }
 
-Expression *ConditionalExpression::eval() const
-{
-    std::unique_ptr<Expression> e(condition->eval());
-    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
-
-    if (v == 0)
-        throw ExpressionError("Invalid expression");
-
-    if (fabs(v->getValue()) > 0.5)
-        return trueExpr->eval();
+Py::Object ConditionalExpression::_getPyValue() const {
+    if(condition->getPyValue().isTrue())
+        return trueExpr->getPyValue();
     else
-        return falseExpr->eval();
+        return falseExpr->getPyValue();
 }
 
 Expression *ConditionalExpression::simplify() const
@@ -1584,22 +2889,28 @@ Expression *ConditionalExpression::simplify() const
     }
 }
 
-std::string ConditionalExpression::toString() const
+void ConditionalExpression::_toString(std::ostream &ss, bool persistent,int) const
 {
-    std::string cstr = condition->toString();
-    std::string tstr = trueExpr->toString();
-    std::string fstr = falseExpr->toString();
+    condition->toString(ss,persistent);
+    ss << " ? ";
+    if (trueExpr->priority() <= priority()) {
+        ss << '(';
+        trueExpr->toString(ss,persistent);
+        ss << ')';
+    } else
+        trueExpr->toString(ss,persistent);
 
-    if (trueExpr->priority() <= priority())
-        tstr = "(" + tstr + ")";
+    ss << " : ";
 
-    if (falseExpr->priority() <= priority())
-        fstr = "(" + fstr + ")";
-
-    return cstr + " ? " + tstr + " : " + fstr;
+    if (falseExpr->priority() <= priority()) {
+        ss << '(';
+        falseExpr->toString(ss,persistent);
+        ss << ')';
+    } else
+        falseExpr->toString(ss,persistent);
 }
 
-Expression *ConditionalExpression::copy() const
+Expression *ConditionalExpression::_copy() const
 {
     return new ConditionalExpression(owner, condition->copy(), trueExpr->copy(), falseExpr->copy());
 }
@@ -1609,66 +2920,62 @@ int ConditionalExpression::priority() const
     return 2;
 }
 
-void ConditionalExpression::getDeps(std::set<ObjectIdentifier> &props) const
-{
-    condition->getDeps(props);
-    trueExpr->getDeps(props);
-    falseExpr->getDeps(props);
-}
-
-void ConditionalExpression::visit(ExpressionVisitor &v)
+void ConditionalExpression::_visit(ExpressionVisitor &v)
 {
     condition->visit(v);
     trueExpr->visit(v);
     falseExpr->visit(v);
 }
 
-TYPESYSTEM_SOURCE(App::ConstantExpression, App::NumberExpression);
+TYPESYSTEM_SOURCE(App::ConstantExpression, App::NumberExpression)
 
-ConstantExpression::ConstantExpression(const DocumentObject *_owner, std::string _name, const Quantity & _quantity)
+ConstantExpression::ConstantExpression(const DocumentObject *_owner, 
+        const char *_name, const Quantity & _quantity)
     : NumberExpression(_owner, _quantity)
     , name(_name)
 {
 }
 
-std::string ConstantExpression::toString() const
+Expression *ConstantExpression::_copy() const
 {
-    return name;
+    return new ConstantExpression(owner, name, getQuantity());
 }
 
-Expression *ConstantExpression::copy() const
+void ConstantExpression::_toString(std::ostream &ss, bool,int) const
 {
-    return new ConstantExpression(owner, name.c_str(), quantity);
+    ss << name;
 }
 
-int ConstantExpression::priority() const
-{
-    return 20;
+Py::Object ConstantExpression::_getPyValue() const {
+    if(!cache) {
+        if(strcmp(name,"None")==0)
+            cache = Py::new_reference_to(Py::None());
+        else if(strcmp(name,"True")==0)
+            cache = Py::new_reference_to(Py::True());
+        else if(strcmp(name, "False")==0)
+            cache = Py::new_reference_to(Py::False());
+        else
+            return NumberExpression::_getPyValue();
+    }
+    return Py::Object(cache);
 }
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
-
-BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
-    : NumberExpression(_owner, Quantity(_value ? 1.0 : 0.0))
-{
+bool ConstantExpression::isNumber() const {
+    return strcmp(name,"None") 
+        && strcmp(name,"True") 
+        && strcmp(name, "False");
 }
 
-Expression *BooleanExpression::copy() const
-{
-    return new BooleanExpression(owner, getValue() > 0.5 ? true : false);
-}
-
-TYPESYSTEM_SOURCE(App::RangeExpression, App::Expression);
+TYPESYSTEM_SOURCE(App::RangeExpression, App::Expression)
 
 RangeExpression::RangeExpression(const DocumentObject *_owner, const std::string &begin, const std::string &end)
-    : Expression(_owner)
-    , range((begin + ":" + end).c_str())
+    : Expression(_owner), begin(begin), end(end)
 {
 }
 
 bool RangeExpression::isTouched() const
 {
-    Range i(range);
+    Range i(getRange());
 
     do {
         Property * prop = owner->getPropertyByName(i.address().c_str());
@@ -1680,33 +2987,25 @@ bool RangeExpression::isTouched() const
     return false;
 }
 
-Expression *RangeExpression::eval() const
-{
-    throw Exception("Range expression cannot be evaluated");
-}
-
-std::string RangeExpression::toString() const
-{
-    return range.rangeString();
-}
-
-Expression *RangeExpression::copy() const
-{
-    return new RangeExpression(owner, range.fromCellString(), range.toCellString());
-}
-
-int RangeExpression::priority() const
-{
-    return 20;
-}
-
-void RangeExpression::getDeps(std::set<ObjectIdentifier> &props) const
-{
-    Range i(range);
-
+Py::Object RangeExpression::_getPyValue() const {
+    Py::List list;
+    Range range(getRange());
     do {
-        props.insert(ObjectIdentifier(owner, i.address()));
-    } while (i.next());
+        Property * p = owner->getPropertyByName(range.address().c_str());
+        if(p)
+            list.append(Py::asObject(p->getPyObject()));
+    } while (range.next());
+    return list;
+}
+
+void RangeExpression::_toString(std::ostream &ss, bool,int) const
+{
+    ss << begin << ":" << end;
+}
+
+Expression *RangeExpression::_copy() const
+{
+    return new RangeExpression(owner, begin, end);
 }
 
 Expression *RangeExpression::simplify() const
@@ -1714,14 +3013,153 @@ Expression *RangeExpression::simplify() const
     return copy();
 }
 
-void RangeExpression::setRange(const Range &r)
+void RangeExpression::_getDeps(ExpressionDeps &deps) const
 {
-    range = r;
+    assert(owner);
+
+    Range i(getRange());
+
+    auto &dep = deps[owner];
+    do {
+        std::string address = i.address();
+        dep[address].push_back(ObjectIdentifier(owner,address));
+    } while (i.next());
+}
+
+Range RangeExpression::getRange() const
+{
+    auto c1 = stringToAddress(begin.c_str(),true);
+    auto c2 = stringToAddress(end.c_str(),true);
+    if(c1.isValid() && c1.isValid())
+        return Range(c1,c2);
+
+    Base::PyGILStateLocker lock;
+    static const std::string attr("getCellFromAlias");
+    Py::Object pyobj(owner->getPyObject(),true);
+    if(!pyobj.hasAttr(attr)) 
+        EXPR_THROW("Invalid cell range " << begin << ':' << end);
+    Py::Callable callable(pyobj.getAttr(attr));
+    if(!c1.isValid()) {
+        try {
+            Py::Tuple arg(1);
+            arg.setItem(0,Py::String(begin));
+            c1 = CellAddress(callable.apply(arg).as_string().c_str());
+        } catch(Py::Exception &) {
+            _EXPR_PY_THROW("Invalid cell address '" << begin << "': ",this);
+        } catch(Base::Exception &e) {
+            _EXPR_RETHROW(e,"Invalid cell address '" << begin << "': ",this);
+        }
+    }
+    if(!c2.isValid()) {
+        try {
+            Py::Tuple arg(1);
+            arg.setItem(0,Py::String(end));
+            c2 = CellAddress(callable.apply(arg).as_string().c_str());
+        } catch(Py::Exception &) {
+            _EXPR_PY_THROW("Invalid cell address '" << end << "': ", this);
+        } catch(Base::Exception &e) {
+            _EXPR_RETHROW(e,"Invalid cell address '" << end << "': ", this);
+        }
+    }
+    return Range(c1,c2);
+}
+
+bool RangeExpression::_renameObjectIdentifier(
+        const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 
+        const ObjectIdentifier &path, ExpressionVisitor &v)
+{
+    (void)path;
+    bool touched =false;
+    auto it = paths.find(ObjectIdentifier(owner,begin));
+    if (it != paths.end()) {
+        v.aboutToChange();
+        begin = it->second.getPropertyName();
+        touched = true;
+    }
+    it = paths.find(ObjectIdentifier(owner,end));
+    if (it != paths.end()) {
+        v.aboutToChange();
+        end = it->second.getPropertyName();
+        touched = true;
+    }
+    return touched;
+}
+
+void RangeExpression::_moveCells(const CellAddress &address,
+        int rowCount, int colCount, ExpressionVisitor &v) 
+{
+    CellAddress addr = stringToAddress(begin.c_str(),true);
+    if(addr.isValid()) {
+        int thisRow = addr.row();
+        int thisCol = addr.col();
+        if (thisRow >= address.row() || thisCol >= address.col()) {
+            v.aboutToChange();
+            addr.setRow(thisRow+rowCount);
+            addr.setCol(thisCol+colCount);
+            begin = addr.toString();
+        }
+    }
+    addr = stringToAddress(end.c_str(),true);
+    if(addr.isValid()) {
+        int thisRow = addr.row();
+        int thisCol = addr.col();
+        if (thisRow >= address.row() || thisCol >= address.col()) {
+            v.aboutToChange();
+            addr.setRow(thisRow + rowCount);
+            addr.setCol(thisCol + colCount);
+            end = addr.toString();
+        }
+    }
+}
+
+void RangeExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVisitor &v) 
+{
+    CellAddress addr = stringToAddress(begin.c_str(),true);
+    if(addr.isValid() && (!addr.isAbsoluteRow() || !addr.isAbsoluteCol())) {
+        v.aboutToChange();
+        if(!addr.isAbsoluteRow())
+            addr.setRow(addr.row()+rowOffset);
+        if(!addr.isAbsoluteCol()) 
+            addr.setCol(addr.col()+colOffset);
+        begin = addr.toString();
+    }
+    addr = stringToAddress(end.c_str(),true);
+    if(addr.isValid() && (!addr.isAbsoluteRow() || !addr.isAbsoluteCol())) {
+        v.aboutToChange();
+        if(!addr.isAbsoluteRow())
+            addr.setRow(addr.row()+rowOffset);
+        if(!addr.isAbsoluteCol()) 
+            addr.setCol(addr.col()+colOffset);
+        end = addr.toString();
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+static Base::XMLReader *_Reader = 0;
+ExpressionParser::ExpressionImporter::ExpressionImporter(Base::XMLReader &reader) {
+    assert(!_Reader);
+    _Reader = &reader;
+}
+
+ExpressionParser::ExpressionImporter::~ExpressionImporter() {
+    assert(_Reader);
+    _Reader = 0;
+}
+
+Base::XMLReader *ExpressionParser::ExpressionImporter::reader() {
+    return _Reader;
 }
 
 namespace App {
 
 namespace ExpressionParser {
+
+bool isModuleImported(PyObject *module) {
+    (void)module;
+    return false;
+}
 
 /**
  * Error function for parser. Throws a generic Base::Exception with the parser error.
@@ -1835,6 +3273,11 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["floor"] = FunctionExpression::FLOOR;
         registered_functions["hypot"] = FunctionExpression::HYPOT;
         registered_functions["cath"] = FunctionExpression::CATH;
+        registered_functions["list"] = FunctionExpression::LIST;
+        registered_functions["tuple"] = FunctionExpression::TUPLE;
+        registered_functions["mscale"] = FunctionExpression::MSCALE;
+        registered_functions["minvert"] = FunctionExpression::MINVERT;
+        registered_functions["create"] = FunctionExpression::CREATE;
 
         // Aggregates
         registered_functions["sum"] = FunctionExpression::SUM;
@@ -1938,10 +3381,9 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
         if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
             NumberExpression * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
             UnitExpression * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
-            const double epsilon = std::numeric_limits<double>::epsilon();
 
             // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
-            if (denom && nom && essentiallyEqual(nom->getValue(), 1.0, epsilon))
+            if (denom && nom && essentiallyEqual(nom->getValue(), 1.0))
                 unitExpression = true;
         }
     }
@@ -1988,3 +3430,7 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
     else
         return false;
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

@@ -57,7 +57,7 @@ class PartExport Part2DObject : public Part::Feature, public Part::AttachExtensi
 public:
     Part2DObject();
 
-    virtual void transformPlacement(const Base::Placement &transform);
+    virtual void transformPlacement(const Base::Placement &transform) override;
 
     /// returns the number of construction lines (to be used as axes)
     virtual int getAxisCount(void) const;
@@ -85,19 +85,19 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute(void) override;
 
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartGui::ViewProvider2DObject";
     }
     //@}
 
-    void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
-    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 };
 
 typedef App::FeaturePythonT<Part2DObject> Part2DObjectPython;

@@ -7,21 +7,32 @@ import os,sys,string
 #os.chdir("E:\\Develop\\FreeCADWin\\scripts")
 
 
-file = open(sys.argv[1])
+try:
+    file = open(sys.argv[1],encoding="utf-8")
+except TypeError:
+    file = open(sys.argv[1])
 
-if(len(sys.argv) > 3):
-    sys.stderr.write("Wrong Parameter\n  Usage:\n  PythonToCPP Infile.py [Outfile]\n")
+if(len(sys.argv) > 4):
+    sys.stderr.write("Wrong Parameter\n  Usage:\n  PythonToCPP Infile.py [Outfile][Variable]\n")
 
 if(len(sys.argv) > 2):
-    out = open(sys.argv[2],"w");
+    try:
+        out = open(sys.argv[2],"w",encoding="utf-8");
+    except TypeError:
+        out = open(sys.argv[2],"w");
 else:
     out = sys.stdout
+
+if(len(sys.argv) > 3):
+    identifier = sys.argv[3]
+else:
+    identifier = os.path.basename(sys.argv[1])
+    identifier = identifier[:-3]
 
 lines = file.readlines()
 
 # We want to use this script for files in another directory, so we extract the actual file name
-fn = os.path.basename(sys.argv[1])
-out.write("const char " + fn[:-3] + "[] =")
+out.write("const char " + identifier + "[] =")
 
 for line in lines:
     # remove new line

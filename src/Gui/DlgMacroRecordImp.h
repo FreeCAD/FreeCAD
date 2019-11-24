@@ -37,7 +37,7 @@ namespace Dialog {
  * \author Jürgen Riegel
  */
 class DlgMacroRecordImp : public QDialog, public Ui_DlgMacroRecord, public Gui::WindowParameter
-{ 
+{
     Q_OBJECT
 
 public:
@@ -52,8 +52,8 @@ protected Q_SLOTS:
     void on_lineEditMacroPath_textChanged ( const QString & );
 
 protected:
-    /// conviniance pointer
-    MacroManager* macroManager; 
+    /// convenience pointer
+    MacroManager* macroManager;
     QString macroPath; // Macro file to save in
 };
 

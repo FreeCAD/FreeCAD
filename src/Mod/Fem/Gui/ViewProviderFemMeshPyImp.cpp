@@ -1,6 +1,12 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Mesh.hxx>
+# include <SMDSAbs_ElementType.hxx>
+#endif
+
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
@@ -10,9 +16,7 @@
 #include <Mod/Fem/App/FemResultObject.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemMesh.h>
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Mesh.hxx>
-#include <SMDSAbs_ElementType.hxx>
+
 
 // inclusion of the generated files (generated out of ViewProviderFemMeshPy.xml)
 #include "ViewProviderFemMeshPy.h"

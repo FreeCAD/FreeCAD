@@ -76,11 +76,11 @@
     </message>
     <message>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ašis</translation>
     </message>
     <message>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Padėtis</translation>
     </message>
     <message>
       <source>Base</source>
@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation type="unfinished">Global Sensitivity:</translation>
+      <translation>Visuotinis jautrumas:</translation>
     </message>
   </context>
   <context>
@@ -179,7 +179,7 @@
     </message>
     <message>
       <source>Ok</source>
-      <translation type="unfinished">Ok</translation>
+      <translation>Gerai</translation>
     </message>
   </context>
   <context>
@@ -280,7 +280,7 @@
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Ritinkite vidurinįjį pelės ratuką</translation>
+      <translation>Sukite vidurinįjį pelės ratuką</translation>
     </message>
   </context>
   <context>
@@ -295,13 +295,12 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation type="unfinished">Press middle+left or middle+right button</translation>
+      <translation>Spustelėkite vidurinį ir kairįjį arba vidurinį ir dešinįjį mygtukus</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
-while doing a left or right click and move the mouse up or down</translation>
+      <translation>Sukite vidurinį pelės mygtuką arba judinkite pelę aukštyn arba žemyn nuspaudę vidurinįjį pelės mygtuką kartu su kairiuoju arba dešiniuoju mygtuku</translation>
     </message>
   </context>
   <context>
@@ -403,11 +402,11 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Bibliotekos</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Ši programinė įranga naudoja kitas atvirosios programinės įrangos dalis, kurių autorių teisės ir kitos nuosavybės teisės priklauso atitinkamiems savininkams:</translation>
     </message>
     <message>
       <source>License</source>
@@ -429,7 +428,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
       <source>Camera settings</source>
-      <translation type="unfinished">Camera settings</translation>
+      <translation>Kameros nustatymai</translation>
     </message>
     <message>
       <source>Orientation</source>
@@ -437,23 +436,23 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Q0</source>
-      <translation type="unfinished">Q0</translation>
+      <translation>Q0</translation>
     </message>
     <message>
       <source>Q1</source>
-      <translation type="unfinished">Q1</translation>
+      <translation>Q1</translation>
     </message>
     <message>
       <source>Q2</source>
-      <translation type="unfinished">Q2</translation>
+      <translation>Q2</translation>
     </message>
     <message>
       <source>Q3</source>
-      <translation type="unfinished">Q3</translation>
+      <translation>Q3</translation>
     </message>
     <message>
       <source>Current view</source>
-      <translation type="unfinished">Current view</translation>
+      <translation>Dabartinė kameros padėtis</translation>
     </message>
   </context>
   <context>
@@ -863,7 +862,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Do you want to override it?</source>
-      <translation type="unfinished">Do you want to override it?</translation>
+      <translation>Ar nepaisyti?</translation>
     </message>
   </context>
   <context>
@@ -1245,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Įgalinti paleidimo lango rodymą pasileidžiant programai</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Perjungti į ataskaitos lango skirtuką:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Automatinė modulio įkrova po programos paleidimo:</translation>
     </message>
@@ -1267,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
       <source>Size of recent file list</source>
       <translation>Neseniai naudotų failų sąrašo dydis</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Lango stilius:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1386,11 +1377,11 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
       <source>Duplicate</source>
-      <translation type="unfinished">Duplicate</translation>
+      <translation>Sukurti kopiją</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation type="unfinished">Addons...</translation>
+      <translation>Plėtiniai...</translation>
     </message>
   </context>
   <context>
@@ -1463,7 +1454,7 @@ Galbūt failo leidimo klaida?</translation>
     </message>
     <message>
       <source>Duplicate Macro</source>
-      <translation type="unfinished">Duplicate Macro</translation>
+      <translation>Sukurti makrokomandos kopiją</translation>
     </message>
     <message>
       <source>Duplicate Failed</source>
@@ -1627,6 +1618,53 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Užverti</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation type="unfinished">Find...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Rasti</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation type="unfinished">Find what:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation type="unfinished">Look at</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation type="unfinished">Groups</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation type="unfinished">Names</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation type="unfinished">Values</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation type="unfinished">Match whole string only</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation type="unfinished">Find Next</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation type="unfinished">Not found</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation type="unfinished">Can't find the text: %1</translation>
     </message>
   </context>
   <context>
@@ -2053,7 +2091,7 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>Corner</source>
-      <translation type="unfinished">Corner</translation>
+      <translation>Kampas</translation>
     </message>
     <message>
       <source>Top left</source>
@@ -2093,7 +2131,7 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>Marker size:</source>
-      <translation type="unfinished">Marker size:</translation>
+      <translation>Žymeklio dydis:</translation>
     </message>
   </context>
   <context>
@@ -2108,27 +2146,27 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>5px</source>
-      <translation type="unfinished">5px</translation>
+      <translation>5 taškai</translation>
     </message>
     <message>
       <source>7px</source>
-      <translation type="unfinished">7px</translation>
+      <translation>7 taškai</translation>
     </message>
     <message>
       <source>9px</source>
-      <translation type="unfinished">9px</translation>
+      <translation>9 taškai</translation>
     </message>
     <message>
       <source>11px</source>
-      <translation type="unfinished">11px</translation>
+      <translation>11 taškų</translation>
     </message>
     <message>
       <source>13px</source>
-      <translation type="unfinished">13px</translation>
+      <translation>13 taškų</translation>
     </message>
     <message>
       <source>15px</source>
-      <translation type="unfinished">15px</translation>
+      <translation>15 taškų</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -2723,10 +2761,6 @@ Prašome nurodti kitą aplanką.</translation>
       <translation>Vartotojo sąsajos veiksmai</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Įrašyti vartotojo sąsajos veiksmus</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Įrašyti kaip pastabą</translation>
     </message>
@@ -2741,6 +2775,10 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Vykdyti makrokomandas vietinėje aplinkoje</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation type="unfinished">Record GUI commands</translation>
     </message>
   </context>
   <context>
@@ -2768,10 +2806,6 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <source>Unit</source>
       <translation>Vienetas</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Vartotojo sistema:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2811,31 +2845,35 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>1/2"</source>
-      <translation type="unfinished">1/2"</translation>
+      <translation>1/2"</translation>
     </message>
     <message>
       <source>1/4"</source>
-      <translation type="unfinished">1/4"</translation>
+      <translation>1/4"</translation>
     </message>
     <message>
       <source>1/8"</source>
-      <translation type="unfinished">1/8"</translation>
+      <translation>1/8"</translation>
     </message>
     <message>
       <source>1/16"</source>
-      <translation type="unfinished">1/16"</translation>
+      <translation>1/16"</translation>
     </message>
     <message>
       <source>1/32"</source>
-      <translation type="unfinished">1/32"</translation>
+      <translation>1/32"</translation>
     </message>
     <message>
       <source>1/64"</source>
-      <translation type="unfinished">1/64"</translation>
+      <translation>1/64"</translation>
     </message>
     <message>
       <source>1/128"</source>
-      <translation type="unfinished">1/128"</translation>
+      <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation type="unfinished">Unit system:</translation>
     </message>
   </context>
   <context>
@@ -2882,15 +2920,15 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
     <message>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Medžio rodinys</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation type="unfinished">Object being edited</translation>
+      <translation>Taisomasis daiktas</translation>
     </message>
     <message>
       <source>Active container</source>
-      <translation type="unfinished">Active container</translation>
+      <translation>Aktyvus konteineris</translation>
     </message>
   </context>
   <context>
@@ -3429,7 +3467,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Apply</source>
-      <translation type="unfinished">Apply</translation>
+      <translation>Pritaikyti</translation>
     </message>
     <message>
       <source>Reset</source>
@@ -3457,11 +3495,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Axial:</source>
-      <translation type="unfinished">Axial:</translation>
+      <translation>Ašinis:</translation>
     </message>
     <message>
       <source>Apply axial</source>
-      <translation type="unfinished">Apply axial</translation>
+      <translation>Taikyti ašinį</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
@@ -3469,11 +3507,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selected points</source>
-      <translation type="unfinished">Selected points</translation>
+      <translation>Pasirinkti taškai</translation>
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation type="unfinished">Apply incremental changes</translation>
+      <translation>Taikyti pridėtinius pokyčius</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
@@ -3568,7 +3606,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Keisti</translation>
     </message>
   </context>
   <context>
@@ -3873,19 +3911,19 @@ Ar norite įrašyti keitimus?</translation>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Bakstelėkite, arba spustelėkite kairį pelės mygtuką.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
       <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -3974,7 +4012,7 @@ Ar norite įrašyti keitimus?</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Ritinkite vidurinįjį pelės ratuką</translation>
+      <translation>Sukite vidurinįjį pelės ratuką</translation>
     </message>
   </context>
   <context>
@@ -4027,7 +4065,7 @@ Ar norite įrašyti keitimus?</translation>
     </message>
     <message>
       <source>Direction:</source>
-      <translation type="unfinished">Direction:</translation>
+      <translation>Kryptis:</translation>
     </message>
   </context>
   <context>
@@ -4172,7 +4210,7 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap OR click left mouse button.</source>
-      <translation type="unfinished">Tap OR click left mouse button.</translation>
+      <translation>Bakstelėkite, arba spustelėkite kairį pelės mygtuką.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
@@ -4191,7 +4229,7 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
-      <translation type="unfinished">Download started...</translation>
+      <translation>Atsisiuntimas prasidėjo...</translation>
     </message>
   </context>
   <context>
@@ -4276,7 +4314,7 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Taisyti %1</translation>
     </message>
   </context>
   <context>
@@ -4428,7 +4466,7 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Ritinkite vidurinįjį pelės ratuką</translation>
+      <translation>Sukite vidurinįjį pelės ratuką</translation>
     </message>
   </context>
   <context>
@@ -4540,12 +4578,12 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
       <translation>Prieaugiai</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Postūmio prieaugis: </translation>
+      <source>Translation Increment:</source>
+      <translation type="unfinished">Translation Increment:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Posūkio prieaugis: </translation>
+      <source>Rotation Increment:</source>
+      <translation type="unfinished">Rotation Increment:</translation>
     </message>
   </context>
   <context>
@@ -4579,7 +4617,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation type="unfinished">A dialog is already open in the task panel</translation>
+      <translation>Langas jau yra atvertas užduočių skydelyje</translation>
     </message>
   </context>
   <context>
@@ -4732,11 +4770,11 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Search...</source>
-      <translation type="unfinished">Search...</translation>
+      <translation>Paieška...</translation>
     </message>
     <message>
       <source>Search for objects</source>
-      <translation type="unfinished">Search for objects</translation>
+      <translation>Ieškoma daiktų</translation>
     </message>
   </context>
   <context>
@@ -4827,55 +4865,55 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>0.1 mm</source>
-      <translation type="unfinished">0.1 mm</translation>
+      <translation>0,1 mm</translation>
     </message>
     <message>
       <source>0.5 mm</source>
-      <translation type="unfinished">0.5 mm</translation>
+      <translation>0,5 mm</translation>
     </message>
     <message>
       <source>1 mm</source>
-      <translation type="unfinished">1 mm</translation>
+      <translation>1 mm</translation>
     </message>
     <message>
       <source>2 mm</source>
-      <translation type="unfinished">2 mm</translation>
+      <translation>2 mm</translation>
     </message>
     <message>
       <source>5 mm</source>
-      <translation type="unfinished">5 mm</translation>
+      <translation>5 mm</translation>
     </message>
     <message>
       <source>10 mm</source>
-      <translation type="unfinished">10 mm</translation>
+      <translation>10 mm</translation>
     </message>
     <message>
       <source>20 mm</source>
-      <translation type="unfinished">20 mm</translation>
+      <translation>20 mm</translation>
     </message>
     <message>
       <source>50 mm</source>
-      <translation type="unfinished">50 mm</translation>
+      <translation>50 mm</translation>
     </message>
     <message>
       <source>100 mm</source>
-      <translation type="unfinished">100 mm</translation>
+      <translation>100 mm</translation>
     </message>
     <message>
       <source>200 mm</source>
-      <translation type="unfinished">200 mm</translation>
+      <translation>200 mm</translation>
     </message>
     <message>
       <source>500 mm</source>
-      <translation type="unfinished">500 mm</translation>
+      <translation>500 mm</translation>
     </message>
     <message>
       <source>1 m</source>
-      <translation type="unfinished">1 m</translation>
+      <translation>1 m</translation>
     </message>
     <message>
       <source>2 m</source>
-      <translation type="unfinished">2 m</translation>
+      <translation>2 m</translation>
     </message>
     <message>
       <source>5 m </source>
@@ -5251,11 +5289,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Keisti</translation>
     </message>
     <message>
       <source>Do you want to close this dialog?</source>
-      <translation type="unfinished">Do you want to close this dialog?</translation>
+      <translation>Ar norite uždaryti šį dialogo langą?</translation>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
@@ -5303,11 +5341,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export failed</source>
-      <translation type="unfinished">Export failed</translation>
+      <translation>Eksportavimas nepavyko</translation>
     </message>
     <message>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Išskaidyti</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -5319,11 +5357,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggle active part</source>
-      <translation type="unfinished">Toggle active part</translation>
+      <translation>Įgalinti detalę taisai</translation>
     </message>
     <message>
       <source>Edit text</source>
-      <translation type="unfinished">Edit text</translation>
+      <translation>Keisti tekstą</translation>
     </message>
   </context>
   <context>
@@ -5716,7 +5754,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Activates or Deactivates the selected object's edit mode</source>
-      <translation type="unfinished">Activates or Deactivates the selected object's edit mode</translation>
+      <translation>Įgalinamas arba išjungiamas pažymėto daikto taisymas</translation>
     </message>
   </context>
   <context>
@@ -5878,7 +5916,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdGroup</name>
     <message>
       <source>Structure</source>
-      <translation type="unfinished">Structure</translation>
+      <translation>Sandara</translation>
     </message>
     <message>
       <source>Create group</source>
@@ -6138,11 +6176,11 @@ Be aware the point where you click matters.</source>
     <name>StdCmdPart</name>
     <message>
       <source>Structure</source>
-      <translation type="unfinished">Structure</translation>
+      <translation>Sandara</translation>
     </message>
     <message>
       <source>Create part</source>
-      <translation type="unfinished">Create part</translation>
+      <translation>Sukurti detalę</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
@@ -6663,7 +6701,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform</source>
-      <translation type="unfinished">Transform</translation>
+      <translation>Keisti</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
@@ -6757,7 +6795,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation type="unfinished">Creates a new view window for the active document</translation>
+      <translation>Sukuria naują rodinio langą aktyviam dokumentui</translation>
     </message>
   </context>
   <context>
@@ -6772,7 +6810,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to dimetric view</source>
-      <translation type="unfinished">Set to dimetric view</translation>
+      <translation>Perjungti į dimetrinį rodymą</translation>
     </message>
   </context>
   <context>
@@ -6877,7 +6915,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to isometric view</source>
-      <translation type="unfinished">Set to isometric view</translation>
+      <translation>Perjungti į izometrinį rodymą</translation>
     </message>
   </context>
   <context>
@@ -7072,7 +7110,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to trimetric view</source>
-      <translation type="unfinished">Set to trimetric view</translation>
+      <translation>Perjungti į trimetrinį rodymą</translation>
     </message>
   </context>
   <context>
@@ -7199,11 +7237,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Collapse/Expand</source>
-      <translation type="unfinished">Collapse/Expand</translation>
+      <translation>Suskleisti/Išskleisti</translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation type="unfinished">Expand active document and collapse all others</translation>
+      <translation>Išskleisti pasirinktą dokumentą ir suskleisti kitus</translation>
     </message>
   </context>
   <context>
@@ -7214,11 +7252,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Multi Document</source>
-      <translation type="unfinished">Multi Document</translation>
+      <translation>Daugybinis dokumentas</translation>
     </message>
     <message>
       <source>Display all documents in the tree view</source>
-      <translation type="unfinished">Display all documents in the tree view</translation>
+      <translation>Rodyti visus dokumentus medžio rodinyje</translation>
     </message>
   </context>
   <context>
@@ -7229,11 +7267,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Single Document</source>
-      <translation type="unfinished">Single Document</translation>
+      <translation>Vienas dokumentas</translation>
     </message>
     <message>
       <source>Only display the active document in the tree view</source>
-      <translation type="unfinished">Only display the active document in the tree view</translation>
+      <translation>Rodyti tik pasirinktą vieną dokumentą medžio rodinyje</translation>
     </message>
   </context>
   <context>
@@ -7244,11 +7282,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Document Tree</source>
-      <translation type="unfinished">Document Tree</translation>
+      <translation>Dokumentų medis</translation>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
-      <translation type="unfinished">Set visibility of inactive documents in tree view</translation>
+      <translation>Nustatyti neaktyvių dokumentų matomumą medžio rodinyje</translation>
     </message>
   </context>
   <context>
@@ -7363,19 +7401,19 @@ Be aware the point where you click matters.</source>
     <name>Std_Delete</name>
     <message>
       <source>These items are linked to items selected for deletion and might break.</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
+      <translation>Šie yra susieti su pasirinktais pašalinti ir gali būti sugadinti.</translation>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Šie yra pasirinkti naikinimui, bet jie nėra tvarkomame dokumente.</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>Ar tikrai norite tęsti?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation type="unfinished">Delete Selection Issues</translation>
+      <translation>Šalinti pasirinkimo nesklandumus</translation>
     </message>
   </context>
   <context>
@@ -7487,40 +7525,40 @@ Ar norite klonuoti taip pat ir tuos nepažymėtus objektus?</translation>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation type="unfinished">Set NaviCube to Isometric mode</translation>
+      <translation>Nustatyti NaviCube į izometrinę veikseną</translation>
     </message>
   </context>
   <context>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation type="unfinished">Orthographic</translation>
+      <translation>Ortografinis</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation type="unfinished">Set View to Orthographic mode</translation>
+      <translation>Perjungti į ortografinį rodymą</translation>
     </message>
   </context>
   <context>
     <name>ViewPerspectiveCmd</name>
     <message>
       <source>Perspective</source>
-      <translation type="unfinished">Perspective</translation>
+      <translation>Perspektyva</translation>
     </message>
     <message>
       <source>Set View to Perspective mode</source>
-      <translation type="unfinished">Set View to Perspective mode</translation>
+      <translation>Perjungti į perspektyvinį rodymą</translation>
     </message>
   </context>
   <context>
     <name>ViewZoomToFitCmd</name>
     <message>
       <source>Zoom to fit</source>
-      <translation type="unfinished">Zoom to fit</translation>
+      <translation>Priartinti, kad tilptų viskas</translation>
     </message>
     <message>
       <source>Zoom so that model fills the view</source>
-      <translation type="unfinished">Zoom so that model fills the view</translation>
+      <translation>Priartinama taip, kad modelis užpildo rodinio langą</translation>
     </message>
   </context>
   <context>

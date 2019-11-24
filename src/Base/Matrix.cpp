@@ -30,6 +30,7 @@
 
 
 #include "Matrix.h"
+#include "Converter.h"
 
 using namespace Base;
 
@@ -43,10 +44,22 @@ Matrix4D::Matrix4D (float a11, float a12, float a13, float a14,
                     float a31, float a32, float a33, float a34,
                     float a41, float a42, float a43, float a44 )
 {
-    dMtrx4D[0][0] = a11; dMtrx4D[0][1] = a12; dMtrx4D[0][2] = a13; dMtrx4D[0][3] = a14;
-    dMtrx4D[1][0] = a21; dMtrx4D[1][1] = a22; dMtrx4D[1][2] = a23; dMtrx4D[1][3] = a24;
-    dMtrx4D[2][0] = a31; dMtrx4D[2][1] = a32; dMtrx4D[2][2] = a33; dMtrx4D[2][3] = a34;
-    dMtrx4D[3][0] = a41; dMtrx4D[3][1] = a42; dMtrx4D[3][2] = a43; dMtrx4D[3][3] = a44;
+    dMtrx4D[0][0] = static_cast<double>(a11);
+    dMtrx4D[0][1] = static_cast<double>(a12);
+    dMtrx4D[0][2] = static_cast<double>(a13);
+    dMtrx4D[0][3] = static_cast<double>(a14);
+    dMtrx4D[1][0] = static_cast<double>(a21);
+    dMtrx4D[1][1] = static_cast<double>(a22);
+    dMtrx4D[1][2] = static_cast<double>(a23);
+    dMtrx4D[1][3] = static_cast<double>(a24);
+    dMtrx4D[2][0] = static_cast<double>(a31);
+    dMtrx4D[2][1] = static_cast<double>(a32);
+    dMtrx4D[2][2] = static_cast<double>(a33);
+    dMtrx4D[2][3] = static_cast<double>(a34);
+    dMtrx4D[3][0] = static_cast<double>(a41);
+    dMtrx4D[3][1] = static_cast<double>(a42);
+    dMtrx4D[3][2] = static_cast<double>(a43);
+    dMtrx4D[3][3] = static_cast<double>(a44);
 }
 
 Matrix4D::Matrix4D (double a11, double a12, double a13, double a14, 
@@ -114,9 +127,7 @@ double Matrix4D::determinant() const
 
 void Matrix4D::move (const Vector3f& rclVct)
 {
-    dMtrx4D[0][3] += rclVct.x;
-    dMtrx4D[1][3] += rclVct.y;
-    dMtrx4D[2][3] += rclVct.z;
+    move(convertTo<Vector3d>(rclVct));
 }
 
 void Matrix4D::move (const Vector3d& rclVct)
@@ -128,12 +139,7 @@ void Matrix4D::move (const Vector3d& rclVct)
 
 void Matrix4D::scale (const Vector3f& rclVct)
 {
-    Matrix4D clMat;
-
-    clMat.dMtrx4D[0][0] = rclVct.x;
-    clMat.dMtrx4D[1][1] = rclVct.y;
-    clMat.dMtrx4D[2][2] = rclVct.z;
-    (*this) = clMat * (*this);
+    scale(convertTo<Vector3d>(rclVct));
 }
 
 void Matrix4D::scale (const Vector3d& rclVct)
@@ -242,8 +248,8 @@ void Matrix4D::rotLine(const Vector3d& rclVct, double fAngle)
 
 void Matrix4D::rotLine(const Vector3f& rclVct, float fAngle)
 {
-    Vector3d tmp(rclVct.x,rclVct.y,rclVct.z);
-    rotLine(tmp,fAngle);
+    Vector3d tmp = convertTo<Vector3d>(rclVct);
+    rotLine(tmp, static_cast<double>(fAngle));
 }
 
 void Matrix4D::rotLine(const Vector3d& rclBase, const Vector3d& rclDir, double fAngle)
@@ -255,9 +261,9 @@ void Matrix4D::rotLine(const Vector3d& rclBase, const Vector3d& rclDir, double f
 
 void Matrix4D::rotLine(const Vector3f& rclBase, const Vector3f& rclDir, float fAngle)
 {
-    Vector3d pnt(rclBase.x,rclBase.y,rclBase.z);
-    Vector3d dir(rclDir.x,rclDir.y,rclDir.z);
-    rotLine(pnt,dir,fAngle);
+    Vector3d pnt = convertTo<Vector3d>(rclBase);
+    Vector3d dir = convertTo<Vector3d>(rclDir);
+    rotLine(pnt,dir,static_cast<double>(fAngle));
 }
 
 /**
@@ -273,129 +279,20 @@ void Matrix4D::rotLine(const Vector3f& rclBase, const Vector3f& rclDir, float fA
  */
 bool Matrix4D::toAxisAngle (Vector3f& rclBase, Vector3f& rclDir, float& rfAngle, float& fTranslation) const
 {
-  // First check if the 3x3 submatrix is orthogonal
-  for ( int i=0; i<3; i++ ) {
-    // length must be one
-    if ( fabs(dMtrx4D[0][i]*dMtrx4D[0][i]+dMtrx4D[1][i]*dMtrx4D[1][i]+dMtrx4D[2][i]*dMtrx4D[2][i]-1.0) > 0.01 )
-      return false;
-    // scalar product with other rows must be zero
-    if ( fabs(dMtrx4D[0][i]*dMtrx4D[0][(i+1)%3]+dMtrx4D[1][i]*dMtrx4D[1][(i+1)%3]+dMtrx4D[2][i]*dMtrx4D[2][(i+1)%3]) > 0.01 )
-      return false;
-  }
+    Vector3d pnt = convertTo<Vector3d>(rclBase);
+    Vector3d dir = convertTo<Vector3d>(rclDir);
+    double dAngle = static_cast<double>(rfAngle);
+    double dTranslation = static_cast<double>(fTranslation);
 
-  // Okay, the 3x3 matrix is orthogonal.
-  // Note: The section to get the rotation axis and angle was taken from WildMagic Library.
-  //
-  // Let (x,y,z) be the unit-length axis and let A be an angle of rotation.
-  // The rotation matrix is R = I + sin(A)*P + (1-cos(A))*P^2 where
-  // I is the identity and
-  //
-  //       +-        -+
-  //   P = |  0 -z +y |
-  //       | +z  0 -x |
-  //       | -y +x  0 |
-  //       +-        -+
-  //
-  // If A > 0, R represents a counterclockwise rotation about the axis in
-  // the sense of looking from the tip of the axis vector towards the
-  // origin.  Some algebra will show that
-  //
-  //   cos(A) = (trace(R)-1)/2  and  R - R^t = 2*sin(A)*P
-  //
-  // In the event that A = pi, R-R^t = 0 which prevents us from extracting
-  // the axis through P.  Instead note that R = I+2*P^2 when A = pi, so
-  // P^2 = (R-I)/2.  The diagonal entries of P^2 are x^2-1, y^2-1, and
-  // z^2-1.  We can solve these for axis (x,y,z).  Because the angle is pi,
-  // it does not matter which sign you choose on the square roots.
-  //
-  // For more details see also http://www.math.niu.edu/~rusin/known-math/97/rotations
-
-  double fTrace = dMtrx4D[0][0] + dMtrx4D[1][1] + dMtrx4D[2][2];
-  double fCos = 0.5*(fTrace-1.0);
-  rfAngle = (float)acos(fCos);  // in [0,PI]
-
-  if ( rfAngle > 0.0f )
-  {
-    if ( rfAngle < F_PI )
-    {
-      rclDir.x = (float)(dMtrx4D[2][1]-dMtrx4D[1][2]);
-      rclDir.y = (float)(dMtrx4D[0][2]-dMtrx4D[2][0]);
-      rclDir.z = (float)(dMtrx4D[1][0]-dMtrx4D[0][1]);
-      rclDir.Normalize();
+    bool ok = toAxisAngle(pnt, dir, dAngle, dTranslation);
+    if (ok) {
+        rclBase = convertTo<Vector3f>(pnt);
+        rclDir = convertTo<Vector3f>(dir);
+        rfAngle = static_cast<float>(dAngle);
+        fTranslation = static_cast<float>(dTranslation);
     }
-    else
-    {
-      // angle is PI
-      double fHalfInverse;
-      if ( dMtrx4D[0][0] >= dMtrx4D[1][1] )
-      {
-        // r00 >= r11
-        if ( dMtrx4D[0][0] >= dMtrx4D[2][2] )
-        {
-          // r00 is maximum diagonal term
-          rclDir.x = (float)(0.5*sqrt(dMtrx4D[0][0] - dMtrx4D[1][1] - dMtrx4D[2][2] + 1.0));
-          fHalfInverse = 0.5/rclDir.x;
-          rclDir.y = (float)(fHalfInverse*dMtrx4D[0][1]);
-          rclDir.z = (float)(fHalfInverse*dMtrx4D[0][2]);
-        }
-        else
-        {
-          // r22 is maximum diagonal term
-          rclDir.z = (float)(0.5*sqrt(dMtrx4D[2][2] - dMtrx4D[0][0] - dMtrx4D[1][1] + 1.0));
-          fHalfInverse = 0.5/rclDir.z;
-          rclDir.x = (float)(fHalfInverse*dMtrx4D[0][2]);
-          rclDir.y = (float)(fHalfInverse*dMtrx4D[1][2]);
-        }
-      }
-      else
-      {
-        // r11 > r00
-        if ( dMtrx4D[1][1] >= dMtrx4D[2][2] )
-        {
-          // r11 is maximum diagonal term
-          rclDir.y = (float)(0.5*sqrt(dMtrx4D[1][1] - dMtrx4D[0][0] - dMtrx4D[2][2] + 1.0));
-          fHalfInverse  = 0.5/rclDir.y;
-          rclDir.x = (float)(fHalfInverse*dMtrx4D[0][1]);
-          rclDir.z = (float)(fHalfInverse*dMtrx4D[1][2]);
-        }
-        else
-        {
-          // r22 is maximum diagonal term
-          rclDir.z = (float)(0.5*sqrt(dMtrx4D[2][2] - dMtrx4D[0][0] - dMtrx4D[1][1] + 1.0));
-          fHalfInverse = 0.5/rclDir.z;
-          rclDir.x = (float)(fHalfInverse*dMtrx4D[0][2]);
-          rclDir.y = (float)(fHalfInverse*dMtrx4D[1][2]);
-        }
-      }
-    }
-  }
-  else
-  {
-    // The angle is 0 and the matrix is the identity.  Any axis will
-    // work, so just use the x-axis.
-    rclDir.x = 1.0f;
-    rclDir.y = 0.0f;
-    rclDir.z = 0.0f;
-    rclBase.x = 0.0f;
-    rclBase.y = 0.0f;
-    rclBase.z = 0.0f;
-  }
 
-  // This is the translation part in axis direction
-  fTranslation = (float)(dMtrx4D[0][3]*rclDir.x+dMtrx4D[1][3]*rclDir.y+dMtrx4D[2][3]*rclDir.z);
-  Vector3f cPnt((float)dMtrx4D[0][3],(float)dMtrx4D[1][3],(float)dMtrx4D[2][3]); 
-  cPnt = cPnt - fTranslation * rclDir;
-
-  // This is the base point of the rotation axis
-  if ( rfAngle > 0.0f )
-  {
-    double factor = 0.5*(1.0+fTrace)/sin(rfAngle);
-    rclBase.x = (float)(0.5*(cPnt.x+factor*(rclDir.y*cPnt.z-rclDir.z*cPnt.y)));
-    rclBase.y = (float)(0.5*(cPnt.y+factor*(rclDir.z*cPnt.x-rclDir.x*cPnt.z)));
-    rclBase.z = (float)(0.5*(cPnt.z+factor*(rclDir.x*cPnt.y-rclDir.y*cPnt.x)));
-  }
-
-  return true;
+    return ok;
 }
 
 bool Matrix4D::toAxisAngle (Vector3d& rclBase, Vector3d& rclDir, double& rfAngle, double& fTranslation) const
@@ -441,9 +338,9 @@ bool Matrix4D::toAxisAngle (Vector3d& rclBase, Vector3d& rclDir, double& rfAngle
   double fCos = 0.5*(fTrace-1.0);
   rfAngle = acos(fCos);  // in [0,PI]
 
-  if ( rfAngle > 0.0f )
+  if ( rfAngle > 0.0 )
   {
-    if ( rfAngle < F_PI )
+    if ( rfAngle < D_PI )
     {
       rclDir.x = (dMtrx4D[2][1]-dMtrx4D[1][2]);
       rclDir.y = (dMtrx4D[0][2]-dMtrx4D[2][0]);
@@ -514,7 +411,7 @@ bool Matrix4D::toAxisAngle (Vector3d& rclBase, Vector3d& rclDir, double& rfAngle
   cPnt = cPnt - fTranslation * rclDir;
 
   // This is the base point of the rotation axis
-  if ( rfAngle > 0.0f )
+  if ( rfAngle > 0.0 )
   {
     double factor = 0.5*(1.0+fTrace)/sin(rfAngle);
     rclBase.x = (0.5*(cPnt.x+factor*(rclDir.y*cPnt.z-rclDir.z*cPnt.y)));
@@ -601,7 +498,7 @@ void Matrix_gauss(Matrix a, Matrix b)
     }
     indxr[i] = irow;
     indxc[i] = icol;
-    if (a[4*icol+icol] == 0) return;
+    if (a[4*icol+icol] == 0.0) return;
     pivinv = 1.0/a[4*icol+icol];
     a[4*icol+icol] = 1.0;
     for (l = 0; l < 4; l++)
@@ -820,8 +717,8 @@ std::string Matrix4D::analyse(void) const
                 trp.transpose();
                 trp = trp * sub;
                 bool ortho = true;
-                for (int i=0; i<4 && ortho; i++) {
-                    for (int j=0; j<4 && ortho; j++) {
+                for (unsigned short i=0; i<4 && ortho; i++) {
+                    for (unsigned short j=0; j<4 && ortho; j++) {
                         if (i != j) {
                             if (fabs(trp[i][j]) > eps) {
                                 ortho = false;
@@ -876,17 +773,7 @@ Matrix4D& Matrix4D::Outer(const Vector3f& rV1, const Vector3f& rV2)
 {
     setToUnity();
 
-    dMtrx4D[0][0] = rV1.x * rV2.x;
-    dMtrx4D[0][1] = rV1.x * rV2.y;
-    dMtrx4D[0][2] = rV1.x * rV2.z;
-
-    dMtrx4D[1][0] = rV1.y * rV2.x;
-    dMtrx4D[1][1] = rV1.y * rV2.y;
-    dMtrx4D[1][2] = rV1.y * rV2.z;
-
-    dMtrx4D[2][0] = rV1.z * rV2.x;
-    dMtrx4D[2][1] = rV1.z * rV2.y;
-    dMtrx4D[2][2] = rV1.z * rV2.z;
+    Outer(convertTo<Vector3d>(rV1), convertTo<Vector3d>(rV2));
 
     return *this;
 }
@@ -914,17 +801,7 @@ Matrix4D& Matrix4D::Hat(const Vector3f& rV)
 {
     setToUnity();
 
-    dMtrx4D[0][0] = 0.0;
-    dMtrx4D[0][1] = -rV.z;
-    dMtrx4D[0][2] = rV.y;
-
-    dMtrx4D[1][0] = rV.z;
-    dMtrx4D[1][1] = 0.0;
-    dMtrx4D[1][2] = -rV.x;
-
-    dMtrx4D[2][0] = -rV.y;
-    dMtrx4D[2][1] = rV.x;
-    dMtrx4D[2][2] = 0.0;
+    Hat(convertTo<Vector3d>(rV));
 
     return *this;
 }
@@ -946,4 +823,30 @@ Matrix4D& Matrix4D::Hat(const Vector3d& rV)
     dMtrx4D[2][2] = 0.0;
 
     return *this;
+}
+
+int Matrix4D::hasScale(double tol) const
+{
+    // check for uniform scaling
+    //
+    // scaling factors are the column vector length. We use square distance and
+    // ignore the actual scaling signess
+    //
+    if (tol == 0.0)
+        tol = 1e-9;
+    double dx = Vector3d(dMtrx4D[0][0],dMtrx4D[1][0],dMtrx4D[2][0]).Sqr();
+    double dy = Vector3d(dMtrx4D[0][1],dMtrx4D[1][1],dMtrx4D[2][1]).Sqr();
+    if (fabs(dx-dy) > tol) {
+        return -1;
+    }
+    else {
+        double dz = Vector3d(dMtrx4D[0][2],dMtrx4D[1][2],dMtrx4D[2][2]).Sqr();
+        if (fabs(dy-dz) > tol)
+            return -1;
+    }
+
+    if (fabs(dx-1.0) > tol)
+        return 1;
+    else
+        return 0;
 }

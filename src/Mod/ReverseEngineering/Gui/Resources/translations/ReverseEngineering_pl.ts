@@ -162,7 +162,7 @@
       <translation>Proszę wybrać pojedynczy obiekt miejsca końcowego, aby uzyskać lokalną orientację.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Próbek na węzeł</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Błąd danych wejściowych</translation>
     </message>

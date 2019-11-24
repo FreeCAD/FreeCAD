@@ -30,10 +30,10 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -64,7 +64,7 @@ namespace SketcherGui {
 extern GeometryCreationMode geometryCreationMode;
 
 /* Constrain commands =======================================================*/
-DEF_STD_CMD_A(CmdSketcherToggleConstruction);
+DEF_STD_CMD_A(CmdSketcherToggleConstruction)
 
 CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     :Command("Sketcher_ToggleConstruction")
@@ -142,7 +142,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             if (it->size() > 4 && it->substr(0,4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
                 // issue the actual commands to toggle
-                doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",selection[0].getFeatName(),GeoId);
+                Gui::cmdAppObjectArgs(selection[0].getObject(), "toggleConstruction(%d) ", GeoId);
             }
         }
         // finish the transaction and update
@@ -168,5 +168,3 @@ void CreateSketcherCommandsAlterGeo(void)
 
     rcCmdMgr.addCommand(new CmdSketcherToggleConstruction());
 }
-
-

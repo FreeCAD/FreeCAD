@@ -22,9 +22,12 @@
 
 #include "PreCompiled.h"
 
+#include <Base/GeometryPyCXX.h>
+#include <Base/MatrixPy.h>
 #include "DocumentObject.h"
 #include "Document.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
+#include "GeoFeature.h"
 #include "GroupExtension.h"
 #include "GeoFeatureGroupExtension.h"
 
@@ -51,6 +54,11 @@ Py::String DocumentObjectPy::getName(void) const
         throw Py::RuntimeError(std::string("This object is currently not part of a document"));
     }
     return Py::String(std::string(internal));
+}
+
+Py::String DocumentObjectPy::getFullName(void) const
+{
+    return Py::String(getDocumentObjectPtr()->getFullName());
 }
 
 Py::Object DocumentObjectPy::getDocument(void) const
@@ -132,8 +140,21 @@ PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
 
 PyObject*  DocumentObjectPy::touch(PyObject * args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+    char *propName = 0;
+    if (!PyArg_ParseTuple(args, "|s",&propName))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception 
+    if(propName) {
+        if(!propName[0]) {
+            getDocumentObjectPtr()->touch(true);
+            Py_Return;
+        }
+        auto prop = getDocumentObjectPtr()->getPropertyByName(propName);
+        if(!prop) 
+            throw Py::RuntimeError("Property not found");
+        prop->touch();
+        Py_Return;
+    }
+
     getDocumentObjectPtr()->touch();
     Py_Return;
 }
@@ -171,12 +192,21 @@ Py::List DocumentObjectPy::getState(void) const
         uptodate = false;
         list.append(Py::String("Recompute"));
     }
+    if (object->testStatus(App::Recompute2)) {
+        list.append(Py::String("Recompute2"));
+    }
     if (object->isRestoring()) {
         uptodate = false;
         list.append(Py::String("Restore"));
     }
     if (object->testStatus(App::Expand)){
         list.append(Py::String("Expanded"));
+    }
+    if (object->testStatus(App::PartialObject)){
+        list.append(Py::String("Partial"));
+    }
+    if (object->testStatus(App::ObjImporting)){
+        list.append(Py::String("Importing"));
     }
     if (uptodate) {
         list.append(Py::String("Up-to-date"));
@@ -187,21 +217,36 @@ Py::List DocumentObjectPy::getState(void) const
 Py::Object DocumentObjectPy::getViewObject(void) const
 {
     try {
+        PyObject *dict = PySys_GetObject("modules");
+        if (!dict) {
+            return Py::None();
+        }
+
+        // check if the FreeCADGui module is already loaded, if not then don't try to load it
+        Py::Dict sysmod(dict);
+        if (!sysmod.hasKey("FreeCADGui")) {
+            return Py::None();
+        }
+
+        // double-check that the module doesn't have a null pointer
         Py::Module module(PyImport_ImportModule("FreeCADGui"),true);
-        if (!module.hasAttr("getDocument")) {
+        if (module.isNull() || !module.hasAttr("getDocument")) {
             // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
             return Py::None();
         }
-        Py::Callable method(module.getAttr("getDocument"));
-        Py::Tuple arg(1);
-        arg.setItem(0, Py::String(getDocumentObjectPtr()->getDocument()->getName()));
-        Py::Object doc = method.apply(arg);
-        method = doc.getAttr("getObject");
+        if(!getDocumentObjectPtr()->getDocument()) {
+            throw Py::RuntimeError("Object has no document");
+        }
         const char* internalName = getDocumentObjectPtr()->getNameInDocument();
         if (!internalName) {
             throw Py::RuntimeError("Object has been removed from document");
         }
 
+        Py::Callable method(module.getAttr("getDocument"));
+        Py::Tuple arg(1);
+        arg.setItem(0, Py::String(getDocumentObjectPtr()->getDocument()->getName()));
+        Py::Object doc = method.apply(arg);
+        method = doc.getAttr("getObject");
         arg.setItem(0, Py::String(internalName));
         Py::Object obj = method.apply(arg);
         return obj;
@@ -292,9 +337,11 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     else if (PyString_Check(expr)) {
         const char * exprStr = PyString_AsString(expr);
 #endif
-        boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr));
+        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
+        if(shared_expr && comment)
+            shared_expr->comment = comment;
 
-        getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+        getDocumentObjectPtr()->setExpression(p, shared_expr);
     }
     else if (PyUnicode_Check(expr)) {
 #if PY_MAJOR_VERSION >= 3
@@ -306,7 +353,9 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
             Py_DECREF(unicode);
             boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
 
-            getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
+            if(shared_expr && comment)
+                shared_expr->comment = comment;
+            getDocumentObjectPtr()->setExpression(p, shared_expr);
         }
         else {
             // utf-8 encoding failed
@@ -319,18 +368,274 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     Py_Return;
 }
 
+PyObject*  DocumentObjectPy::evalExpression(PyObject * args)
+{
+    const char *expr;
+    if (!PyArg_ParseTuple(args, "s", &expr))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    PY_TRY {
+        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), expr));
+        if(shared_expr)
+            return Py::new_reference_to(shared_expr->getPyValue());
+        Py_Return;
+    } PY_CATCH
+}
+
 PyObject*  DocumentObjectPy::recompute(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    PyObject *recursive=Py_False;
+    if (!PyArg_ParseTuple(args, "|O",&recursive))
         return NULL;
 
     try {
-        bool ok = getDocumentObjectPtr()->recomputeFeature();
+        bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive));
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
     }
+}
+
+PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
+{
+    PyObject *obj;
+    short retType = 0;
+    PyObject *pyMat = Py_None;
+    PyObject *doTransform = Py_True;
+    short depth = 0;
+    static char *kwlist[] = {"subname","retType","matrix","transform","depth", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|hOOh", kwlist,
+                &obj,&retType,&pyMat,&doTransform,&depth))
+        return 0;
+
+    if(retType<0 || retType>6) {
+        PyErr_SetString(PyExc_TypeError, "invalid retType, can only be integer 0~6");
+        return 0;
+    }
+
+    std::vector<std::string> subs;
+    bool single=true;
+    if (PyUnicode_Check(obj)) {
+#if PY_MAJOR_VERSION >= 3
+        subs.push_back(PyUnicode_AsUTF8(obj));
+#else
+        PyObject* unicode = PyUnicode_AsUTF8String(obj);
+        subs.push_back(PyString_AsString(unicode));
+        Py_DECREF(unicode);
+    }
+    else if (PyString_Check(obj)) {
+        subs.push_back(PyString_AsString(obj));
+#endif
+    } else if (PySequence_Check(obj)) {
+        single=false;
+        Py::Sequence shapeSeq(obj);
+        for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+            PyObject* item = (*it).ptr();
+            if (PyUnicode_Check(item)) {
+#if PY_MAJOR_VERSION >= 3
+               subs.push_back(PyUnicode_AsUTF8(item));
+#else
+                PyObject* unicode = PyUnicode_AsUTF8String(item);
+                subs.push_back(PyString_AsString(unicode));
+                Py_DECREF(unicode);
+            }
+            else if (PyString_Check(item)) {
+                subs.push_back(PyString_AsString(item));
+#endif
+            }else{
+                PyErr_SetString(PyExc_TypeError, "non-string object in sequence");
+                return 0;
+            }
+        }
+    }else{
+        PyErr_SetString(PyExc_TypeError, "subname must be either a string or sequence of string");
+        return 0;
+    }
+
+    bool transform = PyObject_IsTrue(doTransform);
+
+    struct SubInfo {
+        App::DocumentObject *sobj;
+        Py::Object obj;
+        Py::Object pyObj;
+        Base::Matrix4D mat;
+        SubInfo(const Base::Matrix4D &mat):mat(mat){}
+    };
+
+    Base::Matrix4D mat;
+    if(pyMat!=Py_None) {
+        if(!PyObject_TypeCheck(pyMat,&Base::MatrixPy::Type)) {
+            PyErr_SetString(PyExc_TypeError, "expect argument 'matrix' to be of type Base.Matrix");
+            return 0;
+        }
+        mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
+    }
+
+    PY_TRY {
+        std::vector<SubInfo> ret;
+        for(const auto &sub : subs) {
+            ret.emplace_back(mat);
+            auto &info = ret.back();
+            PyObject *pyObj = 0;
+            info.sobj = getDocumentObjectPtr()->getSubObject(
+                    sub.c_str(),retType!=0&&retType!=2?0:&pyObj,&info.mat,transform,depth);
+            if(pyObj)
+                info.pyObj = Py::Object(pyObj,true);
+            if(info.sobj) 
+                info.obj = Py::Object(info.sobj->getPyObject(),true);
+        }
+        if(ret.empty())
+            Py_Return;
+
+        if(single) {
+            if(retType==0)
+                return Py::new_reference_to(ret[0].pyObj);
+            else if(retType==1 && pyMat==Py_None)
+                return Py::new_reference_to(ret[0].obj);
+            else if(!ret[0].sobj)
+                Py_Return;
+            else if(retType==3)
+                return Py::new_reference_to(Py::Placement(Base::Placement(ret[0].mat)));
+            else if(retType==4)
+                return Py::new_reference_to(Py::Matrix(ret[0].mat));
+            else if(retType==5 || retType==6) {
+                ret[0].sobj->getLinkedObject(true,&ret[0].mat,false);
+                if(retType==5)
+                    return Py::new_reference_to(Py::Placement(Base::Placement(ret[0].mat)));
+                else
+                    return Py::new_reference_to(Py::Matrix(ret[0].mat));
+            }
+            Py::Tuple rret(retType==1?2:3);
+            rret.setItem(0,ret[0].obj);
+            rret.setItem(1,Py::asObject(new Base::MatrixPy(ret[0].mat)));
+            if(retType!=1)
+                rret.setItem(2,ret[0].pyObj);
+            return Py::new_reference_to(rret);
+        }
+        Py::Tuple tuple(ret.size());
+        for(size_t i=0;i<ret.size();++i) {
+            if(retType==0)
+                tuple.setItem(i,ret[i].pyObj);
+            else if(retType==1 && pyMat==Py_None)
+                tuple.setItem(i,ret[i].obj);
+            else if(!ret[i].sobj)
+                tuple.setItem(i, Py::Object());
+            else if(retType==3)
+                tuple.setItem(i,Py::Placement(Base::Placement(ret[0].mat)));
+            else if(retType==4)
+                tuple.setItem(i,Py::Matrix(ret[0].mat));
+            else if(retType==5 || retType==6) {
+                ret[i].sobj->getLinkedObject(true,&ret[i].mat,false);
+                if(retType==5)
+                    tuple.setItem(i,Py::Placement(Base::Placement(ret[i].mat)));
+                else
+                    tuple.setItem(i,Py::Matrix(ret[i].mat));
+            } else {
+                Py::Tuple rret(retType==1?2:3);
+                rret.setItem(0,ret[i].obj);
+                rret.setItem(1,Py::asObject(new Base::MatrixPy(ret[i].mat)));
+                if(retType!=1)
+                    rret.setItem(2,ret[i].pyObj);
+                tuple.setItem(i,rret);
+            }
+        }
+        return Py::new_reference_to(tuple);
+    }PY_CATCH
+}
+
+PyObject*  DocumentObjectPy::getSubObjectList(PyObject *args) {
+    const char *subname;
+    if (!PyArg_ParseTuple(args, "s", &subname))
+        return NULL;
+    Py::List res;
+    PY_TRY {
+        for(auto o : getDocumentObjectPtr()->getSubObjectList(subname))
+            res.append(Py::asObject(o->getPyObject()));
+        return Py::new_reference_to(res);
+    }PY_CATCH
+}
+
+PyObject*  DocumentObjectPy::getSubObjects(PyObject *args) {
+    int reason = 0;
+    if (!PyArg_ParseTuple(args, "|i", &reason))
+        return NULL;
+
+    PY_TRY {
+        auto names = getDocumentObjectPtr()->getSubObjects(reason);
+        Py::Tuple pyObjs(names.size());
+        for(size_t i=0;i<names.size();++i)
+            pyObjs.setItem(i,Py::String(names[i]));
+        return Py::new_reference_to(pyObjs);
+    }PY_CATCH;
+}
+
+PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
+{
+    PyObject *recursive = Py_True;
+    PyObject *pyMat = Py_None;
+    PyObject *transform = Py_True;
+    short depth = 0;
+    static char *kwlist[] = {"recursive","matrix","transform","depth", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|OOOh", kwlist,
+                &recursive,&pyMat,&transform,&depth))
+        return NULL;
+
+    Base::Matrix4D _mat;
+    Base::Matrix4D *mat = 0;
+    if(pyMat!=Py_None) {
+        if(!PyObject_TypeCheck(pyMat,&Base::MatrixPy::Type)) {
+            PyErr_SetString(PyExc_TypeError, "expect argument 'matrix' to be of type Base.Matrix");
+            return 0;
+        }
+        _mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
+        mat = &_mat;
+    }
+
+    PY_TRY {
+        auto linked = getDocumentObjectPtr()->getLinkedObject(
+                PyObject_IsTrue(recursive), mat, PyObject_IsTrue(transform),depth);
+        if(!linked)
+            linked = getDocumentObjectPtr();
+        auto pyObj = Py::Object(linked->getPyObject(),true);
+        if(mat) {
+            Py::Tuple ret(2);
+            ret.setItem(0,pyObj);
+            ret.setItem(1,Py::asObject(new Base::MatrixPy(*mat)));
+            return Py::new_reference_to(ret);
+        }
+        return Py::new_reference_to(pyObj);
+    } PY_CATCH;
+}
+
+PyObject*  DocumentObjectPy::isElementVisible(PyObject *args)
+{
+    char *element = 0;
+    if (!PyArg_ParseTuple(args, "s", &element))
+        return NULL;
+    PY_TRY {
+        return Py_BuildValue("h", getDocumentObjectPtr()->isElementVisible(element));
+    } PY_CATCH;
+}
+
+PyObject*  DocumentObjectPy::setElementVisible(PyObject *args)
+{
+    char *element = 0;
+    PyObject *visible = Py_True;
+    if (!PyArg_ParseTuple(args, "s|O", &element,&visible))
+        return NULL;
+    PY_TRY {
+        return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element,PyObject_IsTrue(visible)));
+    } PY_CATCH;
+}
+
+PyObject*  DocumentObjectPy::hasChildElement(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    PY_TRY {
+        return Py_BuildValue("O", getDocumentObjectPtr()->hasChildElement()?Py_True:Py_False);
+    } PY_CATCH;
 }
 
 PyObject*  DocumentObjectPy::getParentGroup(PyObject *args)
@@ -369,6 +674,16 @@ PyObject*  DocumentObjectPy::getParentGeoFeatureGroup(PyObject *args)
     }
 }
 
+Py::Boolean DocumentObjectPy::getMustExecute() const
+{
+    try {
+        return Py::Boolean(getDocumentObjectPtr()->mustExecute()?true:false);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
 PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
 {
     PyObject* o;
@@ -396,20 +711,39 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
 
 PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
+    // Dynamic property is now directly supported in PropertyContainer. So we
+    // can comment out here and let PropertyContainerPy handle it.
+#if 1
+    (void)attr;
+#else
     // search for dynamic property
     Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
     if (prop)
         return prop->getPyObject();
     else
+#endif
         return 0;
 }
 
 int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
 {
+    // The following code is practically the same as in PropertyContainerPy,
+    // especially since now dynamic property is directly supported in
+    // PropertyContainer. So we can comment out here and let PropertyContainerPy
+    // handle it.
+#if 1
+    (void)attr;
+    (void)obj;
+#else
     // explicitly search for dynamic property
     try {
         Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
         if (prop) {
+            if(prop->testStatus(Property::Immutable)) {
+                std::stringstream s;
+                s << "'DocumentObject' attribute '" << attr << "' is read-only"; 
+                throw Py::AttributeError(s.str());
+            }
             prop->setPyObject(obj);
             return 1;
         }
@@ -424,7 +758,9 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
         s << "Attribute (Name: " << attr << ") error: '" << exc.what() << "' ";
         throw Py::AttributeError(s.str());
     }
-    catch (...) {
+    catch (Py::AttributeError &) {
+        throw;
+    }catch (...) {
         std::stringstream s;
         s << "Unknown error in attribute " << attr;
         throw Py::AttributeError(s.str());
@@ -434,8 +770,9 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
     Property *prop = getDocumentObjectPtr()->getPropertyByName(attr);
     if (prop) {
         // Read-only attributes must not be set over its Python interface
-        short Type =  getDocumentObjectPtr()->getPropertyType(prop);
-        if (Type & Prop_ReadOnly) {
+        if(prop->testStatus(Property::Immutable) ||
+           (getDocumentObjectPtr()->getPropertyType(prop) & Prop_ReadOnly))
+        {
             std::stringstream s;
             s << "'DocumentObject' attribute '" << attr << "' is read-only"; 
             throw Py::AttributeError(s.str());
@@ -451,6 +788,95 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
         }
         return 1;
     } 
+#endif
 
     return 0;
+}
+
+Py::Int DocumentObjectPy::getID() const {
+    return Py::Int(getDocumentObjectPtr()->getID());
+}
+
+Py::Boolean DocumentObjectPy::getRemoving() const {
+    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::Remove));
+}
+
+PyObject *DocumentObjectPy::resolve(PyObject *args)
+{
+    const char *subname;
+    if (!PyArg_ParseTuple(args, "s",&subname))
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        std::string elementName;
+        const char *subElement = 0;
+        App::DocumentObject *parent = 0;
+        auto obj = getDocumentObjectPtr()->resolve(subname,&parent,&elementName,&subElement);
+
+        Py::Tuple ret(4);
+        ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
+        ret.setItem(1,parent?Py::Object(parent->getPyObject(),true):Py::None());
+        ret.setItem(2,Py::String(elementName.c_str()));
+        ret.setItem(3,Py::String(subElement?subElement:""));
+        return Py::new_reference_to(ret);
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
+{
+    const char *subname;
+    PyObject *append = Py_False;
+    int type = 0;
+    if (!PyArg_ParseTuple(args, "s|Oi",&subname,&append,&type))
+        return NULL;                             // NULL triggers exception 
+
+    PY_TRY {
+        std::pair<std::string,std::string> elementName;
+        auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
+                PyObject_IsTrue(append),(GeoFeature::ElementNameType)type);
+        Py::Tuple ret(3);
+        ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
+        ret.setItem(1,Py::String(elementName.first));
+        ret.setItem(2,Py::String(elementName.second));
+        return Py::new_reference_to(ret);
+    } PY_CATCH;
+
+    Py_Return;
+}
+
+Py::List DocumentObjectPy::getParents() const {
+    Py::List ret;
+    for(auto &v : getDocumentObjectPtr()->getParents())
+        ret.append(Py::TupleN(Py::Object(v.first->getPyObject(),true),Py::String(v.second)));
+    return ret;
+}
+
+PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
+    PyObject *pyobj;
+    PyObject *recursive = Py_True;
+    if (!PyArg_ParseTuple(args, "O!|O",&DocumentObjectPy::Type,&pyobj,&recursive))
+        return NULL;
+    PY_TRY {
+        auto obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        auto inList = obj->getInListEx(true);
+        inList.insert(obj);
+        std::set<App::DocumentObject *> visited;
+        return Py::new_reference_to(Py::Boolean(
+                    getDocumentObjectPtr()->adjustRelativeLinks(inList,
+                        PyObject_IsTrue(recursive)?&visited:nullptr)));
+    }PY_CATCH
+}
+
+Py::String DocumentObjectPy::getOldLabel() const {
+    return Py::String(getDocumentObjectPtr()->getOldLabel());
+}
+
+Py::Boolean DocumentObjectPy::getNoTouch() const {
+    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch));
+}
+
+void DocumentObjectPy::setNoTouch(Py::Boolean value) {
+    getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch,value.isTrue());
 }

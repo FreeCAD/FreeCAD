@@ -31,11 +31,12 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
-False if False else FemGui.__name__  # dummy usage of FemGui for flake8, just returns 'FemGui'
 
 # for the panel
 from PySide import QtCore
 from . import FemSelectionWidgets
+
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemMeshBoundaryLayer:
@@ -83,14 +84,15 @@ class _ViewProviderFemMeshBoundaryLayer:
 
     def doubleClicked(self, vobj):
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode, https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
         if not guidoc.getInEdit():
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -101,21 +103,40 @@ class _ViewProviderFemMeshBoundaryLayer:
 
 
 class _TaskPanelFemMeshBoundaryLayer:
-    '''The TaskPanel for editing References property of FemMeshBoundaryLayer objects'''
+    """The TaskPanel for editing References property of FemMeshBoundaryLayer objects"""
 
     def __init__(self, obj):
 
         self.obj = obj
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshBoundaryLayer.ui")
-        QtCore.QObject.connect(self.parameterWidget.bl_number_of_layers, QtCore.SIGNAL("valueChanged(int)"), self.bl_number_of_layers_changed)
-        QtCore.QObject.connect(self.parameterWidget.bl_min_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.bl_min_thickness_changed)
-        QtCore.QObject.connect(self.parameterWidget.bl_growth_rate, QtCore.SIGNAL("valueChanged(double)"), self.bl_growth_rate_changed)  # becareful of signal signature for QDoubleSpinbox
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshBoundaryLayer.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.bl_number_of_layers,
+            QtCore.SIGNAL("valueChanged(int)"),
+            self.bl_number_of_layers_changed
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.bl_min_thickness,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.bl_min_thickness_changed
+        )
+        # be careful of signal signature for QDoubleSpinbox
+        QtCore.QObject.connect(
+            self.parameterWidget.bl_growth_rate,
+            QtCore.SIGNAL("valueChanged(double)"),
+            self.bl_growth_rate_changed
+        )
         self.init_parameter_widget()
 
         # geometry selection widget
-        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(obj.References, ['Solid', 'Face', 'Edge', 'Vertex'])  # start with Solid in list!
+        # start with Solid in list!
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References,
+            ["Solid", "Face", "Edge", "Vertex"]
+        )
 
         # form made from param and selection widget
         self.form = [self.parameterWidget, self.selectionWidget]

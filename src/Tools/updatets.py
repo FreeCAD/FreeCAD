@@ -25,6 +25,14 @@
 #*                                                                         *
 #***************************************************************************
 
+# Changelog:
+# 0.3 User-friendly output
+#     Corrections
+#     Added Changelog
+# 0.2 Add Qt5 support
+#     Add "no obsolete" flags in order to fix 'ghost strings' in Crowdin
+# 0.1 Initial Release
+
 from __future__ import print_function
 
 Usage = """updatets - update all .ts files found in the source directories
@@ -32,12 +40,13 @@ Usage = """updatets - update all .ts files found in the source directories
 Usage:
    updatets
 
-Author:
+Authors:
   (c) 2010 Werner Mayer
-  Licence: GPL
+  (c) 2019 FreeCAD Volunteers
+  Licence: LGPL
 
 Version:
-  0.1
+  0.3
 """
 
 import os, re
@@ -97,6 +106,8 @@ PyCommands = [["src/Mod/Draft",
                'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image.ts -o Gui/Resources/translations/Image.ts'],
               ["src/Mod/Image",
                'rm Gui/Resources/translations/Imagepy.ts'],
+              ["src/Mod/AddonManager",
+               "pylupdate *.py *.ui -ts Resources/translations/AddonManager.ts"],
                ]
 
 # add python folders to exclude list
@@ -110,13 +121,14 @@ LCONVERT = ""
 
 def find_tools(noobsolete=True):
 
+    print(Usage + "\nFirst, lets find all necessary tools on your system")
     global QMAKE, LUPDATE, PYLUPDATE, LCONVERT
     if (os.system("qmake -version") == 0):
         QMAKE = "qmake"
-    elif (os.system("qmake-qt4 -version") == 0):
-        QMAKE = "qmake-qt4"
     elif (os.system("qmake-qt5 -version") == 0):
         QMAKE = "qmake-qt5"
+    elif (os.system("qmake-qt4 -version") == 0):
+        QMAKE = "qmake-qt4"
     else:
         raise Exception("Cannot find qmake")
     if (os.system("lupdate -version") == 0):
@@ -124,24 +136,24 @@ def find_tools(noobsolete=True):
         # TODO: we suppose lupdate is a symlink to lupdate-qt4 for now
         if noobsolete:
             LUPDATE += " -no-obsolete"
-    elif (os.system("lupdate-qt4 -version") == 0):
-        LUPDATE = "lupdate-qt4"
-        if noobsolete:
-            LUPDATE += " -no-obsolete"
     elif (os.system("lupdate-qt5 -version") == 0):
         LUPDATE = "lupdate-qt5"
+        if noobsolete:
+            LUPDATE += " -no-obsolete"
+    elif (os.system("lupdate-qt4 -version") == 0):
+        LUPDATE = "lupdate-qt4"
         if noobsolete:
             LUPDATE += " -noobsolete"
     else:
         raise Exception("Cannot find lupdate")
     if (os.system("pylupdate -version") == 0):
         PYLUPDATE = "pylupdate"
-    elif (os.system("pylupdate4 -version") == 0):
-        PYLUPDATE = "pylupdate4"
-        if noobsolete:
-            PYLUPDATE += " -noobsolete"
     elif (os.system("pylupdate5 -version") == 0):
         PYLUPDATE = "pylupdate5"
+        if noobsolete:
+            PYLUPDATE += " -noobsolete"
+    elif (os.system("pylupdate4 -version") == 0):
+        PYLUPDATE = "pylupdate4"
         if noobsolete:
             PYLUPDATE += " -noobsolete"
     else:
@@ -152,7 +164,12 @@ def find_tools(noobsolete=True):
             LCONVERT += " -no-obsolete"
     else:
         raise Exception("Cannot find lconvert")
-    print("Qt tools:", QMAKE, LUPDATE, PYLUPDATE, LCONVERT)
+    print("\nAll Qt tools have been found!\n",
+          "\t" + QMAKE     + "\n",
+          "\t" + LUPDATE   + "\n",
+          "\t" + PYLUPDATE + "\n",
+          "\t" + LCONVERT  + "\n")
+    print("==============================================\n")
 
 def filter_dirs(item):
 
@@ -213,7 +230,7 @@ def main():
         update_translation(i)
     for j in PyCommands:
         update_python_translation(j)
+    print("\nIf updatets.py was run successfully, the next step is to run ./src/Tools/updatecrowdin.py")
 
 if __name__ == "__main__":
     main()
-

@@ -67,7 +67,7 @@ PyObject*  ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
     Py::List vertex;
     for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
         it != points.end(); ++it)
-        vertex.append(Py::Object(new Base::VectorPy(*it)));
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
     tuple.setItem(0, vertex);
     Py::List facet;
     for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
@@ -124,6 +124,14 @@ void  ComplexGeoDataPy::setMatrix(Py::Object arg)
         error += p->ob_type->tp_name;
         throw Py::TypeError(error);
     }
+}
+
+Py::Int ComplexGeoDataPy::getTag() const {
+    return Py::Int(getComplexGeoDataPtr()->Tag);
+}
+
+void ComplexGeoDataPy::setTag(Py::Int tag) {
+    getComplexGeoDataPtr()->Tag = tag;
 }
 
 PyObject *ComplexGeoDataPy::getCustomAttributes(const char* /*attr*/) const

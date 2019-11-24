@@ -37,7 +37,7 @@
 class gp_Pnt;
 class gp_Ax2;
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class GeometryObject;
 class Vertex;
@@ -79,7 +79,7 @@ public:
 
 public:
     static std::vector<TopoDS_Edge> getEdgesForWalker(TopoDS_Shape shape, double scale, Base::Vector3d direction);
-    static TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, const gp_Ax2& viewAxis);
+    static TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, const gp_Ax2& viewAxis);
 
     static bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds = false);
     static std::vector<TopoDS_Edge> splitEdges(std::vector<TopoDS_Edge> orig, std::vector<splitPoint> splits);
@@ -92,7 +92,7 @@ public:
     static std::vector<edgeSortItem> sortEdges(std::vector<edgeSortItem>& e, bool ascend);
 
 protected:
-    static std::vector<TopoDS_Edge> getEdges(TechDrawGeometry::GeometryObject* geometryObject);
+    static std::vector<TopoDS_Edge> getEdges(TechDraw::GeometryObject* geometryObject);
 
 
 private:

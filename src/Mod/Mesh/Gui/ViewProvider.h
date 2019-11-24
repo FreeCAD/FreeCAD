@@ -187,9 +187,12 @@ protected:
     virtual void unhighlightSelection();
     void highlightComponents();
     void setHighlightedComponents(bool);
+    void highlightSegments();
+    void setHighlightedSegments(bool);
     App::PropertyColorList* getColorProperty() const;
-    void tryColorPerVertex(bool);
+    void tryColorPerVertexOrFace(bool);
     void setColorPerVertex(const App::PropertyColorList*);
+    void setColorPerFace(const App::PropertyColorList*);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;
@@ -213,6 +216,7 @@ private:
     static void panCamera(SoCamera*, float, const SbPlane&, const SbVec2f&, const SbVec2f&);
 
 protected:
+    std::string highlightMode;
     Gui::SoFCSelection  * pcHighlight;
     SoGroup             * pcShapeGroup;
     SoDrawStyle         * pcLineStyle;

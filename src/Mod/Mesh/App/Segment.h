@@ -51,6 +51,9 @@ public:
     void setName(const std::string& n) { _name = n; }
     const std::string& getName() const { return _name; }
 
+    void setColor(const std::string& c) { _color = c; }
+    const std::string& getColor() const { return _color; }
+
     void save(bool on) { _save = on; }
     bool isSaved() const { return _save; }
 
@@ -61,6 +64,7 @@ private:
     MeshObject* _mesh;
     std::vector<unsigned long> _indices;
     std::string _name;
+    std::string _color;
     bool _save;
     bool _modifykernel;
 

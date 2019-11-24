@@ -52,6 +52,9 @@
      </item>
      <item row="0" column="1">
       <widget class="Gui::QuantitySpinBox" name="Value" native="true">
+       <property name="focusPolicy">
+        <enum>Qt::TabFocus</enum>
+       </property>
        <property name="unit" stdset="0">
         <string notr="true">mm</string>
        </property>
@@ -119,6 +122,13 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkIntersection">
+     <property name="text">
+      <string>Intersection</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkReverse">
      <property name="text">
       <string>Make thickness inwards</string>
@@ -134,6 +144,16 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>Value</tabstop>
+  <tabstop>modeComboBox</tabstop>
+  <tabstop>joinComboBox</tabstop>
+  <tabstop>checkIntersection</tabstop>
+  <tabstop>checkReverse</tabstop>
+  <tabstop>buttonRefAdd</tabstop>
+  <tabstop>buttonRefRemove</tabstop>
+  <tabstop>listWidgetReferences</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

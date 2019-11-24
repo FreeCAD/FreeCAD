@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport 
+        Father="BaseClassPy" 
+        Name="LinkViewPy" 
+        Twin="LinkView" 
+        TwinPointer="LinkView" 
+        Include="Gui/ViewProviderLink.h" 
+        Namespace="Gui" 
+        FatherInclude="Base/BaseClass.h"
+        FatherNamespace="Base"
+        Constructor="true"
+        Delete="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+            <UserDocu>Helper class to link to a view object</UserDocu>
+        </Documentation>
+        <Methode Name="reset">
+            <Documentation>
+                <UserDocu>Reset the link view and clear the links</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setMaterial">
+            <Documentation>
+                <UserDocu>
+setMaterial(Material): set the override material of the entire linked object
+
+setMaterial([Material,...]): set the materials for the elements of the link
+                             array/group. 
+
+setMaterial({Int:Material,...}): set the material for the elements of the
+                                 link array/group by index. 
+
+If material is None, then the material is unset. If the material of an element
+is unset, it defaults to the override material of the linked object, if there
+is one
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setType">
+            <Documentation>
+                <UserDocu>
+setType(type, sublink=True): set the link type.
+
+type=0:  override transformation and visibility
+type=1:  override visibility
+type=2:  no override
+type=-1: sub-object link with override visibility
+type=-2: sub-object link with override transformation and visibility
+
+sublink: auto delegate to the sub-object references in the link, if there is
+         one and only one.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setTransform">
+            <Documentation>
+                <UserDocu>
+setTransform(matrix): set transformation of the linked object
+
+setTransform([matrix,...]): set transformation for the elements of the link
+                            array/group
+
+setTransform({index:matrix,...}): set transformation for elements of the link
+                                  array/group by index
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setChildren">
+            <Documentation>
+                <UserDocu>
+setChildren([obj...],vis=[],type=0)
+Group a list of children objects. Note, this mode of operation is incompatible 
+with link array. Calling this function will deactivate link array. And calling
+setSize() will reset all linked children.
+
+vis: initial visibility status of the children
+
+type: children linking type, 
+   0: override transformation and visibility, 
+   1: override visibility, 
+   2: override none.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setLink">
+            <Documentation>
+                <UserDocu>
+setLink(object): Set the link
+
+setLink(object, subname): Set the link with a sub-object reference
+
+setLink(object, [subname,...]): Set the link with a list of sub object references
+
+object: The linked document object or its view object
+
+subname: a string or tuple/list of strings sub-name references to sub object
+         or sub elements (e.g. Face1, Edge2) belonging to the linked object.
+         The sub-name must end with a '.' if it is referencing an sub-object,
+         or else it is considered a sub-element reference.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getDetailPath">
+            <Documentation>
+                <UserDocu>
+getDetailPath(element): get the 3d path an detail of an element.
+
+Return a tuple(path,detail) for the coin3D SoPath and SoDetail of the element
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getElementPicked">
+            <Documentation>
+                <UserDocu>getElementPicked(pickPoint): get the element under a 3d pick point. </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getBoundBox">
+            <Documentation>
+                <UserDocu>getBoundBox(vobj=None): get the bounding box. </UserDocu>
+            </Documentation>
+        </Methode>
+        <Attribute Name="LinkedView" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The linked view object</UserDocu>
+            </Documentation>
+            <Parameter Name="LinkedView" Type="Object" />
+        </Attribute>
+        <Attribute Name="SubNames" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The sub-object reference of the link</UserDocu>
+            </Documentation>
+            <Parameter Name="SubNames" Type="Object" />
+        </Attribute>
+        <Attribute Name="RootNode" ReadOnly="true">
+            <Documentation>
+                <UserDocu>A pivy node holding the cloned representation of the linked view object</UserDocu>
+            </Documentation>
+            <Parameter Name="RootNode" Type="Object" />
+        </Attribute>
+        <Attribute Name="Owner">
+            <Documentation>
+                <UserDocu>The owner view object of this link handle</UserDocu>
+            </Documentation>
+            <Parameter Name="Owner" Type="Object" />
+        </Attribute>
+        <Attribute Name="Visibilities">
+            <Documentation>
+                <UserDocu>Get/set the child element visibility</UserDocu>
+            </Documentation>
+            <Parameter Name="Visibilities" Type="Object" />
+        </Attribute>
+        <Attribute Name="Count">
+            <Documentation>
+                <UserDocu>Set the element size to create an array of linked object</UserDocu>
+            </Documentation>
+            <Parameter Name="Count" Type="Int" />
+        </Attribute>
+        <Methode Name="getChildren" Const="true">
+            <Documentation>
+                <UserDocu>Get children view objects</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
+</GenerateModel>

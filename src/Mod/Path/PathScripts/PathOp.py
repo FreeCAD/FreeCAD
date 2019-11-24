@@ -23,10 +23,10 @@
 # ***************************************************************************
 
 import FreeCAD
+import Part
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
-import PathScripts.PathSetupSheet as PathSetupSheet
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 
@@ -38,14 +38,16 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties implementation for all Path operations."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule()
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -61,8 +63,9 @@ FeatureBaseEdges    = 0x0200     # Base
 FeatureBaseFaces    = 0x0400     # Base
 FeatureBasePanels   = 0x0800     # Base
 FeatureLocations    = 0x1000     # Locations
+FeatureCoolant      = 0x2000     # Coolant
 
-FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels
+FeatureBaseGeometry = FeatureBaseVertexes | FeatureBaseFaces | FeatureBaseEdges | FeatureBasePanels | FeatureCoolant
 
 
 class ObjectOp(object):
@@ -87,6 +90,7 @@ class ObjectOp(object):
         FeatureBaseFaces     ... Base geometry support for faces
         FeatureBasePanels    ... Base geometry support for Arch.Panels
         FeatureLocations     ... Base location support
+        FeatureCoolant       ... Support for operation coolant 
 
     The base class handles all base API and forwards calls to subclasses with
     an op prefix. For instance, an op is not expected to overwrite onChanged(),
@@ -133,6 +137,9 @@ class ObjectOp(object):
             obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "The tool controller that will be used to calculate the path"))
             self.addOpValues(obj, ['tooldia'])
 
+        if FeatureCoolant & features:
+            obj.addProperty("App::PropertyString", "CoolantMode", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Coolant mode for this operation"))
+ 
         if FeatureDepths & features:
             obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Starting Depth of Tool- first cut depth in Z"))
             obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("PathOp", "Final Depth of Tool- lowest value in Z"))
@@ -159,6 +166,18 @@ class ObjectOp(object):
         if FeatureStartPoint & features:
             obj.addProperty("App::PropertyVectorDistance", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"))
             obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("PathOp", "Make True, if specifying a Start Point"))
+
+        # members being set later
+        self.commandlist = None
+        self.horizFeed = None
+        self.horizRapid = None
+        self.job = None
+        self.model = None
+        self.radius = None
+        self.stock = None
+        self.tool = None
+        self.vertFeed = None
+        self.vertRapid = None
 
         self.initOperation(obj)
 
@@ -194,6 +213,9 @@ class ObjectOp(object):
         if FeatureTool & features and not hasattr(obj, 'OpToolDiameter'):
             self.addOpValues(obj, ['tooldia'])
 
+        if FeatureCoolant & features and not hasattr(obj, 'CoolantMode'):
+            obj.addProperty("App::PropertyString", "CoolantMode", "Path", QtCore.QT_TRANSLATE_NOOP("PathOp", "Coolant option for this operation"))
+
         if FeatureDepths & features and not hasattr(obj, 'OpStartDepth'):
             self.addOpValues(obj, ['start', 'final'])
             if FeatureNoFinalDepth & features:
@@ -201,6 +223,10 @@ class ObjectOp(object):
 
         if not hasattr(obj, 'OpStockZMax'):
             self.addOpValues(obj, ['stockz'])
+
+        if not hasattr(obj, 'EnableRotation'):
+            obj.addProperty("App::PropertyEnumeration", "EnableRotation", "Rotation", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable rotation to gain access to pockets/areas not normal to Z axis."))
+            obj.EnableRotation = ['Off', 'A(x)', 'B(y)', 'A & B']
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -219,17 +245,18 @@ class ObjectOp(object):
         '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
         The default implementation returns "FeatureTool | FeatureDeptsh | FeatureHeights | FeatureStartPoint"
         Should be overwritten by subclasses.'''
-        return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint | FeatureBaseGeometry | FeatureFinishDepth
+        # pylint: disable=unused-argument
+        return FeatureTool | FeatureDepths | FeatureHeights | FeatureStartPoint | FeatureBaseGeometry | FeatureFinishDepth | FeatureCoolant
 
     def initOperation(self, obj):
         '''initOperation(obj) ... implement to create additional properties.
         Should be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opOnDocumentRestored(self, obj):
         '''opOnDocumentRestored(obj) ... implement if an op needs special handling like migrating the data model.
         Should be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opOnChanged(self, obj, prop):
         '''opOnChanged(obj, prop) ... overwrite to process property changes.
@@ -238,38 +265,39 @@ class ObjectOp(object):
         distinguish between assigning a different value and assigning the same
         value again.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj, job) ... overwrite to set initial default values.
         Called after the receiver has been fully created with all properties.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opUpdateDepths(self, obj):
         '''opUpdateDepths(obj) ... overwrite to implement special depths calculation.
         Can safely be overwritten by subclass.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opExecute(self, obj):
         '''opExecute(obj) ... called whenever the receiver needs to be recalculated.
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def opRejectAddBase(self, obj, base, sub):
         '''opRejectAddBase(base, sub) ... if op returns True the addition of the feature is prevented.
         Should be overwritten by subclasses.'''
+        # pylint: disable=unused-argument
         return False
 
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
-
         if not 'Restore' in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
             self.updateDepths(obj, True)
 
         self.opOnChanged(obj, prop)
+
 
     def applyExpression(self, obj, prop, expr):
         '''applyExpression(obj, prop, expr) ... set expression expr on obj.prop if expr is set'''
@@ -295,6 +323,9 @@ class ObjectOp(object):
             if not obj.ToolController:
                 return None
             obj.OpToolDiameter = obj.ToolController.Tool.Diameter
+
+        if FeatureCoolant & features:
+            obj.CoolantMode = job.SetupSheet.CoolantMode
 
         if FeatureDepths & features:
             if self.applyExpression(obj, 'StartDepth', job.SetupSheet.StartDepthExpression):
@@ -343,7 +374,7 @@ class ObjectOp(object):
 
     def getJob(self, obj):
         '''getJob(obj) ... return the job this operation is part of.'''
-        if not hasattr(self, 'job'):
+        if not hasattr(self, 'job') or self.job is None:
             if not self._setBaseAndStock(obj):
                 return None
         return self.job
@@ -378,9 +409,13 @@ class ObjectOp(object):
                 bb = base.Shape.BoundBox
                 zmax = max(zmax, bb.ZMax)
                 for sub in sublist:
-                    fbb = base.Shape.getElement(sub).BoundBox
-                    zmin = max(zmin, faceZmin(bb, fbb))
-                    zmax = max(zmax, fbb.ZMax)
+                    try:
+                        fbb = base.Shape.getElement(sub).BoundBox
+                        zmin = max(zmin, faceZmin(bb, fbb))
+                        zmax = max(zmax, fbb.ZMax)
+                    except Part.OCCError as e:
+                        PathLog.error(e)
+
         else:
             # clearing with stock boundaries
             job = PathUtils.findParentJob(obj)
@@ -420,7 +455,7 @@ class ObjectOp(object):
         It also sets the following instance variables that can and should be safely be used by
         implementation of opExecute():
             self.model        ... List of base objects of the Job itself
-            self.stock        ... Stock object fo the Job itself
+            self.stock        ... Stock object for the Job itself
             self.vertFeed     ... vertical feed rate of assigned tool
             self.vertRapid    ... vertical rapid rate of assigned tool
             self.horizFeed    ... horizontal feed rate of assigned tool
@@ -436,15 +471,21 @@ class ObjectOp(object):
         '''
         PathLog.track()
 
+        if obj.ViewObject:
+            obj.ViewObject.Visibility = obj.Active
+
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
-            if obj.ViewObject:
-                obj.ViewObject.Visibility = False
             return
+
 
         if not self._setBaseAndStock(obj):
             return
+
+        if FeatureCoolant & self.opFeatures(obj):
+            if not hasattr(obj, 'CoolantMode'):
+                FreeCAD.Console.PrintError("No coolant property found. Please recreate operation.")
 
         if FeatureTool & self.opFeatures(obj):
             tc = obj.ToolController
@@ -474,7 +515,7 @@ class ObjectOp(object):
         if obj.Comment:
             self.commandlist.append(Path.Command("(%s)" % obj.Comment))
 
-        result = self.opExecute(obj)
+        result = self.opExecute(obj) # pylint: disable=assignment-from-no-return
 
         if FeatureHeights & self.opFeatures(obj):
             # Let's finish by rapid to clearance...just for safety

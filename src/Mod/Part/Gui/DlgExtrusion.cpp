@@ -57,6 +57,8 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Utilities.h>
 
+FC_LOG_LEVEL_INIT("Part",true,true)
+
 using namespace PartGui;
 
 class DlgExtrusion::EdgeSelection : public Gui::SelectionFilterGate
@@ -184,7 +186,7 @@ void DlgExtrusion::on_btnSelectEdge_clicked()
         try{
             QString code = QString::fromLatin1(
                         "import Show\n"
-                        "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::DlgExtrusion')\n"
                         "tv.hide([%1])"
                         );
             std::vector<App::DocumentObject*>sources = getShapesToExtrude();
@@ -433,9 +435,8 @@ void DlgExtrusion::apply()
             assert(sourceObj);
 
             if (!sourceObj->isDerivedFrom(Part::Feature::getClassTypeId())){
-                std::stringstream errmsg;
-                errmsg << "Object " << sourceObj->getNameInDocument() << " is not Part object (has no OCC shape). Can't extrude it.\n";
-                Base::Console().Error(errmsg.str().c_str());
+                FC_ERR("Object " << sourceObj->getFullName() 
+                        << " is not Part object (has no OCC shape). Can't extrude it.");
                 continue;
             }
 
@@ -447,16 +448,16 @@ void DlgExtrusion::apply()
                 //label = QString::fromLatin1("%1_Extrude").arg((*it)->text(0));
             }
 
-            Gui::Command::doCommand(Gui::Command::Doc, "f = FreeCAD.getDocument('%s').addObject('Part::Extrusion', '%s')", sourceObj->getDocument()->getName(), name.c_str());
+            FCMD_OBJ_DOC_CMD(sourceObj,"addObject('Part::Extrusion','" << name << "')");
+            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
 
-            this->writeParametersToFeature(*(sourceObj->getDocument()->getObject(name.c_str())), sourceObj);
+            this->writeParametersToFeature(*newObj, sourceObj);
 
-            std::string sourceObjectName = sourceObj->getNameInDocument();
-            Gui::Command::copyVisual(name.c_str(), "ShapeColor", sourceObjectName.c_str());
-            Gui::Command::copyVisual(name.c_str(), "LineColor", sourceObjectName.c_str());
-            Gui::Command::copyVisual(name.c_str(), "PointColor", sourceObjectName.c_str());
+            Gui::Command::copyVisual(newObj, "ShapeColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
+            Gui::Command::copyVisual(newObj, "PointColor", sourceObj);
 
-            Gui::Command::doCommand(Gui::Command::Gui,"f.Base.ViewObject.hide()");
+            FCMD_OBJ_HIDE(sourceObj);
         }
 
         activeDoc->commitTransaction();

@@ -18,25 +18,35 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+""" Execute Solver and obtain Reports and Results.
+
+Integral part of the Solver Framework which contains components responsible for
+executing the solver in the background. Also provides an asynchronous
+communication system with the solver running in the background. The purpose of
+this module is to be as generic as possible. It can execute every solver
+supported by the fem workbench. The threading and communication support is
+mainly implemented by the :mod:`femsolver.task` and :mod:`femsolver.signal`
+modules.
+"""
 
 __title__ = "FreeCAD FEM solver run"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
-
 import os
 import os.path
-import tempfile
-import threading
+# import threading  # not used ATM
 import shutil
 
 import FreeCAD as App
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 from . import settings
 from . import signal
 from . import task
+
+if App.GuiUp:
+    import FreeCADGui
+    from PySide import QtGui
 
 
 CHECK = 0
@@ -50,7 +60,107 @@ _machines = {}
 _dirTypes = {}
 
 
+def run_fem_solver(solver, working_dir=None):
+    """ Execute *solver* of the solver framework.
+
+    Uses :meth:`getMachine <femsolver.solverbase.Proxy.getMachine>` to obtain a
+    :class:`Machine` instance of the solver. It than executes the Machine with
+    using the ``RESULTS`` target (see :class:`Machine` for infos about
+    different targets). This method is blocking, it waits for the solver to
+    finished before returning. Be aware of :class:`Machine` caching when using
+    the function.
+
+    :param solver:
+        A document object which must be a framework compliant solver. This means
+        that it should be derived from the document object provided by
+        :mod:`femsolver.solverbase` and implement all required methods
+        correctly. Of particular importance is :meth:`getMachine
+        <femsolver.solverbase.Proxy.getMachine>` as it is used by this method
+        the get the :class:`Machine` used to execute the solver.
+
+    :param working_dir:
+        If specified it overwrites the automatic and user configurable working
+        directory management of the Solver framework. Should always be a
+        absolute path because the location of the binary is not consistent
+        among platforms. If ``None`` the automatic working directory management
+        is used.
+
+    :note:
+        There is some legacy code to execute the old Calculix solver
+        (pre-framework) which behaives differently because it doesn't use a
+        :class:`Machine`.
+    """
+
+    if solver.Proxy.Type == "Fem::FemSolverCalculixCcxTools":
+        App.Console.PrintMessage("CalxuliX ccx tools solver!\n")
+        from femtools.ccxtools import CcxTools as ccx
+        fea = ccx(solver)
+        fea.reset_mesh_purge_results_checked()
+        if working_dir is None:
+            fea.run()
+        else:
+            fea.update_objects()
+            fea.setup_working_dir(working_dir)
+            fea.setup_ccx()
+            message = fea.check_prerequisites()
+            if not message:
+                fea.write_inp_file()
+                fea.ccx_run()
+                fea.load_results()
+            else:
+                App.Console.PrintError("Houston, we have a problem ...!\n{}\n".format(message))
+    else:
+        # App.Console.PrintMessage("Frame work solver!\n")
+        try:
+            if working_dir is not None:
+                machine = getMachine(solver, working_dir)
+            else:
+                machine = getMachine(solver)
+        except femutils.MustSaveError:
+            error_message = (
+                "Please save the file before executing the solver. "
+                "This must be done because the location of the working "
+                "directory is set to \"Beside *.FCStd File\"."
+            )
+            App.Console.PrintError(error_message + "\n")
+            if App.GuiUp:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    error_message
+                )
+            return
+        except femutils.DirectoryDoesNotExistError:
+            error_message = "Selected working directory doesn't exist."
+            App.Console.PrintError(error_message + "\n")
+            if App.GuiUp:
+                QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    "Can't start Solver",
+                    error_message
+                )
+            return
+        if not machine.running:
+            machine.reset()
+            machine.target = RESULTS
+            machine.start()
+            machine.join()  # wait for the machine to finish.
+
+
 def getMachine(solver, path=None):
+    """ Get or create :class:`Machine` using caching mechanism.
+
+    :param solver:
+        A document object which must be a framework compliant solver. This means
+        that it should be derived from the document object provided by
+        :mod:`femsolver.solverbase` and implement all required methods
+        correctly. Of particular importance is :meth:`getMachine
+        <femsolver.solverbase.Proxy.getMachine>` as it is used by this method
+        to create a new :class:`Machine` on cache miss.
+
+    :param path:
+        A valid filesystem path which shall be associetad with the machine.
+    """
     _DocObserver.attach()
     m = _machines.get(solver)
     if m is None or not _isPathValid(m, path):
@@ -60,37 +170,37 @@ def getMachine(solver, path=None):
 
 def _isPathValid(m, path):
     t = _dirTypes.get(m.directory)  # setting default None
-    setting = settings.getDirSetting()
+    setting = settings.get_dir_setting()
     if path is not None:
         return t is None and m.directory == path
-    if setting == settings.BESIDE:
-        if t == settings.BESIDE:
+    if setting == settings.DirSetting.BESIDE:
+        if t == settings.DirSetting.BESIDE:
             base = os.path.split(m.directory.rstrip("/"))[0]
-            return base == _getBesideBase(m.solver)
+            return base == femutils.get_beside_base(m.solver)
         return False
-    if setting == settings.TEMPORARY:
-        return t == settings.TEMPORARY
-    if setting == settings.CUSTOM:
-        if t == settings.CUSTOM:
+    if setting == settings.DirSetting.TEMPORARY:
+        return t == settings.DirSetting.TEMPORARY
+    if setting == settings.DirSetting.CUSTOM:
+        if t == settings.DirSetting.CUSTOM:
             firstBase = os.path.split(m.directory.rstrip("/"))[0]
             customBase = os.path.split(firstBase)[0]
-            return customBase == _getCustomBase(m.solver)
+            return customBase == femutils.get_custom_base(m.solver)
         return False
 
 
 def _createMachine(solver, path, testmode):
     global _dirTypes
-    setting = settings.getDirSetting()
+    setting = settings.get_dir_setting()
     if path is not None:
         _dirTypes[path] = None
     elif setting == settings.BESIDE:
-        path = _getBesideDir(solver)
+        path = femutils.get_beside_dir(solver)
         _dirTypes[path] = settings.BESIDE
     elif setting == settings.TEMPORARY:
-        path = _getTempDir(solver)
+        path = femutils.get_temp_dir(solver)
         _dirTypes[path] = settings.TEMPORARY
     elif setting == settings.CUSTOM:
-        path = _getCustomDir(solver)
+        path = femutils.get_custom_dir(solver)
         _dirTypes[path] = settings.CUSTOM
     m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
@@ -98,43 +208,6 @@ def _createMachine(solver, path, testmode):
         del _dirTypes[oldMachine.directory]
     _machines[solver] = m
     return m
-
-
-def _getTempDir(solver):
-    return tempfile.mkdtemp(prefix="fem")
-
-
-def _getBesideDir(solver):
-    base = _getBesideBase(solver)
-    specificPath = os.path.join(base, solver.Label)
-    specificPath = _getUniquePath(specificPath)
-    if not os.path.isdir(specificPath):
-        os.makedirs(specificPath)
-    return specificPath
-
-
-def _getBesideBase(solver):
-    fcstdPath = solver.Document.FileName
-    if fcstdPath == "":
-        raise MustSaveError()
-    return os.path.splitext(fcstdPath)[0]
-
-
-def _getCustomDir(solver):
-    base = _getCustomBase(solver)
-    specificPath = os.path.join(
-        base, solver.Document.Name, solver.Label)
-    specificPath = _getUniquePath(specificPath)
-    if not os.path.isdir(specificPath):
-        os.makedirs(specificPath)
-    return specificPath
-
-
-def _getCustomBase(solver):
-    path = settings.getCustomDir()
-    if not os.path.isdir(path):
-        raise DirectoryDoesNotExist("Invalid path")
-    return path
 
 
 def _getUniquePath(path):
@@ -157,7 +230,7 @@ class BaseTask(task.Thread):
 
     @property
     def analysis(self):
-        return FemUtils.findAnalysisOfMember(self.solver)
+        return femutils.findAnalysisOfMember(self.solver)
 
 
 class Machine(BaseTask):
@@ -260,7 +333,7 @@ class Machine(BaseTask):
 class Check(BaseTask):
 
     def checkMesh(self):
-        meshes = FemUtils.get_member(
+        meshes = femutils.get_member(
             self.analysis, "Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
@@ -275,7 +348,7 @@ class Check(BaseTask):
         return True
 
     def checkMaterial(self):
-        matObjs = FemUtils.get_member(
+        matObjs = femutils.get_member(
             self.analysis, "App::MaterialObjectPython")
         if len(matObjs) == 0:
             self.report.error(
@@ -287,10 +360,10 @@ class Check(BaseTask):
 
     def checkSupported(self, allSupported):
         for m in self.analysis.Group:
-            if FemUtils.is_of_type(m, "Fem::Constraint"):
+            if femutils.is_of_type(m, "Fem::Constraint"):
                 supported = False
                 for sc in allSupported:
-                    if FemUtils.is_of_type(m, *sc):
+                    if femutils.is_of_type(m, *sc):
                         supported = True
                 if not supported:
                     self.report.warning(
@@ -302,15 +375,15 @@ class Solve(BaseTask):
 
     def _observeSolver(self, process):
         output = ""
-        line = FemUtils.pydecode(process.stdout.readline())
+        line = femutils.pydecode(process.stdout.readline())
         self.pushStatus(line)
         output += line
-        line = FemUtils.pydecode(process.stdout.readline())
+        line = femutils.pydecode(process.stdout.readline())
         while line:
             line = "\n%s" % line.rstrip()
             self.pushStatus(line)
             output += line
-            line = FemUtils.pydecode(process.stdout.readline())
+            line = femutils.pydecode(process.stdout.readline())
         return output
 
 
@@ -369,22 +442,16 @@ class _DocObserver(object):
     def _deleteMachine(self, obj):
         m = _machines[obj]
         t = _dirTypes[m.directory]
-
-        def delegate():
-            m.join()
-            if t == settings.TEMPORARY:
-                shutil.rmtree(m.directory)
-            del _dirTypes[m.directory]
-            del _machines[obj]
         m.abort()
-        thread = threading.Thread(target=delegate)
-        thread.daemon = False
-        thread.start()
+        if t == settings.DirSetting.TEMPORARY:
+            shutil.rmtree(m.directory)
+        del _machines[obj]
+        del _dirTypes[m.directory]
 
     def _checkEquation(self, obj):
         for o in obj.Document.Objects:
             if (
-                FemUtils.is_derived_from(o, "Fem::FemSolverObject")
+                femutils.is_derived_from(o, "Fem::FemSolverObject")
                 and hasattr(o, "Group")
                 and obj in o.Group
             ):
@@ -392,13 +459,13 @@ class _DocObserver(object):
                     _machines[o].reset()
 
     def _checkSolver(self, obj):
-        analysis = FemUtils.findAnalysisOfMember(obj)
+        analysis = femutils.findAnalysisOfMember(obj)
         for m in iter(_machines.values()):
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
 
     def _checkAnalysis(self, obj):
-        if FemUtils.is_derived_from(obj, "Fem::FemAnalysis"):
+        if femutils.is_derived_from(obj, "Fem::FemAnalysis"):
             deltaObjs = self._getAdded(obj)
             if deltaObjs:
                 reset = False
@@ -410,7 +477,7 @@ class _DocObserver(object):
 
     def _checkModel(self, obj):
         if self._partOfModel(obj):
-            analysis = FemUtils.findAnalysisOfMember(obj)
+            analysis = femutils.findAnalysisOfMember(obj)
             if analysis is not None:
                 self._resetAll(analysis)
 
@@ -428,16 +495,6 @@ class _DocObserver(object):
 
     def _partOfModel(self, obj):
         for t in self._WHITELIST:
-            if FemUtils.is_derived_from(obj, t):
+            if femutils.is_derived_from(obj, t):
                 return True
         return False
-
-
-class MustSaveError(Exception):
-    pass
-
-
-class DirectoryDoesNotExist(Exception):
-    pass
-
-##  @}

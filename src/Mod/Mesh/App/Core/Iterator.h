@@ -43,6 +43,7 @@ class MeshHelpEdge;
  * The MeshFacetIterator allows to iterate over the facets that
  * hold the topology of the mesh and provides access to their
  * geometric information.
+ * \note This class is not thread-safe.
  */
 class MeshFacetIterator
 {
@@ -167,6 +168,7 @@ protected:
 /**
  * The MeshPointIterator allows to iterate over the vertices of the mesh and provides access to their
  * geometric information.
+ * \note This class is not thread-safe.
  */
 class MeshExport MeshPointIterator
 {

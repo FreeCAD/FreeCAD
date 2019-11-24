@@ -27,18 +27,22 @@
 # include <cstdlib>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 
+#include <Base/Exception.h>
+#include <Base/Console.h>
 #include "ComplexGeoData.h"
 
 using namespace Data;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass)
 
 
-TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence);
+TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence)
 
 
 ComplexGeoData::ComplexGeoData(void)
+    :Tag(0)
 {
 }
 
@@ -152,4 +156,99 @@ void ComplexGeoData::getFaces(std::vector<Base::Vector3d> &Points,
 bool ComplexGeoData::getCenterOfGravity(Base::Vector3d&) const
 {
     return false;
+}
+
+const std::string &ComplexGeoData::elementMapPrefix() {
+    static std::string prefix(";");
+    return prefix;
+}
+
+const char *ComplexGeoData::isMappedElement(const char *name) {
+    if(name && boost::starts_with(name,elementMapPrefix()))
+        return name+elementMapPrefix().size();
+    return 0;
+}
+
+std::string ComplexGeoData::newElementName(const char *name) {
+    if(!name) return std::string();
+    const char *dot = strrchr(name,'.');
+    if(!dot || dot==name) return name;
+    const char *c = dot-1;
+    for(;c!=name;--c) {
+        if(*c == '.') {
+            ++c;
+            break;
+        }
+    }
+    if(isMappedElement(c))
+        return std::string(name,dot-name);
+    return name;
+}
+
+std::string ComplexGeoData::oldElementName(const char *name) {
+    if(!name) return std::string();
+    const char *dot = strrchr(name,'.');
+    if(!dot || dot==name) return name;
+    const char *c = dot-1;
+    for(;c!=name;--c) {
+        if(*c == '.') {
+            ++c;
+            break;
+        }
+    }
+    if(isMappedElement(c))
+        return std::string(name,c-name)+(dot+1);
+    return name;
+}
+
+std::string ComplexGeoData::noElementName(const char *name) {
+    if(!name) return std::string();
+    auto element = findElementName(name);
+    if(element)
+        return std::string(name,element-name);
+    return name;
+}
+
+const char *ComplexGeoData::findElementName(const char *subname) {
+    if(!subname || !subname[0] || isMappedElement(subname))
+        return subname;
+    const char *dot = strrchr(subname,'.');
+    if(!dot)
+        return subname;
+    const char *element = dot+1;
+    if(dot==subname || isMappedElement(element))
+        return element;
+    for(--dot;dot!=subname;--dot) {
+        if(*dot == '.') {
+            ++dot;
+            break;
+        }
+    }
+    if(isMappedElement(dot))
+        return dot;
+    return element;
+}
+
+const std::string &ComplexGeoData::tagPostfix() {
+    static std::string postfix(elementMapPrefix() + ":T");
+    return postfix;
+}
+
+const std::string &ComplexGeoData::indexPostfix() {
+    static std::string postfix(elementMapPrefix() + ":I");
+    return postfix;
+}
+
+const std::string &ComplexGeoData::missingPrefix() {
+    static std::string prefix("?");
+    return prefix;
+}
+
+bool ComplexGeoData::hasMissingElement(const char *subname) {
+    if(!subname)
+        return false;
+    auto dot = strrchr(subname,'.');
+    if(dot)
+        subname = dot+1;
+    return boost::starts_with(subname,missingPrefix());
 }

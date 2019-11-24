@@ -94,15 +94,15 @@ public:
     static _type get_##_name();\
     static void set_##_name(_type _name);
 
-    CAREA_PARAM_DECLARE(double,tolerance);
+    CAREA_PARAM_DECLARE(double,tolerance)
     CAREA_PARAM_DECLARE(bool,fit_arcs)
-    CAREA_PARAM_DECLARE(bool,clipper_simple);
-    CAREA_PARAM_DECLARE(double,clipper_clean_distance);
-    CAREA_PARAM_DECLARE(double,accuracy);
-    CAREA_PARAM_DECLARE(double,units);
-    CAREA_PARAM_DECLARE(short,min_arc_points);
-    CAREA_PARAM_DECLARE(short,max_arc_points);
-    CAREA_PARAM_DECLARE(double,clipper_scale);
+    CAREA_PARAM_DECLARE(bool,clipper_simple)
+    CAREA_PARAM_DECLARE(double,clipper_clean_distance)
+    CAREA_PARAM_DECLARE(double,accuracy)
+    CAREA_PARAM_DECLARE(double,units)
+    CAREA_PARAM_DECLARE(short,min_arc_points)
+    CAREA_PARAM_DECLARE(short,max_arc_points)
+    CAREA_PARAM_DECLARE(double,clipper_scale)
 
     // Following functions is add to operate on possible open curves
 	void PopulateClipper(ClipperLib::Clipper &c, ClipperLib::PolyType type) const;

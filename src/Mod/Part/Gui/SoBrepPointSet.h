@@ -32,6 +32,8 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
+#include <memory>
+#include <Gui/SoFCSelectionContext.h>
 
 class SoCoordinateElement;
 class SoGLCoordinateElement;
@@ -48,27 +50,25 @@ public:
     static void initClass();
     SoBrepPointSet();
 
-    SoSFInt32 highlightIndex;
-    SoMFInt32 selectionIndex;
-
 protected:
     virtual ~SoBrepPointSet() {};
     virtual void GLRender(SoGLRenderAction *action);
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void doAction(SoAction* action); 
 
-private:
-    void renderShape(const SoGLCoordinateElement * const vertexlist,
-                     const int32_t *vertexindices,
-                     int num_vertexindices);
-    void renderHighlight(SoGLRenderAction *action);
-    void renderSelection(SoGLRenderAction *action);
-    bool validIndexes(const SoCoordinateElement*, int32_t, const int32_t *, int) const;
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
 private:
-    SbColor selectionColor;
-    SbColor highlightColor;
-    SoColorPacker colorpacker;
+    typedef Gui::SoFCSelectionContext SelContext;
+    typedef Gui::SoFCSelectionContextPtr SelContextPtr;
+    void renderHighlight(SoGLRenderAction *action, SelContextPtr);
+    void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
+
+private:
+    SelContextPtr selContext;
+    SelContextPtr selContext2;
+    Gui::SoFCSelectionCounter selCounter;
+    uint32_t packedColor;
 };
 
 } // namespace PartGui

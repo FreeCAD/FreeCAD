@@ -48,7 +48,7 @@
 //===========================================================================
 // Part_SimpleCylinder
 //===========================================================================
-DEF_STD_CMD_A(CmdPartSimpleCylinder);
+DEF_STD_CMD_A(CmdPartSimpleCylinder)
 
 CmdPartSimpleCylinder::CmdPartSimpleCylinder()
   :Command("Part_SimpleCylinder")
@@ -99,7 +99,7 @@ bool CmdPartSimpleCylinder::isActive(void)
 //===========================================================================
 // Part_ShapeFromMesh
 //===========================================================================
-DEF_STD_CMD_A(CmdPartShapeFromMesh);
+DEF_STD_CMD_A(CmdPartShapeFromMesh)
 
 CmdPartShapeFromMesh::CmdPartShapeFromMesh()
   :Command("Part_ShapeFromMesh")
@@ -116,9 +116,18 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
 void CmdPartShapeFromMesh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    double STD_OCC_TOLERANCE = 1e-6;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+    int decimals = hGrp->GetInt("Decimals");
+    double tolerance_from_decimals = pow(10., -decimals);
+
+    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
+
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
-        QObject::tr("Enter tolerance for sewing shape:"), 0.1, 0.01,10.0,2,&ok);
+        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok);
     if (!ok)
         return;
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
@@ -159,11 +168,60 @@ bool CmdPartShapeFromMesh::isActive(void)
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
     return Gui::Selection().countObjectsOfType(meshid) > 0;
 }
+//===========================================================================
+// Part_PointsFromMesh
+//===========================================================================
+DEF_STD_CMD_A(CmdPartPointsFromMesh)
+
+CmdPartPointsFromMesh::CmdPartPointsFromMesh()
+  :Command("Part_PointsFromMesh")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Create points object from mesh");
+    sToolTipText  = QT_TR_NOOP("Create selectable points object from selected mesh object");
+    sWhatsThis    = "Part_PointsFromMesh";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Points_from_Mesh";
+}
+
+void CmdPartPointsFromMesh::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
+    std::vector<App::DocumentObject*> meshes;
+    meshes = Gui::Selection().getObjectsOfType(meshid);
+    Gui::WaitCursor wc;
+    std::vector<App::DocumentObject*>::iterator it;
+    openCommand("Points from mesh");
+
+    for (it = meshes.begin(); it != meshes.end(); ++it) {
+        App::Document* doc = (*it)->getDocument();
+        std::string mesh = (*it)->getNameInDocument();
+        if (!(*it)->isDerivedFrom(Base::Type::fromName("Mesh::Feature")))
+            continue;
+        doCommand(Doc,"import Part");
+        doCommand(Doc,"mesh_pts = FreeCAD.getDocument(\"%s\").getObject(\"%s\").Mesh.Points\n",
+                     doc->getName(), mesh.c_str());
+        doCommand(Doc,"Part.show(Part.makeCompound([Part.Point(m.Vector).toShape() for m in mesh_pts]),\"%s\")\n",
+                  (mesh+"_pts").c_str());
+        doCommand(Doc,"del mesh_pts\n");
+    }
+
+    commitCommand();
+}
+
+bool CmdPartPointsFromMesh::isActive(void)
+{
+    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
+    return Gui::Selection().countObjectsOfType(meshid) > 0;
+}
 
 //===========================================================================
 // Part_SimpleCopy
 //===========================================================================
-DEF_STD_CMD_A(CmdPartSimpleCopy);
+DEF_STD_CMD_A(CmdPartSimpleCopy)
 
 CmdPartSimpleCopy::CmdPartSimpleCopy()
   : Command("Part_SimpleCopy")
@@ -177,39 +235,120 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
     sPixmap       = "Tree_Part";
 }
 
+static void _copyShape(const char *cmdName, bool resolve,bool needElement=false, bool refine=false) {
+    Gui::WaitCursor wc;
+    Gui::Command::openCommand(cmdName);
+    for(auto &sel : Gui::Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),resolve)) {
+        std::map<std::string,App::DocumentObject*> subMap;
+        auto obj = sel.getObject();
+        if(!obj) continue;
+        if(resolve || !sel.hasSubNames())
+            subMap.emplace("",obj);
+        else {
+            for(const auto &sub : sel.getSubNames()) {
+                const char *element = 0;
+                auto sobj = obj->resolve(sub.c_str(),0,0,&element);
+                if(!sobj) continue;
+                if(!needElement && element) 
+                    subMap.emplace(sub.substr(0,element-sub.c_str()),sobj);
+                else
+                    subMap.emplace(sub,sobj);
+            }
+            if(subMap.empty())
+                continue;
+        }
+        auto parentName = Gui::Command::getObjectCmd(obj);
+        for(auto &v : subMap) {
+            Gui::Command::doCommand(Gui::Command::Doc,
+                    "__shape = Part.getShape(%s,'%s',needSubElement=%s,refine=%s)%s\n"
+                    "App.ActiveDocument.addObject('Part::Feature','%s').Shape=__shape\n"
+                    "App.ActiveDocument.ActiveObject.Label=%s.Label\n",
+                        parentName.c_str(), v.first.c_str(),
+                        needElement?"True":"False", refine?"True":"False",
+                        needElement?".copy()":"", 
+                        v.second->getNameInDocument(), 
+                        Gui::Command::getObjectCmd(v.second).c_str());
+            auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
+            Gui::Command::copyVisual(newObj, "ShapeColor", v.second);
+            Gui::Command::copyVisual(newObj, "LineColor", v.second);
+            Gui::Command::copyVisual(newObj, "PointColor", v.second);
+        }
+    }
+    Gui::Command::commitCommand();
+    Gui::Command::updateActive();
+}
+
 void CmdPartSimpleCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
-    openCommand("Create Copy");
-    for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
-                      "App.ActiveDocument.%s.Shape\n"
-                      "App.ActiveDocument.ActiveObject.Label="
-                      "App.ActiveDocument.%s.Label\n",
-                      it->getFeatName(),
-                      it->getFeatName(),
-                      it->getFeatName());
-        copyVisual("ActiveObject", "ShapeColor", it->getFeatName());
-        copyVisual("ActiveObject", "LineColor", it->getFeatName());
-        copyVisual("ActiveObject", "PointColor", it->getFeatName());
-        copyVisual("ActiveObject", "DiffuseColor", it->getFeatName());
-    }
-    commitCommand();
-    updateActive();
+    _copyShape("Simple copy",true);
 }
 
 bool CmdPartSimpleCopy::isActive(void)
 {
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    return Gui::Selection().countObjectsOfType(partid) > 0;
+    return Gui::Selection().hasSelection();
+}
+
+//===========================================================================
+// Part_TransformedCopy
+//===========================================================================
+DEF_STD_CMD_A(CmdPartTransformedCopy)
+
+CmdPartTransformedCopy::CmdPartTransformedCopy()
+  : Command("Part_TransformedCopy")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Create transformed copy");
+    sToolTipText  = QT_TR_NOOP("Create a non-parametric copy with transformed placement");
+    sWhatsThis    = "Part_TransformCopy";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Transformed_Copy.svg";
+}
+
+void CmdPartTransformedCopy::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    _copyShape("Transformed copy",false);
+}
+
+bool CmdPartTransformedCopy::isActive(void)
+{
+    return Gui::Selection().hasSelection();
+}
+
+//===========================================================================
+// Part_ElementCopy
+//===========================================================================
+DEF_STD_CMD_A(CmdPartElementCopy)
+
+CmdPartElementCopy::CmdPartElementCopy()
+  : Command("Part_ElementCopy")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Create shape element copy");
+    sToolTipText  = QT_TR_NOOP("Create a non-parametric copy of the selected shape element");
+    sWhatsThis    = "Part_ElementCopy";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Element_Copy.svg";
+}
+
+void CmdPartElementCopy::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    _copyShape("Element copy",false,true);
+}
+
+bool CmdPartElementCopy::isActive(void)
+{
+    return Gui::Selection().hasSelection();
 }
 
 //===========================================================================
 // Part_RefineShape
 //===========================================================================
-DEF_STD_CMD_A(CmdPartRefineShape);
+DEF_STD_CMD_A(CmdPartRefineShape)
 
 CmdPartRefineShape::CmdPartRefineShape()
   : Command("Part_RefineShape")
@@ -226,43 +365,18 @@ CmdPartRefineShape::CmdPartRefineShape()
 void CmdPartRefineShape::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::WaitCursor wc;
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
-    openCommand("Refine shape");
-    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
-        try {
-            doCommand(Doc,"App.ActiveDocument.addObject('Part::Feature','%s').Shape="
-                          "App.ActiveDocument.%s.Shape.removeSplitter()\n"
-                          "App.ActiveDocument.ActiveObject.Label="
-                          "App.ActiveDocument.%s.Label\n"
-                          "Gui.ActiveDocument.%s.hide()\n",
-                          (*it)->getNameInDocument(),
-                          (*it)->getNameInDocument(),
-                          (*it)->getNameInDocument(),
-                          (*it)->getNameInDocument());
-            copyVisual("ActiveObject", "ShapeColor", (*it)->getNameInDocument());
-            copyVisual("ActiveObject", "LineColor", (*it)->getNameInDocument());
-            copyVisual("ActiveObject", "PointColor", (*it)->getNameInDocument());
-        }
-        catch (const Base::Exception& e) {
-            Base::Console().Warning("%s: %s\n", (*it)->Label.getValue(), e.what());
-        }
-    }
-    commitCommand();
-    updateActive();
+    _copyShape("Refined copy",true,false,true);
 }
 
 bool CmdPartRefineShape::isActive(void)
 {
-    Base::Type partid = Base::Type::fromName("Part::Feature");
-    return Gui::Selection().countObjectsOfType(partid) > 0;
+    return Gui::Selection().hasSelection();
 }
 
 //===========================================================================
 // Part_Defeaturing
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDefeaturing);
+DEF_STD_CMD_A(CmdPartDefeaturing)
 
 CmdPartDefeaturing::CmdPartDefeaturing()
   : Command("Part_Defeaturing")
@@ -291,7 +405,7 @@ void CmdPartDefeaturing::activated(int iMsg)
             shape.append(".");
             shape.append(it->getFeatName());
             shape.append(".Shape\n");
-            
+
             std::string faces;
             std::vector<std::string> subnames = it->getSubNames();
             for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {
@@ -355,7 +469,10 @@ void CreateSimplePartCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPartSimpleCylinder());
     rcCmdMgr.addCommand(new CmdPartShapeFromMesh());
+    rcCmdMgr.addCommand(new CmdPartPointsFromMesh());
     rcCmdMgr.addCommand(new CmdPartSimpleCopy());
+    rcCmdMgr.addCommand(new CmdPartElementCopy());
+    rcCmdMgr.addCommand(new CmdPartTransformedCopy());
     rcCmdMgr.addCommand(new CmdPartRefineShape());
     rcCmdMgr.addCommand(new CmdPartDefeaturing());
 }

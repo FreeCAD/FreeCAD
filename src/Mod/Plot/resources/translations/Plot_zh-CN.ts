@@ -108,107 +108,107 @@
   <context>
     <name>plot_axes</name>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="175"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="177"/>
       <source>Configure axes</source>
       <translation>配置坐标轴</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="179"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="181"/>
       <source>Active axes</source>
       <translation>选中的坐标轴</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="211"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="213"/>
       <source>Apply to all axes</source>
       <translation>应用于所有坐标轴</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="215"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="217"/>
       <source>Dimensions</source>
       <translation>尺寸</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="219"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="221"/>
       <source>X axis position</source>
       <translation>X轴位置</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="223"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="225"/>
       <source>Y axis position</source>
       <translation>Y轴位置</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="199"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="201"/>
       <source>Scales</source>
       <translation>比例</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="203"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="205"/>
       <source>X auto</source>
       <translation>X轴自动</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="207"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="209"/>
       <source>Y auto</source>
       <translation>Y轴自动</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="227"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="229"/>
       <source>Index of the active axes</source>
       <translation>选中坐标轴索引</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="231"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="233"/>
       <source>Add new axes to the plot</source>
       <translation>向图表添加新坐标轴</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="236"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="238"/>
       <source>Remove selected axes</source>
       <translation>删除所选坐标轴</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="241"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="243"/>
       <source>Check it to apply transformations to all axes</source>
       <translation>选中以对所有坐标轴应用变换</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="246"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="248"/>
       <source>Left bound of axes</source>
       <translation>坐标轴左边界</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="251"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="253"/>
       <source>Right bound of axes</source>
       <translation>坐标轴右边界</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="256"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="258"/>
       <source>Bottom bound of axes</source>
       <translation>坐标轴下边界</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="261"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="263"/>
       <source>Top bound of axes</source>
       <translation>坐标轴上边界</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="266"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="268"/>
       <source>Outward offset of X axis</source>
       <translation>X轴外部偏移量</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="271"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="273"/>
       <source>Outward offset of Y axis</source>
       <translation>Y轴外部偏移量</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="276"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="278"/>
       <source>X axis scale autoselection</source>
       <translation>自动选择X轴比例</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="281"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="283"/>
       <source>Y axis scale autoselection</source>
       <translation>自动选择Y轴比例</translation>
     </message>
@@ -226,12 +226,12 @@
       <translation>未找到matplotlib, 图表模块将被禁用</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="42"/>
+      <location filename="../../plotSave/TaskPanel.py" line="44"/>
       <source>Plot document must be selected in order to save it</source>
       <translation>必须选中图表文档以保存</translation>
     </message>
     <message>
-      <location filename="../../plotAxes/TaskPanel.py" line="340"/>
+      <location filename="../../plotAxes/TaskPanel.py" line="342"/>
       <source>Axes 0 can not be deleted</source>
       <translation>无法删除坐标轴0</translation>
     </message>
@@ -249,62 +249,62 @@
   <context>
     <name>plot_labels</name>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="133"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="135"/>
       <source>Set labels</source>
       <translation>设置标签</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="137"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="139"/>
       <source>Active axes</source>
       <translation>选中的坐标轴</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="141"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="143"/>
       <source>Title</source>
       <translation>标题</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="145"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="147"/>
       <source>X label</source>
       <translation>X标签</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="149"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="151"/>
       <source>Y label</source>
       <translation>Y标签</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="153"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="155"/>
       <source>Index of the active axes</source>
       <translation>选中坐标轴索引</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="157"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="159"/>
       <source>Title (associated to active axes)</source>
       <translation>标题(与活动轴关联)</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="162"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="164"/>
       <source>Title font size</source>
       <translation>标题字体大小</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="167"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="169"/>
       <source>X axis title</source>
       <translation>X轴标题</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="172"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="174"/>
       <source>X axis title font size</source>
       <translation>X轴标题字体大小</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="177"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="179"/>
       <source>Y axis title</source>
       <translation>Y轴标题</translation>
     </message>
     <message>
-      <location filename="../../plotLabels/TaskPanel.py" line="182"/>
+      <location filename="../../plotLabels/TaskPanel.py" line="184"/>
       <source>Y axis title font size</source>
       <translation>Y轴标题字体大小</translation>
     </message>
@@ -350,42 +350,42 @@
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="127"/>
+      <location filename="../../plotSave/TaskPanel.py" line="129"/>
       <source>Save figure</source>
       <translation>保存图表</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="131"/>
+      <location filename="../../plotSave/TaskPanel.py" line="133"/>
       <source>Inches</source>
       <translation>英寸</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="136"/>
+      <location filename="../../plotSave/TaskPanel.py" line="138"/>
       <source>Dots per Inch</source>
       <translation>每英寸点数(DPI)</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="141"/>
+      <location filename="../../plotSave/TaskPanel.py" line="143"/>
       <source>Output image file path</source>
       <translation>输出图像文件路径</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="146"/>
+      <location filename="../../plotSave/TaskPanel.py" line="148"/>
       <source>Show a file selection dialog</source>
       <translation>显示选择文件对话框</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="151"/>
+      <location filename="../../plotSave/TaskPanel.py" line="153"/>
       <source>X image size</source>
       <translation>X向图像大小</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="156"/>
+      <location filename="../../plotSave/TaskPanel.py" line="158"/>
       <source>Y image size</source>
       <translation>Y向图像大小</translation>
     </message>
     <message>
-      <location filename="../../plotSave/TaskPanel.py" line="161"/>
+      <location filename="../../plotSave/TaskPanel.py" line="163"/>
       <source>Dots per point, with size will define output image resolution</source>
       <translation>每点内的点数, 根据尺寸来定义输出影像的解析度</translation>
     </message>

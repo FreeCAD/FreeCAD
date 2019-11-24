@@ -508,7 +508,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="667"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>Projecció de la vista</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="674"/>
@@ -740,19 +740,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="979"/>
       <source>Make axonometric...</source>
       <translation>Fes axonomètrica...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="980"/>
       <source>Edit axonometric settings...</source>
       <translation>Edita la configuració axonomètrica...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make orthographic</source>
       <translation>Fes ortogràfica</translation>
     </message>

@@ -956,7 +956,7 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1145"/>
       <source>Pitch:</source>
-      <translation>Altura:</translation>
+      <translation>Passo de:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1166"/>

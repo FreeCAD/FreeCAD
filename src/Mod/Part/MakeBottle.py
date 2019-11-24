@@ -67,7 +67,7 @@ def makeBottle(myWidth=50.0, myHeight=70.0, myThickness=30.0):
 
 def makeBoreHole():
 	# create a document if needed
-	if App.ActiveDocument == None:
+	if App.ActiveDocument is None:
 		App.newDocument("Solid")
 
 	Group = App.ActiveDocument.addObject("App::DocumentObjectGroup","Group")

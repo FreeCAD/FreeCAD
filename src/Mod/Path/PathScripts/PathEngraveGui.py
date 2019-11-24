@@ -27,7 +27,6 @@ import FreeCADGui
 import PathScripts.PathEngrave as PathEngrave
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathSelection as PathSelection
 import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui
@@ -37,7 +36,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Engrave operation page controller and command implementation."
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -120,17 +121,20 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.StartVertex != self.form.startVertex.value():
             obj.StartVertex = self.form.startVertex.value()
         self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
         self.form.startVertex.setValue(obj.StartVertex)
         self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
         signals = []
         signals.append(self.form.startVertex.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):

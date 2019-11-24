@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <math.h> //OvG: Required for log10
 # include <TopoDS.hxx>
 # include <BRepGProp_Face.hxx>
 # include <gp_Vec.hxx>
@@ -60,7 +61,7 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <math.h> //OvG: Required for log10
+
 
 using namespace Fem;
 
@@ -71,7 +72,7 @@ double round(double r) {
 }
 #endif
 
-PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject);
+PROPERTY_SOURCE(Fem::Constraint, App::DocumentObject)
 
 Constraint::Constraint()
 {
@@ -177,7 +178,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
         if (sh.ShapeType() == TopAbs_VERTEX) {
             const TopoDS_Vertex& vertex = TopoDS::Vertex(sh);
             gp_Pnt p = BRep_Tool::Pnt(vertex);
-            points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
+            points.emplace_back(p.X(), p.Y(), p.Z());
             normals.push_back(NormalDirection.getValue());
             //OvG: Scale by whole object mass in case of a vertex
             GProp_GProps props;
@@ -216,7 +217,7 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
             for (int i = 0; i < steps + 1; i++) {
                 // Parameter values must be in the range [fp, lp] (#0003683)
                 gp_Pnt p = curve.Value(fp + i * step);
-                points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
+                points.emplace_back(p.X(), p.Y(), p.Z());
                 normals.push_back(NormalDirection.getValue());
             }
         }
@@ -330,10 +331,10 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
                     gp_Pnt p = surface.Value(u, v);
                     BRepClass_FaceClassifier classifier(face, p, Precision::Confusion());
                     if (classifier.State() != TopAbs_OUT) {
-                        points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
+                        points.emplace_back(p.X(), p.Y(), p.Z());
                         props.Normal(u, v,center,normal);
                         normal.Normalize();
-                        normals.push_back(Base::Vector3d(normal.X(), normal.Y(), normal.Z()));
+                        normals.emplace_back(normal.X(), normal.Y(), normal.Z());
                     }
                 }
             }

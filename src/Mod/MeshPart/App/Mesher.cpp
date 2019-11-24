@@ -39,6 +39,10 @@
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Woverloaded-virtual"
+# pragma clang diagnostic ignored "-Wextra-semi"
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wpedantic"
 #endif
 
 #include <SMESH_Gen.hxx>
@@ -70,6 +74,8 @@
 #endif // HAVE_NETGEN
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#elif defined (__GNUC__)
+# pragma GCC diagnostic pop
 #endif
 #endif // HAVE_SMESH
 
@@ -305,6 +311,9 @@ Mesh::MeshObject* Mesher::createMesh() const
                 std::stringstream str;
                 str << "patch" << index++;
                 segm.setName(str.str());
+                App::Color col;
+                col.setPackedValue(it.first);
+                segm.setColor(col.asHexString());
                 meshdata->addSegment(segm);
             }
         }

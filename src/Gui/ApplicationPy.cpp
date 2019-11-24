@@ -101,6 +101,12 @@ PyMethodDef Application::Methods[] = {
   {"addIcon",                 (PyCFunction) Application::sAddIcon, METH_VARARGS,
    "addIcon(string, string or list) -> None\n\n"
    "Add an icon as file name or in XPM format to the system"},
+  {"getIcon",                 (PyCFunction) Application::sGetIcon, METH_VARARGS,
+   "getIcon(string) -> QIcon\n\n"
+   "Get an icon in the system"},
+  {"isIconCached",           (PyCFunction) Application::sIsIconCached, METH_VARARGS,
+   "isIconCached(String) -> Bool\n\n"
+   "Check if an icon with the given name is cached"},
   {"getMainWindow",           (PyCFunction) Application::sGetMainWindow, METH_VARARGS,
    "getMainWindow() -> QMainWindow\n\n"
    "Return the main window instance"},
@@ -132,11 +138,19 @@ PyMethodDef Application::Methods[] = {
   {"runCommand",              (PyCFunction) Application::sRunCommand, METH_VARARGS,
    "runCommand(string) -> None\n\n"
    "Run command with name"},
+  {"isCommandActive",         (PyCFunction) Application::sIsCommandActive, METH_VARARGS,
+   "isCommandActive(string) -> Bool\n\n"
+   "Test if a command is active"},
   {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
+  {"updateCommands",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
+   "updateCommands\n\n"
+   "Update all command active status"},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView, METH_VARARGS,
    "deprecated -- use class View"},
+  {"sendMsgToFocusView",     (PyCFunction) Application::sSendFocusView, METH_VARARGS,
+   "send message to the focused view"},
   {"hide",                    (PyCFunction) Application::sHide, METH_VARARGS,
    "deprecated"},
   {"show",                    (PyCFunction) Application::sShow, METH_VARARGS,
@@ -160,11 +174,14 @@ PyMethodDef Application::Methods[] = {
    "setActiveDocument(string or App.Document) -> None\n\n"
    "Activate the specified document"},
   {"activeView", (PyCFunction)Application::sActiveView, METH_VARARGS,
-   "activeView() -> object or None\n\n"
-   "Return the active view of the active document or None if no one exists"},
+   "activeView(typename=None) -> object or None\n\n"
+   "Return the active view of the active document or None if no one exists" },
   {"activateView", (PyCFunction)Application::sActivateView, METH_VARARGS,
    "activateView(type)\n\n"
    "Activate a view of the given type of the active document"},
+  {"editDocument", (PyCFunction)Application::sEditDocument, METH_VARARGS,
+   "editDocument() -> object or None\n\n"
+   "Return the current editing document or None if no one exists" },
   {"getDocument",             (PyCFunction) Application::sGetDocument, METH_VARARGS,
    "getDocument(string) -> object\n\n"
    "Get a document by its name"},
@@ -197,8 +214,29 @@ PyMethodDef Application::Methods[] = {
      "removeDocumentObserver() -> None\n\n"
      "Remove an added document observer."},
 
+  {"reload",                    (PyCFunction) Application::sReload, METH_VARARGS,
+   "reload(name) -> doc\n\n"
+   "Reload a partial opened document"},
+
+  {"coinRemoveAllChildren",     (PyCFunction) Application::sCoinRemoveAllChildren, METH_VARARGS,
+   "Remove all children from a group node"},
+
   {NULL, NULL, 0, NULL}		/* Sentinel */
 };
+
+PyObject* Gui::Application::sEditDocument(PyObject * /*self*/, PyObject *args)
+{
+	if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+		return NULL;                       // NULL triggers exception 
+
+	Document *pcDoc = Instance->editDocument();
+	if (pcDoc) {
+		return pcDoc->getPyObject();
+	}
+	else {
+		Py_Return;
+	}
+}
 
 PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 {
@@ -216,16 +254,37 @@ PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 
 PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    const char *typeName=0;
+    if (!PyArg_ParseTuple(args, "|s", &typeName))
         return NULL;
 
-    Gui::MDIView* mdiView = Instance->activeView();
-    if (mdiView) {
-        // already incremented in getPyObject().
-        return mdiView->getPyObject();
-    }
+    PY_TRY {
+        Base::Type type;
+        if(typeName) {
+            type = Base::Type::fromName(typeName);
+            if(type.isBad()) {
+                PyErr_Format(PyExc_TypeError, "Invalid type '%s'", typeName);
+                return 0;
+            }
+        }
 
-    Py_Return;
+        Gui::MDIView* mdiView = Instance->activeView();
+        if (mdiView && (type.isBad() || mdiView->isDerivedFrom(type))) {
+            auto res = Py::asObject(mdiView->getPyObject());
+            if(!res.isNone() || !type.isBad()) 
+                return Py::new_reference_to(res);
+        }
+
+        if(type.isBad())
+            type = Gui::View3DInventor::getClassTypeId();
+        Instance->activateView(type, true);
+        mdiView = Instance->activeView();
+        if (mdiView)
+            return mdiView->getPyObject();
+
+        Py_Return;
+
+    } PY_CATCH
 }
 
 PyObject* Gui::Application::sActivateView(PyObject * /*self*/, PyObject *args)
@@ -604,6 +663,28 @@ PyObject* Application::sSendActiveView(PyObject * /*self*/, PyObject *args)
     return Py_None;
 }
 
+PyObject* Application::sSendFocusView(PyObject * /*self*/, PyObject *args)
+{
+    char *psCommandStr;
+    PyObject *suppress=Py_False;
+    if (!PyArg_ParseTuple(args, "s|O!",&psCommandStr,&PyBool_Type,&suppress))
+        return NULL;
+
+    const char* ppReturn=0;
+    if (!Instance->sendMsgToFocusView(psCommandStr,&ppReturn)) {
+        if (!PyObject_IsTrue(suppress))
+            Base::Console().Warning("Unknown view command: %s\n",psCommandStr);
+    }
+
+    // Print the return value to the output
+    if (ppReturn) {
+        return Py_BuildValue("s",ppReturn);
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
 PyObject* Application::sGetMainWindow(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -773,7 +854,8 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     }
 
     try {
-        Instance->activateWorkbench(psKey);
+        bool ok = Instance->activateWorkbench(psKey);
+        return Py::new_reference_to(Py::Boolean(ok));
     }
     catch (const Base::Exception& e) {
         std::stringstream err;
@@ -799,9 +881,6 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
         PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
         return 0;
     }
-
-    Py_INCREF(Py_None);
-    return Py_None;
 }
 
 PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
@@ -989,9 +1068,11 @@ PyObject* Application::sAddIconPath(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
 {
-    char *iconName;
-    char *pixmap;
-    if (!PyArg_ParseTuple(args, "ss", &iconName,&pixmap))
+    const char *iconName;
+    const char *content;
+    Py_ssize_t size = 0;
+    const char *format = "XPM";
+    if (!PyArg_ParseTuple(args, "ss#|s", &iconName,&content,&size,&format))
         return NULL;
     
     QPixmap icon;
@@ -1000,16 +1081,11 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
         return NULL;
     }
 
-    QByteArray ary;
-    std::string content = pixmap;
-    int strlen = (int)content.size();
-    ary.resize(strlen);
-    for (int j=0; j<strlen; j++)
-        ary[j]=content[j];
-    icon.loadFromData(ary, "XPM");
+    QByteArray ary(content,size);
+    icon.loadFromData(ary, format);
 
     if (icon.isNull()){
-        QString file = QString::fromUtf8(pixmap);
+        QString file = QString::fromUtf8(content);
         icon.load(file);
     }
 
@@ -1022,6 +1098,31 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
 
     Py_INCREF(Py_None);
     return Py_None;
+}
+
+PyObject* Application::sGetIcon(PyObject * /*self*/, PyObject *args)
+{
+    char *iconName;
+    if (!PyArg_ParseTuple(args, "s", &iconName))
+        return NULL;
+    
+    PythonWrapper wrap;
+    wrap.loadGuiModule();
+    wrap.loadWidgetsModule();
+    auto pixmap = BitmapFactory().pixmap(iconName);
+    if(!pixmap.isNull())
+        return Py::new_reference_to(wrap.fromQIcon(new QIcon(pixmap)));
+    Py_Return;
+}
+
+PyObject* Application::sIsIconCached(PyObject * /*self*/, PyObject *args)
+{
+    char *iconName;
+    if (!PyArg_ParseTuple(args, "s", &iconName))
+        return NULL;
+    
+    QPixmap icon;
+    return Py::new_reference_to(Py::Boolean(BitmapFactory().findPixmapInCache(iconName, icon)));
 }
 
 PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
@@ -1038,6 +1139,10 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
     try {
         Base::PyGILStateLocker lock;
         Py::Module mod(PyImport_ImportModule("inspect"), true);
+        if (mod.isNull()) {
+            PyErr_SetString(PyExc_ImportError, "Cannot load inspect module");
+            return 0;
+        }
         Py::Callable inspect(mod.getAttr("stack"));
         Py::Tuple args;
         Py::List list(inspect.apply(args));
@@ -1057,7 +1162,11 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
             group = what[1];
         }
         else {
-            group = module;
+            boost::regex rx("/Ext/freecad/(\\w+)/");
+            if (boost::regex_search(file, what, rx))
+                group = what[1];
+            else
+                group = module;
         }
     }
     catch (Py::Exception& e) {
@@ -1109,6 +1218,9 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s|i", &pName, &item))
         return NULL;
 
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
     if (cmd) {
         cmd->invoke(item);
@@ -1119,6 +1231,31 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
         PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
         return 0;
     }
+}
+
+PyObject* Application::sIsCommandActive(PyObject * /*self*/, PyObject *args)
+{
+    char* pName;
+    if (!PyArg_ParseTuple(args, "s", &pName))
+        return NULL;
+
+    Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
+    if (!cmd) {
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        return 0;
+    }
+    PY_TRY {
+        return Py::new_reference_to(Py::Boolean(cmd->isActive()));
+    }PY_CATCH;
+}
+
+PyObject* Application::sUpdateCommands(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    getMainWindow()->updateActions();
+    Py_Return;
 }
 
 PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)
@@ -1146,6 +1283,10 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &sCmd))
         return NULL;
 
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
+    Gui::Command::printPyCaller();
     Gui::Application::Instance->macroManager()->addLine(MacroManager::App, sCmd);
 
     PyObject *module, *dict;
@@ -1167,6 +1308,10 @@ PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &sCmd))
         return NULL;
 
+    Gui::Command::LogDisabler d1;
+    Gui::SelectionLogDisabler d2;
+
+    Gui::Command::printPyCaller();
     Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, sCmd);
 
     PyObject *module, *dict;
@@ -1267,23 +1412,55 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
     PY_TRY {
         ParameterGrp::handle const hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
-        if (strcmp(pstr, "square") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("DIAMOND_FILLED", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "cross") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "plus") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("PLUS", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "empty") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("SQUARE_LINE", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "quad") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("SQUARE_FILLED", hGrp->GetInt("MarkerSize", defSize)));
-        else if (strcmp(pstr, "circle") == 0)
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_LINE", hGrp->GetInt("MarkerSize", defSize)));
-        else
-            return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", hGrp->GetInt("MarkerSize", defSize)));
+        //find the appropriate marker style string token
+        std::string marker_arg = pstr;
+
+        std::list<std::pair<std::string, std::string> > markerList = {
+            {"square", "DIAMOND_FILLED"},
+            {"cross", "CROSS"},
+            {"plus", "PLUS"},
+            {"empty", "SQUARE_LINE"},
+            {"quad", "SQUARE_FILLED"},
+            {"circle", "CIRCLE_LINE"},
+            {"default", "CIRCLE_FILLED"}
+        };
+
+        std::list<std::pair<std::string, std::string>>::iterator markerStyle;
+
+        for (markerStyle = markerList.begin(); markerStyle != markerList.end(); ++markerStyle)
+        {
+            if (marker_arg == (*markerStyle).first || marker_arg == (*markerStyle).second)
+                break;
+        }
+
+        marker_arg = "CIRCLE_FILLED";
+
+        if (markerStyle != markerList.end())
+            marker_arg = (*markerStyle).second;
+
+        //get the marker size
+        int sizeList[]={5, 7, 9};
+
+        if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList))
+            defSize = 9;
+
+        return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex(marker_arg, defSize));
     }PY_CATCH;
 }
 
+PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
+{
+    const char *name;
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return NULL;
+
+    PY_TRY {
+        auto doc = Application::Instance->reopen(App::GetApplication().getDocument(name));
+        if(doc)
+            return doc->getPyObject();
+    }PY_CATCH;
+    Py_Return;
+}
 
 PyObject* Application::sAddDocObserver(PyObject * /*self*/, PyObject *args)
 {
@@ -1306,3 +1483,18 @@ PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
         Py_Return;
     } PY_CATCH;
 }
+
+PyObject* Application::sCoinRemoveAllChildren(PyObject * /*self*/, PyObject *args)
+{
+    PyObject *pynode;
+    if (!PyArg_ParseTuple(args, "O", &pynode))
+        return NULL;
+
+    PY_TRY {
+        void* ptr = 0;
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin","_p_SoGroup", pynode, &ptr, 0);
+        coinRemoveAllChildren(reinterpret_cast<SoGroup*>(ptr));
+        Py_Return;
+    }PY_CATCH;
+}
+

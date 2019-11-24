@@ -233,6 +233,30 @@ Py::Float FacetPy::getAspectRatio(void) const
     return Py::Float(tria.AspectRatio());
 }
 
+Py::Float FacetPy::getAspectRatio2(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::Float(-1.0);
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::Float(tria.AspectRatio2());
+}
+
+Py::Float FacetPy::getRoundness(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::Float(-1.0);
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::Float(tria.Roundness());
+}
+
 Py::Tuple FacetPy::getCircumCircle(void) const
 {
     FacetPy::PointerType face = this->getFacetPtr();
@@ -244,6 +268,23 @@ Py::Tuple FacetPy::getCircumCircle(void) const
     MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
     Base::Vector3f center;
     float radius = tria.CenterOfCircumCircle(center);
+    Py::Tuple tuple(2);
+    tuple.setItem(0, Py::Vector(center));
+    tuple.setItem(1, Py::Float(radius));
+    return tuple;
+}
+
+Py::Tuple FacetPy::getInCircle(void) const
+{
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        return Py::None();
+    }
+
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    Base::Vector3f center;
+    float radius = tria.CenterOfInscribedCircle(center);
     Py::Tuple tuple(2);
     tuple.setItem(0, Py::Vector(center));
     tuple.setItem(1, Py::Float(radius));

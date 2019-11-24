@@ -140,6 +140,13 @@ SET(SketcherGui_SRCS
     ViewProviderPython.h
 )
 
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${SketcherGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(SketcherGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
+
+
 SET(SketcherGuiIcon_SVG
     Resources/icons/SketcherWorkbench.svg
 )

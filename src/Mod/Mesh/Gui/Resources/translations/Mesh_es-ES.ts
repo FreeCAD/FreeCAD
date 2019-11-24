@@ -1158,6 +1158,13 @@ Please run the command to repair folds first</source>
       <source>Export AMF files using compression</source>
       <translation>Exportar archivos AMF utilizando compresión</translation>
     </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation>Este parámetro indica si la compresión ZIP
+se utiliza al escribir un archivo en formato AMF</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
@@ -1293,22 +1300,22 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>Añadir triángulo</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>Invertir normal</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>Borrar</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>Finalizar</translation>
     </message>
@@ -1316,7 +1323,7 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Terminado</translation>
     </message>

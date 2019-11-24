@@ -165,13 +165,6 @@ bool BoundBox2d::Intersect(const Polygon2d &rclPoly) const
   return false;
 }
 
-bool BoundBox2d::Contains (const Vector2d &rclV) const
-{
-  return
-    (rclV.x >= MinX) && (rclV.x <= MaxX) &&
-    (rclV.y >= MinY) && (rclV.y <= MaxY);
-}
-
 /********************************************************/
 /** LINE2D **********************************************/
 
@@ -430,6 +423,37 @@ void Polygon2d::Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rc
   if (clResultPolygon.GetCtVectors() > 0)
     rclResultPolygonList.push_back(clResultPolygon);
 }
+
+bool Polygon2d::Intersect (const Polygon2d &other) const {
+    if(other.GetCtVectors()<2 || GetCtVectors() < 2)
+        return false;
+
+    for(auto &v : _aclVct) {
+        if(other.Contains(v))
+            return true;
+    }
+
+    if(Contains(other[0]))
+        return true;
+
+    for(size_t j=1; j<other.GetCtVectors(); ++j) {
+        auto &v0 = other[j-1];
+        auto &v1 = other[j];
+
+        if(Contains(v1))
+            return true;
+
+        Line2d line(v0, v1);
+        for(size_t i=0; i<GetCtVectors(); ++i) {
+            Line2d line2(At(i), At((i+1)%GetCtVectors()));
+            Vector2d v;
+            if(line.IntersectAndContain(line2, v))
+                return true;
+        }
+    }  
+    return false;
+}
+
 
 bool Polygon2d::Intersect (const Vector2d &rclV, double eps) const
 {

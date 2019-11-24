@@ -43,7 +43,6 @@
 # include <BRepAlgoAPI_Common.hxx>
 #endif
 
-#include <QCoreApplication>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
@@ -63,7 +62,7 @@ PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 Pocket::Pocket()
 {
     addSubType = FeatureAddSub::Subtractive;
-    
+
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
@@ -126,7 +125,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     }
 
     // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue(); 
+    Base::Placement SketchPos    = obj->Placement.getValue();
     Base::Vector3d  SketchVector = getProfileNormal();
 
     // turn around for pockets
@@ -175,6 +174,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             TopExp_Explorer Ex(supportface,TopAbs_WIRE);
             if (!Ex.More())
                 supportface = TopoDS_Face();
+#if 0
             BRepFeat_MakePrism PrismMaker;
             PrismMaker.Init(base, profileshape, supportface, dir, 0, 1);
             PrismMaker.Perform(upToFace);
@@ -182,6 +182,10 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!PrismMaker.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
             TopoDS_Shape prism = PrismMaker.Shape();
+#else
+            TopoDS_Shape prism;
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, 0, 1);
+#endif
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);

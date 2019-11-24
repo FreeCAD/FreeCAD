@@ -223,6 +223,7 @@ public:
                        float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
     void cut(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     void trim(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
+    void trim(const Base::Vector3f& base, const Base::Vector3f& normal);
     //@}
 
     /** @name Selection */
@@ -255,7 +256,7 @@ public:
     /** @name Topological operations */
     //@{
     void refine();
-    void removeSmallEdges(float);
+    void removeNeedles(float);
     void optimizeTopology(float);
     void optimizeEdges();
     void splitEdges();
@@ -275,6 +276,7 @@ public:
     void flipNormals();
     void harmonizeNormals();
     void validateIndices();
+    void validateCaps(float fMaxAngle, float fSplitFactor);
     void validateDeformations(float fMaxAngle, float fEps);
     void validateDegenerations(float fEps);
     void removeDuplicatedPoints();
@@ -289,6 +291,7 @@ public:
     void removeFullBoundaryFacets();
     bool hasInvalidPoints() const;
     void removeInvalidPoints();
+    void mergeFacets();
     //@}
 
     /** @name Mesh segments */

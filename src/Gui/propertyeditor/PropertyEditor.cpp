@@ -26,24 +26,39 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QPainter>
+# include <QMenu>
+# include <QDebug>
+# include <QDialog>
+# include <QMessageBox>
+# include <QCheckBox>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/AutoTransaction.h>
+#include "MainWindow.h"
+#include "DlgAddProperty.h"
 #include "PropertyEditor.h"
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
+#include "PropertyView.h"
+
+FC_LOG_LEVEL_INIT("PropertyView",true,true)
 
 using namespace Gui::PropertyEditor;
 
 PropertyEditor::PropertyEditor(QWidget *parent)
-    : QTreeView(parent), autoupdate(false), committing(false), delaybuild(false)
+    : QTreeView(parent), autoupdate(false), committing(false), delaybuild(false), binding(false)
 {
     propertyModel = new PropertyModel(this);
     setModel(propertyModel);
 
-    PropertyItemDelegate* delegate = new PropertyItemDelegate(this);
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+
+    delegate = new PropertyItemDelegate(this);
     delegate->setItemEditorFactory(new PropertyItemEditorFactory);
     setItemDelegate(delegate);
 
@@ -54,8 +69,10 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     this->background = opt.palette.dark();
     this->groupColor = opt.palette.color(QPalette::BrightText);
 
-    connect(this, SIGNAL(activated(QModelIndex)), this, SLOT(onItemActivated(QModelIndex)));
-    connect(this, SIGNAL(clicked(QModelIndex)), this, SLOT(onItemActivated(QModelIndex)));
+    this->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
+    connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onItemActivated(const QModelIndex &)));
 }
 
 PropertyEditor::~PropertyEditor()
@@ -138,13 +155,31 @@ void PropertyEditor::commitData (QWidget * editor)
 void PropertyEditor::editorDestroyed (QObject * editor)
 {
     QTreeView::editorDestroyed(editor);
+
+    // When editing expression through context menu, the editor (ExpLineEditor)
+    // deletes itself when finished, so it won't trigger closeEditor signal. We
+    // must handle it here to perform auto update.
+    if (autoupdate) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            if (!doc->isTransactionEmpty()) {
+                if (doc->isTouched())
+                    doc->recompute();
+            }
+        }
+        App::GetApplication().closeActiveTransaction();
+    }
 }
 
 void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelIndex & previous )
 {
+    FC_LOG("current changed " << current.row()<<","<<current.column()
+            << "  " << previous.row()<<","<<previous.column());
+
     QTreeView::currentChanged(current, previous);
-    if (previous.isValid())
-        closePersistentEditor(model()->buddy(previous));
+
+    // if (previous.isValid())
+    //     closePersistentEditor(model()->buddy(previous));
 
     // DO NOT activate editor here, use onItemActivate() which response to
     // signals of activated and clicked.
@@ -153,53 +188,102 @@ void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelI
     //     openPersistentEditor(model()->buddy(current));
 }
 
+void PropertyEditor::setupTransaction(const QModelIndex &index) {
+    if(!autoupdate)
+        return;
+    if(this->state()!=EditingState) {
+        FC_LOG("editor not editing");
+        return;
+    }
+    auto &app = App::GetApplication();
+    if(app.getActiveTransaction()) {
+        FC_LOG("editor already transacting " << app.getActiveTransaction());
+        return;
+    }
+    PropertyItem* item = static_cast<PropertyItem*>(index.internalPointer());
+    auto items = item->getPropertyData();
+    for(auto propItem=item->parent();items.empty() && propItem;propItem=propItem->parent())
+        items = propItem->getPropertyData();
+    if(items.empty()) {
+        FC_LOG("editor no item");
+        return;
+    }
+    auto prop = items[0];
+    auto parent = prop->getContainer();
+    auto obj  = Base::freecad_dynamic_cast<App::DocumentObject>(parent);
+    if(!obj || !obj->getDocument()) {
+        FC_LOG("invalid object");
+        return;
+    }
+    if(obj->getDocument()->hasPendingTransaction()) {
+        FC_LOG("pending transaction");
+        return;
+    }
+    std::ostringstream str;
+    str << tr("Edit").toUtf8().constData() << ' ';
+    for(auto prop : items) {
+        if(prop->getContainer()!=obj) {
+            obj = 0;
+            break;
+        }
+    }
+    if(obj && obj->getNameInDocument())
+        str << obj->getNameInDocument() << '.';
+    else
+        str << tr("property").toUtf8().constData() << ' ';
+    str << prop->getName();
+    if(items.size()>1)
+        str << "...";
+    app.setActiveTransaction(str.str().c_str());
+    FC_LOG("editor transaction " << app.getActiveTransaction());
+}
+
 void PropertyEditor::onItemActivated ( const QModelIndex & index )
 {
-    if (autoupdate) {
-        PropertyItem* property = static_cast<PropertyItem*>(index.internalPointer());
-        QString edit = tr("Edit %1").arg(property->propertyName());
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc)
-            doc->openTransaction(edit.toUtf8());
-    }
-    openPersistentEditor(model()->buddy(index));
+    if(index.column() != 1)
+        return;
+    edit(model()->buddy(index),AllEditTriggers,0);
+    setupTransaction(index);
 }
 
 void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
+    QTreeView::closeEditor(editor, hint);
+
     if (autoupdate) {
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
             if (!doc->isTransactionEmpty()) {
-                doc->commitTransaction();
                 // Between opening and committing a transaction a recompute
                 // could already have been done
                 if (doc->isTouched())
                     doc->recompute();
             }
-            else {
-                doc->abortTransaction();
-            }
         }
+        App::GetApplication().closeActiveTransaction();
     }
 
-    QTreeView::closeEditor(editor, hint);
+    QModelIndex indexSaved = currentIndex();
+    FC_LOG("index saved " << indexSaved.row() << ", " << indexSaved.column());
 
-    // If after closing the editor this widget is still in editing state
-    // then a new editor must have been created. So, a transaction must be
-    // opened, too.
-    if (autoupdate && this->state() == EditingState) {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            QString edit;
-            QModelIndex index = currentIndex();
-            if (index.isValid()) {
-                PropertyItem* property = static_cast<PropertyItem*>(index.internalPointer());
-                edit = tr("Edit %1").arg(property->propertyName());
-            }
-            doc->openTransaction(edit.toUtf8());
+    QModelIndex lastIndex;
+    while(this->state()!=EditingState) {
+        QModelIndex index;
+        if (hint == QAbstractItemDelegate::EditNextItem) {
+            index = moveCursor(MoveDown,Qt::NoModifier);
+        } else if(hint == QAbstractItemDelegate::EditPreviousItem) {
+            index = moveCursor(MoveUp,Qt::NoModifier);
+        } else
+            break;
+        if(!index.isValid() || index==lastIndex) {
+            setCurrentIndex(indexSaved);
+            break;
         }
+        lastIndex = index;
+        setCurrentIndex(index);
+        edit(index,AllEditTriggers,0);
     }
+    setupTransaction(currentIndex());
 }
 
 void PropertyEditor::reset()
@@ -237,7 +321,7 @@ void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QM
     //painter->setPen(savedPen);
 }
 
-void PropertyEditor::buildUp(const PropertyModel::PropertyList& props)
+void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool checkDocument)
 {
     if (committing) {
         Base::Console().Warning("While committing the data to the property the selection has changed.\n");
@@ -255,7 +339,19 @@ void PropertyEditor::buildUp(const PropertyModel::PropertyList& props)
         this->setCurrentIndex(index);
     }
 
-    propList = props;
+    propList = std::move(props);
+    propOwners.clear();
+    for(auto &v : propList) {
+        for(auto prop : v.second) {
+            auto container = prop->getContainer();
+            if(!container)
+                continue;
+            // Include document to get proper handling in PropertyView::slotDeleteDocument()
+            if(checkDocument && container->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+                propOwners.insert(static_cast<App::DocumentObject*>(container)->getDocument());
+            propOwners.insert(container);
+        }
+    }
 }
 
 void PropertyEditor::updateProperty(const App::Property& prop)
@@ -271,7 +367,7 @@ void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int en
     for (int i=start; i<=end; i++) {
         QModelIndex item = propertyModel->index(i, column, parent);
         PropertyItem* propItem = static_cast<PropertyItem*>(item.internalPointer());
-        if (propItem && propItem->testStatus(App::Property::Hidden)) {
+        if (!PropertyView::showAll() && propItem && propItem->testStatus(App::Property::Hidden)) {
             setRowHidden (i, parent, true);
         }
         if (propItem && propItem->isSeparator()) {
@@ -285,10 +381,10 @@ void PropertyEditor::updateEditorMode(const App::Property& prop)
 {
     // check if the parent object is selected
     std::string editor = prop.getEditorName();
-    if (editor.empty())
+    if (!PropertyView::showAll() && editor.empty())
         return;
 
-    bool hidden = prop.testStatus(App::Property::Hidden);
+    bool hidden = PropertyView::isPropertyHidden(&prop);
     bool readOnly = prop.testStatus(App::Property::ReadOnly);
 
     int column = 1;
@@ -324,34 +420,8 @@ void PropertyEditor::updateItemEditor(bool enable, int column, const QModelIndex
     }
 }
 
-void PropertyEditor::appendProperty(const App::Property& prop)
-{
-    // check if the parent object is selected
-    std::string editor = prop.getEditorName();
-    if (editor.empty())
-        return;
-    App::PropertyContainer* parent = prop.getContainer();
-    std::string context = prop.getName();
-
-    bool canAddProperty = (!propList.empty());
-    for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
-        if (it->second.empty() || it->second.size() > 1) {
-            canAddProperty = false;
-            break;
-        }
-        else if (it->second.front()->getContainer() != parent) {
-            canAddProperty = false;
-            break;
-        }
-    }
-
-    if (canAddProperty) {
-        std::vector<App::Property*> list;
-        list.push_back(const_cast<App::Property*>(&prop));
-        std::pair< std::string, std::vector<App::Property*> > pair = std::make_pair(context, list);
-        propList.push_back(pair);
-        propertyModel->appendProperty(prop);
-    }
+bool PropertyEditor::appendProperty(const App::Property& prop) {
+    return !!propOwners.count(prop.getContainer());
 }
 
 void PropertyEditor::removeProperty(const App::Property& prop)
@@ -368,6 +438,169 @@ void PropertyEditor::removeProperty(const App::Property& prop)
             propertyModel->removeProperty(prop);
             break;
         }
+    }
+}
+
+enum MenuAction {
+    MA_ShowAll,
+    MA_Expression,
+    MA_RemoveProp,
+    MA_AddProp,
+    MA_Transient,
+    MA_Output,
+    MA_NoRecompute,
+    MA_ReadOnly,
+    MA_Hidden,
+    MA_Touched,
+    MA_EvalOnRestore,
+};
+
+void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
+    QMenu menu;
+    QAction *showAll = menu.addAction(tr("Show all"));
+    showAll->setCheckable(true);
+    showAll->setChecked(PropertyView::showAll());
+    showAll->setData(QVariant(MA_ShowAll));
+
+    auto contextIndex = currentIndex();
+
+    std::unordered_set<App::Property*> props;
+
+    if(PropertyView::showAll()) {
+        for(auto index : selectedIndexes()) {
+            auto item = static_cast<PropertyItem*>(index.internalPointer());
+            if(item->isSeparator())
+                continue;
+            for(auto parent=item;parent;parent=parent->parent()) {
+                const auto &ps = parent->getPropertyData();
+                if(ps.size()) {
+                    props.insert(ps.begin(),ps.end());
+                    break;
+                }
+            }
+        }
+
+        if(props.size())
+            menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
+
+        bool canRemove = !props.empty();
+        unsigned long propType = 0;
+        unsigned long propStatus = 0xffffffff;
+        for(auto prop : props) {
+            propType |= prop->getType();
+            propStatus &= prop->getStatus();
+            if(!prop->testStatus(App::Property::PropDynamic)
+                || prop->testStatus(App::Property::LockDynamic))
+            {
+                canRemove = false;
+            }
+        }
+        if(canRemove)
+            menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
+
+        if(props.size() == 1) {
+            auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
+            auto prop = *props.begin();
+            if(item->isBound() 
+                && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
+                && !prop->isReadOnly() 
+                && !(prop->getType() & App::Prop_ReadOnly))
+            {
+                contextIndex = propertyModel->buddy(contextIndex);
+                setCurrentIndex(contextIndex);
+                menu.addSeparator();
+                menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
+            }
+        }
+
+        if(props.size()) {
+            menu.addSeparator();
+
+            QAction *action;
+            QString text;
+#define _ACTION_SETUP(_name) do {\
+                text = tr(#_name);\
+                action = menu.addAction(text);\
+                action->setData(QVariant(MA_##_name));\
+                action->setCheckable(true);\
+                if(propStatus & (1<<App::Property::_name))\
+                    action->setChecked(true);\
+            }while(0)
+#define ACTION_SETUP(_name) do {\
+                _ACTION_SETUP(_name);\
+                if(propType & App::Prop_##_name) {\
+                    action->setText(text + QString::fromLatin1(" *"));\
+                    action->setChecked(true);\
+                }\
+            }while(0)
+
+            ACTION_SETUP(Hidden);
+            ACTION_SETUP(Output);
+            ACTION_SETUP(NoRecompute);
+            ACTION_SETUP(ReadOnly);
+            ACTION_SETUP(Transient);
+            _ACTION_SETUP(Touched);
+            _ACTION_SETUP(EvalOnRestore);
+        }
+    }
+
+    auto action = menu.exec(QCursor::pos());
+    if(!action)
+        return;
+
+    switch(action->data().toInt()) {
+    case MA_ShowAll:
+        PropertyView::setShowAll(action->isChecked());
+        return;
+#define ACTION_CHECK(_name) \
+    case MA_##_name:\
+        for(auto prop : props) \
+            prop->setStatus(App::Property::_name,action->isChecked());\
+        break
+    ACTION_CHECK(Transient);
+    ACTION_CHECK(ReadOnly);
+    ACTION_CHECK(Output);
+    ACTION_CHECK(Hidden);
+    ACTION_CHECK(EvalOnRestore);
+    case MA_Touched:
+        for(auto prop : props) {
+            if(action->isChecked())
+                prop->touch();
+            else
+                prop->purgeTouched();
+        }
+        break;
+    case MA_Expression:
+        if(contextIndex == currentIndex()) {
+            closePersistentEditor(contextIndex);
+            Base::FlagToggler<> flag(binding);
+            edit(contextIndex,AllEditTriggers,0);
+            setupTransaction(contextIndex);
+        }
+        break;
+    case MA_AddProp: {
+        App::AutoTransaction committer("Add property");
+        std::unordered_set<App::PropertyContainer*> containers;
+        for(auto prop : props)
+            containers.insert(prop->getContainer());
+        Gui::Dialog::DlgAddProperty dlg(
+                Gui::getMainWindow(),std::move(containers));
+        dlg.exec();
+        return;
+    }
+    case MA_RemoveProp: {
+        App::AutoTransaction committer("Remove property");
+        for(auto prop : props) {
+            try {
+                prop->getContainer()->removeDynamicProperty(prop->getName());
+            }catch(Base::Exception &e) {
+                e.ReportException();
+            }
+        }
+        break;
+    }
+    default:
+        break;
     }
 }
 

@@ -37,7 +37,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintPressure, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintPressure, Fem::Constraint)
 
 ConstraintPressure::ConstraintPressure()
 {

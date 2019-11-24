@@ -129,6 +129,7 @@ ViewProviderMeshCurvature::ViewProviderMeshCurvature()
     }
 
     ADD_PROPERTY(TextureMaterial,(mat));
+    SelectionStyle.setValue(1); // BBOX
 }
 
 ViewProviderMeshCurvature::~ViewProviderMeshCurvature()
@@ -290,7 +291,7 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
     // set to the expected size
     if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
         Mesh::Feature* object = static_cast<const App::PropertyLink*>(prop)->getValue<Mesh::Feature*>();
-        this->pcLinkRoot->removeAllChildren();
+        Gui::coinRemoveAllChildren(this->pcLinkRoot);
         if (object) {
             const Mesh::MeshObject& kernel = object->Mesh.getValue();
             pcColorMat->diffuseColor.setNum((int)kernel.countPoints());
@@ -496,6 +497,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
+                view->setSelectionEnabled(true);
                 view->removeEventCallback(SoEvent::getClassTypeId(), curvatureInfoCallback, ud);
             }
         }
@@ -510,7 +512,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
 
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
-            Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
             if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMeshCurvature::getClassTypeId()))
                 return;
             ViewProviderMeshCurvature* self = static_cast<ViewProviderMeshCurvature*>(vp);
@@ -545,7 +547,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMeshCurvature::getClassTypeId()))
             return;
         ViewProviderMeshCurvature* that = static_cast<ViewProviderMeshCurvature*>(vp);

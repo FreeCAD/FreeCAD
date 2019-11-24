@@ -37,12 +37,14 @@
 #include <Gui/WidgetFactory.h>
 
 #include "Workbench.h"
+#include "MDIViewPage.h"
 
 #include "DlgPrefsTechDrawImp.h"
 #include "DlgPrefsTechDraw2Imp.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDimension.h"
+#include "ViewProviderBalloon.h"
 #include "ViewProviderProjGroup.h"
 #include "ViewProviderProjGroupItem.h"
 #include "ViewProviderTemplate.h"
@@ -55,12 +57,17 @@
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderSpreadsheet.h"
 #include "ViewProviderImage.h"
+#include "ViewProviderRichAnno.h"
+#include "ViewProviderLeader.h"
+#include "ViewProviderTile.h"
+#include "ViewProviderWeld.h"
 
 
 // use a different name to CreateCommand()
 void CreateTechDrawCommands(void);
 void CreateTechDrawCommandsDims(void);
 void CreateTechDrawCommandsDecorate(void);
+void CreateTechDrawCommandsAnnotate(void);
 
 void loadTechDrawResource()
 {
@@ -105,14 +112,17 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommands();
     CreateTechDrawCommandsDims();
     CreateTechDrawCommandsDecorate();
+    CreateTechDrawCommandsAnnotate();
 
     TechDrawGui::Workbench::init();
+    TechDrawGui::MDIViewPage::init();
 
     TechDrawGui::ViewProviderPage::init();
     TechDrawGui::ViewProviderDrawingView::init();
 
     TechDrawGui::ViewProviderTemplate::init();
     TechDrawGui::ViewProviderDimension::init();
+    TechDrawGui::ViewProviderBalloon::init();
     TechDrawGui::ViewProviderViewPart::init();
     TechDrawGui::ViewProviderProjGroupItem::init();
     TechDrawGui::ViewProviderProjGroup::init();
@@ -126,6 +136,10 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderGeomHatch::init();
     TechDrawGui::ViewProviderSpreadsheet::init();
     TechDrawGui::ViewProviderImage::init();
+    TechDrawGui::ViewProviderLeader::init();
+    TechDrawGui::ViewProviderRichAnno::init();
+    TechDrawGui::ViewProviderTile::init();
+    TechDrawGui::ViewProviderWeld::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");

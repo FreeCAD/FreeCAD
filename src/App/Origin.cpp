@@ -51,6 +51,8 @@ const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 Origin::Origin(void) {
     ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
+
+    setStatus(App::NoAutoExpand,true);
 }
 
 
@@ -69,7 +71,7 @@ App::OriginFeature *Origin::getOriginFeature( const char *role) const {
     } else {
 
         std::stringstream err;
-        err << "Origin \"" << getNameInDocument () << "\" doesn't contain feature with role \""
+        err << "Origin \"" << getFullName () << "\" doesn't contain feature with role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }
@@ -81,7 +83,7 @@ App::Line *Origin::getAxis( const char *role ) const {
         return static_cast<App::Line *> (feat);
     } else {
         std::stringstream err;
-        err << "Origin \"" << getNameInDocument () << "\" contains bad Axis object for role \""
+        err << "Origin \"" << getFullName () << "\" contains bad Axis object for role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }
@@ -93,7 +95,7 @@ App::Plane *Origin::getPlane( const char *role ) const {
         return static_cast<App::Plane *> (feat);
     } else {
         std::stringstream err;
-        err << "Origin \"" << getNameInDocument () << "\" comtains bad Plane object for role \""
+        err << "Origin \"" << getFullName () << "\" contains bad Plane object for role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }

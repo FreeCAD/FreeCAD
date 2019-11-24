@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="93"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="94"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="195"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="228"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="229"/>
@@ -162,7 +162,7 @@
       <translation>Yerel yönlendirme almak için lütfen tek bir yerleşim nesnesi seçin.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Girdi hatası</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Düğüm başına örnekler</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Girdi hatası</translation>
     </message>
@@ -228,7 +228,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Reverse Engineering</source>
-      <translation>Ters Mühendislik</translation>
+      <translation>Tersine Mühendislik</translation>
     </message>
   </context>
 </TS>

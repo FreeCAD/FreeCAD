@@ -35,6 +35,7 @@
 
 #include "ui_DlgParameter.h"
 #include "DlgParameterImp.h"
+#include "DlgParameterFind.h"
 #include "DlgInputDialogImp.h"
 #include "BitmapFactory.h"
 #include "FileDialog.h"
@@ -115,6 +116,13 @@ DlgParameterImp::~DlgParameterImp()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void DlgParameterImp::on_buttonFind_clicked()
+{
+    if (finder.isNull())
+        finder = new DlgParameterFind(this);
+    finder->show();
 }
 
 /**
@@ -258,6 +266,7 @@ void DlgParameterImp::onChangeParameterSet(int index)
     if (!rcParMngr)
         return;
 
+    rcParMngr->CheckDocument();
     ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
 
     // remove all labels
@@ -395,16 +404,21 @@ void ParameterGroup::onDeleteSelectedItem()
     QTreeWidgetItem* sel = currentItem();
     if (isItemSelected(sel) && sel->parent())
     {
-        if ( QMessageBox::question(this, tr("Remove group"), tr("Do really want to remove this parameter group?"),
+        if ( QMessageBox::question(this, tr("Remove group"), tr("Do you really want to remove this parameter group?"),
                                QMessageBox::Yes, QMessageBox::No|QMessageBox::Default|QMessageBox::Escape) == 
                                QMessageBox::Yes )
         {
             QTreeWidgetItem* parent = sel->parent();
             int index = parent->indexOfChild(sel);
             parent->takeChild(index);
-            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(parent);
-            para->_hcGrp->RemoveGrp(sel->text(0).toLatin1());
+
+            std::string groupName = sel->text(0).toStdString();
+            // must delete the tree item here because it and its children still
+            // hold a reference to the parameter group
             delete sel;
+
+            ParameterGroupItem* para = static_cast<ParameterGroupItem*>(parent);
+            para->_hcGrp->RemoveGrp(groupName.c_str());
         }
     }
 }
@@ -559,6 +573,11 @@ ParameterValue::~ParameterValue()
 void ParameterValue::setCurrentGroup( const Base::Reference<ParameterGrp>& hGrp )
 {
     _hcGrp = hGrp;
+}
+
+Base::Reference<ParameterGrp> ParameterValue::currentGroup() const
+{
+    return _hcGrp;
 }
 
 bool ParameterValue::edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event )
@@ -804,7 +823,7 @@ ParameterGroupItem::~ParameterGroupItem()
 
 void ParameterGroupItem::fillUp(void)
 {
-    // filing up groups
+    // filling up groups
     std::vector<Base::Reference<ParameterGrp> > vhcParamGrp = _hcGrp->GetGroups();
 
     setText(0,QString::fromUtf8(_hcGrp->GetGroupName()));

@@ -28,8 +28,12 @@
 #include <QPen>
 #include <QSvgRenderer>
 #include <QGraphicsSvgItem>
-#include <boost/regex.hpp>
+#include <QDomDocument>
 #endif // #ifndef _PreComp_
+
+#include <QFile>
+#include <QXmlQuery>
+#include <QXmlResultItems>
 
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -37,6 +41,8 @@
 #include <Base/Parameter.h>
 #include <Gui/Command.h>
 
+#include <Mod/TechDraw/App/QDomNodeModel.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 
@@ -140,90 +146,87 @@ void QGISVGTemplate::updateView(bool update)
 
 void QGISVGTemplate::createClickHandles(void)
 {
-    TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
-    std::string temp = tmplte->PageResult.getValue();
+    TechDraw::DrawSVGTemplate *svgTemplate = getSVGTemplate();
+    QString templateFilename(QString::fromUtf8(svgTemplate->PageResult.getValue()));
 
-    if (temp.empty())
+    if (templateFilename.isEmpty()) {
         return;
-
-    Base::FileInfo fi(temp);
-
-    std::ostringstream oStream;
-    std::string tempendl = "--endOfLine--";
-    std::string line;
-
-    //read all of PageResult into oStream (except the DrawingContent marker comment - why??)
-    std::ifstream ifile (fi.filePath().c_str());
-    while (std::getline(ifile,line))
-    {
-        // check if the marker in the template is found
-        if(line.find("<!-- DrawingContent -->") == std::string::npos) {
-            // if not -  write line to oStream
-            oStream << line << tempendl;
-        }
     }
 
-    std::string outfragment(oStream.str());
+    QFile file(templateFilename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        Base::Console().Error("QGISVGTemplate::createClickHandles - error opening template file %s\n",
+                              svgTemplate->PageResult.getValue());
+        return;
+    }
 
-    // Find text tags with freecad:editable attribute and their matching tspans
-    // keep tagRegex in sync with App/DrawSVGTemplate.cpp
-    boost::regex tagRegex("<text([^>]*freecad:editable=[^>]*)>[^<]*<tspan[^>]*>([^<]*)</tspan>");
+    QDomDocument templateDocument;
+    if (!templateDocument.setContent(&file)) {
+        Base::Console().Message("QGISVGTemplate::createClickHandles - xml loading error\n");
+        return;
+    }
+    file.close();
 
-    // Smaller regexes for parsing matches to tagRegex
-    boost::regex editableNameRegex("freecad:editable=\"(.*?)\"");
-    boost::regex xRegex("x=\"([\\d.-]+)\"");
-    boost::regex yRegex("y=\"([\\d.-]+)\"");
-    //Note: some templates have fancy Transform clauses and don't use absolute x,y to position editableFields.
-    //      editableFields will be in the wrong place in this case.
+    QDomElement templateDocElem = templateDocument.documentElement();
 
-    std::string::const_iterator begin, end;
-    begin = outfragment.begin();
-    end = outfragment.end();
-    boost::match_results<std::string::const_iterator> tagMatch, nameMatch, xMatch, yMatch;
+    QXmlQuery query(QXmlQuery::XQuery10);
+    QDomNodeModel model(query.namePool(), templateDocument);
+    query.setFocus(QXmlItem(model.fromDomNode(templateDocElem)));
+
+    // XPath query to select all <text> nodes with "freecad:editable" attribute
+    query.setQuery(QString::fromUtf8(
+        "declare default element namespace \"" SVG_NS_URI "\"; "
+        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+        "//text[@freecad:editable]"));
+
+    QXmlResultItems queryResult;
+    query.evaluateTo(&queryResult);
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double dotSize = hGrp->GetFloat("TemplateDotSize", 3.0);
+    double editClickBoxSize = Rez::guiX(hGrp->GetFloat("TemplateDotSize", 3.0));
 
-    while (boost::regex_search(begin, end, tagMatch, tagRegex)) {
-        if ( boost::regex_search(tagMatch[1].first, tagMatch[1].second, nameMatch, editableNameRegex) &&
-             boost::regex_search(tagMatch[1].first, tagMatch[1].second, xMatch, xRegex) &&
-             boost::regex_search(tagMatch[1].first, tagMatch[1].second, yMatch, yRegex) ) {
+    QColor editClickBoxColor = Qt::green;
+    editClickBoxColor.setAlpha(128);              //semi-transparent
 
-            QString xStr = QString::fromStdString(xMatch[1].str());
-            QString yStr = QString::fromStdString(yMatch[1].str());
+    double width = editClickBoxSize;
+    double height = editClickBoxSize;
 
-            double x = Rez::guiX(xStr.toDouble());
-            double y = Rez::guiX(yStr.toDouble());
+    while (!queryResult.next().isNull())
+    {
+        QDomElement textElement = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
 
-            double editClickBoxSize = Rez::guiX(dotSize);
-            QColor editClickBoxColor = Qt::green;
-            editClickBoxColor.setAlpha(128);              //semi-transparent
+        QString name = textElement.attribute(QString::fromUtf8("freecad:editable"));
+        double x = Rez::guiX(textElement.attribute(QString::fromUtf8("x"), QString::fromUtf8("0.0")).toDouble());
+        double y = Rez::guiX(textElement.attribute(QString::fromUtf8("y"), QString::fromUtf8("0.0")).toDouble());
 
-            double width = editClickBoxSize;
-            double height = editClickBoxSize;
-
-            auto item( new TemplateTextField(this, tmplte, nameMatch[1].str()) );
-            float pad = 1;
-
-            item->setRect(x - pad, Rez::guiX(-tmplte->getHeight()) + y - height - pad,
-                          width + 2 * pad, height + 2 * pad);
-            QPen myPen;
-            QBrush myBrush(editClickBoxColor,Qt::SolidPattern);
-            myPen.setStyle(Qt::SolidLine);
-            myPen.setColor(editClickBoxColor);
-            myPen.setWidth(0);  // 0 means "cosmetic pen" - always 1px
-            item->setPen(myPen);
-            item->setBrush(myBrush);
-
-            item->setZValue(ZVALUE::SVGTEMPLATE + 1);
-            addToGroup(item);
-            textFields.push_back(item);
+        if (name.isEmpty()) {
+            Base::Console().Warning("QGISVGTemplate::createClickHandles - no name for editable text at %f, %f\n",
+                                    x, y);
+            continue;
         }
 
-        begin = tagMatch[0].second;
+        auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
+
+        double pad = 1.0;
+        item->setRect(x - pad, Rez::guiX(-svgTemplate->getHeight()) + y - height - pad,
+                      width + 2.0*pad, height + 2.0*pad);
+
+        QPen myPen;
+        myPen.setStyle(Qt::SolidLine);
+        myPen.setColor(editClickBoxColor);
+        myPen.setWidth(0);  // 0 means "cosmetic pen" - always 1px
+        item->setPen(myPen);
+
+        QBrush myBrush(editClickBoxColor,Qt::SolidPattern);
+        item->setBrush(myBrush);
+
+        item->setZValue(ZVALUE::SVGTEMPLATE + 1);
+        addToGroup(item);
+
+        textFields.push_back(item);
     }
 }
 

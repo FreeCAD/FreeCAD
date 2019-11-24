@@ -28,10 +28,12 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 
 import time
+
+import FreeCAD
 # import Mesh
 
 
-'''
+"""
 load FreeCADs 3D FEM example from Start Workbench
 
 femmesh = App.ActiveDocument.getObject("Box_Mesh").FemMesh
@@ -41,7 +43,7 @@ out_mesh = femmesh.femmesh2mesh.femmesh_2_mesh(femmesh, result)
 import Mesh
 Mesh.show(Mesh.Mesh(out_mesh))
 
-'''
+"""
 # These dictionaries list the nodes, that define faces of an element.
 # The key is the face number, used internally by FreeCAD.
 # The list contains the nodes in the element for each face.
@@ -97,7 +99,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
     if myFemMesh.VolumeCount > 0:
         for ele in myFemMesh.Volumes:
             element_nodes = myFemMesh.getElementNodes(ele)
-            # print('element_node: ', element_nodes)
+            # print("element_node: ", element_nodes)
             faceDef = face_dicts[len(element_nodes)]
 
             for key in faceDef:
@@ -113,13 +115,13 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                     faceCode += (node << shifter)
                     # x << n: x shifted left by n bits = Multiplication
                     shifter += shiftBits
-                # print('codeList: ', codeList)
+                # print("codeList: ", codeList)
                 faceCodeDict[faceCode] = nodeList
                 faceCodeList.append(faceCode)
     elif myFemMesh.FaceCount > 0:
         for ele in myFemMesh.Faces:
             element_nodes = myFemMesh.getElementNodes(ele)
-            # print('element_node: ', element_nodes)
+            # print("element_node: ", element_nodes)
             faceDef = {1: [0, 1, 2]}
 
             for key in faceDef:
@@ -135,7 +137,7 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                     faceCode += (node << shifter)
                     # x << n: x shifted left by n bits = Multiplication
                     shifter += shiftBits
-                # print('codeList: ', codeList)
+                # print("codeList: ", codeList)
                 faceCodeDict[faceCode] = nodeList
                 faceCodeList.append(faceCode)
 
@@ -150,17 +152,17 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
             if faceCodeList[actFaceIdx] == faceCodeList[actFaceIdx + 1]:
                 actFaceIdx += 2
             else:
-                # print('found a single Face: ', faceCodeList[actFaceIdx])
+                # print("found a single Face: ", faceCodeList[actFaceIdx])
                 singleFaces.append(faceCodeList[actFaceIdx])
                 actFaceIdx += 1
         else:
-            print('found a last Face: ', faceCodeList[actFaceIdx])
+            FreeCAD.Console.PrintMessage("Found a last Face: {}\n".format(faceCodeList[actFaceIdx]))
             singleFaces.append(faceCodeList[actFaceIdx])
             actFaceIdx += 1
 
     output_mesh = []
     if myResults:
-        print(myResults.Name)
+        FreeCAD.Console.PrintMessage("{}\n".format(myResults.Name))
         for myFace in singleFaces:
             face_nodes = faceCodeDict[myFace]
             dispVec0 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[0])]
@@ -170,14 +172,14 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                         myFemMesh.getNodeById(face_nodes[1]) + dispVec1,
                         myFemMesh.getNodeById(face_nodes[2]) + dispVec2]
             output_mesh.extend(triangle)
-            # print('my triangle: ', triangle)
+            # print("my triangle: ", triangle)
             if len(face_nodes) == 4:
                 dispVec3 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[3])]
                 triangle = [myFemMesh.getNodeById(face_nodes[2]) + dispVec2,
                             myFemMesh.getNodeById(face_nodes[3]) + dispVec3,
                             myFemMesh.getNodeById(face_nodes[0]) + dispVec0]
                 output_mesh.extend(triangle)
-                # print('my 2. triangle: ', triangle)
+                # print("my 2. triangle: ", triangle)
 
     else:
         for myFace in singleFaces:
@@ -186,14 +188,16 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                         myFemMesh.getNodeById(face_nodes[1]),
                         myFemMesh.getNodeById(face_nodes[2])]
             output_mesh.extend(triangle)
-            # print('my triangle: ', triangle)
+            # print("my triangle: ", triangle)
             if len(face_nodes) == 4:
                 triangle = [myFemMesh.getNodeById(face_nodes[2]),
                             myFemMesh.getNodeById(face_nodes[3]),
                             myFemMesh.getNodeById(face_nodes[0])]
                 output_mesh.extend(triangle)
-                # print('my 2. triangle: ', triangle)
+                # print("my 2. triangle: ", triangle)
 
     end_time = time.clock()
-    print('Mesh by surface search method: ', end_time - start_time)
+    FreeCAD.Console.PrintMessage(
+        "Mesh by surface search method: {}\n".format(end_time - start_time)
+    )
     return output_mesh

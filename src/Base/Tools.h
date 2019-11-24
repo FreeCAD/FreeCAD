@@ -187,6 +187,33 @@ private:
 
 // ----------------------------------------------------------------------------
 
+template<typename Flag=bool>
+struct FlagToggler {
+
+    Flag &flag;
+    bool toggled;
+
+    FlagToggler(Flag &_flag)
+        :flag(_flag),toggled(true)
+    {
+        flag = !flag;
+    }
+
+    FlagToggler(Flag &_flag, Flag check)
+        :flag(_flag),toggled(check==_flag)
+    {
+        if(toggled)
+            flag = !flag;
+    }
+
+    ~FlagToggler() {
+        if(toggled)
+            flag = !flag;
+    }
+};
+
+// ----------------------------------------------------------------------------
+
 template<typename Status, class Object>
 class ObjectStatusLocker
 {
@@ -217,6 +244,23 @@ private:
 
 // ----------------------------------------------------------------------------
 
+template<typename T>
+class BitsetLocker
+{
+public:
+    BitsetLocker(T& flags, std::size_t flag, bool value = true) 
+        : flags(flags), flag(flag)
+    { oldValue = flags.test(flag); flags.set(flag,value); }
+    ~BitsetLocker()
+    { flags.set(flag,oldValue); }
+private:
+    T &flags;
+    std::size_t flag;
+    bool oldValue;
+};
+
+// ----------------------------------------------------------------------------
+
 class ConnectionBlocker {
     typedef boost::signals2::connection Connection;
     typedef boost::signals2::shared_connection_block ConnectionBlock;
@@ -240,6 +284,11 @@ struct BaseExport Tools
     static std::string narrow(const std::wstring& str);
     static std::string escapedUnicodeFromUtf8(const char *s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
+
+    static QString escapeEncodeString(const QString& s);
+    static std::string escapeEncodeString(const std::string& s);
+    static QString escapeEncodeFilename(const QString& s);
+    static std::string escapeEncodeFilename(const std::string& s);
 
     /**
      * @brief toStdString Convert a QString into a UTF-8 encoded std::string.

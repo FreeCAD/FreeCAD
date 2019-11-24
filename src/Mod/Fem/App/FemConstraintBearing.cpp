@@ -40,7 +40,7 @@
 
 using namespace Fem;
 
-PROPERTY_SOURCE(Fem::ConstraintBearing, Fem::Constraint);
+PROPERTY_SOURCE(Fem::ConstraintBearing, Fem::Constraint)
 
 ConstraintBearing::ConstraintBearing()
 {

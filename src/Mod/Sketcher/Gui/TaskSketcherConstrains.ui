@@ -10,6 +10,18 @@
     <height>288</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>288</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -59,8 +71,11 @@
    </item>
    <item>
     <widget class="Gui::PrefCheckBox" name="filterInternalAlignment">
+     <property name="toolTip">
+      <string>Internal alignments will be hidden</string>
+     </property>
      <property name="text">
-      <string>Hide Internal Alignment</string>
+      <string>Hide internal alignment</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -74,21 +89,24 @@
     </widget>
    </item>
    <item>
-       <widget class="Gui::PrefCheckBox" name="extendedInformation">
-           <property name="text">
-               <string>Extended Information</string>
-           </property>
-           <property name="checked">
-               <bool>false</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-               <cstring>ExtendedConstraintInformation</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-               <cstring>Mod/Sketcher</cstring>
-           </property>
-       </widget>
-   </item>   
+    <widget class="Gui::PrefCheckBox" name="extendedInformation">
+     <property name="toolTip">
+      <string>Extended information will be added to the list</string>
+     </property>
+     <property name="text">
+      <string>Extended information</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>ExtendedConstraintInformation</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Sketcher</cstring>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="ConstraintView" name="listWidgetConstraints">
      <property name="modelColumn">

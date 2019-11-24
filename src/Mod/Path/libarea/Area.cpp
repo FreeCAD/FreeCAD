@@ -32,15 +32,15 @@ double CArea::m_after_MakeOffsets_length = 0.0;
     _type CArea::get_##_name() {return m_##_name;}\
     void CArea::set_##_name(_type _name) {m_##_name = _name;}
 
-_CAREA_PARAM_DEFINE(Point,double,tolerance);
+_CAREA_PARAM_DEFINE(Point,double,tolerance)
 CAREA_PARAM_DEFINE(bool,fit_arcs)
-CAREA_PARAM_DEFINE(bool,clipper_simple);
-CAREA_PARAM_DEFINE(double,clipper_clean_distance);
-CAREA_PARAM_DEFINE(double,accuracy);
-CAREA_PARAM_DEFINE(double,units);
-CAREA_PARAM_DEFINE(short,min_arc_points);
-CAREA_PARAM_DEFINE(short,max_arc_points);
-CAREA_PARAM_DEFINE(double,clipper_scale);
+CAREA_PARAM_DEFINE(bool,clipper_simple)
+CAREA_PARAM_DEFINE(double,clipper_clean_distance)
+CAREA_PARAM_DEFINE(double,accuracy)
+CAREA_PARAM_DEFINE(double,units)
+CAREA_PARAM_DEFINE(short,min_arc_points)
+CAREA_PARAM_DEFINE(short,max_arc_points)
+CAREA_PARAM_DEFINE(double,clipper_scale)
 
 void CArea::append(const CCurve& curve)
 {
@@ -392,7 +392,7 @@ static void make_zig_curve(const CCurve& input_curve, double y0, double y)
 	}
         
     if(zig_finished)
-		zigzag_list_for_zigs.push_back(ZigZag(zig, zag));
+		zigzag_list_for_zigs.emplace_back(zig, zag);
 }
 
 void make_zig(const CArea &a, double y0, double y)
@@ -534,11 +534,11 @@ static void zigzag(const CArea &input_a)
 		Point p2(x1, y);
 		Point p3(x1, y0);
 		CCurve c;
-		c.m_vertices.push_back(CVertex(0, p0, null_point, 0));
-		c.m_vertices.push_back(CVertex(0, p1, null_point, 0));
-		c.m_vertices.push_back(CVertex(0, p2, null_point, 1));
-		c.m_vertices.push_back(CVertex(0, p3, null_point, 0));
-		c.m_vertices.push_back(CVertex(0, p0, null_point, 1));
+		c.m_vertices.emplace_back(0, p0, null_point, 0);
+		c.m_vertices.emplace_back(0, p1, null_point, 0);
+		c.m_vertices.emplace_back(0, p2, null_point, 1);
+		c.m_vertices.emplace_back(0, p3, null_point, 0);
+		c.m_vertices.emplace_back(0, p0, null_point, 1);
 		CArea a2;
 		a2.m_curves.push_back(c);
 		a2.Intersect(a);
@@ -635,7 +635,7 @@ void CArea::Split(std::list<CArea> &m_areas)const
 		for(std::list<CCurve>::const_iterator It = m_curves.begin(); It != m_curves.end(); It++)
 		{
 			const CCurve& curve = *It;
-			m_areas.push_back(CArea());
+			m_areas.emplace_back();
 			m_areas.back().m_curves.push_back(curve);
 		}
 	}
@@ -656,7 +656,7 @@ void CArea::Split(std::list<CArea> &m_areas)const
 			}
 			else
 			{
-				m_areas.push_back(CArea());
+				m_areas.emplace_back();
 				m_areas.back().m_curves.push_back(curve);
 			}
 		}
@@ -725,11 +725,11 @@ bool IsInside(const Point& p, const CArea& a)
 {
 	CArea a2;
 	CCurve c;
-	c.m_vertices.push_back(CVertex(Point(p.x - 0.01, p.y - 0.01)));
-	c.m_vertices.push_back(CVertex(Point(p.x + 0.01, p.y - 0.01)));
-	c.m_vertices.push_back(CVertex(Point(p.x + 0.01, p.y + 0.01)));
-	c.m_vertices.push_back(CVertex(Point(p.x - 0.01, p.y + 0.01)));
-	c.m_vertices.push_back(CVertex(Point(p.x - 0.01, p.y - 0.01)));
+	c.m_vertices.emplace_back(Point(p.x - 0.01, p.y - 0.01));
+	c.m_vertices.emplace_back(Point(p.x + 0.01, p.y - 0.01));
+	c.m_vertices.emplace_back(Point(p.x + 0.01, p.y + 0.01));
+	c.m_vertices.emplace_back(Point(p.x - 0.01, p.y + 0.01));
+	c.m_vertices.emplace_back(Point(p.x - 0.01, p.y - 0.01));
 	a2.m_curves.push_back(c);
 	a2.Intersect(a);
 	if(fabs(a2.GetArea()) < 0.0004)return false;

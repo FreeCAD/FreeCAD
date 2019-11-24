@@ -8,6 +8,8 @@
 *.exp
 *.dep
 *.manifest
+*.o
+*.orig
 qrc_*.cpp
 BuildLog.htm
 cmake_install.cmake
@@ -18,6 +20,7 @@ ui_*.h
 moc_*.cpp
 Makefile
 CMakeCache.txt
+CMakeLists.txt.user
 config.h
 install_manifest.txt
 /bin/

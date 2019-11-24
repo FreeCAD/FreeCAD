@@ -54,7 +54,8 @@ MacroManager::MacroManager()
     scriptToPyConsole(true),
     localEnv(true),
     pyConsole(0),
-    pyDebugger(new PythonDebugger())
+    pyDebugger(new PythonDebugger()),
+    totalLines(0)
 {
     // Attach to the Parametergroup regarding macros
     this->params = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro");
@@ -166,35 +167,62 @@ void MacroManager::cancel(void)
     this->openMacro = false;
 }
 
-void MacroManager::addLine(LineType Type, const char* sLine)
+void MacroManager::addLine(LineType Type, const char* sLine, bool pending)
 {
-    if (this->openMacro) {
-        bool comment = false;
-        if (Type == Gui) {
-            if (this->recordGui && this->guiAsComment)
-                comment = true;
-            else if (!this->recordGui)
-                return; // ignore Gui commands
-        }
-        else if (Type == Cmt) {
-            comment = true;
-        }
-
-        QStringList lines = QString::fromLatin1(sLine).split(QLatin1String("\n"));
-        if (comment) {
-            for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it)
-                it->prepend(QLatin1String("#"));
-        }
-        this->macroInProgress.append(lines);
+    if(pending) {
+        if(!sLine)
+            pendingLine.clear();
+        else 
+            pendingLine.emplace_back(Type,sLine);
+        return;
     }
+    if(!sLine)
+        return;
+
+    if(pendingLine.size()) {
+        if(Type == Cmt) {
+            pendingLine.emplace_back(Type,sLine);
+            return;
+        }
+        decltype(pendingLine) lines;
+        lines.swap(pendingLine);
+        for(auto &v : lines)
+            addLine(v.first,v.second.c_str());
+    }
+
+    if(Type != Cmt)
+        ++totalLines;
+
+    bool comment = (Type == Cmt);
+    bool record = this->openMacro;
+
+    if (record && Type == Gui) {
+        if (this->recordGui && this->guiAsComment)
+            comment = true;
+        else if (!this->recordGui)
+            record = false;
+    }
+
+    QStringList lines = QString::fromUtf8(sLine).split(QLatin1String("\n"));
+    if (comment) {
+        for (auto &line : lines) {
+            if(!line.startsWith(QLatin1String("#")))
+                line.prepend(QLatin1String("# "));
+        }
+    }
+
+    if(record)
+        this->macroInProgress.append(lines);
 
     if (this->scriptToPyConsole) {
         // search for the Python console
         if (!this->pyConsole)
             this->pyConsole = Gui::getMainWindow()->findChild<Gui::PythonConsole*>();
         // Python console found?
-        if (this->pyConsole)
-            this->pyConsole->printStatement(QString::fromUtf8(sLine));
+        if (this->pyConsole) {
+            for(auto &line : lines)
+                this->pyConsole->printStatement(line);
+        }
     }
 }
 

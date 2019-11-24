@@ -129,6 +129,11 @@ public:
     Py::Object getActiveObject(const Py::Tuple&);
     Py::Object getViewProvidersOfType(const Py::Tuple&);
     Py::Object redraw(const Py::Tuple&);
+    Py::Object setName(const Py::Tuple&);
+    Py::Object toggleClippingPlane(const Py::Tuple& args, const Py::Dict &);
+    Py::Object hasClippingPlane(const Py::Tuple& args);
+
+    View3DInventor* getView3DIventorPtr() {return _view;}
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);

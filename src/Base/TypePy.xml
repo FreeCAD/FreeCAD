@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="PyObjectBase"
+      Name="TypePy"
+      Twin="BaseType"
+      TwinPointer="BaseType"
+      Include="Base/Type.h"
+      FatherInclude="Base/PyObjectBase.h"
+      Namespace="Base"
+      FatherNamespace="Base"
+      Delete="true">
+    <ForwardDeclarations>
+namespace Base {
+    typedef Type BaseType;
+}</ForwardDeclarations>
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <DeveloperDocu>This is the Type class</DeveloperDocu>
+      <UserDocu>This is the Type class</UserDocu>
+    </Documentation>
+    <Methode Name="fromName" Static="true">
+      <Documentation>
+        <UserDocu>Returns a type object by name</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fromKey" Static="true">
+      <Documentation>
+        <UserDocu>Returns a type object by key</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getNumTypes" Static="true">
+      <Documentation>
+        <UserDocu>Returns the number of type ids</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getBadType" Static="true">
+      <Documentation>
+        <UserDocu>Returns an invalid type id</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAllDerivedFrom" Static="true">
+      <Documentation>
+        <UserDocu>Returns all descendants</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getParent" Const="true">
+      <Documentation>
+        <UserDocu>Returns the parent type id</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isBad" Const="true">
+      <Documentation>
+        <UserDocu>Checks if the type id is invalid</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isDerivedFrom" Const="true">
+      <Documentation>
+        <UserDocu>Returns true if given type is a father</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getAllDerived" Const="true">
+      <Documentation>
+        <UserDocu>Returns all descendants</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Name" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The name of the type id</UserDocu>
+      </Documentation>
+      <Parameter Name="Name" Type="String" />
+    </Attribute>
+    <Attribute Name="Key" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The key of the type id</UserDocu>
+      </Documentation>
+      <Parameter Name="Key" Type="Long" />
+    </Attribute>
+    <Attribute Name="Module" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Module in which this class is defined</UserDocu>
+      </Documentation>
+      <Parameter Name="Module" Type="String"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

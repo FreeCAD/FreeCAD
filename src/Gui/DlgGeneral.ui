@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>396</width>
-    <height>553</height>
+    <width>425</width>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,7 +54,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="Languages"/>
+            <widget class="QComboBox" name="Languages">
+             <property name="toolTip">
+              <string>Language of the application's user interface</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -106,6 +110,9 @@
            </item>
            <item>
             <widget class="Gui::PrefSpinBox" name="RecentFiles">
+             <property name="toolTip">
+              <string>How many files should be listed in recent files list</string>
+             </property>
              <property name="value">
               <number>4</number>
              </property>
@@ -129,6 +136,10 @@
            </property>
            <item>
             <widget class="QCheckBox" name="tiledBackground">
+             <property name="toolTip">
+              <string>Background of the main window will consist of tiles of a special image.
+See the FreeCAD Wiki for details about the image.</string>
+             </property>
              <property name="text">
               <string>Enable tiled background</string>
              </property>
@@ -152,7 +163,11 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="StyleSheets"/>
+            <widget class="QComboBox" name="StyleSheets">
+             <property name="toolTip">
+              <string>Style sheet how user interface will look like</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -172,7 +187,40 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="toolbarIconSize"/>
+            <widget class="QComboBox" name="toolbarIconSize">
+             <property name="toolTip">
+              <string>Choose your preference for toolbar icon size. You can adjust
+this according to your screen size or personal taste</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="treeModeLabel">
+             <property name="text">
+              <string>Tree view mode:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="treeMode">
+             <property name="toolTip">
+              <string>Tree View Mode provides the option the option to
+customize the properties panel. The options are:
+1. 'Combiview'
+2. 'TreeView + PropertyView
+3. 'Both'</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -193,6 +241,11 @@
          </property>
          <item row="2" column="0">
           <widget class="Gui::PrefCheckBox" name="SplashScreen">
+           <property name="toolTip">
+            <string>A Splash screen is a small loading window that is shown
+when FreeCAD is launching. If this option is checked, FreeCAD will
+display the splash screen</string>
+           </property>
            <property name="text">
             <string>Enable splash screen at start up</string>
            </property>
@@ -223,7 +276,12 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QComboBox" name="AutoloadModuleCombo"/>
+            <widget class="QComboBox" name="AutoloadModuleCombo">
+             <property name="toolTip">
+              <string>Choose which workbench will be activated and shown
+after FreeCAD launches</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -244,6 +302,10 @@
          </property>
          <item row="0" column="0">
           <widget class="Gui::PrefCheckBox" name="PythonWordWrap">
+           <property name="toolTip">
+            <string>Words will be wrapped when they exceed available
+horizontal space in Python console</string>
+           </property>
            <property name="text">
             <string>Enable word wrap</string>
            </property>

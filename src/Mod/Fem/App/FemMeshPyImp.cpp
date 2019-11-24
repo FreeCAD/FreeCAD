@@ -22,26 +22,28 @@
 
 
 #include "PreCompiled.h"
-#include <algorithm>
-#include <stdexcept>
+
+#ifndef _PreComp_
+# include <algorithm>
+# include <stdexcept>
+# include <SMESH_Gen.hxx>
+# include <SMESH_Group.hxx>
+# include <SMESH_Mesh.hxx>
+# include <SMESHDS_Group.hxx>
+# include <SMDSAbs_ElementType.hxx>
+# include <SMDS_MeshElement.hxx>
+# include <SMDS_VolumeTool.hxx>
+# include <SMESHDS_Mesh.hxx>
+
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Face.hxx>
+# include <TopoDS.hxx>
+#endif
 
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
-
-#include <SMESH_Gen.hxx>
-#include <SMESH_Group.hxx>
-#include <SMESH_Mesh.hxx>
-#include <SMESHDS_Group.hxx>
-#include <SMDSAbs_ElementType.hxx>
-#include <SMDS_MeshElement.hxx>
-#include <SMDS_VolumeTool.hxx>
-#include <SMESHDS_Mesh.hxx>
-
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS.hxx>
 
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeSolidPy.h>
@@ -1298,7 +1300,7 @@ Py::Tuple FemMeshPy::getGroups(void) const
 
 Py::Object FemMeshPy::getVolume(void) const
 {
-    return Py::Object(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
+    return Py::asObject(new Base::QuantityPy(new Base::Quantity(getFemMeshPtr()->getVolume())));
 
 }
 

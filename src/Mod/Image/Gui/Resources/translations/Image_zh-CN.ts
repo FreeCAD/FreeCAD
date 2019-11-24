@@ -6,32 +6,32 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>缩放图像平面</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
-      <source>Distance</source>
-      <translation>距离</translation>
+      <source>Distance [mm]</source>
+      <translation>距离 [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>选择第一点</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;输入距离&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;选择图像面&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>选择第二点</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
@@ -44,12 +44,12 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
       <source>Scale image plane</source>
-      <translation type="unfinished">Scale image plane</translation>
+      <translation>缩放图像平面</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
+      <translation>通过定义两个点之间的距离来缩放图像平面</translation>
     </message>
   </context>
   <context>

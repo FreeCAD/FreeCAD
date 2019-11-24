@@ -1,14 +1,14 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.10
-Qt theme (stylesheet) specially developed for FreeCAD (http://www.freecadweb.org/).
+version 2.20
+Qt theme (stylesheet) specially developed for FreeCAD (https://www.freecadweb.org/).
 It might work with other software that uses Qt styling.
 
 
 LICENSE
 ============================================================================================================
-Copyright (c) 2018 Pablo Gil Fernández
+Copyright (c) 2019 Pablo Gil Fernández
 
 This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.
@@ -25,7 +25,7 @@ INSTALLATION
 CUSTOMIZATION
 ============================================================================================================
 If you would like to change the overall look/style of the theme, just find and replace following colors in the whole file:
-    BACKGROUND (darker to ligher)
+    BACKGROUND (darker to lighter)
         black
         #1e1e1e
         #3c3c3c
@@ -57,7 +57,7 @@ If you would like to change the overall look/style of the theme, just find and r
 
 KNOWN BUGS and TO DO
 ============================================================================================================
-    - please, follow the link to get updated information: http://forum.freecadweb.org/viewtopic.php?f=10&t=12417
+- please, follow the link to get updated information: https://forum.freecadweb.org/viewtopic.php?f=10&t=12417
 */
 
 
@@ -72,6 +72,7 @@ Reset elements
     border-style: none;
     border-image: none;
     outline: 0;
+    color: black; /* Default color for labels and different text elements that usually use dark colors */
 }
 
 /* specific reset for elements inside QToolBar */
@@ -92,7 +93,7 @@ QToolBar  {
 }
 
 QMdiArea {
-    background-image: url(qss:images_dark-light/background_freecad.svg);
+    background-image: url(qss:images_dark-light/background_freecad_dark.svg);
     background-position: center center;
     background-repeat: no-repeat;
 }
@@ -1129,6 +1130,14 @@ QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
     margin: 0px;
 }
 
+/* Fix for lists inside task panels */
+/* QSint--ActionGroup QFrame[class="content"] QTreeView,
+QSint--ActionGroup QFrame[class="content"] QListView,
+QSint--ActionGroup QFrame[class="content"] QTableView {
+    color: #f5f5f5;
+    background-color: #787878;
+} */
+
 
 /*==================================================================================================
 Buttons
@@ -1170,8 +1179,9 @@ QDateTimeEdit {
     padding-right: 20px;
 }
 
-/* when QTextEdit are no editable */
-QTextEdit:!editable {
+/* when QTextEdit are no editable (like Report view)*/
+QTextEdit:!editable,
+QTextEdit:!editable:focus {
     background-color: #c8c8c8;
     border: 1px solid #505050;
 }

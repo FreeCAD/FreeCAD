@@ -53,6 +53,7 @@ set(PartGui_MOC_HDRS
     DlgSettings3DViewPartImp.h
     DlgSettingsGeneral.h
     DlgSettingsObjectColor.h
+    DlgProjectionOnSurface.h
     PropertyEnumAttacherItem.h
     TaskFaceColors.h
     TaskShapeBuilder.h
@@ -91,6 +92,7 @@ set(PartGui_UIC_SRCS
     DlgSettings3DViewPart.ui
     DlgSettingsGeneral.ui
     DlgSettingsObjectColor.ui
+    DlgProjectionOnSurface.ui
     TaskFaceColors.ui
     TaskShapeBuilder.ui
     TaskLoft.ui
@@ -161,6 +163,9 @@ SET(PartGui_SRCS
     DlgSettingsObjectColor.cpp
     DlgSettingsObjectColor.h
     DlgSettingsObjectColor.ui
+    DlgProjectionOnSurface.cpp
+    DlgProjectionOnSurface.h
+    DlgProjectionOnSurface.ui
     Resources/Part.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -176,6 +181,8 @@ SET(PartGui_SRCS
     SoBrepPointSet.h
     ViewProvider.cpp
     ViewProvider.h
+    ViewProviderAttachExtension.h
+    ViewProviderAttachExtension.cpp
     ViewProviderExt.cpp
     ViewProviderExt.h
     ViewProviderReference.cpp
@@ -252,6 +259,12 @@ SET(PartGui_SRCS
     TaskAttacher.h 
     TaskAttacher.cpp 
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${PartGui_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(PartGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 SET(PartGuiIcon_SVG
     Resources/icons/PartWorkbench.svg

@@ -124,8 +124,13 @@ public:
     void spinCW(void);
     void spinCCW(void);
     
-    void dumpISO(char * title);
+    void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
+
+    void recomputeChildren(void);
+    void updateChildrenScale(void);
+    void autoPositionChildren(void);
+    void updateChildrenEnforce(void);
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -158,10 +163,11 @@ protected:
 
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage(void) const;
-    void updateChildren(void);
+
     void updateChildrenSource(void);
     void updateChildrenLock(void);
     int getViewIndex(const char *viewTypeCStr) const;
+    int getDefProjConv(void) const;
 
 };
 

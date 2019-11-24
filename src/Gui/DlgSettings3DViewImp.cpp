@@ -88,6 +88,9 @@ void DlgSettings3DViewImp::saveSettings()
     index = this->naviCubeCorner->currentIndex();
     hGrp->SetInt("CornerNaviCube", index);
 
+    index = this->renderCache->currentIndex();
+    hGrp->SetInt("RenderCache", index);
+
     QVariant const &vBoxMarkerSize = this->boxMarkerSize->itemData(this->boxMarkerSize->currentIndex());
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
 
@@ -107,6 +110,7 @@ void DlgSettings3DViewImp::saveSettings()
     sliderIntensity->onSave();
     radioPerspective->onSave();
     radioOrthographic->onSave();
+    qspinNewDocScale->onSave();
 
     QVariant camera = comboNewDocView->itemData(comboNewDocView->currentIndex(), Qt::UserRole);
     hGrp->SetASCII("NewDocumentCameraOrientation", (const char*)camera.toByteArray());
@@ -137,6 +141,7 @@ void DlgSettings3DViewImp::loadSettings()
     sliderIntensity->onRestore();
     radioPerspective->onRestore();
     radioOrthographic->onRestore();
+    qspinNewDocScale->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
@@ -157,6 +162,9 @@ void DlgSettings3DViewImp::loadSettings()
 
     index = hGrp->GetInt("CornerNaviCube", 1);
     naviCubeCorner->setCurrentIndex(index);
+
+    index = hGrp->GetInt("RenderCache", 0);
+    renderCache->setCurrentIndex(index);
 
     int const current = hGrp->GetInt("MarkerSize", 9L);
     this->boxMarkerSize->addItem(tr("5px"), QVariant(5));
@@ -179,7 +187,7 @@ void DlgSettings3DViewImp::loadSettings()
     comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
     comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
     comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
-    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
+    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
     index = comboNewDocView->findData(QByteArray(camera.c_str()));
     if (index > -1) comboNewDocView->setCurrentIndex(index);
     if (camera == "Custom") {

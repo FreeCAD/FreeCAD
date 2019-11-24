@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="210"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Genereer doorsnede van maaswerk en vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="211"/>
@@ -65,44 +65,44 @@
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Maaswerk bijsnijden met een vlak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Snijdt een maaswerk bij met een vlak</translation>
     </message>
   </context>
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="353"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Create</source>
       <translation>Aanmaken</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="355"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Close wire</source>
       <translation>Sluit draad</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="357"/>
+      <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="358"/>
+      <location filename="../../CurveOnMesh.cpp" line="368"/>
       <source>Cancel</source>
       <translation>Annuleren</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="566"/>
+      <location filename="../../CurveOnMesh.cpp" line="614"/>
       <source>Wrong mesh picked</source>
       <translation>Verkeerde gaas gepakt</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="606"/>
+      <location filename="../../CurveOnMesh.cpp" line="654"/>
       <source>No point was picked</source>
       <translation>Geen punt was geselecteerd</translation>
     </message>
@@ -140,22 +140,22 @@
       <translation>Benadering spleet</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="75"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
       <source>Tolerance to mesh</source>
       <translation>Tolerantie tot het gaas</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="101"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
       <source>Continuity</source>
       <translation>Continuïteit</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="108"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
       <source>Maximum curve degree</source>
       <translation>Maximaal aantal graden voor de ronding</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="132"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>
@@ -175,7 +175,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="32"/>
       <source>Meshing options</source>
-      <translation>Meshing opties</translation>
+      <translation>Meshingopties</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="38"/>

@@ -127,26 +127,26 @@ public:
     bool hasExtension(Base::Type, bool derived=true) const; //returns first of type (or derived from if set to true) and throws otherwise
     bool hasExtension(const std::string& name) const; //this version does not check derived classes
     bool hasExtensions() const;
-    App::Extension* getExtension(Base::Type, bool derived = true) const; 
+    App::Extension* getExtension(Base::Type, bool derived = true, bool no_except=false) const; 
     App::Extension* getExtension(const std::string& name) const; //this version does not check derived classes
     
     //returns first of type (or derived from) and throws otherwise
     template<typename ExtensionT>
-    ExtensionT* getExtensionByType() const {
-        return dynamic_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId()));
-    };
+    ExtensionT* getExtensionByType(bool no_except=false, bool derived=true) const {
+        return static_cast<ExtensionT*>(getExtension(ExtensionT::getExtensionClassTypeId(),derived,no_except));
+    }
     
     //get all extensions which have the given base class
     std::vector<Extension*> getExtensionsDerivedFrom(Base::Type type) const;
     template<typename ExtensionT>
     std::vector<ExtensionT*> getExtensionsDerivedFromType() const {
-        auto vec = getExtensionsDerivedFrom(ExtensionT::getExtensionClassTypeId());
         std::vector<ExtensionT*> typevec;
-        for(auto ext : vec)
-            typevec.push_back(dynamic_cast<ExtensionT*>(ext));
-        
+        for(auto entry : _extensions) {            
+            if(entry.first.isDerivedFrom(ExtensionT::getExtensionClassTypeId()))
+                typevec.push_back(static_cast<ExtensionT*>(entry.second));
+        }
         return typevec;
-    };
+    }
     
     ExtensionIterator extensionBegin() {return _extensions.begin();};
     ExtensionIterator extensionEnd() {return _extensions.end();};
@@ -193,7 +193,7 @@ private:
 };
 
 #define PROPERTY_HEADER_WITH_EXTENSIONS(_class_) \
-  PROPERTY_HEADER(_class)
+  PROPERTY_HEADER_WITH_OVERRIDE(_class)
 
 /// We make sur that the PropertyData of the container is not connected to the one of the extension
 #define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_) \

@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Splashscreen beim Starten anzeigen</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Wechsle zu Reiter des Ausgabefensters:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Lade Modul automatisch nach Startvorgang:</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Anzahl der zuletzt benutzten Dateien</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Fenster-Stil:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1625,6 +1617,53 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>S&amp;chließen</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Suchen...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Suchen</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Suche nach:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Anschauen von</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Gruppen</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Namen</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Werte</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Nur nach ganzer Zeichenkette suchen</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Nächste Fundstelle</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>Nicht gefunden</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>Kann den Text nicht finden: %1</translation>
     </message>
   </context>
   <context>
@@ -2721,10 +2760,6 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
       <translation>GUI-Befehle</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>GUI-Befehle aufzeichnen</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Aufnahme als Kommentar behandeln</translation>
     </message>
@@ -2739,6 +2774,10 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Makro in lokaler Umgebung ausführen</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>GUI-Befehle aufnehmen</translation>
     </message>
   </context>
   <context>
@@ -2766,10 +2805,6 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <source>Unit</source>
       <translation>Einheit</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Einheitensystem:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2834,6 +2869,10 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Einheitensystem:</translation>
     </message>
   </context>
   <context>
@@ -3878,12 +3917,12 @@ Sollen die Änderungen gespeichert werden?</translation>
       <translation>Ziehen Sie mit 2 Fingern über den Bildschirm oder drücken Sie die rechte Maustaste.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Ziehen Sie mit einem Finger über den Bildschirm oder drücken Sie die linke Maustaste. Im Skizzierer und anderen Bearbeitungsmodi drücken sie zusätzlich die Alt-Taste ihrer Tastatur.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Kneifen (zwei Finger auf den Bildschirm setzen und auseinander ziehen/zusammenführen) oder Blättern mit der mittleren Maustaste oder Bild hoch/runter auf der Tastatur.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4536,12 +4575,12 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
       <translation>Schrittweiten</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Bewegungs Schrittweite: </translation>
+      <source>Translation Increment:</source>
+      <translation>Bewegungs Schrittweite:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Drehung Schrittweite: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Drehung Schrittweite:</translation>
     </message>
   </context>
   <context>

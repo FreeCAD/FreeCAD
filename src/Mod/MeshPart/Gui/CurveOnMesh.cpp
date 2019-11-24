@@ -40,9 +40,11 @@
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <BRepBuilderAPI_MakePolygon.hxx>
 #endif
 
 #include "CurveOnMesh.h"
+#include <Base/Converter.h>
 #include <App/Document.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -77,6 +79,7 @@
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <Poly_Polygon3D.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
 
 /* XPM */
 static const char *cursor_curveonmesh[]={
@@ -241,10 +244,10 @@ public:
         : wireClosed(false)
         , distance(1.0)
         , cosAngle(0.7071) // 45 degree
+        , approximate(true)
         , curve(new ViewProviderCurveOnMesh)
         , mesh(0)
         , grid(0)
-        , kernel(0)
         , viewer(0)
         , editcursor(QPixmap(cursor_curveonmesh), 7, 7)
     {
@@ -268,17 +271,19 @@ public:
     {
         Mesh::Feature* mf = static_cast<Mesh::Feature*>(mesh->getObject());
         const Mesh::MeshObject& meshObject = mf->Mesh.getValue();
-        MeshCore::MeshAlgorithm alg(meshObject.getKernel());
+        kernel = meshObject.getKernel();
+        kernel.Transform(meshObject.getTransform());
+
+        MeshCore::MeshAlgorithm alg(kernel);
         float fAvgLen = alg.GetAverageEdgeLength();
-        grid = new MeshCore::MeshFacetGrid(meshObject.getKernel(), 5.0f * fAvgLen);
-        kernel = &meshObject;
+        grid = new MeshCore::MeshFacetGrid(kernel, 5.0f * fAvgLen);
     }
     bool projectLineOnMesh(const PickedPoint& pick)
     {
         PickedPoint last = pickedPoints.back();
         std::vector<Base::Vector3f> polyline;
 
-        MeshCore::MeshProjection meshProjection(kernel->getKernel());
+        MeshCore::MeshProjection meshProjection(kernel);
         Base::Vector3f v1 = Base::convertTo<Base::Vector3f>(last.point);
         Base::Vector3f v2 = Base::convertTo<Base::Vector3f>(pick.point);
         Base::Vector3f vd = Base::convertTo<Base::Vector3f>(viewer->getViewer()->getViewDirection());
@@ -320,10 +325,11 @@ public:
     bool wireClosed;
     double distance;
     double cosAngle;
+    bool approximate;
     ViewProviderCurveOnMesh* curve;
     Gui::ViewProviderDocumentObject* mesh;
     MeshCore::MeshFacetGrid* grid;
-    Base::Reference<const Mesh::MeshObject> kernel;
+    MeshCore::MeshKernel kernel;
     QPointer<Gui::View3DInventor> viewer;
     QCursor editcursor;
     ApproxPar par;
@@ -337,6 +343,11 @@ CurveOnMeshHandler::CurveOnMeshHandler(QObject* parent)
 CurveOnMeshHandler::~CurveOnMeshHandler()
 {
     disableCallback();
+}
+
+void CurveOnMeshHandler::enableApproximation(bool on)
+{
+    d_ptr->approximate = on;
 }
 
 void CurveOnMeshHandler::setParameters(int maxDegree, GeomAbs_Shape cont, double tol3d, double angle)
@@ -363,9 +374,16 @@ void CurveOnMeshHandler::onCreate()
 {
     for (auto it = d_ptr->cutLines.begin(); it != d_ptr->cutLines.end(); ++it) {
         std::vector<SbVec3f> segm = d_ptr->convert(*it);
-        Handle(Geom_BSplineCurve) spline = approximateSpline(segm);
-        if (!spline.IsNull())
-            displaySpline(spline);
+        if (d_ptr->approximate) {
+            Handle(Geom_BSplineCurve) spline = approximateSpline(segm);
+            if (!spline.IsNull())
+                displaySpline(spline);
+        }
+        else {
+            TopoDS_Wire wire;
+            if (makePolyline(segm, wire))
+                displayPolyline(wire);
+        }
     }
 
     d_ptr->curve->clearVertex();
@@ -489,9 +507,9 @@ void CurveOnMeshHandler::approximateEdge(const TopoDS_Edge& edge, double toleran
         pts.reserve(numNodes);
         for (int i=aNodes.Lower(); i<=aNodes.Upper(); i++) {
             const gp_Pnt& p = aNodes.Value(i);
-            pts.push_back(SbVec3f(static_cast<float>(p.X()),
+            pts.emplace_back(static_cast<float>(p.X()),
                                   static_cast<float>(p.Y()),
-                                  static_cast<float>(p.Z())));
+                                  static_cast<float>(p.Z()));
         }
 
         d_ptr->curve->setPoints(pts);
@@ -508,8 +526,39 @@ void CurveOnMeshHandler::displaySpline(const Handle(Geom_BSplineCurve)& spline)
 
         Gui::View3DInventorViewer* view3d = d_ptr->viewer->getViewer();
         App::Document* doc = view3d->getDocument()->getDocument();
+        doc->openTransaction("Add spline");
         Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Spline", "Spline"));
         part->Shape.setValue(edge);
+        doc->commitTransaction();
+    }
+}
+
+bool CurveOnMeshHandler::makePolyline(const std::vector<SbVec3f>& points, TopoDS_Wire& wire)
+{
+    BRepBuilderAPI_MakePolygon mkPoly;
+    for (std::vector<SbVec3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
+        float x,y,z;
+        it->getValue(x,y,z);
+        mkPoly.Add(gp_Pnt(x,y,z));
+    }
+
+    if (mkPoly.IsDone()) {
+        wire = mkPoly.Wire();
+        return true;
+    }
+
+    return false;
+}
+
+void CurveOnMeshHandler::displayPolyline(const TopoDS_Wire& wire)
+{
+    if (d_ptr->viewer) {
+        Gui::View3DInventorViewer* view3d = d_ptr->viewer->getViewer();
+        App::Document* doc = view3d->getDocument()->getDocument();
+        doc->openTransaction("Add polyline");
+        Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature", "Polyline"));
+        part->Shape.setValue(wire);
+        doc->commitTransaction();
     }
 }
 
@@ -551,7 +600,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * n)
             if (pp) {
                 CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
                 if (!self->d_ptr->wireClosed) {
-                    Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(pp->getPath()));
+                    Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(pp->getPath());
                     if (vp && vp->getTypeId().isDerivedFrom(MeshGui::ViewProviderMesh::getClassTypeId())) {
                         MeshGui::ViewProviderMesh* mesh = static_cast<MeshGui::ViewProviderMesh*>(vp);
                         const SoDetail* detail = pp->getDetail();
@@ -610,6 +659,15 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * n)
             CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
             QTimer::singleShot(100, self, SLOT(onContextMenu()));
         }
+    }
+}
+
+void CurveOnMeshHandler::recomputeDocument()
+{
+    if (d_ptr->viewer) {
+        Gui::View3DInventorViewer* view3d = d_ptr->viewer->getViewer();
+        App::Document* doc = view3d->getDocument()->getDocument();
+        doc->recompute();
     }
 }
 

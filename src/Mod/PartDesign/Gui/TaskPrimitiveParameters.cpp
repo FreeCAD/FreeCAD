@@ -30,6 +30,7 @@
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <boost/bind/bind.hpp>
+# include <boost/bind.hpp>
 #endif
 
 #include "TaskPrimitiveParameters.h"
@@ -47,7 +48,7 @@
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
 #include <App/Origin.h>
-#include <boost/bind.hpp>
+
 
 using namespace PartDesignGui;
 
@@ -58,7 +59,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     ui.setupUi(proxy);
 
     // box
-    ui.boxLength->setMaximum(INT_MAX);    
+    ui.boxLength->setMaximum(INT_MAX);
     ui.boxWidth->setMaximum(INT_MAX);
     ui.boxHeight->setMaximum(INT_MAX);
 
@@ -104,12 +105,12 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     ui.wedgeX2max->setMaximum(INT_MAX);
     ui.wedgeZ2max->setMinimum(INT_MIN);
     ui.wedgeZ2max->setMaximum(INT_MAX);
-    
+
     this->groupLayout()->addWidget(proxy);
-    
+
     int index = 0;
     switch(static_cast<PartDesign::FeaturePrimitive*>(vp->getObject())->getPrimitiveType()) {
-        
+
         case PartDesign::FeaturePrimitive::Box:
             index = 1;
             ui.boxLength->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Length.getValue());
@@ -171,13 +172,13 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             ui.wedgeZmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmin.getValue());
             ui.wedgeZ2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2max.getValue());
             ui.wedgeZ2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min.getValue());
-            break;       
+            break;
     }
-    
+
     ui.widgetStack->setCurrentIndex(index);
     ui.widgetStack->setMinimumSize(ui.widgetStack->widget(index)->minimumSize());
     for(int i=0; i<ui.widgetStack->count(); ++i) {
-    
+
         if(i != index)
             ui.widgetStack->widget(i)->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
     }
@@ -197,29 +198,29 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
-    
+
     // box
     connect(ui.boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
     connect(ui.boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
     connect(ui.boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
-    
+
     // cylinder
     connect(ui.cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
     connect(ui.cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
     connect(ui.cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
-    
+
     // cone
     connect(ui.coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
     connect(ui.coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
     connect(ui.coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
     connect(ui.coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
-    
+
     // sphere
     connect(ui.sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
     connect(ui.sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
     connect(ui.sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
     connect(ui.sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
-    
+
     // ellipsoid
     connect(ui.ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
     connect(ui.ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
@@ -227,19 +228,19 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     connect(ui.ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
     connect(ui.ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
     connect(ui.ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
-    
+
     // torus
     connect(ui.torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
     connect(ui.torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
     connect(ui.torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
     connect(ui.torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
     connect(ui.torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
-    
+
     //prism
     connect(ui.prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
     connect(ui.prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
     connect(ui.prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
-    
+
     // wedge
     connect(ui.wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
     connect(ui.wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXinChanged(double)));
@@ -253,7 +254,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     connect(ui.wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2inChanged(double)));
 }
 
-/*  
+/*
  *  Destroys the object and frees any allocated resources
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
@@ -511,9 +512,10 @@ void TaskBoxPrimitives::onWedgeZmaxChanged(double v) {
 
 
 
-void  TaskBoxPrimitives::setPrimitive(QString name)
+void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
 {
     try {
+        QString name(QString::fromLatin1(Gui::Command::getObjectCmd(obj).c_str()));
         QString cmd;
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
@@ -522,32 +524,32 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
         switch(ui.widgetStack->currentIndex()) {
             case 1:         // box
                 cmd = QString::fromLatin1(
-                    "App.ActiveDocument.%1.Length=%2\n"
-                    "App.ActiveDocument.%1.Width=%3\n"
-                    "App.ActiveDocument.%1.Height=%4\n")
+                    "%1.Length=%2\n"
+                    "%1.Width=%3\n"
+                    "%1.Height=%4\n")
                     .arg(name)
                     .arg(ui.boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
-        
+
             case 2:  // cylinder
                 cmd = QString::fromLatin1(
-                    "App.ActiveDocument.%1.Radius=%2\n"
-                    "App.ActiveDocument.%1.Height=%3\n"
-                    "App.ActiveDocument.%1.Angle=%4\n")
+                    "%1.Radius=%2\n"
+                    "%1.Height=%3\n"
+                    "%1.Angle=%4\n")
                     .arg(name)
                     .arg(ui.cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
-                
+
             case 3:  // cone
                 cmd = QString::fromLatin1(
-                    "App.ActiveDocument.%1.Radius1=%2\n"
-                    "App.ActiveDocument.%1.Radius2=%3\n"
-                    "App.ActiveDocument.%1.Height=%4\n"
-                    "App.ActiveDocument.%1.Angle=%5\n")
+                    "%1.Radius1=%2\n"
+                    "%1.Radius2=%3\n"
+                    "%1.Height=%4\n"
+                    "%1.Angle=%5\n")
                     .arg(name)
                     .arg(ui.coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
@@ -557,10 +559,10 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
 
             case 4:  // sphere
                 cmd = QString::fromLatin1(
-                    "App.ActiveDocument.%1.Radius=%2\n"
-                    "App.ActiveDocument.%1.Angle1=%3\n"
-                    "App.ActiveDocument.%1.Angle2=%4\n"
-                    "App.ActiveDocument.%1.Angle3=%5\n")
+                    "%1.Radius=%2\n"
+                    "%1.Angle1=%3\n"
+                    "%1.Angle2=%4\n"
+                    "%1.Angle3=%5\n")
                     .arg(name)
                     .arg(ui.sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
@@ -569,12 +571,12 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                 break;
             case 5:  // ellipsoid
                 cmd = QString::fromLatin1(
-                    "App.ActiveDocument.%1.Radius1=%2\n"
-                    "App.ActiveDocument.%1.Radius2=%3\n"
-                    "App.ActiveDocument.%1.Radius3=%4\n"
-                    "App.ActiveDocument.%1.Angle1=%5\n"
-                    "App.ActiveDocument.%1.Angle2=%6\n"
-                    "App.ActiveDocument.%1.Angle3=%7\n")
+                    "%1.Radius1=%2\n"
+                    "%1.Radius2=%3\n"
+                    "%1.Radius3=%4\n"
+                    "%1.Angle1=%5\n"
+                    "%1.Angle2=%6\n"
+                    "%1.Angle3=%7\n")
                     .arg(name)
                     .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
@@ -583,14 +585,14 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
-                
+
             case 6:  // torus
                 cmd = QString::fromLatin1(
-                    "App.ActiveDocument.%1.Radius1=%2\n"
-                    "App.ActiveDocument.%1.Radius2=%3\n"
-                    "App.ActiveDocument.%1.Angle1=%4\n"
-                    "App.ActiveDocument.%1.Angle2=%5\n"
-                    "App.ActiveDocument.%1.Angle3=%6\n")
+                    "%1.Radius1=%2\n"
+                    "%1.Radius2=%3\n"
+                    "%1.Angle1=%4\n"
+                    "%1.Angle2=%5\n"
+                    "%1.Angle3=%6\n")
                     .arg(name)
                     .arg(ui.torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
@@ -600,9 +602,9 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                 break;
             case 7:  // prism
                 cmd = QString::fromLatin1(
-                    "App.ActiveDocument.%1.Polygon=%2\n"
-                    "App.ActiveDocument.%1.Circumradius=%3\n"
-                    "App.ActiveDocument.%1.Height=%4\n")
+                    "%1.Polygon=%2\n"
+                    "%1.Circumradius=%3\n"
+                    "%1.Height=%4\n")
                     .arg(name)
                     .arg(ui.prismPolygon->value())
                     .arg(ui.prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
@@ -610,16 +612,16 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                 break;
             case 8:  // wedge
                 cmd = QString::fromLatin1(
-                    "App.ActiveDocument.%1.Xmin=%2\n"
-                    "App.ActiveDocument.%1.Ymin=%3\n"
-                    "App.ActiveDocument.%1.Zmin=%4\n"
-                    "App.ActiveDocument.%1.X2min=%5\n"
-                    "App.ActiveDocument.%1.Z2min=%6\n"
-                    "App.ActiveDocument.%1.Xmax=%7\n"
-                    "App.ActiveDocument.%1.Ymax=%8\n"
-                    "App.ActiveDocument.%1.Zmax=%9\n"
-                    "App.ActiveDocument.%1.X2max=%10\n"
-                    "App.ActiveDocument.%1.Z2max=%11\n")
+                    "%1.Xmin=%2\n"
+                    "%1.Ymin=%3\n"
+                    "%1.Zmin=%4\n"
+                    "%1.X2min=%5\n"
+                    "%1.Z2min=%6\n"
+                    "%1.Xmax=%7\n"
+                    "%1.Ymax=%8\n"
+                    "%1.Zmax=%9\n"
+                    "%1.X2max=%10\n"
+                    "%1.Z2max=%11\n")
                     .arg(name)
                     .arg(ui.wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
@@ -632,7 +634,7 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                     .arg(ui.wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
                     .arg(ui.wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
-            
+
             default:
                 break;
         }
@@ -650,12 +652,12 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
 
 TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView) : vp_prm(PrimitiveView)
 {
-    
+
     assert(PrimitiveView);
-      
+
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
-    
+
     parameter  = new PartGui::TaskAttacher(PrimitiveView);
     Content.push_back(parameter);
 }
@@ -667,7 +669,7 @@ TaskPrimitiveParameters::~TaskPrimitiveParameters()
 
 bool TaskPrimitiveParameters::accept()
 {
-    primitive->setPrimitive(QString::fromUtf8(vp_prm->getObject()->getNameInDocument()));
+    primitive->setPrimitive(vp_prm->getObject());
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 

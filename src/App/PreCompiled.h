@@ -73,6 +73,9 @@
 #include <bitset>
 #include <exception>
 #include <random>
+#include <unordered_set>
+#include <unordered_map>
+#include <iterator>
 
 // Boost
 #include <boost/signals2.hpp>

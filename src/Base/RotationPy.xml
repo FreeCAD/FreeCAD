@@ -10,6 +10,7 @@
 		  Namespace="Base"
 		  Constructor="true"
 		  Delete="true"
+		  NumberProtocol="true"
           RichCompare="true"
 		  FatherNamespace="Base">
 		<Documentation>
@@ -50,8 +51,9 @@
         <Methode Name="isSame">
             <Documentation>
                 <UserDocu>
-                    isSame(Rotation)
-                    Checks if the two quaternions perform the same rotation
+                    isSame(Rotation, [tolerance=0])
+                    Checks if the two quaternions perform the same rotation.
+                    Optionally, a tolerance value greater than zero can be passed.
                 </UserDocu>
             </Documentation>
         </Methode>
@@ -71,12 +73,28 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="toEuler" Const="true">
+        <Methode Name="slerp" Const="true">
+			<Documentation>
+				<UserDocu>
+					slerp(Rotation, Float) -> Rotation
+					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="toEuler" Const="true">
 			<Documentation>
 				<UserDocu>
 					toEuler(Vector) -> list
 					Get the Euler angles of this rotation
 					as yaw-pitch-roll in XY'Z'' convention
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="toMatrix" Const="true">
+			<Documentation>
+				<UserDocu>
+					toMatrix()
+					convert the rotation to a matrix representation
 				</UserDocu>
 			</Documentation>
 		</Methode>
@@ -107,6 +125,12 @@
 				<UserDocu>The rotation axis of the quaternion</UserDocu>
 			</Documentation>
 			<Parameter Name="Axis" Type="Object" />
+		</Attribute>
+		<Attribute Name="RawAxis" ReadOnly="true">
+			<Documentation>
+				<UserDocu>The rotation axis without normalization</UserDocu>
+			</Documentation>
+			<Parameter Name="RawAxis" Type="Object" />
 		</Attribute>
 		<Attribute Name="Angle" ReadOnly="false">
 			<Documentation>

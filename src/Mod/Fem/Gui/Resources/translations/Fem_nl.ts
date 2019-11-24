@@ -70,11 +70,6 @@
       <translation>Analyse container</translation>
     </message>
     <message>
-      <location filename="_CommandFemAnalysis.py" line="43"/>
-      <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Maakt een analysecontainer aan met standaardoplosser CalculiX</translation>
-    </message>
-    <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
       <translation>Maakt een analyse blok met standaard solver CalculiX</translation>
@@ -119,7 +114,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Beperking elektrostatisch potentiaal</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
@@ -132,7 +127,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Beperk stromingssnelheid</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -145,7 +140,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Beperk initiële stromingssnelheid</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="185"/>
+      <source>Creates a FEM constraint initial flow velocity</source>
+      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
     </message>
   </context>
   <context>
@@ -153,7 +153,7 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>Beperk eigen gewicht</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
@@ -166,7 +166,7 @@
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Stromingssectie voor 1D stroming</translation>
     </message>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
@@ -199,16 +199,6 @@
       <source>Creates a FEM shell plate thickness</source>
       <translation>Maakt een FEM-schilplaatdikte aan</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="259"/>
-      <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
-      <source>Creates a FEM shell plate thickness</source>
-      <translation>Maakt een FEM-schilplaatdikte aan</translation>
-    </message>
   </context>
   <context>
     <name>FEM_ElementRotation1D</name>
@@ -228,7 +218,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="314"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Elasticiteit vergelijking</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="315"/>
@@ -241,7 +231,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="297"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Elektrostatische vergelijking</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="298"/>
@@ -254,12 +244,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="331"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Stromingsvergelijking</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="332"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Maak een FEM vergelijking voor de stroming</translation>
     </message>
   </context>
   <context>
@@ -267,12 +257,25 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Fluxsolver equation</source>
-      <translation type="unfinished">Fluxsolver equation</translation>
+      <translation>Fluxsolver vergelijking</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="349"/>
       <source>Creates a FEM equation for fluxsolver</source>
-      <translation type="unfinished">Creates a FEM equation for fluxsolver</translation>
+      <translation>Maak een FEM vergelijking voor de Fluxsolver</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_EquationHeat</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="365"/>
+      <source>Fluxsolver heat</source>
+      <translation type="unfinished">Fluxsolver heat</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="530"/>
+      <source>Fluxsolver heat</source>
+      <translation type="unfinished">Fluxsolver heat</translation>
     </message>
   </context>
   <context>
@@ -280,22 +283,35 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>FEM maas naar maas</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Converteer het oppervlak van een FEM maas naar een maas</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialFluid</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="397"/>
+      <source>Material for fluid</source>
+      <translation type="unfinished">Material for fluid</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="470"/>
-      <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <location filename="../../../femcommands/commands.py" line="582"/>
+      <source>Material for fluid</source>
+      <translation type="unfinished">Material for fluid</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="471"/>
-      <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <location filename="_CommandFemMaterialFluid.py" line="42"/>
+      <source>FEM material for Fluid</source>
+      <translation type="unfinished">FEM material for Fluid</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialFluid.py" line="44"/>
+      <source>Creates a FEM material for Fluid</source>
+      <translation type="unfinished">Creates a FEM material for Fluid</translation>
     </message>
   </context>
   <context>
@@ -303,30 +319,43 @@
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Niet-lineair mechanisch materiaal</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Creëert een niet-lineair mechanisch materiaal</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="415"/>
-      <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <location filename="../../../femcommands/commands.py" line="618"/>
+      <source>Creates a nonlinear mechanical material</source>
+      <translation>Creëert een niet-lineair mechanisch materiaal</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MaterialReinforced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="674"/>
+      <source>Reinforced material (concrete)</source>
+      <translation type="unfinished">Reinforced material (concrete)</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="_CommandFemMaterialSolid.py" line="44"/>
-      <source>Creates a FEM material for solid</source>
-      <translation>Maak een FEM materiaal voor de solid</translation>
+      <location filename="../../../femcommands/commands.py" line="452"/>
+      <source>Material for solid</source>
+      <translation type="unfinished">Material for solid</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
+      <source>Material for solid</source>
+      <translation type="unfinished">Material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
       <source>FEM material for solid</source>
-      <translation type="unfinished">FEM material for solid</translation>
+      <translation>FEM materiaal voor een massief</translation>
     </message>
   </context>
   <context>
@@ -334,7 +363,7 @@
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>FEM-maas grenslaag</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
@@ -354,16 +383,6 @@
       <source>Clear the Mesh of a FEM mesh object</source>
       <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="518"/>
-      <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="520"/>
-      <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MeshDisplayInfo</name>
@@ -371,6 +390,29 @@
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
       <translation type="unfinished">Display FEM mesh info</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshGmshFromShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="556"/>
+      <source>FEM mesh from shape by Gmsh</source>
+      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="557"/>
+      <source>Create a FEM mesh from a shape by Gmsh mesher</source>
+      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
+      <source>FEM mesh from shape by GMSH</source>
+      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
+      <source>Create a FEM mesh from a shape by GMSH mesher</source>
+      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
     </message>
   </context>
   <context>
@@ -385,15 +427,18 @@
       <source>Creates a FEM mesh group</source>
       <translation type="unfinished">Creates a FEM mesh group</translation>
     </message>
+  </context>
+  <context>
+    <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="584"/>
-      <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <location filename="../../../femcommands/commands.py" line="603"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="586"/>
-      <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <location filename="../../../femcommands/commands.py" line="957"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
     </message>
   </context>
   <context>
@@ -432,17 +477,7 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="664"/>
-      <source>Purge results</source>
-      <translation>Ruim resultaten op</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
-      <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Verwijder alle resultaten van de actieve analyse</translation>
     </message>
   </context>
   <context>
@@ -459,26 +494,52 @@
     </message>
   </context>
   <context>
+    <name>FEM_SolverCalculix</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="679"/>
+      <source>Solver CalculiX Standard</source>
+      <translation type="unfinished">Solver CalculiX Standard</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="681"/>
+      <source>Creates a standard FEM solver CalculiX with ccx tools</source>
+      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="42"/>
+      <source>Solver CalculiX</source>
+      <translation type="unfinished">Solver CalculiX</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemSolverCalculix.py" line="44"/>
+      <source>Creates a FEM solver CalculiX</source>
+      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_SolverControl</name>
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Taakbeheer solver</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Veranderd de solver eigenschap en voor de berekeningen uit voor de gekozen solver</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_SolverElmer</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="740"/>
+      <source>Solver Elmer</source>
+      <translation type="unfinished">Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="726"/>
-      <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="728"/>
-      <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <location filename="../../../femcommands/commands.py" line="1174"/>
+      <source>Solver Elmer</source>
+      <translation type="unfinished">Solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -486,12 +547,12 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Voer solver berekeningen uit</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Voer de berekeningen uit voor de geselecteerde solver</translation>
     </message>
   </context>
   <context>
@@ -516,16 +577,6 @@
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
-      <source>Default Fem Command ToolTip</source>
-      <translation type="unfinished">Default Fem Command ToolTip</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="41"/>
-      <source>Default Fem Command MenuText</source>
-      <translation type="unfinished">Default Fem Command MenuText</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
       <translation type="unfinished">Default Fem Command ToolTip</translation>
     </message>
@@ -596,18 +647,10 @@
       <source>Remove</source>
       <translation>Verwijderen</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="_CommandFemMaterialFluid.py" line="42"/>
-      <source>FEM material for Fluid</source>
-      <translation type="unfinished">FEM material for Fluid</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMaterialFluid.py" line="44"/>
-      <source>Creates a FEM material for Fluid</source>
-      <translation type="unfinished">Creates a FEM material for Fluid</translation>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
+      <source>Remove</source>
+      <translation>Verwijderen</translation>
     </message>
   </context>
   <context>
@@ -624,37 +667,11 @@
     </message>
   </context>
   <context>
-    <name>FEM_MeshGmshFromShape</name>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
-      <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
-      <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_MeshPrintInfo</name>
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
       <translation type="unfinished">Print FEM mesh info</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_SolverCalculix</name>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="42"/>
-      <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemSolverCalculix.py" line="44"/>
-      <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
     </message>
   </context>
   <context>
@@ -675,7 +692,7 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Stromingssectie voor 1D stroming</translation>
     </message>
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
@@ -773,12 +790,12 @@
     <message>
       <location filename="_CommandControlSolver.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Taakbeheer solver</translation>
     </message>
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Veranderd de solver eigenschap en voor de berekeningen uit voor de gekozen solver</translation>
     </message>
   </context>
   <context>
@@ -786,12 +803,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>FEM maas naar maas</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Converteer het oppervlak van een FEM maas naar een maas</translation>
     </message>
   </context>
   <context>
@@ -799,12 +816,12 @@
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Niet-lineair mechanisch materiaal</translation>
     </message>
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Creëert een niet-lineair mechanisch materiaal</translation>
     </message>
   </context>
   <context>
@@ -892,7 +909,7 @@
     <message>
       <location filename="_CommandPurgeResults.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Verwijder alle resultaten van de actieve analyse</translation>
     </message>
   </context>
   <context>
@@ -900,12 +917,12 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Voer solver berekeningen uit</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Voer de berekeningen uit voor de geselecteerde solver</translation>
     </message>
   </context>
   <context>

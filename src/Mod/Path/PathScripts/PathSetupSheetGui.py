@@ -28,7 +28,7 @@ import PathScripts.PathGui as PathGui
 import PathScripts.PathIconViewProvider as PathIconViewProvider
 import PathScripts.PathLog as PathLog
 import PathScripts.PathSetupSheet as PathSetupSheet
-import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
+# import PathScripts.PathSetupSheetOpPrototype as PathSetupSheetOpPrototype
 import PathScripts.PathSetupSheetOpPrototypeGui as PathSetupSheetOpPrototypeGui
 import PathScripts.PathUtil as PathUtil
 
@@ -39,11 +39,13 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Task panel editor for a SetupSheet"
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -57,12 +59,9 @@ class ViewProvider:
         PathLog.track(name)
         vobj.Proxy = self
         self.icon = name
-        mode = 2
-        #vobj.setEditorMode('BoundingBox', mode)
-        #vobj.setEditorMode('DisplayMode', mode)
-        #vobj.setEditorMode('Selectable', mode)
-        #vobj.setEditorMode('ShapeColor', mode)
-        #vobj.setEditorMode('Transparency', mode)
+        # mode = 2
+        self.obj = None
+        self.vobj = None
 
     def attach(self, vobj):
         PathLog.track()
@@ -76,12 +75,15 @@ class ViewProvider:
         return None
 
     def __setstate__(self, state):
+        # pylint: disable=unused-argument
         return None
 
     def getDisplayMode(self, mode):
+        # pylint: disable=unused-argument
         return 'Default'
 
     def setEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
         PathLog.track()
         taskPanel = TaskPanel(vobj)
         FreeCADGui.Control.closeDialog()
@@ -90,6 +92,7 @@ class ViewProvider:
         return True
 
     def unsetEdit(self, vobj, mode):
+        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         return
 
@@ -108,6 +111,7 @@ class Delegate(QtGui.QStyledItemDelegate):
     #    #PathLog.track(index.column(), type(option))
 
     def createEditor(self, parent, option, index):
+        # pylint: disable=unused-argument
         if index.data(self.EditorRole) is None:
             editor = PathSetupSheetOpPrototypeGui.Editor(index.data(self.PropertyRole))
             index.model().setData(index, editor, self.EditorRole)
@@ -118,12 +122,14 @@ class Delegate(QtGui.QStyledItemDelegate):
         index.data(self.EditorRole).setEditorData(widget)
 
     def setModelData(self, widget, model, index):
+        # pylint: disable=unused-argument
         PathLog.track(index.row(), index.column())
         editor = index.data(self.EditorRole)
         editor.setModelData(widget)
         index.model().setData(index, editor.prop.displayString(), QtCore.Qt.DisplayRole)
 
     def updateEditorGeometry(self, widget, option, index):
+        # pylint: disable=unused-argument
         widget.setGeometry(option.rect)
 
 class OpTaskPanel:
@@ -146,7 +152,12 @@ class OpTaskPanel:
         self.props = sorted(op.properties())
         self.prototype = op.prototype(name)
 
+        # initialized later
+        self.delegate = None
+        self.model = None
+
     def updateData(self, topLeft, bottomRight):
+        # pylint: disable=unused-argument
         if 0 == topLeft.column():
             isset = self.model.item(topLeft.row(), 0).checkState() == QtCore.Qt.Checked
             self.model.item(topLeft.row(), 1).setEnabled(isset)
@@ -220,7 +231,7 @@ class OpsDefaultEditor:
     def __init__(self, obj, form):
         self.form = form
         self.obj = obj
-        self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key = lambda op: op.name)
+        self.ops = sorted([OpTaskPanel(self.obj, name, op) for name, op in PathUtil.keyValueIter(PathSetupSheet._RegisteredOps)], key = lambda op: op.name) # pylint: disable=protected-access
         if form:
             parent = form.tabOpDefaults
             for op in self.ops:
@@ -279,6 +290,13 @@ class GlobalEditor(object):
         self.form = form
         self.obj = obj
 
+        # initialized later
+        self.clearanceHeightOffs = None
+        self.safeHeightOffs = None
+        self.rapidHorizontal = None
+        self.rapidVertical = None
+        #self.coolantMode = None
+
     def reject(self):
         pass
 
@@ -301,6 +319,16 @@ class GlobalEditor(object):
         self.safeHeightOffs.updateProperty()
         self.rapidVertical.updateProperty()
         self.rapidHorizontal.updateProperty()
+        #self.coolantMode.updateProperty()
+        self.obj.CoolantMode = self.form.setupCoolantMode.currentText()
+
+    def selectInComboBox(self, name, combo):
+        '''selectInComboBox(name, combo) ... helper function to select a specific value in a combo box.'''
+        index = combo.findText(name, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            combo.blockSignals(True)
+            combo.setCurrentIndex(index)
+            combo.blockSignals(False)
 
     def updateUI(self):
         PathLog.track()
@@ -313,6 +341,7 @@ class GlobalEditor(object):
         self.safeHeightOffs.updateSpinBox()
         self.rapidVertical.updateSpinBox()
         self.rapidHorizontal.updateSpinBox()
+        self.selectInComboBox(self.obj.CoolantMode, self.form.setupCoolantMode)
 
     def updateModel(self, recomp = True):
         PathLog.track()
@@ -329,6 +358,7 @@ class GlobalEditor(object):
         self.safeHeightOffs = PathGui.QuantitySpinBox(self.form.setupSafeHeightOffs, self.obj, 'SafeHeightOffset')
         self.rapidHorizontal = PathGui.QuantitySpinBox(self.form.setupRapidHorizontal, self.obj, 'HorizRapid')
         self.rapidVertical = PathGui.QuantitySpinBox(self.form.setupRapidVertical, self.obj, 'VertRapid')
+        self.form.setupCoolantMode.addItems(self.obj.CoolantModes)
         self.setFields()
 
 class TaskPanel:

@@ -26,13 +26,13 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import femtools.femutils as FemUtils
+import femtools.femutils as femutils
 from . import nonlinear
 from ... import equationbase
 
 
 def create(doc, name="Heat"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 

@@ -38,7 +38,7 @@ class gp_Pln;
 class gp_Ax2;
 class TopoDS_Face;
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class Face;
 }

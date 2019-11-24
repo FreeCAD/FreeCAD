@@ -39,6 +39,14 @@ if(BUILD_GUI)
         )
     endif()
 
+    if(NOT BUILD_DYNAMIC_LINK_PYTHON)
+        # executables have to be linked against python libraries,
+        # because extension modules are not.
+        list(APPEND FreeCAD_LIBS
+            ${PYTHON_LIBRARIES}
+        )
+    endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
+
     add_executable(FreeCADMain WIN32 ${FreeCAD_SRCS})
     target_link_libraries(FreeCADMain ${FreeCAD_LIBS})
 
@@ -46,7 +54,7 @@ if(BUILD_GUI)
 
     if(WIN32)
         INSTALL(TARGETS FreeCADMain
-            RUNTIME DESTINATION bin
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     elseif(APPLE AND NOT BUILD_WITH_CONDA)
@@ -55,8 +63,8 @@ if(BUILD_GUI)
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     else()
-        INSTALL(TARGETS FreeCADMain 
-            RUNTIME DESTINATION bin
+        INSTALL(TARGETS FreeCADMain
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         )
     endif()
 endif(BUILD_GUI)
@@ -83,7 +91,15 @@ else()
     )
 endif()
 
-target_link_libraries(FreeCADMainCmd 
+if(NOT BUILD_DYNAMIC_LINK_PYTHON)
+    # executables have to be linked against python libraries,
+    # because extension modules are not.
+    list(APPEND FreeCADMainCmd_LIBS
+        ${PYTHON_LIBRARIES}
+    )
+endif(NOT BUILD_DYNAMIC_LINK_PYTHON)
+
+target_link_libraries(FreeCADMainCmd
     ${FreeCADMainCmd_LIBS}
 )
 
@@ -91,7 +107,7 @@ SET_BIN_DIR(FreeCADMainCmd FreeCADCmd)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADMainCmd
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 elseif(APPLE AND NOT BUILD_WITH_CONDA)
@@ -100,8 +116,8 @@ elseif(APPLE AND NOT BUILD_WITH_CONDA)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else()
-    INSTALL(TARGETS FreeCADMainCmd 
-        RUNTIME DESTINATION bin
+    INSTALL(TARGETS FreeCADMainCmd
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 endif()
 
@@ -120,7 +136,7 @@ SET_PYTHON_PREFIX_SUFFIX(FreeCADMainPy)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADMainPy
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)
@@ -148,10 +164,10 @@ if(BUILD_GUI)
         set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME_DEBUG "FreeCADGuiPy_d")
         set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME_RELEASE "FreeCADGuiPy")
     endif(WIN32)
-    
+
     if(WIN32)
         INSTALL(TARGETS FreeCADGuiPy
-            RUNTIME DESTINATION bin
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     else(WIN32)

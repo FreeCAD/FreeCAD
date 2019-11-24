@@ -22,12 +22,17 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QApplication>
+#endif
 
 #include "DlgSettingsRayImp.h"
 #include <Gui/PrefWidgets.h>
 #include <Base/Console.h>
 
 using namespace RaytracingGui;
+
+/* TRANSLATOR RaytracingGui::DlgSettingsRayImp */
 
 /**
  *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the 
@@ -37,6 +42,7 @@ DlgSettingsRayImp::DlgSettingsRayImp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
+    prefFileChooser2->setToolTip(tr("The path to the POV-Ray executable, if you want to render from %1").arg(qApp->applicationName()));
 }
 
 /** 

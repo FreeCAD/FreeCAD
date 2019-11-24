@@ -20,7 +20,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, os, sys
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, sys
+# import numpy as np
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -59,80 +60,105 @@ def findVert(aVertex,aList):
                     return i
     return None
 
-def getIndices(shape,offset):
-    "returns a list with 2 lists: vertices and face indexes, offsetted with the given amount"
+def getIndices(obj,shape,offsetv,offsetvn):
+    "returns a list with 2 lists: vertices and face indexes, offset with the given amount"
     vlist = []
+    vnlist = []
     elist = []
     flist = []
     curves = None
+
     if isinstance(shape,Part.Shape):
         for e in shape.Edges:
             try:
                 if not isinstance(e.Curve,Part.LineSegment):
                     if not curves:
-                        curves = shape.tessellate(1)
+                        myshape = obj.Shape.copy(False)
+                        myshape.Placement=obj.getGlobalPlacement()
+                        mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                         FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
             except: # unimplemented curve type
-                curves = shape.tessellate(1)
+                myshape = obj.Shape.copy(False)
+                myshape.Placement=obj.getGlobalPlacement()
+                mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                 FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                 break
     elif isinstance(shape,Mesh.Mesh):
         curves = shape.Topology
-    if curves:
-        for v in curves[0]:
-            vlist.append(" "+str(round(v.x,p))+" "+str(round(v.y,p))+" "+str(round(v.z,p)))
-        for f in curves[1]:
-            fi = ""
-            for vi in f:
-                fi += " " + str(vi + offset)
-            flist.append(fi)
-    else:
-        for v in shape.Vertexes:
-            vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
-        if not shape.Faces:
-            for e in shape.Edges:
-                if DraftGeomUtils.geomType(e) == "Line":
-                    ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes) + offset)
-                    ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes) + offset)
-                    elist.append(ei)
-        for f in shape.Faces:
-            if len(f.Wires) > 1:
-                # if we have holes, we triangulate
-                tris = f.tessellate(1)
-                for fdata in tris[1]:
-                    fi = ""
-                    for vi in fdata:
-                        vdata = Part.Vertex(tris[0][vi])
-                        fi += " " + str(findVert(vdata,shape.Vertexes) + offset)
-                    flist.append(fi)
-            else:
-                fi = ""
-                for e in f.OuterWire.OrderedEdges:
-                    #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
-                    v = e.Vertexes[0]
-                    ind = findVert(v,shape.Vertexes)
-                    if ind == None:
-                        return None,None,None
-                    fi += " " + str(ind + offset)
-                flist.append(fi)
-    return vlist,elist,flist
+    if mesh:
+        for v in mesh.Topology[0]:
+              vlist.append(" "+str(round(v[0],p))+" "+str(round(v[1],p))+" "+str(round(v[2],p)))
 
-def export(exportList,filename):
-    "called when freecad exports a file"
+        for vn in mesh.Facets:
+              vnlist.append(" "+str(vn.Normal[0]) + " " + str(vn.Normal[1]) + " " + str(vn.Normal[2]))
+
+        for i, vn in enumerate(mesh.Topology[1]):
+              flist.append(" "+str(vn[0]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[1]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[2]+offsetv)+"//"+str(i+offsetvn)+" ")
+    else:
+        if curves:
+            for v in curves[0]:
+                vlist.append(" "+str(round(v.x,p))+" "+str(round(v.y,p))+" "+str(round(v.z,p)))
+            for f in curves[1]:
+                fi = ""
+                for vi in f:
+                    fi += " " + str(vi + offsetv)
+                flist.append(fi)
+        else:
+            for v in shape.Vertexes:
+                vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
+            if not shape.Faces:
+                for e in shape.Edges:
+                   if DraftGeomUtils.geomType(e) == "Line":
+                        ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes) + offsetv)
+                        ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes) + offsetv)
+                        elist.append(ei)
+            for f in shape.Faces:
+                if len(f.Wires) > 1:
+                    # if we have holes, we triangulate
+                    tris = f.tessellate(1)
+                    for fdata in tris[1]:
+                        fi = ""
+                        for vi in fdata:
+                            vdata = Part.Vertex(tris[0][vi])
+                            fi += " " + str(findVert(vdata,shape.Vertexes) + offsetv)
+                        flist.append(fi)
+                else:
+                    fi = ""
+                    for e in f.OuterWire.OrderedEdges:
+                        #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
+                        v = e.Vertexes[0]
+                        ind = findVert(v,shape.Vertexes)
+                        if ind is None:
+                            return None,None,None
+                        fi += " " + str(ind + offsetv)
+                    flist.append(fi)
+    return vlist,vnlist,elist,flist
+
+
+def export(exportList,filename,colors=None):
+
+    """export(exportList,filename,colors=None):
+    Called when freecad exports a file. exportList is a list
+    of objects, filename is the .obj file to export (a .mtl
+    file with same name will also be created together), and
+    optionally colors can be a dict containing ["objectName:colorTuple"]
+    pairs for use in non-GUI mode."""
+
     import codecs
     outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
     outfile.write("# http://www.freecadweb.org\n")
-    offset = 1
+    offsetv = 1
+    offsetvn = 1
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
     filenamemtl = filename[:-4] + ".mtl"
     materials = []
     outfile.write("mtllib " + os.path.basename(filenamemtl) + "\n")
     for obj in objectslist:
-        if obj.isDerivedFrom("Part::Feature"):
+        if obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("Mesh::Feature"):
             hires = None
             if FreeCAD.GuiUp:
                 visible = obj.ViewObject.isVisible()
@@ -161,13 +187,17 @@ def export(exportList,filename):
                 visible = True
             if visible:
                 if hires:
-                    vlist,elist,flist = getIndices(hires,offset)
+                    vlist,vnlist,elist,flist = getIndices(obj,hires,offsetv,offsetvn)
                 else:
-                    vlist,elist,flist = getIndices(obj.Shape,offset)
-                if vlist == None:
+                    if hasattr(obj,"Shape") and obj.Shape:
+                        vlist,vnlist,elist,flist = getIndices(obj,obj.Shape,offsetv,offsetvn)
+                    elif hasattr(obj,"Mesh") and obj.Mesh:
+                        vlist,vnlist, elist,flist = getIndices(obj,obj.Mesh,offsetv,offsetvn)
+                if vlist is None:
                     FreeCAD.Console.PrintError("Unable to export object "+obj.Label+". Skipping.\n")
                 else:
-                    offset += len(vlist)
+                    offsetv += len(vlist)
+                    offsetvn += len(vnlist)
                     outfile.write("o " + obj.Name + "\n")
 
                     # write material
@@ -179,15 +209,28 @@ def export(exportList,filename):
                                 materials.append(obj.Material)
                                 m = True
                     if not m:
-                        if FreeCAD.GuiUp:
+                        if colors:
+                            if obj.Name in colors:
+                                color = colors[obj.Name]
+                                if color:
+                                    if isinstance(color[0],tuple):
+                                        # this is a diffusecolor. For now, use the first color - #TODO: Support per-face colors
+                                        color = color[0]
+                                    #print("found color for obj",obj.Name,":",color)
+                                    mn = Draft.getrgb(color,testbw=False)[1:]
+                                    outfile.write("usemtl color_" + mn + "\n")
+                                    materials.append(("color_" + mn,color,0))
+                        elif FreeCAD.GuiUp:
                             if hasattr(obj.ViewObject,"ShapeColor") and hasattr(obj.ViewObject,"Transparency"):
-                                mn = Draft.getrgb(obj.ViewObject.ShapeColor)[1:]
+                                mn = Draft.getrgb(obj.ViewObject.ShapeColor,testbw=False)[1:]
                                 outfile.write("usemtl color_" + mn + "\n")
                                 materials.append(("color_" + mn,obj.ViewObject.ShapeColor,obj.ViewObject.Transparency))
 
                     # write geometry
                     for v in vlist:
                         outfile.write("v" + v + "\n")
+                    for vn in vnlist:
+                        outfile.write("vn" + vn + "\n")
                     for e in elist:
                         outfile.write("l" + e + "\n")
                     for f in flist:
@@ -195,17 +238,17 @@ def export(exportList,filename):
     outfile.close()
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + decode(filename) + "\n")
     if materials: 
-        outfile = pythonopen(filenamemtl,"wb")
+        outfile = pythonopen(filenamemtl,"w")
         outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
         outfile.write("# http://www.freecadweb.org\n")
-        kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"d "}
+        kinds = {"AmbientColor":"Ka ","DiffuseColor":"Kd ","SpecularColor":"Ks ","EmissiveColor":"Ke ","Transparency":"Tr "}
         done = [] # store names to avoid duplicates
         for mat in materials:
             if isinstance(mat,tuple):
                 if not mat[0] in done:
                     outfile.write("newmtl " + mat[0] + "\n")
                     outfile.write("Kd " + str(mat[1][0]) + " " + str(mat[1][1]) + " " + str(mat[1][2]) + "\n")
-                    outfile.write("d " + str(mat[2]) + "\n")
+                    outfile.write("Tr " + str(mat[2]/100) + "\n")
                     done.append(mat[0])
             else:
                 if not mat.Name in done:
@@ -219,23 +262,23 @@ def export(exportList,filename):
         FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + decode(filenamemtl) + "\n")
 
 
-def decode(name):
-    "decodes encoded strings"
-    try:
-        decodedName = (name.decode("utf8"))
-    except UnicodeDecodeError:
-        try:
-            decodedName = (name.decode("latin1"))
-        except UnicodeDecodeError:
-            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
-            decodedName = name
-    return decodedName
+#def decode(name):
+#    "decodes encoded strings"
+#    try:
+#        decodedName = (name.decode("utf8"))
+#    except UnicodeDecodeError:
+#        try:
+#            decodedName = (name.decode("latin1"))
+#        except UnicodeDecodeError:
+#            FreeCAD.Console.PrintError(translate("Arch","Error: Couldn't determine character encoding"))
+#            decodedName = name
+#    return decodedName
 
 def open(filename):
     "called when freecad wants to open a file"
-    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
-    doc = FreeCAD.newDocument(docname)
-    doc.Label = decode(docname)
+    docname = (os.path.splitext(os.path.basename(filename))[0])
+    doc = FreeCAD.newDocument(docname.encode("utf8"))
+    doc.Label = docname
     return insert(filename,doc.Name)
 
 def insert(filename,docname):
@@ -246,7 +289,7 @@ def insert(filename,docname):
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
 
-    with pythonopen(filename,"rb") as infile:
+    with pythonopen(filename,"r") as infile:
         verts = []
         facets = []
         activeobject = None
@@ -257,7 +300,7 @@ def insert(filename,docname):
             if line[:7] == "mtllib ":
                 matlib = os.path.join(os.path.dirname(filename),line[7:])
                 if os.path.exists(matlib):
-                    with pythonopen(matlib,"rb") as matfile:
+                    with pythonopen(matlib,"r") as matfile:
                         mname = None
                         color = None
                         trans = None

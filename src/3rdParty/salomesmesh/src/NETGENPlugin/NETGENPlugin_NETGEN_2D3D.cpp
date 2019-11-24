@@ -43,7 +43,22 @@
 namespace nglib {
 #include <nglib.h>
 }
+
+// DLL_HEADER is re-defined in netgen headers
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmacro-redefined"
+#endif
+
+#ifdef NETGEN_PYTHON
+#undef NETGEN_PYTHON
+#endif
+
 #include <meshing.hpp>
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 using namespace std;
 

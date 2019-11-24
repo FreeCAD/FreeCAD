@@ -31,6 +31,7 @@
 #include "ui_RemoveComponents.h"
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Selection.h>
 
 using namespace MeshGui;
 
@@ -45,8 +46,10 @@ RemoveComponents::RemoveComponents(QWidget* parent, Qt::WindowFlags fl)
     ui->spDeselectComp->setRange(1, INT_MAX);
     ui->spDeselectComp->setValue(10);
 
+    Gui::Selection().clearSelection();
     meshSel.setCheckOnlyVisibleTriangles(ui->visibleTriangles->isChecked());
     meshSel.setCheckOnlyPointToUserTriangles(ui->screenTriangles->isChecked());
+    meshSel.setEnabledViewerSelection(false);
 }
 
 RemoveComponents::~RemoveComponents()
@@ -153,6 +156,7 @@ void RemoveComponents::reject()
 {
     // deselect all meshes
     meshSel.clearSelection();
+    meshSel.setEnabledViewerSelection(true);
 }
 
 // -------------------------------------------------

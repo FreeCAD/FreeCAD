@@ -31,6 +31,7 @@
 
 #include <qglobal.h>
 #include <Base/FileInfo.h>
+#include <Base/Console.h>
 #include "SoFCVectorizeSVGAction.h"
 
 using namespace Gui;
@@ -306,7 +307,7 @@ void SoFCVectorizeSVGActionP::printTriangle(const SbVec3f * v, const SbColor * c
         << "; stroke:#"
         << std::hex << std::setw(6) << std::setfill('0') << (cc >> 8)
         << ";" << std::endl
-        << "    stroke-width:1.0;" << std::endl
+        << "    stroke-width:" << publ->getLineWidth() << ";" << std::endl
         << "    stroke-linecap:round;stroke-linejoin:round\"/>" << std::endl;
 }
 
@@ -350,8 +351,9 @@ void SoFCVectorizeSVGActionP::printLine(const SoVectorizeLine * item) const
         << "x1=\"" << v[0][0] << "\" y1=\"" << v[0][1] << "\" "
         << "x2=\"" << v[1][0] << "\" y2=\"" << v[1][1] << "\" "
         << "stroke=\"#"
-        << std::hex << std::setw(6) << std::setfill('0') << (cc >> 8)
-        << "\" stroke-width=\"1px\" />\n";
+        << std::hex << std::setw(6) << std::setfill('0') << (cc >> 8) << "\""
+        << " stroke-linecap=\"square\" "
+        << " stroke-width=\"" << publ->getLineWidth() << "\" />\n";
 }
 
 void SoFCVectorizeSVGActionP::printPoint(const SoVectorizePoint * item) const
@@ -368,14 +370,17 @@ void SoFCVectorizeSVGActionP::printImage(const SoVectorizeImage * item) const
 
 // -------------------------------------------------------
 
-SO_ACTION_SOURCE(SoFCVectorizeSVGAction);
+SO_ACTION_SOURCE(SoFCVectorizeSVGAction)
 
 void SoFCVectorizeSVGAction::initClass(void)
 {
     SO_ACTION_INIT_CLASS(SoFCVectorizeSVGAction, SoVectorizeAction);
 }
 
-SoFCVectorizeSVGAction::SoFCVectorizeSVGAction()
+SoFCVectorizeSVGAction::SoFCVectorizeSVGAction() :
+    m_backgroundState(true),
+    m_lineWidth(1.0),
+    m_usemm(false)
 {
     SO_ACTION_CONSTRUCTOR(SoFCVectorizeSVGAction);
     this->setOutput(new SoSVGVectorOutput);
@@ -400,12 +405,18 @@ void SoFCVectorizeSVGAction::printHeader(void) const
     str << "<!-- Created with FreeCAD (http://www.freecadweb.org) -->" << std::endl;
     str << "<svg xmlns=\"http://www.w3.org/2000/svg\"" << std::endl;
     str << "     xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:ev=\"http://www.w3.org/2001/xml-events\"" << std::endl;
-    str << "     version=\"1.1\" baseProfile=\"full\"" << std::endl;
+    str << "     version=\"1.1\" baseProfile=\"full\""  << std::endl;
 
     SbVec2f size = getPageSize();
-    if (this->getOrientation() == LANDSCAPE)
+    if (this->getOrientation() == LANDSCAPE) {
         SbSwap<float>(size[0], size[1]);
-    str << "     width=\"" << size[0] << "\" height=\"" << size[1] << "\">" << std::endl;
+    }
+    if (getUseMM()) {
+        str << "     width=\"" << size[0] << "mm\" height=\"" << size[1] << "mm\""<< std::endl;
+        str << "     viewBox=\"0 0 " << size[0] << " " << size[1] << "\">" << std::endl;
+    } else {            //original code used px
+        str << "     width=\"" << size[0] << "\" height=\"" << size[1] << "\">" << std::endl;
+    }
     str << "<g>" << std::endl;
 }
 
@@ -422,6 +433,9 @@ void SoFCVectorizeSVGAction::printViewport(void) const
 
 void SoFCVectorizeSVGAction::printBackground(void) const
 {
+    if (!getBackgroundState()) {
+        return;
+    }
     SbVec2f mul = getRotatedViewportSize();
     SbVec2f add = getRotatedViewportStartpos();
 
@@ -447,7 +461,7 @@ void SoFCVectorizeSVGAction::printBackground(void) const
     str << "   style=\"fill:#"
         << std::hex << std::setw(6) << std::setfill('0') << (cc >> 8)
         << ";fill-opacity:1;fill-rule:evenodd;stroke:none;"
-           "stroke-width:1px;stroke-linecap:butt;stroke-linejoin:"
+           "stroke-width:" << getLineWidth() << ";stroke-linecap:butt;stroke-linejoin:"
            "miter;stroke-opacity:1\" />\n";
     str << "<g>" << std::endl;
 }

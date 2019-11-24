@@ -42,7 +42,7 @@ namespace PartDesign
 
 class PartDesignExport ShapeBinder : public Part::Feature
 {
-    PROPERTY_HEADER(PartDesign::ShapeBinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::ShapeBinder);
 
 public:
     ShapeBinder();
@@ -51,24 +51,75 @@ public:
     App::PropertyLinkSubListGlobal    Support;
     App::PropertyBool TraceSupport;
 
-    static void getFilteredReferences(App::PropertyLinkSubList* prop, Part::Feature*& object, std::vector< std::string >& subobjects);
-    static Part::TopoShape buildShapeFromReferences(Feature* obj, std::vector< std::string > subs);
+    static void getFilteredReferences(App::PropertyLinkSubList* prop, App::GeoFeature*& object, std::vector< std::string >& subobjects);
+    static Part::TopoShape buildShapeFromReferences(App::GeoFeature* obj, std::vector< std::string > subs);
 
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderShapeBinder";
     }
 
 protected:
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
-    virtual short int mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    virtual short int mustExecute(void) const override;
+    virtual App::DocumentObjectExecReturn* execute(void) override;
 
 private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    virtual void onSettingDocument();
+    virtual void onSettingDocument() override;
 
     typedef boost::signals2::connection Connection;
     Connection connectDocumentChangedObject;
+};
+
+class PartDesignExport SubShapeBinder : public Part::Feature {
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubShapeBinder);
+public:
+    typedef Part::Feature inherited;
+
+    SubShapeBinder();
+    const char* getViewProviderName(void) const override {
+        return "PartDesignGui::ViewProviderSubShapeBinder";
+    }
+
+    void setLinks(std::map<App::DocumentObject *, std::vector<std::string> > &&values, bool reset=false);
+
+    App::PropertyXLinkSubList Support;
+    App::PropertyBool ClaimChildren;
+    App::PropertyBool Relative;
+    App::PropertyBool Fuse;
+    App::PropertyBool MakeFace;
+    App::PropertyEnumeration BindMode;
+    App::PropertyBool PartialLoad;
+    App::PropertyXLink Context;
+    App::PropertyInteger _Version;
+
+    void update();
+
+    virtual int canLoadPartial() const override {
+        return PartialLoad.getValue()?1:0;
+    }
+
+    virtual bool canLinkProperties() const override {return false;}
+
+protected:
+    virtual App::DocumentObjectExecReturn* execute(void) override;
+    virtual void onChanged(const App::Property *prop) override;
+
+    virtual void handleChangedPropertyType(
+            Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+
+    virtual void onDocumentRestored() override;
+    virtual void setupObject() override;
+
+    void checkPropertyStatus();
+
+    void slotRecomputedObject(const App::DocumentObject& Obj);
+
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connRecomputedObj;
+    App::Document *contextDoc=0;
+
+    std::vector<Part::TopoShape> _Cache;
 };
 
 } //namespace PartDesign

@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation>本节包含供开发人员使用的材料: 如何自己编译 FreeCAD, FreeCAD源代码的结构, 以及如何浏览代码, 如何开发新的工作台以及/或在您自己的应用程序中嵌入FreeCAD。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -111,12 +111,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>如果这是您第一次在论坛上发布评论，请一定 &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;先阅读指南&lt;/a&gt;！</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>FreeCAD 也保持开放 &lt;a href="https://www.freecadweb.org/tracker"&gt;bug Tracker&lt;/a&gt; 任何人都可以提交bug 和提出新功能。为了避免造成额外的工作，并且提供最佳机会查看您的bug被解决，请确保您阅读了 &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;错误提交指南&lt;/a&gt; 之前。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
+      <translation>无法从 GitHub 获取信息。 &lt;a href="EnableDownload.py"&gt;授权 FreeCAD 访问互联网&lt;/a&gt; 并重新加载开始页面。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>以下是添加到 &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD 源代码&lt;/a&gt;的最新更改。 这些更改可能无法反映在你目前正在运行的 FreeCAD 版本中。请检查 &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;可用的选项&lt;/a&gt; 如果您想获取开发版本。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -154,9 +154,9 @@
       <translation type="unfinished">See all commits on github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>See all commits on github</source>
-      <translation type="unfinished">See all commits on github</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
+      <translation>您可以在菜单编辑 -&gt; 首选项 -&gt; 开始 -&gt; 显示额外文件夹中配置自定义文件夹</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -208,22 +208,12 @@
       <source>Notes</source>
       <translation>备注</translation>
     </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>Notes</source>
-      <translation>备注</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
-      <source>Start page</source>
-      <translation>起始页</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>起始页</translation>
     </message>
@@ -238,12 +228,12 @@
     <message>
       <location filename="../../Command.cpp" line="45"/>
       <source>Start Page</source>
-      <translation type="unfinished">Start Page</translation>
+      <translation>开始页面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Displays the start page in a browser view</source>
-      <translation type="unfinished">Displays the start page in a browser view</translation>
+      <translation>在浏览器视图中显示起始页</translation>
     </message>
   </context>
   <context>
@@ -251,12 +241,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation type="unfinished">Start page options</translation>
+      <translation>开始页面选项</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Start page template</source>
-      <translation type="unfinished">Start page template</translation>
+      <translation>开始页面模板</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
@@ -266,22 +256,22 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>内容</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Show forum</source>
-      <translation type="unfinished">Show forum</translation>
+      <translation>显示论坛</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>显示示例文件夹内容</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation type="unfinished">Show additional folder</translation>
+      <translation>显示其他文件夹</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
@@ -291,12 +281,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation type="unfinished">If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</translation>
+      <translation>如果选中此项，FreeCAD 论坛的最新帖子将会在活动选项卡上显示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page</translation>
+      <translation>第一页底部显示可选的自定义文件夹</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
@@ -311,12 +301,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
       <source>Fonts and colors</source>
-      <translation type="unfinished">Fonts and colors</translation>
+      <translation>字体和颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="167"/>
       <source>The background of the main start page area</source>
-      <translation type="unfinished">The background of the main start page area</translation>
+      <translation>开始页页面主背景</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="187"/>
@@ -326,32 +316,32 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="199"/>
       <source>in FreeCAD</source>
-      <translation type="unfinished">in FreeCAD</translation>
+      <translation>在 FreeCAD中</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="218"/>
       <source>In external browser</source>
-      <translation type="unfinished">In external browser</translation>
+      <translation>在外部浏览器中</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
       <source>Background color gradient down</source>
-      <translation type="unfinished">Background color gradient down</translation>
+      <translation>背景颜色向下渐变</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
       <source>The color of the version text</source>
-      <translation type="unfinished">The color of the version text</translation>
+      <translation>版本文本的颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
       <source>Link color</source>
-      <translation type="unfinished">Link color</translation>
+      <translation>链接颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation type="unfinished">An optional image to display as background</translation>
+      <translation>可选的图像作为背景显示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
@@ -361,27 +351,27 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
       <source>Page background color</source>
-      <translation type="unfinished">Page background color</translation>
+      <translation>页面背景颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="321"/>
       <source>The color of the text on the main pages</source>
-      <translation type="unfinished">The color of the text on the main pages</translation>
+      <translation>主页文字的颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="341"/>
       <source>Background image</source>
-      <translation type="unfinished">Background image</translation>
+      <translation>背景图片</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
       <source>Page text color</source>
-      <translation type="unfinished">Page text color</translation>
+      <translation>页面文本颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
       <source>The color of the links</source>
-      <translation type="unfinished">The color of the links</translation>
+      <translation>链接的颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
@@ -396,27 +386,27 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
       <source>The background color behind the panels</source>
-      <translation type="unfinished">The background color behind the panels</translation>
+      <translation>面板背后的背景颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
       <source>The down gradient for the background color (currently unsupported)</source>
-      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
+      <translation>背景颜色的向下渐变(目前不支持)</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
       <source>Open links</source>
-      <translation type="unfinished">Open links</translation>
+      <translation>打开链接</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation type="unfinished">Background text color</translation>
+      <translation>背景文字颜色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation type="unfinished">Use FreeCAD style sheet</translation>
+      <translation>使用 FreeCAD 样式表</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
@@ -431,12 +421,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
       <source>Arial,Helvetica,sans</source>
-      <translation type="unfinished">Arial,Helvetica,sans</translation>
+      <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+      <translation>用于开始页面所有文本的基本字体大小</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="524"/>
@@ -446,7 +436,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="542"/>
       <source>Use gradient for New File icon</source>
-      <translation type="unfinished">Use gradient for New File icon</translation>
+      <translation>为新文件图标使用渐变</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="568"/>
@@ -456,17 +446,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="577"/>
       <source>Should the start page be closed after loading?</source>
-      <translation type="unfinished">Should the start page be closed after loading?</translation>
+      <translation>加载后该开始页面是否关闭？</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
       <source>Switch workbench after loading</source>
-      <translation type="unfinished">Switch workbench after loading</translation>
+      <translation>加载后切换工作台</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>加载后关闭开始页面</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>
@@ -476,7 +466,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>
       <source>If FreeCAD is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If FreeCAD is started by opening a file, apply the two settings above</translation>
+      <translation>如果FreeCAD 通过打开文件启动，请使用上面的两个设置</translation>
     </message>
   </context>
 </TS>

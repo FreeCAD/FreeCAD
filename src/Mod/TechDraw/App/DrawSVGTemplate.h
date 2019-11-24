@@ -61,7 +61,6 @@ public:
 
     double getWidth() const;
     double getHeight() const;
-    void getBlockDimensions(double &x, double &y, double &width, double &height) const;
 
 protected:
     void onChanged(const App::Property* prop);
@@ -72,7 +71,8 @@ protected:
      */
     std::map<std::string, std::string> getEditableTextsFromTemplate();
 
-    QRectF blockDimensions;
+	QString processTemplate(QString fileSpec);
+
 };
 
 typedef App::FeaturePythonT<DrawSVGTemplate> DrawSVGTemplatePython;

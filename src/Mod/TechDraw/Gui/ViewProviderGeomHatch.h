@@ -41,7 +41,7 @@ namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderGeomHatch : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderGeomHatch);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDrawGui::ViewProviderGeomHatch);
 
 public:
     /// constructor
@@ -53,20 +53,22 @@ public:
     App::PropertyColor       ColorPattern;
 
 
-    virtual void attach(App::DocumentObject *);
-    virtual void updateData(const App::Property*);
-    virtual void onChanged(const App::Property *prop);
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-    virtual bool doubleClicked(void);
+    virtual void attach(App::DocumentObject *) override;
+    virtual void updateData(const App::Property*) override;
+    virtual void onChanged(const App::Property *prop) override;
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
+    virtual bool doubleClicked(void) override;
 
-    virtual bool useNewSelectionModel(void) const {return false;}
-    virtual void setDisplayMode(const char* ModeName);
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual bool useNewSelectionModel(void) const override {return false;}
+    virtual void setDisplayMode(const char* ModeName) override;
+    virtual std::vector<std::string> getDisplayModes(void) const override;
     void updateGraphic(void);
     void getParameters(void);
 
     TechDraw::DrawGeomHatch* getViewObject() const;
+
+    virtual Gui::MDIView *getMDIView() override;
 };
 
 } // namespace TechDrawGui

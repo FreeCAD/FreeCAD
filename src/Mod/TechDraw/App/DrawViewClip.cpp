@@ -53,7 +53,6 @@ DrawViewClip::DrawViewClip(void)
     ADD_PROPERTY_TYPE(Height     ,(100),group,App::Prop_None,"The height of the view area of this clip");
     ADD_PROPERTY_TYPE(Width      ,(100),group,App::Prop_None,"The width of the view area of this clip");
     ADD_PROPERTY_TYPE(ShowFrame  ,(0) ,group,App::Prop_None,"Specifies if the clip frame appears on the page or not");
-    ADD_PROPERTY_TYPE(ShowLabels ,(0) ,group,App::Prop_None,"Specifies if View labels appear within the clip area");
     ADD_PROPERTY_TYPE(Views      ,(0) ,group,App::Prop_None,"The Views in this Clip group");
     Views.setScope(App::LinkScope::Global);
 

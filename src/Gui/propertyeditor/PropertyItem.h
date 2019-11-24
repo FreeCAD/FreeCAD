@@ -125,6 +125,10 @@ public:
     virtual QVariant editorData(QWidget *editor) const;
     virtual bool isSeparator() const { return false; }
 
+    QWidget* createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    void setExpressionEditorData(QWidget *editor, const QVariant& data) const;
+    QVariant expressionEditorData(QWidget *editor) const;
+
     /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by 
        childs which like to be informed of a binding*/
     virtual void bind(const App::Property& prop);
@@ -145,17 +149,22 @@ public:
     void setDecimals(int);
     int decimals() const;
 
+    void setLinked(bool);
+    bool isLinked() const;
+
     PropertyItem *child(int row);
     int childCount() const;
     int columnCount() const;
     QString propertyName() const;
     void setPropertyName(const QString&);
     void setPropertyValue(const QString&);
-    QVariant data(int column, int role) const;
+    virtual QVariant data(int column, int role) const;
     bool setData (const QVariant& value);
     Qt::ItemFlags flags(int column) const;
     int row() const;
     void reset();
+
+    bool hasAnyExpression() const;
 
 protected:
     PropertyItem();
@@ -169,16 +178,19 @@ protected:
     virtual void initialize();
     QString pythonIdentifier(const App::Property*) const;
 
-private:
+    //gets called when the bound expression is changed
+    virtual void onChange();
+
+protected:
     QString propName;
     QString displayText;
-    QVariant propData;
     std::vector<App::Property*> propertyItems;
     PropertyItem *parentItem;
     QList<PropertyItem*> childItems;
     bool readonly;
     int precision;
     bool cleared;
+    bool linked;
 };
 
 /**
@@ -948,7 +960,7 @@ class LinkLabel : public QWidget
     Q_OBJECT
 
 public:
-    LinkLabel (QWidget * parent = 0);
+    LinkLabel (QWidget * parent = 0, bool xlink = false);
     virtual ~LinkLabel();
     void setPropertyLink(const QStringList& o);
     QStringList propertyLink() const;
@@ -967,6 +979,7 @@ private:
     QLabel* label;
     QPushButton* editButton;
     QStringList link;
+    bool isXLink;
 };
 
 /**
@@ -978,17 +991,21 @@ class GuiExport PropertyLinkItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const override;
+    virtual QVariant editorData(QWidget *editor) const override;
 
 protected:
-    virtual QVariant toString(const QVariant&) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
+    virtual QVariant toString(const QVariant&) const override;
+    virtual QVariant value(const App::Property*) const override;
+    virtual void setValue(const QVariant&) override;
+    virtual QVariant data(int column, int role) const override;
 
 protected:
     PropertyLinkItem();
+
+private:
+    mutable bool isXLink;
 };
 
 class LinkListLabel : public QWidget

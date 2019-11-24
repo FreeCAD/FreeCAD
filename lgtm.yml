@@ -1,0 +1,12 @@
+path_classifiers:
+  generated:
+  - "src/Mod/Import/App/ap203_configuration_controlled_3d_design_of_mechanical_parts_and_assemblies_mim_lf.py"
+  - "src/Mod/Import/App/automotive_design.py"
+  - "src/Mod/Import/App/config_control_design.py"
+  - "src/Mod/Import/App/ifc2x3.py"
+  - "src/Mod/Import/App/ifc4.py"
+extraction:
+  javascript:
+    index:
+      filters:
+        exclude: "**/translations/*.ts"

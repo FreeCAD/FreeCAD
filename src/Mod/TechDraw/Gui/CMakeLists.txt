@@ -8,6 +8,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
@@ -15,6 +16,17 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
+
+if(BUILD_QT5)
+    include_directories(
+        ${Qt5XmlPatterns_INCLUDE_DIRS}
+    )
+else(BUILD_QT5)
+    include_directories(
+        ${QT_QTXMLPATTERNS_INCLUDE_DIR}
+    )
+endif(BUILD_QT5)
+
 link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawGui_LIBS
@@ -22,14 +34,15 @@ set(TechDrawGui_LIBS
     FreeCADGui
 )
 
-
 set(TechDrawGui_MOC_HDRS
     MDIViewPage.h
     QGVPage.h
     QGITemplate.h
     QGISVGTemplate.h
     QGIDrawingTemplate.h
+    QGIView.h
     QGIViewDimension.h
+    QGIViewBalloon.h
     TaskProjGroup.h
     DlgPrefsTechDrawImp.h
     DlgPrefsTechDraw2Imp.h
@@ -37,6 +50,23 @@ set(TechDrawGui_MOC_HDRS
     DlgTemplateField.h
     TaskSectionView.h
     TaskGeomHatch.h
+    TaskLeaderLine.h
+    TaskRichAnno.h
+    TaskCosVertex.h
+    TaskCenterLine.h
+    TaskLineDecor.h
+    TaskWeldingSymbol.h
+    QGEPath.h
+    QGTracker.h
+    QGILeaderLine.h
+    QGIRichAnno.h
+    QGMText.h
+    mrichtextedit.h
+    mtextedit.h
+    TaskBalloon.h
+    QGIWeldSymbol.h
+    SymbolChooser.h
+    TaskActiveView.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -56,6 +86,18 @@ set(TechDrawGui_UIC_SRCS
     DlgTemplateField.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
+    TaskLeaderLine.ui
+    TaskRichAnno.ui
+    mrichtextedit.ui
+    TaskBalloon.ui
+    TaskCosVertex.ui
+    TaskCenterLine.ui
+    TaskCL2Lines.ui
+    TaskLineDecor.ui
+    TaskRestoreLines.ui
+    TaskWeldingSymbol.ui
+    SymbolChooser.ui
+    TaskActiveView.ui
 )
 
 if(BUILD_QT5)
@@ -64,14 +106,29 @@ else()
     qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
 endif()
 
+SET(MRTE_SRCS 
+    mrichtextedit.ui
+    mrichtextedit.cpp
+    mrichtextedit.h
+    mtextedit.cpp
+    mtextedit.h
+)
+
+SET(MRTE_HDRS 
+    mtextedit.h
+)
+
+
 SET(TechDrawGui_SRCS
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/InitGui.py
     ${TechDrawGui_SRCS}
+    ${MRTE_SRCS}
     AppTechDrawGui.cpp
     AppTechDrawGuiPy.cpp
     Command.cpp
     CommandCreateDims.cpp
     CommandDecorate.cpp
+    CommandAnnotate.cpp
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -95,14 +152,46 @@ SET(TechDrawGui_SRCS
     TaskSectionView.ui
     TaskSectionView.cpp
     TaskSectionView.h
+    TaskBalloon.ui
+    TaskBalloon.cpp
+    TaskBalloon.h
     TaskGeomHatch.ui
     TaskGeomHatch.cpp
     TaskGeomHatch.h
+    TaskLeaderLine.ui
+    TaskLeaderLine.cpp
+    TaskLeaderLine.h
+    TaskRichAnno.ui
+    TaskRichAnno.cpp
+    TaskRichAnno.h
+    TaskCosVertex.ui
+    TaskCosVertex.cpp
+    TaskCosVertex.h
+    TaskCenterLine.ui
+    TaskCenterLine.cpp
+    TaskCenterLine.h
+    TaskLineDecor.ui
+    TaskLineDecor.cpp
+    TaskLineDecor.h
+    TaskRestoreLines.ui
+    TaskCL2Lines.ui
+    TaskWeldingSymbol.ui
+    TaskWeldingSymbol.cpp
+    TaskWeldingSymbol.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
     Rez.h
+    SymbolChooser.ui
+    SymbolChooser.cpp
+    SymbolChooser.h
+    TaskActiveView.ui
+    TaskActiveView.cpp
+    TaskActiveView.h
+    Grabber3d.cpp
+    Grabber3d.h
 )
+
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
     MDIViewPage.h
@@ -148,6 +237,8 @@ SET(TechDrawGuiView_SRCS
     QGIViewCollection.h
     QGIViewDimension.cpp
     QGIViewDimension.h
+    QGIViewBalloon.cpp
+    QGIViewBalloon.h
     QGIProjGroup.cpp
     QGIProjGroup.h
     QGIViewPart.cpp
@@ -178,6 +269,20 @@ SET(TechDrawGuiView_SRCS
     QGICenterLine.h
     QGIHighlight.cpp
     QGIHighlight.h
+    QGEPath.cpp
+    QGEPath.h
+    QGTracker.cpp
+    QGTracker.h
+    QGILeaderLine.cpp
+    QGILeaderLine.h
+    QGIRichAnno.cpp
+    QGIRichAnno.h
+    QGMText.h
+    QGMText.cpp
+    QGIWeldSymbol.h
+    QGIWeldSymbol.cpp
+    QGITile.h
+    QGITile.cpp
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h
@@ -193,6 +298,8 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderTemplate.h
     ViewProviderDimension.cpp
     ViewProviderDimension.h
+    ViewProviderBalloon.cpp
+    ViewProviderBalloon.h
     ViewProviderViewPart.cpp
     ViewProviderViewPart.h
     ViewProviderProjGroup.cpp
@@ -213,8 +320,17 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderGeomHatch.h
     ViewProviderImage.cpp
     ViewProviderImage.h
+    ViewProviderLeader.cpp
+    ViewProviderLeader.h
+    ViewProviderRichAnno.cpp
+    ViewProviderRichAnno.h
+    ViewProviderTile.cpp
+    ViewProviderTile.h
+    ViewProviderWeld.cpp
+    ViewProviderWeld.h
 )
 
+SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})
 SOURCE_GROUP("Mod" FILES ${TechDrawGui_SRCS})
 SOURCE_GROUP("SVG-View" FILES ${TechDrawGuiView_SRCS})
 SOURCE_GROUP("ViewProvider" FILES ${TechDrawGuiViewProvider_SRCS})
@@ -224,6 +340,18 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskLinkDim.ui
     TaskSectionView.ui
     TaskGeomHatch.ui
+    TaskLeaderLine.ui
+    TaskRichAnno.ui
+    TaskCosVertex.ui
+    mrichtextedit.ui
+    TaskBalloon.ui
+    TaskCenterLine.ui
+    TaskLineDecor.ui
+    TaskRestoreLines.ui
+    TaskCL2Lines.ui
+    TaskWeldingSymbol.ui
+    SymbolChooser.ui
+    TaskActiveView.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 
@@ -238,15 +366,16 @@ SET(TechDrawGuiFonts
 )
 
 add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS}
-                               ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts})
+                               ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts} ${MRTE_SRCS})
 target_link_libraries(TechDrawGui ${TechDrawGui_LIBS})
 
-fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiIcon_SVG})
+fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/" ${TechDrawGuiIcon_SVG})
 INSTALL(FILES ${TechDrawGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/icons")
 
 fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw" ${TechDrawGuiFonts})
 INSTALL(FILES ${TechDrawGuiFonts} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Resources/fonts")
 
+fc_copy_sources(TechDrawGui "${CMAKE_BINARY_DIR}/src/Mod/TechDraw/Gui" ${MRTE_HDRS})
 
 SET_BIN_DIR(TechDrawGui TechDrawGui /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDrawGui)

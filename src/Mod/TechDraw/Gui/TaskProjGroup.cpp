@@ -27,6 +27,8 @@
 #include <cmath>
 #endif // #ifndef _PreComp_
 
+#include <QMessageBox>
+
 #include <Base/Console.h>
 
 #include <Gui/Application.h>
@@ -116,11 +118,48 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     m_mdi = dvp->getMDIViewPage();
 
     setUiPrimary();
+    saveGroupState();
 }
 
 TaskProjGroup::~TaskProjGroup()
 {
     delete ui;
+}
+
+void TaskProjGroup::saveGroupState()
+{
+//    Base::Console().Message("TPG::saveGroupState()\n");
+    if (multiView != nullptr) {
+        m_saveSource   = multiView->Source.getValues();
+        m_saveProjType = multiView->ProjectionType.getValueAsString();
+        m_saveScaleType = multiView->ScaleType.getValueAsString();
+        m_saveScale = multiView->Scale.getValue();
+        DrawProjGroupItem* anchor = multiView->getAnchor();
+        m_saveDirection = anchor->Direction.getValue();
+    }
+    for( const auto it : multiView->Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if (view != nullptr) {
+            m_saveViewNames.push_back(view->Type.getValueAsString());
+        }
+    }
+}
+
+//never used?
+void TaskProjGroup::restoreGroupState()
+{
+    Base::Console().Message("TPG::restoreGroupState()\n");
+    if (multiView != nullptr) {
+        multiView->ProjectionType.setValue(m_saveProjType.c_str());
+        multiView->ScaleType.setValue(m_saveScaleType.c_str()); 
+        multiView->Scale.setValue(m_saveScale);
+        multiView->purgeProjections();
+        for(auto & sv : m_saveViewNames) {
+            if (sv != "Front") {
+                multiView->addProjection(sv.c_str());
+            }
+        }
+    }
 }
 
 void TaskProjGroup::viewToggled(bool toggle)
@@ -132,10 +171,9 @@ void TaskProjGroup::viewToggled(bool toggle)
     int index = viewName.mid(7).toInt();
     const char *viewNameCStr = viewChkIndexToCStr(index);
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
-        (void) multiView->addProjection( viewNameCStr );            //maybe this should be send a message instead of blocking?
-//        Gui::Command::doCommand(Gui::Command::Doc,                // Gui response is no faster with this. :(
-//                                "App.activeDocument().%s.addProjection('%s')",
-//                                multiView->getNameInDocument(), viewNameCStr);
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                "App.activeDocument().%s.addProjection('%s')",
+                                multiView->getNameInDocument(), viewNameCStr);
         changed = true;
     } else if ( !toggle && multiView->hasProjection( viewNameCStr ) ) {
         multiView->removeProjection( viewNameCStr );
@@ -164,7 +202,7 @@ void TaskProjGroup::rotateButtonClicked(void)
             multiView->rotateRight();
         } else if ( clicked == ui->butLeftRotate) {
             multiView->rotateLeft();
-        } else if ( clicked == ui->butCWRotate ) {              //doesn't change Anchor view dir. changes projType of secondaries, not dir
+        } else if ( clicked == ui->butCWRotate ) { 
             multiView->spinCW();
         } else if ( clicked == ui->butCCWRotate) {
             multiView->spinCCW();
@@ -173,15 +211,6 @@ void TaskProjGroup::rotateButtonClicked(void)
     }
 }
 
-//void TaskProjGroup::onResetClicked(void)
-//{
-//    TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
-//    if (front) {
-//        setUiPrimary();
-//        Gui::Command::updateActive();
-//    }
-//}
-
 void TaskProjGroup::projectionTypeChanged(int index)
 {
     if(blockUpdate)
@@ -189,19 +218,14 @@ void TaskProjGroup::projectionTypeChanged(int index)
 
     if(index == 0) {
         //layout per Page (Document)
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.activeDocument().%s.ProjectionType = '%s'",
-                                multiView->getNameInDocument(), "Default");
+        multiView->ProjectionType.setValue("Default");
+
     } else if(index == 1) {
         // First Angle layout
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.activeDocument().%s.ProjectionType = '%s'",
-                                multiView->getNameInDocument(), "First Angle");
+        multiView->ProjectionType.setValue("First Angle");
     } else if(index == 2) {
         // Third Angle layout
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.activeDocument().%s.ProjectionType = '%s'",
-                                multiView->getNameInDocument(), "Third Angle");
+        multiView->ProjectionType.setValue("Third Angle");
     } else {
         Base::Console().Log("Error - TaskProjGroup::projectionTypeChanged - unknown projection layout: %d\n",
                             index);
@@ -210,7 +234,6 @@ void TaskProjGroup::projectionTypeChanged(int index)
 
     // Update checkboxes so checked state matches the drawing
     setupViewCheckboxes();
-
 }
 
 void TaskProjGroup::scaleTypeChanged(int index)
@@ -224,12 +247,9 @@ void TaskProjGroup::scaleTypeChanged(int index)
 
     if(index == 0) {
         // Document Scale Type
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
-                                                                                             , "Page");
+        multiView->ScaleType.setValue("Page");
     } else if(index == 1) {
         // Automatic Scale Type
-//        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
-//                                                                                             , "Automatic");
         //block recompute
         multiView->ScaleType.setValue("Automatic");
         double autoScale = multiView->calculateAutomaticScale();
@@ -239,23 +259,19 @@ void TaskProjGroup::scaleTypeChanged(int index)
     } else if(index == 2) {
         // Custom Scale Type
         //block recompute
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
-                                                                                             , "Custom");
+        multiView->ScaleType.setValue("Custom");
         ui->sbScaleNum->setEnabled(true);
         ui->sbScaleDen->setEnabled(true);
 
         int a = ui->sbScaleNum->value();
         int b = ui->sbScaleDen->value();
         double scale = (double) a / (double) b;
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
-                                                                                     , scale);
+        multiView->Scale.setValue(scale);
         //unblock recompute
     } else {
         Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n",index);
         return;
     }
-
-    multiView->recomputeFeature();
 }
 
 std::pair<int, int> TaskProjGroup::nearestFraction(const double val, const long int maxDenom) const
@@ -370,9 +386,10 @@ void TaskProjGroup::scaleManuallyChanged(int i)
     int b = ui->sbScaleDen->value();
 
     double scale = (double) a / (double) b;
+
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
                                                                                      , scale);
-    multiView->recomputeFeature();  //just a repaint.  multiView is already marked for recompute by changed to Scale
+    multiView->recomputeFeature();
 }
 
 void TaskProjGroup::changeEvent(QEvent *e)
@@ -457,15 +474,34 @@ QString TaskProjGroup::formatVector(Base::Vector3d v)
     return data;
 }
 
+void TaskProjGroup::saveButtons(QPushButton* btnOK,
+                             QPushButton* btnCancel,
+                             QPushButton* btnApply)
+{
+    m_btnOK = btnOK;
+    m_btnCancel = btnCancel;
+    m_btnApply = btnApply;
+}
+
+
+bool TaskProjGroup::apply()
+{
+//    Base::Console().Message("TPG::apply()\n");
+    multiView->recomputeChildren();
+    multiView->recomputeFeature();
+
+    return true;
+}
+
 bool TaskProjGroup::accept()
 {
+//    Base::Console().Message("TPG::accept()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
     if (!doc) return false;
 
-    if (!getCreateMode())  {    //this is an edit session, end the transaction
-        Gui::Command::commitCommand();
-    }
-    //Gui::Command::updateActive();     //no chain of updates here
+    multiView->recomputeChildren();
+    multiView->recomputeFeature();
+
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
     return true;
@@ -477,6 +513,7 @@ bool TaskProjGroup::reject()
     if (!doc) return false;
 
     if (getCreateMode()) {
+        //remove the object completely from the document
         std::string multiViewName = multiView->getNameInDocument();
         std::string PageName = multiView->findParentPage()->getNameInDocument();
 
@@ -486,19 +523,19 @@ bool TaskProjGroup::reject()
                                 PageName.c_str(),multiViewName.c_str());
         Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",multiViewName.c_str());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-        //make sure any dangling objects are cleaned up 
-        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     } else {
+        //set the DPG and it's views back to entry state.
         if (Gui::Command::hasPendingCommand()) {
-            std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
-            Gui::Application::Instance->activeDocument()->undo(1);
-            multiView->rebuildViewList();
+            Gui::Command::abortCommand();
+//            std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
+//            Gui::Application::Instance->activeDocument()->undo(1);
+//            multiView->rebuildViewList();
+//            apply();
         } else {
             Base::Console().Log("TaskProjGroup: Edit mode - NO command is active\n");
         }
-
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     }
+    Gui::Command::runCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     return false;
 }
 
@@ -511,7 +548,7 @@ TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode)
 {
     //viewProvider = dynamic_cast<const ViewProviderProjGroup *>(featView);
     widget  = new TaskProjGroup(featView,mode);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-projgroup"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-ProjectionGroup"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -531,16 +568,29 @@ void TaskDlgProjGroup::setCreateMode(bool b)
     widget->setCreateMode(b);
 }
 
+void TaskDlgProjGroup::modifyStandardButtons(QDialogButtonBox* box)
+{
+    QPushButton* btnOK = box->button(QDialogButtonBox::Ok);
+    QPushButton* btnCancel = box->button(QDialogButtonBox::Cancel);
+    QPushButton* btnApply = box->button(QDialogButtonBox::Apply);
+    widget->saveButtons(btnOK, btnCancel, btnApply);
+}
+
 //==== calls from the TaskView ===============================================================
 void TaskDlgProjGroup::open()
 {
-    if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
-        Gui::Command::openCommand("Edit Projection Group");
+     if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
+        App::GetApplication().setActiveTransaction("Edit Projection Group", true);
     }
 }
 
-void TaskDlgProjGroup::clicked(int)
+void TaskDlgProjGroup::clicked(int i)
 {
+//    Q_UNUSED(i);
+//    Base::Console().Message("TDPG::clicked(%X)\n",i);
+    if (i == QMessageBox::Apply) {
+        widget->apply();
+    }
 }
 
 bool TaskDlgProjGroup::accept()

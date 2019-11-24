@@ -43,6 +43,8 @@ public:
     void resume();
     bool isBlocking() const;
 
+    virtual void checkAbort() override;
+
 protected:
     /** Construction */
     SequencerDialog ();

@@ -33,6 +33,12 @@
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "Console.h"
+#include <boost/math/special_functions/fpclassify.hpp>
+
+/** \defgroup Units Units system
+    \ingroup BASE
+    \brief The quantities and units system enables FreeCAD to work transparently with many different units
+*/
 
 // suppress annoying warnings from generated source files
 #ifdef _MSC_VER
@@ -82,7 +88,7 @@ double Quantity::getValueAs(const Quantity &q)const
 
 bool Quantity::operator ==(const Quantity& that) const
 {
-    return (this->_Value == that._Value) && (this->_Unit == that._Unit) ;
+    return (this->_Value == that._Value) && (this->_Unit == that._Unit);
 }
 
 bool Quantity::operator <(const Quantity& that) const
@@ -143,14 +149,15 @@ Quantity Quantity::pow(const Quantity &p) const
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     return Quantity(
         std::pow(this->_Value, p._Value),
-        this->_Unit.pow((short)p._Value)
+        this->_Unit.pow(static_cast<signed char>(p._Value))
         );
 }
 
 Quantity Quantity::pow(double p) const
 {
     return Quantity(
-        std::pow(this->_Value, p), this->_Unit
+        std::pow(this->_Value, p),
+        this->_Unit.pow((short)p)
         );
 }
 
@@ -174,7 +181,7 @@ Quantity& Quantity::operator +=(const Quantity &p)
 Quantity Quantity::operator -(const Quantity &p) const
 {
     if (this->_Unit != p._Unit)
-        throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in minus operation");
+        throw Base::UnitsMismatchError("Quantity::operator -(): Unit mismatch in minus operation");
     return Quantity(this->_Value - p._Value,this->_Unit);
 }
 
@@ -209,23 +216,24 @@ QString Quantity::getUserString(double& factor, QString& unitString) const
 /// true if it has a number without a unit
 bool Quantity::isDimensionless(void)const
 {
-    return _Value != DOUBLE_MIN && _Unit.isEmpty();
+    return isValid() && _Unit.isEmpty();
 }
 
 // true if it has a number and a valid unit
 bool Quantity::isQuantity(void)const
 {
-    return _Value != DOUBLE_MIN && !_Unit.isEmpty();
+    return isValid() && !_Unit.isEmpty();
 }
+
 // true if it has a number with or without a unit
 bool Quantity::isValid(void)const
 {
-    return _Value != DOUBLE_MIN ;
+    return !boost::math::isnan(_Value);
 }
 
 void Quantity::setInvalid(void)
 {
-    _Value = DOUBLE_MIN ;
+    _Value = std::numeric_limits<double>::quiet_NaN();
 }
 
 // === Predefined types =====================================================
@@ -239,6 +247,11 @@ Quantity Quantity::Metre            (1.0e3          ,Unit(1));
 Quantity Quantity::KiloMetre        (1.0e6          ,Unit(1));
 
 Quantity Quantity::Liter            (1000000.0      ,Unit(3));
+
+Quantity Quantity::Hertz            (1.0            ,Unit(0,0,-1));
+Quantity Quantity::KiloHertz        (1.0e3          ,Unit(0,0,-1));
+Quantity Quantity::MegaHertz        (1.0e6          ,Unit(0,0,-1));
+Quantity Quantity::GigaHertz        (1.0e9          ,Unit(0,0,-1));
 
 Quantity Quantity::MicroGram        (1.0e-9         ,Unit(0,1));
 Quantity Quantity::MilliGram        (1.0e-6         ,Unit(0,1));
@@ -342,7 +355,7 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     
     ret_val = atof( temp ); 
     return ret_val;
-};
+}
 
 // error func
 void Quantity_yyerror(char *errorinfo)

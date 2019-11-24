@@ -56,6 +56,9 @@ DrawViewImage::DrawViewImage(void)
     ADD_PROPERTY_TYPE(Width      ,(100),vgroup,App::Prop_None,"The width of the image view");
     ADD_PROPERTY_TYPE(Height     ,(100),vgroup,App::Prop_None,"The height of the view");
     ScaleType.setValue("Custom");
+
+    std::string imgFilter("Image files (*.jpg *.jpeg *.png);;All files (*)");
+    ImageFile.setFilter(imgFilter);
 }
 
 DrawViewImage::~DrawViewImage()

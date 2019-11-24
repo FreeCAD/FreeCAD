@@ -55,11 +55,100 @@
                 <UserDocu>Register an expression for a property</UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="recompute">
+        <Methode Name="evalExpression">
             <Documentation>
-                <UserDocu>Recomputes this object</UserDocu>
+                <UserDocu>Evaluate an expression</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="recompute">
+            <Documentation>
+                <UserDocu>recompute(recursive=False): Recomputes this object</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getSubObject" Keyword="true">
+            <Documentation>
+                <UserDocu>
+getSubObject(subname, retType=0, matrix=None, transform=True, depth=0)
+
+* subname(string|list|tuple): dot separated string or sequence of strings
+referencing subobject.
+
+* retType: return type, 0=PyObject, 1=DocObject, 2=DocAndPyObject, 3=Placement
+
+    PyObject: return a python binding object for the (sub)object referenced in
+    each 'subname' The actual type of 'PyObject' is implementation dependent.
+    For Part::Feature compatible objects, this will be of type TopoShapePy and
+    pre-transformed by accumulated transformation matrix along the object path.  
+
+    DocObject:  return the document object referenced in subname, if 'matrix' is
+    None. Or, return a tuple (object, matrix) for each 'subname' and 'matrix' is
+    the accumulated transformation matrix for the sub object.
+
+    DocAndPyObject: return a tuple (object, matrix, pyobj) for each subname
+
+    Placement: return a trasformed placement of the sub-object
+
+* matrix: the initial transformation to be applied to the sub object.
+
+* transform: whether to transform the sub object using this object's placement
+
+* depth: current recursive depth
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getSubObjectList">
+            <Documentation>
+                <UserDocu>
+getSubObjectList(subname)
+
+Return a list of objects referenced by a given subname including this object
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getSubObjects">
+            <Documentation>
+                <UserDocu>getSubObjects(reason=0): Return subname reference of all sub-objects</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getLinkedObject" Keyword="true">
+            <Documentation>
+                <UserDocu>
+getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
+Returns the linked object if there is one, or else return itself
+
+* recursive: whether to recursively resolve the links
+
+* transform: whether to transform the sub object using this object's placement
+
+* matrix: If not none, this specifies the initial transformation to be applied
+to the sub object. And cause the method to return a tuple (object, matrix)
+containing the accumulated transformation matrix
+
+* depth: current recursive depth
+                </UserDocu>
+            </Documentation>
+        </Methode>
+		<Methode Name="setElementVisible">
+			<Documentation>
+                <UserDocu>
+setElementVisible(element,visible): Set the visibility of a child element
+Return -1 if element visibility is not supported, 0 if element not found, 1 if success
+                </UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="isElementVisible">
+			<Documentation>
+                <UserDocu>
+isElementVisible(element): Check if a child element is visible
+Return -1 if element visibility is not supported or element not found, 0 if invisible, or else 1
+                </UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="hasChildElement">
+			<Documentation>
+                <UserDocu>Return true to indicate the object having child elements</UserDocu>
+			</Documentation>
+		</Methode>
         <Methode Name="getParentGroup">
             <Documentation>
                 <UserDocu>Returns the group the object is in or None if it is not part of a group. 
@@ -69,7 +158,7 @@
         </Methode>
         <Methode Name="getParentGeoFeatureGroup">
             <Documentation>
-                <UserDocu>Returns the GeoFeatureGroup, and hence the local coorinate system, the object 
+                <UserDocu>Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                           is in or None if it is not part of a group. Note that an object can only be 
                           in a single group, hence only a single return value.</UserDocu>
             </Documentation>
@@ -77,6 +166,37 @@
         <Methode Name="getPathsByOutList">
             <Documentation>
                 <UserDocu>Get all paths from this object to another object following the OutList.</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="resolve" Const="true">
+            <Documentation>
+                <UserDocu>
+resolve(subname) -- resolve the sub object
+
+Returns a tuple (subobj,parent,elementName,subElement), where 'subobj' is the
+last object referenced in 'subname', and 'parent' is the direct parent of
+'subobj', and 'elementName' is the name of the subobj, which can be used
+to call parent.isElementVisible/setElementVisible(). 'subElement' is the
+non-object sub-element name if any.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="resolveSubElement" Const="true">
+            <Documentation>
+                <UserDocu>
+resolveSubElement(subname,append,type) -- resolve both new and old style sub element
+
+subname: subname reference containing object hierarchy
+append: Whether to append object hierarchy prefix inside subname to returned element name
+type: 0: normal, 1: for import, 2: for export
+
+Return tuple(obj,newElementName,oldElementName)
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="adjustRelativeLinks">
+            <Documentation>
+                <UserDocu>adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies</UserDocu>
             </Documentation>
         </Methode>
     <Attribute Name="OutList" ReadOnly="true">
@@ -102,6 +222,12 @@
         <UserDocu>A list of all objects which link to this object recursively.</UserDocu>
       </Documentation>
       <Parameter Name="InListRecursive" Type="List"/>
+    </Attribute>
+    <Attribute Name="FullName" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Return the document name and internal name of this object</UserDocu>
+        </Documentation>
+        <Parameter Name="FullName" Type="String"/>
     </Attribute>
     <Attribute Name="Name" ReadOnly="true">
 			<Documentation>
@@ -129,5 +255,41 @@ or None if the GUI is not up</UserDocu>
 			<Parameter Name="ViewObject" Type="Object"/>
 		</Attribute>
 		<CustomAttributes />
+		<Attribute Name="MustExecute" ReadOnly="true">
+			<Documentation>
+                <UserDocu>Check if the object must be recomputed</UserDocu>
+			</Documentation>
+			<Parameter Name="MustExecute" Type="Boolean"/>
+		</Attribute>
+		<Attribute Name="ID" ReadOnly="true">
+			<Documentation>
+                <UserDocu>The unique identifier (among its document) of this object</UserDocu>
+			</Documentation>
+			<Parameter Name="ID" Type="Int"/>
+		</Attribute>
+		<Attribute Name="Removing" ReadOnly="true">
+			<Documentation>
+                <UserDocu>Indicate if the object is being removed</UserDocu>
+			</Documentation>
+			<Parameter Name="Removing" Type="Boolean"/>
+		</Attribute>
+        <Attribute Name="Parents" ReadOnly="true">
+            <Documentation>
+                <UserDocu>A List of tuple(parent,subname) holding all parents to this object</UserDocu>
+            </Documentation>
+			<Parameter Name="Parents" Type="List"/>
+        </Attribute>
+        <Attribute Name="OldLabel" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Contains the old label before change</UserDocu>
+            </Documentation>
+			<Parameter Name="OldLabel" Type="String"/>
+        </Attribute>
+        <Attribute Name="NoTouch">
+            <Documentation>
+                <UserDocu>Enable/disable no touch on any property change</UserDocu>
+            </Documentation>
+			<Parameter Name="NoTouch" Type="Boolean"/>
+        </Attribute>
 	</PythonExport>
 </GenerateModel>

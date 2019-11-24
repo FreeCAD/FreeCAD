@@ -77,32 +77,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="353"/>
+      <location filename="../../CurveOnMesh.cpp" line="363"/>
       <source>Create</source>
       <translation>Stvoriti</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="355"/>
+      <location filename="../../CurveOnMesh.cpp" line="365"/>
       <source>Close wire</source>
       <translation>Zatvori žicu</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="357"/>
+      <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Clear</source>
       <translation>Brisanje</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="358"/>
+      <location filename="../../CurveOnMesh.cpp" line="368"/>
       <source>Cancel</source>
       <translation>Otkazati</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="566"/>
+      <location filename="../../CurveOnMesh.cpp" line="614"/>
       <source>Wrong mesh picked</source>
       <translation>Izabrana pogrešna mreža</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="606"/>
+      <location filename="../../CurveOnMesh.cpp" line="654"/>
       <source>No point was picked</source>
       <translation>Ni jedan vrh nije odabran</translation>
     </message>
@@ -140,22 +140,22 @@
       <translation>Kriva aproksimacija</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="75"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="78"/>
       <source>Tolerance to mesh</source>
       <translation>Odstupanje na mreži</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="101"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="104"/>
       <source>Continuity</source>
       <translation>Kontinuitet</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="108"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="111"/>
       <source>Maximum curve degree</source>
       <translation>Maksimalni Stupanj krivulje</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="132"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="135"/>
       <source>Start</source>
       <translation>Počni</translation>
     </message>
@@ -225,7 +225,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="203"/>
       <source>Fineness:</source>
-      <translation type="unfinished">Fineness:</translation>
+      <translation>Finoća:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="220"/>
@@ -235,17 +235,17 @@
     <message>
       <location filename="../../Tessellation.ui" line="225"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Grubo</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="230"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Srednje grubo</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="235"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Fino</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="240"/>

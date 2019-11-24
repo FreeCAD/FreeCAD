@@ -147,7 +147,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Merge selected cells in spreadsheet</source>
+        <source>Merge selected cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -177,7 +177,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Split previously merged cells in spreadsheet</source>
+        <source>Split previously merged cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -192,7 +192,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set bold text in selected cells</source>
+        <source>Set text in selected cells bold</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -207,7 +207,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set italic text in selected cells</source>
+        <source>Set text in selected cells italic</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -426,7 +426,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Custom</source>
+        <source>Custom Color</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

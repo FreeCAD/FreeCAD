@@ -43,7 +43,9 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base classes and framework for Path operation's UI"
 
-if False:
+LOGLEVEL = False
+
+if LOGLEVEL:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -63,12 +65,16 @@ class ViewProvider(object):
 
     def __init__(self, vobj, resources):
         PathLog.track()
-        vobj.Proxy = self
         self.deleteOnReject = True
         self.OpIcon = ":/icons/%s.svg" % resources.pixmap
         self.OpName = resources.name
         self.OpPageModule = resources.opPageClass.__module__
         self.OpPageClass = resources.opPageClass.__name__
+
+        # initialized later
+        self.vobj = vobj
+        self.Object = None
+        self.panel = None
 
     def attach(self, vobj):
         PathLog.track()
@@ -121,6 +127,7 @@ class ViewProvider(object):
             job.ViewObject.Proxy.resetEditVisibility(job)
 
     def unsetEdit(self, arg1, arg2):
+        # pylint: disable=unused-argument
         if self.panel:
             self.panel.reject(False)
 
@@ -145,7 +152,12 @@ class ViewProvider(object):
 
     def getIcon(self):
         '''getIcon() ... the icon used in the object tree'''
-        return self.OpIcon
+        if self.Object.Active:
+            return self.OpIcon
+        else:
+            return ":/icons/Path-OpActive.svg"
+
+        #return self.OpIcon
 
     def getTaskPanelOpPage(self, obj):
         '''getTaskPanelOpPage(obj) ... use the stored information to instantiate the receiver op's page controller.'''
@@ -165,10 +177,12 @@ class ViewProvider(object):
             self.panel.updateData(obj, prop)
 
     def onDelete(self, vobj, arg2=None):
+        # pylint: disable=unused-argument
         PathUtil.clearExpressionEngine(vobj.Object)
         return True
 
     def setupContextMenu(self, vobj, menu):
+        # pylint: disable=unused-argument
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
@@ -184,12 +198,13 @@ class TaskPanelPage(object):
         '''__init__(obj, features) ... framework initialisation.
         Do not overwrite, implement initPage(obj) instead.'''
         self.obj = obj
-        self.form = self.getForm()
+        self.form = self.getForm() # pylint: disable=assignment-from-no-return
         self.signalDirtyChanged = None
         self.setClean()
         self.setTitle('-')
         self.setIcon(None)
         self.features = features
+        self.isdirty = False
 
     def onDirtyChanged(self, callback):
         '''onDirtyChanged(callback) ... set callback when dirty state changes.'''
@@ -218,6 +233,11 @@ class TaskPanelPage(object):
         Do not overwrite, implement setFields(obj) instead.'''
         self.setFields(self.obj)
 
+    def pageCleanup(self):
+        '''pageCleanup() ... internal callback.
+        Do not overwrite, implement cleanupPage(obj) instead.'''
+        self.cleanupPage(self.obj)
+
     def pageRegisterSignalHandlers(self):
         '''pageRegisterSignalHandlers() .. internal callback.
         Registers a callback for all signals returned by getSignalsForUpdate(obj).
@@ -239,15 +259,17 @@ class TaskPanelPage(object):
         '''getTitle(obj) ... return title to be used for the receiver page.
         The default implementation returns what was previously set with setTitle(title).
         Can safely be overwritten by subclasses.'''
+        # pylint: disable=unused-argument
         return self.title
 
     def setIcon(self, icon):
         '''setIcon(icon) ... sets the icon for the page.'''
         self.icon = icon
 
-    def getIcon(self, icon):
-        '''getIcon(icon) ... return icon for page or None.
+    def getIcon(self, obj):
+        '''getIcon(obj) ... return icon for page or None.
         Can safely be overwritten by subclasses.'''
+        # pylint: disable=unused-argument
         return self.icon
 
     # subclass interface
@@ -255,32 +277,39 @@ class TaskPanelPage(object):
         '''initPage(obj) ... overwrite to customize UI for specific model.
         Note that this function is invoked after all page controllers have been created.
         Should be overwritten by subclasses.'''
-        pass
+        # pylint: disable=unused-argument
+        pass # pylint: disable=unnecessary-pass
+
+    def cleanupPage(self, obj):
+        '''cleanupPage(obj) ... overwrite to perform any cleanup tasks before page is destroyed.
+        Can safely be overwritten by subclasses.'''
+        pass # pylint: disable=unnecessary-pass
 
     def modifyStandardButtons(self, buttonBox):
         '''modifyStandardButtons(buttonBox) ... overwrite if the task panel standard buttons need to be modified.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def getForm(self):
         '''getForm() ... return UI form for this page.
         Must be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def getFields(self, obj):
         '''getFields(obj) ... overwrite to transfer values from UI to obj's properties.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def setFields(self, obj):
         '''setFields(obj) ... overwrite to transfer obj's property values to UI.
         Can safely be overwritten by subclasses.'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return signals which, when triggered, cause the receiver to update the model.
         See also registerSignalHandlers(obj)
         Can safely be overwritten by subclasses.'''
+        # pylint: disable=unused-argument
         return []
 
     def registerSignalHandlers(self, obj):
@@ -289,7 +318,8 @@ class TaskPanelPage(object):
         (see getSignalsForUpdate(obj)) this function can be used to register signal handlers
         manually.
         Can safely be overwritten by subclasses.'''
-        pass
+        # pylint: disable=unused-argument
+        pass # pylint: disable=unnecessary-pass
 
     def updateData(self, obj, prop):
         '''updateData(obj, prop) ... overwrite if the receiver needs to react to property changes that might not have been caused by the receiver itself.
@@ -301,12 +331,14 @@ class TaskPanelPage(object):
         This can happen if a subclass unconditionally transfers all values in getFields(obj) to the model and just calls setFields(obj) in this callback.
         In such a scenario the first property assignment will cause all changes in the UI of the other fields to be overwritten by setFields(obj).
         You have been warned.'''
-        pass
+        # pylint: disable=unused-argument
+        pass # pylint: disable=unnecessary-pass
 
     def updateSelection(self, obj, sel):
         '''updateSelection(obj, sel) ... overwrite to customize UI depending on current selection.
         Can safely be overwritten by subclasses.'''
-        pass
+        # pylint: disable=unused-argument
+        pass # pylint: disable=unnecessary-pass
 
     # helpers
     def selectInComboBox(self, name, combo):
@@ -322,6 +354,7 @@ class TaskPanelPage(object):
         controllers = PathUtils.getToolControllers(self.obj)
         labels = [c.Label for c in controllers]
         combo.blockSignals(True)
+        combo.clear()
         combo.addItems(labels)
         combo.blockSignals(False)
 
@@ -336,6 +369,24 @@ class TaskPanelPage(object):
         if obj.ToolController != tc:
             obj.ToolController = tc
 
+    def setupCoolant(self, obj, combo):
+        '''setupCoolant(obj, combo) ... helper function to setup obj's Coolant option.'''
+        job = PathUtils.findParentJob(obj)
+        options = job.SetupSheet.CoolantModes
+        combo.blockSignals(True)
+        combo.clear()
+        combo.addItems(options)
+        combo.blockSignals(False)
+        
+        if hasattr(obj, 'CoolantMode'):
+            self.selectInComboBox(obj.CoolantMode, combo)
+
+    def updateCoolant(self, obj, combo):
+        '''updateCoolant(obj, combo) ... helper function to update obj's Coolant property if a different one has been selected in the combo box.'''
+        option = combo.currentText()
+        if hasattr(obj, 'CoolantMode'):
+            if obj.CoolantMode != option:
+                obj.CoolantMode = option
 
 class TaskPanelBaseGeometryPage(TaskPanelPage):
     '''Page controller for the base geometry.'''
@@ -394,36 +445,41 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return 'edges'
         return 'nothing'
 
-    def addBaseGeometrySelection(self, sel):
+    def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
+        if len(selection) != 1:
+            if not ignoreErrors:
+                PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
+            return False
+        sel = selection[0]
         if sel.HasSubObjects:
-            if not self.supportsVertexes() and sel.SubObjects[0].ShapeType == "Vertex":
-                PathLog.error(translate("PathProject", "Vertexes are not supported"))
+            if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
+                if not ignoreErrors:
+                    PathLog.error(translate("PathProject", "Vertexes are not supported"))
                 return False
-            if not self.supportsEdges() and sel.SubObjects[0].ShapeType == "Edge":
-                PathLog.error(translate("PathProject", "Edges are not supported"))
+            if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
+                if not ignoreErrors:
+                    PathLog.error(translate("PathProject", "Edges are not supported"))
                 return False
-            if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
-                PathLog.error(translate("PathProject", "Faces are not supported"))
+            if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
+                if not ignoreErrors:
+                    PathLog.error(translate("PathProject", "Faces are not supported"))
                 return False
         else:
             if not self.supportsPanels() or not 'Panel' in sel.Object.Name:
-                PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
+                if not ignoreErrors:
+                    PathLog.error(translate("PathProject", "Please select %s of a solid" % self.featureName()))
                 return False
-
-        for sub in sel.SubElementNames:
-            self.obj.Proxy.addBase(self.obj, sel.Object, sub)
         return True
+
 
     def addBaseGeometry(self, selection):
         PathLog.track(selection)
-        #if len(selection) != 1:
-        #    PathLog.error(translate("PathProject", "Please select %s from a single solid" % self.featureName()))
-        #    return False
-        changed = False
-        for sel in selection:
-            if self.addBaseGeometrySelection(sel):
-                changed = True
-        return changed
+        if self.selectionSupportedAsBaseGeometry(selection, False):
+            sel = selection[0]
+            for sub in sel.SubElementNames:
+                self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+            return True
+        return False
 
     def addBase(self):
         if self.addBaseGeometry(FreeCADGui.Selection.getSelectionEx()):
@@ -470,11 +526,22 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if prop in ['Base']:
             self.setFields(obj)
 
+    def updateSelection(self, obj, sel):
+        if self.selectionSupportedAsBaseGeometry(sel, True):
+            self.form.addBase.setEnabled(True)
+        else:
+            self.form.addBase.setEnabled(False)
 
 class TaskPanelBaseLocationPage(TaskPanelPage):
     '''Page controller for base locations. Uses PathGetPoint.'''
 
     DataLocation = QtCore.Qt.ItemDataRole.UserRole
+
+    def __init__(self, obj, features):
+        super(TaskPanelBaseLocationPage, self).__init__(obj, features)
+
+        # members initialized later
+        self.editRow = None
 
     def getForm(self):
         self.formLoc = FreeCADGui.PySideUic.loadUi(":/panels/PageBaseLocationEdit.ui")
@@ -537,6 +604,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
         self.getPoint.getPoint(self.addLocationAt)
 
     def addLocationAt(self, point, obj):
+        # pylint: disable=unused-argument
         if point:
             locations = self.obj.Locations
             locations.append(point)
@@ -554,6 +622,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
             self.getPoint.getPoint(self.editLocationAt, start)
 
     def editLocationAt(self, point, obj):
+        # pylint: disable=unused-argument
         if point:
             self.formLoc.baseList.item(self.editRow, 0).setData(self.DataLocation, point.x)
             self.formLoc.baseList.item(self.editRow, 1).setData(self.DataLocation, point.y)
@@ -581,6 +650,14 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
 
 class TaskPanelHeightsPage(TaskPanelPage):
     '''Page controller for heights.'''
+
+    def __init__(self, obj, features):
+        super(TaskPanelHeightsPage, self).__init__(obj, features)
+
+        # members initialized later
+        self.clearanceHeight = None
+        self.safeHeight = None
+
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
 
@@ -612,6 +689,16 @@ class TaskPanelHeightsPage(TaskPanelPage):
 
 class TaskPanelDepthsPage(TaskPanelPage):
     '''Page controller for depths.'''
+
+    def __init__(self, obj, features):
+        super(TaskPanelDepthsPage, self).__init__(obj, features)
+
+        # members initialized later
+        self.startDepth = None
+        self.finalDepth = None
+        self.finishDepth = None
+        self.stepDown = None
+
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
 
@@ -752,6 +839,15 @@ class TaskPanel(object):
         self.deleteOnReject = deleteOnReject
         self.featurePages = []
 
+        # members initialized later
+        self.clearanceHeight = None
+        self.safeHeight = None
+        self.startDepth = None
+        self.finishDepth = None
+        self.finalDepth = None
+        self.stepDown = None
+        self.buttonBox = None
+
         features = obj.Proxy.opFeatures(obj)
         opPage.features = features
 
@@ -798,7 +894,6 @@ class TaskPanel(object):
             else:
                 for page in reversed(self.featurePages):
                     toolbox.addItem(page.form, page.getTitle(obj))
-            PathLog.info("Title: '%s'" % opTitle)
             toolbox.setWindowTitle(opTitle)
             if opPage.getIcon(obj):
                 toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
@@ -863,6 +958,7 @@ class TaskPanel(object):
 
     def cleanup(self, resetEdit):
         '''cleanup() ... implements common cleanup tasks.'''
+        self.panelCleanup()
         FreeCADGui.Control.closeDialog()
         if resetEdit:
             FreeCADGui.ActiveDocument.resetEdit()
@@ -870,6 +966,7 @@ class TaskPanel(object):
 
     def pageDirtyChanged(self, page):
         '''pageDirtyChanged(page) ... internal callback'''
+        # pylint: disable=unused-argument
         self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(self.isDirty())
 
     def clicked(self, button):
@@ -897,6 +994,12 @@ class TaskPanel(object):
         PathLog.track()
         for page in self.featurePages:
             page.pageSetFields()
+
+    def panelCleanup(self):
+        '''panelCleanup() ... invoked before the receiver is destroyed.'''
+        PathLog.track()
+        for page in self.featurePages:
+            page.pageCleanup()
 
     def open(self):
         '''open() ... callback invoked when the task panel is opened.'''
@@ -938,20 +1041,26 @@ class TaskPanel(object):
 
     # SelectionObserver interface
     def addSelection(self, doc, obj, sub, pnt):
+        # pylint: disable=unused-argument
         self.updateSelection()
 
     def removeSelection(self, doc, obj, sub):
+        # pylint: disable=unused-argument
         self.updateSelection()
 
     def setSelection(self, doc):
+        # pylint: disable=unused-argument
         self.updateSelection()
 
     def clearSelection(self, doc):
+        # pylint: disable=unused-argument
         self.updateSelection()
 
 
 class CommandSetStartPoint:
     '''Command to set the start point for an operation.'''
+    # pylint: disable=no-init
+
     def GetResources(self):
         return {'Pixmap': 'Path-StartPoint',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path", "Pick Start Point"),
@@ -967,6 +1076,7 @@ class CommandSetStartPoint:
         return obj and hasattr(obj, 'StartPoint')
 
     def setpoint(self, point, o):
+        # pylint: disable=unused-argument
         obj = FreeCADGui.Selection.getSelection()[0]
         obj.StartPoint.x = point.x
         obj.StartPoint.y = point.y
@@ -984,7 +1094,7 @@ def Create(res):
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
     obj = res.objFactory(res.name)
     if obj.Proxy:
-        vobj = ViewProvider(obj.ViewObject, res)
+        obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
 
         FreeCAD.ActiveDocument.commitTransaction()
         obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
@@ -1006,14 +1116,14 @@ class CommandPathOp:
                 'MenuText': self.res.menuText,
                 'ToolTip':  self.res.toolTip}
         if self.res.accelKey:
-                ress['Accel'] = self.res.accelKey
+            ress['Accel'] = self.res.accelKey
         return ress
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

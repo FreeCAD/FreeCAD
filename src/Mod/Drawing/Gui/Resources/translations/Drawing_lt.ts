@@ -194,7 +194,7 @@
       <location filename="../../Command.cpp" line="689"/>
       <location filename="../../Command.cpp" line="690"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Projektuoti kūno atvaizdą į pasirinktą plokštumą</translation>
+      <translation>Projektuoti daikto atvaizdą į pasirinktą plokštumą</translation>
     </message>
   </context>
   <context>
@@ -741,19 +741,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="979"/>
       <source>Make axonometric...</source>
       <translation>Daryti aksonometrinį...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="982"/>
+      <location filename="../../TaskOrthoViews.cpp" line="980"/>
       <source>Edit axonometric settings...</source>
       <translation>Keisti aksonometrinio vaizdo nustatymus...</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="983"/>
+      <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make orthographic</source>
       <translation>Daryti ortografinį</translation>
     </message>

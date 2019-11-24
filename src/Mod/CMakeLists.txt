@@ -102,6 +102,10 @@ if(BUILD_FEM)
     add_subdirectory(Fem)
 endif(BUILD_FEM)
 
+if(BUILD_CLOUD)
+    add_subdirectory(Cloud)
+endif(BUILD_CLOUD)
+
 if(BUILD_SANDBOX)
     add_subdirectory(Sandbox)
 endif(BUILD_SANDBOX)

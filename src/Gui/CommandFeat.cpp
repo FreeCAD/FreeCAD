@@ -26,11 +26,12 @@
 #include <App/DocumentObject.h>
 
 #include "Application.h"
-#include "Command.h"
+#include "CommandT.h"
 #include "Document.h"
 #include "Selection.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewProviderLink.h"
 
 using namespace Gui;
 
@@ -40,7 +41,7 @@ using namespace Gui;
 // Std_Recompute
 //===========================================================================
 
-DEF_STD_CMD(StdCmdFeatRecompute);
+DEF_STD_CMD(StdCmdFeatRecompute)
 
 StdCmdFeatRecompute::StdCmdFeatRecompute()
   :Command("Std_Recompute")
@@ -64,7 +65,7 @@ void StdCmdFeatRecompute::activated(int iMsg)
 // Std_RandomColor
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdRandomColor);
+DEF_STD_CMD_A(StdCmdRandomColor)
 
 StdCmdRandomColor::StdCmdRandomColor()
   :Command("Std_RandomColor")
@@ -78,7 +79,7 @@ StdCmdRandomColor::StdCmdRandomColor()
 
 void StdCmdRandomColor::activated(int iMsg)
 {
-    Q_UNUSED(iMsg); 
+    Q_UNUSED(iMsg);
 
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
@@ -89,11 +90,17 @@ void StdCmdRandomColor::activated(int iMsg)
         float fBlu = (float)rand()/fMax;
 
         ViewProvider* view = Application::Instance->getDocument(it->pDoc)->getViewProvider(it->pObject);
-        App::Property* color = view->getPropertyByName("ShapeColor");
-        if (color && color->getTypeId() == App::PropertyColor::getClassTypeId()) {
+        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
+        if(vpLink) {
+            if(!vpLink->OverrideMaterial.getValue())
+                cmdGuiObjectArgs(it->pObject, "OverrideMaterial = True");
+            cmdGuiObjectArgs(it->pObject, "ShapeMaterial.DiffuseColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
+            continue;
+        }
+        auto color = dynamic_cast<App::PropertyColor*>(view->getPropertyByName("ShapeColor"));
+        if (color) {
             // get the view provider of the selected object and set the shape color
-            doCommand(Gui, "Gui.getDocument(\"%s\").getObject(\"%s\").ShapeColor=(%.2f,%.2f,%.2f)"
-                         , it->DocName, it->FeatName, fRed, fGrn, fBlu);
+            cmdGuiObjectArgs(it->pObject, "ShapeColor=(%.2f,%.2f,%.2f)", fRed, fGrn, fBlu);
         }
     }
 }

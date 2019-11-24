@@ -106,7 +106,7 @@ class _Frame(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         self.setProperties(obj)
-        obj.IfcRole = "Railing"
+        obj.IfcType = "Railing"
 
     def setProperties(self,obj):
 

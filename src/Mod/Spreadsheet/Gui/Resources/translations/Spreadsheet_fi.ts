@@ -147,8 +147,8 @@
       <translation>Yhdistä solut</translation>
     </message>
     <message>
-      <source>Merge selected cells in spreadsheet</source>
-      <translation>Yhdistä valitut solut laskentataulukossa</translation>
+      <source>Merge selected cells</source>
+      <translation type="unfinished">Merge selected cells</translation>
     </message>
   </context>
   <context>
@@ -177,8 +177,8 @@
       <translation>Jaa solu</translation>
     </message>
     <message>
-      <source>Split previously merged cells in spreadsheet</source>
-      <translation>Jaa laskentataulukon aiemmin yhdistetyt solut</translation>
+      <source>Split previously merged cells</source>
+      <translation type="unfinished">Split previously merged cells</translation>
     </message>
   </context>
   <context>
@@ -192,8 +192,8 @@
       <translation>Lihavoitu teksti</translation>
     </message>
     <message>
-      <source>Set bold text in selected cells</source>
-      <translation>Määritä lihavoitu teksti valituissa soluissa</translation>
+      <source>Set text in selected cells bold</source>
+      <translation type="unfinished">Set text in selected cells bold</translation>
     </message>
   </context>
   <context>
@@ -207,8 +207,8 @@
       <translation>Kursivoitu teksti</translation>
     </message>
     <message>
-      <source>Set italic text in selected cells</source>
-      <translation>Määritä kursivoitu teksti valituissa soluissa</translation>
+      <source>Set text in selected cells italic</source>
+      <translation type="unfinished">Set text in selected cells italic</translation>
     </message>
   </context>
   <context>
@@ -426,8 +426,8 @@
       <translation>Vaaleanharmaa</translation>
     </message>
     <message>
-      <source>Custom</source>
-      <translation>Mukautettu</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

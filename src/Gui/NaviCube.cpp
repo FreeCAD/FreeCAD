@@ -307,12 +307,12 @@ void NaviCube::setCorner(Corner c) {
 NaviCubeImplementation::NaviCubeImplementation(
 		Gui::View3DInventorViewer* viewer) {
 	m_View3DInventorViewer = viewer;
-	m_FrontFaceColor = QColor(255,255,255,192);
-	m_BackFaceColor = QColor(226,233,239);
+	m_FrontFaceColor = QColor(255,255,255,128);
+	m_BackFaceColor = QColor(226,233,239,128);
 	m_HiliteColor = QColor(170,226,247);
-	m_ButtonColor = QColor(226,233,239);
+	m_ButtonColor = QColor(226,233,239,128);
 	m_PickingFramebuffer = NULL;
-	m_CubeWidgetSize = 150;
+	m_CubeWidgetSize = 132;
 
 	m_Menu = createNaviCubeMenu();
 }
@@ -371,7 +371,8 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, floa
 
 	if (text) {
 		paint.setPen(Qt::white);
-		QFont sansFont(str("Helvetica"), 0.1875 * texSize);
+		QFont sansFont(str("Helvetica"), 0.18 * texSize);
+		sansFont.setStretch(QFont::ExtraCondensed);
 		paint.setFont(sansFont);
 		paint.drawText(QRect(0, 0, texSize, texSize), Qt::AlignCenter,qApp->translate("Gui::NaviCube",text));
 	}
@@ -409,7 +410,7 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 
 	QPainterPath path;
 
-	float as1 = 0.12f; // arrow size
+	float as1 = 0.18f; // arrow size
 	float as3 = as1 / 3;
 
 	switch (button) {
@@ -430,7 +431,7 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 
 		float a0 = 72;
 		float a1 = 45;
-		float a2 = 38;
+		float a2 = 32;
 
 		if (TEX_ARROW_LEFT == button) {
 			a0 = 180 - a0;
@@ -582,13 +583,13 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 	int t = m_VertexArray.size();
 
 	m_VertexArray.push_back(z - x - y);
-	m_TextureCoordArray.push_back(Vector2f(0, 0));
+	m_TextureCoordArray.emplace_back(0, 0);
 	m_VertexArray.push_back(z + x - y);
-	m_TextureCoordArray.push_back(Vector2f(1, 0));
+	m_TextureCoordArray.emplace_back(1, 0);
 	m_VertexArray.push_back(z + x + y);
-	m_TextureCoordArray.push_back(Vector2f(1, 1));
+	m_TextureCoordArray.emplace_back(1, 1);
 	m_VertexArray.push_back(z - x + y);
-	m_TextureCoordArray.push_back(Vector2f(0, 1));
+	m_TextureCoordArray.emplace_back(0, 1);
 
 	// TEX_TOP, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_TOP
 	// TEX_TOP 			frontTex,
@@ -676,12 +677,12 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
     if (labels.size() != 6) {
         labels.clear();
-        labels.push_back("Front");
-        labels.push_back("Rear");
-        labels.push_back("Top");
-        labels.push_back("Bottom");
-        labels.push_back("Right");
-        labels.push_back("Left");
+        labels.push_back("FRONT");
+        labels.push_back("REAR");
+        labels.push_back("TOP");
+        labels.push_back("BOTTOM");
+        labels.push_back("RIGHT");
+        labels.push_back("LEFT");
     }
 
 	float gap = 0.12f;
@@ -726,8 +727,8 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	z = r45z * r45x * z;
 	x = r45z * r45x * x;
 
-	x *= 0.25f; // corner face size
-	z *= 1.45f; // corner face position
+	x *= 0.23f; // corner face size
+	z *= 1.43f; // corner face position
 
 	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_RIGHT_REAR);
 
@@ -853,6 +854,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+	glLineWidth(2.0);
 
 	glDisable(GL_LIGHTING);
 	//glDisable(GL_BLEND);
@@ -1000,7 +1002,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			glColor3ub(*b, 0, 0);
 		else {
 			QColor& c = (m_HiliteId ==(*b)) ? m_HiliteColor : m_ButtonColor;
-			glColor3f(c.redF(), c.greenF(), c.blueF());
+			glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
 		}
 		glBindTexture(GL_TEXTURE_2D, m_Textures[*b]);
 
@@ -1038,8 +1040,9 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			glVertex3f(0.0f, 0.0f, 0.0f);
 			glEnd();
 		}
-
-		glColor3ub(255,255,255);
+		
+		QColor& c = m_ButtonColor;
+		glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF());
 		glBindTexture(GL_TEXTURE_2D, m_Textures[TEX_VIEW_MENU_ICON]);
 	}
 
@@ -1264,8 +1267,8 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
     // FIXME find out why do we need to hack the cursor position to get
     // 2019-02-17
     // The above comment is truncated; don't know what it's about
-    // The two hacked lines changing the cursor positon are responsible for parts of the
-    // navigational cluster not being active.
+    // The two hacked lines changing the cursor position are responsible for
+    // parts of the navigational cluster not being active.
     // Commented them out and everything seems to be working
 //    y += 4;
 //    x -= 2;

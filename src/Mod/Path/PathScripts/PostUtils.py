@@ -23,7 +23,7 @@
 
 
 '''
-These are a common functions and classes for creating custom post processors.  
+These are a common functions and classes for creating custom post processors.
 '''
 
 from PySide import QtCore, QtGui
@@ -33,26 +33,10 @@ FreeCADGui = None
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-# class OldHighlighter(QtGui.QSyntaxHighlighter):
-#     def highlightBlock(self, text):
-#         myClassFormat = QtGui.QTextCharFormat()
-#         myClassFormat.setFontWeight(QtGui.QFont.Bold)
-#         myClassFormat.setForeground(QtCore.Qt.green)
-#         # the regex pattern to be colored
-#         pattern = "(G.*?|M.*?)\\s"
-#         expression = QtCore.QRegExp(pattern)
-#         index = text.index(expression)
-#         while index >= 0:
-#             length = expression.matchedLength()
-#             setFormat(index, length, myClassFormat)
-#             index = text.index(expression, index + length)
-            
-
 
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
     def __init__(self, parent=None):
         super(GCodeHighlighter, self).__init__(parent)
-        
 
         keywordFormat = QtGui.QTextCharFormat()
         keywordFormat.setForeground(QtCore.Qt.cyan)
@@ -68,12 +52,12 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
         self.highlightingRules.append((QtCore.QRegExp("\\bF[0-9\\.]+\\b"),speedFormat))
 
     def highlightBlock(self, text):
-        for pattern, format in self.highlightingRules:
+        for pattern, hlFormat in self.highlightingRules:
             expression = QtCore.QRegExp(pattern)
             index = expression.indexIn(text)
             while index >= 0:
                 length = expression.matchedLength()
-                self.setFormat(index, length, format)
+                self.setFormat(index, length, hlFormat)
                 index = expression.indexIn(text, index + length)
 
 

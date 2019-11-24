@@ -252,10 +252,18 @@ void Base::XMLReader::readElement(const char* ElementName)
              (ElementName && LocalName != ElementName));
 }
 
-void Base::XMLReader::readEndElement(const char* ElementName)
+int Base::XMLReader::level() const {
+    return Level;
+}
+
+void Base::XMLReader::readEndElement(const char* ElementName, int level)
 {
     // if we are already at the end of the current element
-    if (ReadType == EndElement && LocalName == ElementName) {
+    if (ReadType == EndElement 
+            && ElementName 
+            && LocalName == ElementName
+            && (level<0 || level==Level))
+    {
         return;
     }
     else if (ReadType == EndDocument) {
@@ -268,7 +276,10 @@ void Base::XMLReader::readEndElement(const char* ElementName)
         ok = read(); if (!ok) break;
         if (ReadType == EndDocument)
             break;
-    } while (ReadType != EndElement || (ElementName && LocalName != ElementName));
+    } while (ReadType != EndElement 
+                || (ElementName 
+                    && (LocalName != ElementName
+                        || (level>=0 && level!=Level))));
 }
 
 void Base::XMLReader::readCharacters(void)
@@ -324,6 +335,8 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
             try {
                 Base::Reader reader(zipstream, jt->FileName, FileVersion);
                 jt->Object->RestoreDocFile(reader);
+                if (reader.getLocalReader())
+                    reader.getLocalReader()->readFiles(zipstream);
             }
             catch(...) {
                 // For any exception we just continue with the next file.
@@ -550,6 +563,10 @@ Base::Reader::Reader(std::istream& str, const std::string& name, int version)
 {
 }
 
+Base::Reader::~Reader()
+{
+}
+
 std::string Base::Reader::getFileName() const
 {
     return this->_name;
@@ -565,3 +582,12 @@ std::istream& Base::Reader::getStream()
     return this->_str;
 }
 
+void Base::Reader::initLocalReader(std::shared_ptr<Base::XMLReader> reader)
+{
+    this->localreader = reader;
+}
+
+std::shared_ptr<Base::XMLReader> Base::Reader::getLocalReader() const
+{
+    return(this->localreader);
+}

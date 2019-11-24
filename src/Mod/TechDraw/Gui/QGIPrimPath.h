@@ -43,9 +43,9 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 170};
 
-    int type() const { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual QPainterPath shape() const { return path(); }
+    int type() const override { return Type;}
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
+    virtual QPainterPath shape() const override { return path(); }
 
     void setHighlighted(bool state);
     virtual void setPrettyNormal();
@@ -55,25 +55,52 @@ public:
     virtual double getWidth() { return m_width;}
     Qt::PenStyle getStyle() { return m_styleCurrent; }
     void setStyle(Qt::PenStyle s);
+    void setStyle(int s);
     virtual void setNormalColor(QColor c);
+    virtual void setCapStyle(Qt::PenCapStyle c);
+
+    //plain color fill parms
+    void setFillStyle(Qt::BrushStyle f) { m_fillStyleCurrent = f; }
+    Qt::BrushStyle getFillStyle() { return m_fillStyleCurrent; }
+
+    void setFill(QColor c, Qt::BrushStyle s);
+    void setFill(QBrush b);
+    void resetFill();
+    void setFillColor(QColor c);
+    QColor getFillColor(void) { return m_colDefFill; }
 
 protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
     virtual QColor getSelectColor(void);
     Base::Reference<ParameterGrp> getParmGroup(void);
+    virtual Qt::PenCapStyle prefCapStyle(void);
 
     bool isHighlighted;
+
     QPen m_pen;
     QColor m_colCurrent;
     QColor m_colNormal;
     bool   m_colOverride;
     Qt::PenStyle m_styleCurrent;
     double m_width;
+    Qt::PenCapStyle m_capStyle;
+
+    QBrush m_brush;
+    Qt::BrushStyle m_fillStyleCurrent;                 //current fill style
+    QColor m_fillColorCurrent;                         //current fill color
+
+    QColor m_colDefFill;                        //"no color" default normal fill color
+    QColor m_colNormalFill;                     //current Normal fill color def or plain fill
+    Qt::BrushStyle m_styleDef;                  //default Normal fill style
+    Qt::BrushStyle m_styleNormal;               //current Normal fill style
+    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
+
 
 private:
 

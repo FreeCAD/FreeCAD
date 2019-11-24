@@ -30,6 +30,7 @@
         <file>icons/Path-MachineLathe.svg</file>
         <file>icons/Path-MachineMill.svg</file>
         <file>icons/Path-Machine.svg</file>
+        <file>icons/Path-OpActive.svg</file>
         <file>icons/Path-OperationA.svg</file>
         <file>icons/Path-OperationB.svg</file>
         <file>icons/Path-OpCopy.svg</file>
@@ -49,6 +50,7 @@
         <file>icons/Path-Stop.svg</file>
         <file>icons/Path-ToolChange.svg</file>
         <file>icons/Path-ToolController.svg</file>
+	<file>icons/Path-ToolDuplicate.svg</file>
         <file>icons/Path-Toolpath.svg</file>
         <file>icons/Path-ToolTable.svg</file>
         <file>icons/Path-Area.svg</file>
@@ -86,6 +88,7 @@
         <file>panels/DlgToolEdit.ui</file>
         <file>panels/DlgTCChooser.ui</file>
         <file>panels/DogboneEdit.ui</file>
+        <file>panels/DressupPathBoundary.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
@@ -96,6 +99,7 @@
         <file>panels/PageOpDrillingEdit.ui</file>
         <file>panels/PageOpEngraveEdit.ui</file>
         <file>panels/PageOpHelixEdit.ui</file>
+        <file>panels/PageOpPocketExtEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSurfaceEdit.ui</file>

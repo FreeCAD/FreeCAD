@@ -43,7 +43,7 @@
 
 using namespace Gui;
 
-SO_NODE_SOURCE(SoFCBoundingBox);
+SO_NODE_SOURCE(SoFCBoundingBox)
 
 // vertices used to create a box
 static const int32_t bBoxVerts[8][3] =
@@ -235,7 +235,7 @@ void SoFCBoundingBox::finish()
 
 // ---------------------------------------------------------------
 
-SO_NODE_SOURCE(SoSkipBoundingGroup);
+SO_NODE_SOURCE(SoSkipBoundingGroup)
 
 /*!
   Constructor.

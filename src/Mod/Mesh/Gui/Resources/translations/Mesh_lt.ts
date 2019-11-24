@@ -246,7 +246,7 @@
     <message>
       <location filename="../../Command.cpp" line="616"/>
       <source>Create mesh from shape...</source>
-      <translation>Sukurti tinklą iš kūno pavidalo...</translation>
+      <translation>Sukurti daikto tinklą...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="617"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../Command.cpp" line="641"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Tinklas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="642"/>
@@ -972,7 +972,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Nuostatos</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1020,7 +1020,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="84"/>
       <source>Solid:</source>
-      <translation>Vientisinis kūnas:</translation>
+      <translation>Pilnaviduris kūnas:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="97"/>
@@ -1158,6 +1158,13 @@ Please run the command to repair folds first</source>
       <source>Export AMF files using compression</source>
       <translation>Eksportuoti glaudintus AMF failus</translation>
     </message>
+    <message>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="36"/>
+      <source>This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</source>
+      <translation type="unfinished">This parameter indicates whether ZIP compression
+is used when writing a file in AMF format</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
@@ -1293,22 +1300,22 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="368"/>
+      <location filename="../../MeshEditor.cpp" line="376"/>
       <source>Add triangle</source>
       <translation>Pridėti trikampį</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="369"/>
+      <location filename="../../MeshEditor.cpp" line="377"/>
       <source>Flip normal</source>
       <translation>Apgręžti normalę</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="370"/>
+      <location filename="../../MeshEditor.cpp" line="378"/>
       <source>Clear</source>
       <translation>Išvalyti</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="385"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Finish</source>
       <translation>Užbaigti</translation>
     </message>
@@ -1316,7 +1323,7 @@ Please run the command to repair folds first</source>
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="711"/>
+      <location filename="../../MeshEditor.cpp" line="729"/>
       <source>Finish</source>
       <translation>Užbaigti</translation>
     </message>
@@ -1578,7 +1585,7 @@ Please run the command to repair folds first</source>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="329"/>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ašis</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="330"/>

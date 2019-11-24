@@ -274,9 +274,9 @@ void Builder3D::addTransformation(const Base::Matrix4D& transform)
   Base::Vector3f cAxis, cBase;
   float fAngle, fTranslation;
   transform.toAxisAngle(cBase, cAxis,fAngle,fTranslation);
-  cBase.x = (float)transform[0][3];
-  cBase.y = (float)transform[1][3];
-  cBase.z = (float)transform[2][3];
+  cBase.x = static_cast<float>(transform[0][3]);
+  cBase.y = static_cast<float>(transform[1][3]);
+  cBase.z = static_cast<float>(transform[2][3]);
   addTransformation(cBase,cAxis,fAngle);
 }
 
@@ -300,13 +300,15 @@ void Builder3D::addTransformation(const Base::Vector3f& translation, const Base:
  */
 void Builder3D::saveToLog(void)
 {
-  result <<   "} ";
-  // Note: The string can become very long, so that ConsoleSingelton::Log() will internally 
-  // truncate the string which causes Inventor to fail to interpret the truncated string.
-  // So, we send the string directly to the observer that handles the Inventor stuff.
-  //Console().Log("Vdbg: %s \n",result.str().c_str());
-  ConsoleObserver* obs = Base::Console().Get("StatusBar");
-  if (obs) obs->Log(result.str().c_str());
+    result <<   "} ";
+    // Note: The string can become very long, so that ConsoleSingelton::Log() will internally 
+    // truncate the string which causes Inventor to fail to interpret the truncated string.
+    // So, we send the string directly to the observer that handles the Inventor stuff.
+    //Console().Log("Vdbg: %s \n",result.str().c_str());
+    ILogger* obs = Base::Console().Get("StatusBar");
+    if (obs != nullptr){
+        obs->SendLog(result.str().c_str(), Base::LogStyle::Log);
+    }
 }
 
 /**
@@ -896,9 +898,9 @@ void InventorBuilder::addTransformation(const Matrix4D& transform)
     Vector3f cAxis, cBase;
     float fAngle, fTranslation;
     transform.toAxisAngle(cBase, cAxis,fAngle,fTranslation);
-    cBase.x = (float)transform[0][3];
-    cBase.y = (float)transform[1][3];
-    cBase.z = (float)transform[2][3];
+    cBase.x = static_cast<float>(transform[0][3]);
+    cBase.y = static_cast<float>(transform[1][3]);
+    cBase.z = static_cast<float>(transform[2][3]);
     addTransformation(cBase,cAxis,fAngle);
 }
 

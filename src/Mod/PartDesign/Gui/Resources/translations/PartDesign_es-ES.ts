@@ -795,11 +795,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La función solicitada no puede ser creada. La razón puede ser que:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+ â¢ el cuerpo activo no contiene una forma base, por lo que no hay 
+material para ser eliminado;
+ â¢ el croquis seleccionado no pertenece al cuerpo activo.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +811,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La función solicitada no puede ser creada. La razón puede ser que:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+ â¢ el cuerpo activo no contiene una forma base, por lo que no hay 
+material para ser eliminado;
+ â¢ el croquis seleccionado no pertenece al cuerpo activo.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +827,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>La función solicitada no puede ser creada. La razón puede ser que:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+ â¢ el cuerpo activo no contiene una forma base, por lo que no hay 
+material para ser eliminado;
+ â¢ el croquis seleccionado no pertenece al cuerpo activo.</translation>
     </message>
   </context>
   <context>

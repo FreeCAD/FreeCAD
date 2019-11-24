@@ -77,7 +77,7 @@ short Offset::mustExecute() const
 App::DocumentObjectExecReturn *Offset::execute(void)
 {
     App::DocumentObject* source = Source.getValue();
-    if (!(source && source->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    if (!source)
         return new App::DocumentObjectExecReturn("No source shape linked.");
     double offset = Value.getValue();
     double tol = Precision::Confusion();
@@ -86,7 +86,7 @@ App::DocumentObjectExecReturn *Offset::execute(void)
     short mode = (short)Mode.getValue();
     short join = (short)Join.getValue();
     bool fill = Fill.getValue();
-    const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
+    const TopoShape& shape = Feature::getShape(source);
     if (fabs(offset) > 2*tol)
         this->Shape.setValue(shape.makeOffsetShape(offset, tol, inter, self, mode, join, fill));
     else

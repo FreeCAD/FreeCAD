@@ -25,7 +25,6 @@
 import FreeCAD, os, unittest, tempfile
 import math
 
-
 #---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Document code
 #---------------------------------------------------------------------------
@@ -79,7 +78,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.assertEqual(L1.ExecCount, countChild)
     self.assertEqual(L2.ExecCount, countParent+1)
 
-    L1.touch()
+    L1.touch('')
     countChild = L1.ExecCount
     countParent = L2.ExecCount
     objectcount = self.Doc.recompute()
@@ -689,10 +688,12 @@ class UndoRedoCases(unittest.TestCase):
 
     # second transaction
     self.Doc.openTransaction("Transaction2")
-    self.assertEqual(self.Doc.UndoNames,['Transaction2','Transaction1'])
-    self.assertEqual(self.Doc.UndoCount,2)
+    # new behavior: no change, no transaction
+    self.assertEqual(self.Doc.UndoNames,['Transaction1'])
+    self.assertEqual(self.Doc.UndoCount,1)
     self.assertEqual(self.Doc.RedoNames,[])
     self.assertEqual(self.Doc.RedoCount,0)
+
     self.Doc.getObject("test1").Integer  = 2
     self.assertEqual(self.Doc.UndoNames,['Transaction2','Transaction1'])
     self.assertEqual(self.Doc.UndoCount,2)
@@ -717,19 +718,19 @@ class UndoRedoCases(unittest.TestCase):
 
     # third transaction
     self.Doc.openTransaction("Transaction3")
+    self.Doc.getObject("test1").Integer  = 3
     self.assertEqual(self.Doc.UndoNames,['Transaction3','Transaction2','Transaction1'])
     self.assertEqual(self.Doc.UndoCount,3)
-    self.Doc.getObject("test1").Integer  = 3
     self.assertEqual(self.Doc.RedoNames,[])
     self.assertEqual(self.Doc.RedoCount,0)
 
     # fourth transaction
     self.Doc.openTransaction("Transaction4")
+    self.Doc.getObject("test1").Integer  = 4
     self.assertEqual(self.Doc.UndoNames,['Transaction4','Transaction3','Transaction2','Transaction1'])
     self.assertEqual(self.Doc.UndoCount,4)
     self.assertEqual(self.Doc.RedoNames,[])
     self.assertEqual(self.Doc.RedoCount,0)
-    self.Doc.getObject("test1").Integer  = 4
 
     # undo the fourth transaction
     self.Doc.undo()
@@ -757,7 +758,7 @@ class UndoRedoCases(unittest.TestCase):
 
     # undo the first transaction
     self.Doc.undo()
-    self.failUnless(self.Doc.getObject("test1") == None)
+    self.failUnless(self.Doc.getObject("test1") is None)
     self.failUnless(self.Doc.getObject("Del").Integer == 2)
     self.assertEqual(self.Doc.UndoNames,[])
     self.assertEqual(self.Doc.UndoCount,0)
@@ -937,7 +938,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.openTransaction("Remove")
     self.Doc.removeObject("Label_2")
     self.Doc.commitTransaction()
-    self.failUnless(G1.getObject("Label_2") == None)
+    self.failUnless(G1.getObject("Label_2") is None)
     self.Doc.undo()
     self.failUnless(G1.getObject("Label_2") != None)
 
@@ -953,7 +954,7 @@ class DocumentGroupCases(unittest.TestCase):
     self.Doc.openTransaction("Remove")
     self.Doc.removeObject("Label_2")
     self.Doc.commitTransaction()
-    self.failUnless(G1.getObject("Label_2") == None)
+    self.failUnless(G1.getObject("Label_2") is None)
     self.Doc.openTransaction("Remove")
     self.Doc.removeObject("Group")
     self.Doc.commitTransaction()
@@ -964,7 +965,7 @@ class DocumentGroupCases(unittest.TestCase):
     # Remove first object and then the group in one transaction
     self.Doc.openTransaction("Remove")
     self.Doc.removeObject("Label_2")
-    self.failUnless(G1.getObject("Label_2") == None)
+    self.failUnless(G1.getObject("Label_2") is None)
     self.Doc.removeObject("Group")
     self.Doc.commitTransaction()
     self.Doc.undo()
@@ -976,9 +977,9 @@ class DocumentGroupCases(unittest.TestCase):
     G1.addObject(L3)
     self.Doc.openTransaction("Remove")
     self.Doc.removeObject("Label_2")
-    self.failUnless(G1.getObject("Label_2") == None)
+    self.failUnless(G1.getObject("Label_2") is None)
     self.Doc.removeObject("Label_3")
-    self.failUnless(G1.getObject("Label_3") == None)
+    self.failUnless(G1.getObject("Label_3") is None)
     self.Doc.removeObject("Group")
     self.Doc.commitTransaction()
     self.Doc.undo()
@@ -1000,7 +1001,7 @@ class DocumentGroupCases(unittest.TestCase):
     grp2 = self.Doc.addObject("App::DocumentObjectGroup","Group2")
     grp1.addObject(obj1)
     self.failUnless(obj1.getParentGroup()==grp1)
-    self.failUnless(obj1.getParentGeoFeatureGroup()==None)
+    self.failUnless(obj1.getParentGeoFeatureGroup() is None)
     self.failUnless(grp1.hasObject(obj1))
     grp2.addObject(obj1)
     self.failUnless(grp1.hasObject(obj1)==False)
@@ -1011,8 +1012,8 @@ class DocumentGroupCases(unittest.TestCase):
     prt2 = self.Doc.addObject("App::Part","Part2")
 
     prt1.addObject(grp2)
-    self.failUnless(grp2.getParentGeoFeatureGroup()==prt1)
-    self.failUnless(grp2.getParentGroup()==None)
+    self.failUnless(grp2.getParentGeoFeatureGroup() == prt1)
+    self.failUnless(grp2.getParentGroup() is None)
     self.failUnless(grp2.hasObject(obj1))
     self.failUnless(prt1.hasObject(grp2))
     self.failUnless(prt1.hasObject(obj1))
@@ -1626,11 +1627,25 @@ class DocumentObserverCases(unittest.TestCase):
     #undo/redo is not enabled in cmd line mode by default
     self.Doc2.UndoMode = 1
     
-    self.Doc2.openTransaction('test')
-    self.assertEqual(self.Obs.signal.pop(), 'DocOpenTransaction')
+    # Must set Doc2 as active document before start transaction test. If not,
+    # then a transaction will be auto created inside the active document if a
+    # new transaction is triggered from a non active document
+    FreeCAD.setActiveDocument('Observer2')
+    self.assertEqual(self.Obs.signal.pop(), 'DocActivated')
     self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
-    self.assertEqual(self.Obs.parameter2.pop(), 'test')
     self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+
+    self.Doc2.openTransaction('test')
+    # openTransaction() now only setup pending transaction, which will only be
+    # created when there is actual change
+    self.Doc2.addObject('App::FeatureTest','test')
+    self.assertEqual(self.Obs.signal[0], 'DocOpenTransaction')
+    self.assertEqual(self.Obs.signal.count('DocOpenTransaction'),1)
+    self.assertTrue(self.Obs.parameter[0] is self.Doc2)
+    self.assertEqual(self.Obs.parameter2[0], 'test')
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc2.commitTransaction()
     self.assertEqual(self.Obs.signal.pop(), 'DocCommitTransaction')
@@ -1638,25 +1653,41 @@ class DocumentObserverCases(unittest.TestCase):
     self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     self.Doc2.openTransaction('test2')
-    self.assertEqual(self.Obs.signal.pop(), 'DocOpenTransaction')
-    self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
-    self.assertEqual(self.Obs.parameter2.pop(), 'test2')
-    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    # openTransaction() now only setup pending transaction, which will only be
+    # created when there is actual change
+    self.Doc2.addObject('App::FeatureTest','test')
+    self.assertEqual(self.Obs.signal[0], 'DocOpenTransaction')
+    self.assertEqual(self.Obs.signal.count('DocOpenTransaction'),1)
+    self.assertTrue(self.Obs.parameter[0] is self.Doc2)
+    self.assertEqual(self.Obs.parameter2[0], 'test2')
+    # there will be other signals because of the addObject()
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc2.abortTransaction()
     self.assertEqual(self.Obs.signal.pop(), 'DocAbortTransaction')
     self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
-    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    # there will be other signals because of aborting the above addObject()
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc2.undo()
     self.assertEqual(self.Obs.signal.pop(), 'DocUndo')
     self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
-    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    # there will be other signals because undoing the above addObject()
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc2.redo()
     self.assertEqual(self.Obs.signal.pop(), 'DocRedo')
     self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
-    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    # there will be other signals because redoing the above addObject()
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc1.Comment = 'test comment'
     self.assertEqual(self.Obs.signal.pop(0), 'DocBeforeChange')
@@ -1669,6 +1700,10 @@ class DocumentObserverCases(unittest.TestCase):
     FreeCAD.closeDocument(self.Doc2.Name)
     self.assertEqual(self.Obs.signal.pop(), 'DocDeleted')
     self.assertTrue(self.Obs.parameter.pop() is self.Doc2)
+    if FreeCAD.GuiUp:
+        # only has document activated signal when running in GUI mode
+        self.assertEqual(self.Obs.signal.pop(), 'DocActivated')
+        self.assertTrue(self.Obs.parameter.pop() is self.Doc1)
     self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
     FreeCAD.closeDocument(self.Doc1.Name)
@@ -1716,8 +1751,8 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     FreeCAD.ActiveDocument.removeObject(obj.Name)
-    self.failUnless(self.Obs.signal.pop() == 'ObjDeleted')
-    self.failUnless(self.Obs.parameter.pop() is obj)
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjDeleted')
+    self.failUnless(self.Obs.parameter.pop(0) is obj)
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     pyobj = self.Doc1.addObject("App::FeaturePython","pyobj")
@@ -1820,9 +1855,19 @@ class DocumentObserverCases(unittest.TestCase):
     self.Obs.parameter2 = []    
     self.failUnless(self.GuiObs.signal.pop() == "ObjCreated")
     self.failUnless(self.GuiObs.parameter.pop() is obj.ViewObject)
-    self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
+
+    # There are object change signals, caused by sync of obj.Visibility. Same below.
+    self.GuiObs.signal = []
+    self.GuiObs.parameter = []
+    self.GuiObs.parameter2 = []
 
     obj.ViewObject.Visibility = False
+    self.failUnless(self.Obs.signal.pop() == "ObjChanged")
+    self.failUnless(self.Obs.parameter.pop() is obj)
+    self.failUnless(self.Obs.parameter2.pop() == "Visibility")
+    self.failUnless(self.Obs.signal.pop() == "ObjBeforeChange")
+    self.failUnless(self.Obs.parameter.pop() is obj)
+    self.failUnless(self.Obs.parameter2.pop() == "Visibility")
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     self.failUnless(self.GuiObs.signal.pop(0) == 'ObjChanged')
     self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
@@ -1864,8 +1909,8 @@ class DocumentObserverCases(unittest.TestCase):
     
     vo = obj.ViewObject
     FreeCAD.ActiveDocument.removeObject(obj.Name)
-    self.failUnless(self.Obs.signal.pop() == 'ObjDeleted')
-    self.failUnless(self.Obs.parameter.pop() is obj)
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjDeleted')
+    self.failUnless(self.Obs.parameter.pop(0) is obj)
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     self.failUnless(self.GuiObs.signal.pop() == 'ObjDeleted')
     self.failUnless(self.GuiObs.parameter.pop() is vo)

@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #endif
 
-
 #include "Placement.h"
 #include "Rotation.h"
+#include "DualQuaternion.h"
 
 using namespace Base;
 
@@ -61,6 +60,13 @@ Placement::Placement(const Vector3d& Pos, const Rotation &Rot, const Vector3d& C
     this->_rot = Rot;
 }
 
+Placement Placement::fromDualQuaternion(DualQuat qq)
+{
+    Rotation rot(qq.x.re, qq.y.re, qq.z.re, qq.w.re);
+    DualQuat mvq = 2 * qq.dual() * qq.real().conj();
+    return Placement(Vector3d(mvq.x.re,mvq.y.re, mvq.z.re), rot);
+}
+
 Base::Matrix4D Placement::toMatrix(void) const
 {
     Base::Matrix4D matrix;
@@ -77,6 +83,15 @@ void Placement::fromMatrix(const Base::Matrix4D& matrix)
     this->_pos.x = matrix[0][3];
     this->_pos.y = matrix[1][3];
     this->_pos.z = matrix[2][3];
+}
+
+DualQuat Placement::toDualQuaternion() const
+{
+    DualQuat posqq(_pos.x, _pos.y, _pos.z, 0.0);
+    DualQuat rotqq;
+    _rot.getValue(rotqq.x.re, rotqq.y.re, rotqq.z.re, rotqq.w.re);
+    DualQuat ret (rotqq,  0.5 * posqq * rotqq);
+    return ret;
 }
 
 bool Placement::isIdentity() const
@@ -138,6 +153,11 @@ Placement& Placement::operator = (const Placement& New)
     return *this;
 }
 
+Placement Placement::pow(double t, bool shorten) const
+{
+    return Placement::fromDualQuaternion(this->toDualQuaternion().pow(t, shorten));
+}
+
 void Placement::multVec(const Vector3d & src, Vector3d & dst) const
 {
     this->_rot.multVec(src, dst);
@@ -149,4 +169,10 @@ Placement Placement::slerp(const Placement & p0, const Placement & p1, double t)
     Rotation rot = Rotation::slerp(p0.getRotation(), p1.getRotation(), t);
     Vector3d pos = p0.getPosition() * (1.0-t) + p1.getPosition() * t;
     return Placement(pos, rot);
+}
+
+Placement Placement::sclerp(const Placement& p0, const Placement& p1, double t, bool shorten)
+{
+    Placement trf = p0.inverse() * p1;
+    return p0 * trf.pow(t, shorten);
 }

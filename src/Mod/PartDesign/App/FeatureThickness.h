@@ -41,6 +41,7 @@ public:
 
     App::PropertyLength         Value;
     App::PropertyBool           Reversed;
+    App::PropertyBool           Intersection;
     App::PropertyEnumeration    Mode;
     App::PropertyEnumeration    Join;      
 

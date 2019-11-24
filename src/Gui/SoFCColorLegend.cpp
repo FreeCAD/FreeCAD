@@ -34,12 +34,13 @@
 # include <Inventor/nodes/SoTransform.h>
 #endif
 
+#include "ViewProvider.h"
 #include "SoFCColorLegend.h"
 
 
 using namespace Gui;
 
-SO_NODE_SOURCE(SoFCColorLegend);
+SO_NODE_SOURCE(SoFCColorLegend)
 
 /*!
   Constructor.
@@ -81,7 +82,7 @@ void SoFCColorLegend::finish()
 
 void SoFCColorLegend::setMarkerLabel( const SoMFString& label )
 {
-  labels->removeAllChildren();
+  coinRemoveAllChildren(labels);
 
   int num = label.getNum();
   if ( num > 1 )
@@ -234,7 +235,7 @@ void SoFCColorLegend::setColorModel( App::ColorGradient::TColorModel tModel )
 
   // first clear the children
   if ( getNumChildren() > 0 )
-    removeAllChildren();
+    coinRemoveAllChildren(this);
   addChild(labels);
   addChild(coords);
   addChild(mat);

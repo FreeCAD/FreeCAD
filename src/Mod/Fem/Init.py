@@ -39,12 +39,19 @@ FreeCAD.addImportType("FEM result CalculiX (*.frd)", "feminout.importCcxFrdResul
 FreeCAD.addImportType("FEM mesh Fenics (*.xml *.xdmf)", "feminout.importFenicsMesh")
 FreeCAD.addExportType("FEM mesh Fenics (*.xml *.xdmf)", "feminout.importFenicsMesh")
 
+FreeCAD.addImportType(
+    "FEM mesh YAML/JSON (*.meshyaml *.meshjson *.yaml *.json)", "feminout.importYamlJsonMesh"
+)
+FreeCAD.addExportType(
+    "FEM mesh YAML/JSON (*.meshyaml *.meshjson *.yaml *.json)", "feminout.importYamlJsonMesh"
+)
+
 FreeCAD.addImportType("FEM mesh Z88 (*i1.txt)", "feminout.importZ88Mesh")
 FreeCAD.addExportType("FEM mesh Z88 (*i1.txt)", "feminout.importZ88Mesh")
 
 FreeCAD.addImportType("FEM result Z88 displacements (*o2.txt)", "feminout.importZ88O2Results")
 
-if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
+if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
     FreeCAD.addImportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
     FreeCAD.addExportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
 

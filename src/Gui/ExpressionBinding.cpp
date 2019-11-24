@@ -30,9 +30,13 @@
 #include <App/Expression.h>
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Document.h>
+#include <App/Application.h>
 #include <boost/bind.hpp>
+
+FC_LOG_LEVEL_INIT("Expression",true,true)
 
 using namespace Gui;
 using namespace App;
@@ -67,10 +71,22 @@ void Gui::ExpressionBinding::setExpression(boost::shared_ptr<Expression> expr)
     }
 
     lastExpression = getExpression();
+
+    bool transaction = !App::GetApplication().getActiveTransaction();
+    if(transaction) {
+        std::ostringstream ss;
+        ss << (expr?"Set":"Discard") << " expression " << docObj->Label.getValue();
+        App::GetApplication().setActiveTransaction(ss.str().c_str());
+    }
+
     docObj->ExpressionEngine.setValue(path, expr);
-    
+
     if(m_autoApply)
         apply();
+    
+    if(transaction)
+        App::GetApplication().closeActiveTransaction();
+
 }
 
 void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
@@ -105,17 +121,34 @@ boost::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
     return docObj->getExpression(path).expression;
 }
 
-std::string ExpressionBinding::getExpressionString() const
+std::string ExpressionBinding::getExpressionString(bool no_throw) const
 {
-    if (!getExpression())
-        throw Base::RuntimeError("No expression found.");
-
-    return getExpression()->toString();
+    try {
+        if (!getExpression())
+            throw Base::RuntimeError("No expression found.");
+        return getExpression()->toString();
+    } catch (Base::Exception &e) {
+        if(no_throw)
+            FC_ERR("failed to get expression string: " << e.what());
+        else
+            throw;
+    } catch (std::exception &e) {
+        if(no_throw)
+            FC_ERR("failed to get expression string: " << e.what());
+        else
+            throw;
+    } catch (...) {
+        if(no_throw)
+            FC_ERR("failed to get expression string: unknown exception");
+        else
+            throw;
+    }
+    return std::string();
 }
 
 std::string ExpressionBinding::getEscapedExpressionString() const
 {
-    return Base::Tools::escapedUnicodeFromUtf8(getExpressionString().c_str());
+    return Base::Tools::escapedUnicodeFromUtf8(getExpressionString(false).c_str());
 }
 
 QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
@@ -142,11 +175,20 @@ bool ExpressionBinding::apply(const std::string & propName)
 
         if (!docObj)
             throw Base::RuntimeError("Document object not found.");
+
+        bool transaction = !App::GetApplication().getActiveTransaction();
+        if(transaction) {
+            std::ostringstream ss;
+            ss << "Set expression " << docObj->Label.getValue();
+            App::GetApplication().setActiveTransaction(ss.str().c_str());
+        }
         Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', u'%s')",
                                 docObj->getDocument()->getName(),
                                 docObj->getNameInDocument(),
                                 path.toEscapedString().c_str(),
                                 getEscapedExpressionString().c_str());
+        if(transaction)
+            App::GetApplication().closeActiveTransaction();
         return true;
     }
     else {
@@ -156,11 +198,20 @@ bool ExpressionBinding::apply(const std::string & propName)
             if (!docObj)
                 throw Base::RuntimeError("Document object not found.");
 
-            if (lastExpression)
+            if (lastExpression) {
+                bool transaction = !App::GetApplication().getActiveTransaction();
+                if(transaction) {
+                    std::ostringstream ss;
+                    ss << "Discard expression " << docObj->Label.getValue();
+                    App::GetApplication().setActiveTransaction(ss.str().c_str());
+                }
                 Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', None)",
                                         docObj->getDocument()->getName(),
                                         docObj->getNameInDocument(),
                                         path.toEscapedString().c_str());
+                if(transaction)
+                    App::GetApplication().closeActiveTransaction();
+            }
         }
 
         return false;
@@ -182,10 +233,12 @@ bool ExpressionBinding::apply()
     /* Skip updating read-only properties */
     if (prop->isReadOnly())
         return true;
-    
-    std::string name = docObj->getNameInDocument();
 
-    return apply("App.ActiveDocument." + name + "." + getPath().toEscapedString());
+    std::string _path = getPath().toEscapedString();
+    const char *path = _path.c_str();
+    if(path[0] == '.')
+        ++path;
+    return apply(Gui::Command::getObjectCmd(docObj) + "." + path);
 }
 
 void ExpressionBinding::expressionChange(const ObjectIdentifier& id) {

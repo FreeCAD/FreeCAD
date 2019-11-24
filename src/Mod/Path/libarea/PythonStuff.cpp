@@ -75,6 +75,8 @@ static void print_curve(const CCurve& c)
 	std::size_t nvertices = c.m_vertices.size();
 #if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
 	printf("number of vertices = %d\n", nvertices);
+#elif defined(_WIN32)
+	printf("number of vertices = %Iu\n", nvertices);
 #else
 	printf("number of vertices = %lu\n", nvertices);
 #endif
@@ -137,7 +139,7 @@ static CArea AreaFromDxf(const char* filepath)
 
 static void append_point(CCurve& c, const Point& p)
 {
-	c.m_vertices.push_back(CVertex(p));
+	c.m_vertices.emplace_back(p);
 }
 
 static boost::python::tuple nearest_point_to_curve(CCurve& c1, const CCurve& c2)

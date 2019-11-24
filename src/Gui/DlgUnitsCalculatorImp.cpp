@@ -66,8 +66,8 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     actUnit.setInvalid();
 
     units << Base::Unit::Length << Base::Unit::Mass << Base::Unit::Angle << Base::Unit::Density
-          << Base::Unit::Area << Base::Unit::Volume << Base::Unit::TimeSpan << Base::Unit::Velocity
-          << Base::Unit::Acceleration << Base::Unit::Temperature
+          << Base::Unit::Area << Base::Unit::Volume << Base::Unit::TimeSpan << Base::Unit::Frequency
+          << Base::Unit::Velocity << Base::Unit::Acceleration << Base::Unit::Temperature
           << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential
           << Base::Unit::AmountOfSubstance << Base::Unit::LuminousIntensity << Base::Unit::Stress
           << Base::Unit::Pressure << Base::Unit::Force << Base::Unit::Work << Base::Unit::Power

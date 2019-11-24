@@ -53,19 +53,34 @@ EXTERNAL_MODULES+=' Mesh'
 EXTERNAL_MODULES+=' MeshPart'
 EXTERNAL_MODULES+=' Part'
 EXTERNAL_MODULES+=' Path'
+EXTERNAL_MODULES+=' PySide'
 EXTERNAL_MODULES+=' PySide.QtCore'
 EXTERNAL_MODULES+=' PySide.QtGui'
 EXTERNAL_MODULES+=' TechDraw'
+EXTERNAL_MODULES+=' TestSketcherApp'
+EXTERNAL_MODULES+=' area'
 EXTERNAL_MODULES+=' importlib'
+EXTERNAL_MODULES+=' ocl'
+EXTERNAL_MODULES+=' pivy'
 
-ARGS+=" --errors-only"
+IGNORE_MODULES+=' grbl_post.py'
+IGNORE_MODULES+=' PathSimulatorGui.py'
+IGNORE_MODULES+=' PathSurface.py'
+
+#ARGS+=" --errors-only"
+ARGS+=" --disable=C,R"
 ARGS+=" --ignored-modules=$(echo ${EXTERNAL_MODULES} | tr ' ' ',')"
-ARGS+=" --jobs=4"
+if [ -n "${IGNORE_MODULES}" ]; then
+  ARGS+=" --ignore=$(echo ${IGNORE_MODULES} | tr ' ' ',')"
+fi
+ARGS+=" --jobs=0"
 
-if [ -z "$(which pylint)" ]; then
+if [ -z "$(which pylint3)" ]; then
   echo "Cannot find pylint, please install and try again!"
   exit 1
 fi
 
-#pylint ${ARGS} PathScripts/ PathTests/
-pylint ${ARGS} PathScripts/
+pylint3 ${ARGS} PathScripts/ PathTests/
+#pylint3 ${ARGS} PathScripts/
+#pylint3 ${ARGS} PathTests/
+

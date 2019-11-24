@@ -39,7 +39,10 @@
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/QuantityPy.h>
 
+#include "Document.h"
+#include "DocumentObject.h"
 #include "Placement.h"
 #include "PropertyGeo.h"
 #include "ObjectIdentifier.h"
@@ -56,7 +59,7 @@ using namespace std;
 // PropertyVector
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyVector , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyVector , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -193,19 +196,51 @@ void PropertyVector::Paste(const Property &from)
 
 void PropertyVector::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
+
+const boost::any PropertyVector::getPathValue(const ObjectIdentifier &path) const
+{
+    Base::Unit unit = getUnit();
+    if(!unit.isEmpty()) {
+        std::string p = path.getSubPathStr();
+        if (p == ".x" || p == ".y" || p == ".z") {
+            // Convert double to quantity
+            return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), unit);
+        }
+    }
+    return Property::getPathValue(path);
+}
+
+bool PropertyVector::getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const
+{
+    Base::Unit unit = getUnit();
+    if(unit.isEmpty())
+        return false;
+
+    std::string p = path.getSubPathStr();
+    if (p == ".x") {
+        res = new QuantityPy(new Quantity(getValue().x,unit));
+    } else if(p == ".y") {
+        res = new QuantityPy(new Quantity(getValue().y,unit));
+    } else if(p == ".z") {
+        res = new QuantityPy(new Quantity(getValue().z,unit));
+    } else
+        return false;
+    return true;
+}
+
 
 //**************************************************************************
 // PropertyVectorDistance
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyVectorDistance , App::PropertyVector);
+TYPESYSTEM_SOURCE(App::PropertyVectorDistance , App::PropertyVector)
 
 //**************************************************************************
 // Construction/Destruction
@@ -214,18 +249,6 @@ TYPESYSTEM_SOURCE(App::PropertyVectorDistance , App::PropertyVector);
 PropertyVectorDistance::PropertyVectorDistance()
 {
 
-}
-
-const boost::any PropertyVectorDistance::getPathValue(const ObjectIdentifier &path) const
-{
-    std::string p = path.getSubPathStr();
-
-    if (p == ".x" || p == ".y" || p == ".z") {
-        // Convert double to quantity
-        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
-    }
-    else
-        return Property::getPathValue(path);
 }
 
 PropertyVectorDistance::~PropertyVectorDistance()
@@ -237,7 +260,7 @@ PropertyVectorDistance::~PropertyVectorDistance()
 // PropertyPosition
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPosition , App::PropertyVector);
+TYPESYSTEM_SOURCE(App::PropertyPosition , App::PropertyVector)
 
 //**************************************************************************
 // Construction/Destruction
@@ -253,23 +276,11 @@ PropertyPosition::~PropertyPosition()
 
 }
 
-const boost::any PropertyPosition::getPathValue(const ObjectIdentifier &path) const
-{
-    std::string p = path.getSubPathStr();
-
-    if (p == ".x" || p == ".y" || p == ".z") {
-        // Convert double to quantity
-        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
-    }
-    else
-        return Property::getPathValue(path);
-}
-
 //**************************************************************************
 // PropertyPosition
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyDirection , App::PropertyVector);
+TYPESYSTEM_SOURCE(App::PropertyDirection , App::PropertyVector)
 
 //**************************************************************************
 // Construction/Destruction
@@ -285,23 +296,11 @@ PropertyDirection::~PropertyDirection()
 
 }
 
-const boost::any PropertyDirection::getPathValue(const ObjectIdentifier &path) const
-{
-    std::string p = path.getSubPathStr();
-
-    if (p == ".x" || p == ".y" || p == ".z") {
-        // Convert double to quantity
-        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
-    }
-    else
-        return Property::getPathValue(path);
-}
-
 //**************************************************************************
 // PropertyVectorList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyVectorList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyVectorList , App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -319,37 +318,9 @@ PropertyVectorList::~PropertyVectorList()
 //**************************************************************************
 // Base class implementer
 
-void PropertyVectorList::setSize(int newSize)
-{
-    _lValueList.resize(newSize);
-}
-
-int PropertyVectorList::getSize(void) const
-{
-    return static_cast<int>(_lValueList.size());
-}
-
-void PropertyVectorList::setValue(const Base::Vector3d& lValue)
-{
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0]=lValue;
-    hasSetValue();
-}
-
 void PropertyVectorList::setValue(double x, double y, double z)
 {
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0].Set(x,y,z);
-    hasSetValue();
-}
-
-void PropertyVectorList::setValues(const std::vector<Base::Vector3d>& values)
-{
-    aboutToSetValue();
-    _lValueList = values;
-    hasSetValue();
+    setValue(Base::Vector3d(x,y,z));
 }
 
 PyObject *PropertyVectorList::getPyObject(void)
@@ -362,37 +333,10 @@ PyObject *PropertyVectorList::getPyObject(void)
     return list;
 }
 
-void PropertyVectorList::setPyObject(PyObject *value)
-{
-    if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
-        std::vector<Base::Vector3d> values;
-        values.resize(nSize);
-
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            PropertyVector val;
-            val.setPyObject( item );
-            values[i] = val.getValue();
-        }
-
-        setValues(values);
-    }
-    else if (PyObject_TypeCheck(value, &(VectorPy::Type))) {
-        Base::VectorPy  *pcObject = static_cast<Base::VectorPy*>(value);
-        Base::Vector3d* val = pcObject->getVectorPtr();
-        setValue(*val);
-    }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
-        PropertyVector val;
-        val.setPyObject( value );
-        setValue( val.getValue() );
-    }
-    else {
-        std::string error = std::string("type must be 'Vector' or list of 'Vector', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+Base::Vector3d PropertyVectorList::getPyValue(PyObject *item) const {
+    PropertyVector val;
+    val.setPyObject( item );
+    return val.getValue();
 }
 
 void PropertyVectorList::Save (Base::Writer &writer) const
@@ -463,9 +407,7 @@ Property *PropertyVectorList::Copy(void) const
 
 void PropertyVectorList::Paste(const Property &from)
 {
-    aboutToSetValue();
-    _lValueList = dynamic_cast<const PropertyVectorList&>(from)._lValueList;
-    hasSetValue();
+    setValues(dynamic_cast<const PropertyVectorList&>(from)._lValueList);
 }
 
 unsigned int PropertyVectorList::getMemSize (void) const
@@ -478,7 +420,7 @@ unsigned int PropertyVectorList::getMemSize (void) const
 // PropertyMatrix
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyMatrix , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyMatrix , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -611,7 +553,7 @@ void PropertyMatrix::Paste(const Property &from)
 // PropertyPlacement
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPlacement , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyPlacement , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -639,6 +581,18 @@ void PropertyPlacement::setValue(const Base::Placement &pos)
     hasSetValue();
 }
 
+bool PropertyPlacement::setValueIfChanged(const Base::Placement &pos,double tol,double atol)
+{
+    if(_cPos.getPosition().IsEqual(pos.getPosition(),tol)
+            && _cPos.getRotation().isSame(pos.getRotation(),atol))
+    {
+        return false;
+    }
+    setValue(pos);
+    return true;
+}
+
+
 const Base::Placement & PropertyPlacement::getValue(void)const
 {
     return _cPos;
@@ -646,30 +600,30 @@ const Base::Placement & PropertyPlacement::getValue(void)const
 
 void PropertyPlacement::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Angle")));
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
-    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Angle")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
+    paths.push_back(ObjectIdentifier(*this)
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
 void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
@@ -712,6 +666,24 @@ const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) c
     }
     else
         return Property::getPathValue(path);
+}
+
+bool PropertyPlacement::getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const
+{
+    std::string p = path.getSubPathStr();
+    if (p == ".Rotation.Angle") {
+        Base::Vector3d axis; double angle;
+        _cPos.getRotation().getValue(axis,angle);
+        res = new QuantityPy(new Quantity(Base::toDegrees(angle),Unit::Angle));
+    } else if (p == ".Base.x") {
+        res = new QuantityPy(new Quantity(_cPos.getPosition().x,Unit::Length));
+    } else if (p == ".Base.y") {
+        res = new QuantityPy(new Quantity(_cPos.getPosition().y,Unit::Length));
+    } else if (p == ".Base.z") {
+        res = new QuantityPy(new Quantity(_cPos.getPosition().z,Unit::Length));
+    } else
+        return false;
+    return true;
 }
 
 PyObject *PropertyPlacement::getPyObject(void)
@@ -808,7 +780,7 @@ void PropertyPlacement::Paste(const Property &from)
 // PropertyPlacementList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPlacementList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyPlacementList , App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -826,31 +798,6 @@ PropertyPlacementList::~PropertyPlacementList()
 //**************************************************************************
 // Base class implementer
 
-void PropertyPlacementList::setSize(int newSize)
-{
-    _lValueList.resize(newSize);
-}
-
-int PropertyPlacementList::getSize(void) const
-{
-    return static_cast<int>(_lValueList.size());
-}
-
-void PropertyPlacementList::setValue(const Base::Placement& lValue)
-{
-    aboutToSetValue();
-    _lValueList.resize(1);
-    _lValueList[0]=lValue;
-    hasSetValue();
-}
-
-void PropertyPlacementList::setValues(const std::vector<Base::Placement>& values)
-{
-    aboutToSetValue();
-    _lValueList = values;
-    hasSetValue();
-}
-
 PyObject *PropertyPlacementList::getPyObject(void)
 {
     PyObject* list = PyList_New( getSize() );
@@ -861,37 +808,10 @@ PyObject *PropertyPlacementList::getPyObject(void)
     return list;
 }
 
-void PropertyPlacementList::setPyObject(PyObject *value)
-{
-    if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
-        std::vector<Base::Placement> values;
-        values.resize(nSize);
-
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PySequence_GetItem(value, i);
-            PropertyPlacement val;
-            val.setPyObject( item );
-            values[i] = val.getValue();
-        }
-
-        setValues(values);
-    }
-    else if (PyObject_TypeCheck(value, &(PlacementPy::Type))) {
-        Base::PlacementPy  *pcObject = static_cast<Base::PlacementPy*>(value);
-        Base::Placement* val = pcObject->getPlacementPtr();
-        setValue(*val);
-    }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
-        PropertyPlacement val;
-        val.setPyObject( value );
-        setValue( val.getValue() );
-    }
-    else {
-        std::string error = std::string("type must be 'Placement' or list of 'Placement', not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+Base::Placement PropertyPlacementList::getPyValue(PyObject *item) const {
+    PropertyPlacement val;
+    val.setPyObject( item );
+    return val.getValue();
 }
 
 void PropertyPlacementList::Save (Base::Writer &writer) const
@@ -975,9 +895,7 @@ Property *PropertyPlacementList::Copy(void) const
 
 void PropertyPlacementList::Paste(const Property &from)
 {
-    aboutToSetValue();
-    _lValueList = dynamic_cast<const PropertyPlacementList&>(from)._lValueList;
-    hasSetValue();
+    setValues(dynamic_cast<const PropertyPlacementList&>(from)._lValueList);
 }
 
 unsigned int PropertyPlacementList::getMemSize (void) const
@@ -993,7 +911,7 @@ unsigned int PropertyPlacementList::getMemSize (void) const
 // PropertyPlacement
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPlacementLink , App::PropertyLink);
+TYPESYSTEM_SOURCE(App::PropertyPlacementLink , App::PropertyLink)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1038,7 +956,7 @@ void PropertyPlacementLink::Paste(const Property &from)
 
 // ------------------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyGeometry , App::Property);
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyGeometry , App::Property)
 
 PropertyGeometry::PropertyGeometry()
 {
@@ -1052,7 +970,7 @@ PropertyGeometry::~PropertyGeometry()
 
 // ------------------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyComplexGeoData , App::PropertyGeometry);
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyComplexGeoData , App::PropertyGeometry)
 
 PropertyComplexGeoData::PropertyComplexGeoData()
 {

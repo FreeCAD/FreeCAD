@@ -73,6 +73,7 @@ void DlgSettingsDocumentImp::saveSettings()
     prefSaveBackupFiles->onSave();
     prefCountBackupFiles->onSave();
     prefDuplicateLabel->onSave();
+    prefPartialLoading->onSave();
     prefLicenseType->onSave();
     prefLicenseUrl->onSave();
     prefAuthor->onSave();
@@ -81,6 +82,7 @@ void DlgSettingsDocumentImp::saveSettings()
     prefRecovery->onSave();
     prefAutoSaveEnabled->onSave();
     prefAutoSaveTimeout->onSave();
+    prefCanAbortRecompute->onSave();
 
     int timeout = prefAutoSaveTimeout->value();
     if (!prefAutoSaveEnabled->isChecked())
@@ -102,6 +104,7 @@ void DlgSettingsDocumentImp::loadSettings()
     prefSaveBackupFiles->onRestore();
     prefCountBackupFiles->onRestore();
     prefDuplicateLabel->onRestore();
+    prefPartialLoading->onRestore();
     prefLicenseType->onRestore();
     prefLicenseUrl->onRestore();
     prefAuthor->onRestore();
@@ -110,6 +113,7 @@ void DlgSettingsDocumentImp::loadSettings()
     prefRecovery->onRestore();
     prefAutoSaveEnabled->onRestore();
     prefAutoSaveTimeout->onRestore();
+    prefCanAbortRecompute->onRestore();
 }
 
 /**

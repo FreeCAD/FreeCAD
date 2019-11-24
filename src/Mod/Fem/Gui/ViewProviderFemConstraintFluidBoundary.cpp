@@ -25,11 +25,13 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
-# include <Precision.hxx>
+
 # include <QMessageBox>
 #endif
 
@@ -168,7 +170,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             int idx = 0;
 #else
             // Redraw all arrows
-            pShapeSep->removeAllChildren();
+            Gui::coinRemoveAllChildren(pShapeSep);
 #endif
             // This should always point outside of the solid
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
@@ -270,7 +272,7 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             int idx = 0;
 #else
             // Note: Points and Normals are always updated together
-            pShapeSep->removeAllChildren();
+            Gui::coinRemoveAllChildren(pShapeSep);
 #endif
 
             for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {

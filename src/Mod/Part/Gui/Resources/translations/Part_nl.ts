@@ -209,7 +209,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Verenigt voorwerpen met uitvoerbaar behoud van uitsparingen.</translation>
     </message>
   </context>
   <context>
@@ -258,7 +258,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="59"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Buis aanmaken</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
@@ -299,7 +299,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
       <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
+      <translation>Splits voorwerpen waar ze overlappen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -309,7 +309,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Versnijden tot groep</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
@@ -319,7 +319,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Selecteer eerst ten minste twee voorwerpen! Het eerste voorwerp moet worden versneden; de overige voorwerpen zijn bedoeld om mee te snijden.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
@@ -334,7 +334,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>Overlap verwijderen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
@@ -477,7 +477,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Point can be moved by editing Placement property.</translation>
+      <translation>Aanhechting is uitgeschakeld. Punt kan worden verplaatst door aanpassen van eigenschappen Plaatsing.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
@@ -525,7 +525,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="282"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Punt op rand geplaatst volgens MapPathParameter. Eindpunt kan daarbij aangekoppeld worden om projectie te maken.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="284"/>
@@ -537,7 +537,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="285"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Midden van raakcirkel aan een rand. Optionele eindpuntsverbinding bepaalt plaats.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="287"/>
@@ -573,13 +573,13 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="294"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
+      <translation>Laat referentiepunt met ander eindpunt samenvallen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 1</translation>
+      <translation>Nabijheid punt 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="297"/>
@@ -788,49 +788,49 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Proximity line</translation>
+      <translation>Nabijheids-lijn</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
+      <translation>Lijn die kortste afstand tussen voorwerpen vormt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">1st principal axis</translation>
+      <translation>1e hoofdas</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="252"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows first principal axis of inertia.</translation>
+      <translation>Lijn volgt eerste hoofdas van traagheid.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">2nd principal axis</translation>
+      <translation>2e hoofdas</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="255"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows second principal axis of inertia.</translation>
+      <translation>Lijn volgt tweede hoofdas van traagheid.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">3rd principal axis</translation>
+      <translation>3e hoofdas</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="258"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows third principal axis of inertia.</translation>
+      <translation>Lijn volgt derde hoofdas van traagheid.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="260"/>
@@ -842,7 +842,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Loodlijn van oppervlak op punt dat door hoekpunt bepaald is.</translation>
     </message>
   </context>
   <context>
@@ -857,7 +857,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="126"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Aanhechting is uitgeschakeld. Voorwerp kan verplaatst worden door aanpassen van eigenschappen Plaatsing.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
@@ -869,7 +869,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="129"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Nulpunt is uitgelijnd aan eindpunt. Oriëntatie bepaald via eigenschappen Plaatsing.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="131"/>
@@ -881,7 +881,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="132"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+      <translation>Vlak is parallel met lokaal XY-vlak van gekoppeld voorwerp.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="134"/>
@@ -893,7 +893,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="135"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+      <translation>Vlak is parallel met lokaal XZ-vlak van gekoppeld voorwerp.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="137"/>
@@ -905,31 +905,31 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="138"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+      <translation>Vlak is uitgelijnd op lokaal YZ-vlak van gekoppeld voorwerp.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane face</translation>
+      <translation>Oppervlak</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+      <translation>Vlak is uitgelijnd om met oppervlakte samen te vallen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Tangent to surface</translation>
+      <translation>Rakend aan oppervlak</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="144"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+      <translation>Vlak raakt oppervlak op hoekpunt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
@@ -941,7 +941,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="147"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Vlak raakt rand. Optionele eindpuntsverbinding bepaalt plaats.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="149"/>
@@ -955,7 +955,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="156"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Uitlijnen aan Frenet-Serret coördinaatsysteem van randkromme. Optionele eindpuntsverbinding bepaalt plaats er van.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="152"/>
@@ -1054,7 +1054,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="51"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Aanhechting is uitgeschakeld. Voorwerp kan verplaatst worden door aanpassen van eigenschappen Plaatsing.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
@@ -1066,7 +1066,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="54"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Nulpunt is uitgelijnd aan eindpunt. Oriëntatie bepaald via eigenschappen Plaatsing.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
@@ -1152,7 +1152,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="81"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Uitlijnen aan Frenet-Serret coördinaatsysteem van randkromme. Optionele eindpuntsverbinding bepaalt plaats er van.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="77"/>

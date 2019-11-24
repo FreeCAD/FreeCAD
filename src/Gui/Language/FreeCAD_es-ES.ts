@@ -1244,10 +1244,6 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Activar página de bienvenida en el inicio</translation>
     </message>
     <message>
-      <source>Switch to tab of report window:</source>
-      <translation>Cambiar a la pestaña de ventana de informe:</translation>
-    </message>
-    <message>
       <source>Auto load module after start up:</source>
       <translation>Carga automática del módulo después de iniciar:</translation>
     </message>
@@ -1266,10 +1262,6 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Size of recent file list</source>
       <translation>Tamaño de la lista de archivos recientes</translation>
-    </message>
-    <message>
-      <source>Window style:</source>
-      <translation>Estilo de ventana:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
@@ -1626,6 +1618,53 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>&amp;Close</source>
       <translation>&amp;Cerrar</translation>
+    </message>
+    <message>
+      <source>Find...</source>
+      <translation>Encontrar...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgParameterFind</name>
+    <message>
+      <source>Find</source>
+      <translation>Encontrar</translation>
+    </message>
+    <message>
+      <source>Find what:</source>
+      <translation>Buscar:</translation>
+    </message>
+    <message>
+      <source>Look at</source>
+      <translation>Buscar en</translation>
+    </message>
+    <message>
+      <source>Groups</source>
+      <translation>Grupos</translation>
+    </message>
+    <message>
+      <source>Names</source>
+      <translation>Nombres</translation>
+    </message>
+    <message>
+      <source>Values</source>
+      <translation>Valores</translation>
+    </message>
+    <message>
+      <source>Match whole string only</source>
+      <translation>Sólo coincidencia de palabras completas</translation>
+    </message>
+    <message>
+      <source>Find Next</source>
+      <translation>Encontrar siguiente</translation>
+    </message>
+    <message>
+      <source>Not found</source>
+      <translation>No se encuentra</translation>
+    </message>
+    <message>
+      <source>Can't find the text: %1</source>
+      <translation>No se puede encontrar el texto: %1</translation>
     </message>
   </context>
   <context>
@@ -2060,7 +2099,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
       <source>Top right</source>
-      <translation>OPlanta derecha</translation>
+      <translation>Planta derecha</translation>
     </message>
     <message>
       <source>Bottom left</source>
@@ -2722,10 +2761,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>Comandos de interfaz de usuario</translation>
     </message>
     <message>
-      <source>Recording GUI commands</source>
-      <translation>Grabando comandos de interfaz de usuario</translation>
-    </message>
-    <message>
       <source>Record as comment</source>
       <translation>Grabar como comentario</translation>
     </message>
@@ -2740,6 +2775,10 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>Run macros in local environment</source>
       <translation>Ejecutar macro en entorno local</translation>
+    </message>
+    <message>
+      <source>Record GUI commands</source>
+      <translation>Grabar comandos GUI</translation>
     </message>
   </context>
   <context>
@@ -2767,10 +2806,6 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>Unit</source>
       <translation>Unidad</translation>
-    </message>
-    <message>
-      <source>User system:</source>
-      <translation>Sistema del usuario:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
@@ -2835,6 +2870,10 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>1/128"</source>
       <translation>1/128"</translation>
+    </message>
+    <message>
+      <source>Unit system:</source>
+      <translation>Unidad del sistema:</translation>
     </message>
   </context>
   <context>
@@ -3859,7 +3898,7 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Top right</source>
-      <translation>OPlanta derecha</translation>
+      <translation>Planta derecha</translation>
     </message>
     <message>
       <source>Bottom right</source>
@@ -3878,15 +3917,15 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
+      <translation>Arrastre la pantalla con dos dedos o pulse el botón derecho del ratón.</translation>
     </message>
     <message>
-      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher &amp;&amp; other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
+      <source>Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen &amp;&amp; drag them apart from || towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4173,15 +4212,15 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
+      <translation>Arrastre la pantalla con dos dedos o presione ALT + botón medio del ratón.</translation>
     </message>
     <message>
       <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Arrastre la pantalla con un dedo o presione ALT + botón izquierdo del mouse. En Sketcher y otros modos de edición, también mantenga presionado Alt.</translation>
     </message>
     <message>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
+      <translation>Pellizque (ponga dos dedos en la pantalla y separelos/juntelos) o arrastre el botón central del ratón o presione ALT + botón derecho del ratón o use AvPág/RePág en teclado.</translation>
     </message>
   </context>
   <context>
@@ -4537,12 +4576,12 @@ Desea especificar otro directorio?</translation>
       <translation>Incrementos</translation>
     </message>
     <message>
-      <source>Translation Increment: </source>
-      <translation>Incremento de traslación: </translation>
+      <source>Translation Increment:</source>
+      <translation>Incremento de traslación:</translation>
     </message>
     <message>
-      <source>Rotation Increment: </source>
-      <translation>Incremento de rotación: </translation>
+      <source>Rotation Increment:</source>
+      <translation>Incremento de rotación:</translation>
     </message>
   </context>
   <context>
@@ -7359,11 +7398,11 @@ Be aware the point where you click matters.</source>
     <name>Std_Delete</name>
     <message>
       <source>These items are linked to items selected for deletion and might break.</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
+      <translation>Estos elementos están vinculados a elementos seleccionados para su eliminación y podrían romperse.</translation>
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Estos elementos son seleccionados para su eliminación, pero no están en el documento activo.</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
@@ -7371,7 +7410,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation type="unfinished">Delete Selection Issues</translation>
+      <translation>Eliminar Problemas de Selección</translation>
     </message>
   </context>
   <context>

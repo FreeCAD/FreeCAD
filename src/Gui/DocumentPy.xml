@@ -31,7 +31,7 @@
     <Methode Name="setEdit">
       <Documentation>
         <UserDocu>
-          setEdit([String:Name|ViewProvider|DocumentObject]|,mod)
+          setEdit([String:Name|ViewProvider|DocumentObject]|,mod,subname=None)
           Set the given object in edit mode.
         </UserDocu>
       </Documentation>
@@ -101,6 +101,15 @@
               <UserDocu>scrollToTreeItem(ViewObject) - scroll the tree view to the item of a view object</UserDocu>
           </Documentation>
       </Methode>
+      <Methode Name="toggleInSceneGraph">
+          <Documentation>
+              <UserDocu>
+toggleInSceneGraph(ViewObject)
+
+Add or remove view object from scene graph of all views depending on its canAddToSceneGraph()
+              </UserDocu>
+          </Documentation>
+      </Methode>
       <Attribute Name="ActiveObject" ReadOnly="false">
 	  <Documentation>
 		<UserDocu>The active object of the document</UserDocu>
@@ -113,11 +122,35 @@
 	  </Documentation>
 	  <Parameter Name="ActiveView" Type="Object" />
 	</Attribute>
+	<Attribute Name="EditingTransform">
+	  <Documentation>
+		  <UserDocu>The editing transformation matrix</UserDocu>
+	  </Documentation>
+	  <Parameter Name="EditingTransform" Type="Object" />
+	</Attribute>
+    <Attribute Name="InEditInfo">
+      <Documentation>
+        <UserDocu>A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit</UserDocu>
+      </Documentation>
+	  <Parameter Name="InEditInfo" Type="Object" />
+    </Attribute>
+    <Attribute Name="EditMode" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Current edit mode. Only meaningful when there is a current object in edit</UserDocu>
+      </Documentation>
+	  <Parameter Name="EditMode" Type="Int" />
+    </Attribute>
 	<Attribute Name="Document" ReadOnly="true">
 	  <Documentation>
 		  <UserDocu>The related App document to this Gui document</UserDocu>
 	  </Documentation>
 	  <Parameter Name="Document" Type="Object" />
+	</Attribute>
+	<Attribute Name="Transacting" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate whether the document is undoing/redoing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Transacting" Type="Boolean" />
 	</Attribute>
 		<Attribute Name="Modified" ReadOnly="true">
 			<Documentation>

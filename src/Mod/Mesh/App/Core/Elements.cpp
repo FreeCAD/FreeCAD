@@ -34,6 +34,7 @@
 #include "Elements.h"
 #include "Algorithm.h"
 #include "tritritest.h"
+#include "Utilities.h"
 
 using namespace MeshCore;
 using namespace Wm4;
@@ -56,7 +57,7 @@ unsigned long MeshPointArray::GetOrAddIndex (const MeshPoint &rclPoint)
   if ((ulIndex = Get(rclPoint)) == ULONG_MAX)
   {
     push_back(rclPoint);
-    return (unsigned long)(size() - 1);
+    return static_cast<unsigned long>(size() - 1);
   }
   else
     return ulIndex;
@@ -223,6 +224,119 @@ bool MeshGeomEdge::IntersectBoundingBox (const Base::BoundBox3f &rclBB) const
 
   IntrSegment3Box3<float> intrsectbox(akSeg, kBox, false);
   return intrsectbox.Test();
+}
+
+bool MeshGeomEdge::IntersectWithLine (const Base::Vector3f &rclPt,
+                                      const Base::Vector3f &rclDir,
+                                      Base::Vector3f &rclRes) const
+{
+    const float eps = 1e-06f;
+    Base::Vector3f n = _aclPoints[1] - _aclPoints[0];
+
+    // check angle between edge and the line direction, FLOAT_MAX is
+    // returned for degenerated edges
+    float fAngle = rclDir.GetAngle(n);
+    if (fAngle == 0) {
+        // parallel lines
+        float distance = _aclPoints[0].DistanceToLine(rclPt, rclDir);
+        if (distance < eps) {
+            // lines are equal
+            rclRes = _aclPoints[0];
+            return true;
+        }
+
+        return false; // no intersection possible
+    }
+
+    // that's the normal of a helper plane and its base at _aclPoints
+    Base::Vector3f normal = n.Cross(rclDir);
+
+    // if the distance of rclPt to the plane is higher than eps then the
+    // two lines are warped and there is no intersection possible
+    if (fabs(rclPt.DistanceToPlane(_aclPoints[0], normal)) > eps)
+        return false;
+
+    // get a second helper plane and get the intersection with the line
+    Base::Vector3f normal2 = normal.Cross(n);
+
+    float s = ((_aclPoints[0] - rclPt) * normal2) / (rclDir * normal2);
+    rclRes = rclPt + s * rclDir;
+
+    float dist1 = Base::Distance(_aclPoints[0], _aclPoints[1]);
+    float dist2 = Base::Distance(_aclPoints[0], rclRes);
+    float dist3 = Base::Distance(_aclPoints[1], rclRes);
+
+    return dist2 + dist3 <= dist1 + eps;
+}
+
+bool MeshGeomEdge::IntersectWithPlane (const Base::Vector3f &rclPt,
+                                       const Base::Vector3f &rclDir,
+                                       Base::Vector3f &rclRes) const
+{
+    float dist1 = _aclPoints[0].DistanceToPlane(rclPt, rclDir);
+    float dist2 = _aclPoints[1].DistanceToPlane(rclPt, rclDir);
+
+    // either both points are below or above the plane
+    if (dist1 * dist2 >= 0.0f)
+        return false;
+
+    Base::Vector3f u = _aclPoints[1] - _aclPoints[0];
+    Base::Vector3f b = rclPt - _aclPoints[0];
+    float t = b.Dot(rclDir) / u.Dot(rclDir);
+    rclRes = _aclPoints[0] + t * u;
+
+    return true;
+}
+
+void MeshGeomEdge::ProjectPointToLine (const Base::Vector3f &rclPoint,
+                                       Base::Vector3f &rclProj) const
+{
+    Base::Vector3f pt1 = rclPoint - _aclPoints[0];
+    Base::Vector3f dir = _aclPoints[1] - _aclPoints[0];
+    Base::Vector3f vec;
+    vec.ProjectToLine(pt1, dir);
+    rclProj = rclPoint + vec;
+}
+
+void MeshGeomEdge::ClosestPointsToLine(const Base::Vector3f &linePt, const Base::Vector3f &lineDir,
+                                       Base::Vector3f& rclPnt1, Base::Vector3f& rclPnt2) const
+{
+    const float eps = 1e-06f;
+    Base::Vector3f edgeDir = _aclPoints[1] - _aclPoints[0];
+
+    // check angle between edge and the line direction, FLOAT_MAX is
+    // returned for degenerated edges
+    float fAngle = lineDir.GetAngle(edgeDir);
+    if (fAngle == 0) {
+        // parallel lines
+        float distance = _aclPoints[0].DistanceToLine(linePt, lineDir);
+        if (distance < eps) {
+            // lines are equal
+            rclPnt1 = _aclPoints[0];
+            rclPnt2 = _aclPoints[0];
+        }
+        else {
+            rclPnt1 = _aclPoints[0];
+            MeshGeomEdge edge;
+            edge._aclPoints[0] = linePt;
+            edge._aclPoints[1] = linePt + lineDir;
+            edge.ProjectPointToLine(rclPnt1, rclPnt2);
+        }
+    }
+    else {
+        // that's the normal of a helper plane
+        Base::Vector3f normal = edgeDir.Cross(lineDir);
+
+        // get a second helper plane and get the intersection with the line
+        Base::Vector3f normal2 = normal.Cross(edgeDir);
+        float s = ((_aclPoints[0] - linePt) * normal2) / (lineDir * normal2);
+        rclPnt2 = linePt + s * lineDir;
+
+        // get a third helper plane and get the intersection with the line
+        Base::Vector3f normal3 = normal.Cross(lineDir);
+        float t = ((linePt - _aclPoints[0]) * normal3) / (edgeDir * normal3);
+        rclPnt1 = _aclPoints[0] + t * edgeDir;
+    }
 }
 
 // -----------------------------------------------------------------
@@ -413,14 +527,14 @@ bool MeshGeomFacet::IsDegenerated(float epsilon) const
     // (u*u)*(v*v)-(u*v)*(u*v) < max(eps*(u*u),eps*(v*v)).
     //
     // BTW (u*u)*(v*v)-(u*v)*(u*v) is the same as (uxv)*(uxv).
-    Base::Vector3d p1(this->_aclPoints[0].x,this->_aclPoints[0].y,this->_aclPoints[0].z);
-    Base::Vector3d p2(this->_aclPoints[1].x,this->_aclPoints[1].y,this->_aclPoints[1].z);
-    Base::Vector3d p3(this->_aclPoints[2].x,this->_aclPoints[2].y,this->_aclPoints[2].z);
+    Base::Vector3d p1 = Base::convertTo<Base::Vector3d>(this->_aclPoints[0]);
+    Base::Vector3d p2 = Base::convertTo<Base::Vector3d>(this->_aclPoints[1]);
+    Base::Vector3d p3 = Base::convertTo<Base::Vector3d>(this->_aclPoints[2]);
 
     Base::Vector3d u = p2 - p1;
     Base::Vector3d v = p3 - p1;
 
-    double eps = epsilon;
+    double eps = static_cast<double>(epsilon);
     double uu = u*u;
     if (uu <= eps)
         return true;
@@ -878,15 +992,15 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
     // Note: The algorithm delivers sometimes false-positives, i.e. it claims
     // that the two triangles intersect but they don't. It seems that this bad
     // behaviour occurs if the triangles are nearly co-planar
-    float mult = (float)fabs(this->GetNormal() * rclFacet.GetNormal());
+    float mult = fabs(this->GetNormal() * rclFacet.GetNormal());
     if (rclPt0 == rclPt1) {
-        if (mult < 0.995) // not co-planar, thus no test needed
+        if (mult < 0.995f) // not co-planar, thus no test needed
             return 1;
         if (this->IsPointOf(rclPt0) && rclFacet.IsPointOf(rclPt0))
             return 1;
     }
     else {
-        if (mult < 0.995) // not co-planar, thus no test needed
+        if (mult < 0.995f) // not co-planar, thus no test needed
             return 2;
         if (this->IsPointOf(rclPt0) && rclFacet.IsPointOf(rclPt0) &&
             this->IsPointOf(rclPt1) && rclFacet.IsPointOf(rclPt1))
@@ -899,10 +1013,10 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
 
 bool MeshGeomFacet::IsPointOf (const Base::Vector3f &P) const
 {
-    Base::Vector3d p1(this->_aclPoints[0].x,this->_aclPoints[0].y,this->_aclPoints[0].z);
-    Base::Vector3d p2(this->_aclPoints[1].x,this->_aclPoints[1].y,this->_aclPoints[1].z);
-    Base::Vector3d p3(this->_aclPoints[2].x,this->_aclPoints[2].y,this->_aclPoints[2].z);
-    Base::Vector3d p4(P.x,P.y,P.z);
+    Base::Vector3d p1 = Base::convertTo<Base::Vector3d>(this->_aclPoints[0]);
+    Base::Vector3d p2 = Base::convertTo<Base::Vector3d>(this->_aclPoints[1]);
+    Base::Vector3d p3 = Base::convertTo<Base::Vector3d>(this->_aclPoints[2]);
+    Base::Vector3d p4 = Base::convertTo<Base::Vector3d>(P);
 
     Base::Vector3d u = p2 - p1;
     Base::Vector3d v = p3 - p1;
@@ -972,9 +1086,9 @@ float MeshGeomFacet::CenterOfCircumCircle(Base::Vector3f& rclCenter) const
   float vw = - (v * w);
   float uw = - (w * u);
 
-  float w0 = (float)(2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
-  float w1 = (float)(2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
-  float w2 = (float)(2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
+  float w0 = static_cast<float>(2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
+  float w1 = static_cast<float>(2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
+  float w2 = static_cast<float>(2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
 
   // center of the circle
   float wx = w0 + w1 + w2;
@@ -983,7 +1097,7 @@ float MeshGeomFacet::CenterOfCircumCircle(Base::Vector3f& rclCenter) const
   rclCenter.z = (w0*p0.z + w1*p1.z + w2*p2.z)/wx;
 
   // radius of the circle
-  float fRadius = (float)(sqrt(uu * vv * ww) / (4 * Area()));
+  float fRadius = static_cast<float>(sqrt(uu * vv * ww) / (4 * Area()));
 
   return fRadius;
 }
@@ -1187,6 +1301,21 @@ float MeshGeomFacet::MaximumAngle () const
   return fMaxAngle;
 }
 
+float MeshGeomFacet::MinimumAngle () const
+{
+  float fMinAngle = Mathf::PI;
+
+  for ( int i=0; i<3; i++ ) {
+    Base::Vector3f dir1(_aclPoints[(i+1)%3]-_aclPoints[i]);
+    Base::Vector3f dir2(_aclPoints[(i+2)%3]-_aclPoints[i]);
+    float fAngle = dir1.GetAngle(dir2);
+    if (fAngle < fMinAngle)
+      fMinAngle = fAngle;
+  }
+
+  return fMinAngle;
+}
+
 bool MeshGeomFacet::IsPointOfSphere(const Base::Vector3f& rP) const
 {
   float radius;
@@ -1216,20 +1345,53 @@ bool MeshGeomFacet::IsPointOfSphere(const MeshGeomFacet& rFacet) const
 
 float MeshGeomFacet::AspectRatio() const
 {
-    Base::Vector3f center;
-    float radius = CenterOfCircumCircle(center);
+    Base::Vector3f d0 = _aclPoints[0] - _aclPoints[1];
+    Base::Vector3f d1 = _aclPoints[1] - _aclPoints[2];
+    Base::Vector3f d2 = _aclPoints[2] - _aclPoints[0];
 
-    float minLength = FLOAT_MAX;
-    for (int i=0; i<3; i++) {
-        const Base::Vector3f& p0 = _aclPoints[i];
-        const Base::Vector3f& p1 = _aclPoints[(i+1)%3];
-        float distance = Base::Distance(p0, p1);
-        if (distance < minLength) {
-            minLength = distance;
-        }
-    }
+    float l2, maxl2 = d0.Sqr();
+    if ((l2=d1.Sqr()) > maxl2)
+        maxl2 = l2;
 
-    if (minLength == 0)
-        return FLOAT_MAX;
-    return radius / minLength;
+    d1 = d2;
+    if ((l2=d1.Sqr()) > maxl2)
+        maxl2 = l2;
+
+    // squared area of the parallelogram spanned by d0 and d1
+    float a2 = (d0 % d1).Sqr();
+    return float(sqrt( (maxl2 * maxl2) / a2 ));
+}
+
+float MeshGeomFacet::AspectRatio2() const
+{
+    const Base::Vector3f& rcP1 = _aclPoints[0];
+    const Base::Vector3f& rcP2 = _aclPoints[1];
+    const Base::Vector3f& rcP3 = _aclPoints[2];
+
+    float a = Base::Distance(rcP1, rcP2);
+    float b = Base::Distance(rcP2, rcP3);
+    float c = Base::Distance(rcP3, rcP1);
+
+    // https://stackoverflow.com/questions/10289752/aspect-ratio-of-a-triangle-of-a-meshed-surface
+    return a * b * c / ((b + c - a) * (c + a - b) * (a + b - c));
+}
+
+float MeshGeomFacet::Roundness() const
+{
+    const double FOUR_ROOT3 = 6.928203230275509;
+    double area = static_cast<double>(Area());
+    Base::Vector3f d0 = _aclPoints[0] - _aclPoints[1];
+    Base::Vector3f d1 = _aclPoints[1] - _aclPoints[2];
+    Base::Vector3f d2 = _aclPoints[2] - _aclPoints[0];
+
+    double sum = static_cast<double>(d0.Sqr() + d1.Sqr() + d2.Sqr());
+    return static_cast<float>(FOUR_ROOT3 * area / sum);
+}
+
+void MeshGeomFacet::Transform(const Base::Matrix4D& mat)
+{
+    mat.multVec(_aclPoints[0], _aclPoints[0]);
+    mat.multVec(_aclPoints[1], _aclPoints[1]);
+    mat.multVec(_aclPoints[2], _aclPoints[2]);
+    NormalInvalid();
 }

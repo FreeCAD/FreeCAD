@@ -17,8 +17,8 @@ def proceed():
 
 def compute():    
     QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-   
-    if FreeCAD.ActiveDocument==None:
+
+    if FreeCAD.ActiveDocument is None:
         FreeCAD.newDocument("Gear")
 
     oldDocumentObjects=App.ActiveDocument.Objects

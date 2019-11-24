@@ -21,12 +21,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-# import Draft
 import FreeCAD
 import FreeCADGui
-# import Path
-# import PathScripts
-# import PathScripts.PathDressupTag as PathDressupTag
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGetPoint as PathGetPoint
 import PathScripts.PathDressupHoldingTags as PathDressupTag
@@ -41,7 +37,7 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule()
 
 
-# Qt tanslation handling
+# Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -73,6 +69,11 @@ class PathDressupTagTaskPanel:
         self.pt = FreeCAD.Vector(0, 0, 0)
 
         self.isDirty = True
+        self.buttonBox = None
+        self.tags = None
+        self.Positions = None
+        self.Disabled = None
+        self.editItem = None
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
@@ -190,6 +191,18 @@ class PathDressupTagTaskPanel:
         self.Disabled = self.obj.Disabled
         self.updateTagsView()
 
+    def copyNewTags(self):
+        sel = self.form.cbSource.currentText()
+        tags = [o for o in FreeCAD.ActiveDocument.Objects if sel == o.Label]
+        if 1 == len(tags):
+            if not self.obj.Proxy.copyTags(self.obj, tags[0]):
+                self.obj.Proxy.execute(self.obj)
+            self.Positions = self.obj.Positions
+            self.Disabled = self.obj.Disabled
+            self.updateTagsView()
+        else:
+            PathLog.error(translate('Path_DressupTag', 'Cannot copy tags - internal error')+'\n')
+
     def updateModel(self):
         self.getFields()
         self.updateTagsView()
@@ -228,7 +241,7 @@ class PathDressupTagTaskPanel:
             self.Positions.append(FreeCAD.Vector(point.x, point.y, 0))
             self.updateTagsView()
         else:
-            print("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
+            PathLog.notice("ignore new tag at %s (obj=%s, on-path=%d" % (point, obj, 0))
 
     def addNewTag(self):
         self.tags = self.getTags(True)
@@ -278,6 +291,15 @@ class PathDressupTagTaskPanel:
         else:
             self.form.cbTagGeneration.setEnabled(False)
 
+        enableCopy = False
+        for tags in sorted([o.Label for o in FreeCAD.ActiveDocument.Objects if 'DressupTag' in o.Name]):
+            if tags != self.obj.Label:
+                enableCopy = True
+                self.form.cbSource.addItem(tags)
+        if enableCopy:
+            self.form.gbCopy.setEnabled(True)
+            self.form.pbCopy.clicked.connect(self.copyNewTags)
+
         self.form.lwTags.itemChanged.connect(self.whenTagsViewChanged)
         self.form.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
         self.form.lwTags.itemActivated.connect(self.editTag)
@@ -326,11 +348,16 @@ class PathDressupTagViewProvider:
 
     def __init__(self, vobj):
         PathLog.track()
-        vobj.Proxy = self
         self.vobj = vobj
         self.panel = None
 
         self.debugDisplay()
+
+        # initialized later
+        self.obj = None
+        self.tags = None
+        self.switch = None
+        self.colors = None
 
     def debugDisplay(self):
         # if False and addDebugDisplay():
@@ -389,8 +416,9 @@ class PathDressupTagViewProvider:
         return [self.obj.Base]
 
     def onDelete(self, arg1=None, arg2=None):
-        PathLog.track()
         '''this makes sure that the base operation is added back to the job and visible'''
+        # pylint: disable=unused-argument
+        PathLog.track()
         if self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
         job = PathUtils.findParentJob(self.obj)
@@ -432,11 +460,13 @@ class PathDressupTagViewProvider:
         #    tag.purgeTouched()
 
     def setEdit(self, vobj, mode=0):
+        # pylint: disable=unused-argument
         panel = PathDressupTagTaskPanel(vobj.Object, self)
         self.setupTaskPanel(panel)
         return True
 
     def unsetEdit(self, vobj, mode):
+        # pylint: disable=unused-argument
         if hasattr(self, 'panel') and self.panel:
             self.panel.abort()
 
@@ -474,11 +504,13 @@ class PathDressupTagViewProvider:
         return -1
 
     def allow(self, doc, obj, sub):
+        # pylint: disable=unused-argument
         if obj == self.obj:
             return True
         return False
 
     def addSelection(self, doc, obj, sub, point):
+        # pylint: disable=unused-argument
         PathLog.track(doc, obj, sub, point)
         if self.panel:
             i = self.tagAtPoint(point, sub is None)
@@ -493,13 +525,14 @@ def Create(baseObject, name='DressupTag'):
     '''
     FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupTag", "Create a Tag dressup"))
     obj = PathDressupTag.Create(baseObject, name)
-    vp = PathDressupTagViewProvider(obj.ViewObject)
+    obj.ViewObject.Proxy = PathDressupTagViewProvider(obj.ViewObject)
     FreeCAD.ActiveDocument.commitTransaction()
     obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
     return obj
 
 
 class CommandPathDressupTag:
+    # pylint: disable=no-init
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
@@ -510,7 +543,7 @@ class CommandPathDressupTag:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == 'Job':
-                        return True
+                    return True
         return False
 
     def Activated(self):

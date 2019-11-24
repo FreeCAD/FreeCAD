@@ -30,21 +30,27 @@
 #include <QStyleOptionGraphicsItem>
 #endif
 
-//#include <App/Application.h>
-//#include <App/Material.h>
+#include <App/Application.h>
+#include <App/Material.h>
 #include <Base/Console.h>
-//#include <Base/Parameter.h>
+#include <Base/Parameter.h>
 
+#include "QGIPrimPath.h"
 #include "QGIVertex.h"
 
 using namespace TechDrawGui;
 
 QGIVertex::QGIVertex(int index) :
     projIndex(index),
-    m_radius(2),
-    m_fill(Qt::SolidPattern)
+    m_radius(2)
 {
-    m_brush.setStyle(m_fill);
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("VertexColor", 0x00000000));
+    QColor vertexColor = fcColor.asValue<QColor>();
+
+    setFill(vertexColor, Qt::SolidPattern);
 
     setRadius(m_radius);
 }
@@ -62,8 +68,11 @@ void QGIVertex::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    m_brush.setColor(m_colCurrent);
-    m_brush.setStyle(m_fill);
-    setBrush(m_brush);
+//    painter->setPen(Qt::blue);
+//    painter->drawRect(boundingRect());          //good for debugging
+
+//    m_brush.setColor(m_colCurrent);
+//    m_brush.setStyle(m_fill);
+//    setBrush(m_brush);
     QGIPrimPath::paint (painter, &myOption, widget);
 }

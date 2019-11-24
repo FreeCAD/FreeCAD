@@ -156,6 +156,41 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
+    /** @name Element name mapping */
+    //@{
+    /// Special prefix to mark the beginning of a mapped sub-element name
+    static const std::string &elementMapPrefix();
+    /// Special postfix to mark the following tag
+    static const std::string &tagPostfix();
+    /// Special postfix to mark the index of an array element
+    static const std::string &indexPostfix();
+    /// Special prefix to mark a missing element
+    static const std::string &missingPrefix();
+    /// Check if a subname contains missing element
+    static bool hasMissingElement(const char *subname);
+    /** Check if the name starts with elementMapPrefix()
+     *
+     * @param name: input name
+     * @return Returns the name stripped with elementMapPrefix(), or 0 if not
+     * start with the prefix
+     */
+    static const char *isMappedElement(const char *name);
+
+    /// Strip out the trailing element name if there is mapped element name precedes it.
+    static std::string newElementName(const char *name);
+    /// Strip out the mapped element name if there is one.
+    static std::string oldElementName(const char *name);
+    /// Strip out the old and new element name if there is one.
+    static std::string noElementName(const char *name);
+
+    /// Find the start of an element name in a subname
+    static const char *findElementName(const char *subname);
+
+    static inline const char *hasMappedElementName(const char *subname) {
+        return isMappedElement(findElementName(subname));
+    }
+    //@}
+
 protected:
 
     /// from local to outside
@@ -171,6 +206,8 @@ protected:
         Base::Vector3d tmp = tmpM * vec;
         return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);
     }
+public:
+    mutable long Tag;
 };
 
 } //namespace App

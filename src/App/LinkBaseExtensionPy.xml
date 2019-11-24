@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="DocumentObjectExtensionPy" 
+    Name="LinkBaseExtensionPy" 
+    TwinPointer="LinkBaseExtension" 
+    Twin="LinkBaseExtension" 
+    Include="App/Link.h" 
+    Namespace="App" 
+    FatherInclude="App/DocumentObjectExtensionPy.h" 
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+      <UserDocu>Link extension base class</UserDocu>
+    </Documentation>
+    <Methode Name="configLinkProperty" Keyword="true">
+      <Documentation>
+        <UserDocu>
+configLinkProperty(key=val,...): property configuration
+configLinkProperty(key,...): property configuration with default name
+
+This methode is here to implement what I called Property Design
+Pattern. The extension operates on a predefined set of properties,
+but it relies on the extended object to supply the actual property by
+calling this methode. You can choose a sub set of functionality of
+this extension by supplying only some of the supported properties. 
+
+The 'key' are names used to refer to properties supported by this
+extension, and 'val' is the actual name of the property of your
+object. You can obtain the key names and expected types using
+getLinkPropertyInfo().  You can use property of derived type when
+calling configLinkProperty().  Other types will cause exception to
+ben thrown. The actual properties supported may be different
+depending on the actual extension object underlying this python
+object.
+
+If 'val' is omitted, i.e. calling configLinkProperty(key,...), then
+it is assumed the the actually property name is the same as 'key'
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getLinkExtProperty">
+      <Documentation>
+        <UserDocu>getLinkExtProperty(name): return the property value by its predefined name </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getLinkExtPropertyName">
+      <Documentation>
+        <UserDocu>getLinkExtPropertyName(name): lookup the property name by its predefined name </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getLinkPropertyInfo">
+      <Documentation>
+        <UserDocu>
+getLinkPropertyInfo(): return a tuple of (name,type,doc) for all supported properties.
+
+getLinkPropertyInfo(index): return (name,type,doc) of a specific property
+
+getLinkPropertyInfo(name): return (type,doc) of a specific property
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setLink">
+      <Documentation>
+          <UserDocu>
+setLink(obj,subName=None,subElements=None): Set link object.
+
+setLink([obj,...]),
+setLink([(obj,subName,subElements),...]),
+setLink({index:obj,...}),
+setLink({index:(obj,subName,subElements),...}): set link element of a link group.
+
+obj (DocumentObject): the object to link to. If this is None, then the link is cleared
+
+subName (String): Dot separated object path. 
+
+subElements (String|tuple(String)): non-object sub-elements, e.g. Face1, Edge2.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="cacheChildLabel">
+      <Documentation>
+        <UserDocu>
+cacheChildLabel(enable=True): enable/disable child label cache
+
+The cache is not updated on child label change for performance reason. You must
+call this function on any child label change
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="flattenSubname">
+      <Documentation>
+          <UserDocu>
+flattenSubname(subname) -> string
+
+Return a flattened subname in case it references an object inside a linked plain group
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="expandSubname">
+      <Documentation>
+          <UserDocu>
+expandSubname(subname) -> string
+
+Return an expanded subname in case it references an object inside a linked plain group
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+    <Attribute Name="LinkedChildren" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Return a flattened (in case grouped by plain group) list of linked children</UserDocu>
+        </Documentation>
+        <Parameter Name="LinkedChildren" Type="List"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

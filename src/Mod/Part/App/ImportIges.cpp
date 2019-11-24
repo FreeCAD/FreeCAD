@@ -41,17 +41,13 @@
 # include <IGESBasic_Group.hxx>
 # include <IGESSolid_ManifoldSolid.hxx>
 # include <IGESBasic_SingularSubfigure.hxx>
+# include <XSControl_WorkSession.hxx>
+# include <XSControl_TransferReader.hxx>
+# include <Transfer_TransientProcess.hxx>
+# include <Interface_EntityIterator.hxx>
+# include <Quantity_Color.hxx>
+# include <TCollection_ExtendedString.hxx>
 #endif
-
-#include <XSControl_WorkSession.hxx>
-#include <XSControl_TransferReader.hxx>
-#include <XSControl_WorkSession.hxx>
-#include <XSControl_TransferReader.hxx>
-#include <Transfer_TransientProcess.hxx>
-
-#include <Interface_EntityIterator.hxx>
-#include <Quantity_Color.hxx>
-#include <TCollection_ExtendedString.hxx>
 
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
@@ -151,10 +147,10 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
             std::string type = igesEntity->DynamicType()->Name();
             (void)type;
 #endif
-            
+
             // is it a group, singular sub-figure or solid?
             if (igesEntity->IsKind(STANDARD_TYPE(IGESBasic_Group)) ||
-                igesEntity->IsKind(STANDARD_TYPE(IGESBasic_SingularSubfigure)) || 
+                igesEntity->IsKind(STANDARD_TYPE(IGESBasic_SingularSubfigure)) ||
                 igesEntity->IsKind(STANDARD_TYPE(IGESSolid_ManifoldSolid))) {
                 try {
                     if (aReader.TransferEntity(igesEntity)) {

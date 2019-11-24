@@ -30,6 +30,7 @@
 
 #include <Mod/Mesh/App/MeshFeature.h>
 
+#include <Base/Converter.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -41,6 +42,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include "Tessellation.h"
+#include "CrossSections.h"
 #include "TaskCurveOnMesh.h"
 
 using namespace std;
@@ -100,8 +102,8 @@ void CmdMeshPartTrimByPlane::activated(int)
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setWindowTitle(qApp->translate("MeshPart_TrimByPlane","Trim by plane"));
     msgBox.setText(qApp->translate("MeshPart_TrimByPlane","Select the side you want to keep."));
-    QPushButton* inner = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Inner"), QMessageBox::ActionRole);
-    QPushButton* outer = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Outer"), QMessageBox::ActionRole);
+    QPushButton* inner = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Below"), QMessageBox::ActionRole);
+    QPushButton* outer = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Above"), QMessageBox::ActionRole);
     QPushButton* split = msgBox.addButton(qApp->translate("MeshPart_TrimByPlane","Split"), QMessageBox::ActionRole);
     msgBox.setDefaultButton(inner);
     msgBox.exec();
@@ -122,60 +124,41 @@ void CmdMeshPartTrimByPlane::activated(int)
         return;
     }
 
-    Base::Placement plm = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
-    Base::Vector3d normal(0,0,1);
-    plm.getRotation().multVec(normal, normal);
-    Base::Vector3d up(-1,0,0);
-    plm.getRotation().multVec(up, up);
-    Base::Vector3d view(0,1,0);
-    plm.getRotation().multVec(view, view);
-
-    Base::Vector3d base = plm.getPosition();
-    Base::Rotation rot(Base::Vector3d(0,0,1), view);
-    Base::Matrix4D mat;
-    rot.getValue(mat);
-    Base::ViewProjMatrix proj(mat);
+    Base::Placement plnPlacement = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
 
     openCommand("Trim with plane");
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
+        Base::Vector3d normal(0,0,1);
+        plnPlacement.getRotation().multVec(normal, normal);
+        Base::Vector3d base = plnPlacement.getPosition();
+
         Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(*it)->Mesh.startEditing();
-        Base::BoundBox3d bbox = mesh->getBoundBox();
-        double len = bbox.CalcDiagonalLength();
-        // project center of bbox onto plane and use this as base point
-        Base::Vector3d cnt = bbox.GetCenter();
-        double dist = (cnt-base)*normal;
-        base = cnt - normal * dist;
 
-        Base::Vector3d p1 = base + up * len;
-        Base::Vector3d p2 = base - up * len;
-        Base::Vector3d p3 = p2 + normal * len;
-        Base::Vector3d p4 = p1 + normal * len;
-        p1 = mat * p1;
-        p2 = mat * p2;
-        p3 = mat * p3;
-        p4 = mat * p4;
+        // Apply the inverted mesh placement to the plane because the trimming is done
+        // on the untransformed mesh data
+        Base::Placement meshPlacement = mesh->getPlacement();
+        meshPlacement.invert();
+        meshPlacement.multVec(base, base);
+        meshPlacement.getRotation().multVec(normal, normal);
 
-        Base::Polygon2d polygon2d;
-        polygon2d.Add(Base::Vector2d(p1.x, p1.y));
-        polygon2d.Add(Base::Vector2d(p2.x, p2.y));
-        polygon2d.Add(Base::Vector2d(p3.x, p3.y));
-        polygon2d.Add(Base::Vector2d(p4.x, p4.y));
+        Base::Vector3f plnBase = Base::convertTo<Base::Vector3f>(base);
+        Base::Vector3f plnNormal = Base::convertTo<Base::Vector3f>(normal);
 
         if (role == Gui::SelectionRole::Inner) {
-            mesh->trim(polygon2d, proj, Mesh::MeshObject::INNER);
+            mesh->trim(plnBase, plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
         }
         else if (role == Gui::SelectionRole::Outer) {
-            mesh->trim(polygon2d, proj, Mesh::MeshObject::OUTER);
+            mesh->trim(plnBase, -plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
         }
         else if (role == Gui::SelectionRole::Split) {
             Mesh::MeshObject copy(*mesh);
-            mesh->trim(polygon2d, proj, Mesh::MeshObject::INNER);
+            mesh->trim(plnBase, plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
 
-            copy.trim(polygon2d, proj, Mesh::MeshObject::OUTER);
+            copy.trim(plnBase, -plnNormal);
             App::Document* doc = (*it)->getDocument();
             Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
             fea->Label.setValue((*it)->Label.getValue());
@@ -281,6 +264,45 @@ bool CmdMeshPartSection::isActive(void)
     return true;
 }
 
+//===========================================================================
+// MeshPart_CrossSections
+//===========================================================================
+DEF_STD_CMD_A(CmdMeshPartCrossSections)
+
+CmdMeshPartCrossSections::CmdMeshPartCrossSections()
+  :Command("MeshPart_CrossSections")
+{
+    sAppModule    = "MeshPart";
+    sGroup        = QT_TR_NOOP("MeshPart");
+    sMenuText     = QT_TR_NOOP("Cross-sections...");
+    sToolTipText  = QT_TR_NOOP("Cross-sections");
+    sWhatsThis    = "MeshPart_CrossSections";
+    sStatusTip    = sToolTipText;
+  //sPixmap       = "MeshPart_CrossSections";
+}
+
+void CmdMeshPartCrossSections::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType
+            (Mesh::Feature::getClassTypeId());
+        Base::BoundBox3d bbox;
+        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
+            bbox.Add(static_cast<Mesh::Feature*>(*it)->Mesh.getBoundingBox());
+        }
+        dlg = new MeshPartGui::TaskCrossSections(bbox);
+    }
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdMeshPartCrossSections::isActive(void)
+{
+    return (Gui::Selection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0 &&
+            !Gui::Control().activeDialog());
+}
+
 DEF_STD_CMD_A(CmdMeshPartCurveOnMesh)
 
 CmdMeshPartCurveOnMesh::CmdMeshPartCurveOnMesh()
@@ -325,5 +347,6 @@ void CreateMeshPartCommands(void)
     rcCmdMgr.addCommand(new CmdMeshPartMesher());
     rcCmdMgr.addCommand(new CmdMeshPartTrimByPlane());
     rcCmdMgr.addCommand(new CmdMeshPartSection());
+    rcCmdMgr.addCommand(new CmdMeshPartCrossSections());
     rcCmdMgr.addCommand(new CmdMeshPartCurveOnMesh());
 }

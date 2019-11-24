@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Approximate B-spline surface...</source>
-      <translation>B-spline azalera hurbildua...</translation>
+      <translation>Hurbildu B-spline gainazalera...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
       <source>Approximate a B-spline surface</source>
-      <translation>Hurbildu B-spline azalera batera</translation>
+      <translation>Hurbildu B-spline gainazal batera</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="196"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson azaleraren berreraikitzea</translation>
+      <translation>Poisson gainazalaren berreraikitzea</translation>
     </message>
   </context>
   <context>
@@ -79,7 +79,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-spline surface</source>
-      <translation>Doitu B-spline azalera</translation>
+      <translation>Doitu B-spline gainazala</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
@@ -162,7 +162,7 @@
       <translation>Hautatu kokapen-objektu bakarra tokiko orientazioa eskuratzeko.</translation>
     </message>
     <message>
-      <location filename="../../FitBSplineSurface.cpp" line="175"/>
+      <location filename="../../FitBSplineSurface.cpp" line="174"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>
@@ -195,7 +195,7 @@
       <translation>Laginak nodoko</translation>
     </message>
     <message>
-      <location filename="../../Poisson.cpp" line="109"/>
+      <location filename="../../Poisson.cpp" line="108"/>
       <source>Input error</source>
       <translation>Sarrera-errorea</translation>
     </message>

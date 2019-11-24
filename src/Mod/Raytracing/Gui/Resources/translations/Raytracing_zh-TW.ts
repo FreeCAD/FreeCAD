@@ -4,17 +4,17 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="519"/>
+      <location filename="../../Command.cpp" line="521"/>
       <source>File</source>
       <translation>檔案</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="520"/>
+      <location filename="../../Command.cpp" line="522"/>
       <source>&amp;Export project...</source>
       <translation>匯出專案(&amp;E)...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="521"/>
+      <location filename="../../Command.cpp" line="523"/>
       <source>Export a Raytracing project to a file</source>
       <translation>匯出一個光線追蹤專案到檔案中</translation>
     </message>
@@ -22,27 +22,27 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location filename="../../Command.cpp" line="752"/>
+      <location filename="../../Command.cpp" line="754"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="753"/>
+      <location filename="../../Command.cpp" line="755"/>
       <source>New Luxrender project</source>
       <translation>新 Luxrender 專案</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="756"/>
       <source>Insert new Luxrender project into the document</source>
       <translation>加入新的Luxrender專案至文件中</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="806"/>
+      <location filename="../../Command.cpp" line="808"/>
       <source>No template</source>
       <translation>無範本</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>No template available</source>
       <translation>無可用範本</translation>
     </message>
@@ -50,17 +50,17 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location filename="../../Command.cpp" line="435"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="436"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Insert part</source>
       <translation>置入零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="437"/>
+      <location filename="../../Command.cpp" line="439"/>
       <source>Insert a new part object into a Raytracing project</source>
       <translation>插入一個新的零件物件至光線追蹤專案中</translation>
     </message>
@@ -68,27 +68,27 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="321"/>
       <source>New POV-Ray project</source>
       <translation>新 Pov-ray 專案</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="322"/>
       <source>Insert new POV-Ray project into the document</source>
       <translation>於檔案中新增 POV-Ray 專案</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="374"/>
       <source>No template</source>
       <translation>無範本</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="375"/>
       <source>No template available</source>
       <translation>無可用範本</translation>
     </message>
@@ -96,17 +96,17 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="587"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="586"/>
+      <location filename="../../Command.cpp" line="588"/>
       <source>&amp;Render</source>
       <translation>算繪(&amp;)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="587"/>
+      <location filename="../../Command.cpp" line="589"/>
       <source>Renders the current raytracing project with an external renderer</source>
       <translation>以外部算繪器算繪目前的光線追蹤專案</translation>
     </message>
@@ -114,17 +114,17 @@
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location filename="../../Command.cpp" line="865"/>
+      <location filename="../../Command.cpp" line="867"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="866"/>
+      <location filename="../../Command.cpp" line="868"/>
       <source>&amp;Reset Camera</source>
       <translation>&amp;重設攝影機</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="867"/>
+      <location filename="../../Command.cpp" line="869"/>
       <source>Sets the camera of the selected Raytracing project to match the current view</source>
       <translation>設定所選光線追蹤專案之攝影機來配合目前視圖</translation>
     </message>
@@ -170,18 +170,19 @@
     <message>
       <location filename="../../Command.cpp" line="98"/>
       <location filename="../../Command.cpp" line="237"/>
-      <location filename="../../Command.cpp" line="334"/>
-      <location filename="../../Command.cpp" line="768"/>
+      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="770"/>
       <source>No perspective camera</source>
       <translation>無透視鏡頭</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="99"/>
       <location filename="../../Command.cpp" line="238"/>
-      <location filename="../../Command.cpp" line="335"/>
-      <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
+      <location filename="../../Command.cpp" line="337"/>
+      <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>目前視圖相機並非設定為透視，因此 POV-Ray 影像輸出結果可能與您預期的不同。您是否要繼續？</translation>
+      <translation type="unfinished">The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
+Do you want to continue?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -199,23 +200,23 @@ Do you want to continue?</source>
       <translation>將目前3D視圖中相機及所有內容存為 POV-Ray 檔</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="349"/>
-      <location filename="../../Command.cpp" line="783"/>
+      <location filename="../../Command.cpp" line="351"/>
+      <location filename="../../Command.cpp" line="785"/>
       <source>No template</source>
       <translation>無範本</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="350"/>
-      <location filename="../../Command.cpp" line="784"/>
+      <location filename="../../Command.cpp" line="352"/>
+      <location filename="../../Command.cpp" line="786"/>
       <source>Cannot create a project because there is no template installed.</source>
       <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="769"/>
-      <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
+      <location filename="../../Command.cpp" line="771"/>
+      <source>The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
 Do you want to continue?</source>
-      <translation>目前視圖中攝影機並非透視設定,將會使luxrender影像結果可能與您預期的不同
-您是否要繼續?</translation>
+      <translation type="unfinished">The current view camera is not perspective and thus resulting in a luxrender image that may look different than what was expected.
+Do you want to continue?</translation>
     </message>
   </context>
   <context>
@@ -224,7 +225,7 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="186"/>
       <location filename="../../Command.cpp" line="248"/>
-      <location filename="../../Command.cpp" line="543"/>
+      <location filename="../../Command.cpp" line="545"/>
       <source>POV-Ray</source>
       <translation>POV-Ray</translation>
     </message>
@@ -232,8 +233,8 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="136"/>
       <location filename="../../Command.cpp" line="187"/>
       <location filename="../../Command.cpp" line="249"/>
-      <location filename="../../Command.cpp" line="548"/>
-      <location filename="../../Command.cpp" line="661"/>
+      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="663"/>
       <source>All Files</source>
       <translation>所有檔案</translation>
     </message>
@@ -241,107 +242,107 @@ Do you want to continue?</source>
       <location filename="../../Command.cpp" line="137"/>
       <location filename="../../Command.cpp" line="188"/>
       <location filename="../../Command.cpp" line="251"/>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="552"/>
       <source>Export page</source>
       <translation>匯出頁面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
-      <location filename="../../Command.cpp" line="534"/>
-      <location filename="../../Command.cpp" line="601"/>
-      <location filename="../../Command.cpp" line="879"/>
+      <location filename="../../Command.cpp" line="449"/>
+      <location filename="../../Command.cpp" line="536"/>
+      <location filename="../../Command.cpp" line="603"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="448"/>
+      <location filename="../../Command.cpp" line="450"/>
       <source>Select a Part object.</source>
       <translation>選取零件物件。</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
-      <location filename="../../Command.cpp" line="470"/>
+      <location filename="../../Command.cpp" line="460"/>
+      <location filename="../../Command.cpp" line="472"/>
       <source>No Raytracing project to insert</source>
       <translation>未插入光線追蹤專案</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="459"/>
+      <location filename="../../Command.cpp" line="461"/>
       <source>Create a Raytracing project to insert a view.</source>
       <translation>於視圖中建立一個光線追蹤專案</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="471"/>
+      <location filename="../../Command.cpp" line="473"/>
       <source>Select a Raytracing project to insert the view.</source>
       <translation>選擇一個光線追蹤專案插入視圖中</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="535"/>
-      <location filename="../../Command.cpp" line="602"/>
-      <location filename="../../Command.cpp" line="880"/>
+      <location filename="../../Command.cpp" line="537"/>
+      <location filename="../../Command.cpp" line="604"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Select one Raytracing project object.</source>
       <translation>選擇一個光線追蹤專案物件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="539"/>
+      <location filename="../../Command.cpp" line="541"/>
       <source>Luxrender</source>
       <translation>Luxrender</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="617"/>
-      <location filename="../../Command.cpp" line="623"/>
+      <location filename="../../Command.cpp" line="619"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>POV-Ray not found</source>
       <translation>未發現POV-Ray</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="618"/>
+      <location filename="../../Command.cpp" line="620"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
       <translation>請於偏好設定中設定 POV-Ray 執行檔之路徑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="626"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
       <translation>請於偏好設定中更新 POV-Ray 執行檔之路徑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
-      <location filename="../../Command.cpp" line="637"/>
+      <location filename="../../Command.cpp" line="633"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Luxrender not found</source>
       <translation>無Luxrender</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="634"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
       <translation>請於偏好設定中設定 luxrender或luxconsole執行檔路徑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="640"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
       <translation>請於偏好設定中修正 luxrender或luxconsole執行檔路徑</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>POV-Ray file missing</source>
       <translation>無 POV-Ray 檔</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>The POV-Ray project file doesn't exist.</source>
       <translation>無 POV-Ray 專案檔</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="657"/>
       <location filename="../../Command.cpp" line="659"/>
-      <location filename="../../Command.cpp" line="662"/>
+      <location filename="../../Command.cpp" line="661"/>
+      <location filename="../../Command.cpp" line="664"/>
       <source>Rendered image</source>
       <translation>算繪影像</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="719"/>
+      <location filename="../../Command.cpp" line="721"/>
       <source>Lux project file missing</source>
       <translation>無 Lux 檔</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="722"/>
       <source>The Lux project file doesn't exist.</source>
       <translation>無 Lux 專案檔</translation>
     </message>

@@ -64,10 +64,11 @@ PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderDocumentObject)
  */
 ViewProviderOrigin::ViewProviderOrigin()
 {
-    ADD_PROPERTY_TYPE ( Size, (Base::Vector3d(10,10,10)), 0, App::Prop_ReadOnly,
-    QT_TRANSLATE_NOOP("App::Property", "The displayed size of the origin"));
+    ADD_PROPERTY_TYPE ( Size, (Base::Vector3d(10,10,10)), 0, App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "The displayed size of the origin"));
+    Size.setStatus(App::Property::ReadOnly, true);
 
-    sPixmap = "CoordinateSystem";
+    sPixmap = "Std_CoordinateSystem";
     Visibility.setValue(false);
 
     pcGroupChildren = new SoGroup();
@@ -153,6 +154,12 @@ void ViewProviderOrigin::resetTemporaryVisibility() {
     tempVisMap.clear ();
 }
 
+double ViewProviderOrigin::defaultSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    return 0.25 * hGrp->GetFloat("NewDocumentCameraScale",100.0);
+}
+
 bool ViewProviderOrigin::isTemporaryVisibility() {
     return !tempVisMap.empty();
 }
@@ -212,7 +219,10 @@ bool ViewProviderOrigin::onDelete(const std::vector<std::string> &) {
         return false;
     }
 
-    for (auto obj: origin->OriginFeatures.getValues() ) {
+    auto objs = origin->OriginFeatures.getValues();
+    origin->OriginFeatures.setValues({});
+
+    for (auto obj: objs ) {
         Gui::Command::doCommand( Gui::Command::Doc, "App.getDocument(\"%s\").removeObject(\"%s\")",
                 obj->getDocument()->getName(), obj->getNameInDocument() );
     }

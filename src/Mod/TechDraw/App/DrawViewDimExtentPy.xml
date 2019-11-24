@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DrawViewDimensionPy"
+    Name="DrawViewDimExtentPy"
+    Twin="DrawViewDimExtent"
+    TwinPointer="DrawViewDimExtent"
+    Include="Mod/TechDraw/App/DrawViewDimExtent.h"
+    Namespace="TechDraw"
+    FatherInclude="Mod/TechDraw/App/DrawViewDimensionPy.h"
+    FatherNamespace="TechDraw">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing DimExtents</UserDocu>
+    </Documentation>
+    <Methode Name="tbd">
+      <Documentation>
+        <UserDocu>tbd() - returns tbd.</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>
