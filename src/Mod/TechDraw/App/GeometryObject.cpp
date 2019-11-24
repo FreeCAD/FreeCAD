@@ -25,6 +25,7 @@
 
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
+#include <BRep_Builder.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepLib.hxx>
 #include <BRepLProp_CurveTool.hxx>
@@ -131,6 +132,16 @@ const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges(const bool smo
             }
         }
     }
+    //debug
+    //make compound of edges and save as brep file
+//    BRep_Builder builder;
+//    TopoDS_Compound comp;
+//    builder.MakeCompound(comp);
+//    for (auto& r: result) {
+//        builder.Add(comp, r->occEdge);
+//    }
+//    BRepTools::Write(comp, "GOVizFaceEdges.brep");            //debug
+
     return result;
 }
 

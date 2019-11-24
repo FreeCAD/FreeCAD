@@ -518,9 +518,16 @@ void DrawViewPart::extractFaces()
 
     std::vector<TopoDS_Wire> sortedWires = ew.sortStrip(fw,true);
 
+//    int idb = 0;
     std::vector<TopoDS_Wire>::iterator itWire = sortedWires.begin();
     for (; itWire != sortedWires.end(); itWire++) {
         //version 1: 1 wire/face - no voids in face
+//debug
+//        std::stringstream ss;
+//        ss << "DVPSWire" << idb << ".brep";
+//        std::string wireName = ss.str();
+//        BRepTools::Write((*itWire), wireName.c_str());            //debug
+//debug        idb++;
         TechDraw::Face* f = new TechDraw::Face();
         const TopoDS_Wire& wire = (*itWire);
         TechDraw::Wire* w = new TechDraw::Wire(wire);
@@ -926,7 +933,7 @@ bool DrawViewPart::checkXDirection(void) const
         Base::Vector3d origin(0.0,0.0,0.0);
         Base::Vector3d xDir = getLegacyX(origin,
                                          dir);
-        Base::Console().Warning("DVP - %s - XDirection property not set. Trying %s\n",
+        Base::Console().Log("DVP - %s - XDirection property not set. Trying %s\n",
                                 getNameInDocument(),
                                 DrawUtil::formatVector(xDir).c_str());
         return false;
