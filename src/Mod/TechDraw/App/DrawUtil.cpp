@@ -1037,6 +1037,18 @@ void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
     Base::Console().Message("COUNT - %s has %d edges\n",text,num);
 }
 
+void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
+{
+    Base::Console().Message("DUMP - %s\n",text);
+    TopExp_Explorer expl(s, TopAbs_EDGE);
+    int i;
+    for (i = 1 ; expl.More(); expl.Next(),i++) {
+        const TopoDS_Edge& e = TopoDS::Edge(expl.Current());
+        dumpEdge("dumpEdges", i, e);
+    }
+}
+
+
 void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
 {
     Base::Console().Message("DUMP - dump1Vertex - %s\n",text);
@@ -1055,8 +1067,8 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
     const gp_Pnt& vEnd = propEnd.Value();
     //Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)/%0.3f end:(%.2f,%.3f,%.3f)/%.3f\n",label,i,
     //                        vStart.X(),vStart.Y(),vStart.Z(),start,vEnd.X(),vEnd.Y(),vEnd.Z(),end);
-    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f)\n",label,i,
-                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z());
+    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f) Orient: %d\n",label,i,
+                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z(), e.Orientation());
 }
 const char* DrawUtil::printBool(bool b)
 {
