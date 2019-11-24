@@ -45,6 +45,7 @@
 #include "Selection.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "ViewParams.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -63,13 +64,12 @@ public:
     Document *vpDoc;
     std::map<std::string,QListWidgetItem*> elements;
     std::vector<QListWidgetItem*> items;
-    std::string hiddenSub;
     Connection connectDelDoc;
     Connection connectDelObj;
     QPixmap px;
     bool busy;
-    long onTopMode;
     bool touched;
+    bool selectOnTop;
 
     std::string editDoc;
     std::string editObj;
@@ -97,7 +97,7 @@ public:
             editObj = vp->getObject()->getNameInDocument();
             editSub.clear();
         }
-        onTopMode = vpParent->OnTopWhenSelected.getValue();
+        selectOnTop = ViewParams::instance()->getShowSelectionOnTop();
         busy = false;
         touched = false;
         int w = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon).width();
@@ -105,7 +105,8 @@ public:
     }
 
     ~Private() {
-        vpParent->OnTopWhenSelected.setValue(onTopMode);
+        if(selectOnTop != ViewParams::instance()->getShowSelectionOnTop())
+            ViewParams::instance()->setShowSelectionOnTop(selectOnTop);
     }
 
     bool allow(App::Document *doc, App::DocumentObject *obj, const char *subname) {
@@ -206,7 +207,6 @@ public:
 
     void removeAll() {
         if(elements.size()) {
-            hiddenSub.clear();
             ui->elementList->clear();
             elements.clear();
             apply();
@@ -216,8 +216,6 @@ public:
     void removeItems() {
         for(auto item : ui->elementList->selectedItems()) {
             std::string sub = qPrintable(item->data(Qt::UserRole+1).value<QString>());
-            if(sub == hiddenSub)
-                hiddenSub.clear();
             elements.erase(sub);
             delete item;
         }
@@ -283,8 +281,6 @@ public:
         }
         for(auto item : ui->elementList->selectedItems()) {
             std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
-            if(ViewProvider::hasHiddenMarker(name.c_str()))
-                continue;
             auto &v = sels[name];
             if(!v)
                 Selection().addSelection(editDoc.c_str(),
@@ -317,8 +313,8 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
         ("User parameter:BaseApp/Preferences/View");
     d->ui->recompute->setChecked(hPart->GetBool("ColorRecompute",true));
     d->ui->onTop->setChecked(hPart->GetBool("ColorOnTop",true));
-    if(d->ui->onTop->isChecked()) 
-        d->vpParent->OnTopWhenSelected.setValue(3);
+    if(d->ui->onTop->isChecked() && !ViewParams::instance()->getShowSelectionOnTop())
+        ViewParams::instance()->setShowSelectionOnTop(true);
 
     Selection().addSelectionGate(d,0);
 
@@ -347,7 +343,7 @@ void ElementColors::on_onTop_clicked(bool checked) {
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     hPart->SetBool("ColorOnTop",checked);
-    d->vpParent->OnTopWhenSelected.setValue(checked?3:d->onTopMode);
+    ViewParams::instance()->setShowSelectionOnTop(checked);
 }
 
 void ElementColors::slotDeleteDocument(const Document& Doc)
@@ -466,26 +462,16 @@ void ElementColors::changeEvent(QEvent *e)
 void ElementColors::leaveEvent(QEvent *e) {
     QWidget::leaveEvent(e);
     Selection().rmvPreselect();
-    if(d->hiddenSub.size()) {
-        d->vp->partialRender({d->hiddenSub},false);
-        d->hiddenSub.clear();
-    }
 }
 
 void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
     std::string name(qPrintable(item->data(Qt::UserRole+1).value<QString>()));
-    if(d->hiddenSub.size()) {
-        d->vp->partialRender({d->hiddenSub},false);
-        d->hiddenSub.clear();
-    }
-    if(ViewProvider::hasHiddenMarker(name.c_str())) {
-        d->hiddenSub = name;
-        d->vp->partialRender({name},true);
-        name.resize(name.size()-ViewProvider::hiddenMarker().size());
-    }
+    const char *hidden = ViewProvider::hasHiddenMarker(name.c_str());
+    if(hidden)
+        name.resize(name.size()-std::strlen(hidden));
     Selection().setPreselect(d->editDoc.c_str(),
             d->editObj.c_str(), (d->editSub+name).c_str(),0,0,0,
-            d->ui->onTop->isChecked()?2:1);
+            (d->ui->onTop->isChecked()||hidden)?2:1);
 }
 
 void ElementColors::on_elementList_itemSelectionChanged() {
