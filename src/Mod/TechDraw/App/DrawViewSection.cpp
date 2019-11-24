@@ -49,6 +49,7 @@
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_HLRToShape.hxx>
 #include <ShapeAnalysis.hxx>
+#include <ShapeFix_Wire.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
@@ -371,14 +372,18 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                     ss << "DVSScaledFace" << idb << ".brep" ;
                     std::string faceName = ss.str();
                     BRepTools::Write(pFace, faceName.c_str());            //debug
+                    std::stringstream ss2;
+                    ss2 << "DVSOuter" << idb << ".brep" ;
+                    TopoDS_Wire owdb = ShapeAnalysis::OuterWire(pFace);
+                    std::string wireName = ss2.str();
+                    BRepTools::Write(owdb, wireName.c_str());               //debug
                 }
                 TopoDS_Wire ow = ShapeAnalysis::OuterWire(pFace);
-//                BRepTools::Write(ow, "outerwire.brep");               //debug
                 //this check helps prevent "ghost" faces
                 BRepCheck_Wire chkWire(ow);
                 TopoDS_Edge e1, e2;
                 BRepCheck_Status status = chkWire.SelfIntersect(pFace, e1, e2);
-                if (status == BRepCheck_NoError) { 
+                if (status == BRepCheck_NoError) {
                     builder.Add(newFaces,pFace);
                     sectionFaceWires.push_back(ShapeAnalysis::OuterWire(pFace));
                 }

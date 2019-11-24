@@ -82,7 +82,8 @@ void QGIViewSection::drawSectionFace()
 
     float lineWidth    = sectionVp->LineWidth.getValue();
 
-
+    std::vector<TopoDS_Wire> sectionWires = section->getSectionFaceWires();
+    
     auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
         Base::Console().
