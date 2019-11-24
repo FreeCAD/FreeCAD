@@ -39,6 +39,7 @@ class Bnd_Box;
 class gp_Pln;
 class gp_Pnt;
 class TopoDS_Face;
+class TopoDS_Wire;
 class gp_Ax2;
 
 namespace TechDraw

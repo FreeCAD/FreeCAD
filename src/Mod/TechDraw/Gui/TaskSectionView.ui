@@ -75,36 +75,29 @@
         </item>
         <item row="3" column="1">
          <widget class="QLineEdit" name="leSymbol">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>32</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Identifier for this section</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Scale</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="1">
          <widget class="QDoubleSpinBox" name="sbScale">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
           <property name="minimumSize">
            <size>
-            <width>249</width>
-            <height>33</height>
+            <width>0</width>
+            <height>32</height>
            </size>
           </property>
           <property name="baseSize">
            <size>
-            <width>249</width>
-            <height>33</height>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
           <property name="decimals">
@@ -118,6 +111,13 @@
           </property>
           <property name="value">
            <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Scale</string>
           </property>
          </widget>
         </item>
@@ -298,7 +298,7 @@
           <property name="minimumSize">
            <size>
             <width>150</width>
-            <height>24</height>
+            <height>32</height>
            </size>
           </property>
           <property name="toolTip">
@@ -342,7 +342,7 @@
           <property name="minimumSize">
            <size>
             <width>150</width>
-            <height>24</height>
+            <height>32</height>
            </size>
           </property>
           <property name="toolTip">
@@ -386,7 +386,7 @@
           <property name="minimumSize">
            <size>
             <width>150</width>
-            <height>24</height>
+            <height>32</height>
            </size>
           </property>
           <property name="toolTip">
