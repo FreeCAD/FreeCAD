@@ -197,6 +197,12 @@ void ViewProviderPart::applyColors() {
 
 void ViewProviderPart::buildChildren3D() {
     ViewProviderGeoFeatureGroupExtension::buildChildren3D();
+    if(getObject() && !getObject()->isRestoring())
+        applyColors();
+}
+
+void ViewProviderPart::finishRestoring() {
+    inherited::finishRestoring();
     applyColors();
 }
 
