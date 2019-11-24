@@ -1593,19 +1593,24 @@ void SoFCSelectionRoot::setViewProvider(ViewProvider *vp) {
     viewProvider = vp;
 }
 
-SoNode *SoFCSelectionRoot::getCurrentRoot(bool front, SoNode *def) {
+SoFCSelectionRoot *SoFCSelectionRoot::getCurrentRoot(bool front, SoFCSelectionRoot *def) {
     if(SelStack.size()) 
-        return front?SelStack.front():SelStack.back();
+        return static_cast<SoFCSelectionRoot*>(front?SelStack.front():SelStack.back());
     return def;
 }
 
-SoNode *SoFCSelectionRoot::getCurrentActionRoot(SoAction *action, bool front, SoNode *def) {
+SoFCSelectionRoot *SoFCSelectionRoot::getCurrentActionRoot(
+        SoAction *action, bool front, SoFCSelectionRoot *def) 
+{
     auto it = ActionStacks.find(action);
     if(it == ActionStacks.end() || it->second.empty())
         return def;
-    return front?it->second.front():it->second.back();
+    return static_cast<SoFCSelectionRoot*>(front?it->second.front():it->second.back());
 }
 
+int SoFCSelectionRoot::getRenderPathCode() const {
+    return renderPathCode - 1;
+}
 
 SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
         Stack &stack, SoNode *node, SoFCSelectionContextBasePtr def)
@@ -1846,10 +1851,22 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node,
 
 static std::time_t _CyclicLastReported;
 
-void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
-    if(ViewParams::instance()->getCoinCycleCheck()
-            && !SelStack.nodeSet.insert(this).second) 
+struct SelectionRootPathCode {
+    SelectionRootPathCode(SoAction *action, int &code)
+        :code(code)
     {
+        code = action->getCurPathCode() + 1;
+    }
+
+    ~SelectionRootPathCode() {
+        code = 0;
+    }
+
+    int &code;
+};
+
+void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
+    if(renderPathCode) {
         std::time_t t = std::time(0);
         if(_CyclicLastReported < t) {
             _CyclicLastReported = t+5;
@@ -1857,19 +1874,20 @@ void SoFCSelectionRoot::renderPrivate(SoGLRenderAction * action, bool inPath) {
         }
         return;
     }
+    SelectionRootPathCode guard(action,renderPathCode);
+
     auto state = action->getState();
     bool pushed = false;
     SelStack.push_back(this);
     if(_renderPrivate(action,inPath,pushed)) {
         if(inPath)
-            SoSeparator::GLRenderInPath(action);
+            inherited::GLRenderInPath(action);
         else
-            SoSeparator::GLRenderBelowPath(action);
+            inherited::GLRenderBelowPath(action);
     }
     if(pushed)
         state->pop();
     SelStack.pop_back();
-    SelStack.nodeSet.erase(this);
 }
 
 bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, bool &pushed) {
@@ -1877,9 +1895,13 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
     auto state = action->getState();
     selCounter.checkCache(state,true);
 
-    auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
-    if(ctx2 && ctx2->hideAll)
-        return false;
+    if(!SoFCSwitch::testTraverseState(SoFCSwitch::TraverseOverride)
+            || action->getCurPathCode()!=SoAction::IN_PATH)
+    {
+        auto ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(SelStack,this,SelContext::merge));
+        if(ctx2 && ctx2->hideAll)
+            return false;
+    }
 
     SelContextPtr ctx = getRenderContext<SelContext>(this);
 
@@ -2166,7 +2188,9 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
                       && path->getTail()->isOfType(SoSwitch::getClassTypeId()));
         }
 
-        if(!action->isOfType(SoSelectionElementAction::getClassTypeId())) {
+        if(!action->isOfType(SoSelectionElementAction::getClassTypeId())
+                && !SoFCSwitch::testTraverseState(SoFCSwitch::TraverseOverride))
+        {
             ctx2Searched = true;
             ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(stack,this,SelContext::merge));
             if(ctx2 && ctx2->hideAll)
@@ -2275,7 +2299,10 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
         return true;
     }
 
-    if(!ctx2Searched) {
+    if(!ctx2Searched
+            && (action->getCurPathCode() != SoAction::IN_PATH
+                || !SoFCSwitch::testTraverseState(SoFCSwitch::TraverseOverride)))
+    {
         ctx2 = std::static_pointer_cast<SelContext>(getNodeContext2(stack,this,SelContext::merge));
         if(ctx2 && ctx2->hideAll)
             return false;

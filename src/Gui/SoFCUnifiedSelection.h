@@ -460,9 +460,12 @@ public:
 
     static void moveActionStack(SoAction *from, SoAction *to, bool erase);
 
-    static SoNode *getCurrentRoot(bool front=false, SoNode *def=0);
+    static SoFCSelectionRoot *getCurrentRoot(bool front=false, SoFCSelectionRoot *def=0);
 
-    static SoNode *getCurrentActionRoot(SoAction *action, bool front=false, SoNode *def=0);
+    static SoFCSelectionRoot *getCurrentActionRoot(
+            SoAction *action, bool front=false, SoFCSelectionRoot *def=0);
+
+    int getRenderPathCode() const;
 
     void resetContext();
 
@@ -548,6 +551,8 @@ protected:
     SoFCSelectionCounter selCounter;
 
     ViewProvider *viewProvider;
+
+    int renderPathCode=0;
 };
 
 /**
