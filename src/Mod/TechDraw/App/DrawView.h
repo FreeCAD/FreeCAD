@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
+#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 
 namespace TechDraw
@@ -51,9 +52,9 @@ public:
     DrawView(void);
     virtual ~DrawView();
 
-    App::PropertyFloat X;
-    App::PropertyFloat Y;
-    App::PropertyBool  LockPosition;
+    App::PropertyLength X;
+    App::PropertyLength Y;
+    App::PropertyBool LockPosition;
     App::PropertyFloatConstraint Scale;
 
     App::PropertyEnumeration ScaleType;
