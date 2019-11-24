@@ -90,6 +90,7 @@ private:
     Base::Vector3d m_saveNormal;
     Base::Vector3d m_saveDirection;
     Base::Vector3d m_saveOrigin;
+    double m_saveScale;
 
     std::string m_dirName;
 
