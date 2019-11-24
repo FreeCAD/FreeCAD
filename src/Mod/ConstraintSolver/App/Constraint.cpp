@@ -6,7 +6,7 @@ using DualNumber = Base::DualNumber;
 
 TYPESYSTEM_SOURCE_ABSTRACT(FCS::Constraint, FCS::ParaObject);
 
-double Constraint::maxStep(const ValueSet& /*dir*/) const
+double Constraint::maxStep(const ValueSet& vals, const ValueSet& /*dir*/) const
 {
     return 1e12;
 }
@@ -35,7 +35,12 @@ std::vector<double> Constraint::caluclateDatum()
 
 Base::DualNumber Constraint::netError(const ValueSet& on) const
 {
-    std::vector<DualNumber> buf(rank());
+    return sqrt(netSqError(on));
+}
+
+Base::DualNumber Constraint::netSqError(const ValueSet& on) const
+{
+    std::vector<DualNumber> buf(rank()); //#FIXME: use stack-allocated vector, boost has some
     error(on, buf.data());
 
     if (rank() == 1)
@@ -45,7 +50,7 @@ Base::DualNumber Constraint::netError(const ValueSet& on) const
     for(DualNumber v : buf){
         acc = acc + sq(v);
     }
-    return sqrt(acc);
+    return acc;
 }
 
 double Constraint::netError() const

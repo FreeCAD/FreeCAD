@@ -82,7 +82,7 @@ public://main interface for overriding
      */
     virtual void error(const ValueSet& vals, Base::DualNumber* returnbuf) const = 0;
     //optional
-    virtual double maxStep(const ValueSet& dir) const;
+    virtual double maxStep(const ValueSet& vals, const ValueSet& dir) const;
     virtual void setWeight(double weight);
     virtual void setProblemSize(ProblemSizeInfo sz);
     ///datum parameters are usually numerals entered by user, such as the distance of distance constraint. The parameters are typically fixed.
@@ -93,6 +93,7 @@ public://main interface for overriding
 public://methods
     const std::vector<ParameterRef>& parameters() const {return _parameters;}
     Base::DualNumber netError(const ValueSet& on) const;
+    Base::DualNumber netSqError(const ValueSet& on) const;
     double netError() const;
     double weight() const {return _weight;}
 
