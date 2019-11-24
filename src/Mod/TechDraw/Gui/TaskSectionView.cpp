@@ -163,6 +163,7 @@ void TaskSectionView::setUiPrimary()
     //TODO: get next symbol from page
 //    ui->leSymbol->setText();
 
+    ui->sbScale->setValue(m_base->getScale());
     Base::Vector3d origin = m_base->getOriginalCentroid();
     ui->sbOrgX->setValue(origin.x);
     ui->sbOrgY->setValue(origin.y);
@@ -181,6 +182,7 @@ void TaskSectionView::setUiEdit()
     temp = m_section->SectionSymbol.getValue();
     qTemp    = Base::Tools::fromStdString(temp);
     ui->leSymbol->setText(qTemp);
+    ui->sbScale->setValue(m_section->getScale());
     
     Base::Vector3d origin = m_section->SectionOrigin.getValue();
     ui->sbOrgX->setValue(origin.x);
@@ -194,6 +196,7 @@ void TaskSectionView::saveSectionState()
 //    Base::Console().Message("TSV::saveSectionState()\n");
     if (m_section != nullptr) {
         m_saveSymbol = m_section->SectionSymbol.getValue();
+        m_saveScale  = m_section->getScale();
         m_saveNormal = m_section->SectionNormal.getValue();
         m_saveDirection = m_section->Direction.getValue();
         m_saveOrigin    = m_section->SectionOrigin.getValue();
@@ -208,6 +211,7 @@ void TaskSectionView::restoreSectionState()
 //    Base::Console().Message("TSV::restoreSectionState()\n");
     if (m_section != nullptr) {
         m_section->SectionSymbol.setValue(m_saveSymbol);
+        m_section->Scale.setValue(m_saveScale);
         m_section->SectionNormal.setValue(m_saveNormal);
         m_section->Direction.setValue(m_saveDirection);
         m_section->SectionOrigin.setValue(m_saveOrigin);
@@ -374,27 +378,12 @@ void TaskSectionView::updateSectionView(void)
         Command::doCommand(Command::Doc,"App.activeDocument().%s.SectionSymbol = '%s'",
                            sectionName.c_str(),
                            temp.c_str());
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = %0.6f",
+                           sectionName.c_str(),
+                           ui->sbScale->value());
         m_section->setCSFromBase(m_dirName.c_str());
     }
 }
-
-//void TaskSectionView::saveButtons(QPushButton* btnOK,
-//                             QPushButton* btnCancel,
-//                             QPushButton* btnApply)
-//{
-//    m_btnOK = btnOK;
-//    m_btnCancel = btnCancel;
-//    m_btnApply = btnApply;
-//}
-
-//std::string TaskSectionView::prefViewSection()
-//{
-////    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-////                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Section");
-////                                    
-////    std::string prefString = hGrp->GetASCII("SectionPref", "default");
-////    return prefString;
-//}
 
 //******************************************************************************
 
