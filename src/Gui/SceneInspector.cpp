@@ -109,7 +109,8 @@ void SceneModel::setNode(QModelIndex index, SoNode* node, bool expand)
         }
     } else if (node->isOfType(SoSeparator::getClassTypeId())) {
         auto pcSeparator = static_cast<SoSeparator*>(node);
-        stream << pcSeparator->renderCaching.getValue() << ", ";
+        stream << pcSeparator->renderCaching.getValue() << ", "
+            << pcSeparator->boundingBoxCaching.getValue() << ", ";
     } else if (node->isOfType(SoIndexedShape::getClassTypeId())) {
         auto shape = static_cast<SoIndexedShape*>(node);
         stream << shape->coordIndex.getNum() << ", ";

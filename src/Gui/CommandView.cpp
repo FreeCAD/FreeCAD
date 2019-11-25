@@ -854,6 +854,54 @@ bool StdCmdToggleGroupVisibility::isActive(void)
 }
 
 //===========================================================================
+// Std_ToggleVisibility
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleShowOnTop)
+
+StdCmdToggleShowOnTop::StdCmdToggleShowOnTop()
+  : Command("Std_ToggleShowOnTop")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Toggle show on top");
+    sToolTipText  = QT_TR_NOOP("Toggles whether to show the object on top");
+    sStatusTip    = sToolTipText;
+    sWhatsThis    = "Std_ToggleShowOnTop";
+    sAccel        = "Ctrl+Shift+Space";
+    eType         = Alter3DView;
+}
+
+void StdCmdToggleShowOnTop::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+
+    auto gdoc = Application::Instance->activeDocument();
+    if(!gdoc)
+        return;
+    auto view = Base::freecad_dynamic_cast<View3DInventor>(gdoc->getActiveView());
+    if(!view)
+        return;
+    auto viewer = view->getViewer();
+
+    std::set<App::SubObjectT> objs;
+    for(auto sel : Selection().getSelectionT(gdoc->getDocument()->getName(),0)) {
+        sel.setSubName(sel.getSubNameNoElement().c_str());
+        if(!objs.insert(sel).second)
+            continue;
+        bool selected = viewer->isInGroupOnTop(sel.getObjectName().c_str(),sel.getSubName().c_str());
+        viewer->checkGroupOnTop(SelectionChanges(selected?SelectionChanges::RmvSelection:SelectionChanges::AddSelection,
+                    sel.getDocumentName().c_str(), sel.getObjectName().c_str(), sel.getSubName().c_str()),true);
+    }
+    if(objs.empty())
+        viewer->clearGroupOnTop(true);
+}
+
+bool StdCmdToggleShowOnTop::isActive(void)
+{
+    auto gdoc = Application::Instance->activeDocument();
+    return gdoc && Base::freecad_dynamic_cast<View3DInventor>(gdoc->getActiveView());
+}
+
+//===========================================================================
 // Std_ToggleSelectability
 //===========================================================================
 DEF_STD_CMD_A(StdCmdToggleSelectability)
@@ -3727,6 +3775,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdSetAppearance());
     rcCmdMgr.addCommand(new StdCmdToggleVisibility());
     rcCmdMgr.addCommand(new StdCmdToggleGroupVisibility());
+    rcCmdMgr.addCommand(new StdCmdToggleShowOnTop());
     rcCmdMgr.addCommand(new StdCmdToggleSelectability());
     rcCmdMgr.addCommand(new StdCmdShowSelection());
     rcCmdMgr.addCommand(new StdCmdHideSelection());

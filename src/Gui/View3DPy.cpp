@@ -203,6 +203,15 @@ void View3DInventorPy::init_type()
         "pla: clipping plane placement");
     add_varargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
         "hasClippingPlane(): check whether this clipping plane is active");
+    add_varargs_method("addObjectOnTop",&View3DInventorPy::addObjectOnTop,
+        "addObjectOnTop(obj,subname='')\n\n"
+        "Rorce showing an object in group on top");
+    add_varargs_method("removeObjectOnTop",&View3DInventorPy::removeObjectOnTop,
+        "removeObjectOnTop(obj=None,subname='')\n\n"
+        "Remove an object (or all objects if none is given) from on top group");
+    add_varargs_method("isObjectOnTop",&View3DInventorPy::isObjectOnTop,
+        "isObjectOnTop(obj,subname='')\n\n"
+        "Check if a given object is in group on top");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -2589,4 +2598,70 @@ Py::Object View3DInventorPy::hasClippingPlane(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     return Py::Boolean(_view->getViewer()->hasClippingPlane());
+}
+
+Py::Object View3DInventorPy::addObjectOnTop(const Py::Tuple &args) {
+    PyObject *pyObj;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "O!|s",&App::DocumentObjectPy::Type,&pyObj,&subname))
+        throw Py::Exception();
+    App::DocumentObject *obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
+    std::string sub;
+    if(!subname) {
+        SelectionSingleton::checkTopParent(obj,sub);
+        subname = sub.c_str();
+    }
+    if(obj && obj->getDocument() && obj->getNameInDocument()) {
+        _view->getViewer()->checkGroupOnTop(SelectionChanges(SelectionChanges::AddSelection,
+                    obj->getDocument()->getName(),obj->getNameInDocument(),subname),true);
+        return Py::TupleN(Py::asObject(obj->getPyObject()),Py::String(subname));
+    }
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::removeObjectOnTop(const Py::Tuple &args) {
+    PyObject *pyObj = Py_None;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "|Os",&pyObj,&subname))
+        throw Py::Exception();
+    App::DocumentObject *obj = 0;
+    if(pyObj!=Py_None) {
+        if(!PyObject_TypeCheck(pyObj,&App::DocumentObjectPy::Type))
+            throw Py::TypeError("Expect document object");
+        obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
+    }
+    if(!obj) {
+        _view->getViewer()->clearGroupOnTop(true);
+        return Py::None();
+    }
+
+    std::string sub;
+    if(obj && !subname) {
+        SelectionSingleton::checkTopParent(obj,sub);
+        subname = sub.c_str();
+    }
+    if(obj && obj->getDocument() && obj->getNameInDocument()) {
+        _view->getViewer()->checkGroupOnTop(SelectionChanges(SelectionChanges::RmvSelection,
+                    obj->getDocument()->getName(),obj->getNameInDocument(),subname),true);
+        return Py::TupleN(Py::asObject(obj->getPyObject()),Py::String(subname));
+    }
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::isObjectOnTop(const Py::Tuple &args) {
+    PyObject *pyObj;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "O!|s",&App::DocumentObjectPy::Type,&pyObj,&subname))
+        throw Py::Exception();
+    App::DocumentObject *obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
+    std::string sub;
+    if(!subname) {
+        SelectionSingleton::checkTopParent(obj,sub);
+        subname = sub.c_str();
+    }
+    if(obj && obj->getDocument() && obj->getNameInDocument()) {
+        if(_view->getViewer()->isInGroupOnTop(obj->getNameInDocument(),subname))
+            return Py::TupleN(Py::asObject(obj->getPyObject()),Py::String(subname));
+    }
+    return Py::None();
 }

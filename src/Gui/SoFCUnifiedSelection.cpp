@@ -694,7 +694,9 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
     return highlighted;
 }
 
-bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bool ctrlDown, bool shiftDown) {
+bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, 
+        bool ctrlDown, bool shiftDown, bool altDown) 
+{
     if(infos.empty() || !infos[0].vpd) return false;
 
     std::vector<SelectionSingleton::SelObj> sels;
@@ -737,6 +739,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         if(Gui::Selection().isSelected(docname,objname,info.element.c_str(),0))
             Gui::Selection().rmvSelection(docname,objname,info.element.c_str(),&sels);
         else {
+            SelectionNoTopParentCheck guard;
             bool ok = Gui::Selection().addSelection(docname,objname,
                     info.element.c_str(), pt[0] ,pt[1] ,pt[2], &sels);
             if (ok && mymode == OFF) {
@@ -773,7 +776,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     FC_TRACE("select " << (subSelected?subSelected:"'null'") << ", " << 
             objectName << ", " << subName);
     std::string newElement;
-    if(subSelected && ((ctrlDown && shiftDown)
+    if(subSelected && ((ctrlDown && shiftDown && !altDown)
                         || Data::ComplexGeoData::hasElementName(subSelected)))
     {
         newElement = Data::ComplexGeoData::newElementName(subSelected);
@@ -839,6 +842,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     FC_TRACE("clearing selection");
     Gui::Selection().clearSelection();
     FC_TRACE("add selection");
+    SelectionNoTopParentCheck guard;
     bool ok = Gui::Selection().addSelection(docname, objectName.c_str() ,subName.c_str(), 
             pt[0] ,pt[1] ,pt[2], &sels);
     if (ok)
@@ -922,7 +926,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
             // check to see if the mouse is over a geometry...
             auto infos = this->getPickedList(action,!Selection().needPickedList());
-            if(setSelection(infos,event->wasCtrlDown(),event->wasShiftDown()))
+            if(setSelection(infos,event->wasCtrlDown(),event->wasShiftDown(),event->wasAltDown()))
                 action->setHandled();
         } // mouse release
     }
@@ -2115,8 +2119,13 @@ void SoFCSelectionRoot::rayPick(SoRayPickAction * action) {
     if(selectionStyle.getValue() == Unpickable)
         return;
     BEGIN_ACTION;
-    if(doActionPrivate(stack,action))
-        inherited::rayPick(action);
+    if(doActionPrivate(stack,action)) {
+        if(action->getCurPathCode() == SoAction::IN_PATH) {
+            // skip cached bounding box cull test when traverse in path
+            inherited::doAction(action);
+        } else
+            inherited::rayPick(action);
+    }
     END_ACTION;
 }
 

@@ -151,8 +151,11 @@ public:
 
     /// Observer message from the Selection
     virtual void onSelectionChanged(const SelectionChanges &Reason);
-    void checkGroupOnTop(const SelectionChanges &Reason);
-    void clearGroupOnTop();
+    void checkGroupOnTop(const SelectionChanges &Reason, bool alt=false);
+    void clearGroupOnTop(bool alt=false);
+
+    bool isInGroupOnTop(const char *objname, const char *subname) const;
+    bool isInGroupOnTop(const std::string &key) const;
 
     SoDirectionalLight* getBacklight(void) const;
     void setBacklight(SbBool on);
@@ -467,11 +470,14 @@ private:
 
     struct OnTopInfo {
         SoFCPathAnnotation *node;
+        bool alt;
         std::unordered_map<std::string, SoDetail*> elements;
 
         OnTopInfo();
         OnTopInfo(OnTopInfo &&other);
         ~OnTopInfo();
+
+        void clearElements();
     };
 
     std::unordered_map<std::string,OnTopInfo> objectsOnTopSel;

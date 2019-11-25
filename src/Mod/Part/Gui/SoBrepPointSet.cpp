@@ -147,7 +147,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     }
 
     if(ctx && ctx->selectionIndex.size()) {
-        if(ctx->isSelectAll()) {
+        if(ctx->isSelectAll() && ctx->hasSelectionColor()) {
             if(ctx2 && ctx2->selectionIndex.size()) {
                 ctx2->selectionColor = ctx->selectionColor;
                 renderSelection(action,ctx2); 
@@ -165,7 +165,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
-    if(ctx && ctx->selectionIndex.size())
+    if(ctx && ctx->selectionIndex.size() && ctx->hasSelectionColor())
         renderSelection(action,ctx);
     renderHighlight(action,ctx);
 //#endif

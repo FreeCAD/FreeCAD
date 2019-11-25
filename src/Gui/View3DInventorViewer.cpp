@@ -497,6 +497,7 @@ void View3DInventorViewer::init()
 
     auto pcGroupOnTop = new SoSeparator;
     pcGroupOnTop->renderCaching = SoSeparator::OFF;
+    pcGroupOnTop->boundingBoxCaching = SoSeparator::OFF;
     pcGroupOnTop->setName("GroupOnTop");
 
     auto pickStyle = new SoPickStyle;
@@ -761,7 +762,7 @@ void View3DInventorViewer::initialize()
 }
 
 View3DInventorViewer::OnTopInfo::OnTopInfo()
-    :node(0)
+    :node(0),alt(false)
 {
 }
 
@@ -774,35 +775,111 @@ View3DInventorViewer::OnTopInfo::OnTopInfo(OnTopInfo &&other)
 View3DInventorViewer::OnTopInfo::~OnTopInfo() {
     if(node)
         node->unref();
+    clearElements();
+}
+
+void View3DInventorViewer::OnTopInfo::clearElements() {
     for(auto &v : elements)
         delete v.second;
+    elements.clear();
 }
 
-void View3DInventorViewer::clearGroupOnTop() {
-    if(objectsOnTopPreSel.size()) {
-        SoTempPath tmpPath(10);
-        tmpPath.ref();
+void View3DInventorViewer::clearGroupOnTop(bool alt) {
+    if(objectsOnTopSel.empty() && objectsOnTopPreSel.empty())
+        return;
+
+    SoTempPath tmpPath(10);
+    tmpPath.ref();
+
+    if(!alt) {
+        if(objectsOnTopPreSel.size()) {
+            tmpPath.append(pcGroupOnTopSwitch);
+            tmpPath.append(pcGroupOnTopPreSel);
+            for(auto &v : objectsOnTopPreSel) {
+                auto &info = v.second;
+                tmpPath.truncate(2);
+                tmpPath.append(info.node);
+                tmpPath.append(info.node->getPath());
+                selAction->setSecondary(true);
+                selAction->setType(SoSelectionElementAction::None);
+                selAction->apply(&tmpPath);
+            }
+            objectsOnTopPreSel.clear();
+        }
+        pcGroupOnTopPreSel->resetContext();
+        coinRemoveAllChildren(pcGroupOnTopPreSel);
+    }
+
+    if(objectsOnTopSel.size()) {
+        tmpPath.truncate(0);
         tmpPath.append(pcGroupOnTopSwitch);
-        tmpPath.append(pcGroupOnTopPreSel);
-        for(auto &v : objectsOnTopPreSel) {
-            auto &info = v.second;
-            tmpPath.truncate(2);
-            tmpPath.append(info.node);
-            tmpPath.append(info.node->getPath());
-            selAction->setSecondary(true);
-            selAction->setType(SoSelectionElementAction::None);
-            selAction->apply(&tmpPath);
+        tmpPath.append(pcGroupOnTopSel);
+        if(alt) {
+            for(auto it=objectsOnTopSel.begin();it!=objectsOnTopSel.end();) {
+                auto &info = it->second;
+                if(!info.alt || info.elements.size()) {
+                    info.alt = false;
+                    ++it;
+                    continue;
+                }
+                int idx = pcGroupOnTopSel->findChild(info.node);
+                if(idx >= 0) {
+                    tmpPath.truncate(2);
+                    tmpPath.append(info.node);
+                    tmpPath.append(info.node->getPath());
+                    selAction->setSecondary(false);
+                    selAction->setType(SoSelectionElementAction::None);
+                    selAction->apply(&tmpPath);
+                    pcGroupOnTopSel->removeChild(idx);
+                }
+                it = objectsOnTopSel.erase(it);
+            }
+            tmpPath.unrefNoDelete();
+            return;
+        }
+
+        pcGroupOnTopSel->resetContext();
+        coinRemoveAllChildren(pcGroupOnTopSel);
+
+        selAction->setColor(SbColor(0,0,0));
+        selAction->setSecondary(false);
+        selAction->setType(SoSelectionElementAction::Append);
+        for(auto it=objectsOnTopSel.begin();it!=objectsOnTopSel.end();) {
+            auto &info = it->second;
+            if(!info.alt)
+                it = objectsOnTopSel.erase(it);
+            else {
+                ++it;
+                pcGroupOnTopSel->addChild(info.node);
+                info.clearElements();
+                tmpPath.truncate(2);
+                tmpPath.append(info.node);
+                tmpPath.append(info.node->getPath());
+                selAction->apply(&tmpPath);
+            }
         }
     }
-    objectsOnTopPreSel.clear();
-    objectsOnTopSel.clear();
-    coinRemoveAllChildren(pcGroupOnTopSel);
-    coinRemoveAllChildren(pcGroupOnTopPreSel);
-    pcGroupOnTopSel->resetContext();
-    pcGroupOnTopPreSel->resetContext();
+
+    tmpPath.unrefNoDelete();
 }
 
-void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
+bool View3DInventorViewer::isInGroupOnTop(const char *objname, const char *subname) const {
+    if(!objname)
+        return false;
+    std::string key(objname);
+    key += '.';
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    if(subname)
+        key.insert(key.end(),subname,element);
+    return isInGroupOnTop(key);
+}
+
+bool View3DInventorViewer::isInGroupOnTop(const std::string &key) const {
+    auto it = objectsOnTopSel.find(key);
+    return it!=objectsOnTopSel.end() && it->second.alt;
+}
+
+void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool alt) {
 
     bool preselect = false;
 
@@ -824,10 +901,11 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
                             sel.DocName,sel.FeatName,sel.SubName));
             }
         }
-        break;
+        return;
     case SelectionChanges::ClrSelection:
-        clearGroupOnTop();
-        selectionRoot->selectAll = false;
+        clearGroupOnTop(alt);
+        if(!alt)
+            selectionRoot->selectAll = false;
         return;
     case SelectionChanges::SetPreselect:
     case SelectionChanges::SetPreselectSignal:
@@ -875,18 +953,35 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         auto &info = it->second;
 
         if(Reason.Type == SelectionChanges::HideSelection) {
-            pcGroup->removeChild(info.node);
-            objs.erase(it);
+            if(!info.alt) {
+                pcGroup->removeChild(info.node);
+                objs.erase(it);
+            }
             return;
         }
 
-        auto eit = info.elements.find(element);
-        if(eit == info.elements.end())
-            return;
+        SoDetail *det = 0;
+        auto eit = info.elements.end();
+
+        if(Reason.Type==SelectionChanges::RmvSelection && alt) {
+            // When alt is true, remove this object from the on top group
+            // regardless of whether it is previsouly selected with alt or not.
+            info.alt = false;
+            info.clearElements();
+        } else {
+            eit = info.elements.find(element);
+            if(eit == info.elements.end())
+                return;
+            else
+                det = eit->second;
+        }
 
         if(preselect) {
             auto it2 = objectsOnTopSel.find(key);
-            if(it2!=objectsOnTopSel.end() && it2->second.elements.empty()) {
+            if(it2!=objectsOnTopSel.end() 
+                    && it2->second.elements.empty()
+                    && !it2->second.alt)
+            {
                 pcGroupOnTopSel->removeChild(it2->second.node);
                 objectsOnTopSel.erase(it2);
             }
@@ -907,26 +1002,37 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         tmpPath.append(info.node->getPath());
 
         if(pcGroup == pcGroupOnTopSel) {
-            selAction->setElement(eit->second);
+            selAction->setElement(det);
             selAction->setSecondary(false);
-            selAction->setType(eit->second?SoSelectionElementAction::Remove:SoSelectionElementAction::None);
+            selAction->setType(det?SoSelectionElementAction::Remove:SoSelectionElementAction::None);
             selAction->apply(&tmpPath);
             selAction->setElement(0);
+
+            if(info.alt && eit!=info.elements.end() && info.elements.size()==1) {
+                selAction->setColor(SbColor(0,0,0));
+                selAction->setType(SoSelectionElementAction::All);
+                selAction->apply(&tmpPath);
+            }
         } else {
-            selAction->setElement(eit->second);
+            selAction->setElement(det);
             selAction->setSecondary(true);
-            selAction->setType(eit->second?SoSelectionElementAction::Remove:SoSelectionElementAction::None);
+            selAction->setType(det?SoSelectionElementAction::Remove:SoSelectionElementAction::None);
             selAction->apply(&tmpPath);
             selAction->setElement(0);
         }
 
         tmpPath.unrefNoDelete();
 
-        delete eit->second;
-        info.elements.erase(eit);
-        if(info.elements.empty()) {
+        if(eit != info.elements.end()) {
+            delete eit->second;
+            info.elements.erase(eit);
+        }
+        if(info.elements.empty() && !info.alt) {
             pcGroup->removeChild(index);
             objs.erase(it);
+
+            if(alt)
+                Gui::Selection().rmvPreselect();
         }
         return;
     }
@@ -962,7 +1068,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
     if(Gui::Selection().needPickedList()
-            || ViewParams::instance()->getShowSelectionOnTop())
+            || (alt && Reason.Type == SelectionChanges::AddSelection)
+            || ViewParams::instance()->getShowSelectionOnTop()
+            || isInGroupOnTop(key))
         onTop = 1;
     else if(vp->OnTopWhenSelected.getValue())
         onTop = vp->OnTopWhenSelected.getValue();
@@ -978,11 +1086,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     }else if (Reason.Type == SelectionChanges::AddSelection) {
         if(!onTop)
             return;
-
-        // selAction->setSecondary(false);
-        // selAction->setType(SoSelectionElementAction::All);
         selAction->setColor(selectionRoot->colorSelection.getValue());
-        // selAction->apply(pcGroupOnTopSel);
     }
     if(onTop==2 || onTop==3) {
         if(subname && *subname) {
@@ -1009,7 +1113,24 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             info.node->setPath(&path);
             pcGroup->addChild(info.node);
         }
-        if(info.elements.emplace(element,det).second) {
+        if(alt && Reason.Type == SelectionChanges::AddSelection) {
+            if(!info.alt) {
+                info.alt = true;
+                if(info.elements.empty()) {
+                    SoTempPath tmpPath(path.getLength()+3);
+                    tmpPath.ref();
+                    tmpPath.append(pcGroupOnTopSwitch);
+                    tmpPath.append(pcGroup);
+                    tmpPath.append(info.node);
+                    tmpPath.append(&path);
+                    selAction->setColor(SbColor(0,0,0));
+                    selAction->setSecondary(false);
+                    selAction->setType(SoSelectionElementAction::All);
+                    selAction->apply(&tmpPath);
+                    tmpPath.unrefNoDelete();
+                }
+            }
+        } else if(info.elements.emplace(element,det).second) {
             SoTempPath tmpPath(path.getLength()+3);
             tmpPath.ref();
             tmpPath.append(pcGroupOnTopSwitch);
@@ -1017,8 +1138,12 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             tmpPath.append(info.node);
             tmpPath.append(&path);
             if(pcGroup == pcGroupOnTopSel) {
-                info.node->setDetail(!!det);
                 selAction->setSecondary(false);
+                if(info.elements.size()==1 && info.alt) {
+                    selAction->setType(SoSelectionElementAction::None);
+                    selAction->apply(&tmpPath);
+                }
+                info.node->setDetail(!!det);
                 selAction->setElement(det);
                 selAction->setType(det?SoSelectionElementAction::Append:SoSelectionElementAction::All);
                 selAction->apply(&tmpPath);

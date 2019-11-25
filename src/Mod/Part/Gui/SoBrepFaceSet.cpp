@@ -626,7 +626,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if(Gui::ViewParams::instance()->getShowSelectionOnTop()
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2 || ctx2->isSelectAll())
-            && (!ctx || (!ctx->isHighlightAll() && !ctx->isSelectAll()))
+            && (!ctx || (!ctx->isHighlightAll() && (!ctx->isSelectAll()||!ctx->hasSelectionColor())))
             && action->isRenderingDelayedPaths())
     {
         // Perform a depth buffer only rendering so that we can draw the
@@ -860,18 +860,19 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             ctx2->trans0 = 0.0;
 
         uint32_t diffuseColor = diffuse[0].getPackedValue(trans0);
-        uint32_t highlightColor;
-        uint32_t selectionColor;
+        uint32_t highlightColor=0;
+        uint32_t selectionColor=0;
         if(ctx) {
             highlightColor = ctx->highlightColor.getPackedValue(trans0);
-            selectionColor = ctx->selectionColor.getPackedValue(trans0);
+            if(ctx->hasSelectionColor())
+                selectionColor = ctx->selectionColor.getPackedValue(trans0);
         }
 
         int singleColor = 0;
         if(ctx && ctx->isHighlightAll()) {
             singleColor = 1;
             diffuseColor = highlightColor;
-        }else if(ctx && ctx->isSelectAll()) {
+        }else if(ctx && ctx->isSelectAll() && selectionColor) {
             diffuseColor = selectionColor;
             singleColor = ctx->isHighlighted()?-1:1;
         } else if(ctx2 && ctx2->isSingleColor(diffuseColor,hasTransparency)) {
@@ -966,7 +967,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             }
         }
 
-        if(ctx && ctx->selectionIndex.size()) {
+        if(ctx && ctx->selectionIndex.size() && selectionColor) {
             packedColors.push_back(selectionColor);
             auto cidx = packedColors.size()-1;
             for(auto idx : ctx->selectionIndex) {
@@ -1484,7 +1485,8 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         }
         if(RenderIndices.empty())
             return;
-    }
+    } else if (!ctx->hasSelectionColor())
+        push = false;
 
     bool resetMatIndices = false;
     SoState * state = action->getState();
