@@ -1,93 +1,93 @@
 <RCC>
     <qresource>
-        <file>icons/PartDesign_Chamfer.svg</file>
-        <file>icons/PartDesign_Fillet.svg</file>
-        <file>icons/PartDesign_Draft.svg</file>
-        <file>icons/PartDesign_Thickness.svg</file>
-        <file>icons/PartDesign_Groove.svg</file>
-        <file>icons/PartDesign_Pad.svg</file>
-        <file>icons/PartDesign_Pocket.svg</file>
-        <file>icons/PartDesign_Revolution.svg</file>
-        <file>icons/PartDesign_Mirrored.svg</file>
-        <file>icons/PartDesign_LinearPattern.svg</file>
-        <file>icons/PartDesign_PolarPattern.svg</file>
-        <file>icons/PartDesign_Scaled.svg</file>
-        <file>icons/PartDesign_MultiTransform.svg</file>
-        <file>icons/PartDesign_Hole.svg</file>
+        <file>icons/PartDesign_Additive_Box.svg</file>
+        <file>icons/PartDesign_Additive_Cone.svg</file>
+        <file>icons/PartDesign_Additive_Cylinder.svg</file>
+        <file>icons/PartDesign_Additive_Ellipsoid.svg</file>
+        <file>icons/PartDesign_Additive_Loft.svg</file>
+        <file>icons/PartDesign_Additive_Pipe.svg</file>
+        <file>icons/PartDesign_Additive_Prism.svg</file>
+        <file>icons/PartDesign_Additive_Sphere.svg</file>
+        <file>icons/PartDesign_Additive_Torus.svg</file>
+        <file>icons/PartDesign_Additive_Wedge.svg</file>
+        <file>icons/PartDesign_BaseFeature.svg</file>
         <file>icons/PartDesign_Body.svg</file>
+        <file>icons/PartDesign_Body_old.svg</file>
+        <file>icons/PartDesign_Body_Tree.svg</file>
         <file>icons/PartDesign_Boolean.svg</file>
-        <file>icons/PartDesign_ShapeBinder.svg</file>
-        <file>icons/PartDesign_SubShapeBinder.svg</file>
+        <file>icons/PartDesign_Chamfer.svg</file>
         <file>icons/PartDesign_Clone.svg</file>
-        <file>icons/PartDesign_Plane.svg</file>
-        <file>icons/PartDesign_Line.svg</file>
-        <file>icons/PartDesign_Point.svg</file>
         <file>icons/PartDesign_CoordinateSystem.svg</file>
-        <file>icons/PartDesign_MoveTip.svg</file>
-        <file>icons/Tree_PartDesign_Pad.svg</file>
-        <file>icons/Tree_PartDesign_Revolution.svg</file>	
+        <file>icons/PartDesign_Draft.svg</file>
+        <file>icons/PartDesign_Fillet.svg</file>
+        <file>icons/PartDesign_Groove.svg</file>
+        <file>icons/PartDesign_Hole.svg</file>
         <file>icons/PartDesign_InternalExternalGear.svg</file>
         <file>icons/PartDesign_InvoluteGear.svg</file>
-        <file>icons/PartDesignWorkbench.svg</file>
-        <file>icons/PartDesign_Body_Create_New.svg</file>
-        <file>icons/PartDesign_Body_Tree.svg</file>
-        <file>icons/PartDesign_Additive_Pipe.svg</file>
-        <file>icons/PartDesign_Subtractive_Pipe.svg</file>
-        <file>icons/PartDesign_Additive_Loft.svg</file>
-        <file>icons/PartDesign_Subtractive_Loft.svg</file>
-        <file>icons/PartDesign_Additive_Box.svg</file>	
-        <file>icons/PartDesign_Additive_Cylinder.svg</file>	
-        <file>icons/PartDesign_Additive_Sphere.svg</file>	
-        <file>icons/PartDesign_Additive_Cone.svg</file>	
-        <file>icons/PartDesign_Additive_Torus.svg</file>	
-        <file>icons/PartDesign_Additive_Ellipsoid.svg</file>
-        <file>icons/PartDesign_Additive_Prism.svg</file>	
-        <file>icons/PartDesign_Additive_Wedge.svg</file>
-        <file>icons/PartDesign_Subtractive_Box.svg</file>	
+        <file>icons/PartDesign_Line.svg</file>
+        <file>icons/PartDesign_LinearPattern.svg</file>
+        <file>icons/PartDesign_Mirrored.svg</file>
+        <file>icons/PartDesign_MoveTip.svg</file>
+        <file>icons/PartDesign_MultiTransform.svg</file>
+        <file>icons/PartDesign_Pad.svg</file>
+        <file>icons/PartDesign_Plane.svg</file>
+        <file>icons/PartDesign_Pocket.svg</file>
+        <file>icons/PartDesign_Point.svg</file>
+        <file>icons/PartDesign_PolarPattern.svg</file>
+        <file>icons/PartDesign_Revolution.svg</file>
+        <file>icons/PartDesign_Scaled.svg</file>
+        <file>icons/PartDesign_ShapeBinder.svg</file>
+        <file>icons/PartDesign_SubShapeBinder.svg</file>
+        <file>icons/PartDesign_Subtractive_Box.svg</file>
+        <file>icons/PartDesign_Subtractive_Cone.svg</file>
         <file>icons/PartDesign_Subtractive_Cylinder.svg</file>
-        <file>icons/PartDesign_Subtractive_Sphere.svg</file>
-        <file>icons/PartDesign_Subtractive_Cone.svg</file>	
-        <file>icons/PartDesign_Subtractive_Torus.svg</file>	
         <file>icons/PartDesign_Subtractive_Ellipsoid.svg</file>
-        <file>icons/PartDesign_Subtractive_Prism.svg</file>	
+        <file>icons/PartDesign_Subtractive_Loft.svg</file>
+        <file>icons/PartDesign_Subtractive_Pipe.svg</file>
+        <file>icons/PartDesign_Subtractive_Prism.svg</file>
+        <file>icons/PartDesign_Subtractive_Sphere.svg</file>
+        <file>icons/PartDesign_Subtractive_Torus.svg</file>
         <file>icons/PartDesign_Subtractive_Wedge.svg</file>
-        <file>icons/PartDesign_BaseFeature.svg</file>
+        <file>icons/PartDesign_Thickness.svg</file>
+        <file>icons/PartDesignWorkbench.svg</file>
+        <file>icons/Tree_PartDesign_Pad.svg</file>
+        <file>icons/Tree_PartDesign_Revolution.svg</file>
         <file>translations/PartDesign_af.qm</file>
+        <file>translations/PartDesign_ar.qm</file>
+        <file>translations/PartDesign_ca.qm</file>
+        <file>translations/PartDesign_cs.qm</file>
         <file>translations/PartDesign_de.qm</file>
+        <file>translations/PartDesign_el.qm</file>
+        <file>translations/PartDesign_es-ES.qm</file>
+        <file>translations/PartDesign_eu.qm</file>
         <file>translations/PartDesign_fi.qm</file>
+        <file>translations/PartDesign_fil.qm</file>
         <file>translations/PartDesign_fr.qm</file>
+        <file>translations/PartDesign_gl.qm</file>
         <file>translations/PartDesign_hr.qm</file>
+        <file>translations/PartDesign_hu.qm</file>
+        <file>translations/PartDesign_id.qm</file>
         <file>translations/PartDesign_it.qm</file>
+        <file>translations/PartDesign_ja.qm</file>
+        <file>translations/PartDesign_kab.qm</file>
+        <file>translations/PartDesign_ko.qm</file>
+        <file>translations/PartDesign_lt.qm</file>
         <file>translations/PartDesign_nl.qm</file>
         <file>translations/PartDesign_no.qm</file>
         <file>translations/PartDesign_pl.qm</file>
-        <file>translations/PartDesign_ru.qm</file>
-        <file>translations/PartDesign_uk.qm</file>
-        <file>translations/PartDesign_tr.qm</file>
-        <file>translations/PartDesign_sv-SE.qm</file>
-        <file>translations/PartDesign_zh-TW.qm</file>
         <file>translations/PartDesign_pt-BR.qm</file>
-        <file>translations/PartDesign_cs.qm</file>
-        <file>translations/PartDesign_sk.qm</file>
-        <file>translations/PartDesign_es-ES.qm</file>
-        <file>translations/PartDesign_zh-CN.qm</file>
-        <file>translations/PartDesign_ja.qm</file>
-        <file>translations/PartDesign_ro.qm</file>
-        <file>translations/PartDesign_hu.qm</file>
         <file>translations/PartDesign_pt-PT.qm</file>
-        <file>translations/PartDesign_sr.qm</file>
-        <file>translations/PartDesign_el.qm</file>
+        <file>translations/PartDesign_ro.qm</file>
+        <file>translations/PartDesign_ru.qm</file>
+        <file>translations/PartDesign_sk.qm</file>
         <file>translations/PartDesign_sl.qm</file>
-        <file>translations/PartDesign_eu.qm</file>
-        <file>translations/PartDesign_ca.qm</file>
-        <file>translations/PartDesign_gl.qm</file>
-        <file>translations/PartDesign_kab.qm</file>
-        <file>translations/PartDesign_ko.qm</file>
-        <file>translations/PartDesign_fil.qm</file>
-        <file>translations/PartDesign_id.qm</file>
-        <file>translations/PartDesign_lt.qm</file>
+        <file>translations/PartDesign_sr.qm</file>
+        <file>translations/PartDesign_sv-SE.qm</file>
+        <file>translations/PartDesign_tr.qm</file>
+        <file>translations/PartDesign_uk.qm</file>
         <file>translations/PartDesign_val-ES.qm</file>
-        <file>translations/PartDesign_ar.qm</file>
         <file>translations/PartDesign_vi.qm</file>
+        <file>translations/PartDesign_zh-CN.qm</file>
+        <file>translations/PartDesign_zh-TW.qm</file>
     </qresource>
 </RCC>

@@ -94,7 +94,7 @@ CmdPartDesignBody::CmdPartDesignBody()
     sToolTipText  = QT_TR_NOOP("Create a new body and make it active");
     sWhatsThis    = "PartDesign_Body";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Body_Create_New";
+    sPixmap       = "PartDesign_Body";
 }
 
 void CmdPartDesignBody::activated(int iMsg)
