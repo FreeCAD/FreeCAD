@@ -120,6 +120,7 @@ before_install:
                                python-matplotlib                \
                                python3-dev                      \
                                python3-pyside                   \
+                               python3-pyside2.qtcore           \
                                python3-matplotlib               \
                                libboost1.65-dev                 \
                                libboost-filesystem1.65-dev      \
