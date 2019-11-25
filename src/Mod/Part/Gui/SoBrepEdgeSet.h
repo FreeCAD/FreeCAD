@@ -68,7 +68,7 @@ protected:
 private:
     struct SelContext;
     typedef std::shared_ptr<SelContext> SelContextPtr;
-
+    
     void renderShape(const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices, int num_vertexindices);
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);

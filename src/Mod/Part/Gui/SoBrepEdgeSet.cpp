@@ -61,6 +61,10 @@
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include "SoBrepEdgeSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
@@ -107,6 +111,23 @@ void SoBrepEdgeSet::setSiblings(std::vector<SoNode*> &&s) {
 void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
 
     auto state = action->getState();
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Copied from SoShape::shouldGLRender(). Put here for early render skipping
+    // TODO: check SoShape::shouldGLRender() code in case we want to render shadow
+    const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+    unsigned int shapestyleflags = shapestyle->getFlags();
+    if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
+        return;
+    if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+        if (getBoundingBoxCache()->isValid(state)) {
+            if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
+                return;
+            }
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
     selCounter.checkCache(state);
 
     SelContextPtr ctx2;
@@ -201,7 +222,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
         }
 
         if(ctx && ctx->isSelected()) {
-            if(ctx->isSelectAll()) {
+            if(ctx->isSelectAll() && ctx->hasSelectionColor()) {
                 if(ctx2 && !ctx2->isSelectAll()) {
                     ctx2->selectionColor = ctx->selectionColor;
                     renderSelection(action,ctx2); 
@@ -218,7 +239,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
 
         // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
-        if(ctx && ctx->isSelected())
+        if(ctx && ctx->isSelected() && ctx->hasSelectionColor())
             renderSelection(action,ctx);
         renderHighlight(action,ctx);
 //#endif

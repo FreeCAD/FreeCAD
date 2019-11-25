@@ -60,6 +60,12 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
         return !selectionIndex.empty();
     }
 
+    bool hasSelectionColor() const {
+        return selectionColor[0]!=0.0f
+            || selectionColor[1]!=0.0f
+            || selectionColor[2]!=0.0f;
+    }
+
     void selectAll() {
         selectionIndex.clear();
         selectionIndex.insert(-1);

@@ -446,6 +446,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
             v.second.updateVbo = true;
             v.second.vboLoaded = false;
         }
+        onPartIndexChange();
     }
 
     inherited::doAction(action);
@@ -626,7 +627,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if(Gui::ViewParams::instance()->getShowSelectionOnTop()
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2 || ctx2->isSelectAll())
-            && (!ctx || (!ctx->isHighlightAll() && !ctx->isSelectAll()))
+            && (!ctx || (!ctx->isHighlightAll() && (!ctx->isSelectAll()||!ctx->hasSelectionColor())))
             && action->isRenderingDelayedPaths())
     {
         // Perform a depth buffer only rendering so that we can draw the
@@ -860,18 +861,19 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             ctx2->trans0 = 0.0;
 
         uint32_t diffuseColor = diffuse[0].getPackedValue(trans0);
-        uint32_t highlightColor;
-        uint32_t selectionColor;
+        uint32_t highlightColor=0;
+        uint32_t selectionColor=0;
         if(ctx) {
             highlightColor = ctx->highlightColor.getPackedValue(trans0);
-            selectionColor = ctx->selectionColor.getPackedValue(trans0);
+            if(ctx->hasSelectionColor())
+                selectionColor = ctx->selectionColor.getPackedValue(trans0);
         }
 
         int singleColor = 0;
         if(ctx && ctx->isHighlightAll()) {
             singleColor = 1;
             diffuseColor = highlightColor;
-        }else if(ctx && ctx->isSelectAll()) {
+        }else if(ctx && ctx->isSelectAll() && selectionColor) {
             diffuseColor = selectionColor;
             singleColor = ctx->isHighlighted()?-1:1;
         } else if(ctx2 && ctx2->isSingleColor(diffuseColor,hasTransparency)) {
@@ -894,12 +896,6 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             packedColors.push_back(diffuseColor);
             SoLazyElement::setPacked(state, this,1, &packedColors[0], hasTransparency);
             SoTextureEnabledElement::set(state,this,false);
-
-            if(hasTransparency) {
-                // Override transparency type. We'll do our own sorting in sortParts()
-                SoLazyElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
-                SoShapeStyleElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
-            }
             return true;
         }
 
@@ -966,7 +962,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             }
         }
 
-        if(ctx && ctx->selectionIndex.size()) {
+        if(ctx && ctx->selectionIndex.size() && selectionColor) {
             packedColors.push_back(selectionColor);
             auto cidx = packedColors.size()-1;
             for(auto idx : ctx->selectionIndex) {
@@ -993,12 +989,6 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         SoOverrideElement::setMaterialBindingOverride(state, this, true);
         SoLazyElement::setPacked(state, this, packedColors.size(), &packedColors[0], hasTransparency);
         SoTextureEnabledElement::set(state,this,false);
-
-        if(hasTransparency) {
-            // Override transparency type. We'll do our own sorting in sortParts()
-            SoShapeStyleElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
-            SoLazyElement::setTransparencyType(state, SoTransparencyType::SORTED_OBJECT_BLEND);
-        }
         return true;
     }
     return false;
@@ -1484,7 +1474,8 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         }
         if(RenderIndices.empty())
             return;
-    }
+    } else if (!ctx->hasSelectionColor())
+        push = false;
 
     bool resetMatIndices = false;
     SoState * state = action->getState();
@@ -2022,40 +2013,38 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action, bool check_override) 
         PRIVATE(this)->render(action, check_override, RenderIndices, coords, cindices, numindices,
                               pindices, &indexOffset[0], numparts, normals, nindices,
                               &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
-        if (normalCacheUsed)
-            this->readUnlockNormalCache();
-        RenderIndices.clear();
-        return;
-    }
 
-    if(RenderIndices.empty())
-        renderFaces(coords, cindices, numindices, pindices, 0, numparts,
-                normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
-    else {
-        int start = 0;
-        int next = 0;
-        for(int id : RenderIndices) {
-            // try to render together consequtive indices
-            if(next == id) {
-                ++next;
-                continue;
+    } else {
+
+        if(RenderIndices.empty())
+            renderFaces(coords, cindices, numindices, pindices, 0, numparts,
+                    normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+        else {
+            int start = 0;
+            int next = 0;
+            for(int id : RenderIndices) {
+                // try to render together consequtive indices
+                if(next == id) {
+                    ++next;
+                    continue;
+                }
+                if(next!=start) {
+                    renderFaces(coords, cindices, numindices, pindices, start, next-start,
+                            normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
+                }
+                start = id;
+                next = id+1;
             }
             if(next!=start) {
                 renderFaces(coords, cindices, numindices, pindices, start, next-start,
                         normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
             }
-            start = id;
-            next = id+1;
         }
-        if(next!=start) {
-            renderFaces(coords, cindices, numindices, pindices, start, next-start,
-                    normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures);
-        }
-        RenderIndices.clear();
     }
 
     if (normalCacheUsed)
         this->readUnlockNormalCache();
+    RenderIndices.clear();
 }
 
 void SoBrepFaceSet::renderFaces(const SoCoordinateElement *coords,

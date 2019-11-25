@@ -60,6 +60,10 @@
 
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include "SoBrepPointSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
@@ -102,7 +106,6 @@ void SoBrepPointSet::setSiblings(std::vector<SoNode*> &&s) {
 void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 {
     auto state = action->getState();
-    selCounter.checkCache(state);
 
     const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
     int num = coords->getNum() - this->startIndex.getValue();
@@ -110,6 +113,25 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         // Fixes: #0000545: Undo revolve causes crash 'illegal storage'
         return;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Copied from SoShape::shouldGLRender(). Put here for early render skipping
+    // TODO: check SoShape::shouldGLRender() code in case we want to render shadow
+    const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+    unsigned int shapestyleflags = shapestyle->getFlags();
+    if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
+        return;
+    if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+        if (getBoundingBoxCache()->isValid(state)) {
+            if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
+                return;
+            }
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    selCounter.checkCache(state);
+
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
     if(ctx2 && ctx2->selectionIndex.empty())
@@ -147,7 +169,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     }
 
     if(ctx && ctx->selectionIndex.size()) {
-        if(ctx->isSelectAll()) {
+        if(ctx->isSelectAll() && ctx->hasSelectionColor()) {
             if(ctx2 && ctx2->selectionIndex.size()) {
                 ctx2->selectionColor = ctx->selectionColor;
                 renderSelection(action,ctx2); 
@@ -165,7 +187,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
-    if(ctx && ctx->selectionIndex.size())
+    if(ctx && ctx->selectionIndex.size() && ctx->hasSelectionColor())
         renderSelection(action,ctx);
     renderHighlight(action,ctx);
 //#endif

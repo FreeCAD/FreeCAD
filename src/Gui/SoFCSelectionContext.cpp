@@ -243,6 +243,10 @@ SoFCSelectionCounter::~SoFCSelectionCounter()
 
 
 bool SoFCSelectionCounter::checkCache(SoState *state, bool secondary) {
+    if(SoFCSwitch::testTraverseState(SoFCSwitch::TraverseOverride)) {
+        SoCacheElement::invalidate(state);
+        return false;
+    }
     if(secondary) {
         if(*counter!=0) {
             SoCacheElement::invalidate(state);

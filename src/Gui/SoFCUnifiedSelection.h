@@ -124,7 +124,7 @@ private:
 
     void removeHighlight();
 
-    bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown=false, bool shiftDown=false);
+    bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown, bool shiftDown, bool altDown);
 
     std::vector<PickedInfo> getPickedList(const SbVec2s &pos,
             const SbViewportRegion &vp, bool singlePick) const;

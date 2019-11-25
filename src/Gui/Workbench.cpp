@@ -492,16 +492,21 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" << StdViews << measure
               << "Separator" << "Std_ViewDockUndockFullscreen";
 
-        if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
+        if (Gui::Selection().hasSelection()) {
+            *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility" << "Std_ToggleShowOnTop"
                   << "Std_ToggleSelectability" << "Std_TreeSelection" 
                   << "Std_RandomColor" << "Separator" << "Std_Delete";
-        }
+        } else 
+            *item << "Separator" << "Std_ToggleShowOnTop";
     }
     else if (strcmp(recipient,"Tree") == 0)
     {
-        if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-            *item << "Std_ToggleVisibility" << "Std_ToggleGroupVisibility" << "Std_ShowSelection" << "Std_HideSelection"
+        if (Gui::Selection().hasSelection()) {
+            MenuItem* visu = new MenuItem;
+            visu->setCommand("Visibility");
+            *visu << "Std_ToggleVisibility" << "Std_ToggleGroupVisibility" << "Std_ToggleShowOnTop"
+                  << "Std_ShowSelection" << "Std_HideSelection";
+            *item << visu
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
                   << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
                   << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" << "Separator";
@@ -568,7 +573,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Visibility
     MenuItem* visu = new MenuItem;
     visu->setCommand("Visibility");
-    *visu << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
+    *visu << "Std_ToggleVisibility" << "Std_ToggleShowOnTop" << "Std_ShowSelection" << "Std_HideSelection" 
           << "Std_SelectVisibleObjects"
           << "Separator" << "Std_ToggleObjects" << "Std_ShowObjects" << "Std_HideObjects" 
           << "Separator" << "Std_ToggleSelectability"
@@ -586,7 +591,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ViewVR"
 #endif 
           << "Separator" << visu
-          << "Std_ToggleVisibility" << "Std_ToggleNavigation"
+          << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
           << "Std_TreeViewActions"
