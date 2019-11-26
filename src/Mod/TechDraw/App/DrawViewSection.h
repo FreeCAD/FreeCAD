@@ -57,7 +57,7 @@ class DashSet;
 
 class TechDrawExport DrawViewSection : public DrawViewPart
 {
-    PROPERTY_HEADER(Part::DrawViewSection);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewSection);
 
 public:
     DrawViewSection(void);
@@ -77,16 +77,16 @@ public:
     App::PropertyString SectionSymbol;
     App::PropertyBool   FuseBeforeCut;
 
-    virtual short mustExecute() const;
-
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
     bool isReallyInBox (const gp_Pnt p, const Bnd_Box& bb) const;
 
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onChanged(const App::Property* prop);
-    virtual const char* getViewProviderName(void) const {
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual void onChanged(const App::Property* prop) override;
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderViewSection";
     }
+    virtual void unsetupObject() override;
+    virtual short mustExecute() const override;
 
 public:
     std::vector<TechDraw::Face*> getFaceGeometry();
@@ -102,9 +102,8 @@ public:
 
     TechDraw::DrawViewPart* getBaseDVP() const;
     TechDraw::DrawProjGroupItem* getBaseDPGI() const;
-    virtual void unsetupObject();
 
-    virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
+    virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const override;
     TopoDS_Compound getSectionFaces() { return sectionFaces;};
     std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }
 
