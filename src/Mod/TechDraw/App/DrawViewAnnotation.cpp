@@ -100,6 +100,9 @@ void DrawViewAnnotation::onChanged(const App::Property* prop)
 void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
 // transforms properties that had been changed
 {
+	// also check for changed properties of the base class
+	DrawView::handleChangedPropertyType(reader, TypeName, prop);
+	
 	// property LineSpace had the App::PropertyInteger and was changed to App::PropertyPercent
 	if (prop == &LineSpace && strcmp(TypeName, "App::PropertyInteger") == 0) {
 		App::PropertyInteger LineSpaceProperty;
