@@ -87,6 +87,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
         Base::Console().Error((msg + "\n").c_str());
         return;
     }
+    m_saveBaseName = m_base->getNameInDocument();
+    m_savePageName = m_base->findParentPage()->getNameInDocument();
  
    ui->setupUi(this);
 
@@ -128,6 +130,9 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
          (m_base == nullptr) ) {
         throw Base::RuntimeError("TaskSectionView - BaseView not found");
     }
+
+    m_saveBaseName = m_base->getNameInDocument();
+    m_savePageName = m_base->findParentPage()->getNameInDocument();
 
     ui->setupUi(this);
 
@@ -269,9 +274,15 @@ void TaskSectionView::onApplyClicked(bool b)
     apply();
 }
 
-void TaskSectionView::apply(void)
+bool TaskSectionView::apply(void)
 {
 //    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
+    App::Document* doc = m_section->getDocument();
+    App::DocumentObject* baseObj = doc->getObject(m_saveBaseName.c_str());
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
+    if (dvp == nullptr) {
+        return false;
+    }
     if (m_dirName.empty()) {
         std::string msg = Base::Tools::toStdString(tr("TSV::apply - No section direction picked yet"));
         Base::Console().Error((msg + "\n").c_str());
@@ -279,6 +290,7 @@ void TaskSectionView::apply(void)
         checkAll(false);
         applyQuick(m_dirName);
     }
+    return true;
 }
 
 void TaskSectionView::checkAll(bool b)
@@ -295,12 +307,15 @@ void TaskSectionView::applyQuick(std::string dir)
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
     m_dirName = dir;
     Gui::Command::openCommand("Apply Quick");
+    m_dirName = dir;
     if (m_section == nullptr) {
         m_section = createSectionView();
     }
     if (m_section != nullptr) {
         updateSectionView();
-        m_section->recomputeFeature();
+       m_section->recomputeFeature();
+    }
+    if (m_base != nullptr) {
         m_base->requestPaint();
     }
 }
@@ -385,6 +400,7 @@ void TaskSectionView::updateSectionView(void)
     }
 }
 
+
 //******************************************************************************
 
 bool TaskSectionView::accept()
@@ -394,10 +410,12 @@ bool TaskSectionView::accept()
         if (m_section == nullptr) {
             apply();
         }
+        Gui::Command::updateActive();
+        Gui::Command::commitCommand();
     } else {
         Gui::Command::openCommand("Edit SectionView");
         try {
-            apply();
+            updateSectionView();
         }
         catch (...) {
             Base::Console().Error("TSV::accept - failed to update section\n");
@@ -409,9 +427,12 @@ bool TaskSectionView::accept()
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     if (m_section != nullptr) {
         m_section->requestPaint();
-    }
-    if (m_base != nullptr) {
-        m_base->requestPaint();
+        App::Document* doc = m_section->getDocument();
+        App::DocumentObject* baseObj = doc->getObject(m_saveBaseName.c_str());
+        TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
+        if (dvp != nullptr) {
+            dvp->requestPaint();
+        }
     }
     return true;
 }
@@ -419,21 +440,27 @@ bool TaskSectionView::accept()
 bool TaskSectionView::reject()
 {
 //    Base::Console().Message("TSV::reject()\n");
-    std::string PageName = m_base->findParentPage()->getNameInDocument();
     if (m_section != nullptr) {
         if (m_createMode) {
             std::string SectionName = m_section->getNameInDocument();
             Gui::Command::doCommand(Gui::Command::Gui,
                                     "App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                    PageName.c_str(),SectionName.c_str());
+                                    m_savePageName.c_str(),SectionName.c_str());
             Gui::Command::doCommand(Gui::Command::Gui,
                                     "App.activeDocument().removeObject('%s')",
                                     SectionName.c_str());
         } else {
             restoreSectionState();
             //check undo stack?
-            m_section->requestPaint();
-            m_base->requestPaint();
+            if (m_section != nullptr) {
+                m_section->requestPaint();
+                App::Document* doc = m_section->getDocument();
+                App::DocumentObject* baseObj = doc->getObject(m_saveBaseName.c_str());
+                TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
+                if (dvp != nullptr) {
+                    dvp->requestPaint();
+                }
+            }
         }
     }
 
@@ -489,6 +516,13 @@ bool TaskDlgSectionView::accept()
     widget->accept();
     return true;
 }
+
+//bool TaskDlgSectionView::apply()
+//{
+//    Base::Console().Message("TDSV::apply()\n");
+//    widget->apply();
+//    return true;
+//}
 
 bool TaskDlgSectionView::reject()
 {
