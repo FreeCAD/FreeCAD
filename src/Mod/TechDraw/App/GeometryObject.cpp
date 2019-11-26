@@ -792,6 +792,7 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin,
                                      const Base::Vector3d& direction,
                                      const bool flip)
 {
+//    Base::Console().Message("GO::legacyViewAxis1()\n");
     gp_Ax2 viewAxis;
     gp_Pnt inputCenter(origin.x,origin.y,origin.z);
     Base::Vector3d stdZ(0.0,0.0,1.0);
@@ -818,6 +819,14 @@ gp_Ax2 TechDraw::legacyViewAxis1(const Base::Vector3d origin,
     viewAxis = gp_Ax2(inputCenter,
                       gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
                       gp_Dir(cross.x, cross.y, cross.z));
+
+    //this bit is to handle the old mirror Y logic, but it messes up
+    //some old files.
+    gp_Trsf mirrorXForm;
+    gp_Ax2 mirrorCS(inputCenter, gp_Dir(0, -1, 0));
+    mirrorXForm.SetMirror( mirrorCS );
+    viewAxis = viewAxis.Transformed(mirrorXForm);
+
     return viewAxis;
 }
 
