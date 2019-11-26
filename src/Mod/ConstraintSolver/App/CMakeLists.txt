@@ -76,6 +76,10 @@ SET(Python_Solver_SRCS
     ParaObjectPyImp.cpp
     ParaGeometryPy.xml
     ParaGeometryPyImp.cpp
+    SketchSolverPy.xml
+    SketchSolverPyImp.cpp
+    SketchSolverSystemPy.xml
+    SketchSolverSystemPyImp.cpp
 )
 
 SET(ConstraintSolver_Solver_SRCS
@@ -97,6 +101,10 @@ SET(ConstraintSolver_Solver_SRCS
     ParaObject.cpp
     ParaGeometry.h
     ParaGeometry.cpp
+    SketchSolver.h
+    SketchSolver.cpp
+    SketchSolverSystem.h
+    SketchSolverSystem.cpp
 )
 
 SET(ConstraintSolver_Module_SRCS
