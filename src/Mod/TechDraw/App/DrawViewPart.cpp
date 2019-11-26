@@ -970,7 +970,7 @@ Base::Vector3d DrawViewPart::getLegacyX(const Base::Vector3d& pt,
                                         const Base::Vector3d& axis,
                                         const bool flip)  const
 {
-//    gp_Ax2 viewAxis = TechDraw::getViewAxis(pt,axis,flip);
+//    Base::Console().Message("DVP::getLegacyX() - %s\n", Label.getValue());
     gp_Ax2 viewAxis = TechDraw::legacyViewAxis1(pt, axis, flip);
     gp_Dir gXDir = viewAxis.XDirection();
     Base::Vector3d result(gXDir.X(),
