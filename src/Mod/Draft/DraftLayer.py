@@ -139,11 +139,11 @@ class ViewProviderLayer:
 
         vobj.OverrideChildren = True
         c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",255)
-        vobj.LineColor = (((c>>24)&0xFF)/255,((c>>16)&0xFF)/255,((c>>8)&0xFF)/255)
+        vobj.LineColor = (((c>>24)&0xFF)/255.0,((c>>16)&0xFF)/255.0,((c>>8)&0xFF)/255.0)
         w = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt("DefaultShapeLineWidth",2)
         vobj.LineWidth = w
         c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
-        vobj.ShapeColor = (((c>>24)&0xFF)/255,((c>>16)&0xFF)/255,((c>>8)&0xFF)/255)
+        vobj.ShapeColor = (((c>>24)&0xFF)/255.0,((c>>16)&0xFF)/255.0,((c>>8)&0xFF)/255.0)
         vobj.DrawStyle = "Solid"
 
         vobj.Proxy = self
