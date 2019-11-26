@@ -166,6 +166,7 @@ before_install:
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 
+       export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
        export CCACHE_CPP2=YES
        if [[ ${PYTHON_MAJOR_VERSION} == 2 ]]
        then
