@@ -120,11 +120,6 @@ before_install:
                                python-matplotlib                \
                                python3-dev                      \
                                python3-pyside                   \
-                               python3-pyside2.qtcore           \
-                               python3-pyside2.qtgui            \
-                               python3-pyside2.qtwidgets        \
-                               python3-pyside2.qtsvg            \
-                               python3-pyside2.qtuitools        \
                                python3-matplotlib               \
                                libboost1.65-dev                 \
                                libboost-filesystem1.65-dev      \
@@ -165,10 +160,13 @@ before_install:
                                netgen-headers                   \
                                libmetis-dev                     \
                                libspnav-dev
+       # Runtime deps
+       sudo apt-get install -y --no-install-recommends freecad-daily-python3
 
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 
+       export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
        export CCACHE_CPP2=YES
        if [[ ${PYTHON_MAJOR_VERSION} == 2 ]]
        then
