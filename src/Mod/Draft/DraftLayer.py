@@ -225,6 +225,7 @@ class ViewProviderLayer:
             b.open(QtCore.QIODevice.WriteOnly)
             im.save(b,"XPM")
             self.icondata = ba.data().decode("latin1")
+            vobj.signalChangeIcon()
 
     def canDragObject(self,obj):
         return True
