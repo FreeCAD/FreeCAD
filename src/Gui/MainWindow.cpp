@@ -1998,7 +1998,7 @@ void StatusBarObserver::SendLog(const std::string& msg, Base::LogStyle level)
     MainWindow* win = getMainWindow();
     if(win != nullptr)
     {
-        QApplication::postEvent(getMainWindow(), ev);
+        QApplication::postEvent(win, ev);
     }
 }
 
