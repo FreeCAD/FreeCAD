@@ -159,7 +159,8 @@ before_install:
                                netgen                           \
                                netgen-headers                   \
                                libmetis-dev                     \
-                               libspnav-dev
+                               libspnav-dev                     \
+                               ccache
        # Runtime deps
        sudo apt-get install -y --no-install-recommends freecad-daily-python3
 
