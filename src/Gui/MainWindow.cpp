@@ -1994,7 +1994,12 @@ void StatusBarObserver::SendLog(const std::string& msg, Base::LogStyle level)
 
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
     CustomMessageEvent* ev = new CustomMessageEvent(messageType, QString::fromUtf8(msg.c_str()));
-    QApplication::postEvent(getMainWindow(), ev);
+    // TODO: Can we just get rid of this postEvent altogether?
+    MainWindow* win = getMainWindow();
+    if(win != nullptr)
+    {
+        QApplication::postEvent(getMainWindow(), ev);
+    }
 }
 
 // -------------------------------------------------------------
