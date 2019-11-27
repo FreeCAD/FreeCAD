@@ -188,13 +188,13 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
         // calculate the linear model and the update ratio
         double dL = err - 0.5*(fx + Jx*h_dl).squaredNorm(); //linear expectation of error reduction
         double dF = err - err_new; //actual error reduction
-        double rho = dL/dF;//accuracy of model: rho -> 1.0 for linear system
+        double rho = dF/dL;//accuracy of model: rho -> 1.0 for linear system
 
         iterLog("    trust region = %f", delta);
         iterLog("    GN step norm = %f", h_gn.norm());
         iterLog("    SD step norm = %f", h_sd.norm());
         iterLog("    dogleg step norm = %f", h_dl.norm());
-        iterLog("    err_new = %f", err);
+        iterLog("    err_new = %f", err_new);
         iterLog("    linearity factor = %f", rho);
 
         if (dF > 0 && dL > 0) {
