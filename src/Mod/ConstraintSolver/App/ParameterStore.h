@@ -50,7 +50,7 @@ class FCSExport ParameterStore : public Base::BaseClass {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 protected: //data
     std::vector<Parameter> _params;
-    PyObject* _twin;
+    PyObject* _twin = nullptr;
     std::set<ParameterSubset*> _subsets;
     HValueSet _trivialValueSet;
 protected: //methods
@@ -58,7 +58,7 @@ protected: //methods
     ///fills indexes for newly created parameters
     void on_added(int old_sz, int new_sz);
     void onNewSubset(HParameterSubset ss);
-    void onDeletedSubset(HParameterSubset ss);
+    void onDeletedSubset(ParameterSubset* ss);
 public:
     ///the constructor
     static HParameterStore make(int prealloc = 0);

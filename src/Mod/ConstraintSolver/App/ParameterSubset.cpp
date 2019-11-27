@@ -28,7 +28,7 @@ void ParameterSubset::detach()
 {
     if (host().isNone())
         return;
-    _host->onDeletedSubset(self());
+    _host->onDeletedSubset(this);
     _host = Py::None();
 }
 

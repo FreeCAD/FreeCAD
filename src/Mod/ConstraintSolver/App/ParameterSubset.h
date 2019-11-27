@@ -40,7 +40,7 @@ protected://data
     ///Lookup table. Input = index of parameter in store. Output = index of parameter in the set.
     std::vector<int> _lut;
     HParameterStore _host;
-    PyObject* _twin;
+    PyObject* _twin = nullptr;
 
 protected://methods
     ParameterSubset(int prealloc = 0);

@@ -32,9 +32,9 @@ void ParameterStore::onNewSubset(HParameterSubset ss)
     _subsets.insert(ss.cptr());
 }
 
-void ParameterStore::onDeletedSubset(HParameterSubset ss)
+void ParameterStore::onDeletedSubset(ParameterSubset* ss)
 {
-    _subsets.erase(ss.cptr());
+    _subsets.erase(ss);
 }
 
 HParameterStore ParameterStore::make(int prealloc) {
