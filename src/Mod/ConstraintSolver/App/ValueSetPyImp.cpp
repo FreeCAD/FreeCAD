@@ -57,8 +57,10 @@ PyObject* ValueSetPy::copy(PyObject* args)
 
 PyObject* ValueSetPy::reset(PyObject* args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    getValueSetPtr()->reset();
+    return Py::new_reference_to(Py::None());
 }
 
 PyObject* ValueSetPy::apply(PyObject* args)
