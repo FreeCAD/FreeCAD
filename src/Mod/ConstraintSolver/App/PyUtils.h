@@ -1,9 +1,16 @@
 #ifndef FREECAD_CONSTRAINTSOLVER_PYUTILS_H
 #define FREECAD_CONSTRAINTSOLVER_PYUTILS_H
 
+#ifndef BaseExport
+    #define BaseExport
+#endif
+
 #include <CXX/Objects.hxx>
 #include <Base/DualNumber.h>
 #include <cmath>
+#include <Base/Exception.h>
+#include <Base/PyObjectBase.h>
+
 
 namespace FCS {
 
@@ -41,6 +48,27 @@ inline void setAttr(Py::Object obj, std::string attrname, Py::Object value)
     {
         throw Py::Exception();
     }
+}
+
+template<class Ty>
+inline Ty* pyTypeCheck(PyObject* obj)
+{
+    if (! PyObject_TypeCheck(obj, &Ty::Type)){
+        std::stringstream ss;
+        ss << "Expected " << Ty::Type.tp_name
+           << " but got " << Py::Object(obj).type().as_string();
+        throw Py::TypeError(ss.str());
+    }
+    return static_cast<Ty*>(obj);
+};
+
+inline PyObject* raiseBaseException(Base::Exception& e)
+{
+    auto pye = e.getPyExceptionType();
+    if(!pye)
+        pye = Base::BaseExceptionFreeCADError;
+    PyErr_SetObject(pye, e.getPyObject());
+    return nullptr;
 }
 
 } //namespace

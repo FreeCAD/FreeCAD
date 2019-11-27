@@ -7,14 +7,38 @@
 #include "ParameterSubsetPy.h"
 #include "ParameterSubsetPy.cpp"
 
+#include "PyUtils.h"
+
 PyObject* ParameterSubsetPy::PyMake(struct _typeobject*, PyObject* args, PyObject* /*??*/)  // Python wrapper
 {
-    PyObject* store;
-    if (!PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store))
+    try{
+    {//(parameter_store)
+        PyObject* store;
+        if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
+            HParameterStore hstore (store, false);
+            return Py::new_reference_to(ParameterSubset::make(hstore));
+        }
+        PyErr_Clear();
+    }
+    {//(list_of_params)
+        PyObject* pylist;
+        if (PyArg_ParseTuple(args, "O!",&(PyList_Type), &pylist)){
+            std::vector<ParameterRef> params;
+            for(Py::Object it : Py::List(pylist)){
+                ParameterRef par = * pyTypeCheck<ParameterRefPy>(it.ptr())->getParameterRefPtr();
+                params.push_back(par);
+            };
+            return Py::new_reference_to(ParameterSubset::make(params));
+        }
+        PyErr_Clear();
+    }
+    } catch (Py::Exception&) {
         return nullptr;
-    // create a new instance of ParameterSubsetPy and the Twin object
-    HParameterStore hstore (store, false);
-    return Py::new_reference_to(ParameterSubset::make(hstore));
+    } catch (Base::Exception& err) {
+        return raiseBaseException(err);
+    }
+    PyErr_SetString(PyExc_TypeError, "Unsupported signature. Expected: one argument of type list(ParameterRef), or ParameterStore.");
+    return nullptr;
 }
 
 // constructor method

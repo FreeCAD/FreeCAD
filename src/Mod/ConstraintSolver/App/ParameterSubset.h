@@ -64,6 +64,7 @@ public://methods
     HParameterStore host() const;
 
     int size() const;
+    const std::vector<ParameterRef>& list() const {return _params;}
 
     bool add(ParameterRef param);
     int add(const std::vector<ParameterRef>& params);
