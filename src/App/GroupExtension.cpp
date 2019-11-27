@@ -33,6 +33,7 @@
 #include "Document.h"
 #include "FeaturePythonPyImp.h"
 #include "GeoFeatureGroupExtension.h"
+#include "Link.h"
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
@@ -592,8 +593,14 @@ bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int r
     return true;
 }
 
-int GroupExtension::extensionIsElementVisibleEx(const char *element, int reason) const {
-    if(reason == App::DocumentObject::GS_DEFAULT && ExportMode.getValue() == EXPORT_BY_CHILD_QUERY)
+int GroupExtension::extensionIsElementVisibleEx(const char *subname, int reason) const {
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    if(subname != element) {
+        if(reason!=DocumentObject::GS_SELECT || !LinkBaseExtension::isSubnameHidden(getExtendedObject(),subname))
+            return -1;
+        return 0;
+    }
+    if(reason == DocumentObject::GS_DEFAULT && ExportMode.getValue()==EXPORT_BY_CHILD_QUERY)
         return 1;
     return extensionIsElementVisible(element);
 }

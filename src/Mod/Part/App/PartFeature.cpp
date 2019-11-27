@@ -52,6 +52,9 @@
 # include <gce_MakeDir.hxx>
 #endif
 
+#include <boost/range.hpp>
+typedef boost::iterator_range<const char*> CharRange;
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/bind.hpp>
 #include <Base/Console.h>
@@ -268,9 +271,67 @@ void Feature::clearShapeCache() {
     _ShapeCache.cache.clear();
 }
 
+static inline bool checkLink(const App::DocumentObject *obj) {
+    return obj->getExtensionByType<App::LinkBaseExtension>(obj)
+            || obj->getExtensionByType<App::GeoFeatureGroupExtension>(obj);
+}
+
+static bool checkLinkVisibility(std::set<std::string> &hiddens,
+        bool check, const App::DocumentObject *&lastLink,
+        const App::DocumentObject *obj, const char *subname)
+{
+    if(!obj || !obj->getNameInDocument())
+        return false;
+
+    if(checkLink(obj)) {
+        lastLink = obj;
+        for(auto &s : App::LinkBaseExtension::getHiddenSubnames(obj))
+            hiddens.emplace(std::move(s));
+    }
+
+    if(!subname || !subname[0])
+        return true;
+
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    std::string sub(subname,element-subname);
+
+    for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
+        char c = sub[pos+1];
+        sub[pos+1] = 0;
+
+        for(auto it=hiddens.begin();it!=hiddens.end();) {
+            if(!boost::starts_with(*it,CharRange(sub.c_str(),sub.c_str()+pos+1)))
+                it = hiddens.erase(it);
+            else {
+                if(check && it->size()==pos+1)
+                    return false;
+                ++it;
+            }
+        }
+        auto sobj = obj->getSubObject(sub.c_str());
+        if(!sobj || !sobj->getNameInDocument())
+            return false;
+        if(checkLink(sobj)) {
+            for(auto &s : App::LinkBaseExtension::getHiddenSubnames(sobj))
+                hiddens.insert(std::string(sub)+s);
+            lastLink = sobj;
+        }
+        sub[pos+1] = c;
+    }
+
+    std::set<std::string> res;
+    for(auto &s : hiddens) {
+        if(s.size()>sub.size())
+            res.insert(s.c_str()+sub.size());
+    }
+    hiddens = std::move(res);
+    return true;
+}
+
 static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subname, 
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner, 
-        bool resolveLink, bool noElementMap, std::vector<App::DocumentObject*> &linkStack)
+        bool resolveLink, bool noElementMap, const std::set<std::string> hiddens,
+        const App::DocumentObject *lastLink)
 
 {
     TopoShape shape;
@@ -291,7 +352,12 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         }
     }
 
-    if(_ShapeCache.getShape(obj,shape,subname)) {
+    auto canCache = [&](const App::DocumentObject *o) {
+        return !lastLink || 
+            (hiddens.empty() && !App::GeoFeatureGroupExtension::isNonGeoGroup(o));
+    };
+
+    if(canCache(obj) && _ShapeCache.getShape(obj,shape,subname)) {
         if(noElementMap) {
             // shape.resetElementMap();
             // shape.Tag = 0;
@@ -329,7 +395,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         if(pyobj && PyObject_TypeCheck(pyobj,&TopoShapePy::Type)) {
             shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
             if(!shape.isNull()) {
-                if(obj->getDocument() != linked->getDocument())
+                if(obj->getDocument()!=linked->getDocument() && canCache(obj))
                     _ShapeCache.setShape(obj,shape,subname);
                 if(noElementMap) {
                     // shape.resetElementMap();
@@ -350,7 +416,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
 
     bool scaled = false;
     if(obj!=owner) {
-        if(_ShapeCache.getShape(owner,shape)) {
+        if(canCache(owner) && _ShapeCache.getShape(owner,shape)) {
             auto scaled = shape.transformShape(mat,false,true);
             if(owner->getDocument()!=obj->getDocument()) {
                 // shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
@@ -367,6 +433,8 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             return shape;
         }
     }
+
+    bool cacheable = true;
 
     auto link = owner->getExtensionByType<App::LinkBaseExtension>(true);
     if(owner!=linked 
@@ -385,10 +453,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         // shape.reTagElementMap(tag,hasher);
 
     } else {
-
-        if(link || owner->getExtensionByType<App::GeoFeatureGroupExtension>(true))
-            linkStack.push_back(owner);
-
         // Construct a compound of sub objects
         std::vector<TopoShape> shapes;
 
@@ -418,18 +482,25 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
                 if(!parent || !subObj)
                     continue;
-                if(linkStack.size() 
-                    && App::GeoFeatureGroupExtension::isNonGeoGroup(parent))
-                {
-                    visible = linkStack.back()->isElementVisible(childName.c_str());
-                }else
-                    visible = parent->isElementVisible(childName.c_str());
+                if(lastLink && App::GeoFeatureGroupExtension::isNonGeoGroup(parent))
+                    visible = lastLink->isElementVisibleEx(childName.c_str());
+                else
+                    visible = parent->isElementVisibleEx(childName.c_str());
             }
             if(visible==0)
                 continue;
+
+            std::set<std::string> nextHiddens = hiddens;
+            const App::DocumentObject *nextLink = lastLink;
+            if(!checkLinkVisibility(nextHiddens,true,nextLink,owner,sub.c_str())) {
+                cacheable = false;
+                continue;
+            }
+
             TopoShape shape;
+
             if(!subObj || baseShape.isNull()) {
-                shape = _getTopoShape(owner,sub.c_str(),true,0,&subObj,false,false,linkStack);
+                shape = _getTopoShape(owner,sub.c_str(),true,0,&subObj,false,false,nextHiddens,nextLink);
                 if(shape.isNull())
                     continue;
                 if(visible<0 && subObj && !subObj->Visibility.getValue())
@@ -445,9 +516,6 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             shapes.push_back(shape);
         }
 
-        if(linkStack.size() && linkStack.back()==owner)
-            linkStack.pop_back();
-
         if(shapes.empty()) 
             return shape;
 
@@ -456,15 +524,18 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         shape.makECompound(shapes);
     }
 
-    _ShapeCache.setShape(owner,shape);
+    if(cacheable && canCache(owner))
+        _ShapeCache.setShape(owner,shape);
 
     if(owner!=obj) {
         scaled = shape.transformShape(mat,false,true);
-        if(owner->getDocument()!=obj->getDocument()) {
-            // shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
-            _ShapeCache.setShape(obj,shape,subname);
-        }else if(scaled)
-            _ShapeCache.setShape(obj,shape,subname);
+        if(canCache(obj)) {
+            if(owner->getDocument()!=obj->getDocument()) {
+                // shape.reTagElementMap(obj->getID(),obj->getDocument()->getStringHasher());
+                _ShapeCache.setShape(obj,shape,subname);
+            }else if(scaled)
+                _ShapeCache.setShape(obj,shape,subname);
+        }
     }
     if(noElementMap) {
         // shape.resetElementMap();
@@ -481,7 +552,10 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(!obj || !obj->getNameInDocument()) 
         return TopoShape();
 
-    std::vector<App::DocumentObject*> linkStack;
+    const App::DocumentObject *lastLink=0;
+    std::set<std::string> hiddens;
+    if(!checkLinkVisibility(hiddens,false,lastLink,obj,subname))
+        return TopoShape();
 
     // NOTE! _getTopoShape() always return shape without top level
     // transformation for easy shape caching, i.e.  with `transform` set
@@ -489,7 +563,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
 
     Base::Matrix4D mat;
     auto shape = _getTopoShape(obj, subname, needSubElement, &mat, 
-            powner, resolveLink, noElementMap, linkStack);
+            powner, resolveLink, noElementMap, hiddens, lastLink);
 
     Base::Matrix4D topMat;
     if(pmat || transform) {

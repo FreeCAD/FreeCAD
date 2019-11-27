@@ -2763,10 +2763,31 @@ void TreeWidget::onItemSelectionChanged ()
         // DocumentObject::redirectSubName()
         Selection().clearCompleteSelection();
         DocumentObjectItem *item=0;
+        App::DocumentObject *preselObj=0;
+        std::string preselSub;
         if(selItems.size()) {
-            if(selItems.front()->type() == ObjectType)
+            if(selItems.front()->type() == ObjectType) {
                 item = static_cast<DocumentObjectItem*>(selItems.front());
-            else if(selItems.front()->type() == DocumentType) {
+                if(!ViewParams::instance()->getShowSelectionOnTop()) {
+                    std::ostringstream ss;
+                    App::DocumentObject *topParent = 0;
+                    App::DocumentObject *obj = item->object()->getObject();
+                    item->getSubName(ss,topParent);
+                    if(topParent) {
+                        if(!obj->redirectSubName(ss,topParent,0))
+                            ss << obj->getNameInDocument() << '.';
+                        obj = topParent;
+                    }
+                    auto subname = ss.str();
+                    int vis = obj->isElementVisibleEx(subname.c_str(),App::DocumentObject::GS_SELECT);
+                    if(vis<0)
+                        vis = item->object()->isVisible()?1:0;
+                    if(!vis) {
+                        preselObj = obj;
+                        preselSub = std::move(subname);
+                    }
+                }
+            } else if(selItems.front()->type() == DocumentType) {
                 auto ditem = static_cast<DocumentItem*>(selItems.front());
                 if(TreeParams::Instance()->SyncView()) {
                     bool focus = hasFocus();
@@ -2785,6 +2806,12 @@ void TreeWidget::onItemSelectionChanged ()
         }
         if(TreeParams::Instance()->RecordSelection())
             Gui::Selection().selStackPush();
+
+        if(preselObj) {
+            SelectionNoTopParentCheck guard;
+            Selection().setPreselect(preselObj->getDocument()->getName(),
+                    preselObj->getNameInDocument(),preselSub.c_str(),0,0,0,2);
+        }
     }else{
         for (auto pos = DocumentMap.begin();pos!=DocumentMap.end();++pos) {
             currentDocItem = pos->second;
