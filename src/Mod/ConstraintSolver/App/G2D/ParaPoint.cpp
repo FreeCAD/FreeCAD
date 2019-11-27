@@ -28,8 +28,8 @@ ParaPoint::ParaPoint(ParameterRef x, ParameterRef y)
 void FCS::G2D::ParaPoint::initAttrs()
 {
     _attrs = {
-        {&x, "x", 0.0},
-        {&y, "y", 0.0},
+        {&x, "x", true, 0.0},
+        {&y, "y", true, 0.0},
     };
 }
 
