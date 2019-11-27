@@ -43,6 +43,7 @@
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
+#include "ComplexGeoData.h"
 #include <App/DocumentObjectPy.h>
 #include <boost/bind.hpp>
 
@@ -807,7 +808,8 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subnam
     res.push_back(const_cast<DocumentObject*>(this));
     if(!subname || !subname[0])
         return res;
-    std::string sub(subname);
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    std::string sub(subname,element-subname);
     for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
         char c = sub[pos+1];
         sub[pos+1] = 0;
