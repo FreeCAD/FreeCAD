@@ -46,6 +46,12 @@ typedef UnsafePyHandle<Constraint> HConstraint;
 class FCSExport Constraint : public ParaObject
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public: //enums
+    enum class ePriority{
+        Normal,
+        Low,
+    };
+
 protected://data members
     ///user-modified weight of the constraint
     double _weight = 1.0;
@@ -65,6 +71,7 @@ public://data members
      * implementation of setProblemSize.
      */
     double scale = 1.0;
+    ePriority priority;
 
 public://main interface for overriding
     //mandatory
@@ -97,8 +104,7 @@ public://methods
     double netError() const;
     double weight() const {return _weight;}
 
-protected://methods
-    virtual void operator=(HConstraint other);
+    virtual HParaObject copy() const override;
 
 public: //friends
     friend class ConstraintPy;

@@ -61,14 +61,12 @@ double Constraint::netError() const
     return netError(parameters()[0].host()->savedValues()).re;
 }
 
-void Constraint::operator=(HConstraint other)
+HParaObject Constraint::copy() const
 {
-    //copy everything but _twin
-    _parameters = other->_parameters;
-    _weight = other->_weight;
-    _sz = other->_sz;
-    tag = other->tag;
-    userData = other->userData;
-    label = other->label;
-    scale = other->scale;
+    HConstraint ret = ParaObject::copy();
+    ret->_weight = _weight;
+    ret->_sz =  _sz;
+    ret->scale = scale;
+    ret->priority = priority;
+    return ret;
 }
