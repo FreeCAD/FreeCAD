@@ -47,9 +47,35 @@ matrix:
       - os: linux
         dist: bionic
         compiler: clang
+        addons:
+          apt:
+            sources:
+              - sourceline: 'ppa:ubuntu-toolchain-r/test'
+              - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+                key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+            packages:
+              - clang-9
         env:
+          - CC=clang-9
+          - CXX=clang++-9
           - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
+
+      # - os: linux
+      #   dist: bionic
+      #   compiler: gcc
+      #   addons:
+      #     apt:
+      #       sources:
+      #         - sourceline: 'ppa:ubuntu-toolchain-r/test'
+      #       packages:
+      #         - gcc-9
+      #         - g++-9
+      #   env:
+      #     - CC=gcc-9
+      #     - CXX=g++-9
+      #     - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+      #     - PYTHON_MAJOR_VERSION=3
 
       - os: linux
         dist: bionic
