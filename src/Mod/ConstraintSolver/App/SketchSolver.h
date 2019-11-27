@@ -31,8 +31,9 @@ namespace FCS {
 class SketchSolver;
 typedef UnsafePyHandle<SketchSolver> HSketchSolver;
 
-class SketchSolver
+class SketchSolver : Base::BaseClass
 {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 protected://structs and enums
     struct SystemPair{
         HSubSystem mainSys;
@@ -66,17 +67,17 @@ protected://structs and enums
             Minimal = 1,
             IterationLevel = 2
         };
-        eDebugMode debugMode = eDebugMode::Minimal;
+        eDebugMode debugMode = eDebugMode::IterationLevel;
     };
 
     enum class eSolveResult : int{
         Success = 0,   // Found a solution zeroing the error function
-        Minimized = 2, // Found a solution minimizing the error function
-        Failed = 3,    // Failed to find any solution
+        Minimized = 1, // Found a solution minimizing the error function
+        Failed = 2,    // Failed to find any solution
     };
 
 protected://data
-    PyObject* _twin;
+    PyObject* _twin = nullptr;
 
     HSubSystem _fullSystem;
     std::vector<SystemPair> _subsystems;
@@ -85,6 +86,8 @@ public://data
     SolverPrefs solverPrefs;
 
 public://methods
+    SketchSolver();
+
     /**
      * @brief solveDogLeg: solve a subsystem with DogLeg solver.
      * @param sys: the subsystem
@@ -94,11 +97,17 @@ public://methods
      */
     eSolveResult solveDogLeg(HSubSystem sys, HValueSet vals, DogLegPrefs prefs);
 
+public://python
+    PyObject* getPyObject() override;
+    HSketchSolver self();
 
+protected:
+    ~SketchSolver() = default;
+    friend class SketchSolverPy;
 
+    ///logging shortcut
     template <typename... Args>
     inline void iterLog(std::string msg, Args... args);
-
 };
 
 } //namespace

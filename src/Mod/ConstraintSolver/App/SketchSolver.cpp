@@ -1,10 +1,13 @@
 #include "PreCompiled.h"
 
 #include "SketchSolver.h"
+#include "SketchSolverPy.h"
 
 #include <Base/Console.h>
 
 #include "Eigen/Dense"
+
+TYPESYSTEM_SOURCE(FCS::SketchSolver, Base::BaseClass);
 
 using namespace FCS;
 
@@ -19,9 +22,19 @@ inline void SketchSolver::iterLog(std::string msg, Args... args)
 
 
 
+SketchSolver::SketchSolver()
+    :_fullSystem(Py::None())
+{
+
+}
+
 SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, HValueSet vals, FCS::SketchSolver::DogLegPrefs prefs)
 {
     iterLog("Begin Dogleg solving");
+
+    if (sys->isTouched())
+        sys->update();
+
     int xsize = sys->params()->size();
     int csize = sys->subconstraints().size();
 
@@ -242,5 +255,21 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
         iterLog("dogleg solver failed");
 
     return (stop == 1) ? eSolveResult::Success : eSolveResult::Success;
+}
+
+PyObject* SketchSolver::getPyObject()
+{
+    if (_twin == nullptr){
+        new SketchSolverPy(this);
+        assert(_twin);
+        return _twin;
+    } else {
+        return Py::new_reference_to(_twin);
+    }
+}
+
+HSketchSolver SketchSolver::self()
+{
+    return HSketchSolver(getPyObject(), true);
 }
 

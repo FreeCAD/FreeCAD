@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="BaseClassPy" 
+	  Name="SketchSolverPy" 
+	  Twin="SketchSolver" 
+	  TwinPointer="SketchSolver" 
+	  Include="Mod/ConstraintSolver/App/SketchSolver.h" 
+	  FatherInclude="Base/BaseClassPy.h" 
+	  Namespace="FCS" 
+	  Constructor="true"
+	  Delete="true"
+	  FatherNamespace="Base"
+      Initialization = "true"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>Solver algorithms copied from Sketcer.</DeveloperDocu>
+	  <UserDocu>Solver algorithms copied from Sketcer.</UserDocu>
+	</Documentation>
+
+	<Methode Name="solveDogLeg">
+	  <Documentation>
+		<UserDocu>solveDogLeg(subsystem, valueset, [prefs]). Solves a subsystem with DogLeg solver. 
+        valueset: is used as a starting point, and is updated with the (potentially failed) solution. 
+        prefs: dict of specialized dogleg parameters (#fixme: implement and document)
+        Returns 'Success' or 'Fail'.</UserDocu>
+	  </Documentation>
+	</Methode>
+
+  </PythonExport>
+</GenerateModel>

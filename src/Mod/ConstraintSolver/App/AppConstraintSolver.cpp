@@ -49,6 +49,10 @@
 #include "SimpleConstraintPy.h"
 #include "ParaGeometry.h"
 #include "ParaGeometryPy.h"
+#include "SketchSolver.h"
+#include "SketchSolverPy.h"
+#include "SketchSolverSystem.h"
+#include "SubSystemPy.h"
 
 #include "G2D/ParaPoint.h"
 #include "G2D/ParaPointPy.h"
@@ -135,8 +139,11 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::ConstraintPy      ::Type.tp_name = "ConstraintSolver.Constraint"      ;
     FCS::SimpleConstraintPy::Type.tp_name = "ConstraintSolver.SimpleConstraint";
     FCS::ParaGeometryPy    ::Type.tp_name = "ConstraintSolver.ParaGeometry"    ;
+    FCS::SketchSolverPy    ::Type.tp_name = "ConstraintSolver.SketchSolver"    ;
+    FCS::SubSystemPy       ::Type.tp_name = "ConstraintSolver.SubSystem"       ;
 
     //add python types as module members
+  //Base::Interpreter().addType(&FCS::                  ::Type, mod, ""                );
     Base::Interpreter().addType(&FCS::ParameterStorePy  ::Type, mod, "ParameterStore"  );
     Base::Interpreter().addType(&FCS::ParameterRefPy    ::Type, mod, "ParameterRef"    );
     Base::Interpreter().addType(&FCS::ParameterSubsetPy ::Type, mod, "ParameterSubset" );
@@ -145,6 +152,8 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::ConstraintPy      ::Type, mod, "Constraint"      );
     Base::Interpreter().addType(&FCS::SimpleConstraintPy::Type, mod, "SimpleConstraint");
     Base::Interpreter().addType(&FCS::ParaGeometryPy    ::Type, mod, "ParaGeometry"    );
+    Base::Interpreter().addType(&FCS::SketchSolverPy    ::Type, mod, "SketchSolver"    );
+    Base::Interpreter().addType(&FCS::SubSystemPy       ::Type, mod, "SubSystem"       );
 
 
     Py::Module submodG2D =  makeSubmodule(mod, "__FreeCAD_FCS_G2D__", "G2D", init_freecad_FCS_G2D_module);
@@ -162,6 +171,8 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::Constraint       ::init();
     FCS::SimpleConstraint ::init();
     FCS::ParaGeometry     ::init();
+    FCS::SketchSolver     ::init();
+    FCS::SubSystem        ::init();
 
 
     FCS::G2D::ParaPoint          ::init();
