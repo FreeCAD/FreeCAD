@@ -49,7 +49,7 @@ protected://methods
     void attach(HParameterStore store);
     void detach();
     void onStoreExpand();
-    bool checkParameter(ParameterRef param) const;
+    bool checkParameter(const ParameterRef& param) const;
 
 public://methods
 

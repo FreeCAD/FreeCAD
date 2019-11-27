@@ -13,8 +13,6 @@ FCS::ParameterSubset::ParameterSubset(int prealloc)
     : _host(Py::None())
 {
     this->_params.reserve(size_t(prealloc));
-    if(host().isNone())
-        Base::Console().Warning("ok\n");
 }
 
 void FCS::ParameterSubset::attach(FCS::HParameterStore store)
@@ -37,7 +35,7 @@ void ParameterSubset::onStoreExpand()
     _lut.resize(host()->size(), -1);
 }
 
-bool ParameterSubset::checkParameter(ParameterRef param) const
+bool ParameterSubset::checkParameter(const ParameterRef& param) const
 {
     if (host().isNone())
         return false;

@@ -15,7 +15,8 @@ FCS::ValueSet::ValueSet(FCS::HParameterSubset subset)
 
 void ValueSet::init(bool skip_values)
 {
-    _values.resize(size());
+    if (! skip_values)
+        _values.resize(size());
     _duals.resize(size(), 0.0);
     _scales.resize(size(), 0.0);
     for (int i = 0; i < size(); ++i) {
