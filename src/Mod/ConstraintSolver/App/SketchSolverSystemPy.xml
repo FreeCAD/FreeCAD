@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="BaseClassPy" 
+	  Name="SubSystemPy" 
+	  Twin="SubSystem" 
+	  TwinPointer="SubSystem" 
+	  Include="Mod/ConstraintSolver/App/SketchSolverSystem.h" 
+	  FatherInclude="Base/BaseClassPy.h" 
+	  Namespace="FCS" 
+	  Constructor="true"
+	  Delete="true"
+	  FatherNamespace="Base"
+      Initialization = "true"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>Subsystem for solving. It is a collection of parameters and constraints.</DeveloperDocu>
+	  <UserDocu>Subsystem for solving. It is a collection of parameters and constraints.</UserDocu>
+	</Documentation>
+
+	<Attribute Name="ParameterSet" ReadOnly="true">
+	  <Documentation>
+		<UserDocu>List of parameters to be solved</UserDocu>
+	  </Documentation>
+	  <Parameter Name="ParameterSet" Type="Object" />
+	</Attribute>
+
+	<Methode Name="touch">
+	  <Documentation>
+		<UserDocu>Marks this object that it needs updating.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="addUnknown">
+	  <Documentation>
+		<UserDocu>addUnknown(arg): Adds parameters to solve for. arg can be a ParameterRef, a list of ParameterRefs, or a ParameterSubset object</UserDocu>
+	  </Documentation>
+	</Methode>    
+	<Methode Name="addConstraint">
+	  <Documentation>
+		<UserDocu>addConstraint(arg): adds constraint. Can be a constraint instance, or a list of those.</UserDocu>
+	  </Documentation>
+	</Methode>    
+
+  </PythonExport>
+</GenerateModel>

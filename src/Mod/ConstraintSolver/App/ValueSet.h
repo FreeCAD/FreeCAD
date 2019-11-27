@@ -48,7 +48,7 @@ protected://data
     std::vector<double> _duals;
     std::vector<double> _scales;
     HParameterSubset _subset;
-    PyObject* _twin;
+    PyObject* _twin = nullptr;
 protected://methods
     ValueSet(HParameterSubset subset);
     ValueSet(HParameterSubset subset, const Eigen::VectorXd& vals, bool no_size_check);

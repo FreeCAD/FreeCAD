@@ -44,7 +44,7 @@ Base::DualNumber Constraint::netSqError(const ValueSet& on) const
     error(on, buf.data());
 
     if (rank() == 1)
-        return buf[0];
+        return sq(buf[0]);
 
     DualNumber acc;
     for(DualNumber v : buf){

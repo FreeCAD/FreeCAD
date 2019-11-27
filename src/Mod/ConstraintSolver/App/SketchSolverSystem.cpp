@@ -1,6 +1,7 @@
 #include "PreCompiled.h"
 
 #include "SketchSolverSystem.h"
+#include "SubSystemPy.h"
 
 #include <Base/DualNumber.h>
 #include "DualMath.h"
@@ -8,6 +9,20 @@
 using namespace FCS;
 using DualNumber = Base::DualNumber;
 
+TYPESYSTEM_SOURCE(FCS::SubSystem, Base::BaseClass);
+
+
+SubSystem::SubSystem()
+    : _store(Py::None()), _params(Py::None()), _curvals(Py::None())
+{
+
+}
+
+SubSystem::SubSystem(HParameterStore store)
+    : _store(store), _params(Py::None()), _curvals(Py::None())
+{
+    _store = store;
+}
 
 SubSystem::SubSystem(HParameterSubset params, std::vector<HConstraint> constraints)
     : _curvals(Py::None()), _store(params->host()), _params(params)
@@ -18,6 +33,9 @@ SubSystem::SubSystem(HParameterSubset params, std::vector<HConstraint> constrain
 
 void SubSystem::calcJacobi(ValueSet& vals, HParameterSubset params, Eigen::MatrixXd& output)
 {
+    if (_touched)
+        update();
+
     vals.resetDerivatives();
     output.setZero(_subconstraints.size(), params->size());
 
@@ -40,7 +58,7 @@ void SubSystem::calcJacobi(ValueSet& vals, HParameterSubset params, Eigen::Matri
             //since we compute jacobi for arbitrary set of parameters, we can't
             //assume all parameters the constraint depends on are in params.
             //Though, in practice, they should always be. But check anyway.
-            assert(ip != -1); //#FIXME: if the assert is never hit, remove the following "if".
+            //assert(ip != -1); //#FIXME: if the assert is never hit, remove the following "if".
             if (ip != -1){ //same as "if vals->subset().has(p)"
                 // set dual part of parameter to 1 for deriv computation
                 vals.setDual(p, 1.0);
@@ -61,6 +79,9 @@ void SubSystem::calcJacobi(ValueSet& vals, HParameterSubset params, Eigen::Matri
 
 void SubSystem::calcJacobi(Eigen::MatrixXd& output)
 {
+    if (_touched)
+        update();
+
     HValueSet vals = _curvals;
     if (vals.isNone()){
         vals = ValueSet::make(_params);
@@ -70,6 +91,9 @@ void SubSystem::calcJacobi(Eigen::MatrixXd& output)
 
 void SubSystem::calcGrad(HValueSet vals, Eigen::VectorXd& output)
 {
+    if (_touched)
+        update();
+
     vals->resetDerivatives();
     assert(output.size() == vals->size());
     output.setZero();
@@ -114,6 +138,9 @@ void SubSystem::calcGrad(HValueSet vals, Eigen::VectorXd& output)
 
 double SubSystem::maxStep(const ValueSet& vals, const ValueSet& xdir)
 {
+    if (_touched)
+        update();
+
     double step = 1e12;
     for(HConstraint hc : _constraints){
         step = std::min(step,
@@ -125,6 +152,9 @@ double SubSystem::maxStep(const ValueSet& vals, const ValueSet& xdir)
 
 void SubSystem::calcResidual(const ValueSet& vals, Eigen::VectorXd &output, double& err)
 {
+    if (_touched)
+        update();
+
     assert(output.size() == _subconstraints.size());
 
     std::vector<DualNumber> buf (_maxConstraintRank); //buffer that receives constraint error values
@@ -146,6 +176,8 @@ void SubSystem::calcResidual(const ValueSet& vals, Eigen::VectorXd &output, doub
 
 double SubSystem::error(const ValueSet& vals)
 {
+    if (_touched)
+        update();
     Eigen::VectorXd _(_subconstraints.size());
     double err = 0;
     calcResidual(vals, _, err);
@@ -222,10 +254,29 @@ double SubSystem::lineSearch(ValueSet& vals, const Eigen::VectorXd& dir)
 
 }
 
+PyObject* SubSystem::getPyObject()
+{
+    if (_twin == nullptr){
+        new SubSystemPy(this);
+        assert(_twin);
+        return _twin;
+    } else {
+        return Py::new_reference_to(_twin);
+    }
+}
+
+HSubSystem SubSystem::self()
+{
+    return HSubSystem(getPyObject(), true);
+}
+
 void SubSystem::update()
 {
+    if (_store.isNone() || _params.isNone())
+        throw Base::ReferencesError("SubSystem is not initialized");
     _subconstraints.clear();
     _constraint1stRow.resize(_constraints.size());
+    _maxConstraintRank = 0;
     int isc = 0;//index of subconstraint
     for(int ic = 0; ic <  _constraints.size(); ++ic){
         HConstraint& c = _constraints[ic];
@@ -234,6 +285,41 @@ void SubSystem::update()
             _subconstraints.push_back(Subconstraint{c, ie});
             ++isc;
         }
+        if (c->rank() > _maxConstraintRank)
+            _maxConstraintRank = c->rank();
+    }
+    _touched = false;
+}
+
+void SubSystem::addConstraint(HConstraint c)
+{
+    _constraints.push_back(c);
+    touch();
+}
+
+void SubSystem::addConstraint(const std::vector<HConstraint>& clist)
+{
+    for (const HConstraint& c : clist)
+        addConstraint(c);
+}
+
+void SubSystem::addUnknown(const ParameterRef &p)
+{
+    if (_store.isNone())
+        _store = p.host();
+    if (_params.isNone())
+        _params = ParameterSubset::make(_store);
+    _params->add(p);
+}
+
+void SubSystem::addUnknown(HParameterSubset subset)
+{
+    if (_params.isNone() || _params->size() == 0){
+        _params = subset;
+        _store = _params->host();
+    } else {
+        for (const ParameterRef& p : subset->list())
+            addUnknown(p);
     }
 }
 

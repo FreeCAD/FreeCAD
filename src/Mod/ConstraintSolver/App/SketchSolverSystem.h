@@ -43,10 +43,11 @@ struct Subconstraint
 class SubSystem;
 typedef UnsafePyHandle<SubSystem> HSubSystem;
 
-class SubSystem
+class SubSystem : public Base::BaseClass
 {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 protected://data
-    PyObject* _twin;
+    PyObject* _twin = nullptr;
 
     HParameterStore _store;
     HParameterSubset _params;
@@ -62,12 +63,22 @@ protected://data
     bool _touched = true;
 
 public: //methods
+    SubSystem();
+    SubSystem(HParameterStore store);
     SubSystem(HParameterSubset params, std::vector<HConstraint> constraints);
     HParameterSubset params() const {return _params;}
     const std::vector<Subconstraint>& subconstraints(){return _subconstraints;}
 
     ///fills look-up tables
     void update();
+    void touch() {_touched = true;}
+    bool isTouched() {return _touched;}
+
+    void addConstraint(HConstraint c);
+    void addConstraint(const std::vector<HConstraint>& clist);
+
+    void addUnknown(const ParameterRef& p);
+    void addUnknown(HParameterSubset subset);
 
     ///Jacobi matrix for constraints in this system for arbitrary set of parameters (set can be wider than subset of this subsystem, used for augmented-system solving)
     /**
@@ -101,12 +112,13 @@ public: //methods
     double lineSearch(ValueSet& vals, const Eigen::VectorXd& dir);
 
 public://python
-    PyObject* getPyObject();
+    PyObject* getPyObject() override;
     HSubSystem self();
 
 protected://methods
 
     ~SubSystem() = default; //protected destructor, pyhandle only
+    friend class SubSystemPy;
 };
 
 
