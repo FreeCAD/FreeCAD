@@ -60,6 +60,7 @@ matrix:
           - CXX=clang++-9
           - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
+          - CACHE_NAME=JOB1
 
       # - os: linux
       #   dist: bionic
@@ -76,6 +77,7 @@ matrix:
       #     - CXX=g++-9
       #     - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
       #     - PYTHON_MAJOR_VERSION=3
+      #     - CACHE_NAME=JOB2
 
       - os: linux
         dist: bionic
@@ -83,12 +85,14 @@ matrix:
         env:
           - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
+          - CACHE_NAME=JOB3
 
       - os: linux
         dist: bionic
         compiler: gcc
         env:      
           - PYTHON_MAJOR_VERSION=2
+          - CACHE_NAME=JOB4
 
       - os: windows
         language: cpp
@@ -104,6 +108,7 @@ matrix:
           - CCACHE_TEMPDIR=/tmp/.ccache-temp
           - CCACHE_COMPRESS=1
           - CCACHE_DIR=$HOME/.ccache
+          - CACHE_NAME=JOB5
           # enable this if clcache extended log is needed
           #- CLCACHE_LOG=1
         cache:
