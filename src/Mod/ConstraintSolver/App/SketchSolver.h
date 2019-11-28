@@ -57,6 +57,16 @@ protected://structs and enums
         double trustRegionShrinkFactor = 2.0; //reduce trust region by this factor
         double trustRegionShrinkSpeedupFactor = 2.0; //multiply the reduction factor by this value if trust region is repeatedly reduced
     };
+
+    struct LMPrefs {
+        double zeroError = 1e-10; //error tolerance (if err < eps => solved)
+        double zeroGradient = 1e-80; //minimum gradient, used for testing if the solver is stuck at a local minimum
+        double initialDampingFactor = 1e-3;
+        double dampingFactorBoostMultiplier = 2;
+        double dampingFactorBoostSpeedupMultiplier = 2;
+        double dampingFactorReductionMultiplier = 0.3333;
+    };
+
     struct SolverPrefs{
         ssize_t maxIter = 100; //max number of iterations
         bool sizemult = false; //if true, multiply the maxIter by the number of parameters
@@ -96,6 +106,8 @@ public://methods
      * @return result code (success or failure). The solution or the point where it failed remains in vals.
      */
     eSolveResult solveDogLeg(HSubSystem sys, HValueSet vals, DogLegPrefs prefs);
+
+    eSolveResult solveLM(HSubSystem sys, HValueSet vals, LMPrefs prefs);
 
 public://python
     PyObject* getPyObject() override;

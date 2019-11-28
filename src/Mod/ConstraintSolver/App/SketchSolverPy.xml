@@ -27,6 +27,14 @@
         Returns 'Success' or 'Fail'.</UserDocu>
 	  </Documentation>
 	</Methode>
+	<Methode Name="solveLM">
+	  <Documentation>
+		<UserDocu>solveLM(subsystem, valueset, [prefs]). Solves a subsystem with Levenberg-Marquardt solver. 
+        valueset: is used as a starting point, and is updated with the (potentially failed) solution. 
+        prefs: dict of specialized dogleg parameters (#fixme: implement and document)
+        Returns 'Success' or 'Fail'.</UserDocu>
+	  </Documentation>
+	</Methode>
 
   </PythonExport>
 </GenerateModel>
