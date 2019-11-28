@@ -96,7 +96,7 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
             Base::Console().Error("Dogleg solver failed, diverged.\n");
             stop = 6;
             break;
-        } else if (err != err) { // check for diverging and NaN
+        } else if (err != err) { // check for NaN
             Base::Console().Error("Dogleg solver failed, NaN error returned.\n");
             stop = 6;
             break;
@@ -168,7 +168,7 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
                 // and update h_dl and dL with beta
                 h_dl = h_sd + beta*b;
                 iterLog("    gauss-newton step exceeds trust region, but gradient step doesn't. "
-                      "\n    -> using mix (&f) of the two.", beta);
+                      "\n    -> using mix (%f) of the two.", beta);
             }
         }
 
@@ -180,7 +180,7 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
 
         // do the step and compute the new error
         double err_new;
-        x_new = x + h_dl;
+        *x_new = x + h_dl;
         vals->paste(x_new);
         sys->calcResidual(*vals, fx_new, err_new);
         sys->calcJacobi(*vals, sys->params()->self(), Jx_new);
@@ -199,7 +199,7 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
 
         if (dF > 0 && dL > 0) {
             //errors reduced, great! apply the step
-            x  = x_new;
+            *x = *x_new;
             Jx = Jx_new;
             fx = fx_new;
             err = err_new;
@@ -254,7 +254,8 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
     else
         iterLog("dogleg solver failed");
 
-    return (stop == 1) ? eSolveResult::Success : eSolveResult::Success;
+    return (stop == 1) ? eSolveResult::Success : eSolveResult::Failed;
+}
 }
 
 PyObject* SketchSolver::getPyObject()
