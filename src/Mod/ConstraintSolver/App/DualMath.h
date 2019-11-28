@@ -17,6 +17,8 @@ inline DualNumber sq(DualNumber x){
     return DualNumber(sq(x.re), 2 * x.re * x.du);
 }
 
+using ::sqrt;//duanumber's sqrt tends to override the standard one, and causes errors
+
 inline DualNumber sqrt(DualNumber x){
     double re = ::sqrt(x.re);
     return DualNumber(re, x.du * 0.5 / re);
