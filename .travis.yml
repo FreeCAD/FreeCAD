@@ -303,11 +303,11 @@ script:
         winpty.exe -Xallow-non-tty -Xplain /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0 | tee runlog.txt
         grep -q FAILED runlog.txt ; [ $? == 1 ] && echo "Build succeeded and tests passed!" || ( echo "Tests failed!" && false )
     else
-        # Stop compiling (GCC) after 2 hrs 15 min (2 hrs 30 min limit). Extended to 180 min.
+        # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
         # Preserves created ccache for the next build job.
-        # if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 140m 135m make -j2 install || true; fi
-        # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo make -j2 install; fi
-        sudo make -j2 install
+        if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
+        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo make -j2 install; fi
+        # sudo make -j2 install
         ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         sleep 10 && pkill FreeCAD
