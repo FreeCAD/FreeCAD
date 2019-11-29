@@ -569,7 +569,7 @@ SketchSolver::eSolveResult SketchSolver::solveBFGS(HSubSystem sys, HValueSet val
         iterLog("    line search step = %f", h_norm);
 
         if (h_norm <= (prefs.convergence)){
-            Base::Console().Error("BFGS solver failed: stuck in a local minimum (iteration step too small)");
+            Base::Console().Error("BFGS solver failed: stuck in a local minimum (iteration step too small)\n");
             return eSolveResult::Minimized;
         }
         if (err <= prefs.smallF){
@@ -577,7 +577,7 @@ SketchSolver::eSolveResult SketchSolver::solveBFGS(HSubSystem sys, HValueSet val
             return eSolveResult::Success;
         }
         if (err > divergingLim){
-            Base::Console().Error("BFGS solver failed: diverged");
+            Base::Console().Error("BFGS solver failed: diverged\n");
             return eSolveResult::Failed;
         }
 
@@ -599,7 +599,7 @@ SketchSolver::eSolveResult SketchSolver::solveBFGS(HSubSystem sys, HValueSet val
 
         *xdir = -D * grad;
     }
-    Base::Console().Error("BFGS solver failed: iteration limit reached");
+    Base::Console().Error("BFGS solver failed: iteration limit reached\n");
     return eSolveResult::Failed;
 
 }
