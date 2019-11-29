@@ -580,7 +580,7 @@ PyObject*  TopoShapePy::__setstate__(PyObject *args) {
 
 PyObject*  TopoShapePy::exportStl(PyObject *args)
 {
-    double deflection = 0;
+    double deflection = 0.01;
     char* Name;
     if (!PyArg_ParseTuple(args, "et|d","utf-8",&Name,&deflection))
         return NULL;
