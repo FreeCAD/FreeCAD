@@ -15,13 +15,13 @@
 	  DisableNotify="true">
 	<Documentation>
 	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
-	  <DeveloperDocu>Solver algorithms copied from Sketcer.</DeveloperDocu>
-	  <UserDocu>Solver algorithms copied from Sketcer.</UserDocu>
+	  <DeveloperDocu>Solver algorithms copied from Sketcher.</DeveloperDocu>
+	  <UserDocu>Solver algorithms copied from Sketcher.</UserDocu>
 	</Documentation>
 
 	<Methode Name="solveDogLeg">
 	  <Documentation>
-		<UserDocu>solveDogLeg(subsystem, valueset, [prefs]). Solves a subsystem with DogLeg solver. 
+		<UserDocu>solveDogLeg(subsystem, valueset, [prefs]). Solves a subsystem with DogLeg algorithm. 
         valueset: is used as a starting point, and is updated with the (potentially failed) solution. 
         prefs: dict of specialized dogleg parameters (#fixme: implement and document)
         Returns 'Success' or 'Fail'.</UserDocu>
@@ -29,9 +29,17 @@
 	</Methode>
 	<Methode Name="solveLM">
 	  <Documentation>
-		<UserDocu>solveLM(subsystem, valueset, [prefs]). Solves a subsystem with Levenberg-Marquardt solver. 
+		<UserDocu>solveLM(subsystem, valueset, [prefs]). Solves a subsystem with Levenberg-Marquardt algorithm. 
         valueset: is used as a starting point, and is updated with the (potentially failed) solution. 
-        prefs: dict of specialized dogleg parameters (#fixme: implement and document)
+        prefs: dict of specialized BFGS parameters (#fixme: implement and document)
+        Returns 'Success' or 'Fail'.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="solveBFGS">
+	  <Documentation>
+		<UserDocu>solveBFGS(subsystem, valueset, [prefs]). Solves a subsystem with BFGS algorithm. 
+        valueset: is used as a starting point, and is updated with the (potentially failed) solution. 
+        prefs: dict of specialized BFGS parameters (#fixme: implement and document)
         Returns 'Success' or 'Fail'.</UserDocu>
 	  </Documentation>
 	</Methode>

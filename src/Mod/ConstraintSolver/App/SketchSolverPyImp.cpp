@@ -80,6 +80,26 @@ PyObject* SketchSolverPy::solveLM(PyObject *args)
     return Py::new_reference_to(Py::String(msg[int(ret)]));
 }
 
+PyObject* SketchSolverPy::solveBFGS(PyObject *args)
+{
+    PyObject* pysys;
+    PyObject* pyvals;
+    PyObject* pyprefs = nullptr;
+    if (!PyArg_ParseTuple(args, "O!O!|O!", &SubSystemPy::Type, &pysys,
+                          &ValueSetPy::Type, &pyvals, &PyDict_Type, &pyprefs))
+        return nullptr;
+
+    SketchSolver::BFGSPrefs prefs;
+    if (pyprefs)
+        throw Py::NotImplementedError("preferences support not implemented"); //#fixme: implement
+    auto ret = getSketchSolverPtr()->solveBFGS(
+        HSubSystem(pysys, false),
+        HValueSet(pyvals, false),
+        prefs
+    );
+    const char* msg[] = {"Success", "Minimized", "Fail"};
+    return Py::new_reference_to(Py::String(msg[int(ret)]));
+}
 
 PyObject *SketchSolverPy::getCustomAttributes(const char* /*attr*/) const
 {

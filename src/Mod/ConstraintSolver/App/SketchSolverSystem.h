@@ -100,16 +100,6 @@ public: //methods
     void calcResidual(const ValueSet& vals, Eigen::VectorXd& output, double& err);
     double error(const ValueSet& vals);
 
-    /**
-     * @brief lineSearch finds a minimum of error function along dir
-     * @param vals: initial state of parameters, and the output. Must include
-     * all parameters of the subsystem; can include more. Vals is actively
-     * modified during the search, so one can't launch two in parallel on the
-     * same copy of values.
-     * @param dir: direction (indexes as of parameters of the subsystem)
-     * @return what number was dir multiplied by to arrive to the minimum
-     */
-    double lineSearch(ValueSet& vals, const Eigen::VectorXd& dir);
 
 public://python
     PyObject* getPyObject() override;

@@ -58,6 +58,11 @@ protected://structs and enums
         double trustRegionShrinkSpeedupFactor = 2.0; //multiply the reduction factor by this value if trust region is repeatedly reduced
     };
 
+    struct BFGSPrefs {
+        double convergence = 1e-10; //minimum step (test for convergence)
+        double smallF = 1e-20; //sq(error) success threshold
+    };
+
     struct LMPrefs {
         double zeroError = 1e-10; //error tolerance (if err < eps => solved)
         double zeroGradient = 1e-80; //minimum gradient, used for testing if the solver is stuck at a local minimum
@@ -99,6 +104,17 @@ public://methods
     SketchSolver();
 
     /**
+     * @brief lineSearch finds a minimum of error function along dir
+     * @param vals: initial state of parameters, and the output. Must include
+     * all parameters of the subsystem; can include more. Vals is actively
+     * modified during the search, so one can't launch two in parallel on the
+     * same copy of values.
+     * @param dir: direction (indexes as of parameters of the subsystem)
+     * @return what number was dir multiplied by to arrive to the minimum
+     */
+    double lineSearch(HSubSystem sys, ValueSet& vals, const Eigen::VectorXd& dir);
+
+    /**
      * @brief solveDogLeg: solve a subsystem with DogLeg solver.
      * @param sys: the subsystem
      * @param vals: the initial values and the output. Must include all parameters of the subsystem.
@@ -106,6 +122,8 @@ public://methods
      * @return result code (success or failure). The solution or the point where it failed remains in vals.
      */
     eSolveResult solveDogLeg(HSubSystem sys, HValueSet vals, DogLegPrefs prefs);
+
+    eSolveResult solveBFGS(HSubSystem sys, HValueSet vals, BFGSPrefs prefs);
 
     eSolveResult solveLM(HSubSystem sys, HValueSet vals, LMPrefs prefs);
 
