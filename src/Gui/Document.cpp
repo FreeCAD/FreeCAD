@@ -104,6 +104,7 @@ struct DocumentP
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*> _ViewProviderMap;
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
+    std::list<ViewProviderDocumentObject*> _redoViewProviders;
 
     typedef boost::signals2::connection Connection;
     Connection connectNewObject;
@@ -690,6 +691,9 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 
         // it is possible that a new viewprovider already claims children
         handleChildren3D(pcProvider);
+        if (d->_isTransacting) {
+            d->_redoViewProviders.push_back(pcProvider);
+        }
     }
 }
 
@@ -2152,6 +2156,10 @@ void Document::redo(int iSteps)
         getDocument()->redo();
     }
     App::GetApplication().signalRedo();
+
+    for (auto it : d->_redoViewProviders)
+        handleChildren3D(it);
+    d->_redoViewProviders.clear();
 }
 
 PyObject* Document::getPyObject(void)
