@@ -59,6 +59,8 @@ macro(InitializeFreeCADBuildOptions)
             if (NOT EXISTS ${CMAKE_BINARY_DIR}/bin/DLLs)
                 set(COPY_LIBPACK_BIN_TO_BUILD ON )
                 option(FREECAD_COPY_LIBPACK_BIN_TO_BUILD "Copy larger libpack dependency 'bin' folder to the build directory." OFF)
+                # Copy only the minimum number of files to get a working application
+                option(FREECAD_COPY_PLUGINS_BIN_TO_BUILD "Copy plugins to the build directory." OFF)
             endif()
         else()
             message("Libpack NOT found.\nIf you intend to use a Windows libpack, set the FREECAD_LIBPACK_DIR to the libpack directory.")
