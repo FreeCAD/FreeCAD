@@ -74,7 +74,7 @@ def _findTool(path, typ, dbg=False):
                     if dbg:
                         PathLog.debug("  Found {} at {}".format(typ, f))
                     return f
-        if pname and '/' != pname:
+        if pname and os.path.sep != pname:
             ppname, pfname = os.path.split(pname)
             ffname = os.path.join(pfname, fname) if fname else pfname
             return searchFor(ppname, ffname)
@@ -101,7 +101,7 @@ def _findRelativePath(path, typ):
     for p in PathPreferences.searchPathsTool(typ):
         if path.startswith(p):
             p = path[len(p):]
-            if '/' == p[0]:
+            if os.path.sep == p[0]:
                 p = p[1:]
             if len(p) < len(relative):
                 relative = p
