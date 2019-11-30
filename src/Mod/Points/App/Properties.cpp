@@ -267,12 +267,12 @@ void PropertyCurvatureList::removeIndices( const std::vector<unsigned long>& uIn
 
 PyObject *PropertyCurvatureList::getPyObject(void)
 {
-    throw Py::NotImplementedError("Not yet implemented");
+    throw Base::NotImplementedError("Not yet implemented");
 }
 
 CurvatureInfo PropertyCurvatureList::getPyValue(PyObject *) const
 {
-    throw Py::NotImplementedError("Not yet implemented");
+    throw Base::NotImplementedError("Not yet implemented");
 }
 
 bool PropertyCurvatureList::saveXML(Base::Writer &writer) const

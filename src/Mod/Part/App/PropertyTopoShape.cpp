@@ -755,14 +755,21 @@ PyObject *PropertyFilletEdges::getPyObject(void)
 FilletElement PropertyFilletEdges::getPyValue(PyObject *item) const
 {
     FilletElement fe;
-    Py::Tuple ent(item);
+    if(!PyObject_TypeCheck(item, &PyTuple_Type))
+        throw Base::TypeError();
+
+    try {
+        Py::Tuple ent(item);
 #if PY_MAJOR_VERSION >= 3
-    fe.edgeid = (int)Py::Long(ent.getItem(0));
+        fe.edgeid = (int)Py::Long(ent.getItem(0));
 #else
-    fe.edgeid = (int)Py::Int(ent.getItem(0));
+        fe.edgeid = (int)Py::Int(ent.getItem(0));
 #endif
-    fe.radius1 = (double)Py::Float(ent.getItem(1));
-    fe.radius2 = (double)Py::Float(ent.getItem(2));
+        fe.radius1 = (double)Py::Float(ent.getItem(1));
+        fe.radius2 = (double)Py::Float(ent.getItem(2));
+    } catch (Py::Exception &) {
+        Base::PyException::ThrowException();
+    }
     return fe;
 }
 
