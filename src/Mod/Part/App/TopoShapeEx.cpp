@@ -2426,13 +2426,22 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     auto &other_info = it->second;
                     std::ostringstream ss2;
                     if(other_info.index!=1) {
+                        // 'K' marks the additional source shape of this
+                        // generate (or modified) shape.
                         ss2 << elementMapPrefix() << 'K';
                         if(other_info.index == INT_MIN)
                             ss2 << '0';
                         else if(other_info.index == INT_MIN+1)
                             ss2 << "00";
-                        else
+                        else {
+                            // The same source shape may generate or modify
+                            // more than one shape. The index here marks the
+                            // position it is reported by OCC. Including the
+                            // index here is likely to degrade name stablilty,
+                            // but is unfortunately a necessity to avoid
+                            // duplicate names. 
                             ss2 << other_info.index;
+                        }
                     }
                     std::string other_name = other_key.name;
                     encodeElementName(other_info.shapetype[0],other_name,ss2,sids,0,other_key.tag);
