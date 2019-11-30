@@ -354,6 +354,10 @@ void CmdTechDrawView::activated(int iMsg)
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                   FeatName.c_str(), projDir.x,projDir.y,projDir.z);
+        //do something clever with dirs.second;
+//        dvp->setXDir(dirs.second);
+        doCommand(Doc,"App.activeDocument().%s.XDirection = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                      FeatName.c_str(), dirs.second.x,dirs.second.y,dirs.second.z);
         doCommand(Doc,"App.activeDocument().%s.recompute()", FeatName.c_str());
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
    } else {
@@ -362,6 +366,9 @@ void CmdTechDrawView::activated(int iMsg)
         getDocument()->setStatus(App::Document::Status::SkipRecompute, true);
         doCommand(Doc,"App.activeDocument().%s.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                   FeatName.c_str(), projDir.x,projDir.y,projDir.z);
+        doCommand(Doc,"App.activeDocument().%s.XDirection = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                      FeatName.c_str(), dirs.second.x,dirs.second.y,dirs.second.z);
+//        dvp->setXDir(dirs.second);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
         doCommand(Doc,"App.activeDocument().%s.recompute()", FeatName.c_str());
     }
@@ -527,6 +534,7 @@ void CmdTechDrawDetailView::activated(int iMsg)
 
     doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",FeatName.c_str(),dvp->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.XDirection = App.activeDocument().%s.XDirection",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
 
     updateActive();            //ok here, no preceding recompute
@@ -635,6 +643,8 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
                       multiViewName.c_str(), dirs.first.x,dirs.first.y,dirs.first.z);
         doCommand(Doc,"App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.second.x,dirs.second.y,dirs.second.z);
+        doCommand(Doc,"App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                      multiViewName.c_str(), dirs.second.x,dirs.second.y,dirs.second.z);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     } else {
         std::pair<Base::Vector3d,Base::Vector3d> dirs = DrawGuiUtil::get3DDirAndRot();
@@ -642,6 +652,8 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.Anchor.Direction = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.first.x,dirs.first.y,dirs.first.z);
         doCommand(Doc,"App.activeDocument().%s.Anchor.RotationVector = FreeCAD.Vector(%.3f,%.3f,%.3f)",
+                      multiViewName.c_str(), dirs.second.x,dirs.second.y,dirs.second.z);
+        doCommand(Doc,"App.activeDocument().%s.Anchor.XDirection = FreeCAD.Vector(%.3f,%.3f,%.3f)",
                       multiViewName.c_str(), dirs.second.x,dirs.second.y,dirs.second.z);
         getDocument()->setStatus(App::Document::Status::SkipRecompute, false);
     }

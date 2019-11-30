@@ -58,20 +58,20 @@ UndoDialog::~UndoDialog()
 void UndoDialog::onFetchInfo() 
 {
     clear(); // Remove first all items
-    Gui::Document* pcDoc = Application::Instance->activeDocument();
-    if (pcDoc)
-    {
-        std::vector<std::string> vecUndos = pcDoc->getUndoVector();
-        for (std::vector<std::string>::iterator i=vecUndos.begin(); i!=vecUndos.end(); ++i)
-            addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
+
+    MDIView* mdi =  getMainWindow()->activeWindow();
+    EditorView* view = qobject_cast<EditorView*>(mdi);
+    if (view) {
+        QStringList vecUndos = view->undoActions();
+        for (QStringList::Iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
+            addAction(*i, this, SLOT(onSelected()));
     }
-    else
-    {
-        EditorView* view = qobject_cast<EditorView*>(getMainWindow()->activeWindow());
-        if (view) {
-            QStringList vecUndos = view->undoActions();
-            for (QStringList::Iterator i=vecUndos.begin(); i!=vecUndos.end(); ++i)
-                addAction(*i, this, SLOT(onSelected()));
+    else if (mdi) {
+        Gui::Document* pcDoc = mdi->getGuiDocument();
+        if (pcDoc) {
+            std::vector<std::string> vecUndos = pcDoc->getUndoVector();
+            for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i)
+                addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
         }
     }
 }
@@ -115,20 +115,20 @@ RedoDialog::~RedoDialog()
 void RedoDialog::onFetchInfo() 
 {
     clear(); // Remove first all items
-    Gui::Document* pcDoc = Application::Instance->activeDocument();
-    if (pcDoc)
-    {
-        std::vector<std::string> vecRedos = pcDoc->getRedoVector();
-        for (std::vector<std::string>::iterator i=vecRedos.begin(); i!=vecRedos.end(); ++i)
-            addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
+
+    MDIView* mdi = getMainWindow()->activeWindow();
+    EditorView* view = qobject_cast<EditorView*>(mdi);
+    if (view) {
+        QStringList vecRedos = view->redoActions();
+        for (QStringList::Iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
+            addAction(*i, this, SLOT(onSelected()));
     }
-    else
-    {
-        EditorView* view = qobject_cast<EditorView*>(getMainWindow()->activeWindow());
-        if (view) {
-            QStringList vecRedos = view->redoActions();
-            for (QStringList::Iterator i=vecRedos.begin(); i!=vecRedos.end(); ++i)
-                addAction(*i, this, SLOT(onSelected()));
+    else if (mdi) {
+        Gui::Document* pcDoc = mdi->getGuiDocument();
+        if (pcDoc) {
+            std::vector<std::string> vecRedos = pcDoc->getRedoVector();
+            for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i)
+                addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
         }
     }
 }

@@ -47,9 +47,37 @@ matrix:
       - os: linux
         dist: bionic
         compiler: clang
+        addons:
+          apt:
+            sources:
+              - sourceline: 'ppa:ubuntu-toolchain-r/test'
+              - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main'
+                key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+            packages:
+              - clang-9
         env:
+          - CC=clang-9
+          - CXX=clang++-9
           - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
+          - CACHE_NAME=JOB1
+
+      # - os: linux
+      #   dist: bionic
+      #   compiler: gcc
+      #   addons:
+      #     apt:
+      #       sources:
+      #         - sourceline: 'ppa:ubuntu-toolchain-r/test'
+      #       packages:
+      #         - gcc-9
+      #         - g++-9
+      #   env:
+      #     - CC=gcc-9
+      #     - CXX=g++-9
+      #     - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+      #     - PYTHON_MAJOR_VERSION=3
+      #     - CACHE_NAME=JOB2
 
       - os: linux
         dist: bionic
@@ -57,12 +85,14 @@ matrix:
         env:
           - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - PYTHON_MAJOR_VERSION=3
+          - CACHE_NAME=JOB3
 
       - os: linux
         dist: bionic
         compiler: gcc
         env:      
           - PYTHON_MAJOR_VERSION=2
+          - CACHE_NAME=JOB4
 
       - os: windows
         language: cpp
@@ -78,6 +108,7 @@ matrix:
           - CCACHE_TEMPDIR=/tmp/.ccache-temp
           - CCACHE_COMPRESS=1
           - CCACHE_DIR=$HOME/.ccache
+          - CACHE_NAME=JOB5
           # enable this if clcache extended log is needed
           #- CLCACHE_LOG=1
         cache:
@@ -160,10 +191,13 @@ before_install:
                                netgen-headers                   \
                                libmetis-dev                     \
                                libspnav-dev
+       # Runtime deps
+       sudo apt-get install -y --no-install-recommends freecad-daily-python3
 
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 
+       export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
        export CCACHE_CPP2=YES
        if [[ ${PYTHON_MAJOR_VERSION} == 2 ]]
        then
@@ -269,11 +303,11 @@ script:
         winpty.exe -Xallow-non-tty -Xplain /C/Users/travis/build/FreeCAD/FreeCAD/build/bin/FreeCADCmd.exe --run-test 0 | tee runlog.txt
         grep -q FAILED runlog.txt ; [ $? == 1 ] && echo "Build succeeded and tests passed!" || ( echo "Tests failed!" && false )
     else
-        # Stop compiling (GCC) after 2 hrs 15 min (2 hrs 30 min limit). Extended to 180 min.
+        # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
         # Preserves created ccache for the next build job.
-        # if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 140m 135m make -j2 install || true; fi
-        # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo make -j2 install; fi
-        sudo make -j2 install
+        if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
+        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo make -j2 install; fi
+        # sudo make -j2 install
         ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         sleep 10 && pkill FreeCAD
