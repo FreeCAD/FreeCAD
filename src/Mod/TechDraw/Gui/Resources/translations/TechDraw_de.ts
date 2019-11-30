@@ -406,7 +406,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="715"/>
       <source>Insert a new vertical distance dimension</source>
-      <translation>Eine vertikale Abstans-Bemaßung einfügen</translation>
+      <translation>Eine vertikale Abstands-Bemaßung einfügen</translation>
     </message>
   </context>
   <context>

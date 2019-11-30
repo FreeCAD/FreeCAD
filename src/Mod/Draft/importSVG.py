@@ -356,7 +356,7 @@ def getsize(length, mode='discard', base=1):
         tomm = {
             '': 25.4/90,  # default
             'px': 25.4/90,
-            'pt': 1.25 * 25.4/90,
+            'pt': 4.0/3 * 25.4/90,
             'pc': 15 * 25.4/90,
             'mm': 1.0,
             'cm': 10.0,
@@ -369,7 +369,7 @@ def getsize(length, mode='discard', base=1):
         tomm = {
             '': 25.4/96,  # default
             'px': 25.4/96,
-            'pt': 1.25 * 25.4/96,
+            'pt': 4.0/3 * 25.4/96,
             'pc': 15 * 25.4/96,
             'mm': 1.0,
             'cm': 10.0,
@@ -382,7 +382,7 @@ def getsize(length, mode='discard', base=1):
         topx = {
             '': 1.0,  # default
             'px': 1.0,
-            'pt': 1.25,
+            'pt': 4.0/3,
             'pc': 15,
             'mm': 90.0/25.4,
             'cm': 90.0/254.0,
@@ -395,7 +395,7 @@ def getsize(length, mode='discard', base=1):
         topx = {
             '': 1.0,  # default
             'px': 1.0,
-            'pt': 1.25,
+            'pt': 4.0/3,
             'pc': 15,
             'mm': 96.0/25.4,
             'cm': 96.0/254.0,
