@@ -24,6 +24,7 @@
 
 import FreeCAD
 import Path
+import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathStock as PathStock
@@ -74,13 +75,13 @@ class DressupPathBoundary(object):
             obj.Stock = None
         return True
 
-    def boundaryCommands(self, obj, begin, end):
+    def boundaryCommands(self, obj, begin, end, verticalFeed):
         PathLog.track(_vstr(begin), _vstr(end))
         if end and PathGeom.pointsCoincide(begin, end):
             return []
         cmds = []
         if begin.z < self.safeHeight:
-            cmds.append(Path.Command('G1', {'Z': self.safeHeight}))
+            cmds.append(Path.Command('G1', {'Z': self.safeHeight, 'F': verticalFeed}))
         if begin.z < self.clearanceHeight:
             cmds.append(Path.Command('G0', {'Z': self.clearanceHeight}))
         if end:
@@ -88,12 +89,14 @@ class DressupPathBoundary(object):
             if end.z < self.clearanceHeight:
                 cmds.append(Path.Command('G0', {'Z': max(self.safeHeight, end.z)}))
             if end.z < self.safeHeight:
-                cmds.append(Path.Command('G1', {'Z': end.z}))
+                cmds.append(Path.Command('G1', {'Z': end.z, 'F': verticalFeed}))
         return cmds
 
     def execute(self, obj):
         if not obj.Base or not obj.Base.isDerivedFrom('Path::Feature') or not obj.Base.Path:
             return
+
+        tc = PathDressup.toolController(obj.Base)
 
         if len(obj.Base.Path.Commands) > 0:
             self.safeHeight = float(PathUtil.opProperty(obj.Base, 'SafeHeight'))
@@ -119,7 +122,7 @@ class DressupPathBoundary(object):
                         PathLog.track(_vstr(pos), _vstr(lastExit), ' + ', cmd)
                         # cmd fully included by boundary
                         if lastExit:
-                            commands.extend(self.boundaryCommands(obj, lastExit, pos))
+                            commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
                             lastExit = None
                         commands.append(cmd)
                         pos = PathGeom.commandEndPoint(cmd, pos)
@@ -143,7 +146,7 @@ class DressupPathBoundary(object):
                                 # inside edges are taken at this point (see swap of inside/outside
                                 # above - so we can just connect the dots ...
                                 if lastExit:
-                                    commands.extend(self.boundaryCommands(obj, lastExit, pos))
+                                    commands.extend(self.boundaryCommands(obj, lastExit, pos, tc.VertFeed.Value))
                                     lastExit = None
                                 PathLog.track(e, flip)
                                 commands.extend(PathGeom.cmdsForEdge(e, flip, False))
@@ -176,7 +179,7 @@ class DressupPathBoundary(object):
                     PathLog.track('no-move', cmd)
                     commands.append(cmd)
             if lastExit:
-                commands.extend(self.boundaryCommands(obj, lastExit, None))
+                commands.extend(self.boundaryCommands(obj, lastExit, None, tc.VertFeed.Value))
                 lastExit = None
         else:
             PathLog.warning("No Path Commands for %s" % obj.Base.Label)
