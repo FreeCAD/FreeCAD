@@ -298,7 +298,12 @@ class _CommandWall:
         FreeCADGui.addModule("Draft")
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("WallSketches",True):
             FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
-            FreeCADGui.doCommand('base.Placement = FreeCAD.DraftWorkingPlane.getPlacement()')
+            #FreeCADGui.doCommand('base.Placement = FreeCAD.DraftWorkingPlane.getPlacement()')
+            FreeCADGui.doCommand('delta = trace.EndPoint.sub(trace.StartPoint)')
+            FreeCADGui.doCommand('centre = trace.StartPoint.add(delta/2)')
+            FreeCADGui.doCommand('trace = Part.LineSegment(FreeCAD.Vector(-delta.Length/2,0,0),FreeCAD.Vector(delta.Length/2,0,0))')
+            FreeCADGui.doCommand('import math, DraftVecUtils')
+            FreeCADGui.doCommand('base.Placement=App.Placement(centre,FreeCAD.Rotation(FreeCAD.DraftWorkingPlane.getNormal(),(-math.degrees(DraftVecUtils.angle(delta, normal=FreeCAD.DraftWorkingPlane.getNormal())))))')
             FreeCADGui.doCommand('base.addGeometry(trace)')
         else:
             FreeCADGui.doCommand('base=Draft.makeLine(trace)')
