@@ -1165,7 +1165,14 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
         from pivy import coin
         tex = coin.SoTexture2()
-        tex.image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+
+        ## TODO - https://github.com/FreeCAD/FreeCAD/pull/2746 Backmerge Werner's fix
+        #tex.image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+        image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+        if not image is None:
+            tex.image = image
+        ## TODO
+
         texcoords = coin.SoTextureCoordinatePlane()
         s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("patternScale",0.01)
         texcoords.directionS.setValue(s,0,0)
