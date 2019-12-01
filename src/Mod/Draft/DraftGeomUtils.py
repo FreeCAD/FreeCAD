@@ -1341,10 +1341,10 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
         # Consider individual edge Align direction - ArchWall should now always provide alignList
 
         if i == 0:
-                if alignListC[0] == 'Center':
-                    delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
-                #No need to do anything for 'Left' and 'Rigtht' as orginal dvec have set both the direction and amount of offset correct
-                #elif alignListC[i] == 'Left':  #elif alignListC[i] == 'Right':
+            if alignListC[0] == 'Center':
+                delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
+            #No need to do anything for 'Left' and 'Rigtht' as orginal dvec have set both the direction and amount of offset correct
+            #elif alignListC[i] == 'Left':  #elif alignListC[i] == 'Right':
         if i != 0:
             try:
                 if alignListC[i] == 'Left':
@@ -1369,55 +1369,55 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
         # Consider whether generating the 'offset wire' or the 'base wire'
 
         if offsetMode == None:
-                # Consider if curOrientation and/or curDir match their firstOrientation/firstDir - to determine whether and how to offset the current edge 
-                if (curOrientation == firstOrientation) != (curDir == firstDir):	# i.e. xor
-                    if curAlign in ['Left', 'Right']:
-                        nedge = curredge
-                    elif curAlign == 'Center':
-                        delta = delta.negative()
-                        nedge = offset(curredge,delta,trim=True)
-                else:
-                    # if curAlign in ['Left', 'Right']: # elif curAlign == 'Center': # Both conditions same result..
+            # Consider if curOrientation and/or curDir match their firstOrientation/firstDir - to determine whether and how to offset the current edge 
+            if (curOrientation == firstOrientation) != (curDir == firstDir):	# i.e. xor
+                if curAlign in ['Left', 'Right']:
+                    nedge = curredge
+                elif curAlign == 'Center':
+                    delta = delta.negative()
                     nedge = offset(curredge,delta,trim=True)
+            else:
+                # if curAlign in ['Left', 'Right']: # elif curAlign == 'Center': # Both conditions same result..
+                nedge = offset(curredge,delta,trim=True)
 
-                if curOrientation == "Reversed": # TODO arc alway in counter-clockwise directinon ... ( not necessarily 'reversed')
-                    if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
-                        # if not arc/circle, assume straight line, reverse it
-                        nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
-                    else:
-                        # if arc/circle 
-                        #Part.ArcOfCircle(edge.Curve, edge.FirstParameter,edge.LastParameter,edge.Curve.Axis.z>0)
-                        midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
-                        midOfArc = nedge.valueAt(midParameter)
-                        nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point).toShape()
-                        # TODO any better solution than to calculate midpoint of arc to reverse ?
+            if curOrientation == "Reversed": # TODO arc alway in counter-clockwise directinon ... ( not necessarily 'reversed')
+                if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
+                    # if not arc/circle, assume straight line, reverse it
+                    nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
+                else:
+                    # if arc/circle 
+                    #Part.ArcOfCircle(edge.Curve, edge.FirstParameter,edge.LastParameter,edge.Curve.Axis.z>0)
+                    midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
+                    midOfArc = nedge.valueAt(midParameter)
+                    nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point).toShape()
+                    # TODO any better solution than to calculate midpoint of arc to reverse ?
 
         elif offsetMode in ["BasewireMode"]:
-                if not ( (curOrientation == firstOrientation) != (curDir == firstDir) ):
-                    if curAlign in ['Left', 'Right']:
-                        nedge = curredge
-                    elif curAlign == 'Center':
-                        delta = delta.negative()
-                        nedge = offset(curredge,delta,trim=True)
+            if not ( (curOrientation == firstOrientation) != (curDir == firstDir) ):
+                if curAlign in ['Left', 'Right']:
+                    nedge = curredge
+                elif curAlign == 'Center':
+                    delta = delta.negative()
+                    nedge = offset(curredge,delta,trim=True)
+            else:
+                if curAlign in ['Left', 'Right']:
+                    nedge = offset(curredge,delta,trim=True)
+                elif curAlign == 'Center':
+                    nedge = offset(curredge,delta,trim=True)
+            if curOrientation == "Reversed":
+                if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
+                    # if not arc/circle, assume straight line, reverse it
+                    nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
                 else:
-                    if curAlign in ['Left', 'Right']:
-                        nedge = offset(curredge,delta,trim=True)
-                    elif curAlign == 'Center':
-                        nedge = offset(curredge,delta,trim=True)
-                if curOrientation == "Reversed":
-                    if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
-                        # if not arc/circle, assume straight line, reverse it
-                        nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
-                    else:
-                        # if arc/circle
-                        #Part.ArcOfCircle(edge.Curve, edge.FirstParameter,edge.LastParameter,edge.Curve.Axis.z>0)
-                        midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
-                        midOfArc = nedge.valueAt(midParameter)
-                        nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point).toShape()
-                        # TODO any better solution than to calculate midpoint of arc to reverse ?
+                    # if arc/circle
+                    #Part.ArcOfCircle(edge.Curve, edge.FirstParameter,edge.LastParameter,edge.Curve.Axis.z>0)
+                    midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
+                    midOfArc = nedge.valueAt(midParameter)
+                    nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point).toShape()
+                    # TODO any better solution than to calculate midpoint of arc to reverse ?
         else:
-                print (" something wrong ")
-                return
+            print (" something wrong ")
+            return
         if not nedge:
             return None
         nedges.append(nedge)
