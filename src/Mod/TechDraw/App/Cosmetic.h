@@ -91,6 +91,7 @@ public:
 
     Base::Vector3d permaPoint;           //permanent, unscaled value
     int            linkGeom;             //connection to corresponding "geom" Vertex (fragile - index based!)
+                                         //better to do reverse search for CosmeticTag in vertex geometry
     App::Color     color;
     double         size;
     int            style;

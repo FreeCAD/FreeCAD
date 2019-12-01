@@ -323,7 +323,9 @@ CosmeticVertex* CosmeticVertex::clone(void) const
 
 PyObject* CosmeticVertex::getPyObject(void)
 {
-    return new CosmeticVertexPy(new CosmeticVertex(this->copy()));
+//    return new CosmeticVertexPy(new CosmeticVertex(this->copy()));  //shouldn't this be clone?
+    PyObject* result = new CosmeticVertexPy(this->clone());  //shouldn't this be clone?
+    return result;
 }
 
 void CosmeticVertex::dump(const char* title)
