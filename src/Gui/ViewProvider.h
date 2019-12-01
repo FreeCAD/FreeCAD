@@ -545,6 +545,9 @@ protected:
     std::string overrideMode;
     std::bitset<32> StatusBits;
 
+protected:
+    CoinPtr<SoGroup> pcChildGroup;
+
 private:
     int _iActualMode;
     int _iEditMode;

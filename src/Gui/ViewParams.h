@@ -97,6 +97,7 @@ public:
     FC_VIEW_PARAM(SelectionFaceWire,bool,Bool,false) \
     FC_VIEW_PARAM(NewDocumentCameraScale,double,Float,100.0) \
     FC_VIEW_PARAM(MaxOnTopSelections,int,Int,20) \
+    FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

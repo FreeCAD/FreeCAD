@@ -415,6 +415,8 @@ public:
         SoSwitch *pcUpdateSwitch = pcModeSwitch;
 
         auto childRoot = pcLinked->getChildRoot();
+        if(!childRoot)
+            childRoot = pcLinked->getChildrenGroup();
 
         for(int i=0,count=root->getNumChildren();i<count;++i) {
             SoNode *node = root->getChild(i);
@@ -453,7 +455,7 @@ public:
                 auto child = pcLinkedSwitch->getChild(i);
                 if(pcChildGroup && child==childRoot)
                     pcModeSwitch->addChild(pcChildGroup);
-                else
+                else 
                     pcModeSwitch->addChild(child);
             }
             if(pcChildGroup && !childRoot) {
@@ -661,7 +663,8 @@ public:
             subname = nextsub;
             sobj = ssobj;
 
-            if(sobj->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())) {
+            if(ViewParams::instance()->getMapChildrenPlacement() 
+                    || sobj->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())) {
                 // Link will contain all its children
                 break;
             }
@@ -906,7 +909,7 @@ public:
     void appendToPath(SoPath *path) {
         if(pcSwitch) 
             appendPath(path,pcSwitch);
-        if (pcRoot && isGroup!=0)
+        if (pcRoot && isGroup>0)
             appendPath(path,pcRoot);
     }
 
@@ -1665,6 +1668,9 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
 
                 subname = dot+1;
                 if(!subname[0] || nodeArray[idx]->isGroup==0)
+                    break;
+                if(ViewParams::instance()->getMapChildrenPlacement()
+                        && nodeArray[idx]->isGroup<0)
                     break;
                 idx = -1;
             }

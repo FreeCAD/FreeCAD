@@ -356,8 +356,15 @@ Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
 
 void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
 {
+    if(pcChildGroup) {
+        int idx = pcModeSwitch->findChild(pcChildGroup);
+        if(idx>=0)
+            pcModeSwitch->removeChild(idx);
+    }
     _sDisplayMaskModes[type] = pcModeSwitch->getNumChildren();
     pcModeSwitch->addChild(node);
+    if(pcChildGroup)
+        pcModeSwitch->addChild(pcChildGroup);
 }
 
 void ViewProvider::setDisplayMaskMode(const char* type)

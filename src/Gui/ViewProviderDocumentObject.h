@@ -169,6 +169,12 @@ public:
      */
     bool isShowable() const;
 
+    /** Obtain a group node holding all claimed children
+     *
+     * The group node is only available for object that does not implement getChildRoot()
+     */
+    SoGroup* getChildrenGroup() const;
+
 protected:
     virtual Base::BoundBox3d _getBoundingBox(const char *subname=0, 
             const Base::Matrix4D *mat=0, bool transform=true,

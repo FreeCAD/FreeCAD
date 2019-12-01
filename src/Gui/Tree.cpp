@@ -1564,7 +1564,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     targetParent->getNameInDocument());
         }
 
-        bool syncPlacement = TreeParams::Instance()->SyncPlacement() && targetItemObj->isGroup();
+        bool syncPlacement = TreeParams::Instance()->SyncPlacement();
 
         bool setSelection = true;
         std::vector<std::pair<App::DocumentObject*,std::string> > droppedObjects;
@@ -4048,11 +4048,21 @@ DocumentObjectItem *DocumentItem::findItem(
     auto it = ObjectMap.find(subObj);
     if(it != ObjectMap.end()) {
         for(auto child : it->second->items) {
-            if(child->isChildOfItem(item)) {
-                found = true;
-                res = findItem(sync,child,nextsub,select);
-                if(!select)
-                    return res;
+            for(auto parent=child->parent();
+                    parent && parent->type()==TreeWidget::ObjectType;
+                    parent=parent->parent())
+            {
+                if(parent == item) {
+                    found = true;
+                    res = findItem(sync,child,nextsub,select);
+                    if(!select)
+                        return res;
+                }
+                auto obj = static_cast<DocumentObjectItem*>(parent)->object()->getObject();
+                if(!obj || !obj->getNameInDocument()
+                       ||  obj->getExtensionByType<App::LinkBaseExtension>(true)
+                       ||  obj->getExtensionByType<App::GeoFeatureGroupExtension>(true))
+                    break;
             }
         }
     }
@@ -4649,6 +4659,9 @@ enum GroupType {
 };
 
 int DocumentObjectItem::isGroup() const {
+    if(ViewParams::instance()->getMapChildrenPlacement())
+        return SuperGroup;
+
     auto obj = object()->getObject();
     auto linked = obj->getLinkedObject(true);
     if(linked && linked->hasExtension(
@@ -4658,15 +4671,6 @@ int DocumentObjectItem::isGroup() const {
         return SuperGroup;
     else if(obj->hasChildElement())
         return LinkGroup;
-    if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
-        for(auto parent=getParentItem();parent;parent=parent->getParentItem()) {
-            auto pobj = parent->object()->getObject();
-            if(App::GeoFeatureGroupExtension::isNonGeoGroup(pobj))
-                continue;
-            if(pobj->isElementVisible(obj->getNameInDocument())>=0)
-                return LinkGroup;
-        }
-    }
     return NotGroup;
 }
 

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #include <App/Application.h>
+#include "ViewProvider.h"
 #include "ViewParams.h"
 #include "Selection.h"
 
@@ -62,5 +63,12 @@ ViewParams *ViewParams::instance() {
 
 void ViewParams::onShowSelectionOnTopChanged() {
     Selection().clearCompleteSelection();
+    if(getMapChildrenPlacement())
+        setMapChildrenPlacement(false);
 }
 
+void ViewParams::onMapChildrenPlacementChanged() {
+    ViewProvider::clearBoundingBoxCache();
+    if(!getShowSelectionOnTop())
+        setShowSelectionOnTop(true);
+}
