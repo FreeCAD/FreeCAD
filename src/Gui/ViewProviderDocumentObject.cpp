@@ -46,6 +46,7 @@
 #include <App/Material.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include "Application.h"
 #include "Document.h"
@@ -61,12 +62,12 @@
 #include "SoFCSelection.h"
 #include "ViewParams.h"
 #include "Tree.h"
+#include "ViewProviderLink.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
-
 
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
@@ -231,7 +232,7 @@ void ViewProviderDocumentObject::hide(void)
 }
 
 void ViewProviderDocumentObject::setModeSwitch() {
-    if(getObject() && !TreeWidget::isObjectShowable(getObject())) {
+    if(!isShowable()) {
         if(pcModeSwitch->whichChild.getValue()!=-1) {
             pcModeSwitch->whichChild = -1;
             callExtension(&ViewProviderExtension::extensionModeSwitchChange);
@@ -312,10 +313,13 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
 
     //attach the extensions
     callExtension(&ViewProviderExtension::extensionAttach,pcObj);
+
+    updateChildren();
 }
 
 void ViewProviderDocumentObject::reattach(App::DocumentObject *pcObj) {
     callExtension(&ViewProviderExtension::extensionReattach,pcObj);
+    updateChildren();
 }
 
 void ViewProviderDocumentObject::update(const App::Property* prop)
@@ -330,6 +334,9 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
         Base::ObjectStatusLocker<App::Property::Status,App::Property>
             guard(App::Property::User1, &Visibility);
         ViewProvider::update(prop);
+
+        updateChildren(prop->testStatus(App::Property::Output)
+                        || prop->testStatus(App::Property::PropOutput));
     }
 }
 
@@ -723,14 +730,150 @@ Base::BoundBox3d ViewProviderDocumentObject::_getBoundingBox(
     Base::Matrix4D smat;
     if(mat)
         smat = *mat;
-    const char *subelement = Data::ComplexGeoData::findElementName(subname);
-    if(subelement == subname)
+
+    std::string _subname;
+    const char *nextsub;
+    const char *dot=0;
+    if(Data::ComplexGeoData::isMappedElement(subname)
+            || (dot=strchr(subname,'.'))==0)
+    {
         return ViewProvider::_getBoundingBox(subname,&smat,false,viewer,depth+1);
+    }
+
+    if(ViewParams::instance()->getMapChildrenPlacement()) {
+        _subname = std::string(subname,dot+1-subname);
+        subname = _subname.c_str();
+        nextsub = dot+1;
+    } else
+        nextsub = Data::ComplexGeoData::findElementName(dot+1);
 
     auto sobj = getObject()->getSubObject(subname,0,&smat,transform,depth);
     auto vp = Application::Instance->getViewProvider(sobj);
-    if(!vp || vp==this)
+    if(!vp)
         return Base::BoundBox3d();
-    return vp->getBoundingBox(subelement, &smat,false,viewer,depth+1);
+    return vp->getBoundingBox(nextsub, &smat,false,viewer,depth+1);
+}
+
+const std::vector<App::DocumentObject*> &ViewProviderDocumentObject::getCachedChildren() const {
+    return claimedChildren;
+}
+
+void ViewProviderDocumentObject::beforeDelete() {
+    ViewProvider::beforeDelete();
+
+    for(auto child : childSet) {
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                Application::Instance->getViewProvider(child));
+        if(vpd)
+            vpd->parentSet.erase(getObject());
+    }
+    claimedChildren.clear();
+    childSet.clear();
+    parentSet.clear();
+}
+
+const std::set<App::DocumentObject *>& ViewProviderDocumentObject::claimedBy() const {
+    return parentSet;
+}
+
+void ViewProviderDocumentObject::updateChildren(bool propagate) {
+    auto obj = getObject();
+    if(!obj || !obj->getNameInDocument())
+        return;
+
+    auto newChildren = claimChildren();
+    if(claimedChildren == newChildren)
+        return;
+
+    std::set<App::DocumentObject *> newSet;
+    bool updated = false;
+    for (auto child : newChildren) {
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                Application::Instance->getViewProvider(child));
+        if(!vpd || !newSet.insert(child).second)
+            continue;
+        if(!childSet.erase(child)) {
+            // this means new child detected
+            updated = true;
+            if(vpd->parentSet.insert(obj).second 
+                    && child->getDocument() == obj->getDocument()
+                    && vpd->Visibility.getValue()) 
+            {
+                // Trigger visibility check through
+                // ViewProviderDocumentObject::setModeSwitch(), which will call
+                // ViewProviderDocumentObject::isShowable().
+                vpd->show();
+            }
+        }
+    }
+
+    for (auto child : childSet) {
+        if(newSet.find(child) == newSet.end()) {
+            // this means old child removed
+            updated = true;
+            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(child));
+            if(!vpd)
+                continue;
+            vpd->parentSet.erase(obj);
+            if(vpd->Visibility.getValue()) {
+                // Trigger visibility check through
+                // ViewProviderDocumentObject::setModeSwitch(), which will call
+                // ViewProviderDocumentObject::isShowable().
+                vpd->show();
+            }
+        }
+    }
+
+    if(!updated)
+        return;
+
+    childSet = std::move(newSet);
+    claimedChildren = std::move(newChildren);
+
+    if(propagate) {
+        // This is true if the children update is triggered by a property that
+        // is marked as output. It will not touch its object, and thus, its
+        // property change will not be propagated through recomputation. So we
+        // have to manually check for each links here.
+        for(auto link : App::GetApplication().getLinksTo(obj,App::GetLinkRecursive)) {
+            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(link));
+            if(vpd) 
+                vpd->updateChildren(false);
+        }
+    }
+
+    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
+    //of the geofeaturegroup depends on what the childs claim
+    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+    if(grp) {
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                Application::Instance->getViewProvider(grp));
+        if(vpd)
+            vpd->updateChildren(true);
+    }
+
+    signalChangedChildren(*this);
+    Application::Instance->signalChangedChildren(*this);
+}
+
+bool ViewProviderDocumentObject::isShowable() const {
+    auto obj = getObject();
+    if(!obj)
+        return true;
+    bool showable = true;
+    for(auto parent : parentSet) {  
+        // Calling getViewProvider() here is a more of a safty measure, to make
+        // sure the object exists.
+        if(!Application::Instance->getViewProvider(parent)
+                || parent->getDocument()!=obj->getDocument())
+            continue;
+        if(!parent->hasChildElement() 
+                && parent->getLinkedObject(false)==parent)
+            return true;
+        showable = false;
+    }
+    return showable;
 }
 

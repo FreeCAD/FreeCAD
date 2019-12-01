@@ -247,8 +247,6 @@ public:
     DocumentObjectItems items;
     ViewProviderDocumentObject *viewObject;
     DocumentObjectItem *rootItem;
-    std::vector<App::DocumentObject*> children;
-    std::set<App::DocumentObject*> childSet;
     bool removeChildrenFromRoot;
     bool itemHidden;
     QString label;
@@ -277,65 +275,6 @@ public:
 
     const char *getTreeName() const {
         return docItem->getTreeName();
-    }
-
-    void updateChildren(DocumentObjectDataPtr other) {
-        children = other->children;
-        childSet = other->childSet;
-    }
-
-    bool updateChildren() {
-        auto newChildren = viewObject->claimChildren();
-        auto obj = viewObject->getObject();
-        std::set<App::DocumentObject *> newSet;
-        bool updated = false;
-        for (auto child : newChildren) {
-            if(child && child->getNameInDocument()) {
-                if(!newSet.insert(child).second) {
-                    TREE_WARN("duplicate child item " << obj->getFullName() 
-                        << '.' << child->getNameInDocument());
-                }else if(!childSet.erase(child)) {
-                    // this means new child detected
-                    updated = true;
-                    if(child->getDocument()==obj->getDocument() && 
-                       child->getDocument()==docItem->document()->getDocument())
-                    {
-                        auto &parents = docItem->_ParentMap[child];
-                        if(parents.insert(obj).second && child->Visibility.getValue()) {
-                            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
-                                    Application::Instance->getViewProvider(child));
-                            if(vpd && vpd->Visibility.getValue()) {
-                                // Trigger visibility check through
-                                // ViewProviderDocumentObject::setModeSwitch(), which will call
-                                // TreeWidget::isObjectShowable().
-                                vpd->show();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        for (auto child : childSet) {
-            if(newSet.find(child) == newSet.end()) {
-                // this means old child removed
-                updated = true;
-                docItem->_ParentMap[child].erase(obj);
-                auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
-                        Application::Instance->getViewProvider(child));
-                if(vpd && vpd->Visibility.getValue()) {
-                    // Trigger visibility check through
-                    // ViewProviderDocumentObject::setModeSwitch(), which will call
-                    // TreeWidget::isObjectShowable().
-                    vpd->show();
-                }
-            }
-        }
-        // We still need to check the order of the children
-        updated = updated || children!=newChildren;
-        children.swap(newChildren);
-        childSet.swap(newSet);
-
-        return updated;
     }
 
     void testStatus(bool resetStatus = false) {
@@ -505,6 +444,9 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     connectChangedViewObj = Application::Instance->signalChangedObject.connect(
             boost::bind(&TreeWidget::slotChangedViewObject, this, _1,_2));
 
+    connectChangedChildren = Application::Instance->signalChangedChildren.connect(
+            boost::bind(&TreeWidget::slotChangedChildren, this, _1));
+
     setupResizableColumn(this);
     this->header()->setStretchLastSection(false);
 
@@ -560,6 +502,7 @@ TreeWidget::~TreeWidget()
     connectRelDocument.disconnect();
     connectShowHidden.disconnect();
     connectChangedViewObj.disconnect();
+    connectChangedChildren.disconnect();
     Instances.erase(this);
     if(_LastSelectedTreeWidget == this)
         _LastSelectedTreeWidget = 0;
@@ -582,21 +525,6 @@ void TreeWidget::selectAll() {
         Gui::Selection().selStackPush();
     Gui::Selection().clearSelection();
     Gui::Selection().setSelection(gdoc->getDocument()->getName(),gdoc->getDocument()->getObjects());
-}
-
-bool TreeWidget::isObjectShowable(App::DocumentObject *obj) {
-    if(!obj || !obj->getNameInDocument())
-        return true;
-    Gui::Document *doc = Application::Instance->getDocument(obj->getDocument());
-    if(!doc)
-        return true;
-    if(Instances.empty())
-        return true;
-    auto tree = *Instances.begin();
-    auto it = tree->DocumentMap.find(doc);
-    if(it != tree->DocumentMap.end())
-        return it->second->isObjectShowable(obj);
-    return true;
 }
 
 void TreeWidget::checkTopParent(App::DocumentObject *&obj, std::string &subname) {
@@ -2227,14 +2155,15 @@ void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::P
     {
         const auto &vpd = static_cast<const ViewProviderDocumentObject&>(vp);
         if(&prop == &vpd.ShowInTree) {
-            ChangedObjects.emplace(vpd.getObject(),0);
+            ChangedObjects.insert(std::make_pair(vpd.getObject(),0));
             _updateStatus();
         }
     }
 }
 
+
 void TreeWidget::slotTouchedObject(const App::DocumentObject &obj) {
-    ChangedObjects.emplace(const_cast<App::DocumentObject*>(&obj),0);
+    ChangedObjects.insert(std::make_pair(const_cast<App::DocumentObject*>(&obj),0));
     _updateStatus();
 }
 
@@ -2387,8 +2316,12 @@ void TreeWidget::onUpdateStatus(void)
             }
         }
 
-        updateChildren(iter->first, iter->second, v.second.test(CS_Output), false);
+        for(auto &data : iter->second) {
+            for(auto item : data->items)
+                data->docItem->populateItem(item,true);
+        }
     }
+
     ChangedObjects.clear();
 
     FC_LOG("update item status");
@@ -3165,11 +3098,9 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
                 auto firstData = *entry.begin();
                 pdata->label = firstData->label;
                 pdata->label2 = firstData->label2;
-                pdata->updateChildren(firstData);
             } else {
                 pdata->label = QString::fromUtf8(obj.getObject()->Label.getValue());
                 pdata->label2 = QString::fromUtf8(obj.getObject()->Label2.getValue());
-                pdata->updateChildren();
             }
             entry.insert(pdata);
         }else if(pdata->rootItem && parent==NULL) {
@@ -3282,9 +3213,6 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         auto doc = docItem->document()->getDocument();
         auto &items = data->items;
 
-        if(obj->getDocument() == doc)
-            docItem->_ParentMap.erase(obj);
-
         bool lock = blockConnection(true);
         for(auto cit=items.begin(),citNext=cit;cit!=items.end();cit=citNext) {
             ++citNext;
@@ -3295,37 +3223,27 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
         // Check for any child of the deleted object that is not in the tree, and put it
         // under document item.
-        for(auto child : data->children) {
+        for(auto child : data->viewObject->getCachedChildren()) {
             auto vpd = docItem->getViewProvider(child);
             if(!vpd || child->getDocument()!=doc)
                 continue;
-
-            auto pit = docItem->_ParentMap.find(child);
-            if(pit!=docItem->_ParentMap.end()) {
-                pit->second.erase(obj);
-                if(vpd->Visibility.getValue()) {
-                    // Trigger visibility check through
-                    // ViewProviderDocumentObject::setModeSwitch(), which will call
-                    // TreeWidget::isObjectShowable().
-                    vpd->show();
-                }
-            }
 
             auto cit = docItem->ObjectMap.find(child);
             if(cit==docItem->ObjectMap.end() || cit->second->items.empty()) {
                 // Here means the child object has no corresponding tree item
                 // in this document.
                 bool created = false;
-                if(pit!=docItem->_ParentMap.end()) {
-                    // Because lazying loading, there maybe some parent of this
+                for(auto parent : vpd->claimedBy()) {
+                    if(parent == data->viewObject->getObject())
+                        continue;
+
+                    // Because lazy loading, there maybe some parent of this
                     // child out there didn't populate its tree item. We
                     // iteratre the parent map to try to put the child into one
                     // of its parent. 
-                    for(auto parent : pit->second) {
-                        if(docItem->populateObject(parent)) {
-                            created = true;
-                            break;
-                        }
+                    if(docItem->populateObject(parent)) {
+                        created = true;
+                        break;
                     }
                 }
                 // If no parent can be found, create a new item to put the
@@ -3378,7 +3296,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
     // a) the item is expanded, or b) there is at least one free child, i.e.
     // child originally located at root.
 
-    item->setChildIndicatorPolicy(item->myData->children.empty()?
+    const auto &children = item->object()->getCachedChildren();
+    item->setChildIndicatorPolicy(children.empty()?
             QTreeWidgetItem::DontShowIndicator:QTreeWidgetItem::ShowIndicator);
 
     if (!item->populated && !item->isExpanded()) {
@@ -3391,7 +3310,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
         auto linked = obj->getLinkedObject(true);
         if (linked && linked->getDocument()!=obj->getDocument())
             return;
-        for(auto child : item->myData->children) {
+        for(auto child : children) {
             auto it = ObjectMap.find(child);
             if(it == ObjectMap.end() || it->second->items.empty()) {
                 auto vp = getViewProvider(child);
@@ -3419,7 +3338,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh, bool del
     // iterate through the claimed children, and try to synchronize them with the 
     // children tree item with the same order of appearance. 
     int childCount = item->childCount();
-    for(auto child : item->myData->children) {
+    for(auto child : item->myData->viewObject->getCachedChildren()) {
 
         ++i; // the current index of the claimed child
 
@@ -3633,81 +3552,14 @@ void TreeWidget::slotChangeObject(
         return;
     }
 
-    auto &s = ChangedObjects[obj];
-    if(prop.testStatus(App::Property::Output) 
-            || prop.testStatus(App::Property::NoRecompute))
-    {
-        s.set(CS_Output);
-    }
+    ChangedObjects.insert(std::make_pair(view.getObject(),0));
 }
 
-void TreeWidget::updateChildren(App::DocumentObject *obj,
-        const std::set<DocumentObjectDataPtr> &dataSet, bool propOutput, bool force)
-{
-    bool childrenChanged = false;
-    std::vector<App::DocumentObject*> children;
-    bool removeChildrenFromRoot = true;
-
-    DocumentObjectDataPtr found;
-    for(auto data : dataSet) {
-        if(!found) {
-            found = data;
-            childrenChanged = found->updateChildren();
-            removeChildrenFromRoot = found->viewObject->canRemoveChildrenFromRoot();
-            if(!childrenChanged && found->removeChildrenFromRoot==removeChildrenFromRoot)
-                return;
-        }else if(childrenChanged)
-            data->updateChildren(found);
-        data->removeChildrenFromRoot = removeChildrenFromRoot;
-        DocumentItem* docItem = data->docItem;
-        for(auto item : data->items)
-            docItem->populateItem(item,true);
-    }
-
-    if(force)
-        return;
-
-    if(childrenChanged && propOutput) {
-        // When a property is marked as output, it will not touch its object,
-        // and thus, its property change will not be propagated through
-        // recomputation. So we have to manually check for each links here.
-        for(auto link : App::GetApplication().getLinksTo(obj,App::GetLinkRecursive)) {
-            if(ChangedObjects.count(link))
-                continue;
-            std::vector<App::DocumentObject*> linkedChildren;
-            DocumentObjectDataPtr found;
-            auto it = ObjectTable.find(link);
-            if(it == ObjectTable.end())
-                continue;
-            for(auto data : it->second) {
-                if(!found) {
-                    found = data;
-                    if(!found->updateChildren())
-                        break;
-                }
-                data->updateChildren(found);
-                DocumentItem* docItem = data->docItem;
-                for(auto item : data->items)
-                    docItem->populateItem(item,true);
-            }
-        }
-    }
-
-    if(childrenChanged) {
-        if(!selectTimer->isActive())
-            onSelectionChanged(SelectionChanges());
-
-        //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
-        //of the geofeaturegroup depends on what the childs claim
-        auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-        if(grp && !ChangedObjects.count(grp)) {
-            auto iter = ObjectTable.find(grp);
-            if(iter!=ObjectTable.end())
-                updateChildren(grp,iter->second,true,false);
-        }
-    }
+void TreeWidget::slotChangedChildren(const ViewProviderDocumentObject &view) {
+    ChangedObjects.insert(std::make_pair(view.getObject(),0));
+    _updateStatus();
 }
-    
+
 void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& obj, 
     const Gui::HighlightMode& high, bool set, const App::DocumentObject *parent, const char *subname)
 {
@@ -4038,37 +3890,6 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
     const char *docname = obj->getDocument()->getName();
     const auto &subname = str.str();
 
-    if(subname.size()) {
-        auto parentItem = item->getParentItem();
-        assert(parentItem);
-        if(selected && parentItem->selected) {
-            // When a group item is selected, all its children objects are
-            // highlighted in the 3D view. So, when an item of some group is
-            // newly selected, we must force unselect its parent in order to
-            // show the selection highlight. Besides, select both the parent
-            // group and its children doesn't make much sense.
-            //
-            // UPDATE: There are legit use case of both parent and child
-            // selection, for example, to disambiguate under which group to
-            // operate on the child.
-            //
-            // TREE_TRACE("force unselect parent");
-            // parentItem->setSelected(false);
-            // updateItemSelection(parentItem);
-        }
-    }
-
-    if(selected && item->isGroup()) {
-        // Same reasoning as above. When a group item is newly selected, We
-        // choose to force unselect all its children to void messing up the
-        // selection highlight 
-        //
-        // UPDATE: same as above, child and parent selection is now re-enabled.
-        //
-        // TREE_TRACE("force unselect all children");
-        // updateSelection(item,true);
-    }
-
     if(!selected) {
         Gui::Selection().rmvSelection(docname,objname,subname.c_str());
         return;
@@ -4308,15 +4129,13 @@ void DocumentItem::selectItems(SelectionReason reason) {
     }
 }
 
-void DocumentItem::populateParents(const ViewProvider *vp, ViewParentMap &parentMap) {
-    auto it = parentMap.find(vp);
-    if(it == parentMap.end()) return;
-    for(auto parent : it->second) {
-        auto it = ObjectMap.find(parent->getObject());
+void DocumentItem::populateParents(const ViewProviderDocumentObject *vp) {
+    for(auto parent : vp->claimedBy()) {
+        auto it = ObjectMap.find(parent);
         if(it==ObjectMap.end())
             continue;
 
-        populateParents(parent,parentMap);
+        populateParents(it->second->viewObject);
         for(auto item : it->second->items) {
             if(!item->isHidden() && !item->populated) {
                 item->populated = true;
@@ -4327,7 +4146,6 @@ void DocumentItem::populateParents(const ViewProvider *vp, ViewParentMap &parent
 }
 
 void DocumentItem::selectAllInstances(const ViewProviderDocumentObject &vpd) {
-    ViewParentMap parentMap;
     auto pObject = vpd.getObject();
     if(ObjectMap.find(pObject) == ObjectMap.end())
         return;
@@ -4337,19 +4155,10 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject &vpd) {
     // We are trying to select all items corresponding to a given view
     // provider, i.e. all appearance of the object inside all its parent items
     //
-    // Build a map of object to all its parent    
-    for(auto &v : ObjectMap) {
-        if(v.second->viewObject == &vpd) continue;
-        for(auto child : v.second->viewObject->claimChildren()) {
-            auto vp = getViewProvider(child);
-            if(!vp) continue;
-            parentMap[vp].push_back(v.second->viewObject);
-        }
-    }
 
-    // now make sure all parent items are populated. In order to do that, we
+    // make sure all parent items are populated. In order to do that, we
     // need to populate the oldest parent first
-    populateParents(&vpd,parentMap);
+    populateParents(&vpd);
 
     DocumentObjectItem *first = 0;
     FOREACH_ITEM(item,vpd);
@@ -4439,10 +4248,12 @@ DocumentObjectItem::~DocumentObjectItem()
         myData->rootItem = 0;
 
     if(myOwner && myData->items.empty()) {
-        auto it = myOwner->_ParentMap.find(object()->getObject());
-        if(it!=myOwner->_ParentMap.end() && it->second.size()) {
-            myOwner->PopulateObjects.push_back(*it->second.begin());
-            myOwner->getTree()->_updateStatus();
+        for(auto parent : object()->claimedBy()) {
+            if(myOwner->ObjectMap.count(parent)) {
+                myOwner->PopulateObjects.push_back(parent);
+                myOwner->getTree()->_updateStatus();
+                break;
+            }
         }
     }
 }
@@ -4792,8 +4603,7 @@ bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
         checkMap = false;
     }
     if(checkMap && myOwner) {
-        auto it = myOwner->_ParentMap.find(object()->getObject());
-        if(it!=myOwner->_ParentMap.end()) {
+        for(auto parent : object()->claimedBy()) {
             // Reaching here means all items of this corresponding object is
             // going to be deleted, but the object itself is not deleted and
             // still being referred to by some parent item that is not expanded
@@ -4806,10 +4616,8 @@ bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
             // expand its parent item. It only causes minor problems, such as,
             // tree scroll to object command won't work properly.
 
-            for(auto parent : it->second) {
-                if(getOwnerDocument()->populateObject(parent))
-                    return false;
-            }
+            if(getOwnerDocument()->populateObject(parent))
+                return false;
         }
     }
     return true;
@@ -4860,22 +4668,6 @@ int DocumentObjectItem::isGroup() const {
         }
     }
     return NotGroup;
-}
-
-bool DocumentItem::isObjectShowable(App::DocumentObject *obj) {
-    auto itParents = _ParentMap.find(obj);
-    if(itParents == _ParentMap.end() || itParents->second.empty())
-        return true;
-    bool showable = true;
-    for(auto parent : itParents->second) {  
-        if(parent->getDocument() != obj->getDocument())
-            continue;
-        if(!parent->hasChildElement() 
-                && parent->getLinkedObject(false)==parent)
-            return true;
-        showable = false;
-    }
-    return showable;
 }
 
 int DocumentObjectItem::isParentGroup() const {

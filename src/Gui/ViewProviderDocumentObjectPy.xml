@@ -30,6 +30,18 @@
             </Documentation>
             <Parameter Name="ForceUpdate" Type="Boolean" />
         </Attribute>
+        <Attribute Name="ClaimedChildren" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Obtain claimed child view objects</UserDocu>
+            </Documentation>
+            <Parameter Name="ClaimedChildren" Type="List" />
+        </Attribute>
+        <Attribute Name="ClaimedBy" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Obtain all parent view objects that claim this view object</UserDocu>
+            </Documentation>
+            <Parameter Name="ClaimedBy" Type="List" />
+        </Attribute>
 		<Attribute Name="Document" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Return the document the view provider is part of</UserDocu>
