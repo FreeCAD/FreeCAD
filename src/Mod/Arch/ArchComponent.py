@@ -223,32 +223,28 @@ class Component(ArchIFC.IfcProduct):
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
         if prop == "Placement":
+            print("detected placement change")
             if hasattr(self,"oldPlacement"):
                 if self.oldPlacement:
-                    import DraftVecUtils
-                    deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
-                    if deltap.Length == 0:
-                        deltap = None
-                    v = FreeCAD.Vector(0,0,1)
-                    deltar = FreeCAD.Rotation(self.oldPlacement.Rotation.multVec(v),obj.Placement.Rotation.multVec(v))
-                    #print "Rotation",deltar.Axis,deltar.Angle
-                    if deltar.Angle < 0.0001:
-                        deltar = None
+                    oP = self.oldPlacement
+                    self.oldPlacement = None
+                    oPm = oP.toMatrix()
+                    nPm = obj.Placement.toMatrix()
+                    deltaPm = nPm-oPm
+                    
                     for child in self.getMovableChildren(obj):
-                        #print "moving ",child.Label
-                        if deltar:
-                            #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
-                            # use shape methods to obtain a correct placement
-                            import Part,math
-                            shape = Part.Shape()
-                            shape.Placement = child.Placement
-                            #print("angle before rotation:",shape.Placement.Rotation.Angle)
-                            #print("rotation angle:",math.degrees(deltar.Angle))
-                            shape.rotate(DraftVecUtils.tup(self.oldPlacement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
-                            #print("angle after rotation:",shape.Placement.Rotation.Angle)
-                            child.Placement = shape.Placement
-                        if deltap:
-                            child.Placement.move(deltap)
+                        print("propagating placement to "+str(child.Name))
+                        self.propagatePlacement(child, deltaPm)
+
+
+    def propagatePlacement(self, obj, deltaPm):
+        """
+        this method propagate Placement changes to children objects
+        (destination object, delta placement as matrix)
+        """
+        cPm =obj.Placement.toMatrix()
+        obj.Placement = FreeCAD.Placement(cPm + deltaPm)
+
 
     def getMovableChildren(self,obj):
 
