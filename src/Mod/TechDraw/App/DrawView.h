@@ -58,7 +58,7 @@ public:
     App::PropertyFloatConstraint Scale;
 
     App::PropertyEnumeration ScaleType;
-    App::PropertyFloat Rotation;
+    App::PropertyAngle Rotation;
     App::PropertyString Caption;
 
     /** @name methods override Feature */
