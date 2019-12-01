@@ -832,7 +832,7 @@ void TopoShape::write(const char *FileName) const
     }
     else if (File.hasExtension("stl")) {
         // read brep-file
-        exportStl(File.filePath().c_str(),0);
+        exportStl(File.filePath().c_str(), 0.01);
     }
     else{
         throw Base::FileException("Unknown extension");

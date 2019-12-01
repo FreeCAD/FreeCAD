@@ -426,6 +426,10 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
           Handle(Geom_BezierCurve) bez = adapt.Bezier();
           //if (bez->Degree() < 4) {
           result = new BezierSegment(edge);
+          if (edge.Orientation() == TopAbs_REVERSED) {
+              result->reversed = true;
+          }
+
           //}
           //    OCC is quite happy with Degree > 3 but QtGui handles only 2,3
       } break;
@@ -456,7 +460,7 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
                         delete bspline;
                         bspline = nullptr;
                     }
-                }else {
+                } else {
                     result = bspline;
                 }
             }
@@ -524,6 +528,9 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
     startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
     endPnt = Base::Vector3d(ePt.X(), ePt.Y(), ePt.Z());
     midPnt = Base::Vector3d(m.X(), m.Y(), m.Z());
+    if (e.Orientation() == TopAbs_REVERSED) {
+        reversed = true;
+    }
 }
 
 
@@ -634,6 +641,9 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     startPnt = Base::Vector3d(s.X(), s.Y(), s.Z());
     endPnt = Base::Vector3d(ePt.X(), ePt.Y(), s.Z());
     midPnt = Base::Vector3d(m.X(), m.Y(), s.Z());
+    if (e.Orientation() == TopAbs_REVERSED) {
+        reversed = true;
+    }
 }
 
 AOC::AOC(void) : Circle()
@@ -837,6 +847,9 @@ Generic::Generic(const TopoDS_Edge &e)
         p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
         points.emplace_back(p.X(), p.Y(), p.Z());
     }
+    if (e.Orientation() == TopAbs_REVERSED) {
+        reversed = true;
+    }
 }
 
 
@@ -1039,6 +1052,9 @@ BSpline::BSpline(const TopoDS_Edge &e)
             tempSegment.pnts.emplace_back(controlPoint.X(), controlPoint.Y(), controlPoint.Z());
         }
         segments.push_back(tempSegment);
+    }
+    if (e.Orientation() == TopAbs_REVERSED) {
+        reversed = true;
     }
 }
 
@@ -1265,6 +1281,7 @@ TopoDS_Edge BSpline::asCircle(bool& arc)
             result = newEdge;
         }
     }
+
     return result;
 }
 
@@ -1307,6 +1324,9 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
     for (int i = 1; i <= poles; ++i) {
         gp_Pnt controlPoint = bez->Pole(i);
         pnts.emplace_back(controlPoint.X(), controlPoint.Y(), controlPoint.Z());
+    }
+    if (e.Orientation() == TopAbs_REVERSED) {
+        reversed = true;
     }
 }
 

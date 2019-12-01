@@ -202,7 +202,6 @@ void DrawGuiUtil::dumpPointF(const char* text, const QPointF& p)
     Base::Console().Message("Point: (%.3f, %.3f)\n",p.x(),p.y());
 }
 
-
 std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
 {
     std::pair<Base::Vector3d,Base::Vector3d> result;
@@ -228,12 +227,13 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
     SbVec3f upvec = viewer->getUpDirection();
 
     viewDir = Base::Vector3d(dvec[0], dvec[1], dvec[2]);
+    viewDir = viewDir * (-1.0);        // Inventor dir is opposite TD projection dir
     viewUp  = Base::Vector3d(upvec[0],upvec[1],upvec[2]);
-    Base::Vector3d dirXup = viewDir.Cross(viewUp);          //dir X up should give local Right
 
-    viewDir = viewDir * (-1.0);     // Inventor dir is opposite TD projection dir
+//    Base::Vector3d dirXup = viewDir.Cross(viewUp);
+    Base::Vector3d right = viewUp.Cross(viewDir);
 
-    result = std::make_pair(viewDir,dirXup);
+    result = std::make_pair(viewDir,right);
     return result;
 }
 

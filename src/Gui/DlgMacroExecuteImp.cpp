@@ -326,10 +326,10 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     PythonEditor* editor = new PythonEditor();
     editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
     PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
+    edit->setDisplayName(PythonEditorView::FileName);
     edit->open(file);
     edit->resize(400, 300);
     getMainWindow()->addWindow(edit);
-    edit->setWindowTitle(item->text(0));
 
     if (mitem->systemWide) {
         editor->setReadOnly(true);

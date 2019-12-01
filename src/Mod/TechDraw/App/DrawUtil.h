@@ -166,6 +166,8 @@ class TechDrawExport DrawUtil {
         static const char* printBool(bool b);
         static QString qbaToDebug(const QByteArray& line);
         static void dumpCS(const char* text, gp_Ax2 CS);
+        static void dumpCS3(const char* text, gp_Ax3 CS);
+        static void dumpEdges(const char* text, const TopoDS_Shape& s);
 
 };
 

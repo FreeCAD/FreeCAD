@@ -388,7 +388,7 @@ Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d from
     return toPoint;
 }
 
-//! check if two vectors are parallel
+//! check if two vectors are parallel. Vectors don't have to be unit vectors
 bool DrawUtil::checkParallel(const Base::Vector3d v1, Base::Vector3d v2, double tolerance)
 {
     bool result = false;
@@ -1037,6 +1037,18 @@ void DrawUtil::countEdges(const char* text, const TopoDS_Shape& s)
     Base::Console().Message("COUNT - %s has %d edges\n",text,num);
 }
 
+void DrawUtil::dumpEdges(const char* text, const TopoDS_Shape& s)
+{
+    Base::Console().Message("DUMP - %s\n",text);
+    TopExp_Explorer expl(s, TopAbs_EDGE);
+    int i;
+    for (i = 1 ; expl.More(); expl.Next(),i++) {
+        const TopoDS_Edge& e = TopoDS::Edge(expl.Current());
+        dumpEdge("dumpEdges", i, e);
+    }
+}
+
+
 void DrawUtil::dump1Vertex(const char* text, const TopoDS_Vertex& v)
 {
     Base::Console().Message("DUMP - dump1Vertex - %s\n",text);
@@ -1055,8 +1067,8 @@ void DrawUtil::dumpEdge(const char* label, int i, TopoDS_Edge e)
     const gp_Pnt& vEnd = propEnd.Value();
     //Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)/%0.3f end:(%.2f,%.3f,%.3f)/%.3f\n",label,i,
     //                        vStart.X(),vStart.Y(),vStart.Z(),start,vEnd.X(),vEnd.Y(),vEnd.Z(),end);
-    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f)\n",label,i,
-                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z());
+    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f) Orient: %d\n",label,i,
+                            vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z(), e.Orientation());
 }
 const char* DrawUtil::printBool(bool b)
 {
@@ -1085,7 +1097,23 @@ void DrawUtil::dumpCS(const char* text,
     gp_Dir baseAxis = CS.Direction();
     gp_Dir baseX    = CS.XDirection();
     gp_Dir baseY    = CS.YDirection();
-    Base::Console().Message("DU::dumpCSDVS - %s Axis: %s X: %s Y: %s\n", text,
+    gp_Pnt baseOrg  = CS.Location();
+    Base::Console().Message("DU::dumpCS - %s Loc: %s Axis: %s X: %s Y: %s\n", text,
+                            DrawUtil::formatVector(baseOrg).c_str(),
+                            DrawUtil::formatVector(baseAxis).c_str(),
+                            DrawUtil::formatVector(baseX).c_str(),
+                            DrawUtil::formatVector(baseY).c_str());
+}
+
+void DrawUtil::dumpCS3(const char* text,
+                       gp_Ax3 CS)
+{
+    gp_Dir baseAxis = CS.Direction();
+    gp_Dir baseX    = CS.XDirection();
+    gp_Dir baseY    = CS.YDirection();
+    gp_Pnt baseOrg  = CS.Location();
+    Base::Console().Message("DU::dumpCSF - %s Loc: %s Axis: %s X: %s Y: %s\n", text,
+                            DrawUtil::formatVector(baseOrg).c_str(),
                             DrawUtil::formatVector(baseAxis).c_str(),
                             DrawUtil::formatVector(baseX).c_str(),
                             DrawUtil::formatVector(baseY).c_str());
