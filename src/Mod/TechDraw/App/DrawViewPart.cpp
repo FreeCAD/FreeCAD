@@ -118,7 +118,9 @@ using namespace std;
 //===========================================================================
 
 
-PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
+//PROPERTY_SOURCE(TechDraw::DrawViewPart, TechDraw::DrawView)
+PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, 
+                                TechDraw::DrawView)
 
 DrawViewPart::DrawViewPart(void) :
     geometryObject(0)
@@ -127,8 +129,11 @@ DrawViewPart::DrawViewPart(void) :
     static const char *sgroup = "HLR Parameters";
     nowUnsetting = false;
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                                               GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    CosmeticExtension::initExtension(this);
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().
+                                         GetUserParameter().GetGroup("BaseApp")->
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double defDist = hGrp->GetFloat("FocusDistance",100.0);
 
     //properties that affect Geometry
@@ -155,7 +160,7 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
 
-    ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),sgroup,App::Prop_Output,"CosmeticVertex Save/Restore");
+//    ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),sgroup,App::Prop_Output,"CosmeticVertex Save/Restore");
     ADD_PROPERTY_TYPE(CosmeticEdges ,(0),sgroup,App::Prop_Output,"CosmeticEdge Save/Restore");
     ADD_PROPERTY_TYPE(CenterLines ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
     ADD_PROPERTY_TYPE(GeomFormats ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
@@ -276,6 +281,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
                         getNameInDocument(),diffOut);
 
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
+//    Base::Console().Message("DVP::execute - exits\n");
     return DrawView::execute();
 }
 
@@ -308,6 +314,7 @@ short DrawViewPart::mustExecute() const
 void DrawViewPart::onChanged(const App::Property* prop)
 {
     DrawView::onChanged(prop);
+
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
 }
 
@@ -988,179 +995,12 @@ void DrawViewPart::clearCosmeticVertexes(void)
     CosmeticVertexes.setValues(noVerts);
 }
 
-//CosmeticVertex x,y are stored as unscaled, but mirrored values.
-//if you are creating a CV based on calculations of scaled geometry, you need to 
-//unscale x,y before creation.
-//if you are creating a CV based on calculations of mirrored geometry, you need to
-//mirror again before creation.
-
-//returns CosmeticVertex index! not geomVertexNumber!
-int DrawViewPart::addCosmeticVertex(Base::Vector3d pos)
-{
-//    Base::Console().Message("DVP::addCosmeticVertex(%s)\n",
-//                            DrawUtil::formatVector(pos).c_str());
-    std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    Base::Vector3d tempPos = DrawUtil::invertY(pos);
-    TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(tempPos);
-    int newIdx = (int) (verts.size());
-    verts.push_back(cv);
-    CosmeticVertexes.setValues(verts);
-    return newIdx;
-}
-
-std::string DrawViewPart::addCosmeticVertexSS(Base::Vector3d pos)
-{
-//    Base::Console().Message("DVP::addCosmeticVertexSS(%s)\n",
- //                           DrawUtil::formatVector(pos).c_str());
-    std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    Base::Vector3d tempPos = DrawUtil::invertY(pos);
-    TechDraw::CosmeticVertex* cv = new TechDraw::CosmeticVertex(tempPos);
-    verts.push_back(cv);
-    CosmeticVertexes.setValues(verts);
-    std::string result = cv->getTagAsString();
-    return result;
-}
-
-int DrawViewPart::addCosmeticVertex(CosmeticVertex* cv)
-{
-    std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    int newIdx = (int) verts.size();
-    verts.push_back(cv);
-    CosmeticVertexes.setValues(verts);
-    return newIdx;
-}
-
-void DrawViewPart::removeCosmeticVertex(TechDraw::CosmeticVertex* cv)
-{
-//    Base::Console().Message("DVP::removeCosmeticVertex(%X)\n", cv);
-    bool found = false;
-    int i = 0;
-    std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    int stop = verts.size();
-    for ( ; i < stop; i++) {
-        TechDraw::CosmeticVertex* v = verts.at(i);
-        if (cv == v) {
-            found = true;
-            break;
-        }
-    }
-    if ( (cv != nullptr)  &&
-         (found) )  {
-        removeCosmeticVertex(i);
-    }
-}
-
-//this is by CV index, not the index returned by selection
-void DrawViewPart::removeCosmeticVertex(int idx)
-{
-//    Base::Console().Message("DVP::removeCV(%d)\n", idx);
-    std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    if (idx < (int) verts.size()) {
-        verts.erase(verts.begin() + idx);
-        CosmeticVertexes.setValues(verts);
-        recomputeFeature();
-    }
-}
-
-void DrawViewPart::removeCosmeticVertex(std::string delTag)
-{
-//    Base::Console().Message("DVP::removeCV(%s)\n", delTag.c_str());
-    std::vector<CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
-    std::vector<CosmeticVertex*> newVerts;
-    for (auto& cv: cVerts) {
-        if (cv->getTagAsString() != delTag)  {
-            newVerts.push_back(cv);
-        }
-    }
-    CosmeticVertexes.setValues(newVerts);
-//    recomputeFeature();
-}
-
-void DrawViewPart::removeCosmeticVertex(std::vector<std::string> delTags)
-{
-    std::vector<CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
-//    Base::Console().Message("DVP::removeCosmeticVertex(list) - cVerts: %d\n", cVerts.size());
-    std::vector<CosmeticVertex*> newVerts;
-    for (auto& cv: cVerts) {
-        bool found = false;
-        for (auto& dt: delTags) {
-            if (cv->getTagAsString() == dt)  {
-                found = true;          //this cv is in delete list
-                break; 
-            }
-        }
-        if (!found) {
-            newVerts.push_back(cv);
-        }
-    }
-    CosmeticVertexes.setValues(newVerts);
-}
-
-//transition code. temporary.  not used??
-int DrawViewPart::getCosmeticVertexIndex(std::string tagString)
-{
-    Base::Console().Message("DVP::getCosmeticVertexIndex(%s) - deprec?\n", tagString.c_str());
-    int result = -1;
-    int iCV = 0;
-    const std::vector<TechDraw::CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    for (auto& cv: verts) {
-        std::string cvTag = cv->getTagAsString();
-        if (cvTag == tagString) {
-            result = iCV;
-            break;
-        }
-        iCV++;
-    }
-    return result;
-}
-
-TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertex(std::string tagString) const
-{
-    CosmeticVertex* result = nullptr;
-    const std::vector<TechDraw::CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    for (auto& cv: verts) {
-        std::string cvTag = cv->getTagAsString();
-        if (cvTag == tagString) {
-            result = cv;
-            break;
-        }
-    }
-    return result;
-}
-
-TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByIndex(int idx) const
-{
-    CosmeticVertex* result = nullptr;
-    const std::vector<TechDraw::CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    if (idx < (int) verts.size())  {
-        result = verts.at(idx);
-    }
-    return result;
-}
-
-// find the cosmetic vertex corresponding to geometry vertex idx
-// used when selecting
-TechDraw::CosmeticVertex* DrawViewPart::getCosmeticVertexByGeom(int idx) const
-{
-    CosmeticVertex* result = nullptr;
-    std::vector<CosmeticVertex*> verts = CosmeticVertexes.getValues();
-    TechDraw::Vertex* v = getProjVertexByIndex(idx);
-    if (v == nullptr) {
-        return result;
-    }
-    if (!v->cosmeticTag.empty()) {
-        result = getCosmeticVertex(v->cosmeticTag);
-    }
-    return result;
-}
-
 //add the cosmetic verts to geometry vertex list
 void DrawViewPart::addCosmeticVertexesToGeom(void)
 {
 //    Base::Console().Message("DVP::addCosmeticVertexesToGeom()\n");
     int iCV = 0;
     const std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
-    const std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
     int stop = (int) cVerts.size();
     for ( ; iCV < stop; iCV++) {
         int iGV = geometryObject->addCosmeticVertex(cVerts.at(iCV)->scaled(getScale()),
@@ -1170,17 +1010,6 @@ void DrawViewPart::addCosmeticVertexesToGeom(void)
     }
 }
 
-int DrawViewPart::add1CVToGV(int iCV)
-{
-    Base::Console().Message("DVP::add1CVToGV(%d) 1 - deprec?\n", iCV);
-    TechDraw::CosmeticVertex* cv = getCosmeticVertexByIndex(iCV);
-    int iGV = geometryObject->addCosmeticVertex(cv->scaled(getScale()),
-                                                cv->getTagAsString(),
-                                                iCV);
-    cv->linkGeom = iGV;
-    return iGV;
-}
-
 int DrawViewPart::add1CVToGV(std::string tag)
 {
 //    Base::Console().Message("DVP::add1CVToGV(%s) 2\n", tag.c_str());
@@ -1188,7 +1017,6 @@ int DrawViewPart::add1CVToGV(std::string tag)
     if (cv == nullptr) {
         Base::Console().Message("DVP::add1CVToGV 2 - cv %s not found\n", tag.c_str());
     }
-//    int iCV = getCosmeticVertexIndex(tag);       //transition
     int iCV = -1;
     int iGV = geometryObject->addCosmeticVertex(cv->scaled(getScale()),
                                                 cv->getTagAsString(),
@@ -1196,6 +1024,23 @@ int DrawViewPart::add1CVToGV(std::string tag)
     cv->linkGeom = iGV;
     return iGV;
 }
+
+//update Vertex geometry with current CV's 
+void DrawViewPart::refreshCVGeoms(void)
+{
+//    Base::Console().Message("DVP::refreshCVGeoms()\n");
+
+    std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
+    std::vector<TechDraw::Vertex *> newGVerts;
+    for (auto& gv :gVerts) {
+        if (gv->cosmeticTag.empty()) {       //keep only non-cv vertices
+            newGVerts.push_back(gv);
+        }
+    }
+    getGeometryObject()->setVertexGeometry(newGVerts);
+    addCosmeticVertexesToGeom();
+}
+
 
 //CosmeticEdges -------------------------------------------------------------------
 
@@ -1604,6 +1449,15 @@ PyObject *DrawViewPart::getPyObject(void)
     }
     return Py::new_reference_to(PythonObject);
 }
+
+void DrawViewPart::handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName)
+{
+//    extHandleChangedPropertyName(reader, TypeName, PropName); // CosmeticExtension
+    DrawView::handleChangedPropertyName(reader, TypeName, PropName);
+}
+
+
+
 
 // Python Drawing feature ---------------------------------------------------------
 

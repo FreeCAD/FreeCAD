@@ -572,6 +572,24 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }  //end TopExp
 }
 
+//adds a new GeomVert surrogate for CV
+//returns GeomVert selection index  ("Vertex3")
+// insertGeomForCV(cv)
+int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
+{
+//    Base::Console().Message("GO::addCosmeticVertex(%X)\n", cv);
+    double scale = m_parent->getScale();
+    Base::Vector3d pos = cv->scaled(scale);
+    TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
+    v->cosmetic = true;
+    v->cosmeticLink = -1;  //obs??
+    v->cosmeticTag = cv->getTagAsString();
+    v->hlrVisible = true;
+    int idx = vertexGeom.size();
+    vertexGeom.push_back(v);
+    return idx;
+}
+
 //adds a new GeomVert to list for cv[link]
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos, int link)
 {
@@ -598,6 +616,8 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString,
     vertexGeom.push_back(v);
     return idx;
 }
+
+//================================================================================
 
 //do not need source index anymore.  base has CosmeticTag
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,

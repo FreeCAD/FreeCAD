@@ -52,6 +52,8 @@
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"
 
+#include "CosmeticExtension.h"
+
 namespace TechDraw {
     extern PyObject* initModule();
 }
@@ -70,11 +72,6 @@ PyMOD_INIT_FUNC(TechDraw)
     }
     PyObject* mod = TechDraw::initModule();
     Base::Console().Log("Loading TechDraw module... done\n");
-
-
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
 
     TechDraw::DrawPage            ::init();
     TechDraw::DrawView            ::init();
@@ -118,6 +115,10 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::PropertyCosmeticVertexList::init();
     TechDraw::CosmeticVertex        ::init();
 
+    TechDraw::CosmeticExtension     ::init();
+    TechDraw::CosmeticExtensionPython::init();
+
+   // are these python init calls required?  some modules don't have them
    // Python Types
     TechDraw::DrawPagePython      ::init();
     TechDraw::DrawViewPython      ::init();
@@ -130,5 +131,6 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawTilePython      ::init();
     TechDraw::DrawTileWeldPython  ::init();
     TechDraw::DrawWeldSymbolPython::init();
+
     PyMOD_Return(mod);
 }

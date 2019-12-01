@@ -25,17 +25,32 @@
     </Methode>
     <Methode Name="makeCosmeticVertex">
       <Documentation>
-        <UserDocu>makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns index of created vertex.</UserDocu>
+        <UserDocu>id = makeCosmeticVertex(p1) - add a CosmeticVertex at p1 (View coordinates). Returns unique id vertex.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getCosmeticVertexByIndex">
+    <Methode Name="makeCosmeticVertex3d">
       <Documentation>
-        <UserDocu>getCosmeticVertexByIndex(idx) - returns CosmeticVertx[idx].</UserDocu>
+        <UserDocu>id = makeCosmeticVertex3d(p1) - add a CosmeticVertex at p1 (3d model coordinates). Returns unique id vertex.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCosmeticVertex">
+      <Documentation>
+        <UserDocu>getCosmeticVertex(id) - returns CosmeticVertex with unique id.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getCosmeticVertexBySelection">
+      <Documentation>
+        <UserDocu>getCosmeticVertexBySelection(name) - returns CosmeticVertex with name (Vertex6).  Used in selections.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="replaceCosmeticVertex">
+      <Documentation>
+        <UserDocu>replaceCosmeticVertex(cv) - replaces CosmeticVertex in View. Returns True/False.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeCosmeticVertex">
       <Documentation>
-        <UserDocu>removeCosmeticVertex(idx) - remove CosmeticVertex[idx] from View. Returns None.</UserDocu>
+        <UserDocu>removeCosmeticVertex(cv) - remove CosmeticVertex from View. Returns None.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="clearCosmeticVertices">
