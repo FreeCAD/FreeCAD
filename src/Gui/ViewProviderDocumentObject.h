@@ -151,8 +151,25 @@ public:
         return false;
     }
 
-protected:
+    virtual void beforeDelete() override;
 
+    /// Signal on changed claimed children
+    boost::signals2::signal<void (const ViewProviderDocumentObject &)> signalChangedChildren;
+
+    /// Return cached claimed children
+    const std::vector<App::DocumentObject*> &getCachedChildren() const;
+
+    /// Return a set of parent that claim this view object
+    const std::set<App::DocumentObject*> &claimedBy() const;
+
+    /** Check if the object is showable by its Visibility property
+     *
+     * An object is not showable if it is only claimed by Link type objects.
+     * They will be shown by ViewProviderLink through node tree snapshot.
+     */
+    bool isShowable() const;
+
+protected:
     virtual Base::BoundBox3d _getBoundingBox(const char *subname=0, 
             const Base::Matrix4D *mat=0, bool transform=true,
             const View3DInventorViewer *viewer=0, int depth=0) const override;
@@ -206,6 +223,9 @@ protected:
 
     void setSelectable(bool Selectable=true);
 
+private:
+    void updateChildren(bool propagate=false);
+
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
@@ -215,9 +235,12 @@ private:
     std::vector<std::string> aDisplayModesArray;
     bool _UpdatingView;
 
+    std::vector<App::DocumentObject*> claimedChildren;
+    std::set<App::DocumentObject*> childSet;
+    std::set<App::DocumentObject*> parentSet;
+
     friend class Document;
 };
-
 
 } // namespace Gui
 

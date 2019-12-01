@@ -116,8 +116,6 @@ public:
 
     static void updateStatus(bool delay=true);
 
-    static bool isObjectShowable(App::DocumentObject *obj);
-
     // Check if obj can be considered as a top level object
     static void checkTopParent(App::DocumentObject *&obj, std::string &subname);
 
@@ -194,6 +192,7 @@ private:
     void slotRelabelDocument(const Gui::Document&);
     void slotShowHidden(const Gui::Document &);
     void slotChangedViewObject(const Gui::ViewProvider &, const App::Property &);
+    void slotChangedChildren(const Gui::ViewProviderDocumentObject &);
     void slotStartOpenDocument();
     void slotFinishOpenDocument();
     void _slotDeleteObject(const Gui::ViewProviderDocumentObject&, DocumentItem *deletingDoc);
@@ -203,9 +202,6 @@ private:
 
     void changeEvent(QEvent *e) override;
     void setupText();
-
-    void updateChildren(App::DocumentObject *obj, 
-            const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
 
 private:
     QAction* createGroupAction;
@@ -237,7 +233,6 @@ private:
     std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
 
     enum ChangedObjectStatus {
-        CS_Output,
         CS_Error,
     };
     std::unordered_map<App::DocumentObject*,std::bitset<32> > ChangedObjects;
@@ -260,6 +255,7 @@ private:
     Connection connectRelDocument;
     Connection connectShowHidden;
     Connection connectChangedViewObj;
+    Connection connectChangedChildren;
 };
 
 /** The link between the tree and a document.
@@ -302,8 +298,6 @@ public:
     TreeWidget *getTree() const;
     const char *getTreeName() const;
 
-    bool isObjectShowable(App::DocumentObject *obj);
-
     virtual unsigned int getMemSize (void) const override;
     virtual void Save (Base::Writer &) const override;
     virtual void Restore(Base::XMLReader &) override;
@@ -345,14 +339,12 @@ protected:
     App::DocumentObject *getTopParent(
             App::DocumentObject *obj, std::string &subname, DocumentObjectItem **item=0);
 
-    typedef std::unordered_map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
-    void populateParents(const ViewProvider *vp, ViewParentMap &);
+    void populateParents(const ViewProviderDocumentObject *vp);
 
 private:
     const char *treeName; // for debugging purpose
     Gui::Document* pDocument;
     std::unordered_map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
-    std::unordered_map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
     std::vector<App::DocumentObject*> PopulateObjects;
 
     ExpandInfoPtr _ExpandInfo;
