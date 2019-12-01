@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
+#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
 
 namespace TechDraw
@@ -57,7 +58,7 @@ public:
     App::PropertyFloatConstraint Scale;
 
     App::PropertyEnumeration ScaleType;
-    App::PropertyFloat Rotation;
+    App::PropertyAngle Rotation;
     App::PropertyString Caption;
 
     /** @name methods override Feature */
