@@ -33,7 +33,8 @@ ViewParams::ViewParams() {
     handle->Attach(this);
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
-    _name = handle->Get##_type(#_name,_def);
+    _name = handle->Get##_type(#_name,_def);\
+    funcs[#_name] = &ViewParams::update##_name;
 
 #undef FC_VIEW_PARAM2
 #define FC_VIEW_PARAM2 FC_VIEW_PARAM
@@ -46,22 +47,10 @@ ViewParams::~ViewParams() {
 void ViewParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
     if(!sReason)
         return;
-#undef FC_VIEW_PARAM
-#define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
-    if(strcmp(sReason,#_name)==0) {\
-        _name = handle->Get##_type(#_name,_def);\
-        return;\
-    }
-
-#undef FC_VIEW_PARAM2
-#define FC_VIEW_PARAM2(_name,_ctype,_type,_def) \
-    if(strcmp(sReason,#_name)==0) {\
-        _name = handle->Get##_type(#_name,_def);\
-        on##_name##Changed();\
-        return;\
-    }
-
-    FC_VIEW_PARAMS
+    auto it = funcs.find(sReason);
+    if(it == funcs.end())
+        return;
+    it->second(this);
 }
 
 ViewParams *ViewParams::instance() {

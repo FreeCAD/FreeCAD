@@ -25,6 +25,7 @@
 
 
 #include <Base/Parameter.h>
+#include <App/DynamicProperty.h>
 
 namespace Gui {
 
@@ -100,12 +101,18 @@ public:
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
     _ctype get##_name() const { return _name; }\
-    void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }
+    void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }\
+    static void update##_name(ViewParams *self) { self->_name = self->handle->Get##_type(#_name,_def); }\
 
 #undef FC_VIEW_PARAM2
 #define FC_VIEW_PARAM2(_name,_ctype,_type,_def) \
-    FC_VIEW_PARAM(_name,_ctype,_type,_def)\
+    _ctype get##_name() const { return _name; }\
+    void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }\
     void on##_name##Changed();\
+    static void update##_name(ViewParams *self) { \
+        self->_name = self->handle->Get##_type(#_name,_def); \
+        self->on##_name##Changed();\
+    }\
 
     FC_VIEW_PARAMS
 
@@ -119,6 +126,7 @@ private:
 
     FC_VIEW_PARAMS
     ParameterGrp::handle handle;
+    std::unordered_map<const char *,void(*)(ViewParams*),App::CStringHasher,App::CStringHasher> funcs;
 };
 
 #undef FC_VIEW_PARAM
