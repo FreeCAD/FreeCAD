@@ -25,7 +25,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>input the source value and unit</string>
+        <string>Input the source value and unit</string>
        </property>
       </widget>
      </item>
@@ -45,7 +45,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>specify here the result unit</string>
+        <string>Input here the unit for the result</string>
        </property>
        <property name="text">
         <string/>
@@ -68,7 +68,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>result</string>
+        <string>Result</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -144,7 +144,7 @@ To add a calculation press Return in the value input field</string>
      <item>
       <widget class="QPushButton" name="pushButton_Copy">
        <property name="toolTip">
-        <string>copies result into the clipboard</string>
+        <string>Copy the result into the clipboard</string>
        </property>
        <property name="text">
         <string>Copy</string>
