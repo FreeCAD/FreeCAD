@@ -70,7 +70,7 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
-    void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
 private:
     static const char* TextStyleEnums[];
