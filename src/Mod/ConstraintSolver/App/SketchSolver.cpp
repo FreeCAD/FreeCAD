@@ -46,7 +46,7 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
 
     ssize_t maxIterNumber = solverPrefs.iterLimit(sys);
 
-    HValueSet x_new(sys->params());
+    HValueSet x_new = ValueSet::makeZeros(sys->params());
     Eigen::VectorXd fx(csize), //error values
                     fx_new(csize);
     Eigen::MatrixXd Jx(csize, xsize), Jx_new(csize, xsize);
@@ -278,7 +278,7 @@ SketchSolver::eSolveResult SketchSolver::solveLM(HSubSystem sys, HValueSet vals,
     Eigen::VectorXd e(csize), e_new(csize); // vector of all constraint errors
     Eigen::MatrixXd J(csize, xsize);        // Jacobi of the subsystem
     Eigen::MatrixXd A(xsize, xsize);        //J^T * J,
-    HValueSet h = ValueSet::make(sys->params()); //x step of an iteration
+    HValueSet h = ValueSet::makeZeros(sys->params()); //x step of an iteration
     Eigen::VectorXd g(xsize), //gradient
                     diag_A(xsize); //saved diag elements (to undo damping)
 
@@ -540,11 +540,11 @@ SketchSolver::eSolveResult SketchSolver::solveBFGS(HSubSystem sys, HValueSet val
 
     Eigen::MatrixXd D //approximation of inverse of hessian matrix
             = Eigen::MatrixXd::Identity(xsize, xsize);
-    HValueSet xdir = ValueSet::make(sys->params());
+    HValueSet xdir = ValueSet::makeZeros(sys->params());
     Eigen::VectorXd grad(xsize);
     Eigen::VectorXd Dy(xsize);
 
-    HValueSet h = ValueSet::make(sys->params()); //x step of an iteration
+    HValueSet h = ValueSet::makeZeros(sys->params()); //x step of an iteration
 
 
     sys->calcGrad(vals, grad);
