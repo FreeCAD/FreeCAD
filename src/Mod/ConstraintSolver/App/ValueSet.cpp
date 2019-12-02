@@ -172,7 +172,7 @@ void ValueSet::initFrom(const ValueSet& from)
 
     for(int ito = 0; ito < size(); ++ito){
         int ifrom = from.subset().indexOf((*_subset)[ito]);
-        if (ito != -1){
+        if (ifrom != -1){
             _values[ito] = from._values[ifrom];
             _duals[ito] = from._duals[ifrom];
         }
