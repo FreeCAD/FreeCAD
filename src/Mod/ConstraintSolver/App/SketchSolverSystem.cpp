@@ -25,7 +25,7 @@ SubSystem::SubSystem(HParameterStore store)
 }
 
 SubSystem::SubSystem(HParameterSubset params, std::vector<HConstraint> constraints)
-    : _curvals(Py::None()), _store(params->host()), _params(params)
+    : _store(params->host()), _params(params), _curvals(Py::None())
 {
     _constraints = constraints;
     update();
