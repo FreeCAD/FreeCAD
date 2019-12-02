@@ -101,6 +101,31 @@ PyObject* SketchSolverPy::solveBFGS(PyObject *args)
     return Py::new_reference_to(Py::String(msg[int(ret)]));
 }
 
+PyObject* SketchSolverPy::solveSQP(PyObject *args)
+{
+    PyObject* pymainsys;
+    PyObject* pyauxsys;
+    PyObject* pyvals;
+    PyObject* pyprefs = nullptr;
+    if (!PyArg_ParseTuple(args, "O!O!O!|O!",
+                          &SubSystemPy::Type, &pymainsys,
+                          &SubSystemPy::Type, &pyauxsys,
+                          &ValueSetPy::Type, &pyvals, &PyDict_Type, &pyprefs))
+        return nullptr;
+
+    SketchSolver::SQPPrefs prefs;
+    if (pyprefs)
+        throw Py::NotImplementedError("preferences support not implemented"); //#fixme: implement
+    auto ret = getSketchSolverPtr()->solveSQP(
+        HSubSystem(pymainsys, false),
+        HSubSystem(pyauxsys, false),
+        HValueSet(pyvals, false),
+        prefs
+    );
+    const char* msg[] = {"Success", "Minimized", "Fail"};
+    return Py::new_reference_to(Py::String(msg[int(ret)]));
+}
+
 PyObject *SketchSolverPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

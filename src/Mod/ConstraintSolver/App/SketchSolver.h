@@ -72,6 +72,11 @@ protected://structs and enums
         double dampingFactorReductionMultiplier = 0.3333;
     };
 
+    struct SQPPrefs {
+        double convergence = 1e-10; //minimum step (test for convergence)
+        double smallF = 1e-20; //sq(error) success threshold
+    };
+
     struct SolverPrefs{
         ssize_t maxIter = 100; //max number of iterations
         bool sizemult = false; //if true, multiply the maxIter by the number of parameters
@@ -127,9 +132,25 @@ public://methods
 
     eSolveResult solveLM(HSubSystem sys, HValueSet vals, LMPrefs prefs);
 
+    eSolveResult solveSQP(HSubSystem mainsys, HSubSystem auxsys, HValueSet vals, SQPPrefs prefs);
+
 public://python
     PyObject* getPyObject() override;
     HSketchSolver self();
+
+public://helpers
+    /**
+     * @brief qp_eq minimizes ( 0.5 * x^T * H * x + g^T * x ) under the condition ( A*x + c = 0 ). A helper routine for solve
+     * @param H:
+     * @param g:
+     * @param A: x_size by c_size matrix
+     * @param c: vector of size c_size
+     * @param x (output) - solution
+     * @param Y (output) - row-space of A
+     * @param Z (output) - null-space of A
+     * @return it returns the solution in x, the row-space of A in Y, and the null space of A in Z
+     */
+    static int qp_eq(const Eigen::MatrixXd& H, const Eigen::VectorXd& g, const Eigen::MatrixXd& A, const Eigen::VectorXd& c, Eigen::VectorXd& x, Eigen::MatrixXd& Y, Eigen::MatrixXd& Z);
 
 protected:
     ~SketchSolver() = default;

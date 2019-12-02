@@ -43,6 +43,18 @@
         Returns 'Success' or 'Fail'.</UserDocu>
 	  </Documentation>
 	</Methode>
+	<Methode Name="solveSQP">
+	  <Documentation>
+		<UserDocu>solveSQP(mainsystem, auxsystem, valueset, [prefs]). Solves a pair of subsystems with SQP algorithm. 
+        The solver tries to minimize/zero out the error of auxsystem while keeping the error of mainsystem zero. 
+        mainsystem: system with strict constraints.
+        auxsystem: system of unstrict constraints. Must be on same parameter subset.
+        valueset: is used as a starting point, and is updated with the (potentially failed) solution. 
+        prefs: dict of specialized BFGS parameters (#fixme: implement and document)
+        Returns 'Success', 'Minimized' or 'Fail'. The return value applies to mainsystem; 
+        auxsystem may not have been solved.</UserDocu>
+	  </Documentation>
+	</Methode>
 
   </PythonExport>
 </GenerateModel>
