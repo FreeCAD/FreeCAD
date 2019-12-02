@@ -142,6 +142,8 @@ public:
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
     bool references(std::string geomName) const;
 
+    bool isMultiValueSchema(void) const;
+
 protected:
     virtual void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
