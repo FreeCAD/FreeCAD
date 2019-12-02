@@ -936,13 +936,9 @@ public:
         nodeType = handle.childType;
         if(nodeType == LinkView::SnapshotMax) {
             pcSwitch.reset();
-            if (isGroup==0) 
-                pcRoot = linkInfo->pcLinked->getRoot();
-            else {
-                nodeType = SnapshotChild;
-                pcRoot = linkInfo->getSnapshot(nodeType);
+            pcRoot = linkInfo->pcLinked->getRoot();
+            if(isGroup)
                 isGroup = -1;
-            }
             return;
         }
 
@@ -958,15 +954,6 @@ public:
                 pcRoot = new SoFCSelectionRoot(true);
             else
                 coinRemoveAllChildren(pcRoot);
-            auto groupSep = linkInfo->pcLinked->getRoot();
-            if(pcRoot->isOfType(SoFCSelectionRoot::getClassTypeId())
-                    && groupSep->isOfType(SoFCSelectionRoot::getClassTypeId())) 
-            {
-                auto groot = static_cast<SoFCSelectionRoot*>(groupSep);
-                auto root = static_cast<SoFCSelectionRoot*>(pcRoot.get());
-                root->selectionStyle.disconnect();
-                root->selectionStyle.connectFrom(&groot->selectionStyle);
-            }
             pcRoot->setName(obj->getFullName().c_str());
         }
         pcSwitch->addChild(pcRoot);
@@ -1764,7 +1751,7 @@ void LinkView::unlink(LinkInfoPtr info) {
         else {
             for(auto &info : nodeArray) {
                 int idx;
-                if(!info->isLinked() && 
+                if(info->isLinked() && 
                    (idx=info->pcRoot->findChild(pcLinkedRoot))>=0)
                     info->pcRoot->removeChild(idx);
             }
@@ -2166,6 +2153,8 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App:
     }else if(prop == ext->_getElementListProperty()) {
         if(ext->_getShowElementValue())
             updateElementList(ext);
+    }else if(prop == ext->getSyncGroupVisibilityProperty()) {
+        updateElementList(ext);
     }
 }
 
@@ -2186,7 +2175,10 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension *ext) {
         OverrideMaterialList.setSize(0);
         MaterialList.setSize(0);
     }
-    linkView->setChildren(elements, ext->getVisibilityListValue(),LinkView::SnapshotVisible);
+    if(ext->getSyncGroupVisibilityValue() && ext->linkedPlainGroup())
+        linkView->setChildren(elements);
+    else 
+        linkView->setChildren(elements, ext->getVisibilityListValue(), LinkView::SnapshotVisible);
     applyColors();
 }
 

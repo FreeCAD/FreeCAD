@@ -95,6 +95,10 @@ public:
     (LinkTransform, bool, App::PropertyBool, false, \
       "Set to false to override linked object's placement", ##__VA_ARGS__)
 
+#define LINK_PARAM_GROUP_VISIBILITY(...) \
+    (SyncGroupVisibility, bool, App::PropertyBool, false, \
+      "Set to false to override (nested) child visibility when linked to a plain group", ##__VA_ARGS__)
+
 #define LINK_PARAM_SCALE(...) \
     (Scale, double, App::PropertyFloat, 1.0, "Scale factor", ##__VA_ARGS__)
 
@@ -155,7 +159,8 @@ public:
     LINK_PARAM(ELEMENTS)\
     LINK_PARAM(SHOW_ELEMENT)\
     LINK_PARAM(MODE)\
-    LINK_PARAM(COLORED_ELEMENTS)
+    LINK_PARAM(COLORED_ELEMENTS)\
+    LINK_PARAM(GROUP_VISIBILITY)
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -260,6 +265,7 @@ public:
 
     virtual int extensionSetElementVisible(const char *, bool) override;
     virtual int extensionIsElementVisible(const char *) const override;
+    virtual int extensionIsElementVisibleEx(const char *,int) const override;
     virtual bool extensionHasChildElement() const override;
 
     virtual PyObject* getExtensionPyObject(void) override;
@@ -297,6 +303,7 @@ protected:
     void checkGeoElementMap(const App::DocumentObject *obj, 
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
     void updateGroup();
+    void updateGroupVisibility();
 
 protected:
     std::vector<Property *> props;
@@ -443,6 +450,7 @@ public:
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(SHOW_ELEMENT)\
+    LINK_PARAM_EXT(GROUP_VISIBILITY)\
     LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
 
