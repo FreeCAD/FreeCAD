@@ -66,6 +66,8 @@ public:
     static HValueSet makeTrivial(HParameterStore store);
     ///makes a valueset and inits values from another valueset
     static HValueSet makeFrom(HParameterSubset subset, const ValueSet& other);
+    ///makes a valueset with all values initialized to zero (aimed at things like direction information for maxStep)
+    static HValueSet makeZeros(HParameterSubset subset);
     HValueSet copy() const;
 
     int size() const;

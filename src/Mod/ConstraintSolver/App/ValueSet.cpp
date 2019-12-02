@@ -88,6 +88,11 @@ HValueSet ValueSet::makeFrom(HParameterSubset subset, const ValueSet& other)
     return HValueSet(pyobj, /*new_reference=*/true);
 }
 
+HValueSet ValueSet::makeZeros(HParameterSubset subset)
+{
+    return make(subset, Eigen::VectorXd(subset->size()));
+}
+
 HValueSet ValueSet::copy() const
 {
     HValueSet cpy = make(this->_subset);
