@@ -100,6 +100,9 @@ public: //methods
     void calcResidual(const ValueSet& vals, Eigen::VectorXd& output, double& err);
     double error(const ValueSet& vals);
 
+    ///checks if valueset has all the parameters of the subsystem. Throws Py::ValueError if not.
+    void checkValuesCoverage(const ValueSet& vals) const;
+
 
 public://python
     PyObject* getPyObject() override;

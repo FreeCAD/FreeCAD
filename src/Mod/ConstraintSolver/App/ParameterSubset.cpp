@@ -147,6 +147,20 @@ bool ParameterSubset::has(ParameterRef param) const
     return indexOf(param) != -1;
 }
 
+bool ParameterSubset::has(const HParameterSubset other) const
+{
+    for(const ParameterRef& p : other->list()){
+        if (! has(p))
+            return false;
+    }
+    return true;
+}
+
+bool ParameterSubset::in(const HParameterSubset other) const
+{
+    return other->has(self());
+}
+
 int ParameterSubset::indexOf(const ParameterRef& param) const
 {
     assert(checkParameter(param));

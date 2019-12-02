@@ -184,6 +184,12 @@ double SubSystem::error(const ValueSet& vals)
     return err;
 }
 
+void SubSystem::checkValuesCoverage(const ValueSet& vals) const
+{
+    if (!_params->in(vals.subset().self()))
+        throw Py::ValueError("ValueSet doesn't contain all the parameters of the subsystem, can't calculate derivatives");
+}
+
 PyObject* SubSystem::getPyObject()
 {
     if (_twin == nullptr){

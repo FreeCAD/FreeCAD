@@ -72,6 +72,8 @@ public://methods
     bool remove(ParameterRef param);
     void clear();
     bool has(ParameterRef param) const;
+    bool has(const HParameterSubset other) const;
+    bool in(const HParameterSubset other) const;
     /**
      * @brief indexOf
      *

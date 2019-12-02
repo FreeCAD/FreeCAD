@@ -44,6 +44,8 @@ SketchSolver::eSolveResult FCS::SketchSolver::solveDogLeg(FCS::HSubSystem sys, H
         return eSolveResult::Success;
     }
 
+    sys->checkValuesCoverage(*vals);
+
     ssize_t maxIterNumber = solverPrefs.iterLimit(sys);
 
     HValueSet x_new = ValueSet::makeZeros(sys->params());
@@ -272,6 +274,8 @@ SketchSolver::eSolveResult SketchSolver::solveLM(HSubSystem sys, HValueSet vals,
         iterLog("    nothing to do, finished.");
         return eSolveResult::Success;
     }
+
+    sys->checkValuesCoverage(*vals);
 
     ssize_t maxIterNumber = solverPrefs.iterLimit(sys);
 
@@ -535,6 +539,8 @@ SketchSolver::eSolveResult SketchSolver::solveBFGS(HSubSystem sys, HValueSet val
         iterLog("    nothing to do, finished.");
         return eSolveResult::Success;
     }
+
+    sys->checkValuesCoverage(*vals);
 
     ssize_t maxIterNumber = solverPrefs.iterLimit(sys);
 
