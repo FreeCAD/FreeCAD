@@ -192,8 +192,7 @@ void CmdTechDrawRichTextAnnotation::activated(int iMsg)
 bool CmdTechDrawRichTextAnnotation::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
+    return havePage;
 }
 
 
