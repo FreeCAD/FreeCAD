@@ -66,6 +66,8 @@
 #include "QGEPath.h"
 #include "QGMText.h"
 #include "QGIView.h"
+#include "QGCustomText.h"
+#include "QGCustomRect.h"
 
 #include "QGIRichAnno.h"
 
@@ -79,38 +81,30 @@ QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
 {
     setHandlesChildEvents(false);
     setAcceptHoverEvents(false);
-    setFlag(QGraphicsItem::ItemIsSelectable, false);         //we actually select & drag m_text
-    setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
 
     if (myParent != nullptr) {
         setParentItem(myParent);
     }
+
     setViewFeature(anno);
 
-    m_text = new QGMText();
+    m_text = new QGCustomText();
     m_text->setTextInteractionFlags(Qt::NoTextInteraction);
     addToGroup(m_text);
     m_text->setZValue(ZVALUE::DIMENSION);
+    m_text->centerAt(0.0, 0.0);
 
+    m_rect = new QGCustomRect();
+    addToGroup(m_rect);
+    m_rect->setZValue(ZVALUE::DIMENSION - 1);
+    m_rect->centerAt(0.0, 0.0);
+    
     setZValue(ZVALUE::DIMENSION);
 
-    QObject::connect(
-        m_text, SIGNAL(dragging()),
-        this  , SLOT  (textDragging())
-            );
-    QObject::connect(
-        m_text, SIGNAL(dragFinished()),
-        this  , SLOT  (textDragFinished())
-            );
-    QObject::connect(
-        m_text, SIGNAL(selected(bool)),
-        this  , SLOT  (select(bool)));
-
-    QObject::connect(
-        m_text, SIGNAL(hover(bool)),
-        this  , SLOT  (hover(bool)));
 }
 
 QVariant QGIRichAnno::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -123,52 +117,17 @@ QVariant QGIRichAnno::itemChange(GraphicsItemChange change, const QVariant &valu
     return QGIView::itemChange(change, value);
 }
 
-void QGIRichAnno::textDragging(void)
-{
-//    Base::Console().Message("QGIRA::textDragging()\n");
-    //this is the long way around.  can we do it without crossing the App/Gui boundary?
-    //just update graphics until drag finished.
-//    auto lead( dynamic_cast<TechDraw::DrawRichAnno*>(getFeature()) );
+//void QGIRichAnno::select(bool state)
+//{
+//    setSelected(state);
+//    draw();
+//}
 
-//    if( lead == nullptr ) {
-//        return;
-//    }
-
-//    double x = Rez::appX(m_text->x()),
-//           y = Rez::appX(m_text->y());
-//    Base::Vector3d tPos(x,-y,0.0);
-//    Gui::Command::openCommand("Drag Text");
-//    lead->TextPosition.setValue(tPos);
-//    Gui::Command::commitCommand();
-//      draw();
-}
-
-void QGIRichAnno::textDragFinished(void)
-{
-//    Base::Console().Message("QGIRA::textDragFinished()\n");
-    auto anno( dynamic_cast<TechDraw::DrawRichAnno*>(getFeature()) );
-
-    if( anno == nullptr ) {
-        return;
-    }
-
-    double x = Rez::appX(m_text->x()) / getScale();
-    double y = - Rez::appX(m_text->y()) / getScale();
-    anno->X.setValue(x);
-    anno->Y.setValue(y);
-}
-
-void QGIRichAnno::select(bool state)
-{
-    setSelected(state);
-    draw();
-}
-
-void QGIRichAnno::hover(bool state)
-{
-    m_hasHover = state;
-    draw();
-}
+//void QGIRichAnno::hover(bool state)
+//{
+//    m_hasHover = state;
+//    draw();
+//}
 
 void QGIRichAnno::updateView(bool update)
 {
@@ -184,6 +143,13 @@ void QGIRichAnno::updateView(bool update)
     if ( vp == nullptr ) {
         return;
     }
+    if (annoFeat->X.isTouched() ||
+        annoFeat->Y.isTouched()) {
+        float x = Rez::guiX(annoFeat->X.getValue());
+        float y = Rez::guiX(annoFeat->Y.getValue());
+        m_text->centerAt(x, -y);
+        m_rect->centerAt(x, -y);
+     }
 
     draw();
 }
@@ -197,23 +163,25 @@ void QGIRichAnno::drawBorder()
 
 void QGIRichAnno::draw()
 {
-//    Base::Console().Log("QGITL::draw() - %s\n",getFeature()->getNameInDocument());
+//    Base::Console().Log("QGIRA::draw() - %s - parent: %X\n",getFeature()->getNameInDocument(), parentItem());
     if (!isVisible()) {
-        Base::Console().Log("QGITL::draw - not visible\n");
+//        Base::Console().Message("QGIRA::draw - not visible\n");
         return;
     }
 
     TechDraw::DrawRichAnno* annoFeat = getFeature();
     if((!annoFeat) ) {
-        Base::Console().Log("QGITL::draw - no feature\n");
+//        Base::Console().Message("QGIRA::draw - no feature\n");
         return;
     }
 
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getFeature()));
     if ( vp == nullptr ) {
-        Base::Console().Log("QGITL::draw - no viewprovider\n");
+//        Base::Console().Message("QGIRA::draw - no viewprovider\n");
         return;
     }
+//    double appX = Rez::guiX(annoFeat->X.getValue());
+//    double appY = Rez::guiX(annoFeat->Y.getValue());
 
     QGIView::draw();
 
@@ -257,14 +225,20 @@ void QGIRichAnno::setTextItem()
     m_text->setHtml(outHtml);
 
     m_text->setTextWidth(Rez::guiX(annoFeat->MaxWidth.getValue()));
-    m_text->showBox(annoFeat->ShowFrame.getValue());
 
-    double scale = getScale();
-    double x = Rez::guiX(annoFeat->X.getValue());
-    double y = Rez::guiX(annoFeat->Y.getValue());
-    Base::Vector3d textPos(x,y,0.0);
-    QPointF tPos(textPos.x * scale,- textPos.y * scale);
-    m_text->setPos(tPos);
+//    m_text->showBox(annoFeat->ShowFrame.getValue());
+    if (annoFeat->ShowFrame.getValue()) {
+        QRectF r = m_text->boundingRect().adjusted(1,1,-1,-1);
+        m_rect->setPen(rectPen());
+        m_rect->setBrush(Qt::NoBrush);
+        m_rect->setRect(r);
+        m_rect->show();
+    } else {
+        m_rect->hide();
+    }
+
+    m_text->centerAt(0.0, 0.0);
+    m_rect->centerAt(0.0, 0.0);
 }
 
 //void QGIRichAnno::drawBorder()
@@ -300,5 +274,13 @@ void QGIRichAnno::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 
     QGIView::paint (painter, &myOption, widget);
 }
+
+QPen QGIRichAnno::rectPen() const
+{
+    QPen pen(Qt::SolidLine);
+    pen.setWidthF(1.0);
+    return pen;
+}
+    
 
 #include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>
