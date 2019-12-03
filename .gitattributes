@@ -1,3 +1,21 @@
+# In case people don't have core.autocrlf set, this will manage the default line-ending
+# behaviour
+* text=auto
+
+# Explicitly declare which files we wish to always normalize line-endings on
+# For now, this is restricted to the Fem workbench
+src/Mod/Fem/*.h text
+src/Mod/Fem/*.cpp text
+src/Mod/Fem/*.csv text
+
+# These files will always be checked out with CRLF, i.e. windows-style line endings. This
+# really should not be needed...
+# *.SomeWindowsFileExtensionThatReallyRequiresCRLFEvenInLinux eol=crlf
+
+# These files should be ignored as it pertains to line-endings, because they are binary.
+*.png binary
+*.jpg binary
+
 #git archive --worktree-attributes --prefix=freecad-0.13/ --output=freecad.tar.gz HEAD
 acinclude.m4    export-ignore
 autogen.sh    export-ignore
