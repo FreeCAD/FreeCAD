@@ -56,7 +56,6 @@ DrawRichAnno::DrawRichAnno(void)
     Scale.setStatus(App::Property::Hidden,true);
     ScaleType.setStatus(App::Property::Hidden,true);
 
-
 }
 
 DrawRichAnno::~DrawRichAnno()
@@ -87,7 +86,7 @@ short DrawRichAnno::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawRichAnno::execute(void)
 { 
-//    Base::Console().Message("DRA::execute()\n");
+//    Base::Console().Message("DRA::execute() - @ (%.3f, %.3f)\n", X.getValue(), Y.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
