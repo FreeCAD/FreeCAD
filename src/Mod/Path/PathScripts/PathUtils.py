@@ -223,7 +223,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0, 0, 1))
 
         # findShapeOutline always returns closed wires, by removing the
-        # trace-backs single edge spikes don't contriubte to the bound box
+        # trace-backs single edge spikes don't contribute to the bound box
         uniqueEdges = []
         for edge in outline.Edges:
             if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):

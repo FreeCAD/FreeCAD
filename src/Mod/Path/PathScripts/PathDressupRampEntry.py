@@ -501,7 +501,7 @@ class ObjectDressup:
         1. Start from the original startpoint of the plunge
         2. Calculate the distance on the path which is needed to implement the ramp
            and travel that distance while maintaining start depth
-        3. Start ramping while travelling the original path backwards until reaching the
+        3. Start ramping while traveling the original path backwards until reaching the
            original plunge end point
         4. Continue with the original path
         """
@@ -541,7 +541,7 @@ class ObjectDressup:
                     curPoint = newPoint
 
                 else:
-                    # we are travelling on start depth
+                    # we are traveling on start depth
                     newPoint = FreeCAD.Base.Vector(redge.valueAt(redge.LastParameter).x, redge.valueAt(redge.LastParameter).y, p0.z)
                     outedges.append(self.createRampEdge(redge, curPoint, newPoint))
                     curPoint = newPoint
