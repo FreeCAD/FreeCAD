@@ -60,9 +60,9 @@ using namespace TechDraw;
 //===========================================================================
 
 const char* DrawView::ScaleTypeEnums[]= {"Page",
-                                            "Automatic",
-                                            "Custom",
-                                             NULL};
+                                         "Automatic",
+                                         "Custom",
+                                         NULL};
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
                                                                   pow(10,- Base::UnitsApi::getDecimals())};
@@ -363,7 +363,7 @@ void DrawView::handleChangedPropertyType(
                 static_cast<App::PropertyLinkList*>(prop)->setValue(link.getValue());
             }
         }
-    // property X had App::PropertyFloat and was changed to App::PropertyLength
+    // property X&Y had App::PropertyFloat and was changed to App::PropertyLength
     // sb PropertyDistance.  some X,Y are relative to existing point on page
     } else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat XProperty;
@@ -376,6 +376,12 @@ void DrawView::handleChangedPropertyType(
         YProperty.setContainer(this);
         YProperty.Restore(reader);
         Y.setValue(YProperty.getValue());
+    // property Rotation had App::PropertyFloat and was changed to App::PropertyAngle
+    } else if (prop == &Rotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat RotationProperty;
+        RotationProperty.setContainer(this);
+        RotationProperty.Restore(reader);
+        Rotation.setValue(RotationProperty.getValue());
     }
 }
 

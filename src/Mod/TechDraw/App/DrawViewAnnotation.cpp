@@ -100,22 +100,22 @@ void DrawViewAnnotation::onChanged(const App::Property* prop)
 void DrawViewAnnotation::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
 // transforms properties that had been changed
 {
-	// also check for changed properties of the base class
-	DrawView::handleChangedPropertyType(reader, TypeName, prop);
-	
-	// property LineSpace had the App::PropertyInteger and was changed to App::PropertyPercent
-	if (prop == &LineSpace && strcmp(TypeName, "App::PropertyInteger") == 0) {
-		App::PropertyInteger LineSpaceProperty;
-		// restore the PropertyInteger to be able to set its value
-		LineSpaceProperty.Restore(reader);
-		LineSpace.setValue(LineSpaceProperty.getValue());
-	}
-	// property MaxWidth had the App::PropertyFloat and was changed to App::PropertyLength
-	else if (prop == &MaxWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-		App::PropertyFloat MaxWidthProperty;
-		MaxWidthProperty.Restore(reader);
-		MaxWidth.setValue(MaxWidthProperty.getValue());
-	}
+    // also check for changed properties of the base class
+    DrawView::handleChangedPropertyType(reader, TypeName, prop);
+    
+    // property LineSpace had the App::PropertyInteger and was changed to App::PropertyPercent
+    if (prop == &LineSpace && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger LineSpaceProperty;
+        // restore the PropertyInteger to be able to set its value
+        LineSpaceProperty.Restore(reader);
+        LineSpace.setValue(LineSpaceProperty.getValue());
+    }
+    // property MaxWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    else if (prop == &MaxWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat MaxWidthProperty;
+        MaxWidthProperty.Restore(reader);
+        MaxWidth.setValue(MaxWidthProperty.getValue());
+    }
 }
 
 QRectF DrawViewAnnotation::getRect() const

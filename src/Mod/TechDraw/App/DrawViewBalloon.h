@@ -80,7 +80,7 @@ public:
 protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
-	virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
 private:
 };
