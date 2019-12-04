@@ -320,7 +320,14 @@ int LinkBaseExtension::extensionIsElementVisible(const char *element) const {
     return -1;
 }
 
-int LinkBaseExtension::extensionIsElementVisibleEx(const char *element, int reason) const {
+int LinkBaseExtension::extensionIsElementVisibleEx(const char *subname, int reason) const {
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    if(subname != element) {
+        if(reason!=DocumentObject::GS_SELECT || !isSubnameHidden(getContainer(),subname))
+            return -1;
+        return 0;
+    }
+
     int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
     if(index>=0) {
         if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
@@ -1421,6 +1428,60 @@ Property *LinkBaseExtension::extensionGetPropertyByName(const char* name) const 
             return linked->getPropertyByName(name);
     }
     return 0;
+}
+
+std::vector<std::string> LinkBaseExtension::getHiddenSubnames(
+        const App::DocumentObject *obj, const char *prefix) 
+{
+    std::vector<std::string> res;
+    if(!obj || !obj->getNameInDocument())
+        return res;
+    PropertyLinkSubHidden *prop;
+    int depth=0;
+    while((prop=Base::freecad_dynamic_cast<PropertyLinkSubHidden>(
+                    obj->getPropertyByName("ColoredElements"))))
+    {
+        for(auto &v : prop->getShadowSubs()) {
+            if(prefix && !boost::starts_with(v.first,prefix) && !boost::starts_with(v.second,prefix))
+                continue;
+            auto &s = v.second;
+            if(boost::ends_with(s,DocumentObject::hiddenMarker()))
+                res.push_back(s.substr(0,s.size()-DocumentObject::hiddenMarker().size()));
+        }
+        auto o = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+        if(!o)
+            break;
+        o = o->getLinkedObject(false);
+        if(o==obj || !GetApplication().checkLinkDepth(++depth,true))
+            break;
+        obj = o;
+    }
+    return res;
+}
+
+bool LinkBaseExtension::isSubnameHidden(const App::DocumentObject *obj, const char *subname) 
+{
+    if(!obj || !obj->getNameInDocument() || !subname || !subname[0])
+        return false;
+    PropertyLinkSubHidden *prop;
+    int depth=0;
+    while((prop=Base::freecad_dynamic_cast<PropertyLinkSubHidden>(
+                    obj->getPropertyByName("ColoredElements"))))
+    {
+        for(auto &v : prop->getShadowSubs()) {
+            if((boost::starts_with(v.first,subname) || boost::starts_with(v.second,subname))
+                    && boost::ends_with(v.second, DocumentObject::hiddenMarker()))
+                return true;
+        }
+        auto o = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+        if(!o)
+            break;
+        o = o->getLinkedObject(false);
+        if(o==obj || !GetApplication().checkLinkDepth(++depth,true))
+            break;
+        obj = o;
+    }
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
