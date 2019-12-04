@@ -7,6 +7,23 @@
 src/Mod/Fem/*.h text
 src/Mod/Fem/*.cpp text
 src/Mod/Fem/*.csv text
+src/Mod/Fem/*.py text
+src/Mod/Fem/*.xml text
+src/Mod/Fem/*.txt text
+src/Mod/Fem/*.md text
+src/Mod/Fem/*.ui text
+src/Mod/Fem/*.qrc text
+src/Mod/Fem/*.bat text
+src/Mod/Fem/*.dat text
+src/Mod/Fem/*.ts text
+src/Mod/Fem/*.unv text
+src/Mod/Fem/*.yml text
+src/Mod/Fem/*.vtk text
+src/Mod/Fem/*.inp text
+src/Mod/Fem/*.z88 text
+src/Mod/Fem/*.sif text
+src/Mod/Fem/*.geo text
+src/Mod/Fem/*.frd text
 
 # These files will always be checked out with CRLF, i.e. windows-style line endings. This
 # really should not be needed...
