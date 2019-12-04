@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #include <App/Application.h>
 #include "ViewParams.h"
+#include "Selection.h"
 
 using namespace Gui;
 
@@ -34,6 +35,8 @@ ViewParams::ViewParams() {
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
     _name = handle->Get##_type(#_name,_def);
 
+#undef FC_VIEW_PARAM2
+#define FC_VIEW_PARAM2 FC_VIEW_PARAM
     FC_VIEW_PARAMS
 }
 
@@ -49,6 +52,15 @@ void ViewParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
         _name = handle->Get##_type(#_name,_def);\
         return;\
     }
+
+#undef FC_VIEW_PARAM2
+#define FC_VIEW_PARAM2(_name,_ctype,_type,_def) \
+    if(strcmp(sReason,#_name)==0) {\
+        _name = handle->Get##_type(#_name,_def);\
+        on##_name##Changed();\
+        return;\
+    }
+
     FC_VIEW_PARAMS
 }
 
@@ -57,5 +69,9 @@ ViewParams *ViewParams::instance() {
     if(!inst)
         inst = new ViewParams;
     return inst;
+}
+
+void ViewParams::onShowSelectionOnTopChanged() {
+    Selection().clearCompleteSelection();
 }
 

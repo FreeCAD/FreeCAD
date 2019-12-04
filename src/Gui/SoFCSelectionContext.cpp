@@ -242,7 +242,7 @@ SoFCSelectionCounter::~SoFCSelectionCounter()
 {}
 
 
-bool SoFCSelectionCounter::checkRenderCache(SoState *state) {
+bool SoFCSelectionCounter::checkCache(SoState *state) {
     if(*counter || 
        (hasSelection && Selection().hasSelection()) ||
        (hasPreselection && Selection().hasPreselection()))

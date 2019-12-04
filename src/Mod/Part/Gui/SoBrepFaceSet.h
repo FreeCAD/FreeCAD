@@ -84,6 +84,8 @@ public:
     static void initClass();
     SoBrepFaceSet();
 
+    void setSiblings(std::vector<SoNode*> &&);
+
     SoMFInt32 partIndex;
 
 protected:
@@ -130,13 +132,16 @@ private:
                      const int mbind,
                      const int texture);
 
+    void renderShape(SoGLRenderAction *action, SoMaterialBundle &mb, bool partial);
+
     typedef Gui::SoFCSelectionContextEx SelContext;
     typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
 
-    bool overrideMaterialBinding(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2);
+    bool overrideMaterialBinding(SoGLRenderAction *action,
+            int selected, SelContextPtr ctx, SelContextPtr ctx2);
 
 #ifdef RENDER_GLARRAYS
     void renderSimpleArray();
@@ -154,6 +159,7 @@ private:
     std::vector<uint32_t> packedColors;
     uint32_t packedColor;
     Gui::SoFCSelectionCounter selCounter;
+    std::vector<SoNode*> siblings;
 
     // Define some VBO pointer for the current mesh
     class VBO;

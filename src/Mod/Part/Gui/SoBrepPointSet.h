@@ -50,6 +50,8 @@ public:
     static void initClass();
     SoBrepPointSet();
 
+    void setSiblings(std::vector<SoNode*> &&);
+
 protected:
     virtual ~SoBrepPointSet() {};
     virtual void GLRender(SoGLRenderAction *action);
@@ -64,11 +66,13 @@ private:
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
 
+    bool isSelected(SelContextPtr ctx);
+
 private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
-    uint32_t packedColor;
+    std::vector<SoNode*> siblings;
 };
 
 } // namespace PartGui

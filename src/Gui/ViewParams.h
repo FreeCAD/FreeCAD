@@ -31,6 +31,19 @@ namespace Gui {
 /** Convenient class to obtain view provider related parameters 
  *
  * The parameters are under group "User parameter:BaseApp/Preferences/View"
+ *
+ * To add a new parameter, add a new line under FC_VIEW_PARAMS using macro
+ *
+ * @code
+ *      FC_VIEW_PARAM(parameter_name, c_type, parameter_type, default_value)
+ * @endcode
+ *
+ * If there is special handling on parameter change, use FC_VIEW_PARAM2()
+ * instead, and add a function with the following signature in ViewParams.cpp,
+ *
+ * @code
+ *      void ViewParams:on<ParamName>Changed()
+ * @endcode
  */
 class GuiExport ViewParams: public ParameterGrp::ObserverType {
 public:
@@ -61,11 +74,25 @@ public:
     FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false) \
     FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true) \
     FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true) \
+    FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,true) \
+    FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0) \
+    FC_VIEW_PARAM(PickRadius,double,Float,5.0) \
+    FC_VIEW_PARAM(SelectionTransparency,double,Float,0.5) \
+    FC_VIEW_PARAM(SelectionLinePattern,int,Int,0) \
+    FC_VIEW_PARAM(SelectionHiddenLineWidth,double,Float,1.0) \
+    FC_VIEW_PARAM(SelectionBBoxLineWidth,double,Float,3.0) \
+    FC_VIEW_PARAM(ShowHighlightEdgeOnly,bool,Bool,false) \
+    FC_VIEW_PARAM(PreSelectionDelay,double,Float,0.1) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
     _ctype get##_name() const { return _name; }\
     void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }
+
+#undef FC_VIEW_PARAM2
+#define FC_VIEW_PARAM2(_name,_ctype,_type,_def) \
+    FC_VIEW_PARAM(_name,_ctype,_type,_def)\
+    void on##_name##Changed();\
 
     FC_VIEW_PARAMS
 
@@ -74,11 +101,15 @@ private:
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
     _ctype _name;
 
+#undef FC_VIEW_PARAM2
+#define FC_VIEW_PARAM2 FC_VIEW_PARAM
+
     FC_VIEW_PARAMS
     ParameterGrp::handle handle;
 };
 
 #undef FC_VIEW_PARAM
+#undef FC_VIEW_PARAM2
 
 } // namespace Gui
 
