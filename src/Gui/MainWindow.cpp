@@ -1653,9 +1653,11 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
     else if(mimeData->hasFormat(_MimeDocObjX)) {
         format = _MimeDocObjX;
         hasXLink = true;
-    }else if(mimeData->hasFormat(_MimeDocObjFile))
+    }else if(mimeData->hasFormat(_MimeDocObjFile)) {
+        format = _MimeDocObjFile;
         fromDoc = true;
-    else if(mimeData->hasFormat(_MimeDocObjXFile)) {
+    }else if(mimeData->hasFormat(_MimeDocObjXFile)) {
+        format = _MimeDocObjXFile;
         fromDoc = true;
         hasXLink = true;
     }else {
