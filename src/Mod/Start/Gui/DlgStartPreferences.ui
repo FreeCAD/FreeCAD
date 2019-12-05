@@ -572,10 +572,11 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="1">
-       <widget class="QComboBox" name="AutoloadModuleCombo"/>
+       <widget class="QComboBox" name="AutoloadModuleCombo">
         <property name="toolTip">
-         <string>Choose which workbench to switch to after FreeCAD launches</string>
+         <string>Choose which workbench to switch to after the program launches</string>
         </property>
+       </widget>
       </item>
       <item row="1" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_2">
