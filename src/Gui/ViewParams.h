@@ -62,6 +62,7 @@ public:
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true) \
     FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false) \
     FC_VIEW_PARAM(PropertyViewTimer, unsigned long, Unsigned, 100) \
+    FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \

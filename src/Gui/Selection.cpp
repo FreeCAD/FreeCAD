@@ -48,6 +48,7 @@
 #include "MDIView.h"
 #include "SelectionFilter.h"
 #include "Tree.h"
+#include "ViewParams.h"
 #include "ViewProviderDocumentObject.h"
 
 
@@ -1487,7 +1488,7 @@ void SelectionSingleton::setVisible(VisibleState vis) {
                 if (!visElement)
                     updateSelection(false,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 parent->setElementVisible(elementName.c_str(), visElement ? true : false);
-                if (visElement)
+                if(vis && ViewParams::instance()->getUpdateSelectionVisual())
                     updateSelection(true,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 continue;
             }
@@ -1507,9 +1508,11 @@ void SelectionSingleton::setVisible(VisibleState vis) {
             else
                 visObject = !vp->isShow();
 
+            SelectionNoTopParentCheck guard;
             if(visObject) {
                 vp->show();
-                updateSelection(visObject,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                if (ViewParams::instance()->getUpdateSelectionVisual())
+                    updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
             } else {
                 updateSelection(visObject,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
                 vp->hide();
