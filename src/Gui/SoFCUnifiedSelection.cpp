@@ -83,6 +83,7 @@
 #include <App/Document.h>
 #include <Gui/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObserver.h>
 #include <App/ComplexGeoData.h>
 
 #include "SoFCUnifiedSelection.h"
@@ -251,7 +252,7 @@ struct SoFCUnifiedSelection::PickedInfo {
 
 };
 
-void SoFCUnifiedSelection::getPickedList(std::vector<PickedInfo> &ret,
+void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
         const SoPickedPointList &points, bool singlePick, bool copy,
         std::set<std::pair<ViewProvider*,std::string> > &filter) const
 {
@@ -298,12 +299,12 @@ void SoFCUnifiedSelection::getPickedList(std::vector<PickedInfo> &ret,
     }
 }
 
-
-std::vector<SoFCUnifiedSelection::PickedInfo> 
-SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick) const
+void SoFCUnifiedSelection::getPickedInfoOnTop(std::vector<PickedInfo> &ret,
+        const SbViewportRegion &viewport, const SbVec2s &pos,
+        bool singlePick, std::set<std::pair<ViewProvider*,std::string> > &filter) const
 {
-    std::vector<PickedInfo> ret;
-    std::set<std::pair<ViewProvider*,std::string> > filter;
+    if(ViewParams::instance()->getShowSelectionBoundingBox())
+        return;
 
     SoPath *path = pcViewer->getGroupOnTopPath();
     int pathLength = path->getLength();
@@ -344,12 +345,15 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
             action->getEvent()->getPosition(), singlePick, filter);
 
     if(ret.empty() || !singlePick)
-        getPickedList(ret,action->getPickedPointList(),singlePick,false,filter);
-    else if(ret.size()==1)
-        return ret;
+        getPickedInfo(ret,action->getPickedPointList(),singlePick,false,filter);
 
+    postProcessPickedList(ret, singlePick);
+    return ret;
+}
+
+void SoFCUnifiedSelection::postProcessPickedList(std::vector<PickedInfo> &ret, bool singlePick) {
     if(ret.size()<=1)
-        return ret;
+        return;
 
     // To identify the picking of lines in a concave area we have to 
     // get all intersection points. If we have two or more intersection
@@ -377,14 +381,41 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
     if(singlePick) {
         std::vector<PickedInfo> sret(1);
         sret[0] = std::move(*itPicked);
-        return sret;
+        ret = std::move(sret);
+        return;
     }
     if(itPicked != ret.begin()) {
         PickedInfo tmp(std::move(*itPicked));
         *itPicked = std::move(*ret.begin());
         *ret.begin() = std::move(tmp);
     }
-    return ret;
+}
+
+std::vector<App::SubObjectT>
+SoFCUnifiedSelection::getPickedSelections(
+        const SbViewportRegion &viewport, const SbVec2s pos, SoNode *scene) const
+{
+    std::vector<PickedInfo> infos;
+    std::set<std::pair<ViewProvider*,std::string> > filter;
+
+    getPickedInfoOnTop(infos, viewport, pos, false, filter);
+
+    SoRayPickAction action(viewport);
+    action.setPoint(pos);
+    action.setPickAll(true);
+    action.setRadius(ViewParams::instance()->getPickRadius());
+    action.apply(scene);
+    getPickedInfo(infos,action.getPickedPointList(),false,false,filter);
+
+    postProcessPickedList(infos,false);
+
+    std::vector<App::SubObjectT> sels;
+    sels.reserve(infos.size());
+    for(auto &info : infos) {
+        if(info.vpd)
+            sels.emplace_back(info.vpd->getObject(),info.element.c_str());
+    }
+    return sels;
 }
 
 SoPickedPoint *SoFCUnifiedSelection::getPickedPoint(SoHandleEventAction *action) const {
