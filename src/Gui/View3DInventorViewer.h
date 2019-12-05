@@ -32,9 +32,11 @@
 
 #include <Base/Type.h>
 #include <Base/Placement.h>
+#include <Base/BoundBox.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbTime.h>
 #include <Gui/Quarter/SoQTQuarterAdaptor.h>
 #include <QCursor>
 #include <QImage>
@@ -61,6 +63,9 @@ class SoGroup;
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
+class SoTimerSensor;
+class SoSensor;
+class SbBox3f;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -357,6 +362,7 @@ public:
      */
     void viewAll();
     void viewAll(float factor);
+    void viewBoundBox(const SbBox3f &box);
 
     /// Breaks out a VR window for a Rift
     void viewVR(void);
@@ -366,7 +372,7 @@ public:
      * of the scene. Therefore we search for all SOFCSelection nodes, if
      * none of them is selected nothing happens.
      */
-    void viewSelection();
+    void viewSelection(bool extend = false);
 
     void setGradientBackground(bool b);
     bool hasGradientBackground() const;
@@ -398,12 +404,15 @@ public:
 
     SoPath *getGroupOnTopPath() {return pcGroupOnTopPath;}
 
+    bool getSceneBoundBox(SbBox3f &box) const;
+    bool getSceneBoundBox(Base::BoundBox3d &box) const;
+
 protected:
     GLenum getInternalTextureFormat() const;
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
-    void animatedViewAll(int steps, int ms);
+    void animatedViewAll(const SbBox3f &bbox, int steps, int ms);
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
@@ -415,6 +424,8 @@ protected:
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
+
+    static void onViewFitTimer(void *, SoSensor *);
 
     enum eWinGestureTuneState{
         ewgtsDisabled, //suppress tuning/re-tuning after errors
@@ -505,6 +516,10 @@ private:
     QCursor editCursor, zoomCursor, panCursor, spinCursor;
     SbBool redirected;
     SbBool allowredir;
+
+    bool viewFitting;
+    SbTime viewFitTime;
+    SoTimerSensor *viewFitTimer;
 
     std::string overrideMode;
     Gui::Document* guiDocument = nullptr;

@@ -27,6 +27,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <memory>
 #include <bitset>
 #include <QIcon>
 #include <boost/signals2.hpp>
@@ -209,10 +210,22 @@ public:
 
     /** Return the bound box of this view object
      *
+     * @param subname: optional subname path to a sub object
+     * @param mat: optional initial transformation
+     * @param transform: whether to transform using current view object placement
+     * @param view: view of this view object, if null, use the current active view
+     * @param depth: current traversal depth, internal use to prevent infinite recursion.
+     *
      * This method shall work regardless whether the current view object is
      * visible or not.
      */
-    Base::BoundBox3d getBoundingBox(const char *subname=0, bool transform=true, MDIView *view=0) const;
+    Base::BoundBox3d getBoundingBox(const char *subname=0, 
+            const Base::Matrix4D *mat=0, bool transform=true,
+            const View3DInventorViewer *view=0, int depth=0) const;
+
+    /** Convenience function to obtain the current active viewer
+     */
+    static const View3DInventorViewer *getActiveViewer();
 
     /**
      * Get called if the object is about to get deleted.
@@ -509,6 +522,9 @@ public:
     
     virtual void setRenderCacheMode(int);
 
+    /// Internal use to invalidate all bounding box cache
+    static void clearBoundingBoxCache();
+
 protected:
     /** Helper method to check that the node is valid, i.e. it must not cause
      * and infinite recursion.
@@ -538,6 +554,11 @@ protected:
     /// Turn on mode switch
     virtual void setModeSwitch();
 
+    /// Internal use to customize bounding box retrieval
+    virtual Base::BoundBox3d _getBoundingBox(const char *subname=0, 
+            const Base::Matrix4D *mat=0, bool transform=true,
+            const View3DInventorViewer *view=0, int depth=0) const;
+
 protected:
     /// The root Separator of the ViewProvider
     SoSeparator *pcRoot;
@@ -558,6 +579,9 @@ private:
     int viewOverrideMode;
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
+
+    struct BoundingBoxCache;
+    mutable std::unique_ptr<BoundingBoxCache> bboxCache;
 };
 
 } // namespace Gui

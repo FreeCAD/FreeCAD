@@ -26,6 +26,15 @@
 # include <sstream>
 #endif
 
+#ifdef FC_OS_MACOSX
+# include <OpenGL/gl.h>
+#else
+# ifdef FC_OS_WIN32
+#  include <windows.h>
+# endif
+# include <GL/gl.h>
+#endif
+
 #include <Inventor/SbBox.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -39,6 +48,8 @@
 #include <string.h>
 #include <iostream>
 
+#include "ViewParams.h"
+#include "SoFCUnifiedSelection.h"
 #include "SoFCBoundingBox.h"
 
 using namespace Gui;
@@ -79,14 +90,14 @@ SoFCBoundingBox::SoFCBoundingBox ()
     SO_NODE_ADD_FIELD(maxBounds, ( 1.0,  1.0,  1.0));
     SO_NODE_ADD_FIELD(coordsOn, (true));
     SO_NODE_ADD_FIELD(dimensionsOn, (true));
+    SO_NODE_ADD_FIELD(skipBoundingBox, (true));
 
-    root = new SoSeparator();
-    SoSeparator *bboxSep = new SoSeparator();
+    bboxSep = new SoSeparator();
+    bboxSep->ref();
 
     bboxCoords = new SoCoordinate3();
     bboxCoords->point.setNum(8);
     bboxSep->addChild(bboxCoords);
-    root->addChild(bboxSep);
 
     // the lines of the box
     bboxLines  = new SoIndexedLineSet();
@@ -97,6 +108,7 @@ SoFCBoundingBox::SoFCBoundingBox ()
 
     // create the text nodes, including a transform for each vertice offset
     textSep = new SoSeparator();
+    textSep->ref();
     for (int i = 0; i < 8; i++) {
         SoSeparator *temp = new SoSeparator();
         SoTransform *trans = new SoTransform();
@@ -109,6 +121,7 @@ SoFCBoundingBox::SoFCBoundingBox ()
 
     // create the text nodes, including a transform for each dimension
     dimSep = new SoSeparator();
+    dimSep->ref();
     for (int i = 0; i < 3; i++) {
         SoSeparator *temp = new SoSeparator();
         SoTransform *trans = new SoTransform();
@@ -118,15 +131,13 @@ SoFCBoundingBox::SoFCBoundingBox ()
         temp->addChild(text);
         dimSep->addChild(temp);
     }
-
-    root->addChild(textSep);
-    root->addChild(dimSep);
-    root->ref();
 }
 
 SoFCBoundingBox::~SoFCBoundingBox ()
 {
-    root->unref();
+    bboxSep->unref();
+    textSep->unref();
+    dimSep->unref();
 }
 
 void SoFCBoundingBox::GLRender (SoGLRenderAction *action)
@@ -140,9 +151,18 @@ void SoFCBoundingBox::GLRender (SoGLRenderAction *action)
     if (!shouldGLRender(action))
         return;
 
+    SoState *state = action->getState();
+
     // get the latest values from the fields
-    corner[0] = minBounds.getValue();
-    corner[1] = maxBounds.getValue();
+    SbXfBox3f xbbox(minBounds.getValue(),maxBounds.getValue());
+
+    if(ViewParams::instance()->getRenderProjectedBBox())
+        xbbox.transform(SoModelMatrixElement::get(state));
+
+    SbBox3f bbox = xbbox.project();
+
+    corner[0] = bbox.getMin();
+    corner[1] = bbox.getMax();
     coord     = coordsOn.getValue();
     dimension = dimensionsOn.getValue();
 
@@ -171,13 +191,6 @@ void SoFCBoundingBox::GLRender (SoGLRenderAction *action)
             SoText2* t = (SoText2 *)sep->getChild(1);
             t->string.setValue(str.str().c_str());
         }
-
-        textSep->ref();
-        if (root->findChild(textSep) < 0)
-            root->addChild(textSep);
-    } else {
-        if (root->findChild(textSep) >= 0)
-            root->removeChild(textSep);
     }
 
     // if dimension is true then set the text nodes
@@ -199,22 +212,49 @@ void SoFCBoundingBox::GLRender (SoGLRenderAction *action)
             SoText2* t = (SoText2 *)sep->getChild(1);
             t->string.setValue(str.str().c_str());
         }
-
-        dimSep->ref();
-        if (root->findChild(dimSep) < 0)
-            root->addChild(dimSep);
-    } else {
-        if (root->findChild(dimSep) >= 0)
-            root->removeChild(dimSep);
     }
 
     bboxCoords->point.finishEditing();
 
     // Avoid shading
-    SoState * state = action->getState();
     state->push();
+
+    if(ViewParams::instance()->getRenderProjectedBBox())
+        SoModelMatrixElement::makeIdentity(state,this);
+
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
-    root->GLRender(action);
+
+    if(action->isRenderingDelayedPaths()) {
+        bboxSep->GLRender(action);
+        if(coord)
+            textSep->GLRender(action);
+        if(dimension)
+            dimSep->GLRender(action);
+    } else {
+        // Enable depth clampping to bypass near/far plane clipping, because
+        // the bounding box corners are likely outside the range.
+        GLboolean clamped = glIsEnabled(GL_DEPTH_CLAMP);
+        if(!clamped)
+            glEnable(GL_DEPTH_CLAMP);
+
+        // GL_LEQUAL is necessary for far clampping to work
+        FCDepthFunc depthFunc(GL_LEQUAL);
+
+        bboxSep->GLRender(action);
+
+        if(coord || dimension) {
+            // Change depth func to GL_ALWAYS to render text on top of the
+            // geometry
+            depthFunc.set(GL_ALWAYS);
+            if(coord)
+                textSep->GLRender(action);
+            if(dimension)
+                dimSep->GLRender(action);
+        }
+
+        if(!clamped)
+            glDisable(GL_DEPTH_CLAMP);
+    }
     state->pop();
 }
 
@@ -224,6 +264,8 @@ void SoFCBoundingBox::generatePrimitives (SoAction * /*action*/)
 
 void SoFCBoundingBox::computeBBox (SoAction * /*action*/, SbBox3f &box, SbVec3f &center)
 {
+    if(skipBoundingBox.getValue())
+        return;
     center = (minBounds.getValue() + maxBounds.getValue()) / 2.0f;
     box.setBounds(minBounds.getValue(), maxBounds.getValue());
 }

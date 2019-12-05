@@ -787,6 +787,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     //Base::Console().Log("Document::slotChangedObject() called\n");
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider) {
+        ViewProvider::clearBoundingBoxCache();
         try {
             viewProvider->update(&Prop);
             if(d->_editingViewer 

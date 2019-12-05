@@ -1485,8 +1485,8 @@ SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
 
 SO_NODE_SOURCE(SoFCSelectionRoot)
 
-SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
-    :SoFCSeparator(trackCacheMode)
+SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode, ViewProvider *vp)
+    :SoFCSeparator(trackCacheMode), viewProvider(vp)
 {
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
     SO_NODE_ADD_FIELD(selectionStyle,(Full));
@@ -1515,6 +1515,10 @@ void SoFCSelectionRoot::finish()
 {
     so_bbox_cleanup();
     atexit_cleanup();
+}
+
+void SoFCSelectionRoot::setViewProvider(ViewProvider *vp) {
+    viewProvider = vp;
 }
 
 SoNode *SoFCSelectionRoot::getCurrentRoot(bool front, SoNode *def) {
@@ -1643,33 +1647,94 @@ void SoFCSelectionRoot::setupSelectionLineRendering(
     SoLazyElement::setPacked(state, node, 1, color, false);
 }
 
-bool SoFCSelectionRoot::renderBBox(
-        SoGLRenderAction *action, SoNode *node, SbColor color) 
+bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node,
+        const SbColor &color, const SbMatrix *mat, bool force)
 {
     auto data = (SoFCBBoxRenderInfo*) so_bbox_storage->get();
     if (data->bboxaction == NULL) {
         // The viewport region will be replaced every time the action is
         // used, so we can just feed it a dummy here.
         data->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());
-        data->cube = new SoCube;
-        data->cube->ref();
     }
 
     auto state = action->getState();
 
-    if(!action->isRenderingDelayedPaths()
+    if(!force && !action->isRenderingDelayedPaths()
             && ViewParams::instance()->getShowSelectionOnTop())
         return false;
 
-    SbBox3f bbox;
     data->bboxaction->setViewportRegion(action->getViewportRegion());
     SoSwitchElement::set(data->bboxaction->getState(), SoSwitchElement::get(action->getState()));
-    data->bboxaction->apply(node);
-    bbox = data->bboxaction->getBoundingBox();
-    if(bbox.isEmpty())
+
+    bool project = !mat && ViewParams::instance()->getRenderProjectedBBox();
+    if(project || !node->isOfType(SoGroup::getClassTypeId()))
+        data->bboxaction->apply(node);
+    else {
+        SoTempPath resetPath(2);
+        resetPath.ref();
+        auto group = static_cast<SoGroup*>(node);
+        for(int i=0,count=group->getNumChildren();i<count;++i) {
+            auto child = group->getChild(i);
+            if(child->isOfType(SoTransform::getClassTypeId())) {
+                resetPath.append(group);
+                resetPath.append(child);
+                data->bboxaction->setResetPath(&resetPath,false);
+                break;
+            }
+        }
+        data->bboxaction->apply(node);
+        data->bboxaction->setResetPath(0);
+        resetPath.unrefNoDelete();
+    }
+    
+    SbXfBox3f xbbox = data->bboxaction->getXfBoundingBox();
+    if(xbbox.isEmpty())
         return false;
 
+    if(project)
+        xbbox.transform(SoModelMatrixElement::get(state));
+    renderBBox(action,node,xbbox.project(),color,mat);
+    return true;
+}
+
+bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, 
+        const SbBox3f &bbox, SbColor color, const SbMatrix *mat) 
+{
+    auto data = (SoFCBBoxRenderInfo*) so_bbox_storage->get();
+    if (data->cube == NULL) {
+        data->cube = new SoCube;
+        data->cube->ref();
+    }
+
+    SoState *state = action->getState();
     state->push();
+
+    if(mat) {
+        SoModelMatrixElement::mult(state, node, *mat);
+    } else if(ViewParams::instance()->getRenderProjectedBBox()) {
+        // reset model matrix, since we will transform and project the bounding box
+        // by ourself, so that it is always rendered to be aligned with the global
+        // axes regardless of the current model matrix.
+        SoModelMatrixElement::makeIdentity(state,node);
+
+    } else if(node->isOfType(SoGroup::getClassTypeId())) {
+        // if not, then search for the transform node and setup the model matrix
+        auto group = static_cast<SoGroup*>(node);
+        for(int i=0,count=group->getNumChildren();i<count;++i) {
+            auto child = group->getChild(i);
+            if(child->isOfType(SoTransform::getClassTypeId())) {
+                SbMatrix matrix;
+                auto transform = static_cast<SoTransform*>(child);
+                matrix.setTransform(transform->translation.getValue(),
+                                    transform->rotation.getValue(),
+                                    transform->scaleFactor.getValue(),
+                                    transform->scaleOrientation.getValue(),
+                                    transform->center.getValue());
+                SoModelMatrixElement::mult(state, node, matrix);
+                break;
+            }
+        }
+    }
 
     uint32_t packed = color.getPackedValue(0.0);
     setupSelectionLineRendering(state,node,&packed);
@@ -1679,9 +1744,9 @@ bool SoFCSelectionRoot::renderBBox(
 
     float x, y, z;
     bbox.getSize(x, y, z);
-    data->cube->width  = x+0.001;
-    data->cube->height  = y+0.001;
-    data->cube->depth = z+0.001;
+    data->cube->width  = x;
+    data->cube->height  = y;
+    data->cube->depth = z;
 
     SoModelMatrixElement::translateBy(state,node,bbox.getCenter());
 
@@ -1689,9 +1754,19 @@ bool SoFCSelectionRoot::renderBBox(
     mb.sendFirst();
 
     FCDepthFunc guard;
+    GLboolean clamped = true;
+
+    clamped = glIsEnabled(GL_DEPTH_CLAMP);
+    if(!clamped)
+        glEnable(GL_DEPTH_CLAMP);
+
     if(!action->isRenderingDelayedPaths())
         guard.set(GL_LEQUAL);
+
     data->cube->GLRender(action);
+
+    if(!clamped)
+        glDisable(GL_DEPTH_CLAMP);
 
     state->pop();
     return true;
@@ -1749,7 +1824,21 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath, b
                 else
                     SoSeparator::GLRenderBelowPath(action);
             }
-            renderBBox(action,this,ctx->hlAll?ctx->hlColor:ctx->selColor);
+
+            if(!ViewParams::instance()->getShowSelectionOnTop()) {
+                SoCacheElement::invalidate(state);
+                if(ViewParams::instance()->getUseTightBoundingBox() && viewProvider) {
+                    Base::Matrix4D mat;
+                    bool project = ViewParams::instance()->getRenderProjectedBBox();
+                    if(project)
+                        mat = ViewProvider::convert(SoModelMatrixElement::get(state));
+                    auto fcbox = viewProvider->getBoundingBox(0,&mat,project);
+                    SbBox3f bbox(fcbox.MinX,fcbox.MinY,fcbox.MinZ,
+                                fcbox.MaxX,fcbox.MaxY,fcbox.MaxZ);
+                    renderBBox(action,this,bbox,ctx->hlAll?ctx->hlColor:ctx->selColor);
+                } else
+                    renderBBox(action,this,ctx->hlAll?ctx->hlColor:ctx->selColor);
+            }
             return false;
         }
     }
@@ -2179,7 +2268,8 @@ void FCDepthFunc::set(int32_t f) {
 
 SO_NODE_SOURCE(SoFCPathAnnotation)
 
-SoFCPathAnnotation::SoFCPathAnnotation()
+SoFCPathAnnotation::SoFCPathAnnotation(ViewProvider *vp, const char *sub, View3DInventorViewer *viewer)
+    :viewProvider(vp), subname(sub?sub:""), viewer(viewer)
 {
     SO_NODE_CONSTRUCTOR(SoFCPathAnnotation);
     path = 0;
@@ -2282,7 +2372,47 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
                 SoFCSelectionRoot::checkSelection(sel,selColor,hl,hlColor);
                 if(!sel && !hl)
                     selColor.setPackedValue(ViewParams::instance()->getSelectionColor(),trans);
-                SoFCSelectionRoot::renderBBox(action,this,hl?hlColor:selColor);
+
+                // push a null entry to skip SoFCSwitch manipulation in
+                // case ViewProvider::getBoundingBox() needs to use SoGetBoundingBoxAction()
+                _SwitchStack.emplace_back(nullptr);
+
+                if(!viewProvider || det) {
+                    SoFCSelectionRoot::renderBBox(action,this,hl?hlColor:selColor);
+                } else {
+                    auto state = action->getState();
+
+                    if(ViewParams::instance()->getRenderProjectedBBox()) {
+                        if(!ViewParams::instance()->getUseTightBoundingBox()) 
+                            SoFCSelectionRoot::renderBBox(action,this,hl?hlColor:selColor);
+                        else {
+                            Base::Matrix4D mat = ViewProvider::convert(SoModelMatrixElement::get(state));
+                            auto fcbox = viewProvider->getBoundingBox(subname.c_str(),&mat,true,viewer);
+                            SbBox3f bbox(fcbox.MinX,fcbox.MinY,fcbox.MinZ,
+                                        fcbox.MaxX,fcbox.MaxY,fcbox.MaxZ);
+                            SoFCSelectionRoot::renderBBox(action,this,bbox,hl?hlColor:selColor);
+                        }
+                    } else {
+                        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(viewProvider);
+                        if(vpd && vpd->getObject() && vpd->getObject()->getNameInDocument()) {
+                            Base::Matrix4D mat;
+                            auto vp = Application::Instance->getViewProvider(
+                                    vpd->getObject()->getSubObject(subname.c_str(),0,&mat));
+                            if(vp) {
+                                SbMatrix matrix = ViewProvider::convert(mat);
+                                if(!ViewParams::instance()->getUseTightBoundingBox())
+                                    SoFCSelectionRoot::renderBBox(action,vp->getRoot(),hl?hlColor:selColor,&matrix);
+                                else {
+                                    auto fcbox = vp->getBoundingBox(0,0,false,viewer);
+                                    SbBox3f bbox(fcbox.MinX,fcbox.MinY,fcbox.MinZ,
+                                            fcbox.MaxX,fcbox.MaxY,fcbox.MaxZ);
+                                    SoFCSelectionRoot::renderBBox(action,this,bbox,hl?hlColor:selColor,&matrix);
+                                }
+                            }
+                        }
+                    }
+                }
+                _SwitchStack.pop_back();
             }
         }
 
