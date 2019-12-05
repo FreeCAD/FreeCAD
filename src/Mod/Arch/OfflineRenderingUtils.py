@@ -362,7 +362,7 @@ def render(outputfile,scene=None,camera=None,zoom=False,width=400,height=300,bac
 def buildScene(objects,colors=None):
 
     """buildScene(objects,colors=None): builds a coin node from a given list of FreeCAD
-    objects. Optional colors argument can be a dicionary of objName:ShapeColorTuple
+    objects. Optional colors argument can be a dictionary of objName:ShapeColorTuple
     or obj:DiffuseColorList pairs."""
 
     from pivy import coin

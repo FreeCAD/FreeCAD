@@ -140,7 +140,7 @@ public:
     //printf("Attach observer %p\n", ToObserv);
     _ObserverSet.insert(ToObserv);
     if ( _ObserverSet.size() == count )
-      printf("Observer %p already attached\n", ToObserv);
+      printf("Observer %p already attached\n", static_cast<void*>(ToObserv));
 #else
     _ObserverSet.insert(ToObserv);
 #endif
@@ -159,7 +159,7 @@ public:
     //printf("Detach observer %p\n", ToObserv);
     _ObserverSet.erase(ToObserv);
     if ( _ObserverSet.size() == count )
-      printf("Observer %p already detached\n", ToObserv);
+      printf("Observer %p already detached\n", static_cast<void*>(ToObserv));
 #else
     _ObserverSet.erase(ToObserv);
 #endif

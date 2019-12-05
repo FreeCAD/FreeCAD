@@ -390,7 +390,7 @@ automatically run a file recovery when it is started.</string>
       <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="prefAddLogo">
         <property name="toolTip">
-         <string>Program logo will be added to the thumbnail</string>
+         <string>The program logo will be added to the thumbnail</string>
         </property>
         <property name="text">
          <string>Add the program logo to the generated thumbnail</string>
@@ -433,6 +433,14 @@ automatically run a file recovery when it is started.</string>
       </item>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="prefPartialLoading">
+        <property name="toolTip">
+         <string>Enable partial loading of external linked document. When enabled, only
+the referenced objects and their dependencies will be loaded when a linked
+document is auto opened together with the main document.
+A partially loaded document cannot be edited. Double click the document
+icon in the tree view to reload it in full.
+         </string>
+        </property>
         <property name="text">
          <string>Disable partial loading of external linked objects</string>
         </property>

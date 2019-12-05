@@ -34,7 +34,7 @@ class TestFemImport(unittest.TestCase):
 
     # ********************************************************************************************
     # no is document needed to test import Fem and import FemGui
-    # thus neiter setUp nor tearDown methods are needed
+    # thus neither setUp nor tearDown methods are needed
 
     def test_00print(
         self

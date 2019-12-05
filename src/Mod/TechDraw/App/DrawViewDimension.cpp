@@ -515,13 +515,36 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     return DrawView::execute();
 }
 
+bool DrawViewDimension::isMultiValueSchema(void) const
+{
+    bool result = false;
+    bool angularMeasure = false;
+    if ( (Type.isValue("Angle")) ||
+         (Type.isValue("Angle3Pt")) ) {
+        angularMeasure = true;
+    }
+
+    Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
+
+    if (((uniSys == Base::UnitSystem::Imperial1) ||
+         (uniSys == Base::UnitSystem::ImperialBuilding) ) &&
+         !angularMeasure) {
+        result = true;
+    } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
+         angularMeasure) {
+        result = true;
+    }
+    return result;
+}
+
 std::string  DrawViewDimension::getFormatedValue(int partial)
 {
-//    Base::Console().Message("DVD::getFormatedValue()\n");
+//    Base::Console().Message("DVD::getFormatedValue(%d)\n", partial);
     std::string result;
     if (Arbitrary.getValue()) {
         return FormatSpec.getStrValue();
     }
+    bool multiValueSchema = false;
 
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     QString specStrCopy = specStr;
@@ -554,24 +577,32 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
 
 //handle multi value schemes
     std::string pre = getPrefix();
+    QString qMultiValueStr;
     QString qPre = QString::fromUtf8(pre.data(),pre.size());
     if (((uniSys == Base::UnitSystem::Imperial1) ||
          (uniSys == Base::UnitSystem::ImperialBuilding) ) &&
          !angularMeasure) {
+        multiValueSchema = true;
+        qMultiValueStr = userStr;
         specStr = userStr;
         if (!pre.empty()) {
+            qMultiValueStr = qPre + userStr;
             specStr = qPre + userStr;
         }
     } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
          angularMeasure) {
+        multiValueSchema = true;
         QString dispMinute = QString::fromUtf8("\'");
         QString dispSecond = QString::fromUtf8("\"");
         QString schemeMinute = QString::fromUtf8("M");
         QString schemeSecond = QString::fromUtf8("S");
         specStr = userStr.replace(schemeMinute,dispMinute);
         specStr = specStr.replace(schemeSecond,dispSecond);
+        multiValueSchema = true;
+        qMultiValueStr = specStr;
         if (!pre.empty()) {
-            specStr = qPre + userStr;
+            qMultiValueStr = qPre + specStr;
+            specStr = qPre + specStr;
         }
     } else {
 //handle single value schemes
@@ -646,6 +677,11 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
     std::string ssPrefix = Base::Tools::toStdString(formatPrefix);
     std::string ssSuffix = Base::Tools::toStdString(formatSuffix);
     result = specStr.toUtf8().constData();
+    if (multiValueSchema) {
+        result = ssPrefix +
+                 Base::Tools::toStdString(qMultiValueStr) +
+                 ssSuffix;
+    }
     if (partial == 1)  {                            //just the number (+prefix & suffix)
 //        result = Base::Tools::toStdString(specVal);
         result = ssPrefix +

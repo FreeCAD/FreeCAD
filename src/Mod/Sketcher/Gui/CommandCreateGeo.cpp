@@ -838,7 +838,7 @@ public:
                     case TRANSITION_MODE_Perpendicular_L: // 5th mode
                         TransitionMode = TRANSITION_MODE_Perpendicular_R;
                         break;
-                    default: // 6th mode (Perpendicular_R) + unexpexted mode
+                    default: // 6th mode (Perpendicular_R) + unexpected mode
                         SegmentMode = SEGMENT_MODE_Line;
                         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
                             TransitionMode = TRANSITION_MODE_Tangent;
@@ -7014,14 +7014,14 @@ public:
                     EditCurve[16].x,EditCurve[16].y,EditCurve[17].x,EditCurve[17].y, // line1
                     EditCurve[0].x,EditCurve[0].y,EditCurve[34].x,EditCurve[34].y, // line2
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
-                    geometryCreationMode==Construction?"True":"False", // geometry as construction or not                                        
+                    geometryCreationMode==Construction?"True":"False", // geometry as construction or not
                     firstCurve,firstCurve+3, // tangent1
                     firstCurve,firstCurve+2, // tangent2
                     firstCurve+2,firstCurve+1, // tangent3
                     firstCurve+3,firstCurve+1, // tangent4
                     (fabs(lx)>fabs(ly))?"Horizontal":"Vertical", firstCurve+2, // vertical or horizontal constraint
                     firstCurve,firstCurve+1, // equal constraint
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch                
+                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 Gui::Command::commitCommand();
 

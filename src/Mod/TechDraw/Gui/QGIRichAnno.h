@@ -32,6 +32,7 @@
 #include <QColor>
 #include <QFont>
 #include <QPointF>
+#include <QPen>
 
 #include <Base/Vector3D.h>
 #include "QGILeaderLine.h"
@@ -47,6 +48,8 @@ class QGIPrimPath;
 class QGIArrow;
 class QGEPath;
 class QGMText;
+class QGCustomText;
+class QGCustomRect;
 
 
 //*******************************************************************
@@ -75,12 +78,14 @@ public:
     void setTextItem(void);
 
     virtual TechDraw::DrawRichAnno* getFeature(void);
+    QPen rectPen() const;
+
 
 public Q_SLOTS:
-    void textDragging(void);
-    void textDragFinished(void);
-    void hover(bool state);
-    void select(bool state);
+/*    void textDragging(void);*/
+/*    void textDragFinished(void);*/
+/*    void hover(bool state);*/
+/*    void select(bool state);*/
 
 protected:
     virtual void draw() override;
@@ -88,8 +93,10 @@ protected:
                                  const QVariant &value ) override;
 
 protected:
-    QGMText* m_text;
+/*    QGMText* m_text;*/
+    QGCustomText* m_text;
     bool m_hasHover;
+    QGCustomRect* m_rect;
 
 };
 
