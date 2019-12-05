@@ -33,6 +33,8 @@
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObserver.h"
+#include "ComplexGeoData.h"
+#include "GeoFeature.h"
 
 using namespace App;
 
@@ -77,7 +79,7 @@ Document* DocumentT::getDocument() const
     return GetApplication().getDocument(document.c_str());
 }
 
-std::string DocumentT::getDocumentName() const
+const std::string &DocumentT::getDocumentName() const
 {
     return document;
 }
@@ -151,7 +153,7 @@ Document* DocumentObjectT::getDocument() const
     return GetApplication().getDocument(document.c_str());
 }
 
-std::string DocumentObjectT::getDocumentName() const
+const std::string& DocumentObjectT::getDocumentName() const
 {
     return document;
 }
@@ -181,12 +183,12 @@ DocumentObject* DocumentObjectT::getObject() const
     return obj;
 }
 
-std::string DocumentObjectT::getObjectName() const
+const std::string &DocumentObjectT::getObjectName() const
 {
     return object;
 }
 
-std::string DocumentObjectT::getObjectLabel() const
+const std::string &DocumentObjectT::getObjectLabel() const
 {
     return label;
 }
@@ -208,7 +210,7 @@ std::string DocumentObjectT::getObjectPython() const
     return str.str();
 }
 
-std::string DocumentObjectT::getPropertyName() const {
+const std::string &DocumentObjectT::getPropertyName() const {
     return property;
 }
 
@@ -231,6 +233,87 @@ Property *DocumentObjectT::getProperty() const {
 }
 // -----------------------------------------------------------------------------
 
+SubObjectT::SubObjectT()
+{}
+
+SubObjectT::SubObjectT(const DocumentObject *obj, const char *s)
+    :DocumentObjectT(obj),subname(s?s:"")
+{}
+
+bool SubObjectT::operator<(const SubObjectT &other) const {
+    if(getDocumentName() < other.getDocumentName())
+        return true;
+    if(getDocumentName() > other.getDocumentName())
+        return false;
+    if(getObjectName() < other.getObjectName())
+        return true;
+    if(getObjectName() > other.getObjectName())
+        return false;
+    if(getSubName() < other.getSubName())
+        return true;
+    if(getSubName() > other.getSubName())
+        return false;
+    return getPropertyName() < other.getPropertyName();
+}
+
+void SubObjectT::setSubName(const char *s) {
+    subname = s?s:"";
+}
+
+const std::string &SubObjectT::getSubName() const {
+    return subname;
+}
+
+std::string SubObjectT::getSubNameNoElement() const {
+    return Data::ComplexGeoData::noElementName(subname.c_str());
+}
+
+const char *SubObjectT::getElementName() const {
+    return Data::ComplexGeoData::findElementName(subname.c_str());
+}
+
+std::string SubObjectT::getNewElementName() const {
+    std::pair<std::string, std::string> element;
+    auto obj = getObject();
+    if(!obj)
+        return std::string();
+    GeoFeature::resolveElement(obj,subname.c_str(),element);
+    return std::move(element.first);
+}
+
+std::string SubObjectT::getOldElementName(int *index) const {
+    std::pair<std::string, std::string> element;
+    auto obj = getObject();
+    if(!obj)
+        return std::string();
+    GeoFeature::resolveElement(obj,subname.c_str(),element);
+    if(!index) 
+        return std::move(element.second);
+    std::size_t pos = element.second.find_first_of("0123456789");
+    if(pos == std::string::npos)
+        *index = -1;
+    else {
+        *index = std::atoi(element.second.c_str()+pos);
+        element.second.resize(pos);
+    }
+    return std::move(element.second);
+}
+
+App::DocumentObject *SubObjectT::getSubObject() const {
+    auto obj = getObject();
+    if(obj)
+        return obj->getSubObject(subname.c_str());
+    return 0;
+}
+
+std::vector<App::DocumentObject*> SubObjectT::getSubObjectList() const {
+    auto obj = getObject();
+    if(obj)
+        return obj->getSubObjectList(subname.c_str());
+    return {};
+}
+
+// -----------------------------------------------------------------------------
 DocumentObserver::DocumentObserver() : _document(0)
 {
     this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(boost::bind
