@@ -361,7 +361,7 @@ bool SelectionSingleton::hasSelection() const
 }
 
 bool SelectionSingleton::hasPreselection() const {
-    return !CurrentPreselection.ObjName.empty();
+    return !CurrentPreselection.Object.getObjectName().empty();
 }
 
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getCompleteSelection(int resolve) const
@@ -584,9 +584,7 @@ void SelectionSingleton::notify(SelectionChanges &&Chng) {
             break;
         case SelectionChanges::SetPreselect:
             notify = CurrentPreselection.Type==SelectionChanges::SetPreselect 
-                && CurrentPreselection.DocName == msg.DocName
-                && CurrentPreselection.ObjName == msg.ObjName
-                && CurrentPreselection.SubName == msg.SubName;
+                && CurrentPreselection.Object == msg.Object;
             break;
         case SelectionChanges::RmvPreselect:
             notify = CurrentPreselection.Type==SelectionChanges::ClrSelection;
@@ -719,14 +717,12 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
        msg.Type == SelectionChanges::HideSelection)
         return;
     
-    if(msg.DocName.size() && msg.ObjName.size() && msg.SubName.size()) {
-        App::Document* pDoc = getDocument(msg.pDocName);
-        if(!pDoc) return;
+    if(msg.Object.getSubName().size()) {
+        auto pParent = msg.Object.getObject();
+        if(!pParent) return;
         std::pair<std::string,std::string> elementName;
         auto &newElementName = elementName.first;
         auto &oldElementName = elementName.second;
-        auto pParent = pDoc->getObject(msg.pObjectName);
-        if(!pParent) return;
         auto pObject = App::GeoFeature::resolveElement(pParent,msg.pSubName,elementName);
         if (!pObject) return;
         SelectionChanges msg2(msg.Type,pObject->getDocument()->getName(),
@@ -735,12 +731,10 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
                 pObject->getTypeId().getName(), msg.x,msg.y,msg.z);
 
         msg2.pOriginalMsg = &msg;
-        msg2.pParentObject = pParent;
-        msg2.pSubObject = pObject;
         signalSelectionChanged3(msg2);
 
-        msg2.SubName = oldElementName;
-        msg2.pSubName = msg2.SubName.c_str();
+        msg2.Object.setSubName(oldElementName.c_str());
+        msg2.pSubName = msg2.Object.getSubName().c_str();
         signalSelectionChanged2(msg2);
 
     }else {
@@ -854,7 +848,7 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     static char buf[513];
 
     // if nothing is in preselect ignore
-    if(!CurrentPreselection.pObjectName || CurrentPreselection.ObjName.empty()) return;
+    if(CurrentPreselection.Object.getObjectName().empty()) return;
 
     CurrentPreselection.x = x;
     CurrentPreselection.y = y;
@@ -1053,7 +1047,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     SelectionChanges Chng(SelectionChanges::AddSelection,
             temp.DocName,temp.FeatName,temp.SubName,temp.TypeName, x,y,z);
 
-    FC_LOG("Add Selection "<<Chng.DocName<<'#'<<Chng.ObjName<<'.'<<Chng.SubName
+    FC_LOG("Add Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName
             << " (" << x << ", " << y << ", " << z << ')');
 
     notify(std::move(Chng));
@@ -1198,7 +1192,7 @@ bool SelectionSingleton::addSelections(const char* pDocName, const char* pObject
         SelectionChanges Chng(SelectionChanges::AddSelection,
                 temp.DocName,temp.FeatName,temp.SubName,temp.TypeName);
 
-        FC_LOG("Add Selection "<<Chng.DocName<<'#'<<Chng.ObjName<<'.'<<Chng.SubName);
+        FC_LOG("Add Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName);
 
         notify(std::move(Chng));
         update = true;
@@ -1233,7 +1227,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
     SelectionChanges Chng(show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection,
             pDocName,pObjectName,pSubName,pObject->getTypeId().getName());
 
-    FC_LOG("Update Selection "<<Chng.DocName << '#' << Chng.ObjName << '.' <<Chng.SubName);
+    FC_LOG("Update Selection "<<Chng.pDocName << '#' << Chng.pObjectName << '.' <<Chng.pSubName);
 
     notify(std::move(Chng));
 
@@ -1327,7 +1321,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     // So, the notification is done after the loop, see also #0003469
     if(changes.size()) {
         for(auto &Chng : changes) {
-            FC_LOG("Rmv Selection "<<Chng.DocName<<'#'<<Chng.ObjName<<'.'<<Chng.SubName);
+            FC_LOG("Rmv Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName);
             notify(std::move(Chng));
         }
         getMainWindow()->updateActions();
@@ -1674,7 +1668,7 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
     }
     if(changes.size()) {
         for(auto &Chng : changes) {
-            FC_LOG("Rmv Selection "<<Chng.DocName<<'#'<<Chng.ObjName<<'.'<<Chng.SubName);
+            FC_LOG("Rmv Selection "<<Chng.pDocName<<'#'<<Chng.pObjectName<<'.'<<Chng.pSubName);
             notify(std::move(Chng));
         }
         getMainWindow()->updateActions();
