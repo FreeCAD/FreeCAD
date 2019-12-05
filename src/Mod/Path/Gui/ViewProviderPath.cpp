@@ -97,22 +97,26 @@ public:
             setArrow();
             return;
         }
-        if((msg.Type!=Gui::SelectionChanges::SetPreselect 
+        if(msg.Type!=Gui::SelectionChanges::SetPreselect 
                     && msg.Type!=Gui::SelectionChanges::MovePreselect)
-                || !msg.pOriginalMsg || !msg.pSubObject || !msg.pParentObject)
+            return;
+        auto obj = msg.Object.getObject();
+        if(!obj)
+            return;
+        Base::Matrix4D mat;
+        auto sobj = obj->getSubObject(msg.pSubName,0,&mat);
+        if(!sobj)
             return;
         Base::Matrix4D linkMat;
-        auto sobj = msg.pSubObject->getLinkedObject(true,&linkMat,false);
+        auto linked = sobj->getLinkedObject(true,&linkMat,false);
         auto vp = Base::freecad_dynamic_cast<ViewProviderPath>(
-                        Application::Instance->getViewProvider(sobj));
+                        Application::Instance->getViewProvider(linked));
         if(!vp) {
             setArrow();
             return;
         }
         
         if(vp->pt0Index >= 0) { 
-            Base::Matrix4D mat;
-            msg.pParentObject->getSubObject(msg.pSubName,0,&mat);
             mat *= linkMat;
             mat.inverse();
             Base::Vector3d pt = mat*Base::Vector3d(msg.x,msg.y,msg.z);
