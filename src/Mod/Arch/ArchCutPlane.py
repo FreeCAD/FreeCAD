@@ -25,7 +25,7 @@
 import FreeCAD,ArchCommands
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
-    import FreeCADGui,Part
+    import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
 else:
@@ -46,10 +46,11 @@ __url__ = "http://www.freecadweb.org"
 
 def getPlanWithLine(line):
     """Function to make a plane along Normal plan"""
-    plan= FreeCAD.DraftWorkingPlane
-    w=plan.getNormal()
-    part=Part.Shape(line)
-    out=part.extrude(w)
+    import Part
+    plan = FreeCAD.DraftWorkingPlane
+    w = plan.getNormal()
+    part = Part.Shape(line)
+    out = part.extrude(w)
     return out
 
 
