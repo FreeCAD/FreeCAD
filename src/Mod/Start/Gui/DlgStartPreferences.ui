@@ -548,6 +548,9 @@
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
+        <property name="toolTip">
+         <string>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -569,12 +572,16 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="1">
-       <widget class="QComboBox" name="AutoloadModuleCombo"/>
+       <widget class="QComboBox" name="AutoloadModuleCombo">
+        <property name="toolTip">
+         <string>Choose which workbench to switch to after the program launches</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBox_2">
         <property name="toolTip">
-         <string>Should the start page be closed after loading?</string>
+         <string>If checked, will automatically close the Start page when FreeCAD launches</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
