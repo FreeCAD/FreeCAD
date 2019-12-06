@@ -1230,22 +1230,22 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
         return false;
     if(!pSubName)
         pSubName = "";
-    if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
+    auto pDoc = getDocument(pDocName);
+    if(!pDoc) return false;
+    auto pObject = pDoc->getObject(pObjectName);
+    if(!pObject) return false;
+    _SelObj sel;
+    if(checkSelection(pDocName,pObjectName,pSubName,0,sel,&_SelList)<=0)
+        return false;
+    if(DocName==sel.DocName && FeatName==sel.FeatName && SubName==sel.SubName) {
         if(show) {
             FC_TRACE("preselect signal");
             notify(SelectionChanges(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName));
         }else
             rmvPreselect();
     }
-    auto pDoc = getDocument(pDocName);
-    if(!pDoc) return false;
-    auto pObject = pDoc->getObject(pObjectName);
-    if(!pObject) return false;
-    if (!isSelected(pObject, pSubName,0))
-        return false;
-
     SelectionChanges Chng(show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection,
-            pDocName,pObjectName,pSubName,pObject->getTypeId().getName());
+            sel.DocName, sel.FeatName, sel.SubName, sel.pObject->getTypeId().getName());
 
     FC_LOG("Update Selection "<<Chng.DocName << '#' << Chng.ObjName << '.' <<Chng.SubName);
 
