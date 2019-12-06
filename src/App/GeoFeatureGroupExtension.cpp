@@ -393,7 +393,7 @@ void GeoFeatureGroupExtension::getCSInList(const DocumentObject* obj,
 
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSRelevantLinks(const DocumentObject* obj) {
 
-    if(!obj)
+    if(!obj || !obj->getNameInDocument() || obj->testStatus(App::ObjectStatus::Remove))
         return std::vector< DocumentObject* >();
 
     //get all out links 
@@ -421,7 +421,10 @@ void GeoFeatureGroupExtension::recursiveCSRelevantLinks(const DocumentObject* ob
 
     //go on traversing the graph in all directions!
     for(auto o : links) {   
-        if(!o || o == obj ||  std::find(vec.begin(), vec.end(), o) != vec.end())
+        if(!o || !o->getNameInDocument()
+              || o->testStatus(App::ObjectStatus::Remove)
+              || o == obj 
+              || std::find(vec.begin(), vec.end(), o) != vec.end())
             continue;
 
         vec.push_back(o);
