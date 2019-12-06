@@ -214,7 +214,7 @@ def export(exportList,filename,colors=None,preferences=None):
 
     if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
         trueNorthX = math.tan(-Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian))
-        contextCreator.model_context.TrueNorth.DirectionRatios = (trueNorthX, 1., 1.)
+        contextCreator.model_context.TrueNorth.DirectionRatios = (trueNorthX, 1.)
 
     products = {} # { Name: IfcEntity, ... }
     subproducts = {} # { Name: IfcEntity, ... } for storing additions/subtractions and other types of subcomponents of a product
@@ -307,8 +307,8 @@ def export(exportList,filename,colors=None,preferences=None):
             for axg in axgroups:
                 ifcaxg = []
                 for ax in axg:
-                    p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)))
-                    p2 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(0.001)))
+                    p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)[:2]))
+                    p2 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(0.001)[:2]))
                     pol = ifcbin.createIfcPolyline([p1,p2])
                     ifcpols.append(pol)
                     axis = ifcfile.createIfcGridAxis(ax[2],pol,True)
@@ -1656,8 +1656,8 @@ def getProfile(ifcfile,p):
         # arbitrarily use the first edge as the rectangle orientation
         d = vec(p.Edges[0])
         d.normalize()
-        pxvc = ifcbin.createIfcDirection(tuple(d))
-        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass))
+        pxvc = ifcbin.createIfcDirection(tuple(d)[:2])
+        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
