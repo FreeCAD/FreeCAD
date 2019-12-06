@@ -714,18 +714,17 @@ class svgHandler(xml.sax.ContentHandler):
         if self.count == 1 and name == 'svg':
             if 'inkscape:version' in data:
                 inks_doc_name = attrs.getValue('sodipodi:docname')
-                inks_full_ver = attrs.getValue('inkscape:version')[:4]
-                inks_full_ver_list = inks_full_ver.split('.')
-                _maj = int(inks_full_ver_list[0])
-                _min = int(inks_full_ver_list[1])
-
+                inks_full_ver = attrs.getValue('inkscape:version')
+                inks_ver_pars = re.search("\d+\.\d+", inks_full_ver)
+                if inks_ver_pars != None:
+                    inks_ver_f = float(inks_ver_pars.group(0))
+                else:
+                    inks_ver_f = 99.99
                 # Inkscape before 0.92 used 90 dpi as resolution
                 # Newer versions use 96 dpi
-                if _maj == 0 and _min > 91:
-                    self.svgdpi = 96.0
-                elif _maj == 0 and _min < 92:
+                if inks_ver_f < 0.92:
                     self.svgdpi = 90.0
-                elif _maj > 0:
+                else:
                     self.svgdpi = 96.0
             if 'inkscape:version' not in data:
                 _msg = ("This SVG file does not appear to have been produced "

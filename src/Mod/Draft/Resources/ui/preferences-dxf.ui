@@ -60,7 +60,9 @@ Note: C++ importer is faster, but is not as featureful yet</string>
     <widget class="Gui::PrefCheckBox" name="checkBox_7">
      <property name="toolTip">
       <string>Python exporter is used, otherwise the newer C++ is used.
-Note: C++ importer is faster, but is not as featureful yet</string>
+Note: C++ importer is faster, but is not as featureful yet
+      </string>
+     </property>
      <property name="text">
       <string>Use legacy python exporter</string>
      </property>
