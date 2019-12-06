@@ -546,8 +546,12 @@ void QGIViewDimension::updateDim()
     if (dim->Arbitrary.getValue()) {
         labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
     } else {
-        labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
-        unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
+        if (dim->isMultiValueSchema()) {
+            labelText = QString::fromUtf8(dim->getFormatedValue(0).c_str()); //don't format multis
+        } else {
+            labelText = QString::fromUtf8(dim->getFormatedValue(1).c_str()); //just the number pref/spec/suf
+            unitText  = QString::fromUtf8(dim->getFormatedValue(2).c_str()); //just the unit
+        }
     }
     
     QFont font = datumLabel->getFont();

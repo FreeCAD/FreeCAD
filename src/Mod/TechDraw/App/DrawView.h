@@ -52,8 +52,8 @@ public:
     DrawView(void);
     virtual ~DrawView();
 
-    App::PropertyLength X;
-    App::PropertyLength Y;
+    App::PropertyDistance X;
+    App::PropertyDistance Y;
     App::PropertyBool LockPosition;
     App::PropertyFloatConstraint Scale;
 

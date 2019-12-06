@@ -64,7 +64,7 @@ protected:
     void saveSectionState();
     void restoreSectionState();
 
-    void apply(void);
+    bool apply(void);
     void applyQuick(std::string dir);
     void applyAligned(void);
 
@@ -96,6 +96,9 @@ private:
 
     bool m_createMode;
     bool m_saved;
+
+    std::string m_saveBaseName;
+    std::string m_savePageName;
 
 };
 

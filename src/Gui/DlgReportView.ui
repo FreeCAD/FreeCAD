@@ -88,6 +88,10 @@
       </item>
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkShowReportViewOnWarningOrError">
+        <property name="toolTip">
+         <string>When an error has occurred, the Report View dialog becomes visible
+on-screen while displaying the error</string>
+        </property>
         <property name="text">
          <string>Show report view on warning or error</string>
         </property>

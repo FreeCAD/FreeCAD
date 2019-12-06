@@ -363,22 +363,20 @@ void DrawView::handleChangedPropertyType(
                 static_cast<App::PropertyLinkList*>(prop)->setValue(link.getValue());
             }
         }
+    // property X had App::PropertyFloat and was changed to App::PropertyLength
+    // sb PropertyDistance.  some X,Y are relative to existing point on page
+    } else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat XProperty;
+        XProperty.setContainer(this);
+        // restore the PropertyFloat to be able to set its value
+        XProperty.Restore(reader);
+        X.setValue(XProperty.getValue());
+    } else if (prop == &Y && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat YProperty;
+        YProperty.setContainer(this);
+        YProperty.Restore(reader);
+        Y.setValue(YProperty.getValue());
     }
-	// property X had App::PropertyFloat and was changed to App::PropertyLength
-	else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
-		App::PropertyFloat XProperty;
-		XProperty.setContainer(this);
-		// restore the PropertyFloat to be able to set its value
-		XProperty.Restore(reader);
-		X.setValue(XProperty.getValue());
-	}
-	// property Y had App::PropertyFloat and was changed to App::PropertyLength
-	else if (prop == &Y && strcmp(TypeName, "App::PropertyFloat") == 0) {
-		App::PropertyFloat YProperty;
-		YProperty.setContainer(this);
-		YProperty.Restore(reader);
-		Y.setValue(YProperty.getValue());
-	}
 }
 
 bool DrawView::keepUpdated(void)

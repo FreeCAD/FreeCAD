@@ -132,6 +132,7 @@ class Layer:
 class ViewProviderLayer:
     """A View Provider for the Layer object"""
 
+
     def __init__(self, vobj):
         vobj.addProperty("App::PropertyBool", "OverrideLineColorChildren", "Layer", QT_TRANSLATE_NOOP("App::Property",
                                                                                                       "If on, the child objects of this layer will match its visual aspects"))
@@ -157,6 +158,7 @@ class ViewProviderLayer:
         vobj.LineWidth = w
         c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor", 4294967295)
         vobj.ShapeColor = (((c >> 24) & 0xFF) / 255, ((c >> 16) & 0xFF) / 255, ((c >> 8) & 0xFF) / 255)
+
         vobj.DrawStyle = "Solid"
 
         vobj.Proxy = self
@@ -243,6 +245,7 @@ class ViewProviderLayer:
             b.open(QtCore.QIODevice.WriteOnly)
             im.save(b, "XPM")
             self.icondata = ba.data().decode("latin1")
+            vobj.signalChangeIcon()
 
     def canDragObject(self, obj):
         return True
