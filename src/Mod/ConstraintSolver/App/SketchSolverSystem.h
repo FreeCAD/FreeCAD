@@ -67,6 +67,7 @@ public: //methods
     SubSystem(HParameterStore store);
     SubSystem(HParameterSubset params, std::vector<HConstraint> constraints);
     HParameterSubset params() const {return _params;}
+    const std::vector<HConstraint>& constraints() const {return _constraints;}
     const std::vector<Subconstraint>& subconstraints(){return _subconstraints;}
 
     ///fills look-up tables

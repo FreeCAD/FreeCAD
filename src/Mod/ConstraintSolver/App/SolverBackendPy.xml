@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="BaseClassPy" 
+	  Name="SolverBackendPy" 
+	  Twin="SolverBackend" 
+	  TwinPointer="SolverBackend" 
+	  Include="Mod/ConstraintSolver/App/SolverBackend.h" 
+	  FatherInclude="Base/BaseClassPy.h" 
+	  Namespace="FCS" 
+	  Constructor="true"
+	  Delete="true"
+	  FatherNamespace="Base"
+      Initialization = "true"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>Low-level solver algorithm.</DeveloperDocu>
+	  <UserDocu>Low-level solver algorithm. Constructor: SolverBackend(backend_typeid), where backend_typeid is like \"FCS::DogLeg\"</UserDocu>
+	</Documentation>
+    
+    <Attribute Name="Prefs">
+      <Documentation>
+        <UserDocu>Solver preferences (a dict)</UserDocu>
+      </Documentation>
+      <Parameter Name="Prefs" Type="Dict" />
+    </Attribute>
+
+
+	<Methode Name="solve">
+	  <Documentation>
+		<UserDocu>solve(subsystem, valueset). Solves a single subsystem. 
+        valueset: is used as a starting point, and is updated with the (potentially failed) solution. 
+        Returns 'Success' or 'Minimized'. If fails, raises an error.</UserDocu>
+	  </Documentation>
+	</Methode>
+	<Methode Name="solvePair">
+	  <Documentation>
+		<UserDocu>solvePair(mainsystem, auxsystem, valueset). Solves a pair of subsystems.
+        The goal is to minimize error of auxsystem while precizely solving mainsystem. For 
+        applications like dragging with mouse.
+        valueset: is used as a starting point, and is updated with the (potentially failed) solution. 
+        Returns 'Success' or 'Minimized'; the return value is for mainsystem, and is irrelevant 
+        to auxsystem. If fails, raises an error.</UserDocu>
+	  </Documentation>
+	</Methode>
+
+  </PythonExport>
+</GenerateModel>

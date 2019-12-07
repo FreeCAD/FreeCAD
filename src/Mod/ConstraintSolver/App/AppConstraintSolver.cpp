@@ -53,6 +53,8 @@
 #include "SketchSolverPy.h"
 #include "SketchSolverSystem.h"
 #include "SubSystemPy.h"
+#include "SolverBackend.h"
+#include "SolverBackendPy.h"
 
 #include "G2D/ParaPoint.h"
 #include "G2D/ParaPointPy.h"
@@ -141,6 +143,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::ParaGeometryPy    ::Type.tp_name = "ConstraintSolver.ParaGeometry"    ;
     FCS::SketchSolverPy    ::Type.tp_name = "ConstraintSolver.SketchSolver"    ;
     FCS::SubSystemPy       ::Type.tp_name = "ConstraintSolver.SubSystem"       ;
+    FCS::SolverBackendPy   ::Type.tp_name = "ConstraintSolver.SolverBackend"   ;
 
     //add python types as module members
   //Base::Interpreter().addType(&FCS::                  ::Type, mod, ""                );
@@ -154,6 +157,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::ParaGeometryPy    ::Type, mod, "ParaGeometry"    );
     Base::Interpreter().addType(&FCS::SketchSolverPy    ::Type, mod, "SketchSolver"    );
     Base::Interpreter().addType(&FCS::SubSystemPy       ::Type, mod, "SubSystem"       );
+    Base::Interpreter().addType(&FCS::SolverBackendPy   ::Type, mod, "SolverBackend"   );
 
 
     Py::Module submodG2D =  makeSubmodule(mod, "__FreeCAD_FCS_G2D__", "G2D", init_freecad_FCS_G2D_module);
@@ -166,13 +170,14 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::G2D::ConstraintDistancePy ::Type, submodG2D.ptr(), "ConstraintDistance"  );
 
     //fill type system
-    FCS::ParameterStore   ::init();
-    FCS::ParaObject       ::init();
-    FCS::Constraint       ::init();
-    FCS::SimpleConstraint ::init();
-    FCS::ParaGeometry     ::init();
-    FCS::SketchSolver     ::init();
-    FCS::SubSystem        ::init();
+    FCS::ParameterStore     ::init();
+    FCS::ParaObject         ::init();
+    FCS::Constraint         ::init();
+    FCS::SimpleConstraint   ::init();
+    FCS::ParaGeometry       ::init();
+    FCS::SketchSolver       ::init();
+    FCS::SubSystem          ::init();
+    FCS::SolverBackend      ::init();
 
 
     FCS::G2D::ParaPoint          ::init();

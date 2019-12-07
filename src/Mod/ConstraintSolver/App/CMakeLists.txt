@@ -32,7 +32,7 @@ generate_from_xml(SimpleConstraintPy)
 generate_from_xml(ParaObjectPy)
 generate_from_xml(ParaGeometryPy)
 generate_from_xml(SketchSolverSystemPy)
-generate_from_xml(SketchSolverPy)
+generate_from_xml(SolverBackendPy)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/G2D)
 generate_from_xml(G2D/ParaPointPy)
@@ -82,6 +82,8 @@ SET(Python_Solver_SRCS
     SketchSolverPyImp.cpp
     SketchSolverSystemPy.xml
     SketchSolverSystemPyImp.cpp
+    SolverBackendPy.xml
+    SolverBackendPyImp.cpp
 )
 
 SET(ConstraintSolver_Solver_SRCS
@@ -107,6 +109,8 @@ SET(ConstraintSolver_Solver_SRCS
     SketchSolver.cpp
     SketchSolverSystem.h
     SketchSolverSystem.cpp
+    SolverBackend.h
+    SolverBackend.cpp
 )
 
 SET(ConstraintSolver_Module_SRCS

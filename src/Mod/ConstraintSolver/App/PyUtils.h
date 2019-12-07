@@ -62,6 +62,7 @@ inline Ty* pyTypeCheck(PyObject* obj)
     return static_cast<Ty*>(obj);
 };
 
+///for use in PyMake
 inline PyObject* raiseBaseException(Base::Exception& e)
 {
     auto pye = e.getPyExceptionType();
@@ -69,6 +70,17 @@ inline PyObject* raiseBaseException(Base::Exception& e)
         pye = Base::BaseExceptionFreeCADError;
     PyErr_SetObject(pye, e.getPyObject());
     return nullptr;
+}
+
+template <typename Enum>
+inline Enum str2enum(Py::String value, const char* valueNames[]){
+    std::string strvalue = Py::String(value);
+    for (int i = 0; valueNames[i] != nullptr; ++i) {
+        if (valueNames[i] == strvalue){
+            return Enum(i);
+        }
+    }
+    throw Py::ValueError("Not recognized: " + strvalue);
 }
 
 } //namespace
