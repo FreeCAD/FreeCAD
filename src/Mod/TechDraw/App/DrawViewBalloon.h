@@ -54,8 +54,8 @@ public:
     App::PropertyEnumeration EndType;
     App::PropertyEnumeration Symbol;
     App::PropertyFloat       SymbolScale;
-    App::PropertyLength      OriginX;
-    App::PropertyLength      OriginY;
+    App::PropertyDistance    OriginX;
+    App::PropertyDistance    OriginY;
     App::PropertyBool        OriginIsSet;
     App::PropertyFloat       TextWrapLen;
 
