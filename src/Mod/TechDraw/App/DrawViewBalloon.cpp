@@ -136,8 +136,8 @@ void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const c
 
 	// property OriginX had the App::PropertyFloat and was changed to App::PropertyLength
 	if (prop == &OriginX && strcmp(TypeName, "App::PropertyFloat") == 0) {
-		App::PropertyInteger OriginXProperty;
-		// restore the PropertyInteger to be able to set its value
+		App::PropertyFloat OriginXProperty;
+		// restore the PropertyFloat to be able to set its value
 		OriginXProperty.Restore(reader);
 		OriginX.setValue(OriginXProperty.getValue());
 	}
