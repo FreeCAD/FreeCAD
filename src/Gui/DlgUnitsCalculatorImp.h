@@ -50,19 +50,17 @@ protected:
     void reject();
 
 protected Q_SLOTS:
-    void unitValueChanged(const Base::Quantity&);
+    void textChanged(const QString);
     void valueChanged(const Base::Quantity&);
     void on_unitsBox_activated(int);
 
     void copy(void);
-    void help(void);
     void returnPressed(void);
 
     void parseError(const QString& errorText);
 
 private:
     Base::Quantity actValue;
-    Base::Quantity actUnit;
     std::unique_ptr<Ui_DlgUnitCalculator> ui;
     QList<Base::Unit> units;
 };
