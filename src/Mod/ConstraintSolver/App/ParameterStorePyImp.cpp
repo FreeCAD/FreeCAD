@@ -74,7 +74,7 @@ PyObject* ParameterStorePy::addN(PyObject* args)
                 }
             }
             return Py::new_reference_to(ret);
-        } catch (Py::Exception &e) {
+        } catch (Py::Exception&) {
             return nullptr; //error message whould already be set by PyCXX
         }
     };
