@@ -52,6 +52,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "Window.h"
+#include "ViewParams.h"
 
 #include <Base/Console.h>
 #include <Base/Placement.h>
@@ -75,8 +76,10 @@ PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
-    : pcBoundSwitch(0)
+    : pcBoundingBox(0)
+    , pcBoundSwitch(0)
     , pcBoundColor(0)
+    , pcSwitchSensor(0)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool randomColor = hGrp->GetBool("RandomColor", false);
@@ -101,21 +104,11 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     App::Material mat(App::Material::DEFAULT);
     ADD_PROPERTY(ShapeMaterial,(mat));
     ADD_PROPERTY(BoundingBox,(false));
-    ADD_PROPERTY(Selectable,(true));
-
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    Selectable.setValue(enableSel);
 
     pcShapeMaterial = new SoMaterial;
     pcShapeMaterial->ref();
     //ShapeMaterial.touch(); materials are rarely used, so better to initialize with default shape color
     ShapeColor.touch();
-
-    pcBoundingBox = new Gui::SoFCBoundingBox;
-    pcBoundingBox->ref();
-
-    pcBoundColor = new SoBaseColor();
-    pcBoundColor->ref();
 
     sPixmap = "Feature";
 }
@@ -123,8 +116,13 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
 ViewProviderGeometryObject::~ViewProviderGeometryObject()
 {
     pcShapeMaterial->unref();
-    pcBoundingBox->unref();
-    pcBoundColor->unref();
+    if(pcBoundingBox)
+        pcBoundingBox->unref();
+    if(pcBoundSwitch)
+        pcBoundSwitch->unref();
+    if(pcBoundColor)
+        pcBoundColor->unref();
+    delete pcSwitchSensor;
 }
 
 void ViewProviderGeometryObject::onChanged(const App::Property* prop)
@@ -132,11 +130,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
     // Actually, the properties 'ShapeColor' and 'Transparency' are part of the property 'ShapeMaterial'.
     // Both redundant properties are kept due to more convenience for the user. But we must keep the values
     // consistent of all these properties.
-    if (prop == &Selectable) {
-        bool Sel = Selectable.getValue();
-        setSelectable(Sel);
-    }
-    else if (prop == &ShapeColor) {
+    if (prop == &ShapeColor) {
         const App::Color& c = ShapeColor.getValue();
         pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
         if (c != ShapeMaterial.getValue().diffuseColor)
@@ -180,24 +174,20 @@ void ViewProviderGeometryObject::attach(App::DocumentObject *pcObj)
 
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
-    if (prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
-        Base::BoundBox3d box = static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
+    if(prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId()))
+        updateBoundingBox();
+
+    ViewProviderDragger::updateData(prop);
+}
+
+void ViewProviderGeometryObject::updateBoundingBox() {
+    if(pcBoundingBox) {
+        Base::BoundBox3d box = this->getBoundingBox(0,0,false);
+        if(!box.IsValid())
+            return;
         pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
     }
-    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
-        App::GeoFeature* geometry = dynamic_cast<App::GeoFeature*>(getObject());
-        if (geometry && prop == &geometry->Placement) {
-            const App::PropertyComplexGeoData* data = geometry->getPropertyOfGeometry();
-            if (data) {
-                Base::BoundBox3d box = data->getBoundingBox();
-                pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
-                pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
-            }
-        }
-    }
-
-    ViewProviderDragger::updateData(prop);
 }
 
 SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos, const View3DInventorViewer& viewer,bool pickAll) const
@@ -241,9 +231,45 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
 
 unsigned long ViewProviderGeometryObject::getBoundColor() const
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long bbcol = hGrp->GetUnsigned("BoundingBoxColor",4294967295UL); // white (255,255,255)
-    return bbcol;
+    return ViewParams::instance()->getBoundingBoxColor();
+}
+
+void ViewProviderGeometryObject::addBoundSwitch() {
+    if(!pcBoundSwitch)
+        return;
+
+    if(pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
+        if(pcModeSwitch->findChild(pcBoundSwitch)>=0)
+            return;
+        pcModeSwitch->addChild(pcBoundSwitch);
+        // SoFCSwitch::tailChild is shown together with whichChild as long as
+        // whichChild is not -1. Put the bound box there is better then putting
+        // as the last node in all mode group node.  For example,
+        // Arch.BuildingPart puts a SoTransform inside its mode group, which
+        // messes up the bound box display.
+        //
+        // It is also better than putting the bound switch outside of mode
+        // switch like before, because we can easily hide the bound box together
+        // with the object, and also good for Link as it won't show the bound
+        // box
+        static_cast<SoFCSwitch*>(pcModeSwitch)->tailChild = pcModeSwitch->getNumChildren()-1;
+        return;
+    }
+
+    for(int i=0;i<pcModeSwitch->getNumChildren();++i) {
+        auto node = pcModeSwitch->getChild(i);
+        if(!node->isOfType(SoGroup::getClassTypeId()))
+            continue;
+        auto group = static_cast<SoGroup*>(node);
+        int idx = group->findChild(pcBoundSwitch);
+        if(idx >= 0) {
+            // make sure we are added last
+            if(idx == group->getNumChildren()-1)
+                continue;
+            group->removeChild(idx);
+        }
+        group->addChild(pcBoundSwitch);
+    }
 }
 
 void ViewProviderGeometryObject::showBoundingBox(bool show)
@@ -254,22 +280,39 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         r = ((bbcol >> 24) & 0xff) / 255.0; g = ((bbcol >> 16) & 0xff) / 255.0; b = ((bbcol >> 8) & 0xff) / 255.0;
 
         pcBoundSwitch = new SoSwitch();
+        pcBoundSwitch->ref();
         SoSeparator* pBoundingSep = new SoSeparator();
         SoDrawStyle* lineStyle = new SoDrawStyle;
         lineStyle->lineWidth = 2.0f;
         pBoundingSep->addChild(lineStyle);
 
+        if(!pcBoundColor) {
+            pcBoundColor = new SoBaseColor;
+            pcBoundColor->ref();
+        }
         pcBoundColor->rgb.setValue(r, g, b);
         pBoundingSep->addChild(pcBoundColor);
 
-        pBoundingSep->addChild(new SoResetTransform());
+        if(!pcBoundingBox) {
+            pcBoundingBox = new SoFCBoundingBox;
+            pcBoundingBox->ref();
+        }
         pBoundingSep->addChild(pcBoundingBox);
         pcBoundingBox->coordsOn.setValue(false);
         pcBoundingBox->dimensionsOn.setValue(true);
 
         // add to the highlight node
         pcBoundSwitch->addChild(pBoundingSep);
-        pcRoot->addChild(pcBoundSwitch);
+
+        updateBoundingBox();
+
+        addBoundSwitch();
+        pcSwitchSensor = new SoNodeSensor;
+        pcSwitchSensor->setData(this);
+        pcSwitchSensor->attach(pcModeSwitch);
+        pcSwitchSensor->setFunction([](void *data, SoSensor*) {
+            reinterpret_cast<ViewProviderGeometryObject*>(data)->addBoundSwitch();
+        });
     }
 
     if (pcBoundSwitch) {
@@ -277,30 +320,3 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
     }
 }
 
-void ViewProviderGeometryObject::setSelectable(bool selectable)
-{
-    SoSearchAction sa;
-    sa.setInterest(SoSearchAction::ALL);
-    sa.setSearchingAll(true);
-    sa.setType(Gui::SoFCSelection::getClassTypeId());
-    sa.apply(pcRoot);
-
-    SoPathList & pathList = sa.getPaths();
-
-    for (int i=0;i<pathList.getLength();i++) {
-        SoFCSelection *selNode = dynamic_cast<SoFCSelection*>(pathList[i]->getTail());
-        if (selectable) {
-            if (selNode) {
-                selNode->selectionMode = SoFCSelection::SEL_ON;
-                selNode->highlightMode = SoFCSelection::AUTO;
-            }
-        }
-        else {
-            if (selNode) {
-                selNode->selectionMode = SoFCSelection::SEL_OFF;
-                selNode->highlightMode = SoFCSelection::OFF;
-                selNode->selected = SoFCSelection::NOTSELECTED;
-            }
-        }
-    }
-}

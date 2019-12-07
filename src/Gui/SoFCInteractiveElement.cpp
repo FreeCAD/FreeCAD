@@ -261,6 +261,13 @@ void SoGLVBOActivatedElement::get(SoState * state, SbBool& active)
     }
 }
 
+SbBool SoGLVBOActivatedElement::get(SoState * state)
+{
+    const SoGLVBOActivatedElement* self =  static_cast<const SoGLVBOActivatedElement *>
+        (SoElement::getConstElement(state, classStackIndex));
+    return self->active;
+}
+
 void SoGLVBOActivatedElement::push(SoState * state)
 {
     inherited::push(state);

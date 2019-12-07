@@ -582,7 +582,7 @@ class ViewProviderBuildingPart:
         self.Object = vobj.Object
         self.clip = None
         from pivy import coin
-        self.sep = coin.SoGroup()
+        self.sep = coin.SoSeparator()
         self.mat = coin.SoMaterial()
         self.sep.addChild(self.mat)
         self.dst = coin.SoDrawStyle()

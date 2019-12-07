@@ -48,6 +48,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
+#include <Gui/SoFCSelectionAction.h>
 #include <Base/Console.h>
 
 
@@ -105,6 +106,9 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
 }
 
 void ViewProviderAddSub::updateAddSubShapeIndicator() {
+
+    Gui::SoUpdateVBOAction action;
+    action.apply(this->previewFaceSet);
 
     TopoDS_Shape cShape(static_cast<PartDesign::FeatureAddSub*>(getObject())->AddSubShape.getValue());
     if (cShape.IsNull()) {
@@ -267,7 +271,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
 
 void ViewProviderAddSub::updateData(const App::Property* p) {
 
-    if(strcmp(p->getName(), "AddSubShape")==0)
+    if(p && p->getName() && strcmp(p->getName(), "AddSubShape")==0)
         updateAddSubShapeIndicator();
 
     PartDesignGui::ViewProvider::updateData(p);

@@ -64,7 +64,7 @@ public:
     SoSFVec3f maxBounds; /**< maximum box coordinates */
     SoSFBool coordsOn; /**< If true, the coordinates are displayed at each vertex */
     SoSFBool dimensionsOn; /**< If true, the dimensions are displayed in x,y and z direction */
-
+    SoSFBool skipBoundingBox; /**< If true, skip this node when calculating bounding box */
 
 protected:
     virtual ~SoFCBoundingBox();
@@ -73,7 +73,7 @@ protected:
     virtual void computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center);
 
 private:
-    SoSeparator        *root, *textSep, *dimSep;
+    SoSeparator        *bboxSep, *textSep, *dimSep;
     SoCoordinate3      *bboxCoords;
     SoIndexedLineSet   *bboxLines;
 };

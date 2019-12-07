@@ -61,7 +61,7 @@ public:
     Qt::ItemFlags flags (const QModelIndex & index) const;
 
 private:
-    void setNode(QModelIndex, SoNode*);
+    void setNode(QModelIndex, SoNode*, bool expand=true);
     QHash<SoNode*, QString> nodeNames;
 };
 

@@ -48,10 +48,15 @@
 #  include <Inventor/nodes/SoComplexity.h>
 #  include <Inventor/nodes/SoLightModel.h>
 #  include <Inventor/nodes/SoBaseColor.h>
+#  include <Inventor/SoPickedPoint.h>
+#  include <Inventor/details/SoFaceDetail.h>
+#  include <Inventor/details/SoLineDetail.h>
+#  include <Inventor/details/SoPointDetail.h>
 #endif
 
 #include <Base/Console.h>
 
+#include "SoFCUnifiedSelection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCSelection.h"
 #include "SoFCUnifiedSelection.h"
@@ -1381,3 +1386,95 @@ SoBoxSelectionRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
 
 #undef PRIVATE
 #undef PUBLIC
+
+///////////////////////////////////////////////////////////////////////////
+
+SO_ACTION_SOURCE(SoFCRayPickAction)
+
+void SoFCRayPickAction::initClass() {
+    SO_ACTION_INIT_CLASS(SoFCRayPickAction,SoRayPickAction);
+
+    SoRayPickAction::addMethod(SoShape::getClassTypeId(),
+        [](SoAction *action, SoNode *node) {
+            assert(action && node);
+            assert(action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId()));
+            node->rayPick(static_cast<SoRayPickAction*>(action));
+            if(action->getTypeId().isDerivedFrom(SoFCRayPickAction::getClassTypeId()))
+                static_cast<SoFCRayPickAction*>(action)->afterPick();
+        }
+    );
+}
+
+void SoFCRayPickAction::finish() {
+    atexit_cleanup();
+}
+
+SoFCRayPickAction::SoFCRayPickAction(const SbViewportRegion &vp)
+    :SoRayPickAction(vp)
+{
+    ppList.reset(new SoPickedPointList);
+}
+
+SoFCRayPickAction::~SoFCRayPickAction()
+{}
+
+const SoPickedPointList &SoFCRayPickAction::getPrioPickedPointList() const {
+    if(ppList->getLength())
+        return *ppList;
+    return getPickedPointList();
+}
+
+void SoFCRayPickAction::cleanup() {
+    reset();
+    ppList->truncate(0);
+}
+
+void SoFCRayPickAction::beginTraversal(SoNode * node) {
+    cleanup();
+    inherited::beginTraversal(node);
+}
+
+static inline float getDistance(SoAction *action, const SbVec3f &pos) {
+    const SbViewVolume &vv = SoViewVolumeElement::get(action->getState());
+    auto plane = vv.getPlane(vv.getNearDist());
+    return -plane.getDistance(pos);
+}
+
+void SoFCRayPickAction::afterPick() {
+    if(isPickAll())
+        return;
+
+    if(!ppList->getLength()) {
+        auto pp = getPickedPoint();
+        if(pp) {
+            ppList->append(pp->copy());
+            lastPriority = SoFCUnifiedSelection::getPriority(pp);
+            lastDist = getDistance(this,pp->getPoint());
+            lastRoot = SoFCSelectionRoot::getCurrentActionRoot(this);
+            reset();
+        }
+        return;
+    }
+    auto curpp = getPickedPoint();
+    if(!curpp)
+        return;
+
+    const SbVec3f &pos = curpp->getPoint();
+    float dist = getDistance(this,pos);
+    int p = SoFCUnifiedSelection::getPriority(curpp);
+
+    bool update = false;
+    if(pos.equals((*ppList)[0]->getPoint(),0.01f))
+        update = (p > lastPriority);
+    else
+        update = (dist < lastDist);
+    if(update) {
+        lastPriority = p;
+        lastDist = dist;
+        ppList->set(0,curpp->copy());
+    } 
+
+    reset();
+}
+
+

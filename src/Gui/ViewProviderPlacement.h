@@ -57,8 +57,6 @@ public:
 
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const override {return true;}
-    /// indicates if the ViewProvider can be selected
-    virtual bool isSelectable(void) const override;
 
     virtual bool getElementPicked(const SoPickedPoint *pp, std::string &subname) const override;
     virtual bool getDetailPath(const char *, SoFullPath *, bool, SoDetail *&) const override;

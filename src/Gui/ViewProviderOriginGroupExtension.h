@@ -40,24 +40,16 @@ public:
     ViewProviderOriginGroupExtension(void);
     virtual ~ViewProviderOriginGroupExtension();
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void)const override;
+    virtual void extensionClaimChildren(std::vector<App::DocumentObject*> &)const override;
+    virtual void extensionClaimChildren3D(std::vector<App::DocumentObject*> &)const override;
 
     virtual void extensionAttach(App::DocumentObject *pcObject) override;
     virtual void extensionUpdateData(const App::Property* prop) override;
     
-    void updateOriginSize();
-
-protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
+    virtual void updateOriginSize();
 
 private:
-    std::vector<App::DocumentObject*> constructChildren (
-            const std::vector<App::DocumentObject*> &children ) const;
-
-    boost::signals2::connection connectChangedObjectApp;
-    boost::signals2::connection connectChangedObjectGui;
+    void constructChildren ( std::vector<App::DocumentObject*> &children ) const;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension> ViewProviderOriginGroupExtensionPython;

@@ -35,6 +35,7 @@
 #endif
 #include <string>
 #include <bitset>
+#include <boost/signals2.hpp>
 
 namespace Py {
 class Object;
@@ -79,6 +80,7 @@ public:
                       // relevant for the container using it
         EvalOnRestore = 14, // In case of expression binding, evaluate the
                             // expression on restore and touch the object on value change.
+        Busy = 15, // internal use to avoid recursive signaling
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
@@ -270,6 +272,9 @@ private:
 private:
     PropertyContainer *father;
     const char *myName;
+
+public:
+    boost::signals2::signal<void (const App::Property&)> signalChanged;
 };
 
 
@@ -509,6 +514,25 @@ public:
             _lValueList[index] = value;
         this->_touchList.insert(index);
         guard.tryInvoke();
+    }
+
+    template<class F>
+    int removeIf(F f) {
+        ListT vals;
+        int count=0;
+        for(auto it=_lValueList.cbegin();it!=_lValueList.cend();++it) {
+            const T &v = *it;
+            if(f(v)) {
+                if(!count)
+                    vals.insert(vals.end(),_lValueList.cbegin(),it);
+                ++count;
+            } else if (count) {
+                vals.push_back(v);
+            }
+        }
+        if(count)
+            setValues(std::move(vals));
+        return count;
     }
 
 protected:

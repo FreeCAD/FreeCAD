@@ -61,9 +61,11 @@ PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
     if (prop) {
         if(!checkOwner || (checkOwner==1 && prop->getContainer()==getPropertyContainerPtr()))
             return prop->getPyObject();
-        Py::TupleN res(Py::asObject(prop->getContainer()->getPyObject()),
-                       Py::asObject(prop->getPyObject()));
-        return Py::new_reference_to(res);
+        if(checkOwner == 2) {
+            Py::TupleN res(Py::asObject(prop->getContainer()->getPyObject()),
+                        Py::asObject(prop->getPyObject()));
+            return Py::new_reference_to(res);
+        }
     }
     PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", pstr);
     return NULL;

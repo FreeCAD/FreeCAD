@@ -1176,12 +1176,12 @@ void Document::commitTransaction() {
 
 void Document::_commitTransaction(bool notify)
 {
-    if(isPerformingTransaction() || d->committing) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-            FC_WARN("Cannot commit transaction while transacting");
-        return;
-    }
     if (d->activeUndoTransaction) {
+        if(isPerformingTransaction() || d->committing) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("Cannot commit transaction while transacting");
+            return;
+        }
         Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false,true);
         int id = d->activeUndoTransaction->getID();
@@ -1212,12 +1212,12 @@ void Document::abortTransaction() {
 
 void Document::_abortTransaction()
 {
-    if(isPerformingTransaction() || d->committing) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-            FC_WARN("Cannot abort transaction while transacting");
-    }
-
     if (d->activeUndoTransaction) {
+        if(isPerformingTransaction() || d->committing) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                FC_WARN("Cannot abort transaction while transacting");
+        }
+
         Base::FlagToggler<bool> flag(d->rollback);
         Application::TransactionSignaller signaller(true,true);
 
@@ -3191,6 +3191,12 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                     // set all dependent object touched to force recompute
                     for (auto inObjIt : obj->getInList())
                         inObjIt->enforceRecompute();
+
+                    // give the object a chance to revert the abover touching,
+                    // because for example, new objects are created with
+                    // object's execute(), and it will be safe to not touch
+                    // those objects.
+                    obj->afterRecompute();
                 }
             }
             // check if all objects are recomputed but still thouched 
@@ -3766,27 +3772,6 @@ void Document::removeObject(const char* sName)
 
     _checkTransaction(pos->second,0,__LINE__);
 
-#if 0
-    if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
-        // Preserve link group sub object global visibilities. Normally those
-        // claimed object should be hidden in global coordinate space. However,
-        // when the group is deleted, the user will naturally try to show the
-        // children, which may now in the global space. When the parent is
-        // undeleted, having its children shown in both the local and global
-        // coordinate space is very confusing. Hence, we preserve the visibility
-        // here
-        for(auto &sub : pos->second->getSubObjects()) {
-            if(sub.empty())
-                continue;
-            if(sub[sub.size()-1]!='.')
-                sub += '.';
-            auto sobj = pos->second->getSubObject(sub.c_str());
-            if(sobj && sobj->getDocument()==this && !sobj->Visibility.getValue())
-                d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
-        }
-    }
-#endif
-
     if (d->activeObject == pos->second)
         d->activeObject = 0;
 
@@ -3870,20 +3855,6 @@ void Document::_removeObject(DocumentObject* pcObject)
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
 
-    if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
-        // Preserve link group children global visibility. See comments in
-        // removeObject() for more details.
-        for(auto &sub : pos->second->getSubObjects()) {
-            if(sub.empty())
-                continue;
-            if(sub[sub.size()-1]!='.')
-                sub += '.';
-            auto sobj = pos->second->getSubObject(sub.c_str());
-            if(sobj && sobj->getDocument()==this && !sobj->Visibility.getValue())
-                d->activeUndoTransaction->addObjectChange(sobj,&sobj->Visibility);
-        }
-    }
-
     if (d->activeObject == pcObject)
         d->activeObject = 0;
 
@@ -3905,11 +3876,13 @@ void Document::_removeObject(DocumentObject* pcObject)
     if (!d->rollback && d->activeUndoTransaction) {
         // Undo stuff
         signalTransactionRemove(*pcObject, d->activeUndoTransaction);
+        breakDependency(pcObject, true);
         d->activeUndoTransaction->addObjectNew(pcObject);
     }
     else {
         // for a rollback delete the object
         signalTransactionRemove(*pcObject, 0);
+
         breakDependency(pcObject, true);
     }
 

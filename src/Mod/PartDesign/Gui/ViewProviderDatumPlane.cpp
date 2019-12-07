@@ -66,7 +66,6 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
     lineSet->coordIndex.set1Value(3, 3);
     lineSet->coordIndex.set1Value(4, 0);
     lineSet->coordIndex.set1Value(5, SO_END_LINE_INDEX);
-    getShapeRoot ()->addChild(lineSet);
 
     PartGui::SoBrepFaceSet *faceSet = new PartGui::SoBrepFaceSet();
     // SoBrepFaceSet supports only triangles (otherwise we receive incorrect highlighting)
@@ -84,6 +83,7 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
     faceSet->coordIndex.set1Value(7, SO_END_FACE_INDEX);
 
     getShapeRoot ()->addChild(faceSet);
+    getShapeRoot ()->addChild(lineSet);
 }
 
 void ViewProviderDatumPlane::updateData(const App::Property* prop)

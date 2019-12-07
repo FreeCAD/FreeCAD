@@ -844,6 +844,11 @@ class ViewProviderComponent:
         self.hiresgroup.addChild(self.meshcolor)
         self.hiresgroup.setName("HiRes")
         vobj.addDisplayMode(self.hiresgroup,"HiRes");
+
+        # 'defaultChild' defines the default display mode used for tree view
+        # mouse over highlight and selection on top
+        if hasattr(vobj.SwitchNode, 'defaultChild'):
+            vobj.SwitchNode.defaultChild = 1
         return
 
     def getDisplayModes(self,vobj):

@@ -242,13 +242,23 @@ SoFCSelectionCounter::~SoFCSelectionCounter()
 {}
 
 
-bool SoFCSelectionCounter::checkRenderCache(SoState *state) {
+bool SoFCSelectionCounter::checkCache(SoState *state, bool secondary) {
+    if(SoFCSwitch::testTraverseState(SoFCSwitch::TraverseOverride)) {
+        SoCacheElement::invalidate(state);
+        return false;
+    }
+    if(secondary) {
+        if(*counter!=0) {
+            SoCacheElement::invalidate(state);
+            return false;
+        }
+        return true;
+    }
     if(*counter || 
        (hasSelection && Selection().hasSelection()) ||
        (hasPreselection && Selection().hasPreselection()))
     {
-        if(SoFCSelectionRoot::getCacheMode()!=SoSeparator::OFF)
-            SoCacheElement::invalidate(state);
+        SoCacheElement::invalidate(state);
         return false;
     }
     if(!Selection().hasPreselection())
@@ -263,7 +273,7 @@ void SoFCSelectionCounter::checkAction(SoHighlightElementAction *hlaction) {
         hasPreselection = true;
 }
 
-void SoFCSelectionCounter::checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextPtr ctx) {
+void SoFCSelectionCounter::checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextBasePtr ctx) {
     switch(selaction->getType()) {
     case SoSelectionElementAction::None:
         return;

@@ -129,6 +129,8 @@ public:
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    /// signal on changed claimed children
+    boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalChangedChildren;
     //@}
 
     /** @name methods for Document handling */

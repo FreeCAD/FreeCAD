@@ -29,6 +29,7 @@
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/Document.h>
+#include <Gui/Application.h>
 #include <App/DocumentObjectPy.h>
 
 // inclusion of the generated files (generated out of ViewProviderDocumentObjectPy.xml)
@@ -81,6 +82,26 @@ Py::Boolean ViewProviderDocumentObjectPy::getForceUpdate() const
 void ViewProviderDocumentObjectPy::setForceUpdate(Py::Boolean arg)
 {
     getViewProviderDocumentObjectPtr()->forceUpdate(arg);
+}
+
+Py::List ViewProviderDocumentObjectPy::getClaimedChildren() const {
+    Py::List res;
+    for(auto obj : getViewProviderDocumentObjectPtr()->getCachedChildren()) {
+        auto vp = Application::Instance->getViewProvider(obj);
+        if(vp)
+            res.append(Py::asObject(vp->getPyObject()));
+    }
+    return res;
+}
+
+Py::List ViewProviderDocumentObjectPy::getClaimedBy() const {
+    Py::List res;
+    for(auto obj : getViewProviderDocumentObjectPtr()->claimedBy()) {
+        auto vp = Application::Instance->getViewProvider(obj);
+        if(vp)
+            res.append(Py::asObject(vp->getPyObject()));
+    }
+    return res;
 }
 
 Py::Object ViewProviderDocumentObjectPy::getDocument(void) const

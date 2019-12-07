@@ -139,6 +139,7 @@ public:
   virtual SoElement * copyMatchInfo(void) const;
 
   static  void set(SoState * state, SbBool);
+  static  SbBool get(SoState * state);
   static  void get(SoState * state, SbBool& active);
 
 protected:

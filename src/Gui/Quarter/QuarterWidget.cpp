@@ -650,6 +650,8 @@ QuarterWidget::setSceneGraph(SoNode * node)
     PRIVATE(this)->scene->ref();
 
     superscene = new SoSeparator;
+    superscene->renderCaching = SoSeparator::OFF;
+    superscene->boundingBoxCaching = SoSeparator::OFF;
     superscene->addChild(PRIVATE(this)->headlight);
 
     // if the scene does not contain a camera, add one

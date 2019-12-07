@@ -88,7 +88,9 @@ Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
 
 bool ViewProviderTransformed::setEdit(int ModNum)
 {
-    pcRejectedRoot = new SoSeparator();
+    auto sep = new SoSeparator();
+    sep->renderCaching = SoSeparator::OFF;
+    pcRejectedRoot = sep;
     pcRejectedRoot->ref();
 
     SoPickStyle* rejectedPickStyle = new SoPickStyle();
@@ -357,6 +359,7 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
             rejectedTrfms->matrix.finishEditing();
             rejectedTrfms->addChild(rejectedFaceSet);
             SoSeparator* sep = new SoSeparator();
+            sep->renderCaching = SoSeparator::OFF;
             sep->addChild(rejectedCoords);
             sep->addChild(rejectedNorms);
             sep->addChild(rejectedTrfms);

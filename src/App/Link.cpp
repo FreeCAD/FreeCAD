@@ -29,7 +29,7 @@
 #include <boost/preprocessor/stringize.hpp>
 #include "Application.h"
 #include "Document.h"
-#include "GroupExtension.h"
+#include "GeoFeatureGroupExtension.h"
 #include "Link.h"
 #include "LinkBaseExtensionPy.h"
 #include <Base/Console.h>
@@ -147,6 +147,7 @@ void LinkBaseExtension::setProperty(int idx, Property *prop) {
         }
         break;
     case PropElementList:
+        getElementListProperty()->setScope(LinkScope::Global);
         getElementListProperty()->setStatus(Property::Hidden,true);
         // fall through
     case PropLinkedObject:
@@ -199,7 +200,7 @@ App::GroupExtension *LinkBaseExtension::linkedPlainGroup() const {
     auto linked = getTrueLinkedObject(false);
     if(!linked)
         return 0;
-    return linked->getExtensionByType<GroupExtension>(true,false);
+    return GeoFeatureGroupExtension::getNonGeoGroup(linked);
 }
 
 App::PropertyLinkList *LinkBaseExtension::_getElementListProperty() const {
@@ -247,7 +248,7 @@ int LinkBaseExtension::_getElementCountValue() const {
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
-    if(_getElementListProperty() || _getElementCountValue())
+    if(_getElementListValue().size() || _getElementCountValue())
         return true;
     DocumentObject *linked = getTrueLinkedObject(false);
     if(linked) {
@@ -260,6 +261,14 @@ bool LinkBaseExtension::extensionHasChildElement() const {
 int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visible) {
     int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
     if(index>=0) {
+        if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
+            const auto &elements = _getElementListValue();
+            if(index<(int)elements.size()) {
+                elements[index]->Visibility.setValue(visible);
+                return 1;
+            }
+            return -1;
+        }
         auto propElementVis = getVisibilityListProperty();
         if(!propElementVis || !element || !element[0]) 
             return -1;
@@ -285,9 +294,18 @@ int LinkBaseExtension::extensionSetElementVisible(const char *element, bool visi
     return -1;
 }
 
-int LinkBaseExtension::extensionIsElementVisible(const char *element) {
+int LinkBaseExtension::extensionIsElementVisible(const char *element) const {
     int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
     if(index>=0) {
+        if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
+            const auto &elements = _getElementListValue();
+            if(index<(int)elements.size()) {
+                auto group = App::GroupExtension::getGroupOfObject(elements[index]);
+                if(group)
+                    return group->isElementVisible(elements[index]->getNameInDocument());
+            }
+            return -1;
+        }
         auto propElementVis = getVisibilityListProperty();
         if(propElementVis) {
             if(propElementVis->getSize()<=index || propElementVis->getValues()[index])
@@ -299,6 +317,39 @@ int LinkBaseExtension::extensionIsElementVisible(const char *element) {
     DocumentObject *linked = getTrueLinkedObject(false);
     if(linked)
         return linked->isElementVisible(element);
+    return -1;
+}
+
+int LinkBaseExtension::extensionIsElementVisibleEx(const char *subname, int reason) const {
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    if(subname != element) {
+        if(reason!=DocumentObject::GS_SELECT || !isSubnameHidden(getContainer(),subname))
+            return -1;
+        return 0;
+    }
+
+    int index = _getShowElementValue()?getElementIndex(element):getArrayIndex(element);
+    if(index>=0) {
+        if(getSyncGroupVisibilityValue() && linkedPlainGroup()) {
+            const auto &elements = _getElementListValue();
+            if(index<(int)elements.size()) {
+                auto group = App::GroupExtension::getGroupOfObject(elements[index]);
+                if(group)
+                    return group->isElementVisibleEx(elements[index]->getNameInDocument(),reason);
+            }
+            return -1;
+        }
+        auto propElementVis = getVisibilityListProperty();
+        if(propElementVis) {
+            if(propElementVis->getSize()<=index || propElementVis->getValues()[index])
+                return 1;
+            return 0;
+        }
+        return -1;
+    }
+    DocumentObject *linked = getTrueLinkedObject(false);
+    if(linked)
+        return linked->isElementVisibleEx(element,reason);
     return -1;
 }
 
@@ -407,7 +458,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
         if(_ChildCache.getSize()) {
             auto obj=_ChildCache.find(name,&idx);
             if(obj) {
-                auto group = obj->getExtensionByType<GroupExtension>(true,false);
+                auto group = GeoFeatureGroupExtension::getNonGeoGroup(obj);
                 if(group) {
                     int nidx = getElementIndex(dot+1,psubname);
                     if(nidx >= 0)
@@ -442,7 +493,7 @@ int LinkBaseExtension::getElementIndex(const char *subname, const char **psubnam
             return -1;
         auto obj = elements[idx];
         if(obj && _ChildCache.getSize()) {
-            auto group = obj->getExtensionByType<GroupExtension>(true,false);
+            auto group = GeoFeatureGroupExtension::getNonGeoGroup(obj);
             if(group) {
                 int nidx = getElementIndex(dot+1,psubname);
                 if(nidx >= 0)
@@ -729,68 +780,55 @@ void LinkBaseExtension::parseSubName() const {
     }
 }
 
-void LinkBaseExtension::slotChangedPlainGroup(const App::DocumentObject &obj, const App::Property &prop) {
-    auto group = obj.getExtensionByType<GroupExtension>(true,false);
-    if(group && &prop == &group->Group)
-        updateGroup();
-}
-
 void LinkBaseExtension::updateGroup() {
     std::vector<GroupExtension*> groups;
-    std::unordered_set<const App::DocumentObject*> groupSet;
     auto group = linkedPlainGroup();
     if(group) {
         groups.push_back(group);
-        groupSet.insert(group->getExtendedObject());
     }else{
         for(auto o : getElementListProperty()->getValues()) {
             if(!o || !o->getNameInDocument())
                 continue;
-            auto ext = o->getExtensionByType<GroupExtension>(true,false);
-            if(ext) {
+            auto ext = GeoFeatureGroupExtension::getNonGeoGroup(o);
+            if(ext) 
                 groups.push_back(ext);
-                groupSet.insert(o);
-            }
         }
     }
     std::vector<App::DocumentObject*> children;
+    plainGroupConns.clear();
     if(groups.size()) {
         children = getElementListValue();
         std::set<DocumentObject*> childSet(children.begin(),children.end());
         for(auto ext : groups) {
-            auto group = ext->getExtendedObject();
-            auto &conn = plainGroupConns[group];
-            if(!conn.connected()) {
-                FC_LOG("new group connection " << getExtendedObject()->getFullName() 
-                        << " -> " << group->getFullName());
-                conn = group->signalChanged.connect(
-                        boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
-            }
+            plainGroupConns.push_back(ext->Group.signalChanged.connect(
+                        boost::bind(&LinkBaseExtension::updateGroup,this)));
+            if(getSyncGroupVisibilityValue())
+                plainGroupConns.push_back(ext->_GroupTouched.signalChanged.connect(
+                            boost::bind(&LinkBaseExtension::updateGroupVisibility,this)));
+
             std::size_t count = children.size();
             ext->getAllChildren(children,childSet);
             for(;count<children.size();++count) {
                 auto child = children[count];
-                if(!child->getExtensionByType<GroupExtension>(true,false))
+                auto childGroup = GeoFeatureGroupExtension::getNonGeoGroup(child);
+                if(!childGroup)
                     continue;
-                groupSet.insert(child);
-                auto &conn = plainGroupConns[child];
-                if(!conn.connected()) {
-                    FC_LOG("new group connection " << getExtendedObject()->getFullName() 
-                            << " -> " << child->getFullName());
-                    conn = child->signalChanged.connect(
-                            boost::bind(&LinkBaseExtension::slotChangedPlainGroup,this,_1,_2));
-                }
+                plainGroupConns.push_back(childGroup->Group.signalChanged.connect(
+                            boost::bind(&LinkBaseExtension::updateGroup,this)));
+                if(getSyncGroupVisibilityValue())
+                    plainGroupConns.push_back(childGroup->_GroupTouched.signalChanged.connect(
+                                boost::bind(&LinkBaseExtension::updateGroupVisibility,this)));
             }
         }
     }
-    for(auto it=plainGroupConns.begin();it!=plainGroupConns.end();) {
-        if(!groupSet.count(it->first))
-            it = plainGroupConns.erase(it);
-        else
-            ++it;
-    }
     if(children != _ChildCache.getValues())
         _ChildCache.setValue(children);
+    updateGroupVisibility();
+}
+
+void LinkBaseExtension::updateGroupVisibility() {
+    if(getSyncGroupVisibilityValue())
+        _LinkTouched.touch();
 }
 
 void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop) {
@@ -1038,6 +1076,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
             getElementCountProperty()->setValue(
                     getElementListProperty()->getSize());
         }
+    }else if(prop == getSyncGroupVisibilityProperty()) {
+        if(linkedPlainGroup())
+            updateGroup();
     }else if(prop == getLinkedObjectProperty()) {
         auto group = linkedPlainGroup();
         if(getShowElementProperty())
@@ -1330,7 +1371,7 @@ std::vector<App::DocumentObject*> LinkBaseExtension::getLinkedChildren(bool filt
         return _getElementListValue();
     std::vector<App::DocumentObject*> ret;
     for(auto o : _getElementListValue()) {
-        if(!o->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
+        if(!GeoFeatureGroupExtension::isNonGeoGroup(o))
             ret.push_back(o);
     }
     return ret;
@@ -1347,7 +1388,7 @@ const char *LinkBaseExtension::flattenSubname(const char *subname) const {
             extensionGetSubObject(obj,s.c_str());
             if(!obj)
                 break;
-            if(!obj->hasExtension(GroupExtension::getExtensionClassTypeId(),false))
+            if(!GeoFeatureGroupExtension::isNonGeoGroup(obj))
                 return sub;
         }
     }
@@ -1387,6 +1428,60 @@ Property *LinkBaseExtension::extensionGetPropertyByName(const char* name) const 
             return linked->getPropertyByName(name);
     }
     return 0;
+}
+
+std::vector<std::string> LinkBaseExtension::getHiddenSubnames(
+        const App::DocumentObject *obj, const char *prefix) 
+{
+    std::vector<std::string> res;
+    if(!obj || !obj->getNameInDocument())
+        return res;
+    PropertyLinkSubHidden *prop;
+    int depth=0;
+    while((prop=Base::freecad_dynamic_cast<PropertyLinkSubHidden>(
+                    obj->getPropertyByName("ColoredElements"))))
+    {
+        for(auto &v : prop->getShadowSubs()) {
+            if(prefix && !boost::starts_with(v.first,prefix) && !boost::starts_with(v.second,prefix))
+                continue;
+            auto &s = v.second;
+            if(boost::ends_with(s,DocumentObject::hiddenMarker()))
+                res.push_back(s.substr(0,s.size()-DocumentObject::hiddenMarker().size()));
+        }
+        auto o = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+        if(!o)
+            break;
+        o = o->getLinkedObject(false);
+        if(o==obj || !GetApplication().checkLinkDepth(++depth,true))
+            break;
+        obj = o;
+    }
+    return res;
+}
+
+bool LinkBaseExtension::isSubnameHidden(const App::DocumentObject *obj, const char *subname) 
+{
+    if(!obj || !obj->getNameInDocument() || !subname || !subname[0])
+        return false;
+    PropertyLinkSubHidden *prop;
+    int depth=0;
+    while((prop=Base::freecad_dynamic_cast<PropertyLinkSubHidden>(
+                    obj->getPropertyByName("ColoredElements"))))
+    {
+        for(auto &v : prop->getShadowSubs()) {
+            if((boost::starts_with(v.first,subname) || boost::starts_with(v.second,subname))
+                    && boost::ends_with(v.second, DocumentObject::hiddenMarker()))
+                return true;
+        }
+        auto o = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+        if(!o)
+            break;
+        o = o->getLinkedObject(false);
+        if(o==obj || !GetApplication().checkLinkDepth(++depth,true))
+            break;
+        obj = o;
+    }
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

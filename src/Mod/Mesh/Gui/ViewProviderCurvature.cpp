@@ -88,6 +88,7 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshCurvature, Gui::ViewProviderDocumentObj
 ViewProviderMeshCurvature::ViewProviderMeshCurvature()
 {
     pcColorRoot = new SoSeparator();
+    pcColorRoot->renderCaching = SoSeparator::OFF;
     pcColorRoot->ref();
     pcColorMat = new SoMaterial;
     pcColorMat->ref();

@@ -30,7 +30,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Placement.h>
-
+#include <App/Application.h>
 #include <App/Document.h>
 #include "OriginFeature.h"
 
@@ -49,17 +49,17 @@ const char* Origin::AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
 const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 
 Origin::Origin(void) {
-    ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
+    ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, (PropertyType)(Prop_Hidden|Prop_Output),
             "Axis and baseplanes controlled by the origin" );
 
     setStatus(App::NoAutoExpand,true);
 }
 
-
 Origin::~Origin(void)
 { }
 
 App::OriginFeature *Origin::getOriginFeature( const char *role) const {
+    initObjects();
     const auto & features = OriginFeatures.getValues ();
     auto featIt = std::find_if (features.begin(), features.end(),
             [role] (App::DocumentObject *obj) {
@@ -107,34 +107,21 @@ bool Origin::hasObject (const DocumentObject *obj) const {
 }
 
 short Origin::mustExecute(void) const {
-    if (OriginFeatures.isTouched ()) {
-        return 1;
-    } else {
-        return DocumentObject::mustExecute();
-    }
+    return DocumentObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Origin::execute(void) {
-    try { // try to find all base axis and planes in the origin
-        for (const char* role: AxisRoles) {
-            App::Line *axis = getAxis (role);
-            assert(axis);
-            (void)axis;
-        }
-        for (const char* role: PlaneRoles) {
-            App::Plane *plane = getPlane (role);
-            assert(plane);
-            (void)plane;
-        }
-    } catch (const Base::Exception &ex) {
-        setError ();
-        return new App::DocumentObjectExecReturn ( ex.what () );
-    }
-
     return DocumentObject::execute ();
 }
 
 void Origin::setupObject () {
+    DocumentObject::setupObject();
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preference/Group");
+    if(hGrp->GetBool("CreateOrigin",false))
+        initObjects();
+}
+
+void Origin::initObjects() const {
     const static struct {
         const Base::Type type;
         const char *role;
@@ -148,6 +135,9 @@ void Origin::setupObject () {
         {App::Plane::getClassTypeId (), "YZ_Plane", Base::Rotation ( Base::Vector3d (1,1,1), M_PI*2/3 ) },
     };
 
+    if(OriginFeatures.getSize())
+        return;
+
     App::Document *doc = getDocument ();
 
     std::vector<App::DocumentObject *> links;
@@ -160,11 +150,12 @@ void Origin::setupObject () {
         App::OriginFeature *feature = static_cast <App::OriginFeature *> ( featureObj );
         feature->Placement.setValue ( Base::Placement ( Base::Vector3d (), data.rot ) );
         feature->Role.setValue ( data.role );
+        feature->purgeTouched();
 
         links.push_back (feature);
     }
 
-    OriginFeatures.setValues (links);
+    const_cast<Origin*>(this)->OriginFeatures.setValues (links);
 }
 
 void Origin::unsetupObject () {

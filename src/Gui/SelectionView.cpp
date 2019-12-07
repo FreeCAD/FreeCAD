@@ -32,12 +32,17 @@
  #include <QCheckBox>
 # include <QMenu>
 # include <QLabel>
+# include <QApplication>
 #endif
+
+#include <QHelpEvent>
+#include <QToolTip>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
+#include <App/DocumentObserver.h>
 #include "SelectionView.h"
 #include "Command.h"
 #include "Application.h"
@@ -49,7 +54,6 @@ FC_LOG_LEVEL_INIT("Selection",true,true,true)
 
 using namespace Gui;
 using namespace Gui::DockWnd;
-
 
 /* TRANSLATOR Gui::DockWnd::SelectionView */
 
@@ -400,16 +404,7 @@ void SelectionView::preselect(QListWidgetItem* item)
         char *end = std::strchr(objname,' ');
         if(end) *end = 0;
     }
-    QString cmd = QString::fromLatin1("Gui.Selection.setPreselection("
-        "App.getDocument('%1').getObject('%2'),'%3',tp=2)")
-        .arg(QString::fromLatin1(docname))
-        .arg(QString::fromLatin1(objname))
-        .arg(QString::fromLatin1(subname));
-    try {
-        Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
-    }catch(Base::Exception &e) {
-        e.ReportException();
-    }
+    Gui::Selection().setPreselect(docname,objname,subname,0,0,0,2);
 }
 
 void SelectionView::zoom(void)
@@ -626,5 +621,139 @@ void SelectionView::onEnablePickList() {
 }
 
 /// @endcond
+
+////////////////////////////////////////////////////////////////////////
+
+SelectionMenu::SelectionMenu(QWidget *parent)
+    :QMenu(parent),pSelList(0)
+{}
+
+void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
+    clear();
+    setStyleSheet(QLatin1String("* { menu-scrollable: 1 }"));
+
+    pSelList = &sels;
+    std::ostringstream ss;
+
+    std::map<std::string,std::map<std::pair<std::string,int>, int> > objs;
+    int i=0;
+    for(auto &sel : sels) {
+        ss.str("");
+        int index = -1;
+        std::string element = sel.getOldElementName(&index);
+        if(index < 0)
+            continue;
+        ss << sel.getObjectName() << '.' << sel.getSubNameNoElement();
+        objs[ss.str()][std::make_pair(element,index)] = i++;
+    }
+    for(auto &v : objs) {
+        auto &sel = sels[v.second.begin()->second];
+        auto sobj = sel.getSubObject();
+        if(!sobj)
+            continue;
+        if(sels.size()>20) {
+            QMenu *sub = addMenu(QString::fromUtf8(sobj->Label.getValue()));
+            connect(sub,SIGNAL(aboutToShow()),this,SLOT(onSubMenu()));
+            for(auto &vv : v.second) {
+                int i = vv.second;
+                QAction *action = sub->addAction(QString::fromUtf8(sels[i].getOldElementName().c_str()));
+                action->setData(i);
+            }
+        } else {
+            for(auto &vv : v.second) {
+                int i = vv.second;
+                ss.str("");
+                ss << sobj->Label.getValue() << " (" << sels[i].getOldElementName() << ')';
+                QAction *action = this->addAction(QString::fromUtf8(ss.str().c_str()));
+                action->setData(i);
+            }
+        }
+    }
+    bool toggle = !Gui::Selection().needPickedList();
+    if(toggle)
+        Gui::Selection().enablePickedList(true);
+
+    Gui::Selection().rmvPreselect();
+
+    timer.setSingleShot(true);
+    connect(&timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+
+    connect(this, SIGNAL(hovered(QAction*)), this, SLOT(onHover(QAction*)));
+    QAction* picked = exec(QCursor::pos());
+
+    timer.stop();
+    QToolTip::hideText();
+
+    if(picked) {
+        int idx = picked->data().toInt();
+        auto &sel = sels[idx];
+
+        bool ctrl = (QApplication::queryKeyboardModifiers() == Qt::ControlModifier);
+        if(!ctrl) {
+            if(TreeParams::Instance()->RecordSelection())
+                Gui::Selection().selStackPush();
+            Gui::Selection().clearSelection();
+        }
+        Gui::Selection().addSelection(sel.getDocumentName().c_str(),
+                sel.getObjectName().c_str(), sel.getSubName().c_str());
+        if(TreeParams::Instance()->RecordSelection())
+            Gui::Selection().selStackPush(false,ctrl);
+    }
+    pSelList = 0;
+    if(toggle)
+        Gui::Selection().enablePickedList(false);
+}
+
+void SelectionMenu::onHover(QAction *action) {
+    timer.stop();
+    QToolTip::hideText();
+
+    if(!pSelList)
+        return;
+    int idx = action->data().toInt();
+    if(idx<0 || idx>=(int)pSelList->size())
+        return;
+    auto &sel = (*pSelList)[idx];
+    Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
+            sel.getObjectName().c_str(), sel.getSubName().c_str(),0,0,0,2);
+    timer.start(500);
+    tooltipIndex = idx;
+}
+
+void SelectionMenu::leaveEvent(QEvent *event) {
+    timer.stop();
+    QToolTip::hideText();
+    QMenu::leaveEvent(event);
+}
+
+void SelectionMenu::onTimer() {
+    auto &sel = (*pSelList)[tooltipIndex];
+    QToolTip::showText(QCursor::pos(), QLatin1String(sel.getSubNameNoElement().c_str()));
+}
+
+void SelectionMenu::onSubMenu() {
+    timer.stop();
+    QToolTip::hideText();
+
+    auto submenu = qobject_cast<QMenu*>(sender());
+    if(!submenu)
+        return;
+    auto actions = submenu->actions();
+    if(!actions.size())
+        return;
+    int idx = actions.front()->data().toInt();
+    if(idx<0 || idx>=(int)pSelList->size())
+        return;
+    auto &sel = (*pSelList)[idx];
+
+    const char *element = sel.getElementName();
+    std::string subname(sel.getSubName().c_str(),element);
+
+    Gui::Selection().setPreselect(sel.getDocumentName().c_str(),
+            sel.getObjectName().c_str(), subname.c_str(),0,0,0,2);
+
+    timer.start(500);
+    tooltipIndex = idx;
+}
 
 #include "moc_SelectionView.cpp"

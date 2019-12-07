@@ -37,6 +37,7 @@
 #endif
 #include <algorithm>
 
+#include <cctype>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
@@ -1663,7 +1664,19 @@ protected:
 
             size_t len = (found?m2[0].first:tend) - m[0].second;
             try {
-                App::ExpressionPtr expr(App::Expression::parse(obj,std::string(m[0].second,len)));
+                // Check if the expression body contains a single
+                // non-whitespace character '#'.  This is used to signal the
+                // user's intention of unbinding the property.
+                bool empty = false;
+                const char *t = m[0].second;
+                for(;*t && std::isspace((int)*t);++t);
+                if(*t == '#') {
+                    for(++t;*t && std::isspace((int)*t);++t);
+                    empty = !*t;
+                }
+                App::ExpressionPtr expr;
+                if(!empty)
+                    expr.reset(App::Expression::parse(obj,std::string(m[0].second,len)));
                 if(expr && comment.size()) {
                     if(comment[0] == '&') {
                         expr->comment = comment.c_str()+1;
@@ -1694,6 +1707,8 @@ protected:
                     auto old = v2.first->getExpressions();
                     for(auto it=expressions.begin(),itNext=it;it!=expressions.end();it=itNext) {
                         ++itNext;
+                        if(!it->second)
+                            continue;
                         auto iter = old.find(it->first);
                         if(iter != old.end() && it->second->isSame(*iter->second))
                             expressions.erase(it);

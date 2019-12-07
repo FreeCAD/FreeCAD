@@ -40,6 +40,8 @@ class GuiExport ViewProviderOrigin : public ViewProviderDocumentObject
 public:
     /// Size of the origin as set by the part.
     App::PropertyVector Size;
+    /// Margin added to the size of the origin.
+    App::PropertyVector Margin;
 
     /// constructor.
     ViewProviderOrigin();
@@ -74,11 +76,17 @@ public:
         return false;
     }
 
+    virtual bool doubleClicked();
+
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
+
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize();
 protected:
     virtual void onChanged(const App::Property* prop);
     virtual bool onDelete(const std::vector<std::string> &);
+    virtual void updateData(const App::Property *prop);
+    virtual bool setEdit(int);
 
 private:
     SoGroup *pcGroupChildren;

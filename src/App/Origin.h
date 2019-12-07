@@ -115,6 +115,9 @@ public:
     /// Returns true on changing OriginFeature set
     virtual short mustExecute(void) const;
 
+    /// Make sure origin features are initialized
+    void initObjects() const;
+
     /// Axis types
     static const char* AxisRoles[3];
     /// Baseplane types
@@ -130,11 +133,6 @@ protected:
     virtual void setupObject ();
     /// Removes all planes and axis if they are still linked to the document
     virtual void unsetupObject ();
-
-private:
-    struct SetupData;
-    void setupOriginFeature (App::PropertyLink &featProp, const SetupData &data);
-
 };
 
 } //namespace App

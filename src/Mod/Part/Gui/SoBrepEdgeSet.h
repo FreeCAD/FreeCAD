@@ -50,6 +50,8 @@ public:
     static void initClass();
     SoBrepEdgeSet();
 
+    void setSiblings(std::vector<SoNode*> &&);
+
 protected:
     virtual ~SoBrepEdgeSet() {};
     virtual void GLRender(SoGLRenderAction *action);
@@ -66,18 +68,20 @@ protected:
 private:
     struct SelContext;
     typedef std::shared_ptr<SelContext> SelContextPtr;
-
+    
     void renderShape(const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices, int num_vertexindices);
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
     bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;
 
+    bool isSelected(SelContextPtr ctx);
+
 private:
     SelContextPtr selContext;
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
-    uint32_t packedColor;
+    std::vector<SoNode*> siblings;
 };
 
 } // namespace PartGui

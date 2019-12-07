@@ -1213,7 +1213,8 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
             // Get the closest point to the camera of the whole scene. 
             // This point doesn't need to be part of this view provider.
             Gui::WaitCursor wc;
-            const SoPickedPoint * point = view->getPickedPoint(n);
+            std::unique_ptr<SoPickedPoint> pp(view->getPickedPoint(n));
+            auto point = pp.get();
             if (point) {
                 Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
                 if (vp && vp->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {

@@ -168,6 +168,12 @@ void ViewProviderRobotObject::onChanged(const App::Property* prop)
         }
     }
     else {
+        if (prop == &SelectionStyle) {
+            pcRobotRoot->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                : Gui::SoFCSelection::EMISSIVE;
+            pcSimpleRoot->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                : Gui::SoFCSelection::EMISSIVE;
+        }
         ViewProviderGeometryObject::onChanged(prop);
     }
 }
