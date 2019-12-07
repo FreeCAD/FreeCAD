@@ -39,8 +39,8 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBox_4">
      <property name="toolTip">
-      <string>Python importer is used, otherwise the newer C++ one.
-The C++ importer is faster, but has not as many features yet.</string>
+      <string>Python importer is used, otherwise the newer C++ is used.
+Note: C++ importer is faster, but is not as featureful yet</string>
      </property>
      <property name="text">
       <string>Use legacy python importer</string>
@@ -58,6 +58,11 @@ The C++ importer is faster, but has not as many features yet.</string>
    </item>
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBox_7">
+     <property name="toolTip">
+      <string>Python exporter is used, otherwise the newer C++ is used.
+Note: C++ importer is faster, but is not as featureful yet
+      </string>
+     </property>
      <property name="text">
       <string>Use legacy python exporter</string>
      </property>
@@ -81,9 +86,8 @@ The C++ importer is faster, but has not as many features yet.</string>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
            <string>Allow FreeCAD to download the Python converter for DXF import and export.
-You can also do that manually, by visiting
-https://github.com/yorikvanhavre/Draft-dxf-importer
-</string>
+You can also do this manually by installing the "dxf_library" workbench
+from the Addon Manager.</string>
           </property>
           <property name="text">
            <string>Allow FreeCAD to automatically download and update the DXF libraries</string>

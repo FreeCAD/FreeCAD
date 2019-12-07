@@ -1262,8 +1262,8 @@ class ObjectSurface(PathOp.ObjectOp):
         pnt.y = RNG[0].y
         pnt.z = RNG[0].z + float(obj.DepthOffset.Value)
 
-        # Adjust feed rate based on radius/circumferance of cutter.
-        # Original feed rate based on travel at circumferance.
+        # Adjust feed rate based on radius/circumference of cutter.
+        # Original feed rate based on travel at circumference.
         if rN > 0:
             # if pnt.z > self.layerEndPnt.z:
             if pnt.z >= self.layerEndzMax:

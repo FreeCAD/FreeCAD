@@ -1,7 +1,7 @@
 /** \addtogroup WORKBENCHES
     Most of FreeCAD's functionality is defined in dedicated Workbenches
 
-    Those plugins, also called \b modules or \b worbenches, provide
+    Those plugins, also called \b modules or \b workbenches, provide
     functionality for specialized facets of FreeCAD. The word \b module
     refers to any new group of tools, while \b workbench designates
     specifically a GUI group of tools in the FreeCAD interface. All
@@ -28,4 +28,3 @@
  * \ingroup WORKBENCHES
  * \brief Modules that provide utility tools to FreeCAD but don't define a workbench
 */
-

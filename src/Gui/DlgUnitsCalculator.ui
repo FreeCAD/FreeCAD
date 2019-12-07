@@ -24,6 +24,9 @@
          <height>0</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Input the source value and unit</string>
+       </property>
       </widget>
      </item>
      <item>
@@ -34,12 +37,18 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::InputField" name="UnitInput">
+      <widget class="QLineEdit" name="UnitInput">
        <property name="minimumSize">
         <size>
          <width>100</width>
          <height>0</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Input here the unit for the result</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -58,6 +67,9 @@
          <height>0</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Result</string>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -67,6 +79,10 @@
    </item>
    <item row="1" column="0">
     <widget class="QTextEdit" name="textEdit">
+     <property name="toolTip">
+      <string>List of last used calculations 
+To add a calculation press Return in the value input field</string>
+     </property>
      <property name="readOnly">
       <bool>true</bool>
      </property>
@@ -82,7 +98,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="quantitySpinBox">
+      <widget class="Gui::QuantitySpinBox" name="quantitySpinBox" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -113,13 +129,6 @@
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton_Help">
-       <property name="text">
-        <string>Help</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -134,6 +143,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_Copy">
+       <property name="toolTip">
+        <string>Copy the result into the clipboard</string>
+       </property>
        <property name="text">
         <string>Copy</string>
        </property>

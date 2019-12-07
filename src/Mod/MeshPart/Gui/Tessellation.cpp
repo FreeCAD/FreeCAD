@@ -285,7 +285,7 @@ bool Tessellation::accept()
                     // TODO: currently, we can only retrieve part feature
                     // color. The problem is that if the feature is linked,
                     // there are potentially many places where the color can
-                    // get overriden.
+                    // get overridden.
                     //
                     // With topo naming feature merged, it will be possible to
                     // infer more accurate colors from just the shape names,

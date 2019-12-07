@@ -27,15 +27,15 @@
  * \ingroup PATH
  * Collections of macros for managing groups of parameters.
  *
- * \section Motivation 
+ * \section Motivation
  *
  * For an application like FreeCAD, there are often cases where the same set of
  * parameters are referred in dozons of different places. The macros here is
  * designed to help managing those parameters, so that you can define groups of
  * parameters once, and refer them everywhere in groups with simple macro calls for
  * all kinds of purposes. Any changing, adding and removing of parameters in the
- * group become much easier. And by everywhere, I mean \ref ParamCommon 
- * "class definition, impelentation", \ref ParamProperty "document object properties",
+ * group become much easier. And by everywhere, I mean \ref ParamCommon
+ * "class definition, implementation", \ref ParamProperty "document object properties",
  * \ref ParamPy "python c++ classes", and even \ref ParamDoc "doc string",
  * pretty much everything except the python code, which although not implemented
  * yet, is in fact also possible to be done using C preprocessor (No one says C
@@ -49,7 +49,7 @@
  * goes wrong, the compiler error message is kind of cryptic. If so, first
  * double check your macro definition of the parameter is correctly, not missing
  * or having extra parathesis or comma.  Then, you can use the CMake
- * intermeidate file target to get the preprocessor output for checking. For
+ * intermediate file target to get the preprocessor output for checking. For
  * example, for a file located at \c src/Mod/Path/App/Area.cpp,
  * \code{.sh}
  *     cd <your_build_dir>/src/Mod/Path/App
@@ -65,7 +65,7 @@
  *
  * The macros here make heavy use of the awsome
  * [Boost.Preprocessor](http://www.boost.org/libs/preprocessor/) (short for
- * Boost.PP).  Here are some brief introduction on Boost.PP conecept in order to
+ * Boost.PP).  Here are is a brief introduction on Boost.PP concept in order to
  * explain why this marco library is designed the way it is.
  *
  * In Boost.PP, a sequence is defined as,
@@ -145,13 +145,13 @@
  * Area.h, Area.cpp, FeatureArea.h, FeatureArea.cpp for usage of variouse macros.
  *
  * See struct AreaDoc for an example of doc string generation.
- * 
- * Each field of the parameter can be referred to with various 
- * \ref ParamAccessor "various accessor macros", and can be easily 
+ *
+ * Each field of the parameter can be referred to with various
+ * \ref ParamAccessor "various accessor macros", and can be easily
  * \ref ParamStringizer "stringified".
  *
  * \anchor ParamField You can also use #PARAM_FIELD(_field,_param) to refer to
- * each field, where \a _field is one of <tt>TYPE, ARG, NAME, DEF, DOC, or SEQ</tt>. 
+ * each field, where \a _field is one of <tt>TYPE, ARG, NAME, DEF, DOC, or SEQ</tt>.
  * And #PARAM_FIELD_STR to stringify.
  *
  * Here \a _param is the parameter definition described above in the form of a
@@ -184,7 +184,7 @@
 
 /**
  * \defgroup ParamAccessor Field accessors
- * To abstract parameter field details 
+ * To abstract parameter field details
  * \ingroup ParamHelper
  * @{
  */
@@ -229,7 +229,7 @@
 #define PARAM_FSEQ_STR_(_i,_elem) \
     BOOST_PP_COMMA_IF(_i) BOOST_PP_STRINGIZE(_elem)
 
-/** \c SEQ stringizer will stringify each element separately 
+/** \c SEQ stringizer will stringify each element separately
  *
  * Expands to:
  *      #seq[0], #seq[1] ...
@@ -261,7 +261,7 @@
 /** Helper for #PARAM_FOREACH_I */
 #define PARAM_FOREACH_I_(_,_op,_i,_param) _op(_i,_param)
 
-/** Apply macro \a _op to each parameter in sequence \a _seq with additional index 
+/** Apply macro \a _op to each parameter in sequence \a _seq with additional index
  *
  * Operation macro \a _op should be defined as,
  * \code
@@ -277,9 +277,9 @@
 #define PARAM_TYPED_FOREACH_(_1,_op,_param) \
     PARAM_TYPED(_op,_param)(_param)
 
-/** Type depended macro construction 
+/** Type depended macro construction
  *
- * Convert macro \a _op to \a _op##\<type\>. Note that it only converts the 
+ * Convert macro \a _op to \a _op##\<type\>. Note that it only converts the
  * macro name, not contsucts a macro call. To expand to a macro call, simply
  * \code
  *      PARAM_TYPED(_op,_param)(_param)
@@ -289,7 +289,7 @@
 #define PARAM_TYPED(_op,_param) \
     BOOST_PP_CAT(_op,PARAM_FTYPE(_param))
 
-/** Apply type dependent macro call to a sequence of parameters 
+/** Apply type dependent macro call to a sequence of parameters
  *
  * \a _op will be converted to \a _op##\<type\> for each parameter
  * \ingroup ParamLooper
@@ -298,7 +298,7 @@
     BOOST_PP_SEQ_FOR_EACH(PARAM_TYPED_FOREACH_,_op,_seq)
 
 
-/** \defgroup ParamCommon Common helpers 
+/** \defgroup ParamCommon Common helpers
  * \ingroup ParamHelper
  */
 
@@ -311,7 +311,7 @@
 
 /** Obtain parameter type
  *
- * The main purpose is to alias enum type to short 
+ * The main purpose is to alias enum type to short
  * \ingroup ParamCommon
  */
 #define PARAM_TYPE(_param) \
@@ -334,17 +334,17 @@
  *      #define MY_SRC(_param) BOOST_PP_CAT(my,PARAM_FNAME(_param))
  *      ->
  *          my##<name>
- * \endcode 
+ * \endcode
  *
  * Expands to:
  * \code{.unparsed}
  *         type1 _src(_param1);type2 _src(_param2); ...
- * \endcode 
+ * \endcode
  * \ingroup ParamCommon
  */
 #define PARAM_DECLARE(_src,_seq) \
     BOOST_PP_SEQ_FOR_EACH(PARAM_DECLARE_,_src,_seq)
- 
+
 
 /** Helper for #PARAM_DECLARE_INIT */
 #define PARAM_DECLARE_INIT_(_1,_src,_param) \
@@ -360,7 +360,7 @@
  * Expands to:
  * \code{.unparsed}
  *         type1 _src(_param1)=_def1;type2 _src(_param2)=_def2; ...
- * \endcode 
+ * \endcode
  * \ingroup ParamCommon
  */
 #define PARAM_DECLARE_INIT(_src,_seq) \
@@ -379,7 +379,7 @@
 #define PARAM_ENUM_DECLARE_bool(_param)
 #define PARAM_ENUM_DECLARE_enum2 PARAM_ENUM_DECLARE_enum
 
-/** \defgroup ParamEnumHelper Enum convert helpers 
+/** \defgroup ParamEnumHelper Enum convert helpers
  * \ingroup ParamCommon
  */
 
@@ -423,7 +423,7 @@
                                             BOOST_PP_TUPLE_ELEM(2,_args),\
                                             _param)
 
-/** Convert single enum parameter value into user defined enum type 
+/** Convert single enum parameter value into user defined enum type
  *
  * This macro is used by #PARAM_ENUM_CONVERT to convert each parameter, but
  * you can use it directly for a single parameter. Check #PARAM_NUM_CONVERT
@@ -449,7 +449,7 @@
  *
  * This assumes the user defined enum type is given in \ref ParamSeq "seq_type"
  * of the parameter definition, and it has the same postfix as the ones
- * specified in \ref ParamSeq "seq" member of the parameter definition. See 
+ * specified in \ref ParamSeq "seq" member of the parameter definition. See
  * \ref ParamEnumHelper "here" for implementations
  *
  * \ingroup ParamEnumHelper
@@ -460,7 +460,7 @@
  * access the field. Or, supply your own macro to append any prefix as you
  * like.
  * \arg \c _dst: Same as above.
- * \arg \c _default: A macro to call for invalid value. Signature should be 
+ * \arg \c _default: A macro to call for invalid value. Signature should be
  * <tt>_default(_param)<\tt>, where \c _param is the parameter definition. You
  * can use #PARAM_ENUM_EXCEPT to throw Base::ValueError exception in FreeCAD
  * \arg \c _seq: Parameter sequence
@@ -481,7 +481,7 @@
  *
  * expands to
  * \code{.unparsed}
- *      MyEnum1 myTest1; 
+ *      MyEnum1 myTest1;
  *      switch(Test1) {
  *      case Test1Foo:
  *          myTest1 = myEnum1Foo;
@@ -492,7 +492,7 @@
  *      default:
  *          throw Base::ValueError("invalid value for enum Test1");
  *      }
- *      MyEnum2 myTest2; 
+ *      MyEnum2 myTest2;
  *      switch(Test2) {
  *      case Test1Foo:
  *          myTest2 = myEnum2Foo;
@@ -537,7 +537,7 @@
 
 /* Validate enum type parameters
  *
- * This macro validates the value a variable of enum type parameters. See 
+ * This macro validates the value a variable of enum type parameters. See
  * similar macro #PARAM_ENUM_CONVERT for detail usage.
  *
  * \ingroup ParamEnumHelper
@@ -548,7 +548,7 @@
  * access the field. Or, supply your own macro to append any prefix as you
  * like.
  *
- * \arg \c _default: A macro to call for invalid value. Signature should be 
+ * \arg \c _default: A macro to call for invalid value. Signature should be
  * <tt>_default(_param)<\tt>, where \c _param is the parameter definition. You
  * can use #PARAM_ENUM_EXCEPT to throw Base::ValueError exception in FreeCAD
  *
@@ -581,7 +581,7 @@
  *      ...
  * \endcode
  * Example usage:
- *      PARAM_ENUM_STRING_DECLARE(static const char *Enum, MyParamsSeq) 
+ *      PARAM_ENUM_STRING_DECLARE(static const char *Enum, MyParamsSeq)
  * \ingroup ParamEnumHelper
  */
 #define PARAM_ENUM_STRING_DECLARE(_prefix,_seq) \
@@ -599,7 +599,7 @@
  *
  * Expand to,
  * \code{.unparsed}
- *       _src(_param1)(def1), _src(_param1)(def2)...  
+ *       _src(_param1)(def1), _src(_param1)(def2)...
  * \endcode
  * \ingroup ParamCommon
  */
@@ -656,14 +656,14 @@
 #define PARAM_ARGS_(_,_src,_i,_param) \
     BOOST_PP_COMMA_IF(_i) PARAM_TYPE(_param) _src(_param)
 
-/** Declare the parameters as function argument list without defaults. 
+/** Declare the parameters as function argument list without defaults.
  *
  * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
  * more details
  *
  * Expand to:
  * \code{.unparsed}
- *      type1 _src(_param1), type2 _src(_param2) ... 
+ *      type1 _src(_param1), type2 _src(_param2) ...
  * \endcode
  * \ingroup ParamCommon
  */
@@ -677,7 +677,7 @@
  */
 
 /** \defgroup ParamDoc Python doc helper
- * Generate argument doc string for Python 
+ * Generate argument doc string for Python
  * \ingroup ParamPy
  */
 
@@ -703,7 +703,7 @@
 #define PARAM_PY_DOC_(_,_field,_param) \
     PARAM_TYPED(PARAM_PY_DOC_,_param)(_field,_param)
 
-/* Generate document of a sequence of parameters 
+/* Generate document of a sequence of parameters
  * \ingroup ParamDoc
  */
 #define PARAM_PY_DOC(_field,_seq) \
@@ -714,7 +714,7 @@
 #define PARAM_PY_ARGS_DOC_(_,_field,_i,_param) \
     BOOST_PP_IF(_i,", "," ") PARAM_FIELD_STR(_field,_param) "=" PARAM_FDEF_STR(_param)
 
-/** Generate argument list string 
+/** Generate argument list string
  * \arg \c _field: specifies the \ref ParamField "field" to use as name
  *
  * Expand to a single string:
@@ -732,7 +732,7 @@
 #define PARAM_FIELDS_(_1,_src,_i,_param) \
     BOOST_PP_COMMA_IF(_i) _src(_param)
 
-/** Expand to a list of the given field in the parameter sequence 
+/** Expand to a list of the given field in the parameter sequence
  *
  * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
  * more details
@@ -771,7 +771,7 @@
  * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
  * more details
  *
- * The field will be casted from python C to C type 
+ * The field will be casted from python C to C type
  * \ingroup ParamCommon ParamPy
  */
 #define PARAM_PY_FIELDS(_src,_seq) \
@@ -800,7 +800,7 @@
 #define PARAM_PY_KWDS_(_param) \
     PARAM_TYPED(PARAM_PYARG_,_param)
 
-/** Generate a format string for kewords based argument 
+/** Generate a format string for kewords based argument
  * \ingroup ParamPy
  */
 #define PARAM_PY_KWDS(_seq) \
@@ -817,7 +817,7 @@
 #define PARAM_PY_DECLARE_(_1,_src,_param) \
     PARAM_TYPED(PARAM_PY_TYPE_,_param) _src(_param);
 
-/** Declare field variables for Python C type without initialization 
+/** Declare field variables for Python C type without initialization
  * \ingroup ParamPy
  */
 #define PARAM_PY_DECLARE(_src,_seq) \
@@ -853,7 +853,7 @@
  * more details
  * Expand to:
  * \code{.unparsed}
- *      &_src(_param1), &_src(_param1) ... 
+ *      &_src(_param1), &_src(_param1) ...
  * \endcode
  * \ingroup ParamPy
  */
@@ -874,7 +874,7 @@
 #define PARAM_CAST_PYOBJ_enum2       PARAM_CAST_PYOBJ_short
 
 
-/** Stringize field to a Python string 
+/** Stringize field to a Python string
  * \ingroup ParamPy ParamStringizer
  */
 #if PY_MAJOR_VERSION < 3
@@ -901,8 +901,8 @@
  * Roughly translated to:
  * \code{.unparsed}
  *      PyDict_SetItem(_dict,#_field1,_src(_param));
- *      PyDict_SetItem(_dict,#_field2,_src(_param)); 
- *      ... 
+ *      PyDict_SetItem(_dict,#_field2,_src(_param));
+ *      ...
  * \endcode
  * \ingroup ParamPy
  */
@@ -951,8 +951,8 @@
  * Roughly translated to:
  * \code{.unparsed}
  *      PyDict_SetItem(_dict,#_field1,doc1);
- *      PyDict_SetItem(_dict,#_field1,doc2); 
- *      ... 
+ *      PyDict_SetItem(_dict,#_field1,doc2);
+ *      ...
  * \endcode
  * \ingroup ParamDoc
  */
@@ -961,7 +961,7 @@
 
 
 /** \defgroup ParamProperty Property Macros
- * Helper macros for FreeCAD properties 
+ * Helper macros for FreeCAD properties
  * \ingroup ParamHelper
  * @{*/
 #define PARAM_PROP_bool(_param) App::PropertyBool PARAM_FNAME(_param)
@@ -976,7 +976,7 @@
 #define PARAM_PROP_DECLARE_(_param) \
     PARAM_TYPED(PARAM_PROP_,_param)(_param);
 
-/** Declare FreeCAD properties 
+/** Declare FreeCAD properties
  * \ingroup ParamProperty
  */
 #define PARAM_PROP_DECLARE(_seq) \
@@ -1025,7 +1025,7 @@
 /** Setup \c enum type parameter */
 #define PARAM_PROP_SET_ENUM_enum(_prefix,_param) \
     PARAM_FNAME(_param).setEnums(BOOST_PP_CAT(_prefix,PARAM_FNAME(_param)));
- 
+
 /** Helper for #PARAM_PROP_SET_ENUM */
 #define PARAM_PROP_SET_ENUM_TYPED(_1,_prefix,_param) \
     PARAM_TYPED(PARAM_PROP_SET_ENUM_,_param)(_prefix,_param)
@@ -1041,7 +1041,7 @@
 #define PARAM_PROP_ARGS_(_i,_param) \
     BOOST_PP_COMMA_IF(_i) PARAM_FNAME(_param).getValue()
 
-/** Expand the property list as function arguments 
+/** Expand the property list as function arguments
  *
  * Expand to:
  * \code{.unparsed}
@@ -1056,8 +1056,8 @@
 /** Helper for #PARAM_PROP_TOUCHED */
 #define PARAM_PROP_TOUCHED_(_param) \
     if(PARAM_FNAME(_param).isTouched()) return 1;
-    
-/** Returns 1 if any properties is touched 
+
+/** Returns 1 if any properties is touched
  *
  * Expand to:
  * \code{.unparsed}

@@ -60,9 +60,9 @@ using namespace TechDraw;
 //===========================================================================
 
 const char* DrawView::ScaleTypeEnums[]= {"Page",
-                                            "Automatic",
-                                            "Custom",
-                                             NULL};
+                                         "Automatic",
+                                         "Custom",
+                                         NULL};
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
                                                                   pow(10,- Base::UnitsApi::getDecimals())};
@@ -75,17 +75,17 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X ,(0.0),group,App::Prop_None,"X position in internal units");
-    ADD_PROPERTY_TYPE(Y ,(0.0),group,App::Prop_None,"Y position in internal units");
-    ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Lock View position to parent Page or Group");
-    ADD_PROPERTY_TYPE(Rotation ,(0.0),group,App::Prop_None,"Rotation in degrees counterclockwise");
+    ADD_PROPERTY_TYPE(X, (0.0), group, App::Prop_None, "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, App::Prop_None, "Y position");
+    ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_None, "Lock View position to parent Page or Group");
+    ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_None, "Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
-    ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
+    ADD_PROPERTY_TYPE(ScaleType, ((long)0), group, App::Prop_None, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
-    ADD_PROPERTY_TYPE(Caption ,(""),group,App::Prop_None,"Short text about the view");
+    ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_None, "Short text about the view");
 }
 
 DrawView::~DrawView()
@@ -345,8 +345,7 @@ void DrawView::handleChangedPropertyType(
             // no idea
         }
     } else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId()) 
-            && strcmp(prop->getName(),"Source")==0) 
-    {
+            && strcmp(prop->getName(),"Source")==0)   {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;
         if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
@@ -364,6 +363,12 @@ void DrawView::handleChangedPropertyType(
                 static_cast<App::PropertyLinkList*>(prop)->setValue(link.getValue());
             }
         }
+// property Rotation had App::PropertyFloat and was changed to App::PropertyAngle
+    } else if (prop == &Rotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat RotationProperty;
+        RotationProperty.setContainer(this);
+        RotationProperty.Restore(reader);
+        Rotation.setValue(RotationProperty.getValue());
     }
 }
 
