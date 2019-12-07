@@ -111,6 +111,8 @@ SET(ConstraintSolver_Solver_SRCS
     SketchSolverSystem.cpp
     SolverBackend.h
     SolverBackend.cpp
+    DogLeg.h
+    DogLeg.cpp
 )
 
 SET(ConstraintSolver_Module_SRCS

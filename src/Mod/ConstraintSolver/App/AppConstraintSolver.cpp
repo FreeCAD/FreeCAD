@@ -55,6 +55,7 @@
 #include "SubSystemPy.h"
 #include "SolverBackend.h"
 #include "SolverBackendPy.h"
+#include "DogLeg.h"
 
 #include "G2D/ParaPoint.h"
 #include "G2D/ParaPointPy.h"
@@ -178,6 +179,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::SketchSolver       ::init();
     FCS::SubSystem          ::init();
     FCS::SolverBackend      ::init();
+    FCS::DogLeg             ::init();
 
 
     FCS::G2D::ParaPoint          ::init();
