@@ -201,7 +201,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
                               e.GetMessageString());
         }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
+        Base::Console().Error("GeometryObject::projectShape - unknown error occurred while projecting shape\n");
+//        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
     }
 
     auto end   = chrono::high_resolution_clock::now();
@@ -262,7 +263,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
                               e.GetMessageString());
     }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::projectShape - error occurred while extracting edges");
+        Base::Console().Error("GO::projectShape - unknown error while extracting edges\n");
+//        throw Base::RuntimeError("GeometryObject::projectShape - error occurred while extracting edges");
     }
     end   = chrono::high_resolution_clock::now();
     diff  = end - start;
@@ -342,7 +344,8 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
                               e.GetMessageString());
     }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - unknown error while projecting shape\n");
+//        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
 //        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
     }
 
@@ -389,7 +392,8 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
                               e.GetMessageString());
     }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while extracting edges");
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - - error occurred while extracting edges\n");
+//        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while extracting edges");
 //        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
     }
     auto end = chrono::high_resolution_clock::now();
