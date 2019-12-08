@@ -17,7 +17,7 @@ Py::Dict DogLeg::Prefs::getPyValue() const
     ret["minGrad"] = Py::Float(minGrad);
     ret["minStep"] = Py::Float(minStep);
     const char* gaussStepStrings[] = {"FullPivLU", "LeastNormFullPivLU", "LeastNormLdlt", nullptr};
-    ret[""] = Py::String(gaussStepStrings[int(this->dogLegGaussStep)]);
+    ret["dogLegGaussStep"] = Py::String(gaussStepStrings[int(this->dogLegGaussStep)]);
     ret["initialTrustRegion"] = Py::Float(initialTrustRegion);
     ret["trustRegionExpandLinearityTolerance"] = Py::Float(trustRegionExpandLinearityTolerance);
     ret["trustRegionExpandMinStepSpan"] = Py::Float(trustRegionExpandMinStepSpan);
