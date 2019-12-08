@@ -49,8 +49,6 @@
 #include "SimpleConstraintPy.h"
 #include "ParaGeometry.h"
 #include "ParaGeometryPy.h"
-#include "SketchSolver.h"
-#include "SketchSolverPy.h"
 #include "SketchSolverSystem.h"
 #include "SubSystemPy.h"
 #include "SolverBackend.h"
@@ -145,7 +143,6 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::ConstraintPy      ::Type.tp_name = "ConstraintSolver.Constraint"      ;
     FCS::SimpleConstraintPy::Type.tp_name = "ConstraintSolver.SimpleConstraint";
     FCS::ParaGeometryPy    ::Type.tp_name = "ConstraintSolver.ParaGeometry"    ;
-    FCS::SketchSolverPy    ::Type.tp_name = "ConstraintSolver.SketchSolver"    ;
     FCS::SubSystemPy       ::Type.tp_name = "ConstraintSolver.SubSystem"       ;
     FCS::SolverBackendPy   ::Type.tp_name = "ConstraintSolver.SolverBackend"   ;
 
@@ -159,7 +156,6 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::ConstraintPy      ::Type, mod, "Constraint"      );
     Base::Interpreter().addType(&FCS::SimpleConstraintPy::Type, mod, "SimpleConstraint");
     Base::Interpreter().addType(&FCS::ParaGeometryPy    ::Type, mod, "ParaGeometry"    );
-    Base::Interpreter().addType(&FCS::SketchSolverPy    ::Type, mod, "SketchSolver"    );
     Base::Interpreter().addType(&FCS::SubSystemPy       ::Type, mod, "SubSystem"       );
     Base::Interpreter().addType(&FCS::SolverBackendPy   ::Type, mod, "SolverBackend"   );
 
@@ -179,7 +175,6 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::Constraint         ::init();
     FCS::SimpleConstraint   ::init();
     FCS::ParaGeometry       ::init();
-    FCS::SketchSolver       ::init();
     FCS::SubSystem          ::init();
     FCS::SolverBackend      ::init();
     FCS::DogLeg             ::init();
