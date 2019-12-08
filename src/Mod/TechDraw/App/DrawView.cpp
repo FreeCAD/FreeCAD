@@ -60,9 +60,9 @@ using namespace TechDraw;
 //===========================================================================
 
 const char* DrawView::ScaleTypeEnums[]= {"Page",
-                                            "Automatic",
-                                            "Custom",
-                                             NULL};
+                                         "Automatic",
+                                         "Custom",
+                                         NULL};
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
                                                                   pow(10,- Base::UnitsApi::getDecimals())};
@@ -340,12 +340,12 @@ void DrawView::handleChangedPropertyType(
                 Scale.setValue(1.0);
             }
         } else {
-            // has Scale property that isn't float 
-            Base::Console().Log("DrawPage::Restore - old document Scale is not a float!\n");
+            // has Scale prop that isn't Float! 
+            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
+            // no idea
         }
     } else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId()) 
-            && strcmp(prop->getName(),"Source")==0) 
-    {
+            && strcmp(prop->getName(),"Source")==0)   {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;
         if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
@@ -363,6 +363,7 @@ void DrawView::handleChangedPropertyType(
                 static_cast<App::PropertyLinkList*>(prop)->setValue(link.getValue());
             }
         }
+
     // property X had App::PropertyFloat and was changed to App::PropertyLength
     // sb PropertyDistance.  some X,Y are relative to existing point on page
     } else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
@@ -376,6 +377,13 @@ void DrawView::handleChangedPropertyType(
         YProperty.setContainer(this);
         YProperty.Restore(reader);
         Y.setValue(YProperty.getValue());
+       
+// property Rotation had App::PropertyFloat and was changed to App::PropertyAngle
+    } else if (prop == &Rotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat RotationProperty;
+        RotationProperty.setContainer(this);
+        RotationProperty.Restore(reader);
+        Rotation.setValue(RotationProperty.getValue());
     }
 }
 
