@@ -22,5 +22,5 @@ sys.addUnknown(p2.Parameters)
 sys.addConstraint(c)
 
 vs = CS.ValueSet(CS.ParameterSubset(ps.allFree()))
-slv = CS.SketchSolver()
-slv.solveLM(sys, vs)
+slv = CS.SolverBackend("FCS::LM")
+slv.solve(sys, vs)

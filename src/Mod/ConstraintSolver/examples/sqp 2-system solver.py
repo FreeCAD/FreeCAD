@@ -41,8 +41,8 @@ sysaux.addUnknown(sys.ParameterSet)
 sysaux.addConstraint(c2)
 
 vs = CS.ValueSet(CS.ParameterSubset(ps.allFree()))
-slv = CS.SketchSolver()
-slv.solveSQP(sys, sysaux, vs)
+slv = CS.SolverBackend("FCS::SQP")
+slv.solvePair(sys, sysaux, vs)
 
 for p in [p1,p2,p3]:
     print(vs[p.x], vs[p.y])
