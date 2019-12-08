@@ -28,8 +28,8 @@
 
 namespace FCS {
 
-class Dogleg;
-typedef UnsafePyHandle<Dogleg> HDogleg;
+class DogLeg;
+typedef UnsafePyHandle<DogLeg> HDogLeg;
 
 class FCSExport DogLeg : public SolverBackend
 {
