@@ -113,6 +113,12 @@ SET(ConstraintSolver_Solver_SRCS
     SolverBackend.cpp
     DogLeg.h
     DogLeg.cpp
+    LM.h
+    LM.cpp
+    BFGS.h
+    BFGS.cpp
+    SQP.h
+    SQP.cpp
 )
 
 SET(ConstraintSolver_Module_SRCS

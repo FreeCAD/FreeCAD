@@ -56,6 +56,9 @@
 #include "SolverBackend.h"
 #include "SolverBackendPy.h"
 #include "DogLeg.h"
+#include "LM.h"
+#include "BFGS.h"
+#include "SQP.h"
 
 #include "G2D/ParaPoint.h"
 #include "G2D/ParaPointPy.h"
@@ -180,6 +183,9 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::SubSystem          ::init();
     FCS::SolverBackend      ::init();
     FCS::DogLeg             ::init();
+    FCS::LM                 ::init();
+    FCS::BFGS               ::init();
+    FCS::SQP                ::init();
 
 
     FCS::G2D::ParaPoint          ::init();
