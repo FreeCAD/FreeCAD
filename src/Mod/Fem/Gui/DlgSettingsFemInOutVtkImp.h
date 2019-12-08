@@ -1,7 +1,7 @@
-/******************b********************************************************
+/***************************************************************************
  *   Copyright (c) 2018 FreeCAD Developers                                 *
  *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
- *   Based on src/Mod/Fem/Gui/DlgSettingsFemExportAbaqusCcxImp.h                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemExportAbaqusCcxImp.h           *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
