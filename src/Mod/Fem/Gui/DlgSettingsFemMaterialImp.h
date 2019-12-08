@@ -1,7 +1,7 @@
  /**************************************************************************
  *   Copyright (c) 2018 FreeCAD Developers                                 *
  *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
- *   Based on src/Mod/Fem/Gui/DlgSettingsFemElmer.h                         *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemElmer.h                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
