@@ -5,7 +5,7 @@
 	  Name="SubSystemPy" 
 	  Twin="SubSystem" 
 	  TwinPointer="SubSystem" 
-	  Include="Mod/ConstraintSolver/App/SketchSolverSystem.h" 
+	  Include="Mod/ConstraintSolver/App/SubSystem.h" 
 	  FatherInclude="Base/BaseClassPy.h" 
 	  Namespace="FCS" 
 	  Constructor="true"

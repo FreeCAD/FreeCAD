@@ -24,7 +24,7 @@
 #ifndef FREECAD_CONSTRAINTSOLVER_SOLVERBACKEND_H
 #define FREECAD_CONSTRAINTSOLVER_SOLVERBACKEND_H
 
-#include "SketchSolverSystem.h"
+#include "SubSystem.h"
 
 #include <Base/Console.h>
 

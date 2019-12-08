@@ -31,7 +31,7 @@ generate_from_xml(ConstraintPy)
 generate_from_xml(SimpleConstraintPy)
 generate_from_xml(ParaObjectPy)
 generate_from_xml(ParaGeometryPy)
-generate_from_xml(SketchSolverSystemPy)
+generate_from_xml(SubSystemPy)
 generate_from_xml(SolverBackendPy)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/G2D)
@@ -78,8 +78,8 @@ SET(Python_Solver_SRCS
     ParaObjectPyImp.cpp
     ParaGeometryPy.xml
     ParaGeometryPyImp.cpp
-    SketchSolverSystemPy.xml
-    SketchSolverSystemPyImp.cpp
+    SubSystemPy.xml
+    SubSystemPyImp.cpp
     SolverBackendPy.xml
     SolverBackendPyImp.cpp
 )
@@ -103,8 +103,8 @@ SET(ConstraintSolver_Solver_SRCS
     ParaObject.cpp
     ParaGeometry.h
     ParaGeometry.cpp
-    SketchSolverSystem.h
-    SketchSolverSystem.cpp
+    SubSystem.h
+    SubSystem.cpp
     SolverBackend.h
     SolverBackend.cpp
     DogLeg.h
