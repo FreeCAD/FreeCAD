@@ -495,19 +495,17 @@ App::any pyObjectToAny(Py::Object value, bool check) {
 #if PY_MAJOR_VERSION < 3
     else if (PyString_Check(pyvalue))
         return App::any(std::string(PyString_AsString(pyvalue)));
-#endif
     else if (PyUnicode_Check(pyvalue)) {
         PyObject * s = PyUnicode_AsUTF8String(pyvalue);
         if(!s)
             FC_THROWM(Base::ValueError,"Invalid unicode string");
         Py::Object o(s,true);
-
-#if PY_MAJOR_VERSION >= 3
-        return App::any(std::string(PyUnicode_AsUTF8(s)));
-#else
         return App::any(std::string(PyString_AsString(s)));
-#endif
     }
+#else
+    else if (PyUnicode_Check(pyvalue))
+        return App::any(std::string(PyUnicode_AsUTF8(pyvalue)));
+#endif
     else {
         return App::any(pyObjectWrap(pyvalue));
     }
