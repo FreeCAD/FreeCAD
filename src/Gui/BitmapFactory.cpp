@@ -693,6 +693,8 @@ void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const
     int numcomponents;
 
     const unsigned char * bytes = p.getValue(size, numcomponents);
+    if (!bytes)
+        return;
 
     int width  = (int)size[0];
     int height = (int)size[1];
