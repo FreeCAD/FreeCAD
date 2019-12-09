@@ -36,7 +36,7 @@ ConstraintDistance::ConstraintDistance(HParaPoint p1, HParaPoint p2, FCS::HParam
 void ConstraintDistance::initAttrs()
 {
     _attrs = {
-        {&dist, "dist", 1.0},
+        {&dist, "dist", true, 1.0},
     };
     _children = {
         {&p1, "p1", &ParaPointPy::Type},

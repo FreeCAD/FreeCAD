@@ -25,7 +25,7 @@
 #define FREECAD_CONSTRAINTSOLVER_PARAPOINT_H
 
 #include <Mod/ConstraintSolver/App/ParaGeometry.h>
-#include "Vector.h"
+#include "Point.h"
 
 namespace FCS {
 namespace G2D {
@@ -46,7 +46,7 @@ public://methods
     void initAttrs() override;
     virtual PyObject* getPyObject() override;
 
-    Vector pos(const ValueSet& vals) const;
+    Point pos(const ValueSet& vals) const;
 
 public: //friends
     friend class ParaPointPy;
