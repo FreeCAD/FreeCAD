@@ -344,18 +344,20 @@ void DrawView::handleChangedPropertyType(
             Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
             // no idea
         }
-    } else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId()) 
-            && strcmp(prop->getName(),"Source")==0)   {
+    }
+    else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
+        && strcmp(prop->getName(), "Source") == 0) {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;
-        if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
+        if (strcmp(glink.getTypeId().getName(), TypeName) == 0) {            //property in file is plg
             glink.setContainer(this);
             glink.Restore(reader);
             if (glink.getValue() != nullptr) {
                 static_cast<App::PropertyLinkList*>(prop)->setScope(App::LinkScope::Global);
                 static_cast<App::PropertyLinkList*>(prop)->setValue(glink.getValue());
             }
-        } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
+        }
+        else if (strcmp(link.getTypeId().getName(), TypeName) == 0) {            //property in file is pl
             link.setContainer(this);
             link.Restore(reader);
             if (link.getValue() != nullptr) {
@@ -363,23 +365,36 @@ void DrawView::handleChangedPropertyType(
                 static_cast<App::PropertyLinkList*>(prop)->setValue(link.getValue());
             }
         }
+    }
 
     // property X had App::PropertyFloat and was changed to App::PropertyLength
-    // sb PropertyDistance.  some X,Y are relative to existing point on page
-    } else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
+    // and later to PropertyDistance because some X,Y are relative to existing points on page
+    else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat XProperty;
         XProperty.setContainer(this);
         // restore the PropertyFloat to be able to set its value
         XProperty.Restore(reader);
         X.setValue(XProperty.getValue());
-    } else if (prop == &Y && strcmp(TypeName, "App::PropertyFloat") == 0) {
+    }
+    else if (prop == &X && strcmp(TypeName, "App::PropertyLength") == 0) {
+        App::PropertyLength X2Property;
+        X2Property.Restore(reader);
+        X.setValue(X2Property.getValue());
+    }
+    else if (prop == &Y && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat YProperty;
         YProperty.setContainer(this);
         YProperty.Restore(reader);
         Y.setValue(YProperty.getValue());
+    }
+    else if (prop == &Y && strcmp(TypeName, "App::PropertyLength") == 0) {
+        App::PropertyLength Y2Property;
+        Y2Property.Restore(reader);
+        Y.setValue(Y2Property.getValue());
+    }
        
 // property Rotation had App::PropertyFloat and was changed to App::PropertyAngle
-    } else if (prop == &Rotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+    else if (prop == &Rotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat RotationProperty;
         RotationProperty.setContainer(this);
         RotationProperty.Restore(reader);
