@@ -503,8 +503,13 @@ App::any pyObjectToAny(Py::Object value, bool check) {
         return App::any(std::string(PyString_AsString(s)));
     }
 #else
-    else if (PyUnicode_Check(pyvalue))
-        return App::any(std::string(PyUnicode_AsUTF8(pyvalue)));
+    else if (PyUnicode_Check(pyvalue)) {
+        const char* value = PyUnicode_AsUTF8(pyvalue);
+        if (!value) {
+            FC_THROWM(Base::ValueError, "Invalid unicode string");
+        }
+        return App::any(std::string(value));
+    }
 #endif
     else {
         return App::any(pyObjectWrap(pyvalue));
