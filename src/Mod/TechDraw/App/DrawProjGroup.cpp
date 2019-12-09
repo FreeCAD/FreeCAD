@@ -54,11 +54,9 @@
 using namespace TechDraw;
 
 const char* DrawProjGroup::ProjectionTypeEnums[] = {"Default",
-                                                              "First Angle",
-                                                              "Third Angle",
-                                                              NULL};
-
-
+                                                    "First Angle",
+                                                    "Third Angle",
+                                                    NULL};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
@@ -70,25 +68,22 @@ DrawProjGroup::DrawProjGroup(void)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoDist = hGrp->GetBool("AutoDist",true);
-
-
+    
     ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
     Anchor.setScope(App::LinkScope::Global);
 
-
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY_TYPE(ProjectionType, ((long)getDefProjConv()), group,
-                                App::Prop_None, "First or Third Angle projection");
+                                App::Prop_None, "First or Third angle projection");
 
     ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,
-                                App::Prop_None,"Distribute Views Automatically or Manually");
+                                App::Prop_None,"Distribute views automatically or manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
     Rotation.setStatus(App::Property::Hidden,true);   //DPG does not rotate
     Caption.setStatus(App::Property::Hidden,true);
-
 }
 
 DrawProjGroup::~DrawProjGroup()
@@ -1275,4 +1270,24 @@ PyObject *DrawProjGroup::getPyObject(void)
         PythonObject = Py::Object(new DrawProjGroupPy(this),true);
     }
     return Py::new_reference_to(PythonObject);
+}
+
+void DrawProjGroup::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+// transforms properties that had been changed
+{
+    // also check for changed properties of the base class
+    DrawView::handleChangedPropertyType(reader, TypeName, prop);
+
+    // property spacingX/Y had the App::PropertyFloat and were changed to App::PropertyLength
+    if ((prop == &spacingX) && (strcmp(TypeName, "App::PropertyFloat") == 0)) {
+        App::PropertyFloat spacingXProperty;
+        // restore the PropertyFloat to be able to set its value
+        spacingXProperty.Restore(reader);
+        spacingX.setValue(spacingXProperty.getValue());
+    }
+    else if ((prop == &spacingY) && (strcmp(TypeName, "App::PropertyFloat") == 0)) {
+        App::PropertyFloat spacingYProperty;
+        spacingYProperty.Restore(reader);
+        spacingY.setValue(spacingYProperty.getValue());
+    }
 }
