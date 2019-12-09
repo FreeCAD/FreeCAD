@@ -42,6 +42,8 @@ generate_from_xml(G2D/ConstraintDistancePy)
 SET(ConstraintSolver_G2D
     G2D/Vector.h
     G2D/Vector.cpp
+    G2D/Point.h
+    G2D/Point.cpp
     G2D/ParaPoint.h
     G2D/ParaPoint.cpp
     G2D/ParaPointPy.xml
