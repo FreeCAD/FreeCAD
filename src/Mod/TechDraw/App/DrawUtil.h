@@ -114,6 +114,7 @@ class TechDrawExport DrawUtil {
         static std::vector<std::string> tokenize(std::string csvLine, std::string delimiter = ",$$$,");
         static App::Color pyTupleToColor(PyObject* pColor);
         static PyObject* colorToPyTuple(App::Color color);
+        static bool isCrazy(TopoDS_Edge e);
 
         // Supplementary mathematical functions
         static int sgn(double x);

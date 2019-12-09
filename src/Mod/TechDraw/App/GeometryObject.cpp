@@ -480,7 +480,7 @@ void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 //! update edgeGeom and vertexGeom from Compound of edges
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool hlrVisible)
 {
-//    Base::Console().Message("GO::addGeomFromCompound()\n");
+//    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if(edgeCompound.IsNull()) {
         Base::Console().Log("TechDraw::GeometryObject::addGeomFromCompound edgeCompound is NULL\n");
         return; // There is no OpenCascade Geometry to be calculated
@@ -492,19 +492,25 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     for ( ; edges.More(); edges.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         if (edge.IsNull()) {
-            //Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
+            Base::Console().Log("GO::addGeomFromCompound - edge: %d is NULL\n",i);
             continue;
         }
         if (DrawUtil::isZeroEdge(edge)) {
-            Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is zeroEdge\n",i);
+            Base::Console().Log("GO::addGeomFromCompound - edge: %d is zeroEdge\n",i);
+            continue;
+        }
+        if (DrawUtil::isCrazy(edge))  {
+            Base::Console().Log("GO::addGeomFromCompound - edge: %d is crazy\n",i);
             continue;
         }
 
         base = BaseGeom::baseFactory(edge);
         if (base == nullptr) {
             Base::Console().Log("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
-            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
+            continue;
+//            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
+
         base->source(0);             //object geometry
         base->sourceIndex(i-1);
         base->classOfEdge = category;

@@ -148,6 +148,10 @@ QPainterPath QGIViewPart::geomToPainterPath(TechDraw::BaseGeom *baseGeom, double
     Q_UNUSED(rot);
     QPainterPath path;
 
+    if (baseGeom == nullptr) {
+        return path;
+    }
+
     switch(baseGeom->geomType) {
         case CIRCLE: {
             TechDraw::Circle *geom = static_cast<TechDraw::Circle *>(baseGeom);
