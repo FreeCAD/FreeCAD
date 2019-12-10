@@ -69,4 +69,4 @@ Python style is preferred over Doxygen style
 ### Code formatting
 - slashes
     - Do not use to many slashes in a row. This could cause trouble with Doxygen.
-    - see [PR with comment] (https://github.com/FreeCAD/FreeCAD/pull/2757#discussion_r355218913)
+    - see [PR with comment](https://github.com/FreeCAD/FreeCAD/pull/2757#discussion_r355218913)
