@@ -38,8 +38,6 @@ import os
 import sys
 
 import FreeCAD
-from femsolver import settings
-# from femsolver.run import _getUniquePath as getUniquePath
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
@@ -272,6 +270,7 @@ def get_pref_working_dir(solver_obj):
      caching of the solver framework. For solver use getMachine from run.py
      instead.
     """
+    from femsolver import settings
     dir_setting = settings.get_dir_setting()
     if dir_setting == settings.DirSetting.TEMPORARY:
         setting_working_dir = get_temp_dir(solver_obj)
@@ -284,6 +283,9 @@ def get_pref_working_dir(solver_obj):
     return setting_working_dir
 
 
+# these are a duplicate of the methods in src/Mod/Fem/femsolver/run.py
+# see commit xxx (will be added when in master) for more information
+# the FEM preferences will be used by both
 def get_temp_dir(obj=None):
     from tempfile import mkdtemp
     return mkdtemp(prefix="fcfem_")
@@ -292,7 +294,6 @@ def get_temp_dir(obj=None):
 def get_beside_dir(obj):
     base = get_beside_base(obj)
     specific_path = os.path.join(base, obj.Label)
-    # specific_path = getUniquePath(specific_path)
     if not os.path.isdir(specific_path):
         os.makedirs(specific_path)
     return specific_path
@@ -302,7 +303,6 @@ def get_custom_dir(obj):
     base = get_custom_base(obj)
     specific_path = os.path.join(
         base, obj.Document.Name, obj.Label)
-    # specific_path = getUniquePath(specific_path)
     if not os.path.isdir(specific_path):
         os.makedirs(specific_path)
     return specific_path
@@ -330,7 +330,8 @@ def get_beside_base(obj):
 
 
 def get_custom_base(solver):
-    path = settings.get_custom_dir()
+    from femsolver.settings import get_custom_dir
+    path = get_custom_dir()
     if not os.path.isdir(path):
         error_message = "Selected working directory doesn't exist."
         FreeCAD.Console.PrintError(error_message + "\n")
