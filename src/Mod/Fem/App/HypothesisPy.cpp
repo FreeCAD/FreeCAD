@@ -80,7 +80,7 @@ HypothesisPy::~HypothesisPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 template<class T>
 void SMESH_HypothesisPy<T>::init_type(PyObject* module)
@@ -149,7 +149,7 @@ Py::Object SMESH_HypothesisPy<T>::getLibName(const Py::Tuple& args)
 }
 
 
-#if SMESH_VERSION_MAJOR < 7 //////////////////////////////////////////////////////////
+#if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 {
@@ -192,7 +192,7 @@ Py::Object SMESH_HypothesisPy<T>::clearParameters(const Py::Tuple& args)
     hypothesis<SMESH_Hypothesis>()->ClearParameters();
     return Py::None();
 }
-#endif //////////////////////////////////////////////////////////////////////////
+#endif // --------------------------------------------------------------------
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setParametersByMesh(const Py::Tuple& args)
@@ -226,7 +226,7 @@ PyObject *SMESH_HypothesisPy<T>::PyMake(struct _typeobject * /*type*/, PyObject 
     return new T(hypId, 1, mesh->getGenerator());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Arithmetic1DPy::init_type(PyObject* module)
 {
@@ -263,7 +263,7 @@ Py::Object StdMeshers_Arithmetic1DPy::getLength(const Py::Tuple& args)
         GetLength(start ? true : false));
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_AutomaticLengthPy::init_type(PyObject* module)
 {
@@ -329,7 +329,7 @@ Py::Object StdMeshers_AutomaticLengthPy::getLength(const Py::Tuple& args)
     }
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_NotConformAllowedPy::init_type(PyObject* module)
 {
@@ -347,7 +347,7 @@ StdMeshers_NotConformAllowedPy::~StdMeshers_NotConformAllowedPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_MaxLengthPy::init_type(PyObject* module)
 {
@@ -419,7 +419,7 @@ Py::Object StdMeshers_MaxLengthPy::getUsePreestimatedLength(const Py::Tuple& arg
     return Py::Boolean(hypothesis<StdMeshers_MaxLength>()->GetUsePreestimatedLength());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_LocalLengthPy::init_type(PyObject* module)
 {
@@ -468,7 +468,7 @@ Py::Object StdMeshers_LocalLengthPy::getPrecision(const Py::Tuple& args)
     return Py::Float(hypothesis<StdMeshers_LocalLength>()->GetPrecision());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_MaxElementAreaPy::init_type(PyObject* module)
 {
@@ -502,7 +502,7 @@ Py::Object StdMeshers_MaxElementAreaPy::getMaxArea(const Py::Tuple& args)
     return Py::Float(hypothesis<StdMeshers_MaxElementArea>()->GetMaxArea());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_QuadranglePreferencePy::init_type(PyObject* module)
 {
@@ -520,7 +520,7 @@ StdMeshers_QuadranglePreferencePy::~StdMeshers_QuadranglePreferencePy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Quadrangle_2DPy::init_type(PyObject* module)
 {
@@ -538,7 +538,7 @@ StdMeshers_Quadrangle_2DPy::~StdMeshers_Quadrangle_2DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Regular_1DPy::init_type(PyObject* module)
 {
@@ -556,7 +556,7 @@ StdMeshers_Regular_1DPy::~StdMeshers_Regular_1DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_UseExisting_1DPy::init_type(PyObject* module)
 {
@@ -574,7 +574,7 @@ StdMeshers_UseExisting_1DPy::~StdMeshers_UseExisting_1DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_UseExisting_2DPy::init_type(PyObject* module)
 {
@@ -592,7 +592,7 @@ StdMeshers_UseExisting_2DPy::~StdMeshers_UseExisting_2DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_CompositeSegment_1DPy::init_type(PyObject* module)
 {
@@ -610,7 +610,7 @@ StdMeshers_CompositeSegment_1DPy::~StdMeshers_CompositeSegment_1DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Deflection1DPy::init_type(PyObject* module)
 {
@@ -637,7 +637,7 @@ Py::Object StdMeshers_Deflection1DPy::setDeflection(const Py::Tuple& args)
     return Py::None();
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Hexa_3DPy::init_type(PyObject* module)
 {
@@ -655,9 +655,9 @@ StdMeshers_Hexa_3DPy::~StdMeshers_Hexa_3DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-#if SMESH_VERSION_MAJOR < 7 ///////////////////////////////////////////////////////////
+#if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
 void StdMeshers_TrianglePreferencePy::init_type(PyObject* module)
 {
     behaviors().name("StdMeshers_TrianglePreference");
@@ -673,9 +673,9 @@ StdMeshers_TrianglePreferencePy::StdMeshers_TrianglePreferencePy(int hypId, int 
 StdMeshers_TrianglePreferencePy::~StdMeshers_TrianglePreferencePy()
 {
 }
-#endif ///////////////////////////////////////////////////////////////////////////
+#endif // --------------------------------------------------------------------
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_StartEndLengthPy::init_type(PyObject* module)
 {
@@ -706,7 +706,7 @@ Py::Object StdMeshers_StartEndLengthPy::getLength(const Py::Tuple& args)
     return Py::Float(hypothesis<StdMeshers_StartEndLength>()->GetLength((bool)Py::Boolean(args[0])));
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_SegmentLengthAroundVertexPy::init_type(PyObject* module)
 {
@@ -739,7 +739,7 @@ Py::Object StdMeshers_SegmentLengthAroundVertexPy::getLength(const Py::Tuple& ar
     return Py::Float(hypothesis<StdMeshers_SegmentLengthAroundVertex>()->GetLength());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_SegmentAroundVertex_0DPy::init_type(PyObject* module)
 {
@@ -757,7 +757,7 @@ StdMeshers_SegmentAroundVertex_0DPy::~StdMeshers_SegmentAroundVertex_0DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_RadialPrism_3DPy::init_type(PyObject* module)
 {
@@ -775,7 +775,7 @@ StdMeshers_RadialPrism_3DPy::~StdMeshers_RadialPrism_3DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_QuadraticMeshPy::init_type(PyObject* module)
 {
@@ -793,7 +793,7 @@ StdMeshers_QuadraticMeshPy::~StdMeshers_QuadraticMeshPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_ProjectionSource3DPy::init_type(PyObject* module)
 {
@@ -811,7 +811,7 @@ StdMeshers_ProjectionSource3DPy::~StdMeshers_ProjectionSource3DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_ProjectionSource2DPy::init_type(PyObject* module)
 {
@@ -829,7 +829,7 @@ StdMeshers_ProjectionSource2DPy::~StdMeshers_ProjectionSource2DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_ProjectionSource1DPy::init_type(PyObject* module)
 {
@@ -847,7 +847,7 @@ StdMeshers_ProjectionSource1DPy::~StdMeshers_ProjectionSource1DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Projection_3DPy::init_type(PyObject* module)
 {
@@ -865,7 +865,7 @@ StdMeshers_Projection_3DPy::~StdMeshers_Projection_3DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Projection_2DPy::init_type(PyObject* module)
 {
@@ -883,7 +883,7 @@ StdMeshers_Projection_2DPy::~StdMeshers_Projection_2DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Projection_1DPy::init_type(PyObject* module)
 {
@@ -901,7 +901,7 @@ StdMeshers_Projection_1DPy::~StdMeshers_Projection_1DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_Prism_3DPy::init_type(PyObject* module)
 {
@@ -919,7 +919,7 @@ StdMeshers_Prism_3DPy::~StdMeshers_Prism_3DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_NumberOfSegmentsPy::init_type(PyObject* module)
 {
@@ -956,7 +956,7 @@ Py::Object StdMeshers_NumberOfSegmentsPy::getNumSegm(const Py::Tuple& args)
     return Py::Long(hypothesis<StdMeshers_NumberOfSegments>()->GetNumberOfSegments());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_NumberOfLayersPy::init_type(PyObject* module)
 {
@@ -993,7 +993,7 @@ Py::Object StdMeshers_NumberOfLayersPy::getNumLayers(const Py::Tuple& args)
     return Py::Long(hypothesis<StdMeshers_NumberOfLayers>()->GetNumberOfLayers());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_MEFISTO_2DPy::init_type(PyObject* module)
 {
@@ -1011,7 +1011,7 @@ StdMeshers_MEFISTO_2DPy::~StdMeshers_MEFISTO_2DPy()
 {
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_MaxElementVolumePy::init_type(PyObject* module)
 {
@@ -1044,7 +1044,7 @@ Py::Object StdMeshers_MaxElementVolumePy::getMaxVolume(const Py::Tuple& args)
     return Py::Float(hypothesis<StdMeshers_MaxElementVolume>()->GetMaxVolume());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_LengthFromEdgesPy::init_type(PyObject* module)
 {
@@ -1081,7 +1081,7 @@ Py::Object StdMeshers_LengthFromEdgesPy::getMode(const Py::Tuple& args)
     return Py::Long(hypothesis<StdMeshers_LengthFromEdges>()->GetMode());
 }
 
-// ----------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 void StdMeshers_LayerDistributionPy::init_type(PyObject* module)
 {
