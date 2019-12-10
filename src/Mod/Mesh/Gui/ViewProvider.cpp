@@ -1364,7 +1364,7 @@ private:
 std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRegion& vp,
                                                               SoCamera* camera) const
 {
-#if 1
+#if 0
     Q_UNUSED(vp)
 
     SbVec3f pos = camera->position.getValue();
@@ -1437,8 +1437,14 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
     root->addChild(this->getCoordNode());
     root->addChild(this->getShapeNode());
 
+    // Coin3d's off-screen renderer doesn't work out-of-the-box any more on most recent Linux systems.
+    // So, use FreeCAD's offscreen renderer now.
+#if 0
     Gui::SoFCOffscreenRenderer& renderer = Gui::SoFCOffscreenRenderer::instance();
     renderer.setViewportRegion(vp);
+#else
+    Gui::SoQtOffscreenRenderer renderer(vp);
+#endif
     renderer.setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
 
     QImage img;
