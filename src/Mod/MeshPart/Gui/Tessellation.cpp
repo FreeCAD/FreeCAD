@@ -193,6 +193,34 @@ struct ShapeInfo {
 };
 }
 
+void Tessellation::on_estimateMaximumEdgeLength_clicked()
+{
+    std::list<ShapeInfo> shapeObjects;
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (!activeDoc) {
+        return;
+    }
+
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
+    if (!activeGui) {
+        return;
+    }
+
+    double edgeLen = 0;
+    for (auto &sel : Gui::Selection().getSelection("*",0)) {
+        auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
+        if (shape.hasSubShape(TopAbs_FACE)) {
+            Base::BoundBox3d bbox = shape.getBoundBox();
+            edgeLen = std::max<double>(edgeLen, bbox.LengthX());
+            edgeLen = std::max<double>(edgeLen, bbox.LengthY());
+            edgeLen = std::max<double>(edgeLen, bbox.LengthZ());
+            shapeObjects.emplace_back(sel.pObject, sel.SubName);
+        }
+    }
+
+    ui->spinMaximumEdgeLength->setValue(edgeLen/10);
+}
+
 bool Tessellation::accept()
 {
     std::list<ShapeInfo> shapeObjects;
@@ -210,19 +238,12 @@ bool Tessellation::accept()
 
     this->document = QString::fromLatin1(activeDoc->getName());
 
-    double edgeLen = 0;
     for (auto &sel : Gui::Selection().getSelection("*",0)) {
         auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
-            Base::BoundBox3d bbox = shape.getBoundBox();
-            edgeLen = std::max<double>(edgeLen, bbox.LengthX());
-            edgeLen = std::max<double>(edgeLen, bbox.LengthY());
-            edgeLen = std::max<double>(edgeLen, bbox.LengthZ());
-            shapeObjects.emplace_back(sel.pObject,sel.SubName);
+            shapeObjects.emplace_back(sel.pObject, sel.SubName);
         }
     }
-
-    ui->spinMaximumEdgeLength->setValue(edgeLen/10);
 
     if (shapeObjects.empty()) {
         QMessageBox::critical(this, windowTitle(),
