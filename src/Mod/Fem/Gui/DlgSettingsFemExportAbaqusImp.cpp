@@ -1,7 +1,7 @@
-/**************************************************************************
+/***************************************************************************
  *   Copyright (c) 2017 FreeCAD Developers                                 *
  *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
- *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcx.cpp                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcx.cpp                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
