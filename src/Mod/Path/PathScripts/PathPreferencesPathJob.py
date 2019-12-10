@@ -71,6 +71,7 @@ class JobPreferencesPage:
         policy = str(self.form.cboOutputPolicy.currentText())
         PathPreferences.setOutputFileDefaults(path, policy)
         self.saveStockSettings()
+        self.saveToolsSettings()
 
     def saveStockSettings(self):
         if self.form.stockGroup.isChecked():
@@ -106,6 +107,9 @@ class JobPreferencesPage:
             PathPreferences.setDefaultStockTemplate(json.dumps(attrs))
         else:
             PathPreferences.setDefaultStockTemplate('')
+
+    def saveToolsSettings(self):
+        PathPreferences.setToolsSettings(self.form.toolsUseLegacy.isChecked(), self.form.toolsAbsolutePaths.isChecked())
 
     def selectComboEntry(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -167,6 +171,7 @@ class JobPreferencesPage:
         self.form.tbOutputFile.clicked.connect(self.browseOutputFile)
 
         self.loadStockSettings()
+        self.loadToolSettings()
 
     def loadStockSettings(self):
         stock = PathPreferences.defaultStockTemplate()
@@ -243,6 +248,10 @@ class JobPreferencesPage:
             self.form.stockFromBase.show()
             self.form.stockCreateBox.hide()
             self.form.stockCreateCylinder.hide()
+
+    def loadToolSettings(self):
+        self.form.toolsUseLegacy.setChecked(PathPreferences.toolsUseLegacyTools())
+        self.form.toolsAbsolutePaths.setChecked(PathPreferences.toolsStoreAbsolutePaths())
 
     def getPostProcessor(self, name):
         if not name in self.processor.keys():

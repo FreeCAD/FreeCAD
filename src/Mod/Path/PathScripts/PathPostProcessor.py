@@ -38,7 +38,7 @@ class PostProcessor:
     def load(cls, processor):
         PathLog.track(processor)
         syspath = sys.path
-        paths = PathPreferences.searchPaths()
+        paths = PathPreferences.searchPathsPost()
         paths.extend(sys.path)
         sys.path = paths
 

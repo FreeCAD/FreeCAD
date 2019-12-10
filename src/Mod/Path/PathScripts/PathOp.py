@@ -498,10 +498,10 @@ class ObjectOp(object):
                 self.vertRapid = tc.VertRapid.Value
                 self.horizRapid = tc.HorizRapid.Value
                 tool = tc.Proxy.getTool(tc)
-                if not tool or tool.Diameter == 0:
+                if not tool or float(tool.Diameter) == 0:
                     FreeCAD.Console.PrintError("No Tool found or diameter is zero. We need a tool to build a Path.")
                     return
-                self.radius = tool.Diameter/2
+                self.radius = float(tool.Diameter) /2 
                 self.tool = tool
                 obj.OpToolDiameter = tool.Diameter
 

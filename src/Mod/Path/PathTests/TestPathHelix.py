@@ -34,8 +34,10 @@ PathLog.trackModule(PathLog.thisModule())
 
 
 class TestPathHelix(PathTestUtils.PathTestBase):
+    RotateBy = 45
 
     def setUp(self):
+        self.clone = None
         self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
         self.job = PathJob.Create('Job', [self.doc.Body])
 
@@ -68,7 +70,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         proxy = op.Proxy
         model = self.job.Model.Group[0]
 
-        for deg in range(5, 360, 5):
+        for deg in range(self.RotateBy, 360, self.RotateBy):
             model.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
             for base in op.Base:
                 model = base[0]
@@ -81,7 +83,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
     def test03(self):
         '''Verify Helix generates proper holes for rotated base model'''
 
-        for deg in range(5, 360, 5):
+        for deg in range(self.RotateBy, 360, self.RotateBy):
             self.tearDown()
             self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
             self.doc.Body.Placement.Rotation = FreeCAD.Rotation(deg, 0, 0)
@@ -102,7 +104,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
 
     def test04(self):
         '''Verify Helix generates proper holes for rotated clone base model'''
-        for deg in range(5, 360, 5):
+        for deg in range(self.RotateBy, 360, self.RotateBy):
             self.tearDown()
             self.doc = FreeCAD.open(FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_holes00.fcstd')
             self.clone = Draft.clone(self.doc.Body)

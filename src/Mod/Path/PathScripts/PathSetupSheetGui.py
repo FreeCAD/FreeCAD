@@ -306,9 +306,9 @@ class GlobalEditor(object):
     def getFields(self):
         def updateExpression(name, widget):
             value = str(widget.text())
-            val = PathGui.getProperty(self.obj, name)
+            val = PathUtil.getProperty(self.obj, name)
             if val != value:
-                PathGui.setProperty(self.obj, name, value)
+                PathUtil.setProperty(self.obj, name, value)
 
         updateExpression('StartDepthExpression',        self.form.setupStartDepthExpr)
         updateExpression('FinalDepthExpression',        self.form.setupFinalDepthExpr)

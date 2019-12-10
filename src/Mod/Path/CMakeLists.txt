@@ -101,6 +101,12 @@ SET(PathScripts_SRCS
     PathScripts/PathStop.py
     PathScripts/PathSurface.py
     PathScripts/PathSurfaceGui.py
+    PathScripts/PathToolBit.py
+    PathScripts/PathToolBitCmd.py
+    PathScripts/PathToolBitEdit.py
+    PathScripts/PathToolBitGui.py
+    PathScripts/PathToolBitLibraryCmd.py
+    PathScripts/PathToolBitLibraryGui.py
     PathScripts/PathToolController.py
     PathScripts/PathToolControllerGui.py
     PathScripts/PathToolEdit.py
@@ -133,6 +139,29 @@ SET(PathScripts_post_SRCS
     PathScripts/post/smoothie_post.py
 )
 
+SET(Tools_Bit_SRCS
+  Tools/Bit/t1.fctb
+  Tools/Bit/t2.fctb
+  Tools/Bit/t3.fctb
+  Tools/Bit/t4.fctb
+  Tools/Bit/t5.fctb
+  Tools/Bit/t6.fctb
+  Tools/Bit/t7.fctb
+  Tools/Bit/t8.fctb
+  Tools/Bit/t9.fctb
+)
+
+SET(Tools_Library_SRCS
+  Tools/Library/endmills.fctl
+)
+
+SET(Tools_Shape_SRCS
+  Tools/Shape/ballend.fcstd
+  Tools/Shape/bullnose.fcstd
+  Tools/Shape/drill.fcstd
+  Tools/Shape/endmill.fcstd
+  Tools/Shape/v-bit.fcstd
+)
 
 SET(PathTests_SRCS
     PathTests/__init__.py
@@ -147,9 +176,11 @@ SET(PathTests_SRCS
     PathTests/TestPathLog.py
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py
+    PathTests/TestPathPreferences.py
     PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
     PathTests/TestPathTool.py
+    PathTests/TestPathToolBit.py
     PathTests/TestPathToolController.py
     PathTests/TestPathTooltable.py
     PathTests/TestPathUtil.py
@@ -178,6 +209,9 @@ SET(Path_Images
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_post_SRCS}
+    ${Tools_Bit_SRCS}
+    ${Tools_Library_SRCS}
+    ${Tools_Shape_SRCS}
     ${Path_Images}
 )
 
@@ -216,6 +250,27 @@ INSTALL(
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${Tools_Bit_SRCS}
+    DESTINATION
+        Mod/Path/Tools/Bit
+)
+
+INSTALL(
+    FILES
+        ${Tools_Library_SRCS}
+    DESTINATION
+        Mod/Path/Tools/Library
+)
+
+INSTALL(
+    FILES
+      ${Tools_Shape_SRCS}
+    DESTINATION
+      Mod/Path/Tools/Shape
 )
 
 INSTALL(

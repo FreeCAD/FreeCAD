@@ -25,6 +25,7 @@
 import FreeCAD
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import PathScripts.PathUtil as PathUtil
 import PySide
 
 
@@ -44,34 +45,6 @@ if LOGLEVEL:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def _getProperty(obj, prop):
-    o = obj
-    attr = obj
-    name = None
-    for name in prop.split('.'):
-        o = attr
-        if not hasattr(o, name):
-            break
-        attr = getattr(o, name)
-
-    if o == attr:
-        PathLog.warning(translate('PathGui', "%s has no property %s (%s))") % (obj.Label, prop, name))
-        return (None, None, None)
-
-    #PathLog.debug("found property %s of %s (%s: %s)" % (prop, obj.Label, name, attr))
-    return(o, attr, name)
-
-def getProperty(obj, prop):
-    '''getProperty(obj, prop) ... answer obj's property defined by its canonical name.'''
-    o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
-    return attr
-
-def setProperty(obj, prop, value):
-    '''setProperty(obj, prop, value) ... set the property value of obj's property defined by its canonical name.'''
-    o, attr, name = _getProperty(obj, prop) # pylint: disable=unused-variable
-    if o and name:
-        setattr(o, name, value)
-
 def updateInputField(obj, prop, widget, onBeforeChange=None):
     '''updateInputField(obj, prop, widget) ... update obj's property prop with the value of widget.
 The property's value is only assigned if the new value differs from the current value.
@@ -82,13 +55,13 @@ If onBeforeChange is specified it is called before a new value is assigned to th
 Returns True if a new value was assigned, False otherwise (new value is the same as the current).
 '''
     value = FreeCAD.Units.Quantity(widget.text()).Value
-    attr = getProperty(obj, prop)
+    attr = PathUtil.getProperty(obj, prop)
     attrValue = attr.Value if hasattr(attr, 'Value') else attr
     if not PathGeom.isRoughly(attrValue, value):
         PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, attr, value))
         if onBeforeChange:
             onBeforeChange(obj)
-        setProperty(obj, prop, value)
+        PathUtil.setProperty(obj, prop, value)
         return True
     return False
 
@@ -107,7 +80,7 @@ The spin box gets bound to a given property and supports update in both directio
         self.widget = widget
         self.prop = prop
         self.onBeforeChange = onBeforeChange
-        attr = getProperty(self.obj, self.prop)
+        attr = PathUtil.getProperty(self.obj, self.prop)
         if attr is not None:
             if hasattr(attr, 'Value'):
                 widget.setProperty('unit', attr.getUserPreferred()[2])
@@ -134,7 +107,7 @@ If no value is provided the value of the bound property is used.
 quantity can be of type Quantity or Float.'''
         if self.valid:
             if quantity is None:
-                quantity = getProperty(self.obj, self.prop)
+                quantity = PathUtil.getProperty(self.obj, self.prop)
             value = quantity.Value if hasattr(quantity, 'Value') else quantity
             self.widget.setProperty('rawValue', value)
 
