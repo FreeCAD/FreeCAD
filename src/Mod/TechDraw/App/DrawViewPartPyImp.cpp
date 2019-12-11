@@ -627,7 +627,7 @@ PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 
     color = DrawUtil::pyTupleToColor(pColor);
     DrawViewPart* dvp = getDrawViewPartPtr();
-    TechDraw::GeomFormat* gf = dvp->getGeomFormatByGeom(idx);
+    TechDraw::GeomFormat* gf = dvp->getGeomFormatBySelection(idx);
     if (gf != nullptr) {
         gf->m_format.m_style = style;
         gf->m_format.m_color = color;

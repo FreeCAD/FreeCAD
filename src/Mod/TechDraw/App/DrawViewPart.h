@@ -112,7 +112,6 @@ public:
     App::PropertyInteger  IsoCount;
 
     TechDraw::PropertyCenterLineList  CenterLines;
-    TechDraw::PropertyGeomFormatList  GeomFormats;
 
     virtual short mustExecute() const override;
     virtual void onDocumentRestored() override;
@@ -175,13 +174,11 @@ public:
     void clearCosmeticVertexes(void); 
     void refreshCVGeoms(void);
     void addCosmeticVertexesToGeom(void);
-    void add1CosmeticVertexToGeom(int iCV);
     int add1CVToGV(std::string tag);
 
     void clearCosmeticEdges(void); 
     void refreshCEGeoms(void);
     void addCosmeticEdgesToGeom(void);
-    void add1CosmeticEdgeToGeom(int iCE);
     int add1CEToGE(std::string tag);
 
     virtual int addCenterLine(TechDraw::CenterLine*);
@@ -196,10 +193,6 @@ public:
     void clearCenterLines(void);
     void addCenterLinesToGeom(void);
 
-    int addGeomFormat(TechDraw::GeomFormat* gf);
-    virtual void removeGeomFormat(int idx);
-    TechDraw::GeomFormat* getGeomFormatByIndex(int idx) const;
-    TechDraw::GeomFormat* getGeomFormatByGeom(int idx) const;
     void clearGeomFormats(void);
 
     void dumpVerts(const std::string text);

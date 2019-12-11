@@ -33,6 +33,7 @@
 
 #include "PropertyCosmeticVertexList.h"
 #include "PropertyCosmeticEdgeList.h"
+#include "PropertyGeomFormatList.h"
 
 
 namespace TechDraw {
@@ -48,6 +49,8 @@ public:
 
     TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
     TechDraw::PropertyCosmeticEdgeList   CosmeticEdges;
+//    TechDraw::PropertyCenterLineList     CenterLines;
+    TechDraw::PropertyGeomFormatList     GeomFormats;          //formats for geometric edges
 
     virtual std::string     addCosmeticVertex(Base::Vector3d pos);
     virtual CosmeticVertex* getCosmeticVertexBySelection(std::string name) const;
@@ -65,6 +68,13 @@ public:
     virtual bool            replaceCosmeticEdge(CosmeticEdge* newEdge);
     virtual void            removeCosmeticEdge(std::string tag);
     virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
+
+    virtual std::string     addGeomFormat(TechDraw::GeomFormat* gf);
+    virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;
+    virtual GeomFormat*     getGeomFormatBySelection(int i) const;
+    virtual GeomFormat*     getGeomFormat(std::string id) const;
+    virtual bool            replaceGeomFormat(TechDraw::GeomFormat* gf);
+    virtual void            removeGeomFormat(std::string tag);
 
 
     PyObject* getExtensionPyObject(void);

@@ -132,7 +132,7 @@ void TaskLineDecor::getDefaults(void)
                     m_visible = cl->m_format.m_visible;
                 }
             } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
+                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
                 if (gf != nullptr) {
                     m_style = gf->m_format.m_style;
                     m_color = gf->m_format.m_color;
@@ -199,7 +199,7 @@ void TaskLineDecor::applyDecorations(void)
                     cl->m_format.m_visible = m_visible;
                 }
             } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
+                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
                 if (gf != nullptr) {
                     gf->m_format.m_style = m_style;
                     gf->m_format.m_color = m_color;

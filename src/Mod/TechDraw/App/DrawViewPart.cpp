@@ -161,9 +161,9 @@ DrawViewPart::DrawViewPart(void) :
     ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
 
 //    ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),sgroup,App::Prop_Output,"CosmeticVertex Save/Restore");
-    ADD_PROPERTY_TYPE(CosmeticEdges ,(0),sgroup,App::Prop_Output,"CosmeticEdge Save/Restore");
+//    ADD_PROPERTY_TYPE(CosmeticEdges ,(0),sgroup,App::Prop_Output,"CosmeticEdge Save/Restore");
     ADD_PROPERTY_TYPE(CenterLines ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
-    ADD_PROPERTY_TYPE(GeomFormats ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
+//    ADD_PROPERTY_TYPE(GeomFormats ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
 
     geometryObject = nullptr;
     getRunControl();
@@ -999,14 +999,11 @@ void DrawViewPart::clearCosmeticVertexes(void)
 void DrawViewPart::addCosmeticVertexesToGeom(void)
 {
 //    Base::Console().Message("DVP::addCosmeticVertexesToGeom()\n");
-    int iCV = 0;
     const std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
-    int stop = (int) cVerts.size();
-    for ( ; iCV < stop; iCV++) {
-        int iGV = geometryObject->addCosmeticVertex(cVerts.at(iCV)->scaled(getScale()),
-                                                    cVerts.at(iCV)->getTagAsString(),
-                                                    iCV);   //last param can be removed now? 
-        cVerts.at(iCV)->linkGeom = iGV;
+    for (auto& cv: cVerts) {
+        int iGV = geometryObject->addCosmeticVertex(cv->scaled(getScale()),
+                                                    cv->getTagAsString());
+        cv->linkGeom = iGV;
     }
 }
 
@@ -1017,10 +1014,8 @@ int DrawViewPart::add1CVToGV(std::string tag)
     if (cv == nullptr) {
         Base::Console().Message("DVP::add1CVToGV 2 - cv %s not found\n", tag.c_str());
     }
-    int iCV = -1;
     int iGV = geometryObject->addCosmeticVertex(cv->scaled(getScale()),
-                                                cv->getTagAsString(),
-                                                iCV);
+                                                cv->getTagAsString());
     cv->linkGeom = iGV;
     return iGV;
 }
@@ -1242,51 +1237,6 @@ void DrawViewPart::clearGeomFormats(void)
     for (auto& f: fmts) {
         delete f;
     }
-}
-
-int DrawViewPart::addGeomFormat(GeomFormat* gf)
-{
-    std::vector<GeomFormat*> fmts = GeomFormats.getValues();
-    int newIdx = (int) fmts.size();
-    fmts.push_back(gf);
-    GeomFormats.setValues(fmts);
-    return newIdx;
-}
-
-void DrawViewPart::removeGeomFormat(int idx)
-{
-    std::vector<GeomFormat*> fmts = GeomFormats.getValues();
-    if (idx < (int) fmts.size()) {
-        GeomFormat* toRemove = fmts[idx];
-        fmts.erase(fmts.begin() + idx);
-        GeomFormats.setValues(fmts);
-        delete toRemove;
-        requestPaint();
-    }
-}
-
-TechDraw::GeomFormat* DrawViewPart::getGeomFormatByIndex(int idx) const
-{
-    GeomFormat* result = nullptr;
-    const std::vector<TechDraw::GeomFormat*> fmts = GeomFormats.getValues();
-    if (idx < (int) fmts.size())  {
-        result = fmts.at(idx);
-    }
-    return result;
-}
-
-//find the format corresponding to geometry edge idx
-TechDraw::GeomFormat* DrawViewPart::getGeomFormatByGeom(int idx) const
-{
-    GeomFormat* result = nullptr;
-    const std::vector<TechDraw::GeomFormat*> fmts = GeomFormats.getValues();
-    for (auto& f: fmts) {
-        if (f->m_geomIndex == idx) {
-            result = f;
-            break;
-        }
-    }
-    return result;
 }
 
 //------------------------------------------------------------------------------

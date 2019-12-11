@@ -145,25 +145,19 @@ public:
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
     int addCosmeticVertex(CosmeticVertex* cv);
+    int addCosmeticVertex(Base::Vector3d pos);
     int addCosmeticVertex(Base::Vector3d pos,
-                          int link = -1);   //obs?
-    int addCosmeticVertex(Base::Vector3d pos,
-                          std::string tagString,
-                          int link = -1);  //obs??
+                          std::string tagString);
 
     int addCosmeticEdge(CosmeticEdge* ce);
     int addCosmeticEdge(Base::Vector3d start,
-                        Base::Vector3d end,
-                        int link = -1);   //obs?
+                        Base::Vector3d end);
     int addCosmeticEdge(Base::Vector3d start,
                         Base::Vector3d end,
-                        std::string tagString,
-                        int link = -1);  //obs??
+                        std::string tagString);
     int addCosmeticEdge(TechDraw::BaseGeom* base,
                         std::string tagString);
 
-
-/*    int addCosmeticEdge(TechDraw::BaseGeom* bg, int s = 0);*/
     int addCenterLine(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
 
 protected:

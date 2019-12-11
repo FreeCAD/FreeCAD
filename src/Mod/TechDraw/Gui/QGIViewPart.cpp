@@ -570,7 +570,6 @@ void QGIViewPart::drawViewPart()
                 int source = (*itGeom)->source();
                 int sourceIndex = (*itGeom)->sourceIndex();
                 if (source == COSMETICEDGE) {
-//                    showItem = formatGeomFromCosmetic(sourceIndex, item);
                     std::string cTag = (*itGeom)->getCosmeticTag();
                     showItem = formatGeomFromCosmetic(cTag, item);
                 } else if (source == CENTERLINE) {
@@ -579,7 +578,7 @@ void QGIViewPart::drawViewPart()
                     Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",i,source);
                 }
             } else {
-                TechDraw::GeomFormat* gf = viewPart->getGeomFormatByGeom(i);
+                TechDraw::GeomFormat* gf = viewPart->getGeomFormatBySelection(i);
                 if (gf != nullptr) {
                     item->setNormalColor(gf->m_format.m_color.asValue<QColor>());
                     item->setWidth(gf->m_format.m_weight * lineScaleFactor);
