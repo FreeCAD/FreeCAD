@@ -45,7 +45,7 @@ public:
     PropertyBool ReadOnly;
 
     TextDocument();
-    ~TextDocument() {};
+    ~TextDocument() {}
 
     void onChanged(const Property* prop);
     const char* getViewProviderName() const;
