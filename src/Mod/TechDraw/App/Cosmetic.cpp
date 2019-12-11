@@ -1534,6 +1534,12 @@ boost::uuids::uuid GeomFormat::getTag() const
     return tag;
 }
 
+std::string GeomFormat::getTagAsString(void) const
+{
+    std::string tmp = boost::uuids::to_string(getTag());
+    return tmp;
+}
+
 void GeomFormat::createNewTag()
 {
     // Initialize a random number generator, to avoid Valgrind false positives.

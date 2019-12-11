@@ -593,27 +593,26 @@ int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
     return idx;
 }
 
-//adds a new GeomVert to list for cv[link]
-int GeometryObject::addCosmeticVertex(Base::Vector3d pos, int link)
+//adds a new GeomVert to list
+//should probably be called addVertex since not connect to CV by tag
+int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 {
     Base::Console().Message("GO::addCosmeticVertex() 1 - deprec?\n");
     TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
     v->cosmetic = true;
-    v->cosmeticLink = link;
-    v->cosmeticTag = "tbi";
+    v->cosmeticTag = "tbi";        //not connected to CV
     v->hlrVisible = true;
     int idx = vertexGeom.size();
     vertexGeom.push_back(v);
     return idx;
 }
 
-int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString, int link)
+int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 {
 //    Base::Console().Message("GO::addCosmeticVertex() 2\n");
     TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
     v->cosmetic = true;
-    v->cosmeticLink = link;
-    v->cosmeticTag = tagString;
+    v->cosmeticTag = tagString;     //connected to CV
     v->hlrVisible = true;
     int idx = vertexGeom.size();
     vertexGeom.push_back(v);
@@ -641,8 +640,7 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 //adds a new GeomEdge to list for ce[link]
 //this should be made obsolete and the variant with tag used instead
 int GeometryObject::addCosmeticEdge(Base::Vector3d start,
-                                    Base::Vector3d end,
-                                    int link)
+                                    Base::Vector3d end)
 {
     Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
     gp_Pnt gp1(start.x, start.y, start.z);
@@ -660,8 +658,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
 
 int GeometryObject::addCosmeticEdge(Base::Vector3d start,
                                     Base::Vector3d end,
-                                    std::string tagString,
-                                    int link)
+                                    std::string tagString)
 {
     Base::Console().Message("GO::addCosmeticEdge() 2\n");
     gp_Pnt gp1(start.x, start.y, start.z);

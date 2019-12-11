@@ -47,7 +47,9 @@ CosmeticExtension::CosmeticExtension()
 {
     static const char *cgroup = "Cosmetics";
 
-    EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),cgroup,App::Prop_Output,"CosmeticVertex Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(CosmeticVertexes, (0), cgroup, App::Prop_Output, "CosmeticVertex Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(CosmeticEdges, (0), cgroup, App::Prop_Output, "CosmeticEdge Save/Restore");
+    EXTENSION_ADD_PROPERTY_TYPE(GeomFormats ,(0),cgroup,App::Prop_Output,"Geometry format Save/Restore");
 
     initExtensionType(CosmeticExtension::getExtensionClassTypeId());
 }
@@ -287,6 +289,103 @@ bool CosmeticExtension::replaceCosmeticEdge(CosmeticEdge* newCE)
     return result;
 }
 
+//********** Center Line *******************************************************
+
+
+//********** Geometry Formats **************************************************
+//returns unique GF id
+//only adds gf to gflist property.  does not add to display geometry until dvp repaints.
+std::string CosmeticExtension::addGeomFormat(TechDraw::GeomFormat* gf)
+{
+//    Base::Console().Message("CEx::addGeomFormat(gf: %X)\n", gf);
+    std::vector<GeomFormat*> formats = GeomFormats.getValues();
+    TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(gf);
+    formats.push_back(newGF);
+    GeomFormats.setValues(formats);
+    std::string result = newGF->getTagAsString();
+    return result;
+}
+
+
+//get GF by unique id
+TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(std::string tagString) const
+{
+//    Base::Console().Message("CEx::getGeomFormat(%s)\n", tagString.c_str());
+    GeomFormat* result = nullptr;
+    const std::vector<TechDraw::GeomFormat*> formats = GeomFormats.getValues();
+    for (auto& gf: formats) {
+        std::string gfTag = gf->getTagAsString();
+        if (gfTag == tagString) {
+            result = gf;
+            break;
+        }
+    }
+    return result;
+}
+
+// find the cosmetic edge corresponding to selection name (Edge5)
+// used when selecting
+TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(std::string name) const
+{
+//    Base::Console().Message("CEx::getCEBySelection(%s)\n",name.c_str());
+    GeomFormat* result = nullptr;
+    App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
+    if (dvp == nullptr) {
+        return result;
+    }
+    int idx = DrawUtil::getIndexFromName(name);
+    const std::vector<TechDraw::GeomFormat*> formats = GeomFormats.getValues();
+    for (auto& gf: formats) {
+        if (gf->m_geomIndex == idx) {
+            result = gf;
+            break;
+        }
+    }
+    return result;
+}
+
+//overload for index only 
+TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
+{
+//    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
+    std::stringstream ss;
+    ss << "Edge" << i;
+    std::string eName = ss.str();
+    return getGeomFormatBySelection(eName);
+}
+
+bool CosmeticExtension::replaceGeomFormat(GeomFormat* newGF)
+{
+//    Base::Console().Message("CEx::replaceGF(%s)\n", newGF->getTagAsString().c_str());
+    bool result = false;
+    std::vector<GeomFormat*> gFormats = GeomFormats.getValues();
+    std::vector<GeomFormat*> newFormats;
+    std::string tag = newGF->getTagAsString();
+    for (auto& gf: gFormats) {
+        if (gf->getTagAsString() == tag)  {
+            newFormats.push_back(newGF);
+            result = true;
+        } else { 
+            newFormats.push_back(gf);
+        }
+    }
+    GeomFormats.setValues(newFormats);
+    return result;
+}
+
+void CosmeticExtension::removeGeomFormat(std::string delTag)
+{
+//    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
+    std::vector<GeomFormat*> cFormats = GeomFormats.getValues();
+    std::vector<GeomFormat*> newFormats;
+    for (auto& gf: cFormats) {
+        if (gf->getTagAsString() != delTag)  {
+            newFormats.push_back(gf);
+        }
+    }
+    GeomFormats.setValues(newFormats);
+}
 
 //================================================================================
 PyObject* CosmeticExtension::getExtensionPyObject(void) {

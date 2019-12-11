@@ -236,6 +236,8 @@ public:
 
     Base::Vector3d m_start;
     Base::Vector3d m_end;
+
+    //required to recalculate CL after source geom changes.
     std::vector<std::string> m_faces;
     std::vector<std::string> m_edges;
     std::vector<std::string> m_verts;
@@ -296,6 +298,8 @@ public:
 
     //Uniqueness
     boost::uuids::uuid getTag() const;
+    virtual std::string getTagAsString(void) const;
+
 protected:
     void createNewTag();
     void assignTag(const TechDraw::GeomFormat* gf);
