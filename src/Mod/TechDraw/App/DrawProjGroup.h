@@ -174,7 +174,7 @@ protected:
     Base::Vector3d dir2vec(gp_Dir d);
     gp_Dir vec2dir(Base::Vector3d v);
 
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 };
 

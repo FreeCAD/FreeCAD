@@ -98,6 +98,7 @@ void DlgUnitsCalculator::reject()
 
 void DlgUnitsCalculator::textChanged(QString unit)
 {
+    Q_UNUSED(unit)
     valueChanged(actValue);
 }
 
