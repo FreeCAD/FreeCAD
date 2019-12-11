@@ -73,7 +73,7 @@ ViewProviderPlacement::ViewProviderPlacement()
     pcRoot->unref();
     pcRoot = newRoot;
     pcRoot->ref();
-    sPixmap = "CoordinateSystem";
+    sPixmap = "Std_Placement";
 
     OnTopWhenSelected.setValue(1);
 }
