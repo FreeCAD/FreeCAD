@@ -97,6 +97,11 @@ public:
         setObject(other.ptr());
     }
 
+    UnsafePyHandle(CppType* obj)
+    {
+        *this = obj;
+    }
+
     /**
      * @brief isValid: if the C++ object was deleted but Py object is still
      * around, isValid will return false. Attempting to dereference the handle
@@ -123,6 +128,13 @@ public:
     CppType* operator->() const {
         return cppptr;
     }
+    void operator=(CppType* obj){
+        if (obj)
+            setObject(obj->getPyObject(), true);
+        else
+            *this = Py::None();
+    }
+
     ///returns pointer to C++ object
     CppType* cptr() const {
         return cppptr;
