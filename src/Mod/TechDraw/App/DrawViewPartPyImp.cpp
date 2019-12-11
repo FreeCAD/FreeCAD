@@ -307,8 +307,8 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     //points inverted in addCosmeticEdge(p1, p2)
     Base::Vector3d pnt1 = static_cast<Base::VectorPy*>(pPnt1)->value();
     Base::Vector3d pnt2 = static_cast<Base::VectorPy*>(pPnt2)->value();
-    int idx = dvp->addCosmeticEdge(pnt1, pnt2);
-    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
+    std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
@@ -322,7 +322,8 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
         Base::Console().Message("%s\n",msg.c_str());
         throw Py::RuntimeError(msg);
     }
-    return PyLong_FromLong(idx);
+    PyObject* result = new CosmeticEdgePy(new CosmeticEdge(ce));
+    return result;
 }
 
 PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
@@ -355,8 +356,9 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     Handle(Geom_Circle) hCircle = new Geom_Circle (circle);
     BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(M_PI/180), angle2*(M_PI/180));
     TopoDS_Edge edge = aMakeEdge.Edge();
-    int idx = dvp->addCosmeticEdge(edge);
-    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
+    TechDraw::BaseGeom* bg = TechDraw::BaseGeom::baseFactory(edge);
+    std::string tag = dvp->addCosmeticEdge(bg);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(tag);
     if (ce != nullptr) {
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
@@ -370,7 +372,8 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
         Base::Console().Message("%s\n",msg.c_str());
         throw Py::RuntimeError(msg);
     }
-    return PyLong_FromLong(idx);
+    PyObject* result = new CosmeticEdgePy(new CosmeticEdge(ce));
+    return result;
 }
 
 PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
@@ -406,8 +409,9 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     // Qt -y is up, OCC -y is down
 
     TopoDS_Edge edge = aMakeEdge.Edge();
-    int idx = dvp->addCosmeticEdge(edge);
-    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
+    TechDraw::BaseGeom* bg = TechDraw::BaseGeom::baseFactory(edge);
+    std::string tag = dvp->addCosmeticEdge(bg);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(tag);
     if (ce != nullptr) {
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
@@ -421,101 +425,80 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
         Base::Console().Message("%s\n",msg.c_str());
         throw Py::RuntimeError(msg);
     }
-    return PyLong_FromLong(idx);
+
+    PyObject* result = new CosmeticEdgePy(new CosmeticEdge(ce));
+    return result;
 }
 
-//PyObject* DrawViewPartPy::getCosmeticVertexByIndex(PyObject *args)
-//{
-//    PyObject* result = nullptr;
-//    int idx = -1;
-//    if (!PyArg_ParseTuple(args, "i", &idx)) {
-//        throw Py::TypeError("expected (index)");
-//    }
-//    DrawViewPart* dvp = getDrawViewPartPtr();
-//    TechDraw::CosmeticVertex* cv = dvp->getCosmeticVertexByIndex(idx);
-//    if (cv != nullptr) {
-//        result = new CosmeticVertexPy(new CosmeticVertex(cv));
-//    } else {
-//        result = Py_None;
-//    }
-//    return result;
-//}
+//********** Cosmetic Edge *****************************************************
 
-
-PyObject* DrawViewPartPy::getCosmeticEdgeByIndex(PyObject *args)
+PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
 {
-    int idx = 0;
+    char* tag;
     PyObject* result = Py_None;
-    if (!PyArg_ParseTuple(args, "i", &idx)) {
-        throw Py::TypeError("expected (index)");
+    if (!PyArg_ParseTuple(args, "s", &tag)) {
+        throw Py::TypeError("expected (tag)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
-    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(idx);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(tag);
     if (ce != nullptr) {
         result = new CosmeticEdgePy(new CosmeticEdge(ce));
     } else {
-        Base::Console().Error("DVPPI::getCosEdgebyIdx - edge %d not found\n", idx);
+        Base::Console().Error("DVPPI::getCosmeticEdge - edge %s not found\n", tag);
     }
 
     return result;
 }
 
-PyObject* DrawViewPartPy::getCosmeticEdgeByGeom(PyObject *args)
+PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCosmeticEdgeByGeom()\n");
-    int idx = 0;
+//    Base::Console().Message("DVPPI::getCosmeticEdgeBySelection()\n");
+    char* tag;
     PyObject* result = Py_None;
-    if (!PyArg_ParseTuple(args, "i", &idx)) {
-        throw Py::TypeError("expected (index)");
+    if (!PyArg_ParseTuple(args, "s", &tag)) {
+        throw Py::TypeError("expected (tag)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
 
-    TechDraw::BaseGeom* bg = dvp->getGeomByIndex(idx);
-    if (bg == nullptr) {
-        Base::Console().Error("DVPPI::getCEbyGeom - geom: %d not found\n",idx);
-        return result;
-    }
-    int source = bg->source();
-    int sourceIndex = bg->sourceIndex();
-    if (source == 1) {           //cosmetic edge
-        TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeByIndex(sourceIndex);
-        if (ce != nullptr) {
-            result = new CosmeticEdgePy(new CosmeticEdge(ce));
-        } else {
-            Base::Console().Error("DVPPI::getCosEdgebyGeom - edge %d not found\n", idx);
-        }
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeBySelection(tag);
+    if (ce != nullptr) {
+        result = new CosmeticEdgePy(new CosmeticEdge(ce));
+    } else {
+        Base::Console().Error("DVPPI::getCosmeticEdgebySelection - edge for tag %s not found\n", tag);
     }
     return result;
 }
 
-//PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
-//{
-////    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
-//    int idx = 0;
-//    PyObject* result = Py_None;
-//    PyObject* pCE;
-//    if (!PyArg_ParseTuple(args, "iO!", &idx, &(TechDraw::CosmeticEdgePy::Type), &pCE)) {
-//        throw Py::TypeError("expected (index, CosmeticEdge)");
-//    }
-//    TechDraw::CosmeticEdge* ce = static_cast<CosmeticEdgePy*>(pCE)->getCosmeticEdgePtr();
-//    DrawViewPart* dvp = getDrawViewPartPtr();
-//    dvp->replaceCosmeticEdge(idx, ce);
-
-//    return result;
-//}
+PyObject* DrawViewPartPy::replaceCosmeticEdge(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::replaceCosmeticEdge()\n");
+    PyObject* pNewCE;
+    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::CosmeticEdgePy::Type), &pNewCE)) {
+        throw Py::TypeError("expected (CosmeticEdge)");
+    }
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    TechDraw::CosmeticEdgePy* cePy = static_cast<TechDraw::CosmeticEdgePy*>(pNewCE);
+    TechDraw::CosmeticEdge* ce = cePy->getCosmeticEdgePtr();
+    bool result = dvp->replaceCosmeticEdge(ce);
+    dvp->refreshCEGeoms();
+    dvp->requestPaint();
+    return PyBool_FromLong((long) result);
+}
 
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::removeCosEdge()\n");
-    int idx = 0;
-    if (!PyArg_ParseTuple(args, "i", &idx)) {
-        throw Py::TypeError("expected (index)");
+//    Base::Console().Message("DVPPI::removeCosmeticEdge()\n");
+    char* tag;
+    if (!PyArg_ParseTuple(args, "s", &tag)) {
+        throw Py::TypeError("expected (tag)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
-    dvp->removeCosmeticEdge(idx);
-    Py_INCREF(Py_None);
+    dvp->removeCosmeticEdge(tag);
+    Py_INCREF(Py_None); 
     return Py_None;
 }
+
+//********** Center Line *******************************************************
 
 PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
 {

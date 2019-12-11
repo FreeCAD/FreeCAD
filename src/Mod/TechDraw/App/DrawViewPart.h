@@ -111,8 +111,6 @@ public:
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
-/*    TechDraw::PropertyCosmeticVertexList CosmeticVertexes;*/
-    TechDraw::PropertyCosmeticEdgeList CosmeticEdges;
     TechDraw::PropertyCenterLineList  CenterLines;
     TechDraw::PropertyGeomFormatList  GeomFormats;
 
@@ -180,19 +178,11 @@ public:
     void add1CosmeticVertexToGeom(int iCV);
     int add1CVToGV(std::string tag);
 
-    virtual int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
-    virtual int addCosmeticEdge(TopoDS_Edge e);
-    virtual int addCosmeticEdge(TechDraw::CosmeticEdge*);
-    virtual void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);
-    virtual void removeCosmeticEdge(int idx);
-    virtual void removeCosmeticEdge(std::string delTag);
-    virtual void removeCosmeticEdge(std::vector<std::string> delTags);
-    TechDraw::CosmeticEdge* getCosmeticEdge(std::string tagString) const;
-    TechDraw::CosmeticEdge* getCosmeticEdgeByIndex(int idx) const;
-    TechDraw::CosmeticEdge* getCosmeticEdgeByGeom(int idx) const;
-    int getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const;
-    void clearCosmeticEdges(void);
+    void clearCosmeticEdges(void); 
+    void refreshCEGeoms(void);
     void addCosmeticEdgesToGeom(void);
+    void add1CosmeticEdgeToGeom(int iCE);
+    int add1CEToGE(std::string tag);
 
     virtual int addCenterLine(TechDraw::CenterLine*);
     virtual void removeCenterLine(TechDraw::CenterLine* cl);

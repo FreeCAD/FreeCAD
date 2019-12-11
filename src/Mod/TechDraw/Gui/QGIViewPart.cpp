@@ -687,21 +687,6 @@ void QGIViewPart::drawViewPart()
     }
 }
 
-bool QGIViewPart::formatGeomFromCosmetic(int sourceIndex, QGIEdge* item)
-{
-//    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%d)\n",sourceIndex);
-    bool result = true;
-    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
-    TechDraw::CosmeticEdge* ce = partFeat->getCosmeticEdgeByIndex(sourceIndex);
-    if (ce != nullptr) {
-        item->setNormalColor(ce->m_format.m_color.asValue<QColor>());
-        item->setWidth(ce->m_format.m_weight * lineScaleFactor);
-        item->setStyle(ce->m_format.m_style);
-        result = ce->m_format.m_visible;
-    }
-    return result;
-}
-
 bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 {
 //    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());

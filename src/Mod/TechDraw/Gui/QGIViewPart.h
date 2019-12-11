@@ -106,7 +106,6 @@ protected:
     bool prefFaceEdges(void);
     bool prefPrintCenters(void);
 
-    bool formatGeomFromCosmetic(int sourceIndex, QGIEdge* item);
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(int sourceIndex, QGIEdge* item);
 

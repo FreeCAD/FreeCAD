@@ -32,6 +32,7 @@
 #include <Base/Exception.h>
 
 #include "PropertyCosmeticVertexList.h"
+#include "PropertyCosmeticEdgeList.h"
 
 
 namespace TechDraw {
@@ -46,6 +47,7 @@ public:
     virtual ~CosmeticExtension();
 
     TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
+    TechDraw::PropertyCosmeticEdgeList   CosmeticEdges;
 
     virtual std::string     addCosmeticVertex(Base::Vector3d pos);
     virtual CosmeticVertex* getCosmeticVertexBySelection(std::string name) const;
@@ -54,6 +56,16 @@ public:
     virtual bool            replaceCosmeticVertex(CosmeticVertex* newVertex);
     virtual void            removeCosmeticVertex(std::string tag);
     virtual void            removeCosmeticVertex(std::vector<std::string> delTags);
+
+    virtual std::string     addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
+    virtual std::string     addCosmeticEdge(TechDraw::BaseGeom* bg);
+    virtual CosmeticEdge*   getCosmeticEdgeBySelection(std::string name) const;
+    virtual CosmeticEdge*   getCosmeticEdgeBySelection(int i) const;
+    virtual CosmeticEdge*   getCosmeticEdge(std::string id) const;
+    virtual bool            replaceCosmeticEdge(CosmeticEdge* newEdge);
+    virtual void            removeCosmeticEdge(std::string tag);
+    virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
+
 
     PyObject* getExtensionPyObject(void);
 

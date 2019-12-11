@@ -110,6 +110,7 @@ public:
     const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; }
     
     void setVertexGeometry(std::vector<Vertex*> newVerts) {vertexGeom = newVerts; }
+    void setEdgeGeometry(std::vector<BaseGeom*> newGeoms) {edgeGeom = newGeoms; }
 
     void projectShape(const TopoDS_Shape &input,
                       const gp_Ax2 viewAxis);
@@ -143,11 +144,26 @@ public:
     TopoDS_Shape getHidSeam(void)    { return hidSeam; }
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
-    //Are removeXXXXX functions really needed for GO?
     int addCosmeticVertex(CosmeticVertex* cv);
-    int addCosmeticVertex(Base::Vector3d pos, int link = -1);   //obs?
-    int addCosmeticVertex(Base::Vector3d pos, std::string tagString, int link = -1);  //obs??
-    int addCosmeticEdge(TechDraw::BaseGeom* bg, int s = 0);
+    int addCosmeticVertex(Base::Vector3d pos,
+                          int link = -1);   //obs?
+    int addCosmeticVertex(Base::Vector3d pos,
+                          std::string tagString,
+                          int link = -1);  //obs??
+
+    int addCosmeticEdge(CosmeticEdge* ce);
+    int addCosmeticEdge(Base::Vector3d start,
+                        Base::Vector3d end,
+                        int link = -1);   //obs?
+    int addCosmeticEdge(Base::Vector3d start,
+                        Base::Vector3d end,
+                        std::string tagString,
+                        int link = -1);  //obs??
+    int addCosmeticEdge(TechDraw::BaseGeom* base,
+                        std::string tagString);
+
+
+/*    int addCosmeticEdge(TechDraw::BaseGeom* bg, int s = 0);*/
     int addCenterLine(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
 
 protected:

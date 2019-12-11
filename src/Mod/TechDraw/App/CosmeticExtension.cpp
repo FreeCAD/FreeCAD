@@ -171,6 +171,123 @@ bool CosmeticExtension::replaceCosmeticVertex(CosmeticVertex* newCV)
     return result;
 }
 
+//********** Cosmetic Edge *****************************************************
+
+//returns unique CE id
+//only adds ce to celist property.  does not add to display geometry until dvp executes.
+std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
+                                               Base::Vector3d end)
+{
+//    Base::Console().Message("CEx::addCosmeticEdge(%s)\n",
+ //                           DrawUtil::formatVector(pos).c_str());
+    std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
+    TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(start, end);
+    edges.push_back(ce);
+    CosmeticEdges.setValues(edges);
+    std::string result = ce->getTagAsString();
+    return result;
+}
+
+std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeom* bg)
+{
+//    Base::Console().Message("CEx::addCosmeticEdge(bg: %X)\n", bg);
+    std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
+    TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(bg);
+    edges.push_back(ce);
+    CosmeticEdges.setValues(edges);
+    std::string result = ce->getTagAsString();
+    return result;
+}
+
+
+//get CE by unique id
+TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(std::string tagString) const
+{
+//    Base::Console().Message("CEx::getCosmeticEdge(%s)\n", tagString.c_str());
+    CosmeticEdge* result = nullptr;
+    const std::vector<TechDraw::CosmeticEdge*> edges = CosmeticEdges.getValues();
+    for (auto& ce: edges) {
+        std::string ceTag = ce->getTagAsString();
+        if (ceTag == tagString) {
+            result = ce;
+            break;
+        }
+    }
+    return result;
+}
+
+// find the cosmetic edge corresponding to selection name (Edge5)
+// used when selecting
+TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(std::string name) const
+{
+//    Base::Console().Message("CEx::getCEBySelection(%s)\n",name.c_str());
+    CosmeticEdge* result = nullptr;
+    App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
+    if (dvp == nullptr) {
+        return result;
+    }
+    int idx = DrawUtil::getIndexFromName(name);
+    TechDraw::BaseGeom* base = dvp->getGeomByIndex(idx);
+    if (base == nullptr) {
+        return result;
+    }
+    if (!base->getCosmeticTag().empty()) {
+        result = getCosmeticEdge(base->getCosmeticTag());
+    }
+    return result;
+}
+
+//overload for index only 
+TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) const
+{
+//    Base::Console().Message("CEx::getCEBySelection(%d)\n", i);
+    std::stringstream ss;
+    ss << "Edge" << i;
+    std::string eName = ss.str();
+    return getCosmeticEdgeBySelection(eName);
+}
+
+void CosmeticExtension::removeCosmeticEdge(std::string delTag)
+{
+//    Base::Console().Message("DVP::removeCE(%s)\n", delTag.c_str());
+    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    std::vector<CosmeticEdge*> newEdges;
+    for (auto& ce: cEdges) {
+        if (ce->getTagAsString() != delTag)  {
+            newEdges.push_back(ce);
+        }
+    }
+    CosmeticEdges.setValues(newEdges);
+}
+
+void CosmeticExtension::removeCosmeticEdge(std::vector<std::string> delTags)
+{
+    for (auto& t: delTags) {
+        removeCosmeticEdge(t);
+    }
+}
+
+bool CosmeticExtension::replaceCosmeticEdge(CosmeticEdge* newCE)
+{
+//    Base::Console().Message("DVP::replaceCE(%s)\n", newCE->getTagAsString().c_str());
+    bool result = false;
+    std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    std::vector<CosmeticEdge*> newEdges;
+    std::string tag = newCE->getTagAsString();
+    for (auto& ce: cEdges) {
+        if (ce->getTagAsString() == tag)  {
+            newEdges.push_back(newCE);
+            result = true;
+        } else { 
+            newEdges.push_back(ce);
+        }
+    }
+    CosmeticEdges.setValues(newEdges);
+    return result;
+}
+
+
 //================================================================================
 PyObject* CosmeticExtension::getExtensionPyObject(void) {
     if (ExtensionPythonObject.is(Py::_None())){

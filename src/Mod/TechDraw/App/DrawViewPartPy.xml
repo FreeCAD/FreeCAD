@@ -73,19 +73,24 @@
         <UserDocu>makeCosmeticCircleArc(center, radius, start, end) - add a CosmeticEdge at center with radius radius(View coordinates) from start angle to end angle. Returns index of created edge.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getCosmeticEdgeByIndex">
+    <Methode Name="getCosmeticEdge">
       <Documentation>
-        <UserDocu>getCosmeticEdgeByIndex(idx) - returns CosmeticEdge[idx].</UserDocu>
+        <UserDocu>ce = getCosmeticEdge(id) - returns CosmeticEdge with unique id.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getCosmeticEdgeByGeom">
+    <Methode Name="getCosmeticEdgeBySelection">
       <Documentation>
-        <UserDocu>getCosmeticEdgeByGeom(idx) - returns CosmeticEdge using geometry index.</UserDocu>
+        <UserDocu>ce = getCosmeticEdgeBySelection(name) - returns CosmeticEdge by name (Edge25).  Used in selections</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="replaceCosmeticEdge">
+      <Documentation>
+        <UserDocu>replaceCosmeticEdge(ce) - replaces CosmeticEdge ce in View. Returns True/False.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="removeCosmeticEdge">
       <Documentation>
-        <UserDocu>removeCosmeticEdge(idx) - remove CosmeticEdge[idx] from View. Returns None.</UserDocu>
+        <UserDocu>removeCosmeticEdge(ce) - remove CosmeticEdge ce from View. Returns None.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeCenterLine">
