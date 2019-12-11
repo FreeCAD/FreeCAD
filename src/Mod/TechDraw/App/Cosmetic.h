@@ -41,6 +41,8 @@ class TopoDS_Edge;
 namespace TechDraw {
 class DrawViewPart;
 
+
+//general purpose line format specifier
 class TechDrawExport LineFormat
 {
 public:
@@ -64,6 +66,7 @@ public:
     std::string toString() const;
 };
 
+//********** Cosmetic Vertex ***************************************************
 class TechDrawExport CosmeticVertex: public Base::Persistence, public TechDraw::Vertex
 {
     TYPESYSTEM_HEADER();
@@ -110,6 +113,9 @@ protected:
 
 };
 
+//********** CosmeticEdge ******************************************************
+
+//?? should this inherit BaseGeom or have a BaseGeom member?
 class TechDrawExport CosmeticEdge : public Base::Persistence, public TechDraw::BaseGeom
 {
     TYPESYSTEM_HEADER();
@@ -125,7 +131,6 @@ public:
     TechDraw::BaseGeom* scaledGeometry(double scale);
 
     virtual std::string toString(void) const;
-/*    virtual bool fromCSV(std::string& lineSpec);*/
     void dump(const char* title);
 
     // Persistence implementer ---------------------
@@ -137,6 +142,8 @@ public:
     CosmeticEdge* copy(void) const;
     CosmeticEdge* clone(void) const;
 
+    //Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
+    //Base::Vector3d permaEnd; 
     TechDraw::BaseGeom* m_geometry;
     LineFormat m_format;
 
@@ -150,6 +157,8 @@ protected:
 
     boost::uuids::uuid tag;
 };
+
+//***** CenterLine *************************************************************
 
 class TechDrawExport CenterLine: public Base::Persistence
 {
@@ -255,6 +264,9 @@ protected:
 
 };
 
+//********** GeomFormat ********************************************************
+
+// format specifier for geometric edges (Edge5)
 class TechDrawExport GeomFormat: public Base::Persistence
 {
     TYPESYSTEM_HEADER();
@@ -278,7 +290,8 @@ public:
     std::string toString(void) const;
     void dump(const char* title) const;
 
-    int m_geomIndex; 
+    //std::string linkTag;
+    int m_geomIndex;            //connection to edgeGeom
     LineFormat m_format;
 
     //Uniqueness

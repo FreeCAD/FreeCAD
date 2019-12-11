@@ -119,7 +119,7 @@ void TaskLineDecor::getDefaults(void)
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeByIndex(bg->sourceIndex());
+                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
                     m_style = ce->m_format.m_style;
                     m_color = ce->m_format.m_color;
                     m_weight = ce->m_format.m_weight;
@@ -186,7 +186,7 @@ void TaskLineDecor::applyDecorations(void)
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeByIndex(bg->sourceIndex());
+                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
                     ce->m_format.m_style = m_style;
                     ce->m_format.m_color = m_color;
                     ce->m_format.m_weight = m_weight;
@@ -218,7 +218,6 @@ void TaskLineDecor::applyDecorations(void)
             }
         }
     }
-    
 }
 
 bool TaskLineDecor::accept()

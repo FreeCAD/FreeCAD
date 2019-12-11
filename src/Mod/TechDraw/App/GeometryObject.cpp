@@ -33,6 +33,7 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -572,6 +573,8 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }  //end TopExp
 }
 
+//********** Cosmetic Vertex ***************************************************
+
 //adds a new GeomVert surrogate for CV
 //returns GeomVert selection index  ("Vertex3")
 // insertGeomForCV(cv)
@@ -617,17 +620,72 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString,
     return idx;
 }
 
-//================================================================================
+//********** Cosmetic Edge *****************************************************
 
-//do not need source index anymore.  base has CosmeticTag
+//adds a new GeomEdge surrogate for CE
+//returns GeomEdge selection index  ("Edge3")
+// insertGeomForCE(ce)
+int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
+{
+    Base::Console().Message("GO::addCosmeticEdge(%X)\n", ce);
+    double scale = m_parent->getScale();
+    TechDraw::BaseGeom* e = ce->scaledGeometry(scale);
+    e->cosmetic = true;
+    e->setCosmeticTag(ce->getTagAsString());
+    e->hlrVisible = true;
+    int idx = edgeGeom.size();
+    edgeGeom.push_back(e);
+    return idx;
+}
+
+//adds a new GeomEdge to list for ce[link]
+//this should be made obsolete and the variant with tag used instead
+int GeometryObject::addCosmeticEdge(Base::Vector3d start,
+                                    Base::Vector3d end,
+                                    int link)
+{
+    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
+    gp_Pnt gp1(start.x, start.y, start.z);
+    gp_Pnt gp2(end.x, end.y, end.z);
+    TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    TechDraw::BaseGeom* e = BaseGeom::baseFactory(occEdge);
+    e->cosmetic = true;
+//    e->cosmeticLink = link;
+    e->setCosmeticTag("tbi");
+    e->hlrVisible = true;
+    int idx = edgeGeom.size();
+    edgeGeom.push_back(e);
+    return idx;
+}
+
+int GeometryObject::addCosmeticEdge(Base::Vector3d start,
+                                    Base::Vector3d end,
+                                    std::string tagString,
+                                    int link)
+{
+    Base::Console().Message("GO::addCosmeticEdge() 2\n");
+    gp_Pnt gp1(start.x, start.y, start.z);
+    gp_Pnt gp2(end.x, end.y, end.z);
+    TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    TechDraw::BaseGeom* base = BaseGeom::baseFactory(occEdge);
+    base->cosmetic = true;
+    base->setCosmeticTag(tagString);
+    base->hlrVisible = true;
+    int idx = edgeGeom.size();
+    edgeGeom.push_back(base);
+    return idx;
+}
+
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
-                                    int s)
+                                    std::string tagString)
 {
     base->cosmetic = true;
-    base->source(s);           //1-CosmeticEdge, 2-CenterLine
-    
+    base->hlrVisible = true;
+    base->source(1);           //1-CosmeticEdge, 2-CenterLine
+    base->setCosmeticTag(tagString);
+    base->sourceIndex(-1);
+    int idx = edgeGeom.size();
     edgeGeom.push_back(base);
-    int idx = edgeGeom.size() - 1;
     return idx;
 }
 
