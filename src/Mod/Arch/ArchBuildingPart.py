@@ -310,6 +310,7 @@ class CommandBuildingPart:
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("obj = Arch.makeBuildingPart("+ss+")")
         FreeCADGui.addModule("Draft")
+        FreeCADGui.doCommand("obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
