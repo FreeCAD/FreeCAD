@@ -2737,6 +2737,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             PyTuple_SetItem(pts,0,pPt1);
             PyTuple_SetItem(pts,1,pPt2);
             PyList_Append(solnPts, pts);
+            Py_DecRef(pts);//Append does not steal reference
 
             geom = PyTuple_New(6);
             PyTuple_SetItem(geom,0,pSuppType1);
@@ -2746,13 +2747,16 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             PyTuple_SetItem(geom,4,pSupportIndex2);
             PyTuple_SetItem(geom,5,pParm2);
             PyList_Append(solnGeom, geom);
+            Py_DecRef(geom);//Append does not steal reference
         }
     }
     else {
         PyErr_SetString(PyExc_TypeError, "distToShape: No Solutions Found.");
         return 0;
     }
-    return Py_BuildValue("dOO", minDist, solnPts,solnGeom);
+    PyObject* ret = Py_BuildValue("dOO", minDist, solnPts,solnGeom);
+    Py_DecRef(solnPts); Py_DecRef(solnGeom); //Py_BuildValue doesn't steal references
+    return ret;
 }
 
 PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
