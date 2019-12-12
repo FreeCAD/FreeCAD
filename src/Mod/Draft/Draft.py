@@ -1789,7 +1789,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             newobj = makeCopy(obj)
         else:
             newobj = obj
-        if hasattr(obj,'Shape'):
+        if hasattr(obj,'Shape') and (Draft.getType(obj) not in ["WorkingPlaneProxy"]):
             shape = obj.Shape.copy()
             shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
             newobj.Shape = shape
