@@ -839,6 +839,7 @@ class ViewProviderBuildingPart:
                 else:
                     self.wptext = FreeCADGui.draftToolBar.wplabel.text()
                     FreeCADGui.draftToolBar.wplabel.setText(self.Object.Label)
+            FreeCAD.DraftWorkingPlane.lastBuildingPart = self.Object.Name
 
     def writeCamera(self):
 
