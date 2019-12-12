@@ -2644,18 +2644,18 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             suppS1 = extss.SupportOnShape1(i);
             switch (supportType1) {
                 case BRepExtrema_IsVertex:
-                    suppType1 = "Vertex";
+                    suppType1 = Py::String("Vertex");
                     suppIndex1 = Py::asObject(_getSupportIndex("Vertex",ts1,suppS1));
                     param1 = Py::None();
                     break;
                 case BRepExtrema_IsOnEdge:
-                    suppType1 = "Edge";
+                    suppType1 = Py::String("Edge");
                     suppIndex1 = Py::asObject(_getSupportIndex("Edge",ts1,suppS1));
                     extss.ParOnEdgeS1(i,t1);
                     param1 = Py::Float(t1);
                     break;
                 case BRepExtrema_IsInFace:
-                    suppType1 = "Face";
+                    suppType1 = Py::String("Face");
                     suppIndex1 = Py::asObject(_getSupportIndex("Face",ts1,suppS1));
                     extss.ParOnFaceS1(i,u1,v1);
                     {
@@ -2667,7 +2667,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType1 is unknown: %d \n",supportType1);
-                    suppType1 = "Unknown";
+                    suppType1 = Py::String("Unknown");
                     suppIndex1 = -1;
                     param1 = Py::None();
             }
@@ -2678,18 +2678,18 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             suppS2 = extss.SupportOnShape2(i);
             switch (supportType2) {
                 case BRepExtrema_IsVertex:
-                    suppType2 = "Vertex";
+                    suppType2 = Py::String("Vertex");
                     suppIndex2 = Py::asObject(_getSupportIndex("Vertex",ts2,suppS2));
                     param2 = Py::None();
                     break;
                 case BRepExtrema_IsOnEdge:
-                    suppType2 = "Edge";
+                    suppType2 = Py::String("Edge");
                     suppIndex2 = Py::asObject(_getSupportIndex("Edge",ts2,suppS2));
                     extss.ParOnEdgeS2(i,t2);
                     param2 = Py::Float(t2);
                     break;
                 case BRepExtrema_IsInFace:
-                    suppType2 = "Face";
+                    suppType2 = Py::String("Face");
                     suppIndex2 = Py::asObject(_getSupportIndex("Face",ts2,suppS2));
                     extss.ParOnFaceS2(i,u2,v2);
                     {
@@ -2701,7 +2701,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     break;
                 default:
                     Base::Console().Message("distToShape: supportType2 is unknown: %d \n",supportType2);
-                    suppType2 = "Unknown";
+                    suppType2 = Py::String("Unknown");
                     suppIndex2 = -1;
                     param2 = Py::None();
             }
