@@ -103,7 +103,6 @@ public:
     boost::uuids::uuid getTag() const;
     virtual std::string getTagAsString(void) const;
 
-
 protected:
     //Uniqueness
     void createNewTag();
@@ -142,8 +141,10 @@ public:
     CosmeticEdge* copy(void) const;
     CosmeticEdge* clone(void) const;
 
-    //Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords
-    //Base::Vector3d permaEnd; 
+    Base::Vector3d permaStart;         //persistent unscaled start/end points in View coords?
+    Base::Vector3d permaEnd; 
+    double permaRadius;
+    void unscaleEnds(double scale);
     TechDraw::BaseGeom* m_geometry;
     LineFormat m_format;
 
@@ -167,7 +168,8 @@ class TechDrawExport CenterLine: public Base::Persistence
 public:
     CenterLine();
     CenterLine(CenterLine* cl);
-    //set m_faces after using next 2 ctors
+    //set m_faces after using next 3 ctors
+    CenterLine(TechDraw::BaseGeom* bg);
     CenterLine(Base::Vector3d p1, Base::Vector3d p2);
     CenterLine(Base::Vector3d p1, Base::Vector3d p2,
                int m, 

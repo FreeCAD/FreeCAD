@@ -324,7 +324,7 @@ CosmeticVertex* CosmeticVertex::clone(void) const
 PyObject* CosmeticVertex::getPyObject(void)
 {
 //    return new CosmeticVertexPy(new CosmeticVertex(this->copy()));  //shouldn't this be clone?
-    PyObject* result = new CosmeticVertexPy(this->clone());  //shouldn't this be clone?
+    PyObject* result = new CosmeticVertexPy(this->clone());
     return result;
 }
 
@@ -344,13 +344,15 @@ CosmeticEdge::CosmeticEdge()
 //    Base::Console().Message("CE::CE()\n");
     m_geometry = new TechDraw::BaseGeom();
     initialize();
-    
 }
 
+//TODO: set permaStart/permaEnd in ctors. Need scale. 
 CosmeticEdge::CosmeticEdge(CosmeticEdge* ce)
 {
 //    Base::Console().Message("CE::CE(ce)\n");
     TechDraw::BaseGeom* newGeom = ce->m_geometry->copy();
+    permaStart = ce->permaStart;
+    permaEnd   = ce->permaEnd;      
     m_geometry = newGeom;
     m_format   = ce->m_format;
     initialize();
@@ -365,6 +367,8 @@ CosmeticEdge::CosmeticEdge(Base::Vector3d pt1, Base::Vector3d pt2)
     gp_Pnt gp2(p2.x,p2.y,p2.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    permaStart = p1;
+    permaEnd   = p2;
     initialize();
 }
 
@@ -372,6 +376,8 @@ CosmeticEdge::CosmeticEdge(TopoDS_Edge e)
 {
 //    Base::Console().Message("CE::CE(TopoDS_Edge)\n");
     m_geometry = TechDraw::BaseGeom::baseFactory(e);
+    permaStart = m_geometry->getStartPoint();
+    permaEnd   = m_geometry->getEndPoint();
     initialize();
 }
 
@@ -379,6 +385,8 @@ CosmeticEdge::CosmeticEdge(TechDraw::BaseGeom* g)
 {
 //    Base::Console().Message("CE::CE(bg)\n");
     m_geometry = g;
+    permaStart = m_geometry->getStartPoint();
+    permaEnd   = m_geometry->getEndPoint();
     initialize();
 }
 
@@ -400,6 +408,13 @@ void CosmeticEdge::initialize(void)
     m_geometry->setCosmeticTag(getTagAsString());
 }
 
+void CosmeticEdge::unscaleEnds(double scale)
+{
+    permaStart = permaStart / scale;
+    permaEnd   = permaEnd   / scale;
+    permaRadius = permaRadius / scale;
+}
+
 TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
 {
     TechDraw::BaseGeom* newGeom = nullptr;
@@ -418,6 +433,7 @@ TechDraw::BaseGeom* CosmeticEdge::scaledGeometry(double scale)
 std::string CosmeticEdge::toString(void) const
 {
     std::stringstream ss;
+    ss << getTagAsString() << ", $$$, ";
     if (m_geometry != nullptr) {
         ss << m_geometry->geomType << 
             ",$$$," <<
@@ -556,7 +572,7 @@ CosmeticEdge* CosmeticEdge::clone(void) const
 
 PyObject* CosmeticEdge::getPyObject(void)
 {
-    return new CosmeticEdgePy(new CosmeticEdge(this->copy()));
+    return new CosmeticEdgePy(this->clone());
 }
 
 //*********************************************************
@@ -580,28 +596,38 @@ CenterLine::CenterLine(void)
     initialize();
 }
 
-CenterLine::CenterLine(CenterLine* cl)
+CenterLine::CenterLine(TechDraw::CenterLine* cl)
 {
     m_start = cl->m_start;
-    m_end = cl->m_end; 
+    m_end = cl->m_end;
     m_mode = cl->m_mode;
     m_hShift = cl->m_hShift;
     m_vShift = cl->m_vShift;
     m_rotate = cl->m_rotate;
     m_extendBy = cl->m_extendBy;
-    m_faces = cl->m_faces;
-    m_format = cl->m_format;
     m_type = cl->m_type;
-    m_flip2Line = cl->m_flip2Line;
-    m_edges = cl->m_edges;
-    m_verts = cl->m_verts;
+    m_flip2Line = m_flip2Line;
 
-    TechDraw::BaseGeom* newGeom = cl->m_geometry->copy();
-    m_geometry = newGeom;
+    m_geometry = cl->m_geometry;    //new BaseGeom(cl->m_geometry);??
 
     initialize();
-    
-    m_format   = cl->m_format;
+}
+
+CenterLine::CenterLine(TechDraw::BaseGeom* bg)
+{
+    m_start = bg->getStartPoint();
+    m_end = bg->getEndPoint();
+    m_mode = CLMODE::VERTICAL;
+    m_hShift = 0.0;
+    m_vShift = 0.0;
+    m_rotate = 0.0;
+    m_extendBy = 0.0;
+    m_type = CLTYPE::FACE;
+    m_flip2Line = false;
+
+    m_geometry = bg;
+
+    initialize();
 }
 
 CenterLine::CenterLine(Base::Vector3d pt1, Base::Vector3d pt2)
@@ -674,7 +700,7 @@ CenterLine* CenterLine::CenterLineBuilder(DrawViewPart* partFeat,
                                           int mode,
                                           bool flip)
 {
-//    Base::Console().Message("CL::CLBuilder()\n");
+//    Base::Console().Message("CL::CLBuilder()\n - subNames: %d", subNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> ends;
     std::vector<std::string> faces;
     std::vector<std::string> edges;
@@ -929,7 +955,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
                                                       double rotate, bool flip)
                                                       
 {
-//    Base::Console().Message("CL::calc2Lines() - mode: %d flip: %d\n", mode, flip);
+//    Base::Console().Message("CL::calc2Lines() - mode: %d flip: %d edgeNames: %d\n", mode, flip, edgeNames.size());
     std::pair<Base::Vector3d, Base::Vector3d> result;
     if (edgeNames.empty()) {
         Base::Console().Warning("CL::calcEndPoints2Lines - no edges!\n");
@@ -937,6 +963,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
     }
 
     double scale = partFeat->getScale();
+    const std::vector<TechDraw::BaseGeom*> dbEdges = partFeat->getEdgeGeometry();
 
     std::vector<TechDraw::BaseGeom*> edges;
     for (auto& en: edgeNames) {
@@ -947,10 +974,12 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Lines(DrawVi
         TechDraw::BaseGeom* bg = partFeat->getGeomByIndex(idx);
         if (bg != nullptr) {
             edges.push_back(bg);
+        } else {
+            Base::Console().Message("CL::calcEndPoints2Lines - no geom for index: %d\n", idx);
         }
     }
     if (edges.size() != 2) {
-//        Base::Console().Message("CL::calcEndPoints2Lines - wrong number of edges!\n");
+        Base::Console().Message("CL::calcEndPoints2Lines - wrong number of edges: %d!\n", edges.size());
 //        return result;
         throw Base::IndexError("CenterLine wrong number of edges.");
     }
@@ -1085,8 +1114,8 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints2Points(DrawV
 
 
     //extend
-    p1 = p1 - (clDir * ext);
-    p2 = p2 + (clDir * ext);
+    p1 = p1 + (clDir * ext);
+    p2 = p2 - (clDir * ext);
 
     //rotate
     if (!DrawUtil::fpCompare(rotate, 0.0)) {
@@ -1388,7 +1417,7 @@ CenterLine *CenterLine::clone(void) const
 
 PyObject* CenterLine::getPyObject(void)
 {
-    return new CenterLinePy(new CenterLine(this->copy()));
+    return new CenterLinePy(this->clone());
 }
 
 void CenterLine::setShifts(double h, double v)

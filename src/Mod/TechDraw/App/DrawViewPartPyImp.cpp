@@ -310,6 +310,8 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     std::string newTag = dvp->addCosmeticEdge(pnt1, pnt2);
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
+        ce->permaStart = pnt1;
+        ce->permaEnd   = pnt2;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
         if (pColor == nullptr) {
@@ -322,8 +324,10 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
         Base::Console().Message("%s\n",msg.c_str());
         throw Py::RuntimeError(msg);
     }
-    PyObject* result = new CosmeticEdgePy(new CosmeticEdge(ce));
-    return result;
+    //int link = 
+    dvp->add1CEToGE(newTag);
+    dvp->requestPaint();
+    return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
 }
 
 PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
@@ -357,9 +361,11 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     BRepBuilderAPI_MakeEdge aMakeEdge(hCircle, angle1*(M_PI/180), angle2*(M_PI/180));
     TopoDS_Edge edge = aMakeEdge.Edge();
     TechDraw::BaseGeom* bg = TechDraw::BaseGeom::baseFactory(edge);
-    std::string tag = dvp->addCosmeticEdge(bg);
-    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(tag);
+    std::string newTag = dvp->addCosmeticEdge(bg);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
+        ce->permaStart = pnt1;
+        ce->permaEnd   = pnt1;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
         if (pColor == nullptr) {
@@ -372,8 +378,10 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
         Base::Console().Message("%s\n",msg.c_str());
         throw Py::RuntimeError(msg);
     }
-    PyObject* result = new CosmeticEdgePy(new CosmeticEdge(ce));
-    return result;
+    //int link = 
+    dvp->add1CEToGE(newTag);
+    dvp->requestPaint();
+    return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
 }
 
 PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
@@ -410,9 +418,11 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
 
     TopoDS_Edge edge = aMakeEdge.Edge();
     TechDraw::BaseGeom* bg = TechDraw::BaseGeom::baseFactory(edge);
-    std::string tag = dvp->addCosmeticEdge(bg);
-    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(tag);
+    std::string newTag = dvp->addCosmeticEdge(bg);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(newTag);
     if (ce != nullptr) {
+        ce->permaStart = pnt1;
+        ce->permaEnd   = pnt1;
         ce->m_format.m_style = style;
         ce->m_format.m_weight = weight;
         if (pColor == nullptr) {
@@ -426,8 +436,10 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
         throw Py::RuntimeError(msg);
     }
 
-    PyObject* result = new CosmeticEdgePy(new CosmeticEdge(ce));
-    return result;
+    //int link = 
+    dvp->add1CEToGE(newTag);
+    dvp->requestPaint();
+    return PyUnicode_FromString(newTag.c_str());   //return tag for new CE
 }
 
 //********** Cosmetic Edge *****************************************************
@@ -442,7 +454,9 @@ PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
     DrawViewPart* dvp = getDrawViewPartPtr();
     TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdge(tag);
     if (ce != nullptr) {
-        result = new CosmeticEdgePy(new CosmeticEdge(ce));
+//        result = new CosmeticEdgePy(new CosmeticEdge(ce));
+        result = new CosmeticEdgePy(ce->clone());
+//        result = ce->getPyObject();
     } else {
         Base::Console().Error("DVPPI::getCosmeticEdge - edge %s not found\n", tag);
     }
@@ -453,18 +467,19 @@ PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
 PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 {
 //    Base::Console().Message("DVPPI::getCosmeticEdgeBySelection()\n");
-    char* tag;
+    char* name;
     PyObject* result = Py_None;
-    if (!PyArg_ParseTuple(args, "s", &tag)) {
-        throw Py::TypeError("expected (tag)");
+    if (!PyArg_ParseTuple(args, "s", &name)) {
+        throw Py::TypeError("expected (name)");
     }
     DrawViewPart* dvp = getDrawViewPartPtr();
 
-    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeBySelection(tag);
+    TechDraw::CosmeticEdge* ce = dvp->getCosmeticEdgeBySelection(name);
     if (ce != nullptr) {
-        result = new CosmeticEdgePy(new CosmeticEdge(ce));
+//        result = ce->getPyObject();
+        result = new CosmeticEdgePy(ce->clone());
     } else {
-        Base::Console().Error("DVPPI::getCosmeticEdgebySelection - edge for tag %s not found\n", tag);
+        Base::Console().Error("DVPPI::getCosmeticEdgebySelection - edge for name %s not found\n", name);
     }
     return result;
 }
@@ -530,86 +545,94 @@ PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
 #endif
         }
     }
-
     CenterLine* cl = nullptr;
-    int idx = -1;
+    std::string tag;
     if (!subs.empty()) {
         cl = CenterLine::CenterLineBuilder(dvp,
                                            subs,
                                            mode);     //vert,horiz,align
         if (cl != nullptr) {
-            idx = dvp->addCenterLine(cl);
+            tag = dvp->addCenterLine(cl);
         } else {
             std::string msg = "DVPPI:makeCenterLine - line creation failed";
             Base::Console().Message("%s\n",msg.c_str());
             throw Py::RuntimeError(msg);
         }
     }
-    return PyLong_FromLong(idx);
+    //int link = 
+    dvp->add1CLToGE(tag);
+    dvp->requestPaint();
+
+    return PyUnicode_FromString(tag.c_str());   //return tag for new CV
 }
 
-PyObject* DrawViewPartPy::adjustCenterLine(PyObject *args)
+PyObject* DrawViewPartPy::getCenterLine(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::adjustCenterLine()\n");
-    int idx = -1;
-    double hShift = 0.0;
-    double vShift = 0.0;
-    double rotate = 0.0;
-    double extend = 0.0;
-    bool flip = false;
-
-    if (!PyArg_ParseTuple(args, "idddd|p",&idx, &hShift, &vShift, &rotate, &extend, &flip)) {
-        throw Py::TypeError("expected (index, hShift, vShift, rotate, extend [,flip])");
+    char* tag;
+    PyObject* result = Py_None;
+    if (!PyArg_ParseTuple(args, "s", &tag)) {
+        throw Py::TypeError("expected (tag)");
     }
-
     DrawViewPart* dvp = getDrawViewPartPtr();
-    CenterLine* cl = dvp->getCenterLineByIndex(idx);
+    TechDraw::CenterLine* cl = dvp->getCenterLine(tag);
     if (cl != nullptr) {
-        cl->m_hShift = hShift;
-        cl->m_vShift = vShift;
-        cl->m_rotate = rotate;
-        cl->m_extendBy = extend;
-        cl->m_flip2Line = flip;
+        result = new CenterLinePy(cl->clone());
     } else {
-        std::string msg = "DVPPI:adjustCenterLine - CenterLine not found";
-        Base::Console().Message("%s\n",msg.c_str());
-        throw Py::RuntimeError(msg);
+        Base::Console().Error("DVPPI::getCenterLine - centerLine %s not found\n", tag);
     }
+
+    return result;
+}
+
+PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::getCenterLineBySelection()\n");
+    char* tag;
+    PyObject* result = Py_None;
+    if (!PyArg_ParseTuple(args, "s", &tag)) {
+        throw Py::TypeError("expected (name)");
+    }
+    DrawViewPart* dvp = getDrawViewPartPtr();
+
+    TechDraw::CenterLine* cl = dvp->getCenterLineBySelection(tag);
+    if (cl != nullptr) {
+        result = new CenterLinePy(cl->clone());
+    } else {
+        Base::Console().Error("DVPPI::getCenterLinebySelection - centerLine for tag %s not found\n", tag);
+    }
+    return result;
+}
+
+PyObject* DrawViewPartPy::replaceCenterLine(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::replace CenterLine()\n");
+    PyObject* pNewCL;
+    if (!PyArg_ParseTuple(args, "O!", &(TechDraw::CenterLinePy::Type), &pNewCL)) {
+        throw Py::TypeError("expected (CenterLine)");
+    }
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    TechDraw::CenterLinePy* clPy = static_cast<TechDraw::CenterLinePy*>(pNewCL);
+    TechDraw::CenterLine* cl = clPy->getCenterLinePtr();
+    bool result = dvp->replaceCenterLine(cl);
+    dvp->refreshCLGeoms();
+    dvp->requestPaint();
+    return PyBool_FromLong((long) result);
+}
+
+PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
+{
+//    Base::Console().Message("DVPPI::removeCenterLine()\n");
+    char* tag;
+    if (!PyArg_ParseTuple(args, "s", &tag)) {
+        throw Py::TypeError("expected (tag)");
+    }
+    DrawViewPart* dvp = getDrawViewPartPtr();
+    dvp->removeCenterLine(tag);
+    Py_INCREF(Py_None); 
     return Py_None;
 }
 
-PyObject* DrawViewPartPy::formatCenterLine(PyObject *args)
-{
-//    Base::Console().Message("DVPPI::formatCenterLine()\n");
-    int idx = -1;
-    int style = Qt::SolidLine;
-    App::Color defColor = LineFormat::getDefEdgeColor();
-    double weight = 0.5;
-    int visible = 1;
-    PyObject* pColor;
-
-    if (!PyArg_ParseTuple(args, "iidOi",&idx, &style, &weight, &pColor, &visible)) {
-        throw Py::TypeError("expected (index, style, weight, color, visible)");
-    }
-
-    DrawViewPart* dvp = getDrawViewPartPtr();
-    CenterLine* cl = dvp->getCenterLineByIndex(idx);
-    if (cl != nullptr) {
-        cl->m_format.m_style = style;
-        cl->m_format.m_weight = weight;
-        if (pColor == nullptr) {
-            cl->m_format.m_color = defColor;
-        } else {
-            cl->m_format.m_color = DrawUtil::pyTupleToColor(pColor);
-        }
-        cl->m_format.m_visible = visible;
-    } else {
-        std::string msg = "DVPPI:formatCenterLine - CenterLine not found";
-        Base::Console().Message("%s\n",msg.c_str());
-        throw Py::RuntimeError(msg);
-    }
-    return Py_None;
-}
+//********** Geometry Edge *****************************************************
 
 PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 {

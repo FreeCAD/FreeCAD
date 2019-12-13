@@ -125,7 +125,8 @@ void TaskLineDecor::getDefaults(void)
                     m_weight = ce->m_format.m_weight;
                     m_visible = ce->m_format.m_visible;
                 } else if (bg->source() == 2) {
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
+//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag);
+                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(m_edges.front());
                     m_style = cl->m_format.m_style;
                     m_color = cl->m_format.m_color;
                     m_weight = cl->m_format.m_weight;
@@ -192,7 +193,8 @@ void TaskLineDecor::applyDecorations(void)
                     ce->m_format.m_weight = m_weight;
                     ce->m_format.m_visible = m_visible;
                 } else if (bg->source() == 2) {
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
+//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag());
+                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(e);
                     cl->m_format.m_style = m_style;
                     cl->m_format.m_color = m_color;
                     cl->m_format.m_weight = m_weight;

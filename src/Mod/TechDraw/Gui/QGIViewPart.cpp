@@ -568,12 +568,12 @@ void QGIViewPart::drawViewPart()
             item->setStyle(Qt::SolidLine);
             if ((*itGeom)->cosmetic == true) {
                 int source = (*itGeom)->source();
-                int sourceIndex = (*itGeom)->sourceIndex();
                 if (source == COSMETICEDGE) {
                     std::string cTag = (*itGeom)->getCosmeticTag();
                     showItem = formatGeomFromCosmetic(cTag, item);
                 } else if (source == CENTERLINE) {
-                    showItem = formatGeomFromCenterLine(sourceIndex, item);
+                    std::string cTag = (*itGeom)->getCosmeticTag();
+                    showItem = formatGeomFromCenterLine(cTag, item);
                 } else {
                     Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",i,source);
                 }
@@ -702,12 +702,12 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 }
 
 
-bool QGIViewPart::formatGeomFromCenterLine(int sourceIndex, QGIEdge* item)
+bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
 {
 //    Base::Console().Message("QGIVP::formatGeomFromCenterLine(%d)\n",sourceIndex);
     bool result = true;
     auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
-    TechDraw::CenterLine* cl = partFeat->getCenterLineByIndex(sourceIndex);
+    TechDraw::CenterLine* cl = partFeat->getCenterLine(cTag);
     if (cl != nullptr) {
         item->setNormalColor(cl->m_format.m_color.asValue<QColor>());
         item->setWidth(cl->m_format.m_weight * lineScaleFactor);
@@ -926,6 +926,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     }
 }
 
+//TODO: use Cosmetic::CenterLine object for this to make it usable for dims.
 void QGIViewPart::drawCenterLines(bool b)
 {
     TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());

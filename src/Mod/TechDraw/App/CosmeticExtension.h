@@ -33,6 +33,7 @@
 
 #include "PropertyCosmeticVertexList.h"
 #include "PropertyCosmeticEdgeList.h"
+#include "PropertyCenterLineList.h"
 #include "PropertyGeomFormatList.h"
 
 
@@ -49,7 +50,7 @@ public:
 
     TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
     TechDraw::PropertyCosmeticEdgeList   CosmeticEdges;
-//    TechDraw::PropertyCenterLineList     CenterLines;
+    TechDraw::PropertyCenterLineList     CenterLines;
     TechDraw::PropertyGeomFormatList     GeomFormats;          //formats for geometric edges
 
     virtual std::string     addCosmeticVertex(Base::Vector3d pos);
@@ -68,6 +69,16 @@ public:
     virtual bool            replaceCosmeticEdge(CosmeticEdge* newEdge);
     virtual void            removeCosmeticEdge(std::string tag);
     virtual void            removeCosmeticEdge(std::vector<std::string> delTags);
+
+    virtual std::string     addCenterLine(Base::Vector3d start, Base::Vector3d end);
+    virtual std::string     addCenterLine(TechDraw::CenterLine* cl);
+    virtual std::string     addCenterLine(TechDraw::BaseGeom* bg);
+    virtual CenterLine*     getCenterLineBySelection(std::string name) const;
+    virtual CenterLine*     getCenterLineBySelection(int i) const;
+    virtual CenterLine*     getCenterLine(std::string tag) const;
+    virtual bool            replaceCenterLine(CenterLine* newLine);
+    virtual void            removeCenterLine(std::string tag);
+    virtual void            removeCenterLine(std::vector<std::string> delTags);
 
     virtual std::string     addGeomFormat(TechDraw::GeomFormat* gf);
     virtual GeomFormat*     getGeomFormatBySelection(std::string name) const;

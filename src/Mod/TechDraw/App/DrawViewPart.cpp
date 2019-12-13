@@ -1080,16 +1080,15 @@ int DrawViewPart::add1CEToGE(std::string tag)
 //update Edge geometry with current CE's 
 void DrawViewPart::refreshCEGeoms(void)
 {
-//    Base::Console().Message("CEx::refreshCEGeoms()\n");
-
+//    Base::Console().Message("DVP::refreshCEGeoms()\n");
     std::vector<TechDraw::BaseGeom *> gEdges = getEdgeGeometry();
-    std::vector<TechDraw::BaseGeom *> newGEdges;
+    std::vector<TechDraw::BaseGeom *> oldGEdges;
     for (auto& ge :gEdges) {
-        if (ge->getTagAsString().empty()) {       //keep only non-ce edges
-            newGEdges.push_back(ge);
+        if (ge->getCosmeticTag().empty()) {       //keep only non-ce edges
+            oldGEdges.push_back(ge);
         }
     }
-    getGeometryObject()->setEdgeGeometry(newGEdges);
+    getGeometryObject()->setEdgeGeometry(oldGEdges);
     addCosmeticEdgesToGeom();
 }
 
@@ -1101,129 +1100,50 @@ void DrawViewPart::clearCenterLines(void)
     CenterLines.setValues(noLines);
 }
 
-int DrawViewPart::addCenterLine(CenterLine* cl)
+int DrawViewPart::add1CLToGE(std::string tag)
 {
-//    Base::Console().Message("DVP::addCL(cl)\n");
-    std::vector<CenterLine*> lines = CenterLines.getValues();
-    int newIdx = (int) lines.size();
-    lines.push_back(cl);
-    CenterLines.setValues(lines);
-    return newIdx;
+//    Base::Console().Message("CEx::add1CLToGE(%s) 2\n", tag.c_str());
+    TechDraw::CenterLine* cl = getCenterLine(tag);
+    if (cl == nullptr) {
+        Base::Console().Message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
+        return -1;
+    }
+    TechDraw::BaseGeom* scaledGeom = cl->scaledGeometry(this);
+    int iGE = geometryObject->addCenterLine(scaledGeom,
+                                            tag);
+                                                
+    return iGE;
 }
 
-void DrawViewPart::removeCenterLine(TechDraw::CenterLine* cl)
+//update Edge geometry with current CL's 
+void DrawViewPart::refreshCLGeoms(void)
 {
-    bool found = false;
-    int i = 0;
-    std::vector<CenterLine*> lines = CenterLines.getValues();
-    int stop = lines.size();
-    for ( ; i < stop; i++) {
-        TechDraw::CenterLine* l = lines.at(i);
-        if (cl == l) {
-            found = true;
-            break;
+//    Base::Console().Message("DVP::refreshCLGeoms()\n");
+    std::vector<TechDraw::BaseGeom *> gEdges = getEdgeGeometry();
+    std::vector<TechDraw::BaseGeom *> newGEdges;
+    for (auto& ge :gEdges) {
+        //TODO: this will keep CE & CL
+        if (ge->getCosmeticTag().empty()) {       //keep only non-cl edges
+            newGEdges.push_back(ge);
         }
     }
-    if ( (cl != nullptr)  &&
-         (found) )  {
-        removeCenterLine(i);
-    }
-}
-
-void DrawViewPart::removeCenterLine(int idx)
-{
-    std::vector<CenterLine*> lines = CenterLines.getValues();
-    if (idx < (int) lines.size()) {
-        lines.erase(lines.begin() + idx);
-        CenterLines.setValues(lines);
-        recomputeFeature();
-    }
-}
-
-void DrawViewPart::removeCenterLine(std::string delTag)
-{
-//    Base::Console().Message("DVP::removeCL(%s)\n", delTag.c_str());
-    std::vector<CenterLine*> cLines = CenterLines.getValues();
-    std::vector<CenterLine*> newLines;
-    for (auto& cl: cLines) {
-        if (cl->getTagAsString() != delTag)  {
-            newLines.push_back(cl);
-        }
-    }
-    CenterLines.setValues(newLines);
-}
-
-void DrawViewPart::removeCenterLine(std::vector<std::string> delTags)
-{
-    std::vector<CenterLine*> cLines = CenterLines.getValues();
-    std::vector<CenterLine*> newLines;
-    for (auto& cl: cLines) {
-        bool found = false;
-        for (auto& dt: delTags) {
-            if (cl->getTagAsString() == dt)  {
-                found = true;          //this cl is in delete list
-                break; 
-            }
-        }
-        if (!found) {
-            newLines.push_back(cl);
-        }
-    }
-    CenterLines.setValues(newLines);
-}
-
-void DrawViewPart::replaceCenterLine(int idx, TechDraw::CenterLine* cl)
-{
-    std::vector<CenterLine*> lines = CenterLines.getValues();
-    if (idx < (int) lines.size())  {
-        lines.at(idx) = cl;
-        recomputeFeature();
-    }
-}
-
-void DrawViewPart::replaceCenterLineByGeom(int geomIndex, TechDraw::CenterLine* cl)
-{
-    const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
-    int sourceIndex = geoms.at(geomIndex)->sourceIndex();
-    replaceCenterLine(sourceIndex, cl);
-}
-
-TechDraw::CenterLine* DrawViewPart::getCenterLineByIndex(int idx) const
-{
-    CenterLine* result = nullptr;
-    const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
-    if (idx < (int) lines.size())  {
-        result = lines.at(idx);
-    }
-    return result;
-}
-
-//find the cosmetic edge corresponding to geometry edge idx
-TechDraw::CenterLine* DrawViewPart::getCenterLineByGeom(int idx) const
-{
-    const std::vector<TechDraw::BaseGeom*> &geoms = getEdgeGeometry();
-    int sourceIndex = geoms.at(idx)->sourceIndex();
-    CenterLine* result = nullptr;
-    const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
-    result = lines.at(sourceIndex);
-    return result;
+    getGeometryObject()->setEdgeGeometry(newGEdges);
+    addCenterLinesToGeom();
 }
 
 //add the center lines to geometry Edges list
 void DrawViewPart::addCenterLinesToGeom(void)
 {
 //   Base::Console().Message("DVP::addCenterLinesToGeom()\n");
-   int i = 0;
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
-    int stop = (int) lines.size();
-    for ( ; i < stop; i++) {
-        TechDraw::BaseGeom* scaledGeom = lines.at(i)->scaledGeometry(this);
+    for (auto& cl: lines) {
+        TechDraw::BaseGeom* scaledGeom = cl->scaledGeometry(this);
         if (scaledGeom == nullptr) {
             Base::Console().Error("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
         }
 //        int idx =
-        (void) geometryObject->addCenterLine(scaledGeom, 2, i);
+        (void) geometryObject->addCenterLine(scaledGeom, cl->getTagAsString());
     }
 }
 
@@ -1264,6 +1184,17 @@ void DrawViewPart::dumpCosVerts(std::string text)
         cv->dump("a CV");
     }
 }
+
+void DrawViewPart::dumpCosEdges(std::string text)
+{
+    std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
+    Base::Console().Message("%s - dumping %d CosmeticEdge\n",
+                            text.c_str(), cEdges.size());
+    for (auto& ce: cEdges) {
+        ce->dump("a CE");
+    }
+}
+
 
 
 void DrawViewPart::onDocumentRestored()
