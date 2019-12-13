@@ -111,8 +111,6 @@ public:
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
 
-    TechDraw::PropertyCenterLineList  CenterLines;
-
     virtual short mustExecute() const override;
     virtual void onDocumentRestored() override;
     virtual App::DocumentObjectExecReturn *execute(void) override;
@@ -181,22 +179,16 @@ public:
     void addCosmeticEdgesToGeom(void);
     int add1CEToGE(std::string tag);
 
-    virtual int addCenterLine(TechDraw::CenterLine*);
-    virtual void removeCenterLine(TechDraw::CenterLine* cl);
-    virtual void removeCenterLine(int idx);
-    void removeCenterLine(std::string delTag);
-    void removeCenterLine(std::vector<std::string> delTags);
-    TechDraw::CenterLine* getCenterLineByIndex(int idx) const;
-    TechDraw::CenterLine* getCenterLineByGeom(int idx) const;
-    void replaceCenterLine(int idx, TechDraw::CenterLine* cl);
-    void replaceCenterLineByGeom(int geomIndex, TechDraw::CenterLine* cl);
-    void clearCenterLines(void);
+    void clearCenterLines(void); 
+    void refreshCLGeoms(void);
     void addCenterLinesToGeom(void);
+    int add1CLToGE(std::string tag);
 
     void clearGeomFormats(void);
 
     void dumpVerts(const std::string text);
     void dumpCosVerts(const std::string text);
+    void dumpCosEdges(const std::string text);
 
 protected:
     bool checkXDirection(void) const;

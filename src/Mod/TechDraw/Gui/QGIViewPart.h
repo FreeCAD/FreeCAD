@@ -107,7 +107,7 @@ protected:
     bool prefPrintCenters(void);
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
-    bool formatGeomFromCenterLine(int sourceIndex, QGIEdge* item);
+    bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
 private:
     QList<QGraphicsItem*> deleteItems;

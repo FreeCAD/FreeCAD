@@ -667,6 +667,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
     TechDraw::BaseGeom* base = BaseGeom::baseFactory(occEdge);
     base->cosmetic = true;
     base->setCosmeticTag(tagString);
+    base->source(1);           //1-CosmeticEdge, 2-CenterLine
     base->hlrVisible = true;
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);
@@ -687,15 +688,16 @@ int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
 }
 
 int GeometryObject::addCenterLine(TechDraw::BaseGeom* base,
-                                    int s, int si)
+                                  std::string tag)
+//                                    int s, int si)
 {
 //    Base::Console().Message("GO::addCenterLine()\n");
     base->cosmetic = true;
-    base->source(s);           //1-CosmeticEdge, 2-CenterLine
-    base->sourceIndex(si);     //index into source;
-    
+    base->setCosmeticTag(tag);
+    base->source(2);
+//    base->sourceIndex(si);     //index into source;
+    int idx = edgeGeom.size();
     edgeGeom.push_back(base);
-    int idx = edgeGeom.size() - 1;
     return idx;
 }
 

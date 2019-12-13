@@ -158,7 +158,9 @@ public:
     int addCosmeticEdge(TechDraw::BaseGeom* base,
                         std::string tagString);
 
-    int addCenterLine(TechDraw::BaseGeom* bg, int s = 0, int si = -1);
+    int addCenterLine(TechDraw::BaseGeom* bg,
+                      std::string tag);
+/*                       int s = 0, int si = -1);*/
 
 protected:
     //HLR output

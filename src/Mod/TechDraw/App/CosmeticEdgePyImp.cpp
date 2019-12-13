@@ -29,7 +29,13 @@
 
 #include <App/Material.h>
 
+#include <Base/Console.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+#include <Base/GeometryPyCXX.h>
+
 #include "DrawUtil.h"
+#include "Geometry.h"
 #include "Cosmetic.h"
 #include "CosmeticEdgePy.h"
 #include "CosmeticEdgePy.cpp"
@@ -111,18 +117,18 @@ PyObject* CosmeticEdgePy::copy(PyObject *args)
     return cpy;
 }
 
-PyObject* CosmeticEdgePy::setFormat(PyObject* args)
+void CosmeticEdgePy::setFormat(Py::Object arg)
 {
 //    Base::Console().Message("CEP::setFormat()\n");
-    PyObject* pTuple;
+    PyObject* pTuple = arg.ptr();
     int style = 1;
     double weight = 0.50;
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
     App::Color c(red, blue, green, alpha);
     bool visible = 1; 
-    if (!PyArg_ParseTuple(args, "O", &pTuple)) {
-      return NULL;
-    }
+//    if (!PyArg_ParseTuple(args, "O", &pTuple)) {
+//      return NULL;
+//    }
     
     TechDraw::CosmeticEdge* ce = this->getCosmeticEdgePtr();
     if (PyTuple_Check(pTuple)) {
@@ -145,13 +151,10 @@ PyObject* CosmeticEdgePy::setFormat(PyObject* args)
     } else {
         Base::Console().Error("CEPI::setFormat - not a tuple!\n");
     }
-    
-    return Py_None;
 }
 
-PyObject* CosmeticEdgePy::getFormat(PyObject *args)
+Py::Object CosmeticEdgePy::getFormat(void) const
 {
-    (void) args;
 //    Base::Console().Message("CEP::getFormat()\n");
     TechDraw::CosmeticEdge* ce = this->getCosmeticEdgePtr();
 
@@ -167,7 +170,7 @@ PyObject* CosmeticEdgePy::getFormat(PyObject *args)
     PyTuple_SET_ITEM(result, 2, pColor);
     PyTuple_SET_ITEM(result, 3, pVisible);
 
-    return result;
+    return Py::asObject(result);
 }
 
 Py::String CosmeticEdgePy::getTag(void) const
@@ -175,6 +178,89 @@ Py::String CosmeticEdgePy::getTag(void) const
     std::string tmp = boost::uuids::to_string(getCosmeticEdgePtr()->getTag());
     return Py::String(tmp);
 }
+
+//Py::String CosmeticEdgePy::getOwner(void) const
+//{
+////    std::string tmp = boost::uuids::to_string(getCosmeticEdgePtr()->getOwner());
+//    std::string tmp = "not implemented yet";
+//    return Py::String(tmp);
+//}
+
+//TODO: make BaseGeom py-aware or convert TD geometry to ??Part::Geometry2d?? or other
+//      py-aware class.
+//Py::Object CosmeticEdgePy::getGeometry(void) const
+//{
+////    TechDraw::BaseGeom* bg = getCosmeticEdgePtr()->m_geometry;
+//    Base::Console().Message("Not implemented yet");
+//    return Py::asObject(Py_None);
+//}
+
+//void CosmeticEdgePy::setGeometry(Py::Object arg)
+//{
+//    Base::Console().Message("Not implemented yet");
+//    PyObject* p = arg.ptr();
+//    if (PyObject_TypeCheck(p, &(TechDraw::BaseGeomPy::Type))) {
+//        //TODO
+//    } else {
+//        std::string error = std::string("type must be 'BaseGeom', not ");
+//        error += p->ob_type->tp_name;
+//        throw Py::TypeError(error);
+//    }
+//}
+
+//Py::Object CosmeticEdgePy::getStart(void) const
+//{
+//    Base::Vector3d point = getCosmeticEdgePtr()->permaStart;
+//    point = DrawUtil::invertY(point);
+//    return Py::asObject(new Base::VectorPy(point));
+//}
+
+//void CosmeticEdgePy::setStart(Py::Object arg)
+//{
+//    PyObject* p = arg.ptr();
+//    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
+//        Base::Vector3d point = static_cast<Base::VectorPy*>(p)->value();
+//        getCosmeticEdgePtr()->permaStart = 
+//                DrawUtil::invertY(point);
+//    }
+//    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
+//        Base::Vector3d point = Base::getVectorFromTuple<double>(p);
+//        getCosmeticEdgePtr()->permaStart = 
+//                DrawUtil::invertY(point);
+//    }
+//    else {
+//        std::string error = std::string("type must be 'Vector', not ");
+//        error += p->ob_type->tp_name;
+//        throw Py::TypeError(error);
+//    }
+//}
+
+//Py::Object CosmeticEdgePy::getEnd(void) const
+//{
+//    Base::Vector3d point = getCosmeticEdgePtr()->permaEnd;
+//    point = DrawUtil::invertY(point);
+//    return Py::asObject(new Base::VectorPy(point));
+//}
+
+//void CosmeticEdgePy::setEnd(Py::Object arg)
+//{
+//    PyObject* p = arg.ptr();
+//    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
+//        Base::Vector3d point = static_cast<Base::VectorPy*>(p)->value();
+//        getCosmeticEdgePtr()->permaEnd = 
+//                DrawUtil::invertY(point);
+//    }
+//    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
+//        Base::Vector3d point = Base::getVectorFromTuple<double>(p);
+//        getCosmeticEdgePtr()->permaEnd = 
+//                DrawUtil::invertY(point);
+//    }
+//    else {
+//        std::string error = std::string("type must be 'Vector', not ");
+//        error += p->ob_type->tp_name;
+//        throw Py::TypeError(error);
+//    }
+//}
 
 PyObject *CosmeticEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
