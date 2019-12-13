@@ -89,14 +89,13 @@ class _TaskPanel(object):
             self._part.ViewObject.show()
 
     def reject(self):
-        self._restoreVisibility()
+        self._recomputeAndRestore()
         return True
 
     def accept(self):
         if self._obj.References != self._refWidget.references():
             self._obj.References = self._refWidget.references()
-        self._obj.Document.recompute()
-        self._restoreVisibility()
+        self._recomputeAndRestore()
         return True
 
     def _restoreVisibility(self):
@@ -109,5 +108,14 @@ class _TaskPanel(object):
                 self._part.ViewObject.show()
             else:
                 self._part.ViewObject.hide()
+
+    def _recomputeAndRestore(self):
+        doc = Gui.getDocument(self._obj.Document)
+        doc.Document.recompute()
+        self._restoreVisibility()
+        # TODO: test if there is an active selection observer
+        # if yes Gui.Selection.removeObserver is your friend
+        doc.resetEdit()
+
 
 ##  @}
