@@ -48,7 +48,7 @@ public:
         ReadWrite = 0x03,
     };
 
-    /// Constrction
+    /// Construction
     FileInfo (const char* _FileName="");
     FileInfo (const std::string &_FileName);
     /// Set a new file name
