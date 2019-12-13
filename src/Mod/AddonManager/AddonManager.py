@@ -298,7 +298,10 @@ class AddonsInstaller(QtGui.QDialog):
         if oktoclose:
             if hasattr(self,"install_worker"):
                 QtGui.QMessageBox.information(self, translate("AddonsInstaller","Addon manager"), translate("AddonsInstaller","Please restart FreeCAD for changes to take effect."))
-            shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
+            try:
+                shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
+            except:
+                FreeCAD.Console.PrintMessage(translate("AddonsInstaller", 'AddonManager - Macros, there was nothing to clean up'))
             QtGui.QDialog.reject(self)
 
     def retranslateUi(self):
@@ -719,16 +722,20 @@ class FillMacroListWorker(QtCore.QThread):
             return
 
         self.info_label_signal.emit('Downloading list of macros for git...')
-        git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
-        for dirpath, _, filenames in os.walk(self.repo_dir):
-             if '.git' in dirpath:
-                 continue
-             for filename in filenames:
-                 if filename.lower().endswith('.fcmacro'):
-                    macro = Macro(filename[:-8])  # Remove ".FCMacro".
-                    macro.on_git = True
-                    macro.src_filename = os.path.join(dirpath, filename)
-                    self.macros.append(macro)
+        try:
+            git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
+            for dirpath, _, filenames in os.walk(self.repo_dir):
+                if '.git' in dirpath:
+                    continue
+                for filename in filenames:
+                    if filename.lower().endswith('.fcmacro'):
+                        macro = Macro(filename[:-8])  # Remove ".FCMacro".
+                        macro.on_git = True
+                        macro.src_filename = os.path.join(dirpath, filename)
+                        self.macros.append(macro)
+        except:
+            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path')+"\n")
+
 
     def retrieve_macros_from_wiki(self):
         """Retrieve macros from the wiki
