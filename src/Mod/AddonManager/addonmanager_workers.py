@@ -271,7 +271,10 @@ class FillMacroListWorker(QtCore.QThread):
             return
 
         self.info_label_signal.emit('Downloading list of macros from git...')
-        git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
+        try:
+            git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
+        except:
+            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path')+"\n")
         for dirpath, _, filenames in os.walk(self.repo_dir):
              if '.git' in dirpath:
                  continue
