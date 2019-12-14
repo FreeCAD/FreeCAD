@@ -150,6 +150,12 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   connectChgObject = documentIn.signalChangedObject.connect(boost::bind(&Model::slotChangeObject, this, _1, _2));
   connectEdtObject = documentIn.signalInEdit.connect(boost::bind(&Model::slotInEdit, this, _1));
   connectResObject = documentIn.signalResetEdit.connect(boost::bind(&Model::slotResetEdit, this, _1));
+
+  for (auto obj : documentIn.getDocument()->getObjects()) {
+    auto vpd = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(documentIn.getViewProvider(obj));
+    if (vpd)
+      slotNewObject(*vpd);
+  }
 }
 
 Model::~Model()
