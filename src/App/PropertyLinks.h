@@ -1107,6 +1107,7 @@ public:
     static bool hasXLink(const std::vector<App::DocumentObject*> &objs, std::vector<App::Document*> *unsaved=0);
     static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=0);
     static std::map<App::Document*,std::set<App::Document*> > getDocumentInList(App::Document *doc=0);
+    static void restoreDocument(const App::Document &doc);
 
     virtual void updateElementReference(
             DocumentObject *feature,bool reverse=false, bool notify=false) override;

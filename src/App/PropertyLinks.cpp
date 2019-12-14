@@ -2641,6 +2641,13 @@ public:
         }
     }
 
+    static void restoreDocument(const App::Document &doc) {
+        auto it = _DocInfoMap.find(getFullPath(doc.FileName.getValue()));
+        if(it==_DocInfoMap.end())
+            return;
+        it->second->slotFinishRestoreDocument(doc);
+    }
+
     void slotFinishRestoreDocument(const App::Document &doc) {
         if(pcDoc) return;
         QString fullpath(getFullPath());
@@ -3421,6 +3428,10 @@ bool PropertyXLink::hasXLink(
         }
     }
     return ret;
+}
+
+void PropertyXLink::restoreDocument(const App::Document &doc) {
+    DocInfo::restoreDocument(doc);
 }
 
 std::map<App::Document*,std::set<App::Document*> > 
