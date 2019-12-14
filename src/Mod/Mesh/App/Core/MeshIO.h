@@ -129,6 +129,8 @@ public:
     /** Loads a Cadmould FE file. */
     bool LoadCadmouldFE (std::ifstream &rstrIn);
 
+    static std::vector<std::string> supportedMeshFormats();
+
 protected:
     MeshKernel &_rclMesh;   /**< reference to mesh data structure */
     Material* _material;
@@ -204,6 +206,8 @@ public:
     bool SaveCadmouldFE (std::ostream &rstrOut) const;
     /** Writes a python module which creates a mesh */
     bool SavePython (std::ostream &rstrOut) const;
+
+    static std::vector<std::string> supportedMeshFormats();
 
 protected:
     const MeshKernel &_rclMesh;   /**< reference to mesh data structure */
