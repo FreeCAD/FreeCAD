@@ -284,14 +284,24 @@ void DocumentObject::getOutList(int options, std::vector<DocumentObject*> &res) 
     std::vector<Property*> props;
     getPropertyList(props);
     bool noHidden = !!(options & OutListNoHidden);
-    bool noXLinked = !!(options & OutListNoXLinked);
+    std::size_t size = res.size();
     for(auto prop : props) {
         auto link = dynamic_cast<PropertyLinkBase*>(prop);
-        if(link && (!noXLinked || !PropertyXLink::supportXLink(prop)))
+        if(link)
             link->getLinks(res,noHidden);
     }
     if(!(options & OutListNoExpression))
         ExpressionEngine.getLinks(res);
+
+    if(options & OutListNoXLinked) {
+        for(auto it=res.begin()+size;it!=res.end();) {
+            auto obj = *it;
+            if(obj && obj->getDocument()!=getDocument())
+                it = res.erase(it);
+            else
+                ++it;
+        }
+    }
 }
 
 std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Property* prop) const
