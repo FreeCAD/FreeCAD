@@ -35,6 +35,7 @@
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/ordered_index.hpp>
+#include <boost/signals2.hpp>
 
 #include "DAGRectItem.h"
 
@@ -79,6 +80,7 @@ namespace Gui
       std::shared_ptr<QGraphicsPixmapItem> stateIcon; //!< visible Icon
       std::shared_ptr<QGraphicsPixmapItem> icon; //!< icon
       std::shared_ptr<QGraphicsTextItem> text; //!< text
+      boost::signals2::connection connChangeIcon;
       int row; //!< row for this entry.
       ColumnMask column; //!< column number containing the point.
       int topoSortIndex;
