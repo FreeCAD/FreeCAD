@@ -81,7 +81,6 @@ namespace Gui
       void renameRejectedSlot();
       void editingStartSlot();
       void editingFinishedSlot();
-      void iconUpdateSlot(); //!< needed because python objects are not ready.
       
     private:
       Model(){}
@@ -101,6 +100,7 @@ namespace Gui
       void slotChangeObject(const Gui::ViewProviderDocumentObject &VPDObjectIn, const App::Property& propertyIn);
       void slotInEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
       void slotResetEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
+      void slotChangeIcon(const Gui::ViewProviderDocumentObject &VPDObjectIn, std::shared_ptr<QGraphicsPixmapItem> icon);
       
       std::shared_ptr<GraphLinkContainer> graphLink;
       std::shared_ptr<Graph> theGraph;

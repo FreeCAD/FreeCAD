@@ -246,26 +246,21 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   auto *rectangle = (*theGraph)[virginVertex].rectangle.get();
   rectangle->setEditingBrush(QBrush(Qt::yellow));
   
-  (*theGraph)[virginVertex].icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
+  auto icon = (*theGraph)[virginVertex].icon;
+  icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
   (*theGraph)[virginVertex].stateIcon->setPixmap(passPixmap);
   (*theGraph)[virginVertex].text->setFont(this->font());
+  (*theGraph)[virginVertex].connChangeIcon = 
+      const_cast<Gui::ViewProviderDocumentObject&>(VPDObjectIn).signalChangeIcon.connect(
+          boost::bind(&Model::slotChangeIcon, this, boost::cref(VPDObjectIn), icon));
   
   graphDirty = true;
-  
-  //we are here before python objects are instantiated. so at this point
-  //the getIcon method doesn't reflect the python override.
-  //so we hack in a delay to get the latest icon and set it for the graphics item.
-  lastAddedVertex = virginVertex;
-  QTimer::singleShot(0, this, SLOT(iconUpdateSlot()));
+  lastAddedVertex = Graph::null_vertex();
 }
 
-void Model::iconUpdateSlot()
+void Model::slotChangeIcon(const ViewProviderDocumentObject &VPDObjectIn, std::shared_ptr<QGraphicsPixmapItem> icon)
 {
-  if (lastAddedVertex == Graph::null_vertex())
-    return;
-  const ViewProviderDocumentObject *VPDObject = findRecord(lastAddedVertex, *graphLink).VPDObject;
-  (*theGraph)[lastAddedVertex].icon->setPixmap(VPDObject->getIcon().pixmap(iconSize, iconSize));
-  lastAddedVertex = Graph::null_vertex();
+  icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
   this->invalidate();
 }
 
@@ -286,6 +281,8 @@ void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
   
   if (vertex == lastAddedVertex)
     lastAddedVertex = Graph::null_vertex();
+
+  (*theGraph)[vertex].connChangeIcon.disconnect();
   
   //remove the actual vertex.
   boost::clear_vertex(vertex, *theGraph);
