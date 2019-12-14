@@ -69,6 +69,8 @@ View::~View()
 
 void View::slotActiveDocument(const Document &documentIn)
 {
+  if (Gui::Selection().hasSelection())
+      return;
   ModelMap::const_iterator it = modelMap.find(&documentIn);
   if (it == modelMap.end())
   {
@@ -98,24 +100,31 @@ void View::awakeSlot()
 
 void View::onSelectionChanged(const SelectionChanges& msg)
 {
-  //dispatch to appropriate document.
-  ModelMap::iterator it;
-  for (auto it = modelMap.begin(); it != modelMap.end(); ++it)
-  {
-    if (std::string(it->first->getDocument()->getName()) == std::string(msg.pDocName))
-    {
-      it->second->selectionChanged(msg);
+  switch(msg.Type) {
+  case SelectionChanges::AddSelection:
+  case SelectionChanges::RmvSelection:
+  case SelectionChanges::SetSelection:
+    if (!msg.pDocName || !msg.pDocName[0])
+      return;
+    break;
+  case SelectionChanges::ClrSelection:
+    if (!msg.pDocName || !msg.pDocName[0]) {
+      for (auto &v : modelMap) {
+        v.second->selectionChanged(msg);
+      }
       return;
     }
+    break;
+  default:
+    return;
   }
-  
-  //FIXME: why am I getting a spontaneous event with an empty name?
-  //also getting events after the document has been removed from modelMap.
-  //just ignore for now.
-//   std::ostringstream stream;
-//   stream << std::endl << "couldn't find document of name: " << std::string(msg.pDocName) << std::endl << std::endl;
-//   Base::Console().Warning(stream.str().c_str());
-//   assert(0); //no document of name.
+  auto doc = Gui::Application::Instance->getDocument(msg.pDocName);
+  if (!doc) return;
+  auto &model = modelMap[doc];
+  if(!model)
+    model = std::make_shared<Model>(this, *doc);
+  this->setScene(model.get());
+  model->selectionChanged(msg);
 }
 
 
