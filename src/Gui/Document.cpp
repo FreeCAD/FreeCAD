@@ -424,8 +424,10 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg)
         dlg->setDocumentName(this->getDocument()->getName());
-    if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-        signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
+    if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        auto vpd = static_cast<ViewProviderDocumentObject*>(d->_editViewProvider);
+        vpd->getDocument()->signalInEdit(*vpd);
+    }
 
     App::AutoTransaction::setEnable(false);
     return true;
