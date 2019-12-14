@@ -704,6 +704,9 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     _pendingDocMap.clear();
 
     Base::SequencerLauncher seq("Postprocessing...", newDocs.size());
+    for (auto &v : newDocs) 
+        PropertyXLink::restoreDocument(*v.first);
+
     for (auto &v : newDocs) {
         FC_TIME_INIT(t1);
         v.first->afterRestore(true);
