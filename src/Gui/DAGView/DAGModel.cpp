@@ -310,18 +310,7 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
     auto *text = (*theGraph)[record.vertex].text.get();
     text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
   }
-  
-  //link changes. these require a recalculation of connectors.
-  const static std::unordered_set<std::string> linkTypes =
-  {
-    "App::PropertyLink",
-    "App::PropertyLinkList",
-    "App::PropertyLinkSub",
-    "App::PropertyLinkSubList",
-    "App::PropertyLinkPickList"
-  };
-  
-  if (linkTypes.find(propertyIn.getTypeId().getName()) != linkTypes.end())
+  else if (propertyIn.isDerivedFrom(App::PropertyLinkBase::getClassTypeId()))
   {
     const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
     boost::clear_vertex(record.vertex, *theGraph);
