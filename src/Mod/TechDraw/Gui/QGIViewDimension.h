@@ -88,8 +88,10 @@ public:
 
     QGCustomText* getDimText(void) { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
-    QGCustomText* getTolText(void) { return m_tolText; }
-    void setTolText(QGCustomText* newTol) { m_tolText = newTol; }
+    QGCustomText* getTolTextOver(void) { return m_tolTextOver; }
+    void setTolTextOver(QGCustomText* newTol) { m_tolTextOver = newTol; }
+    QGCustomText* getTolTextUnder(void) { return m_tolTextUnder; }
+    void setTolTextUnder(QGCustomText* newTol) { m_tolTextOver = newTol; }
 
     double getTolAdjust(void);
     bool hasHover;
@@ -115,7 +117,8 @@ protected:
 //    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_dimText;
-    QGCustomText* m_tolText;
+    QGCustomText* m_tolTextOver;
+    QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
     int getPrecision(void);
     QColor m_colNormal;
