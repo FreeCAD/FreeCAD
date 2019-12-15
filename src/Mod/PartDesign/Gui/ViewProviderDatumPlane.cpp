@@ -134,8 +134,8 @@ void ViewProviderDatumPlane::setExtents(double l, double w)
 {
     // Change the coordinates of the line
     pCoords->point.setNum (4);
-    pCoords->point.set1Value(0, l, w, 0);
-    pCoords->point.set1Value(1, 0, w, 0);
-    pCoords->point.set1Value(2, 0, 0, 0);
-    pCoords->point.set1Value(3, l, 0, 0);
+    pCoords->point.set1Value(0, l/2, w/2, 0);
+    pCoords->point.set1Value(1, -l/2, w/2, 0);
+    pCoords->point.set1Value(2, -l/2, -w/2, 0);
+    pCoords->point.set1Value(3, l/2, -w/2, 0);
 }
