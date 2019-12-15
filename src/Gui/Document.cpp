@@ -404,18 +404,20 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
             d->_editSubname = subname;
     }
 
-    d->_editMode = ModNum;
-    d->_editViewProvider = svp->startEditing(ModNum);
-    if(!d->_editViewProvider) {
-        d->_editViewProviderParent = 0;
-        FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
-        return false;
-    }
-
     auto sobjs = obj->getSubObjectList(subname);
     d->_editObjs.clear();
     d->_editObjs.insert(sobjs.begin(),sobjs.end());
     d->_editingObject = sobj;
+
+    d->_editMode = ModNum;
+    d->_editViewProvider = svp->startEditing(ModNum);
+    if(!d->_editViewProvider) {
+        d->_editViewProviderParent = 0;
+        d->_editObjs.clear();
+        d->_editingObject = 0;
+        FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
+        return false;
+    }
 
     if(view3d) {
         view3d->getViewer()->setEditingViewProvider(d->_editViewProvider,ModNum);

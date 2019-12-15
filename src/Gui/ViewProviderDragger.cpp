@@ -214,6 +214,7 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
       csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
       auto mat = viewer->getDocument()->getEditingTransform();
+      viewer->getDocument()->setEditingTransform(mat);
       auto feat = dynamic_cast<App::GeoFeature *>(getObject());
       if(feat) {
           auto matInverse = feat->Placement.getValue().toMatrix();
