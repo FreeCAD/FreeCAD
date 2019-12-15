@@ -1456,6 +1456,8 @@ def getIfcTypeFromObj(obj):
         ifctype = translationtable[ifctype]
     if ifctype == "VisGroup":
         ifctype = "Group"
+    if ifctype == "Undefined":
+        ifctype = "BuildingElementProxy"
 
     return "Ifc" + ifctype
 

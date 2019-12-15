@@ -139,6 +139,18 @@ struct Color_Less  : public std::binary_function<const App::Color&,
 
 // --------------------------------------------------------------
 
+std::vector<std::string> MeshInput::supportedMeshFormats()
+{
+    std::vector<std::string> fmt;
+    fmt.emplace_back("bms");
+    fmt.emplace_back("ply");
+    fmt.emplace_back("stl");
+    fmt.emplace_back("obj");
+    fmt.emplace_back("off");
+    fmt.emplace_back("smf");
+    return fmt;
+}
+
 bool MeshInput::LoadAny(const char* FileName)
 {
     // ask for read permission
@@ -1745,6 +1757,22 @@ void MeshOutput::Transform(const Base::Matrix4D& mat)
     _transform = mat;
     if (mat != Base::Matrix4D())
         apply_transform = true;
+}
+
+std::vector<std::string> MeshOutput::supportedMeshFormats()
+{
+    std::vector<std::string> fmt;
+    fmt.emplace_back("bms");
+    fmt.emplace_back("ply");
+    fmt.emplace_back("stl");
+    fmt.emplace_back("obj");
+    fmt.emplace_back("off");
+    fmt.emplace_back("smf");
+    fmt.emplace_back("x3d");
+    fmt.emplace_back("wrl");
+    fmt.emplace_back("wrz");
+    fmt.emplace_back("amf");
+    return fmt;
 }
 
 MeshIO::Format MeshOutput::GetFormat(const char* FileName)

@@ -619,7 +619,10 @@ QString FileIconProvider::type(const QFileInfo & info) const
  * Constructs a file chooser called \a name with the parent \a parent.
  */
 FileChooser::FileChooser ( QWidget * parent )
-  : QWidget(parent), md( File ), _filter( QString::null )
+  : QWidget(parent)
+  , md( File )
+  , accMode( AcceptOpen )
+  , _filter( QString::null )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );
@@ -710,7 +713,10 @@ void FileChooser::chooseFile()
 
     QString fn;
     if ( mode() == File ) {
-        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), prechosenDirectory, _filter,0,dlgOpt );
+        if (acceptMode() == AcceptOpen)
+            fn = QFileDialog::getOpenFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, 0, dlgOpt);
+        else
+            fn = QFileDialog::getSaveFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, 0, dlgOpt);
     } else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
         fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory,option );
