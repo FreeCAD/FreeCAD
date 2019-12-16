@@ -225,7 +225,7 @@ def _getBesideDir(solver):
 
 
 def _getBesideBase(solver):
-    path = femutils.get_doc_dir(solver.Document)
+    path = os.path.splitext(solver.Document.FileName)[0]
     if path is None:
         error_message = (
             "Please save the file before executing the solver. "
