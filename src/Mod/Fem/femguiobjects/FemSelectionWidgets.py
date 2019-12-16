@@ -160,10 +160,19 @@ class SolidSelector(_Selector):
             if solids:
                 item = (selObj.Object, tuple(solids))
                 selection.append(item)
+        if len(selection) == 0:
+            FreeCAD.Console.PrintMessage(
+                "Object with no Shape selected or nothing selected at all.\n"
+            )
         return selection
 
     def _getObjects(self, obj, names):
         objects = []
+        if not hasattr(obj, "Shape"):
+            FreeCAD.Console.PrintMessage(
+                "Selected object has no Shape.\n"
+            )
+            return objects
         shape = obj.Shape
         for n in names:
             if n.startswith("Face"):
