@@ -2716,7 +2716,8 @@ void VariableExpression::_moveCells(const CellAddress &address,
     if(var.hasDocumentObjectName(true))
         return;
 
-    auto &comp = var.getPropertyComponent(0);
+    int idx = 0;
+    const auto &comp = var.getPropertyComponent(0,&idx);
     CellAddress addr = stringToAddress(comp.getName().c_str(),true);
     if(!addr.isValid())
         return;
@@ -2727,7 +2728,7 @@ void VariableExpression::_moveCells(const CellAddress &address,
         v.aboutToChange();
         addr.setRow(thisRow + rowCount);
         addr.setCol(thisCol + colCount);
-        comp = ObjectIdentifier::SimpleComponent(addr.toString());
+        var.setComponent(idx,ObjectIdentifier::SimpleComponent(addr.toString()));
     }
 }
 
@@ -2735,7 +2736,8 @@ void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVi
     if(var.hasDocumentObjectName(true))
         return;
 
-    auto &comp = var.getPropertyComponent(0);
+    int idx = 0;
+    const auto &comp = var.getPropertyComponent(0,&idx);
     CellAddress addr = stringToAddress(comp.getName().c_str(),true);
     if(!addr.isValid() || (addr.isAbsoluteCol() && addr.isAbsoluteRow()))
         return;
@@ -2745,7 +2747,7 @@ void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVi
         addr.setCol(addr.col()+colOffset);
     if(!addr.isAbsoluteRow())
         addr.setRow(addr.row()+rowOffset);
-    comp = ObjectIdentifier::SimpleComponent(addr.toString());
+    var.setComponent(idx,ObjectIdentifier::SimpleComponent(addr.toString()));
 }
 
 void VariableExpression::setPath(const ObjectIdentifier &path)

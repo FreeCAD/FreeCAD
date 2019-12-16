@@ -664,6 +664,9 @@ class SpreadsheetCases(unittest.TestCase):
         sheet = self.doc.addObject('Spreadsheet::Sheet','Spreadsheet')
         sheet.set('B1', '=B2')
         sheet.set('B2', '124')
+        # Calling getContents() here activates ObjectIdentifier internal cache,
+        # which needs to be tested as well.
+        self.assertEqual(sheet.getContents("B1"),"=B2")
         sheet.insertRows('2', 1)
         self.assertEqual(sheet.getContents("B1"),"=B3")
 
