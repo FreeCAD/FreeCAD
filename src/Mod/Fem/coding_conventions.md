@@ -22,7 +22,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 - All files should have a license header
 - Unix line endings will be used:
     - a .gitattributes file has been added to ensure line endings of text files are LF
-    - use `?w=1` in link address to surpress line ending changes on github
+    - use `?w=1` in link address to suppress line ending changes on github
 - never use mixed line endings on one file
 - 4 Spaces for indent
 - no trailing white spaces
