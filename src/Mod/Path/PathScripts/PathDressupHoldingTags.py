@@ -552,7 +552,10 @@ class PathData:
         self.obj = obj
         self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
         self.rapid = _RapidEdges(rapid)
-        self.edges = self.wire.Edges
+        if self.wire:
+            self.edges = self.wire.Edges
+        else:
+            self.edges = []
         self.baseWire = self.findBottomWire(self.edges)
 
     def findBottomWire(self, edges):
