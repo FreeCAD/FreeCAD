@@ -29,6 +29,8 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM FemSelectWidget
 
+import sys
+
 import FreeCAD
 import FreeCADGui
 import femmesh.meshtools as FemMeshTools
@@ -204,7 +206,11 @@ class SolidSelector(_Selector):
                 if(self._findSub(sub, solid.Vertexes)):
                     foundSolids.add("Solid" + str(solidId + 1))
         if len(foundSolids) == 1:
-            return iter(foundSolids).next()
+            it = iter(foundSolids)
+            if sys.version_info.major >= 3:
+                return next(it)
+            else:
+                return it.next()
         return None
 
     def _findSub(self, sub, subList):
