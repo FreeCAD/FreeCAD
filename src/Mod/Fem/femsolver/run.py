@@ -239,7 +239,7 @@ def _getBesideBase(solver):
                 "Can't start Solver",
                 error_message
             )
-        raise MustSaveError()
+        raise femutils.MustSaveError()
     return path
 
 
@@ -264,7 +264,7 @@ def _getCustomBase(solver):
                 "Can't start Solver",
                 error_message
             )
-        raise DirectoryDoesNotExistError("Invalid path")
+        raise femutils.DirectoryDoesNotExistError("Invalid path")
     return path
 
 

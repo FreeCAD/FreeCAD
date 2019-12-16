@@ -355,6 +355,7 @@ def check_working_dir(wdir):
         return False
 
 
+# TODO: move in own error module
 class MustSaveError(Exception):
     pass
 
