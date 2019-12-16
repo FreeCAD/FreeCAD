@@ -38,9 +38,9 @@ void ConstraintDistance::initAttrs()
     _attrs = {
         {&dist, "dist", true, 1.0},
     };
-    _children = {
-        {&p1, "p1", &ParaPointPy::Type},
-        {&p2, "p2", &ParaPointPy::Type},
+    _shapes = {
+        {&p1, "p1", ParaPoint::getClassTypeId()},
+        {&p2, "p2", ParaPoint::getClassTypeId()},
     };
 }
 
@@ -52,7 +52,9 @@ void ConstraintDistance::setWeight(double weight)
 
 Base::DualNumber ConstraintDistance::error1(const ValueSet& vals) const
 {
-    return vals[dist] - (p1->pos(vals) - p2->pos(vals)).length();
+    Point pp1 = p1->placement->value(vals) * p1->tshape()(vals);
+    Point pp2 = p2->placement->value(vals) * p2->tshape()(vals);
+    return vals[dist] - (pp1 - pp2).length();
 }
 
 PyObject* ConstraintDistance::getPyObject()

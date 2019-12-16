@@ -21,9 +21,7 @@ int ParaObjectPy::finalization()
 // returns a string which represents the object e.g. when printed in python
 std::string ParaObjectPy::representation(void) const
 {
-    std::stringstream ss;
-    ss << "<" << getParaObjectPtr()->getTypeId().getName() << " object>";
-    return ss.str();
+    return getParaObjectPtr()->repr();
 }
 
 PyObject* ParaObjectPy::update(PyObject* args)

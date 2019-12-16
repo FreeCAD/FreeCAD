@@ -46,6 +46,13 @@ inline DualNumber atan2(DualNumber y, DualNumber x) {
     return DualNumber(re, du);
 }
 
+///atan2 assuming x^2+y^2 == 1 (slightly faster)
+inline DualNumber atan2n(DualNumber y, DualNumber x) {
+    double re = ::atan2(y.re, x.re);
+    double du = (x.du * -y.re + y.du * x.re);
+    return DualNumber(re, du);
+}
+
 inline DualNumber exp(DualNumber a){
     double ret = ::exp(a.re);
     return DualNumber(ret, a.du * ret);

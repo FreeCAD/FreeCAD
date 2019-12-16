@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="ParaObjectPy" 
+	  Name="ParaTransformPy" 
+	  Twin="ParaTransform" 
+	  TwinPointer="ParaTransform" 
+	  Include="Mod/ConstraintSolver/App/G2D/ParaTransform.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/ParaObjectPy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="true"
+	  Delete="false"
+	  FatherNamespace="FCS"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu>Base class for transforms</DeveloperDocu>
+	  <UserDocu>Base class for transforms</UserDocu>
+	</Documentation>
+    
+    
+  </PythonExport>
+</GenerateModel>

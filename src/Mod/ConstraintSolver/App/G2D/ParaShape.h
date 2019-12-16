@@ -21,39 +21,56 @@
  ***************************************************************************/
 #pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
-#ifndef FREECAD_CONSTRAINTSOLVER_G2D_CONSTRAINTDISTANCE_H
-#define FREECAD_CONSTRAINTSOLVER_G2D_CONSTRAINTDISTANCE_H
+#ifndef FREECAD_CONSTRAINTSOLVER_ParaShapeBase_H
+#define FREECAD_CONSTRAINTSOLVER_ParaShapeBase_H
 
-#include "ParaGeometry.h"
-#include "ParaPoint.h"
-#include "SimpleConstraint.h"
+#include <Mod/ConstraintSolver/App/ParaObject.h>
+#include <Mod/ConstraintSolver/App/ParaGeometry.h>
+#include "ParaTransform.h"
 
 namespace FCS {
 namespace G2D {
 
-class ConstraintDistance;
-typedef Base::UnsafePyHandle<ConstraintDistance> HConstraintDistance;
+class ParaShapeBase;
+typedef Base::UnsafePyHandle<ParaShapeBase> HParaShapeBase;
 
-class FCSExport ConstraintDistance : public FCS::SimpleConstraint
+class FCSExport ParaShapeBase : public FCS::ParaObject
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-public: //data
-    ParameterRef dist;
-    HShape_Point p1;
-    HShape_Point p2;
+public://data
+    HParaTransform placement;
+    HParaObject _tshape;
+    bool reversed = false;
 
-public: //methods
-    ConstraintDistance();
-    ConstraintDistance(HParaPoint p1, HParaPoint p2, ParameterRef dist);
-    ConstraintDistance(HParaPoint p1, HParaPoint p2, HParameterStore store);
-
+public://methods
+    ParaShapeBase();
+    ParaShapeBase(HParaGeometry tshape, HParaTransform placement = Py::None());
     void initAttrs() override;
-    void setWeight(double weight) override;
-    Base::DualNumber error1(const ValueSet& vals) const override;
     virtual PyObject* getPyObject() override;
+    virtual std::string repr() const override;
+    virtual HParaObject copy() const override;
+
+    ///slaps transform of this shape atop another tshape. Useful for getting
+    ///subshapes of this shape with placement information.
+    HParaShapeBase getSubShape(const ParaGeometry& subshape);
+    HParaShapeBase getSubShape(const HParaShapeBase subshape);
+
+    Base::Type shapeType() const override {return _tshape->getTypeId();}
 
 public: //friends
-    friend class ConstraintDistancePy;
+    friend class ParaShapePy;
+};
+
+template<class TShapeType>
+class ParaShape : public ParaShapeBase
+{
+public:
+    ParaShape();
+    ParaShape(HParaTransform placement, UnsafePyHandle<TShapeType> tshape){
+        this->placement = placement;
+        this->_tshape = tshape;
+    }
+    TShapeType& tshape() {return static_cast<TShapeType&>(*_tshape);}
 };
 
 }} //namespace

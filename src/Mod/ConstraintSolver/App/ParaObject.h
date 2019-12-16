@@ -58,16 +58,25 @@ public://helper structs
     {
         Base::PyHandleBase* value = nullptr;
         std::string name;
-        PyTypeObject *type;
+        PyTypeObject* type;
         bool make = false; //true if it's an actual child, like an endpoint of an arc. False if it is a reference, like a constraint referring a point. If make, the object is auto-constructed upon call to makeParameters
+        bool writeOnce = false;
+    };
+    struct ShapeRef
+    {
+        Base::PyHandleBase* value = nullptr;
+        std::string name;
+        Base::Type type; //type of tshape
     };
 
 protected://data members
     std::vector<ParameterRef> _parameters;
     PyObject* _twin = nullptr;
-    std::vector<ParameterAttribute> _attrs; //vectors are likely to be faster than maps on small lists
+    std::vector<ParameterAttribute> _attrs; //vectors are likely to be faster for name lookups than maps on small lists
     std::vector<ChildAttribute> _children;
+    std::vector<ShapeRef> _shapes;
     bool _touched = true;
+    bool _locked = false;
 public://data members
     int tag = 0;
     Py::Object userData;
@@ -76,6 +85,7 @@ public://data members
 public: //methods
     virtual PyObject* getPyObject() override;
     HParaObject self();
+    virtual std::string repr() const;
 
     /**
      * @brief update: updates list of parameters. Must call after redirecting prarmeters.
@@ -85,6 +95,13 @@ public: //methods
     virtual void update();
     void touch() {_touched = true;}
     bool isTouched() const {return _touched;}
+    
+    ///locking means parameter references and references to objects can't be
+    ///changed. This is used in particular in ParaTransform objects bound to
+    ///shapes.
+    void lock() {_locked = true;}
+    bool isLocked() const {return _locked;}
+    void throwIfLocked() const;
 
     virtual HParaObject copy() const;
 
@@ -93,6 +110,7 @@ public: //methods
     ///returns true if all vital parameter and object refs are set up
     bool isComplete() const;
     virtual void throwIfIncomplete() const;
+    virtual void throwIfIncomplete_Shapes() const;
 
 
     virtual Py::Object getAttr(const char* attrname);
@@ -100,10 +118,16 @@ public: //methods
     virtual void setAttr(std::string attrname, Py::Object val);
     virtual std::vector<std::string> listAttrs() const;
 
+    ///iterate over every shape referenced by this ParaObject and call a lambda for every one of them.
+    /// Note: ShapeRef may have been generated on the fly, and may not have a name. But it should be writable.
+    virtual void forEachShape(std::function<void(const ShapeRef&)> callback) const;
+
     virtual void initFromDict(Py::Dict dict);
 
 protected: //methods
     virtual void initAttrs() = 0;
+    ///we need this to support type-checked shape attributes
+    virtual Base::Type shapeType() const {return Base::Type::badType();}
     virtual ~ParaObject() = default; //protect destructor to enforce handle-only
 public: //friends
     friend class ParaObjectPy;

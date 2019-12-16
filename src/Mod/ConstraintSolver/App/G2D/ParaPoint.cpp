@@ -8,7 +8,7 @@ using namespace FCS::G2D;
 
 TYPESYSTEM_SOURCE(FCS::G2D::ParaPoint, FCS::ParaGeometry);
 
-Point ParaPoint::pos(const ValueSet& vals) const
+Point ParaPoint::value(const ValueSet& vals) const
 {
     return Point(vals[x], vals[y]);
 }

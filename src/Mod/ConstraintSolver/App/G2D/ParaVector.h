@@ -21,39 +21,36 @@
  ***************************************************************************/
 #pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
-#ifndef FREECAD_CONSTRAINTSOLVER_G2D_CONSTRAINTDISTANCE_H
-#define FREECAD_CONSTRAINTSOLVER_G2D_CONSTRAINTDISTANCE_H
+#ifndef FREECAD_CONSTRAINTSOLVER_PARAVECTOR_H
+#define FREECAD_CONSTRAINTSOLVER_PARAVECTOR_H
 
-#include "ParaGeometry.h"
-#include "ParaPoint.h"
-#include "SimpleConstraint.h"
+#include <Mod/ConstraintSolver/App/ParaObject.h>
+#include "Vector.h"
 
 namespace FCS {
 namespace G2D {
 
-class ConstraintDistance;
-typedef Base::UnsafePyHandle<ConstraintDistance> HConstraintDistance;
+class ParaVector;
+typedef Base::UnsafePyHandle<ParaVector> HParaVector;
 
-class FCSExport ConstraintDistance : public FCS::SimpleConstraint
+class FCSExport ParaVector : public FCS::ParaObject
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-public: //data
-    ParameterRef dist;
-    HShape_Point p1;
-    HShape_Point p2;
+public://data
+    ParameterRef x;
+    ParameterRef y;
 
-public: //methods
-    ConstraintDistance();
-    ConstraintDistance(HParaPoint p1, HParaPoint p2, ParameterRef dist);
-    ConstraintDistance(HParaPoint p1, HParaPoint p2, HParameterStore store);
-
+public://methods
+    ParaVector();
+    ParaVector(ParameterRef x, ParameterRef y);
     void initAttrs() override;
-    void setWeight(double weight) override;
-    Base::DualNumber error1(const ValueSet& vals) const override;
     virtual PyObject* getPyObject() override;
 
+    Vector operator()(const ValueSet& vals) const;
+
 public: //friends
-    friend class ConstraintDistancePy;
+    friend class ParaVectorPy;
+
 };
 
 }} //namespace

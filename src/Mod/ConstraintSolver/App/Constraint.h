@@ -106,6 +106,7 @@ public://methods
 
     virtual HParaObject copy() const override;
 
+
 public: //friends
     friend class ConstraintPy;
 };

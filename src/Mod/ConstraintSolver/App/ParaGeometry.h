@@ -28,6 +28,9 @@
 
 namespace FCS {
 
+class ParaGeometry;
+typedef UnsafePyHandle<ParaGeometry> HParaGeometry;
+
 class FCSExport ParaGeometry : public ParaObject
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();

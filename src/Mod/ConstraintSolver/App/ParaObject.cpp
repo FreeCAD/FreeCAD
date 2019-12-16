@@ -31,6 +31,19 @@ HParaObject ParaObject::self()
     return HParaObject(getPyObject(), true);
 }
 
+std::string ParaObject::repr() const
+{
+    std::stringstream ss;
+    ss << "<" ;
+    if (label.size() == 0)
+        ss << "unlabeled ";
+    ss << getTypeId().getName() << " object";
+    if (label.size() != 0)
+        ss << " '" << label << "'";
+    ss << ">";
+    return ss.str();
+}
+
 void ParaObject::update()
 {
     _parameters.clear();
@@ -59,14 +72,18 @@ void ParaObject::update()
     _touched = false;
 }
 
+void ParaObject::throwIfLocked() const
+{
+    if (_locked)
+        throw Py::RuntimeError(repr() + " is locked");
+}
+
 HParaObject ParaObject::copy() const
 {
-    HParaObject cpy(
+    HParaObject cpy =
         static_cast<ParaObject*>(
             getTypeId().createInstance()
-        )->getPyObject()
-        , true
-    );
+        );
 
     //copy parameter references
     for(int i = 0; i < _attrs.size(); ++i){
@@ -75,19 +92,25 @@ HParaObject ParaObject::copy() const
     };
     //copy references to children
     for(int i = 0; i < _children.size(); ++i){
-        assert(cpy->_attrs[i].name == _attrs[i].name);
+        assert(cpy->_children[i].name == _children[i].name);
         *(cpy->_children[i].value) = *(_children[i].value);
+    };
+    //copy references to shapes
+    for(int i = 0; i < _shapes.size(); ++i){
+        assert(cpy->_shapes[i].name == _shapes[i].name);
+        *(cpy->_shapes[i].value) = *(_shapes[i].value);
     };
 
     cpy->_parameters = _parameters;
     cpy->_touched = _touched;
+    cpy->_locked = false;
 
     return cpy;
 }
 
 std::vector<ParameterRef> ParaObject::makeParameters(HParameterStore into)
 {
-    touch();
+    throwIfLocked(); touch();
     std::vector<ParameterRef> ret;
     for(auto& v : this->_attrs){
         if (! v.make)
@@ -125,15 +148,27 @@ void ParaObject::throwIfIncomplete() const
 {
     for(auto& v : this->_attrs){
         if (v.value->isNull()){
-            throw Py::Exception(PyExc_LookupError,"Parameter '" + v.name + "' is null");
+            throw Py::Exception(PyExc_LookupError,"Parameter '" + v.name + "' of " + repr() + " is null");
         }
     };
     for(auto& v : this->_children){
         if (v.value->isNone()){
-            throw Py::Exception(PyExc_LookupError,"Child reference '" + v.name + "' is None");
+            throw Py::Exception(PyExc_LookupError,"Child reference '" + v.name + "' of " + repr() + " is None");
         }
         HParaObject(*v.value)->throwIfIncomplete();
     };
+    throwIfIncomplete_Shapes();
+}
+
+void ParaObject::throwIfIncomplete_Shapes() const
+{
+    forEachShape([&](const ShapeRef& it){
+        if (it.value->isNone()){
+            throw Py::Exception(PyExc_LookupError,"Shape reference '" + it.name + "' of " + repr() + " is None");
+        }
+        HParaObject(*it.value)->throwIfIncomplete();
+    });
+
 }
 
 Py::Object ParaObject::getAttr(const char* attrname)
@@ -146,8 +181,12 @@ Py::Object ParaObject::getAttr(const char* attrname)
         if (v.name == attrname)
             return *v.value;
     };
+    for(auto& v : this->_shapes){
+        if (v.name == attrname)
+            return *v.value;
+    };
     std::stringstream ss;
-    ss << self().repr().as_std_string() << " has no attribute "
+    ss << repr() << " has no attribute "
        << attrname;
     throw Py::AttributeError(ss.str());
 }
@@ -156,25 +195,53 @@ void ParaObject::setAttr(std::string attrname, Py::Object val)
 {
     for(auto& v : this->_attrs){
         if (v.name == attrname){
+            throwIfLocked();
             if (!PyObject_TypeCheck(val.ptr(), &ParameterRefPy::Type)){
                 std::stringstream ss;
                 ss << "Must be ParameterRef object, not " << val.type().as_string();
                 throw Py::TypeError(ss.str());
             }
-            *(v.value) = *HParameterRef(val);
             touch();
+            *(v.value) = *HParameterRef(val);
             return;
         }
     };
     for(auto& v : this->_children){
         if (v.name == attrname){
+            if (v.writeOnce && !v.value->isNone()){
+                throw Py::RuntimeError("Attribute " + v.name + " of " + repr() + " is write-once, can't overwrite");
+            }
+            throwIfLocked();
             if (!PyObject_TypeCheck(val.ptr(), v.type)){
                 std::stringstream ss;
                 ss << "Must be "<< v.type->tp_name <<" object, not " << val.type().as_string();
                 throw Py::TypeError(ss.str());
             }
-            *(v.value) = val;
             touch();
+            *(v.value) = val;
+            return;
+        }
+    };
+    for(auto& v : this->_shapes){
+        if (v.name == attrname){
+            throwIfLocked();
+            if (!PyObject_TypeCheck(val.ptr(), &ParaObjectPy::Type)){
+                std::stringstream ss;
+                ss << "Must be ParaObject object, not " << val.type().as_string();
+                throw Py::TypeError(ss.str());
+            }
+            touch();
+            HParaObject sh = val;
+            if (sh->shapeType() == Base::Type::badType())
+                throw Py::TypeError(std::string("Object ") + sh->repr() + " is not a shape");
+            if (! sh->shapeType().isDerivedFrom(v.type)){
+                std::stringstream ss;
+                ss << "Shape must be derived from " << v.type.getName()
+                   << " (got unsuitsable " << sh->shapeType().getName() << ")";
+                throw Py::TypeError(ss.str());
+            }
+
+            *(v.value) = val;
             return;
         }
     };
@@ -194,7 +261,17 @@ std::vector<std::string> ParaObject::listAttrs() const
     for(auto& v : this->_children){
         ret.push_back(v.name);
     };
+    for(auto& v : this->_shapes){
+        ret.push_back(v.name);
+    };
     return ret;
+}
+
+void ParaObject::forEachShape(std::function<void (const ShapeRef&)> callback) const
+{
+    for(auto v : _shapes){
+        callback(v);
+    }
 }
 
 void ParaObject::initFromDict(Py::Dict dict)

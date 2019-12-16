@@ -26,12 +26,14 @@
 
 #include <Mod/ConstraintSolver/App/ParaGeometry.h>
 #include "Point.h"
+#include "ParaShape.h"
 
 namespace FCS {
 namespace G2D {
 
 class ParaPoint;
 typedef Base::UnsafePyHandle<ParaPoint> HParaPoint;
+typedef Base::UnsafePyHandle<ParaShape<ParaPoint>> HShape_Point;
 
 class FCSExport ParaPoint : public FCS::ParaGeometry
 {
@@ -46,7 +48,8 @@ public://methods
     void initAttrs() override;
     virtual PyObject* getPyObject() override;
 
-    Point pos(const ValueSet& vals) const;
+    Point value(const ValueSet& vals) const;
+    Point operator()(const ValueSet& vals) const{return value(vals);}
 
 public: //friends
     friend class ParaPointPy;

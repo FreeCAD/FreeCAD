@@ -35,7 +35,11 @@ generate_from_xml(SubSystemPy)
 generate_from_xml(SolverBackendPy)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/G2D)
+generate_from_xml(G2D/ParaVectorPy)
 generate_from_xml(G2D/ParaPointPy)
+generate_from_xml(G2D/ParaTransformPy)
+generate_from_xml(G2D/ParaPlacementPy)
+generate_from_xml(G2D/ParaShapePy)
 
 generate_from_xml(G2D/ConstraintDistancePy)
 
@@ -44,10 +48,28 @@ SET(ConstraintSolver_G2D
     G2D/Vector.cpp
     G2D/Point.h
     G2D/Point.cpp
+    G2D/Placement.h
+    G2D/Placement.cpp
+    G2D/ParaVector.h
+    G2D/ParaVector.cpp
+    G2D/ParaVectorPy.xml
+    G2D/ParaVectorPyImp.cpp
     G2D/ParaPoint.h
     G2D/ParaPoint.cpp
     G2D/ParaPointPy.xml
     G2D/ParaPointPyImp.cpp
+    G2D/ParaPlacement.h
+    G2D/ParaPlacement.cpp
+    G2D/ParaPlacementPy.xml
+    G2D/ParaPlacementPyImp.cpp
+    G2D/ParaTransform.h
+    G2D/ParaTransform.cpp
+    G2D/ParaTransformPy.xml
+    G2D/ParaTransformPyImp.cpp
+    G2D/ParaShape.h
+    G2D/ParaShape.cpp
+    G2D/ParaShapePy.xml
+    G2D/ParaShapePyImp.cpp    
     G2D/ConstraintDistance.h
     G2D/ConstraintDistance.cpp
     G2D/ConstraintDistancePy.xml
