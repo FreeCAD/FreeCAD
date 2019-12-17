@@ -209,7 +209,6 @@ public:
     App::PropertyFloatConstraint PointSize;
     App::PropertyMaterialList MaterialList;
     App::PropertyBoolList OverrideMaterialList;
-    App::PropertyBool Selectable;
     App::PropertyColorList OverrideColorList;
     App::PropertyPersistentObject ChildViewProvider;
 

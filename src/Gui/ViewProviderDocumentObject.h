@@ -63,6 +63,9 @@ public:
     App::PropertyBool ShowInTree;
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
+    App::PropertyBool Selectable;
+
+    virtual bool isSelectable(void) const override {return Selectable.getValue();}
 
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);
@@ -195,6 +198,8 @@ protected:
     //@}
 
     virtual void setModeSwitch() override;
+
+    void setSelectable(bool Selectable=true);
 
 protected:
     App::DocumentObject *pcObject;
