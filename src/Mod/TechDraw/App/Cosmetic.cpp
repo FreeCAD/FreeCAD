@@ -606,7 +606,7 @@ CenterLine::CenterLine(TechDraw::CenterLine* cl)
     m_rotate = cl->m_rotate;
     m_extendBy = cl->m_extendBy;
     m_type = cl->m_type;
-    m_flip2Line = m_flip2Line;
+    m_flip2Line = cl->m_flip2Line;
 
     m_geometry = cl->m_geometry;    //new BaseGeom(cl->m_geometry);??
 
