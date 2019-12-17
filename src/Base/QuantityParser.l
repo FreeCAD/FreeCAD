@@ -53,7 +53,8 @@ CGRP     '\,'[0-9][0-9][0-9]
 "m"        yylval = Quantity::Metre;               return UNIT; // metre
 "km"       yylval = Quantity::KiloMetre;           return UNIT; // kilo meter
 
-"l"        yylval = Quantity::Liter;               return UNIT; // Liter      dm^3
+"l"        yylval = Quantity::Liter;               return UNIT; // Liter  (dm^3)
+"ml"       yylval = Quantity::MilliLiter;          return UNIT; // milli Liter
 
 "Hz"       yylval = Quantity::Hertz;               return UNIT; // Hertz
 "kHz"      yylval = Quantity::KiloHertz;           return UNIT; // Kilo Hertz
@@ -82,6 +83,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "uK"       yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin
 
 "mol"      yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)
+"mmol"     yylval = Quantity::Mole;                return UNIT; // Milli Mole
 
 "cd"       yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)
 
@@ -93,8 +95,6 @@ CGRP     '\,'[0-9][0-9][0-9]
 "mil"      yylval = Quantity::Thou;                return UNIT; // mil  (the thou in US)
 "yd"       yylval = Quantity::Yard;                return UNIT; // yard
 "mi"       yylval = Quantity::Mile;                return UNIT; // mile
-
-
 
 "lb"       yylval = Quantity::Pound;               return UNIT; // pound
 "lbm"      yylval = Quantity::Pound;               return UNIT; // pound 
@@ -114,6 +114,9 @@ CGRP     '\,'[0-9][0-9][0-9]
 "MPa"      yylval = Quantity::MegaPascal;          return UNIT; // Pascal
 "GPa"      yylval = Quantity::GigaPascal;          return UNIT; // Pascal
 
+"bar"      yylval = Quantity::Bar;                 return UNIT; // 1 bar = 100 kPa
+"mbar"     yylval = Quantity::MilliBar;            return UNIT; // Milli Bar
+
 "Torr"     yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 )
 "mTorr"    yylval = Quantity::mTorr;               return UNIT; //
 "uTorr"    yylval = Quantity::yTorr;               return UNIT; //
@@ -123,15 +126,38 @@ CGRP     '\,'[0-9][0-9][0-9]
 "ksi"      yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2
 
 "W"        yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
+"mW"       yylval = Quantity::Watt;                return UNIT; // Milli Watt
 "VA"       yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3)
 
 "V"        yylval = Quantity::Volt;                return UNIT; // Volt (kg*m^2/A/s^3)
+"kV"       yylval = Quantity::KiloVolt;            return UNIT; // Kilo Volt
+"mV"       yylval = Quantity::MilliVolt;           return UNIT; // Milli Volt
+
+"C"        yylval = Quantity::Coulomb;             return UNIT; // Coulomb (A*s)
+
+"T"        yylval = Quantity::Tesla;               return UNIT; // Tesla (kg/s^2/A)
+
+"F"        yylval = Quantity::Farad;               return UNIT; // Farad (s^4*A^2/m^2/kg)
+"mF"       yylval = Quantity::MilliFarad;          return UNIT; // Milli Farad
+"\xC2\xB5F"    yylval = Quantity::MicroFarad;      return UNIT; // Micro Farad
+"uF"       yylval = Quantity::MicroFarad;          return UNIT; // Micro Farad
+"nF"       yylval = Quantity::NanoFarad;           return UNIT; // Nano Farad
+"pF"       yylval = Quantity::PicoFarad;           return UNIT; // Pico Farad
+
+"H"        yylval = Quantity::Henry;               return UNIT; // Henry (kg*m^2/s^2/A^2)
+"mH"       yylval = Quantity::MilliHenry;          return UNIT; // Milli Henry
+"\xC2\xB5H"    yylval = Quantity::MicroHenry;      return UNIT; // Micro Henry
+"uH"       yylval = Quantity::MicroHenry;          return UNIT; // Micro Henry
+"nH"       yylval = Quantity::NanoHenry;           return UNIT; // Nano Henry
 
 "J"        yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2)
+"kJ"       yylval = Quantity::KiloJoule;           return UNIT; // Kilo Joule
 "Nm"       yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule
 "VAs"      yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule
 "CV"       yylval = Quantity::WattSecond;          return UNIT; //
 "Ws"       yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
+"kWh"      yylval = Quantity::KiloWattHour;        return UNIT; // 1 kWh = 3.6e6 J
+"eV"       yylval = Quantity::ElectronVolt;        return UNIT; // 1 eV = 1.602176634e-19 J
 
 "\xC2\xB0" yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 "deg"      yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)

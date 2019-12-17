@@ -187,6 +187,7 @@ public:
     static Quantity KiloMetre;
 
     static Quantity Liter;
+    static Quantity MilliLiter;
 
     static Quantity Hertz;
     static Quantity KiloHertz;
@@ -212,6 +213,7 @@ public:
     static Quantity MilliKelvin;
     static Quantity MicroKelvin;
 
+    static Quantity MilliMole;
     static Quantity Mole;
 
     static Quantity Candela;
@@ -239,6 +241,9 @@ public:
     static Quantity MegaPascal;
     static Quantity GigaPascal;
 
+    static Quantity Bar;
+    static Quantity MilliBar;
+
     static Quantity Torr;
     static Quantity mTorr;
     static Quantity yTorr;
@@ -250,11 +255,31 @@ public:
     static Quantity VoltAmpere;
 
     static Quantity Volt;
+    static Quantity MilliVolt;
+    static Quantity KiloVolt;
+
+    static Quantity Coulomb;
+
+    static Quantity Tesla;
+
+    static Quantity Farad;
+    static Quantity MilliFarad;
+    static Quantity MicroFarad;
+    static Quantity NanoFarad;
+    static Quantity PicoFarad;
+
+    static Quantity Henry;
+    static Quantity MilliHenry;
+    static Quantity MicroHenry;
+    static Quantity NanoHenry;
 
     static Quantity Joule;
+    static Quantity KiloJoule;
     static Quantity NewtonMeter;
     static Quantity VoltAmpereSecond;
     static Quantity WattSecond;
+    static Quantity KiloWattHour;
+    static Quantity ElectronVolt;
 
     static Quantity KMH;
     static Quantity MPH;

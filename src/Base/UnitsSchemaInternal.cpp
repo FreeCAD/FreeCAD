@@ -52,7 +52,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
 
     // now do special treatment on all cases seems necessary:
     if (unit == Unit::Length) {  // Length handling ============================
-        if (UnitValue < 0.000000001) {// smaller then 0.001 nm -> scientific notation
+        if (UnitValue < 0.000000001) {// smaller than 0.001 nm -> scientific notation
             unitString = QString::fromLatin1("mm");
             factor = 1.0;
         }
@@ -76,7 +76,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             unitString = QString::fromLatin1("km");
             factor = 1000000.0;
         }
-        else { // bigger then 1000 km -> scientific notation
+        else { // bigger than 1000 km -> scientific notation
             unitString = QString::fromLatin1("mm");
             factor = 1.0;
         }

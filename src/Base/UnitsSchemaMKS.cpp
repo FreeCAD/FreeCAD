@@ -175,8 +175,76 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 1000000;
     }
     else if (unit == Unit::ElectricPotential) {
-        unitString = QString::fromLatin1("V");
-        factor = 1000000;
+        if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("mV");
+            factor = 1e3;
+        }
+        if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("V");
+            factor = 1e6;
+        }
+        if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("kV");
+            factor = 1e9;
+        }
+    }
+    else if (unit == Unit::ElectricCharge) {
+        unitString = QString::fromLatin1("C");
+        factor = 1.0;
+    }
+    else if (unit == Unit::MagneticFluxDensity) {
+        unitString = QString::fromLatin1("T");
+        factor = 1.0;
+    }
+    else if (unit == Unit::ElectricalCapacitance) {
+        if (UnitValue < 1e-15) {
+            unitString = QString::fromLatin1("pF");
+            factor = 1e-18;
+        }
+        else if (UnitValue < 1e-12) {
+            unitString = QString::fromLatin1("nF");
+            factor = 1e-15;
+        }
+        else if (UnitValue < 1e-9) {
+            unitString = QString::fromUtf8("µF");
+            factor = 1e-12;
+        }
+        else if (UnitValue < 1e-6) {
+            unitString = QString::fromLatin1("mF");
+            factor = 1e-9;
+        }
+        else {
+            unitString = QString::fromLatin1("F");
+            factor = 1e-6;
+        }
+    }
+    else if (unit == Unit::ElectricalInductance) {
+        if (UnitValue < 1e-6) {
+            unitString = QString::fromLatin1("nH");
+            factor = 1e-3;
+        }
+        else if (UnitValue < 1e-3) {
+            unitString = QString::fromUtf8("µH");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("mH");
+            factor = 1e3;
+        }
+        else {
+            unitString = QString::fromLatin1("H");
+            factor = 1e6;
+        }
+    }
+    else if (unit == Unit::Work) {
+        if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("J");
+            factor = 1e6;
+        }
+        else {
+            unitString = QString::fromLatin1("kJ");
+            factor = 1e9;
+        }
     }
     else if (unit == Unit::SpecificEnergy) {
         unitString = QString::fromLatin1("m^2/s^2");
