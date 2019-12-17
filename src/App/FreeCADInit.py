@@ -639,6 +639,7 @@ App.Units.DeciMetre     = App.Units.Quantity('dm')
 App.Units.Metre         = App.Units.Quantity('m')
 App.Units.KiloMetre     = App.Units.Quantity('km')
 
+App.Units.MilliLiter    = App.Units.Quantity('ml')
 App.Units.Liter         = App.Units.Quantity('l')
 
 App.Units.MicroGram     = App.Units.Quantity('ug')
@@ -660,6 +661,7 @@ App.Units.Kelvin        = App.Units.Quantity('K')
 App.Units.MilliKelvin   = App.Units.Quantity('mK')
 App.Units.MicroKelvin   = App.Units.Quantity('uK')
 
+App.Units.MilliMole     = App.Units.Quantity('mmol')
 App.Units.Mole          = App.Units.Quantity('mol')
 
 App.Units.Candela       = App.Units.Quantity('cd')
@@ -685,6 +687,9 @@ App.Units.KiloPascal    = App.Units.Quantity('kPa')
 App.Units.MegaPascal    = App.Units.Quantity('MPa')
 App.Units.GigaPascal    = App.Units.Quantity('GPa')
 
+App.Units.MilliBar      = App.Units.Quantity('mbar')
+App.Units.Bar           = App.Units.Quantity('bar')
+
 App.Units.PoundForce    = App.Units.Quantity().PoundForce
 App.Units.Torr          = App.Units.Quantity().Torr
 App.Units.mTorr         = App.Units.Quantity().mTorr
@@ -697,15 +702,34 @@ App.Units.Watt          = App.Units.Quantity('W')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
 
 App.Units.Volt          = App.Units.Quantity('V')
+App.Units.MilliVolt     = App.Units.Quantity('mV')
+App.Units.KiloVolt      = App.Units.Quantity('kV')
+
+App.Units.Coulomb       = App.Units.Quantity('C')
+
+App.Units.Tesla         = App.Units.Quantity('T')
+
+App.Units.PicoFarad     = App.Units.Quantity('pF')
+App.Units.NanoFarad     = App.Units.Quantity('nF')
+App.Units.MicroFarad    = App.Units.Quantity('uF')
+App.Units.MilliFarad    = App.Units.Quantity('mF')
+App.Units.Farad         = App.Units.Quantity('F')
+
+App.Units.NanoHenry     = App.Units.Quantity('nH')
+App.Units.MicroHenry    = App.Units.Quantity('uH')
+App.Units.MilliHenry    = App.Units.Quantity('mH')
+App.Units.Henry         = App.Units.Quantity('H')
 
 App.Units.Joule         = App.Units.Quantity('J')
+App.Units.KiloJoule     = App.Units.Quantity('kJ')
 App.Units.NewtonMeter   = App.Units.Quantity('Nm')
 App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
 App.Units.WattSecond    = App.Units.Quantity('Ws')
+App.Units.KiloWattHour  = App.Units.Quantity('kWh')
+App.Units.ElectronVolt  = App.Units.Quantity('eV')
 
 App.Units.MPH           = App.Units.Quantity('mi/h')
 App.Units.KMH           = App.Units.Quantity('km/h')
-
 
 App.Units.Degree        = App.Units.Quantity('deg')
 App.Units.Radian        = App.Units.Quantity('rad')
@@ -731,8 +755,12 @@ App.Units.Velocity      = App.Units.Unit(1,0,-1)
 App.Units.Acceleration  = App.Units.Unit(1,0,-2) 
 App.Units.Temperature   = App.Units.Unit(0,0,0,0,1) 
 
-App.Units.ElectricCurrent   = App.Units.Unit(0,0,0,1) 
-App.Units.ElectricPotential = App.Units.Unit(2,1,-3,-1)
+App.Units.ElectricCurrent       = App.Units.Unit(0,0,0,1) 
+App.Units.ElectricPotential     = App.Units.Unit(2,1,-3,-1)
+App.Units.ElectricCharge        = App.Units.Unit(0,0,1,1)
+App.Units.MagneticFluxDensity   = App.Units.Unit(0,1,-2,-1)
+App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
+App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 
