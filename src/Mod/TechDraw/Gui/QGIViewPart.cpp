@@ -90,7 +90,8 @@ using namespace TechDrawGui;
 
 const float lineScaleFactor = Rez::guiX(1.);   // temp fiddle for devel
 
-QGIViewPart::QGIViewPart()
+QGIViewPart::QGIViewPart() :
+    m_isExporting(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -508,17 +509,24 @@ void QGIViewPart::drawViewPart()
                 }
             } else if (fHatch) {
                 if (!fHatch->HatchPattern.isEmpty()) {
-                    newFace->isHatched(true);
-                    newFace->setFillMode(QGIFace::FromFile);
-                    newFace->setHatchFile(fHatch->HatchPattern.getValue());
-                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
-                    ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
-                    if (hatchVp != nullptr) {
-                        double hatchScale = hatchVp->HatchScale.getValue();
-                        if (hatchScale > 0.0) {
-                            newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                    if (getExporting()) {
+                        newFace->hideSvg(true);
+                        newFace->isHatched(false);
+                        newFace->setFillMode(QGIFace::PlainFill);
+                    } else {
+                        newFace->hideSvg(false);
+                        newFace->isHatched(true);
+                        newFace->setFillMode(QGIFace::FromFile);
+                        newFace->setHatchFile(fHatch->HatchPattern.getValue());
+                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
+                        ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+                        if (hatchVp != nullptr) {
+                            double hatchScale = hatchVp->HatchScale.getValue();
+                            if (hatchScale > 0.0) {
+                                newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                            }
+                            newFace->setHatchColor(hatchVp->HatchColor.getValue());
                         }
-                        newFace->setHatchColor(hatchVp->HatchColor.getValue());
                     }
                 }
             }

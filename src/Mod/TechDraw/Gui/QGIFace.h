@@ -90,7 +90,7 @@ public:
     void setHatchFile(std::string fileSpec);
     void loadSvgHatch(std::string fileSpec);
     void buildSvgHatch(void);
-    void toggleSvg(bool b);
+    void hideSvg(bool b);
     void clearSvg(void);
     
     //PAT fill parms & methods
@@ -140,6 +140,8 @@ protected:
     long int m_segCount;
     long int m_maxSeg;
     long int m_maxTile;
+
+    bool m_hideSvgTiles;
 
 
 private:

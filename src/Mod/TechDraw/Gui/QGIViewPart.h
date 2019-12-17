@@ -90,6 +90,8 @@ public:
                                      bool large_arc_flag, bool sweep_flag,
                                      double x, double y,
                                      double curx, double cury);
+    void setExporting(bool b) { m_isExporting = b; }
+    bool getExporting(void) { return m_isExporting; }
 
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeom *baseGeom) const;
@@ -108,6 +110,8 @@ protected:
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
+
+    bool m_isExporting;
 
 private:
     QList<QGraphicsItem*> deleteItems;
