@@ -305,7 +305,6 @@ void TaskSectionView::checkAll(bool b)
 void TaskSectionView::applyQuick(std::string dir)
 {
 //    Base::Console().Message("TSV::applyQuick(%s)\n", dir.c_str());
-    m_dirName = dir;
     Gui::Command::openCommand("Apply Quick");
     m_dirName = dir;
     if (m_section == nullptr) {
