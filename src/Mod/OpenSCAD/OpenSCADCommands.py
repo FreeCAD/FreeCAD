@@ -327,7 +327,6 @@ class OpenSCADMeshBooleanWidget(QtGui.QWidget):
 
 class OpenSCADMeshBooleanTask:
     def __init__(self):
-        pass
         self.form = OpenSCADMeshBooleanWidget()
         self.form.buttonadd.clicked.connect(self.doboolean)
     def getStandardButtons(self):
