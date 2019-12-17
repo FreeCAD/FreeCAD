@@ -1,4 +1,4 @@
-// geo file for meshing with GMSH meshing software created by FreeCAD
+// geo file for meshing with Gmsh meshing software created by FreeCAD
 
 // open brep geometry
 Merge "/tmp/tmp0TVZbM.brep";
@@ -42,14 +42,14 @@ Mesh.SaveAll = 1;
 Save "/tmp/tmpjVhNNb.unv";
 
 
-//////////////////////////////////////////////////////////////////////
-// GMSH documentation:
+// **********************************************************************
+// Gmsh documentation:
 // http://gmsh.info/doc/texinfo/gmsh.html#Mesh
 //
-// We do not check if something went wrong, like negative jacobians etc. You can run GMSH manually yourself: 
+// We do not check if something went wrong, like negative jacobians etc. You can run Gmsh manually yourself: 
 //
-// to see full GMSH log, run in bash:
-// /usr/local/bin/gmsh - /tmp/tmputZ_uU.geo
+// to see full Gmsh log, run in bash:
+// /usr/bin/gmsh - /tmp/tmputZ_uU.geo
 //
-// to run GMSH and keep file in GMSH GUI (with log), run in bash:
-// /usr/local/bin/gmsh /tmp/tmputZ_uU.geo
+// to run Gmsh and keep file in Gmsh GUI (with log), run in bash:
+// /usr/bin/gmsh /tmp/tmputZ_uU.geo

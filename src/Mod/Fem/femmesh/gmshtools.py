@@ -787,7 +787,7 @@ class GmshTools():
         geo.write("\n\n")
 
         # some useful information
-        geo.write("//////////////////////////////////////////////////////////////////////\n")
+        geo.write("// " + "*" * 70 +"\n")
         geo.write("// Gmsh documentation:\n")
         geo.write("// http://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
         geo.write("//\n")
