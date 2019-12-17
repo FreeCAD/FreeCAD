@@ -312,6 +312,7 @@ Quantity Quantity::PSI              (6.894744825494,Unit(-1,1,-2)); // pounds/in
 Quantity Quantity::KSI              (6894.744825494,Unit(-1,1,-2)); // 1000 x pounds/in^2
 
 Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3));  // Watt (kg*m^2/s^3)
+Quantity Quantity::MilliWatt        (1e+3          ,Unit(2,1,-3));
 Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3));  // VoltAmpere (kg*m^2/s^3)
 
 Quantity Quantity::Volt             (1e+6          ,Unit(2,1,-3,-1)); // Volt (kg*m^2/A/s^3)

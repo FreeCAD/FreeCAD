@@ -252,6 +252,7 @@ public:
     static Quantity KSI;
 
     static Quantity Watt;
+    static Quantity MilliWatt;
     static Quantity VoltAmpere;
 
     static Quantity Volt;
