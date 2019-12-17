@@ -73,17 +73,39 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         }
     }
     else if (unit == Unit::Area) {
-        if (UnitValue < 100.0) {// smaller than 1 square cm
+        if (UnitValue < 100) {
             unitString = QString::fromLatin1("mm^2");
             factor = 1.0;
         }
-        else if (UnitValue < 10000000000000.0) {
-            unitString = QString::fromLatin1("m^2");
-            factor = 1000000.0;
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("cm^2");
+            factor = 100;
         }
-        else { // bigger then 1 square kilometer
+        else if (UnitValue < 1e12) {
+            unitString = QString::fromLatin1("m^2");
+            factor = 1e6;
+        }
+        else { // bigger than 1 square kilometer
             unitString = QString::fromLatin1("km^2");
-            factor = 1000000000000.0;
+            factor = 1e12;
+        }
+    }
+    else if (unit == Unit::Volume) {
+        if (UnitValue < 1e3) {// smaller than 1 ul
+            unitString = QString::fromLatin1("mm^3");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("ml");
+            factor = 1e3;
+        }
+        else if (UnitValue < 1e9) {
+            unitString = QString::fromLatin1("l");
+            factor = 1e6;
+        }
+        else { // bigger than 1000 l
+            unitString = QString::fromLatin1("m^3");
+            factor = 1e9;
         }
     }
     else if (unit == Unit::Mass) {
@@ -237,7 +259,11 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         }
     }
     else if (unit == Unit::Work) {
-        if (UnitValue < 1e3) {
+        if (UnitValue < 1.602176634e-10) {
+            unitString = QString::fromLatin1("eV");
+            factor = 1.602176634e-13;
+        }
+        if (UnitValue < 1e9) {
             unitString = QString::fromLatin1("J");
             factor = 1e6;
         }

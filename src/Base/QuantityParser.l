@@ -2,7 +2,12 @@
 /* Lexer for the FreeCAD  Units language   */
 /* (c) 2013 Juergen Riegel  LGPL           */
 
+/* use this file to generate the file 'QuantityLexer.c' using the program flex
+/* the command for this operation is:
 /* flex --outfile=QuantityLexer.c QuantityParser.l */
+/* (flex for Windows is available here: */
+/*  https://sourceforge.net/projects/winflexbison/ */
+/*  (you must then change 'flex' to 'win_flex' in the command)) */
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
@@ -83,7 +88,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "uK"       yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin
 
 "mol"      yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)
-"mmol"     yylval = Quantity::Mole;                return UNIT; // Milli Mole
+"mmol"     yylval = Quantity::MilliMole;           return UNIT; // Milli Mole
 
 "cd"       yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)
 
@@ -126,7 +131,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "ksi"      yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2
 
 "W"        yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
-"mW"       yylval = Quantity::Watt;                return UNIT; // Milli Watt
+"mW"       yylval = Quantity::MilliWatt;           return UNIT; // Milli Watt
 "VA"       yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3)
 
 "V"        yylval = Quantity::Volt;                return UNIT; // Volt (kg*m^2/A/s^3)
