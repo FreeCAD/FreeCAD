@@ -465,28 +465,39 @@ PyObject*  DocumentPy::recompute(PyObject * args)
     PyObject *force = Py_False;
     PyObject *checkCycle = Py_False;
     if (!PyArg_ParseTuple(args, "|OO!O!",&pyobjs,
-                &PyBool_Type,&force,&PyBool_Type,&checkCycle))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception
+                &PyBool_Type,&force,&PyBool_Type,&checkCycle))
+        return nullptr;
+
     PY_TRY {
         std::vector<App::DocumentObject *> objs;
-        if(pyobjs!=Py_None) {
-            if(!PySequence_Check(pyobjs)) {
+        if (pyobjs!=Py_None) {
+            if (!PySequence_Check(pyobjs)) {
                 PyErr_SetString(PyExc_TypeError, "expect input of sequence of document objects");
-                return 0;
+                return nullptr;
             }
+
             Py::Sequence seq(pyobjs);
-            for(size_t i=0;i<seq.size();++i) {
-                if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+            for (size_t i=0;i<seq.size();++i) {
+                if (!PyObject_TypeCheck(seq[i].ptr(), &DocumentObjectPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
-                    return 0;
+                    return nullptr;
                 }
                 objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
             }
         }
+
         int options = 0;
-        if(PyObject_IsTrue(checkCycle))
+        if (PyObject_IsTrue(checkCycle))
             options = Document::DepNoCycle;
-        int objectCount = getDocumentPtr()->recompute(objs,PyObject_IsTrue(force),0,options);
+
+        int objectCount = getDocumentPtr()->recompute(objs, PyObject_IsTrue(force), 0, options);
+
+        // Document::recompute() hides possibly raised Python exceptions by its features
+        // So, check if an error is set and return null if yes
+        if (PyErr_Occurred()) {
+            return nullptr;
+        }
+
         return Py::new_reference_to(Py::Int(objectCount));
     } PY_CATCH;
 }

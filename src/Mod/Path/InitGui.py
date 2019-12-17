@@ -71,6 +71,16 @@ class PathWorkbench (Workbench):
         FreeCADGui.addIconPath(":/icons")
         from PathScripts import PathGuiInit
         from PathScripts import PathJobCmd
+
+        from PathScripts import PathToolBitCmd
+        from PathScripts import PathToolBitLibraryCmd
+        if PathPreferences.experimentalFeaturesEnabled():
+            toolbitcmdlist = PathToolBitCmd.CommandList + ["Separator"] + PathToolBitLibraryCmd.CommandList + ["Path_ToolController", "Separator"]
+            self.toolbitctxmenu = ["Path_ToolBitLibraryLoad", "Path_ToolController"]
+        else:
+            toolbitcmdlist = []
+            self.toolbitctxmenu = []
+
         import PathCommands
         PathGuiInit.Startup()
 
@@ -112,7 +122,7 @@ class PathWorkbench (Workbench):
         if extracmdlist:
             self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
-        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Separator"] + toolcmdlist +["Separator"] + twodopcmdlist + engravecmdlist +["Separator"] +threedopcmdlist +["Separator"])
+        self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Path_ExportTemplate", "Separator"] + toolbitcmdlist + toolcmdlist +["Separator"] + twodopcmdlist + engravecmdlist +["Separator"] +threedopcmdlist +["Separator"])
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
         self.appendMenu([QtCore.QT_TRANSLATE_NOOP("Path", "&Path"), QtCore.QT_TRANSLATE_NOOP(
@@ -143,6 +153,7 @@ class PathWorkbench (Workbench):
 
     def ContextMenu(self, recipient):
         import PathScripts
+        menuAppended = False
         if len(FreeCADGui.Selection.getSelection()) == 1:
             obj = FreeCADGui.Selection.getSelection()[0]
             if obj.isDerivedFrom("Path::Feature"):
@@ -152,9 +163,11 @@ class PathWorkbench (Workbench):
                 if "Remote" in selectedName:
                     self.appendContextMenu("", ["Refresh_Path"])
                 if "Job" in selectedName:
-                    self.appendContextMenu("", ["Path_ExportTemplate"])
-            if isinstance (obj.Proxy, PathScripts.PathOp.ObjectOp):
+                    self.appendContextMenu("", ["Path_ExportTemplate"] + self.toolbitctxmenu)
+                menuAppended = True
+            if isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp):
                 self.appendContextMenu("", ["Path_OperationCopy", "Path_OpActiveToggle"])
+                menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
                 if "Profile" in selectedName or "Contour" in selectedName or "Dressup" in selectedName:
                     self.appendContextMenu("", "Separator")
@@ -162,6 +175,12 @@ class PathWorkbench (Workbench):
                     #self.appendContextMenu("", ["Set_EndPoint"])
                     for cmd in self.dressupcmds:
                         self.appendContextMenu("", [cmd])
+                    menuAppended = True
+            if isinstance(obj.Proxy, PathScripts.PathToolBit.ToolBit):
+                self.appendContextMenu("", ["Path_ToolBitSave", "Path_ToolBitSaveAs"])
+                menuAppended = True
+        if menuAppended:
+            self.appendContextMenu("", "Separator")
 
 Gui.addWorkbench(PathWorkbench())
 

@@ -671,7 +671,7 @@ class PathData:
             print("tag[%d]" % i)
             if not i in fromObj.Disabled:
                 dist = self.baseWire.distToShape(Part.Vertex(FreeCAD.Vector(pos.x, pos.y, self.minZ)))
-                if dist[0] < W:
+                if True or dist[0] < W:
                     print("tag[%d/%d]: (%.2f, %.2f, %.2f)" % (i, j, pos.x, pos.y, self.minZ))
                     at = dist[1][0][0]
                     tags.append(Tag(j, at.x, at.y,  W, H, A, R, True))
@@ -759,7 +759,13 @@ class ObjectTagDressup:
         obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "IDs of disabled holding tags"))
         obj.addProperty("App::PropertyInteger", "SegmentationFactor", "Tag", QtCore.QT_TRANSLATE_NOOP("Path_DressupTag", "Factor determining the # of segments used to approximate rounded tags."))
 
-        self.__setstate__(obj)
+        # for pylint ...
+        self.obj = obj
+        self.solids = []
+        self.tags = []
+        self.pathData = None
+        self.toolRadius = None
+        self.mappers = []
 
         obj.Proxy = self
         obj.Base = base
@@ -1021,7 +1027,7 @@ class ObjectTagDressup:
             #    traceback.print_exc()
             return None
 
-        self.toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter / 2
+        self.toolRadius = float(PathDressup.toolController(obj.Base).Tool.Diameter) / 2
         self.pathData = pathData
         if generate:
             obj.Height = self.pathData.defaultTagHeight()

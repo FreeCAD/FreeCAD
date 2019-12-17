@@ -106,6 +106,10 @@ class PropertyQuantity(Property):
             return Property.displayString(self)
         return self.value.getUserPreferred()[0]
 
+class PropertyAngle(PropertyQuantity):
+    def typeString(self):
+        return "Angle"
+
 class PropertyDistance(PropertyQuantity):
     def typeString(self):
         return "Distance"
@@ -122,13 +126,22 @@ class PropertyFloat(Property):
     def typeString(self):
         return "Float"
 
+    def valueFromString(self, string):
+        return float(string)
+
 class PropertyInteger(Property):
     def typeString(self):
         return "Integer"
 
+    def valueFromString(self, string):
+        return int(string)
+
 class PropertyBool(Property):
     def typeString(self):
         return "Bool"
+
+    def valueFromString(self, string):
+        return bool(string)
 
 class PropertyString(Property):
     def typeString(self):
@@ -137,24 +150,25 @@ class PropertyString(Property):
 class OpPrototype(object):
 
     PropertyType = {
-            'App::PropertyBool': PropertyBool,
-            'App::PropertyDistance': PropertyDistance,
-            'App::PropertyEnumeration': PropertyEnumeration,
-            'App::PropertyFloat': PropertyFloat,
-            'App::PropertyFloatConstraint': Property,
-            'App::PropertyFloatList': Property,
-            'App::PropertyInteger': PropertyInteger,
-            'App::PropertyIntegerList': PropertyInteger,
-            'App::PropertyLength': PropertyLength,
-            'App::PropertyLink': Property,
-            'App::PropertyLinkList': Property,
-            'App::PropertyLinkSubListGlobal': Property,
-            'App::PropertyPercent': PropertyPercent,
-            'App::PropertyString': PropertyString,
-            'App::PropertyStringList': Property,
-            'App::PropertyVectorDistance': Property,
-            'App::PropertyVectorList': Property,
-            'Part::PropertyPartShape': Property,
+            'App::PropertyAngle':               PropertyAngle,
+            'App::PropertyBool':                PropertyBool,
+            'App::PropertyDistance':            PropertyDistance,
+            'App::PropertyEnumeration':         PropertyEnumeration,
+            'App::PropertyFloat':               PropertyFloat,
+            'App::PropertyFloatConstraint':     Property,
+            'App::PropertyFloatList':           Property,
+            'App::PropertyInteger':             PropertyInteger,
+            'App::PropertyIntegerList':         PropertyInteger,
+            'App::PropertyLength':              PropertyLength,
+            'App::PropertyLink':                Property,
+            'App::PropertyLinkList':            Property,
+            'App::PropertyLinkSubListGlobal':   Property,
+            'App::PropertyPercent':             PropertyPercent,
+            'App::PropertyString':              PropertyString,
+            'App::PropertyStringList':          Property,
+            'App::PropertyVectorDistance':      Property,
+            'App::PropertyVectorList':          Property,
+            'Part::PropertyPartShape':          Property,
             }
 
     def __init__(self, name):

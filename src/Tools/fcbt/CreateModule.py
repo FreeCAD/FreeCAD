@@ -93,7 +93,7 @@ def createApp(Application):
 	sys.stdout.write("Modifying files...\n")
 	MakeAppTools.replaceTemplate("../Mod/" + Application,"_TEMPLATE_",Application)
 	MakeAppTools.replaceTemplate("../Mod/" + Application,"${CMAKE_SOURCE_DIR}/src/Tools/","${CMAKE_SOURCE_DIR}/src/Mod/")
-	# make the congigure script executable
+	# make the configure script executable
 	#os.chmod("../Mod/" + Application + "/configure", 0777);
 	sys.stdout.write("Modifying files done.\n")
 

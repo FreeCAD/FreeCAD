@@ -29,6 +29,8 @@ import FreeCADGui
 import Path
 import PathScripts
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathToolBitLibraryCmd as PathToolBitLibraryCmd
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathToolLibraryManager as ToolLibraryManager
@@ -439,12 +441,14 @@ class CommandToolLibraryEdit():
         pass
 
     def edit(self, job=None, cb=None):
-        editor = EditorPanel(job, cb)
-        editor.setupUi()
-
-        r = editor.form.exec_()
-        if r:
-            pass
+        if PathPreferences.toolsReallyUseLegacyTools():
+            editor = EditorPanel(job, cb)
+            editor.setupUi()
+            editor.form.exec_()
+        else:
+            if PathToolBitLibraryCmd.CommandToolBitLibraryLoad.Execute(job):
+                if cb:
+                    cb()
 
     def GetResources(self):
         return {'Pixmap'  : 'Path-ToolTable',
@@ -456,7 +460,6 @@ class CommandToolLibraryEdit():
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-
         self.edit()
 
 if FreeCAD.GuiUp:

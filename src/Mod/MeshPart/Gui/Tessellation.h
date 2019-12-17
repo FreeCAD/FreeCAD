@@ -49,6 +49,7 @@ protected:
 
 private Q_SLOTS:
     void meshingMethod(int id);
+    void on_estimateMaximumEdgeLength_clicked();
     void on_comboFineness_currentIndexChanged(int);
     void on_checkSecondOrder_toggled(bool);
     void on_checkQuadDominated_toggled(bool);

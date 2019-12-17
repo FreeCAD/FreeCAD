@@ -50,7 +50,10 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
     editor->setIndex(index);
 
     editor->setDocumentObject(sheet);
-    connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
+    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=41694
+    // It looks like the slot commitAndCloseEditor() is not needed any more and even
+    // causes a crash when doing so because the LineEdit is still accessed after its destruction.
+    //connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
     return editor;
 }
 

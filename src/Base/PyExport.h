@@ -168,22 +168,22 @@ public:
         return *this;
     }
 
-    /// derefrence operators
+    /// dereference operators
     HandledType &operator*() {
         return *_pHandels;
     }
 
-    /// derefrence operators
+    /// dereference operators
     HandledType *operator->() {
         return _pHandels;
     }
 
-    /// derefrence operators
+    /// dereference operators
     const HandledType &operator*() const {
         return _pHandels;
     }
 
-    /// derefrence operators
+    /// dereference operators
     const HandledType *operator->() const {
         return _pHandels;
     }

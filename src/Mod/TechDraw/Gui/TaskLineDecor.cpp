@@ -119,20 +119,21 @@ void TaskLineDecor::getDefaults(void)
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeByIndex(bg->sourceIndex());
+                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(m_edges.front());
                     m_style = ce->m_format.m_style;
                     m_color = ce->m_format.m_color;
                     m_weight = ce->m_format.m_weight;
                     m_visible = ce->m_format.m_visible;
                 } else if (bg->source() == 2) {
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
+//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag);
+                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(m_edges.front());
                     m_style = cl->m_format.m_style;
                     m_color = cl->m_format.m_color;
                     m_weight = cl->m_format.m_weight;
                     m_visible = cl->m_format.m_visible;
                 }
             } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
+                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
                 if (gf != nullptr) {
                     m_style = gf->m_format.m_style;
                     m_color = gf->m_format.m_color;
@@ -186,20 +187,21 @@ void TaskLineDecor::applyDecorations(void)
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
-                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeByIndex(bg->sourceIndex());
+                    TechDraw::CosmeticEdge* ce = m_partFeat->getCosmeticEdgeBySelection(e);
                     ce->m_format.m_style = m_style;
                     ce->m_format.m_color = m_color;
                     ce->m_format.m_weight = m_weight;
                     ce->m_format.m_visible = m_visible;
                 } else if (bg->source() == 2) {
-                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineByIndex(bg->sourceIndex());
+//                    TechDraw::CenterLine* cl = m_partFeat->getCenterLine(bg->getCosmeticTag());
+                    TechDraw::CenterLine* cl = m_partFeat->getCenterLineBySelection(e);
                     cl->m_format.m_style = m_style;
                     cl->m_format.m_color = m_color;
                     cl->m_format.m_weight = m_weight;
                     cl->m_format.m_visible = m_visible;
                 }
             } else {
-                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatByGeom(num);
+                TechDraw::GeomFormat* gf = m_partFeat->getGeomFormatBySelection(num);
                 if (gf != nullptr) {
                     gf->m_format.m_style = m_style;
                     gf->m_format.m_color = m_color;
@@ -218,7 +220,6 @@ void TaskLineDecor::applyDecorations(void)
             }
         }
     }
-    
 }
 
 bool TaskLineDecor::accept()

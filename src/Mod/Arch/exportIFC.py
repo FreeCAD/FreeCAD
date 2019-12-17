@@ -86,7 +86,7 @@ DATA;
 #2=IFCORGANIZATION($,'$company',$,$,$);
 #3=IFCPERSONANDORGANIZATION(#1,#2,$);
 #4=IFCAPPLICATION(#2,'$version','FreeCAD','118df2cf_ed21_438e_a41');
-#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4,$now);
+#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$now,#3,#4,$now);
 #6=IFCDIRECTION((1.,0.,0.));
 #7=IFCDIRECTION((0.,0.,1.));
 #8=IFCCARTESIANPOINT((0.,0.,0.));
@@ -214,7 +214,7 @@ def export(exportList,filename,colors=None,preferences=None):
 
     if Draft.getObjectsOfType(objectslist, "Site"):  # we assume one site and one representation context only
         trueNorthX = math.tan(-Draft.getObjectsOfType(objectslist, "Site")[0].Declination.getValueAs(FreeCAD.Units.Radian))
-        contextCreator.model_context.TrueNorth.DirectionRatios = (trueNorthX, 1., 1.)
+        contextCreator.model_context.TrueNorth.DirectionRatios = (trueNorthX, 1.)
 
     products = {} # { Name: IfcEntity, ... }
     subproducts = {} # { Name: IfcEntity, ... } for storing additions/subtractions and other types of subcomponents of a product
@@ -307,8 +307,8 @@ def export(exportList,filename,colors=None,preferences=None):
             for axg in axgroups:
                 ifcaxg = []
                 for ax in axg:
-                    p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)))
-                    p2 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(0.001)))
+                    p1 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[0]).multiply(0.001)[:2]))
+                    p2 = ifcbin.createIfcCartesianPoint(tuple(FreeCAD.Vector(ax[1]).multiply(0.001)[:2]))
                     pol = ifcbin.createIfcPolyline([p1,p2])
                     ifcpols.append(pol)
                     axis = ifcfile.createIfcGridAxis(ax[2],pol,True)
@@ -802,22 +802,34 @@ def export(exportList,filename,colors=None,preferences=None):
         if (Draft.getType(floor) == "Floor") or (hasattr(floor,"IfcType") and floor.IfcType == "Building Storey"):
             objs = Draft.getGroupContents(floor,walls=True,addgroups=True)
             objs = Arch.pruneIncluded(objs)
-            children = []
+            objs.remove(floor) # getGroupContents + addgroups will include the floor itself
+            buildingelements, spaces = [], []
             for c in objs:
-                if c.Name != floor.Name: # getGroupContents + addgroups will include the floor itself
-                    if c.Name in products.keys():
-                        if not (c.Name in treated):
-                            children.append(products[c.Name])
-                            treated.append(c.Name)
+                if c.Name in products and c.Name not in treated:
+                    prod = products[c.Name]
+                    if prod.is_a()=='IfcSpace':
+                        spaces.append(prod)
+                    else:
+                        buildingelements.append(prod)
+                    treated.append(c.Name)
             f = products[floor.Name]
-            if children:
+            if buildingelements:
                 ifcfile.createIfcRelContainedInSpatialStructure(
                     ifcopenshell.guid.new(),
                     history,
                     'StoreyLink',
                     '',
-                    children,
+                    buildingelements,
                     f
+                )
+            if spaces:
+                ifcfile.createIfcRelAggregates(
+                    ifcopenshell.guid.new(),
+                    history,
+                    'StoreyLink',
+                    '',
+                    f,
+                    spaces
                 )
             floors.append(f)
             defaulthost = f
@@ -834,7 +846,7 @@ def export(exportList,filename,colors=None,preferences=None):
                 if not (c.Name in treated):
                     if c.Name != building.Name: # getGroupContents + addgroups will include the building itself
                         if c.Name in products.keys():
-                            if Draft.getType(c) in ["Floor","BuildingPart"]:
+                            if Draft.getType(c) in ["Floor","BuildingPart","Space"]:
                                 childfloors.append(products[c.Name])
                                 treated.append(c.Name)
                             elif not (c.Name in treated):
@@ -1022,13 +1034,29 @@ def export(exportList,filename,colors=None,preferences=None):
             elif buildings:
                 defaulthost = buildings[0]
         if defaulthost:
-            ifcfile.createIfcRelContainedInSpatialStructure(
-                ifcopenshell.guid.new(),
-                history,
-                'UnassignedObjectsLink',
-                '',
-                untreated,
-                defaulthost
+            spaces, buildingelements = [],[]
+            for entity in untreated:
+                if entity.is_a()=="IfcSpace":
+                    spaces.append(entity)
+                else:
+                    buildingelements.append(entity)
+            if spaces:
+                ifcfile.createIfcRelAggregates(
+                    ifcopenshell.guid.new(),
+                    history,
+                    'UnassignedObjectsLink',
+                    '',
+                    defaulthost,
+                    spaces
+                )
+            if buildingelements:
+                ifcfile.createIfcRelContainedInSpatialStructure(
+                    ifcopenshell.guid.new(),
+                    history,
+                    'UnassignedObjectsLink',
+                    '',
+                    buildingelements,
+                    defaulthost
             )
         else:
             # no default host: aggregate unassigned objects directly under the IfcProject - WARNING: NON STANDARD
@@ -1456,6 +1484,8 @@ def getIfcTypeFromObj(obj):
         ifctype = translationtable[ifctype]
     if ifctype == "VisGroup":
         ifctype = "Group"
+    if ifctype == "Undefined":
+        ifctype = "BuildingElementProxy"
 
     return "Ifc" + ifctype
 
@@ -1654,8 +1684,8 @@ def getProfile(ifcfile,p):
         # arbitrarily use the first edge as the rectangle orientation
         d = vec(p.Edges[0])
         d.normalize()
-        pxvc = ifcbin.createIfcDirection(tuple(d))
-        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass))
+        pxvc = ifcbin.createIfcDirection(tuple(d)[:2])
+        povc = ifcbin.createIfcCartesianPoint(tuple(p.CenterOfMass[:2]))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
         #semiPerimeter = p.Length/2
         #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)

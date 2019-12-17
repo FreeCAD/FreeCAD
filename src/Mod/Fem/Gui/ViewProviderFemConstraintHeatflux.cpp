@@ -109,7 +109,7 @@ void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
     float scaledradius = RADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
     //float ambienttemp = pcConstraint->AmbientTemp.getValue();
-    ////float facetemp = pcConstraint->FaceTemp.getValue();
+    // //float facetemp = pcConstraint->FaceTemp.getValue();
     //float filmcoef = pcConstraint->FilmCoef.getValue();
 
     if (strcmp(prop->getName(),"Points") == 0) {

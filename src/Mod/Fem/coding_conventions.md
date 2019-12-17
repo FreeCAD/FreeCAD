@@ -20,7 +20,9 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 ## Python and C++
 ### Code formatting
 - All files should have a license header
-- Unix line endings are preferred
+- Unix line endings will be used:
+    - a .gitattributes file has been added to ensure line endings of text files are LF
+    - use `?w=1` in link address to suppress line ending changes on github
 - never use mixed line endings on one file
 - 4 Spaces for indent
 - no trailing white spaces
@@ -65,3 +67,8 @@ Python style is preferred over Doxygen style
 ## C++
 ### Naming policy
 - CamelCase names
+
+### Code formatting
+- slashes
+    - Do not use to many slashes in a row. This could cause trouble with Doxygen.
+    - see [PR with comment](https://github.com/FreeCAD/FreeCAD/pull/2757#discussion_r355218913)

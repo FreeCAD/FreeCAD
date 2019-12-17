@@ -692,6 +692,40 @@ void StdCmdMeasurementSimple::activated(int iMsg)
     updateActive();
     commitCommand();
 }
+
+//===========================================================================
+// Std_TextDocument
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdTextDocument)
+
+StdCmdTextDocument::StdCmdTextDocument()
+  :Command("Std_TextDocument")
+{
+    sGroup        = QT_TR_NOOP("Tools");
+    sMenuText     = QT_TR_NOOP("Add text document");
+    sToolTipText  = QT_TR_NOOP("Add text document to active document");
+    sWhatsThis    = "Std_TextDocument";
+    sStatusTip    = QT_TR_NOOP("Add text document to active document");
+    sPixmap       = "TextDocument";
+    eType         = 0;
+}
+
+void StdCmdTextDocument::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    openCommand("Insert text document");
+    doCommand(Doc,"App.ActiveDocument.addObject(\"App::TextDocument\",\"%s\").Label=\"%s\"","Text document","Text document");
+    updateActive();
+    commitCommand();
+}
+
+bool StdCmdTextDocument::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // Std_UnitsCalculator
 //===========================================================================
@@ -741,6 +775,7 @@ void CreateStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());
     rcCmdMgr.addCommand(new StdCmdFreeCADFAQ());
     rcCmdMgr.addCommand(new StdCmdPythonWebsite());
+    rcCmdMgr.addCommand(new StdCmdTextDocument());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     //rcCmdMgr.addCommand(new StdCmdMeasurementSimple());
     //rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());

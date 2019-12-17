@@ -145,6 +145,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
         return;
     }
 
+    
     ui->setupUi(this);
     m_title = QObject::tr("Rich text creator");
 
@@ -278,7 +279,7 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand("Create Leader");
+    Gui::Command::openCommand("Create Anno");
     Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
                        annoType.c_str(),annoName.c_str());
     Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
@@ -309,7 +310,7 @@ void TaskRichAnno::createAnnoFeature()
 void TaskRichAnno::updateAnnoFeature()
 {
 //    Base::Console().Message("TRA::updateAnnoFeature()\n");
-    Gui::Command::openCommand("Edit Leader");
+    Gui::Command::openCommand("Edit Anno");
     commonFeatureUpdate();
 
     Gui::Command::commitCommand();
@@ -375,16 +376,19 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
             TechDraw::DrawLeaderLine* dll = dynamic_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
         } else {
-            Base::Console().Log("TRA::calcTextPos - m_baseFeat is not Leader\n");
+//            Base::Console().Message("TRA::calcTextPos - m_baseFeat is not Leader\n");
             QPointF result(0.0,0.0);
             return result;
         }
     } else {
+//        Base::Console().Message("TRA::calcStartPos - no m_baseFeat\n");
         if (m_basePage != nullptr) {
             double w = Rez::guiX(m_basePage->getPageWidth() / 2.0);
             double h = Rez::guiX(m_basePage->getPageHeight() / 2.0);
             QPointF result(w,h);
             return result;
+        } else {
+            Base::Console().Message("TRA::calcStartPos - no m_basePage\n");
         }
     }
 

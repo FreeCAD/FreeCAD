@@ -33,6 +33,7 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -201,7 +202,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
                               e.GetMessageString());
         }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
+        Base::Console().Error("GeometryObject::projectShape - unknown error occurred while projecting shape\n");
+//        throw Base::RuntimeError("GeometryObject::projectShape - unknown error occurred while projecting shape");
     }
 
     auto end   = chrono::high_resolution_clock::now();
@@ -262,7 +264,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
                               e.GetMessageString());
     }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::projectShape - error occurred while extracting edges");
+        Base::Console().Error("GO::projectShape - unknown error while extracting edges\n");
+//        throw Base::RuntimeError("GeometryObject::projectShape - error occurred while extracting edges");
     }
     end   = chrono::high_resolution_clock::now();
     diff  = end - start;
@@ -342,7 +345,8 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
                               e.GetMessageString());
     }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - unknown error while projecting shape\n");
+//        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
 //        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
     }
 
@@ -389,7 +393,8 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
                               e.GetMessageString());
     }
     catch (...) {
-        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while extracting edges");
+        Base::Console().Error("GO::projectShapeWithPolygonAlgo - - error occurred while extracting edges\n");
+//        throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while extracting edges");
 //        Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
     }
     auto end = chrono::high_resolution_clock::now();
@@ -476,7 +481,7 @@ void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 //! update edgeGeom and vertexGeom from Compound of edges
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool hlrVisible)
 {
-//    Base::Console().Message("GO::addGeomFromCompound()\n");
+//    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if(edgeCompound.IsNull()) {
         Base::Console().Log("TechDraw::GeometryObject::addGeomFromCompound edgeCompound is NULL\n");
         return; // There is no OpenCascade Geometry to be calculated
@@ -488,19 +493,25 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     for ( ; edges.More(); edges.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         if (edge.IsNull()) {
-            //Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
+            Base::Console().Log("GO::addGeomFromCompound - edge: %d is NULL\n",i);
             continue;
         }
         if (DrawUtil::isZeroEdge(edge)) {
-            Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is zeroEdge\n",i);
+            Base::Console().Log("GO::addGeomFromCompound - edge: %d is zeroEdge\n",i);
+            continue;
+        }
+        if (DrawUtil::isCrazy(edge))  {
+            Base::Console().Log("GO::addGeomFromCompound - edge: %d is crazy\n",i);
             continue;
         }
 
         base = BaseGeom::baseFactory(edge);
         if (base == nullptr) {
             Base::Console().Log("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
-            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
+            continue;
+//            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
+
         base->source(0);             //object geometry
         base->sourceIndex(i-1);
         base->classOfEdge = category;
@@ -562,55 +573,131 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }  //end TopExp
 }
 
-//adds a new GeomVert to list for cv[link]
-int GeometryObject::addCosmeticVertex(Base::Vector3d pos, int link)
+//********** Cosmetic Vertex ***************************************************
+
+//adds a new GeomVert surrogate for CV
+//returns GeomVert selection index  ("Vertex3")
+// insertGeomForCV(cv)
+int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
+{
+//    Base::Console().Message("GO::addCosmeticVertex(%X)\n", cv);
+    double scale = m_parent->getScale();
+    Base::Vector3d pos = cv->scaled(scale);
+    TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
+    v->cosmetic = true;
+    v->cosmeticLink = -1;  //obs??
+    v->cosmeticTag = cv->getTagAsString();
+    v->hlrVisible = true;
+    int idx = vertexGeom.size();
+    vertexGeom.push_back(v);
+    return idx;
+}
+
+//adds a new GeomVert to list
+//should probably be called addVertex since not connect to CV by tag
+int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 {
     Base::Console().Message("GO::addCosmeticVertex() 1 - deprec?\n");
     TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
     v->cosmetic = true;
-    v->cosmeticLink = link;
-    v->cosmeticTag = "tbi";
+    v->cosmeticTag = "tbi";        //not connected to CV
     v->hlrVisible = true;
     int idx = vertexGeom.size();
     vertexGeom.push_back(v);
     return idx;
 }
 
-int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString, int link)
+int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 {
 //    Base::Console().Message("GO::addCosmeticVertex() 2\n");
     TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
     v->cosmetic = true;
-    v->cosmeticLink = link;
-    v->cosmeticTag = tagString;
+    v->cosmeticTag = tagString;     //connected to CV
     v->hlrVisible = true;
     int idx = vertexGeom.size();
     vertexGeom.push_back(v);
     return idx;
 }
 
-//do not need source index anymore.  base has CosmeticTag
+//********** Cosmetic Edge *****************************************************
+
+//adds a new GeomEdge surrogate for CE
+//returns GeomEdge selection index  ("Edge3")
+// insertGeomForCE(ce)
+int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
+{
+    Base::Console().Message("GO::addCosmeticEdge(%X)\n", ce);
+    double scale = m_parent->getScale();
+    TechDraw::BaseGeom* e = ce->scaledGeometry(scale);
+    e->cosmetic = true;
+    e->setCosmeticTag(ce->getTagAsString());
+    e->hlrVisible = true;
+    int idx = edgeGeom.size();
+    edgeGeom.push_back(e);
+    return idx;
+}
+
+//adds a new GeomEdge to list for ce[link]
+//this should be made obsolete and the variant with tag used instead
+int GeometryObject::addCosmeticEdge(Base::Vector3d start,
+                                    Base::Vector3d end)
+{
+    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
+    gp_Pnt gp1(start.x, start.y, start.z);
+    gp_Pnt gp2(end.x, end.y, end.z);
+    TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    TechDraw::BaseGeom* e = BaseGeom::baseFactory(occEdge);
+    e->cosmetic = true;
+//    e->cosmeticLink = link;
+    e->setCosmeticTag("tbi");
+    e->hlrVisible = true;
+    int idx = edgeGeom.size();
+    edgeGeom.push_back(e);
+    return idx;
+}
+
+int GeometryObject::addCosmeticEdge(Base::Vector3d start,
+                                    Base::Vector3d end,
+                                    std::string tagString)
+{
+    Base::Console().Message("GO::addCosmeticEdge() 2\n");
+    gp_Pnt gp1(start.x, start.y, start.z);
+    gp_Pnt gp2(end.x, end.y, end.z);
+    TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
+    TechDraw::BaseGeom* base = BaseGeom::baseFactory(occEdge);
+    base->cosmetic = true;
+    base->setCosmeticTag(tagString);
+    base->source(1);           //1-CosmeticEdge, 2-CenterLine
+    base->hlrVisible = true;
+    int idx = edgeGeom.size();
+    edgeGeom.push_back(base);
+    return idx;
+}
+
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
-                                    int s)
+                                    std::string tagString)
 {
     base->cosmetic = true;
-    base->source(s);           //1-CosmeticEdge, 2-CenterLine
-    
+    base->hlrVisible = true;
+    base->source(1);           //1-CosmeticEdge, 2-CenterLine
+    base->setCosmeticTag(tagString);
+    base->sourceIndex(-1);
+    int idx = edgeGeom.size();
     edgeGeom.push_back(base);
-    int idx = edgeGeom.size() - 1;
     return idx;
 }
 
 int GeometryObject::addCenterLine(TechDraw::BaseGeom* base,
-                                    int s, int si)
+                                  std::string tag)
+//                                    int s, int si)
 {
 //    Base::Console().Message("GO::addCenterLine()\n");
     base->cosmetic = true;
-    base->source(s);           //1-CosmeticEdge, 2-CenterLine
-    base->sourceIndex(si);     //index into source;
-    
+    base->setCosmeticTag(tag);
+    base->source(2);
+//    base->sourceIndex(si);     //index into source;
+    int idx = edgeGeom.size();
     edgeGeom.push_back(base);
-    int idx = edgeGeom.size() - 1;
     return idx;
 }
 

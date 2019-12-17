@@ -105,7 +105,6 @@ def import_stpz(fn,fc,doc):
         os.remove(tempfilepath)
     except OSError:
         sayzerr("error on removing "+tempfilepath+" file")
-        pass
 ###
 
 def open(filename,doc=None):
@@ -152,32 +151,36 @@ def export(objs,filename):
     namefpath = os.path.join(basepath,fname)
         
     outfpath = os.path.join(basepath,fname)+u'.stpZ'
+    outfpathT = os.path.join(tempdir,fname)+u'.stpZ'
     outfpath_stp = os.path.join(basepath,fname)+u'.stp'
+    outfpathT_stp = os.path.join(tempdir,fname)+u'.stp'
+    
     outfpath_base = basepath
     #outfpath_str = mkz_string(os.path.join(basepath,fname))
     outfpath_str = os.path.join(basepath,fname)+u'.stp'
+    outfpathT_str = os.path.join(tempdir,fname)+u'.stp'
     
         
-    if os.path.exists(outfpath_stp):
-        sayzw("File cannot be compressed because a file with the same name exists '"+ outfpath_stp +"'")
+    if os.path.exists(outfpathT_stp):
+        sayzw("File cannot be compressed because a file with the same name exists '"+ outfpathT_stp +"'")
         QtGui.QApplication.restoreOverrideCursor()
         reply = QtGui.QMessageBox.information(None,"info", "File cannot be compressed because\na file with the same name exists\n'"+ outfpath_stp + "'")
     else:    
-        ImportGui.export(objs,outfpath_stp)
-        with builtin.open(outfpath_stp, 'rb') as f_in:
+        ImportGui.export(objs,outfpathT_stp)
+        with builtin.open(outfpathT_stp, 'rb') as f_in:
             file_content = f_in.read()
             new_f_content = file_content
             f_in.close()
-        with gz.open(outfpath_str, 'wb') as f_out:
+        with gz.open(outfpathT_str, 'wb') as f_out:
             f_out.write(new_f_content)
             f_out.close()    
         if os.path.exists(outfpath):
             os.remove(outfpath)
-            os.rename(outfpath_str, outfpath)  
-            #os.remove(outfpath_stp)
+            os.rename(outfpathT_str, outfpath)  
+            #os.remove(outfpathT_stp)
         else:
-            os.rename(outfpath_str, outfpath)
-            #os.remove(outfpath_stp)                
+            os.rename(outfpathT_str, outfpath)
+            #os.remove(outfpathT_stp)                
 
 ####
 

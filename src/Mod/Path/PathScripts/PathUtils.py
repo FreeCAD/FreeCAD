@@ -223,7 +223,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0, 0, 1))
 
         # findShapeOutline always returns closed wires, by removing the
-        # trace-backs single edge spikes don't contriubte to the bound box
+        # trace-backs single edge spikes don't contribute to the bound box
         uniqueEdges = []
         for edge in outline.Edges:
             if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):
@@ -703,14 +703,14 @@ def guessDepths(objshape, subs=None):
 
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
-    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
+    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or float(tool.Diameter) == 0.0:
         return 0.0
     else:
         if tool.CuttingEdgeAngle <= 0 or tool.CuttingEdgeAngle >= 180:
             PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % tool.CuttingEdgeAngle)
             return 0.0
         theta = math.radians(tool.CuttingEdgeAngle)
-        length = (tool.Diameter / 2) / math.tan(theta / 2)
+        length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
         if length < 0:
             PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
             return 0.0

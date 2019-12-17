@@ -75,22 +75,22 @@ class TestResult(unittest.TestCase):
         frd_content_len = []
         for key in sorted(frd_content.keys()):
             frd_content_len.append(len(frd_content[key]))
-        print("read data")
-        print(frd_content_len)
-        print(sorted(frd_content.keys()))
-        # print(frd_content)
+        # print("read data")
+        # print(frd_content_len)
+        # print(sorted(frd_content.keys()))
+        # # print(frd_content)
         read_mflow = frd_content["Results"][12]["mflow"]
         read_npressure = frd_content["Results"][12]["npressure"]
         res_len = [
             len(read_mflow),
             len(read_npressure)
         ]
-        print(res_len)
-        print(read_mflow)
-        print(read_npressure)
+        # print(res_len)
+        # print(read_mflow)
+        # print(read_npressure)
 
         # create the expected data
-        print("\nexpected data")
+        # print("\nexpected data")
         efc = {}  # expected frd content
         efc["Nodes"] = {
             2: FreeCAD.Vector(0.0, 0.0, -50.0),
@@ -229,8 +229,8 @@ class TestResult(unittest.TestCase):
         expected_frd_content_len = []
         for key in sorted(expected_frd_content.keys()):
             expected_frd_content_len.append(len(expected_frd_content[key]))
-        print(expected_frd_content_len)
-        print(sorted(expected_frd_content.keys()))
+        # print(expected_frd_content_len)
+        # print(sorted(expected_frd_content.keys()))
         # expected results
         expected_mflow = expected_frd_content["Results"][12]["mflow"]
         expected_npressure = expected_frd_content["Results"][12]["npressure"]
@@ -238,9 +238,9 @@ class TestResult(unittest.TestCase):
             len(expected_mflow),
             len(expected_npressure)
         ]
-        print(expected_res_len)
-        print(expected_mflow)
-        print(expected_npressure)
+        # print(expected_res_len)
+        # print(expected_mflow)
+        # print(expected_npressure)
 
         # tests
         self.assertEqual(

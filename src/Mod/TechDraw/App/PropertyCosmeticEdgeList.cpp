@@ -116,7 +116,6 @@ PyObject *PropertyCosmeticEdgeList::getPyObject(void)
 void PropertyCosmeticEdgeList::setPyObject(PyObject *value)
 {
     // check container of this property to notify about changes
-//    Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
 
     if (PySequence_Check(value)) {
         Py_ssize_t nSize = PySequence_Size(value);
@@ -135,8 +134,6 @@ void PropertyCosmeticEdgeList::setPyObject(PyObject *value)
         }
 
         setValues(values);
-//        if (part2d)
-//            part2d->acceptCosmeticEdge();
     }
     else if (PyObject_TypeCheck(value, &(CosmeticEdgePy::Type))) {
         CosmeticEdgePy  *pcObject = static_cast<CosmeticEdgePy*>(value);

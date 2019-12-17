@@ -27,6 +27,7 @@
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 # include <App/PropertyLinks.h>
+# include <App/PropertyUnits.h>
 
 #include "DrawView.h"
 
@@ -53,8 +54,8 @@ public:
     App::PropertyEnumeration EndType;
     App::PropertyEnumeration Symbol;
     App::PropertyFloat       SymbolScale;
-    App::PropertyFloat       OriginX;
-    App::PropertyFloat       OriginY;
+    App::PropertyDistance    OriginX;
+    App::PropertyDistance    OriginY;
     App::PropertyBool        OriginIsSet;
     App::PropertyFloat       TextWrapLen;
 
@@ -79,6 +80,7 @@ public:
 protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
+	virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
 private:
 };

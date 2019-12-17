@@ -68,7 +68,8 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 
 QGIFace::QGIFace(int index) :
-    projIndex(index)
+    projIndex(index),
+    m_hideSvgTiles(false)
 {
     m_segCount = 0;
 //    setFillMode(NoFill);
@@ -139,13 +140,16 @@ void QGIFace::draw()
                     m_fillStyleCurrent = m_styleNormal;
                     loadSvgHatch(m_fileSpec);
                     buildSvgHatch();
-                    toggleSvg(true);
+                    if (m_hideSvgTiles) {
+                        m_rect->hide();
+                    } else {
+                        m_rect->show();
+                    }
                 } else if ((ext.toUpper() == QString::fromUtf8("JPG"))   ||
                          (ext.toUpper() == QString::fromUtf8("PNG"))   ||
                          (ext.toUpper() == QString::fromUtf8("JPEG"))  ||
                          (ext.toUpper() == QString::fromUtf8("BMP")) ) {
                     setFillMode(BitmapFill);
-                    toggleSvg(false);
                     m_fillStyleCurrent = Qt::TexturePattern;
                     m_texture = textureFromBitmap(m_fileSpec);
                     m_brush.setTexture(m_texture);
@@ -195,7 +199,7 @@ void QGIFace::setDrawEdges(bool b) {
 void QGIFace::setHatchFile(std::string fileSpec)
 {
     m_fileSpec = fileSpec;
-}   
+}
  
 void QGIFace::loadSvgHatch(std::string fileSpec)
 {
@@ -546,7 +550,7 @@ void QGIFace::buildSvgHatch()
 
 void QGIFace::clearSvg()
 {
-    toggleSvg(false);
+    hideSvg(true);
 }
 
 //this isn't used currently
@@ -578,14 +582,9 @@ void QGIFace::setHatchScale(double s)
 }
 
 //QtSvg does not handle clipping, so we must be able to turn the hatching on/off
-void QGIFace::toggleSvg(bool b)
+void QGIFace::hideSvg(bool b)
 {
-    if (b) {
-        m_rect->show();
-    } else {
-        m_rect->hide();
-    }
-    update();
+    m_hideSvgTiles = b;
 }
 
 QPixmap QGIFace::textureFromBitmap(std::string fileSpec)

@@ -582,7 +582,8 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit">
           <property name="toolTip">
-           <string>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</string>
+           <string>This is the SVG stroke-dasharray property to apply
+to projections of hidden objects.</string>
           </property>
           <property name="text">
            <string>30, 10</string>
@@ -641,7 +642,8 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>Scaling factor for patterns used by object that have a Footprint display mode</string>
+           <string>Scaling factor for patterns used by object that have
+a Footprint display mode</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -683,7 +685,7 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit_2">
           <property name="toolTip">
-           <string>The URL of a bim server instance (www.bimserver.org)  to connect to.</string>
+           <string>The URL of a bim server instance (www.bimserver.org) to connect to.</string>
           </property>
           <property name="text">
            <string>http://localhost:8082</string>
@@ -703,7 +705,9 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>If this is checked, the &quot;Open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
+           <string>If this is selected, the &quot;Open BimServer in browser&quot;
+button will open the Bim Server interface in an external browser
+instead of the FreeCAD web workbench</string>
           </property>
           <property name="text">
            <string>Open in external browser</string>

@@ -222,7 +222,7 @@ public:
     StdMeshers_Hexa_3DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_Hexa_3DPy();
 };
-#if SMESH_VERSION_MAJOR < 7 ///////////////////////////////////////////////////////////////////////////////
+#if SMESH_VERSION_MAJOR < 7 // -----------------------------------------------
 class StdMeshers_TrianglePreferencePy : public SMESH_HypothesisPy<StdMeshers_TrianglePreferencePy>
 {
 public:
@@ -230,7 +230,7 @@ public:
     StdMeshers_TrianglePreferencePy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_TrianglePreferencePy();
 };
-#endif ///////////////////////////////////////////////////////////////////////////////////////////////
+#endif // --------------------------------------------------------------------
 
 class StdMeshers_StartEndLengthPy : public SMESH_HypothesisPy<StdMeshers_StartEndLengthPy>
 {

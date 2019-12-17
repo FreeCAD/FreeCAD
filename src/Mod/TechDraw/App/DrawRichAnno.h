@@ -42,10 +42,8 @@ public:
 
     App::PropertyLink         AnnoParent;
     App::PropertyString       AnnoText;
-//    App::PropertyVector       TextPosition;
     App::PropertyBool         ShowFrame;
     App::PropertyFloat        MaxWidth;
-    App::PropertyVector       AttachPoint;
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);

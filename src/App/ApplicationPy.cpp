@@ -119,7 +119,7 @@ PyMethodDef Application::Methods[] = {
      "newDocument(name, label=None, hidden=False) -> object\n"
      "Create a new document with a given name.\n\n"
      "name: unique document name which is checked automatically.\n"
-     "label: optional user changable label for the document.\n"
+     "label: optional user changeable label for the document.\n"
      "hidden: whether to hide document 3D view."},
     {"closeDocument",  (PyCFunction) Application::sCloseDocument, METH_VARARGS,
      "closeDocument(string) -> None\n\n"

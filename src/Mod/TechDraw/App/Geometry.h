@@ -75,6 +75,7 @@ class TechDrawExport BaseGeom
 {
     public:
         BaseGeom();
+        //BaseGeom(BaseGeom* bg);   //do we need a copy constructor too?
         virtual ~BaseGeom() = default;
 
     public:
@@ -106,6 +107,7 @@ class TechDrawExport BaseGeom
         Base::Vector3d nearPoint(Base::Vector3d p);
         Base::Vector3d nearPoint(const BaseGeom* p);
         static BaseGeom* baseFactory(TopoDS_Edge edge);
+        static bool validateEdge(TopoDS_Edge edge);
         bool closed(void);
         BaseGeom* copy();
         std::string dump();

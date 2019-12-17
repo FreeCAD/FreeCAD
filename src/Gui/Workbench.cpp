@@ -598,7 +598,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *tool << "Std_DlgParameter" << "Separator"
           << "Std_ViewScreenShot" << "Std_SceneInspector"
           << "Std_ExportGraphviz" << "Std_ProjectUtil" << "Separator"
-          << "Std_MeasureDistance" << "Separator" 
+          << "Std_MeasureDistance" << "Separator"
+          << "Std_TextDocument" << "Separator"
           << "Std_DemoMode" << "Std_UnitsCalculator" << "Separator" << "Std_DlgCustomize";
 #ifdef BUILD_ADDONMGR
     *tool << "Std_AddonMgr";

@@ -26,16 +26,13 @@
 import FreeCAD
 import Path
 import PathScripts.PathLog as PathLog
+import PathScripts.PathPreferences as PathPreferences
+import PathScripts.PathToolBit as PathToolBit
 
 from PySide import QtCore
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -61,54 +58,74 @@ class ToolControllerTemplate:
     VertRapid    = 'vrapid'
 
 class ToolController:
-    def __init__(self, obj, tool=1):
-        PathLog.track('tool: {}'.format(tool))
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The active tool"))
+    def __init__(self, obj, cTool=False):
+        PathLog.track('tool: {}'.format(cTool))
+
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The active tool"))
         obj.ToolNumber = (0, 0, 10000, 1)
-        obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property", "The tool used by this controller"))
-
-        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "The speed of the cutting spindle in RPM"))
-        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property", "Direction of spindle rotation"))
+        self.ensureUseLegacyTool(obj, cTool)
+        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The speed of the cutting spindle in RPM"))
+        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Direction of spindle rotation"))
         obj.SpindleDir = ['Forward', 'Reverse']
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property", "Feed rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property", "Feed rate for horizontal moves"))
-        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for vertical moves in Z"))
-        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("App::Property", "Rapid rate for horizontal moves"))
-        obj.Proxy = self
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Feed rate for horizontal moves"))
+        obj.addProperty("App::PropertySpeed", "VertRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Rapid rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizRapid", "Rapid", QtCore.QT_TRANSLATE_NOOP("PathToolController", "Rapid rate for horizontal moves"))
         obj.setEditorMode('Placement', 2)
 
     def onDocumentRestored(self, obj):
         obj.setEditorMode('Placement', 2)
 
+    def onDelete(self, obj, arg2=None):
+        # pylint: disable=unused-argument
+        if not self.usesLegacyTool(obj):
+            if len(obj.Tool.InList) == 1:
+                if hasattr(obj.Tool.Proxy, 'onDelete'):
+                    obj.Tool.Proxy.onDelete(obj.Tool)
+                obj.Document.removeObject(obj.Tool.Name)
+
     def setFromTemplate(self, obj, template):
         '''setFromTemplate(obj, xmlItem) ... extract properties from xmlItem and assign to receiver.'''
         PathLog.track(obj.Name, template)
-        if template.get(ToolControllerTemplate.Version) and 1 == int(template.get(ToolControllerTemplate.Version)):
-            if template.get(ToolControllerTemplate.Label):
-                obj.Label = template.get(ToolControllerTemplate.Label)
-            if template.get(ToolControllerTemplate.VertFeed):
-                obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
-            if template.get(ToolControllerTemplate.HorizFeed):
-                obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
-            if template.get(ToolControllerTemplate.VertRapid):
-                obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
-            if template.get(ToolControllerTemplate.HorizRapid):
-                obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
-            if template.get(ToolControllerTemplate.SpindleSpeed):
-                obj.SpindleSpeed = float(template.get(ToolControllerTemplate.SpindleSpeed))
-            if template.get(ToolControllerTemplate.SpindleDir):
-                obj.SpindleDir = template.get(ToolControllerTemplate.SpindleDir)
-            if template.get(ToolControllerTemplate.ToolNumber):
-                obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
-            if template.get(ToolControllerTemplate.Tool):
-                obj.Tool.setFromTemplate(template.get(ToolControllerTemplate.Tool))
-            if template.get(ToolControllerTemplate.Expressions):
-                for exprDef in template.get(ToolControllerTemplate.Expressions):
-                    if exprDef[ToolControllerTemplate.ExprExpr]:
-                        obj.setExpression(exprDef[ToolControllerTemplate.ExprProp], exprDef[ToolControllerTemplate.ExprExpr])
+        version = 0
+        if template.get(ToolControllerTemplate.Version):
+            version = int(template.get(ToolControllerTemplate.Version))
+            if version == 1 or version == 2:
+                if template.get(ToolControllerTemplate.Label):
+                    obj.Label = template.get(ToolControllerTemplate.Label)
+                if template.get(ToolControllerTemplate.VertFeed):
+                    obj.VertFeed = template.get(ToolControllerTemplate.VertFeed)
+                if template.get(ToolControllerTemplate.HorizFeed):
+                    obj.HorizFeed = template.get(ToolControllerTemplate.HorizFeed)
+                if template.get(ToolControllerTemplate.VertRapid):
+                    obj.VertRapid = template.get(ToolControllerTemplate.VertRapid)
+                if template.get(ToolControllerTemplate.HorizRapid):
+                    obj.HorizRapid = template.get(ToolControllerTemplate.HorizRapid)
+                if template.get(ToolControllerTemplate.SpindleSpeed):
+                    obj.SpindleSpeed = float(template.get(ToolControllerTemplate.SpindleSpeed))
+                if template.get(ToolControllerTemplate.SpindleDir):
+                    obj.SpindleDir = template.get(ToolControllerTemplate.SpindleDir)
+                if template.get(ToolControllerTemplate.ToolNumber):
+                    obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
+                if template.get(ToolControllerTemplate.Tool):
+                    toolVersion = template.get(ToolControllerTemplate.Tool).get(ToolControllerTemplate.Version)
+                    if toolVersion == 1:
+                        self.ensureUseLegacyTool(obj, True)
+                        obj.Tool.setFromTemplate(template.get(ToolControllerTemplate.Tool))
+                    else:
+                        self.ensureUseLegacyTool(obj, False)
+                        obj.Tool = PathToolBit.Factory.CreateFromAttrs(template.get(ToolControllerTemplate.Tool))
+                        if obj.Tool and obj.Tool.ViewObject and obj.Tool.ViewObject.Visibility:
+                            obj.Tool.ViewObject.Visibility = False
+                if template.get(ToolControllerTemplate.Expressions):
+                    for exprDef in template.get(ToolControllerTemplate.Expressions):
+                        if exprDef[ToolControllerTemplate.ExprExpr]:
+                            obj.setExpression(exprDef[ToolControllerTemplate.ExprProp], exprDef[ToolControllerTemplate.ExprExpr])
+            else:
+                PathLog.error(translate('PathToolController', "Unsupported PathToolController template version %s") % template.get(ToolControllerTemplate.Version))
         else:
-            PathLog.error(translate('PathToolController', "Unsupported PathToolController template version %s") % template.get(ToolControllerTemplate.Version))
+            PathLog.error(translate('PathToolController', 'PathToolController template has no version - corrupted template file?'))
 
     def templateAttrs(self, obj):
         '''templateAttrs(obj) ... answer a dictionary with all properties that should be stored for a template.'''
@@ -123,7 +140,10 @@ class ToolController:
         attrs[ToolControllerTemplate.HorizRapid]   = ("%s" % (obj.HorizRapid))
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
         attrs[ToolControllerTemplate.SpindleDir]   = obj.SpindleDir
-        attrs[ToolControllerTemplate.Tool]         = obj.Tool.templateAttrs()
+        if self.usesLegacyTool(obj):
+            attrs[ToolControllerTemplate.Tool]     = obj.Tool.templateAttrs()
+        else:
+            attrs[ToolControllerTemplate.Tool]     = obj.Tool.Proxy.templateAttrs(obj.Tool)
         expressions = []
         for expr in obj.ExpressionEngine:
             PathLog.debug('%s: %s' % (expr[0], expr[1]))
@@ -157,39 +177,61 @@ class ToolController:
         PathLog.track()
         return obj.Tool
 
+    def usesLegacyTool(self, obj):
+        '''returns True if the tool being controlled is a legacy tool'''
+        return isinstance(obj.Tool, Path.Tool)
 
+    def ensureUseLegacyTool(self, obj, legacy):
+        if not hasattr(obj, 'Tool') or (legacy != self.usesLegacyTool(obj)):
+            if legacy and hasattr(obj, 'Tool') and len(obj.Tool.InList) == 1:
+                if hasattr(obj.Tool.Proxy, 'onDelete'):
+                    obj.Tool.Proxy.onDelete(obj.Tool)
+                obj.Document.removeObject(obj.Tool.Name)
+
+            if hasattr(obj, 'Tool'):
+                obj.removeProperty('Tool')
+
+            if legacy:
+                obj.addProperty("Path::PropertyTool", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
+            else:
+                obj.addProperty("App::PropertyLink", "Tool", "Base", QtCore.QT_TRANSLATE_NOOP("PathToolController", "The tool used by this controller"))
 
 def Create(name = 'Default Tool', tool=None, toolNumber=1, assignViewProvider=True):
-    PathLog.track(tool, toolNumber)
+    legacyTool = PathPreferences.toolsReallyUseLegacyTools() if tool is None else isinstance(tool, Path.Tool)
+
+    PathLog.track(tool, toolNumber, legacyTool)
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Label = name
+    obj.Proxy = ToolController(obj, legacyTool)
 
-    ToolController(obj)
     if FreeCAD.GuiUp and assignViewProvider:
         ViewProvider(obj.ViewObject)
 
     if tool is None:
-        tool = Path.Tool()
-        tool.Diameter = 5.0
-        tool.Name = "Default Tool"
-        tool.CuttingEdgeHeight = 15.0
-        tool.ToolType = "EndMill"
-        tool.Material = "HighSpeedSteel"
+        if legacyTool:
+            tool = Path.Tool()
+            tool.Diameter = 5.0
+            tool.Name = "Default Tool"
+            tool.CuttingEdgeHeight = 15.0
+            tool.ToolType = "EndMill"
+            tool.Material = "HighSpeedSteel"
+        else:
+            tool = PathToolBit.Factory.Create()
+            if tool.ViewObject:
+                tool.ViewObject.Visibility = False
+
     obj.Tool = tool
     obj.ToolNumber = toolNumber
     return obj
 
 def FromTemplate(template, assignViewProvider=True):
+    # pylint: disable=unused-argument
     PathLog.track()
 
     name = template.get(ToolControllerTemplate.Name, ToolControllerTemplate.Label)
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    tc  = ToolController(obj)
-    if FreeCAD.GuiUp and assignViewProvider:
-        ViewProvider(obj.ViewObject)
-
-    tc.setFromTemplate(obj, template)
+    obj = Create(name, assignViewProvider=True)
+    obj.Proxy.setFromTemplate(obj, template)
 
     return obj
 

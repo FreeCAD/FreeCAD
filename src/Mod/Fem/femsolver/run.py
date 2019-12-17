@@ -37,6 +37,7 @@ import os
 import os.path
 # import threading  # not used ATM
 import shutil
+import tempfile
 
 import FreeCAD as App
 import femtools.femutils as femutils
@@ -176,7 +177,7 @@ def _isPathValid(m, path):
     if setting == settings.DirSetting.BESIDE:
         if t == settings.DirSetting.BESIDE:
             base = os.path.split(m.directory.rstrip("/"))[0]
-            return base == femutils.get_beside_base(m.solver)
+            return base == _getBesideBase(m.solver)
         return False
     if setting == settings.DirSetting.TEMPORARY:
         return t == settings.DirSetting.TEMPORARY
@@ -184,7 +185,7 @@ def _isPathValid(m, path):
         if t == settings.DirSetting.CUSTOM:
             firstBase = os.path.split(m.directory.rstrip("/"))[0]
             customBase = os.path.split(firstBase)[0]
-            return customBase == femutils.get_custom_base(m.solver)
+            return customBase == _getCustomBase(m.solver)
         return False
 
 
@@ -193,21 +194,78 @@ def _createMachine(solver, path, testmode):
     setting = settings.get_dir_setting()
     if path is not None:
         _dirTypes[path] = None
-    elif setting == settings.BESIDE:
-        path = femutils.get_beside_dir(solver)
-        _dirTypes[path] = settings.BESIDE
-    elif setting == settings.TEMPORARY:
-        path = femutils.get_temp_dir(solver)
-        _dirTypes[path] = settings.TEMPORARY
-    elif setting == settings.CUSTOM:
-        path = femutils.get_custom_dir(solver)
-        _dirTypes[path] = settings.CUSTOM
+    elif setting == settings.DirSetting.BESIDE:
+        path = _getBesideDir(solver)
+        _dirTypes[path] = settings.DirSetting.BESIDE
+    elif setting == settings.DirSetting.TEMPORARY:
+        path = _getTempDir(solver)
+        _dirTypes[path] = settings.DirSetting.TEMPORARY
+    elif setting == settings.DirSetting.CUSTOM:
+        path = _getCustomDir(solver)
+        _dirTypes[path] = settings.DirSetting.CUSTOM
     m = solver.Proxy.createMachine(solver, path, testmode)
     oldMachine = _machines.get(solver)
     if oldMachine is not None and _dirTypes.get(oldMachine.directory) is not None:
         del _dirTypes[oldMachine.directory]
     _machines[solver] = m
     return m
+
+
+def _getTempDir(solver):
+    return tempfile.mkdtemp(prefix="fem")
+
+
+def _getBesideDir(solver):
+    base = _getBesideBase(solver)
+    specificPath = os.path.join(base, solver.Label)
+    specificPath = _getUniquePath(specificPath)
+    if not os.path.isdir(specificPath):
+        os.makedirs(specificPath)
+    return specificPath
+
+
+def _getBesideBase(solver):
+    path = os.path.splitext(solver.Document.FileName)[0]
+    if path is None:
+        error_message = (
+            "Please save the file before executing the solver. "
+            "This must be done because the location of the working "
+            "directory is set to \"Beside *.FCStd File\"."
+        )
+        App.Console.PrintError(error_message + "\n")
+        if App.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver",
+                error_message
+            )
+        raise femutils.MustSaveError()
+    return path
+
+
+def _getCustomDir(solver):
+    base = _getCustomBase(solver)
+    specificPath = os.path.join(
+        base, solver.Document.Name, solver.Label)
+    specificPath = _getUniquePath(specificPath)
+    if not os.path.isdir(specificPath):
+        os.makedirs(specificPath)
+    return specificPath
+
+
+def _getCustomBase(solver):
+    path = settings.get_custom_dir()
+    if not os.path.isdir(path):
+        error_message = "Selected working directory doesn't exist."
+        App.Console.PrintError(error_message + "\n")
+        if App.GuiUp:
+            QtGui.QMessageBox.critical(
+                FreeCADGui.getMainWindow(),
+                "Can't start Solver",
+                error_message
+            )
+        raise femutils.DirectoryDoesNotExistError("Invalid path")
+    return path
 
 
 def _getUniquePath(path):

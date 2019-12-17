@@ -25,6 +25,7 @@
 import TestApp
 
 from PathTests.TestPathLog   import TestPathLog
+from PathTests.TestPathPreferences  import TestPathPreferences
 from PathTests.TestPathCore  import TestPathCore
 #from PathTests.TestPathPost  import PathPostTestCases
 from PathTests.TestPathGeom  import TestPathGeom
@@ -35,6 +36,7 @@ from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 from PathTests.TestPathDressupDogbone import TestDressupDogbone
 from PathTests.TestPathStock import TestPathStock
 from PathTests.TestPathTool import TestPathTool
+from PathTests.TestPathToolBit  import TestPathToolBit
 from PathTests.TestPathTooltable import TestPathTooltable
 from PathTests.TestPathToolController import TestPathToolController
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
@@ -58,4 +60,6 @@ False if TestPathToolController.__name__ else True
 False if TestPathSetupSheet.__name__ else True
 False if TestPathDeburr.__name__ else True
 False if TestPathHelix.__name__ else True
+False if TestPathPreferences.__name__ else True
+False if TestPathToolBit.__name__ else True
 

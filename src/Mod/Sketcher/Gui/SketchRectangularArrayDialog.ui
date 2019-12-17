@@ -90,7 +90,8 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="ConstraintSeparationCheckBox">
      <property name="toolTip">
-      <string>If selected, each element in the array is constrained with respect to the others using construction lines</string>
+      <string>If selected, each element in the array is constrained
+with respect to the others using construction lines</string>
      </property>
      <property name="layoutDirection">
       <enum>Qt::LeftToRight</enum>
@@ -112,7 +113,9 @@
    <item>
     <widget class="Gui::PrefCheckBox" name="CloneCheckBox">
      <property name="toolTip">
-      <string>If checked it substitutes dimensional constraints by geometric constraints in the copies, so that a change in the original element is directly reflected on copies</string>
+      <string>If selected, it substitutes dimensional constraints by geometric constraints
+in the copies, so that a change in the original element is directly
+reflected on copies</string>
      </property>
      <property name="text">
       <string>Clone</string>
