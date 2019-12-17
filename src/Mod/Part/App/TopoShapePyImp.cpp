@@ -2661,7 +2661,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     {
                         Py::Tuple tup(2);
                         tup[0] = Py::Float(u1);
-                        tup[1] = Py::None();
+                        tup[1] = Py::Float(v1);
                         param1 = tup;
                     }
                     break;
@@ -2695,7 +2695,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
                     {
                         Py::Tuple tup(2);
                         tup[0] = Py::Float(u2);
-                        tup[1] = Py::None();
+                        tup[1] = Py::Float(v2);
                         param2 = tup;
                     }
                     break;
