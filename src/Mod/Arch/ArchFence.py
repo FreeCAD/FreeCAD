@@ -428,7 +428,7 @@ if __name__ == '__main__':
 
         for i in range(8):
             parts.append(Part.makeBox(20, 20, 1000 - 60,
-                                      FreeCAD.Vector((2000 / 9 * (i + 1)) - 10, 15, 30)))
+                                      FreeCAD.Vector((2000.0 / 9 * (i + 1)) - 10, 15, 30)))
 
         Part.show(Part.makeCompound(parts), "Section")
 
