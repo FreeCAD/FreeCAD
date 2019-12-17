@@ -279,7 +279,7 @@ public:
         childSet = other->childSet;
     }
 
-    bool updateChildren(bool checkVisibility) {
+    bool updateChildren() {
         auto newChildren = viewObject->claimChildren();
         auto obj = viewObject->getObject();
         std::set<App::DocumentObject *> newSet;
@@ -297,17 +297,14 @@ public:
                     {
                         auto &parents = docItem->_ParentMap[child];
                         if(parents.insert(obj).second && child->Visibility.getValue()) {
-                            bool showable = false;
-                            for(auto parent : parents) {  
-                                if(!parent->hasChildElement() 
-                                        && parent->getLinkedObject(false)==parent)
-                                {
-                                    showable = true;
-                                    break;
-                                }
+                            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                                    Application::Instance->getViewProvider(child));
+                            if(vpd && vpd->Visibility.getValue()) {
+                                // Trigger visibility check through
+                                // ViewProviderDocumentObject::setModeSwitch(), which will call
+                                // TreeWidget::isObjectShowable().
+                                vpd->show();
                             }
-                            if(!showable)
-                                child->Visibility.setValue(false);
                         }
                     }
                 }
@@ -318,6 +315,14 @@ public:
                 // this means old child removed
                 updated = true;
                 docItem->_ParentMap[child].erase(obj);
+                auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                        Application::Instance->getViewProvider(child));
+                if(vpd && vpd->Visibility.getValue()) {
+                    // Trigger visibility check through
+                    // ViewProviderDocumentObject::setModeSwitch(), which will call
+                    // TreeWidget::isObjectShowable().
+                    vpd->show();
+                }
             }
         }
         // We still need to check the order of the children
@@ -325,14 +330,6 @@ public:
         children.swap(newChildren);
         childSet.swap(newSet);
 
-        if(updated && checkVisibility) {
-            for(auto child : children) {
-                if(!child || !child->getNameInDocument() || !child->Visibility.getValue())
-                    continue;
-                if(child->getDocument()==obj->getDocument() && !docItem->isObjectShowable(child))
-                    child->Visibility.setValue(false);
-            }
-        }
         return updated;
     }
 
@@ -3111,7 +3108,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             } else {
                 pdata->label = QString::fromUtf8(obj.getObject()->Label.getValue());
                 pdata->label2 = QString::fromUtf8(obj.getObject()->Label2.getValue());
-                pdata->updateChildren(true);
+                pdata->updateChildren();
             }
             entry.insert(pdata);
         }else if(pdata->rootItem && parent==NULL) {
@@ -3243,7 +3240,18 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         for(auto child : data->children) {
             if(!child || !child->getNameInDocument() || child->getDocument()!=doc)
                 continue;
-            docItem->_ParentMap[child].erase(obj);
+
+            auto pit = docItem->_ParentMap.find(child);
+            if(pit!=docItem->_ParentMap.end()) {
+                pit->second.erase(obj);
+                if(vpd->Visibility.getValue()) {
+                    // Trigger visibility check through
+                    // ViewProviderDocumentObject::setModeSwitch(), which will call
+                    // TreeWidget::isObjectShowable().
+                    vpd->show();
+                }
+            }
+
             auto cit = docItem->ObjectMap.find(child);
             if(cit==docItem->ObjectMap.end() || cit->second->items.empty()) {
                 auto vpd = docItem->getViewProvider(child);
@@ -3257,8 +3265,6 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
                         needUpdate = true;
                 }
             }
-            if(child->Visibility.getValue() && !docItem->isObjectShowable(child))
-                child->Visibility.setValue(false);
         }
         docItem->ObjectMap.erase(obj);
     }
@@ -3572,7 +3578,7 @@ void TreeWidget::updateChildren(App::DocumentObject *obj,
     for(auto data : dataSet) {
         if(!found) {
             found = data;
-            childrenChanged = found->updateChildren(force);
+            childrenChanged = found->updateChildren();
             removeChildrenFromRoot = found->viewObject->canRemoveChildrenFromRoot();
             if(!childrenChanged && found->removeChildrenFromRoot==removeChildrenFromRoot)
                 return;
@@ -3602,7 +3608,7 @@ void TreeWidget::updateChildren(App::DocumentObject *obj,
             for(auto data : it->second) {
                 if(!found) {
                     found = data;
-                    if(!found->updateChildren(false))
+                    if(!found->updateChildren())
                         break;
                 }
                 data->updateChildren(found);
