@@ -192,7 +192,6 @@ def InitApplications():
 			PathEnvironment += path + os.pathsep
 		except UnicodeDecodeError:
 			Wrn('Filter invalid module path: u{}\n'.format(repr(path)))
-			pass
 
 	# new paths must be prepended to avoid to load a wrong version of a library
 	try:

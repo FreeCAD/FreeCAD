@@ -105,7 +105,6 @@ def import_stpz(fn,fc,doc):
         os.remove(tempfilepath)
     except OSError:
         sayzerr("error on removing "+tempfilepath+" file")
-        pass
 ###
 
 def open(filename,doc=None):
