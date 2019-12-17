@@ -194,6 +194,8 @@ protected:
 
     //@}
 
+    virtual void setModeSwitch() override;
+
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
