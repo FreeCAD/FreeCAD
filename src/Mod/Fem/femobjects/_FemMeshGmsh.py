@@ -175,6 +175,14 @@ class _FemMeshGmsh():
         obj.GeometryTolerance = 1e-06
 
         obj.addProperty(
+            "App::PropertyBool",
+            "SecondOrderLinear",
+            "FEM Gmsh Mesh Params",
+            "Second order nodes are created by linear interpolation"
+        )
+        obj.SecondOrderLinear = True
+
+        obj.addProperty(
             "App::PropertyEnumeration",
             "Algorithm2D",
             "FEM Gmsh Mesh Params",

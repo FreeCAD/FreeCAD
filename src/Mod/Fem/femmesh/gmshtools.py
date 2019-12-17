@@ -757,6 +757,16 @@ class GmshTools():
             geo.write("Coherence Mesh; // Remove duplicate vertices\n")
         else:
             geo.write("Mesh  " + self.dimension + ";\n")
+        if hasattr(self.mesh_obj, "SecondOrderLinear") and self.mesh_obj.SecondOrderLinear is True:
+            geo.write(
+                "Mesh.SecondOrderLinear = 1; // Second order nodes are created "
+                "by linear interpolation instead by curvilinear\n"
+            )
+        else:
+            geo.write(
+                "Mesh.SecondOrderLinear = 0; // Second order nodes are created "
+                "by linear interpolation instead by curvilinear\n"
+            )
         geo.write("\n")
 
         # save mesh
