@@ -64,7 +64,7 @@ TechDraw's templates.
 
 ## How to create a new tool bit Shape
 
-A tool bit template represents the physical shape of a tool. It does not completely desribe the bit - for that some
+A tool bit template represents the physical shape of a tool. It does not completely describe the bit - for that some
 additional parameters are needed which will be added when an actual bit is parametrized from the template.
 
 1. Create a new FreeCAD document

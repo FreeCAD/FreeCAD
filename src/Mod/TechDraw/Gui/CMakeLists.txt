@@ -328,6 +328,8 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderTile.h
     ViewProviderWeld.cpp
     ViewProviderWeld.h
+    ViewProviderCosmeticExtension.cpp
+    ViewProviderCosmeticExtension.h 
 )
 
 SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})

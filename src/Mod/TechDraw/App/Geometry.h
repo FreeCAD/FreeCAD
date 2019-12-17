@@ -75,6 +75,7 @@ class TechDrawExport BaseGeom
 {
     public:
         BaseGeom();
+        //BaseGeom(BaseGeom* bg);   //do we need a copy constructor too?
         virtual ~BaseGeom() = default;
 
     public:

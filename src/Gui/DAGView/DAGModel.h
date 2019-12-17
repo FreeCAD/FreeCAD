@@ -127,7 +127,7 @@ namespace Gui
       float pointToIcon;                          //!< spacing from last column points to first icon.
       float iconToIcon;                           //!< spacing between icons.
       float iconToText;                           //!< spacing between last icon and text.
-      float rowPadding;                           //!< spaces added to rectangle bacground width ends.
+      float rowPadding;                           //!< spaces added to rectangle background width ends.
       std::vector<QBrush> backgroundBrushes;      //!< brushes to paint background rectangles.
       std::vector<QBrush> forgroundBrushes;       //!< brushes to paint points, connectors, text.
       void setupViewConstants();

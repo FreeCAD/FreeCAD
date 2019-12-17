@@ -753,8 +753,10 @@ void execCenterLine(Gui::Command* cmd)
         int geomIdx = DrawUtil::getIndexFromName(edgeName);
         const std::vector<TechDraw::BaseGeom  *> &geoms = baseFeat->getEdgeGeometry();
         BaseGeom* bg = geoms.at(geomIdx);
-        int clIdx = bg->sourceIndex();
-        TechDraw::CenterLine* cl = baseFeat->getCenterLineByIndex(clIdx);
+//        int clIdx = bg->sourceIndex();
+//        TechDraw::CenterLine* cl = baseFeat->getCenterLineByIndex(clIdx);
+        std::string tag = bg->getCosmeticTag();
+        TechDraw::CenterLine* cl = baseFeat->getCenterLine(tag);
         if (cl == nullptr) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("No CenterLine in selection."));
@@ -829,8 +831,10 @@ void exec2LineCenterLine(Gui::Command* cmd)
         int geomIdx = DrawUtil::getIndexFromName(edgeName);
         const std::vector<TechDraw::BaseGeom  *> &geoms = dvp->getEdgeGeometry();
         BaseGeom* bg = geoms.at(geomIdx);
-        int clIdx = bg->sourceIndex();
-        TechDraw::CenterLine* cl = dvp->getCenterLineByIndex(clIdx);
+//        int clIdx = bg->sourceIndex();
+//        TechDraw::CenterLine* cl = dvp->getCenterLineByIndex(clIdx);
+        std::string tag = bg->getCosmeticTag();
+        TechDraw::CenterLine* cl = dvp->getCenterLine(tag);
         if (cl == nullptr) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                                  QObject::tr("No CenterLine in selection."));

@@ -53,7 +53,7 @@ class Ui_DlgPreferences;
  * \li For each widget inside your page - you want to save or load - you have to call 
  * \<objectname\>->onSave() or \<objectname\>->onRestore(). The best way to this is either to 
  * define the protected slots saveSettings() and loadSettings() in your form and overwrite
- * them in a subclass or define these slots in this subclass diretly. 
+ * them in a subclass or define these slots in this subclass directly. 
  *
  * See the example below for more details:
  *

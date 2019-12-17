@@ -90,7 +90,8 @@ using namespace TechDrawGui;
 
 const float lineScaleFactor = Rez::guiX(1.);   // temp fiddle for devel
 
-QGIViewPart::QGIViewPart()
+QGIViewPart::QGIViewPart() :
+    m_isExporting(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -508,17 +509,24 @@ void QGIViewPart::drawViewPart()
                 }
             } else if (fHatch) {
                 if (!fHatch->HatchPattern.isEmpty()) {
-                    newFace->isHatched(true);
-                    newFace->setFillMode(QGIFace::FromFile);
-                    newFace->setHatchFile(fHatch->HatchPattern.getValue());
-                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
-                    ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
-                    if (hatchVp != nullptr) {
-                        double hatchScale = hatchVp->HatchScale.getValue();
-                        if (hatchScale > 0.0) {
-                            newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                    if (getExporting()) {
+                        newFace->hideSvg(true);
+                        newFace->isHatched(false);
+                        newFace->setFillMode(QGIFace::PlainFill);
+                    } else {
+                        newFace->hideSvg(false);
+                        newFace->isHatched(true);
+                        newFace->setFillMode(QGIFace::FromFile);
+                        newFace->setHatchFile(fHatch->HatchPattern.getValue());
+                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
+                        ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
+                        if (hatchVp != nullptr) {
+                            double hatchScale = hatchVp->HatchScale.getValue();
+                            if (hatchScale > 0.0) {
+                                newFace->setHatchScale(hatchVp->HatchScale.getValue());
+                            }
+                            newFace->setHatchColor(hatchVp->HatchColor.getValue());
                         }
-                        newFace->setHatchColor(hatchVp->HatchColor.getValue());
                     }
                 }
             }
@@ -568,18 +576,17 @@ void QGIViewPart::drawViewPart()
             item->setStyle(Qt::SolidLine);
             if ((*itGeom)->cosmetic == true) {
                 int source = (*itGeom)->source();
-                int sourceIndex = (*itGeom)->sourceIndex();
                 if (source == COSMETICEDGE) {
-//                    showItem = formatGeomFromCosmetic(sourceIndex, item);
                     std::string cTag = (*itGeom)->getCosmeticTag();
                     showItem = formatGeomFromCosmetic(cTag, item);
                 } else if (source == CENTERLINE) {
-                    showItem = formatGeomFromCenterLine(sourceIndex, item);
+                    std::string cTag = (*itGeom)->getCosmeticTag();
+                    showItem = formatGeomFromCenterLine(cTag, item);
                 } else {
                     Base::Console().Message("QGIVP::drawVP - edge: %d is confused - source: %d\n",i,source);
                 }
             } else {
-                TechDraw::GeomFormat* gf = viewPart->getGeomFormatByGeom(i);
+                TechDraw::GeomFormat* gf = viewPart->getGeomFormatBySelection(i);
                 if (gf != nullptr) {
                     item->setNormalColor(gf->m_format.m_color.asValue<QColor>());
                     item->setWidth(gf->m_format.m_weight * lineScaleFactor);
@@ -662,7 +669,8 @@ void QGIViewPart::drawViewPart()
         } else {        //regular Vertex
             if (showVertices) {
                 QGIVertex *item = new QGIVertex(i);
-                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByGeom(i);
+                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexBySelection(i);
+//                TechDraw::CosmeticVertex* cv = viewPart->getCosmeticVertexByGeom(i);
                 if (cv != nullptr) {
                     item->setNormalColor(cv->color.asValue<QColor>());
                     item->setRadius(cv->size);
@@ -686,21 +694,6 @@ void QGIViewPart::drawViewPart()
     }
 }
 
-bool QGIViewPart::formatGeomFromCosmetic(int sourceIndex, QGIEdge* item)
-{
-//    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%d)\n",sourceIndex);
-    bool result = true;
-    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
-    TechDraw::CosmeticEdge* ce = partFeat->getCosmeticEdgeByIndex(sourceIndex);
-    if (ce != nullptr) {
-        item->setNormalColor(ce->m_format.m_color.asValue<QColor>());
-        item->setWidth(ce->m_format.m_weight * lineScaleFactor);
-        item->setStyle(ce->m_format.m_style);
-        result = ce->m_format.m_visible;
-    }
-    return result;
-}
-
 bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 {
 //    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());
@@ -717,12 +710,12 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 }
 
 
-bool QGIViewPart::formatGeomFromCenterLine(int sourceIndex, QGIEdge* item)
+bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
 {
 //    Base::Console().Message("QGIVP::formatGeomFromCenterLine(%d)\n",sourceIndex);
     bool result = true;
     auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
-    TechDraw::CenterLine* cl = partFeat->getCenterLineByIndex(sourceIndex);
+    TechDraw::CenterLine* cl = partFeat->getCenterLine(cTag);
     if (cl != nullptr) {
         item->setNormalColor(cl->m_format.m_color.asValue<QColor>());
         item->setWidth(cl->m_format.m_weight * lineScaleFactor);
@@ -941,6 +934,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     }
 }
 
+//TODO: use Cosmetic::CenterLine object for this to make it usable for dims.
 void QGIViewPart::drawCenterLines(bool b)
 {
     TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());

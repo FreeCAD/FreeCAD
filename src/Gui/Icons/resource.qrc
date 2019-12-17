@@ -139,8 +139,9 @@
         <file>DrawStyleShaded.svg</file>
         <file>DrawStyleWireFrame.svg</file>
         <file>user.svg</file>
-        <file>CoordinateSystem.svg</file>
         <file>Std_CoordinateSystem.svg</file>
+        <file>Std_CoordinateSystem_alt.svg</file>
+        <file>Std_Placement.svg</file>
         <file>MacroEditor.svg</file>
         <file>Param_Bool.svg</file>
         <file>Param_Float.svg</file>

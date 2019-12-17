@@ -41,6 +41,7 @@
 #include "PropertyCenterLineList.h"
 #include "PropertyCosmeticEdgeList.h"
 #include "PropertyCosmeticVertexList.h"
+#include "CosmeticExtension.h"
 #include "DrawView.h"
 
 class gp_Pnt;
@@ -83,9 +84,9 @@ namespace TechDraw
 
 class DrawViewSection;
 
-class TechDrawExport DrawViewPart : public DrawView
+class TechDrawExport DrawViewPart : public DrawView, public CosmeticExtension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewPart);
+    PROPERTY_HEADER_WITH_EXTENSIONS(TechDraw::DrawViewPart);
 
 public:
     DrawViewPart(void);
@@ -109,11 +110,6 @@ public:
     //App::PropertyBool   OutlinesHidden;
     App::PropertyBool   IsoHidden;
     App::PropertyInteger  IsoCount;
-
-    TechDraw::PropertyCosmeticVertexList CosmeticVertexes;
-    TechDraw::PropertyCosmeticEdgeList CosmeticEdges;
-    TechDraw::PropertyCenterLineList  CenterLines;
-    TechDraw::PropertyGeomFormatList  GeomFormats;
 
     virtual short mustExecute() const override;
     virtual void onDocumentRestored() override;
@@ -173,58 +169,26 @@ public:
 
     bool isIso(void) const;
 
-    virtual int addCosmeticVertex(Base::Vector3d pos);
-    virtual int addCosmeticVertex(CosmeticVertex* cv);
-    std::string addCosmeticVertexSS(Base::Vector3d pos);
-    virtual void removeCosmeticVertex(TechDraw::CosmeticVertex* cv);
-    virtual void removeCosmeticVertex(int idx);
-    virtual void removeCosmeticVertex(std::string tagString);
-    virtual void removeCosmeticVertex(std::vector<std::string> delTags);
-
-    int getCosmeticVertexIndex(std::string tagString);
-    TechDraw::CosmeticVertex* getCosmeticVertex(std::string tagString) const;
-    TechDraw::CosmeticVertex* getCosmeticVertexByIndex(int idx) const;
-    TechDraw::CosmeticVertex* getCosmeticVertexByGeom(int idx) const;
     void clearCosmeticVertexes(void); 
+    void refreshCVGeoms(void);
     void addCosmeticVertexesToGeom(void);
-    void add1CosmeticVertexToGeom(int iCV);
-    int add1CVToGV(int iCV);
     int add1CVToGV(std::string tag);
 
-    virtual int addCosmeticEdge(Base::Vector3d start, Base::Vector3d end);
-    virtual int addCosmeticEdge(TopoDS_Edge e);
-    virtual int addCosmeticEdge(TechDraw::CosmeticEdge*);
-    virtual void removeCosmeticEdge(TechDraw::CosmeticEdge* ce);
-    virtual void removeCosmeticEdge(int idx);
-    virtual void removeCosmeticEdge(std::string delTag);
-    virtual void removeCosmeticEdge(std::vector<std::string> delTags);
-    TechDraw::CosmeticEdge* getCosmeticEdge(std::string tagString) const;
-    TechDraw::CosmeticEdge* getCosmeticEdgeByIndex(int idx) const;
-    TechDraw::CosmeticEdge* getCosmeticEdgeByGeom(int idx) const;
-    int getCosmeticEdgeIndex(TechDraw::CosmeticEdge* ce) const;
-    void clearCosmeticEdges(void);
+    void clearCosmeticEdges(void); 
+    void refreshCEGeoms(void);
     void addCosmeticEdgesToGeom(void);
+    int add1CEToGE(std::string tag);
 
-    virtual int addCenterLine(TechDraw::CenterLine*);
-    virtual void removeCenterLine(TechDraw::CenterLine* cl);
-    virtual void removeCenterLine(int idx);
-    void removeCenterLine(std::string delTag);
-    void removeCenterLine(std::vector<std::string> delTags);
-    TechDraw::CenterLine* getCenterLineByIndex(int idx) const;
-    TechDraw::CenterLine* getCenterLineByGeom(int idx) const;
-    void replaceCenterLine(int idx, TechDraw::CenterLine* cl);
-    void replaceCenterLineByGeom(int geomIndex, TechDraw::CenterLine* cl);
-    void clearCenterLines(void);
+    void clearCenterLines(void); 
+    void refreshCLGeoms(void);
     void addCenterLinesToGeom(void);
+    int add1CLToGE(std::string tag);
 
-    int addGeomFormat(TechDraw::GeomFormat* gf);
-    virtual void removeGeomFormat(int idx);
-    TechDraw::GeomFormat* getGeomFormatByIndex(int idx) const;
-    TechDraw::GeomFormat* getGeomFormatByGeom(int idx) const;
     void clearGeomFormats(void);
 
     void dumpVerts(const std::string text);
     void dumpCosVerts(const std::string text);
+    void dumpCosEdges(const std::string text);
 
 protected:
     bool checkXDirection(void) const;
@@ -248,6 +212,9 @@ protected:
 
     TopoDS_Shape m_saveShape;    //TODO: make this a Property.  Part::TopoShapeProperty??
     Base::Vector3d m_saveCentroid;   //centroid before centering shape in origin
+
+    void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
+
 
 private:
     bool nowUnsetting;

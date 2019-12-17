@@ -340,7 +340,7 @@ inline void MeshFacetIterator::Transform( const Base::Matrix4D& rclTrf )
 {
   _clTrf = rclTrf;
   Base::Matrix4D tmp;
-  // cecks for unit matrix
+  // checks for unit matrix
   _clTrf != tmp ? _bApply = true : _bApply = false;
 }
 
@@ -438,7 +438,7 @@ inline void MeshPointIterator::Transform( const Base::Matrix4D& rclTrf )
 {
   _clTrf = rclTrf;
   Base::Matrix4D tmp;
-  // cecks for unit matrix
+  // checks for unit matrix
   _clTrf != tmp ? _bApply = true : _bApply = false;
 }
 
