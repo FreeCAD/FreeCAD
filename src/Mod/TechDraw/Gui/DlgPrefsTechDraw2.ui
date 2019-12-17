@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>TechDrawGui::DlgPrefsTechDraw2Imp</class>
  <widget class="QWidget" name="TechDrawGui::DlgPrefsTechDraw2Imp">
@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>771</height>
+    <height>855</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,49 +22,6 @@
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0">
-        <item row="0" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbShowUnits">
-          <property name="toolTip">
-           <string>Append unit to Dimension text</string>
-          </property>
-          <property name="text">
-           <string>Show Units</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ShowUnits</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="Gui::PrefColorButton" name="colDimColor">
-          <property name="toolTip">
-           <string>Dimension text color</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>Color</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
@@ -92,21 +49,64 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="label_12">
           <property name="text">
            <string>Arrow Size</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
            <string>Diameter Symbol</string>
           </property>
          </widget>
         </item>
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbShowUnits">
+          <property name="toolTip">
+           <string>Append unit to Dimension text</string>
+          </property>
+          <property name="text">
+           <string>Show Units</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowUnits</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
         <item row="6" column="2">
+         <widget class="Gui::PrefColorButton" name="colDimColor">
+          <property name="toolTip">
+           <string>Dimension text color</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Color</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
          <widget class="Gui::PrefLineEdit" name="leDiameter">
           <property name="font">
            <font>
@@ -149,7 +149,7 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="2">
+        <item row="8" column="2">
          <widget class="Gui::PrefComboBox" name="pcbArrow">
           <property name="toolTip">
            <string>Preferred arrowhead style</string>
@@ -227,7 +227,7 @@
           </item>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="label_9">
           <property name="text">
            <string>Arrow Style</string>
@@ -269,7 +269,7 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="2">
+        <item row="9" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
           <property name="toolTip">
            <string>Dimension arrowhead size in units</string>
@@ -305,14 +305,14 @@
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_16">
           <property name="text">
            <string>Dimensioning Standard and Style</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="2">
+        <item row="10" column="2">
          <widget class="Gui::PrefComboBox" name="pcbStandardAndStyle">
           <property name="toolTip">
            <string>Preferred standard and style of drawing dimensional values</string>
@@ -343,6 +343,38 @@
             <string>ASME Referencing</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_17">
+          <property name="text">
+           <string>Tolerance Font Size Factor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsb_TolFactor">
+          <property name="toolTip">
+           <string>Size of tolerance text relative to main dimension text.</string>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="maximum">
+           <double>99.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TolSizeAdjust</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
          </widget>
         </item>
        </layout>
