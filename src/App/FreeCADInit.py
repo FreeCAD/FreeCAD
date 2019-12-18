@@ -677,9 +677,9 @@ App.Units.Stone         = App.Units.Quantity('st')
 App.Units.Hundredweights= App.Units.Quantity('cwt')
 
 App.Units.Newton        = App.Units.Quantity('N')
+App.Units.MilliNewton   = App.Units.Quantity('mN')
 App.Units.KiloNewton    = App.Units.Quantity('kN')
 App.Units.MegaNewton    = App.Units.Quantity('MN')
-App.Units.MilliNewton   = App.Units.Quantity('mN')
 
 App.Units.Pascal        = App.Units.Quantity('Pa')
 App.Units.KiloPascal    = App.Units.Quantity('kPa')
@@ -698,6 +698,8 @@ App.Units.PSI           = App.Units.Quantity('psi')
 App.Units.KSI           = App.Units.Quantity('ksi')
 
 App.Units.Watt          = App.Units.Quantity('W')
+App.Units.MilliWatt     = App.Units.Quantity('mW')
+App.Units.KiloWatt      = App.Units.Quantity('kW')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
 
 App.Units.Volt          = App.Units.Quantity('V')
@@ -720,6 +722,7 @@ App.Units.MilliHenry    = App.Units.Quantity('mH')
 App.Units.Henry         = App.Units.Quantity('H')
 
 App.Units.Joule         = App.Units.Quantity('J')
+App.Units.MilliJoule    = App.Units.Quantity('mJ')
 App.Units.KiloJoule     = App.Units.Quantity('kJ')
 App.Units.NewtonMeter   = App.Units.Quantity('Nm')
 App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
