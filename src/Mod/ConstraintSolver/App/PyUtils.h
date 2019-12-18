@@ -7,9 +7,11 @@
 
 #include <CXX/Objects.hxx>
 #include <Base/DualNumber.h>
-#include <cmath>
+
 #include <Base/Exception.h>
 #include <Base/PyObjectBase.h>
+
+#include <functional>
 
 
 namespace FCS {
@@ -20,6 +22,16 @@ inline Py::List asPyList(Vec& vec){ //vec is usually not changed... unless getPy
     Py::List ret;
     for (auto &v : vec) {
         ret.append(Py::Object(v.getPyObject(), true));
+    }
+    return ret;
+}
+
+///converts std::vector of Py::Objects to Py::List.
+template<class Vec>
+inline Py::List asPyObjectList(Vec& vec){ //vec is usually not changed... unless getPyObject changes the object, which does happen to some
+    Py::List ret;
+    for (auto &v : vec) {
+        ret.append(v);
     }
     return ret;
 }
@@ -82,6 +94,9 @@ inline Enum str2enum(Py::String value, const char* valueNames[]){
     }
     throw Py::ValueError("Not recognized: " + strvalue);
 }
+
+///a non-macro replacement for try {} PY_CATCH;
+PyObject* pyTryCatch(std::function<Py::Object ()> body, PyObject* errorreturn = nullptr);
 
 } //namespace
 

@@ -47,6 +47,9 @@ protected://data
     std::vector<HParaPlacement> _fwchain;
 
 public://methods
+    ParaTransform();
+    ParaTransform(std::vector<HParaPlacement> &fwchain, std::vector<HParaPlacement> revchain);
+
     virtual PyObject* getPyObject() override;
 
     Placement value(const ValueSet& vals);

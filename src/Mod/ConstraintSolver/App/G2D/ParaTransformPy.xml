@@ -14,10 +14,50 @@
 	  DisableNotify="true">
 	<Documentation>
 	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
-	  <DeveloperDocu>Base class for transforms</DeveloperDocu>
-	  <UserDocu>Base class for transforms</UserDocu>
+	  <DeveloperDocu>Transform (a chain of forward and inverse ParaPlacements)</DeveloperDocu>
+	  <UserDocu>Transform (a chain of forward and inverse ParaPlacements)
+      Constructors:
+      ParaTransform(): identity transform.
+      ParaTransform(fwchain, revchain = None): creates a transform from the given lists of ParaPlacements. 
+      See docstrings for RevChain and FwChain for the meaning of these parameters.</UserDocu>
 	</Documentation>
     
+	<Attribute Name="FwChain">
+	  <Documentation>
+		<UserDocu>Sequence of placements that bring the shape from its local CS into a (more) global CS.
+        
+        Overall transform applied is: shape_pos = RevChain[-1].inverse * ... * RevChain[0].inverse * FwChain[0] * ... * FwChain[-1] * local_pos</UserDocu>
+	  </Documentation>
+	  <Parameter Name="FwChain" Type="List" />
+	</Attribute>
+	<Attribute Name="RevChain">
+	  <Documentation>
+		<UserDocu>Sequence of placements to be applied inversed, that bring the shape from (semi)global CS into another local CS.
+        
+        Overall transform applied is: shape_pos = RevChain[-1].inverse * ... * RevChain[0].inverse * FwChain[0] * ... * FwChain[-1] * local_pos</UserDocu>
+	  </Documentation>
+	  <Parameter Name="RevChain" Type="List" />
+	</Attribute>
     
+    <Methode Name="simplify">
+	  <Documentation>
+		<UserDocu>simplify(): removes common starting sequence from Fw and Rev chains. Returns the number of placements removed from each chain</UserDocu>
+	  </Documentation>
+	</Methode>	
+    <Methode Name="simplifyTransforms" Static="true">
+	  <Documentation>
+		<UserDocu>simplifyTransforms(list_of_transforms): removes common starting sequence from full chains of provided transforms. Returns number of placements removed from each transform.</UserDocu>
+	  </Documentation>
+	</Methode>	
+    <Methode Name="simplifyTransformsOfConstraint" Static="true">
+	  <Documentation>
+		<UserDocu>simplifyTransformsOfConstraint(simplifyTransformsOfConstraint): removes common starting sequence from full chains of transforms of shapes referenced by a constraint. 
+        
+        Returns number of placements removed from each shape. 
+        
+        Caution: on CS-dependent constraints (horizontal constraint, for example), the meaning of the constraint will change.</UserDocu>
+	  </Documentation>
+	</Methode>	
+
   </PythonExport>
 </GenerateModel>
