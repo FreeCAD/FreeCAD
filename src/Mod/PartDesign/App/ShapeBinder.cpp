@@ -459,6 +459,7 @@ void SubShapeBinder::update() {
         }catch(...){}
     }
 
+    result.setPlacement(Placement.getValue());
     Shape.setValue(result);
 }
 
