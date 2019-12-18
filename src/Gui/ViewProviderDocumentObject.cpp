@@ -281,10 +281,12 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     aDisplayEnumsArray.push_back(0); // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));
 
-    // set the active mode
-    const char* defmode = this->getDefaultDisplayMode();
-    if (defmode)
-        DisplayMode.setValue(defmode);
+    if(!isRestoring()) {
+        // set the active mode
+        const char* defmode = this->getDefaultDisplayMode();
+        if (defmode)
+            DisplayMode.setValue(defmode);
+    }
 
     //attach the extensions
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
