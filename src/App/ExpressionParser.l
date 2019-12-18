@@ -164,7 +164,7 @@ EXPO     [eE][-+]?[0-9]+
 "mm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMetre;          yylval.quantity.unitStr = yytext; return UNIT; // milli meter    (internal standard length)
 "cm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::CentiMetre;          yylval.quantity.unitStr = yytext; return UNIT; // centi meter
 "dm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::DeciMetre;           yylval.quantity.unitStr = yytext; return UNIT; // deci meter
-"m"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = yytext; return UNIT; // metre
+"m"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = yytext; return UNIT; // Metre
 "km"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloMetre;           yylval.quantity.unitStr = yytext; return UNIT; // kilo meter
 
 "l"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Liter;               yylval.quantity.unitStr = yytext; return UNIT; // Liter      dm^3
@@ -184,12 +184,12 @@ EXPO     [eE][-+]?[0-9]+
 "A"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = yytext; return UNIT; // Ampere         (internal standard electric current)
 "mA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = yytext; return UNIT; // milli Ampere
 "kA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Ampere
-"MA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // Mega Ampere
+"MA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // mega Ampere
 
 "K"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Kelvin;              yylval.quantity.unitStr = yytext; return UNIT; // Kelvin         (internal standard thermodynamic temperature)
-"mK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // Kelvin
-"\xC2\xB5K"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // Kelvin
-"uK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // Kelvin
+"mK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // milli Kelvin
+"\xC2\xB5K"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // micro Kelvin
+"uK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // micro Kelvin
 
 "mol"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = yytext; return UNIT; // Mole           (internal standard amount of substance)
 "mmol"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMole;           yylval.quantity.unitStr = yytext; return UNIT; // milli Mole
@@ -214,14 +214,14 @@ EXPO     [eE][-+]?[0-9]+
 "lbf"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::PoundForce;          yylval.quantity.unitStr = yytext; return UNIT; // pound
 
 "N"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Newton;              yylval.quantity.unitStr = yytext; return UNIT; // Newton (kg*m/s^2)a-za-za-z
-"kN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = yytext; return UNIT; // Newton
-"MN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = yytext; return UNIT; // Newton
-"mN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = yytext; return UNIT; // Newton
+"mN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = yytext; return UNIT; // milli Newton
+"kN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Newton
+"MN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = yytext; return UNIT; // mega Newton
 
 "Pa"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = yytext; return UNIT; // Pascal (kg/m*s^2 or N/m^2)
-"kPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = yytext; return UNIT; // Pascal
-"MPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // Pascal
-"GPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // Pascal
+"kPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Pascal
+"MPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // mega Pascal
+"GPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // giga Pascal
 
 "bar"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Bar;                 yylval.quantity.unitStr = yytext; return UNIT; // Bar
 "mbar"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliBar;            yylval.quantity.unitStr = yytext; return UNIT; // milli Bar
@@ -235,30 +235,33 @@ EXPO     [eE][-+]?[0-9]+
 "ksi"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KSI;                 yylval.quantity.unitStr = yytext; return UNIT; // 1000 x pounds/in^2
 
 "W"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = yytext; return UNIT; // Watt (kg*m^2/s^3)
+"mW"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliWatt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Watt
+"kW"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloWatt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Watt
 "VA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // VoltAmpere (kg*m^2/s^3)
 
 "V"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Volt;                yylval.quantity.unitStr = yytext; return UNIT; // Volt (kg*m^2/A/s^3)
-"kV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloVolt;            yylval.quantity.unitStr = yytext; return UNIT; // Kilo Volt
-"mV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliVolt;           yylval.quantity.unitStr = yytext; return UNIT; // Milli Volt
+"kV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloVolt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Volt
+"mV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliVolt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Volt
 
 "C"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Coulomb;             yylval.quantity.unitStr = yytext; return UNIT; // Coulomb (A*s)
 
 "T"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Tesla;               yylval.quantity.unitStr = yytext; return UNIT; // Tesla (kg/s^2/A)
 
 "F"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Farad;               yylval.quantity.unitStr = yytext; return UNIT; // Farad (s^4*A^2/m^2/kg)
-"mF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliFarad;          yylval.quantity.unitStr = yytext; return UNIT; // Milli Farad
-"\xC2\xB5F"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroFarad;          yylval.quantity.unitStr = yytext; return UNIT; // Micro Farad
-"uF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroFarad;          yylval.quantity.unitStr = yytext; return UNIT; // Micro Farad
-"nF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoFarad;           yylval.quantity.unitStr = yytext; return UNIT; // Nano Farad
-"pF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::PicoFarad;           yylval.quantity.unitStr = yytext; return UNIT; // Pico Farad
+"mF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliFarad;          yylval.quantity.unitStr = yytext; return UNIT; // milli Farad
+"\xC2\xB5F"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroFarad;          yylval.quantity.unitStr = yytext; return UNIT; // micro Farad
+"uF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroFarad;          yylval.quantity.unitStr = yytext; return UNIT; // micro Farad
+"nF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoFarad;           yylval.quantity.unitStr = yytext; return UNIT; // nano Farad
+"pF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::PicoFarad;           yylval.quantity.unitStr = yytext; return UNIT; // pico Farad
 
 "H"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Henry;               yylval.quantity.unitStr = yytext; return UNIT; // Henry (kg*m^2/s^2/A^2)
-"mH"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliHenry;          yylval.quantity.unitStr = yytext; return UNIT; // Milli Henry
-"\xC2\xB5H"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroHenry;          yylval.quantity.unitStr = yytext; return UNIT; // Micro Henry
-"uH"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroHenry;          yylval.quantity.unitStr = yytext; return UNIT; // Micro Henry)
-"nH"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoHenry;           yylval.quantity.unitStr = yytext; return UNIT; // Nano Henry
+"mH"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliHenry;          yylval.quantity.unitStr = yytext; return UNIT; // milli Henry
+"\xC2\xB5H"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroHenry;          yylval.quantity.unitStr = yytext; return UNIT; // micro Henry
+"uH"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroHenry;          yylval.quantity.unitStr = yytext; return UNIT; // micro Henry)
+"nH"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoHenry;           yylval.quantity.unitStr = yytext; return UNIT; // nano Henry
 
 "J"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Joule;               yylval.quantity.unitStr = yytext; return UNIT; // Joule (kg*m^2/s^2)
+"mJ"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliJoule;          yylval.quantity.unitStr = yytext; return UNIT; // milli Joule
 "kJ"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloJoule;           yylval.quantity.unitStr = yytext; return UNIT; // kilo Joule
 "Nm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = yytext; return UNIT; // N*m = Joule
 "VAs"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = yytext; return UNIT; // V*A*s = Joule

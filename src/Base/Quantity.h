@@ -232,9 +232,9 @@ public:
     static Quantity PoundForce;
 
     static Quantity Newton;
+    static Quantity MilliNewton;
     static Quantity KiloNewton;
     static Quantity MegaNewton;
-    static Quantity MilliNewton;
 
     static Quantity Pascal;
     static Quantity KiloPascal;
@@ -253,6 +253,7 @@ public:
 
     static Quantity Watt;
     static Quantity MilliWatt;
+    static Quantity KiloWatt;
     static Quantity VoltAmpere;
 
     static Quantity Volt;
@@ -275,6 +276,7 @@ public:
     static Quantity NanoHenry;
 
     static Quantity Joule;
+    static Quantity MilliJoule;
     static Quantity KiloJoule;
     static Quantity NewtonMeter;
     static Quantity VoltAmpereSecond;

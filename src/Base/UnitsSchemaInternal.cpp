@@ -209,14 +209,36 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 0.001;
         }
     }
+    else if (unit == Unit::Force) {
+        if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("mN");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("N");
+            factor = 1e3;
+        }
+        else if (UnitValue < 1e9) {
+            unitString = QString::fromLatin1("kN");
+            factor = 1e6;
+        }
+        else {
+            unitString = QString::fromLatin1("MN");
+            factor = 1e9;
+        }
+    }
     else if (unit == Unit::Power) {
         if (UnitValue < 1e6) {
             unitString = QString::fromLatin1("mW");
             factor = 1e3;
         }
-        else {
+        else if (UnitValue < 1e9) {
             unitString = QString::fromLatin1("W");
             factor = 1e6;
+        }
+        else {
+            unitString = QString::fromLatin1("kW");
+            factor = 1e9;
         }
     }
     else if (unit == Unit::ElectricPotential) {
@@ -234,13 +256,17 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
         else { // > 1000 kV scientificc notation
             unitString = QString::fromLatin1("V");
-            factor = 1.0;
+            factor = 1e6;
         }
     }
     else if (unit == Unit::Work) {
         if (UnitValue < 1.602176634e-10) {
             unitString = QString::fromLatin1("eV");
             factor = 1.602176634e-13;
+        }
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("mJ");
+            factor = 1e3;
         }
         else if (UnitValue < 1e9) {
             unitString = QString::fromLatin1("J");
@@ -256,7 +282,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         }
         else { // bigger than 1000 kWh -> scientific notation
             unitString = QString::fromLatin1("J");
-            factor = 1.0;
+            factor = 1e6;
         }
     }
     else if (unit == Unit::SpecificEnergy) {
