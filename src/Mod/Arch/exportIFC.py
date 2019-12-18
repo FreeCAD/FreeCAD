@@ -977,6 +977,7 @@ def export(exportList,filename,colors=None,preferences=None):
     if untreated:
         if not defaulthost:
             if preferences['ADD_DEFAULT_STOREY']:
+                if preferences['DEBUG']: print("No floor found. Adding default floor")
                 defaulthost = ifcfile.createIfcBuildingStorey(
                     ifcopenshell.guid.new(),
                     history,
@@ -1275,6 +1276,7 @@ def export(exportList,filename,colors=None,preferences=None):
         if remaining:
             if not defaulthost:
                 if preferences['ADD_DEFAULT_STOREY']:
+                    if preferences['DEBUG']: print("No floor found. Adding default floor")
                     defaulthost = ifcfile.createIfcBuildingStorey(
                         ifcopenshell.guid.new(),
                         history,
