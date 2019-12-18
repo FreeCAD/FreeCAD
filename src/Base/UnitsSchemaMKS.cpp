@@ -109,10 +109,26 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         }
     }
     else if (unit == Unit::Mass) {
-        // TODO Cascade for the weights
-        // default action for all cases without special treatment:
-        unitString = quant.getUnit().getString();
-        factor = 1.0;
+        if (UnitValue < 1e-6) {
+            unitString = QString::fromUtf8("\xC2\xB5g");
+            factor = 1e-9;
+        }
+        else if (UnitValue < 1e-3) {
+            unitString = QString::fromLatin1("mg");
+            factor = 1e-6;
+        }
+        else if (UnitValue < 1.0) {
+            unitString = QString::fromLatin1("g");
+            factor = 1e-3;
+        }
+        else if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("kg");
+            factor = 1.0;
+        }
+        else {
+            unitString = QString::fromLatin1("t");
+            factor = 1e3;
+        }
     }
     else if (unit == Unit::Density) {
         if (UnitValue < 0.0001) {
@@ -193,8 +209,14 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 1.0;
     }
     else if (unit == Unit::Power) {
-        unitString = QString::fromLatin1("W");
-        factor = 1000000;
+        if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("mW");
+            factor = 1e3;
+        }
+        else {
+            unitString = QString::fromLatin1("W");
+            factor = 1e6;
+        }
     }
     else if (unit == Unit::ElectricPotential) {
         if (UnitValue < 1.0) {
@@ -263,13 +285,21 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             unitString = QString::fromLatin1("eV");
             factor = 1.602176634e-13;
         }
-        if (UnitValue < 1e9) {
+        else if (UnitValue < 1e9) {
             unitString = QString::fromLatin1("J");
             factor = 1e6;
         }
-        else {
+        else if (UnitValue < 1e12) {
             unitString = QString::fromLatin1("kJ");
             factor = 1e9;
+        }
+        else if (UnitValue < 3.6e+15) {
+            unitString = QString::fromLatin1("kWh");
+            factor = 3.6e+12;
+        }
+        else { // bigger than 1000 kWh -> scientific notation
+            unitString = QString::fromLatin1("J");
+            factor = 1.0;
         }
     }
     else if (unit == Unit::SpecificEnergy) {
