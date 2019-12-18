@@ -113,12 +113,19 @@ void QGIViewSection::drawSectionFace()
             newFace->setFillColor(faceColor);
             newFace->setFillStyle(Qt::SolidPattern);
         } else if (section->CutSurfaceDisplay.isValue("SvgHatch")) {
-            newFace->isHatched(true);
-            newFace->setFillMode(QGIFace::SvgFill);
-            newFace->setHatchColor(sectionVp->HatchColor.getValue());
-            newFace->setHatchScale(section->HatchScale.getValue());
-            std::string hatchSpec = section->FileHatchPattern.getValue();
-            newFace->setHatchFile(hatchSpec);
+            if (getExporting()) {
+                newFace->hideSvg(true);
+                newFace->isHatched(false);
+                newFace->setFillMode(QGIFace::PlainFill);
+            } else {
+                newFace->hideSvg(false);
+                newFace->isHatched(true);
+                newFace->setFillMode(QGIFace::SvgFill);
+                newFace->setHatchColor(sectionVp->HatchColor.getValue());
+                newFace->setHatchScale(section->HatchScale.getValue());
+                std::string hatchSpec = section->FileHatchPattern.getValue();
+                newFace->setHatchFile(hatchSpec);
+            }
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
             newFace->isHatched(true);
             newFace->setFillMode(QGIFace::GeomHatchFill);

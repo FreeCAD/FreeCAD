@@ -777,9 +777,10 @@ def export(exportList,filename,colors=None,preferences=None):
     defaulthost = []
 
     # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements first
+    # if ifc type is "Undefined" gather elements too
 
     for bp in Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if bp.IfcType not in ["Site","Building","Building Storey","Space","Undefined"]:
+        if bp.IfcType not in ["Site","Building","Building Storey","Space"]:
             if bp.Name in products:
                 subs = []
                 for c in bp.Group:
@@ -976,6 +977,7 @@ def export(exportList,filename,colors=None,preferences=None):
     if untreated:
         if not defaulthost:
             if preferences['ADD_DEFAULT_STOREY']:
+                if preferences['DEBUG']: print("No floor found. Adding default floor")
                 defaulthost = ifcfile.createIfcBuildingStorey(
                     ifcopenshell.guid.new(),
                     history,
@@ -1274,6 +1276,7 @@ def export(exportList,filename,colors=None,preferences=None):
         if remaining:
             if not defaulthost:
                 if preferences['ADD_DEFAULT_STOREY']:
+                    if preferences['DEBUG']: print("No floor found. Adding default floor")
                     defaulthost = ifcfile.createIfcBuildingStorey(
                         ifcopenshell.guid.new(),
                         history,
