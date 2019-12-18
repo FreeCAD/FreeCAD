@@ -66,14 +66,16 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->ValueInput->setText(QString::fromLatin1("1 cm"));
     ui->UnitInput->setText(QString::fromLatin1("in"));
 
-    units << Base::Unit::Length << Base::Unit::Mass << Base::Unit::Angle << Base::Unit::Density
-          << Base::Unit::Area << Base::Unit::Volume << Base::Unit::TimeSpan << Base::Unit::Frequency
-          << Base::Unit::Velocity << Base::Unit::Acceleration << Base::Unit::Temperature
+    units << Base::Unit::Acceleration << Base::Unit::AmountOfSubstance << Base::Unit::Angle
+          << Base::Unit::Area << Base::Unit::Density << Base::Unit::ElectricalCapacitance
+          << Base::Unit::ElectricalInductance << Base::Unit::ElectricCharge
           << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential
-          << Base::Unit::AmountOfSubstance << Base::Unit::LuminousIntensity << Base::Unit::Stress
-          << Base::Unit::Pressure << Base::Unit::Force << Base::Unit::Work << Base::Unit::Power
-          << Base::Unit::ThermalConductivity << Base::Unit::ThermalExpansionCoefficient
-          << Base::Unit::SpecificHeat << Base::Unit::ThermalTransferCoefficient << Base::Unit::HeatFlux;
+          << Base::Unit::Frequency << Base::Unit::Force << Base::Unit::HeatFlux << Base::Unit::Length
+          << Base::Unit::LuminousIntensity << Base::Unit::Mass << Base::Unit::MagneticFluxDensity
+          << Base::Unit::Pressure << Base::Unit::Power << Base::Unit::SpecificHeat
+          << Base::Unit::Stress << Base::Unit::Temperature << Base::Unit::ThermalConductivity
+          << Base::Unit::ThermalExpansionCoefficient << Base::Unit::ThermalTransferCoefficient
+          << Base::Unit::TimeSpan << Base::Unit::Velocity << Base::Unit::Volume << Base::Unit::Work;
     for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
         ui->unitsBox->addItem(it->getTypeString());
     }
