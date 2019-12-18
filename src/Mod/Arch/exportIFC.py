@@ -777,9 +777,10 @@ def export(exportList,filename,colors=None,preferences=None):
     defaulthost = []
 
     # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements first
+    # if ifc type is "Undefined" gather elements too
 
     for bp in Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if bp.IfcType not in ["Site","Building","Building Storey","Space","Undefined"]:
+        if bp.IfcType not in ["Site","Building","Building Storey","Space"]:
             if bp.Name in products:
                 subs = []
                 for c in bp.Group:
