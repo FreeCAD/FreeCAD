@@ -247,6 +247,14 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
         unitString = QString::fromLatin1("W/m^2");
         factor = 1.0;
     }
+    else if (unit == Unit::ElectricCharge) {
+        unitString = QString::fromLatin1("C");
+        factor = 1.0;
+    }
+    else if (unit == Unit::MagneticFluxDensity) {
+        unitString = QString::fromLatin1("T");
+        factor = 1.0;
+    }
     else if (unit == Unit::ElectricalCapacitance) {
         if (UnitValue < 1e-15) {
             unitString = QString::fromLatin1("pF");
@@ -257,7 +265,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 1e-15;
         }
         else if (UnitValue < 1e-9) {
-            unitString = QString::fromUtf8("µF");
+            unitString = QString::fromUtf8("\xC2\xB5""F"); // \x reads everything to the end, therefore split
             factor = 1e-12;
         }
         else if (UnitValue < 1e-6) {
@@ -275,7 +283,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 1e-3;
         }
         else if (UnitValue < 1e3) {
-            unitString = QString::fromUtf8("µH");
+            unitString = QString::fromUtf8("\xC2\xB5H");
             factor = 1.0;
         }
         else if (UnitValue < 1e6) {

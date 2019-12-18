@@ -228,7 +228,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1e-15;
         }
         else if (UnitValue < 1e-9) {
-            unitString = QString::fromUtf8("µF");
+            unitString = QString::fromUtf8("\xC2\xB5""F"); // \x reads everything to the end, therefore split
             factor = 1e-12;
         }
         else if (UnitValue < 1e-6) {
@@ -246,7 +246,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1e-3;
         }
         else if (UnitValue < 1e-3) {
-            unitString = QString::fromUtf8("µH");
+            unitString = QString::fromUtf8("\xC2\xB5H");
             factor = 1.0;
         }
         else if (UnitValue < 1.0) {
