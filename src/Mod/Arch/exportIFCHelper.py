@@ -125,7 +125,7 @@ class ContextCreator:
 
     def createTrueNorth(self):
         return self.file.createIfcDirection(
-            (self.calculateXAxisAbscissa(), self.calculateXAxisOrdinate(), 0.))
+            (self.calculateXAxisAbscissa(), self.calculateXAxisOrdinate()))
 
     def calculateXAxisAbscissa(self):
         if "true_north" in self.project_data:

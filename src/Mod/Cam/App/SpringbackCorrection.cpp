@@ -1,7 +1,7 @@
 /***************************************************************************
- *   Copyright (c) 2007                                                    *
- *   Joachim Zettler <Joachim.Zettler@gmx.de>                  *
- *   Human Rezai <Human@web.de>                                            *
+ *   Copyright (c) 2007 Joachim Zettler <Joachim.Zettler@gmx.de>           *
+ *   Copyright (c) 2007 Human Rezai <Human@web.de>                         *
+ *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -73,7 +73,7 @@ SpringbackCorrection::SpringbackCorrection(const TopoDS_Shape& aShape, const Mes
     MeshMap.clear();
     //Remove any existing Triangulation on the Shape
     BRepTools::Clean(m_Shape);
-    best_fit::Tesselate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basistriangulierung des ganzen Shapes
+    best_fit::Tesselate_Shape(m_Shape,m_CadMesh,(float) 0.1); // Basic triangulation of the entire shape
 
     MeshCore::MeshTopoAlgorithm algo(m_CadMesh);
     algo.HarmonizeNormals();
@@ -1394,7 +1394,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
 
 
-    // ********************************** GLOBALE KORREKTUR ****************************************
+    // ********************************** GLOBAL CORRECTION ****************************************
     int cm = 49;
     InitFaceCheck(m_CadMesh, deg_Tol+1);  // kritische dreiecke -> _ulProp = 0
     MeshCore::MeshFacetArray facAr2 = m_CadMesh.GetFacets();
@@ -1545,7 +1545,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
     Base::Builder3D logg;
     double d;
 
-    // stelle die regionen dar
+    // represent the regions
 
     for (unsigned int i=0; i<RegionSkals.size(); ++i)
     {
@@ -1593,7 +1593,7 @@ bool SpringbackCorrection::Perform(int deg_Tol, bool out)
 
     cout << " glob: " << tmpVec.size() << endl;
 
-    // ********************************** LOKALE KORREKTUR ****************************************
+    // ********************************** LOCAL CORRECTION ****************************************
     unsigned long ind;
 
     MeshCore::MeshPointArray tmpPnts = m_CadMesh.GetPoints();

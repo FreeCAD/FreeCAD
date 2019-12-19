@@ -27,9 +27,17 @@
 # include <boost/uuid/uuid_io.hpp>
 #endif
 
+#include <Base/Console.h>
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
+#include <Base/GeometryPyCXX.h>
+
+
 #include "Cosmetic.h"
 #include "CosmeticVertexPy.h"
 #include "CosmeticVertexPy.cpp"
+
+#include "DrawUtil.h"
 
 using namespace TechDraw;
 
@@ -59,7 +67,7 @@ PyObject* CosmeticVertexPy::clone(PyObject *args)
         return NULL;
 
     TechDraw::CosmeticVertex* geom = this->getCosmeticVertexPtr();
-    geom->dump("CEPYI::clone");
+//    geom->dump("CEPYI::clone");
     PyTypeObject* type = this->GetType();
     PyObject* cpy = 0;
     // let the type object decide
@@ -87,7 +95,7 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
         return NULL;
 
     TechDraw::CosmeticVertex* geom = this->getCosmeticVertexPtr();
-    geom->dump("CEPYI::copy");
+//    geom->dump("CEPYI::copy");
     PyTypeObject* type = this->GetType();
     PyObject* cpy = 0;
     // let the type object decide
@@ -114,6 +122,57 @@ Py::String CosmeticVertexPy::getTag(void) const
     std::string tmp = boost::uuids::to_string(getCosmeticVertexPtr()->getTag());
     return Py::String(tmp);
 }
+
+Py::Object CosmeticVertexPy::getPoint(void) const
+{
+    Base::Vector3d point = getCosmeticVertexPtr()->permaPoint;
+    point = DrawUtil::invertY(point);
+    return Py::asObject(new Base::VectorPy(point));
+}
+
+void CosmeticVertexPy::setPoint(Py::Object arg)
+{
+    PyObject* p = arg.ptr();
+    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
+        Base::Vector3d point = static_cast<Base::VectorPy*>(p)->value();
+        getCosmeticVertexPtr()->permaPoint = 
+                DrawUtil::invertY(point);
+    }
+    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
+        Base::Vector3d point = Base::getVectorFromTuple<double>(p);
+        getCosmeticVertexPtr()->permaPoint = 
+                DrawUtil::invertY(point);
+    }
+    else {
+        std::string error = std::string("type must be 'Vector', not ");
+        error += p->ob_type->tp_name;
+        throw Py::TypeError(error);
+    }
+}
+
+Py::Boolean CosmeticVertexPy::getShow(void) const
+{
+    bool show = getCosmeticVertexPtr()->visible;
+    if (show) {
+        Py_RETURN_TRUE;
+    } else {
+        Py_RETURN_FALSE;
+    }
+//    return Py::asObject();
+}
+
+void CosmeticVertexPy::setShow(Py::Boolean arg)
+{
+    PyObject* p = arg.ptr();
+    if (PyBool_Check(p)) {
+        if (p == Py_True) {
+            getCosmeticVertexPtr()->visible = true;
+        } else {
+            getCosmeticVertexPtr()->visible = false;
+        }
+    }
+}
+
 
 PyObject *CosmeticVertexPy::getCustomAttributes(const char* /*attr*/) const
 {

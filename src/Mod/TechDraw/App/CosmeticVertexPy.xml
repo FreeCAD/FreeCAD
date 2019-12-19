@@ -31,5 +31,18 @@
       </Documentation>
       <Parameter Name="Tag" Type="String"/>
     </Attribute>
+    <Attribute Name="Point">
+      <Documentation>
+        <UserDocu>Gives the position of this CosmeticVertex as vector.</UserDocu>
+      </Documentation>
+      <Parameter Name="Point" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Show">
+      <Documentation>
+        <UserDocu>Show/hide the vertex.</UserDocu>
+      </Documentation>
+      <Parameter Name="Show" Type="Boolean"/>
+    </Attribute>
+
   </PythonExport>
 </GenerateModel>

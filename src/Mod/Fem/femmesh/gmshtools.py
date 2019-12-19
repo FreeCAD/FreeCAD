@@ -723,6 +723,17 @@ class GmshTools():
         geo.write("\n")
         geo.write("// mesh order\n")
         geo.write("Mesh.ElementOrder = " + self.order + ";\n")
+        if self.order == "2":
+            if hasattr(self.mesh_obj, "SecondOrderLinear") and self.mesh_obj.SecondOrderLinear is True:
+                geo.write(
+                    "Mesh.SecondOrderLinear = 1; // Second order nodes are created "
+                    "by linear interpolation instead by curvilinear\n"
+                )
+            else:
+                geo.write(
+                    "Mesh.SecondOrderLinear = 0; // Second order nodes are created "
+                    "by linear interpolation instead by curvilinear\n"
+                )
         geo.write("\n")
 
         geo.write(
@@ -776,7 +787,7 @@ class GmshTools():
         geo.write("\n\n")
 
         # some useful information
-        geo.write("//////////////////////////////////////////////////////////////////////\n")
+        geo.write("// " + "*" * 70 +"\n")
         geo.write("// Gmsh documentation:\n")
         geo.write("// http://gmsh.info/doc/texinfo/gmsh.html#Mesh\n")
         geo.write("//\n")

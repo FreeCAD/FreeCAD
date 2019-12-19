@@ -90,6 +90,11 @@ void ViewProviderMeshDefects::onChanged(const App::Property* prop)
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
     }
+    // Visibility changes must be handled here because in the base class it changes the attribute of the feature
+    // and thus affects the visibility of the mesh view provider which is undesired behaviour
+    else if (prop == &Visibility) {
+        Visibility.getValue() ? show() : hide();
+    }
     else {
         ViewProviderDocumentObject::onChanged(prop);
     }

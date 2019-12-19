@@ -25,22 +25,41 @@
             <UserDocu>Create a copy of this CosmeticEdge</UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="setFormat">
-        <Documentation>
-            <UserDocu>Change the appearance of this CometicEdge. edge.setFormat(style, color, weight, visible)</UserDocu>
-        </Documentation>
-    </Methode>
-
-    <Methode Name="getFormat">
-        <Documentation>
-            <UserDocu>returns the appearance attributes of this CometicEdge.  returns tuple(style, color, weight, visible).</UserDocu>
-        </Documentation>
-    </Methode>
     <Attribute Name="Tag" ReadOnly="true">
       <Documentation>
         <UserDocu>Gives the tag of the CosmeticEdge as string.</UserDocu>
       </Documentation>
       <Parameter Name="Tag" Type="String"/>
+    </Attribute>
+<!--    <Attribute Name="Owner" ReadOnly="true">-->
+<!--      <Documentation>-->
+<!--        <UserDocu>Gives the name of the View which owns this CosmeticEdge as string.</UserDocu>-->
+<!--      </Documentation>-->
+<!--      <Parameter Name="Owner" Type="String"/>-->
+<!--    </Attribute> -->
+<!--    <Attribute Name="Start">-->
+<!--      <Documentation>-->
+<!--        <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>-->
+<!--      </Documentation>-->
+<!--      <Parameter Name="Start" Type="Object"/>-->
+<!--    </Attribute>-->
+<!--    <Attribute Name="End">-->
+<!--      <Documentation>-->
+<!--        <UserDocu>Gives the position of one end of this CosmeticEdge as vector.</UserDocu>-->
+<!--      </Documentation>-->
+<!--      <Parameter Name="End" Type="Object"/>-->
+<!--    </Attribute>-->
+<!--    <Attribute Name="Geometry">-->
+<!--      <Documentation>-->
+<!--        <UserDocu>The edge geometry for this CosmeticEdge.</UserDocu>-->
+<!--      </Documentation>-->
+<!--      <Parameter Name="Geometry" Type="Object"/>-->
+<!--    </Attribute> -->
+    <Attribute Name="Format">
+      <Documentation>
+        <UserDocu>The appearance attributes (style, color, weight, visible) for this CosmeticEdge.</UserDocu>
+      </Documentation>
+      <Parameter Name="Format" Type="Object"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

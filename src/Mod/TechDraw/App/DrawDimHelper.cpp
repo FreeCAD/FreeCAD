@@ -350,10 +350,10 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
 
     //regular dims will have trouble with geom indexes!
     Base::Vector3d cleanMin = DrawUtil::invertY(inMin) / scale;
-    std::string tag1 = dvp->addCosmeticVertexSS(cleanMin);
+    std::string tag1 = dvp->addCosmeticVertex(cleanMin);
     int iGV1 = dvp->add1CVToGV(tag1);
     Base::Vector3d cleanMax = DrawUtil::invertY(inMax) / scale;
-    std::string tag2 = dvp->addCosmeticVertexSS(cleanMax);
+    std::string tag2 = dvp->addCosmeticVertex(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);
 
     std::vector<App::DocumentObject *> objs;

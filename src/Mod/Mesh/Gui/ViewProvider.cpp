@@ -1442,10 +1442,11 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
 #if 0
     Gui::SoFCOffscreenRenderer& renderer = Gui::SoFCOffscreenRenderer::instance();
     renderer.setViewportRegion(vp);
+    renderer.setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
 #else
     Gui::SoQtOffscreenRenderer renderer(vp);
+    renderer.setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f));
 #endif
-    renderer.setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
 
     QImage img;
     renderer.render(root);

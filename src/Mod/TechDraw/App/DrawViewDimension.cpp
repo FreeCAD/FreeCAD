@@ -178,7 +178,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
              (prop == &OverTolerance) ||
              (prop == &UnderTolerance) ||
              (prop == &Inverted) ) {
-//            nothing in particular
+            requestPaint();
         }
     }
 

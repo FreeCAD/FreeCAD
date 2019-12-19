@@ -91,8 +91,8 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_geomIndex = DrawUtil::getIndexFromName(m_edgeName);
     const std::vector<TechDraw::BaseGeom  *> &geoms = partFeat->getEdgeGeometry();
     BaseGeom* bg = geoms.at(m_geomIndex);
-    m_clIdx = bg->sourceIndex();
-    m_cl = partFeat->getCenterLineByIndex(m_clIdx);
+    std::string tag = bg->getCosmeticTag();
+    m_cl = partFeat->getCenterLine(tag);
     if (m_cl == nullptr) {         //checked by CommandAnnotate.  Should never happen.
         Base::Console().Message("TCL::TCL() - no centerline found\n");
     }
@@ -291,7 +291,8 @@ void TaskCenterLine::updateCenterLine(void)
     m_cl->m_extendBy = ui->qsbExtend->rawValue();
     m_cl->m_type = m_type;
     m_cl->m_flip2Line = m_flipped;
-    m_partFeat->replaceCenterLine(m_clIdx, m_cl);
+    m_partFeat->replaceCenterLine(m_cl);
+    m_partFeat->refreshCLGeoms();
     m_partFeat->requestPaint();
 
     Gui::Command::updateActive();
