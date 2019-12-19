@@ -12,8 +12,15 @@ JtReader    export-ignore
 
 
 # get all used file types
+
 # in a directory in a bash use
 # find . -type f -name '*.*' | sed 's|.*\.||' | sort -u
+
+# in Mod directory for normalized modules
+# find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.*' | sed 's|.*\.||' | sort -u
+
+# search for a specific file ending in normalized folders
+# find AddonManager Arch Complete Draft Idf Fem Material OpenSCAD Show Tux -type f -name '*.emn' 
 
 
 # normalize the line endings of the following files
@@ -44,6 +51,20 @@ JtReader    export-ignore
 *.unv text
 *.vtk text
 *.z88 text
+
+# files which are human readable
+# but for which it is not sure if normalize is ok
+# emn
+# emp
+# igs
+# stp
+# svg
+
+# binary files
+# FCMat
+# FCStd
+# ods
+# qm
 
 
 # line endings of the modules commented will be normalized
