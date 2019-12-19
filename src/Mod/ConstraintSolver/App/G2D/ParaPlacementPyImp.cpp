@@ -6,39 +6,40 @@
 #include "ParameterStorePy.h"
 #include "ParameterRefPy.h"
 
+#include "PyUtils.h"
+
 using namespace FCS;
 
 PyObject *ParaPlacementPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kwd)  // Python wrapper
 {
-
-    {
-        if (PyArg_ParseTuple(args, "")){
-            HParaPlacement p = (new ParaPlacement)->self();
-            if (!(kwd == Py_None))
-                p->initFromDict(Py::Dict(kwd));
-            return Py::new_reference_to(p);
+    return pyTryCatch([&]()->Py::Object{
+        {
+            if (PyArg_ParseTuple(args, "")){
+                HParaPlacement p = (new ParaPlacement)->self();
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
+                return p;
+            }
+            PyErr_Clear();
         }
-        PyErr_Clear();
-    }
-    {
-        PyObject* store;
-        if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
-            HParaPlacement p = (new ParaPlacement)->self();
-            p->makeParameters(HParameterStore(store, false));
-            return Py::new_reference_to(p);
+        {
+            PyObject* store;
+            if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
+                HParaPlacement p = (new ParaPlacement)->self();
+                p->makeParameters(HParameterStore(store, false));
+                return p;
+            }
+            PyErr_Clear();
         }
-        PyErr_Clear();
-    }
 
-    PyErr_SetString(PyExc_TypeError,
-        "Wrong argument count or type."
-        "\n\nsupported signatures:"
-        "\n() - all parameters set to null references"
-        "\n(<ParameterStore object>) - creates new parameters into the store"
-        "\n(**keyword_args) - assigns attributes. If 'store':<ParameterStore object> is given, the unlisted references are created into the store automatically."
-    );
-
-    return nullptr;
+        throw Py::TypeError(
+            "Wrong argument count or type."
+            "\n\nsupported signatures:"
+            "\n() - all parameters set to null references"
+            "\n(<ParameterStore object>) - creates new parameters into the store"
+            "\n(**keyword_args) - assigns attributes. If 'store':<ParameterStore object> is given, the unlisted references are created into the store automatically."
+        );
+    });
 }
 
 // constructor method
