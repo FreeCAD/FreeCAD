@@ -317,7 +317,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     if(!transaction) {
         if(relative)
             self->Context.setValue(parent,parentSub.c_str());
-        self->update();
+        self->update(PartDesign::SubShapeBinder::UpdateForced);
         return;
     }
 
@@ -325,7 +325,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     try{
         if(relative)
             self->Context.setValue(parent,parentSub.c_str());
-        self->update();
+        self->update(PartDesign::SubShapeBinder::UpdateForced);
         App::GetApplication().closeActiveTransaction();
         return;
     }catch(Base::Exception &e) {
