@@ -37,7 +37,7 @@ std::string TypePy::representation(void) const
     return str.str();
 }
 
-PyObject* TypePy::staticCallback_fromName (PyObject * /*self*/, PyObject *args)
+PyObject* TypePy::fromName (PyObject *args)
 {
     const char *name;
     if (!PyArg_ParseTuple(args, "s", &name))
@@ -47,7 +47,7 @@ PyObject* TypePy::staticCallback_fromName (PyObject * /*self*/, PyObject *args)
     return new TypePy(new Base::Type(type));
 }
 
-PyObject* TypePy::staticCallback_fromKey (PyObject * /*self*/, PyObject *args)
+PyObject* TypePy::fromKey (PyObject *args)
 {
     unsigned int index;
     if (!PyArg_ParseTuple(args, "I", &index))
@@ -57,7 +57,7 @@ PyObject* TypePy::staticCallback_fromKey (PyObject * /*self*/, PyObject *args)
     return new TypePy(new Base::Type(type));
 }
 
-PyObject* TypePy::staticCallback_getNumTypes (PyObject * /*self*/, PyObject *args)
+PyObject* TypePy::getNumTypes (PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -66,7 +66,7 @@ PyObject* TypePy::staticCallback_getNumTypes (PyObject * /*self*/, PyObject *arg
     return PyLong_FromLong(num);
 }
 
-PyObject* TypePy::staticCallback_getBadType (PyObject * /*self*/, PyObject *args)
+PyObject* TypePy::getBadType (PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -120,7 +120,7 @@ PyObject*  TypePy::isDerivedFrom(PyObject *args)
     return PyBool_FromLong(v ? 1 : 0);
 }
 
-PyObject*  TypePy::staticCallback_getAllDerivedFrom(PyObject* /*self*/, PyObject *args)
+PyObject*  TypePy::getAllDerivedFrom(PyObject *args)
 {
     Base::Type type;
 
