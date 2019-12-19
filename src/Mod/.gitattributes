@@ -118,7 +118,8 @@ Web/** -text
 # this would let git manage the file endings automatically
 # to be save this will be commented
 # * text=auto
-# if used it is very important to set the file types
+# if used it has to be at beginning of all line ending commands in this file
+# furthermore if used it is very important to set the file types
 # which should not be normalized manually (like svg, jpg, etc)
 # they should be set to binary
 
