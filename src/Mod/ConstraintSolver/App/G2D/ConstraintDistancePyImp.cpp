@@ -7,27 +7,23 @@
 #include "ParameterRefPy.h"
 #include "G2D/ParaPointPy.h"
 
+#include "PyUtils.h"
+
 using namespace FCS;
 
 PyObject *ConstraintDistancePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kwd)  // Python wrapper
 {
-    if (!PyArg_ParseTuple(args, "")){
-        PyErr_SetString(PyExc_TypeError, "Only keyword arguments are supported");
-        return nullptr;
-    }
-    try {
+    return pyTryCatch([&]()->Py::Object{
+
+        if (!PyArg_ParseTuple(args, "")){
+            PyErr_SetString(PyExc_TypeError, "Only keyword arguments are supported");
+            throw Py::Exception();
+        }
         HConstraintDistance p = (new ConstraintDistance)->self();
-        p->initFromDict(Py::Dict(kwd));
-        return Py::new_reference_to(p);
-    } catch (Py::Exception&){
-        return nullptr;
-    } catch (Base::Exception& e) {
-        auto pye = e.getPyExceptionType();
-        if(!pye)
-            pye = Base::BaseExceptionFreeCADError;
-        PyErr_SetObject(pye, e.getPyObject());
-        return nullptr;
-    }
+        if (kwd && kwd != Py_None)
+            p->initFromDict(Py::Dict(kwd));
+        return p;
+    });
 }
 
 // constructor method
