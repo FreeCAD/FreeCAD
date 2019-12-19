@@ -53,13 +53,14 @@ JtReader    export-ignore
 # Draft/** -text
 # Fem/** -text
 # Material/** -text
+# Show/** -text
 # Tux/** -text
 
 
 # line endings of the modules NOT commented will NOT be normalized
 # Be carefully changes here could affect a lot of files automatically!
 
-# Complete, Idf, OpenSCAD, Show makes sense to normalize
+# Complete, Idf, OpenSCAD makes sense to normalize
 
 Assembly/** -text
 Cam/** -text
@@ -85,7 +86,6 @@ ReverseEngineering/** -text
 Robot/** -text
 Sandbox/** -text
 Ship/** -text
-Show/** -text
 Sketcher/** -text
 Spreadsheet/** -text
 Start/** -text
