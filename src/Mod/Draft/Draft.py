@@ -5732,8 +5732,13 @@ class _DraftLink(_DraftObject):
     def onDocumentRestored(self, obj):
         if self.useLink:
             self.linkSetup(obj)
-            if obj.Shape.isNull():
+        else:
+            obj.setPropertyStatus('Shape','-Transient')
+        if obj.Shape.isNull():
+            if getattr(obj,'PlacementList',None):
                 self.buildShape(obj,obj.Placement,obj.PlacementList)
+            else:
+                self.execute(obj)
 
     def buildShape(self,obj,pl,pls):
         import Part
@@ -5773,9 +5778,9 @@ class _DraftLink(_DraftObject):
             return False # return False to call LinkExtension::execute()
 
     def onChanged(self, obj, prop):
-        if getattr(obj,'useLink',False):
+        if not getattr(self,'useLink',False):
             return
-        elif prop == 'Fuse':
+        if prop == 'Fuse':
             if obj.Fuse:
                 obj.setPropertyStatus('Shape','-Transient')
             else:
@@ -5891,7 +5896,7 @@ class _Array(_DraftLink):
             rc = xcount*rdist
             c = 2*rc*math.pi
             n = math.floor(c/tdist)
-            n = math.floor(n/sym)*sym
+            n = int(math.floor(n/sym)*sym)
             if n == 0: continue
             angle = 360/n
             for ycount in range(0, n):
@@ -5950,6 +5955,7 @@ class _PathArray(_DraftLink):
             obj.addProperty("App::PropertyBool","ExpandArray","Draft",
                     QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
             obj.ExpandArray = False
+            obj.setPropertyStatus('Shape','Transient')
 
         _DraftLink.attach(self,obj)
 
