@@ -1,6 +1,6 @@
-#line 1 "QuantityLexer.c"
+#line 2 "QuantityLexer.c"
 
-#line 3 "QuantityLexer.c"
+#line 4 "QuantityLexer.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -614,22 +614,22 @@ char *yytext;
 /* (c) 2013 Juergen Riegel  LGPL           */
 
 /* use this file to generate the file 'QuantityLexer.c' using the program flex
-/* the command for this operation is:
-/* flex --outfile=QuantityLexer.c QuantityParser.l */
-/* (flex for Windows is available here: */
-/*  https://sourceforge.net/projects/winflexbison/ */
-/*  (you must then change 'flex' to 'win_flex' in the command)) */
+ * the command for this operation is:
+ * flex --outfile=QuantityLexer.c QuantityParser.l
+ * (flex for Windows is available here:
+ *  https://sourceforge.net/projects/winflexbison/
+ *  (you must then change 'flex' to 'win_flex' in the command)) */
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
  * on Win32. The C++ scanner uses STL streams instead. */
 #define YY_NO_UNISTD_H
 
-#line 627 "QuantityLexer.c"
+#line 628 "QuantityLexer.c"
 /*** Flex Declarations and Options ***/
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 
-#line 632 "QuantityLexer.c"
+#line 633 "QuantityLexer.c"
 
 #define INITIAL 0
 #define C_COMMENT 1
@@ -641,7 +641,7 @@ char *yytext;
  */
 #include <unistd.h>
 #endif
-    
+
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *
 #endif
@@ -848,7 +848,7 @@ YY_DECL
 #line 37 "QuantityParser.l"
 
 
-#line 851 "QuantityLexer.c"
+#line 852 "QuantityLexer.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1572,7 +1572,7 @@ YY_RULE_SETUP
 #line 206 "QuantityParser.l"
 ECHO;
 	YY_BREAK
-#line 1575 "QuantityLexer.c"
+#line 1576 "QuantityLexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
