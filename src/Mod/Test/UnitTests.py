@@ -87,6 +87,38 @@ class UnitBasicCases(unittest.TestCase):
             v = FreeCAD.Units.parseQuantity(t[0]).getValueAs("ksi")
             self.assertAlmostEqual(1, v.Value, msg="Failed with \"{0}\" scheme: {1} != 1 (delta: {2})".format(schemes[i], v.Value, self.delta), delta=self.delta)
 
+    def testSchemeTranslation(self):
+        quantities = []
+        for i in dir(FreeCAD.Units):
+            if issubclass(type(getattr(FreeCAD.Units, i)), FreeCAD.Units.Quantity):
+                quantities.append(i)
+
+        schemes = FreeCAD.Units.listSchemas()
+        for i in quantities:
+            q1 = getattr(FreeCAD.Units, i)
+            q1 = FreeCAD.Units.Quantity(q1)
+            q1.Format = {'Precision': 16}
+            for idx, val in enumerate(schemes):
+                t = FreeCAD.Units.schemaTranslate(q1, idx)
+                try:
+                    q2 = FreeCAD.Units.Quantity(t[0])
+                    if math.fabs(q1.Value - q2.Value) > 0.01:
+                        print (q1, " : ", q2, " : ", t, " : ", i, " : ", val)
+                except Exception as e:
+                    print ("{}: {}".format(str(e), t[0]))
+
+    def testVoltage(self):
+        q1 = FreeCAD.Units.Quantity("1e20 V")
+        t = FreeCAD.Units.schemaTranslate(q1, 0) # Standard
+        q2 = FreeCAD.Units.Quantity(t[0])
+        self.assertAlmostEqual(q1.Value, q2.Value, delta=self.delta)
+
+    def testEnergy(self):
+        q1 = FreeCAD.Units.Quantity("1e20 J")
+        t = FreeCAD.Units.schemaTranslate(q1, 0) # Standard
+        q2 = FreeCAD.Units.Quantity(t[0])
+        self.assertAlmostEqual(q1.Value, q2.Value, delta=self.delta)
+
     def testTrigonometric(self):
         #tu=FreeCAD.Units.translateUnit
         self.failUnless(compare(tu('sin(pi)'), math.sin(math.pi)))
