@@ -93,7 +93,11 @@ public:
     App::PropertyXLink Context;
     App::PropertyInteger _Version;
 
-    void update();
+    enum UpdateOption {
+        UpdateInit = 1,
+        UpdateForced = 2,
+    };
+    void update(int options=0);
 
     virtual int canLoadPartial() const override {
         return PartialLoad.getValue()?1:0;
@@ -118,8 +122,6 @@ protected:
     typedef boost::signals2::scoped_connection Connection;
     Connection connRecomputedObj;
     App::Document *contextDoc=0;
-
-    std::vector<Part::TopoShape> _Cache;
 };
 
 } //namespace PartDesign
