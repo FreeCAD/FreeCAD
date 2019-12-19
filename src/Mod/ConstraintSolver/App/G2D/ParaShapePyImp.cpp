@@ -6,36 +6,37 @@
 #include "ParaGeometryPy.h"
 #include "G2D/ParaTransformPy.h"
 
+#include "PyUtils.h"
+
 using namespace FCS;
 
 PyObject *ParaShapePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kwd)  // Python wrapper
 {
-
-    {
-        if (PyArg_ParseTuple(args, "")){
-            HParaShapeBase p = (new ParaShapeBase)->self();
-            return Py::new_reference_to(p);
+    return pyTryCatch([&]()->Py::Object{
+        {
+            if (PyArg_ParseTuple(args, "")){
+                HParaShapeBase p = (new ParaShapeBase)->self();
+                return p;
+            }
+            PyErr_Clear();
         }
-        PyErr_Clear();
-    }
-    {
-        PyObject* tshape;
-        PyObject* transform = Py_None;
-        if (PyArg_ParseTuple(args, "O!O!",&(ParaGeometryPy::Type), &tshape, &(ParaTransformPy::Type), &transform)){
-            HParaShapeBase p = (new ParaShapeBase(HParaGeometry(tshape,false), HParaTransform(transform,false)))->self();
-            return Py::new_reference_to(p);
+        {
+            PyObject* tshape;
+            PyObject* transform = Py_None;
+            if (PyArg_ParseTuple(args, "O!|O!",&(ParaGeometryPy::Type), &tshape, &(ParaTransformPy::Type), &transform)){
+                HParaShapeBase p = new ParaShapeBase(HParaGeometry(tshape,false), HParaTransform(transform,false));
+                return p;
+            }
+            PyErr_Clear();
         }
-        PyErr_Clear();
-    }
 
-    PyErr_SetString(PyExc_TypeError,
-        "Wrong argument count or type."
-        "\n\nsupported signatures:"
-        "\n() - null shape"
-        "\n(<ParaGeometry>, <ParaTransform> = None) - creates new shape with given (or empty) transform"
-    );
-
-    return nullptr;
+        throw Py::TypeError(
+            "Wrong argument count or type."
+            "\n\nsupported signatures:"
+            "\n() - null shape"
+            "\n(<ParaGeometry>, <ParaTransform> = None) - creates new shape with given (or empty) transform"
+        );
+    });
 }
 
 // constructor method
