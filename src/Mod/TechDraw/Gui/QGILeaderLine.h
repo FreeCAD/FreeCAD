@@ -67,15 +67,11 @@ public:
                         QWidget * widget = 0 ) override;
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape(void) const override;
-    double getEdgeFuzz(void) const;
 
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
 
     virtual TechDraw::DrawLeaderLine* getFeature(void);
-    QGEPath* getLeaderLine(void) { return m_line; }
-    std::vector<QPointF> waypointsToQPoints(void);
-    std::vector<QPointF> waypointsToQPoints(std::vector<Base::Vector3d> pts);
 
     void startPathEdit(void);
     void setArrows(std::vector<QPointF> pathPoints);
@@ -84,10 +80,12 @@ public:
     void closeEdit(void);
     
     double getLineWidth(void);
+    double getEdgeFuzz(void) const;
+
+
 
 public Q_SLOTS:
     void onLineEditFinished(QPointF attach, std::vector<QPointF> deltas);    //QGEPath is finished editing points
-    void onAttachMoved(QPointF attach);
     void select(bool state);
     void hover(bool state);
     virtual void onSourceChange(TechDraw::DrawView* newParent) override;
@@ -97,10 +95,13 @@ Q_SIGNALS:
 
 protected:
     virtual void draw() override;
+    QPainterPath makeLeaderPath(std::vector<QPointF> qPoints);
+    std::vector<QPointF> getWayPointsFromFeature(void);
+    QPointF getAttachFromFeature(void);
+
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     std::vector<QPointF> m_pathPoints;
-    Base::Vector3d m_attachPoint;
     
     void saveState(void);
     void restoreState(void);
@@ -108,13 +109,18 @@ protected:
 protected:
     QColor getNormalColor() override;
 
-    QGraphicsItem* m_parentItem;       //<<< this never changes!
-    QGEPath* m_line;
-    QGIArrow* m_arrow1;
-    QGIArrow* m_arrow2;
+    QGraphicsItem* m_parentItem;
+    QGIPrimPath* m_line;               //actual leader line
     double m_lineWidth;
     QColor m_lineColor;
     Qt::PenStyle m_lineStyle;
+    QGIArrow* m_arrow1;
+    QGIArrow* m_arrow2;
+
+    QGEPath* m_editPath;               //line editor
+    QColor m_editPathColor;
+    Qt::PenStyle m_editPathStyle;
+
     bool m_hasHover;
 
     double m_saveX;
