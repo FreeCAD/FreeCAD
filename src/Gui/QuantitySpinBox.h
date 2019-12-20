@@ -91,6 +91,11 @@ public:
     /// Sets the value of the maximum property 
     void setMaximum(double max);
 
+    /// Gets the number of decimals
+    int decimals() const;
+    /// Sets the number of decimals
+    void setDecimals(int v);
+
     /// Gets the path of the bound property
     QString boundToName() const;
     /// Sets the path of the bound property
