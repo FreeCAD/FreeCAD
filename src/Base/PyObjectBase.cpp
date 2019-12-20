@@ -52,6 +52,13 @@ PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
     StatusBits.set(Notify);
 }
 
+void PyObjectBase::PyDestructor(PyObject* P)
+{
+    if (static_cast<PyObjectBase*>(P)->weakRefList)
+        PyObject_ClearWeakRefs(P);
+    delete ((PyObjectBase *) P);
+}
+
 /// destructor
 PyObjectBase::~PyObjectBase() 
 {

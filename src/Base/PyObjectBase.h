@@ -220,8 +220,7 @@ public:
      */
     PyObjectBase(void*, PyTypeObject *T);
     /// Wrapper for the Python destructor
-    static void PyDestructor(PyObject *P)   // python wrapper
-    {  delete ((PyObjectBase *) P);  }
+    static void PyDestructor(PyObject *P);
     /// incref method wrapper (see python extending manual)
     PyObjectBase* IncRef(void) {Py_INCREF(this);return this;}
     /// decref method wrapper (see python extending manual)	
@@ -343,6 +342,8 @@ protected:
 
 private:
     PyObject* attrDict;
+public:
+    PyObject* weakRefList = nullptr; //for use by python's weakref module
 };
 
 

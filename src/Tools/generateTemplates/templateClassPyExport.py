@@ -340,7 +340,7 @@ PyTypeObject @self.export.Name@::Type = {
 = else:
     0,                                                /*tp_richcompare */
 -
-    0,                                                /*tp_weaklistoffset */
+    offsetof(PyObjectBase, weakRefList) - offsetof(PyObjectBase, ob_refcnt) + offsetof(PyObject, ob_refcnt),    /*tp_weaklistoffset */
     0,                                                /*tp_iter */
     0,                                                /*tp_iternext */
     @self.export.Namespace@::@self.export.Name@::Methods,                     /*tp_methods */
