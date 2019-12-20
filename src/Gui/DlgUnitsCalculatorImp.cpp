@@ -187,8 +187,15 @@ void DlgUnitsCalculator::returnPressed(void)
 
 void DlgUnitsCalculator::on_unitsBox_activated(int index)
 {
-    ui->quantitySpinBox->setValue(1.0);
-    ui->quantitySpinBox->setUnit(units[index]);
+    // SI units use [m], not [mm] for lengths
+    //
+    Base::Quantity q = ui->quantitySpinBox->value();
+    int32_t old = q.getUnit().getSignature().Length;
+    double value = q.getValue();
+
+    Base::Unit unit = units[index];
+    int32_t len = unit.getSignature().Length;
+    ui->quantitySpinBox->setValue(Base::Quantity(value * std::pow(10.0, 3*(len-old)), unit));
 }
 
 void DlgUnitsCalculator::on_comboBoxScheme_activated(int index)
