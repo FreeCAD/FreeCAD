@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre          (yorik@uncreated.net) 2015     *
- *   Copyright (c) 2016 WandererFan    (wandererfan@gmail.com)             *
+ *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
