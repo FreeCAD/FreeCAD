@@ -158,6 +158,10 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             factor = 1000000000000000000.0;
         }
     }
+    else if (unit == Unit::Acceleration) {
+        unitString = QString::fromLatin1("m/s^2");
+        factor = 1000.0;
+    }
     else if ((unit == Unit::Pressure) || (unit == Unit::Stress)) {
         if (UnitValue < 10.0) {// Pa is the smallest
             unitString = QString::fromLatin1("Pa");
