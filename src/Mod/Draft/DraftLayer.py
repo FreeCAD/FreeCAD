@@ -129,7 +129,8 @@ class ViewProviderLayer:
     """A View Provider for the Layer object"""
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyBool","OverrideChildren","Layer",QT_TRANSLATE_NOOP("App::Property","If on, the child objects of this layer will match its visual aspects"))
+        vobj.addProperty("App::PropertyBool", "OverrideLineColorChildren", "Layer", QT_TRANSLATE_NOOP("App::Property", "If on, the child objects of this layer will match its visual aspects"))
+        vobj.addProperty("App::PropertyBool", "OverrideShapeColorChildren", "Layer", QT_TRANSLATE_NOOP("App::Property", "If on, the child objects of this layer will match its visual aspects"))
         vobj.addProperty("App::PropertyColor","LineColor","Layer",QT_TRANSLATE_NOOP("App::Property","The line color of the children of this layer"))
         vobj.addProperty("App::PropertyColor","ShapeColor","Layer",QT_TRANSLATE_NOOP("App::Property","The shape color of the children of this layer"))
         vobj.addProperty("App::PropertyFloat","LineWidth","Layer",QT_TRANSLATE_NOOP("App::Property","The line width of the children of this layer"))
@@ -137,7 +138,8 @@ class ViewProviderLayer:
         vobj.addProperty("App::PropertyInteger","Transparency","Layer",QT_TRANSLATE_NOOP("App::Property","The transparency of the children of this layer"))
         vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
 
-        vobj.OverrideChildren = True
+        vobj.OverrideLineColorChildren = True
+        vobj.OverrideShapeColorChildren = True
         c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",255)
         vobj.LineColor = (((c>>24)&0xFF)/255.0,((c>>16)&0xFF)/255.0,((c>>8)&0xFF)/255.0)
         w = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt("DefaultShapeLineWidth",2)
@@ -185,16 +187,21 @@ class ViewProviderLayer:
             self.onChanged(obj.ViewObject,"LineColor")
 
     def onChanged(self,vobj,prop):
-        if hasattr(vobj,"OverrideChildren") and vobj.OverrideChildren:
+        if hasattr(vobj,"OverrideLineColorChildren") and vobj.OverrideLineColorChildren:
             if hasattr(vobj,"Object")and hasattr(vobj.Object,"Group"):
                 for o in vobj.Object.Group:
                     if o.ViewObject:
                         for p in ["LineColor","ShapeColor","LineWidth","DrawStyle","Transparency"]:
-                            if hasattr(vobj,p) and hasattr(o.ViewObject,p):
-                                setattr(o.ViewObject,p,getattr(vobj,p))
-                        # give line color to texts
-                        if hasattr(vobj,"LineColor") and hasattr(o.ViewObject,"TextColor"):
-                            o.ViewObject.TextColor = vobj.LineColor
+                            if p == "ShapeColor":
+                                if hasattr(vobj, "OverrideShapeColorChildren") and vobj.OverrideShapeColorChildren:
+                                    setattr(o.ViewObject, p, getattr(vobj, p))
+                            else:
+                                if hasattr(vobj, p) and hasattr(o.ViewObject,p):
+                                    setattr(o.ViewObject,p,getattr(vobj,p))
+
+                            # give line color to texts
+                            if hasattr(vobj,"LineColor") and hasattr(o.ViewObject,"TextColor"):
+                                o.ViewObject.TextColor = vobj.LineColor
 
         if (prop == "Visibility") and hasattr(vobj,"Visibility"):
             if hasattr(vobj,"Object")and hasattr(vobj.Object,"Group"):
