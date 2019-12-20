@@ -83,7 +83,7 @@ class CommandLayer():
     def GetResources(self):
         return {'Pixmap': 'Draft_Layer',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Layer", "Layer"),
-                'ToolTip' : QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Layer", "Adds a layer")}
 
     def Activated(self):
         import FreeCADGui
@@ -108,9 +108,13 @@ class Layer:
         self.setProperties(obj)
 
     def setProperties(self, obj):
-        if not "Group" in obj.PropertiesList:
-            obj.addProperty("App::PropertyLinkList", "Group", "Layer",
-                            QT_TRANSLATE_NOOP("App::Property", "The objects that are part of this layer"))
+        if "Group" not in obj.PropertiesList:
+            obj.addProperty(
+                "App::PropertyLinkList",
+                "Group",
+                "Layer",
+                QT_TRANSLATE_NOOP("App::Property", "The objects that are part of this layer")
+            )
 
     def __getstate__(self):
         return self.Type
@@ -124,7 +128,7 @@ class Layer:
 
     def addObject(self, obj, child):
         g = obj.Group
-        if not child in g:
+        if child not in g:
             g.append(child)
         obj.Group = g
 
@@ -133,13 +137,54 @@ class ViewProviderLayer:
     """A View Provider for the Layer object"""
 
     def __init__(self, vobj):
-        vobj.addProperty("App::PropertyBool", "OverrideLineColorChildren", "Layer", QT_TRANSLATE_NOOP("App::Property", "If on, the child objects of this layer will match its visual aspects"))
-        vobj.addProperty("App::PropertyBool", "OverrideShapeColorChildren", "Layer", QT_TRANSLATE_NOOP("App::Property", "If on, the child objects of this layer will match its visual aspects"))
-        vobj.addProperty("App::PropertyColor", "LineColor", "Layer", QT_TRANSLATE_NOOP("App::Property", "The line color of the children of this layer"))
-        vobj.addProperty("App::PropertyColor", "ShapeColor", "Layer", QT_TRANSLATE_NOOP("App::Property", "The shape color of the children of this layer"))
-        vobj.addProperty("App::PropertyFloat", "LineWidth", "Layer", QT_TRANSLATE_NOOP("App::Property", "The line width of the children of this layer"))
-        vobj.addProperty("App::PropertyEnumeration", "DrawStyle", "Layer", QT_TRANSLATE_NOOP("App::Property", "The draw style of the children of this layer"))
-        vobj.addProperty("App::PropertyInteger", "Transparency", "Layer", QT_TRANSLATE_NOOP("App::Property", "The transparency of the children of this layer"))
+        vobj.addProperty(
+            "App::PropertyBool",
+            "OverrideLineColorChildren",
+            "Layer",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "If on, the child objects of this layer will match its visual aspects"
+            )
+        )
+        vobj.addProperty(
+            "App::PropertyBool",
+            "OverrideShapeColorChildren",
+            "Layer",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "If on, the child objects of this layer will match its visual aspects"
+            )
+        )
+        vobj.addProperty(
+            "App::PropertyColor",
+            "LineColor",
+            "Layer",
+            QT_TRANSLATE_NOOP("App::Property", "The line color of the children of this layer")
+        )
+        vobj.addProperty(
+            "App::PropertyColor",
+            "ShapeColor",
+            "Layer",
+            QT_TRANSLATE_NOOP("App::Property", "The shape color of the children of this layer")
+        )
+        vobj.addProperty(
+            "App::PropertyFloat",
+            "LineWidth",
+            "Layer",
+            QT_TRANSLATE_NOOP("App::Property", "The line width of the children of this layer")
+        )
+        vobj.addProperty(
+            "App::PropertyEnumeration",
+            "DrawStyle",
+            "Layer",
+            QT_TRANSLATE_NOOP("App::Property", "The draw style of the children of this layer")
+        )
+        vobj.addProperty(
+            "App::PropertyInteger",
+            "Transparency",
+            "Layer",
+            QT_TRANSLATE_NOOP("App::Property", "The transparency of the children of this layer")
+        )
         vobj.DrawStyle = ["Solid", "Dashed", "Dotted", "Dashdot"]
 
         vobj.OverrideLineColorChildren = True
@@ -254,7 +299,8 @@ class ViewProviderLayer:
 
     def canDropObject(self, obj):
 
-        if hasattr(obj, "Proxy") and isinstance(obj.Proxy, Layer):  # for now, prevent stacking layers
+        if hasattr(obj, "Proxy") and isinstance(obj.Proxy, Layer):
+            # for now, prevent stacking layers
             return False
         return True
 
@@ -265,9 +311,9 @@ class ViewProviderLayer:
     def dropObject(self, vobj, otherobj):
 
         if hasattr(vobj.Object, "Group"):
-            if not otherobj in vobj.Object.Group:
-                if not (hasattr(otherobj, "Proxy") and isinstance(otherobj.Proxy,
-                                                                  Layer)):  # for now, prevent stacking layers
+            if otherobj not in vobj.Object.Group:
+                if not (hasattr(otherobj, "Proxy") and isinstance(otherobj.Proxy, Layer)):
+                    # for now, prevent stacking layers
                     g = vobj.Object.Group
                     g.append(otherobj)
                     vobj.Object.Group = g
@@ -285,12 +331,18 @@ class ViewProviderLayer:
 
         from PySide import QtCore, QtGui
         import Draft_rc
-        action1 = QtGui.QAction(QtGui.QIcon(":/icons/button_right.svg"), translate("draft", "Activate this layer"),
-                                menu)
+        action1 = QtGui.QAction(
+            QtGui.QIcon(":/icons/button_right.svg"),
+            translate("draft", "Activate this layer"),
+            menu
+        )
         action1.triggered.connect(self.activate)
         menu.addAction(action1)
-        action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectGroup.svg"), translate("draft", "Select contents"),
-                                menu)
+        action2 = QtGui.QAction(
+            QtGui.QIcon(":/icons/Draft_SelectGroup.svg"),
+            translate("draft", "Select contents"),
+            menu
+        )
         action2.triggered.connect(self.selectcontents)
         menu.addAction(action2)
 
