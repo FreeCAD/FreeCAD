@@ -85,6 +85,7 @@ bool ViewProviderTextDocument::doubleClicked()
     if (!activateView()) {
         editorWidget = new QPlainTextEdit {};
         editorWidget->setReadOnly(ReadOnly.getValue());
+        FontName.touch();
         SyntaxHighlighter.touch();
 
         getMainWindow()->addWindow(
