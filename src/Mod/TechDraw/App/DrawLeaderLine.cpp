@@ -68,8 +68,8 @@ DrawLeaderLine::DrawLeaderLine(void)
     Rotation.setStatus(App::Property::Hidden,true);
     Caption.setStatus(App::Property::Hidden,true);
 
-    //generally, lines/leaders are not meant to move around.
     LockPosition.setValue(true);
+    LockPosition.setStatus(App::Property::Hidden,true);
 }
 
 DrawLeaderLine::~DrawLeaderLine()
@@ -104,7 +104,7 @@ short DrawLeaderLine::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawLeaderLine::execute(void)
 { 
-//    Base::Console().Message("DL::execute()\n");
+//    Base::Console().Message("DLL::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -144,6 +144,22 @@ bool DrawLeaderLine::keepUpdated(void)
     return result;
 }
 
+//need separate getParentScale()???
+
+double DrawLeaderLine::getBaseScale(void) const
+{
+//    Base::Console().Message("DLL::getBaseScale()\n");
+    double result = 1.0;
+    DrawView* parent = getBaseView();
+    if (parent != nullptr) {
+        result = parent->getScale();
+    } else {
+        //TARFU
+        Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
+    }
+    return result;
+}
+
 double DrawLeaderLine::getScale(void) const
 {
 //    Base::Console().Message("DLL::getScale()\n");
@@ -157,7 +173,6 @@ double DrawLeaderLine::getScale(void) const
             Base::Console().Log("DrawLeaderLine - %s - scale not found.  Using 1.0. \n", getNameInDocument());
         }
     }
-//    Base::Console().Message("DLL::getScale - returns: %.3f\n", result);
     return result;
 }
 
