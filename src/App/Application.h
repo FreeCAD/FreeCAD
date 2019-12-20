@@ -494,7 +494,8 @@ private:
     static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
     static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
     static PyObject *sCheckAbort(PyObject *self,PyObject *args);
-    static PyMethodDef    Methods[]; 
+    static PyObject *sTestWeakRef(PyObject *self,PyObject *args);
+    static PyMethodDef    Methods[];
 
     friend class ApplicationObserver;
 

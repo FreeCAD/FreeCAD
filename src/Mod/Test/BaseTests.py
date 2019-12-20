@@ -288,3 +288,13 @@ class ParameterTestCase(unittest.TestCase):
         #remove all
         TestPar = FreeCAD.ParamGet("System parameter:Test")
         TestPar.Clear()
+
+class WeakRefTestCase(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def testWeakRef(self):
+        FreeCAD._testWeakRef()
+
+    def tearDown(self):
+        pass

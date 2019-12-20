@@ -46,6 +46,7 @@
 #include <Base/FileInfo.h>
 #include <Base/UnitsApi.h>
 #include <Base/Sequencer.h>
+#include <Base/PlacementPy.h>
 
 //using Base::GetConsole;
 using namespace Base;
@@ -181,6 +182,9 @@ PyMethodDef Application::Methods[] = {
      "There is an active sequencer during document restore and recomputation. User may\n"
      "abort the operation by pressing the ESC key. Once detected, this function will\n"
      "trigger a BaseExceptionFreeCADAbort exception."},
+    {"_testWeakRef",       (PyCFunction) Application::sTestWeakRef, METH_VARARGS,
+     "_testWeakRef(): unit test routine, checks if questionable offset math is working."
+     " Throws an error or crashes if it doesn't."},
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
@@ -937,6 +941,32 @@ PyObject *Application::sCheckAbort(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         Base::Sequencer().checkAbort();
+        Py_Return;
+    }PY_CATCH
+}
+
+PyObject *Application::sTestWeakRef(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    PyObjectBase* obj = new Base::PlacementPy(new Base::Placement());
+    Py::Object oobj = Py::asObject(obj); //to auto-delete the thing when done
+
+    assert(obj->weakRefList == nullptr);
+
+    PY_TRY {
+        Py::Module weakref("weakref");
+        Py::Tuple args(1); args[0] = Py::Object(obj);
+        Py::Object ref = Py::Callable(weakref.getAttr("ref")).apply(args);
+        if (obj->weakRefList == nullptr){
+            //deleting relevant objects now only increases the odds of a crash. So we leak.
+            oobj.increment_reference_count();
+            ref.increment_reference_count();
+            throw Base::RuntimeError("Weakref offset is not working, weakRefList member is still null after creating a weakref");
+        }
+        Base::Interpreter().runString("print('weakref seems to be working correctly')");
+
         Py_Return;
     }PY_CATCH
 }
