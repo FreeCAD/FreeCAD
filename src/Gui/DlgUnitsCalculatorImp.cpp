@@ -66,22 +66,45 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->ValueInput->setText(QString::fromLatin1("1 cm"));
     ui->UnitInput->setText(QString::fromLatin1("in"));
 
-    units << Base::Unit::Acceleration << Base::Unit::AmountOfSubstance << Base::Unit::Angle
-          << Base::Unit::Area << Base::Unit::Density << Base::Unit::ElectricalCapacitance
-          << Base::Unit::ElectricalInductance << Base::Unit::ElectricCharge
-          << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential
-          << Base::Unit::Frequency << Base::Unit::Force << Base::Unit::HeatFlux << Base::Unit::Length
-          << Base::Unit::LuminousIntensity << Base::Unit::Mass << Base::Unit::MagneticFluxDensity
-          << Base::Unit::Pressure << Base::Unit::Power << Base::Unit::SpecificHeat
-          << Base::Unit::Stress << Base::Unit::Temperature << Base::Unit::ThermalConductivity
-          << Base::Unit::ThermalExpansionCoefficient << Base::Unit::ThermalTransferCoefficient
-          << Base::Unit::TimeSpan << Base::Unit::Velocity << Base::Unit::Volume << Base::Unit::Work;
+    units << Base::Unit::Acceleration
+          << Base::Unit::AmountOfSubstance
+          << Base::Unit::Angle
+          << Base::Unit::Area
+          << Base::Unit::Density
+          << Base::Unit::ElectricalCapacitance
+          << Base::Unit::ElectricalInductance
+          << Base::Unit::ElectricCharge
+          << Base::Unit::ElectricCurrent
+          << Base::Unit::ElectricPotential
+          << Base::Unit::Frequency
+          << Base::Unit::Force
+          << Base::Unit::HeatFlux
+          << Base::Unit::Length
+          << Base::Unit::LuminousIntensity
+          << Base::Unit::Mass
+          << Base::Unit::MagneticFluxDensity
+          << Base::Unit::Pressure
+          << Base::Unit::Power
+          << Base::Unit::SpecificHeat
+          << Base::Unit::Stress
+          << Base::Unit::Temperature
+          << Base::Unit::ThermalConductivity
+          << Base::Unit::ThermalExpansionCoefficient
+          << Base::Unit::ThermalTransferCoefficient
+          << Base::Unit::TimeSpan
+          << Base::Unit::Velocity
+          << Base::Unit::Volume
+          << Base::Unit::Work;
     for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
         ui->unitsBox->addItem(it->getTypeString());
     }
 
     ui->quantitySpinBox->setValue(1.0);
     ui->quantitySpinBox->setUnit(units.front());
+    ui->spinBoxDecimals->setValue(Base::UnitsApi::getDecimals());
+
+    // see on_comboBoxScheme_activated
+    ui->comboBoxScheme->setDisabled(true);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -164,7 +187,19 @@ void DlgUnitsCalculator::returnPressed(void)
 
 void DlgUnitsCalculator::on_unitsBox_activated(int index)
 {
+    ui->quantitySpinBox->setValue(1.0);
     ui->quantitySpinBox->setUnit(units[index]);
+}
+
+void DlgUnitsCalculator::on_comboBoxScheme_activated(int index)
+{
+    //TODO
+    Q_UNUSED(index)
+}
+
+void DlgUnitsCalculator::on_spinBoxDecimals_valueChanged(int value)
+{
+    ui->quantitySpinBox->setDecimals(value);
 }
 
 #include "moc_DlgUnitsCalculatorImp.cpp"
