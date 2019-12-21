@@ -2408,6 +2408,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     dragCtx.reset(new DraggerContext);
 
     dragCtx->preTransform = doc->getEditingTransform();
+    doc->setEditingTransform(dragCtx->preTransform);
 
     const auto &pla = ext->getPlacementProperty()?
         ext->getPlacementValue():ext->getLinkPlacementValue();

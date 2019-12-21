@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Yorik van Havre          (yorik@uncreated.net) 2012     *
+ *   Copyright (c) 2012 Yorik van Havre <yorik@uncreated.net>              *
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *

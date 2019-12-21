@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2018 - FreeCAD Developers                               *
+# *   Copyright (c) 2018 FreeCAD Developers                                 *
 # *   Author: Bernd Hahnebach <bernd@bimstatik.org>                         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
