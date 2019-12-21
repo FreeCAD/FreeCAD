@@ -169,7 +169,7 @@ PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args)
 PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args)
 {
     if (PyArg_ParseTuple(args, "")) {
-        int num = NumUnitSystemTypes;
+        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         Py::Tuple tuple(num);
         for (int i=0; i<num; i++) {
             tuple.setItem(i, Py::String(UnitsApi::getDescription(static_cast<UnitSystem>(i))));
@@ -181,7 +181,7 @@ PyObject* UnitsApi::sListSchemas(PyObject * /*self*/, PyObject *args)
     PyErr_Clear();
     int index;
     if (PyArg_ParseTuple(args, "i", &index)) {
-        int num = NumUnitSystemTypes;
+        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         if (index < 0 || index >= num) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
             return 0;
@@ -207,7 +207,7 @@ PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
     PyErr_Clear();
     int index;
     if (PyArg_ParseTuple(args, "i", &index)) {
-        int num = NumUnitSystemTypes;
+        int num = static_cast<int>(UnitSystem::NumUnitSystemTypes);
         if (index < 0 || index >= num) {
             PyErr_SetString(PyExc_ValueError, "invalid schema value");
             return 0;

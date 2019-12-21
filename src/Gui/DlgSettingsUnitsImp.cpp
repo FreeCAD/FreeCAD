@@ -57,7 +57,7 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
     ui->tableWidget->setVisible(false);
     //
     // Enable/disable the fractional inch option depending on system
-    if( UnitsApi::getSchema() == ImperialBuilding )
+    if( UnitsApi::getSchema() == UnitSystem::ImperialBuilding )
     {
         ui->comboBox_FracInch->setEnabled(true);
     }
@@ -82,7 +82,7 @@ void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
         return; // happens when clearing the combo box in retranslateUi()
 
     // Enable/disable the fractional inch option depending on system
-    if( (UnitSystem)index == ImperialBuilding )
+    if( (UnitSystem)index == UnitSystem::ImperialBuilding )
     {
         ui->comboBox_FracInch->setEnabled(true);
     }

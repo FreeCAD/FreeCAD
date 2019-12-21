@@ -2894,20 +2894,20 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
         // If this is a supported unit system then define what the base unit is.
         switch (unitSys)
         {
-            case Base::SI1:
-            case Base::MmMin:
+            case Base::UnitSystem::SI1:
+            case Base::UnitSystem::MmMin:
                 baseUnitStr = QString::fromLatin1("mm");
                 break;
 
-            case Base::SI2:
+            case Base::UnitSystem::SI2:
                 baseUnitStr = QString::fromLatin1("m");
                 break;
 
-            case Base::ImperialDecimal:
+            case Base::UnitSystem::ImperialDecimal:
                 baseUnitStr = QString::fromLatin1("in");
                 break;
 
-            case Base::Centimeters:
+            case Base::UnitSystem::Centimeters:
                 baseUnitStr = QString::fromLatin1("cm");
                 break;
 

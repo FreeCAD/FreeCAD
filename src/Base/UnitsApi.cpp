@@ -62,7 +62,7 @@ using namespace Base;
 double UnitsApi::defaultFactor = 1.0;
 
 UnitsSchema  *UnitsApi::UserPrefSystem = new UnitsSchemaInternal();
-UnitSystem    UnitsApi::actSystem = SI1;
+UnitSystem    UnitsApi::actSystem = UnitSystem::SI1;
 
 //double   UnitsApi::UserPrefFactor [50];
 //QString  UnitsApi::UserPrefUnit   [50];
@@ -83,21 +83,21 @@ UnitsApi::~UnitsApi()
 const char* UnitsApi::getDescription(UnitSystem system)
 {
     switch (system) {
-    case SI1:
+    case UnitSystem::SI1:
         return "Standard (mm/kg/s/degree)";
-    case SI2:
+    case UnitSystem::SI2:
         return "MKS (m/kg/s/degree)";
-    case Imperial1:
+    case UnitSystem::Imperial1:
         return "US customary (in/lb)";
-    case ImperialDecimal:
+    case UnitSystem::ImperialDecimal:
         return "Imperial decimal (in/lb)";
-    case Centimeters:
+    case UnitSystem::Centimeters:
         return "Building Euro (cm/m²/m³)";
-    case ImperialBuilding:
+    case UnitSystem::ImperialBuilding:
         return "Building US (ft-in/sqft/cuft)";
-    case MmMin:
+    case UnitSystem::MmMin:
         return "Metric small parts & CNC(mm, mm/min)";
-    case ImperialCivil:
+    case UnitSystem::ImperialCivil:
         return "Imperial for Civil Eng (ft, ft/sec)";
     default:
         return "Unknown schema";
@@ -107,21 +107,21 @@ const char* UnitsApi::getDescription(UnitSystem system)
 UnitsSchema* UnitsApi::createSchema(UnitSystem s)
 {
     switch (s) {
-    case SI1:
+    case UnitSystem::SI1:
         return new UnitsSchemaInternal();
-    case SI2:
+    case UnitSystem::SI2:
         return new UnitsSchemaMKS();
-    case Imperial1:
+    case UnitSystem::Imperial1:
         return new UnitsSchemaImperial1();
-    case ImperialDecimal:
+    case UnitSystem::ImperialDecimal:
         return new UnitsSchemaImperialDecimal();
-    case Centimeters:
+    case UnitSystem::Centimeters:
         return new UnitsSchemaCentimeters();
-    case ImperialBuilding:
+    case UnitSystem::ImperialBuilding:
         return new UnitsSchemaImperialBuilding();
-    case MmMin:
+    case UnitSystem::MmMin:
         return new UnitsSchemaMmMin();
-    case ImperialCivil:
+    case UnitSystem::ImperialCivil:
         return new UnitsSchemaImperialCivil();
     default:
         break;
@@ -144,7 +144,7 @@ void UnitsApi::setSchema(UnitSystem s)
     // for wrong value fall back to standard schema
     if (!UserPrefSystem) {
         UserPrefSystem = new UnitsSchemaInternal();
-        actSystem = SI1;
+        actSystem = UnitSystem::SI1;
     }
 
     UserPrefSystem->setSchemaUnits(); // if necessary a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
