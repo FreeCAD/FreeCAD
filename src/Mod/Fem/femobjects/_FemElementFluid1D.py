@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Ofentse Kgoa <kgoaot@eskom.co.za>                  *
 # *   Based on the FemElementGeometry1D by Bernd Hahnebach                  *
 # *                                                                         *

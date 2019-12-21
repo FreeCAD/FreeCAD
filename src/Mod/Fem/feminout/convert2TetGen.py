@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2010 - Juergen Riegel <juergen.riegel@web.de>           *
-# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2010 Juergen Riegel <juergen.riegel@web.de>             *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *

@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2015 - FreeCAD Developers                               *
-# *   Author (c) 2015 - Przemo Fiszt < przemo@firszt.eu>                    *
+# *   Copyright (c) 2015 FreeCAD Developers                                 *
+# *   Copyright (c) 2015 Przemo Fiszt <przemo@firszt.eu>                    *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
