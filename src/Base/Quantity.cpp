@@ -213,6 +213,11 @@ QString Quantity::getUserString(double& factor, QString& unitString) const
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
 }
 
+QString Quantity::getUserString(UnitsSchema* schema, double &factor, QString &unitString) const
+{
+    return schema->schemaTranslate(*this, factor, unitString);
+}
+
 /// true if it has a number without a unit
 bool Quantity::isDimensionless(void)const
 {

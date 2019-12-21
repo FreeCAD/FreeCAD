@@ -35,6 +35,7 @@
 #endif
 
 namespace Base {
+class UnitsSchema;
 
 struct BaseExport QuantityFormat {
     enum NumberOption {
@@ -143,12 +144,13 @@ public:
         _Format = f;
     }
     /// transfer to user preferred unit/potence
-    QString getUserString(double &factor, QString &unitString)const;
+    QString getUserString(double &factor, QString &unitString) const;
     QString getUserString(void) const { // to satisfy GCC
         double  dummy1;
         QString dummy2;
         return getUserString(dummy1,dummy2);
     }
+    QString getUserString(UnitsSchema* schema, double &factor, QString &unitString) const;
 
     static Quantity parse(const QString &string);
 

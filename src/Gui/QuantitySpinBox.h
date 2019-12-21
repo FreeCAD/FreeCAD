@@ -25,6 +25,7 @@
 #define GUI_QUANTITYSPINBOX_H
 
 #include <QAbstractSpinBox>
+#include <Base/UnitsSchema.h>
 #include <Gui/MetaTypes.h>
 #include "ExpressionBinding.h"
 
@@ -96,6 +97,13 @@ public:
     /// Sets the number of decimals
     void setDecimals(int v);
 
+    /// Sets a specific unit schema to handle quantities.
+    /// The system-wide schema won't be used any more.
+    void setSchema(const Base::UnitSystem& s);
+
+    /// Clears the schemaand again use the system-wide schema.
+    void clearSchema();
+
     /// Gets the path of the bound property
     QString boundToName() const;
     /// Sets the path of the bound property
@@ -146,6 +154,8 @@ protected:
 
 private:
     void updateText(const Base::Quantity&);
+    QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
+    QString getUserString(const Base::Quantity& val) const;
 
 Q_SIGNALS:
     /** Gets emitted if the user has entered a VALID input

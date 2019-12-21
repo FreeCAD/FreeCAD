@@ -86,7 +86,6 @@ public:
 
     static double defaultFactor;
 
-protected:
     /// return an instance of the given enum value
     static UnitsSchemaPtr createSchema(UnitSystem s);
 
