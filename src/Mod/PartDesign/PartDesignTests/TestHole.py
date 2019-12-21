@@ -1,4 +1,5 @@
-#   Copyright (c) Kurt Kremitzki <kkremitzki@gmail.com>          2017     *
+#**************************************************************************
+#   Copyright (c) 2017 Kurt Kremitzki <kkremitzki@gmail.com>              *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
 #                                                                         *
