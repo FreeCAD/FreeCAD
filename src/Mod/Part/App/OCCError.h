@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Sebastian Hoogen   (github@sebastianhoogen.de) 2014     *
+ *   Copyright (c) 2014 Sebastian Hoogen <github@sebastianhoogen.de>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

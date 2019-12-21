@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) wandererfan       <wandererfan (at) gmail.com> 2013     *
+ *   Copyright (c) 2013 wandererfan <wandererfan (at) gmail.com>           *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
