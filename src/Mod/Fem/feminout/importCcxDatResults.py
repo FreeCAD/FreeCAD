@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 - FreeCAD Developers                               *
+# *   Copyright (c) 2015 FreeCAD Developers                                 *
 # *   Author: Przemo Firszt <przemo@firszt.eu>                              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
