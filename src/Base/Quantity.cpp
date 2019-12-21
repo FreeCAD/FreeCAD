@@ -246,7 +246,8 @@ Quantity Quantity::DeciMetre        (100.0          ,Unit(1));
 Quantity Quantity::Metre            (1.0e3          ,Unit(1));
 Quantity Quantity::KiloMetre        (1.0e6          ,Unit(1));
 
-Quantity Quantity::Liter            (1000000.0      ,Unit(3));
+Quantity Quantity::MilliLiter       (1000.0         ,Unit(3));
+Quantity Quantity::Liter            (1.0e6          ,Unit(3));
 
 Quantity Quantity::Hertz            (1.0            ,Unit(0,0,-1));
 Quantity Quantity::KiloHertz        (1.0e3          ,Unit(0,0,-1));
@@ -272,6 +273,7 @@ Quantity Quantity::Kelvin           (1.0           ,Unit(0,0,0,0,1));
 Quantity Quantity::MilliKelvin      (0.001         ,Unit(0,0,0,0,1));
 Quantity Quantity::MicroKelvin      (0.000001      ,Unit(0,0,0,0,1));
 
+Quantity Quantity::MilliMole        (0.001         ,Unit(0,0,0,0,0,1));
 Quantity Quantity::Mole             (1.0           ,Unit(0,0,0,0,0,1));
 
 Quantity Quantity::Candela          (1.0           ,Unit(0,0,0,0,0,0,1));
@@ -287,17 +289,20 @@ Quantity Quantity::Ounce            (0.0283495231  ,Unit(0,1));
 Quantity Quantity::Stone            (6.35029318    ,Unit(0,1));
 Quantity Quantity::Hundredweights   (50.80234544   ,Unit(0,1));
 
-Quantity Quantity::PoundForce       (224.81        ,Unit(1,1,-2));  // Newton  are ~= 0.22481 lbF
+Quantity Quantity::PoundForce       (224.81        ,Unit(1,1,-2)); // Newton  are ~= 0.22481 lbF
 
-Quantity Quantity::Newton           (1000.0        ,Unit(1,1,-2));  // Newton (kg*m/s^2)
+Quantity Quantity::Newton           (1000.0        ,Unit(1,1,-2)); // Newton (kg*m/s^2)
+Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 Quantity Quantity::KiloNewton       (1e+6          ,Unit(1,1,-2));
 Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
-Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 
 Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
 Quantity Quantity::MegaPascal       (1000.0        ,Unit(-1,1,-2));
 Quantity Quantity::GigaPascal       (1e+6          ,Unit(-1,1,-2));
+
+Quantity Quantity::MilliBar         (0.1           ,Unit(-1,1,-2));
+Quantity Quantity::Bar              (100.0         ,Unit(-1,1,-2)); // 1 bar = 100 kPa
 
 Quantity Quantity::Torr             (101.325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::mTorr            (0.101325/760.0,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
@@ -306,15 +311,38 @@ Quantity Quantity::yTorr            (0.000101325/760.0 ,Unit(-1,1,-2)); // Torr 
 Quantity Quantity::PSI              (6.894744825494,Unit(-1,1,-2)); // pounds/in^2
 Quantity Quantity::KSI              (6894.744825494,Unit(-1,1,-2)); // 1000 x pounds/in^2
 
-Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3));  // Watt (kg*m^2/s^3)
-Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3));  // VoltAmpere (kg*m^2/s^3)
+Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3)); // Watt (kg*m^2/s^3)
+Quantity Quantity::MilliWatt        (1e+3          ,Unit(2,1,-3));
+Quantity Quantity::KiloWatt         (1e+9          ,Unit(2,1,-3));
+Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3)); // VoltAmpere (kg*m^2/s^3)
 
-Quantity Quantity::Volt             (1e+6          ,Unit(2,1,-3,-1));  // Volt (kg*m^2/A/s^3)
+Quantity Quantity::Volt             (1e+6          ,Unit(2,1,-3,-1)); // Volt (kg*m^2/A/s^3)
+Quantity Quantity::MilliVolt        (1e+3          ,Unit(2,1,-3,-1));
+Quantity Quantity::KiloVolt         (1e+9          ,Unit(2,1,-3,-1));
 
-Quantity Quantity::Joule            (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
-Quantity Quantity::NewtonMeter      (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
-Quantity Quantity::VoltAmpereSecond (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
-Quantity Quantity::WattSecond       (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::Coulomb          (1.0           ,Unit(0,0,1,1)); // Coulomb (A*s)
+
+Quantity Quantity::Tesla            (1.0           ,Unit(0,1,-2,-1)); // Tesla (kg/s^2/A)
+
+Quantity Quantity::PicoFarad        (1e-18         ,Unit(-2,-1,4,2));
+Quantity Quantity::NanoFarad        (1e-15         ,Unit(-2,-1,4,2));
+Quantity Quantity::MicroFarad       (1e-12         ,Unit(-2,-1,4,2));
+Quantity Quantity::MilliFarad       (1e-9          ,Unit(-2,-1,4,2));
+Quantity Quantity::Farad            (1e-6          ,Unit(-2,-1,4,2)); // Farad (s^4*A^2/m^2/kg)
+
+Quantity Quantity::NanoHenry        (1e-3          ,Unit(2,1,-2,-2));
+Quantity Quantity::MicroHenry       (1.0           ,Unit(2,1,-2,-2));
+Quantity Quantity::MilliHenry       (1e+3          ,Unit(2,1,-2,-2));
+Quantity Quantity::Henry            (1e+6          ,Unit(2,1,-2,-2)); // Henry (kg*m^2/s^2/A^2)
+
+Quantity Quantity::Joule            (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::MilliJoule       (1e+3            ,Unit(2,1,-2));
+Quantity Quantity::KiloJoule        (1e+9            ,Unit(2,1,-2));
+Quantity Quantity::NewtonMeter      (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::VoltAmpereSecond (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::WattSecond       (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::KiloWattHour     (3.6e+12         ,Unit(2,1,-2));  // 1 kWh = 3.6e6 J
+Quantity Quantity::ElectronVolt     (1.602176634e-13 ,Unit(2,1,-2));  // 1 eV = 1.602176634e-19 J
 
 Quantity Quantity::KMH              (277.778       ,Unit(1,0,-1));  // km/h
 Quantity Quantity::MPH              (447.04        ,Unit(1,0,-1));  // Mile/h

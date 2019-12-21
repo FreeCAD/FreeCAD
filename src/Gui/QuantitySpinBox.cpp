@@ -682,6 +682,21 @@ void QuantitySpinBox::setRange(double minimum, double maximum)
     d->maximum = maximum;
 }
 
+int QuantitySpinBox::decimals() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->quantity.getFormat().precision;
+}
+
+void QuantitySpinBox::setDecimals(int v)
+{
+    Q_D(QuantitySpinBox);
+    Base::QuantityFormat f = d->quantity.getFormat();
+    f.precision = v;
+    d->quantity.setFormat(f);
+    updateText(d->quantity);
+}
+
 QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 {
     Q_D(const QuantitySpinBox);

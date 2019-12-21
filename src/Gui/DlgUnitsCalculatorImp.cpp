@@ -66,19 +66,45 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->ValueInput->setText(QString::fromLatin1("1 cm"));
     ui->UnitInput->setText(QString::fromLatin1("in"));
 
-    units << Base::Unit::Length << Base::Unit::Mass << Base::Unit::Angle << Base::Unit::Density
-          << Base::Unit::Area << Base::Unit::Volume << Base::Unit::TimeSpan << Base::Unit::Frequency
-          << Base::Unit::Velocity << Base::Unit::Acceleration << Base::Unit::Temperature
-          << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential
-          << Base::Unit::AmountOfSubstance << Base::Unit::LuminousIntensity << Base::Unit::Stress
-          << Base::Unit::Pressure << Base::Unit::Force << Base::Unit::Work << Base::Unit::Power
-          << Base::Unit::ThermalConductivity << Base::Unit::ThermalExpansionCoefficient
-          << Base::Unit::SpecificHeat << Base::Unit::ThermalTransferCoefficient << Base::Unit::HeatFlux;
+    units << Base::Unit::Acceleration
+          << Base::Unit::AmountOfSubstance
+          << Base::Unit::Angle
+          << Base::Unit::Area
+          << Base::Unit::Density
+          << Base::Unit::ElectricalCapacitance
+          << Base::Unit::ElectricalInductance
+          << Base::Unit::ElectricCharge
+          << Base::Unit::ElectricCurrent
+          << Base::Unit::ElectricPotential
+          << Base::Unit::Frequency
+          << Base::Unit::Force
+          << Base::Unit::HeatFlux
+          << Base::Unit::Length
+          << Base::Unit::LuminousIntensity
+          << Base::Unit::Mass
+          << Base::Unit::MagneticFluxDensity
+          << Base::Unit::Pressure
+          << Base::Unit::Power
+          << Base::Unit::SpecificHeat
+          << Base::Unit::Stress
+          << Base::Unit::Temperature
+          << Base::Unit::ThermalConductivity
+          << Base::Unit::ThermalExpansionCoefficient
+          << Base::Unit::ThermalTransferCoefficient
+          << Base::Unit::TimeSpan
+          << Base::Unit::Velocity
+          << Base::Unit::Volume
+          << Base::Unit::Work;
     for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
         ui->unitsBox->addItem(it->getTypeString());
     }
 
+    ui->quantitySpinBox->setValue(1.0);
     ui->quantitySpinBox->setUnit(units.front());
+    ui->spinBoxDecimals->setValue(Base::UnitsApi::getDecimals());
+
+    // see on_comboBoxScheme_activated
+    ui->comboBoxScheme->setDisabled(true);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -104,8 +130,11 @@ void DlgUnitsCalculator::textChanged(QString unit)
 
 void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
 {
-    // first check the unit, if it is invalid, getTypeString() outputs an empty string 
-    if (Base::Unit(ui->UnitInput->text()).getTypeString().isEmpty()) {
+    // first check the unit, if it is invalid, getTypeString() outputs an empty string
+    // explicitly check for "ee" like in "eeV" because this would trigger an exception in Base::Unit
+    // since it expects then a scientific notation number like "1e3"
+    if ( (ui->UnitInput->text().mid(0, 2) == QString::fromLatin1("ee")) ||
+        Base::Unit(ui->UnitInput->text()).getTypeString().isEmpty()) {
         ui->ValueOutput->setText(tr("unknown unit: ") + ui->UnitInput->text());
         ui->pushButton_Copy->setEnabled(false);
     } else { // the unit is valid
@@ -158,7 +187,26 @@ void DlgUnitsCalculator::returnPressed(void)
 
 void DlgUnitsCalculator::on_unitsBox_activated(int index)
 {
-    ui->quantitySpinBox->setUnit(units[index]);
+    // SI units use [m], not [mm] for lengths
+    //
+    Base::Quantity q = ui->quantitySpinBox->value();
+    int32_t old = q.getUnit().getSignature().Length;
+    double value = q.getValue();
+
+    Base::Unit unit = units[index];
+    int32_t len = unit.getSignature().Length;
+    ui->quantitySpinBox->setValue(Base::Quantity(value * std::pow(10.0, 3*(len-old)), unit));
+}
+
+void DlgUnitsCalculator::on_comboBoxScheme_activated(int index)
+{
+    //TODO
+    Q_UNUSED(index)
+}
+
+void DlgUnitsCalculator::on_spinBoxDecimals_valueChanged(int value)
+{
+    ui->quantitySpinBox->setDecimals(value);
 }
 
 #include "moc_DlgUnitsCalculatorImp.cpp"

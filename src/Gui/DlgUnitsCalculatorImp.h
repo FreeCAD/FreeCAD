@@ -53,6 +53,8 @@ protected Q_SLOTS:
     void textChanged(const QString);
     void valueChanged(const Base::Quantity&);
     void on_unitsBox_activated(int);
+    void on_comboBoxScheme_activated(int);
+    void on_spinBoxDecimals_valueChanged(int);
 
     void copy(void);
     void returnPressed(void);
