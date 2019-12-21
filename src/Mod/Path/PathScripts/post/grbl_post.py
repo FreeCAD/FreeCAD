@@ -57,6 +57,9 @@ G17 G90
 M2
 '''                               # default postamble text will appear following the last operation.
 
+SPINDLE_WAIT = 0                  # no waiting after M3 / M4 by default
+RETURN_TO = None                  # no movements after end of program
+
 # Customisation with no command line argument
 MODAL = False                     # if true commands are suppressed if the same as previous line.
 LINENR = 100                      # line number starting value
@@ -92,6 +95,8 @@ parser.add_argument('--preamble',                                help='set comma
 parser.add_argument('--postamble',                               help='set commands to be issued after the last command, default="M5\nG17 G90\n;M2"')
 parser.add_argument('--inches',             action='store_true', help='Convert output for US imperial mode (G20)')
 parser.add_argument('--tool-change',        action='store_true', help='Insert M6 for all tool changes')
+parser.add_argument('--wait-for-spindle',   type=int, default=0, help='Wait for spindle to reach desired speed after M3 / M4, default=0')
+parser.add_argument('--return-to',          default='',          help='Move to the specified coordinates at the end, e.g. --return-to=0,0')
 TOOLTIP_ARGS = parser.format_help()
 
 
@@ -128,6 +133,8 @@ def processArguments(argstring):
   global UNIT_FORMAT
   global TRANSLATE_DRILL_CYCLES
   global OUTPUT_TOOL_CHANGE
+  global SPINDLE_WAIT
+  global RETURN_TO
 
   try:
     args = parser.parse_args(shlex.split(argstring))
@@ -163,6 +170,14 @@ def processArguments(argstring):
       PRECISION = 4
     if args.tool_change:
       OUTPUT_TOOL_CHANGE = True
+    if args.wait_for_spindle > 0:
+      SPINDLE_WAIT = args.wait_for_spindle
+    if args.return_to != '':
+      RETURN_TO = [int(v) for v in args.return_to.split(',')]
+      if len(RETURN_TO) != 2:
+        RETURN_TO = None
+        print("--return-to coordinates must be specified as <x>,<y>, ignoring")
+
 
   except Exception as e:
     return False
@@ -247,6 +262,9 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + "(Begin postamble)\n"
   for line in POSTAMBLE.splitlines(True):
     gcode += linenumber() + line
+
+  if RETURN_TO:
+    gcode += linenumber() + "G0 X%s Y%s" % tuple(RETURN_TO)
 
   # show the gCode result dialog
   if FreeCAD.GuiUp and SHOW_EDITOR:
@@ -365,6 +383,13 @@ def parse(pathobj):
         if command in ('G81', 'G82', 'G83'):
           out += drill_translate(outstring, command, c.Parameters)
           # Efface la ligne que l'on vient de translater
+          del(outstring[:])
+          outstring = []
+
+      if SPINDLE_WAIT > 0:
+        if command in ('M3', 'M03', 'M4', 'M04'):
+          out += linenumber() + format_outstring(outstring) + "\n"
+          out += linenumber() + format_outstring(['G4', 'P%s' % SPINDLE_WAIT]) + "\n"
           del(outstring[:])
           outstring = []
 
