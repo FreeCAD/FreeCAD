@@ -34,6 +34,7 @@
 #include "UnitsSchemaMKS.h"
 #include "UnitsSchemaCentimeters.h"
 #include "UnitsSchemaMmMin.h"
+#include "StdStlTools.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -61,7 +62,7 @@ using namespace Base;
 // === static attributes  ================================================
 double UnitsApi::defaultFactor = 1.0;
 
-UnitsSchema  *UnitsApi::UserPrefSystem = new UnitsSchemaInternal();
+UnitsSchemaPtr  UnitsApi::UserPrefSystem(new UnitsSchemaInternal());
 UnitSystem    UnitsApi::actSystem = UnitSystem::SI1;
 
 //double   UnitsApi::UserPrefFactor [50];
@@ -104,38 +105,36 @@ const char* UnitsApi::getDescription(UnitSystem system)
     }
 }
 
-UnitsSchema* UnitsApi::createSchema(UnitSystem s)
+UnitsSchemaPtr UnitsApi::createSchema(UnitSystem s)
 {
     switch (s) {
     case UnitSystem::SI1:
-        return new UnitsSchemaInternal();
+        return std::make_unique<UnitsSchemaInternal>();
     case UnitSystem::SI2:
-        return new UnitsSchemaMKS();
+        return std::make_unique<UnitsSchemaMKS>();
     case UnitSystem::Imperial1:
-        return new UnitsSchemaImperial1();
+        return std::make_unique<UnitsSchemaImperial1>();
     case UnitSystem::ImperialDecimal:
-        return new UnitsSchemaImperialDecimal();
+        return std::make_unique<UnitsSchemaImperialDecimal>();
     case UnitSystem::Centimeters:
-        return new UnitsSchemaCentimeters();
+        return std::make_unique<UnitsSchemaCentimeters>();
     case UnitSystem::ImperialBuilding:
-        return new UnitsSchemaImperialBuilding();
+        return std::make_unique<UnitsSchemaImperialBuilding>();
     case UnitSystem::MmMin:
-        return new UnitsSchemaMmMin();
+        return std::make_unique<UnitsSchemaMmMin>();
     case UnitSystem::ImperialCivil:
-        return new UnitsSchemaImperialCivil();
+        return std::make_unique<UnitsSchemaImperialCivil>();
     default:
         break;
     }
 
-    return 0;
+    return nullptr;
 }
 
 void UnitsApi::setSchema(UnitSystem s)
 {
     if (UserPrefSystem) {
         UserPrefSystem->resetSchemaUnits(); // for schemas changed the Quantity constants
-        delete UserPrefSystem;
-        UserPrefSystem = 0;
     }
 
     UserPrefSystem = createSchema(s);
@@ -143,7 +142,7 @@ void UnitsApi::setSchema(UnitSystem s)
 
     // for wrong value fall back to standard schema
     if (!UserPrefSystem) {
-        UserPrefSystem = new UnitsSchemaInternal();
+        UserPrefSystem = std::make_unique<UnitsSchemaInternal>();
         actSystem = UnitSystem::SI1;
     }
 
