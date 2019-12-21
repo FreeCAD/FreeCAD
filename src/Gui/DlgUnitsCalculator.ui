@@ -119,48 +119,7 @@ To add a calculation press Return in the value input field</string>
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QComboBox" name="comboBoxScheme">
-        <item>
-         <property name="text">
-          <string>Standard (mm/kg/s/degree)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>MKS (m/kg/s/degree)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>US customary (in/lb)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Imperial decimal (in/lb)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Building Euro (cm/m²/m³)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Building US (ft-in/sqft/cuft)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Metric small parts &amp; CNC(mm, mm/min)</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Imperial Civil (ft/ft^2/ft^3)</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="comboBoxScheme"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_5">

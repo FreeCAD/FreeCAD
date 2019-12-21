@@ -50,6 +50,13 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
+    ui->comboBoxScheme->addItem(QString::fromLatin1("System schema"), static_cast<int>(-1));
+    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+    for (int i=0; i<num; i++) {
+        QString item = QString::fromLatin1(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        ui->comboBoxScheme->addItem(item, i);
+    }
+
     connect(ui->ValueInput, SIGNAL(valueChanged(Base::Quantity)), this, SLOT(valueChanged(Base::Quantity)));
     connect(ui->ValueInput, SIGNAL(returnPressed()), this, SLOT(returnPressed()));
     connect(ui->UnitInput, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
@@ -102,9 +109,6 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     ui->quantitySpinBox->setValue(1.0);
     ui->quantitySpinBox->setUnit(units.front());
     ui->spinBoxDecimals->setValue(Base::UnitsApi::getDecimals());
-
-    // see on_comboBoxScheme_activated
-    ui->comboBoxScheme->setDisabled(true);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -200,8 +204,11 @@ void DlgUnitsCalculator::on_unitsBox_activated(int index)
 
 void DlgUnitsCalculator::on_comboBoxScheme_activated(int index)
 {
-    //TODO
-    Q_UNUSED(index)
+    int item = ui->comboBoxScheme->itemData(index).toInt();
+    if (item > 0)
+        ui->quantitySpinBox->setSchema(static_cast<Base::UnitSystem>(item));
+    else
+        ui->quantitySpinBox->clearSchema();
 }
 
 void DlgUnitsCalculator::on_spinBoxDecimals_valueChanged(int value)
