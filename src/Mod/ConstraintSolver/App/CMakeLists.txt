@@ -42,6 +42,7 @@ generate_from_xml(G2D/ParaPlacementPy)
 generate_from_xml(G2D/ParaShapePy)
 
 generate_from_xml(G2D/ConstraintDistancePy)
+generate_from_xml(G2D/ConstraintPlacementRulesPy)
 
 SET(ConstraintSolver_G2D
     G2D/Vector.h
@@ -74,6 +75,10 @@ SET(ConstraintSolver_G2D
     G2D/ConstraintDistance.cpp
     G2D/ConstraintDistancePy.xml
     G2D/ConstraintDistancePyImp.cpp
+    G2D/ConstraintPlacementRules.h
+    G2D/ConstraintPlacementRules.cpp
+    G2D/ConstraintPlacementRulesPy.xml
+    G2D/ConstraintPlacementRulesPyImp.cpp
 )
 
 SET(ConstraintSolver_Utils_SRCS

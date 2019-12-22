@@ -70,6 +70,8 @@
 #include "G2D/ParaShapePy.h"
 #include "G2D/ConstraintDistance.h"
 #include "G2D/ConstraintDistancePy.h"
+#include "G2D/ConstraintPlacementRules.h"
+#include "G2D/ConstraintPlacementRulesPy.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -177,6 +179,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ParaTransformPy            ::Type.tp_name = "ConstraintSolver.G2D.ParaTransform"            ;
     FCS::G2D::ParaShapePy                ::Type.tp_name = "ConstraintSolver.G2D.ParaShape"                ;
     FCS::G2D::ConstraintDistancePy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistance"       ;
+    FCS::G2D::ConstraintPlacementRulesPy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintPlacementRules" ;
 
     Base::Interpreter().addType(&FCS::G2D::ParaPointPy                ::Type, submodG2D.ptr(), "ParaPoint"                );
     Base::Interpreter().addType(&FCS::G2D::ParaVectorPy               ::Type, submodG2D.ptr(), "ParaVector"               );
@@ -184,6 +187,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::G2D::ParaTransformPy            ::Type, submodG2D.ptr(), "ParaTransform"            );
     Base::Interpreter().addType(&FCS::G2D::ParaShapePy                ::Type, submodG2D.ptr(), "ParaShape"                );
     Base::Interpreter().addType(&FCS::G2D::ConstraintDistancePy       ::Type, submodG2D.ptr(), "ConstraintDistance"       );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintPlacementRulesPy ::Type, submodG2D.ptr(), "ConstraintPlacementRules" );
   //Base::Interpreter().addType(&FCS::G2D::                           ::Type, submodG2D.ptr(), ""                         );
 
     //fill type system
@@ -206,6 +210,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ParaTransform            ::init();
     FCS::G2D::ParaShapeBase            ::init();
     FCS::G2D::ConstraintDistance       ::init();
+    FCS::G2D::ConstraintPlacementRules ::init();
 
     Base::Console().Log("Loading ConstraintSolver module... done\n");
     PyMOD_Return(mod);

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="SimpleConstraintPy" 
+	  Name="ConstraintPlacementRulesPy" 
+	  Twin="ConstraintPlacementRules" 
+	  TwinPointer="ConstraintPlacementRules" 
+	  Include="Mod/ConstraintSolver/App/G2D/ConstraintPlacementRules.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/SimpleConstraintPy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="true"
+	  Delete="false"
+	  FatherNamespace="FCS"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu></DeveloperDocu>
+	  <UserDocu></UserDocu>
+	</Documentation>
+    
+    
+  </PythonExport>
+</GenerateModel>
