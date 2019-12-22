@@ -171,20 +171,20 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Py::Module submodG2D =  makeSubmodule(mod, "__FreeCAD_FCS_G2D__", "G2D", init_freecad_FCS_G2D_module);
 
 
-    FCS::G2D::ParaPointPy          ::Type.tp_name = "ConstraintSolver.G2D.ParaGeometry"       ;
-    FCS::G2D::ParaVectorPy         ::Type.tp_name = "ConstraintSolver.G2D.ParaVector"         ;
-    FCS::G2D::ParaPlacementPy      ::Type.tp_name = "ConstraintSolver.G2D.ParaPlacement"      ;
-    FCS::G2D::ParaTransformPy      ::Type.tp_name = "ConstraintSolver.G2D.ParaTransform"      ;
-    FCS::G2D::ParaShapePy          ::Type.tp_name = "ConstraintSolver.G2D.ParaShape"          ;
-    FCS::G2D::ConstraintDistancePy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistance" ;
+    FCS::G2D::ParaPointPy                ::Type.tp_name = "ConstraintSolver.G2D.ParaGeometry"             ;
+    FCS::G2D::ParaVectorPy               ::Type.tp_name = "ConstraintSolver.G2D.ParaVector"               ;
+    FCS::G2D::ParaPlacementPy            ::Type.tp_name = "ConstraintSolver.G2D.ParaPlacement"            ;
+    FCS::G2D::ParaTransformPy            ::Type.tp_name = "ConstraintSolver.G2D.ParaTransform"            ;
+    FCS::G2D::ParaShapePy                ::Type.tp_name = "ConstraintSolver.G2D.ParaShape"                ;
+    FCS::G2D::ConstraintDistancePy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistance"       ;
 
-    Base::Interpreter().addType(&FCS::G2D::ParaPointPy          ::Type, submodG2D.ptr(), "ParaPoint"           );
-    Base::Interpreter().addType(&FCS::G2D::ParaVectorPy         ::Type, submodG2D.ptr(), "ParaVector"          );
-    Base::Interpreter().addType(&FCS::G2D::ParaPlacementPy      ::Type, submodG2D.ptr(), "ParaPlacement"       );
-    Base::Interpreter().addType(&FCS::G2D::ParaTransformPy      ::Type, submodG2D.ptr(), "ParaTransform"       );
-    Base::Interpreter().addType(&FCS::G2D::ParaShapePy          ::Type, submodG2D.ptr(), "ParaShape"           );
-    Base::Interpreter().addType(&FCS::G2D::ConstraintDistancePy ::Type, submodG2D.ptr(), "ConstraintDistance"  );
-  //Base::Interpreter().addType(&FCS::G2D::                     ::Type, submodG2D.ptr(), ""                    );
+    Base::Interpreter().addType(&FCS::G2D::ParaPointPy                ::Type, submodG2D.ptr(), "ParaPoint"                );
+    Base::Interpreter().addType(&FCS::G2D::ParaVectorPy               ::Type, submodG2D.ptr(), "ParaVector"               );
+    Base::Interpreter().addType(&FCS::G2D::ParaPlacementPy            ::Type, submodG2D.ptr(), "ParaPlacement"            );
+    Base::Interpreter().addType(&FCS::G2D::ParaTransformPy            ::Type, submodG2D.ptr(), "ParaTransform"            );
+    Base::Interpreter().addType(&FCS::G2D::ParaShapePy                ::Type, submodG2D.ptr(), "ParaShape"                );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintDistancePy       ::Type, submodG2D.ptr(), "ConstraintDistance"       );
+  //Base::Interpreter().addType(&FCS::G2D::                           ::Type, submodG2D.ptr(), ""                         );
 
     //fill type system
     FCS::ParameterStore     ::init();
@@ -200,12 +200,12 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::SQP                ::init();
 
 
-    FCS::G2D::ParaPoint          ::init();
-    FCS::G2D::ParaVector         ::init();
-    FCS::G2D::ParaPlacement      ::init();
-    FCS::G2D::ParaTransform      ::init();
-    FCS::G2D::ParaShapeBase      ::init();
-    FCS::G2D::ConstraintDistance ::init();
+    FCS::G2D::ParaPoint                ::init();
+    FCS::G2D::ParaVector               ::init();
+    FCS::G2D::ParaPlacement            ::init();
+    FCS::G2D::ParaTransform            ::init();
+    FCS::G2D::ParaShapeBase            ::init();
+    FCS::G2D::ConstraintDistance       ::init();
 
     Base::Console().Log("Loading ConstraintSolver module... done\n");
     PyMOD_Return(mod);
