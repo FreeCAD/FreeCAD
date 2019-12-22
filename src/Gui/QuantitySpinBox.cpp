@@ -26,6 +26,7 @@
 # include <QDebug>
 # include <QLineEdit>
 # include <QFocusEvent>
+# include <QFontMetrics>
 # include <QHBoxLayout>
 # include <QLabel>
 # include <QStyle>
@@ -477,10 +478,8 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else {
-        if (!hasExpression())
+    else if (!hasExpression())
             QAbstractSpinBox::keyPressEvent(event);
-    }
 }
 
 
@@ -767,6 +766,67 @@ void QuantitySpinBox::stepBy(int steps)
     lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
     update();
     selectNumber();
+}
+
+QSize QuantitySpinBox::sizeHint() const
+{
+    Q_D(const QuantitySpinBox);
+    ensurePolished();
+
+    const QFontMetrics fm(fontMetrics());
+    int h = lineEdit()->sizeHint().height();
+    int w = 0;
+
+    QString s;
+    QString fixedContent = QLatin1String(" ");
+
+    Base::Quantity q(d->quantity);
+    q.setValue(d->maximum);
+    s = textFromValue(q);
+    s.truncate(18);
+    s += fixedContent;
+    w = qMax(w, fm.width(s));
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
+                        .expandedTo(QApplication::globalStrut());
+    return size;
+}
+
+QSize QuantitySpinBox::minimumSizeHint() const
+{
+    Q_D(const QuantitySpinBox);
+    ensurePolished();
+
+    const QFontMetrics fm(fontMetrics());
+    int h = lineEdit()->minimumSizeHint().height();
+    int w = 0;
+
+    QString s;
+    QString fixedContent = QLatin1String(" ");
+
+    Base::Quantity q(d->quantity);
+    q.setValue(d->maximum);
+    s = textFromValue(q);
+    s.truncate(18);
+    s += fixedContent;
+    w = qMax(w, fm.width(s));
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
+                               .expandedTo(QApplication::globalStrut());
+    return size;
 }
 
 void QuantitySpinBox::showEvent(QShowEvent * event)
