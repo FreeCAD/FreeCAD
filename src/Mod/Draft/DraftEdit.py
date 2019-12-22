@@ -997,36 +997,33 @@ class Edit():
     def getRectanglePts(self, obj):
         '''
         returns the list of edipoints for the given Draft Rectangle
-        circle:
-        0 : Placement.Base or center
-        1 : radius
-        arc:
-        0 : Placement.Base or center
-        1 : first endpoint
-        2 : second endpoint
-        3 : midpoint
+        0 : Placement.Base
+        1 : Length
+        2 : Height
         '''
         editpoints = []
         editpoints.append(obj.getGlobalPlacement().Base)
-        editpoints.append(obj.getGlobalPlacement().multVec(obj.Shape.Vertexes[2].Point))
-        v = obj.Shape.Vertexes
+        editpoints.append(obj.getGlobalPlacement().multVec(FreeCAD.Vector(obj.Length,0,0))
+        editpoints.append(obj.getGlobalPlacement().multVec(FreeCAD.Vector(0,obj.Height,0))
+        '''v = obj.Shape.Vertexes
         self.bx = v[1].Point.sub(v[0].Point)
         if obj.Length < 0:
             self.bx = self.bx.negative()
         self.by = v[2].Point.sub(v[1].Point)
         if obj.Height < 0:
-            self.by = self.by.negative()
+            self.by = self.by.negative()'''
         return editpoints
 
     def updateRectangle(self, obj, nodeIndex, v):
         import DraftVecUtils
-        delta = v.sub(obj.Placement.Base)
+        delta = obj.getGlobalPlacement().inverse().multVec(v)
         if nodeIndex == 0:
             p = obj.Placement
             p.move(delta)
             obj.Placement = p
         elif self.editing == 1:
-            diag = v.sub(obj.Placement.Base)
+            obj.Length = DraftVecUtils.project(delta,FreeCAD.Vector(1,0,0)).Length
+            '''diag = v.sub(obj.Placement.Base)
             nx = DraftVecUtils.project(diag,self.bx)
             ny = DraftVecUtils.project(diag,self.by)
             ax = nx.Length
@@ -1038,7 +1035,10 @@ class Edit():
                     ay = -ay
                 obj.Length = ax
                 obj.Height = ay
-                obj.recompute()
+                obj.recompute()'''
+        elif self.editing == 1:
+            obj.Length = DraftVecUtils.project(delta,FreeCAD.Vector(0,1,0)).Length
+
         self.trackers[obj.Name][0].set(obj.Placement.Base)
         self.trackers[obj.Name][1].set(obj.Shape.Vertexes[2].Point)
 
