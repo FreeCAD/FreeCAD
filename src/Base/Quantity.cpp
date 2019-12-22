@@ -315,6 +315,7 @@ Quantity Quantity::yTorr            (0.000101325/760.0 ,Unit(-1,1,-2)); // Torr 
 
 Quantity Quantity::PSI              (6.894744825494,Unit(-1,1,-2)); // pounds/in^2
 Quantity Quantity::KSI              (6894.744825494,Unit(-1,1,-2)); // 1000 x pounds/in^2
+Quantity Quantity::MPSI             (6894744.825494,Unit(-1,1,-2)); // 1000 ksi
 
 Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3)); // Watt (kg*m^2/s^3)
 Quantity Quantity::MilliWatt        (1e+3          ,Unit(2,1,-3));
@@ -348,6 +349,8 @@ Quantity Quantity::VoltAmpereSecond (1e+6            ,Unit(2,1,-2));  // Joule (
 Quantity Quantity::WattSecond       (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
 Quantity Quantity::KiloWattHour     (3.6e+12         ,Unit(2,1,-2));  // 1 kWh = 3.6e6 J
 Quantity Quantity::ElectronVolt     (1.602176634e-13 ,Unit(2,1,-2));  // 1 eV = 1.602176634e-19 J
+Quantity Quantity::Calorie          (4.1868e+6       ,Unit(2,1,-2));  // 1 cal = 4.1868 J
+Quantity Quantity::KiloCalorie      (4.1868e+9       ,Unit(2,1,-2));
 
 Quantity Quantity::KMH              (277.778       ,Unit(1,0,-1));  // km/h
 Quantity Quantity::MPH              (447.04        ,Unit(1,0,-1));  // Mile/h

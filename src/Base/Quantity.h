@@ -252,6 +252,7 @@ public:
 
     static Quantity PSI;
     static Quantity KSI;
+    static Quantity MPSI;
 
     static Quantity Watt;
     static Quantity MilliWatt;
@@ -285,6 +286,8 @@ public:
     static Quantity WattSecond;
     static Quantity KiloWattHour;
     static Quantity ElectronVolt;
+    static Quantity Calorie;
+    static Quantity KiloCalorie;
 
     static Quantity KMH;
     static Quantity MPH;
