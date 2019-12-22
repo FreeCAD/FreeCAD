@@ -124,6 +124,8 @@ public:
     virtual QValidator::State validate(QString &input, int &pos) const;
     virtual void fixup(QString &str) const;
 
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
     bool event(QEvent *event);
 
     void setExpression(boost::shared_ptr<App::Expression> expr);
