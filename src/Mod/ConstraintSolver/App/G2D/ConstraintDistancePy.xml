@@ -14,8 +14,8 @@
 	  DisableNotify="true">
 	<Documentation>
 	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
-	  <DeveloperDocu>2D point</DeveloperDocu>
-	  <UserDocu>2D point</UserDocu>
+	  <DeveloperDocu></DeveloperDocu>
+	  <UserDocu></UserDocu>
 	</Documentation>
     
     
