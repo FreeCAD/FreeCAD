@@ -129,6 +129,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 
 "psi"      yylval = Quantity::PSI;                 return UNIT; // pounds/in^2
 "ksi"      yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2
+"Mpsi"     yylval = Quantity::MPSI;                return UNIT; // 1000 ksi
 
 "W"        yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
 "mW"       yylval = Quantity::MilliWatt;           return UNIT; // milli Watt
@@ -165,6 +166,8 @@ CGRP     '\,'[0-9][0-9][0-9]
 "Ws"       yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
 "kWh"      yylval = Quantity::KiloWattHour;        return UNIT; // 1 kWh = 3.6e6 J
 "eV"       yylval = Quantity::ElectronVolt;        return UNIT; // 1 eV = 1.602176634e-19 J
+"cal"      yylval = Quantity::Calorie;             return UNIT; // 1 cal = 4.1868 J 
+"kcal"     yylval = Quantity::KiloCalorie;         return UNIT; 
 
 "\xC2\xB0" yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 "deg"      yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)

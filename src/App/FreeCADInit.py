@@ -641,6 +641,11 @@ App.Units.KiloMetre     = App.Units.Quantity('km')
 App.Units.MilliLiter    = App.Units.Quantity('ml')
 App.Units.Liter         = App.Units.Quantity('l')
 
+App.Units.Hertz         = App.Units.Quantity('Hz')
+App.Units.KiloHertz     = App.Units.Quantity('kHz')
+App.Units.MegaHertz     = App.Units.Quantity('MHz')
+App.Units.GigaHertz     = App.Units.Quantity('GHz')
+
 App.Units.MicroGram     = App.Units.Quantity('ug')
 App.Units.MilliGram     = App.Units.Quantity('mg')
 App.Units.Gram          = App.Units.Quantity('g')
@@ -696,6 +701,7 @@ App.Units.yTorr         = App.Units.Quantity().yTorr
 
 App.Units.PSI           = App.Units.Quantity('psi')
 App.Units.KSI           = App.Units.Quantity('ksi')
+App.Units.MPSI          = App.Units.Quantity('Mpsi')
 
 App.Units.Watt          = App.Units.Quantity('W')
 App.Units.MilliWatt     = App.Units.Quantity('mW')
@@ -729,6 +735,8 @@ App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
 App.Units.WattSecond    = App.Units.Quantity('Ws')
 App.Units.KiloWattHour  = App.Units.Quantity('kWh')
 App.Units.ElectronVolt  = App.Units.Quantity('eV')
+App.Units.Calorie       = App.Units.Quantity('cal')
+App.Units.KiloCalorie   = App.Units.Quantity('kcal')
 
 App.Units.MPH           = App.Units.Quantity('mi/h')
 App.Units.KMH           = App.Units.Quantity('km/h')
