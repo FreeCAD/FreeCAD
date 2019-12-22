@@ -29,8 +29,6 @@ G2D::ParaShapeBase::ParaShapeBase(HParaGeometry tshape, HParaTransform placement
 
 void FCS::G2D::ParaShapeBase::initAttrs()
 {
-    _attrs = {
-    };
     _children = {
         //valueref , name       , PyType                , make , writeOnce
         {&placement, "placement", &ParaTransformPy::Type, false, true     },
