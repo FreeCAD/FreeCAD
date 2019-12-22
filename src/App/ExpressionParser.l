@@ -1,7 +1,7 @@
 %{
-/* Lexer for the FreeCAD  Expression language   */
-/* (c) 2010 Juergen Riegel  LGPL           */
-/* (c) 2015 Eivind Kvedalen LGPL           */
+/* Lexer for the FreeCAD Expression language   */
+/* (c) 2010 Jürgen Riegel LGPL                 */
+/* (c) 2015 Eivind Kvedalen LGPL               */
 
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
