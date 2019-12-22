@@ -66,7 +66,6 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
     connect(ui->pushButton_Copy, SIGNAL(clicked()), this, SLOT(copy()));
 
     connect(ui->ValueInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
-    connect(ui->UnitInput, SIGNAL(parseError(QString)), this, SLOT(parseError(QString)));
 
     ui->ValueInput->setParamGrpPath(QByteArray("User parameter:BaseApp/History/UnitsCalculator"));
     // set a default that also illustrates how the dialog works
