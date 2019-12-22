@@ -245,7 +245,7 @@ class Edit():
             if key == 111: # "o"
                 self.finish(closed=True)
             if key == 105: # "i"
-                if Draft.getType(self.obj) == "Circle": self.arcInvert()
+                if Draft.getType(self.obj) == "Circle": self.arcInvert(self.obj)
 
     def mousePressed(self, event_callback):
         "mouse button event handler, calls: startEditing, endEditing, addPoint, delPoint"
@@ -528,13 +528,13 @@ class Edit():
             self.ghost.update(pointList,obj.Degree)
         elif Draft.getType(obj) == "Circle":
             self.ghost.on()
-            self.ghost.setCenter(obj.Placement.Base)
+            self.ghost.setCenter(obj.getGlobalPlacement().Base)
             self.ghost.setRadius(obj.Radius)
             if self.obj.FirstAngle == self.obj.LastAngle:#self.obj is a circle
                 self.ghost.circle = True
                 if self.editing == 0: self.ghost.setCenter(pt)
                 elif self.editing == 1: 
-                    radius = pt.sub(obj.Placement.Base).Length
+                    radius = pt.sub(obj.getGlobalPlacement().Base).Length
                     self.ghost.setRadius(radius)
             else:
                 if self.arc3Pt == False:
@@ -715,7 +715,6 @@ class Edit():
         
         self.setPlacement(obj)
         self.editpoints = self.getEditPoints(obj)
-        
         if self.editpoints: # set trackers and align plane
             self.setTrackers(obj, self.editpoints)
             self.editpoints = []
@@ -1003,44 +1002,27 @@ class Edit():
         '''
         editpoints = []
         editpoints.append(obj.getGlobalPlacement().Base)
-        editpoints.append(obj.getGlobalPlacement().multVec(FreeCAD.Vector(obj.Length,0,0))
-        editpoints.append(obj.getGlobalPlacement().multVec(FreeCAD.Vector(0,obj.Height,0))
-        '''v = obj.Shape.Vertexes
-        self.bx = v[1].Point.sub(v[0].Point)
-        if obj.Length < 0:
-            self.bx = self.bx.negative()
-        self.by = v[2].Point.sub(v[1].Point)
-        if obj.Height < 0:
-            self.by = self.by.negative()'''
+        editpoints.append(obj.getGlobalPlacement().multVec(FreeCAD.Vector(obj.Length,0,0)))
+        editpoints.append(obj.getGlobalPlacement().multVec(FreeCAD.Vector(0,obj.Height,0)))
         return editpoints
+
+    def updateRectangleTrackers(self, obj):
+        self.trackers[obj.Name][0].set(obj.getGlobalPlacement().Base)
+        self.trackers[obj.Name][1].set(obj.getGlobalPlacement().multVec(FreeCAD.Vector(obj.Length,0,0)))
+        self.trackers[obj.Name][2].set(obj.getGlobalPlacement().multVec(FreeCAD.Vector(0,obj.Height,0)))
 
     def updateRectangle(self, obj, nodeIndex, v):
         import DraftVecUtils
         delta = obj.getGlobalPlacement().inverse().multVec(v)
         if nodeIndex == 0:
-            p = obj.Placement
-            p.move(delta)
-            obj.Placement = p
+            #p = obj.getGlobalPlacement()
+            #p.move(delta)
+            obj.Placement.move(delta)
         elif self.editing == 1:
             obj.Length = DraftVecUtils.project(delta,FreeCAD.Vector(1,0,0)).Length
-            '''diag = v.sub(obj.Placement.Base)
-            nx = DraftVecUtils.project(diag,self.bx)
-            ny = DraftVecUtils.project(diag,self.by)
-            ax = nx.Length
-            ay = ny.Length
-            if ax and ay:
-                if abs(nx.getAngle(self.bx)) > 0.1:
-                    ax = -ax
-                if abs(ny.getAngle(self.by)) > 0.1:
-                    ay = -ay
-                obj.Length = ax
-                obj.Height = ay
-                obj.recompute()'''
-        elif self.editing == 1:
-            obj.Length = DraftVecUtils.project(delta,FreeCAD.Vector(0,1,0)).Length
-
-        self.trackers[obj.Name][0].set(obj.Placement.Base)
-        self.trackers[obj.Name][1].set(obj.Shape.Vertexes[2].Point)
+        elif self.editing == 2:
+            obj.Height = DraftVecUtils.project(delta,FreeCAD.Vector(0,1,0)).Length
+        self.updateRectangleTrackers(obj)
 
     #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Ellipse (# TODO: yet to be implemented)
@@ -1069,40 +1051,33 @@ class Edit():
         3 : midpoint
         '''        
         editpoints = []
-        editpoints.append(obj.Placement.Base)
+        editpoints.append(obj.getGlobalPlacement().Base)
         if obj.FirstAngle == obj.LastAngle:#self.obj is a circle
             self.ui.editUi("Circle")
-            editpoints.append(obj.Shape.Vertexes[0].Point)
+            editpoints.append(obj.getGlobalPlacement().multVec(FreeCAD.Vector(obj.Radius,0,0)))
         else:#self.obj is an arc
             self.ui.editUi("Arc")
-            editpoints.append(obj.Shape.Vertexes[0].Point)#First endpoint
-            editpoints.append(obj.Shape.Vertexes[1].Point)#Second endpoint
+            editpoints.append(self.getArcStart(obj))#First endpoint
+            editpoints.append(self.getArcEnd(obj))#Second endpoint
             editpoints.append(self.getArcMid(obj))#Midpoint
         return editpoints
 
-    def updateCircleTrackers(self,ep1=1,ep2=1,ep3=1,ep4=1):
-        self.obj.recompute()
-        if ep1 == 1:
-            self.trackers[self.obj.Name][0].set(self.obj.Placement.Base)
-        if ep2 == 1:
-            self.trackers[self.obj.Name][1].set(self.obj.Shape.Vertexes[0].Point)
-        if ep3 == 1:
-            self.trackers[self.obj.Name][2].set(self.obj.Shape.Vertexes[1].Point)
-        if ep4 == 1:
-            self.trackers[self.obj.Name][3].set(self.getArcMid(self.obj))
+    def updateCircleTrackers(self,obj):
+        self.trackers[obj.Name][0].set(obj.getGlobalPlacement().Base)
+        self.trackers[obj.Name][1].set(self.getArcStart(obj))
+        if len(self.trackers[obj.Name]) > 2: # object is a circle
+            self.trackers[obj.Name][2].set(self.getArcEnd(obj))
+            self.trackers[obj.Name][3].set(self.getArcMid(obj))
 
     def updateCircle(self, obj, nodeIndex, v):
-        delta = self.invpl.multVec(v)
-        if self.obj.FirstAngle == self.obj.LastAngle:# object is a circle
+        delta = obj.getGlobalPlacement().inverse().multVec(v)
+        if obj.FirstAngle == obj.LastAngle:# object is a circle
             if self.editing == 0:
-                p = self.obj.Placement
-                p.move(delta)
-                self.obj.Placement = p
-                self.setPlacement(self.obj)
-                self.updateCirclePts(0,1,0,0)
-            if self.editing == 1:
-                self.obj.Radius = delta.Length
-                self.updateCirclePts(0,0,0,0)
+                obj.Placement.move(delta)
+            elif self.editing == 1:
+                obj.Radius = delta.Length
+            self.obj.recompute()
+            self.updateCircleTrackers(obj)
 
         else:#self.obj is an arc
 
@@ -1115,19 +1090,19 @@ class Edit():
                     p.move(delta)
                     self.obj.Placement = p
                     self.setPlacement(self.obj)
-                    self.updateCirclePts(0,1,1,1)
+                    self.updateCircleTrackers(obj)
                 elif self.editing == 1:
                     self.obj.FirstAngle=dangle
                     self.obj.recompute()
-                    self.updateCirclePts(0,1,0,1)
+                    self.updateCircleTrackers(obj)
                 elif self.editing == 2:
                     self.obj.LastAngle=dangle
                     self.obj.recompute()
-                    self.updateCirclePts(0,0,1,1)
+                    self.updateCircleTrackers(obj)
                 elif self.editing == 3:
                     self.obj.Radius = delta.Length
                     self.obj.recompute()
-                    self.updateCirclePts(0,1,1,1)
+                    self.updateCircleTrackers(obj)
 
             elif self.arc3Pt == True:
                 import Part
@@ -1141,7 +1116,7 @@ class Edit():
                     self.obj.LastAngle = -math.degrees(DraftVecUtils.angle(p2.sub(p0)))
                     self.obj.Placement.Base = self.pl.multVec(p0)
                     self.setPlacement(self.obj)
-                    self.updateCirclePts(1,0,0,1)
+                    self.updateCircleTrackers(obj)
                     return
                 else:
                     if self.editing == 1:#first point
@@ -1168,23 +1143,35 @@ class Edit():
                     self.obj.FirstAngle = dangleF
                     self.obj.LastAngle = dangleL
                     FreeCAD.Console.PrintMessage("Press I to invert the circle\n")
-                    self.updateCirclePts()
+                    self.updateCircleTrackers(obj)
+
+    def getArcStart(self, obj):#Returns object midpoint
+        if Draft.getType(obj) == "Circle":
+            return self.pointOnCircle(obj, obj.FirstAngle)
+    
+    def getArcEnd(self, obj):#Returns object midpoint
+        if Draft.getType(obj) == "Circle":
+            return self.pointOnCircle(obj, obj.LastAngle)
 
     def getArcMid(self, obj):#Returns object midpoint
         if Draft.getType(obj) == "Circle":
             if obj.LastAngle>obj.FirstAngle:
-                midAngle=math.radians(obj.FirstAngle+(obj.LastAngle-obj.FirstAngle)/2)
+                midAngle=obj.FirstAngle+(obj.LastAngle-obj.FirstAngle)/2
             else:
-                midAngle=math.radians(obj.FirstAngle+(obj.LastAngle-obj.FirstAngle)/2)+math.pi
-            midRadX=obj.Radius*math.cos(midAngle)
-            midRadY=obj.Radius*math.sin(midAngle)
-            deltaMid=FreeCAD.Vector(midRadX,midRadY,0.0)
-            midPoint=self.pl.multVec(deltaMid) # check this line
-            return(midPoint)
+                midAngle=(obj.FirstAngle+(obj.LastAngle-obj.FirstAngle)/2)+180.0
+            return self.pointOnCircle(obj, midAngle)
 
-    def arcInvert(self):
-        self.obj.FirstAngle, self.obj.LastAngle = self.obj.LastAngle, self.obj.FirstAngle
-        self.obj.recompute()
+    def pointOnCircle(self, obj, angle):
+        if Draft.getType(obj) == "Circle":
+            px=obj.Radius*math.cos(math.radians(angle))
+            py=obj.Radius*math.sin(math.radians(angle))
+            p = obj.getGlobalPlacement().multVec(FreeCAD.Vector(px,py,0.0))
+            return p
+        return None
+
+    def arcInvert(self, obj):
+        obj.FirstAngle, obj.LastAngle = obj.LastAngle, obj.FirstAngle
+        obj.recompute()
         self.trackers[self.obj.Name][1].set(self.obj.Shape.Vertexes[0].Point)
         self.trackers[self.obj.Name][2].set(self.obj.Shape.Vertexes[1].Point)
         self.trackers[self.obj.Name][3].set(self.getArcMid(self.obj))
