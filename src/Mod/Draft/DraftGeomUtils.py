@@ -1126,6 +1126,15 @@ def isReallyClosed(wire):
     # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex for the rectangle
     # - use Edges[i].Vertexes[0/1] instead
     length = len(wire.Edges)
+
+    # Test if it is full circle / ellipse first
+    if length == 1:
+        if len(wire.Edges[0].Vertexes) == 1:
+            return True # This is a closed wire - full circle / ellipse
+        else:
+            return False # TODO Should be False if 1 edge but not single vertex, correct?  No need to test further below.
+
+    # If more than 1 edge, further test below
     v1 = wire.Edges[0].Vertexes[0].Point  #v1 = wire.Vertexes[0].Point
     v2 = wire.Edges[length-1].Vertexes[1].Point  #v2 = wire.Vertexes[-1].Point
     if DraftVecUtils.equals(v1,v2): return True
