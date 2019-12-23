@@ -2071,7 +2071,10 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     rgbt.append(diffusecolor[i])
                     i += len(sol.Faces)
             for i,shape in enumerate(colorshapes):
-                key = rgbt[i]
+                if i < len(rgbt):
+                    key = rgbt[i]
+                else:
+                    key = rgbt[0]
                 #if hasattr(obj,"Material"):
                 #    if obj.Material:
                 #        key = obj.Material.Name #TODO handle multimaterials
