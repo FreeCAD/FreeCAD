@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2014     *
+ *   Copyright (c) 2014 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
