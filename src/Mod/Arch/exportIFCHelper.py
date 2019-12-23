@@ -39,6 +39,27 @@ def getObjectsOfIfcType(objects, ifcType):
     return results
 
 
+def writeUnits(ifcfile,unit="metre"):
+    
+    """adds additional units settings to the given ifc file if needed"""
+    # so far, only metre or foot possible (which is all revit knows anyway)
+    
+    if unit == "foot":
+        d1 = ifcfile.createIfcDimensionalExponents(1,0,0,0,0,0,0);
+        d2 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.3048),ifcfile[13])
+        d3 = ifcfile.createIfcConversionBasedUnit(d1,'LENGTHUNIT','FOOT',d2)
+        d4 = ifcfile.createIfcDimensionalExponents(2,0,0,0,0,0,0);
+        d5 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.09290304000000001),ifcfile[14])
+        d6 = ifcfile.createIfcConversionBasedUnit(d4,'AREAUNIT','SQUARE FOOT',d5)
+        d7 = ifcfile.createIfcDimensionalExponents(3,0,0,0,0,0,0);
+        d8 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.028316846592),ifcfile[15])
+        d9 = ifcfile.createIfcConversionBasedUnit(d7,'VOLUMEUNIT','CUBIC FOOT',d8)
+        ifcfile.createIfcUnitAssignment((d3,d6,d9,ifcfile[18]))
+    else: # default = metre, no need to add anything
+        ifcfile.createIfcUnitAssignment((ifcfile[13],ifcfile[14],ifcfile[15],ifcfile[18]))
+    return ifcfile
+
+
 class SIUnitCreator:
     def __init__(self, file, text, type):
         self.prefixes = [

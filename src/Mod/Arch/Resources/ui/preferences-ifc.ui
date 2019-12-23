@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>463</width>
-    <height>910</height>
+    <height>937</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -633,6 +633,40 @@ A building storey is not mandatory but a common practice to have at least one in
          <cstring>Mod/Arch</cstring>
         </property>
        </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>IFC file units</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox_3">
+          <property name="toolTip">
+           <string>The units you want your IFC file to be exported to. Note that IFC file are ALWAYS written in metric units. Imperial units are only a conversion applied on top of it. But some BIM applications will use this to choose which unit to work with when opening the file.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcUnit</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Metric</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Imperial</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
