@@ -273,6 +273,7 @@ public:
         MINVERT, // invert matrix/placement/rotation
         CREATE, // create new object of a given type
         STR, // stringify
+        HIDDENREF, // hidden reference that has no dependency check
 
         // Aggregates
         AGGREGATES,
@@ -345,9 +346,7 @@ protected:
     virtual Py::Object _getPyValue() const override;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
     virtual bool _isIndexable() const override;
-    virtual void _getDeps(ExpressionDeps &) const override;
-    virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const override;
-    virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const override;
+    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const override;
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) override;
     virtual void _importSubNames(const ObjectIdentifier::SubNameMap &) override;
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) override;
@@ -435,7 +434,7 @@ protected:
     virtual Expression * _copy() const override;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
     virtual Py::Object _getPyValue() const override;
-    virtual void _getDeps(ExpressionDeps &) const override;
+    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const override;
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) override;
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) override;
