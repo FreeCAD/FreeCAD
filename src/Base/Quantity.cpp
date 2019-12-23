@@ -290,6 +290,10 @@ Quantity Quantity::Thou             (0.0254        ,Unit(1));
 Quantity Quantity::Yard             (914.4         ,Unit(1));
 Quantity Quantity::Mile             (1609344.0     ,Unit(1));
 
+Quantity Quantity::MilePerHour      (447.04        ,Unit(1,0,-1));
+Quantity Quantity::SquareFoot       (92903.04      ,Unit(2));
+Quantity Quantity::CubicFoot        (28316846.592  ,Unit(3));
+
 Quantity Quantity::Pound            (0.45359237    ,Unit(0,1));
 Quantity Quantity::Ounce            (0.0283495231  ,Unit(0,1));
 Quantity Quantity::Stone            (6.35029318    ,Unit(0,1));

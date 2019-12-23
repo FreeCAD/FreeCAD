@@ -232,6 +232,10 @@ public:
     static Quantity Hundredweights;
     static Quantity Mile;
 
+    static Quantity MilePerHour;
+    static Quantity SquareFoot;
+    static Quantity CubicFoot;
+
     static Quantity PoundForce;
 
     static Quantity Newton;
