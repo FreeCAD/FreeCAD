@@ -135,7 +135,10 @@ def getDXFlibs():
         global dxfLibrary,dxfColorMap,dxfReader
         import dxfLibrary
         import dxfColorMap
-        import dxfReader
+        try:
+            import dxfReader
+        except:
+            libsok = False
     except ImportError:
         libsok = False
         FreeCAD.Console.PrintWarning("DXF libraries not found. Trying to download...\n")
