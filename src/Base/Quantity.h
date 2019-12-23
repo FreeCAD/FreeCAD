@@ -195,6 +195,7 @@ public:
     static Quantity KiloHertz;
     static Quantity MegaHertz;
     static Quantity GigaHertz;
+    static Quantity TeraHertz;
 
     static Quantity MicroGram;
     static Quantity MilliGram;

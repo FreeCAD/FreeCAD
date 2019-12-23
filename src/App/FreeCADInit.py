@@ -645,6 +645,7 @@ App.Units.Hertz         = App.Units.Quantity('Hz')
 App.Units.KiloHertz     = App.Units.Quantity('kHz')
 App.Units.MegaHertz     = App.Units.Quantity('MHz')
 App.Units.GigaHertz     = App.Units.Quantity('GHz')
+App.Units.TeraHertz     = App.Units.Quantity('THz')
 
 App.Units.MicroGram     = App.Units.Quantity('ug')
 App.Units.MilliGram     = App.Units.Quantity('mg')

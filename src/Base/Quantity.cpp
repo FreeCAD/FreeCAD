@@ -258,6 +258,7 @@ Quantity Quantity::Hertz            (1.0            ,Unit(0,0,-1));
 Quantity Quantity::KiloHertz        (1.0e3          ,Unit(0,0,-1));
 Quantity Quantity::MegaHertz        (1.0e6          ,Unit(0,0,-1));
 Quantity Quantity::GigaHertz        (1.0e9          ,Unit(0,0,-1));
+Quantity Quantity::TeraHertz        (1.0e12         ,Unit(0,0,-1));
 
 Quantity Quantity::MicroGram        (1.0e-9         ,Unit(0,1));
 Quantity Quantity::MilliGram        (1.0e-6         ,Unit(0,1));

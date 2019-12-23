@@ -174,6 +174,7 @@ EXPO     [eE][-+]?[0-9]+
 "kHz"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloHertz;           yylval.quantity.unitStr = yytext; return UNIT; // kilo Hertz
 "MHz"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaHertz;           yylval.quantity.unitStr = yytext; return UNIT; // mega Hertz
 "GHz"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaHertz;           yylval.quantity.unitStr = yytext; return UNIT; // giga Hertz
+"THz"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::TeraHertz;           yylval.quantity.unitStr = yytext; return UNIT; // tera Hertz
 
 "ug"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return UNIT; // micro gram
 "\xC2\xB5g"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return UNIT; // micro gram
