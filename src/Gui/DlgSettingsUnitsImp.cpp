@@ -53,6 +53,12 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
     ui->setupUi(this);
     ui->spinBoxDecimals->setMaximum(std::numeric_limits<double>::digits10 + 1);
 
+    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+    for (int i = 0; i < num; i++) {
+        QString item = QString::fromUtf8(Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        ui->comboBox_ViewSystem->addItem(item, i);
+    }
+
     //fillUpListBox();
     ui->tableWidget->setVisible(false);
     //
