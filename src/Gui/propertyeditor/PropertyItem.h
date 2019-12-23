@@ -662,6 +662,8 @@ private:
     PropertyVectorDistanceItem* m_p;
 };
 
+class PropertyStringListItem;
+
 /**
  * Edit properties of enum type. 
  * \author Werner Mayer
@@ -669,18 +671,26 @@ private:
 class GuiExport PropertyEnumItem: public PropertyItem
 {
     Q_OBJECT
+    Q_PROPERTY(QStringList Enum READ getEnum WRITE setEnum DESIGNABLE true USER true)
     PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget *editor) const;
 
+    QStringList getEnum() const;
+    void setEnum(QStringList);
+
 protected:
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
+    virtual void propertyBound();
 
 protected:
     PropertyEnumItem();
+
+private:
+    PropertyStringListItem* m_enum;
 };
 
 /**

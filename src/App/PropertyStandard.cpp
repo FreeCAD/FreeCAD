@@ -471,9 +471,9 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             hasSetValue();
         }
         else {
-            std::stringstream out;
-            out << "'" << str << "' is not part of the enumeration";
-            throw Base::ValueError(out.str());
+            FC_THROWM(Base::ValueError, "'" << str 
+                    << "' is not part of the enumeration in "
+                    << getFullName());
         }
     }
 #endif
@@ -491,18 +491,29 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             hasSetValue();
         }
         else {
-            std::stringstream out;
-            out << "'" << str << "' is not part of the enumeration";
-            throw Base::ValueError(out.str());
+            FC_THROWM(Base::ValueError, "'" << str 
+                    << "' is not part of the enumeration in "
+                    << getFullName());
         }
     }
     else if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
         std::vector<std::string> values;
-        values.resize(nSize);
 
-        for (Py_ssize_t i = 0; i < nSize; ++i) {
-            PyObject *item = PySequence_GetItem(value, i);
+        int idx = -1;
+        Py::Sequence seq(value);
+
+        if(seq.size() == 2) {
+            Py::Object v(seq[0].ptr());
+            if(!v.isString() && v.isSequence()) {
+                seq = v;
+                idx = Py::Int(seq[1].ptr());
+            }
+        }
+
+        values.resize(seq.size());
+
+        for (std::size_t i = 0; i < seq.size(); ++i) {
+            PyObject *item = seq[i].ptr();
 
             if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
@@ -519,16 +530,22 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             }
 #endif
             else {
-                std::string error = std::string("type in list must be str or unicode, not ");
-                throw Base::TypeError(error + item->ob_type->tp_name);
+                FC_THROWM(Base::TypeError, "PropertyEnumeration "
+                        << getFullName() << " expects type in list to be string, not "
+                        << item->ob_type->tp_name);
             }
         }
+
+        aboutToSetValue();
         _enum.setEnums(values);
-        setValue((long)0);
+        if (idx>=0)
+            _enum.setValue(idx,true);
+        hasSetValue();
     }
     else {
-        std::string error = std::string("type must be int, str or unicode not ");
-        throw Base::TypeError(error + value->ob_type->tp_name);
+        FC_THROWM(Base::TypeError, "PropertyEnumeration " << getFullName()
+                << "expects type to be int, string, or sequence of string, not "
+                << value->ob_type->tp_name);
     }
 }
 
@@ -539,22 +556,20 @@ Property * PropertyEnumeration::Copy(void) const
 
 void PropertyEnumeration::Paste(const Property &from)
 {
-    aboutToSetValue();
-
     const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
-    _enum = prop._enum;
-
-    hasSetValue();
+    setValue(prop._enum);
 }
 
 void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    verifyPath(path);
-
     if (value.type() == typeid(int))
         setValue(boost::any_cast<int>(value));
+    else if (value.type() == typeid(long))
+        setValue(boost::any_cast<long>(value));
     else if (value.type() == typeid(double))
         setValue(boost::any_cast<double>(value));
+    else if (value.type() == typeid(float))
+        setValue(boost::any_cast<float>(value));
     else if (value.type() == typeid(short))
         setValue(boost::any_cast<short>(value));
     else if (value.type() == typeid(std::string))
@@ -563,8 +578,59 @@ void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const boost
         setValue(boost::any_cast<char*>(value));
     else if (value.type() == typeid(const char*))
         setValue(boost::any_cast<const char*>(value));
-    else
+    else if (path.getSubPathStr() == ".Enum") {
+        Base::PyGILStateLocker lock;
+        Py::Object pyValue = pyObjectFromAny(value);
+        if(!pyValue.isString() && pyValue.isSequence()) {
+            Py::Sequence seq(pyValue);
+            if(seq.size() && Py::Object(seq[0].ptr()).isString()) {
+                setPyObject(pyValue.ptr());
+                return;
+            }
+        }
         throw bad_cast();
+    } else {
+        Base::PyGILStateLocker lock;
+        Py::Object pyValue = pyObjectFromAny(value);
+        setPyObject(pyValue.ptr());
+    }
+}
+
+const boost::any PropertyEnumeration::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+    if (p == ".Enum") {
+        Base::PyGILStateLocker lock;
+        Py::Tuple res(_enum.maxValue()+1);
+        const char **enums = _enum.getEnums();
+        for(int i=0;i<=_enum.maxValue();++i)
+            res.setItem(i,Py::String(enums[i]));
+        return pyObjectToAny(res,false);
+    }
+    else if (p == ".String") {
+        auto v = getValueAsString();
+        return std::string(v?v:"");
+    } else
+        return getValue();
+}
+
+bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const
+{
+    std::string p = path.getSubPathStr();
+    if (p == ".Enum") {
+        Base::PyGILStateLocker lock;
+        Py::Tuple res(_enum.maxValue()+1);
+        const char **enums = _enum.getEnums();
+        for(int i=0;i<=_enum.maxValue();++i)
+            res.setItem(i,Py::String(enums[i]));
+        r = res;
+    }
+    else if (p == ".String") {
+        auto v = getValueAsString();
+        r = Py::String(v?v:"");
+    } else 
+        r = Py::Int(getValue());
+    return true;
 }
 
 //**************************************************************************

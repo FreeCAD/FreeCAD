@@ -82,10 +82,8 @@ Enumeration::~Enumeration()
 void Enumeration::tearDown(void)
 {
     // Ugly...
-    char **plEnums = (char **)_EnumArray;
-
-    // Delete C Strings first
-    while (*(plEnums++) != NULL) {
+    for(char **plEnums = (char **)_EnumArray; *plEnums != NULL; ++plEnums) {
+        // Delete C Strings first
         free(*plEnums);
     }
 
@@ -98,6 +96,9 @@ void Enumeration::tearDown(void)
 
 void Enumeration::setEnums(const char **plEnums)
 {
+    if(plEnums == _EnumArray)
+        return;
+
     std::string oldValue;
     bool preserve = (isValid() && plEnums != NULL);
     if (preserve) {
@@ -304,6 +305,10 @@ Enumeration & Enumeration::operator=(const Enumeration &other)
 
 bool Enumeration::operator==(const Enumeration &other) const
 {
+    if(_index != other._index)
+        return false;
+    if (getCStr() == other.getCStr())
+        return true;
     if (getCStr() == NULL || other.getCStr() == NULL) {
         return false;
     }

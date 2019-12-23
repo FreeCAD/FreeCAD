@@ -179,7 +179,7 @@ public:
     const char * getValueAsString(void) const;
 
     /// Returns Enumeration object
-    Enumeration getEnum(void) const;
+    const Enumeration &getEnum(void) const;
 
     /// get all possible enum values as vector of strings
     std::vector<std::string> getEnumVector(void) const;
@@ -204,7 +204,8 @@ public:
     virtual void Paste(const Property &from);
 
     virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _enum; }
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const;
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const;
 
 private:
     Enumeration _enum;
