@@ -676,6 +676,7 @@ App.Units.Foot          = App.Units.Quantity('ft')
 App.Units.Thou          = App.Units.Quantity('thou')
 App.Units.Yard          = App.Units.Quantity('yd')
 App.Units.Mile          = App.Units.Quantity('mi')
+
 App.Units.MilePerHour   = App.Units.Quantity('mph')
 App.Units.SquareFoot    = App.Units.Quantity('sqft')
 App.Units.CubicFoot     = App.Units.Quantity('cft')
