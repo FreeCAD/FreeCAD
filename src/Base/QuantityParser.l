@@ -170,6 +170,8 @@ CGRP     '\,'[0-9][0-9][0-9]
 "Ws"       yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
 "kWh"      yylval = Quantity::KiloWattHour;        return UNIT; // 1 kWh = 3.6e6 J
 "eV"       yylval = Quantity::ElectronVolt;        return UNIT; // 1 eV = 1.602176634e-19 J
+"keV"      yylval = Quantity::KiloElectronVolt;    return UNIT;
+"MeV"      yylval = Quantity::MegaElectronVolt;    return UNIT;
 "cal"      yylval = Quantity::Calorie;             return UNIT; // 1 cal = 4.1868 J 
 "kcal"     yylval = Quantity::KiloCalorie;         return UNIT; 
 

@@ -354,6 +354,8 @@ Quantity Quantity::VoltAmpereSecond (1e+6            ,Unit(2,1,-2));  // Joule (
 Quantity Quantity::WattSecond       (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
 Quantity Quantity::KiloWattHour     (3.6e+12         ,Unit(2,1,-2));  // 1 kWh = 3.6e6 J
 Quantity Quantity::ElectronVolt     (1.602176634e-13 ,Unit(2,1,-2));  // 1 eV = 1.602176634e-19 J
+Quantity Quantity::KiloElectronVolt (1.602176634e-10 ,Unit(2,1,-2));
+Quantity Quantity::MegaElectronVolt (1.602176634e-7  ,Unit(2,1,-2));
 Quantity Quantity::Calorie          (4.1868e+6       ,Unit(2,1,-2));  // 1 cal = 4.1868 J
 Quantity Quantity::KiloCalorie      (4.1868e+9       ,Unit(2,1,-2));
 

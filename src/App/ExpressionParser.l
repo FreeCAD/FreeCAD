@@ -210,6 +210,9 @@ EXPO     [eE][-+]?[0-9]+
 "mil"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // mil  (the thou in US)
 "yd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return UNIT; // yard
 "mi"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = yytext; return UNIT; // mile
+"mph"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MilePerHour;         yylval.quantity.unitStr = yytext; return UNIT; // mile per hour 
+"sqft"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::SquareFoot;          yylval.quantity.unitStr = yytext; return UNIT; // square foot
+"cft"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::CubicFoot;           yylval.quantity.unitStr = yytext; return UNIT; // cubic foot
 
 "lb"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return UNIT; // pound
 "lbm"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return UNIT; // pound
@@ -276,6 +279,8 @@ EXPO     [eE][-+]?[0-9]+
 "Ws"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return UNIT; // W*s = Joule
 "kWh"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloWattHour;        yylval.quantity.unitStr = yytext; return UNIT; // 1 kWh = 3.6e6 J
 "eV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::ElectronVolt;        yylval.quantity.unitStr = yytext; return UNIT; // 1 eV = 1.602176634e-19 J
+"keV"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloElectronVolt;    yylval.quantity.unitStr = yytext; return UNIT;
+"MeV"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaElectronVolt;    yylval.quantity.unitStr = yytext; return UNIT;
 "cal"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Calorie;             yylval.quantity.unitStr = yytext; return UNIT; // 1 cal = 4.1868 J
 "kcal"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloCalorie;         yylval.quantity.unitStr = yytext; return UNIT;
 

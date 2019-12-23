@@ -676,6 +676,9 @@ App.Units.Foot          = App.Units.Quantity('ft')
 App.Units.Thou          = App.Units.Quantity('thou')
 App.Units.Yard          = App.Units.Quantity('yd')
 App.Units.Mile          = App.Units.Quantity('mi')
+App.Units.MilePerHour   = App.Units.Quantity('mph')
+App.Units.SquareFoot    = App.Units.Quantity('sqft')
+App.Units.CubicFoot     = App.Units.Quantity('cft')
 
 App.Units.Pound         = App.Units.Quantity('lb')
 App.Units.Ounce         = App.Units.Quantity('oz')
@@ -695,10 +698,10 @@ App.Units.GigaPascal    = App.Units.Quantity('GPa')
 App.Units.MilliBar      = App.Units.Quantity('mbar')
 App.Units.Bar           = App.Units.Quantity('bar')
 
-App.Units.PoundForce    = App.Units.Quantity().PoundForce
-App.Units.Torr          = App.Units.Quantity().Torr
-App.Units.mTorr         = App.Units.Quantity().mTorr
-App.Units.yTorr         = App.Units.Quantity().yTorr
+App.Units.PoundForce    = App.Units.Quantity('lbf')
+App.Units.Torr          = App.Units.Quantity('Torr')
+App.Units.mTorr         = App.Units.Quantity('mTorr')
+App.Units.yTorr         = App.Units.Quantity('uTorr')
 
 App.Units.PSI           = App.Units.Quantity('psi')
 App.Units.KSI           = App.Units.Quantity('ksi')
@@ -736,6 +739,8 @@ App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
 App.Units.WattSecond    = App.Units.Quantity('Ws')
 App.Units.KiloWattHour  = App.Units.Quantity('kWh')
 App.Units.ElectronVolt  = App.Units.Quantity('eV')
+App.Units.KiloElectronVolt = App.Units.Quantity('keV')
+App.Units.MegaElectronVolt = App.Units.Quantity('MeV')
 App.Units.Calorie       = App.Units.Quantity('cal')
 App.Units.KiloCalorie   = App.Units.Quantity('kcal')
 

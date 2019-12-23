@@ -315,6 +315,14 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
             unitString = QString::fromLatin1("eV");
             factor = 1.602176634e-13;
         }
+        else if (UnitValue < 1.602176634e-7) {
+            unitString = QString::fromLatin1("keV");
+            factor = 1.602176634e-10;
+        }
+        else if (UnitValue < 1.602176634e-4) {
+            unitString = QString::fromLatin1("MeV");
+            factor = 1.602176634e-7;
+        }
         else if (UnitValue < 1e6) {
             unitString = QString::fromLatin1("mJ");
             factor = 1e3;

@@ -291,6 +291,8 @@ public:
     static Quantity WattSecond;
     static Quantity KiloWattHour;
     static Quantity ElectronVolt;
+    static Quantity KiloElectronVolt;
+    static Quantity MegaElectronVolt;
     static Quantity Calorie;
     static Quantity KiloCalorie;
 
