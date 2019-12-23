@@ -38,6 +38,7 @@
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
+FC_LOG_LEVEL_INIT("App",true);
 
 using namespace App;
 using namespace Base;
@@ -70,6 +71,15 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document &doc) 
             prop->onRelabeledDocument(doc);
     }
 }
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+struct PropertyExpressionEngine::Private {
+    // For some reason, MSVC has trouble with vector of scoped_connection if
+    // defined in header, hence the private structure here.
+    std::vector<boost::signals2::scoped_connection> conns;
+    std::unordered_map<std::string, std::vector<ObjectIdentifier> > propMap;
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -126,7 +136,7 @@ void PropertyExpressionEngine::hasSetValue()
         return;
     }
 
-    std::set<App::DocumentObject*> deps;
+    std::map<App::DocumentObject*,bool> deps;
     std::vector<std::string> labels;
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
@@ -142,7 +152,93 @@ void PropertyExpressionEngine::hasSetValue()
 
     updateDeps(std::move(deps));
 
+    if(pimpl) {
+        pimpl->conns.clear();
+        pimpl->propMap.clear();
+    }
+    // check if there is any hidden references
+    bool hasHidden = false;
+    for(auto &v : _Deps) {
+        if(v.second) {
+            hasHidden = true;
+            break;
+        }
+    }
+    if(hasHidden) {
+        if(!pimpl)
+            pimpl.reset(new Private);
+        for(auto &e : expressions) {
+            auto expr = e.second.expression;
+            if(!expr) continue;
+            for(auto &dep : expr->getIdentifiers()) {
+                if(!dep.second)
+                    continue;
+                const ObjectIdentifier &var = dep.first;
+                for(auto &vdep : var.getDep(true)) {
+                    auto obj = vdep.first;
+                    auto objName = obj->getFullName() + ".";
+                    for(auto &propName : vdep.second) {
+                        std::string key = objName + propName;
+                        auto &propDeps = pimpl->propMap[key];
+                        if(propDeps.empty()) {
+                            if(propName.size()) 
+                                pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
+                                            &PropertyExpressionEngine::slotChangedProperty,this,_1,_2)));
+                            else
+                                pimpl->conns.push_back(obj->signalChanged.connect(boost::bind(
+                                            &PropertyExpressionEngine::slotChangedObject,this,_1,_2)));
+                        }
+                        propDeps.push_back(e.first);
+                    }
+                }
+            }
+        }
+    }
+
     PropertyExpressionContainer::hasSetValue();
+}
+
+void PropertyExpressionEngine::updateHiddenReference(const std::string &key) {
+    if(!pimpl)
+        return;
+    auto it = pimpl->propMap.find(key);
+    if(it == pimpl->propMap.end())
+        return;
+    for(auto &var : it->second) {
+        auto it = expressions.find(var);
+        if(it == expressions.end() || it->second.busy)
+            continue;
+        Property *myProp = var.getProperty();
+        if(!myProp)
+            continue;
+        Base::StateLocker guard(it->second.busy);
+        App::any value;
+        try {
+            value = it->second.expression->getValueAsAny();
+            if(!isAnyEqual(value, myProp->getPathValue(var)))
+                myProp->setPathValue(var, value);
+        }catch(Base::Exception &e) {
+            e.ReportException();
+            FC_ERR("Failed to evaluate property binding "
+                    << myProp->getFullName() << " on change of " << key);
+        }catch(std::bad_cast &) {
+            FC_ERR("Invalid type '" << value.type().name()
+                    << "' in property binding " << myProp->getFullName()
+                    << " on change of " << key);
+        }catch(std::exception &e) {
+            FC_ERR(e.what());
+            FC_ERR("Failed to evaluate property binding "
+                    << myProp->getFullName() << " on change of " << key);
+        }
+    }
+}
+
+void PropertyExpressionEngine::slotChangedObject(const App::DocumentObject &obj, const App::Property &) {
+    updateHiddenReference(obj.getFullName());
+}
+
+void PropertyExpressionEngine::slotChangedProperty(const App::DocumentObject &, const App::Property &prop) {
+    updateHiddenReference(prop.getFullName());
 }
 
 void PropertyExpressionEngine::Paste(const Property &from)
@@ -563,17 +659,17 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             prop->setPathValue(*it, value);
         }catch(Base::Exception &e) {
             std::ostringstream ss;
-            ss << e.what() << std::endl << "in property binding '" << prop->getName() << "'";
+            ss << e.what() << std::endl << "in property binding '" << prop->getFullName() << "'";
             e.setMessage(ss.str());
             throw;
         }catch(std::bad_cast &) {
             std::ostringstream ss;
             ss << "Invalid type '" << value.type().name() << "'";
-            ss << "\nin property binding '" << prop->getName() << "'";
+            ss << "\nin property binding '" << prop->getFullName() << "'";
             throw Base::TypeError(ss.str().c_str());
         }catch(std::exception &e) {
             std::ostringstream ss;
-            ss << e.what() << "\nin property binding '" << prop->getName() << "'";
+            ss << e.what() << "\nin property binding '" << prop->getFullName() << "'";
             throw Base::RuntimeError(ss.str().c_str());
         }
     }
@@ -611,9 +707,11 @@ void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
 
 bool PropertyExpressionEngine::depsAreTouched() const
 {
-    for(auto obj : _Deps)
-        if(obj->isTouched())
+    for(auto &v : _Deps) {
+        // v.second inidcates if it is a hidden reference
+        if(!v.second && v.first->isTouched())
             return true;
+    }
     return false;
 }
 
@@ -640,8 +738,9 @@ std::string PropertyExpressionEngine::validateExpression(const ObjectIdentifier 
     assert(pathDocObj);
 
     auto inList = pathDocObj->getInListEx(true);
-    for(auto docObj : expr->getDepObjects()) {
-        if(inList.count(docObj)) {
+    for(auto &v : expr->getDepObjects()) {
+        auto docObj = v.first;
+        if(!v.second && inList.count(docObj)) {
             std::stringstream ss;
             ss << "cyclic reference to " << docObj->getFullName();
             return ss.str();
@@ -766,8 +865,8 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inLis
     if(!owner)
         return false;
     bool found = false;
-    for(auto obj : _Deps) {
-        if(inList.count(obj)) {
+    for(auto &v : _Deps) {
+        if(inList.count(v.first)) {
             found = true;
             break;
         }

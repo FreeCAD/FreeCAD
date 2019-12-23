@@ -966,38 +966,39 @@ void PropertySheet::addDependencies(CellAddress key)
     if (expression == 0)
         return;
 
-    for(auto &dep : expression->getDeps()) {
+    for(auto &var : expression->getIdentifiers()) {
+        for(auto &dep : var.first.getDep(true)) {
+            App::DocumentObject *docObj = dep.first;
+            App::Document *doc = docObj->getDocument();
 
-        App::DocumentObject *docObj = dep.first;
-        App::Document *doc = docObj->getDocument();
+            std::string docObjName = docObj->getFullName();
 
-        std::string docObjName = docObj->getFullName();
+            owner->observeDocument(doc);
 
-        owner->observeDocument(doc);
+            documentObjectToCellMap[docObjName].insert(key);
+            cellToDocumentObjectMap[key].insert(docObjName);
+            ++updateCount;
 
-        documentObjectToCellMap[docObjName].insert(key);
-        cellToDocumentObjectMap[key].insert(docObjName);
-        ++updateCount;
+            for(auto &name : dep.second) {
+                std::string propName = docObjName + "." + name;
+                FC_LOG("dep " << key.toString() << " -> " << name);
 
-        for(auto &props : dep.second) {
-            std::string propName = docObjName + "." + props.first;
-            FC_LOG("dep " << key.toString() << " -> " << propName);
+                // Insert into maps
+                propertyNameToCellMap[propName].insert(key);
+                cellToPropertyNameMap[key].insert(propName);
 
-            // Insert into maps
-            propertyNameToCellMap[propName].insert(key);
-            cellToPropertyNameMap[key].insert(propName);
+                // Also an alias?
+                if (docObj==owner && name.size()) {
+                    auto j = revAliasProp.find(name);
 
-            // Also an alias?
-            if (docObj==owner && props.first.size()) {
-                std::map<std::string, CellAddress>::const_iterator j = revAliasProp.find(props.first);
+                    if (j != revAliasProp.end()) {
+                        propName = docObjName + "." + j->second.toString();
+                        FC_LOG("dep " << key.toString() << " -> " << propName);
 
-                if (j != revAliasProp.end()) {
-                    propName = docObjName + "." + j->second.toString();
-                    FC_LOG("dep " << key.toString() << " -> " << propName);
-
-                    // Insert into maps
-                    propertyNameToCellMap[propName].insert(key);
-                    cellToPropertyNameMap[key].insert(propName);
+                        // Insert into maps
+                        propertyNameToCellMap[propName].insert(key);
+                        cellToPropertyNameMap[key].insert(propName);
+                    }
                 }
             }
         }
@@ -1066,6 +1067,16 @@ void PropertySheet::removeDependencies(CellAddress key)
 
 void PropertySheet::recomputeDependants(const App::DocumentObject *owner, const char *propName)
 {
+    auto itD = _Deps.find(const_cast<App::DocumentObject*>(owner));
+    if(itD!=_Deps.end() && itD->second) {
+        // Check for hidden reference. Because a hidden reference is not
+        // protected by cyclic dependency checking, we need to take special
+        // care to prevent it from misbehave.
+        Sheet *sheet = Base::freecad_dynamic_cast<Sheet>(getContainer());
+        if(!sheet || sheet->testStatus(App::ObjectStatus::Recompute2))
+            return;
+    }
+
     // First, search without actual property name for sub-object/link
     // references, i.e indirect references. The depenedecies of these
     // references are too complex to track exactly, so we only track the
@@ -1078,7 +1089,7 @@ void PropertySheet::recomputeDependants(const App::DocumentObject *owner, const 
             setDirty(cell);
     }
 
-    if (propName) {
+    if (propName && *propName) {
         // Now, we check for direct property references
         it = propertyNameToCellMap.find(fullName + propName);
         if (it != propertyNameToCellMap.end()) {
@@ -1245,7 +1256,7 @@ void PropertySheet::hasSetValue()
 
     updateCount = 0;
 
-    std::set<App::DocumentObject*> deps;
+    std::map<App::DocumentObject*,bool> deps;
     std::vector<std::string> labels;
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertySheet> v(*this);
@@ -1327,8 +1338,9 @@ bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
             continue;
         try {
             bool need_adjust = false;
-            for(auto docObj : expr->getDepObjects()) {
-                if (docObj && docObj != owner && inList.count(docObj)) {
+            for(auto &v : expr->getDepObjects()) {
+                auto docObj = v.first;
+                if (v.second && docObj && docObj!=owner && inList.count(docObj)) {
                     need_adjust = true;
                     break;
                 }

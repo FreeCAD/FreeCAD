@@ -85,9 +85,11 @@ public:
 
     struct ExpressionInfo {
         boost::shared_ptr<App::Expression> expression; /**< The actual expression tree */
+        bool busy;
 
         ExpressionInfo(boost::shared_ptr<App::Expression> expression = boost::shared_ptr<App::Expression>()) {
             this->expression = expression;
+            this->busy = false;
         }
 
         ExpressionInfo(const ExpressionInfo & other) {
@@ -186,6 +188,10 @@ private:
                 boost::unordered_map<int, App::ObjectIdentifier> &revNodes, 
                 DiGraph &g, ExecuteOption option=ExecuteAll) const;
 
+    void slotChangedObject(const App::DocumentObject &obj, const App::Property &prop);
+    void slotChangedProperty(const App::DocumentObject &obj, const App::Property &prop);
+    void updateHiddenReference(const std::string &key);
+
     bool running; /**< Boolean used to avoid loops */
     bool restoring = false;
 
@@ -200,6 +206,9 @@ private:
     };
     /**< Expressions are read from file to this map first before they are validated and inserted into the actual map */
     std::unique_ptr<std::vector<RestoredExpression> > restoredExpressions;
+
+    struct Private;
+    std::unique_ptr<Private> pimpl;
 
     friend class AtomicPropertyChange;
 

@@ -1305,11 +1305,11 @@ protected:
     virtual void onBreakLink(App::DocumentObject *obj);
     virtual void onAddDep(App::DocumentObject *) {}
     virtual void onRemoveDep(App::DocumentObject *) {}
-    void updateDeps(std::set<DocumentObject*> &&newDeps);
+    void updateDeps(std::map<DocumentObject*,bool> &&newDeps);
     void clearDeps();
 
 protected:
-    std::set<App::DocumentObject*> _Deps;
+    std::map<App::DocumentObject*,bool> _Deps;
     std::map<std::string, std::unique_ptr<PropertyXLink> > _XLinks;
     std::map<std::string, std::string> _DocMap;
     bool _LinkRestored;
@@ -1319,6 +1319,7 @@ private:
         std::unique_ptr<PropertyXLink> xlink;
         std::string docName;
         std::string docLabel;
+        bool hidden=false;
     };
     std::unique_ptr<std::vector<RestoreInfo> > _XLinkRestores;
 };

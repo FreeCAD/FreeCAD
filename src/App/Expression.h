@@ -51,7 +51,9 @@ typedef std::unique_ptr<Expression> ExpressionPtr;
 AppExport bool isAnyEqual(const App::any &v1, const App::any &v2);
 AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = 0);
 
+// Map of depending objects to a map of depending property name to the full referencing object identifier
 typedef std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectIdentifier> > > ExpressionDeps;
+
 class AppExport ExpressionVisitor {
 public:
     virtual ~ExpressionVisitor() {}
@@ -62,9 +64,7 @@ public:
     virtual App::PropertyLinkBase* getPropertyLink() {return 0;}
 
 protected:
-    void getIdentifiers(Expression &e, std::set<App::ObjectIdentifier> &); 
-    void getDeps(Expression &e, ExpressionDeps &); 
-    void getDepObjects(Expression &e, std::set<App::DocumentObject*> &, std::vector<std::string> *); 
+    void getIdentifiers(Expression &e, std::map<App::ObjectIdentifier, bool> &); 
     bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
     bool relabeledDocument(Expression &e, const std::string &oldName, const std::string &newName);
     bool renameObjectIdentifier(Expression &e,
@@ -135,14 +135,19 @@ public:
 
     virtual int priority() const;
 
-    void getIdentifiers(std::set<App::ObjectIdentifier> &) const;
-    std::set<App::ObjectIdentifier> getIdentifiers() const;
+    void getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const;
+    std::map<App::ObjectIdentifier,bool> getIdentifiers() const;
 
-    void getDeps(ExpressionDeps &deps) const;
-    ExpressionDeps getDeps() const;
+    enum DepOption {
+        DepNormal,
+        DepHidden,
+        DepAll,
+    };
+    void getDeps(ExpressionDeps &deps, int option=DepNormal) const;
+    ExpressionDeps getDeps(int option=DepNormal) const;
 
-    std::set<App::DocumentObject*> getDepObjects(std::vector<std::string> *labels=0) const;
-    void getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *labels=0) const;
+    std::map<App::DocumentObject*,bool> getDepObjects(std::vector<std::string> *labels=0) const;
+    void getDepObjects(std::map<App::DocumentObject*,bool> &, std::vector<std::string> *labels=0) const;
 
     ExpressionPtr importSubNames(const std::map<std::string,std::string> &nameMap) const;
 
@@ -188,9 +193,7 @@ protected:
     virtual bool _isIndexable() const {return false;}
     virtual Expression *_copy() const = 0;
     virtual void _toString(std::ostream &ss, bool persistent, int indent=0) const = 0;
-    virtual void _getDeps(ExpressionDeps &) const  {}
-    virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const  {}
-    virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const  {}
+    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const  {}
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) {return false;}
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) {return false;}
     virtual bool _relabeledDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
