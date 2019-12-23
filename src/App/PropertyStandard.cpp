@@ -304,18 +304,22 @@ PropertyEnumeration::~PropertyEnumeration()
 
 void PropertyEnumeration::setEnums(const char **plEnums)
 {
-    // Setting the enum is done only once inside the constructor
-    // but before the current index is already set. So, this needs
-    // to be preserved.
-    int index = _enum._index;
+    // For backward compatibility, if the property container is not attached to
+    // any document (i.e. its full name starts with '?'), do not notify, or
+    // else existing code may crash.
+    bool notify = !boost::starts_with(getFullName(), "?");
+    if (notify)
+        aboutToSetValue();
     _enum.setEnums(plEnums);
-    // Make sure not to set an index out of range
-    int max = _enum.maxValue();
-    _enum._index = std::min<int>(index, max);
+    if (notify)
+        hasSetValue();
 }
 
 void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
 {
+    // _enum.setEnums() will preserve old value possible, so no need to do it
+    // here
+#if 0
     if (_enum.isValid()) {
         const std::string &index = getValueAsString();
         _enum.setEnums(Enums);
@@ -323,6 +327,9 @@ void PropertyEnumeration::setEnums(const std::vector<std::string> &Enums)
     } else {
         _enum.setEnums(Enums);
     }
+#else
+    setEnumVector(Enums);
+#endif
 }
 
 void PropertyEnumeration::setValue(const char *value)
@@ -378,6 +385,19 @@ std::vector<std::string> PropertyEnumeration::getEnumVector() const
     return _enum.getEnumVector();
 }
 
+void PropertyEnumeration::setEnumVector(const std::vector<std::string> &values)
+{
+    // For backward compatibility, if the property container is not attached to
+    // any document (i.e. its full name starts with '?'), do not notify, or
+    // else existing code may crash.
+    bool notify = !boost::starts_with(getFullName(), "?");
+    if (notify)
+        aboutToSetValue();
+    _enum.setEnums(values);
+    if (notify)
+        hasSetValue();
+}
+
 const char ** PropertyEnumeration::getEnums() const
 {
     return _enum.getEnums();
@@ -414,6 +434,8 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
     // get the value of my Attribute
     long val = reader.getAttributeAsInteger("value");
 
+    aboutToSetValue();
+
     if (reader.hasAttribute("CustomEnum")) {
         reader.readElement("CustomEnumList");
         int count = reader.getAttributeAsInteger("count");
@@ -436,14 +458,21 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
         val = getValue();
     }
 
-    setValue(val);
+    _enum.setValue(val);
+    hasSetValue();
 }
 
 PyObject * PropertyEnumeration::getPyObject()
 {
     if (!_enum.isValid()) {
-        PyErr_SetString(PyExc_AssertionError, "The enum is empty");
-        return nullptr;
+        // There is legimate use case of having an empty PropertyEnumeration and
+        // set its enumeration items later. Returning error here cause hasattr()
+        // to return False even though the property exists.
+        //
+        // PyErr_SetString(PyExc_AssertionError, "The enum is empty");
+        // return 0;
+        //
+        Py_Return;
     }
 
     return Py_BuildValue("s", getValueAsString());
@@ -458,6 +487,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             _enum.setValue(val, true);
             hasSetValue();
         }
+        return;
     }
     else if (PyUnicode_Check(value)) {
         std::string str = PyUnicode_AsUTF8(value);
@@ -467,34 +497,47 @@ void PropertyEnumeration::setPyObject(PyObject *value)
             hasSetValue();
         }
         else {
-            std::stringstream out;
-            out << "'" << str << "' is not part of the enumeration";
-            throw Base::ValueError(out.str());
+            FC_THROWM(Base::ValueError, "'" << str 
+                    << "' is not part of the enumeration in "
+                    << getFullName());
         }
+        return;
     }
     else if (PySequence_Check(value)) {
-        Py_ssize_t nSize = PySequence_Size(value);
-        std::vector<std::string> values;
-        values.resize(nSize);
 
-        for (Py_ssize_t i = 0; i < nSize; ++i) {
-            PyObject *item = PySequence_GetItem(value, i);
+        try {
+            std::vector<std::string> values;
 
-            if (PyUnicode_Check(item)) {
-                values[i] = PyUnicode_AsUTF8(item);
+            int idx = -1;
+            Py::Sequence seq(value);
+
+            if(seq.size() == 2) {
+                Py::Object v(seq[0].ptr());
+                if(!v.isString() && v.isSequence()) {
+                    idx = Py::Int(seq[1].ptr());
+                    seq = v;
+                }
             }
-            else {
-                std::string error = std::string("type in list must be str or unicode, not ");
-                throw Base::TypeError(error + item->ob_type->tp_name);
-            }
+
+            values.resize(seq.size());
+
+            for (int i = 0; i < seq.size(); ++i)
+                values[i] = Py::Object(seq[i].ptr()).as_string();
+
+            aboutToSetValue();
+            _enum.setEnums(values);
+            if (idx>=0)
+                _enum.setValue(idx,true);
+            hasSetValue();
+            return;
+        } catch (Py::Exception &) {
+            Base::PyException e;
+            e.ReportException();
         }
-        _enum.setEnums(values);
-        setValue((long)0);
     }
-    else {
-        std::string error = std::string("type must be int, str or unicode not ");
-        throw Base::TypeError(error + value->ob_type->tp_name);
-    }
+
+    FC_THROWM(Base::TypeError, "PropertyEnumeration " << getFullName()
+            << " expects type to be int, string, or list(string), or list(list, int)");
 }
 
 Property * PropertyEnumeration::Copy() const
@@ -504,22 +547,20 @@ Property * PropertyEnumeration::Copy() const
 
 void PropertyEnumeration::Paste(const Property &from)
 {
-    aboutToSetValue();
-
     const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
-    _enum = prop._enum;
-
-    hasSetValue();
+    setValue(prop._enum);
 }
 
-void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyEnumeration::setPathValue(const ObjectIdentifier &, const boost::any &value)
 {
-    verifyPath(path);
-
     if (value.type() == typeid(int))
         setValue(boost::any_cast<int>(value));
+    else if (value.type() == typeid(long))
+        setValue(boost::any_cast<long>(value));
     else if (value.type() == typeid(double))
         setValue(boost::any_cast<double>(value));
+    else if (value.type() == typeid(float))
+        setValue(boost::any_cast<float>(value));
     else if (value.type() == typeid(short))
         setValue(boost::any_cast<short>(value));
     else if (value.type() == typeid(std::string))
@@ -528,8 +569,61 @@ void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const boost
         setValue(boost::any_cast<char*>(value));
     else if (value.type() == typeid(const char*))
         setValue(boost::any_cast<const char*>(value));
-    else
-        throw bad_cast();
+    else {
+        Base::PyGILStateLocker lock;
+        Py::Object pyValue = pyObjectFromAny(value);
+        setPyObject(pyValue.ptr());
+    }
+}
+
+bool PropertyEnumeration::setPyPathValue(const ObjectIdentifier &, const Py::Object &value)
+{
+    setPyObject(value.ptr());
+    return true;
+}
+
+const boost::any PropertyEnumeration::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+    if (p == ".Enum" || p == ".All") {
+        Base::PyGILStateLocker lock;
+        Py::Object res;
+        getPyPathValue(path, res);
+        return pyObjectToAny(res,false);
+    }
+    else if (p == ".String") {
+        auto v = getValueAsString();
+        return std::string(v?v:"");
+    } else
+        return getValue();
+}
+
+bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier &path, Py::Object &r) const
+{
+    std::string p = path.getSubPathStr();
+    if (p == ".Enum" || p == ".All") {
+        Base::PyGILStateLocker lock;
+        Py::Tuple res(_enum.maxValue()+1);
+        const char **enums = _enum.getEnums();
+        PropertyString tmp;
+        for(int i=0;i<=_enum.maxValue();++i) {
+            tmp.setValue(enums[i]);
+            res.setItem(i,Py::asObject(tmp.getPyObject()));
+        }
+        if(p == ".Enum")
+            r = res;
+        else {
+            Py::Tuple tuple(2);
+            tuple.setItem(0, res);
+            tuple.setItem(1, Py::Int(getValue()));
+            r = tuple;
+        }
+    } else if (p == ".String") {
+        auto v = getValueAsString();
+        r = Py::String(v?v:"");
+    } else 
+        r = Py::Int(getValue());
+    return true;
 }
 
 //**************************************************************************
