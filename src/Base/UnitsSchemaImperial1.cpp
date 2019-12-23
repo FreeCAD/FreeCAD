@@ -178,7 +178,11 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("in/min");
-        factor = 25.4/60;
+        factor = 25.4 / 60;
+    }
+    else if (unit == Unit::Acceleration) {
+        unitString = QString::fromLatin1("in/min^2");
+        factor = 25.4 / 3600;
     }
     else {
         // default action for all cases without special treatment:

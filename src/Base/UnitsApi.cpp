@@ -95,7 +95,7 @@ const char* UnitsApi::getDescription(UnitSystem system)
     case UnitSystem::Centimeters:
         return "Building Euro (cm/m²/m³)";
     case UnitSystem::ImperialBuilding:
-        return "Building US (ft-in/sqft/cuft)";
+        return "Building US (ft-in/sqft/cft)";
     case UnitSystem::MmMin:
         return "Metric small parts & CNC(mm, mm/min)";
     case UnitSystem::ImperialCivil:
