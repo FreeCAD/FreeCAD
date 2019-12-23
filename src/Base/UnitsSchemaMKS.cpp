@@ -345,21 +345,25 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 1.0;
     }
     else if (unit == Unit::Frequency) {
-        if (UnitValue < 1000.0) {
+        if (UnitValue < 1e3) {
             unitString = QString::fromLatin1("Hz");
             factor = 1.0;
         }
-        else if (UnitValue < 1000000.0) {
+        else if (UnitValue < 1e6) {
             unitString = QString::fromLatin1("kHz");
-            factor = 1000.0;
+            factor = 1e3;
         }
-        else if (UnitValue < 1000000000.0) {
+        else if (UnitValue < 1e9) {
             unitString = QString::fromLatin1("MHz");
-            factor = 1000000.0;
+            factor = 1e6;
+        }
+        else if (UnitValue < 1e12) {
+            unitString = QString::fromLatin1("GHz");
+            factor = 1e9;
         }
         else {
-            unitString = QString::fromLatin1("GHz");
-            factor = 1000000000.0;
+            unitString = QString::fromLatin1("THz");
+            factor = 1e12;
         }
     }
     else if (unit == Unit::Velocity) {
