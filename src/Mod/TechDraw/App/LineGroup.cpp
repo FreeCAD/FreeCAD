@@ -197,3 +197,20 @@ LineGroup* LineGroup::lineGroupFactory(std::string groupName)
     }
     return lg;
 }
+
+//valid weight names: Thick, Thin, Graphic, Extra
+double LineGroup::getDefaultWidth(std::string weightName, std::string groupName)
+{
+    //default line weights
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
+                                                    GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = groupName;
+    if (groupName.empty()) {
+        lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    }
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+
+    double weight = lg->getWeight(weightName);
+    delete lg;
+    return weight;
+}
