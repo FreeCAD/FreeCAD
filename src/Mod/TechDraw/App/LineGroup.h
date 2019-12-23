@@ -55,6 +55,10 @@ public:
     //static LineGroup maker
     static LineGroup* lineGroupFactory(std::string groupName);
 
+    static double getDefaultWidth(std::string weightName, 
+                                  std::string groupName = std::string());
+
+
 protected:
     void init(void);
 
