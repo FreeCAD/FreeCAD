@@ -101,6 +101,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "mil"      yylval = Quantity::Thou;                return UNIT; // mil  (the thou in US)
 "yd"       yylval = Quantity::Yard;                return UNIT; // yard
 "mi"       yylval = Quantity::Mile;                return UNIT; // mile
+
 "mph"      yylval = Quantity::MilePerHour;         return UNIT; // mile per hour
 "sqft"     yylval = Quantity::SquareFoot;          return UNIT; // square foot
 "cft"      yylval = Quantity::CubicFoot;           return UNIT; // cubic foot

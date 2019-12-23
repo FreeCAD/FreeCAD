@@ -210,6 +210,7 @@ EXPO     [eE][-+]?[0-9]+
 "mil"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // mil  (the thou in US)
 "yd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return UNIT; // yard
 "mi"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = yytext; return UNIT; // mile
+
 "mph"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MilePerHour;         yylval.quantity.unitStr = yytext; return UNIT; // mile per hour 
 "sqft"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::SquareFoot;          yylval.quantity.unitStr = yytext; return UNIT; // square foot
 "cft"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::CubicFoot;           yylval.quantity.unitStr = yytext; return UNIT; // cubic foot
