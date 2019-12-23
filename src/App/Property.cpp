@@ -71,6 +71,8 @@ std::string Property::getFullName() const {
     if(myName) {
         if(father)
             name = father->getFullName() + ".";
+        else
+            name = "?.";
         name += myName;
     }else
         return "?";
