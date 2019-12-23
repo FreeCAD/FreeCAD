@@ -38,6 +38,7 @@ Enumeration::Enumeration()
 }
 
 Enumeration::Enumeration(const Enumeration &other)
+    : _EnumArray(NULL), _ownEnumArray(false), _index(0), _maxVal(-1)
 {
     if (other._ownEnumArray) {
         setEnums(other.getEnumVector());
