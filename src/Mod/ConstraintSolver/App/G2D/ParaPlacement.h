@@ -21,8 +21,8 @@
  ***************************************************************************/
 #pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
-#ifndef FREECAD_CONSTRAINTSOLVER_PARAPLACEMENT_H
-#define FREECAD_CONSTRAINTSOLVER_PARAPLACEMENT_H
+#ifndef FREECAD_CONSTRAINTSOLVER_G2D_PARAPLACEMENT_H
+#define FREECAD_CONSTRAINTSOLVER_G2D_PARAPLACEMENT_H
 
 #include <Mod/ConstraintSolver/App/ParaObject.h>
 #include "ParaPoint.h"

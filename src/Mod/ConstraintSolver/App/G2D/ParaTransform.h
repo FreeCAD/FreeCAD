@@ -21,8 +21,8 @@
  ***************************************************************************/
 #pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
-#ifndef FREECAD_CONSTRAINTSOLVER_PARATRANSFORM_H
-#define FREECAD_CONSTRAINTSOLVER_PARATRANSFORM_H
+#ifndef FREECAD_CONSTRAINTSOLVER_G2D_PARATRANSFORM_H
+#define FREECAD_CONSTRAINTSOLVER_G2D_PARATRANSFORM_H
 
 #include <Mod/ConstraintSolver/App/ParaGeometry.h>
 #include "Placement.h"
