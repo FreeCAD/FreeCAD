@@ -75,7 +75,7 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
                          TechDraw::DrawLeaderLine* leader) :
     m_parentItem(myParent),
     m_lineColor(Qt::black),
-    m_hasHover(false),
+//    m_hasHover(false),
     m_blockDraw(false)
 
 {
@@ -91,6 +91,8 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
     m_line = new QGIPrimPath();
     addToGroup(m_line);
     m_line->setNormalColor(getNormalColor());
+    m_line->setFlag(QGraphicsItem::ItemIsSelectable, false);
+    m_line->setAcceptHoverEvents(false);
     m_line->setPrettyNormal();
     m_line->setPos(0.0,0.0);
 
@@ -130,13 +132,6 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
         m_editPath, SIGNAL(pointsUpdated(QPointF, std::vector<QPointF>)),
         this  , SLOT  (onLineEditFinished(QPointF, std::vector<QPointF>))
             );
-    QObject::connect(
-        m_editPath, SIGNAL(selected(bool)),
-        this  , SLOT  (select(bool)));
-
-    QObject::connect(                   //do we care?
-        m_editPath, SIGNAL(hover(bool)),
-        this  , SLOT  (hover(bool)));
 }
 
 QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -144,19 +139,53 @@ QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant &va
 //    Base::Console().Message("QGILL::itemChange(%d)\n", change);
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
-            m_editPath->setSelected(true);
-            m_arrow1->setSelected(true);
-            m_arrow2->setSelected(true);
+            setPrettySel();
         } else {
-            m_editPath->setSelected(false);
-            m_arrow1->setSelected(false);
-            m_arrow2->setSelected(false);
+            setPrettyNormal();
         }
         draw();
     } else if(change == ItemSceneChange && scene()) {
         // nothing special!
     }
     return QGIView::itemChange(change, value);
+}
+
+//QGILL isn't draggable so skip QGIV::mousePress have event
+void QGILeaderLine::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+//    Base::Console().Message("QGILL::mousePressEvent() - %s\n",getViewName());
+    QGraphicsItem::mousePressEvent(event);
+}
+
+//void QGILeaderLine::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+//{
+//    QGraphicsItem::mouseMoveEvent(event);
+//}
+
+//QGILL isn't draggable so skip QGIV::mouseRelease
+void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+{
+//    Base::Console().Message("QGILL::mouseReleaseEvent() - %s\n",getViewName());
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+//    Base::Console().Message("QGILL::hoverEnter() - selected; %d\n",isSelected());
+    if (!isSelected()) {
+        setPrettyPre();
+    }
+    QGIView::hoverEnterEvent(event);
+}
+
+void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+//    Base::Console().Message("QGILL::hoverLeave() - selected; %d\n",isSelected());
+    if(!isSelected()) {
+        setPrettyNormal();
+    }
+    
+    QGIView::hoverLeaveEvent(event);
 }
 
 void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
@@ -173,17 +202,27 @@ void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
     }
 }
 
-void QGILeaderLine::select(bool state)
-{
-    setSelected(state);
-//    draw();
+void QGILeaderLine::setPrettyNormal() {
+//    Base::Console().Message("QGILL::setPrettyNormal()\n");
+    m_line->setPrettyNormal();
+    m_arrow1->setPrettyNormal();
+    m_arrow2->setPrettyNormal();
 }
 
-void QGILeaderLine::hover(bool state)
-{
-    m_hasHover = state;
-//    draw();
+void QGILeaderLine::setPrettyPre() {
+//    Base::Console().Message("QGILL::setPrettyPre()\n");
+    m_line->setPrettyPre();
+    m_arrow1->setPrettyPre();
+    m_arrow2->setPrettyPre();
 }
+
+void QGILeaderLine::setPrettySel() {
+//    Base::Console().Message("QGILL::setPrettySel()\n");
+    m_line->setPrettySel();
+    m_arrow1->setPrettySel();
+    m_arrow2->setPrettySel();
+}
+
 
 void QGILeaderLine::closeEdit(void)
 {
