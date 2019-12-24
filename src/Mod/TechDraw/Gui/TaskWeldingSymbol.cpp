@@ -573,7 +573,7 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
     if (m_arrowIn != nullptr) {
         tileName = m_arrowIn->getNameInDocument();
     }
-    if (m_arrowIn == nullptr) {   // this should never happen on an update!
+    if (m_arrowIn == nullptr) {
         tileName = m_leadFeat->getDocument()->getUniqueObjectName("DrawTileWeld");
         Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
                    tileType.c_str(),tileName.c_str());
@@ -590,7 +590,7 @@ std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
         Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
                        tileName.c_str(), m_arrowOut.col);
 
-        if (m_otherOut.symbolPath.empty()) {
+        if (m_arrowOut.symbolPath.empty()) {
             Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = ''",
                        tileName.c_str());
         } else {

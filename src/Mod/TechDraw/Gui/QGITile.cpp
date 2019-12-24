@@ -33,6 +33,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawTile.h>
@@ -114,7 +115,6 @@ void QGITile::draw(void)
 
     prepareGeometryChange();
     m_wide = getSymbolWidth();
-//    m_high = getSymbolHeight() * scaleToFont();
     m_high = getSymbolHeight();
 
     makeText();
@@ -161,34 +161,45 @@ void QGITile::makeSymbol(void)
     }
 
 //    m_qgSvg->setGraphicsEffect(m_effect);
-    
-    QFileInfo fi(m_svgPath);
-    if (fi.isReadable()) {
-        QFile svgFile(m_svgPath);
-        if(svgFile.open(QIODevice::ReadOnly)) {
-            QByteArray qba = svgFile.readAll();
-            if (!m_qgSvg->load(&qba)) {
-                Base::Console().Error("Error - Could not load SVG renderer with **%s**\n", qPrintable(m_svgPath));
-                return;
-            }
-            svgFile.close();
-//            m_qgSvg->setScale(scaleToFont());
-            m_qgSvg->setScale(getSymbolFactor());
-            m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
-        } else {
-            Base::Console().Error("Error - Could not open file **%s**\n", qPrintable(m_svgPath));  
-        } 
-    } else {
-        Base::Console().Error("QGIT::makeSymbol - file: **%s** is not readable\n",qPrintable(m_svgPath));
+
+    QByteArray qba = getSvgString(m_svgPath);
+    if (qba.isEmpty()) {
+        Base::Console().Message("QGIT::makeSymbol - no data from file: %s\n", qPrintable(m_svgPath));
         return;
     }
+    if (!m_qgSvg->load(&qba)) {
+        Base::Console().Error("Error - Could not load SVG renderer with **%s**\n", qPrintable(m_svgPath));
+        return;
+   }
+   m_qgSvg->setScale(getSymbolFactor());
+   m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
 }
+
+//re PropertyFileIncluded locking problem - ensure Qt file functions destroyed by going out of scope
+QByteArray QGITile::getSvgString(QString svgPath)
+{
+    QByteArray qba;
+    QFileInfo fi(svgPath);
+    if (fi.isReadable()) {
+        QFile svgFile(svgPath);
+        if(svgFile.open(QIODevice::ReadOnly)) {
+            qba = svgFile.readAll();
+            svgFile.close();
+        } else {
+            Base::Console().Error("Error - Could not open file **%s**\n", qPrintable(svgPath));  
+        } 
+    } else {
+        Base::Console().Error("QGIT::makeSymbol - file: **%s** is not readable\n",qPrintable(svgPath));
+    }
+    return qba;
+}
+
 
 void QGITile::makeText(void)
 {
 //    Base::Console().Message("QGIT::makeText()\n");
     prepareGeometryChange();
-    m_font.setPixelSize(prefFontSize());
+//    m_font.setPixelSize(prefFontSize());
     double verticalFudge = 0.10;
 
     //(0, 0) is 1/2 up symbol (above line symbol)!
@@ -204,8 +215,8 @@ void QGITile::makeText(void)
 
     double vertAdjust = 0.0;
     double minVertAdjust = prefFontSize() * 0.1;
-    if (prefFontSize() > m_high) {       //text is bigger than symbol
-        vertAdjust = ((prefFontSize() - m_high) / 2.0) + minVertAdjust;
+    if (m_font.pixelSize() > m_high) {
+        vertAdjust = ((m_font.pixelSize() - m_high) / 2.0) + minVertAdjust;
     }
 
     double textHeightL = m_qgTextL->boundingRect().height();
@@ -273,12 +284,20 @@ void QGITile::setTileTextCenter(std::string s)
     m_textC = QString::fromUtf8(s.c_str());
 }
 
-//using label font and dimension font size.  could change later
-//void QGITile::setFont(QFont f, double fsize)
-//{
-//    m_font = f;
-//    m_textSize = fsize;
-//}
+void QGITile::setFont(QFont f, double fSizePx)
+{
+//    Base::Console().Message("QGIT::setFont(%s, %.3f)\n", qPrintable(f.family()), fSizePx);
+    m_font = f;
+    m_font.setPixelSize(fSizePx);
+}
+
+void QGITile::setFont(std::string fName, double fSizePx)
+{
+    QString qFName = Base::Tools::fromStdString(fName);
+    QFont f(qFName);
+    setFont(f, fSizePx);
+}
+
 
 void QGITile::setSymbolFile(std::string s)
 {
@@ -383,17 +402,6 @@ double QGITile::prefFontSize(void) const
     double sizeMM = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
     double fontSize = QGIView::calculateFontPixelSize(sizeMM);
     return fontSize;
-}
-
-//factor to scale symbol to match font size
-double QGITile::scaleToFont(void) const
-{
-    double fpx = prefFontSize();
-    double spx = getSymbolHeight();
-//    double factor = getSymbolFactor();
-    double factor = 1.0;
-    double sf = (fpx / spx) * factor;
-    return sf;
 }
 
 QString QGITile::prefTextFont(void) const

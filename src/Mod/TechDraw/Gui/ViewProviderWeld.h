@@ -45,6 +45,10 @@ public:
     /// destructor
     virtual ~ViewProviderWeld();
 
+    App::PropertyString      Font;
+    App::PropertyLength      FontSize;
+    App::PropertyLength      TileFontSize;
+
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     virtual bool useNewSelectionModel(void) const {return false;}
@@ -58,6 +62,12 @@ public:
 
     virtual TechDraw::DrawWeldSymbol* getViewObject() const;
     virtual TechDraw::DrawWeldSymbol* getFeature() const;
+
+    std::string prefFontName(void);
+    double prefFontSize(void);
+    double prefTileTextAdjust(void);
+
+    
 };
 
 } // namespace TechDrawGui
