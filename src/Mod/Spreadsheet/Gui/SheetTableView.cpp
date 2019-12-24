@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QKeyEvent>
 # include <QAction>
+# include <QMenu>
 # include <QApplication>
 # include <QClipboard>
 # include <QMessageBox>
@@ -34,6 +35,7 @@
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <Gui/CommandT.h>
+#include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <boost/bind.hpp>
 #include "../App/Utils.h"
@@ -99,13 +101,44 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(removeRows, SIGNAL(triggered()), this, SLOT(removeRows()));
     connect(removeColumns, SIGNAL(triggered()), this, SLOT(removeColumns()));
 
-    QAction * cellProperties = new QAction(tr("Properties..."), this);
-    addAction(cellProperties);
+    contextMenu = new QMenu(this);
 
-    setContextMenuPolicy(Qt::ActionsContextMenu);
-    setTabKeyNavigation(false);
+    QAction * cellProperties = new QAction(tr("Properties..."), this);
+    contextMenu->addAction(cellProperties);
 
     connect(cellProperties, SIGNAL(triggered()), this, SLOT(cellProperties()));
+
+    contextMenu->addSeparator();
+    QAction *recompute = new QAction(tr("Recompute"),this);
+    connect(recompute, SIGNAL(triggered()), this, SLOT(onRecompute()));
+    contextMenu->addAction(recompute);
+
+    contextMenu->addSeparator();
+    actionMerge = contextMenu->addAction(tr("Merge cells"));
+    connect(actionMerge,SIGNAL(triggered()), this, SLOT(mergeCells()));
+    actionSplit = contextMenu->addAction(tr("Split cells"));
+    connect(actionSplit,SIGNAL(triggered()), this, SLOT(splitCell()));
+
+    contextMenu->addSeparator();
+    actionCut = contextMenu->addAction(tr("Cut"));
+    connect(actionCut,SIGNAL(triggered()), this, SLOT(cutSelection()));
+    actionCopy = contextMenu->addAction(tr("Copy"));
+    connect(actionCopy,SIGNAL(triggered()), this, SLOT(copySelection()));
+    actionPaste = contextMenu->addAction(tr("Paste"));
+    connect(actionPaste,SIGNAL(triggered()), this, SLOT(pasteClipboard()));
+    actionDel = contextMenu->addAction(tr("Delete"));
+    connect(actionDel,SIGNAL(triggered()), this, SLOT(deleteSelection()));
+
+    setTabKeyNavigation(false);
+}
+
+void SheetTableView::onRecompute() {
+    Gui::Command::openCommand("Recompute cells");
+    for(auto &range : selectedRanges()) {
+        Gui::cmdAppObjectArgs(sheet, "recomputeCells('%s', '%s')",
+                range.fromCellString(), range.toCellString());
+    }
+    Gui::Command::commitCommand();
 }
 
 void SheetTableView::cellProperties()
@@ -525,6 +558,14 @@ void SheetTableView::pasteClipboard()
     }
 }
 
+void SheetTableView::mergeCells() {
+    Gui::Application::Instance->commandManager().runCommandByName("Spreadsheet_MergeCells");
+}
+
+void SheetTableView::splitCell() {
+    Gui::Application::Instance->commandManager().runCommandByName("Spreadsheet_SplitCell");
+}
+
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
     SpreadsheetGui::LineEdit * le = qobject_cast<SpreadsheetGui::LineEdit*>(editor);
@@ -538,6 +579,27 @@ void SheetTableView::edit ( const QModelIndex & index )
 {
     currentEditIndex = index;
     QTableView::edit(index);
+}
+
+void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
+    const QMimeData* mimeData = QApplication::clipboard()->mimeData();
+    if(!selectionModel()->hasSelection()) {
+        actionCut->setEnabled(false);
+        actionCopy->setEnabled(false);
+        actionDel->setEnabled(false);
+        actionPaste->setEnabled(false);
+        actionSplit->setEnabled(false);
+        actionMerge->setEnabled(false);
+    }else{
+        actionPaste->setEnabled(mimeData && (mimeData->hasText() || mimeData->hasText()));
+        actionCut->setEnabled(true);
+        actionCopy->setEnabled(true);
+        actionDel->setEnabled(true);
+        actionSplit->setEnabled(true);
+        actionMerge->setEnabled(true);
+    }
+
+    contextMenu->exec(QCursor::pos());
 }
 
 #include "moc_SheetTableView.cpp"

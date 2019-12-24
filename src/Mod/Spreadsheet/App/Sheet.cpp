@@ -753,6 +753,12 @@ void Sheet::touchCells(Range range) {
     }while(range.next());
 }
 
+void Sheet::recomputeCells(Range range) {
+    do {
+        recomputeCell(*range);
+    }while(range.next());
+}
+
 /**
  * @brief Recompute cell at address \a p.
  * @param p Address of cell.
