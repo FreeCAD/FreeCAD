@@ -165,5 +165,20 @@
         <UserDocu>Get given spreadsheet row height</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="touchCells">
+      <Documentation>
+        <UserDocu>touchCells(from, to=None): touch cells in the given range</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="recomputeCells">
+      <Documentation>
+        <UserDocu>
+recomputeCells(from, to=None)
+
+Manually recompute cells in the given range with the given order without
+following depedency order.
+        </UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
