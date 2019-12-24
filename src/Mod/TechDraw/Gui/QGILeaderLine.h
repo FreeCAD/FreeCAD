@@ -82,12 +82,18 @@ public:
     double getLineWidth(void);
     double getEdgeFuzz(void) const;
 
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    //void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
+    void setPrettyNormal();
+    void setPrettyPre();
+    void setPrettySel();
 
 public Q_SLOTS:
     void onLineEditFinished(QPointF attach, std::vector<QPointF> deltas);    //QGEPath is finished editing points
-    void select(bool state);
-    void hover(bool state);
     virtual void onSourceChange(TechDraw::DrawView* newParent) override;
 
 Q_SIGNALS:
