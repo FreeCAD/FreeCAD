@@ -21,38 +21,27 @@
  ***************************************************************************/
 #pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
-#ifndef FREECAD_CONSTRAINTSOLVER_G2D_PARAPOINT_H
-#define FREECAD_CONSTRAINTSOLVER_G2D_PARAPOINT_H
+#ifndef FREECAD_CONSTRAINTSOLVER_G2D_PARAGEOMETRY2D_H
+#define FREECAD_CONSTRAINTSOLVER_G2D_PARAGEOMETRY2D_H
 
-#include "ParaGeometry2D.h"
-#include "Point.h"
-#include "ParaShape.h"
+#include <Mod/ConstraintSolver/App/ParaGeometry.h>
 
 namespace FCS {
 namespace G2D {
 
-class ParaPoint;
-typedef Base::UnsafePyHandle<ParaPoint> HParaPoint;
-typedef Base::UnsafePyHandle<ParaShape<ParaPoint>> HShape_Point;
+class ParaGeometry2D;
+typedef UnsafePyHandle<ParaGeometry2D> HParaGeometry2D;
 
-class FCSExport ParaPoint : public FCS::G2D::ParaGeometry2D
+class FCSExport ParaGeometry2D : public FCS::ParaGeometry
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public://data
-    ParameterRef x;
-    ParameterRef y;
 
 public://methods
-    ParaPoint();
-    ParaPoint(ParameterRef x, ParameterRef y);
-    void initAttrs() override;
     virtual PyObject* getPyObject() override;
 
-    Point value(const ValueSet& vals) const;
-    Point operator()(const ValueSet& vals) const{return value(vals);}
-
 public: //friends
-    friend class ParaPointPy;
+    friend class ParaGeometry2DPy;
 
 };
 

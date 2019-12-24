@@ -58,6 +58,8 @@
 #include "BFGS.h"
 #include "SQP.h"
 
+#include "G2D/ParaGeometry2D.h"
+#include "G2D/ParaGeometry2DPy.h"
 #include "G2D/ParaPoint.h"
 #include "G2D/ParaPointPy.h"
 #include "G2D/ParaVector.h"
@@ -173,7 +175,8 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Py::Module submodG2D =  makeSubmodule(mod, "__FreeCAD_FCS_G2D__", "G2D", init_freecad_FCS_G2D_module);
 
 
-    FCS::G2D::ParaPointPy                ::Type.tp_name = "ConstraintSolver.G2D.ParaGeometry"             ;
+    FCS::G2D::ParaGeometry2DPy           ::Type.tp_name = "ConstraintSolver.G2D.ParaGeometry2D"           ;
+    FCS::G2D::ParaPointPy                ::Type.tp_name = "ConstraintSolver.G2D.ParaPoint"                ;
     FCS::G2D::ParaVectorPy               ::Type.tp_name = "ConstraintSolver.G2D.ParaVector"               ;
     FCS::G2D::ParaPlacementPy            ::Type.tp_name = "ConstraintSolver.G2D.ParaPlacement"            ;
     FCS::G2D::ParaTransformPy            ::Type.tp_name = "ConstraintSolver.G2D.ParaTransform"            ;
@@ -181,6 +184,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintDistancePy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistance"       ;
     FCS::G2D::ConstraintPlacementRulesPy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintPlacementRules" ;
 
+    Base::Interpreter().addType(&FCS::G2D::ParaGeometry2DPy           ::Type, submodG2D.ptr(), "ParaGeometry2D"           );
     Base::Interpreter().addType(&FCS::G2D::ParaPointPy                ::Type, submodG2D.ptr(), "ParaPoint"                );
     Base::Interpreter().addType(&FCS::G2D::ParaVectorPy               ::Type, submodG2D.ptr(), "ParaVector"               );
     Base::Interpreter().addType(&FCS::G2D::ParaPlacementPy            ::Type, submodG2D.ptr(), "ParaPlacement"            );
@@ -204,6 +208,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::SQP                ::init();
 
 
+    FCS::G2D::ParaGeometry2D           ::init();
     FCS::G2D::ParaPoint                ::init();
     FCS::G2D::ParaVector               ::init();
     FCS::G2D::ParaPlacement            ::init();

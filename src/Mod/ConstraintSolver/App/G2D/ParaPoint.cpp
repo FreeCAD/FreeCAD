@@ -6,7 +6,7 @@
 using namespace FCS;
 using namespace FCS::G2D;
 
-TYPESYSTEM_SOURCE(FCS::G2D::ParaPoint, FCS::ParaGeometry);
+TYPESYSTEM_SOURCE(FCS::G2D::ParaPoint, FCS::G2D::ParaGeometry2D);
 
 Point ParaPoint::value(const ValueSet& vals) const
 {
