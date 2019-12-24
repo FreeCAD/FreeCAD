@@ -170,7 +170,7 @@ protected:
     double m_lockWidth;
     double m_lockHeight;
 
-    int m_selectState;
+/*    int m_selectState;*/
 };
 
 } // namespace
