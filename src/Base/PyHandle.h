@@ -38,7 +38,10 @@ public:
     void operator=(PyObject* pyob){
         setObject(pyob);
     }
-    void operator=(Py::Object other){
+    void operator=(const Py::Object& other){
+        setObject(other.ptr());
+    }
+    void operator=(const PyHandleBase& other){
         setObject(other.ptr());
     }
 };
