@@ -5915,10 +5915,12 @@ class _Array(_DraftLink):
             if num == 0:
                 return base
             fraction = float(angle)/(num-1)
+        ctr = DraftVecUtils.tup(center)
+        axs = DraftVecUtils.tup(axis)
         for i in range(num-1):
             currangle = fraction + (i*fraction)
             npl = pl.copy()
-            npl.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
+            npl.rotate(ctr, axs, currangle)
             npl = npl.multiply(spin)
             if axisvector:
                 if not DraftVecUtils.isNull(axisvector):
