@@ -39,6 +39,7 @@ public://data
 
 public://methods
     virtual PyObject* getPyObject() override;
+    virtual HParaObject toShape() override;
 
 public: //friends
     friend class ParaGeometry2DPy;

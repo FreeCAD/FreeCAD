@@ -34,7 +34,8 @@ typedef UnsafePyHandle<ParaGeometry> HParaGeometry;
 class FCSExport ParaGeometry : public ParaObject
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-    //no special functionality so far. Just base class for typechecks.
+public: //methods
+    virtual HParaObject toShape() = 0;
 };
 
 } //namespace

@@ -17,6 +17,13 @@
 	  <DeveloperDocu>Base class for all geometry on parameters.</DeveloperDocu>
 	  <UserDocu>Base class for all geometry on parameters.</UserDocu>
 	</Documentation>
+    
+  	<Methode Name="toShape">
+	  <Documentation>
+		<UserDocu>Makes a shape with no transform from this geometry.</UserDocu>
+	  </Documentation>
+	</Methode>
+
 
   </PythonExport>
 </GenerateModel>

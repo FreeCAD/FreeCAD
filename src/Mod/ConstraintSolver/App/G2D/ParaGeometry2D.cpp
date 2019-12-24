@@ -19,3 +19,8 @@ PyObject* ParaGeometry2D::getPyObject()
         return Py::new_reference_to(_twin);
     }
 }
+
+HParaObject FCS::G2D::ParaGeometry2D::toShape()
+{
+    return new ParaShapeBase(self());
+}

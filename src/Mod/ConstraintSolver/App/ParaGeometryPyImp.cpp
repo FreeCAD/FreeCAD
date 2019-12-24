@@ -11,6 +11,12 @@ std::string ParaGeometryPy::representation(void) const
     return ParaObjectPy::representation();
 }
 
+PyObject* ParaGeometryPy::toShape(PyObject* args)
+{
+    if (! PyArg_ParseTuple(args, ""))
+        return nullptr;
+    return Py::new_reference_to(getParaGeometryPtr()->toShape());
+}
 
 
 PyObject *ParaGeometryPy::getCustomAttributes(const char* attr) const
