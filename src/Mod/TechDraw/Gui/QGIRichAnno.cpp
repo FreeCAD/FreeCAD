@@ -277,10 +277,25 @@ void QGIRichAnno::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 
 QPen QGIRichAnno::rectPen() const
 {
-    QPen pen(Qt::SolidLine);
-    pen.setWidthF(1.0);
+    QPen pen;
+    const auto sym( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
+    if( sym == nullptr ) {
+        return pen;
+    }
+    auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return pen;
+    }
+
+    double rectWeight = Rez::guiX(vp->LineWidth.getValue());
+    Qt::PenStyle rectStyle = (Qt::PenStyle) vp->LineStyle.getValue();
+    App::Color temp = vp->LineColor.getValue();
+    QColor rectColor = temp.asValue<QColor>(); 
+
+    pen = QPen(rectStyle);
+    pen.setWidthF(rectWeight);
+    pen.setColor(rectColor);
     return pen;
 }
-    
 
 #include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>
