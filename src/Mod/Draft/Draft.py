@@ -5902,10 +5902,13 @@ class _Array(_DraftLink):
                 base.append(npl)
         return base
 
-    def polarArray(self,pl,center,angle,num,axis,axisvector):
+    def polarArray(self,spl,center,angle,num,axis,axisvector):
         #print("angle ",angle," num ",num)
         import Part
-        base = [pl.copy()]
+        spin = FreeCAD.Placement(Vector(), spl.Rotation)
+        pl = FreeCAD.Placement(spl.Base, FreeCAD.Rotation())
+        center = center.sub(spl.Base)
+        base = [spl.copy()]
         if angle == 360:
             fraction = float(angle)/num
         else:
@@ -5916,6 +5919,7 @@ class _Array(_DraftLink):
             currangle = fraction + (i*fraction)
             npl = pl.copy()
             npl.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
+            npl = npl.multiply(spin)
             if axisvector:
                 if not DraftVecUtils.isNull(axisvector):
                     npl.translate(FreeCAD.Vector(axisvector).multiply(i+1))
