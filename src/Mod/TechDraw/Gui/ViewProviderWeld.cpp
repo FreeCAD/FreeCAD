@@ -57,6 +57,13 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderWeld, TechDrawGui::ViewProviderDrawingV
 ViewProviderWeld::ViewProviderWeld()
 {
     sPixmap = "actions/techdraw-weldsymbol";
+    static const char *group = "Text";
+
+    ADD_PROPERTY_TYPE(Font, (prefFontName().c_str()),group,App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(FontSize, (prefFontSize()), group,
+                                (App::PropertyType)(App::Prop_None),"Tail text size");
+    ADD_PROPERTY_TYPE(TileFontSize, (prefFontSize() * prefTileTextAdjust()), group,
+                                (App::PropertyType)(App::Prop_None),"Text size on individual symbol tiles");
 }
 
 ViewProviderWeld::~ViewProviderWeld()
@@ -141,6 +148,34 @@ bool ViewProviderWeld::doubleClicked(void)
     setEdit(ViewProvider::Default);
     return true;
 }
+
+std::string ViewProviderWeld::prefFontName(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                          GetGroup("Mod/TechDraw/Labels");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    return fontName;
+}
+
+double ViewProviderWeld::prefFontSize(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                 GetGroup("Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
+    return fontSize;
+}
+
+double ViewProviderWeld::prefTileTextAdjust(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                 GetGroup("Mod/TechDraw/Dimensions");
+    double adjust   = hGrp->GetFloat("TileTextAdjust", 0.75);
+    return adjust;
+}
+
 
 
 TechDraw::DrawWeldSymbol* ViewProviderWeld::getViewObject() const

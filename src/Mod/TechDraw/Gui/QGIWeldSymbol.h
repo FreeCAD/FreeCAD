@@ -104,7 +104,7 @@ protected:
 
 protected:
     void removeQGITiles(void);
-    std::vector<QGITile*> getQGITiles(void);
+    std::vector<QGITile*> getQGITiles(void) const;
 
     virtual QColor prefNormalColor();
     double prefArrowSize();
@@ -127,6 +127,8 @@ protected:
     bool m_blockDraw;    //prevent redraws while updating.
 
     std::string m_weldFeatName;
+    virtual QRectF customBoundingRect() const;
+
 };
 
 }

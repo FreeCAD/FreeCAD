@@ -64,7 +64,8 @@ public:
     void setTileTextLeft(std::string s);
     void setTileTextRight(std::string s);
     void setTileTextCenter(std::string s);
-    void setFont(QFont f, double fsize);
+    void setFont(QFont f, double fSizePx);
+    void setFont(std::string fName, double fSizePx);
     void setSymbolFile(std::string s);
     void setTilePosition(QPointF org, int r, int c);
     void setTileScale(double s);
@@ -84,9 +85,10 @@ protected:
     double getSymbolWidth(void) const;
     double getSymbolHeight(void) const;
     double getSymbolFactor(void) const;
+    QByteArray getSvgString(QString svgPath);
+
     QString prefTextFont(void) const;
     double prefFontSize(void) const;
-    double scaleToFont(void) const;
     void makeSymbol(void);
     void makeText(void);
 
