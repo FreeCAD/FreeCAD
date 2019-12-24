@@ -643,9 +643,11 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
-    openCommand("Duplicate a PartDesign object");
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
+    // This transaction must be opened after using the core duplication function.
+    // See https://forum.freecadweb.org/viewtopic.php?f=19&t=41918&p=355939#p355939
+    openCommand("Duplicate a PartDesign object");
     if (pcActiveBody) {
         // Find the features that were added
         std::vector<App::DocumentObject*> afterFeatures = getDocument()->getObjects();
