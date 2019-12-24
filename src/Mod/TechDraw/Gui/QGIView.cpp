@@ -82,8 +82,7 @@ QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_locked(false),
-     m_innerView(false),
-     m_selectState(0)
+     m_innerView(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -209,6 +208,9 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                     }
                 }
             }
+        } else {
+            //not a dpgi, not locked, but moved.
+            //feat->setPosition(Rez::appX(newPos.x()), -Rez::appX(newPos.y());
         }
         return newPos;
     }
@@ -216,10 +218,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
             m_colCurrent = getSelectColor();
-            m_selectState = 2;
+//            m_selectState = 2;
         } else {
             m_colCurrent = getNormalColor();
-            m_selectState = 0;
+//            m_selectState = 0;
         }
         drawBorder();
     }
@@ -242,7 +244,9 @@ void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-    //TODO: this should be done in itemChange
+    //TODO: this should be done in itemChange - item position has changed
+    //TODO: and should check for dragging
+//    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n",getViewName());
     if(!m_locked) {
         if (!isInnerView()) {
             double tempX = x(),
@@ -261,10 +265,8 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
         m_colCurrent = getSelectColor();
-        m_selectState = 2;
     } else {
         m_colCurrent = getPreColor();
-        m_selectState = 1;
     }
     drawBorder();
 }
@@ -274,10 +276,8 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     Q_UNUSED(event);
     if(isSelected()) {
         m_colCurrent = getSelectColor();
-        m_selectState = 1;
     } else {
         m_colCurrent = getNormalColor();
-        m_selectState = 0;
     }
     drawBorder();
 }
