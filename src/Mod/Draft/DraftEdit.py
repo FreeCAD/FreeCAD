@@ -130,8 +130,8 @@ class Edit():
         else:
             self.ui.selectUi()
             FreeCAD.Console.PrintMessage(translate("draft", 
-                                                   "Select a Draft object to edit") +
-                                                   "\n")
+                                                   "Select a Draft object to edit")
+                                                   + "\n")
             self.register_selection_callback()
 
     def proceed(self):
@@ -142,10 +142,9 @@ class Edit():
             return self.finish() 
 
         # Save selectstate and turn selectable false.
-        # Object can remain selectable commenting following lines, 
-        # but snap only process the first edge of self.obj TODO: fix it
-        #self.saveSelectState(self.obj)        
-        #self.setSelectState(self.obj, False)
+        # Object can remain selectable commenting following lines:
+        # self.saveSelectState(self.obj)        
+        # self.setSelectState(self.obj, False)
 
         # start object editing
         FreeCADGui.Selection.clearSelection()
@@ -157,14 +156,17 @@ class Edit():
         for obj in self.objs:
             self.setEditPoints(obj)
 
-        self.register_editing_callbacks()#register action callback
-        # set plane tracker to match edited object
-        #FreeCAD.DraftWorkingPlane.save()
-        #self.alignWorkingPlane()
+        self.register_editing_callbacks()
+
+        # TODO: align working plane when editing starts
+        # FreeCAD.DraftWorkingPlane.save()
+        # self.alignWorkingPlane()
 
 
     def finish(self,closed=False):
-        "terminates Edit Tool"
+        """
+        terminates Edit Tool
+        """
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
         self.editing = None
@@ -178,11 +180,11 @@ class Edit():
             self.removeTrackers()
         self.restoreSelectState(self.obj)
         if Draft.getType(self.obj) == "Structure":
-            if self.originalDisplayMode != None:
+            if self.originalDisplayMode is not None:
                 self.obj.ViewObject.DisplayMode = self.originalDisplayMode
-            if self.originalPoints != None:
+            if self.originalPoints is not None:
                 self.obj.ViewObject.NodeSize = self.originalPoints
-            if self.originalNodes != None:
+            if self.originalNodes is not None:
                 self.obj.ViewObject.ShowNodes = self.originalNodes
         self.selectstate = None
         self.originalDisplayMode = None
@@ -202,18 +204,24 @@ class Edit():
     #---------------------------------------------------------------------------
 
     def register_selection_callback(self):
-        "register callback for selection when command is launched"
+        """
+        register callback for selection when command is launched
+        """
         self.unregister_selection_callback()
         self.call = self.view.addEventCallback("SoEvent",DraftTools.selectObject)
 
     def unregister_selection_callback(self):
-        "remove callback for selection if it exhists"
+        """
+        remove selection callback if it exhists
+        """
         if self.call:
             self.view.removeEventCallback("SoEvent",self.call)
         self.call = None
 
     def register_editing_callbacks(self):
-        "register callbacks to use during editing (former action function)"
+        """
+        register editing callbacks (former action function)
+        """
         viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
         self.render_manager = viewer.getSoRenderManager()
         view = FreeCADGui.ActiveDocument.ActiveView
@@ -229,7 +237,9 @@ class Edit():
         #FreeCAD.Console.PrintMessage("Draft edit callbacks registered \n")
 
     def unregister_editing_callbacks(self):
-        "remove callbacks used during editing if they exhist"
+        """
+        remove callbacks used during editing if they exhist
+        """
         view = FreeCADGui.ActiveDocument.ActiveView
         if self._keyPressedCB:
             view.removeEventCallbackSWIG(coin.SoKeyboardEvent.getClassTypeId(), self._keyPressedCB)
@@ -249,7 +259,9 @@ class Edit():
     #---------------------------------------------------------------------------
 
     def keyPressed(self, event_callback):
-        "keyboard event handler"
+        """
+        keyboard event handler
+        """
         #TODO: Get the keys from preferences
         event = event_callback.getEvent()
         if event.getState() == coin.SoKeyboardEvent.DOWN:
@@ -266,7 +278,9 @@ class Edit():
                     self.arcInvert(self.obj)
 
     def mousePressed(self, event_callback):
-        "mouse button event handler, calls: startEditing, endEditing, addPoint, delPoint"
+        """
+        mouse button event handler, calls: startEditing, endEditing, addPoint, delPoint
+        """
         event = event_callback.getEvent()
         if (event.getState() == coin.SoMouseButtonEvent.DOWN and 
             event.getButton() == event.BUTTON1):#left click
@@ -309,13 +323,13 @@ class Edit():
             pos = event.getPosition()
             node = self.getEditNode(pos)
             ep = self.getEditNodeIndex(node)
-            if ep != None:
-                if self.overNode != None:
+            if ep is not None:
+                if self.overNode is not None:
                     self.overNode.setColor(COLORS["default"])
                 self.trackers[str(node.objectName.getValue())][ep].setColor(COLORS["red"])
                 self.overNode = self.trackers[str(node.objectName.getValue())][ep]
             else:
-                if self.overNode != None:
+                if self.overNode is not None:
                     self.overNode.setColor(COLORS["default"])
                     self.overNode = None
 
@@ -333,8 +347,9 @@ class Edit():
             return
         self.setPlacement(self.obj)
 
-        FreeCAD.Console.PrintMessage(str(self.obj.Name) + str(
-            ": editing node: n° ") + str(ep) + "\n")
+        FreeCAD.Console.PrintMessage(str(self.obj.Name) + 
+                                     + str(": editing node: n° ")
+                                     + str(ep) + "\n")
 
         self.ui.lineUi()
         self.ui.isRelative.show()
@@ -376,8 +391,8 @@ class Edit():
         self.objs = []
         if len(selection) > self.maxObjects:
             FreeCAD.Console.PrintMessage(translate("draft", 
-                                                   "Too many objects selected, max number set to: " +
-                                                   str(self.maxObjects) + "\n"))
+                                                   "Too many objects selected, max number set to: "
+                                                   + str(self.maxObjects) + "\n"))
             return None
         for obj in selection:
             if "Proxy" in selection[0].PropertiesList and hasattr(selection[0].Proxy,"Type"):
@@ -392,15 +407,15 @@ class Edit():
                 except:
                     pass
             FreeCAD.Console.PrintWarning(translate("draft",
-                                         str(obj.Name) + 
-                                         ": this object is not editable") +
-                                         "\n")
+                                         str(obj.Name)
+                                         + ": this object is not editable")
+                                         + "\n")
         return self.objs
 
     def numericInput(self, obj, nodeIndex, v, numy=None,numz=None):
         '''this function gets called by the toolbar
         or by the mouse click and activate the update function'''
-        if (numy != None):
+        if (numy is not None):
             v = Vector(v,numy,numz)
         self.update(obj, nodeIndex, v)
         FreeCAD.ActiveDocument.recompute()
@@ -418,7 +433,7 @@ class Edit():
 
     def restoreSelectState(self,obj):
         if obj:
-            if hasattr(obj.ViewObject,"Selectable") and (self.selectstate != None):
+            if hasattr(obj.ViewObject,"Selectable") and (self.selectstate is not None):
                 obj.ViewObject.Selectable = self.selectstate
 
     def setPlacement(self,obj):
@@ -479,10 +494,10 @@ class Edit():
 
     def setTrackers(self, obj, points=None):
         "set Edit Trackers for editpoints collected from self.obj"
-        if points == None or len(points) == 0:
+        if points is None or len(points) == 0:
             FreeCAD.Console.PrintWarning(translate("draft", 
-                                                   "No edit point found for selected object") +
-                                                   "\n")
+                                                   "No edit point found for selected object")
+                                                   + "\n")
             # do not finish if some trackers are still present
             if self.trackers == {'object':[]}:
                 self.finish()
@@ -732,7 +747,8 @@ class Edit():
 
         if ep is None:
             return FreeCAD.Console.PrintWarning(translate("draft",
-                                                          "Node not found\n"))
+                                                          "Node not found")
+                                                          + "\n")
 
         doc = FreeCAD.getDocument(str(node.documentName.getValue()))
         self.obj = doc.getObject(str(node.objectName.getValue()))
@@ -742,8 +758,8 @@ class Edit():
             return
         if len(self.obj.Points) <= 2:
             FreeCAD.Console.PrintWarning(translate("draft", 
-                                                   "Active object must have more than two points/nodes") +
-                                                   "\n")
+                                                   "Active object must have more than two points/nodes") 
+                                                   + "\n")
             return
 
         pts = self.obj.Points
@@ -880,8 +896,8 @@ class Edit():
         if ( editPnt in pts ) == True: # checks if point enter is equal to other, this could cause a OCC problem
             FreeCAD.Console.PrintMessage(translate("draft", 
                                                    "It is not possible to have two coincident points in this \
-                                                   object, please try again.") +
-                                                   "\n")
+                                                   object, please try again.")
+                                                   + "\n")
             if Draft.getType(obj) in ["BezCurve"]:
                 self.resetTrackers(obj)
             else:
@@ -1016,8 +1032,8 @@ class Edit():
                     changep = 1
                 else:
                     FreeCAD.Console.PrintWarning(translate("draft", 
-                                                           "Can't change Knot belonging to pole %d"%point) +
-                                                           "\n")
+                                                           "Can't change Knot belonging to pole %d"%point)
+                                                           + "\n")
                     return
                 if knot:
                     if style == 'Tangent':
@@ -1030,7 +1046,8 @@ class Edit():
                         pass #
             else:
                 FreeCAD.Console.PrintWarning(translate("draft", 
-                                                       "Selection is not a Knot\n"))
+                                                       "Selection is not a Knot")
+                                                       + "\n")
                 return
         else: #point is a knot
             if style == 'Sharp':
@@ -1056,8 +1073,8 @@ class Edit():
                 knot = 0
             else:
                 FreeCAD.Console.PrintWarning(translate("draft",
-                                                       "Endpoint of BezCurve can't be smoothed") +
-                                                       "\n")
+                                                       "Endpoint of BezCurve can't be smoothed")
+                                                       + "\n")
                 return
         segment = knot // deg #segment index
         newcont = obj.Continuity[:] #don't edit a property inplace !!!
@@ -1068,9 +1085,9 @@ class Edit():
                 len(obj.Continuity) >1):
             newcont[segment-1] = style2cont.get(style)
         else: #should not happen
-            FreeCAD.Console.PrintWarning('Continuity indexing error:'+
-                'point:%d deg:%d len(cont):%d' % (knot,deg,
-                len(obj.Continuity)))
+            FreeCAD.Console.PrintWarning('Continuity indexing error:'
+                                         + 'point:%d deg:%d len(cont):%d' % (knot,deg,
+                                         len(obj.Continuity)))
         obj.Points = pts
         obj.Continuity = newcont
         self.resetTrackers(obj)
@@ -1332,8 +1349,8 @@ class Edit():
         else:
             FreeCAD.Console.PrintWarning(translate("draft",
                                                    "Sketch is too complex to edit: \
-                                                    it is suggested to use sketcher default editor") +
-                                                   "\n")
+                                                    it is suggested to use sketcher default editor")
+                                                   + "\n")
             return None
 
     def updateSketch(self, obj, nodeIndex, v):
@@ -1543,6 +1560,24 @@ class Edit():
 
 
 
+class whichNode():
+    """
+    """
+    def __init__(self):
+        pass#FreeCAD.Console.PrintMessage("selected node is"+ str(FreeCAD.activeDraftCommand.overNode) +" \n")
+
+
+    def GetResources(self):
+        return {'Pixmap'  : 'whichNode',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "whichNode"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "which nod is over?")}
+
+    def Activated(self):
+        FreeCAD.Console.PrintMessage("selected node is"+ str(FreeCAD.activeDraftCommand.overNode) +" \n")
+
+
 if FreeCAD.GuiUp:
     # setup command
     FreeCADGui.addCommand('Draft_Edit', Edit())
+    FreeCADGui.addCommand('Draft_Edit_WhichNode', whichNode())
+    
