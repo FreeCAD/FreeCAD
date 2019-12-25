@@ -153,12 +153,7 @@ void CosmeticVertexPy::setPoint(Py::Object arg)
 Py::Boolean CosmeticVertexPy::getShow(void) const
 {
     bool show = getCosmeticVertexPtr()->visible;
-    if (show) {
-        Py_RETURN_TRUE;
-    } else {
-        Py_RETURN_FALSE;
-    }
-//    return Py::asObject();
+    return Py::Boolean(show);
 }
 
 void CosmeticVertexPy::setShow(Py::Boolean arg)
