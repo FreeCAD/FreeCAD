@@ -49,7 +49,8 @@ public:
     DrawViewBalloon();
     virtual ~DrawViewBalloon();
 
-    App::PropertyLink        sourceView;
+/*    App::PropertyLink        sourceView;*/
+    App::PropertyLink        SourceView;
     App::PropertyString      Text;
     App::PropertyEnumeration EndType;
     App::PropertyEnumeration Symbol;
@@ -77,10 +78,13 @@ public:
     static const char* balloonTypeEnums[];
     static const char* endTypeEnums[];
 
+    void handleXYLock(void) override;
+
 protected:
     void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-	virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+/*    virtual void onDocumentRestored();*/
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
 
 private:
 };
