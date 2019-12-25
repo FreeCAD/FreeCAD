@@ -22,21 +22,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
+#include <BRep_Builder.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <Precision.hxx>
 
-  # include <QGraphicsScene>
-  # include <QGraphicsSceneMouseEvent>
-  # include <QPainter>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
-
-  # include <math.h>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QPaintDevice>
+#include <QSvgGenerator>
+#include <QVector2D>
+#include <math.h>
 #endif
 
 #include <App/Application.h>
