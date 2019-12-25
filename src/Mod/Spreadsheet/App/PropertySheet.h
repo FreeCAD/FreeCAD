@@ -74,7 +74,7 @@ public:
 
     void copyCells(Base::Writer &writer, const std::vector<App::Range> &ranges) const;
 
-    void pasteCells(Base::XMLReader &reader, const App::CellAddress &addr);
+    void pasteCells(Base::XMLReader &reader, App::Range dstRange);
 
     Cell *createCell(App::CellAddress address);
 
