@@ -44,6 +44,7 @@
 #include <PropertySheetPy.h>
 #include <App/ExpressionVisitors.h>
 #include <App/ExpressionParser.h>
+
 FC_LOG_LEVEL_INIT("Spreadsheet", true, true)
 
 using namespace App;
@@ -366,63 +367,123 @@ void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ra
     writer.Stream() << "</Cells>" << std::endl;
 }
 
-void PropertySheet::pasteCells(XMLReader &reader, const CellAddress &addr) {
-    AtomicPropertyChange signaller(*this);
-
-    bool first = true;
-    int roffset=0,coffset=0;
-
+void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
     reader.readElement("Cells");
     int rangeCount = reader.getAttributeAsInteger("count");
+    if(rangeCount<=0)
+        return;
 
-    for(;rangeCount;--rangeCount) {
+    int dstRows = dstRange.rowCount();
+    int dstCols = dstRange.colCount();
+    CellAddress dstFrom = dstRange.from();
+
+    int roffset,coffset;
+
+    AtomicPropertyChange signaller(*this);
+    for(int ri=0; ri < rangeCount; ++ri) {
         reader.readElement("Range");
         CellAddress from(reader.getAttribute("from"));
         CellAddress to(reader.getAttribute("to"));
         int cellCount = reader.getAttributeAsInteger("count");
+
         Range range(from,to);
-        bool hasCells = !!cellCount;
-        for(;cellCount;--cellCount) {
+
+        CellAddress addr(dstFrom);
+        if(!ri) {
+            roffset = addr.row() - from.row();
+            coffset = addr.col() - from.col();
+        }
+
+        int rcount,ccount;
+        if(rangeCount>1) {
+            rcount = 1;
+            ccount = 1;
+        } else {
+            rcount = dstRows/range.rowCount();
+            if(!rcount)
+                rcount = 1;
+            ccount = dstCols/range.colCount();
+            if(!ccount)
+                ccount = 1;
+        }
+        for(int ci=0; ci < cellCount; ++ci) {
             reader.readElement("Cell");
             CellAddress src(reader.getAttribute("address"));
-            if(first) {
-                first = false;
-                roffset = addr.row() - from.row();
-                coffset = addr.col() - from.col();
-            }else
-                range.next();
-            while(src!=*range) {
-                CellAddress dst(*range);
-                dst.setRow(dst.row()+roffset);
-                dst.setCol(dst.col()+coffset);
-                owner->clear(dst);
-                owner->cellUpdated(dst);
-                range.next();
-            }
-            CellAddress dst(src.row()+roffset, src.col()+coffset);
-            auto cell = owner->getNewCell(dst);
-            cell->setSpans(-1,-1);
-            cell->restore(reader,true);
-            int rows, cols;
-            if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1)) 
-                mergeCells(dst, CellAddress(dst.row() + rows - 1, dst.col() + cols - 1));
 
-            if(roffset || coffset) {
-                OffsetCellsExpressionVisitor<PropertySheet> visitor(*this, roffset, coffset);
-                cell->visit(visitor);
-                if(visitor.changed())
-                    recomputeDependencies(dst);
+            if(ci)
+                range.next();
+
+            while(src!=*range) {
+                for(int r=0; r < rcount; ++r) {
+                    for(int c=0; c < ccount; ++c) {
+                        CellAddress dst(range.row()+roffset+r*range.rowCount(),
+                                        range.column()+coffset+c*range.colCount());
+                        if(!dst.isValid())
+                            continue;
+                        owner->clear(dst);
+                        owner->cellUpdated(dst);
+                    }
+                }
+                range.next();
             }
-            dirty.insert(dst);
-            owner->cellUpdated(dst);
+
+            CellAddress newCellAddr;
+            for(int r=0; r < rcount; ++r) {
+                for(int c=0; c < ccount; ++c) {
+                    CellAddress dst(src.row()+roffset+r*range.rowCount(),
+                                    src.col()+coffset+c*range.colCount());
+                    if(!dst.isValid())
+                        continue;
+
+                    auto cell = owner->getNewCell(dst);
+                    cell->setSpans(-1,-1);
+
+                    int roffset_cur, coffset_cur;
+                    if(!newCellAddr.isValid()) {
+                        roffset_cur = roffset;
+                        coffset_cur = coffset;
+                        newCellAddr = dst;
+                        cell->restore(reader,true);
+                    } else {
+                        roffset_cur = r*range.rowCount();
+                        coffset_cur = c*range.colCount();
+                        auto newCell = owner->getCell(newCellAddr);
+                        const Expression *expr;
+                        if(!newCell || !(expr=newCell->getExpression(true))) {
+                            FC_THROWM(Base::RuntimeError, "Failed to copy cell "
+                                    << getFullName() << '.' << dst.toString()
+                                    << " from " << newCellAddr.toString());
+                        }
+                        cell->setExpression(ExpressionPtr(expr->copy()));
+                    }
+
+                    int rows, cols;
+                    if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1)) 
+                        mergeCells(dst, CellAddress(dst.row() + rows - 1, dst.col() + cols - 1));
+
+                    if(roffset_cur || coffset_cur) {
+                        OffsetCellsExpressionVisitor<PropertySheet> visitor(*this, roffset_cur, coffset_cur);
+                        cell->visit(visitor);
+                        if(visitor.changed())
+                            recomputeDependencies(dst);
+                    }
+                    dirty.insert(dst);
+                    owner->cellUpdated(dst);
+                }
+            }
         }
-        if(!hasCells || range.next()) {
+        if(!cellCount || range.next()) {
             do {
-                CellAddress dst(*range);
-                dst.setRow(dst.row()+roffset);
-                dst.setCol(dst.col()+coffset);
-                owner->clear(dst);
-                owner->cellUpdated(dst);
+                for(int r=0; r < rcount; ++r) {
+                    for(int c=0; c < ccount; ++c) {
+                        CellAddress dst(range.row()+roffset+r*range.rowCount(),
+                                        range.column()+coffset+c*range.colCount());
+                        if(!dst.isValid())
+                            continue;
+                        owner->clear(dst);
+                        owner->cellUpdated(dst);
+                    }
+                }
             }while(range.next());
         }
     }

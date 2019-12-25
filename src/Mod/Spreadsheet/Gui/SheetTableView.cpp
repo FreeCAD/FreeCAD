@@ -515,18 +515,16 @@ void SheetTableView::pasteClipboard()
     if(!mimeData || !mimeData->hasText())
         return;
 
-    if(selectionModel()->selectedIndexes().size()>1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Spreadsheet"),
-                QObject::tr("Spreadsheet does not support range selection when pasting.\n"
-                            "Please select one cell only."));
+    auto ranges = selectedRanges();
+    if(ranges.empty())
         return;
-    }
 
-    QModelIndex current = currentIndex();
+    Range range = ranges.back();
 
     App::AutoTransaction committer("Paste cell");
     try {
         if (!mimeData->hasFormat(_SheetMime)) {
+            CellAddress current = range.from();
             QStringList cells;
             QString text = mimeData->text();
             int i=0;
@@ -534,7 +532,7 @@ void SheetTableView::pasteClipboard()
                 QStringList cols = it.split(QLatin1Char('\t'));
                 int j=0;
                 for (auto jt : cols) {
-                    QModelIndex index = model()->index(current.row()+i, current.column()+j);
+                    QModelIndex index = model()->index(current.row()+i, current.col()+j);
                     model()->setData(index, jt);
                     j++;
                 }
@@ -546,7 +544,7 @@ void SheetTableView::pasteClipboard()
             std::istream in(0);
             in.rdbuf(&buf);
             Base::XMLReader reader("<memory>", in);
-            sheet->getCells()->pasteCells(reader,CellAddress(current.row(),current.column()));
+            sheet->getCells()->pasteCells(reader,range);
         }
 
         GetApplication().getActiveDocument()->recompute();
@@ -555,7 +553,9 @@ void SheetTableView::pasteClipboard()
         e.ReportException();
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Copy & Paste failed"),
                 QString::fromLatin1(e.what()));
+        return;
     }
+    clearSelection();
 }
 
 void SheetTableView::mergeCells() {
