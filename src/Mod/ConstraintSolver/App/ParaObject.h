@@ -35,9 +35,11 @@
 
 namespace FCS {
 
+class Constraint;
+typedef UnsafePyHandle<Constraint> HConstraint;
+
 class ParaObject;
 typedef UnsafePyHandle<ParaObject> HParaObject;
-
 
 /**
  * @brief Base class for all objects (geometries, constraints) built on solver parameters
@@ -121,6 +123,8 @@ public: //methods
     ///iterate over every shape referenced by this ParaObject and call a lambda for every one of them.
     /// Note: ShapeRef may have been generated on the fly, and may not have a name. But it should be writable.
     virtual void forEachShape(std::function<void(const ShapeRef&)> callback) const;
+
+    virtual std::vector<HConstraint> makeRuleConstraints(){return std::vector<HConstraint>();}
 
     virtual void initFromDict(Py::Dict dict);
 

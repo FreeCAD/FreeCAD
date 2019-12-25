@@ -6,6 +6,7 @@
 #include "ParameterSubset.h"
 #include "ParameterRefPy.h"
 #include "ParameterStorePy.h"
+#include "ParaGeometryPy.h"
 #include "PyUtils.h"
 
 #include "unordered_set"
@@ -225,24 +226,37 @@ void ParaObject::setAttr(std::string attrname, Py::Object val)
     for(auto& v : this->_shapes){
         if (v.name == attrname){
             throwIfLocked();
-            if (!PyObject_TypeCheck(val.ptr(), &ParaObjectPy::Type)){
-                std::stringstream ss;
-                ss << "Must be ParaObject object, not " << val.type().as_string();
-                throw Py::TypeError(ss.str());
+            if (PyObject_TypeCheck(val.ptr(), &ParaGeometryPy::Type)){
+                touch();
+                HParaGeometry g = val;
+                if (!g->isDerivedFrom(v.type)){
+                    std::stringstream ss;
+                    ss << "Geometry must be derived from " << v.type.getName()
+                       << " (got unsuitsable " << g->getTypeId().getName() << ")";
+                    throw Py::TypeError(ss.str());
+                }
+                *(v.value) = g->toShape();
+                return;
             }
-            touch();
-            HParaObject sh = val;
-            if (sh->shapeType() == Base::Type::badType())
-                throw Py::TypeError(std::string("Object ") + sh->repr() + " is not a shape");
-            if (! sh->shapeType().isDerivedFrom(v.type)){
-                std::stringstream ss;
-                ss << "Shape must be derived from " << v.type.getName()
-                   << " (got unsuitsable " << sh->shapeType().getName() << ")";
-                throw Py::TypeError(ss.str());
+            else if (PyObject_TypeCheck(val.ptr(), &ParaObjectPy::Type)){
+                touch();
+                HParaObject sh = val;
+                if (sh->shapeType() == Base::Type::badType())
+                    throw Py::TypeError(std::string("Object ") + sh->repr() + " is not a shape or geometry");
+                if (! sh->shapeType().isDerivedFrom(v.type)){
+                    std::stringstream ss;
+                    ss << "Shape must be derived from " << v.type.getName()
+                       << " (got unsuitsable " << sh->shapeType().getName() << ")";
+                    throw Py::TypeError(ss.str());
+                }
+
+                *(v.value) = val;
+                return;
             }
 
-            *(v.value) = val;
-            return;
+            std::stringstream ss;
+            ss << "Must be ParaObject object, not " << val.type().as_string();
+            throw Py::TypeError(ss.str());
         }
     };
     std::stringstream ss;

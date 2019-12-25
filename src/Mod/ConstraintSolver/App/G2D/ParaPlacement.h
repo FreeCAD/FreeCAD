@@ -47,6 +47,7 @@ public://methods
     ParaPlacement(ParameterRef x, ParameterRef y, ParameterRef rx, ParameterRef ry);
     void initAttrs() override;
     virtual PyObject* getPyObject() override;
+    virtual std::vector<HConstraint> makeRuleConstraints() override;
 
     Placement operator()(const ValueSet& vals) const;
 

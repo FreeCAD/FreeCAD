@@ -6,6 +6,8 @@
 #include "G2D/ParaPointPy.h"
 #include "G2D/ParaVectorPy.h"
 
+#include "ConstraintPlacementRules.h"
+
 using namespace FCS;
 using namespace FCS::G2D;
 
@@ -31,8 +33,6 @@ ParaPlacement::ParaPlacement(ParameterRef x, ParameterRef y, ParameterRef rx, Pa
 
 void FCS::G2D::ParaPlacement::initAttrs()
 {
-    _attrs = {
-    };
     _children ={
         {&translation, "translation", &ParaPointPy::Type, true},
         {&rotation, "rotation", &ParaVectorPy::Type, true},
@@ -49,5 +49,10 @@ PyObject* ParaPlacement::getPyObject()
         return Py::new_reference_to(_twin);
     }
 
+}
+
+std::vector<HConstraint> ParaPlacement::makeRuleConstraints()
+{
+    return {(new ConstraintPlacementRules)->self()};
 }
 
