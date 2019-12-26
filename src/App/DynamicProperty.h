@@ -75,6 +75,8 @@ public:
     //@{
     /// Get all properties of the class (including parent)
     void getPropertyList(std::vector<Property*> &List) const;
+    /// get all properties with their names
+    void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
     /// Get all properties of the class (including parent)
     void getPropertyMap(std::map<std::string,Property*> &Map) const;
     /// Find a dynamic property by its name
