@@ -65,6 +65,12 @@ void DynamicProperty::getPropertyList(std::vector<Property*> &List) const
         List.push_back(v.property);
 }
 
+void DynamicProperty::getPropertyNamedList(std::vector<std::pair<const char*, Property*> > &List) const
+{
+    for (auto &v : props.get<0>())
+        List.emplace_back(v.getName(),v.property);
+}
+
 void DynamicProperty::getPropertyMap(std::map<std::string,Property*> &Map) const
 {
     for (auto &v : props.get<0>())
