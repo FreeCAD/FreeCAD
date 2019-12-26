@@ -255,7 +255,7 @@ public:
             if(count)
                 *count = propSize;
         }
-        if(v) 
+        if(v)
             *v = QString::fromLatin1(propName);
         return;
     }
