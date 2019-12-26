@@ -775,6 +775,52 @@ void Sheet::recomputeCell(CellAddress p)
         cellSpanChanged(p);
 }
 
+PropertySheet::BindingType Sheet::getCellBinding(Range &range,
+        ExpressionPtr *pStart, ExpressionPtr *pEnd) const 
+{
+    do {
+        CellAddress addr = *range;
+        for(auto &r : boundRanges) {
+            if(addr.row()>=r.from().row()
+                    && addr.row()<=r.to().row()
+                    && addr.col()>=r.from().col()
+                    && addr.col()<=r.to().col())
+            {
+                auto res = cells.getBinding(r,pStart,pEnd);
+                if(res != PropertySheet::BindingNone) {
+                    range = r;
+                    return res;
+                }
+            }
+        }
+    } while(range.next());
+    return PropertySheet::BindingNone;
+}
+
+unsigned Sheet::getCellBindingBorder(App::CellAddress address) const {
+    unsigned flags = 0;
+    for(auto &range : boundRanges) {
+        auto from = range.from();
+        auto to = range.to();
+        if(address.row() < from.row()
+                || address.row() > to.row()
+                || address.col() < from.col()
+                || address.col() > to.col())
+            continue;
+        if(address.row() == from.row())
+            flags |= BorderTop;
+        if(address.row() == to.row())
+            flags |= BorderBottom;
+        if(address.col() == from.col())
+            flags |= BorderLeft;
+        if(address.col() == to.col())
+            flags |= BorderRight;
+        if(flags == BorderAll)
+            break;
+    }
+    return flags;
+}
+
 /**
   * Update the document properties.
   *
@@ -782,6 +828,13 @@ void Sheet::recomputeCell(CellAddress p)
 
 DocumentObjectExecReturn *Sheet::execute(void)
 {
+    boundRanges.clear();
+    for(auto &v : ExpressionEngine.getExpressions()) {
+        CellAddress from,to;
+        if(!cells.isBindingPath(v.first,&from,&to))
+            continue;
+        boundRanges.emplace_back(from,to);
+    }
 
     // Get dirty cells that we have to recompute
     std::set<CellAddress> dirtyCells = cells.getDirty();

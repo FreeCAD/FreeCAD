@@ -25,7 +25,7 @@
 #ifndef SPREADSHEETDELEGATE_H
 #define SPREADSHEETDELEGATE_H
 
-#include <QItemDelegate>
+#include <QStyledItemDelegate>
 
 namespace Spreadsheet {
 class Sheet;
@@ -33,7 +33,7 @@ class Sheet;
 
 namespace SpreadsheetGui {
 
-class SpreadsheetDelegate : public QItemDelegate
+class SpreadsheetDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
@@ -45,6 +45,9 @@ public:
                       const QModelIndex &index) const;
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+
 private Q_SLOTS:
     void commitAndCloseEditor();
 private:

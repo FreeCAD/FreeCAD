@@ -24,8 +24,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QItemDelegate>
-#include <QLineEdit>
+# include <QLineEdit>
+# include <QPainter>
 #endif
 
 #include "SpreadsheetDelegate.h"
@@ -33,11 +33,13 @@
 #include <App/DocumentObject.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Gui/ExpressionCompleter.h>
+#include "DlgBindSheet.h"
 
+using namespace Spreadsheet;
 using namespace SpreadsheetGui;
 
 SpreadsheetDelegate::SpreadsheetDelegate(Spreadsheet::Sheet * _sheet, QWidget *parent)
-    : QItemDelegate(parent)
+    : QStyledItemDelegate(parent)
     , sheet(_sheet)
 {
 }
@@ -46,6 +48,14 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
 {
+    App::CellAddress addr(index.row(),index.column());
+    App::Range range(addr,addr);
+    if(sheet && sheet->getCellBinding(range)) {
+        DlgBindSheet dlg(sheet,{range},parent);
+        dlg.exec();
+        return 0;
+    }
+
     SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
     editor->setIndex(index);
 
@@ -94,6 +104,33 @@ QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const Q
     Q_UNUSED(option);
     Q_UNUSED(index);
     return QSize();
+}
+
+void SpreadsheetDelegate::paint(QPainter *painter,
+        const QStyleOptionViewItem &option, const QModelIndex &index ) const
+{
+    QStyledItemDelegate::paint(painter, option, index);
+    if(!sheet)
+        return;
+    unsigned flags = sheet->getCellBindingBorder(App::CellAddress(index.row(),index.column()));
+    if(!flags)
+        return;
+    QPen pen(Qt::blue);
+    pen.setWidth(1);
+    pen.setStyle(Qt::SolidLine);
+    painter->setPen(pen);
+    if(flags == Sheet::BorderAll) {
+        painter->drawRect(option.rect);
+        return;
+    }
+    if(flags & Sheet::BorderLeft) 
+        painter->drawLine(option.rect.topLeft(), option.rect.bottomLeft());
+    if(flags & Sheet::BorderTop) 
+        painter->drawLine(option.rect.topLeft(), option.rect.topRight());
+    if(flags & Sheet::BorderRight) 
+        painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
+    if(flags & Sheet::BorderBottom) 
+        painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
 }
 
 #include "moc_SpreadsheetDelegate.cpp"

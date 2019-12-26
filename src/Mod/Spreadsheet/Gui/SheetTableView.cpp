@@ -44,6 +44,7 @@
 #include "SheetTableView.h"
 #include "LineEdit.h"
 #include "PropertiesDialog.h"
+#include "DlgBindSheet.h"
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
@@ -113,6 +114,13 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(recompute, SIGNAL(triggered()), this, SLOT(onRecompute()));
     contextMenu->addAction(recompute);
 
+    actionBind = new QAction(tr("Bind..."),this);
+    connect(actionBind, SIGNAL(triggered()), this, SLOT(onBind()));
+    contextMenu->addAction(actionBind);
+
+    horizontalHeader()->addAction(actionBind);
+    verticalHeader()->addAction(actionBind);
+
     contextMenu->addSeparator();
     actionMerge = contextMenu->addAction(tr("Merge cells"));
     connect(actionMerge,SIGNAL(triggered()), this, SLOT(mergeCells()));
@@ -139,6 +147,14 @@ void SheetTableView::onRecompute() {
                 range.fromCellString(), range.toCellString());
     }
     Gui::Command::commitCommand();
+}
+
+void SheetTableView::onBind() {
+    auto ranges = selectedRanges();
+    if(ranges.size()>=1 && ranges.size()<=2) {
+        DlgBindSheet dlg(sheet,ranges,this);
+        dlg.exec();
+    }
 }
 
 void SheetTableView::cellProperties()
@@ -598,6 +614,9 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
         actionSplit->setEnabled(true);
         actionMerge->setEnabled(true);
     }
+
+    auto ranges = selectedRanges();
+    actionBind->setEnabled(ranges.size()>=1 && ranges.size()<=2);
 
     contextMenu->exec(QCursor::pos());
 }

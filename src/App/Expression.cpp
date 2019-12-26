@@ -1164,12 +1164,13 @@ Expression* Expression::eval() const {
     return expressionFromPy(owner,getPyValue());
 }
 
-bool Expression::isSame(const Expression &other) const {
+bool Expression::isSame(const Expression &other, bool checkComment) const {
     if(&other == this)
         return true;
     if(getTypeId()!=other.getTypeId())
         return false;
-    return comment==other.comment && toString(true,true) == other.toString(true,true);
+    return (!checkComment || comment==other.comment)
+        && toString(true,true) == other.toString(true,true);
 }
 
 std::string Expression::toString(bool persistent, bool checkPriority, int indent) const {

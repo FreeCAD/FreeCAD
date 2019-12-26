@@ -161,6 +161,8 @@ public:
     PyObject *getPyObject(void) override;
     void setPyObject(PyObject *) override;
 
+    PyObject *getPyValue(PyObject *key);
+
     void invalidateDependants(const App::DocumentObject *docObj);
 
     void renamedDocumentObject(const App::DocumentObject *docObj);
@@ -176,6 +178,22 @@ public:
     std::string getRow(int offset=0) const;
 
     std::string getColumn(int offset=0) const;
+
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
+
+    unsigned getBindingBorder(App::CellAddress address) const;
+
+    bool isBindingPath(const App::ObjectIdentifier &path,
+            App::CellAddress *from=0, App::CellAddress *to=0, bool *href=0) const;
+
+    enum BindingType {
+        BindingNone,
+        BindingNormal,
+        BindingHREF,
+    };
+    BindingType getBinding(const App::Range &range,
+            App::ExpressionPtr *pStart=0, App::ExpressionPtr *pEnd=0) const;
 
 protected:
     virtual void hasSetValue() override;

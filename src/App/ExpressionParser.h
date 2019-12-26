@@ -299,6 +299,9 @@ public:
 
     static Py::Object evaluate(const Expression *owner, int type, const std::vector<Expression*> &args);
 
+    Function getFunction() const {return f;}
+    const std::vector<Expression*> &getArgs() const {return args;}
+
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
     virtual Py::Object _getPyValue() const override;

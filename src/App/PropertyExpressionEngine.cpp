@@ -28,7 +28,7 @@
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include "ExpressionVisitors.h"
 #include "PropertyExpressionEngine.h"
 #include "PropertyStandard.h"
@@ -458,8 +458,13 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
 
     // Check if the current expression equals the new one and do nothing if so to reduce unneeded computations
     ExpressionMap::iterator it = expressions.find(usePath);
-    if(it != expressions.end() && expr == it->second.expression)
+    if(it != expressions.end()
+            && (expr == it->second.expression || 
+                (expr && it->second.expression 
+                 && expr->isSame(*it->second.expression))))
+    {
         return;
+    }
 
     if (expr) {
         std::string error = validateExpression(usePath, expr);
@@ -469,9 +474,9 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
         expressions[usePath] = ExpressionInfo(expr);
         expressionChanged(usePath);
         signaller.tryInvoke();
-    } else {
+    } else if (it != expressions.end()) {
         AtomicPropertyChange signaller(*this);
-        expressions.erase(usePath);
+        expressions.erase(it);
         expressionChanged(usePath);
         signaller.tryInvoke();
     }
@@ -650,12 +655,10 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         try {
             // Evaluate expression
             value = expressions[*it].expression->getValueAsAny();
-            if(option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore)) {
-                if(isAnyEqual(value, prop->getPathValue(*it)))
-                    continue;
-                if(touched)
-                    *touched = true;
-            }
+            if(isAnyEqual(value, prop->getPathValue(*it)))
+                continue;
+            if(touched)
+                *touched = true;
             prop->setPathValue(*it, value);
         }catch(Base::Exception &e) {
             std::ostringstream ss;
