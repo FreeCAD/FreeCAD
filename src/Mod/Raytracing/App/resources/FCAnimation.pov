@@ -87,9 +87,9 @@
 };
 
 
-// Textur f�r Koordinatenlinien
-#declare scaletexture =   // Hintergrundfarbe
-  // horizontale Linien
+// Texture for coordinate lines
+#declare scaletexture =   // Background color
+  // horizontal lines
   texture {
     pigment {
       gradient y
@@ -98,7 +98,7 @@
     finish {LineFinish}
   };
   /* 
-  // H�henlinien
+  // Contour lines
   texture {
     pigment {
       gradient z
@@ -106,7 +106,7 @@
     }
     finish {LineFinish}
   }; 
-  // Vertikale Linien
+  // vertical lines
   texture {
     pigment {
       gradient x
@@ -171,7 +171,7 @@ sphere { 0*x 8000 inverse
 }
 
 
-// Fussboden
+// Floor
 plane {               // checkered floor
   y, -1
   texture
@@ -191,10 +191,10 @@ plane {               // checkered floor
 }
 
 
-// T�re
+// Door
 
 #include "SeitenvandFC01.inc"
-mesh { Seitenwand 
+mesh { // side wall
   texture { finaltexture }
 } 
 
@@ -209,7 +209,7 @@ mesh { Tuer16
 }
 
 
-//testteil
+//Test part
 
 /*
 cylinder {
