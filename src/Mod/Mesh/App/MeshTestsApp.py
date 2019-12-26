@@ -1,4 +1,5 @@
-#   (c) Juergen Riegel (juergen.riegel@web.de) 2007      LGPL
+#  Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>
+#  LGPL
 
 import FreeCAD, os, sys, unittest, Mesh
 import time, tempfile, math

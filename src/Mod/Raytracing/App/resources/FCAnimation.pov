@@ -1,7 +1,7 @@
 // FreeCAD Povray standard file
 /***************************************************************************
- *   Copyright (c) 2005 Juergen Riegel         <juergen.riegel@web.de>     *
- *   Copyright (c) 2005 Georg Wiora            <georg.wiora@quarkbox.de>   *
+ *   Copyright (c) 2005 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2005 Georg Wiora <georg.wiora@quarkbox.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -87,7 +87,7 @@
 };
 
 
-// Textur für Koordinatenlinien
+// Textur fï¿½r Koordinatenlinien
 #declare scaletexture =   // Hintergrundfarbe
   // horizontale Linien
   texture {
@@ -98,7 +98,7 @@
     finish {LineFinish}
   };
   /* 
-  // Höhenlinien
+  // Hï¿½henlinien
   texture {
     pigment {
       gradient z
@@ -191,7 +191,7 @@ plane {               // checkered floor
 }
 
 
-// Türe
+// Tï¿½re
 
 #include "SeitenvandFC01.inc"
 mesh { Seitenwand 
