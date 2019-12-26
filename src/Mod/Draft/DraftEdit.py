@@ -62,8 +62,134 @@ class Edit():
     Current implementation use many parts of pivy graphics code by user "looo".
     The tool collect editpoints from objects and display Trackers on them to allow
     editing their Shape and their parameters.
+
+
+    Callbacks
+    ----------
+    selection_callback
+        registered when tool is launched, identify
+        selected objects.
+    
+    editing_callbacks
+        self._keyPressedCB      -> self.keyPressed
+        self._mouseMovedCB      -> self._mouseMovedCB
+        if self._mousePressedCB -> self.mousePressed
+        when trackers are displayed for selected objects,
+        theese callbacks capture user events and forward 
+        them to related functions
+
+
+    Task panel (Draft Toolbar)
+    ----------
+    self.ui = FreeCADGui.draftToolBar
+    Draft_Edit uses taskpanel in 3 ways:
+
+    1 - when waiting for user to select an object
+        calling self.ui.selectUi()
+
+    2 - when Trackers are displayed and user must click one, a
+        custom task panel is displayed depending on edited
+        object:
+        self.ui.editUi()            -> the default one
+        self.ui.editUi("Wire")      -> line and wire editing
+        self.ui.editUi("BezCurve")  -> BezCurve editing
+        self.ui.editUi("Circle")    -> circle editing
+        self.ui.editUi("Arc")       -> arc editing
+        When Draft_Edit evaluate mouse click, depending if some
+        ui button have been pressed (.isChecked()), decide if
+        the action is a startEditing or AddPoint or DelPoint or
+        change BezCurve Continuity, ecc.
+
+    3 - when in editing, lineUi support clicking destination point
+        by self.startEditing
+        self.ui.lineUi()
+        self.ui.isRelative.show()
+
+
+    Tracker selection
+    ----------
+    If the tool recognize mouse click as an attempt to startEditing,
+    using soRayPickAction, it identifies the selected editTracker and
+    start editing it. Here is where "looo" code was very useful.
+
+
+    Editing preview
+    ----------
+    When object editing begins, self.ghost is initiated with the 
+    corresponding DraftTracker of the object type. The object Tracker
+    is deleted when user clicks again and endEditing.
+
+
+    Preferences
+    ----------
+    maxObjects : Int
+        set by "DraftEditMaxObjects" in user preferences
+        The max number of FreeCAD objects the tool is
+        allowed to edit at the same time.
+
+    pick_radius : Int
+        set by "DraftEditPickRadius" in user preferences
+        The pick radius during editing operation.
+        Increase if you experience problems in clicking
+        on a editTracker because of screen resolution.
+
+
+    Attributes
+    ----------
+    obj : Edited object
+        I'm planning to discard this attribute.
+        In old implementation every function was supposed to 
+        act on self.obj, self.editpoints, self.trackers,
+        self.pl, self.invpl.
+        Due to multiple object editing, i'm planning to keep
+        just self.trackers. Any other object will be identified
+        and processed starting from editTracker informations.
+    
+    editing : Int
+        Index of the editTracker that has been clicked by the 
+        user. Tracker selection mechanism is based on it.
+        if self.editing == None :
+            the user didn't click any node, and next click will
+            be processed as an attempt to start editing operation
+        if self.editing == o or 1 or 2 or 3 etc :
+            the user is editing corresponding node, so next click
+            will be processed as an attempt to end editing operation
+
+    editpoints : List [FreeCAD::Vector]
+        List of editpoints collected from the edited object, 
+        on whick editTrackers will be placed.
+
+    trackers : Dictionary {object.Name : [editTrackers]}
+        It records the list of DraftTrackers.editTracker.
+        {object.Name as String : [editTrackers for the object]}
+        Each tracker is created with (position,obj.Name,idx), 
+        so it's possible to recall it 
+        self.trackers[str(node.objectName.getValue())][ep]
+
+    overNode : DraftTrackers.editTracker
+        It represent the editTracker under the cursor position.
+        It is used to preview the tracker selection action.
+
+    ghost : DraftTrackers.*
+        Handles the tracker to preview editing operations.
+        it is initialized when user clicks on a editTracker
+        by self.startEditing() function.
+
+    supportedObjs : List
+        List of supported Draft Objects.
+        The tool use Draft.getType(obj) to compare object type
+        to the list.
+
+    supportedPartObjs : List
+        List of supported Part Objects.
+        The tool use Draft.getType(obj) and obj.TypeId to compare 
+        object type to the list.
     """
+    
     def __init__(self):
+        """
+        Initialize Draft_Edit Command.
+        """
         self.running = False
         self.trackers = {'object':[]}
         self.overNode = None # preselected node with mouseover
@@ -71,11 +197,12 @@ class Edit():
         self.editing = None
 
         # event callbacks
-        self.call = None
+        self.selection_callback = None
         self._keyPressedCB = None
         self._mouseMovedCB = None
         self._mousePressedCB = None
 
+        # this are used to edit structure objects, it's a bit buggy i think
         self.selectstate = None
         self.originalDisplayMode = None
         self.originalPoints = None
@@ -206,15 +333,15 @@ class Edit():
         register callback for selection when command is launched
         """
         self.unregister_selection_callback()
-        self.call = self.view.addEventCallback("SoEvent",DraftTools.selectObject)
+        self.selection_callback = self.view.addEventCallback("SoEvent",DraftTools.selectObject)
 
     def unregister_selection_callback(self):
         """
         remove selection callback if it exhists
         """
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        self.call = None
+        if self.selection_callback:
+            self.view.removeEventCallback("SoEvent",self.selection_callback)
+        self.selection_callback = None
 
     def register_editing_callbacks(self):
         """
@@ -1558,24 +1685,7 @@ class Edit():
 
 
 
-class whichNode():
-    """
-    """
-    def __init__(self):
-        pass#FreeCAD.Console.PrintMessage("selected node is"+ str(FreeCAD.activeDraftCommand.overNode) +" \n")
-
-
-    def GetResources(self):
-        return {'Pixmap'  : 'whichNode',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "whichNode"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "which nod is over?")}
-
-    def Activated(self):
-        FreeCAD.Console.PrintMessage("selected node is"+ str(FreeCAD.activeDraftCommand.overNode) +" \n")
-
-
 if FreeCAD.GuiUp:
     # setup command
     FreeCADGui.addCommand('Draft_Edit', Edit())
     FreeCADGui.addCommand('Draft_Edit_WhichNode', whichNode())
-    
