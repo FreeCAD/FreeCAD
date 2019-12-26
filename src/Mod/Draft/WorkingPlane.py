@@ -16,9 +16,7 @@ YZ, and XZ planes.
 """
 
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2009, 2010                                              *
-# *   Ken Cline <cline@frii.com>                                            *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -45,7 +43,7 @@ from FreeCAD import Console as FCC
 
 __title__ = "FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 
 class plane:

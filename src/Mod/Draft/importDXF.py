@@ -1,11 +1,8 @@
 # -*- coding: utf8 -*-
-
-
 # Check code with
 # flake8 --ignore=E226,E266,E401,W503
 
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -28,7 +25,7 @@
 
 __title__ = "FreeCAD Draft Workbench - DXF importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = "https://www.freecadweb.org"
 
 ## @package importDXF
 #  \ingroup DRAFT

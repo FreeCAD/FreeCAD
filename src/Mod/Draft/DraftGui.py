@@ -1,7 +1,5 @@
 # -*- coding: utf8 -*-
-
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -24,7 +22,7 @@
 
 __title__="FreeCAD Draft Workbench - GUI part"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = "https://www.freecadweb.org"
 
 ## @package DraftGui
 #  \ingroup DRAFT
@@ -695,7 +693,7 @@ class DraftToolBar:
 
 
         # following lines can cause a crash and are not needed anymore when using the task panel
-        # http://forum.freecadweb.org/viewtopic.php?f=3&t=6952
+        # https://forum.freecadweb.org/viewtopic.php?f=3&t=6952
         #QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("escaped()"),self.escape)
         #QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("escaped()"),self.escape)
         #QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("escaped()"),self.escape)
