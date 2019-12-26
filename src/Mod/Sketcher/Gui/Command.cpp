@@ -723,8 +723,9 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
         std::vector<Part::Geometry *> tempgeo = tempsketch->getInternalGeometry();
         std::vector<Sketcher::Constraint *> tempconstr = tempsketch->Constraints.getValues();
 
-        std::vector<Part::Geometry *> mirrorgeo (tempgeo.begin()+addedGeometries+1,tempgeo.end());
-        std::vector<Sketcher::Constraint *> mirrorconstr (tempconstr.begin()+addedConstraints+1,tempconstr.end());
+		// If value of addedGeometries or addedConstraints is -1, it gets added to vector begin iterator and that is invlid
+		std::vector<Part::Geometry *> mirrorgeo(tempgeo.begin() + (addedGeometries + 1), tempgeo.end());
+		std::vector<Sketcher::Constraint *> mirrorconstr(tempconstr.begin() + (addedConstraints + 1), tempconstr.end());
 
         for (std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
 
