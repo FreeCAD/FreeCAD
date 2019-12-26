@@ -185,7 +185,7 @@ public:
 
     Py::Object getPyValue() const;
 
-    bool isSame(const Expression &other) const;
+    bool isSame(const Expression &other, bool checkComment=true) const;
 
     friend ExpressionVisitor;
 

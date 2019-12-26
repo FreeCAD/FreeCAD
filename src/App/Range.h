@@ -58,9 +58,9 @@ struct AppExport CellAddress {
 
     inline int col() const { return _col; }
 
-    void setRow(int r) { _row = r; }
+    void setRow(int r, bool clip=false) { _row = (clip && r>=MAX_ROWS) ? MAX_ROWS-1 : r; }
 
-    void setCol(int c) { _col = c; }
+    void setCol(int c, bool clip=false) { _col = (clip && c>=MAX_COLUMNS) ? MAX_COLUMNS-1 : c; }
 
     inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
 
@@ -74,7 +74,7 @@ struct AppExport CellAddress {
 
     inline bool isAbsoluteCol() const { return _absCol; }
 
-    std::string toString(bool noAbsolute=false) const;
+    std::string toString(bool noAbsolute=false, bool row=true, bool col=true) const;
 
     // Static members
 
