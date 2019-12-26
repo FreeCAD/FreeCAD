@@ -350,10 +350,8 @@ QVariant PropertyItem::toString(const QVariant& prop) const
     std::ostringstream ss;
     Base::PyGILStateLocker lock;
     try {
-        Base::PyGILStateLocker lock;
-        Py::Object pyobj(propertyItems[0]->getPyObject(), true);
-        std::ostringstream ss;
-        if (pyobj.isNone()) {
+        Py::Object pyobj(propertyItems[0]->getPyObject(),true);
+        if(pyobj.isNone()) {
             ss << "<None>";
         }
         else if(pyobj.isSequence()) {
@@ -393,6 +391,7 @@ QVariant PropertyItem::toString(const QVariant& prop) const
         }
         else
             ss << pyobj.as_string();
+
     } catch (Py::Exception &) {
         Base::PyException e;
         ss.str("");
