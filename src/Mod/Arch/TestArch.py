@@ -1,7 +1,7 @@
 # Unit test for the Arch module
 
 #***************************************************************************
-#*   (c) Yorik van Havre <yorik@uncreated.net> 2013                        *
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
