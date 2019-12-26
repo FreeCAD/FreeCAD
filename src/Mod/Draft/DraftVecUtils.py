@@ -15,9 +15,8 @@ but which can also be used in other workbenches and in macros.
 # flake8 --ignore=E226,E266,E401,W503
 
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2009, 2010                                              *
-# *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -39,7 +38,7 @@ but which can also be used in other workbenches and in macros.
 
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup DRAFTVECUTILS
 #  @{
