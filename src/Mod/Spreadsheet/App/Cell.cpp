@@ -246,7 +246,10 @@ const App::Expression *Cell::getExpression(bool withFormat) const
 bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
-        if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
+        s.clear();
+        if(expression->hasComponent())
+            s = "=" + expression->toString(persistent);
+        else if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
             s = static_cast<App::StringExpression*>(expression.get())->getText();
             char * end;
             errno = 0;
