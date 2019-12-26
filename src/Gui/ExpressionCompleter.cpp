@@ -132,10 +132,10 @@ public:
         int docSize = (int)docs.size()*2;
         int objSize = 0;
         int propSize = 0;
-        std::vector<App::Property*> props;
+        std::vector<std::pair<const char*, App::Property*> > props;
         App::Document *doc = 0;
         App::DocumentObject *obj = 0;
-        App::Property *prop = 0;
+        const char *propName = 0;
         if(idx>=0 && idx<docSize) 
             doc = docs[idx/2];
         else {
@@ -157,13 +157,13 @@ public:
                     idx -= objSize;
                     if(info.d.doc<0)
                         row = idx;
-                    cobj->getPropertyList(props);
+                    cobj->getPropertyNamedList(props);
                     propSize = (int)props.size();
                     if(idx >= propSize)
                         return;
                     if(idx>=0) {
                         obj = cobj;
-                        prop = props[idx];
+                        propName = props[idx].first;
                     }
                 }
             }
@@ -173,8 +173,8 @@ public:
                 *count = docSize + objSize + propSize;
             if(idx>=0 && v) {
                 QString res;
-                if(prop)
-                    res = QString::fromLatin1(prop->getName());
+                if(propName)
+                    res = QString::fromLatin1(propName);
                 else if(obj) {
                     if(idx & 1)
                         res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
@@ -221,18 +221,18 @@ public:
 
         if(noProperty)
             return;
-        if(!prop) {
+        if(!propName) {
             idx = row;
-            obj->getPropertyList(props);
+            obj->getPropertyNamedList(props);
             propSize = (int)props.size();
             if(idx<0 || idx>=propSize)
                 return;
-            prop = props[idx];
+            propName = props[idx].first;
             if(count)
                 *count = propSize;
         }
         if(v) 
-            *v = QString::fromLatin1(prop->getName());
+            *v = QString::fromLatin1(propName);
         return;
     }
 

@@ -111,6 +111,17 @@ const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
 
 }
 
+Cell * PropertySheet::getValueFromAlias(const std::string &alias)
+{
+    std::map<std::string, CellAddress>::const_iterator it = revAliasProp.find(alias);
+
+    if (it != revAliasProp.end())
+        return getValue(it->second);
+    else
+        return 0;
+
+}
+
 bool PropertySheet::isValidAlias(const std::string &candidate)
 {
     static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
@@ -598,10 +609,15 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
     const Cell * aliasedCell = getValueFromAlias(alias);
     Cell * cell = nonNullCellAt(address);
 
-    if (aliasedCell != 0 && cell != aliasedCell)
+    if(aliasedCell == cell)
+        return;
+
+    if (aliasedCell)
         throw Base::ValueError("Alias already defined.");
 
     assert(cell != 0);
+
+    AtomicPropertyChange signaller(*this);
 
     /* Mark cells depending on this cell dirty; they need to be resolved when an alias changes or disappears */
     std::string fullName = owner->getFullName() + "." + address.toString();
@@ -617,23 +633,21 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
     }
 
     std::string oldAlias;
-
-    if (cell->getAlias(oldAlias))
-        owner->aliasRemoved(address, oldAlias);
-
+    cell->getAlias(oldAlias);
     cell->setAlias(alias);
 
-    if (oldAlias.size() > 0 && alias.size() > 0) {
+    if (oldAlias.size() > 0) {
         std::map<App::ObjectIdentifier, App::ObjectIdentifier> m;
 
         App::ObjectIdentifier key(owner, oldAlias);
-        App::ObjectIdentifier value(owner, alias);
+        App::ObjectIdentifier value(owner, alias.empty()?address.toString():alias);
 
         m[key] = value;
 
         owner->getDocument()->renameObjectIdentifiers(m);
     }
 
+    signaller.tryInvoke();
 }
 
 void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
@@ -700,10 +714,8 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
         splitCell(currPos);
 
         std::string alias;
-        if(cell->getAlias(alias)) {
-            owner->aliasRemoved(currPos, alias);
+        if(cell->getAlias(alias))
             cell->setAlias("");
-        }
 
         // Remove from old
         removeDependencies(currPos);
