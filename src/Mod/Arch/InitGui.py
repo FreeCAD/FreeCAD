@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -45,7 +43,7 @@ class ArchWorkbench(Workbench):
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
                      "Arch_ToggleIfcBrepFlag","Arch_3Views",
                      "Arch_IfcSpreadsheet","Arch_ToggleSubs"]
-                     
+
         # try to locate the Rebar addon
         try:
             import RebarTools
@@ -141,5 +139,3 @@ FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui","Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui","Import-Export")
 
 FreeCAD.__unit_test__ += [ "TestArch" ]
-
-
