@@ -46,7 +46,9 @@ public:
     bool isBound() const;
     virtual bool apply(const std::string &propName);
     virtual bool apply();
-    bool hasExpression() const;
+
+    //double binding means the bound property is both driving and driven
+    bool hasExpression(bool checkDoubleBinding=true) const;
 
     QPixmap getIcon(const char *name, const QSize &size) const;
    

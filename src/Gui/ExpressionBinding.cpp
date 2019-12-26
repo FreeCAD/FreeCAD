@@ -27,7 +27,7 @@
 #include "ExpressionBinding.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
@@ -107,9 +107,13 @@ void ExpressionBinding::bind(const Property &prop)
     bind(App::ObjectIdentifier(prop));
 }
 
-bool ExpressionBinding::hasExpression() const
+bool ExpressionBinding::hasExpression(bool checkDoubleBinding) const
 {
-    return isBound() && getExpression() != 0;
+    if(!isBound())
+        return false;
+    auto expr = getExpression();
+    return expr && (!checkDoubleBinding
+                    || !App::VariableExpression::isDoubleBinding(getExpression().get()));
 }
 
 boost::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
@@ -170,7 +174,7 @@ QPixmap ExpressionBinding::getIcon(const char* name, const QSize& size) const
 bool ExpressionBinding::apply(const std::string & propName)
 {
     Q_UNUSED(propName); 
-    if (hasExpression()) {
+    if (hasExpression(false)) {
         DocumentObject * docObj = path.getDocumentObject();
 
         if (!docObj)

@@ -370,7 +370,7 @@ void Gui::QuantitySpinBox::onChange()
 {
     Q_ASSERT(isBound());
     
-    if (getExpression()) {
+    if (hasExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
@@ -438,7 +438,7 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
     iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(), 0);
 
     try {
-        if (isBound() && getExpression()) {
+        if (hasExpression()) {
             std::unique_ptr<Expression> result(getExpression()->eval());
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
@@ -873,7 +873,7 @@ bool QuantitySpinBox::event(QEvent * event)
     // tooltip of the icon label.
 #if 0
     if (event->type() == QEvent::ToolTip) {
-        if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
+        if (isBound() && hasExpression() && lineEdit()->isReadOnly()) {
             QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
 
             QToolTip::showText( helpEvent->globalPos(), Base::Tools::fromStdString(getExpression()->toString()), this);
@@ -895,7 +895,7 @@ void QuantitySpinBox::focusInEvent(QFocusEvent * event)
         event->reason() == Qt::BacktabFocusReason  ||
         event->reason() == Qt::ShortcutFocusReason) {
 
-        if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
+        if (isBound() && hasExpression() && lineEdit()->isReadOnly()) {
             QHelpEvent * helpEvent = new QHelpEvent(QEvent::ToolTip, QPoint( 0, rect().height() ), mapToGlobal( QPoint( 0, rect().height() ) ));
             QApplication::postEvent(this, helpEvent);
             lineEdit()->setSelection(0, 0);

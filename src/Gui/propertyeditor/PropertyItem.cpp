@@ -117,13 +117,13 @@ void PropertyItem::reset()
 
 void PropertyItem::onChange()
 {
-    if(hasExpression()) {
+    if(hasExpression(false)) {
         for(auto child : childItems) {
-            if(child && child->hasExpression())
+            if(child && child->hasExpression(false))
                 child->setExpression(boost::shared_ptr<App::Expression>());
         }
         for(auto item=parentItem;item;item=item->parentItem) {
-            if(item->hasExpression())
+            if(item->hasExpression(false))
                 item->setExpression(boost::shared_ptr<App::Expression>());
         }
     }
@@ -619,7 +619,7 @@ QVariant PropertyItem::data(int column, int role) const
                 return toString(val);
             } 
             else if( role == Qt::TextColorRole) {
-                if(hasExpression())
+                if(hasExpression(false))
                     return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
                 return QVariant();
             } else
@@ -634,7 +634,7 @@ QVariant PropertyItem::data(int column, int role) const
         else if (role == Qt::ToolTipRole)
             return toolTip(propertyItems[0]);
         else if( role == Qt::TextColorRole) {
-            if(hasExpression())
+            if(hasExpression(false))
                 return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
             return QVariant();
         } else
@@ -694,7 +694,7 @@ void PropertyItem::bind(const App::Property& prop)
 
 QString PropertyItem::expressionAsString() const
 {
-    if (hasExpression()) {
+    if (hasExpression(false)) {
         try {
             std::unique_ptr<App::Expression> result(getExpression()->eval());
             return QString::fromStdString(result->toString());
@@ -2146,7 +2146,7 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
     Base::Vector3d dir;
     value.getRotation().getRawValue(dir, angle);
     if (!init_axis) {
-        if (m_a->hasExpression()) {
+        if (m_a->hasExpression(false)) {
             QString str = m_a->expressionAsString();
             const_cast<PropertyPlacementItem*>(this)->rot_angle = str.toDouble();
         }
@@ -2157,15 +2157,15 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
         PropertyItem* x = m_d->child(0);
         PropertyItem* y = m_d->child(1);
         PropertyItem* z = m_d->child(2);
-        if (x->hasExpression()) {
+        if (x->hasExpression(false)) {
             QString str = x->expressionAsString();
             dir.x = str.toDouble();
         }
-        if (y->hasExpression()) {
+        if (y->hasExpression(false)) {
             QString str = y->expressionAsString();
             dir.y = str.toDouble();
         }
-        if (z->hasExpression()) {
+        if (z->hasExpression(false)) {
             QString str = z->expressionAsString();
             dir.z = str.toDouble();
         }

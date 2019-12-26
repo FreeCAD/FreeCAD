@@ -279,7 +279,7 @@ void UIntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 
 void UIntSpinBox::onChange() {
     
-    if (getExpression()) {
+    if (hasExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
@@ -330,7 +330,7 @@ void UIntSpinBox::resizeEvent(QResizeEvent * event)
     iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(), 0);
 
     try {
-        if (isBound() && getExpression()) {
+        if (hasExpression()) {
             std::unique_ptr<Expression> result(getExpression()->eval());
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
@@ -474,7 +474,7 @@ void IntSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 
 void IntSpinBox::onChange() {
     
-    if (getExpression()) {
+    if (hasExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
@@ -509,7 +509,7 @@ void IntSpinBox::resizeEvent(QResizeEvent * event)
     iconLabel->move(lineEdit()->rect().right() - frameWidth - sz.width(), 0);
 
     try {
-        if (isBound() && getExpression()) {
+        if (hasExpression()) {
             std::unique_ptr<Expression> result(getExpression()->eval());
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 
@@ -653,7 +653,7 @@ void DoubleSpinBox::setExpression(boost::shared_ptr<Expression> expr)
 
 void DoubleSpinBox::onChange() {
     
-    if (getExpression()) {
+    if (hasExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
         NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
 

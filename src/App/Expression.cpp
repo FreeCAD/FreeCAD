@@ -2399,7 +2399,8 @@ const std::vector<FunctionExpression::FunctionInfo> &FunctionExpression::getFunc
         {STR, "str", "str(arg), convert the input argment to string"},
         {HREF, "href", "href(arg), hide any object reference inside the input.\n"
                        "This allows to create cyclic references. Use with caution!"},
-
+        {DBIND, "dbind", "dbind(arg), double binding a variable expression.\n"
+                         "This allows an expression binding to be both driven and driving."},
         // Aggregates
         {SUM, "sum", "Sum a list of numbers or cells"},
         {COUNT, "count", "Count the number of non-empty cells in the given range"},
@@ -2414,9 +2415,13 @@ const std::vector<FunctionExpression::FunctionInfo> &FunctionExpression::getFunc
 EXPR_TYPESYSTEM_SOURCE(App::FunctionExpression, App::Expression);
 
 ExpressionPtr FunctionExpression::create(const DocumentObject *owner, int f, ExpressionList &&args) {
+
     _EXPR_NEW(res,FunctionExpression,owner);
     res->args = std::move(args);
-    res->f = f;
+    res->ftype = f;
+
+    if(f == DBIND && (args.size()!=1 || !args.front()->isDerivedFrom(VariableExpression::getClassTypeId())))
+        _EXPR_THROW("dbind() only accepts one identifier expression", res);
     return _res;
 }
 
@@ -2763,7 +2768,8 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
         return res;
     } case STR: {
         return Py::String(args[0]->getPyValue().as_string());
-    } case HREF: {
+    } case HREF:
+      case DBIND: {
         return args[0]->getPyValue();
     } default:
         break;
@@ -2986,7 +2992,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
 }
 
 Py::Object FunctionExpression::_getPyValue(int *) const {
-    return evaluate(this,f,args);
+    return evaluate(this,ftype,args);
 }
 
 /**
@@ -3013,7 +3019,7 @@ ExpressionPtr FunctionExpression::simplify() const
         return eval();
     }
     else
-        return create(owner, f, std::move(a));
+        return create(owner, ftype, std::move(a));
 }
 
 /**
@@ -3031,7 +3037,7 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         for(auto &info : functions)
             _map[info.type] = i++;
     }
-    auto iter = _map.find(f);
+    auto iter = _map.find(ftype);
     if(iter != _map.end())
         ss << functions[iter->second].name << '(';
     else
@@ -3053,13 +3059,13 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 ExpressionPtr FunctionExpression::_copy() const
 {
     _EXPR_NEW(res, FunctionExpression,owner);
-    res->f = f;
+    res->ftype = ftype;
     copy_vector(res->args,args);
     return _res;
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v) {
-    HiddenReference ref(f == HREF);
+    HiddenReference ref(ftype == HREF || ftype == DBIND);
     for(auto &arg : args)
         arg->visit(v);
 }
@@ -3640,11 +3646,19 @@ void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVi
     }
 }
 
+const VariableExpression *VariableExpression::isDoubleBinding(const Expression *expr)
+{
+    auto fexpr = SimpleStatement::cast<FunctionExpression>(expr);
+    if(fexpr && fexpr->type() == FunctionExpression::DBIND && fexpr->getArgs().size()==1)
+        return Base::freecad_dynamic_cast<VariableExpression>(fexpr->getArgs().front().get());
+    return nullptr;
+}
+
 //
 // CallableExpression class
 //
 
-EXPR_TYPESYSTEM_SOURCE(App::CallableExpression, App::Expression);
+EXPR_TYPESYSTEM_SOURCE(App::CallableExpression, App::FunctionExpression);
 
 ExpressionPtr CallableExpression::create(const App::DocumentObject *owner, std::string &&name,
         StringList &&names, ExpressionList &&args)
@@ -3667,7 +3681,7 @@ ExpressionPtr CallableExpression::create(const DocumentObject *owner,
 
     static std::unordered_map<const char *, int, CStringHasher, CStringHasher> functions;
     if(functions.empty()) {
-        for(auto &info : FunctionExpression::getFunctions())
+        for(auto &info : getFunctions())
             functions[info.name] = info.type;
     }
 
@@ -3677,8 +3691,8 @@ ExpressionPtr CallableExpression::create(const DocumentObject *owner,
         return CallableExpression::create(owner,
                 VariableExpression::create(owner,std::move(path)), std::move(names),std::move(args));
     }
-    if(it->second < FunctionExpression::CALLABLE_START
-            || it->second > FunctionExpression::CALLABLE_END) {
+    if(it->second < CALLABLE_START
+            || it->second > CALLABLE_END) {
         for(auto &n : names) {
             if(n.size()) {
                 PARSER_THROW("Function '" << name << "' does not support named argument.");
@@ -3760,7 +3774,7 @@ void CallableExpression::_toString(std::ostream &ss, bool persistent,int) const 
 }
 
 std::string CallableExpression::getDocString() const {
-    if(ftype == FunctionExpression::FUNC_PARSED && 
+    if(ftype == FUNC_PARSED && 
        expr && expr->isDerivedFrom(SimpleStatement::getClassTypeId()))
     {
         auto e = static_cast<SimpleStatement*>(expr.get());
@@ -3785,7 +3799,7 @@ bool CallableExpression::isTouched() const
 }
 
 void CallableExpression::_visit(ExpressionVisitor &v) {
-    HiddenReference ref(ftype == FunctionExpression::HREF);
+    HiddenReference ref(ftype == HREF || ftype == DBIND);
     for(auto &arg : args)
         arg->visit(v);
     if(expr)
@@ -3866,7 +3880,7 @@ enum JumpType {
 
 Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
 
-    if(ftype != FunctionExpression::FUNC_PARSED)
+    if(ftype != FUNC_PARSED)
         PY_THROW("Unexpected callable expression type: " << ftype);
     if(!expr)
         PY_THROW("Invalid callable expression");
@@ -3971,7 +3985,7 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
 }
 
 Py::Object CallableExpression::_getPyValue(int *) const {
-    if(!expr && ftype == FunctionExpression::EVAL) {
+    if(!expr && ftype == EVAL) {
         if(args.size()<1)
             EXPR_THROW("Expects at least one arg");
 
@@ -4009,7 +4023,7 @@ Py::Object CallableExpression::_getPyValue(int *) const {
     }
 
     Py::Object *pyCallable = 0;
-    if(!expr && ftype != FunctionExpression::EVAL && _EvalStack.size() && _EvalStack.front()->PythonMode()) {
+    if(!expr && ftype != EVAL && _EvalStack.size() && _EvalStack.front()->PythonMode()) {
         auto &frame = *_EvalStack.back();
         pyCallable = frame.getVar(this,name.c_str(),BindQuery);
         if(pyCallable && !pyCallable->isCallable()) 
@@ -4017,8 +4031,8 @@ Py::Object CallableExpression::_getPyValue(int *) const {
     }
     if(!expr && !pyCallable) {
         switch(ftype) {
-        case FunctionExpression::FUNC: 
-        case FunctionExpression::FUNC_D: {
+        case FUNC: 
+        case FUNC_D: {
 
             if(args.size()<1)
                 EXPR_THROW("Expects at least one argument");
@@ -4031,11 +4045,11 @@ Py::Object CallableExpression::_getPyValue(int *) const {
                 static_cast<Statement&>(*statement).add(parse(owner,cmd,true));
 
             _EXPR_NEW(res,CallableExpression,owner);
-            res->ftype = FunctionExpression::FUNC_PARSED;
+            res->ftype = FUNC_PARSED;
             res->names.reserve(args.size());
             res->args.reserve(args.size());
             res->expr = std::move(statement);
-            if(ftype == FunctionExpression::FUNC_D) {
+            if(ftype == FUNC_D) {
                 // Delay argument evaluation until the function is evaluated.
                 // Just wrap them as it is now.
                 for(size_t i=1;i<args.size();++i) {
@@ -4053,12 +4067,12 @@ Py::Object CallableExpression::_getPyValue(int *) const {
             }
             return Py::Object(new ExpressionPy(_res.release()));
 
-        } case FunctionExpression::IMPORT_PY: {
+        } case IMPORT_PY: {
             Py::Object value(args[0]->getPyValue());
             if(!value.isString())
                 EXPR_THROW("Function expects the first argument to be a string.");
             return ImportModules::instance()->getModule(value.as_string(),this);
-        } case FunctionExpression::PRAGMA: {
+        } case PRAGMA: {
             Py::Object value(args[0]->getPyValue());
             if(!value.isString())
                 EXPR_THROW("Function expects the first argument to be a string.");
@@ -4202,6 +4216,31 @@ void VariableExpression::popComponents(int count) {
         components.pop_back();
     }
     var.popComponents(count);
+}
+
+void VariableExpression::assign(const ObjectIdentifier &path) const
+{
+    Base::PyGILStateLocker lock;
+    assign(path.getPyValue(true));
+}
+
+void VariableExpression::assign(Py::Object value) const
+{
+    if(components.empty()) {
+        var.setPyValue(value);
+        return;
+    }
+
+    Py::Object rhs;
+    bool readonly = false;
+    rhs = var.getPyValue(true,0,&readonly);
+    if(readonly)
+        FC_THROWM(Base::RuntimeError,
+                "Cannot set read-only property: " << var.toString());
+    std::size_t count = components.size()-1;
+    for(std::size_t i=0;i<count;++i)
+        rhs = components[i]->get(this,rhs);
+    components.back()->set(this,rhs,value);
 }
 
 //

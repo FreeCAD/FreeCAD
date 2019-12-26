@@ -229,6 +229,11 @@ public:
 
     virtual ExpressionPtr simplify() const;
 
+    void assign(const ObjectIdentifier &path) const;
+    void assign(Py::Object value) const;
+
+    static const VariableExpression *isDoubleBinding(const Expression *expr);
+
 protected:
     VariableExpression(const App::DocumentObject *_owner):Expression(_owner) {}
 
@@ -524,6 +529,9 @@ public:
         STR,
         HREF,
 
+        // double binding, used by PropertyExpressionEngine to make a property both driving and driven
+        DBIND, 
+
         CALLABLE_START,
 
         FUNC,
@@ -546,7 +554,7 @@ public:
         // Last one
         LAST,
     };
-    int type() const {return f;}
+    int type() const {return ftype;}
 
     static Py::Object evaluate(const Expression *owner, int type, const ExpressionList &args);
 
@@ -568,7 +576,7 @@ protected:
     virtual Py::Object _getPyValue(int *jumpCode=0) const;
     static Py::Object evalAggregate(const Expression *owner, int type, const ExpressionList &args);
 
-    int f;        /**< Function to execute */
+    int ftype;        /**< Function to execute */
     ExpressionList args; /** Arguments to function*/
 };
 
@@ -576,7 +584,7 @@ protected:
   * Class implementing a callable expression with named arguments and optional trailing accessor
   */
 
-class AppExport CallableExpression : public Expression {
+class AppExport CallableExpression : public FunctionExpression {
     EXPR_TYPESYSTEM_HEADER();
 public:
     static ExpressionPtr create(const App::DocumentObject *owner, std::string &&name,
@@ -599,7 +607,7 @@ public:
     const std::string &getName() const {return name;}
 
 protected:
-    CallableExpression(const App::DocumentObject *_owner):Expression(_owner) {}
+    CallableExpression(const App::DocumentObject *_owner):FunctionExpression(_owner) {}
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const { return true; }
@@ -611,8 +619,6 @@ protected:
     ExpressionPtr expr;
     std::string name;
     StringList names;
-    ExpressionList args;
-    int ftype = 0;
 };
 
 class AppExport RangeExpression : public App::Expression {

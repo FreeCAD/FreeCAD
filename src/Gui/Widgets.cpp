@@ -1476,13 +1476,17 @@ void ExpLineEdit::setExpression(boost::shared_ptr<Expression> expr)
 
 void ExpLineEdit::onChange() {
     
-    if (getExpression()) {
-        std::unique_ptr<Expression> result(getExpression()->eval());
-        if(result->isDerivedFrom(App::StringExpression::getClassTypeId()))
-            setText(QString::fromUtf8(static_cast<App::StringExpression*>(
-                            result.get())->getText().c_str()));
-        else
-            setText(QString::fromUtf8(result->toString().c_str()));
+    if (hasExpression()) {
+        // Do NOT update property item text with expression evaluation result,
+        // because some property has different output and input value.
+        //
+        // std::unique_ptr<Expression> result(getExpression()->eval());
+        // if(result->isDerivedFrom(App::StringExpression::getClassTypeId()))
+        //     setText(QString::fromUtf8(static_cast<App::StringExpression*>(
+        //                     result.get())->getText().c_str()));
+        // else
+        //     setText(QString::fromUtf8(result->toString().c_str()));
+
         setReadOnly(true);
         iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
@@ -1511,7 +1515,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
     iconLabel->move(rect().right() - frameWidth - sz.width(), 0);
 
     try {
-        if (isBound() && getExpression()) {
+        if (isBound() && hasExpression()) {
             setReadOnly(true);
             QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
             iconLabel->setPixmap(pixmap);

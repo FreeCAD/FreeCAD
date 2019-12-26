@@ -427,12 +427,14 @@ public:
 
     App::any getValue(bool pathValue=false, bool *isPseudoProperty=0) const;
 
-    Py::Object getPyValue(bool pathValue=false, bool *isPseudoProperty=0) const;
+    Py::Object getPyValue(bool pathValue=false, bool *isPseudoProperty=0, bool *isReadOnly=0) const;
 
     // Setter: is const because it does not alter the object state,
     // but does have an aiding effect.
 
     void setValue(const App::any & value) const;
+
+    void setPyValue(Py::Object value) const;
 
     // Static functions
 

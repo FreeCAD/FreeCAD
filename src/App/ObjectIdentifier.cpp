@@ -2197,18 +2197,25 @@ App::any ObjectIdentifier::getValue(bool pathValue, bool *isPseudoProperty) cons
     return App::any();
 }
 
-Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool *isPseudoProperty) const
+Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool *isPseudoProperty, bool *isReadOnly) const
 {
     ResolveResults rs(*this);
 
-    if(isPseudoProperty) {
-        *isPseudoProperty = rs.propertyType!=PseudoNone;
+    if(isPseudoProperty || isReadOnly) {
+        bool pseudo = rs.propertyType!=PseudoNone;
         if(rs.propertyType == PseudoSelf
                 && isLocalProperty()
                 && rs.propertyIndex+1 < (int)components.size()
                 && owner->getPropertyByName(components[rs.propertyIndex+1].getName().c_str()))
         {
-            *isPseudoProperty = false;
+            pseudo = false;
+        }
+        if(isPseudoProperty)
+            *isPseudoProperty = pseudo;
+        if(isReadOnly) {
+            *isReadOnly = pseudo || (rs.resolvedProperty
+                    && (rs.resolvedProperty->testStatus(Property::Immutable)
+                        || rs.resolvedProperty->testStatus(Property::PropReadOnly)));
         }
     }
 
@@ -2237,15 +2244,23 @@ Py::Object ObjectIdentifier::getPyValue(bool pathValue, bool *isPseudoProperty) 
 
 void ObjectIdentifier::setValue(const App::any &value) const
 {
-    std::stringstream ss;
+    Base::PyGILStateLocker lock;
+    setPyValue(pyObjectFromAny(value));
+}
+
+void ObjectIdentifier::setPyValue(Py::Object value) const
+{
     ResolveResults rs(*this);
     if(rs.propertyType)
-        FC_THROWM(Base::RuntimeError,"Cannot set pseudo property");
+        FC_THROWM(Base::RuntimeError,"Cannot set pseudo property " << toString());
+    if(!rs.resolvedProperty)
+        FC_THROWM(Base::RuntimeError,"Property not found " << toString());
+    if(rs.resolvedProperty->testStatus(Property::Immutable)
+            || rs.resolvedProperty->testStatus(Property::PropReadOnly))
+        FC_THROWM(Base::RuntimeError,"Cannot set read-only property: " << toString());
 
-    Base::PyGILStateLocker lock;
     try {
-        Py::Object pyvalue = pyObjectFromAny(value);
-        access(rs,&pyvalue);
+        access(rs,&value);
     }catch(Py::Exception &) {
         Base::PyException::ThrowException();
     }

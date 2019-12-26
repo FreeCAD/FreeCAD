@@ -1834,10 +1834,10 @@ void Application::initTypes(void)
     App ::ConstantExpression        ::init();
     App ::OperatorExpression        ::init();
     App ::VariableExpression        ::init();
+    App ::FunctionExpression        ::init();
     App ::CallableExpression        ::init();
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
-    App ::FunctionExpression        ::init();
     App ::RangeExpression           ::init();
     App ::PyObjectExpression        ::init();
     App ::ListExpression            ::init();

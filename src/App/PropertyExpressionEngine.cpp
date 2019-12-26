@@ -170,6 +170,26 @@ void PropertyExpressionEngine::hasSetValue()
         for(auto &e : expressions) {
             auto expr = e.second.expression;
             if(!expr) continue;
+
+            if(VariableExpression::isDoubleBinding(expr.get())) {
+                auto prop = e.first.getProperty();
+                if(prop) {
+                    ObjectIdentifier path = e.first;
+                    pimpl->conns.push_back(prop->signalChanged.connect(
+                        [this, path](const App::Property &) {
+                            auto it = expressions.find(path);
+                            if(it == expressions.end() || it->second.busy)
+                                return;
+                            auto vexpr = VariableExpression::isDoubleBinding(it->second.expression.get());
+                            if(vexpr) {
+                                Base::StateLocker guard(it->second.busy);
+                                vexpr->assign(it->first);
+                            }
+                        }
+                    ));
+                }
+            }
+
             for(auto &dep : expr->getIdentifiers()) {
                 if(!dep.second)
                     continue;
@@ -215,8 +235,8 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string &key) {
         App::any value;
         try {
             value = it->second.expression->getValueAsAny();
-            if(!isAnyEqual(value, myProp->getPathValue(var)))
-                myProp->setPathValue(var, value);
+            // if(!isAnyEqual(value, myProp->getPathValue(var)))
+            myProp->setPathValue(var, value);
         }catch(Base::Exception &e) {
             e.ReportException();
             FC_ERR("Failed to evaluate property binding "
