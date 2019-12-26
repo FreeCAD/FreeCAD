@@ -389,10 +389,15 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     {
         /* Number */
         double d;
+        long l;
+        bool isInteger = false;
         if(prop->isDerivedFrom(App::PropertyFloat::getClassTypeId()))
             d = static_cast<const App::PropertyFloat*>(prop)->getValue();
-        else
-            d = static_cast<const App::PropertyInteger*>(prop)->getValue();
+        else {
+            isInteger = true;
+            l = static_cast<const App::PropertyInteger*>(prop)->getValue();
+            d = l;
+        }
 
         switch (role) {
         case  Qt::TextColorRole: {
@@ -428,10 +433,11 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                 //QString number = QString::number(d / displayUnit.scaler);
                 v = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
             }
-            else {
+            else if (!isInteger) {
                 v = QLocale::system().toString(d,'f',Base::UnitsApi::getDecimals());
                 //v = QString::number(d);
-            }
+            } else 
+                v = QString::number(l);
             return QVariant(v);
         }
         default:
