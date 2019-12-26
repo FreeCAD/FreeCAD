@@ -1424,6 +1424,36 @@ Property *LinkBaseExtension::extensionGetPropertyByName(const char* name) const 
     return 0;
 }
 
+void LinkBaseExtension::extensionGetPropertyNamedList(
+        std::vector<std::pair<const char *,Property*> > &List) const
+{
+    inherited::extensionGetPropertyNamedList(List);
+
+    auto owner = getContainer();
+    if(!owner || !owner->canLinkProperties())
+        return;
+
+    auto linked = getTrueLinkedObject(true);
+    if(!linked)
+        return;
+
+    std::vector<std::pair<const char*, Property*> > props;
+    linked->getPropertyNamedList(props);
+
+    std::unordered_map<const char*, Property*, CStringHasher, CStringHasher> propMap;
+    for(auto &v : props) {
+        if(!isExcludedProperties(v.first))
+            propMap[v.first] = v.second;
+    }
+
+    for(auto &v : List) 
+        propMap.erase(v.first);
+
+    List.reserve(List.size() + propMap.size());
+    for(auto &v : propMap) 
+        List.push_back(v);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 namespace App {

@@ -121,7 +121,6 @@ void Sheet::clearAll()
     cellErrors.clear();
     columnWidths.clear();
     rowHeights.clear();
-    removedAliases.clear();
 
     for (ObserverMap::iterator i = observers.begin(); i != observers.end(); ++i)
         delete i->second;
@@ -425,6 +424,14 @@ bool Sheet::getCellAddress(const Property *prop, CellAddress & address)
     return false;
 }
 
+App::CellAddress Sheet::getCellAddress(const char *name, bool silent) const {
+    return cells.getCellAddress(name,silent);
+}
+
+App::Range Sheet::getRange(const char *name, bool silent) const {
+    return cells.getRange(name,silent);
+}
+
 /**
  * @brief Get a map with column indices and widths.
  * @return Map with results.
@@ -445,22 +452,6 @@ std::map<int, int> Sheet::getRowHeights() const
     return rowHeights.getValues();
 }
 
-
-/**
- * @brief Remove all aliases.
- *
- */
-
-void Sheet::removeAliases()
-{
-    std::map<CellAddress, std::string>::iterator i = removedAliases.begin();
-
-    while (i != removedAliases.end()) {
-        this->removeDynamicProperty(i->second.c_str());
-        ++i;
-    }
-    removedAliases.clear();
-}
 
 /**
  * Update internal structure when document is set for this property.
@@ -607,42 +598,6 @@ Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
     return pyProp;
 }
 
-/**
- * @brief Update the alias for the cell at \a key.
- * @param key Cell to update.
- */
-
-void Sheet::updateAlias(CellAddress key)
-{
-    std::string alias;
-    Property * prop = props.getDynamicPropertyByName(key.toString().c_str());
-
-    if (!prop)
-        return;
-
-    Cell * cell = getCell(key);
-
-    if (cell && cell->getAlias(alias)) {
-        Property * aliasProp = props.getDynamicPropertyByName(alias.c_str());
-
-        /* Update or create alias? */
-        if (aliasProp) {
-            // Type of alias and property must always be the same
-            if (aliasProp->getTypeId() != prop->getTypeId()) {
-                this->removeDynamicProperty(alias.c_str());
-                aliasProp = 0;
-            }
-        }
-
-        if (!aliasProp) {
-            aliasProp = addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_NoPersist);
-            aliasProp->setStatus(App::Property::Hidden,true);
-        }
-
-        aliasProp->Paste(*prop);
-    }
-}
-
 struct CurrentAddressLock {
     CurrentAddressLock(int &r, int &c, const CellAddress &addr)
         :row(r),col(c)
@@ -733,18 +688,35 @@ void Sheet::updateProperty(CellAddress key)
 
 Property *Sheet::getPropertyByName(const char* name) const
 {
-    std::string _name;
-    CellAddress addr;
-    if(addr.parseAbsoluteAddress(name)) {
-        _name = addr.toString(true);
-        name = _name.c_str();
-    }
-    Property * prop = getProperty(name);
-
+    CellAddress addr = getCellAddress(name,true);
+    Property *prop = 0;
+    if(addr.isValid())
+        prop = getProperty(addr);
     if (prop)
         return prop;
     else
         return DocumentObject::getPropertyByName(name);
+}
+
+Property *Sheet::getDynamicPropertyByName(const char* name) const {
+    CellAddress addr = getCellAddress(name,true);
+    Property *prop = 0;
+    if(addr.isValid())
+        prop = getProperty(addr);
+    if (prop)
+        return prop;
+    else
+        return DocumentObject::getDynamicPropertyByName(name);
+}
+
+void Sheet::getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const {
+    DocumentObject::getPropertyNamedList(List);
+    List.reserve(List.size()+cells.aliasProp.size());
+    for(auto &v : cells.aliasProp) {
+        auto prop = getProperty(v.first);
+        if(prop)
+            List.emplace_back(v.second.c_str(),prop);
+    }
 }
 
 void Sheet::touchCells(Range range) {
@@ -793,8 +765,6 @@ void Sheet::recomputeCell(CellAddress p)
             throw;
     }
 
-    updateAlias(p);
-
     if (!cell || cell->spansChanged())
         cellSpanChanged(p);
 }
@@ -806,8 +776,6 @@ void Sheet::recomputeCell(CellAddress p)
 
 DocumentObjectExecReturn *Sheet::execute(void)
 {
-    // Remove all aliases first
-    removeAliases();
 
     // Get dirty cells that we have to recompute
     std::set<CellAddress> dirtyCells = cells.getDirty();
@@ -1322,17 +1290,6 @@ bool Sheet::isValidAlias(const std::string & candidate)
 void Sheet::setSpans(CellAddress address, int rows, int columns)
 {
     cells.setSpans(address, rows, columns);
-}
-
-/**
- * @brief Called when alias \a alias at \a address is removed.
- * @param address Address of alias.
- * @param alias Removed alias.
- */
-
-void Sheet::aliasRemoved(CellAddress address, const std::string & alias)
-{
-    removedAliases[address] = alias;
 }
 
 /**

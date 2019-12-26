@@ -130,12 +130,12 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , foregroundColor(other.foregroundColor)
     , backgroundColor(other.backgroundColor)
     , displayUnit(other.displayUnit)
-    , alias(other.alias)
     , computedUnit(other.computedUnit)
     , rowSpan(other.rowSpan)
     , colSpan(other.colSpan)
 {
     setUsed(MARK_SET, false);
+    setAlias(other.alias);
     setDirty();
 }
 

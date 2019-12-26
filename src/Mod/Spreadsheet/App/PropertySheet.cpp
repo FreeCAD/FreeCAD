@@ -110,6 +110,17 @@ const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
 
 }
 
+Cell * PropertySheet::getValueFromAlias(const std::string &alias)
+{
+    std::map<std::string, CellAddress>::const_iterator it = revAliasProp.find(alias);
+
+    if (it != revAliasProp.end())
+        return getValue(it->second);
+    else
+        return 0;
+
+}
+
 bool PropertySheet::isValidAlias(const std::string &candidate)
 {
     static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
@@ -537,10 +548,15 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
     const Cell * aliasedCell = getValueFromAlias(alias);
     Cell * cell = nonNullCellAt(address);
 
-    if (aliasedCell != 0 && cell != aliasedCell)
+    if(aliasedCell == cell)
+        return;
+
+    if (aliasedCell)
         throw Base::ValueError("Alias already defined.");
 
     assert(cell != 0);
+
+    AtomicPropertyChange signaller(*this);
 
     /* Mark cells depending on this cell dirty; they need to be resolved when an alias changes or disappears */
     std::string fullName = owner->getFullName() + "." + address.toString();
@@ -556,23 +572,21 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
     }
 
     std::string oldAlias;
-
-    if (cell->getAlias(oldAlias))
-        owner->aliasRemoved(address, oldAlias);
-
+    cell->getAlias(oldAlias);
     cell->setAlias(alias);
 
-    if (oldAlias.size() > 0 && alias.size() > 0) {
+    if (oldAlias.size() > 0) {
         std::map<App::ObjectIdentifier, App::ObjectIdentifier> m;
 
         App::ObjectIdentifier key(owner, oldAlias);
-        App::ObjectIdentifier value(owner, alias);
+        App::ObjectIdentifier value(owner, alias.empty()?address.toString():alias);
 
         m[key] = value;
 
         owner->getDocument()->renameObjectIdentifiers(m);
     }
 
+    signaller.tryInvoke();
 }
 
 void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
@@ -639,10 +653,8 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
         splitCell(currPos);
 
         std::string alias;
-        if(cell->getAlias(alias)) {
-            owner->aliasRemoved(currPos, alias);
+        if(cell->getAlias(alias))
             cell->setAlias("");
-        }
 
         // Remove from old
         removeDependencies(currPos);
@@ -1465,4 +1477,58 @@ void PropertySheet::setExpressions(
             cell->setExpression(std::move(v.second));
     }
     signaller.tryInvoke();
+}
+
+App::CellAddress PropertySheet::getCellAddress(const char *addr, bool silent) const {
+    assert(addr);
+    CellAddress caddr;
+    const Cell * cell = getValueFromAlias(addr);
+    if(cell)
+        return cell->getAddress();
+    else
+        return stringToAddress(addr,silent);
+}
+
+App::Range PropertySheet::getRange(const char *range, bool silent) const {
+    assert(range);
+    const char *sep = strchr(range,':');
+    CellAddress from,to;
+    if(!sep) 
+        from = to = getCellAddress(range,silent);
+    else {
+        std::string addr(range,sep);
+
+        auto findCell = [this, &addr](CellAddress caddr, int r, int c) -> CellAddress {
+            if(!getValue(caddr))
+                return CellAddress();
+            if(addr == "-")
+                r = 0;
+            else
+                c = 0;
+            for(;;) {
+                caddr.setRow(caddr.row()+r);
+                caddr.setCol(caddr.col()+c);
+                if(!caddr.isValid() || !getValue(caddr)) 
+                    break;
+            }
+            caddr.setRow(caddr.row()-r);
+            caddr.setCol(caddr.col()-c);
+            return caddr;
+        };
+
+        if(addr == "-" || addr == "|") {
+            to = getCellAddress(sep+1,silent);
+            return Range(findCell(to,-1,-1), from);
+        } else {
+            from = getCellAddress(addr.c_str(),silent);
+            addr = sep+1;
+            if(addr == "-" || addr == "|")
+                return Range(from, findCell(from,1,1));
+            to = getCellAddress(addr.c_str(),silent);
+        } 
+    }
+
+    if(!from.isValid() || !to.isValid())
+        return App::Range(App::CellAddress(),App::CellAddress());
+    return App::Range(from,to);
 }
