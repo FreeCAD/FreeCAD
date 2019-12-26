@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Berthold Grupp          2005                            *
+ *   Copyright (c) 2005 Berthold Grupp                                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
