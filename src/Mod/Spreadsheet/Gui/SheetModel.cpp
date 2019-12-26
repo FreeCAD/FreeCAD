@@ -50,6 +50,7 @@ SheetModel::SheetModel(Sheet *_sheet, QObject *parent)
     , sheet(_sheet)
 {
     cellUpdatedConnection = sheet->cellUpdated.connect(bind(&SheetModel::cellUpdated, this, bp::_1));
+    rangeUpdatedConnection = sheet->rangeUpdated.connect(bind(&SheetModel::rangeUpdated, this, bp::_1));
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Spreadsheet");
     aliasBgColor = QColor(Base::Tools::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e")));
@@ -61,6 +62,7 @@ SheetModel::SheetModel(Sheet *_sheet, QObject *parent)
 SheetModel::~SheetModel()
 {
     cellUpdatedConnection.disconnect();
+    rangeUpdatedConnection.disconnect();
 }
 
 int SheetModel::rowCount(const QModelIndex &parent) const
@@ -592,6 +594,14 @@ void SheetModel::cellUpdated(CellAddress address)
     QModelIndex i = index(address.row(), address.col());
 
     dataChanged(i, i);
+}
+
+void SheetModel::rangeUpdated(const Range &range)
+{
+    QModelIndex i = index(range.from().row(), range.from().col());
+    QModelIndex j = index(range.to().row(), range.to().col());
+
+    dataChanged(i, j);
 }
 
 #include "moc_SheetModel.cpp"

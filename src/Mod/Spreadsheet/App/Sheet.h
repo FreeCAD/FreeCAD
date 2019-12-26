@@ -98,6 +98,18 @@ public:
 
     Cell *getNewCell(App::CellAddress address);
 
+    enum Border {
+        BorderTop = 1,
+        BorderLeft = 2,
+        BorderBottom = 4,
+        BorderRight = 8,
+        BorderAll = 15,
+    };
+    unsigned getCellBindingBorder(App::CellAddress address) const;
+
+    PropertySheet::BindingType getCellBinding(App::Range &range,
+            App::ExpressionPtr *pStart=0, App::ExpressionPtr *pEnd=0) const;
+
     void setCell(const char *address, const char *value);
 
     void setCell(App::CellAddress address, const char *value);
@@ -185,6 +197,8 @@ public:
 
     boost::signals2::signal<void (App::CellAddress)> cellUpdated;
 
+    boost::signals2::signal<void (App::Range)> rangeUpdated;
+
     boost::signals2::signal<void (App::CellAddress)> cellSpanChanged;
 
     boost::signals2::signal<void (int, int)> columnWidthChanged;
@@ -258,6 +272,8 @@ protected:
 
     int currentRow = -1;
     int currentCol = -1;
+
+    std::vector<App::Range> boundRanges;
 
     friend class SheetObserver;
 
