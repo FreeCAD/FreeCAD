@@ -128,7 +128,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
     if(expr) {
-        os << std::endl;
+        os << "\nin expression: ";
         expr->toString(os);
     }
     return os;
@@ -1792,6 +1792,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case CEIL:
     case FLOOR:
     case MINVERT:
+    case STR:
     case HREF:
         if (args.size() != 1)
             EXPR_THROW("Invalid number of arguments: exactly one required.");
@@ -2142,6 +2143,8 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             PyObjectBase::__PyInit(res.ptr(),tuple.ptr(),dict.ptr());
         }
         return res;
+    } else if (f == STR) {
+        return Py::String(args[0]->getPyValue().as_string());
     } else if (f == HREF) {
         return args[0]->getPyValue();
     }
@@ -2476,6 +2479,8 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
         ss << "minvert("; break;;
     case CREATE:
         ss << "create("; break;;
+    case STR:
+        ss << "str("; break;;
     case HREF:
         ss << "href("; break;;
     default:
@@ -3291,6 +3296,7 @@ static void initParser(const App::DocumentObject *owner)
         registered_functions["mscale"] = FunctionExpression::MSCALE;
         registered_functions["minvert"] = FunctionExpression::MINVERT;
         registered_functions["create"] = FunctionExpression::CREATE;
+        registered_functions["str"] = FunctionExpression::STR;
         registered_functions["href"] = FunctionExpression::HREF;
 
         // Aggregates

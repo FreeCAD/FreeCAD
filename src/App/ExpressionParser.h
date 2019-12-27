@@ -273,6 +273,7 @@ public:
         MINVERT, // invert matrix/placement/rotation
         CREATE, // create new object of a given type
         HREF, // hidden reference that has no dependency check
+        STR, // stringify
 
         // Aggregates
         AGGREGATES,
