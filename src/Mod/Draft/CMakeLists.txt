@@ -18,6 +18,7 @@ SET(Draft_tests
     drafttests/test_dwg.py
     drafttests/test_oca.py
     drafttests/test_airfoildat.py
+    TestDraft.py
 )
 
 SET(Draft_utilities
@@ -53,6 +54,14 @@ SET(Draft_task_panels
     drafttaskpanels/task_polararray.py
 )
 
+SET(Draft_import
+    importAirfoilDAT.py
+    importDWG.py
+    importDXF.py
+    importOCA.py
+    importSVG.py
+)
+
 SET(Draft_SRCS
     ${Draft_tests}
     ${Draft_utilities}
@@ -60,6 +69,7 @@ SET(Draft_SRCS
     ${Draft_view_providers}
     ${Draft_GUI_tools}
     ${Draft_task_panels}
+    ${Draft_import}
     Init.py
     InitGui.py
     Draft.py
@@ -75,12 +85,6 @@ SET(Draft_SRCS
     DraftSelectPlane.py
     WorkingPlane.py
     getSVG.py
-    importDXF.py
-    importOCA.py
-    importSVG.py
-    importDWG.py
-    importAirfoilDAT.py
-    TestDraft.py
 )
 SOURCE_GROUP("" FILES ${Draft_SRCS})
 
