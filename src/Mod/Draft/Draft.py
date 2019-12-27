@@ -1596,9 +1596,11 @@ def move(objectslist,vector,copy=False):
     newgroups = {}
     objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
+        vminusglobal = obj.getGlobalPlacement().inverse().multVec(vector)
+        realvector = obj.Placement.multVec(vminusglobal)
         if getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
-            v = v.add(vector)
+            v = v.add(realvector)
             if copy:
                 newobj = makeCopy(obj)
             else:
@@ -1612,7 +1614,7 @@ def move(objectslist,vector,copy=False):
             else:
                 newobj = obj
             pla = newobj.Placement
-            pla.move(vector)
+            pla.move(realvector)
         elif getType(obj) == "Annotation":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::Annotation",getRealName(obj.Name))
@@ -1621,7 +1623,7 @@ def move(objectslist,vector,copy=False):
                     formatObject(newobj,obj)
             else:
                 newobj = obj
-            newobj.Position = obj.Position.add(vector)
+            newobj.Position = obj.Position.add(realvector)
         elif getType(obj) == "DraftText":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
@@ -1635,7 +1637,7 @@ def move(objectslist,vector,copy=False):
                     formatObject(newobj,obj)
             else:
                 newobj = obj
-            newobj.Placement.Base = obj.Placement.Base.add(vector)
+            newobj.Placement.Base = obj.Placement.Base.add(realvector)
         elif getType(obj) == "Dimension":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
@@ -1645,16 +1647,16 @@ def move(objectslist,vector,copy=False):
                     formatObject(newobj,obj)
             else:
                 newobj = obj
-            newobj.Start = obj.Start.add(vector)
-            newobj.End = obj.End.add(vector)
-            newobj.Dimline = obj.Dimline.add(vector)
+            newobj.Start = obj.Start.add(realvector)
+            newobj.End = obj.End.add(realvector)
+            newobj.Dimline = obj.Dimline.add(realvector)
         else:
             if copy and obj.isDerivedFrom("Mesh::Feature"):
                 print("Mesh copy not supported at the moment") # TODO
             newobj = obj
             if "Placement" in obj.PropertiesList:
                 pla = obj.Placement
-                pla.move(vector)
+                pla.move(realvector)
         newobjlist.append(newobj)
         if copy:
             for p in obj.InList:
