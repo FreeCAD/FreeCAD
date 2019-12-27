@@ -786,8 +786,8 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
                     && d->_editingObject
                     && d->_editViewProviderParent 
                     && (Prop.isDerivedFrom(App::PropertyPlacement::getClassTypeId())
-						// Issue ID 0004230 : getName() can return null in which case strstr() crashes
-						|| (Prop.getName() && strstr(Prop.getName(), "Scale")))
+                        // Issue ID 0004230 : getName() can return null in which case strstr() crashes
+                        || (Prop.getName() && strstr(Prop.getName(),"Scale")))
                     && d->_editObjs.count(&Obj)) 
             {
                 Base::Matrix4D mat;
