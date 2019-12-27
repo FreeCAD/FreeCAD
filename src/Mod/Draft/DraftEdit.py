@@ -436,7 +436,7 @@ class Edit():
             if self.editing is None:
                 self.startEditing(event)
             else:
-                self.endEditing(self.obj,self.editing)
+                self.endEditing(self.obj,self.editing, None)
     
     def mouseMoved(self, event_callback):
         "mouse moved event handler, update tracker position and update preview ghost"
@@ -472,7 +472,7 @@ class Edit():
             return
         self.setPlacement(self.obj)
 
-        FreeCAD.Console.PrintMessage(str(self.obj.Name) + 
+        FreeCAD.Console.PrintMessage(str(self.obj.Name)
                                      + str(": editing node: n° ")
                                      + str(ep) + "\n")
 
@@ -497,12 +497,17 @@ class Edit():
         if self.ghost:
             self.updateGhost(obj=self.obj,idx=self.editing,pt=snappedPos)
 
-    def endEditing(self, obj, nodeIndex):
+    def endEditing(self, obj, nodeIndex, v = None):
         "terminate editing and start object updating process"
         self.finalizeGhost()
         self.trackers[obj.Name][nodeIndex].on()
         FreeCADGui.Snapper.setSelectMode(True)
-        self.numericInput(obj, nodeIndex, self.trackers[obj.Name][nodeIndex].get())
+        if v is None:
+            v = self.trackers[obj.Name][nodeIndex].get()
+        self.update(obj, nodeIndex, v)
+        self.ui.editUi(self.ui.lastMode)
+        self.node = []
+        self.editing = None
         self.showTrackers()
         DraftTools.redraw3DView()
 
@@ -537,16 +542,13 @@ class Edit():
                                          + "\n")
         return self.objs
 
-    def numericInput(self, obj, nodeIndex, v, numy=None,numz=None):
+    def numericInput(self, v, numy=None, numz=None):
         '''this function gets called by the toolbar
         or by the mouse click and activate the update function'''
         if (numy is not None):
             v = Vector(v,numy,numz)
-        self.update(obj, nodeIndex, v)
+        self.endEditing(self.obj, self.editing, v)
         FreeCAD.ActiveDocument.recompute()
-        self.editing = None
-        self.ui.editUi(self.ui.lastMode)
-        self.node = []
 
     def setSelectState(self, obj, selState = False):
         if hasattr(obj.ViewObject,"Selectable"):
@@ -990,6 +992,8 @@ class Edit():
             self.updatePartLine(obj, nodeIndex, v)
         elif objectType == "Part" and self.obj.TypeId == "Part::Box":
             self.updatePartBox(obj, nodeIndex, v)
+        
+        obj.recompute()
 
         FreeCAD.ActiveDocument.commitTransaction()
 
@@ -1688,4 +1692,3 @@ class Edit():
 if FreeCAD.GuiUp:
     # setup command
     FreeCADGui.addCommand('Draft_Edit', Edit())
-    FreeCADGui.addCommand('Draft_Edit_WhichNode', whichNode())
