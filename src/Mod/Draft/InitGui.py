@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -22,7 +21,7 @@
 
 __title__ = "FreeCAD Draft Workbench - Init file"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = "https://www.freecadweb.org"
 
 
 class DraftWorkbench(Workbench):

@@ -99,7 +99,7 @@ private:
     QGCustomText*      m_qgTextR;
     QGCustomText*      m_qgTextC;
     QGCustomSvg*       m_qgSvg;
-    QGraphicsColorizeEffect* m_effect;
+  //QGraphicsColorizeEffect* m_effect;
     QString            m_svgPath;
     QString            m_textL;
     QString            m_textR;

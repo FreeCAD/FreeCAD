@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2009, 2010                                              *
-#*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
+#*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+#*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -27,7 +25,7 @@
 
 __title__="FreeCAD Draft Workbench"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Daniel Falck"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## \addtogroup DRAFT
 #  \brief Create and manipulate basic 2D objects
@@ -5732,8 +5730,13 @@ class _DraftLink(_DraftObject):
     def onDocumentRestored(self, obj):
         if self.useLink:
             self.linkSetup(obj)
-            if obj.Shape.isNull():
+        else:
+            obj.setPropertyStatus('Shape','-Transient')
+        if obj.Shape.isNull():
+            if getattr(obj,'PlacementList',None):
                 self.buildShape(obj,obj.Placement,obj.PlacementList)
+            else:
+                self.execute(obj)
 
     def buildShape(self,obj,pl,pls):
         import Part
@@ -5773,9 +5776,9 @@ class _DraftLink(_DraftObject):
             return False # return False to call LinkExtension::execute()
 
     def onChanged(self, obj, prop):
-        if getattr(obj,'useLink',False):
+        if not getattr(self,'useLink',False):
             return
-        elif prop == 'Fuse':
+        if prop == 'Fuse':
             if obj.Fuse:
                 obj.setPropertyStatus('Shape','-Transient')
             else:
@@ -5891,7 +5894,7 @@ class _Array(_DraftLink):
             rc = xcount*rdist
             c = 2*rc*math.pi
             n = math.floor(c/tdist)
-            n = math.floor(n/sym)*sym
+            n = int(math.floor(n/sym)*sym)
             if n == 0: continue
             angle = 360/n
             for ycount in range(0, n):
@@ -5902,20 +5905,26 @@ class _Array(_DraftLink):
                 base.append(npl)
         return base
 
-    def polarArray(self,pl,center,angle,num,axis,axisvector):
+    def polarArray(self,spl,center,angle,num,axis,axisvector):
         #print("angle ",angle," num ",num)
         import Part
-        base = [pl.copy()]
+        spin = FreeCAD.Placement(Vector(), spl.Rotation)
+        pl = FreeCAD.Placement(spl.Base, FreeCAD.Rotation())
+        center = center.sub(spl.Base)
+        base = [spl.copy()]
         if angle == 360:
             fraction = float(angle)/num
         else:
             if num == 0:
                 return base
             fraction = float(angle)/(num-1)
+        ctr = DraftVecUtils.tup(center)
+        axs = DraftVecUtils.tup(axis)
         for i in range(num-1):
             currangle = fraction + (i*fraction)
             npl = pl.copy()
-            npl.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
+            npl.rotate(ctr, axs, currangle)
+            npl = npl.multiply(spin)
             if axisvector:
                 if not DraftVecUtils.isNull(axisvector):
                     npl.translate(FreeCAD.Vector(axisvector).multiply(i+1))
@@ -5944,6 +5953,7 @@ class _PathArray(_DraftLink):
             obj.addProperty("App::PropertyBool","ExpandArray","Draft",
                     QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
             obj.ExpandArray = False
+            obj.setPropertyStatus('Shape','Transient')
 
         _DraftLink.attach(self,obj)
 

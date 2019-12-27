@@ -953,8 +953,9 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 {
     char *cFileName,*cColor="Current",*cComment="$MIBA";
     int w=-1,h=-1;
+    int s=View3DInventorViewer::getNumSamples();
 
-    if (!PyArg_ParseTuple(args.ptr(), "et|iiss","utf-8",&cFileName,&w,&h,&cColor,&cComment))
+    if (!PyArg_ParseTuple(args.ptr(), "et|iissi","utf-8",&cFileName,&w,&h,&cColor,&cComment,&s))
         throw Py::Exception();
 
     std::string encodedName = std::string(cFileName);
@@ -972,7 +973,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
-    _view->getViewer()->savePicture(w, h, 8, bg, img);
+    _view->getViewer()->savePicture(w, h, s, bg, img);
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();

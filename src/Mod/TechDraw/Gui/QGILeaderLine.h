@@ -82,11 +82,11 @@ public:
     double getLineWidth(void);
     double getEdgeFuzz(void) const;
 
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
-    //void mouseMoveEvent(QGraphicsSceneMouseEvent * event);
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+    //void mouseMoveEvent(QGraphicsSceneMouseEvent * event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
     void setPrettyNormal();
     void setPrettyPre();
