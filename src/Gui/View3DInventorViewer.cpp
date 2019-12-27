@@ -2201,6 +2201,9 @@ void View3DInventorViewer::renderFramebuffer()
     for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
         (*it)->paintGL();
 
+    if (naviCubeEnabled)
+        naviCube->drawNaviCube();
+
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
 }
@@ -2233,6 +2236,9 @@ void View3DInventorViewer::renderGLImage()
 
     for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
         (*it)->paintGL();
+
+    if (naviCubeEnabled)
+        naviCube->drawNaviCube();
 
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
