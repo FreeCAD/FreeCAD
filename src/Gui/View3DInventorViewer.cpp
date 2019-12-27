@@ -1504,6 +1504,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
         View3DInventorViewer* self = const_cast<View3DInventorViewer*>(this);
         img = self->grabFramebuffer();
         img = img.mirrored();
+        img = img.scaledToWidth(w);
         return;
     }
 
