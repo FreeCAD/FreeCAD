@@ -1785,15 +1785,15 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     newgroups = {}
     objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
+        ci = obj.getGlobalPlacement().inverse().multVec(center)
+        c = obj.Placement.multVec(ci)
+        ai = obj.getGlobalPlacement().inverse().Rotation.multVec(axis)
+        a = obj.Placement.Rotation.multVec(ai)        
         if copy:
             newobj = makeCopy(obj)
         else:
             newobj = obj
-        if hasattr(obj,'Shape') and (getType(obj) not in ["WorkingPlaneProxy","BuildingPart"]):
-            shape = obj.Shape.copy()
-            shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
-            newobj.Shape = shape
-        elif (obj.isDerivedFrom("App::Annotation")):
+        if (obj.isDerivedFrom("App::Annotation")):
             if axis.normalize() == Vector(1,0,0):
                 newobj.ViewObject.RotationAxis = "X"
                 newobj.ViewObject.Rotation = angle
@@ -1811,17 +1811,23 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
                 newobj.ViewObject.Rotation = -angle
         elif getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
-            rv = v.sub(center)
-            rv = DraftVecUtils.rotate(rv,math.radians(angle),axis)
-            v = center.add(rv)
+            rv = v.sub(c)
+            rv = DraftVecUtils.rotate(rv,math.radians(angle),a)
+            v = c.add(rv)
             newobj.X = v.x
             newobj.Y = v.y
             newobj.Z = v.z
         elif hasattr(obj,"Placement"):
+            #FreeCAD.Console.PrintMessage("placement rotation\n")
             shape = Part.Shape()
             shape.Placement = obj.Placement
-            shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
+            shape.rotate(DraftVecUtils.tup(c), DraftVecUtils.tup(a), angle)
             newobj.Placement = shape.Placement
+        elif hasattr(obj,'Shape') and (getType(obj) not in ["WorkingPlaneProxy","BuildingPart"]):
+            #think it make more sense to try first to rotate placement and later to try with shape. no?
+            shape = obj.Shape.copy()
+            shape.rotate(DraftVecUtils.tup(c), DraftVecUtils.tup(a), angle)
+            newobj.Shape = shape
         if copy:
             formatObject(newobj,obj)
         newobjlist.append(newobj)
@@ -1837,7 +1843,7 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
         select(newobjlist)
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
-
+    
 def scaleVectorFromCenter(vector, scale, center):
     return vector.sub(center).scale(scale.x, scale.y, scale.z).add(center)
 
