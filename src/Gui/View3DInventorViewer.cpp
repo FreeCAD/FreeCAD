@@ -1479,10 +1479,14 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
         ("User parameter:BaseApp/Preferences/View")->GetASCII("SavePicture");
 
     bool useFramebufferObject = false;
+    bool useGrabFramebuffer = false;
     bool usePixelBuffer = false;
     bool useCoinOffscreenRenderer = false;
     if (saveMethod == "FramebufferObject") {
         useFramebufferObject = true;
+    }
+    else if (saveMethod == "GrabFramebuffer") {
+        useGrabFramebuffer = true;
     }
     else if (saveMethod == "PixelBuffer") {
         usePixelBuffer = true;
@@ -1494,6 +1498,12 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     if (useFramebufferObject) {
         View3DInventorViewer* self = const_cast<View3DInventorViewer*>(this);
         self->imageFromFramebuffer(w, h, s, bg, img);
+        return;
+    }
+    else if (useGrabFramebuffer) {
+        View3DInventorViewer* self = const_cast<View3DInventorViewer*>(this);
+        img = self->grabFramebuffer();
+        img = img.mirrored();
         return;
     }
 
