@@ -272,6 +272,7 @@ public:
         MSCALE, // matrix scale by vector
         MINVERT, // invert matrix/placement/rotation
         CREATE, // create new object of a given type
+        STR, // stringify
 
         // Aggregates
         AGGREGATES,
