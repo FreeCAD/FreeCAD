@@ -116,7 +116,7 @@ DrawViewSection::DrawViewSection()
     static const char *sgroup = "Section";
     static const char *fgroup = "Cut Surface Format";
 
-    ADD_PROPERTY_TYPE(SectionSymbol ,("A"),sgroup,App::Prop_None,"The identifier for this section");
+    ADD_PROPERTY_TYPE(SectionSymbol ,(""),sgroup,App::Prop_None,"The identifier for this section");
     ADD_PROPERTY_TYPE(BaseView ,(0),sgroup,App::Prop_None,"2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0) ,sgroup,App::Prop_None,"Section Plane normal direction");  //direction of extrusion of cutting prism
@@ -162,6 +162,7 @@ short DrawViewSection::mustExecute() const
 
 void DrawViewSection::onChanged(const App::Property* prop)
 {
+//    Base::Console().Message("DVS::onChanged(%s) - restoring: %d\n", prop->getName(), isRestoring());
     if (!isRestoring()) {
         if (prop == &SectionSymbol) {
             std::string lblText = "Section " +
@@ -207,7 +208,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 {
-//    Base::Console().Message("DVS::execute() - %s \n", getNameInDocument());
+//    Base::Console().Message("DVS::execute() - %s/%s \n", getNameInDocument(), Label.getValue());
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
