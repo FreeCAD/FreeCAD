@@ -295,6 +295,18 @@ DynamicProperty::PropData DynamicProperty::getDynamicPropertyData(const Property
     return PropData();
 }
 
+bool DynamicProperty::changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
+    auto &index = props.get<1>();
+    auto it = index.find(const_cast<Property*>(prop));
+    if (it == index.end())
+        return false;
+    if(group)
+        it->group = group;
+    if(doc)
+        it->doc = doc;
+    return true;
+}
+
 const char *DynamicProperty::getPropertyName(const Property *prop) const
 {
     auto &index = props.get<1>();

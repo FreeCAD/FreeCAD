@@ -200,6 +200,10 @@ public:
       return dynamicProps.getDynamicPropertyData(prop);
   }
 
+  bool changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
+      return dynamicProps.changeDynamicProperty(prop,group,doc);
+  }
+
   virtual bool removeDynamicProperty(const char* name) {
       return dynamicProps.removeDynamicProperty(name);
   }

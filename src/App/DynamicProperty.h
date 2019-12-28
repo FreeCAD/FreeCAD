@@ -149,8 +149,8 @@ public:
         Property* property;
         std::string name;
         const char *pName;
-        std::string group;
-        std::string doc;
+        mutable std::string group;
+        mutable std::string doc;
         short attr;
         bool readonly;
         bool hidden;
@@ -167,6 +167,8 @@ public:
     };
 
     PropData getDynamicPropertyData(const Property* prop) const;
+
+    bool changeDynamicProperty(const Property *prop, const char *group, const char *doc);
 
 private:
     std::string getUniquePropertyName(PropertyContainer &pc, const char *Name) const;
