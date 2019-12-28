@@ -216,19 +216,24 @@ class _ViewProviderArchMaterialContainer:
             mats = [o for o in self.Object.Group if o.isDerivedFrom("App::MaterialObject")]
             todelete = []
             for mat in mats:
-                if mat.Label[-1].isdigit() and mat.Label[-2].isdigit() and mat.Label[-3].isdigit():
-                    orig = None
-                    for om in mats:
-                        if om.Label == mat.Label[:-3].strip():
-                            orig = om
-                            break
-                    if orig:
-                        for par in mat.InList:
-                            for prop in par.PropertiesList:
-                                if getattr(par,prop) == mat:
-                                    FreeCAD.Console.PrintMessage("Changed property '"+prop+"' of object "+par.Label+" from "+mat.Label+" to "+orig.Label+"\n")
-                                    setattr(par,prop,orig)
-                        todelete.append(mat)
+                orig = None
+                for om in mats:
+                    if om.Label == mat.Label:
+                        orig = om
+                        break
+                else:
+                    if mat.Label[-1].isdigit() and mat.Label[-2].isdigit() and mat.Label[-3].isdigit():
+                        for om in mats:
+                            if om.Label == mat.Label[:-3].strip():
+                                orig = om
+                                break
+                if orig:
+                    for par in mat.InList:
+                        for prop in par.PropertiesList:
+                            if getattr(par,prop) == mat:
+                                FreeCAD.Console.PrintMessage("Changed property '"+prop+"' of object "+par.Label+" from "+mat.Label+" to "+orig.Label+"\n")
+                                setattr(par,prop,orig)
+                    todelete.append(mat)
             for tod in todelete:
                 if not tod.InList:
                     FreeCAD.Console.PrintMessage("Merging duplicate material "+tod.Label+"\n")

@@ -8,8 +8,8 @@ import Test, TestDraft
 Test.runTestsFromModule(TestDraft)
 """
 # ***************************************************************************
-# *   (c) 2013 Yorik van Havre <yorik@uncreated.net>                        *
-# *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
+# *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *

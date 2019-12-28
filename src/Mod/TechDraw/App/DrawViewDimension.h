@@ -86,7 +86,7 @@ struct arcPoints
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewDimension);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
 
 public:
     /// Constructor

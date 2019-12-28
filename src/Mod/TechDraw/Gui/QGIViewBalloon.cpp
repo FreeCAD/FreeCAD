@@ -130,6 +130,8 @@ void QGIBalloonLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIBalloonLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
+//    Base::Console().Message("QGIVB::mouseRelease - pos: %s\n", 
+//                            DrawUtil::formatVector(pos()).c_str());
     m_ctrl = false;
     if(scene() && this == scene()->mouseGrabberItem()) {
         Q_EMIT dragFinished();
@@ -308,16 +310,18 @@ QGIViewBalloon::QGIViewBalloon() :
 
 }
 
+//from QGVP::mouseReleaseEvent - pos = eventPos
 void QGIViewBalloon::placeBalloon(QPointF pos)
 {
-
+//    Base::Console().Message("QGIVB::placeBalloon(%s)\n",
+//                            DrawUtil::formatVector(pos).c_str());
     auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
     if( balloon == nullptr ) {
         return;
     }
 
     DrawView* balloonParent = nullptr;
-    App::DocumentObject* docObj = balloon->sourceView.getValue();
+    App::DocumentObject* docObj = balloon->SourceView.getValue();
     if (docObj == nullptr) {
         return;
     } else {
@@ -334,8 +338,10 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         return;
     }
 
-    balloon->OriginX.setValue(mapFromScene(pos).x());
-    balloon->OriginY.setValue(mapFromScene(pos).y());
+    balloon->OriginX.setValue(Rez::appX(mapFromScene(pos).x()));
+    balloon->OriginY.setValue(Rez::appX(mapFromScene(pos).y()));
+    balloon->X.setValue(Rez::appX(mapFromScene(pos).x() + 200));
+    balloon->Y.setValue(- Rez::appX(mapFromScene(pos).y() - 200));
 
     int idx = featPage->getNextBalloonIndex();
     QString labelText = QString::number(idx);
@@ -405,6 +411,11 @@ void QGIViewBalloon::updateView(bool update)
         balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
         balloonLabel->setColor(getNormalColor());
     }
+    if ( balloon->X.isTouched() || balloon->Y.isTouched()){
+        float x = Rez::guiX(balloon->X.getValue());
+        float y = Rez::guiX(balloon->Y.getValue());
+        balloonLabel->setPosFromCenter(x,-y);
+    }
 
     updateBalloon();
     draw();
@@ -429,6 +440,7 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
 
     QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
     balloonLabel->verticalSep = false;
+    balloonLabel->seps.clear();
 
     if (strcmp(balloon->Symbol.getValueAsString(), "Rectangle") == 0) {
         while (labelText.contains(QString::fromUtf8("|"))) {
@@ -441,6 +453,7 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     }
 
     balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
+    balloonLabel->setPosFromCenter(balloonLabel->X(),balloonLabel->Y());
 }
 
 void QGIViewBalloon::balloonLabelDragged(bool ctrl)
@@ -450,17 +463,18 @@ void QGIViewBalloon::balloonLabelDragged(bool ctrl)
 
 void QGIViewBalloon::balloonLabelDragFinished()
 {
-    auto dim( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
+    auto dvb( dynamic_cast<TechDraw::DrawViewBalloon *>(getViewObject()) );
 
-    if( dim == nullptr ) {
+    if( dvb == nullptr ) {
         return;
     }
 
+    //this needs to be scaled?
     double x = Rez::appX(balloonLabel->X()),
            y = Rez::appX(balloonLabel->Y());
     Gui::Command::openCommand("Drag Balloon");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dim->getNameInDocument(), x);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dim->getNameInDocument(), -y);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f", dvb->getNameInDocument(), x);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f", dvb->getNameInDocument(), -y);
     Gui::Command::commitCommand();
 }
 
@@ -509,8 +523,6 @@ void QGIViewBalloon::draw_modifier(bool modifier)
     Base::Vector3d lblCenter = Base::Vector3d(mappedRect.center().x(), mappedRect.center().y(), 0.0);
 
     if (balloon->isLocked()) {
-        lblCenter.x = (oldLabelCenter->x());
-        lblCenter.y = (oldLabelCenter->y());
         balloonLabel->setFlag(QGraphicsItem::ItemIsMovable, false);
     } else
         balloonLabel->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -519,8 +531,8 @@ void QGIViewBalloon::draw_modifier(bool modifier)
     Base::Vector3d kinkPoint;
     double kinkLength = Rez::guiX(5.0);
 
-    float orginX = balloon->OriginX.getValue();
-    float orginY = balloon->OriginY.getValue();
+    float orginX = Rez::guiX(balloon->OriginX.getValue());
+    float orginY = Rez::guiX(balloon->OriginY.getValue());
 
     const char *balloonType = balloon->Symbol.getValueAsString();
 
@@ -609,12 +621,12 @@ void QGIViewBalloon::draw_modifier(bool modifier)
     dLinePath.lineTo(kinkPoint.x, kinkPoint.y);
 
     if (modifier) {
-        balloon->OriginX.setValue(orginX + lblCenter.x - oldLabelCenter->x());
-        balloon->OriginY.setValue(orginY + lblCenter.y - oldLabelCenter->y());
+        balloon->OriginX.setValue(Rez::appX(orginX + lblCenter.x - oldLabelCenter->x()));
+        balloon->OriginY.setValue(Rez::appX(orginY + lblCenter.y - oldLabelCenter->y()));
     }
 
-    orginX = balloon->OriginX.getValue();
-    orginY = balloon->OriginY.getValue();
+    orginX = Rez::guiX(balloon->OriginX.getValue());
+    orginY = Rez::guiX(balloon->OriginY.getValue());
 
     dLinePath.lineTo(orginX, orginY);
 

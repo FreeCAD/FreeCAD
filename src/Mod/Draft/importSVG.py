@@ -19,7 +19,6 @@ Currently unsupported:
 # flake8 --ignore=E226,E266,E401,W503
 
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -42,7 +41,7 @@ Currently unsupported:
 
 __title__ = "FreeCAD Draft Workbench - SVG importer/exporter"
 __author__ = "Yorik van Havre, Sebastian Hoogen"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = "https://www.freecadweb.org"
 
 # ToDo:
 # ignoring CDATA
