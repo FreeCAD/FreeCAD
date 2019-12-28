@@ -22,6 +22,7 @@ set(SpreadsheetGui_MOC_HDRS
     Workbench.h
     PropertiesDialog.h
     DlgBindSheet.h
+    DlgSheetConf.h
     qtcolorpicker.h
 )
 
@@ -55,6 +56,7 @@ set(SpreadsheetGui_UIC_SRCS
    Sheet.ui
    PropertiesDialog.ui
    DlgBindSheet.ui
+   DlgSheetConf.ui
 )
 
 if(BUILD_QT5)
@@ -91,6 +93,8 @@ SET(SpreadsheetGui_SRCS
     PropertiesDialog.cpp
     DlgBindSheet.h
     DlgBindSheet.cpp
+    DlgSheetConf.h
+    DlgSheetConf.cpp
     ${SpreadsheetGui_UIC_HDRS}
 )
 
