@@ -81,6 +81,7 @@ protected Q_SLOTS:
     void cellProperties();
     void onRecompute();
     void onBind();
+    void onConfSetup();
 
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
