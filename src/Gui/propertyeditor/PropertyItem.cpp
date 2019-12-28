@@ -1266,6 +1266,40 @@ QVariant PropertyBoolItem::editorData(QWidget *editor) const
 
 // ---------------------------------------------------------------
 
+namespace Gui { namespace PropertyEditor {
+class VectorLineEdit : public Gui::ExpLineEdit
+{
+    int decimals;
+public:
+    VectorLineEdit (int decimals, QWidget * parent=0, bool expressionOnly=false)
+        : Gui::ExpLineEdit(parent, expressionOnly)
+        , decimals(decimals)
+    {
+    }
+
+    bool apply(const std::string &propName) {
+        if (!ExpressionBinding::apply(propName)) {
+            QVariant data = property("coords");
+            if (data.canConvert<Base::Vector3d>()) {
+                const Base::Vector3d& value = data.value<Base::Vector3d>();
+
+                QString str = QString::fromLatin1("(%1, %2, %3)")
+                                .arg(value.x,0,'f',decimals)
+                                .arg(value.y,0,'f',decimals)
+                                .arg(value.z,0,'f',decimals);
+
+                Gui::Command::doCommand(Gui::Command::Doc, "%s = %s", propName.c_str(), str.toLatin1().constData());
+                return true;
+            }
+        }
+
+        return false;
+    }
+};
+}}
+
+// ---------------------------------------------------------------
+
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorItem)
 
 PropertyVectorItem::PropertyVectorItem()
@@ -1291,6 +1325,8 @@ QVariant PropertyVectorItem::toString(const QVariant& prop) const
         .arg(QLocale::system().toString(value.x, 'f', 2),
              QLocale::system().toString(value.y, 'f', 2),
              QLocale::system().toString(value.z, 'f', 2));
+    if (hasExpression())
+        data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     return QVariant(data);
 }
 
@@ -1316,9 +1352,15 @@ void PropertyVectorItem::setValue(const QVariant& value)
 
 QWidget* PropertyVectorItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
 {
-    QLineEdit *le = new QLineEdit(parent);
+    VectorLineEdit *le = new VectorLineEdit(decimals(), parent);
     le->setFrame(false);
     le->setReadOnly(true);
+
+    if (isBound()) {
+        le->bind(getPath());
+        le->setAutoApply(autoApply());
+    }
+
     return le;
 }
 
@@ -1330,6 +1372,7 @@ void PropertyVectorItem::setEditorData(QWidget *editor, const QVariant& data) co
         .arg(QLocale::system().toString(value.x, 'f', 2),
              QLocale::system().toString(value.y, 'f', 2),
              QLocale::system().toString(value.z, 'f', 2));
+    le->setProperty("coords", data);
     le->setText(text);
 }
 
@@ -1403,6 +1446,8 @@ QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
            Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
            Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
            Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
+    if (hasExpression())
+        data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     return QVariant(data);
 }
 
@@ -1434,14 +1479,21 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
 void PropertyVectorDistanceItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     QLineEdit* le = qobject_cast<QLineEdit*>(editor);
+    le->setProperty("coords", data);
     le->setText(toString(data).toString());
 }
 
 QWidget* PropertyVectorDistanceItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
 {
-    QLineEdit *le = new QLineEdit(parent);
+    VectorLineEdit *le = new VectorLineEdit(decimals(), parent);
     le->setFrame(false);
     le->setReadOnly(true);
+
+    if (isBound()) {
+        le->bind(getPath());
+        le->setAutoApply(autoApply());
+    }
+
     return le;
 }
 
