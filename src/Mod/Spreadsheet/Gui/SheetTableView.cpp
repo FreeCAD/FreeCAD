@@ -48,6 +48,7 @@
 #include "LineEdit.h"
 #include "PropertiesDialog.h"
 #include "DlgBindSheet.h"
+#include "DlgSheetConf.h"
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
@@ -183,6 +184,10 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(actionBind, SIGNAL(triggered()), this, SLOT(onBind()));
     contextMenu->addAction(actionBind);
 
+    QAction *actionConf = new QAction(tr("Configuration table..."),this);
+    connect(actionConf, SIGNAL(triggered()), this, SLOT(onConfSetup()));
+    contextMenu->addAction(actionConf);
+
     horizontalHeader()->addAction(actionBind);
     verticalHeader()->addAction(actionBind);
 
@@ -220,6 +225,14 @@ void SheetTableView::onBind() {
         DlgBindSheet dlg(sheet,ranges,this);
         dlg.exec();
     }
+}
+
+void SheetTableView::onConfSetup() {
+    auto ranges = selectedRanges();
+    if(ranges.empty())
+        return;
+    DlgSheetConf dlg(sheet,ranges.back(),this);
+    dlg.exec();
 }
 
 void SheetTableView::cellProperties()
