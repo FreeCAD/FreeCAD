@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 #  Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>
 #  LGPL
 
