@@ -182,7 +182,7 @@ void ViewProviderTemplate::setMarkers(bool state)
     }
 }
 
-MDIViewPage* ViewProviderTemplate::getMDIViewPage(void)
+MDIViewPage* ViewProviderTemplate::getMDIViewPage(void) const
 {
     MDIViewPage* myMdi = nullptr;
     auto t = getTemplate();
@@ -195,7 +195,8 @@ MDIViewPage* ViewProviderTemplate::getMDIViewPage(void)
     return myMdi;
 }
 
-Gui::MDIView *ViewProviderTemplate::getMDIView() {
+Gui::MDIView *ViewProviderTemplate::getMDIView() const
+{
     return getMDIViewPage();
 }
 

@@ -470,7 +470,9 @@ public:
     static Base::Matrix4D convert(const SbMatrix &sbMat);
     //@}
 
-    virtual MDIView *getMDIView() {return 0;}
+    virtual MDIView *getMDIView() const {
+        return nullptr;
+    }
 
 public:
     // this method is called by the viewer when the ViewProvider is in edit
