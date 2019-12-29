@@ -968,6 +968,15 @@ SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
     return _ViewProviderSet.find(pcProvider) != _ViewProviderSet.end();
 }
 
+SbBool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
+{
+    SoSearchAction sa;
+    sa.setNode(const_cast<ViewProvider*>(vp)->getRoot());
+    sa.setSearchingAll(true);
+    sa.apply(getSoRenderManager()->getSceneGraph());
+    return sa.getPath() != nullptr;
+}
+
 /// adds an ViewProvider to the view, e.g. from a feature
 void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
 {

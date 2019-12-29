@@ -56,6 +56,7 @@ public:
 
     View3DInventorViewer *getViewer(unsigned int) const;
     void setOverrideCursor(const QCursor&);
+    virtual bool containsViewProvider(const ViewProvider*) const;
 
     PyObject *getPyObject(void);
     void setPyObject(PyObject *);

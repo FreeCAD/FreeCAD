@@ -106,7 +106,8 @@ public:
     void removeOverlayWidget();
 
     View3DInventorViewer *getViewer(void) const {return _viewer;}
-  
+    virtual bool containsViewProvider(const ViewProvider*) const;
+
 public Q_SLOTS:
     /// override the cursor in this view
     void setOverrideCursor(const QCursor&);

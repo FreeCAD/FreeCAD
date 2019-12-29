@@ -1956,44 +1956,56 @@ MDIView* Document::getActiveView(void) const
     return 0;
 }
 
-MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type typeId) {
-    MDIView *view = 0;
-    if(!vp)
+MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type typeId)
+{
+    MDIView *view = nullptr;
+    if (!vp) {
         view = getActiveView();
-    else{
+    }
+    else {
         view = vp->getMDIView();
-        if(!view) {
+        if (!view) {
             auto obj = vp->getObject();
-            if(!obj)
+            if (!obj) {
                 view = getActiveView();
+            }
             else {
                 auto linked = obj->getLinkedObject(true);
-                if(linked!=obj) {
+                if (linked!=obj) {
                     auto vpLinked = dynamic_cast<ViewProviderDocumentObject*>(
                                 Application::Instance->getViewProvider(linked));
-                    if(vpLinked)
+                    if (vpLinked)
                         view = vpLinked->getMDIView();
                 }
-                if(!view && typeId.isBad())
-                    typeId = View3DInventor::getClassTypeId();
+
+                if (!view && typeId.isBad()) {
+                    MDIView* active = getActiveView();
+                    if (active && active->containsViewProvider(vp))
+                        view = active;
+                    else
+                        typeId = View3DInventor::getClassTypeId();
+                }
             }
         }
     }
-    if(!view || (!typeId.isBad() && !view->isDerivedFrom(typeId))) {
-        view = 0;
+
+    if (!view || (!typeId.isBad() && !view->isDerivedFrom(typeId))) {
+        view = nullptr;
         for (auto *v : d->baseViews) {
-            if(v->isDerivedFrom(MDIView::getClassTypeId()) && 
-               (typeId.isBad() || v->isDerivedFrom(typeId))) 
-            {
+            if (v->isDerivedFrom(MDIView::getClassTypeId()) &&
+               (typeId.isBad() || v->isDerivedFrom(typeId))) {
                 view = static_cast<MDIView*>(v);
                 break;
             }
         }
     }
-    if(!view && !typeId.isBad()) 
+
+    if (!view && !typeId.isBad())
         view = createView(typeId);
-    if(view)
+
+    if (view)
         getMainWindow()->setActiveWindow(view);
+
     return view;
 }
 

@@ -181,7 +181,12 @@ public:
 
     /** @name Handling of view providers */
     //@{
+    /// Checks if the view provider is a top-level object of the scene
     SbBool hasViewProvider(ViewProvider*) const;
+    /// Checks if the view provider is part of the scene.
+    /// In contrast to hasViewProvider() this method also checks if the view
+    /// provider is a child of another view provider
+    SbBool containsViewProvider(const ViewProvider*) const;
     /// adds an ViewProvider to the view, e.g. from a feature
     void addViewProvider(ViewProvider*);
     /// remove a ViewProvider
