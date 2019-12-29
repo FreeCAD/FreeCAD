@@ -223,7 +223,7 @@ public:
 
     /** @name Nodes */
     //@{
-    virtual SoSeparator* getRoot() override {
+    virtual SoSeparator* getRoot() const override {
         return ViewProviderT::getRoot();
     }
     virtual SoSeparator* getFrontRoot() const override {

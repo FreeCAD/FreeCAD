@@ -971,7 +971,7 @@ SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 SbBool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
 {
     SoSearchAction sa;
-    sa.setNode(const_cast<ViewProvider*>(vp)->getRoot());
+    sa.setNode(vp->getRoot());
     sa.setSearchingAll(true);
     sa.apply(getSoRenderManager()->getSceneGraph());
     return sa.getPath() != nullptr;
