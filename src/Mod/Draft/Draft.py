@@ -287,26 +287,60 @@ def ungroup(obj):
             grp.Group = g
 
 def autogroup(obj):
-    """adds a given object to the autogroup, if applicable"""
+    """
+    Adds a given object to the autogroup, if applicable.
+
+    If autogroup is present, object is added to autogroup.
+    If an Arch container is active, add given object to it.
+    If an App::Part container is active, add given object to it
+    and update the object placement so it doesn't jump on other
+    position in respect of it's creation.
+
+    Parameter
+    --------
+    obj : object.Name
+        Name of the object to add to the group.
+
+    TODO
+    --------
+    add support for App::Part with Draft Annotations.
+
+    """
     if FreeCAD.GuiUp:
+        # Arch active container
+        active_part = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part")
+        # Arch active container
+        active_arch_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
         if hasattr(FreeCADGui,"draftToolBar"):
-            if hasattr(FreeCADGui.draftToolBar,"autogroup") and (not FreeCADGui.draftToolBar.isConstructionMode()):
-                if FreeCADGui.draftToolBar.autogroup != None:
-                    g = FreeCAD.ActiveDocument.getObject(FreeCADGui.draftToolBar.autogroup)
-                    if g:
+            if (hasattr(FreeCADGui.draftToolBar,"autogroup") 
+                and not FreeCADGui.draftToolBar.isConstructionMode()
+                ):
+                if FreeCADGui.draftToolBar.autogroup is not None:
+                    active_group = FreeCAD.ActiveDocument.getObject(FreeCADGui.draftToolBar.autogroup)
+                    if active_group:
                         found = False
-                        for o in g.Group:
+                        for o in active_group.Group:
                             if o.Name == obj.Name:
                                 found = True
                         if not found:
-                            gr = g.Group
+                            gr = active_group.Group
                             gr.append(obj)
-                            g.Group = gr
-                else:
-                    # Arch active container
-                    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-                    if a:
-                        a.addObject(obj)
+                            active_group.Group = gr
+                elif active_arch_obj:
+                    active_arch_obj.addObject(obj)
+                elif active_part:
+                    inverse_placement = active_part.getGlobalPlacement().inverse()
+                    if getType(obj) == 'Point':
+                        # point vector have a kind of placement, so should be
+                        # processed before generic object with placement
+                        point_vector = FreeCAD.Vector(obj.X, obj.Y, obj.Z)
+                        real_point = inverse_placement.multVec(point_vector)
+                        obj.X = real_point.x
+                        obj.Y = real_point.y
+                        obj.Z = real_point.z                    
+                    elif hasattr(obj,"Placement"):
+                        obj.Placement = FreeCAD.Placement(inverse_placement.multiply(obj.Placement))
+                    active_part.addObject(obj)
 
 def dimSymbol(symbol=None,invert=False):
     """returns the current dim symbol from the preferences as a pivy SoMarkerSet"""
