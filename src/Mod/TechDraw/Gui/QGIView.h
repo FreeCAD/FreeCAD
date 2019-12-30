@@ -83,6 +83,9 @@ public:
     virtual void drawBorder(void);
     virtual void isVisible(bool state);
     virtual bool isVisible(void);
+
+    virtual void setGroupSelection(bool b);
+
     virtual void draw(void);
     virtual void drawCaption(void);
     virtual void rotateView(void);

@@ -275,6 +275,7 @@ QGIViewBalloon::QGIViewBalloon() :
 
     balloonLabel->setZValue(ZVALUE::LABEL);
     arrow->setZValue(ZVALUE::DIMENSION);
+
     balloonLines->setZValue(ZVALUE::DIMENSION);
     balloonLines->setStyle(Qt::SolidLine);
 
@@ -305,61 +306,44 @@ QGIViewBalloon::QGIViewBalloon() :
         this  , SLOT  (hover(bool)));
 
 //    toggleBorder(false);
-    setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
-                                                     //above this Dimension's parent view.   need Layers?
-
+    setZValue(ZVALUE::DIMENSION);
 }
 
-//from QGVP::mouseReleaseEvent - pos = eventPos
-void QGIViewBalloon::placeBalloon(QPointF pos)
+QVariant QGIViewBalloon::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-//    Base::Console().Message("QGIVB::placeBalloon(%s)\n",
-//                            DrawUtil::formatVector(pos).c_str());
-    auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
-    if( balloon == nullptr ) {
-        return;
+   if (change == ItemSelectedHasChanged && scene()) {
+        if(isSelected()) {
+            balloonLabel->setSelected(true);
+        } else {
+            balloonLabel->setSelected(false);
+        }
+        draw();
     }
+    return QGIView::itemChange(change, value);
+}
 
-    DrawView* balloonParent = nullptr;
-    App::DocumentObject* docObj = balloon->SourceView.getValue();
-    if (docObj == nullptr) {
-        return;
-    } else {
-        balloonParent = dynamic_cast<DrawView*>(docObj);
-    }
-    
-    auto featPage = balloonParent->findParentPage();
-    if (featPage == nullptr) {
-        return;
-    }
-    
-    auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
-        return;
-    }
+//Set selection state for this and it's children
+void QGIViewBalloon::setGroupSelection(bool b)
+{
+//    Base::Console().Message("QGIVB::setGroupSelection(%d)\n",b);
+    setSelected(b);
+    balloonLabel->setSelected(b);
+    balloonLines->setSelected(b);
+    arrow->setSelected(b);
+}
 
-    balloon->OriginX.setValue(Rez::appX(mapFromScene(pos).x()));
-    balloon->OriginY.setValue(Rez::appX(mapFromScene(pos).y()));
-    balloon->X.setValue(Rez::appX(mapFromScene(pos).x() + 200));
-    balloon->Y.setValue(- Rez::appX(mapFromScene(pos).y() - 200));
-
-    int idx = featPage->getNextBalloonIndex();
-    QString labelText = QString::number(idx);
-    balloon->Text.setValue(std::to_string(idx).c_str());
- 
-    QFont font = balloonLabel->getFont();
-    font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
-    font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-    balloonLabel->setFont(font);
-    prepareGeometryChange();
-
-    // Default label position
-    balloonLabel->setPosFromCenter(mapFromScene(pos).x() + 200, mapFromScene(pos).y() -200);
-    balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
-
+void QGIViewBalloon::select(bool state)
+{
+//    Base::Console().Message("QGIVBall::select(%d)\n", state);
+    setSelected(state);
     draw();
 }
 
+void QGIViewBalloon::hover(bool state)
+{
+    hasHover = state;
+    draw();
+}
 
 void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
 {
@@ -379,18 +363,6 @@ void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
 
     updateBalloon();
 
-    draw();
-}
-
-void QGIViewBalloon::select(bool state)
-{
-    setSelected(state);
-    draw();
-}
-
-void QGIViewBalloon::hover(bool state)
-{
-    hasHover = state;
     draw();
 }
 
@@ -478,6 +450,58 @@ void QGIViewBalloon::balloonLabelDragFinished()
     Gui::Command::commitCommand();
 }
 
+
+
+//from QGVP::mouseReleaseEvent - pos = eventPos
+void QGIViewBalloon::placeBalloon(QPointF pos)
+{
+//    Base::Console().Message("QGIVB::placeBalloon(%s)\n",
+//                            DrawUtil::formatVector(pos).c_str());
+    auto balloon( dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()) );
+    if( balloon == nullptr ) {
+        return;
+    }
+
+    DrawView* balloonParent = nullptr;
+    App::DocumentObject* docObj = balloon->SourceView.getValue();
+    if (docObj == nullptr) {
+        return;
+    } else {
+        balloonParent = dynamic_cast<DrawView*>(docObj);
+    }
+    
+    auto featPage = balloonParent->findParentPage();
+    if (featPage == nullptr) {
+        return;
+    }
+    
+    auto vp = static_cast<ViewProviderBalloon*>(getViewProvider(getViewObject()));
+    if ( vp == nullptr ) {
+        return;
+    }
+
+    balloon->OriginX.setValue(Rez::appX(mapFromScene(pos).x()));
+    balloon->OriginY.setValue(Rez::appX(mapFromScene(pos).y()));
+    balloon->X.setValue(Rez::appX(mapFromScene(pos).x() + 200));
+    balloon->Y.setValue(- Rez::appX(mapFromScene(pos).y() - 200));
+
+    int idx = featPage->getNextBalloonIndex();
+    QString labelText = QString::number(idx);
+    balloon->Text.setValue(std::to_string(idx).c_str());
+ 
+    QFont font = balloonLabel->getFont();
+    font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
+    font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+    balloonLabel->setFont(font);
+    prepareGeometryChange();
+
+    // Default label position
+    balloonLabel->setPosFromCenter(mapFromScene(pos).x() + 200, mapFromScene(pos).y() -200);
+    balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
+
+    draw();
+}
+
 void QGIViewBalloon::draw()
 {
     draw_modifier(false);
@@ -516,7 +540,7 @@ void QGIViewBalloon::draw_modifier(bool modifier)
     }
 
     m_colNormal = getNormalColor();
-    balloonLabel->setColor(m_colNormal);
+//    balloonLabel->setColor(m_colNormal);
 
     m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
 
@@ -661,19 +685,13 @@ void QGIViewBalloon::draw_modifier(bool modifier)
     arrow->setRotation(arAngle);
     arrow->show();
 
-    // redraw the Dimension and the parent View
+    // redraw the Balloon and the parent View
     if (hasHover && !isSelected()) {
-        arrow->setPrettyPre();
-        balloonLines->setPrettyPre();
-        balloonShape->setPrettyPre();
+        setPrettyPre();
     } else if (isSelected()) {
-        arrow->setPrettySel();
-        balloonLines->setPrettySel();
-        balloonShape->setPrettySel();
+        setPrettySel();
     } else {
-        arrow->setPrettyNormal();
-        balloonLines->setPrettyNormal();
-        balloonShape->setPrettyNormal();
+        setPrettyNormal();
     }
 
     update();
@@ -681,28 +699,38 @@ void QGIViewBalloon::draw_modifier(bool modifier)
         //TODO: parent redraw still required with new frame/label??
         parentItem()->update();
     } else {
-        Base::Console().Log("INFO - QGIVD::draw - no parent to update\n");
+        Base::Console().Log("INFO - QGIVB::draw - no parent to update\n");
     }
 
 }
+
+void QGIViewBalloon::setPrettyPre(void)
+{
+    arrow->setPrettyPre();
+    balloonShape->setPrettyPre();
+    balloonLines->setPrettyPre();
+}
+
+void QGIViewBalloon::setPrettySel(void)
+{
+//    Base::Console().Message("QGIVBal::setPrettySel()\n");
+    arrow->setPrettySel();
+    balloonShape->setPrettySel();
+    balloonLines->setPrettySel();
+}
+
+void QGIViewBalloon::setPrettyNormal(void)
+{
+    arrow->setPrettyNormal();
+    balloonShape->setPrettyNormal();
+    balloonLines->setPrettyNormal();
+}
+
 
 void QGIViewBalloon::drawBorder(void)
 {
 //Dimensions have no border!
 //    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
-}
-
-QVariant QGIViewBalloon::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-   if (change == ItemSelectedHasChanged && scene()) {
-        if(isSelected()) {
-            balloonLabel->setSelected(true);
-        } else {
-            balloonLabel->setSelected(false);
-        }
-        draw();
-    }
-    return QGIView::itemChange(change, value);
 }
 
 void QGIViewBalloon::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
