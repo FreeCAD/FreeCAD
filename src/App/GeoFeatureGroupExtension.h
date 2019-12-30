@@ -135,6 +135,8 @@ protected:
         return _ExportChildren;
     }
 
+    void buildExport(const std::vector<App::DocumentObject*> &);
+
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
     static std::vector<App::DocumentObject*> getScopedObjectsFromLinks(const App::DocumentObject*, LinkScope scope = LinkScope::Local);
