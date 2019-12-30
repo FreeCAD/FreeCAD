@@ -492,7 +492,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
     TechDraw::DrawLeaderLine* featLeader = getFeature();
 
     double baseScale = featLeader->getBaseScale();
-    QPointF lastOffset = (pathPoints.back() - pathPoints.front()) * baseScale;
+    QPointF lastOffset = (pathPoints.back() - pathPoints.front());
 
     if (featLeader->StartSymbol.getValue() > -1) {
         m_arrow1->setStyle(featLeader->StartSymbol.getValue());
