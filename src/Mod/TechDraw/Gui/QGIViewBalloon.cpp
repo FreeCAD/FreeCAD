@@ -501,6 +501,9 @@ void QGIViewBalloon::draw_modifier(bool modifier)
     show();
 
     const TechDraw::DrawViewPart *refObj = balloon->getViewPart();
+    if (refObj == nullptr) {
+        return;
+    }
     if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
         balloonLabel->hide();
         hide();

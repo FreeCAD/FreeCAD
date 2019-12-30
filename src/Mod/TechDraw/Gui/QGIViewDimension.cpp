@@ -675,6 +675,9 @@ void QGIViewDimension::draw()
     }
 
     const TechDraw::DrawViewPart *refObj = dim->getViewPart();
+    if (refObj == nullptr) {
+        return;
+    }
     if(!refObj->hasGeometry()) {                                       //nothing to draw yet (restoring)
         datumLabel->hide();
         hide();
