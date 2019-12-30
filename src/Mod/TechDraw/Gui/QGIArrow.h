@@ -36,13 +36,13 @@ namespace TechDrawGui
 {
 
 enum ArrowType {
-	FILLED_TRIANGLE = 0,
-	OPEN_ARROW,
-	HASH_MARK,
-	DOT,
-	OPEN_CIRCLE,
-	FORK,
-	PYRAMID
+    FILLED_TRIANGLE = 0,
+    OPEN_ARROW,
+    HASH_MARK,
+    DOT,
+    OPEN_CIRCLE,
+    FORK,
+    PYRAMID
 };
 
 class TechDrawGuiExport QGIArrow : public QGIPrimPath

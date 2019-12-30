@@ -71,9 +71,29 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawViewBalloon, TechDraw::DrawView)
 
-const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
-                                              "Dot",
+//from Gui/QGIArrow.h
+//enum ArrowType {
+//        FILLED_TRIANGLE = 0,
+//        OPEN_ARROW,
+//        HASH_MARK,
+//        DOT,
+//        OPEN_CIRCLE,
+//        FORK,
+//        PYRAMID
+//    };
+
+const char* DrawViewBalloon::endTypeEnums[]= { "FILLED_TRIANGLE",
+                                               "OPEN_ARROW",
+                                               "HASH_MARK",
+                                               "DOT",
+                                               "OPEN_CIRCLE",
+                                               "FORK",
+                                               "PYRAMID",
                                                NULL};
+
+//const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
+//                                              "Dot",
+//                                               NULL};
 
 const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
                                                   "None",
