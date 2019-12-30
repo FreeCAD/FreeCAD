@@ -749,6 +749,11 @@ class editTracker(Tracker):
 
     def getSubelementName(self):
         return str(self.selnode.subElementName.getValue())
+        
+    def getSubelementIndex(self):
+        subElement = self.getSubelementName()
+        idx = int(subElement[8:])
+        return idx
 
     def move(self,delta):
         self.set(self.get().add(delta))

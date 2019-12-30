@@ -1734,12 +1734,18 @@ class Edit():
 
     def evaluate_menu_action(self,labelname):
         action_label = str(labelname.text())
-        if action_label == "make sharp":
-            pass
-        elif action_label == "make tangent":
-            pass
-        elif action_label == "make symmetric":
-            pass
+        # Bezier curve menu
+        if action_label in ["make sharp", "make tangent", "make symmetric"]:
+            doc = self.overNode.getDocName()
+            obj = FreeCAD.getDocument(doc).getObject(self.overNode.getObjName())
+            idx = self.overNode.getSubelementIndex()
+            if action_label == "make sharp":
+                self.smoothBezPoint(obj, idx, 'Sharp')
+            elif action_label == "make tangent":
+                self.smoothBezPoint(obj, idx, 'Tangent')
+            elif action_label == "make symmetric":
+                self.smoothBezPoint(obj, idx, 'Symmetric')
+        # addPoint and deletePoint menu
         elif action_label == "delete point":
             self.delPoint(self.event)
         elif action_label == "add point":
