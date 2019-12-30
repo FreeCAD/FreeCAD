@@ -301,7 +301,7 @@ void SubShapeBinder::setupObject() {
     checkPropertyStatus();
 }
 
-void SubShapeBinder::update(int options) {
+void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     std::vector<Part ::TopoShape> shapes;
     std::vector<const Base::Matrix4D*> shapeMats;

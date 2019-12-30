@@ -94,10 +94,11 @@ public:
     App::PropertyInteger _Version;
 
     enum UpdateOption {
+        UpdateNone = 0,
         UpdateInit = 1,
         UpdateForced = 2,
     };
-    void update(int options=0);
+    void update(UpdateOption options = UpdateNone);
 
     virtual int canLoadPartial() const override {
         return PartialLoad.getValue()?1:0;
