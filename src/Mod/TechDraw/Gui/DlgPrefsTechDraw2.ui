@@ -84,7 +84,7 @@
           <property name="toolTip">
            <string>Dimension text color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -225,6 +225,16 @@
              <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>6 - Pyramid</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/icons/arrowpyramid.svg</normalon>
+            </iconset>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="8" column="0">
@@ -254,11 +264,11 @@
          </widget>
         </item>
         <item row="4" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize" native="true">
           <property name="toolTip">
            <string>Dimension font size in units</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -270,11 +280,11 @@
          </widget>
         </item>
         <item row="9" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize" native="true">
           <property name="toolTip">
            <string>Dimension arrowhead size in units</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>3.500000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -395,7 +405,7 @@
           <property name="toolTip">
            <string>Color for centerlines</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>175</red>
             <green>175</green>
@@ -585,7 +595,7 @@
           <property name="toolTip">
            <string>Line color for sectionlines</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>175</red>
             <green>175</green>
@@ -648,7 +658,7 @@
           <property name="toolTip">
            <string>Vertex display color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>150</red>
             <green>147</green>
