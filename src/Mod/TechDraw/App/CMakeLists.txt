@@ -102,6 +102,8 @@ SET(Draw_SRCS
     DrawViewDimExtent.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
+    DrawViewGDTReference.h
+    DrawViewGDTReference.cpp
     DrawViewSection.cpp
     DrawViewSection.h
     DrawHatch.cpp

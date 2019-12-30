@@ -62,6 +62,7 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewGDTReference.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
@@ -730,6 +731,92 @@ bool CmdTechDrawProjectionGroup::isActive(void)
 //}
 
 //===========================================================================
+// TechDraw_GDT_Reference
+//===========================================================================
+
+//! common checks of Selection for Dimension commands
+//non-empty selection, no more than maxObjs selected and at least 1 DrawingPage exists
+bool _checkSelectionGDTReference(Gui::Command* cmd, unsigned maxObjs) {
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    if (selection.size() == 0) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+                             QObject::tr("Select an object first"));
+        return false;
+    }
+
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
+    if (SubNames.size() > maxObjs){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+            QObject::tr("Too many objects selected"));
+        return false;
+    }
+
+    std::vector<App::DocumentObject*> pages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    if (pages.empty()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+            QObject::tr("Create a page first."));
+        return false;
+    }
+    return true;
+}
+
+bool _checkDrawViewPartGDTReference(Gui::Command* cmd) {
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( !objFeat ) {
+        QMessageBox::warning( Gui::getMainWindow(),
+                              QObject::tr("Incorrect selection"),
+                              QObject::tr("No View of a Part in selection.") );
+        return false;
+    }
+    return true;
+}
+
+
+DEF_STD_CMD_A(CmdTechDrawGDTReference)
+
+CmdTechDrawGDTReference::CmdTechDrawGDTReference()
+  : Command("TechDraw_GDT_Reference")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert GDT Reference");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_GDT_Reference";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_GDT_Reference";
+}
+
+void CmdTechDrawGDTReference::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    bool result = _checkSelectionGDTReference(this,1);
+    if (!result)
+        return;
+    result = _checkDrawViewPartGDTReference(this);
+    if (!result)
+        return;
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( objFeat == nullptr ) {
+        return;
+    }
+
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
+}
+
+bool CmdTechDrawGDTReference::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+
+
+//===========================================================================
 // TechDraw_Balloon
 //===========================================================================
 
@@ -1362,4 +1449,5 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());
     rcCmdMgr.addCommand(new CmdTechDrawBalloon());
+    rcCmdMgr.addCommand(new CmdTechDrawGDTReference());
 }

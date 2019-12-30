@@ -38,6 +38,7 @@
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewGDTReference.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
@@ -197,6 +198,8 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
               temp.push_back((*it));
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
               temp.push_back((*it));
+      	  } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId())) {
+      		  temp.push_back((*it));
           }
       }
       return temp;
