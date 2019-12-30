@@ -55,7 +55,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 	dimensions->setCommand("Dimensions");
 	*dimensions << "TechDraw_LengthDimension" << "TechDraw_HorizontalDimension" << "TechDraw_VerticalDimension"
 		<< "TechDraw_RadiusDimension" << "TechDraw_DiameterDimension" << "TechDraw_AngleDimension"
-		<< "TechDraw_HorizontalExtentDimension" << "TechDraw_VerticalExtentDimension" << "TechDraw_LinkDimension";
+		<< "TechDraw_HorizontalExtentDimension" << "TechDraw_VerticalExtentDimension" << "TechDraw_LinkDimension"
+		<< "TechDraw_GDT_Reference";
 
 	// annotations
 	Gui::MenuItem* annotations = new Gui::MenuItem;
@@ -154,6 +155,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 //    *dims << "TechDraw_HorizontalExtentDimension";
 //    *dims << "TechDraw_VerticalExtentDimension";
     *dims << "TechDraw_LinkDimension";
+    *dims << "TechDraw_GDT_Reference";
     *dims << "TechDraw_Balloon";
 //    *dims << "TechDraw_Dimension"
 
@@ -226,6 +228,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 //    *dims << "TechDraw_HorizontalExtentDimension";
 //    *dims << "TechDraw_VerticalExtentDimension";
     *dims << "TechDraw_LinkDimension";
+    *dims << "TechDraw_GDT_Reference";
     *dims << "TechDraw_Balloon";
 //    *dims << "TechDraw_Dimension";
 
