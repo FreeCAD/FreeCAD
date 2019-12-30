@@ -279,6 +279,8 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // save Object pointer
     pcObject = pcObj;
 
+    pcObj->setStatus(App::ObjectStatus::ViewProviderAttached,true);
+
     if(pcObj && pcObj->getNameInDocument() &&
        Visibility.getValue()!=pcObj->Visibility.getValue())
         pcObj->Visibility.setValue(Visibility.getValue());

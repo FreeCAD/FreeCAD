@@ -58,7 +58,7 @@ GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
     _ExportChildren.setScope(LinkScope::Hidden);
     _ExportChildren.setStatus(Property::NoModify,true);
     EXTENSION_ADD_PROPERTY_TYPE(_ExportChildren,(0),"Base",
-            (App::PropertyType)(Prop_Output|Prop_NoPersist|Prop_Hidden|Prop_ReadOnly),"");
+            (App::PropertyType)(Prop_Output|Prop_Hidden|Prop_ReadOnly),"");
 }
 
 GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
@@ -172,9 +172,42 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::addObjects(std::vector<Ap
     
     if(Group.getSize() != (int)grp.size()) {
         Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
+        buildExport(grp);
         Group.setValues(grp);
     }
     return ret;
+}
+
+void GeoFeatureGroupExtension::buildExport(
+        const std::vector<App::DocumentObject *> &children) 
+{
+    auto owner = getExtendedObject();
+
+    // NOTE: if there is view provider attached, we rely on
+    // ViewProviderGeoFeatureGroupExtension to populate _ExportChildren based
+    // on how each child claim their own children. If no view provider is
+    // attached (e.g. Gui module is not loaded), we rely on the following logic
+    // to include only children that do not appear in the inList of any other
+    // child. This logic is similar to ViewProviderGeoFeatureGroupExtension,
+    // but not exactly the same.  So there may have some discrepency depending
+    // on whether the Gui module is loaded or not.
+    if(owner->testStatus(ObjectStatus::ViewProviderAttached))
+        return;
+
+    std::set<App::DocumentObject *> childSet(children.begin(),children.end());
+    std::vector<App::DocumentObject *> exportChildren;
+    for(auto child : children) {
+        bool exclude = false;
+        for(auto obj : child->getInList()) {
+            if(childSet.count(obj)) {
+                exclude = true;
+                break;
+            }
+        }
+        if(!exclude)
+            exportChildren.push_back(child);
+    }
+    _ExportChildren.setValue(std::move(exportChildren));
 }
 
 std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector<App::DocumentObject*> objects)  {
@@ -199,6 +232,7 @@ std::vector<DocumentObject*> GeoFeatureGroupExtension::removeObjects(std::vector
     
     if(!removed.empty()) {
         Base::ObjectStatusLocker<Property::Status, Property> guard(Property::User3, &Group);
+        buildExport(grp);
         Group.setValues(grp);
     }
     
@@ -278,6 +312,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
                 }
             }while(retry);
 
+            buildExport(children);
 
             //if an error was found we need to correct the values and inform the user
             if(error) {

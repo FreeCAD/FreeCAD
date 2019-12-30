@@ -71,10 +71,6 @@ GroupExtension::~GroupExtension()
 {
 }
 
-void GroupExtension::checkParentGroup() {
-    _checkParentGroup = true;
-}
-
 bool GroupExtension::queryChildExport(App::DocumentObject *obj) const {
     if(!obj || !obj->getNameInDocument())
         return false;

@@ -161,8 +161,6 @@ void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Proper
                     auto ext = App::GeoFeatureGroupExtension::getNonGeoGroup(obj);
                     if(!ext)
                         continue;
-                    // To inform GroupExtension to disable toggling children visibility
-                    ext->checkParentGroup();
                     impl->conns.push_back(
                             ext->Group.signalChanged.connect([=](const App::Property &){
                                 auto owner = this->getExtendedViewProvider();

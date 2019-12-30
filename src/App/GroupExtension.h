@@ -172,7 +172,6 @@ private:
     std::vector<boost::signals2::scoped_connection> _Conns;
 
     bool _togglingVisibility = false;
-    bool _checkParentGroup = false;
 };
 
 

@@ -63,6 +63,7 @@ enum ObjectStatus {
     NoTouch = 14, // no touch on any property change
     Expand = 16, // indicate the object's tree item expansion status
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
+    ViewProviderAttached = 18, // indicate if a view provider is attached to this object
 };
 
 /** Return object for feature execution
