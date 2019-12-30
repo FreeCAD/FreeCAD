@@ -220,6 +220,11 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
+    DrawViewPart* dvp = getViewPart();
+    if (dvp == nullptr) {
+        Base::Console().Message("DVD::execute - no DVP!\n");
+        return App::DocumentObject::StdReturn;
+    }
 
     //any empty Reference2D??
     if (!has2DReferences()) {                                            //too soon?
@@ -716,8 +721,11 @@ double DrawViewDimension::getDimValue()
         }
         return result;
     }
+    if  (getViewPart() == nullptr) {
+        return result;
+    }
 
-    if (!getViewPart()->hasGeometry()) {                              //happens when loading saved document
+    if  (!getViewPart()->hasGeometry() ) {                              //happens when loading saved document
         return result;
     }
 

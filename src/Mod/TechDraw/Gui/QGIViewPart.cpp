@@ -830,6 +830,9 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     if (!viewPart)  {
         return;
     }
+    if (viewSection == nullptr) {
+        return;
+    }
 
     if (!viewSection->hasGeometry()) {
         return;
