@@ -639,13 +639,16 @@ void QGIViewBalloon::draw_modifier(bool modifier)
     balloonLines->setPath(dLinePath);
     balloonShape->setPath(balloonPath);
 
-    const char *endType = balloon->EndType.getValueAsString();
+//    const char *endType = balloon->EndType.getValueAsString();
 
-    if (strcmp(endType, "Arrow") == 0) {
-        arrow->setStyle(QGIArrow::getPrefArrowStyle());
-    } else if (strcmp(endType, "Dot") == 0) {
-        arrow->setStyle(3);
-    }
+//    if (strcmp(endType, "FILLED_TRIANGLE") == 0) {
+//        arrow->setStyle(QGIArrow::getPrefArrowStyle());
+//    } else if (strcmp(endType, "DOT") == 0) {
+//        arrow->setStyle(3);
+//    }
+
+    int endType = balloon->EndType.getValue();
+    arrow->setStyle(endType);
 
     arrow->setSize(QGIArrow::getPrefArrowSize());
     arrow->draw();
@@ -753,6 +756,14 @@ QColor QGIViewBalloon::getNormalColor()
 
     m_colNormal = vp->Color.getValue().asValue<QColor>();
     return m_colNormal;
+}
+
+int QGIViewBalloon::prefDefaultArrow() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    int arrow = hGrp->GetInt("BalloonArrow", QGIArrow::getPrefArrowStyle());
+    return arrow;
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewBalloon.cpp>

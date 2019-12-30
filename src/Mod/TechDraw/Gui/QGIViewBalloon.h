@@ -137,11 +137,14 @@ public:
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = 0 ) override;
-    virtual QColor getNormalColor(void) override;
     QString getLabelText(void);
     void draw_modifier(bool modifier);
     void placeBalloon(QPointF pos);
     TechDraw::DrawViewBalloon *dvBalloon;
+
+    virtual QColor getNormalColor(void) override;
+    int prefDefaultArrow() const;
+
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
