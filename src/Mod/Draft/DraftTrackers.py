@@ -717,19 +717,19 @@ class editTracker(Tracker):
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValue((pos.x,pos.y,pos.z))
         if inactive:
-            selnode = coin.SoSeparator()
+            self.selnode = coin.SoSeparator()
         else:
-            selnode = coin.SoType.fromName("SoFCSelection").createInstance()
+            self.selnode = coin.SoType.fromName("SoFCSelection").createInstance()
             if name:
-                selnode.useNewSelection = False
-                selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
-                selnode.objectName.setValue(name)
-                selnode.subElementName.setValue("EditNode"+str(idx))
+                self.selnode.useNewSelection = False
+                self.selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
+                self.selnode.objectName.setValue(name)
+                self.selnode.subElementName.setValue("EditNode"+str(idx))
         node = coin.SoAnnotation()
-        selnode.addChild(self.coords)
-        selnode.addChild(self.color)
-        selnode.addChild(self.marker)
-        node.addChild(selnode)
+        self.selnode.addChild(self.coords)
+        self.selnode.addChild(self.color)
+        self.selnode.addChild(self.marker)
+        node.addChild(self.selnode)
         ontop = not inactive
         Tracker.__init__(self,children=[node],ontop=ontop,name="editTracker")
         self.on()
@@ -740,6 +740,15 @@ class editTracker(Tracker):
     def get(self):
         p = self.coords.point.getValues()[0]
         return Vector(p[0],p[1],p[2])
+
+    def getDocName(self):
+        return str(self.selnode.documentName.getValue())
+
+    def getObjName(self):
+        return str(self.selnode.objectName.getValue())
+
+    def getSubelementName(self):
+        return str(self.selnode.subElementName.getValue())
 
     def move(self,delta):
         self.set(self.get().add(delta))

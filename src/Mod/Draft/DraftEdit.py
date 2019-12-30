@@ -37,7 +37,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     import DraftTools
     from DraftTrackers import *
-    from PySide import QtCore
+    from PySide import QtCore, QtGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
     from DraftTools import translate
 
@@ -408,35 +408,39 @@ class Edit():
         """
         event = event_callback.getEvent()
         if (event.getState() == coin.SoMouseButtonEvent.DOWN and 
-            event.getButton() == event.BUTTON1):#left click
-            if self.ui.addButton.isChecked():
-                self.addPoint(event)
-                return
-            if self.ui.delButton.isChecked():
-                self.delPoint(event)
-                return
-            if Draft.getType(self.obj) == "BezCurve" and (self.ui.sharpButton.isChecked()
-                                    or self.ui.tangentButton.isChecked() or
-                                    self.ui.symmetricButton.isChecked()):
-                pos = event.getPosition()
-                node = self.getEditNode(pos)
-                ep = self.getEditNodeIndex(node)
-                if ep is None:
+            event.getButton() == event.BUTTON1
+            ):#left click
+            if not event.wasAltDown():
+                if self.ui.addButton.isChecked():
+                    self.addPoint(event)
                     return
-                doc = FreeCAD.getDocument(str(node.documentName.getValue()))
-                self.obj = doc.getObject(str(node.objectName.getValue()))
-                if self.obj is None:
+                if self.ui.delButton.isChecked():
+                    self.delPoint(event)
                     return
-                if self.ui.sharpButton.isChecked():
-                    return self.smoothBezPoint(self.obj, ep, 'Sharp')
-                elif self.ui.tangentButton.isChecked():
-                    return self.smoothBezPoint(self.obj, ep, 'Tangent')
-                elif self.ui.symmetricButton.isChecked():
-                    return self.smoothBezPoint(self.obj, ep, 'Symmetric')
-            if self.editing is None:
-                self.startEditing(event)
-            else:
-                self.endEditing(self.obj,self.editing, None)
+                if Draft.getType(self.obj) == "BezCurve" and (self.ui.sharpButton.isChecked()
+                                        or self.ui.tangentButton.isChecked() or
+                                        self.ui.symmetricButton.isChecked()):
+                    pos = event.getPosition()
+                    node = self.getEditNode(pos)
+                    ep = self.getEditNodeIndex(node)
+                    if ep is None:
+                        return
+                    doc = FreeCAD.getDocument(str(node.documentName.getValue()))
+                    self.obj = doc.getObject(str(node.objectName.getValue()))
+                    if self.obj is None:
+                        return
+                    if self.ui.sharpButton.isChecked():
+                        return self.smoothBezPoint(self.obj, ep, 'Sharp')
+                    elif self.ui.tangentButton.isChecked():
+                        return self.smoothBezPoint(self.obj, ep, 'Tangent')
+                    elif self.ui.symmetricButton.isChecked():
+                        return self.smoothBezPoint(self.obj, ep, 'Symmetric')
+                if self.editing is None:
+                    self.startEditing(event)
+                else:
+                    self.endEditing(self.obj,self.editing)
+            elif event.wasAltDown(): #left click with ctrl down
+                self.display_tracker_menu(event)
     
     def mouseMoved(self, event_callback):
         "mouse moved event handler, update tracker position and update preview ghost"
@@ -1686,6 +1690,56 @@ class Edit():
         self.trackers[self.obj.Name][1].set(self.pl.multVec(FreeCAD.Vector(self.obj.Length,0,0)))
         self.trackers[self.obj.Name][2].set(self.pl.multVec(FreeCAD.Vector(0,self.obj.Width,0)))
         self.trackers[self.obj.Name][3].set(self.pl.multVec(FreeCAD.Vector(0,0,self.obj.Height)))
+
+    #---------------------------------------------------------------------------
+    # Context menu
+    #---------------------------------------------------------------------------
+
+    def display_tracker_menu(self, event):
+        self.tracker_menu = QtGui.QMenu()
+        self.event = event
+        actions = None
+        if self.overNode:
+            doc = self.overNode.getDocName()
+            obj = FreeCAD.getDocument(doc).getObject(self.overNode.getObjName())
+            # ep = self.getEditNodeIndex(self.overNode) TODO: Fix it
+            if Draft.getType(obj) in ["Line", "Wire"]:
+                actions = ["delete point"]
+            elif Draft.getType(obj) in ["BezCurve"]:
+                actions = ["make sharp", "make tangent", "make symmetric"]
+            else:
+                return
+        else:
+            pos = self.event.getPosition()
+            selobjs = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+            if not selobjs:
+                return
+            for info in selobjs:
+                if not info:
+                    return
+                for o in self.objs:
+                    if o.Name == info["Object"]:
+                        actions = ["add point"]
+        if actions is None:
+            return
+        for a in actions:
+            self.tracker_menu.addAction(a)
+        self.tracker_menu.popup(FreeCADGui.getMainWindow().cursor().pos())
+        QtCore.QObject.connect(self.tracker_menu,QtCore.SIGNAL("triggered(QAction *)"),self.evaluate_menu_action)
+
+    def evaluate_menu_action(self,labelname):
+        action_label = str(labelname.text())
+        if action_label == "make sharp":
+            pass
+        elif action_label == "make tangent":
+            pass
+        elif action_label == "make symmetric":
+            pass
+        elif action_label == "delete point":
+            self.delPoint(self.event)
+        elif action_label == "add point":
+            self.addPoint(self.event)
+        del self.event
 
 
 
