@@ -507,7 +507,12 @@ class Edit():
         self.trackers[obj.Name][nodeIndex].on()
         FreeCADGui.Snapper.setSelectMode(True)
         if v is None:
+            # endEditing is called by mousePressed
             v = self.trackers[obj.Name][nodeIndex].get()
+        else:
+            # endEditing is called by numericInput, so tracker
+            # position should be updated manually
+            self.trackers[obj.Name][nodeIndex].set(v)
         self.update(obj, nodeIndex, v)
         self.ui.editUi(self.ui.lastMode)
         self.node = []
