@@ -94,7 +94,7 @@ public:
     void setTolTextUnder(QGCustomText* newTol) { m_tolTextOver = newTol; }
 
     double getTolAdjust(void);
-    bool hasHover;
+/*    bool hasHover;*/
 
     bool isFramed(void) { return m_isFramed; }
     void setFramed(bool framed) { m_isFramed = framed; }
@@ -160,6 +160,8 @@ public:
     void setPrettySel(void);
     void setPrettyNormal(void);
 
+    virtual void setGroupSelection(bool b) override;
+    virtual QGIDatumLabel* getDatumLabel(void) { return datumLabel; }
 
 public Q_SLOTS:
     void datumLabelDragged(bool ctrl);
@@ -243,7 +245,9 @@ protected:
     Base::Vector3d findIsoDir(Base::Vector3d ortho);
     Base::Vector3d findIsoExt(Base::Vector3d isoDir);
     QString getPrecision(void);
-    
+
+    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+
 protected:
     bool hasHover;
     QGIDatumLabel* datumLabel;                                         //dimension text
@@ -274,6 +278,8 @@ private:
     double getDefaultIsoReferenceLineOverhang() const;
     double getDefaultAsmeHorizontalLeaderLength() const;
     double getDefaultAsmeExtensionLineGap() const;
+
+/*    QGIView* m_parent;      //for edit dialog set up eventually*/
 
 };
 

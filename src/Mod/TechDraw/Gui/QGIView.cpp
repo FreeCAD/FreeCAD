@@ -158,6 +158,12 @@ bool QGIView::isVisible(void)
     return result;
 }
 
+//Set selection state for this and it's children
+void QGIView::setGroupSelection(bool b)
+{
+    setSelected(b);
+}
+
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {
     alignHash.clear();

@@ -1016,43 +1016,52 @@ void MDIViewPage::blockSelection(const bool state)
 //Set all QGIViews to unselected state
 void MDIViewPage::clearSceneSelection()
 {
-  blockSelection(true);
-  m_sceneSelected.clear();
+//    Base::Console().Message("MDIVP::clearSceneSelection()\n");
+    blockSelection(true);
+    m_sceneSelected.clear();
 
-  std::vector<QGIView *> views = m_view->getViews();
+    std::vector<QGIView *> views = m_view->getViews();
 
-  // Iterate through all views and unselect all
-  for (std::vector<QGIView *>::iterator it = views.begin(); it != views.end(); ++it) {
-      QGIView *item = *it;
-      bool state = item->isSelected();
-      if (state) {
-          item->setSelected(false);
-          item->updateView();
-      }
-  }
+    // Iterate through all views and unselect all
+    for (std::vector<QGIView *>::iterator it = views.begin(); it != views.end(); ++it) {
+        QGIView *item = *it;
+        bool state = item->isSelected();
 
-  blockSelection(false);
+        //handle oddballs
+        QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>(*it);
+        if (dim != nullptr) {
+            state = dim->getDatumLabel()->isSelected();
+        } else {
+            QGIViewBalloon* bal = dynamic_cast<QGIViewBalloon*>(*it);
+                if (bal != nullptr) {
+                    state = bal->getBalloonLabel()->isSelected();
+                }
+        }
+
+        if (state) {
+            item->setGroupSelection(false);
+            item->updateView();
+        }
+    }
+
+    blockSelection(false);
 }
 
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
 void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 {
 //    Base::Console().Message("MDIVP::selectQGIV(%s) - %d\n", obj->getNameInDocument(), isSelected);
-
-    App::DocumentObject* objCopy = obj;
-    TechDraw::DrawHatch* hatchObj = dynamic_cast<TechDraw::DrawHatch*>(objCopy);
-    if (hatchObj) {                                                    //Hatch does not have a QGIV of it's own. mark parent as selected.
-        objCopy = hatchObj->getSourceView();                           //possible to highlight subObject?
-    }
-    QGIView *view = m_view->findQViewForDocObj(objCopy);
+    QGIView *view = m_view->findQViewForDocObj(obj);
 
     blockSelection(true);
     if(view) {
         bool state = view->isSelected();
-        if (state != isSelected) {
+        if (!isSelected) {
+            view->setGroupSelection(false);
+        } else if (state != isSelected) {
             view->setSelected(isSelected);
-            view->updateView();
         }
+        view->updateView();
     }
     blockSelection(false);
 }
@@ -1074,15 +1083,16 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
             }
         }
         blockSelection(false);
-    } else {
-        bool selectState = (msg.Type == Gui::SelectionChanges::AddSelection) ? true : false;
+    } else if(msg.Type == Gui::SelectionChanges::AddSelection) {
         blockSelection(true);
         for (auto& so: selObjs){
             if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                selectQGIView(so.pObject, selectState);
+                selectQGIView(so.pObject, true);
             }
         }
         blockSelection(false);
+    } else {
+        Base::Console().Log("MDIVP::onSelectionChanged - unhandled: %d\n", msg.Type);
     }
 }
 
@@ -1290,12 +1300,6 @@ void MDIViewPage::setTreeToSceneSelect(void)
 //                    Base::Console().Message("MDIVP::setTreeToScene - mText has no parent Feature\n");
                     continue;
                 }
-//                if (!parentFeat->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
-//                    //mtext is parented to something other than Leader
-//                    //need special cases here?
-//                    Base::Console().Message("MDIVP::setTreeToScene - mText parentFeat is not LeaderLine\n");
-//                    continue;
-//                }
                 const char* name = parentFeat->getNameInDocument();
                 if (!name) {                                   //can happen during undo/redo if Dim is selected???
 //                    Base::Console().Message("INFO - MDIVP::sceneSelectionChanged - parentFeat name is null!\n");
