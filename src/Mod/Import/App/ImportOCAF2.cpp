@@ -432,25 +432,28 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
                 }else if(j!=0)
                     continue;
 
-                bool foundFaceColor=false,foundEdgeColor=false;
+                bool foundFaceColor = false;
+                bool checkSubFaceColor = false;
+                bool checkSubEdgeColor = false;
                 App::Color faceColor,edgeColor;
                 Quantity_Color aColor;
                 if(aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor) ||
                    aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))
                 {
+                    foundFaceColor = true;
                     faceColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
-                    foundFaceColor = faceColor!=info.faceColor;
+                    checkSubFaceColor = faceColor!=info.faceColor;
                 }
                 if(aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
                     edgeColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
-                    foundEdgeColor = edgeColor!=info.edgeColor;
+                    checkSubEdgeColor = edgeColor!=info.edgeColor;
                     if(j==0 && foundFaceColor && colors.faceColors.size() && edgeColor==faceColor) {
                         // Do not set edge the same color as face
-                        foundEdgeColor = false;
+                        checkSubEdgeColor = false;
                     }
                 }
 
-                if(foundFaceColor) {
+                if(checkSubFaceColor) {
                     for(TopExp_Explorer exp(subShape,TopAbs_FACE);exp.More();exp.Next()) {
                         int idx = colors.faceMap.FindIndex(exp.Current())-1;
                         if(idx>=0 && idx<(int)colors.faceColors.size()) {
@@ -460,7 +463,7 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
                         }
                     }
                 }
-                if(foundEdgeColor) {
+                if(checkSubEdgeColor) {
                     for(TopExp_Explorer exp(subShape,TopAbs_EDGE);exp.More();exp.Next()) {
                         int idx = colors.edgeMap.FindIndex(exp.Current())-1;
                         if(idx>=0 && idx<(int)colors.edgeColors.size()) {
