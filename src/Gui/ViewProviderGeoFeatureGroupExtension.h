@@ -71,7 +71,7 @@ public:
 
     static bool needUpdateChildren(App::DocumentObject *obj);
 
-    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/);
+    virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) override;
 
 protected:
     void buildExport() const;
