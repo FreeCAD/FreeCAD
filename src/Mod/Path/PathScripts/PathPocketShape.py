@@ -43,13 +43,8 @@ __created__ = "2017"
 __scriptVersion__ = "2i usable"
 __lastModified__ = "2019-09-07 08:32 CST"
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 
 # Qt translation handling
@@ -122,6 +117,7 @@ class Extension(object):
     DirectionY      = 2
 
     def __init__(self, obj, feature, sub, length, direction):
+        PathLog.debug("Extension(%s, %s, %s, %.2f, %s" % (obj.Label, feature, sub, length, direction))
         self.obj = obj
         self.feature = feature
         self.sub = sub
@@ -149,8 +145,11 @@ class Extension(object):
 
     def _getEdgeNumbers(self):
         if 'Wire' in self.sub:
-            return [nr for nr in self.sub[5:-1].split(',')]
-        return [self.sub[4:]]
+            numbers = [nr for nr in self.sub[5:-1].split(',')]
+        else:
+            numbers = [self.sub[4:]]
+        PathLog.debug("_getEdgeNumbers() -> %s" % numbers)
+        return numbers
 
     def _getEdgeNames(self):
         return ["Edge%s" % nr for nr in self._getEdgeNumbers()]
@@ -180,13 +179,15 @@ class Extension(object):
     def getWire(self):
         PathLog.track()
         if PathGeom.isRoughly(0, self.length.Value) or not self.sub:
+            PathLog.debug("no extension, length=%.2f, sub=%s" % (self.length.Value, self.sub))
             return None
 
         feature = self.obj.Shape.getElement(self.feature)
         edges = self._getEdges()
-        sub = Part.Wire(edges)
+        sub = Part.Wire(Part.sortEdges(edges)[0])
 
         if 1 == len(edges):
+            PathLog.debug("Extending single edge wire")
             edge = edges[0]
             if Part.Circle == type(edge.Curve) and not endPoints(edge):
                 circle = edge.Curve
