@@ -138,8 +138,48 @@ ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
     return p;
 }
 
+static std::vector<Property*> _RemovedProps;
+static int _PropCleanerCounter;
+
+struct PropertyCleaner {
+    PropertyCleaner(Property *p)
+        : prop(p)
+    {
+        ++_PropCleanerCounter;
+    }
+    ~PropertyCleaner() {
+        if(--_PropCleanerCounter)
+            return;
+        bool found = false;
+        while(_RemovedProps.size()) {
+            auto p = _RemovedProps.back();
+            _RemovedProps.pop_back();
+            if(p != prop)
+                delete p;
+            else
+                found = true;
+        }
+        if(found)
+            _RemovedProps.push_back(prop);
+    }
+
+    Property *prop;
+};
+
+void Property::destroy(Property *p) {
+    if(p) {
+        // Is it necessary to nullify the container? May cause crash if any
+        // onChanged() caller assumes a non-null container.
+        //
+        // p->setContainer(0);
+
+        _RemovedProps.push_back(p);
+    }
+}
+
 void Property::touch()
 {
+    PropertyCleaner guard(this);
     if (father)
         father->onChanged(this);
     StatusBits.set(Touched);
@@ -152,6 +192,7 @@ void Property::setReadOnly(bool readOnly)
 
 void Property::hasSetValue(void)
 {
+    PropertyCleaner guard(this);
     if (father)
         father->onChanged(this);
     StatusBits.set(Touched);
