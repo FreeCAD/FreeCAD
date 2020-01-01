@@ -66,7 +66,8 @@ class DressupPathBoundary(object):
     def onDelete(self, obj, args):
         if obj.Base:
             job = PathUtils.findParentJob(obj)
-            job.Proxy.addOperation(obj.Base, obj)
+            if job:
+                job.Proxy.addOperation(obj.Base, obj)
             if obj.Base.ViewObject:
                 obj.Base.ViewObject.Visibility = True
             obj.Base = None

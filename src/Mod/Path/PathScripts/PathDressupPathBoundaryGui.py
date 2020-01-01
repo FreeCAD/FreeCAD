@@ -191,7 +191,8 @@ class DressupPathBoundaryViewProvider(object):
         return [self.obj.Base, self.obj.Stock]
 
     def onDelete(self, vobj, args=None):
-        vobj.Object.Proxy.onDelete(vobj.Object, args)
+        if vobj.Object and vobj.Object.Proxy:
+            vobj.Object.Proxy.onDelete(vobj.Object, args)
         return True
 
     def setEdit(self, vobj, mode=0):
