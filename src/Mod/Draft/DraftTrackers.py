@@ -741,17 +741,17 @@ class editTracker(Tracker):
         p = self.coords.point.getValues()[0]
         return Vector(p[0],p[1],p[2])
 
-    def getDocName(self):
+    def get_doc_name(self):
         return str(self.selnode.documentName.getValue())
 
-    def getObjName(self):
+    def get_obj_name(self):
         return str(self.selnode.objectName.getValue())
 
-    def getSubelementName(self):
+    def get_subelement_name(self):
         return str(self.selnode.subElementName.getValue())
-        
-    def getSubelementIndex(self):
-        subElement = self.getSubelementName()
+
+    def get_subelement_index(self):
+        subElement = self.get_subelement_name()
         idx = int(subElement[8:])
         return idx
 
