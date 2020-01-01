@@ -1008,7 +1008,7 @@ bool Document::redo(int id)
 
 void Document::addOrRemovePropertyOfObject(TransactionalObject* obj, Property *prop, bool add)
 {
-    if (!prop || !obj) 
+    if (!prop || !obj || !obj->isAttachedToDocument()) 
         return;
     if(d->iUndoMode && !isPerformingTransaction() && !d->activeUndoTransaction) {
         if(!testStatus(Restoring) || testStatus(Importing)) {

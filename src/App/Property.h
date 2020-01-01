@@ -106,6 +106,9 @@ public:
     Property();
     virtual ~Property();
 
+    /// For safe deleting of a dynamic property
+    static void destroy(Property *p);
+
     /** This method is used to get the size of objects
      * It is not meant to have the exact size, it is more or less an estimation
      * which runs fast! Is it two bytes or a GB?
