@@ -176,7 +176,6 @@ protected:
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
     virtual void initialize();
-    QString pythonIdentifier(const App::Property*) const;
 
     //gets called when the bound expression is changed
     virtual void onChange();
