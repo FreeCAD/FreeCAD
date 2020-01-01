@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QCoreApplication>
 # include <QStatusBar>
+# include <QEvent>
 #endif
 
 #include "Command.h"
@@ -362,6 +363,24 @@ Action * StdCmdToolBarMenu::createAction(void)
 // Std_ViewStatusBar
 //===========================================================================
 
+class FilterStatusBar : public QObject
+{
+//    Q_OBJECT
+    
+public:
+    FilterStatusBar(Action * action):QObject() {this->action = action;}
+//    virtual ~FilterStatusBar() {}
+protected:
+    Action * action;
+    bool eventFilter(QObject *obj, QEvent *event)
+    {
+        if (getMainWindow()->findChild<QStatusBar *>() != nullptr && obj == getMainWindow()->statusBar() && ((event->type() == QEvent::Hide) || (event->type() == QEvent::Show))) {
+            this->action->setChecked(getMainWindow()->statusBar()->isVisible());
+        }
+        return false;
+    }
+};
+
 DEF_STD_CMD_AC(StdCmdStatusBar)
 
 StdCmdStatusBar::StdCmdStatusBar()
@@ -380,7 +399,9 @@ Action * StdCmdStatusBar::createAction(void)
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
     pcAction->setChecked(true);
-
+    FilterStatusBar *fsb = new FilterStatusBar(pcAction);
+    getMainWindow()->statusBar()->installEventFilter(fsb);
+    
     return pcAction;
 }
 
@@ -480,5 +501,3 @@ void CreateWindowStdCommands(void)
 }
 
 } // namespace Gui
-
-
