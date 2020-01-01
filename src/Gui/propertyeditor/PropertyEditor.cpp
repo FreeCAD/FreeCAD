@@ -507,6 +507,7 @@ enum MenuAction {
     MA_Hidden,
     MA_Touched,
     MA_EvalOnRestore,
+    MA_CopyOnChange,
 };
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
@@ -612,6 +613,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             ACTION_SETUP(Transient);
             _ACTION_SETUP(Touched);
             _ACTION_SETUP(EvalOnRestore);
+            _ACTION_SETUP(CopyOnChange);
         }
     }
 
@@ -638,6 +640,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     ACTION_CHECK(Output);
     ACTION_CHECK(Hidden);
     ACTION_CHECK(EvalOnRestore);
+    ACTION_CHECK(CopyOnChange);
     case MA_Touched:
         for(auto prop : props) {
             if(action->isChecked())
