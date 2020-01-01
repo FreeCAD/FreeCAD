@@ -81,6 +81,7 @@ public:
         EvalOnRestore = 14, // In case of expression binding, evaluate the
                             // expression on restore and touch the object on value change.
         Busy = 15, // internal use to avoid recursive signaling
+        CopyOnChange = 16, // for Link to copy the linked object on change of the property with this flag
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be

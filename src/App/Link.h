@@ -95,6 +95,14 @@ public:
     (LinkTransform, bool, App::PropertyBool, false, \
       "Set to false to override linked object's placement", ##__VA_ARGS__)
 
+#define LINK_PARAM_COPY_ON_CHANGE(...) \
+    (LinkCopyOnChange, long, App::PropertyEnumeration, ((long)0), \
+      "Disabled: disable copy on change\n"\
+      "Enabled: enable copy linked object on change of any of its propert marked as CopyOnChange\n"\
+      "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"\
+      "       the link will try to sync any change of the original linked object back to the copy.",\
+      ##__VA_ARGS__)
+
 #define LINK_PARAM_SCALE(...) \
     (Scale, double, App::PropertyFloat, 1.0, "Scale factor", ##__VA_ARGS__)
 
@@ -155,7 +163,8 @@ public:
     LINK_PARAM(ELEMENTS)\
     LINK_PARAM(SHOW_ELEMENT)\
     LINK_PARAM(MODE)\
-    LINK_PARAM(COLORED_ELEMENTS)
+    LINK_PARAM(COLORED_ELEMENTS)\
+    LINK_PARAM(COPY_ON_CHANGE)\
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -287,11 +296,18 @@ public:
 
     void cacheChildLabel(int enable=-1) const;
 
+    static bool setupCopyOnChange(App::DocumentObject *obj, App::DocumentObject *linked,
+            std::vector<boost::signals2::scoped_connection> *copyOnChangeConns, bool checkExisting);
+
+    static bool isCopyOnChangeProperty(App::DocumentObject *obj, const Property &prop);
+
 protected:
     void _handleChangedPropertyName(Base::XMLReader &reader, 
             const char * TypeName, const char *PropName);
     void parseSubName() const;
     void update(App::DocumentObject *parent, const Property *prop);
+    void checkCopyOnChange(App::DocumentObject *parent, const App::Property &prop);
+    void setupCopyOnChange(App::DocumentObject *parent);
     void syncElementList();
     void detachElement(App::DocumentObject *obj);
     void checkGeoElementMap(const App::DocumentObject *obj, 
@@ -312,8 +328,10 @@ protected:
 
     mutable std::unordered_map<std::string,int> myLabelCache; // for label based subname lookup
     mutable bool enableLabelCache;
-
     bool hasOldSubElement;
+
+    std::vector<boost::signals2::scoped_connection> copyOnChangeConns;
+    bool hasCopyOnChange;
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -447,6 +465,7 @@ public:
     LINK_PARAM_EXT(SHOW_ELEMENT)\
     LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)
 
@@ -486,6 +505,7 @@ public:
     LINK_PARAM_EXT(TRANSFORM) \
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
+    LINK_PARAM_EXT(COPY_ON_CHANGE)\
 
     // defines the actual properties
     LINK_PROPS_DEFINE(LINK_PARAMS_ELEMENT)
