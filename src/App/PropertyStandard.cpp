@@ -211,7 +211,7 @@ void PropertyPath::setValue(const char * Path)
     hasSetValue();
 }
 
-boost::filesystem::path PropertyPath::getValue(void) const
+const boost::filesystem::path &PropertyPath::getValue(void) const
 {
     return _cValue;
 }
@@ -368,7 +368,7 @@ const char * PropertyEnumeration::getValueAsString(void) const
     return _enum.getCStr();
 }
 
-Enumeration PropertyEnumeration::getEnum(void) const
+const Enumeration &PropertyEnumeration::getEnum(void) const
 {
     return _enum;
 }

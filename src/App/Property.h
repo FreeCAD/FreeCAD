@@ -239,6 +239,9 @@ public:
     /// Called before a child property changing value
     virtual void aboutToSetChildValue(Property &) {}
 
+    /// Compare if this property has the same content as the given one
+    virtual bool isSame(const Property &other) const;
+
     friend class PropertyContainer;
     friend struct PropertyData;
     friend class DynamicProperty;
@@ -495,6 +498,11 @@ public:
     const ListT &getValue(void) const{return getValues();}
 
     const_reference operator[] (int idx) const {return _lValueList[idx];} 
+
+    virtual bool isSame(const Property &other) const override {
+        return this->getTypeId() == other.getTypeId()
+            && this->getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
 
     virtual void setPyObject(PyObject *value) override {
         try {
