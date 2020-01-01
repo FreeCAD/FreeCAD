@@ -3897,8 +3897,11 @@ void PropertyLinkItem::setValue(const QVariant& value)
                 doc = items[FC_XLINK_VALUE_INDEX+1];
             else
                 doc = d;
-            data = QString::fromLatin1("(App.getDocument('%1').getObject('%2'),'%3')").
-                    arg(doc,o,items[FC_XLINK_VALUE_INDEX]);
+            if(items[FC_XLINK_VALUE_INDEX].size()) {
+                data = QString::fromLatin1("(App.getDocument('%1').getObject('%2'),'%3')").
+                        arg(doc,o,items[FC_XLINK_VALUE_INDEX]);
+            } else
+                data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(doc,o);
         }else
             data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d,o);
         setPropertyValue(data);
