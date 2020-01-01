@@ -207,7 +207,7 @@ void PropertyPath::setValue(const char * Path)
     hasSetValue();
 }
 
-boost::filesystem::path PropertyPath::getValue() const
+const boost::filesystem::path &PropertyPath::getValue(void) const
 {
     return _cValue;
 }

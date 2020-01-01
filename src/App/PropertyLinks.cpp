@@ -84,6 +84,27 @@ void PropertyLinkBase::hasSetValue() {
     Property::hasSetValue();
 }
 
+bool PropertyLinkBase::isSame(const Property &other) const
+{
+    if(other.isDerivedFrom(PropertyLinkBase::getClassTypeId())
+        || getScope() != static_cast<const PropertyLinkBase*>(&other)->getScope())
+        return false;
+
+    static std::vector<App::DocumentObject*> ret;
+    static std::vector<std::string> subs;
+    static std::vector<App::DocumentObject*> ret2;
+    static std::vector<std::string> subs2;
+
+    ret.clear();
+    subs.clear();
+    ret2.clear();
+    subs2.clear();
+    getLinks(ret,true,&subs,false);
+    static_cast<const PropertyLinkBase *>(&other)->getLinks(ret2,true,&subs2,true);
+
+    return ret==ret2 && subs==subs2;
+}
+
 void PropertyLinkBase::unregisterElementReference() {
 }
 
