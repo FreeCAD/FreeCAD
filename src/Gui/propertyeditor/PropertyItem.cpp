@@ -395,38 +395,6 @@ void PropertyItem::setValue(const QVariant& /*value*/)
 {
 }
 
-QString PropertyItem::pythonIdentifier(const App::Property* prop) const
-{
-    App::PropertyContainer* parent = prop->getContainer();
-    QString propPrefix = QString::fromLatin1(parent->getPropertyPrefix());
-    if (parent->getTypeId() == App::Document::getClassTypeId()) {
-        App::Document* doc = static_cast<App::Document*>(parent);
-        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
-        QString propName = QString::fromLatin1(prop->getName());
-        return QString::fromLatin1("FreeCAD.getDocument(\"%1\").%3%2").arg(docName).arg(propName).arg(propPrefix);
-    }
-    if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
-        App::Document* doc = obj->getDocument();
-        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
-        QString objName = QString::fromLatin1(obj->getNameInDocument());
-        QString propName = QString::fromLatin1(prop->getName());
-        return QString::fromLatin1("FreeCAD.getDocument(\"%1\").getObject(\"%2\").%4%3")
-            .arg(docName,objName,propName,propPrefix);
-    }
-    auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(parent);
-    if (vp) {
-        App::DocumentObject* obj = vp->getObject();
-        App::Document* doc = obj->getDocument();
-        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
-        QString objName = QString::fromLatin1(obj->getNameInDocument());
-        QString propName = QString::fromLatin1(prop->getName());
-        return QString::fromLatin1("FreeCADGui.getDocument(\"%1\").getObject(\"%2\").%4%3")
-            .arg(docName,objName,propName,propPrefix);
-    }
-    return QString();
-}
-
 QWidget* PropertyItem::createEditor(QWidget* /*parent*/, const QObject* /*receiver*/, const char* /*method*/) const
 {
     return 0;
@@ -502,25 +470,52 @@ void PropertyItem::setPropertyName(const QString& name)
 
 void PropertyItem::setPropertyValue(const QString& value)
 {
+    // Construct command for property assignment in one go, in case of any
+    // intermediate changes caused by property change that may potentially
+    // invalidate the current property array.
+    std::ostringstream ss;
     for (std::vector<App::Property*>::const_iterator it = propertyItems.begin();
-        it != propertyItems.end(); ++it) {
-        App::PropertyContainer* parent = (*it)->getContainer();
-        if (parent && !parent->isReadOnly(*it) && !(*it)->testStatus(App::Property::ReadOnly)) {
-            QString cmd = QString::fromLatin1("%1 = %2").arg(pythonIdentifier(*it), value);
-            try {
-                Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
-            }
-            catch (Base::PyException &e) {
-                e.ReportException();
-                Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
-            }
-            catch (Base::Exception &e) {
-                e.ReportException();
-            }
-            catch (...) {
-                Base::Console().Error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
-            }
-        }
+        it != propertyItems.end(); ++it) 
+    {
+        auto prop = *it;
+        App::PropertyContainer* parent = prop->getContainer();
+        if (!parent || parent->isReadOnly(prop) || prop->testStatus(App::Property::ReadOnly))
+            continue;
+        if (parent->isDerivedFrom(App::Document::getClassTypeId())) {
+            App::Document* doc = static_cast<App::Document*>(parent);
+            ss << "FreeCAD.getDocument('" << doc->getName() << "').";
+        } else if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+            App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
+            App::Document* doc = obj->getDocument();
+            ss << "FreeCAD.getDocument('" << doc->getName() << "').getObject('" 
+               << obj->getNameInDocument() << "').";
+        } else if (parent->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+            App::DocumentObject* obj = static_cast<ViewProviderDocumentObject*>(parent)->getObject();
+            App::Document* doc = obj->getDocument();
+            ss << "FreeCADGui.getDocument('" << doc->getName() << "').getObject('" 
+               << obj->getNameInDocument() << "').";
+        } else
+            continue;
+        ss << parent->getPropertyPrefix() << prop->getName()
+           << " = " << value.toLatin1().constData() << '\n';
+    }
+
+    std::string cmd = ss.str();
+    if(cmd.empty())
+        return;
+
+    try {
+        Gui::Command::runCommand(Gui::Command::App, cmd.c_str());
+    }
+    catch (Base::PyException &e) {
+        e.ReportException();
+        Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
+    }
+    catch (Base::Exception &e) {
+        e.ReportException();
+    }
+    catch (...) {
+        Base::Console().Error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
     }
 }
 
