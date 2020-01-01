@@ -93,8 +93,8 @@ public:
      * Retrieve what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and
      * all Childs or to all objects within the Glocal scope.
      */
-    LinkScope getScope() {return _pcScope;};
-
+    LinkScope getScope() const {return _pcScope;};
+    
 protected:
     LinkScope _pcScope = LinkScope::Local;
 };
@@ -287,6 +287,8 @@ public:
         return ret;
     }
     //@}
+
+    virtual bool isSame(const Property &other) const override;
 
     /** Enable/disable temporary holding external object without throwing exception
      *
