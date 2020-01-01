@@ -215,7 +215,7 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
             throw Base::RuntimeError("property is not dynamic");
         Property *prop = it->property;
         GetApplication().signalRemoveDynamicProperty(*prop);
-        delete prop;
+        Property::destroy(prop);
         index.erase(it);
         return true;
     }
