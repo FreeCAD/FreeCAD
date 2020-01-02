@@ -49,7 +49,6 @@
 
 #include <Mod/TechDraw/App/LineGroup.h>
 
-#include "TaskReference.h"
 #include "ViewProviderGDTReference.h"
 
 using namespace TechDrawGui;
