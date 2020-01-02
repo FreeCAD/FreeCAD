@@ -170,6 +170,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
     //    - Hatches
     //    - GeomHatches
     //    - Leaders
+	//    - GDTReference
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
