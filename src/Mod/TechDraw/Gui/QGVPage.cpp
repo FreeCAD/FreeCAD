@@ -664,6 +664,24 @@ QGIView * QGVPage::findParent(QGIView *view) const
         }
     }
 
+    //If type is gdtreference we check references first
+    TechDraw::DrawViewGDTReference *ref = 0;
+    ref = dynamic_cast<TechDraw::DrawViewGDTReference *>(myFeat);
+
+    if(ref) {
+    	std::vector<App::DocumentObject *> objs = ref->References2D.getValues();
+
+        if(objs.size() > 0) {
+        	std::vector<App::DocumentObject *> objs = ref->References2D.getValues();
+        	// Attach the dimension to the first object's group
+        	for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+        		if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
+        			return *it;
+        		}
+        	}
+        }
+    }
+
     //If type is balloon we check references first
     TechDraw::DrawViewBalloon *balloon = 0;
     balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myFeat);
