@@ -167,8 +167,8 @@ void ViewProviderGDTReference::onChanged(const App::Property* p)
 }
 
 
-//TechDraw::DrawViewReference* ViewProviderReference::getViewObject() const
-//{
-//    return dynamic_cast<TechDraw::DrawViewReference*>(pcObject);
-//}
+TechDraw::DrawViewGDTReference* ViewProviderGDTReference::getViewObject() const
+{
+    return dynamic_cast<TechDraw::DrawViewGDTReference*>(pcObject);
+}
 
