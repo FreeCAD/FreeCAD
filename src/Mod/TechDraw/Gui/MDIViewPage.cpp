@@ -78,6 +78,7 @@
 #include <Mod/TechDraw/App/DrawViewCollection.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewGDTReference.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
@@ -95,6 +96,7 @@
 #include "QGIViewPart.h"
 #include "QGIViewDimension.h"
 #include "QGIViewBalloon.h"
+#include "QGIViewGDTReference.h"
 #include "QGIViewClip.h"
 #include "QGIVertex.h"
 #include "QGIEdge.h"
@@ -358,6 +360,9 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()) ) {
         qview = m_view->addViewBalloon( static_cast<TechDraw::DrawViewBalloon *>(obj) );
+
+    } else if (typeId.isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId()) ) {
+        qview = m_view->addViewGDTReference( static_cast<TechDraw::DrawViewGDTReference *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()) ) {
         qview = m_view->addDrawViewAnnotation( static_cast<TechDraw::DrawViewAnnotation *>(obj) );
