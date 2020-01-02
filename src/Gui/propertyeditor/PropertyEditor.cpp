@@ -473,21 +473,36 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     auto contextIndex = currentIndex();
 
     std::unordered_set<App::Property*> props;
-
-    if(PropertyView::showAll()) {
-        for(auto index : selectedIndexes()) {
-            auto item = static_cast<PropertyItem*>(index.internalPointer());
-            if(item->isSeparator())
-                continue;
-            for(auto parent=item;parent;parent=parent->parent()) {
-                const auto &ps = parent->getPropertyData();
-                if(ps.size()) {
-                    props.insert(ps.begin(),ps.end());
-                    break;
-                }
+    for(auto index : selectedIndexes()) {
+        auto item = static_cast<PropertyItem*>(index.internalPointer());
+        if(item->isSeparator())
+            continue;
+        for(auto parent=item;parent;parent=parent->parent()) {
+            const auto &ps = parent->getPropertyData();
+            if(ps.size()) {
+                props.insert(ps.begin(),ps.end());
+                break;
             }
         }
+    }
 
+    if(props.size() == 1) {
+        auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
+        auto prop = *props.begin();
+        if(item->isBound() 
+            && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
+            && !prop->isReadOnly() 
+            && !prop->testStatus(App::Property::Immutable)
+            && !(prop->getType() & App::Prop_ReadOnly))
+        {
+            contextIndex = propertyModel->buddy(contextIndex);
+            setCurrentIndex(contextIndex);
+            menu.addSeparator();
+            menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
+        }
+    }
+
+    if(PropertyView::showAll()) {
         if(props.size()) {
             menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
             unsigned count = 0;
@@ -517,21 +532,6 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         }
         if(canRemove)
             menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
-
-        if(props.size() == 1) {
-            auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
-            auto prop = *props.begin();
-            if(item->isBound() 
-                && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
-                && !prop->isReadOnly() 
-                && !(prop->getType() & App::Prop_ReadOnly))
-            {
-                contextIndex = propertyModel->buddy(contextIndex);
-                setCurrentIndex(contextIndex);
-                menu.addSeparator();
-                menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
-            }
-        }
 
         if(props.size()) {
             menu.addSeparator();
