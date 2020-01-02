@@ -74,7 +74,7 @@ public:
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
-        return "TechDrawGui::ViewProviderReference";
+        return "TechDrawGui::ViewProviderGDTReference";
     }
 
 protected:
