@@ -55,6 +55,7 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewGDTReference.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
@@ -282,6 +283,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     // for Page, valid children are any View except: DrawProjGroupItem
     //                                               DrawViewDimension
     //                                               DrawViewBalloon
+    //												 DrawViewGDTReference
     //                                               DrawLeaderLine
     //                                               DrawRichAnno 
     //                                               any FeatuerView in a DrawViewClip
@@ -313,6 +315,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
              docObj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())         ||
              docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())       ||
              docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())       ||
+			 docObj->isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId()) ||
              (featView && featView->isInClip()) )
               continue;
           else
