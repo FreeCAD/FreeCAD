@@ -62,7 +62,7 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
-//TODO GDT #include <Mod/TechDraw/App/DrawViewGDTReference.h>
+#include <Mod/TechDraw/App/DrawViewGDTReference.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
