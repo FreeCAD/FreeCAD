@@ -2753,12 +2753,18 @@ void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVi
     if(!addr.isValid() || (addr.isAbsoluteCol() && addr.isAbsoluteRow()))
         return;
 
-    v.aboutToChange();
     if(!addr.isAbsoluteCol())
         addr.setCol(addr.col()+colOffset);
     if(!addr.isAbsoluteRow())
         addr.setRow(addr.row()+rowOffset);
-    var.setComponent(idx,ObjectIdentifier::SimpleComponent(addr.toString()));
+    if(!addr.isValid()) {
+        FC_WARN("Not changing relative cell reference '"
+                << comp.getName() << "' due to invalid offset "
+                << '(' << colOffset << ", " << rowOffset << ')');
+    } else {
+        v.aboutToChange();
+        var.setComponent(idx,ObjectIdentifier::SimpleComponent(addr.toString()));
+    }
 }
 
 void VariableExpression::setPath(const ObjectIdentifier &path)
