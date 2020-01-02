@@ -193,6 +193,7 @@ void MDIViewPage::addChildrenToPage(void)
     setDimensionGroups();
     setBalloonGroups();
     setLeaderGroups();
+    setGDTReferenceGroups();
 
     App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
@@ -245,6 +246,23 @@ void MDIViewPage::setBalloonGroups(void)
             if (parent) {
                 QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>((*itInspect));
                 m_view->addBalloonToParent(balloon,parent);
+            }
+        }
+    }
+}
+
+void MDIViewPage::setGDTReferenceGroups(void)
+{
+    const std::vector<QGIView *> &allItems = m_view->getViews();
+    std::vector<QGIView *>::const_iterator itInspect;
+    int referenceItemType = QGraphicsItem::UserType + 145;
+
+    for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
+        if (((*itInspect)->type() == referenceItemType) && (!(*itInspect)->group())) {
+            QGIView* parent = m_view->findParent((*itInspect));
+            if (parent) {
+                QGIViewGDTReference* ref = dynamic_cast<QGIViewGDTReference*>((*itInspect));
+                m_view->addGDTReferenceToParent(ref,parent);
             }
         }
     }
