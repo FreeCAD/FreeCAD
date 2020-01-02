@@ -50,6 +50,7 @@
 #include "DrawViewPart.h"
 #include "DrawViewDimension.h"
 #include "DrawViewBalloon.h"
+#include "DrawViewGDTReference.h"
 #include "DrawLeaderLine.h"
 
 #include <Mod/TechDraw/App/DrawPagePy.h>  // generated from DrawPagePy.xml
