@@ -209,7 +209,8 @@ def convertToDxf(dwgfilename):
         outdir = tempfile.mkdtemp()
         basename = os.path.basename(dwgfilename)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
-        subprocess.call(("dwg2dxf", dwgfilename, "-o", result))
+        proc = subprocess.Popen(("dwg2dxf", dwgfilename, "-o", result))
+        proc.communicate()
         return result
     ############################ end libredwg
 
@@ -263,8 +264,8 @@ def convertToDwg(dxffilename, dwgfilename):
     ############################ try libredwg
     import shutil
     if shutil.which("dxf2dwg"):
-        subprocess.Popen(("dxf2dwg", dxffilename, "-o", dwgfilename))
-        subprocess.communicate()
+        proc = subprocess.Popen(("dxf2dwg", dxffilename, "-o", dwgfilename))
+        proc.communicate()
         return dwgfilename
     ############################ end libredwg
 
