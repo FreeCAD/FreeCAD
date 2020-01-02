@@ -871,11 +871,17 @@ void CmdTechDrawGDTReference::activated(int iMsg)
     if( objFeat == nullptr ) {
         return;
     }
+    std::vector<std::string> subNames = selection[0].getSubNames();
+
+    std::vector<App::DocumentObject *> objs;
+    std::vector<std::string> subs;
 
     std::string referenceType;
     int edgeType = _isValidSingleEdgeUtil(this);
     if(edgeType == isHorizontal || edgeType == isVertical || edgeType == isDiagonal){
     	referenceType = "Edge";
+    	objs.push_back(objFeat);
+    	subs.push_back(subNames[0]);
     }else{
     	QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
     			QObject::tr("Only horizontal, vertical and diagonal edge allowed."));
@@ -886,9 +892,18 @@ void CmdTechDrawGDTReference::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
+    TechDraw::DrawViewGDTReference *ref = 0;
+
     openCommand("Create GDT Reference");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewGDTReference','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(),referenceType.c_str());
+
+    ref = dynamic_cast<TechDraw::DrawViewGDTReference *>(getDocument()->getObject(FeatName.c_str()));
+    if (!ref) {
+    	throw Base::TypeError("CmdTechDrawGDTReference - ref not found\n");
+    }
+    ref->References2D.setValues(objs, subs);
+
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     updateActive();
     commitCommand();
