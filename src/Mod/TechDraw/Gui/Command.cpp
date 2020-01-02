@@ -83,6 +83,20 @@
 using namespace TechDrawGui;
 using namespace std;
 
+//TODO merge with CommandCreateDims
+enum EdgeTypeUtil{
+        isInvalid,
+        isHorizontal,
+        isVertical,
+        isDiagonal,
+        isCircle,
+        isEllipse,
+        isBSplineCircle,
+        isBSpline,
+        isAngle,
+        isAngle3Pt
+    };
+
 
 //===========================================================================
 // TechDraw_PageDefault
@@ -787,6 +801,61 @@ CmdTechDrawGDTReference::CmdTechDrawGDTReference()
     sPixmap         = "TechDraw_GDT_Reference";
 }
 
+//! verify that Selection contains a valid Geometry for a single Edge Dimension
+int _isValidSingleEdgeUtil(Gui::Command* cmd) {
+    auto edgeType( isInvalid );
+    auto selection( cmd->getSelection().getSelectionEx() );
+
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( objFeat == nullptr ) {
+        return isInvalid;
+    }
+
+    const std::vector<std::string> SubNames = selection[0].getSubNames();
+    if (SubNames.size() == 1) {                                                 //only 1 subshape selected
+        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
+            int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
+            TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
+            if (!geom) {
+                Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
+                return isInvalid;
+            }
+
+            if(geom->geomType == TechDraw::GENERIC) {
+                TechDraw::Generic* gen1 = static_cast<TechDraw::Generic *>(geom);
+                if(gen1->points.size() > 2) {                                   //the edge is a polyline
+                    return isInvalid;
+                }
+                Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
+                if(fabs(line.y) < FLT_EPSILON ) {
+                    edgeType = isHorizontal;
+                } else if(fabs(line.x) < FLT_EPSILON) {
+                    edgeType = isVertical;
+                } else {
+                    edgeType = isDiagonal;
+                }
+            } else if (geom->geomType == TechDraw::CIRCLE ||
+                       geom->geomType == TechDraw::ARCOFCIRCLE ) {
+                edgeType = isCircle;
+            } else if (geom->geomType == TechDraw::ELLIPSE ||
+                       geom->geomType == TechDraw::ARCOFELLIPSE) {
+                edgeType = isEllipse;
+            } else if (geom->geomType == TechDraw::BSPLINE) {
+                TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*>(geom);
+                if (spline->isCircle()) {
+                    edgeType = isBSplineCircle;
+                } else {
+                    edgeType = isBSpline;
+                }
+            } else {
+                edgeType = isInvalid;
+            }
+        }
+    }
+    return edgeType;
+}
+
+
 void CmdTechDrawGDTReference::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -802,9 +871,43 @@ void CmdTechDrawGDTReference::activated(int iMsg)
     if( objFeat == nullptr ) {
         return;
     }
+    std::vector<std::string> subNames = selection[0].getSubNames();
 
+    std::vector<App::DocumentObject *> objs;
+    std::vector<std::string> subs;
+
+    std::string referenceType;
+    int edgeType = _isValidSingleEdgeUtil(this);
+    if(edgeType == isHorizontal || edgeType == isVertical || edgeType == isDiagonal){
+    	referenceType = "Edge";
+    	objs.push_back(objFeat);
+    	subs.push_back(subNames[0]);
+    }else{
+    	QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+    			QObject::tr("Only horizontal, vertical and diagonal edge allowed."));
+    	return;
+    }
+
+    std::string FeatName = getUniqueObjectName("GDTReference");
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
+
+    TechDraw::DrawViewGDTReference *ref = 0;
+
+    openCommand("Create GDT Reference");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewGDTReference','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(),referenceType.c_str());
+
+    ref = dynamic_cast<TechDraw::DrawViewGDTReference *>(getDocument()->getObject(FeatName.c_str()));
+    if (!ref) {
+    	throw Base::TypeError("CmdTechDrawGDTReference - ref not found\n");
+    }
+    ref->References2D.setValues(objs, subs);
+
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
+
 }
 
 bool CmdTechDrawGDTReference::isActive(void)
@@ -813,7 +916,6 @@ bool CmdTechDrawGDTReference::isActive(void)
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);
 }
-
 
 
 //===========================================================================
@@ -915,6 +1017,7 @@ CmdTechDrawClipGroup::CmdTechDrawClipGroup()
     // setting the
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert Clip Group");
+    // TODO correct this
     sToolTipText  = sToolTipText;
     sWhatsThis    = "TechDraw_ClipGroup";
     sStatusTip    = sToolTipText;

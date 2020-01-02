@@ -73,6 +73,7 @@ class DrawProjectSplit;
 class DrawViewSection;
 class DrawViewDetail;
 class DrawViewBalloon;
+class DrawViewGDTReference;
 class CosmeticVertex;
 class CosmeticEdge;
 class CenterLine;
@@ -123,6 +124,7 @@ public:
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
+    std::vector<TechDraw::DrawViewGDTReference*> getGDTReferences() const;
 
     const std::vector<TechDraw::Vertex *> getVertexGeometry() const;
     const std::vector<TechDraw::BaseGeom  *> & getEdgeGeometry() const;

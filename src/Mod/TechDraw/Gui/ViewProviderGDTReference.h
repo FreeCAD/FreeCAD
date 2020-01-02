@@ -62,6 +62,8 @@ public:
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
 
+    virtual TechDraw::DrawViewGDTReference* getViewObject() const;
+
 };
 
 } // namespace TechDrawGui

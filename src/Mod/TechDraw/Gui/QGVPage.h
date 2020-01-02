@@ -44,6 +44,7 @@ class DrawViewSpreadsheet;
 class DrawViewImage;
 class DrawLeaderLine;
 class DrawViewBalloon;
+class DrawViewGDTReference;
 class DrawRichAnno;
 class DrawWeldSymbol;
 }
@@ -55,6 +56,7 @@ class QGIViewDimension;
 class QGITemplate;
 class ViewProviderPage;
 class QGIViewBalloon;
+class QGIViewGDTReference;
 class QGILeaderLine;
 class QGIRichAnno;
 class QGITile;
@@ -74,6 +76,7 @@ public:
 
     QGIView * addViewDimension(TechDraw::DrawViewDimension *dim);
     QGIView * addViewBalloon(TechDraw::DrawViewBalloon *balloon);
+    QGIView * addViewGDTReference(TechDraw::DrawViewGDTReference *reference);
     QGIView * addProjectionGroup(TechDraw::DrawProjGroup *view);
     QGIView * addViewPart(TechDraw::DrawViewPart *part);
     QGIView * addViewSection(TechDraw::DrawViewPart *part);
@@ -93,6 +96,7 @@ public:
     QGIView* findParent(QGIView *) const;
 
     void addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent);
+    void addGDTReferenceToParent(QGIViewGDTReference* reference, QGIView* parent);
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
 
