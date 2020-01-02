@@ -64,6 +64,7 @@
 #include <Mod/TechDraw/App/DrawParametricTemplate.h>
 #include <Mod/TechDraw/App/DrawViewCollection.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewGDTReference.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -89,6 +90,7 @@
 #include "QGIViewCollection.h"
 #include "QGIViewDimension.h"
 #include "QGIViewBalloon.h"
+#include "QGIViewGDTReference.h"
 #include "QGIProjGroup.h"
 #include "QGIViewPart.h"
 #include "QGIViewSection.h"
@@ -423,6 +425,36 @@ QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
 
     addQView(qview);
     return qview;
+}
+
+QGIView * QGVPage::addViewGDTReference(TechDraw::DrawViewGDTReference *reference)
+{
+    auto vReference( new QGIViewGDTReference );
+
+    auto ourScene( scene() );
+    assert(ourScene);
+    ourScene->addItem(vReference);
+
+    vReference->setViewPartFeature(reference);
+
+    QGIView *parent = 0;
+    parent = findParent(vReference);
+
+    if(parent)
+        addGDTReferenceToParent(vReference,parent);
+
+    return vReference;
+}
+
+void QGVPage::addGDTReferenceToParent(QGIViewGDTReference* ref, QGIView* parent)
+{
+    assert(ref);
+    assert(parent);          //blow up if we don't have Dimension or Parent
+    QPointF posRef(0.,0.);
+    QPointF mapPos = ref->mapToItem(parent, posRef);
+    ref->moveBy(-mapPos.x(), -mapPos.y());
+    parent->addToGroup(ref);
+    ref->setZValue(ZVALUE::DIMENSION);
 }
 
 QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
