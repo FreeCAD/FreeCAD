@@ -41,6 +41,7 @@
 #include "DrawViewImage.h"
 #include "DrawViewDetail.h"
 #include "DrawViewBalloon.h"
+#include "DrawViewGDTReference.h"
 #include "DrawLeaderLine.h"
 #include "DrawRichAnno.h"
 #include "DrawTile.h"
@@ -89,6 +90,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawProjGroupItem   ::init();
     TechDraw::DrawViewDetail      ::init();
     TechDraw::DrawViewBalloon     ::init();
+    TechDraw::DrawViewGDTReference::init();
     TechDraw::DrawLeaderLine      ::init();
     TechDraw::DrawRichAnno        ::init();
 
