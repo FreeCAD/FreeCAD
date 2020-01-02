@@ -908,6 +908,11 @@ void CmdTechDrawGDTReference::activated(int iMsg)
     updateActive();
     commitCommand();
 
+    //ref->recomputeFeature();
+
+    //Horrible hack to force Tree update
+    double x = objFeat->X.getValue();
+    objFeat->X.setValue(x);
 }
 
 bool CmdTechDrawGDTReference::isActive(void)

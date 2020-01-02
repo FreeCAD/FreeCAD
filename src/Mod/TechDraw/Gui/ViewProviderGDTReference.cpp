@@ -60,7 +60,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderGDTReference, TechDrawGui::ViewProvider
 
 ViewProviderGDTReference::ViewProviderGDTReference()
 {
-    sPixmap = "TechDraw_Reference";
+    sPixmap = "TechDraw_GDT_Reference";
 
     static const char *group = "Reference Format";
 
