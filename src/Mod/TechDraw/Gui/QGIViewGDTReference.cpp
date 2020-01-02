@@ -616,4 +616,4 @@ QColor QGIViewGDTReference::getNormalColor()
     return m_colNormal;
 }
 
-#include <Mod/TechDraw/Gui/moc_QGIViewReference.cpp>
+#include <Mod/TechDraw/Gui/moc_QGIViewGDTReference.cpp>
