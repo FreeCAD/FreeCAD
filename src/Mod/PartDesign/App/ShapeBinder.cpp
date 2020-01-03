@@ -43,6 +43,7 @@
 #include <App/Document.h>
 #include <App/GroupExtension.h>
 #include <App/OriginFeature.h>
+#include <App/Link.h>
 #include <Mod/Part/App/TopoShape.h>
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
@@ -325,10 +326,30 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden,
             "Stores the context of this binder. It is used for monitoring and auto updating\n"
             "the relative placement of the bound shape");
+
+    static const char *BindCopyOnChangeEnum[] = {"Disabled", "Enabled", "Mutated", 0};
+    BindCopyOnChange.setEnums(BindCopyOnChangeEnum);
+    ADD_PROPERTY_TYPE(BindCopyOnChange, ((long)0), "Base", App::Prop_None,
+            "Disabled: disable copy on change.\n"
+            "Enabled: duplicate properties from binding object that are marked with 'CopyOnChange'.\n"
+            "         Make internal copy of the object with any changed properties to obtain the\n"
+            "         shape of an alternative configuration\n"
+            "Mutated: indicate the binder has already mutated by changing any properties marked with\n"
+            "         'CopyOnChange'. Those properties will not longer be kept in sync between the\n"
+            "         binder and the binding object");
+
     Context.setScope(App::LinkScope::Hidden);
 
     ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
                 App::Prop_Hidden|App::Prop_ReadOnly), "");
+
+    _CopiedLink.setScope(App::LinkScope::Hidden);
+    ADD_PROPERTY_TYPE(_CopiedLink,(0),"Base",(App::PropertyType)(
+                App::Prop_Hidden|App::Prop_ReadOnly|App::Prop_NoPersist), "");
+}
+
+SubShapeBinder::~SubShapeBinder() {
+    clearCopiedObjects();
 }
 
 void SubShapeBinder::setupObject() {
@@ -374,6 +395,60 @@ App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject 
     return nullptr;
 }
 
+void SubShapeBinder::setupCopyOnChange() {
+    copyOnChangeConns.clear();
+
+    const auto &support = Support.getSubListValues();
+    if(BindCopyOnChange.getValue()==0 || support.size()!=1) {
+        if(hasCopyOnChange) {
+            hasCopyOnChange = false;
+            std::vector<App::Property*> props;
+            getPropertyList(props);
+            for(auto prop : props) {
+                if(App::LinkBaseExtension::isCopyOnChangeProperty(this,*prop)) {
+                    try {
+                        removeDynamicProperty(prop->getName());
+                    } catch (Base::Exception &e) {
+                        e.ReportException();
+                    } catch (...) {
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    auto linked = support.front().getValue();
+    hasCopyOnChange = App::LinkBaseExtension::setupCopyOnChange(this,linked,
+        BindCopyOnChange.getValue()==1?&copyOnChangeConns:nullptr,hasCopyOnChange);
+    if(hasCopyOnChange) {
+        copyOnChangeConns.push_back(linked->signalChanged.connect(
+            [this](const App::DocumentObject &, const App::Property &prop) {
+                if(!prop.testStatus(App::Property::Output)
+                        && !prop.testStatus(App::Property::PropOutput))
+                {
+                    if(this->_CopiedObjs.size()) {
+                        FC_LOG("Clear binder " << getFullName() << " cache on change of "
+                                << prop.getFullName());
+                        this->clearCopiedObjects();
+                    }
+                }
+            }
+        ));
+    }
+}
+
+void SubShapeBinder::clearCopiedObjects() {
+    std::vector<App::DocumentObjectT> objs;
+    objs.swap(_CopiedObjs);
+    for(auto &o : objs) {
+        auto obj = o.getObject();
+        if(obj)
+            obj->getDocument()->removeObject(obj->getNameInDocument());
+    }
+    _CopiedLink.setValue(0);
+}
+
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     std::vector<Part ::TopoShape> shapes;
@@ -406,6 +481,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         if(parent && (parent!=Context.getValue() || parentSub!=Context.getSubName(false)))
             Context.setValue(parent,parentSub.c_str());
     }
+
     bool first = false;
     std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
     for(auto &l : Support.getSubListValues()) {
@@ -454,7 +530,52 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         if(init)
             continue;
 
-        const auto &subvals = l.getSubValues();
+        App::DocumentObject *copied = 0;
+
+        if(BindCopyOnChange.getValue() == 2 && Support.getSubListValues().size()==1) {
+            if(_CopiedObjs.size())
+               copied = _CopiedObjs.front().getObject();
+
+            bool recomputeCopy = false;
+
+            if(!copied) {
+                recomputeCopy = true;
+                clearCopiedObjects();
+
+                auto tmpDoc = App::GetApplication().newDocument(
+                                "_tmp_binder", 0, false, true);
+                auto objs = tmpDoc->copyObject({obj},true,true);
+                if(objs.size()) {
+                    for(auto it=objs.rbegin(); it!=objs.rend(); ++it)
+                        _CopiedObjs.emplace_back(*it);
+                    copied = objs.back();
+                }
+            }
+
+            if(copied) {
+                std::vector<App::Property*> props;
+                getPropertyList(props);
+                for(auto prop : props) {
+                    if(!App::LinkBaseExtension::isCopyOnChangeProperty(this,*prop))
+                        continue;
+                    auto p = copied->getPropertyByName(prop->getName());
+                    if(p && p->getContainer()==copied
+                            && p->getTypeId()==prop->getTypeId()
+                            && !p->isSame(*prop)) 
+                    {
+                        recomputeCopy = true;
+                        std::unique_ptr<App::Property> pcopy(prop->Copy());
+                        p->Paste(*pcopy);
+                    }
+                }
+                if(recomputeCopy)
+                    copied->recomputeFeature(true);
+                obj = copied;
+                _CopiedLink.setValue(copied,l.getSubValues(false));
+            }
+        }
+
+        const auto &subvals = copied?_CopiedLink.getSubValues():l.getSubValues();
         std::set<std::string> subs(subvals.begin(),subvals.end());
         static std::string none("");
         if(subs.empty())
@@ -616,9 +737,15 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
     }
 }
 
+static const char _GroupPrefix[] = "Configuration (";
+
 App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
+
+    setupCopyOnChange();
+
     if(BindMode.getValue()==0)
         update(UpdateForced);
+
     return inherited::execute();
 }
 
@@ -641,11 +768,15 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
         }
     }else if(!isRestoring()) {
         if(prop == &Support) {
+            clearCopiedObjects();
+            setupCopyOnChange();
             if(Support.getSubListValues().size()) {
                 update(); 
                 if(BindMode.getValue() == 2)
                     Support.setValue(0);
             }
+        }else if(prop == &BindCopyOnChange) {
+            setupCopyOnChange();
         }else if(prop == &BindMode) {
            if(BindMode.getValue() == 2)
                Support.setValue(0);
@@ -654,9 +785,25 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
            checkPropertyStatus();
         }else if(prop == &PartialLoad) {
            checkPropertyStatus();
-        }
+        }else if(prop && !prop->testStatus(App::Property::User3))
+            checkCopyOnChange(*prop);
     }
     inherited::onChanged(prop);
+}
+
+void SubShapeBinder::checkCopyOnChange(const App::Property &prop) {
+    if(BindCopyOnChange.getValue()!=1
+            || getDocument()->isPerformingTransaction()
+            || !App::LinkBaseExtension::isCopyOnChangeProperty(this,prop)
+            || Support.getSubListValues().size()!=1)
+        return;
+
+    auto linked = Support.getSubListValues().front().getValue();
+    if(!linked)
+        return;
+    auto linkedProp = linked->getPropertyByName(prop.getName());
+    if(linkedProp && linkedProp->getTypeId()==prop.getTypeId() && !linkedProp->isSame(prop))
+        BindCopyOnChange.setValue(2);
 }
 
 void SubShapeBinder::checkPropertyStatus() {
