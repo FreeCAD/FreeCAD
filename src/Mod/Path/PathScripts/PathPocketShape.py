@@ -92,24 +92,29 @@ def selectOffsetWire(feature, wires):
 
 def extendWire(feature, wire, length):
     '''extendWire(wire, length) ... return a closed Wire which extends wire by length'''
-    off2D = wire.makeOffset2D(length)
-    endPts = endPoints(wire)
-    edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]
-    wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
-    offset = selectOffsetWire(feature, wires)
-    ePts = endPoints(offset)
-    l0 = (ePts[0] - endPts[0]).Length
-    l1 = (ePts[1] - endPts[0]).Length
-    edges = wire.Edges
-    if l0 < l1:
-        edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[0])))
-        edges.extend(offset.Edges)
-        edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[1])))
-    else:
-        edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[0])))
-        edges.extend(offset.Edges)
-        edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[1])))
-    return Part.Wire(edges)
+    PathLog.track(length)
+    if length and length != 0:
+        off2D = wire.makeOffset2D(length)
+        endPts = endPoints(wire)
+        if endPts:
+            edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]
+            wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
+            offset = selectOffsetWire(feature, wires)
+            ePts = endPoints(offset)
+            if ePts and len(ePts) > 1:
+                l0 = (ePts[0] - endPts[0]).Length
+                l1 = (ePts[1] - endPts[0]).Length
+                edges = wire.Edges
+                if l0 < l1:
+                    edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[0])))
+                    edges.extend(offset.Edges)
+                    edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[1])))
+                else:
+                    edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[0])))
+                    edges.extend(offset.Edges)
+                    edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[1])))
+                return Part.Wire(edges)
+    return None
 
 class Extension(object):
     DirectionNormal = 0
@@ -189,24 +194,37 @@ class Extension(object):
         if 1 == len(edges):
             PathLog.debug("Extending single edge wire")
             edge = edges[0]
-            if Part.Circle == type(edge.Curve) and not endPoints(edge):
+            if Part.Circle == type(edge.Curve):
                 circle = edge.Curve
                 # for a circle we have to figure out if it's a hole or a cylinder
                 p0 = edge.valueAt(edge.FirstParameter)
                 normal = (edge.Curve.Center - p0).normalize()
                 direction = self._getDirectedNormal(p0, normal)
-
                 if direction is None:
                     return None
+
                 if PathGeom.pointsCoincide(normal, direction):
                     r = circle.Radius - self.length.Value
                 else:
                     r = circle.Radius + self.length.Value
                 # assuming the offset produces a valid circle - go for it
                 if r > 0:
-                    c1 = Part.makeCircle(r, circle.Center, circle.Axis, edge.FirstParameter * 180 / math.pi, edge.LastParameter * 180 / math.pi)
-                    return [Part.Wire([edge]), Part.Wire([c1])]
+                    e3 = Part.makeCircle(r, circle.Center, circle.Axis, edge.FirstParameter * 180 / math.pi, edge.LastParameter * 180 / math.pi)
+                    if endPoints(edge):
+                        # need to construct the arc slice
+                        e0 = Part.makeLine(edge.valueAt(edge.FirstParameter), e3.valueAt(e3.FirstParameter))
+                        e2 = Part.makeLine(edge.valueAt(edge.LastParameter), e3.valueAt(e3.LastParameter))
+                        return Part.Wire([e0, edge, e2, e3])
+                    return Part.Wire([e3])
                 # the extension is bigger than the hole - so let's just cover the whole hole
+                if endPoints(edge):
+                    # if the resulting arc is smaller than the radius, create a pie slice
+                    PathLog.track()
+                    center = circle.Center
+                    e0 = Part.makeLine(center, edge.valueAt(edge.FirstParameter))
+                    e2 = Part.makeLine(edge.valueAt(edge.LastParameter), center)
+                    return Part.Wire([e0, edge, e2])
+                PathLog.track()
                 return Part.Wire([edge])
 
             else:
