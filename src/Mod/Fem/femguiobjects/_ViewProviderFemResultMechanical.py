@@ -637,6 +637,8 @@ class _TaskPanelFemResultShow:
         node_numbers = list(self.mesh_obj.FemMesh.Nodes.keys())
         zero_values = [0] * len(node_numbers)
         self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
+        # TODO it seams a result mesh reset has to be done for transparency mesh separately
+        # see https://forum.freecadweb.org/viewtopic.php?f=18&t=41951&p=357700#p357698
 
     def reject(self):
         # if the tasks panel is called from Command obj is not in edit mode
