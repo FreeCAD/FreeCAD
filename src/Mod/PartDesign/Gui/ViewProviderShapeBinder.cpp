@@ -32,12 +32,14 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Console.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/ViewParams.h>
 
 #include <Mod/PartDesign/App/ShapeBinder.h>
 
@@ -216,18 +218,46 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderSubShapeBinder,PartGui::ViewProviderP
 ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
     sPixmap = "PartDesign_SubShapeBinder.svg";
 
-    //get the datum coloring scheme
-    // set default color for datums (golden yellow with 60% transparency)
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
-            "User parameter:BaseApp/Preferences/Mod/PartDesign");
-    unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
-    App::Color col ( (uint32_t) shcol );
-    
-    ShapeColor.setValue(col);
-    LineColor.setValue(col);
-    PointColor.setValue(col);
-    Transparency.setValue(60);
-    LineWidth.setValue(1);
+    ADD_PROPERTY_TYPE(UseBinderStyle, (false), "",(App::PropertyType)(App::Prop_None), "");
+}
+
+void ViewProviderSubShapeBinder::attach(App::DocumentObject *obj) {
+
+    UseBinderStyle.setValue(boost::istarts_with(obj->getNameInDocument(),"binder"));
+    ViewProviderPart::attach(obj);
+}
+
+void ViewProviderSubShapeBinder::onChanged(const App::Property *prop) {
+    if(prop == &UseBinderStyle
+            && (!getObject() || !getObject()->isRestoring()))
+    {
+        App::Color shapeColor,lineColor,pointColor;
+        int transparency, linewidth;
+        if(UseBinderStyle.getValue()) {
+            //get the datum coloring scheme
+            // set default color for datums (golden yellow with 60% transparency)
+            static ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
+                    "User parameter:BaseApp/Preferences/Mod/PartDesign");
+            shapeColor.setPackedValue(hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 ));
+            lineColor = shapeColor;
+            pointColor = shapeColor;
+            transparency = 60;
+            linewidth = 1;
+        } else {
+            shapeColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeColor());
+            lineColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeLineColor());
+            pointColor = lineColor;
+            transparency = 0;
+            linewidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
+        }
+        ShapeColor.setValue(shapeColor);
+        LineColor.setValue(lineColor);
+        PointColor.setValue(pointColor);
+        Transparency.setValue(transparency);
+        LineWidth.setValue(linewidth);
+    }
+
+    ViewProviderPart::onChanged(prop);
 }
 
 bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject *, 
@@ -276,6 +306,7 @@ void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver
     act->setData(QVariant((int)Synchronize));
     act = menu->addAction(QObject::tr("Select bound object"), receiver, member);
     act->setData(QVariant((int)SelectObject));
+    ViewProviderPart::setupContextMenu(menu,receiver,member);
 }
 
 bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
@@ -305,7 +336,10 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
         }
         Gui::Selection().selStackPush();
         break;
-    }}
+    }
+    default:
+        return ViewProviderPart::setEdit(ModNum);
+    }
     return false;
 }
 
