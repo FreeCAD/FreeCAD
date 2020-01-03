@@ -35,7 +35,7 @@
 #include "QGIView.h"
 #include "QGIViewPart.h"
 #include "QGCustomText.h"
-//#include "QGIViewDimension.h"
+#include <Mod/TechDraw/App/DrawViewGDTReference.h>
 
 namespace TechDraw {
 class DrawViewGDTReference;
@@ -71,7 +71,7 @@ public:
     void setLabelCenter();
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
-    double Y() const { return posY; }              //minus posY?
+    double Y() const { return posY; }
     
     void setFont(QFont f);
     QFont getFont(void) { return m_labelText->font(); }
@@ -102,7 +102,7 @@ protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+// TODO    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_labelText;
     QColor m_colNormal;
@@ -115,7 +115,8 @@ private:
 };
 
 //*******************************************************************
-
+// QGIViewGDTReference
+//*******************************************************************
 class TechDrawGuiExport QGIViewGDTReference : public QGIView
 {
     Q_OBJECT
@@ -144,7 +145,7 @@ public Q_SLOTS:
     void referenceLabelDragFinished(void);
     void select(bool state);
     void hover(bool state);
-    void updateReference(bool obtuse = false);
+    void updateReference(void);
 
 protected:
     void draw() override;
@@ -163,8 +164,12 @@ protected:
     double m_lineWidth;
     bool m_obtuse;
     void parentViewMousePressed(QGIView *view, QPointF pos);
-    QPointF *oldLabelCenter;
     QGIView *parent;
+
+private:
+    Base::Vector3d calculateCenter(TechDraw::PointPair & segment);
+    Base::Vector3d calculateLabelPlacement(TechDraw::PointPair & segment);
+    static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
 
 };
 
