@@ -2473,7 +2473,7 @@ public:
                 return std::string(path.toUtf8().constData());
         }
 
-        const char *docPath = pDoc->FileName.getValue();
+        const char *docPath = pDoc->getFileName();
         if(!docPath || *docPath==0)
             throw Base::RuntimeError("Owner document not saved");
         
@@ -2510,7 +2510,7 @@ public:
                        l->testFlag(PropertyLinkBase::LinkAllowPartial))==0) 
                 {
                     for(App::Document *doc : App::GetApplication().getDocuments()) {
-                        if(getFullPath(doc->FileName.getValue()) == fullpath) {
+                        if(getFullPath(doc->getFileName()) == fullpath) {
                             info->attach(doc);
                             break;
                         }
@@ -2585,7 +2585,7 @@ public:
             FC_ERR("document not found " << filePath());
         else{
             for(App::Document *doc : App::GetApplication().getDocuments()) {
-                if(getFullPath(doc->FileName.getValue()) == fullpath) {
+                if(getFullPath(doc->getFileName()) == fullpath) {
                     attach(doc);
                     return;
                 }
@@ -2599,7 +2599,7 @@ public:
     void attach(Document *doc) {
         assert(!pcDoc);
         pcDoc = doc;
-        FC_LOG("attaching " << doc->getName() << ", " << doc->FileName.getValue());
+        FC_LOG("attaching " << doc->getName() << ", " << doc->getFileName());
         std::map<App::PropertyLinkBase*,std::vector<App::PropertyXLink*> > parentLinks;
         for(auto it=links.begin(),itNext=it;it!=links.end();it=itNext) {
             ++itNext;
@@ -2652,7 +2652,7 @@ public:
     void slotFinishRestoreDocument(const App::Document &doc) {
         if(pcDoc) return;
         QString fullpath(getFullPath());
-        if(!fullpath.isEmpty() && getFullPath(doc.FileName.getValue())==fullpath)
+        if(!fullpath.isEmpty() && getFullPath(doc.getFileName())==fullpath)
             attach(const_cast<App::Document*>(&doc));
     }
 
@@ -2665,7 +2665,7 @@ public:
 
         QFileInfo info(myPos->first);
         QString path(info.canonicalFilePath());
-        const char *filename = doc.FileName.getValue();
+        const char *filename = doc.getFileName();
         QString docPath(getFullPath(filename));
 
         if(path.isEmpty() || path!=docPath) {
@@ -2937,7 +2937,7 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
         if(lValue->getDocument() != owner->getDocument()) {
             if(!docInfo || lValue->getDocument()!=docInfo->pcDoc)
             {
-                const char *filename = lValue->getDocument()->FileName.getValue();
+                const char *filename = lValue->getDocument()->getFileName();
                 if(!filename || *filename==0) 
                     throw Base::RuntimeError("Linked document not saved");
                 FC_LOG("xlink set to new document " << lValue->getDocument()->getName());
@@ -3142,7 +3142,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                 _path = docInfo->filePath();
             else {
                 auto pDoc = owner->getDocument();
-                const char *docPath = pDoc->FileName.getValue();
+                const char *docPath = pDoc->getFileName();
                 if(docPath && docPath[0]) {
                     if(filePath.size())
                         _path = DocInfo::getDocPath(filePath.c_str(),pDoc,false);

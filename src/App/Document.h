@@ -73,6 +73,7 @@ public:
         Importing = 6,
         PartialDoc = 7,
         AllowPartialRecompute = 8, // allow recomputing editing object if SkipRecompute is set
+        TempDoc = 9, // Mark as temporary document without prompt for save
     };
 
     /** @name Properties */
@@ -225,6 +226,13 @@ public:
     const char* getName() const;
     /// Get program version the project file was created with
     const char* getProgramVersion() const;
+    /** Returned filename
+     * 
+     * For saved document, this will be the content stored in property
+     * 'Filename'. For unsaved temporary file, this will be the content of
+     * property 'TransientDir'.
+     */
+    const char* getFileName() const;
     //@}
 
     virtual void Save (Base::Writer &writer) const override;
@@ -269,10 +277,15 @@ public:
      * @param recursive: if true, then all objects this object depends on are
      * copied as well. By default \a recursive is false.
      *
+     * @param returnAll: if true, return all copied objects including those
+     * auto included by recursive searching. If false, then only return the
+     * copied object corresponding to the input objects.
+     *
      * @return Returns the list of objects copied.
      */
     std::vector<DocumentObject*> copyObject(
-            const std::vector<DocumentObject*> &objs, bool recursive=false);
+            const std::vector<DocumentObject*> &objs,
+            bool recursive=false, bool returnAll=false);
     /** Move an object from another document to this document
      * If \a recursive is true then all objects this object depends on
      * are moved as well. By default \a recursive is false.

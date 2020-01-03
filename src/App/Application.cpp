@@ -381,12 +381,19 @@ void Application::renameDocument(const char *OldName, const char *NewName)
 #endif
 }
 
-Document* Application::newDocument(const char * Name, const char * UserName, bool createView)
+Document* Application::newDocument(const char * Name, const char * UserName, bool createView, bool tempDoc)
 {
     // get a valid name anyway!
     if (!Name || Name[0] == '\0')
         Name = "Unnamed";
-    string name = getUniqueDocumentName(Name);
+    string name = getUniqueDocumentName(Name, tempDoc);
+
+    // return the temporary document if it exists
+    if (tempDoc) {
+        auto it = DocMap.find(name);
+        if (it != DocMap.end() && it->second->testStatus(Document::TempDoc))
+            return it->second;
+    }
 
     std::string userName;
     if (UserName && UserName[0] != '\0') {
@@ -407,11 +414,15 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
 
     // create the FreeCAD document
     std::unique_ptr<Document> newDoc(new Document(name.c_str()));
+    if (tempDoc)
+        newDoc->setStatus(Document::TempDoc, true);
+
+    auto oldActiveDoc = _pActiveDoc;
+    auto doc = newDoc.get();
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
     _pActiveDoc = DocMap[name];
-
 
     // connect the signals to the application for the new document
     _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDocument, this, bp::_1, bp::_2));
@@ -442,12 +453,16 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         Py::Module("FreeCAD").setAttr(std::string("ActiveDocument"),active);
     }
 
-    signalNewDocument(*_pActiveDoc,createView);
+    signalNewDocument(*_pActiveDoc, createView);
 
     // set the UserName after notifying all observers
     _pActiveDoc->Label.setValue(userName);
 
-    return _pActiveDoc;
+    // set the old document active again if the new is temporary
+    if (tempDoc && oldActiveDoc)
+        setActiveDocument(oldActiveDoc);
+
+    return doc;
 }
 
 bool Application::closeDocument(const char* name)
@@ -513,7 +528,7 @@ std::vector<App::Document*> Application::getDocuments() const
     return docs;
 }
 
-std::string Application::getUniqueDocumentName(const char *Name) const
+std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) const
 {
     if (!Name || *Name == '\0')
         return std::string();
@@ -523,7 +538,7 @@ std::string Application::getUniqueDocumentName(const char *Name) const
     std::map<string,Document*>::const_iterator pos;
     pos = DocMap.find(CleanName);
 
-    if (pos == DocMap.end()) {
+    if (pos == DocMap.end() || (tempDoc && pos->second->testStatus(Document::TempDoc))) {
         // if not, name is OK
         return CleanName;
     }
@@ -531,7 +546,8 @@ std::string Application::getUniqueDocumentName(const char *Name) const
         std::vector<std::string> names;
         names.reserve(DocMap.size());
         for (pos = DocMap.begin();pos != DocMap.end();++pos) {
-            names.push_back(pos->first);
+            if (!tempDoc || !pos->second->testStatus(Document::TempDoc))
+                names.push_back(pos->first);
         }
         return Base::Tools::getUniqueName(CleanName, names);
     }

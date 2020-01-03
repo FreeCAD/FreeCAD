@@ -289,8 +289,8 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
-    PyObject *obj, *rec=Py_False;
-    if (!PyArg_ParseTuple(args, "O|O",&obj,&rec))
+    PyObject *obj, *rec=Py_False, *retAll=Py_False;
+    if (!PyArg_ParseTuple(args, "O|OO",&obj,&rec,&retAll))
         return NULL;    // NULL triggers exception
 
     std::vector<App::DocumentObject*> objs;
@@ -314,8 +314,8 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
     }
 
     PY_TRY {
-        auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec));
-        if(ret.size()==1 && single)
+        auto ret = getDocumentPtr()->copyObject(objs, PyObject_IsTrue(rec), PyObject_IsTrue(retAll));
+        if (ret.size()==1 && single)
             return ret[0]->getPyObject();
 
         Py::Tuple tuple(ret.size());
@@ -866,11 +866,17 @@ Py::Boolean DocumentPy::getRecomputing(void) const
     return Py::Boolean(getDocumentPtr()->testStatus(Document::Status::Recomputing));
 }
 
-Py::Boolean DocumentPy::getTransacting() const {
+Py::Boolean DocumentPy::getTransacting() const
+{
     return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
 }
 
-Py::String DocumentPy::getOldLabel() const {
+Py::String DocumentPy::getOldLabel() const
+{
     return Py::String(getDocumentPtr()->getOldLabel());
 }
 
+Py::Boolean DocumentPy::getTemporary() const
+{
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::TempDoc));
+}

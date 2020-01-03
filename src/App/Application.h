@@ -86,11 +86,12 @@ public:
      * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
-    App::Document* newDocument(const char * Name=0l, const char * UserName=0l, bool createView=true);
+    App::Document* newDocument(const char * Name=0l, const char * UserName=0l,
+            bool createView=true, bool tempDoc=false);
     /// Closes the document \a name and removes it from the application.
     bool closeDocument(const char* name);
     /// find a unique document name
-    std::string getUniqueDocumentName(const char *Name) const;
+    std::string getUniqueDocumentName(const char *Name, bool tempDoc=false) const;
     /// Open an existing document from a file
     App::Document* openDocument(const char * FileName=0l, bool createView=true);
     /** Open multiple documents

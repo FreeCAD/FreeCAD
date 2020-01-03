@@ -1125,24 +1125,27 @@ bool Document::saveAs(void)
     }
 }
 
-void Document::saveAll() {
+void Document::saveAll()
+{
     std::vector<App::Document*> docs;
     try {
         docs = App::Document::getDependentDocuments(App::GetApplication().getDocuments(),true);
-    }catch(Base::Exception &e) {
+    }
+    catch(Base::Exception &e) {
         e.ReportException();
         int ret = QMessageBox::critical(getMainWindow(), QObject::tr("Failed to save document"),
                 QObject::tr("Documents contains cyclic dependencies. Do you still want to save them?"),
                 QMessageBox::Yes,QMessageBox::No);
-        if(ret!=QMessageBox::Yes)
+        if (ret != QMessageBox::Yes)
             return;
         docs = App::GetApplication().getDocuments();
     }
+
     std::map<App::Document *, bool> dmap;
     for(auto doc : docs)
         dmap[doc] = doc->mustExecute();
     for(auto doc : docs) {
-        if(doc->testStatus(App::Document::PartialDoc))
+        if (doc->testStatus(App::Document::PartialDoc) || doc->testStatus(App::Document::TempDoc))
             continue;
         auto gdoc = Application::Instance->getDocument(doc);
         if(!gdoc)
@@ -1161,7 +1164,8 @@ void Document::saveAll() {
             }
             Command::doCommand(Command::Doc,"App.getDocument('%s').save()",doc->getName());
             gdoc->setModified(false);
-        } catch (const Base::Exception& e) {
+        }
+        catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(), 
                     QObject::tr("Failed to save document") + 
                         QString::fromLatin1(": %1").arg(QString::fromUtf8(doc->getName())), 

@@ -2147,6 +2147,8 @@ void TreeWidget::drawRow(QPainter *painter, const QStyleOptionViewItem &options,
 
 void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
 {
+    if(Doc.getDocument()->testStatus(App::Document::TempDoc))
+        return;
     DocumentItem* item = new DocumentItem(&Doc, this->rootItem);
     if(isMainDoc)
         this->expandItem(item);
