@@ -73,6 +73,9 @@ public:
     double X() const { return posX; }
     double Y() const { return posY; }
     
+    double marginHeight() const { return m_marginHeight; }
+    double marginWidth() const { return m_marginWidth; }
+
     void setFont(QFont f);
     QFont getFont(void) { return m_labelText->font(); }
     void setPrettySel(void);
@@ -110,6 +113,8 @@ protected:
 
     double posX;
     double posY;
+    double m_marginHeight;
+    double m_marginWidth;
     
 private:
 };
@@ -168,7 +173,7 @@ protected:
 
 private:
     Base::Vector3d calculateCenter(TechDraw::PointPair & segment);
-    Base::Vector3d calculateLabelPlacement(TechDraw::PointPair & segment);
+    Base::Vector3d calculateLabelPlacement(TechDraw::PointPair & segment, double length);
     static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
 
 };
