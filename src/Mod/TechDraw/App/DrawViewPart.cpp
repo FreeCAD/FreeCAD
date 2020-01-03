@@ -608,7 +608,7 @@ std::vector<TechDraw::DrawViewGDTReference*> DrawViewPart::getGDTReferences() co
     std::sort(children.begin(),children.end(),std::less<App::DocumentObject*>());
     std::vector<App::DocumentObject*>::iterator newEnd = std::unique(children.begin(),children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewBalloon::getClassTypeId())) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawViewGDTReference::getClassTypeId())) {
             TechDraw::DrawViewGDTReference* ref = dynamic_cast<TechDraw::DrawViewGDTReference*>(*it);
             result.push_back(ref);
         }
