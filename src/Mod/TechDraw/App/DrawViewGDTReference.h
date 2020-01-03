@@ -40,7 +40,21 @@ namespace TechDraw {
 
 class DrawViewPart;
 
-typedef std::pair<Base::Vector3d,Base::Vector3d> pointPair;
+//TODO merge with CommandCreateDims
+typedef enum EdgeTypeUtil{
+        isInvalid = 0,
+        isHorizontal,
+        isVertical,
+        isDiagonal,
+        isCircle,
+        isEllipse,
+        isBSplineCircle,
+        isBSpline,
+        isAngle,
+        isAngle3Pt
+    } EdgeTypeUtil;
+
+typedef std::pair<Base::Vector3d,Base::Vector3d> PointPair;
 
 class TechDrawExport DrawViewGDTReference : public TechDraw::DrawView
 {
@@ -51,21 +65,13 @@ public:
     DrawViewGDTReference();
     virtual ~DrawViewGDTReference();
 
-    App::PropertyLinkSubList       References2D;
-    App::PropertyEnumeration       Type;  // Edge, Cosmetic, Feature frame
-    //App::PropertyLink        sourceView;
-    App::PropertyString      Text;
-    App::PropertyFloat       SymbolScale;
-    App::PropertyDistance    OriginX;
-    App::PropertyDistance    OriginY;
-    App::PropertyBool        OriginIsSet;
-    App::PropertyFloat       TextWrapLen;
-
+    App::PropertyLinkSubList	References2D;
+    App::PropertyEnumeration	Type;  // Edge, Cosmetic, Feature frame
+    App::PropertyString			Text;
+    App::PropertyFloat			SymbolScale;
 
     short mustExecute() const;
-    bool has2DReferences(void) const;
-    //DrawViewPart* getViewPart() const;
-    QPointF origin;
+    PointPair getLinearPoints(void) {return m_linearPoints; }
 
     //virtual PyObject *getPyObject(void);
 
@@ -76,17 +82,19 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderGDTReference";
     }
+    DrawViewPart* getViewPart() const;
 
 protected:
     static const char* TypeEnums[];
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
-    DrawViewPart* getViewPart() const;
-    pointPair getPointsOneEdge();
-	//virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    PointPair getPointsOneEdge();
+    bool has2DReferences(void) const;
+    bool checkReferences2D(void) const;
+	virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
 private:
-    pointPair   m_linearPoints;
+    PointPair   m_linearPoints;
 };
 
 } //namespace TechDraw

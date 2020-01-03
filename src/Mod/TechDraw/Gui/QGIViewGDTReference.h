@@ -35,7 +35,7 @@
 #include "QGIView.h"
 #include "QGIViewPart.h"
 #include "QGCustomText.h"
-//#include "QGIViewDimension.h"
+#include <Mod/TechDraw/App/DrawViewGDTReference.h>
 
 namespace TechDraw {
 class DrawViewGDTReference;
@@ -70,9 +70,14 @@ public:
                         QWidget *widget = nullptr ) override;
     void setLabelCenter();
     void setPosFromCenter(const double &xCenter, const double &yCenter);
+    void setRotateAngle(double angle);
     double X() const { return posX; }
-    double Y() const { return posY; }              //minus posY?
+    double Y() const { return posY; }
     
+    double rotationAngle() const { return m_angle; }
+    double marginHeight() const { return m_marginHeight; }
+    double marginWidth() const { return m_marginWidth; }
+
     void setFont(QFont f);
     QFont getFont(void) { return m_labelText->font(); }
     void setPrettySel(void);
@@ -84,6 +89,7 @@ public:
     void setLabelString(QString t, qreal maxWidth);
     QGCustomText* getLabelText(void) { return m_labelText; }
     void setLabelText(QGCustomText* newText) { m_labelText = newText; }
+    void rotate(void);
 
     bool hasHover;
 
@@ -102,7 +108,7 @@ protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+// TODO    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_labelText;
     QColor m_colNormal;
@@ -110,12 +116,16 @@ protected:
 
     double posX;
     double posY;
-    
+    double m_marginHeight;
+    double m_marginWidth;
+    double m_angle;
+
 private:
 };
 
 //*******************************************************************
-
+// QGIViewGDTReference
+//*******************************************************************
 class TechDrawGuiExport QGIViewGDTReference : public QGIView
 {
     Q_OBJECT
@@ -144,7 +154,7 @@ public Q_SLOTS:
     void referenceLabelDragFinished(void);
     void select(bool state);
     void hover(bool state);
-    void updateReference(bool obtuse = false);
+    void updateReference(void);
 
 protected:
     void draw() override;
@@ -161,11 +171,24 @@ protected:
     QGIDimLines* referenceShape;
     QGIArrow* referenceArrow;
     double m_lineWidth;
-    bool m_obtuse;
     void parentViewMousePressed(QGIView *view, QPointF pos);
-    QPointF *oldLabelCenter;
     QGIView *parent;
+    Base::Vector3d m_linkDir;
+    double m_arrowAngle;
+    double m_lineAngle;
+    //Base::Vector2d m_edgeDir;
 
+private:
+    Base::Vector3d calculateCenter(TechDraw::PointPair & segment);
+    Base::Vector2d labelPlacementAndRotation(TechDraw::PointPair & segment, double distance);
+    // TODO move to utils (using in QGIViewDimension)
+    double getIsoStandardLinePlacement(double labelAngle);
+    static inline double toDeg(double a) { return a*180/M_PI; }
+    static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
+    static inline double toQtDeg(double a) { return -a*180.0/M_PI; }
+    static inline double toQtRad(double a) { return -a*M_PI/180.0; }
+    Base::Vector2d computePerpendicularIntersection(const Base::Vector2d &linePoint,
+    		const Base::Vector2d &perpendicularPoint, double lineAngle);
 };
 
 } // namespace
