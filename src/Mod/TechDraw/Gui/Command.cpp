@@ -83,19 +83,19 @@
 using namespace TechDrawGui;
 using namespace std;
 
-//TODO merge with CommandCreateDims
-enum EdgeTypeUtil{
-        isInvalid,
-        isHorizontal,
-        isVertical,
-        isDiagonal,
-        isCircle,
-        isEllipse,
-        isBSplineCircle,
-        isBSpline,
-        isAngle,
-        isAngle3Pt
-    };
+////TODO merge with CommandCreateDims
+//enum EdgeTypeUtil{
+//        isInvalid = 0,
+//        isHorizontal,
+//        isVertical,
+//        isDiagonal,
+//        isCircle,
+//        isEllipse,
+//        isBSplineCircle,
+//        isBSpline,
+//        isAngle,
+//        isAngle3Pt
+//    };
 
 
 //===========================================================================
@@ -802,13 +802,14 @@ CmdTechDrawGDTReference::CmdTechDrawGDTReference()
 }
 
 //! verify that Selection contains a valid Geometry for a single Edge Dimension
-int _isValidSingleEdgeUtil(Gui::Command* cmd) {
-    auto edgeType( isInvalid );
+TechDraw::EdgeTypeUtil _isValidSingleEdgeUtil(Gui::Command* cmd) {
+    TechDraw::EdgeTypeUtil edgeType = TechDraw::EdgeTypeUtil::isInvalid ;
+
     auto selection( cmd->getSelection().getSelectionEx() );
 
     auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
     if( objFeat == nullptr ) {
-        return isInvalid;
+        return TechDraw::EdgeTypeUtil::isInvalid;
     }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
@@ -818,37 +819,37 @@ int _isValidSingleEdgeUtil(Gui::Command* cmd) {
             TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
             if (!geom) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
-                return isInvalid;
+                return TechDraw::EdgeTypeUtil::isInvalid;
             }
 
             if(geom->geomType == TechDraw::GENERIC) {
                 TechDraw::Generic* gen1 = static_cast<TechDraw::Generic *>(geom);
                 if(gen1->points.size() > 2) {                                   //the edge is a polyline
-                    return isInvalid;
+                    return TechDraw::EdgeTypeUtil::isInvalid;
                 }
                 Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
                 if(fabs(line.y) < FLT_EPSILON ) {
-                    edgeType = isHorizontal;
+                    edgeType = TechDraw::EdgeTypeUtil::isHorizontal;
                 } else if(fabs(line.x) < FLT_EPSILON) {
-                    edgeType = isVertical;
+                    edgeType = TechDraw::EdgeTypeUtil::isVertical;
                 } else {
-                    edgeType = isDiagonal;
+                    edgeType = TechDraw::EdgeTypeUtil::isDiagonal;
                 }
             } else if (geom->geomType == TechDraw::CIRCLE ||
                        geom->geomType == TechDraw::ARCOFCIRCLE ) {
-                edgeType = isCircle;
+                edgeType = TechDraw::EdgeTypeUtil::isCircle;
             } else if (geom->geomType == TechDraw::ELLIPSE ||
                        geom->geomType == TechDraw::ARCOFELLIPSE) {
-                edgeType = isEllipse;
+                edgeType = TechDraw::EdgeTypeUtil::isEllipse;
             } else if (geom->geomType == TechDraw::BSPLINE) {
                 TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*>(geom);
                 if (spline->isCircle()) {
-                    edgeType = isBSplineCircle;
+                    edgeType = TechDraw::EdgeTypeUtil::isBSplineCircle;
                 } else {
-                    edgeType = isBSpline;
+                    edgeType = TechDraw::EdgeTypeUtil::isBSpline;
                 }
             } else {
-                edgeType = isInvalid;
+                edgeType = TechDraw::EdgeTypeUtil::isInvalid;
             }
         }
     }
@@ -877,11 +878,13 @@ void CmdTechDrawGDTReference::activated(int iMsg)
     std::vector<std::string> subs;
 
     std::string referenceType;
-    int edgeType = _isValidSingleEdgeUtil(this);
-    if(edgeType == isHorizontal || edgeType == isVertical || edgeType == isDiagonal){
-    	referenceType = "Edge";
-    	objs.push_back(objFeat);
-    	subs.push_back(subNames[0]);
+    TechDraw::EdgeTypeUtil edgeType = _isValidSingleEdgeUtil(this);
+    if(	edgeType == TechDraw::EdgeTypeUtil::isHorizontal ||
+    	edgeType == TechDraw::EdgeTypeUtil::isVertical ||
+		edgeType == TechDraw::EdgeTypeUtil::isDiagonal){
+			referenceType = "Edge";
+			objs.push_back(objFeat);
+			subs.push_back(subNames[0]);
     }else{
     	QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
     			QObject::tr("Only horizontal, vertical and diagonal edge allowed."));
