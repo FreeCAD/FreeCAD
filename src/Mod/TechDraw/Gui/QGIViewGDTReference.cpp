@@ -76,6 +76,9 @@ QGIReferenceLabel::QGIReferenceLabel(QGIViewGDTReference * parent)
 	posX = 0;
     posY = 0;
 
+    m_marginHeight = 1.0;
+    m_marginWidth = 2.0;
+
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(ItemSendsGeometryChanges, true);
     setFlag(ItemIsMovable, true);
@@ -310,11 +313,17 @@ Base::Vector3d QGIViewGDTReference::calculateCenter(TechDraw::PointPair & segmen
 	return (first+second)/2.0;
 }
 
-Base::Vector3d QGIViewGDTReference::calculateLabelPlacement(TechDraw::PointPair & segment){
+Base::Vector3d QGIViewGDTReference::calculateLabelPlacement(TechDraw::PointPair & segment, double length){
 	Base::Vector3d result;
 	Base::Vector3d middle = calculateCenter(segment);
-	result = middle;
+	Base::Vector3d dir = segment.first-segment.second;
+	Base::Vector3d base = segment.second;
+	Base::Vector3d perp = middle.Perpendicular(base, dir);
+	result = middle + perp.Normalize() * length;
 	Base::Console().Message("middle %.3f %.3f\n",middle.x, middle.y);
+	double angl = result.GetAngle(Base::Vector3d(1,0,0));
+	Base::Console().Message("result %.3f %.3f  ang %.3f\n",result.x, result.y, angl);
+
 	return result;
 }
 
@@ -326,15 +335,16 @@ void QGIViewGDTReference::setViewPartFeature(TechDraw::DrawViewGDTReference *ref
 
     setViewFeature(static_cast<TechDraw::DrawView *>(reference));
 
-    //float x = Rez::guiX(reference->X.getValue());
-    //float y = Rez::guiX(-reference->Y.getValue());
+    double textWidth = referenceLabel->getLabelText()->boundingRect().width();
+    double symbWidth = Rez::guiX(referenceLabel->marginWidth()) * 2 + textWidth;
+    double lineLength = Rez::appX(2.5 * symbWidth);
+    Base::Console().Message("symbWidth %.3f  line length %.3f\n", symbWidth, lineLength);
     PointPair edge = reference->getLinearPoints();
-    Base::Vector3d center = calculateLabelPlacement(edge);
-    Base::Console().Message("labelcenter %.3f %.3f\n",center.x, center.y);
-    QString labelText = QString::fromUtf8(reference->Text.getStrValue().data());
-    referenceLabel->setLabelString(labelText, -1.);
-    reference->X.setValue(center.x);
-    reference->Y.setValue(center.y);
+    Base::Vector3d labelCenter = calculateLabelPlacement(edge, lineLength);
+    Base::Console().Message("labelcenter %.3f %.3f\n",labelCenter.x, labelCenter.y);
+
+    reference->X.setValue(labelCenter.x);
+    reference->Y.setValue(labelCenter.y);
     float x = Rez::guiX(reference->X.getValue());
     float y = Rez::guiX(reference->Y.getValue());
     referenceLabel->setPosFromCenter(x, y);
@@ -462,8 +472,8 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
 
     double textWidth = referenceLabel->getLabelText()->boundingRect().width();
     double textHeight = referenceLabel->getLabelText()->boundingRect().height();
-    QRectF  mappedRect = mapRectFromItem(referenceLabel, referenceLabel->boundingRect());
-    Base::Vector3d lblCenter = Base::Vector3d(mappedRect.center().x(), mappedRect.center().y(), 0.0);
+
+    Base::Console().Message("referenceLabel %.3f %.3f\n",referenceLabel->X(), referenceLabel->Y());
 
     if (reference->isLocked()) {
         referenceLabel->setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -471,29 +481,30 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
         referenceLabel->setFlag(QGraphicsItem::ItemIsMovable, true);
 
     Base::Vector3d dLineStart;
-    double lineLength = Rez::guiX(2.0 * textWidth);
-
     float scale = reference->SymbolScale.getValue();
     double offset = 0;
     QPainterPath referencePath;
 
     // Square symbol
-    textWidth = (textWidth * scale) + Rez::guiX(2.0);
-    textHeight = (textHeight * scale) + Rez::guiX(1.0);
+    textWidth = (textWidth * scale) + Rez::guiX(referenceLabel->marginWidth());
+    textHeight = (textHeight * scale) + Rez::guiX(referenceLabel->marginHeight());
     double max = std::max(textWidth, textHeight);
-    referencePath.addRect(lblCenter.x -(max / 2.0), lblCenter.y - (max / 2.0), max, max);
+    referencePath.addRect(referenceLabel->X() -(max / 2.0), referenceLabel->Y() - (max / 2.0), max, max);
     offset = (max / 2.0);
 
     PointPair linePoints = reference->getLinearPoints();
-    Base::Vector2d origin = fromQtApp(calculateCenter(linePoints));
+    Base::Vector3d middle = calculateCenter(linePoints);
+    Base::Vector2d origin;
+    origin.x = middle.x;
+    origin.y = middle.y;
     origin.x = Rez::guiX(origin.x);
     origin.y = Rez::guiX(origin.y);
 
     //Base::Console().Message("origin %.3f %.3f\n",origin.x, origin.y);
 
-    offset = (lblCenter.x < origin.x) ? offset : -offset;
-    dLineStart.y = lblCenter.y;
-    dLineStart.x = lblCenter.x + offset;
+    offset = (referenceLabel->X() < origin.x) ? offset : -offset;
+    dLineStart.y = referenceLabel->Y();
+    dLineStart.x = referenceLabel->X() + offset;
 
     QPainterPath dLinePath;
     dLinePath.moveTo(dLineStart.x, dLineStart.y);
