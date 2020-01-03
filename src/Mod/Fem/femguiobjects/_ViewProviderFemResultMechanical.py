@@ -308,6 +308,11 @@ class _TaskPanelFemResultShow:
             self.restore_initial_result_dialog()
 
     def restore_initial_result_dialog(self):
+        # initialize FreeCAD.FEM_dialog and set standard values
+        # the FEM result mechanical task panel restore values
+        # are saved in a dictionary which is an attribute of FreeCAD
+        # the name is FEM_dialog
+        # This is not smart at all IMHO (Bernd)
         FreeCAD.FEM_dialog = {
             "results_type": "None",
             "show_disp": False,
@@ -511,8 +516,6 @@ class _TaskPanelFemResultShow:
         return scalar_list
 
     def result_selected(self, res_type, res_values, res_unit):
-        # What is the FreeCAD.FEM_dialog for ???
-        # Where is it initialized ?
         FreeCAD.FEM_dialog["results_type"] = res_type
         (minm, avg, maxm) = self.get_result_stats(res_type)
         self.update_colors_stats(res_values, res_unit, minm, avg, maxm)
