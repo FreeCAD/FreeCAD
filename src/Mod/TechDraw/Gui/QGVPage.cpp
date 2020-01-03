@@ -654,6 +654,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
         std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
 
         if(objs.size() > 0) {
+        	// TODO correct this line ?
             std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
             // Attach the dimension to the first object's group
             for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
@@ -664,16 +665,14 @@ QGIView * QGVPage::findParent(QGIView *view) const
         }
     }
 
-    //If type is gdtreference we check references first
+    //If type is gdtreference we check references2D first
     TechDraw::DrawViewGDTReference *ref = 0;
     ref = dynamic_cast<TechDraw::DrawViewGDTReference *>(myFeat);
 
     if(ref) {
     	std::vector<App::DocumentObject *> objs = ref->References2D.getValues();
-
         if(objs.size() > 0) {
-        	std::vector<App::DocumentObject *> objs = ref->References2D.getValues();
-        	// Attach the dimension to the first object's group
+        	// Attach the GDTReference to the first object's group
         	for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
         		if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
         			return *it;
