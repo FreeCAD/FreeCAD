@@ -268,6 +268,14 @@ public:
     static Quantity MilliVolt;
     static Quantity KiloVolt;
 
+    static Quantity Siemens;
+    static Quantity MilliSiemens;
+    static Quantity MicroSiemens;
+
+    static Quantity Ohm;
+    static Quantity KiloOhm;
+    static Quantity MegaOhm;
+
     static Quantity Coulomb;
 
     static Quantity Tesla;

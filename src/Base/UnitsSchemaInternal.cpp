@@ -295,7 +295,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     }
     else if (unit == Unit::SpecificEnergy) {
         unitString = QString::fromLatin1("m^2/s^2");
-        factor = 1000000;
+        factor = 1e6;
     }
     else if (unit == Unit::HeatFlux) {
         unitString = QString::fromLatin1("W/m^2");
@@ -308,6 +308,34 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     else if (unit == Unit::MagneticFluxDensity) {
         unitString = QString::fromLatin1("T");
         factor = 1.0;
+    }
+    else if (unit == Unit::ElectricalConductance) {
+        if (UnitValue < 1e-9) {
+            unitString = QString::fromLatin1("\xC2\xB5S");
+            factor = 1e-12;
+        }
+        else if (UnitValue < 1e-6) {
+            unitString = QString::fromLatin1("mS");
+            factor = 1e-9;
+        }
+        else {
+            unitString = QString::fromLatin1("S");
+            factor = 1e-6;
+        }
+    }
+    else if (unit == Unit::ElectricalResistance) {
+        if (UnitValue < 1e9) {
+            unitString = QString::fromLatin1("Ohm");
+            factor = 1e6;
+        }
+        else if (UnitValue < 1e12) {
+            unitString = QString::fromLatin1("kOhm");
+            factor = 1e9;
+        }
+        else {
+            unitString = QString::fromLatin1("MOhm");
+            factor = 1e12;
+        }
     }
     else if (unit == Unit::ElectricalCapacitance) {
         if (UnitValue < 1e-15) {
