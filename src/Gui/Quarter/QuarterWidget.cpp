@@ -886,7 +886,11 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     glMatrixMode(GL_PROJECTION);
 
     QtGLWidget* w = static_cast<QtGLWidget*>(this->viewport());
-    assert(w->isValid() && "No valid GL context found!");
+    if (!w->isValid()) {
+        qWarning() << "No valid GL context found!";
+        return;
+    }
+    //assert(w->isValid() && "No valid GL context found!");
     // We might have to process the delay queue here since we don't know
     // if paintGL() is called from Qt, and we might have some sensors
     // waiting to trigger (the redraw sensor has a lower priority than a
