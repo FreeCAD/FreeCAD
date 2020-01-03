@@ -203,7 +203,6 @@ def convertToDxf(dwgfilename):
     """
     import os, tempfile, subprocess, sys
 
-    ############################ try libredwg
     import shutil
     if shutil.which("dwg2dxf"):
         outdir = tempfile.mkdtemp()
@@ -212,7 +211,6 @@ def convertToDxf(dwgfilename):
         proc = subprocess.Popen(("dwg2dxf", dwgfilename, "-o", result))
         proc.communicate()
         return result
-    ############################ end libredwg
 
     teigha = getTeighaConverter()
     if teigha:
@@ -261,13 +259,11 @@ def convertToDwg(dxffilename, dwgfilename):
     """
     import os, subprocess
 
-    ############################ try libredwg
     import shutil
     if shutil.which("dxf2dwg"):
         proc = subprocess.Popen(("dxf2dwg", dxffilename, "-o", dwgfilename))
         proc.communicate()
         return dwgfilename
-    ############################ end libredwg
 
     teigha = getTeighaConverter()
     if teigha:
