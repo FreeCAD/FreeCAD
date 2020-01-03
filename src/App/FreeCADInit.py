@@ -715,6 +715,14 @@ App.Units.Volt          = App.Units.Quantity('V')
 App.Units.MilliVolt     = App.Units.Quantity('mV')
 App.Units.KiloVolt      = App.Units.Quantity('kV')
 
+App.Units.Siemens       = App.Units.Quantity('S')
+App.Units.MilliSiemens  = App.Units.Quantity('mS')
+App.Units.MicroSiemens  = App.Units.Quantity('uS')
+
+App.Units.Ohm          = App.Units.Quantity('Ohm')
+App.Units.KiloOhm      = App.Units.Quantity('kOhm')
+App.Units.MegaOhm      = App.Units.Quantity('MOhm')
+
 App.Units.Coulomb       = App.Units.Quantity('C')
 
 App.Units.Tesla         = App.Units.Quantity('T')
@@ -776,6 +784,8 @@ App.Units.ElectricCharge        = App.Units.Unit(0,0,1,1)
 App.Units.MagneticFluxDensity   = App.Units.Unit(0,1,-2,-1)
 App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
 App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
+App.Units.ElectricalConductance = App.Units.Unit(-2,-1,3,2)
+App.Units.ElectricalResistance  = App.Units.Unit(2,1,-3,-2)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 

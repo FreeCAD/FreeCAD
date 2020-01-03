@@ -254,6 +254,15 @@ EXPO     [eE][-+]?[0-9]+
 "kV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloVolt;            yylval.quantity.unitStr = yytext; return UNIT; // kilo Volt
 "mV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliVolt;           yylval.quantity.unitStr = yytext; return UNIT; // milli Volt
 
+"S"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Siemens;             yylval.quantity.unitStr = yytext; return UNIT; // Siemens (A^2*s^3/kg/m^2)
+"mS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // milli Siemens
+"uS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // micro Siemens
+"\xC2\xB5S"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroSiemens;        yylval.quantity.unitStr = yytext; return UNIT; // micro Siemens
+
+"Ohm"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Ohm;                 yylval.quantity.unitStr = yytext; return UNIT; // Ohm (kg*m^2/A^2/s^3)
+"kOhm"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloOhm;             yylval.quantity.unitStr = yytext; return UNIT; // kilo Ohm
+"MOhm"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliOhm;            yylval.quantity.unitStr = yytext; return UNIT; // mega Ohm
+
 "C"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Coulomb;             yylval.quantity.unitStr = yytext; return UNIT; // Coulomb (A*s)
 
 "T"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Tesla;               yylval.quantity.unitStr = yytext; return UNIT; // Tesla (kg/s^2/A)
@@ -291,7 +300,7 @@ EXPO     [eE][-+]?[0-9]+
 "gon"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = yytext; return UNIT; // gon
 "M"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute
 "\xE2\x80\xB2"               COUNTCHARS; yylval.quantity.scaler  = Quantity::AngMinute;           yylval.quantity.unitStr = yytext; return UNIT; // angminute U+2032 	&prime; &#8242; ′
-"S"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond
+"AS"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond
 "\xE2\x80\xB3"               COUNTCHARS; yylval.quantity.scaler  = Quantity::AngSecond;           yylval.quantity.unitStr = yytext; return UNIT; // angsecond U+2033 	&Prime; &#8243; ″
 
 {DIGIT}*"."{DIGIT}+{EXPO}?   COUNTCHARS; yylval.fvalue = num_change(yytext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;

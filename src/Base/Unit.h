@@ -114,6 +114,8 @@ public:
     static Unit MagneticFluxDensity;
     static Unit ElectricalCapacitance;
     static Unit ElectricalInductance;
+    static Unit ElectricalConductance;
+    static Unit ElectricalResistance;
     static Unit AmountOfSubstance;
     static Unit LuminousIntensity;
 
