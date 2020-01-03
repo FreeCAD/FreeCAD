@@ -225,6 +225,10 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             scalinglaw = s;
         }*/
 
+        // Verify that path is not a null shape
+        if (path.IsNull())
+            return new App::DocumentObjectExecReturn("Path must not be a null shape");
+
         //build all shells
         std::vector<TopoDS_Shape> shells;
         std::vector<TopoDS_Wire> frontwires, backwires;
