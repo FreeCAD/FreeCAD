@@ -2595,6 +2595,10 @@ std::string Document::getFullName() const {
     return myName;
 }
 
+const char *Document::getFileName() const {
+    return testStatus(TempDoc)?TransientDir.getValue():FileName.getValue();
+}
+
 /// Remove all modifications. After this call The document becomes valid again.
 void Document::purgeTouched()
 {
@@ -3938,7 +3942,7 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
 }
 
 std::vector<DocumentObject*> Document::copyObject(
-    const std::vector<DocumentObject*> &objs, bool recursive)
+    const std::vector<DocumentObject*> &objs, bool recursive, bool returnAll)
 {
     std::vector<DocumentObject*> deps;
     if(!recursive)
@@ -3946,7 +3950,7 @@ std::vector<DocumentObject*> Document::copyObject(
     else
         deps = getDependencyList(objs,DepNoXLinked|DepSort);
 
-    if(!isSaved() && PropertyXLink::hasXLink(deps))
+    if(!testStatus(TempDoc) && !isSaved() && PropertyXLink::hasXLink(deps))
         throw Base::RuntimeError(
                 "Document must be saved at least once before link to external objects");
         
@@ -3988,7 +3992,7 @@ std::vector<DocumentObject*> Document::copyObject(
         imported = md.importObjects(istr);
     }
 
-    if(imported.size()!=deps.size())
+    if(returnAll || imported.size()!=deps.size())
         return imported;
 
     std::unordered_map<App::DocumentObject*,size_t> indices;

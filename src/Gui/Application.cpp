@@ -846,7 +846,12 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
             // Call the closing mechanism from Python. This also checks whether pcDoc is the last open document.
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", pcDoc->getDocument()->getName());
             if (!d->activeDocument && d->documents.size()) {
+                Document *gdoc = 0;
                 for(auto &v : d->documents) {
+                    if(v.second->getDocument()->testStatus(App::Document::TempDoc))
+                        continue;
+                    else if (!gdoc)
+                        gdoc = v.second;
                     Gui::MDIView* view = v.second->getActiveView();
                     if(view) {
                         setActiveDocument(v.second);
@@ -854,9 +859,10 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
                         return;
                     }
                 }
-                auto gdoc = d->documents.begin()->second;
-                setActiveDocument(gdoc);
-                activateView(View3DInventor::getClassTypeId(),true);
+                if(gdoc) {
+                    setActiveDocument(gdoc);
+                    activateView(View3DInventor::getClassTypeId(),true);
+                }
             }
         }
         catch (const Base::Exception& e) {
