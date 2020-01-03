@@ -56,6 +56,7 @@ class PartDesignGuiExport ViewProviderSubShapeBinder : public PartGui::ViewProvi
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderShapeBinder);
 
 public:
+    App::PropertyBool UseBinderStyle;
 
     /// Constructor
     ViewProviderSubShapeBinder();
@@ -71,6 +72,8 @@ public:
     virtual bool doubleClicked() override;
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     virtual bool setEdit(int ModNum) override;
+    virtual void attach(App::DocumentObject *obj) override;
+    virtual void onChanged(const App::Property *prop) override;
 
 private:
     void updatePlacement(bool transaction);
