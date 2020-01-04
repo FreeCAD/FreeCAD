@@ -35,13 +35,8 @@ from PySide import QtCore
 
 __doc__ = "Class and implementation of Path Engrave operation"
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.trackModule(PathLog.thisModule())
 
 
 # Qt translation handling
@@ -84,6 +79,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         jobshapes = []
 
         if len(obj.Base) >= 1:  # user has selected specific subelements
+            PathLog.track(len(obj.Base))
             wires = []
             for base, subs in obj.Base:
                 edges = []
@@ -104,6 +100,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 jobshapes.append(Part.makeCompound(wires))
 
         else:  # Use the Job Base object
+            PathLog.track(self.model)
             for base in self.model:
                 PathLog.track(base.Label)
                 if base.isDerivedFrom('Part::Part2DObject'):
@@ -121,7 +118,6 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
 
         if len(jobshapes) > 0:
             PathLog.debug('processing {} jobshapes'.format(len(jobshapes)))
-            PathLog.track()
             wires = []
             for shape in jobshapes:
                 PathLog.debug('jobshape has {} edges'.format(len(shape.Edges)))
@@ -130,6 +126,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 self.buildpathocc(obj, shape.Wires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
+            PathLog.debug('processing {} jobshapes -> {} wires'.format(len(jobshapes), len(wires)))
         # the last command is a move to clearance, which is automatically added by PathOp
         if self.commandlist:
             self.commandlist.pop()
