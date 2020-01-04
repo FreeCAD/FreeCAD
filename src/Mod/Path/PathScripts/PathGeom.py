@@ -255,7 +255,7 @@ def cmdsForEdge(edge, flip = False, useHelixForBSpline = True, segm = 50, hSpeed
         p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
         p3 = pt
 
-        if (type(edge.Curve) == Part.Circle and isRoughly(edge.Curve.Axis.x, 0) and isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
+        if hasattr(edge.Curve, 'Axis') and ((type(edge.Curve) == Part.Circle and isRoughly(edge.Curve.Axis.x, 0) and isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve)):
             # This is an arc or a helix and it should be represented by a simple G2/G3 command
             if edge.Curve.Axis.z < 0:
                 cmd = 'G2' if not flip else 'G3'
