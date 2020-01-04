@@ -99,7 +99,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 wires.extend(basewires)
                 jobshapes.append(Part.makeCompound(wires))
 
-        else:  # Use the Job Base object
+        elif len(obj.BaseShapes) > 0:  # user added specific shapes
+            jobshapes.extend([base.Shape for base in obj.BaseShapes])
+        else:
             PathLog.track(self.model)
             for base in self.model:
                 PathLog.track(base.Label)
@@ -120,10 +122,10 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             PathLog.debug('processing {} jobshapes'.format(len(jobshapes)))
             wires = []
             for shape in jobshapes:
+                shapeWires = shape.Wires
                 PathLog.debug('jobshape has {} edges'.format(len(shape.Edges)))
                 self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-                shapeWires = shape.Wires
-                self.buildpathocc(obj, shape.Wires, self.getZValues(obj))
+                self.buildpathocc(obj, shapeWires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
             PathLog.debug('processing {} jobshapes -> {} wires'.format(len(jobshapes), len(wires)))
