@@ -93,6 +93,14 @@ class DraftLink(DraftObject):
         """Set up the link properties on attachment."""
         obj.configLinkProperty('Placement', LinkedObject='Base')
 
+        if not hasattr(obj, 'AlwaysSyncPlacement'):
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                'Force sync pattern placements even when array elements are expanded')
+            obj.addProperty("App::PropertyBool",
+                            "AlwaysSyncPlacement",
+                            "Draft",
+                            _tip)
+
         if hasattr(obj, 'ShowElement'):
             # Rename 'ShowElement' property to 'ExpandArray' to avoid conflict
             # with native App::Link
@@ -128,7 +136,13 @@ class DraftLink(DraftObject):
                             ' Link')
             obj.setPropertyStatus('ColoredElements', 'Hidden')
 
-        obj.configLinkProperty('LinkTransform', 'ColoredElements')
+        if not hasattr(obj,'LinkCopyOnChange'):
+            obj.addProperty("App::PropertyEnumeration","LinkCopyOnChange"," Link")
+
+        obj.configLinkProperty('LinkCopyOnChange','LinkTransform','ColoredElements')
+
+        if not getattr(obj, 'Fuse', False):
+            obj.setPropertyStatus('Shape', 'Transient')
 
     def getViewProviderName(self, _obj):
         """Override the view provider name."""
@@ -170,13 +184,15 @@ class DraftLink(DraftObject):
     def buildShape(self, obj, pl, pls):
         """Build the shape of the link object."""
         if self.use_link:
-            if not getattr(obj, 'ExpandArray', True) or obj.Count != len(pls):
+            if not getattr(obj, 'ExpandArray', False) or obj.Count != len(pls):
                 obj.setPropertyStatus('PlacementList', '-Immutable')
                 obj.PlacementList = pls
                 obj.setPropertyStatus('PlacementList', 'Immutable')
                 obj.Count = len(pls)
-        elif hasattr(obj, 'Count') and obj.Count != len(pls): # required for regular pointarrays
-            obj.Count = len(pls)
+            if getattr(obj, 'ExpandArray', False) \
+                    and getattr(obj, 'AlwaysSyncPlacement', False):
+                for pla,child in zip(pls,obj.ElementList):
+                    child.Placement = pla
 
         if obj.Base:
             shape = getattr(obj.Base, 'Shape', None)
@@ -198,10 +214,7 @@ class DraftLink(DraftObject):
                     if len(vis) > i and not vis[i]:
                         continue
 
-                    # 'I' is a prefix for disambiguation
-                    # when mapping element names
-                    base.append(shape.transformed(pla.toMatrix(),
-                                                  op='I{}'.format(i)))
+                    base.append(shape.transformed(pla.toMatrix()))
 
                 if getattr(obj, 'Fuse', False) and len(base) > 1:
                     obj.Shape = base[0].multiFuse(base[1:]).removeSplitter()
