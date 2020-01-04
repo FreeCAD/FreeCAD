@@ -415,6 +415,8 @@ bool TaskSectionView::accept()
     if (m_createMode) {
         if (m_section == nullptr) {
             apply();
+        } else {
+            updateSectionView();
         }
         Gui::Command::updateActive();
         Gui::Command::commitCommand();
