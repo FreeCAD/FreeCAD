@@ -29,11 +29,8 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 import math
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 class PathBaseGate(object):
     # pylint: disable=no-init

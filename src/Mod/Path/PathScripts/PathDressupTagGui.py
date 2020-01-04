@@ -422,8 +422,9 @@ class PathDressupTagViewProvider:
         if self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
         job = PathUtils.findParentJob(self.obj)
-        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
-        arg1.Object.Base = None
+        if arg1.Object and arg1.Object.Base and job:
+            job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
+            arg1.Object.Base = None
         # if self.debugDisplay():
         #    self.vobj.Debug.removeObjectsFromDocument()
         #    self.vobj.Debug.Document.removeObject(self.vobj.Debug.Name)

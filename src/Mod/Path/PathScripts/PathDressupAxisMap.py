@@ -168,10 +168,12 @@ class ViewProviderDressup:
     def onDelete(self, arg1=None, arg2=None):
         '''this makes sure that the base operation is added back to the project and visible'''
         # pylint: disable=unused-argument
-        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        job = PathUtils.findParentJob(arg1.Object)
-        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
-        arg1.Object.Base = None
+        if arg1.Object and arg1.Object.Base:
+            FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+            job = PathUtils.findParentJob(arg1.Object)
+            if job:
+                job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
+            arg1.Object.Base = None
         return True
 
 class CommandPathDressup:

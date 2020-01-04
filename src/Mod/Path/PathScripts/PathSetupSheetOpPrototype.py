@@ -30,13 +30,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 class Property(object):
     '''Base class for all prototype properties'''

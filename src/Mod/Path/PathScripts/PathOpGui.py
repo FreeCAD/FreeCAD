@@ -502,9 +502,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         for i in range(self.form.baseList.count()):
             item = self.form.baseList.item(i)
             obj = item.data(self.DataObject)
-            sub = str(item.data(self.DataObjectSub))
+            sub = item.data(self.DataObjectSub)
             if sub:
-                base = (obj, sub)
+                base = (obj, str(sub))
                 newlist.append(base)
         PathLog.debug("Setting new base: %s -> %s" % (self.obj.Base, newlist))
         self.obj.Base = newlist

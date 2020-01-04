@@ -29,8 +29,8 @@ import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathTests.PathTestUtils as PathTestUtils
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-PathLog.trackModule(PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 
 class TestPathHelix(PathTestUtils.PathTestBase):

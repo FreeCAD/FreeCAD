@@ -77,13 +77,8 @@ __created__ = "2016"
 __scriptVersion__ = "3t Usable"
 __lastModified__ = "2019-05-10 10:37 CST"
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 
 # Qt translation handling
