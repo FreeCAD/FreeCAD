@@ -75,7 +75,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     sToolTipText    = QT_TR_NOOP("Toggles the toolbar or selected geometry to/from construction mode");
     sWhatsThis      = "Sketcher_ToggleConstruction";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_AlterConstruction";
+    sPixmap         = "Sketcher_ToggleConstruction";
     sAccel          = "C,M";
     eType           = ForEdit;
 
