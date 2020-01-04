@@ -5720,7 +5720,12 @@ class _DraftLink(_DraftObject):
         if not hasattr(obj,'ColoredElements'):
             obj.addProperty('App::PropertyLinkSubHidden','ColoredElements',' Link')
             obj.setPropertyStatus('ColoredElements','Hidden')
-        obj.configLinkProperty('LinkTransform','ColoredElements')
+        if not hasattr(obj,'LinkCopyOnChange'):
+            obj.addProperty("App::PropertyEnumeration","LinkCopyOnChange"," Link")
+        if not hasattr(obj,'SyncPlacement'):
+            obj.addProperty("App::PropertyBool","SyncPlacement","Draft",
+                    QT_TRANSLATE_NOOP("App::Property","Sync placement when ExpandArray is True"))
+        obj.configLinkProperty('LinkCopyOnChange','LinkTransform','ColoredElements')
 
     def getViewProviderName(self,_obj):
         if self.useLink:
@@ -5743,34 +5748,50 @@ class _DraftLink(_DraftObject):
         import DraftGeomUtils
 
         if self.useLink:
-            if not getattr(obj,'ExpandArray',True) or obj.Count != len(pls):
+            if obj.Count != len(pls):
+                obj.Count = len(pls)
+            if not getattr(obj,'ExpandArray',False):
                 obj.setPropertyStatus('PlacementList','-Immutable')
                 obj.PlacementList = pls
                 obj.setPropertyStatus('PlacementList','Immutable')
-                obj.Count = len(pls)
+            elif getattr(obj, 'SyncPlacement',False):
+                for pla,child in zip(pls,obj.ElementList):
+                    touched = 'Touched' in child.State
+                    child.Placement = pla
+                    if not touched:
+                        child.purgeTouched()
 
         if obj.Base:
-            shape = Part.getShape(obj.Base)
-            if shape.isNull():
-                raise RuntimeError("'{}' cannot build shape of '{}'\n".format(
-                        obj.Name,obj.Base.Name))
-            else:
-                shape = shape.copy()
-                shape.Placement = FreeCAD.Placement()
-                base = []
+            base = []
+            if getattr(obj,'ExpandArray',False):
                 for i,pla in enumerate(pls):
-                    vis = getattr(obj,'VisibilityList',[])
-                    if len(vis)>i and not vis[i]:
-                        continue;
-                    # 'I' is a prefix for disambiguation when mapping element names
-                    base.append(shape.transformed(pla.toMatrix(),op='I{}'.format(i)))
-                if getattr(obj,'Fuse',False) and len(base) > 1:
-                    obj.Shape = base[0].multiFuse(base[1:]).removeSplitter()
+                    if not obj.isElementVisible(str(i)):
+                        continue
+                    shape = Part.getShape(obj,str(i)+'.')
+                    if not shape.isNull():
+                        base.append(shape)
+            else:
+                shape = Part.getShape(obj.Base)
+                if shape.isNull():
+                    raise RuntimeError("'{}' cannot build shape of '{}'\n".format(
+                            obj.Name,obj.Base.Name))
                 else:
-                    obj.Shape = Part.makeCompound(base)
+                    shape = shape.copy()
+                    shape.Placement = FreeCAD.Placement()
+                    for i,pla in enumerate(pls):
+                        vis = getattr(obj,'VisibilityList',[])
+                        if len(vis)>i and not vis[i]:
+                            continue;
+                        # 'I' is a prefix for disambiguation when mapping element names
+                        base.append(shape.transformed(pla.toMatrix(),op='I{}'.format(i)))
 
-                if not DraftGeomUtils.isNull(pl):
-                    obj.Placement = pl
+            if getattr(obj,'Fuse',False) and len(base) > 1:
+                obj.Shape = base[0].multiFuse(base[1:]).removeSplitter()
+            else:
+                obj.Shape = Part.makeCompound(base)
+
+            if not DraftGeomUtils.isNull(pl):
+                obj.Placement = pl
 
         if self.useLink:
             return False # return False to call LinkExtension::execute()
