@@ -261,7 +261,7 @@ EXPO     [eE][-+]?[0-9]+
 
 "Ohm"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Ohm;                 yylval.quantity.unitStr = yytext; return UNIT; // Ohm (kg*m^2/A^2/s^3)
 "kOhm"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloOhm;             yylval.quantity.unitStr = yytext; return UNIT; // kilo Ohm
-"MOhm"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliOhm;            yylval.quantity.unitStr = yytext; return UNIT; // mega Ohm
+"MOhm"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaOhm;             yylval.quantity.unitStr = yytext; return UNIT; // mega Ohm
 
 "C"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Coulomb;             yylval.quantity.unitStr = yytext; return UNIT; // Coulomb (A*s)
 
