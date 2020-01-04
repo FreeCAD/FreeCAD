@@ -37,13 +37,8 @@ from PySide import QtCore
 
 LOG_MODULE = PathLog.thisModule()
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-    PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-else:
-    PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
+PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
+#PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 
 
 # Qt translation handling
