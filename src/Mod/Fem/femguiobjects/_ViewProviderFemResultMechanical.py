@@ -312,7 +312,11 @@ class _TaskPanelFemResultShow:
         # the FEM result mechanical task panel restore values
         # are saved in a dictionary which is an attribute of FreeCAD
         # the name is FEM_dialog
+        # in python console after result task panel has been opened once
+        # FreeCAD.FEM_dialog or FreeCAD.__dir__()
         # This is not smart at all IMHO (Bernd)
+        # It was added with commit 3a7772d
+        # https://github.com/FreeCAD/FreeCAD/commit/3a7772d
         FreeCAD.FEM_dialog = {
             "results_type": "None",
             "show_disp": False,
