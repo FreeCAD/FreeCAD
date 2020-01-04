@@ -308,6 +308,15 @@ class _TaskPanelFemResultShow:
             self.restore_initial_result_dialog()
 
     def restore_initial_result_dialog(self):
+        # initialize FreeCAD.FEM_dialog and set standard values
+        # the FEM result mechanical task panel restore values
+        # are saved in a dictionary which is an attribute of FreeCAD
+        # the name is FEM_dialog
+        # in python console after result task panel has been opened once
+        # FreeCAD.FEM_dialog or FreeCAD.__dir__()
+        # This is not smart at all IMHO (Bernd)
+        # It was added with commit 3a7772d
+        # https://github.com/FreeCAD/FreeCAD/commit/3a7772d
         FreeCAD.FEM_dialog = {
             "results_type": "None",
             "show_disp": False,
@@ -511,8 +520,6 @@ class _TaskPanelFemResultShow:
         return scalar_list
 
     def result_selected(self, res_type, res_values, res_unit):
-        # What is the FreeCAD.FEM_dialog for ???
-        # Where is it initialized ?
         FreeCAD.FEM_dialog["results_type"] = res_type
         (minm, avg, maxm) = self.get_result_stats(res_type)
         self.update_colors_stats(res_values, res_unit, minm, avg, maxm)
@@ -634,6 +641,8 @@ class _TaskPanelFemResultShow:
         node_numbers = list(self.mesh_obj.FemMesh.Nodes.keys())
         zero_values = [0] * len(node_numbers)
         self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
+        # TODO it seams a result mesh reset has to be done for transparency mesh separately
+        # see https://forum.freecadweb.org/viewtopic.php?f=18&t=41951&p=357700#p357698
 
     def reject(self):
         # if the tasks panel is called from Command obj is not in edit mode
