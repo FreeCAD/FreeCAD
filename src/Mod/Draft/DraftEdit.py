@@ -554,17 +554,13 @@ class Edit():
                                                    + str(self.maxObjects) + "\n"))
             return None
         for obj in selection:
-            if "Proxy" in selection[0].PropertiesList and hasattr(selection[0].Proxy,"Type"):
-                if Draft.getType(obj) in self.supportedObjs:
+            if Draft.getType(obj) in self.supportedObjs:
+                self.objs.append(obj)
+                continue
+            elif Draft.getType(obj) in self.supportedPartObjs:
+                if obj.TypeId in self.supportedPartObjs:
                     self.objs.append(obj)
                     continue
-            else:
-                try:
-                    if Draft.getType(obj) in self.supportedPartObjs and obj.TypeId in self.supportedPartObjs:
-                        self.objs.append(obj)
-                        continue
-                except:
-                    pass
             App.Console.PrintWarning(translate("draft",
                                          str(obj.Name)
                                          + ": this object is not editable")
@@ -686,15 +682,39 @@ class Edit():
             self.trackers = {'object':[]}
 
 
-    def hideTrackers(self):
-        "hide Edit Trackers"
-        for t in self.trackers[self.obj.Name]:
-            t.off()
+    def hideTrackers(self, obj=None):
+        """hide Edit Trackers
 
-    def showTrackers(self):
-        "show Edit Trackers"
-        for t in self.trackers[self.obj.Name]:
-            t.on()
+        Attributes
+        ----------
+        obj : FreeCAD object
+            hides trackers only for given object, 
+            if obj is None, hides all trackers
+        """
+        if obj is None:
+            for key in self.trackers:
+                for t in self.trackers[key]:
+                    t.off()
+        else:
+            for t in self.trackers[obj.Name]:
+                t.off()
+
+    def showTrackers(self, obj=None):
+        """show Edit Trackers
+
+        Attributes
+        ----------
+        obj : FreeCAD object
+            shows trackers only for given object, 
+            if obj is None, shows all trackers
+        """
+        if obj is None:
+            for key in self.trackers:
+                for t in self.trackers[key]:
+                    t.on()
+        else:
+            for t in self.trackers[obj.Name]:
+                t.on()
 
     #---------------------------------------------------------------------------
     # PREVIEW
