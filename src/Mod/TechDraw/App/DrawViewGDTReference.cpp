@@ -89,9 +89,9 @@ DrawViewGDTReference::DrawViewGDTReference(void)
     ScaleType.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::Hidden,true);
     Scale.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,true);
+    Scale.setStatus(App::Property::Hidden,false);
     Rotation.setStatus(App::Property::ReadOnly,true);
-    Rotation.setStatus(App::Property::Hidden,true);
+    Rotation.setStatus(App::Property::Hidden,false);
     Caption.setStatus(App::Property::Hidden,true);
 }
 

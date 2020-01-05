@@ -89,7 +89,7 @@ public:
     void setLabelText(QGCustomText* newText) { m_labelText = newText; }
 
     bool hasHover;
-
+    Base::Vector3d linkDir;
     QGIViewGDTReference *parent;
 
 Q_SIGNALS:
@@ -115,6 +115,7 @@ protected:
     double posY;
     double m_marginHeight;
     double m_marginWidth;
+
     
 private:
 };
@@ -167,15 +168,19 @@ protected:
     QGIDimLines* referenceShape;
     QGIArrow* referenceArrow;
     double m_lineWidth;
-    bool m_obtuse;
     void parentViewMousePressed(QGIView *view, QPointF pos);
     QGIView *parent;
+    double labelAngle;
 
 private:
     Base::Vector3d calculateCenter(TechDraw::PointPair & segment);
-    Base::Vector3d calculateLabelPlacement(TechDraw::PointPair & segment, double length);
+    Base::Vector3d calculateLabelPlacement(TechDraw::PointPair & segment, Base::Vector3d & origin, double length);
+    //static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
+    // TODO move to utils (using in QGIViewDimension)
+    double getIsoStandardLinePlacement(double labelAngle);
+    static inline double toDeg(double a) { return a*180/M_PI; }
     static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
-
+    static inline double toQtDeg(double a) { return -a*180.0/M_PI; }
 };
 
 } // namespace
