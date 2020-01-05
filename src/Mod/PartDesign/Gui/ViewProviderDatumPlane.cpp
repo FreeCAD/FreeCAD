@@ -27,8 +27,11 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCoordinate3.h>
+# include <Precision.hxx>
 #endif
 
+#include <Base/Tools.h>
+#include <Gui/SoFCSelectionAction.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
@@ -44,12 +47,10 @@ ViewProviderDatumPlane::ViewProviderDatumPlane()
     sPixmap = "PartDesign_Plane.svg";
 
     pCoords = new SoCoordinate3();
-    pCoords->ref ();
 }
 
 ViewProviderDatumPlane::~ViewProviderDatumPlane()
 {
-    pCoords->unref ();
 }
 
 void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
@@ -69,6 +70,8 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
     lineSet->coordIndex.set1Value(5, SO_END_LINE_INDEX);
 
     PartGui::SoBrepFaceSet *faceSet = new PartGui::SoBrepFaceSet();
+    pFaceSet.reset(faceSet);
+    
     // SoBrepFaceSet supports only triangles (otherwise we receive incorrect highlighting)
     faceSet->partIndex.set1Value(0, 2); // One face, two triangles
     faceSet->coordIndex.setNum(8);
@@ -89,20 +92,29 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
 
 void ViewProviderDatumPlane::updateData(const App::Property* prop)
 {
-    // Gets called whenever a property of the attached object changes
-    if (strcmp(prop->getName(),"Placement") == 0) {
-        updateExtents ();
-    }
-    else if (strcmp(prop->getName(),"Length") == 0 ||
-             strcmp(prop->getName(),"Width") == 0) {
-        PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
-        if (pcDatum->ResizeMode.getValue() != 0)
-            setExtents(pcDatum->Length.getValue(), pcDatum->Width.getValue());
+    if(!prop)
+        return;
+    auto name = prop->getName();
+    if(name && !prop->testStatus(App::Property::User3)) {
+        if(strcmp(name, "Placement")==0
+                || strcmp(name, "Length")==0
+                || strcmp(name, "Width")==0
+                || strcmp(name, "ResizeMode")==0)
+        {
+            updateExtents();
+        }
     }
 
     ViewProviderDatum::updateData(prop);
 }
 
+void ViewProviderDatumPlane::updateExtents() {
+    auto pcDatum = Base::freecad_dynamic_cast<PartDesign::Plane>(getObject());
+    if (pcDatum && pcDatum->ResizeMode.getValue() != 0)
+        setExtents(pcDatum->Length.getValue(), pcDatum->Width.getValue());
+    else
+        ViewProviderDatum::updateExtents();
+}
 
 void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
     PartDesign::Plane* pcDatum = static_cast<PartDesign::Plane*>(this->getObject());
@@ -118,17 +130,40 @@ void ViewProviderDatumPlane::setExtents (Base::BoundBox3d bbox) {
     // Add origin of the plane to the box if it's not
     bbox.Add ( Base::Vector3d (0, 0, 0) );
 
-    double margin = sqrt(bbox.LengthX ()*bbox.LengthY ()) * marginFactor ();
+    double length = bbox.LengthX();
+    if (length < Precision::Confusion()) {
+        length = pcDatum->Length.getValue();
+        bbox.MaxX += length/2.0; 
+        bbox.MinX -= length/2.0; 
+    } else if (length != pcDatum->Length.getValue()) {
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &pcDatum->Length);
+        pcDatum->Length.setValue(length);
+    }
 
-    pcDatum->Length.setValue(bbox.LengthX() + 2*margin);
-    pcDatum->Width.setValue(bbox.LengthY() + 2*margin);
+    double width = bbox.LengthY();
+    if (width < Precision::Confusion()) {
+        width = pcDatum->Width.getValue();
+        bbox.MaxY += width/2.0; 
+        bbox.MinY -= width/2.0; 
+    } else if (width != pcDatum->Width.getValue()) {
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &pcDatum->Width);
+        pcDatum->Width.setValue(width);
+    }
+
+    double marginx = length * marginFactor ();
+    double marginy = width * marginFactor ();
 
     // Change the coordinates of the line
     pCoords->point.setNum (4);
-    pCoords->point.set1Value(0, bbox.MaxX + margin, bbox.MaxY + margin, 0 );
-    pCoords->point.set1Value(1, bbox.MinX - margin, bbox.MaxY + margin, 0 );
-    pCoords->point.set1Value(2, bbox.MinX - margin, bbox.MinY - margin, 0 );
-    pCoords->point.set1Value(3, bbox.MaxX + margin, bbox.MinY - margin, 0 );
+    pCoords->point.set1Value(0, bbox.MaxX + marginx, bbox.MaxY + marginy, 0 );
+    pCoords->point.set1Value(1, bbox.MinX - marginx, bbox.MaxY + marginy, 0 );
+    pCoords->point.set1Value(2, bbox.MinX - marginx, bbox.MinY - marginy, 0 );
+    pCoords->point.set1Value(3, bbox.MaxX + marginx, bbox.MinY - marginy, 0 );
+
+    if(pFaceSet) {
+        Gui::SoUpdateVBOAction action;
+        action.apply(this->pFaceSet);
+    }
 }
 
 void ViewProviderDatumPlane::setExtents(double l, double w)
@@ -139,4 +174,10 @@ void ViewProviderDatumPlane::setExtents(double l, double w)
     pCoords->point.set1Value(1, -l/2, w/2, 0);
     pCoords->point.set1Value(2, -l/2, -w/2, 0);
     pCoords->point.set1Value(3, l/2, -w/2, 0);
+
+    if(pFaceSet) {
+        Gui::SoUpdateVBOAction action;
+        action.apply(this->pFaceSet);
+    }
+
 }

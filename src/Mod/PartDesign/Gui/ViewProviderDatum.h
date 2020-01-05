@@ -73,7 +73,7 @@ public:
     void setExtents (const SbBox3f &bbox);
 
     /// update size to match the guessed bounding box
-    void updateExtents ();
+    virtual void updateExtents ();
 
     /// The datum type (Plane, Line or Point)
     // TODO remove this attribute (2015-09-08, Fat-Zer)

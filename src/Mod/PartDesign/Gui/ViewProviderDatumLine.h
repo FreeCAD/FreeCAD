@@ -36,6 +36,7 @@ class PartDesignGuiExport ViewProviderDatumLine : public PartDesignGui::ViewProv
     PROPERTY_HEADER(PartDesignGui::ViewProviderDatumLine);
 
 public:
+
     /// Constructor
     ViewProviderDatumLine();
     virtual ~ViewProviderDatumLine();
@@ -44,6 +45,7 @@ public:
     virtual void updateData(const App::Property*);
 
     virtual void setExtents (Base::BoundBox3d bbox);
+    virtual void updateExtents();
 
 private:
     SoCoordinate3 *pCoords;

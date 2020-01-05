@@ -50,7 +50,6 @@ public:
 
     Base::Vector3d getNormal();
 
-private:
     static const char* ResizeModeEnums[];
 };
 

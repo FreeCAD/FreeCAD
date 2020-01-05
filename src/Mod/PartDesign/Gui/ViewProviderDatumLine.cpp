@@ -26,8 +26,10 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCoordinate3.h>
+# include <Precision.hxx>
 #endif
 
+#include <Base/Tools.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 
@@ -65,19 +67,39 @@ void ViewProviderDatumLine::attach ( App::DocumentObject *obj ) {
     getShapeRoot ()->addChild(lineSet);
 }
 
-void ViewProviderDatumLine::updateData(const App::Property* prop)
-{
-    // Gets called whenever a property of the attached object changes
-    if (strcmp(prop->getName(),"Placement") == 0) {
-        updateExtents ();
+void ViewProviderDatumLine::updateData(const App::Property* prop) {
+    if(!prop)
+        return;
+    auto name = prop->getName();
+    if(name && !prop->testStatus(App::Property::User3)) {
+        if(strcmp(name, "Placement")==0
+                || strcmp(name, "Length")==0
+                || strcmp(name, "ResizeMode")==0)
+        {
+            updateExtents();
+        }
     }
 
     ViewProviderDatum::updateData(prop);
 }
 
+void ViewProviderDatumLine::updateExtents() {
+    auto pcDatum = Base::freecad_dynamic_cast<PartDesign::Line>(getObject());
+    if (pcDatum && pcDatum->ResizeMode.getValue() != 0)
+        setExtents(Base::BoundBox3d());
+    else
+        ViewProviderDatum::updateExtents();
+}
 
 void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
-    PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
+    auto pcDatum = Base::freecad_dynamic_cast<PartDesign::Line>(getObject());
+    if(!pcDatum)
+        return;
+
+    if (pcDatum->ResizeMode.getValue() != 0) {
+        double l = pcDatum->Length.getValue()/2.0;
+        bbox = Base::BoundBox3d(-l, -l, -l, l, l, l);
+    }
 
     Base::Placement plm = pcDatum->Placement.getValue ().inverse ();
 
@@ -86,7 +108,17 @@ void ViewProviderDatumLine::setExtents (Base::BoundBox3d bbox) {
     // Add origin of the line to the box if it's not
     bbox.Add ( Base::Vector3d (0, 0, 0) );
 
-    double margin = bbox.LengthZ () * marginFactor ();
+    double length = bbox.LengthZ();
+    if (length < Precision::Confusion()) {
+        length = pcDatum->Length.getValue();
+        bbox.MaxZ += length/2.0;
+        bbox.MinZ -= length/2.0;
+    } else if (length != pcDatum->Length.getValue()) {
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3, &pcDatum->Length);
+        pcDatum->Length.setValue(length);
+    }
+
+    double margin = length * marginFactor();
 
     // Display the line
     pCoords->point.setNum (2);

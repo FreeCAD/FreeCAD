@@ -26,6 +26,7 @@
 #define PARTDESIGN_DATUMLINE_H
 
 #include <Mod/Part/App/DatumFeature.h>
+#include <App/PropertyUnits.h>
 
 namespace PartDesign
 {
@@ -35,12 +36,17 @@ class PartDesignExport Line : public Part::Datum
     PROPERTY_HEADER(PartDesign::Line);
 
 public:
+    App::PropertyEnumeration ResizeMode;
+    App::PropertyLength Length;
+
     Line();
     virtual ~Line();
 
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderDatumLine";
     }
+
+    virtual void onChanged(const App::Property *prop);
 
     Base::Vector3d getDirection() const;
 };
