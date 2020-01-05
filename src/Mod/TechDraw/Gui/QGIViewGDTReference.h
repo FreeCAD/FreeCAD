@@ -87,10 +87,12 @@ public:
     void setLabelString(QString t, qreal maxWidth);
     QGCustomText* getLabelText(void) { return m_labelText; }
     void setLabelText(QGCustomText* newText) { m_labelText = newText; }
+    void rotate(void);
 
     bool hasHover;
-    Base::Vector3d linkDir;
+
     QGIViewGDTReference *parent;
+    double m_angle;
 
 Q_SIGNALS:
     void dragging(bool);
@@ -115,8 +117,8 @@ protected:
     double posY;
     double m_marginHeight;
     double m_marginWidth;
-
     
+
 private:
 };
 
@@ -170,11 +172,12 @@ protected:
     double m_lineWidth;
     void parentViewMousePressed(QGIView *view, QPointF pos);
     QGIView *parent;
-    double labelAngle;
+    Base::Vector3d m_linkDir;
+    double m_arrowAngle;
 
 private:
     Base::Vector3d calculateCenter(TechDraw::PointPair & segment);
-    Base::Vector3d calculateLabelPlacement(TechDraw::PointPair & segment, Base::Vector3d & origin, double length);
+    void labelPlacementAndRotation(TechDraw::PointPair & segment, Base::Vector3d & origin, double length);
     //static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
     // TODO move to utils (using in QGIViewDimension)
     double getIsoStandardLinePlacement(double labelAngle);
