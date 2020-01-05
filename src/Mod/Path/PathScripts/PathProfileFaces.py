@@ -43,8 +43,7 @@ __created__ = "2014"
 __scriptVersion__ = "2j usable"
 __lastModified__ = "2019-07-25 14:48 CST"
 
-LOGLEVEL = PathLog.Level.INFO  # change to .DEBUG to enable debugging messages
-PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):

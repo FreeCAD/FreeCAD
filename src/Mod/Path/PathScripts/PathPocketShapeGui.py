@@ -43,13 +43,8 @@ __doc__ = "Pocket Shape operation page controller and command implementation."
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-LOGLEVEL = False
-
-if LOGLEVEL:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 class _Extension(object):
     ColourEnabled = (1.0,  .5, 1.0)
@@ -119,10 +114,12 @@ class _Extension(object):
         return not self.root is None
 
     def show(self):
-        self.switch.whichChild = coin.SO_SWITCH_ALL
+        if self.switch:
+            self.switch.whichChild = coin.SO_SWITCH_ALL
 
     def hide(self):
-        self.switch.whichChild = coin.SO_SWITCH_NONE
+        if self.switch:
+            self.switch.whichChild = coin.SO_SWITCH_NONE
 
     def enable(self, ena = True):
         if ena:
@@ -231,7 +228,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.setExtensions(self.extensions)
 
     def createItemForBaseModel(self, base, sub, edges, extensions):
-        PathLog.track()
+        PathLog.track(base.Label, sub, '+', len(edges), len(base.Shape.getElement(sub).Edges))
         ext = _Extension(self.obj, base, sub, None)
         item = QtGui.QStandardItem()
         item.setData(sub, QtCore.Qt.EditRole)
@@ -241,17 +238,18 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         extendCorners = self.form.extendCorners.isChecked()
 
         def createSubItem(label, ext0):
-            self.switch.addChild(ext0.root)
-            item0 = QtGui.QStandardItem()
-            item0.setData(label, QtCore.Qt.EditRole)
-            item0.setData(ext0, self.DataObject)
-            item0.setCheckable(True)
-            for e in extensions:
-                if e.obj == base and e.sub == label:
-                    item0.setCheckState(QtCore.Qt.Checked)
-                    ext0.enable()
-                    break
-            item.appendRow([item0])
+            if ext0.root:
+                self.switch.addChild(ext0.root)
+                item0 = QtGui.QStandardItem()
+                item0.setData(label, QtCore.Qt.EditRole)
+                item0.setData(ext0, self.DataObject)
+                item0.setCheckable(True)
+                for e in extensions:
+                    if e.obj == base and e.sub == label:
+                        item0.setCheckState(QtCore.Qt.Checked)
+                        ext0.enable()
+                        break
+                item.appendRow([item0])
 
         extensionEdges = {}
         for edge in base.Shape.getElement(sub).Edges:
@@ -305,7 +303,8 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         def removeItemSwitch(item, ext):
             # pylint: disable=unused-argument
             ext.hide()
-            self.switch.removeChild(ext.root)
+            if ext.root:
+                self.switch.removeChild(ext.root)
         self.forAllItemsCall(removeItemSwitch)
         self.model.clear()
 
