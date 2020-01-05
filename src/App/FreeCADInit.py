@@ -726,6 +726,11 @@ App.Units.MegaOhm      = App.Units.Quantity('MOhm')
 App.Units.Coulomb       = App.Units.Quantity('C')
 
 App.Units.Tesla         = App.Units.Quantity('T')
+App.Units.Gauss         = App.Units.Quantity('G')
+
+App.Units.Weber         = App.Units.Quantity('Wb')
+
+App.Units.Oersted       = App.Units.Quantity('Oe')
 
 App.Units.PicoFarad     = App.Units.Quantity('pF')
 App.Units.NanoFarad     = App.Units.Quantity('nF')
