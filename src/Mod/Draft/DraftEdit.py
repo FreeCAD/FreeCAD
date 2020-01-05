@@ -191,6 +191,12 @@ class Edit():
         it is initialized when user clicks on a editTracker
         by self.startEditing() function.
 
+    alt_edit_mode : Int
+        Allows alternative editing modes for objects.
+        ATM supported for:
+        - arcs: if 0 edit by 3 points, if 1 edit by center, 
+                radius, angles
+
     supportedObjs : List
         List of supported Draft Objects.
         The tool use Draft.getType(obj) to compare object type
@@ -230,7 +236,7 @@ class Edit():
         self.maxObjects = param.GetInt("DraftEditMaxObjects", 5)
         self.pick_radius = param.GetInt("DraftEditPickRadius", 20)
         
-        self.arc_edit_mode = 1 # set 1 for 3 points, 0 for angle and radius
+        self.alt_edit_mode = 0 # alternative edit mode for objects
 
         # preview
         self.ghost = None
@@ -535,7 +541,7 @@ class Edit():
             # position should be updated manually
             self.trackers[obj.Name][nodeIndex].set(v)
         self.update(obj, nodeIndex, v)
-        self.arc_edit_mode = 1
+        self.alt_edit_mode = 0
         self.ui.editUi(self.ui.lastMode)
         self.node = []
         self.editing = None
@@ -584,8 +590,8 @@ class Edit():
                     return obj
 
     def numericInput(self, v, numy=None, numz=None):
-        '''this function gets called by the toolbar
-        or by the mouse click and activate the update function'''
+        """this function gets called by the toolbar
+        or by the mouse click and activate the update function"""
         if (numy is not None):
             v = App.Vector(v,numy,numz)
         self.endEditing(self.obj, self.editing, v)
@@ -771,7 +777,8 @@ class Edit():
             self.ghost.on()
             self.ghost.setCenter(obj.getGlobalPlacement().Base)
             self.ghost.setRadius(obj.Radius)
-            if self.obj.FirstAngle == self.obj.LastAngle:#self.obj is a circle
+            if self.obj.FirstAngle == self.obj.LastAngle:
+                # self.obj is a circle
                 self.ghost.circle = True
                 if self.editing == 0:
                     self.ghost.setCenter(pt)
@@ -779,7 +786,33 @@ class Edit():
                     radius = pt.sub(obj.getGlobalPlacement().Base).Length
                     self.ghost.setRadius(radius)
             else:
-                if self.arc_edit_mode == 0:
+                if self.alt_edit_mode == 0:
+                    # edit by 3 points
+                    if self.editing == 0:
+                        # center point
+                        import DraftVecUtils
+                        p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
+                        p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
+                        p0 = DraftVecUtils.project(self.invpl.multVec(pt),self.invpl.multVec(self.getArcMid(obj, global_placement=True)))
+                        self.ghost.autoinvert=False
+                        self.ghost.setRadius(p1.sub(p0).Length)
+                        self.ghost.setStartPoint(self.obj.Shape.Vertexes[1].Point)
+                        self.ghost.setEndPoint(self.obj.Shape.Vertexes[0].Point)
+                        self.ghost.setCenter(self.pl.multVec(p0))
+                        return
+                    else:
+                        p1=self.getArcStart(obj,global_placement=True)
+                        p2=self.getArcMid(obj,global_placement=True)
+                        p3=self.getArcEnd(obj,global_placement=True)
+                        if self.editing == 1:
+                            p1=pt
+                        elif self.editing == 3:
+                            p2=pt
+                        elif self.editing == 2:
+                            p3=pt
+                        self.ghost.setBy3Points(p1,p2,p3)
+                elif self.alt_edit_mode == 1:
+                    # edit by center radius angles
                     self.ghost.setStartAngle(math.radians(obj.FirstAngle))
                     self.ghost.setEndAngle(math.radians(obj.LastAngle))
                     if self.editing == 0:
@@ -790,29 +823,6 @@ class Edit():
                         self.ghost.setEndPoint(pt)
                     elif self.editing == 3:
                         self.ghost.setRadius(self.invpl.multVec(pt).Length)
-                elif self.arc_edit_mode == 1:
-                    if self.editing == 0:#center point
-                        import DraftVecUtils
-                        p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
-                        p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
-                        p0 = DraftVecUtils.project(self.invpl.multVec(pt),self.invpl.multVec(self.getArcMid(self.obj)))
-                        self.ghost.autoinvert=False
-                        self.ghost.setRadius(p1.sub(p0).Length)
-                        self.ghost.setStartPoint(self.obj.Shape.Vertexes[1].Point)
-                        self.ghost.setEndPoint(self.obj.Shape.Vertexes[0].Point)
-                        self.ghost.setCenter(self.pl.multVec(p0))
-                        return
-                    else:
-                        p1=self.obj.Shape.Vertexes[0].Point
-                        p2=self.getArcMid(self.obj)
-                        p3=self.obj.Shape.Vertexes[1].Point
-                        if self.editing == 1:
-                            p1=pt
-                        elif self.editing == 3:
-                            p2=pt
-                        elif self.editing == 2:
-                            p3=pt
-                        self.ghost.setBy3Points(p1,p2,p3)
         DraftTools.redraw3DView()
 
     def applyPlacement(self,pointList):
@@ -980,9 +990,9 @@ class Edit():
             self.editpoints = []
 
     def getEditPoints(self, obj):
-        '''
+        """
         (object) return a list of App.Vectors relative to object edit nodes
-        '''
+        """
         objectType = Draft.getType(obj)
 
         if objectType in ["Wire","BSpline"]:
@@ -1292,12 +1302,12 @@ class Edit():
     #---------------------------------------------------------------------------
 
     def getRectanglePts(self, obj):
-        '''
+        """
         returns the list of edipoints for the given Draft Rectangle
         0 : Placement.Base
         1 : Length
         2 : Height
-        '''
+        """
         editpoints = []
         editpoints.append(obj.getGlobalPlacement().Base)
         editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(obj.Length,0,0)))
@@ -1337,7 +1347,7 @@ class Edit():
     #---------------------------------------------------------------------------
 
     def getCirclePts(self, obj):
-        '''
+        """
         returns the list of edipoints for the given Draft Arc or Circle
         circle:
         0 : Placement.Base or center
@@ -1347,123 +1357,121 @@ class Edit():
         1 : first endpoint
         2 : second endpoint
         3 : midpoint
-        '''        
+        """        
         editpoints = []
         editpoints.append(obj.getGlobalPlacement().Base)
-        if obj.FirstAngle == obj.LastAngle:#self.obj is a circle
+        if obj.FirstAngle == obj.LastAngle:
+            # obj is a circle
             self.ui.editUi("Circle")
             editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(obj.Radius,0,0)))
-        else:#self.obj is an arc
+        else:
+            # obj is an arc
             self.ui.editUi("Arc")
-            editpoints.append(self.getArcStart(obj))#First endpoint
-            editpoints.append(self.getArcEnd(obj))#Second endpoint
-            editpoints.append(self.getArcMid(obj))#Midpoint
+            editpoints.append(self.getArcStart(obj, global_placement=True))#First endpoint
+            editpoints.append(self.getArcEnd(obj, global_placement=True))#Second endpoint
+            editpoints.append(self.getArcMid(obj, global_placement=True))#Midpoint
         return editpoints
 
-    def updateCircleTrackers(self,obj):
+    def updateCircleTrackers(self, obj):
         self.trackers[obj.Name][0].set(obj.getGlobalPlacement().Base)
-        self.trackers[obj.Name][1].set(self.getArcStart(obj))
-        if len(self.trackers[obj.Name]) > 2: # object is a circle
-            self.trackers[obj.Name][2].set(self.getArcEnd(obj))
-            self.trackers[obj.Name][3].set(self.getArcMid(obj))
+        self.trackers[obj.Name][1].set(self.getArcStart(obj, global_placement=True))
+        if len(self.trackers[obj.Name]) > 2: 
+            # object is an arc
+            self.trackers[obj.Name][2].set(self.getArcEnd(obj, global_placement=True))
+            self.trackers[obj.Name][3].set(self.getArcMid(obj, global_placement=True))
 
     def updateCircle(self, obj, nodeIndex, v):
         delta = obj.getGlobalPlacement().inverse().multVec(v)
-        if obj.FirstAngle == obj.LastAngle:# object is a circle
-            if self.editing == 0:
-                obj.Placement.move(delta)
-            elif self.editing == 1:
+        local_v = obj.Placement.multVec(delta)
+
+        if obj.FirstAngle == obj.LastAngle:
+            # object is a circle
+            if nodeIndex == 0:
+                obj.Placement.Base = local_v
+            elif nodeIndex == 1:
                 obj.Radius = delta.Length
-            self.obj.recompute()
-            self.updateCircleTrackers(obj)
 
-        else:#self.obj is an arc
-
-            if self.arc_edit_mode == 0:#edit by center radius FirstAngle LastAngle
-                #deltaX = v[0]-self.obj.Placement.Base[0]
-                #deltaY = v[1]-self.obj.Placement.Base[1]
-                dangle = math.degrees(math.atan2(delta[1],delta[0]))
-                if self.editing == 0:
-                    p = self.obj.Placement
-                    p.move(delta)
-                    self.obj.Placement = p
-                    self.setPlacement(self.obj)
-                    self.updateCircleTrackers(obj)
-                elif self.editing == 1:
-                    self.obj.FirstAngle = dangle
-                    self.obj.recompute()
-                    self.updateCircleTrackers(obj)
-                elif self.editing == 2:
-                    self.obj.LastAngle = dangle
-                    self.obj.recompute()
-                    self.updateCircleTrackers(obj)
-                elif self.editing == 3:
-                    self.obj.Radius = delta.Length
-                    self.obj.recompute()
-                    self.updateCircleTrackers(obj)
-
-            elif self.arc_edit_mode == 1:
+        else:
+            # obj is an arc
+            if self.alt_edit_mode == 0:
+                # edit arc by 3 points
                 import Part
-                if self.editing == 0:#center point
+                if nodeIndex == 0:
+                    #center point
                     import DraftVecUtils
-                    p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
-                    p2 = self.invpl.multVec(self.obj.Shape.Vertexes[1].Point)
-                    p0 = DraftVecUtils.project(delta,self.invpl.multVec(self.getArcMid(self.obj)))
-                    self.obj.Radius = p1.sub(p0).Length
-                    self.obj.FirstAngle = -math.degrees(DraftVecUtils.angle(p1.sub(p0)))
-                    self.obj.LastAngle = -math.degrees(DraftVecUtils.angle(p2.sub(p0)))
-                    self.obj.Placement.Base = self.pl.multVec(p0)
-                    self.setPlacement(self.obj)
-                    self.updateCircleTrackers(obj)
-                    return
+                    p1 = self.getArcStart(obj)
+                    p2 = self.getArcEnd(obj)
+                    p0 = DraftVecUtils.project(delta,self.getArcMid(obj))
+                    obj.Radius = p1.sub(p0).Length
+                    obj.FirstAngle = -math.degrees(DraftVecUtils.angle(p1.sub(p0)))
+                    obj.LastAngle = -math.degrees(DraftVecUtils.angle(p2.sub(p0)))
+                    obj.Placement.Base = obj.Placement.multVec(p0)
+                    self.setPlacement(obj)
+
                 else:
-                    if self.editing == 1:#first point
+                    if nodeIndex == 1:#first point
                         p1=v
-                        p2=self.getArcMid(self.obj)
-                        p3=self.obj.Shape.Vertexes[1].Point
-                    elif self.editing == 3:#midpoint
-                        p1=self.obj.Shape.Vertexes[0].Point
+                        p2=self.getArcMid(obj,global_placement=True)
+                        p3=self.getArcEnd(obj,global_placement=True)
+                    elif nodeIndex == 3:#midpoint
+                        p1=self.getArcStart(obj,global_placement=True)
                         p2=v
-                        p3=self.obj.Shape.Vertexes[1].Point
-                    elif self.editing == 2:#second point
-                        p1=self.obj.Shape.Vertexes[0].Point
-                        p2=self.getArcMid(self.obj)
+                        p3=self.getArcEnd(obj,global_placement=True)
+                    elif nodeIndex == 2:#second point
+                        p1=self.getArcStart(obj,global_placement=True)
+                        p2=self.getArcMid(obj,global_placement=True)
                         p3=v
                     arc=Part.ArcOfCircle(p1,p2,p3)
-                    e = arc.toShape()
-                    self.obj.Placement.Base=arc.Center
-                    self.setPlacement(self.obj)
-                    self.obj.Radius = arc.Radius
+                    obj.Placement.Base = obj.Placement.multVec(obj.getGlobalPlacement().inverse().multVec(arc.Location))
+                    self.setPlacement(obj)
+                    obj.Radius = arc.Radius
                     delta = self.invpl.multVec(p1)
-                    dangleF = math.degrees(math.atan2(delta[1],delta[0]))
+                    obj.FirstAngle = math.degrees(math.atan2(delta[1],delta[0]))
                     delta = self.invpl.multVec(p3)
-                    dangleL = math.degrees(math.atan2(delta[1],delta[0]))
-                    self.obj.FirstAngle = dangleF
-                    self.obj.LastAngle = dangleL
-                    self.updateCircleTrackers(obj)
+                    obj.LastAngle = math.degrees(math.atan2(delta[1],delta[0]))
 
-    def getArcStart(self, obj):#Returns object midpoint
+            elif self.alt_edit_mode == 1:
+                # edit arc by center radius FirstAngle LastAngle
+                if nodeIndex == 0:
+                    obj.Placement.Base = local_v
+                    self.setPlacement(obj)
+                else:
+                    dangle = math.degrees(math.atan2(delta[1],delta[0]))
+                    if nodeIndex == 1:
+                        obj.FirstAngle = dangle
+                    elif nodeIndex == 2:
+                        obj.LastAngle = dangle
+                    elif nodeIndex == 3:
+                        obj.Radius = delta.Length
+
+        obj.recompute()
+        self.updateCircleTrackers(obj)
+
+
+    def getArcStart(self, obj, global_placement=False):#Returns object midpoint
         if Draft.getType(obj) == "Circle":
-            return self.pointOnCircle(obj, obj.FirstAngle)
+            return self.pointOnCircle(obj, obj.FirstAngle, global_placement)
     
-    def getArcEnd(self, obj):#Returns object midpoint
+    def getArcEnd(self, obj, global_placement=False):#Returns object midpoint
         if Draft.getType(obj) == "Circle":
-            return self.pointOnCircle(obj, obj.LastAngle)
+            return self.pointOnCircle(obj, obj.LastAngle, global_placement)
 
-    def getArcMid(self, obj):#Returns object midpoint
+    def getArcMid(self, obj, global_placement=False):#Returns object midpoint
         if Draft.getType(obj) == "Circle":
             if obj.LastAngle > obj.FirstAngle:
                 midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
             else:
                 midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
                 midAngle += App.Units.Quantity(180,App.Units.Angle)
-            return self.pointOnCircle(obj, midAngle)
+            return self.pointOnCircle(obj, midAngle, global_placement)
 
-    def pointOnCircle(self, obj, angle):
+    def pointOnCircle(self, obj, angle, global_placement=False):
         if Draft.getType(obj) == "Circle":
             px = obj.Radius * math.cos(math.radians(angle))
             py = obj.Radius * math.sin(math.radians(angle))
-            p = obj.getGlobalPlacement().multVec(App.Vector(px, py, 0.0))
+            p = App.Vector(px, py, 0.0)
+            if global_placement == True:
+                p = obj.getGlobalPlacement().multVec(p)
             return p
         return None
 
@@ -1529,11 +1537,11 @@ class Edit():
     # SKETCH: just if it's composed by a single segment-------------------------
 
     def getSketchPts(self, obj):
-        '''
+        """
         returns the list of edipoints for the given single line sketch (WallTrace)
         0 : startpoint
         1 : endpoint
-        '''
+        """
         editpoints = []
         if obj.GeometryCount == 1:
             editpoints.append(obj.getGlobalPlacement().multVec(obj.getPoint(0,1)))
@@ -1547,12 +1555,12 @@ class Edit():
             return None
 
     def updateSketch(self, obj, nodeIndex, v):
-        '''
+        """
         (single segment sketch object, node index as Int, App.Vector)
         move a single line sketch (WallTrace) vertex according to a given App.Vector
         0 : startpoint
         1 : endpoint
-        '''
+        """
         if nodeIndex == 0:
             obj.movePoint(0,1,obj.getGlobalPlacement().inverse().multVec(v))
         elif nodeIndex == 1:
@@ -1563,11 +1571,11 @@ class Edit():
     #WALL-----------------------------------------------------------------------
 
     def getWallPts(self, obj):
-        '''
+        """
         returns the list of edipoints for the given Arch Wall object
         0 : height of the wall
         1-to end : base object editpoints, in place with the wall
-        '''
+        """
         editpoints = []
         #height of the wall
         editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(0,0,obj.Height)))
@@ -1584,9 +1592,9 @@ class Edit():
 
 
     def updateWallTrackers(self, obj):
-        '''
+        """
         update self.trackers[obj.Name][0] to match with given object
-        '''
+        """
         pass
 
     def updateWall(self, obj, nodeIndex, v):
@@ -1815,7 +1823,7 @@ class Edit():
             self.addPoint(self.event)
         # arc tools
         elif action_label in ["move arc","set radius", "set first angle", "set last angle"]:
-            self.arc_edit_mode = 0
+            self.alt_edit_mode = 1
             self.startEditing(self.event)
         elif action_label == "invert arc":
             pos = self.event.getPosition()
