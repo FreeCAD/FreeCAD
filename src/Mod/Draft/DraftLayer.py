@@ -241,7 +241,9 @@ class ViewProviderLayer:
                         for p in ["LineColor", "ShapeColor", "LineWidth", "DrawStyle", "Transparency"]:
                             if p == "ShapeColor":
                                 if hasattr(vobj, "OverrideShapeColorChildren") and vobj.OverrideShapeColorChildren:
-                                    setattr(o.ViewObject, p, getattr(vobj, p))
+                                    if hasattr(vobj, p):
+                                        # see forum topic https://forum.freecadweb.org/viewtopic.php?f=23&t=42197
+                                        setattr(o.ViewObject, p, getattr(vobj, p))
                             else:
                                 if hasattr(vobj, p) and hasattr(o.ViewObject, p):
                                     setattr(o.ViewObject, p, getattr(vobj, p))
