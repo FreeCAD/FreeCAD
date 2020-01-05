@@ -229,6 +229,8 @@ class Edit():
         param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         self.maxObjects = param.GetInt("DraftEditMaxObjects", 5)
         self.pick_radius = param.GetInt("DraftEditPickRadius", 20)
+        
+        self.arc_edit_mode = 1 # set 1 for 3 points, 0 for angle and radius
 
         # preview
         self.ghost = None
@@ -280,8 +282,8 @@ class Edit():
     def proceed(self):
         "this method defines editpoints and set the editTrackers"
         self.unregister_selection_callback()
-        self.objs = self.getObjsFromSelection()
-        if not self.objs:
+        self.edited_objects = self.getObjsFromSelection()
+        if not self.edited_objects:
             return self.finish() 
 
         # Save selectstate and turn selectable false.
@@ -293,10 +295,9 @@ class Edit():
         Gui.Selection.clearSelection()
         Gui.Snapper.setSelectMode(True)
         
-        self.arc3Pt = True # TODO: Find a more elegant way
         self.ui.editUi()
 
-        for obj in self.objs:
+        for obj in self.edited_objects:
             self.setEditPoints(obj)
 
         self.register_editing_callbacks()
@@ -534,6 +535,7 @@ class Edit():
             # position should be updated manually
             self.trackers[obj.Name][nodeIndex].set(v)
         self.update(obj, nodeIndex, v)
+        self.arc_edit_mode = 1
         self.ui.editUi(self.ui.lastMode)
         self.node = []
         self.editing = None
@@ -547,7 +549,7 @@ class Edit():
     def getObjsFromSelection(self):
         "evaluate selection and returns a valid object to edit"
         selection = Gui.Selection.getSelection()
-        self.objs = []
+        self.edited_objects = []
         if len(selection) > self.maxObjects:
             App.Console.PrintMessage(translate("draft", 
                                                    "Too many objects selected, max number set to: "
@@ -555,17 +557,31 @@ class Edit():
             return None
         for obj in selection:
             if Draft.getType(obj) in self.supportedObjs:
-                self.objs.append(obj)
+                self.edited_objects.append(obj)
                 continue
             elif Draft.getType(obj) in self.supportedPartObjs:
                 if obj.TypeId in self.supportedPartObjs:
-                    self.objs.append(obj)
+                    self.edited_objects.append(obj)
                     continue
             App.Console.PrintWarning(translate("draft",
                                          str(obj.Name)
                                          + ": this object is not editable")
                                          + "\n")
-        return self.objs
+        return self.edited_objects
+
+    def get_selected_obj_at_position(self, pos):
+        """return object at given position
+        if object is one of the edited objects (self.edited_objects)
+        """
+        selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
+        if not selobjs:
+            return
+        for info in selobjs:
+            if not info:
+                return
+            for obj in self.edited_objects:
+                if obj.Name == info["Object"]:
+                    return obj
 
     def numericInput(self, v, numy=None, numz=None):
         '''this function gets called by the toolbar
@@ -763,7 +779,7 @@ class Edit():
                     radius = pt.sub(obj.getGlobalPlacement().Base).Length
                     self.ghost.setRadius(radius)
             else:
-                if self.arc3Pt == False:
+                if self.arc_edit_mode == 0:
                     self.ghost.setStartAngle(math.radians(obj.FirstAngle))
                     self.ghost.setEndAngle(math.radians(obj.LastAngle))
                     if self.editing == 0:
@@ -774,7 +790,7 @@ class Edit():
                         self.ghost.setEndPoint(pt)
                     elif self.editing == 3:
                         self.ghost.setRadius(self.invpl.multVec(pt).Length)
-                elif self.arc3Pt == True:
+                elif self.arc_edit_mode == 1:
                     if self.editing == 0:#center point
                         import DraftVecUtils
                         p1 = self.invpl.multVec(self.obj.Shape.Vertexes[0].Point)
@@ -830,11 +846,12 @@ class Edit():
         for info in selobjs:
             if not info:
                 return
-            for o in self.objs:
+            for o in self.edited_objects:
                 if o.Name != info["Object"]:
                     continue
                 self.obj = o
                 break
+            self.setPlacement(self.obj)
             if Draft.getType(self.obj) == "Wire" and 'Edge' in info["Component"]:
                 pt = App.Vector(info["x"], info["y"], info["z"])
                 self.addPointToWire(pt, int(info["Component"][4:]))
@@ -1073,8 +1090,8 @@ class Edit():
         # DNC: fix error message if edited point coincides with one of the existing points
         if ( editPnt in pts ) == True: # checks if point enter is equal to other, this could cause a OCC problem
             App.Console.PrintMessage(translate("draft", 
-                                                   "It is not possible to have two coincident points in this \
-                                                   object, please try again.")
+                                                   "This object does not support possible "
+                                                   + "coincident points, please try again.")
                                                    + "\n")
             if Draft.getType(obj) in ["BezCurve"]:
                 self.resetTrackers(obj)
@@ -1362,7 +1379,7 @@ class Edit():
 
         else:#self.obj is an arc
 
-            if self.arc3Pt == False:#edit by center radius FirstAngle LastAngle
+            if self.arc_edit_mode == 0:#edit by center radius FirstAngle LastAngle
                 #deltaX = v[0]-self.obj.Placement.Base[0]
                 #deltaY = v[1]-self.obj.Placement.Base[1]
                 dangle = math.degrees(math.atan2(delta[1],delta[0]))
@@ -1385,7 +1402,7 @@ class Edit():
                     self.obj.recompute()
                     self.updateCircleTrackers(obj)
 
-            elif self.arc3Pt == True:
+            elif self.arc_edit_mode == 1:
                 import Part
                 if self.editing == 0:#center point
                     import DraftVecUtils
@@ -1423,7 +1440,6 @@ class Edit():
                     dangleL = math.degrees(math.atan2(delta[1],delta[0]))
                     self.obj.FirstAngle = dangleF
                     self.obj.LastAngle = dangleL
-                    App.Console.PrintMessage("Press I to invert the circle\n")
                     self.updateCircleTrackers(obj)
 
     def getArcStart(self, obj):#Returns object midpoint
@@ -1439,7 +1455,8 @@ class Edit():
             if obj.LastAngle > obj.FirstAngle:
                 midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
             else:
-                midAngle = (obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0) + 180.0
+                midAngle = obj.FirstAngle + (obj.LastAngle - obj.FirstAngle) / 2.0
+                midAngle += App.Units.Quantity(180,App.Units.Angle)
             return self.pointOnCircle(obj, midAngle)
 
     def pointOnCircle(self, obj, angle):
@@ -1453,9 +1470,7 @@ class Edit():
     def arcInvert(self, obj):
         obj.FirstAngle, obj.LastAngle = obj.LastAngle, obj.FirstAngle
         obj.recompute()
-        self.trackers[self.obj.Name][1].set(self.obj.Shape.Vertexes[0].Point)
-        self.trackers[self.obj.Name][2].set(self.obj.Shape.Vertexes[1].Point)
-        self.trackers[self.obj.Name][3].set(self.getArcMid(self.obj))
+        self.updateCircleTrackers(obj)
 
     #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Polygon (maybe could also rotate the polygon)
@@ -1745,27 +1760,34 @@ class Edit():
         self.event = event
         actions = None
         if self.overNode:
+            # if user is over a node
             doc = self.overNode.get_doc_name()
             obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
-            # ep = self.getEditNodeIndex(self.overNode) TODO: Fix it
+            ep = self.overNode.get_subelement_index()
             if Draft.getType(obj) in ["Line", "Wire"]:
                 actions = ["delete point"]
+            elif Draft.getType(obj) in ["Circle"]:
+                if obj.FirstAngle != obj.LastAngle:
+                    if ep == 0: # user is over arc start point
+                        actions = ["move arc"]
+                    elif ep == 1: # user is over arc start point
+                        actions = ["set first angle"]
+                    elif ep == 2: # user is over arc end point
+                        actions = ["set last angle"]
+                    elif ep == 3: # user is over arc mid point
+                        actions = ["set radius"]
             elif Draft.getType(obj) in ["BezCurve"]:
                 actions = ["make sharp", "make tangent", "make symmetric", "delete point"]
             else:
                 return
         else:
+            # if user is over an edited object
             pos = self.event.getPosition()
-            selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
-            if not selobjs:
-                return
-            for info in selobjs:
-                if not info:
-                    return
-                for o in self.objs:
-                    if o.Name == info["Object"]:
-                        if Draft.getType(o) in ["Line", "Wire","BSpline", "BezCurve"]:
-                            actions = ["add point"]
+            obj = self.get_selected_obj_at_position(pos)
+            if Draft.getType(obj) in ["Line", "Wire","BSpline", "BezCurve"]:
+                actions = ["add point"]
+            elif Draft.getType(obj) in ["Circle"] and obj.FirstAngle != obj.LastAngle:
+                actions = ["invert arc"]
         if actions is None:
             return
         for a in actions:
@@ -1791,6 +1813,14 @@ class Edit():
             self.delPoint(self.event)
         elif action_label == "add point":
             self.addPoint(self.event)
+        # arc tools
+        elif action_label in ["move arc","set radius", "set first angle", "set last angle"]:
+            self.arc_edit_mode = 0
+            self.startEditing(self.event)
+        elif action_label == "invert arc":
+            pos = self.event.getPosition()
+            obj = self.get_selected_obj_at_position(pos)
+            self.arcInvert(obj)
         del self.event
 
 
