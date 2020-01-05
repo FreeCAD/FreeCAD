@@ -323,8 +323,7 @@ class _TaskPanelFemResultShow:
             "disp_factor": 0,
             "disp_factor_max": 100
         }
-        self.reset_mesh_deformation()
-        self.reset_mesh_color()
+        self.reset_result_mesh()
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -643,8 +642,17 @@ class _TaskPanelFemResultShow:
         self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
         # TODO it seams a result mesh reset has to be done for transparency mesh separately
         # see https://forum.freecadweb.org/viewtopic.php?f=18&t=41951&p=357700#p357698
+        # TODO restore color will be green and not orange which is standard for meshes in FreeCAD
+        # somehow the setNodeColorByScalars overwrites the ShapeColor and the above code just
+        # sets all colors back to zero result value which will be green color
+        # the setNodeColorByScalars color should somehow removed to get back the ShapeColor
+
+    def reset_result_mesh(self):
+        self.reset_mesh_deformation()
+        self.reset_mesh_color()
 
     def reject(self):
+        self.reset_result_mesh()
         # if the tasks panel is called from Command obj is not in edit mode
         # thus reset edit does not close the dialog, maybe don't call but set in edit instead
         FreeCADGui.Control.closeDialog()
