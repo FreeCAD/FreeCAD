@@ -279,6 +279,11 @@ public:
     static Quantity Coulomb;
 
     static Quantity Tesla;
+    static Quantity Gauss;
+
+    static Quantity Weber;
+
+    static Quantity Oersted;
 
     static Quantity Farad;
     static Quantity MilliFarad;
