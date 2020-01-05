@@ -646,6 +646,9 @@ class _TaskPanelFemResultShow:
         # somehow the setNodeColorByScalars overwrites the ShapeColor and the above code just
         # sets all colors back to zero result value which will be green color
         # the setNodeColorByScalars color should somehow removed to get back the ShapeColor
+        # TODO expose resetColorByNodeId and resetDisplacementByNodeId
+        # from C++ FemMesh ViewProvider to Python and use these methods for a clean mesh reset
+        # https://github.com/FreeCAD/FreeCAD/blob/eab5a6a/src/Mod/Fem/Gui/ViewProviderFemMesh.h#L117
 
     def reset_result_mesh(self):
         self.reset_mesh_deformation()
