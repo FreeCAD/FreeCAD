@@ -52,7 +52,7 @@ class QGIWeldSymbol;
 class TechDrawGuiExport QGITile : public QGIDecoration
 {
 public:
-    explicit QGITile();
+    explicit QGITile(TechDraw::DrawTileWeld*);
     ~QGITile(void);
 
     enum {Type = QGraphicsItem::UserType + 325};
@@ -93,6 +93,9 @@ protected:
     void makeText(void);
 
     bool getAltWeld(void);
+    bool isReadable(QString filePath);
+    std::string getStringFromFile(std::string inSpec);
+
 
 private:
     QGCustomText*      m_qgTextL;
@@ -114,6 +117,7 @@ private:
     int                m_col;
     bool               m_tailRight;
     bool               m_altWeld;
+    TechDraw::DrawTileWeld* m_tileFeat;
 };
 
 }
