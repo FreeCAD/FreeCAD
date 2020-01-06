@@ -451,11 +451,11 @@ void QGIViewGDTReference::referenceLabelDragged(bool ctrl)
 	labelCenter.y = - Rez::appX(referenceLabel->Y());
 	PointPair edge = reference->getLinearPoints();
 	Base::Vector2d startPt = fromQtApp(edge.first);
-	//Base::Vector2d endPt = fromQtApp(edge.second);
 	intersectionPt = computePerpendicularIntersection(startPt, labelCenter, m_lineAngle);
 
-	//if((startPt-endPt)*(labelCenter-intersectionPt) < 0)
-	//	m_linkDir = m_linkDir * -1;
+	Base::Vector2d currentPerpVec = (labelCenter-intersectionPt);
+	currentPerpVec.Normalize();
+	m_linkDir = Base::Vector3d(currentPerpVec.x, -currentPerpVec.y);
 
 	reference->X.setValue(intersectionPt.x);
 	reference->Y.setValue(intersectionPt.y);
@@ -520,8 +520,6 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
 
     double textWidth = referenceLabel->getLabelText()->boundingRect().width();
     double textHeight = referenceLabel->getLabelText()->boundingRect().height();
-
-    Base::Console().Message("referenceLabel %.3f %.3f\n",referenceLabel->X(), referenceLabel->Y());
 
     if (reference->isLocked()) {
         referenceLabel->setFlag(QGraphicsItem::ItemIsMovable, false);
