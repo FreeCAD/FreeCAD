@@ -118,127 +118,43 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>AttachmentOffset property. The placement is expressed in local space of object being attached.</string>
+      <string/>
      </property>
      <property name="title">
       <string>Attachment Offset:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
-      <widget class="QLabel" name="labelOffset">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
+       <widget class="QLabel" name="labelOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
          <string>X:</string>
-       </property>
+        </property>
         <property name="buddy">
          <cstring>labelOffset</cstring>
-       </property>
-      </widget>
-     </item>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
-      <widget class="QLabel" name="labelOffset2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-         <string>Y:</string>
-       </property>
-      </widget>
-     </item>
-      <item row="2" column="1">
-      <widget class="Gui::InputField" name="attachmentOffsetY" native="true">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>5</height>
-         </size>
-        </property>
-      </widget>
-     </item>
-      <item row="3" column="0">
-      <widget class="QLabel" name="labelOffset3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-         <string>Z:</string>
-       </property>
-      </widget>
-     </item>
-      <item row="3" column="1">
-      <widget class="Gui::InputField" name="attachmentOffsetZ" native="true">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>5</height>
-         </size>
-        </property>
-      </widget>
-     </item>
-      <item row="4" column="0">
-      <widget class="QLabel" name="labelYaw">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-         <string>Yaw:</string>
-       </property>
-      </widget>
-     </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="labelPitch">
-       <property name="sizePolicy">
+       <widget class="QLabel" name="labelOffset2">
+        <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
-         <string>Pitch:</string>
-       </property>
-      </widget>
-     </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="labelRoll">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-         <string>Roll:</string>
-       </property>
-      </widget>
-     </item>
-      <item row="1" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetX" native="true">
+         <string>Y:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::InputField" name="attachmentOffsetY">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -251,75 +167,180 @@
           <height>5</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local space of object being attached.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelOffset3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Z:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::InputField" name="attachmentOffsetZ">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>5</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local space of object being attached.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelYaw">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Roll:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelPitch">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Pitch:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="labelRoll">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Yaw:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::InputField" name="attachmentOffsetX">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>5</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local space of object being attached.</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetYaw">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">deg</string>
-       </property>
-        <property name="minimum">
-        <double>-360.000000000000000</double>
-       </property>
-        <property name="maximum">
-        <double>360.000000000000000</double>
-       </property>
-        <property name="value">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-      <item row="5" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetPitch">
-       <property name="sizePolicy">
+       <widget class="Gui::InputField" name="attachmentOffsetRoll">
+        <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Rotation around the x-axis
+Note: The placement is expressed in local space of object being attached.</string>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
-        <property name="minimum">
+        <property name="minimum" stdset="0">
          <double>-360.000000000000000</double>
         </property>
-        <property name="maximum">
+        <property name="maximum" stdset="0">
          <double>360.000000000000000</double>
         </property>
-        <property name="value">
+        <property name="value" stdset="0">
          <double>0.000000000000000</double>
-       </property>
-      </widget>
-     </item>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::InputField" name="attachmentOffsetPitch">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Rotation around the y-axis
+Note: The placement is expressed in local space of object being attached.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">deg</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>-360.000000000000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>360.000000000000000</double>
+        </property>
+        <property name="value" stdset="0">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+      </item>
       <item row="6" column="1">
-       <widget class="Gui::InputField" name="attachmentOffsetRoll">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">deg</string>
-       </property>
-        <property name="minimum">
-        <double>-360.000000000000000</double>
-       </property>
-        <property name="maximum">
-        <double>360.000000000000000</double>
-       </property>
-        <property name="value">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-    </layout>
+       <widget class="Gui::InputField" name="attachmentOffsetYaw">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Rotation around the z-axis
+Note: The placement is expressed in local space of object being attached.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">deg</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>-360.000000000000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>360.000000000000000</double>
+        </property>
+        <property name="value" stdset="0">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -337,13 +358,6 @@
    <extends>QLineEdit</extends>
    <header>Gui/InputField.h</header>
   </customwidget>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
-  </customwidget>
-  <customwidget>
-  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>buttonRef1</tabstop>
@@ -358,9 +372,9 @@
   <tabstop>attachmentOffsetX</tabstop>
   <tabstop>attachmentOffsetY</tabstop>
   <tabstop>attachmentOffsetZ</tabstop>
-  <tabstop>attachmentOffsetYaw</tabstop>
-  <tabstop>attachmentOffsetPitch</tabstop>
   <tabstop>attachmentOffsetRoll</tabstop>
+  <tabstop>attachmentOffsetPitch</tabstop>
+  <tabstop>attachmentOffsetYaw</tabstop>
   <tabstop>checkBoxFlip</tabstop>
  </tabstops>
  <resources/>
