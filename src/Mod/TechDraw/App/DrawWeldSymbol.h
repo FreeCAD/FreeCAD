@@ -50,6 +50,7 @@ public:
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
+    virtual void onSettingDocument(void);
 
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderWeld";

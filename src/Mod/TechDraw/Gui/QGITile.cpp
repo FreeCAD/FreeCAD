@@ -49,7 +49,7 @@
 
 using namespace TechDrawGui;
 
-QGITile::QGITile() :
+QGITile::QGITile(TechDraw::DrawTileWeld* dtw) :
     m_textL(QString::fromUtf8(" ")),
     m_textR(QString::fromUtf8(" ")),
     m_textC(QString::fromUtf8(" ")),
@@ -57,7 +57,8 @@ QGITile::QGITile() :
     m_row(0),
     m_col(0),
     m_tailRight(true),
-    m_altWeld(false)
+    m_altWeld(false),
+    m_tileFeat(dtw)
 {
     m_qgSvg = new QGCustomSvg();
     addToGroup(m_qgSvg);
@@ -154,17 +155,11 @@ void QGITile::makeSymbol(void)
 {
 //    Base::Console().Message("QGIT::makeSymbol()\n");
 //    m_effect->setColor(m_colCurrent);
-
-    if (m_svgPath.isEmpty()) {
-        Base::Console().Warning("QGIT::makeSymbol - no symbol file set\n");
-        return;
-    }
-
 //    m_qgSvg->setGraphicsEffect(m_effect);
 
-    QByteArray qba = getSvgString(m_svgPath);
+    std::string symbolString = getStringFromFile(m_tileFeat->SymbolFile.getValue());
+    QByteArray qba(symbolString.c_str(), symbolString.length());
     if (qba.isEmpty()) {
-        Base::Console().Message("QGIT::makeSymbol - no data from file: %s\n", qPrintable(m_svgPath));
         return;
     }
     if (!m_qgSvg->load(&qba)) {
@@ -174,26 +169,6 @@ void QGITile::makeSymbol(void)
    m_qgSvg->setScale(getSymbolFactor());
    m_qgSvg->centerAt(0.0, 0.0);   //(0,0) is based on symbol size
 }
-
-//re PropertyFileIncluded locking problem - ensure Qt file functions destroyed by going out of scope
-QByteArray QGITile::getSvgString(QString svgPath)
-{
-    QByteArray qba;
-    QFileInfo fi(svgPath);
-    if (fi.isReadable()) {
-        QFile svgFile(svgPath);
-        if(svgFile.open(QIODevice::ReadOnly)) {
-            qba = svgFile.readAll();
-            svgFile.close();
-        } else {
-            Base::Console().Error("Error - Could not open file **%s**\n", qPrintable(svgPath));  
-        } 
-    } else {
-        Base::Console().Error("QGIT::makeSymbol - file: **%s** is not readable\n",qPrintable(svgPath));
-    }
-    return qba;
-}
-
 
 void QGITile::makeText(void)
 {
@@ -255,6 +230,15 @@ void QGITile::makeText(void)
         vOffset = -0.5 * (m_high + textHeightC);
     }
     m_qgTextC->centerAt(0.0, vOffset);
+}
+
+//read whole text file into std::string
+std::string QGITile::getStringFromFile(std::string inSpec)
+{
+    std::ifstream f(inSpec);
+    std::stringstream ss;
+    ss << f.rdbuf();
+    return ss.str();
 }
 
 void QGITile::setTilePosition(QPointF org, int r, int c)
