@@ -453,9 +453,10 @@ void QGIViewGDTReference::referenceLabelDragged(bool ctrl)
 	Base::Vector2d startPt = fromQtApp(edge.first);
 	intersectionPt = computePerpendicularIntersection(startPt, labelCenter, m_lineAngle);
 
-	Base::Vector2d currentPerpVec = (labelCenter-intersectionPt);
-	currentPerpVec.Normalize();
-	m_linkDir = Base::Vector3d(currentPerpVec.x, -currentPerpVec.y);
+	Base::Vector2d perp = (labelCenter-intersectionPt);
+	perp.Normalize();
+	m_linkDir = Base::Vector3d(perp.x, -perp.y);
+	m_arrowAngle = atan2(perp.y, -perp.x) * 180 / M_PI;
 
 	reference->X.setValue(intersectionPt.x);
 	reference->Y.setValue(intersectionPt.y);
