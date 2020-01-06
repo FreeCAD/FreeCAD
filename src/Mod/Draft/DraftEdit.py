@@ -503,9 +503,9 @@ class Edit():
             return
         self.setPlacement(self.obj)
 
-        App.Console.PrintMessage(str(self.obj.Name)
-                                     + str(": editing node: n° ")
-                                     + str(ep) + "\n")
+        App.Console.PrintMessage(self.obj.Name
+                                 + ": editing node number "
+                                 + str(ep) + "\n")
 
         self.ui.lineUi()
         self.ui.isRelative.show()
@@ -558,8 +558,8 @@ class Edit():
         self.edited_objects = []
         if len(selection) > self.maxObjects:
             App.Console.PrintMessage(translate("draft", 
-                                                   "Too many objects selected, max number set to: "
-                                                   + str(self.maxObjects) + "\n"))
+                                               "Too many objects selected, max number set to: ")
+                                     + str(self.maxObjects) + "\n")
             return None
         for obj in selection:
             if Draft.getType(obj) in self.supportedObjs:
@@ -569,10 +569,10 @@ class Edit():
                 if obj.TypeId in self.supportedPartObjs:
                     self.edited_objects.append(obj)
                     continue
-            App.Console.PrintWarning(translate("draft",
-                                         str(obj.Name)
-                                         + ": this object is not editable")
-                                         + "\n")
+            App.Console.PrintWarning(obj.Name 
+                                     + translate("draft",
+                                                 ": this object is not editable")
+                                     + "\n")
         return self.edited_objects
 
     def get_selected_obj_at_position(self, pos):
@@ -1100,9 +1100,9 @@ class Edit():
         # DNC: fix error message if edited point coincides with one of the existing points
         if ( editPnt in pts ) == True: # checks if point enter is equal to other, this could cause a OCC problem
             App.Console.PrintMessage(translate("draft", 
-                                                   "This object does not support possible "
-                                                   + "coincident points, please try again.")
-                                                   + "\n")
+                                               "This object does not support possible "
+                                               "coincident points, please try again.")
+                                     + "\n")
             if Draft.getType(obj) in ["BezCurve"]:
                 self.resetTrackers(obj)
             else:
@@ -1549,9 +1549,9 @@ class Edit():
             return editpoints
         else:
             App.Console.PrintWarning(translate("draft",
-                                                   "Sketch is too complex to edit: \
-                                                    it is suggested to use sketcher default editor")
-                                                   + "\n")
+                                                   "Sketch is too complex to edit: "
+                                                   "it is suggested to use sketcher default editor")
+                                     + "\n")
             return None
 
     def updateSketch(self, obj, nodeIndex, v):
