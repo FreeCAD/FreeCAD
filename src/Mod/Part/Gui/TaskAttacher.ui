@@ -118,9 +118,7 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>Attachment offset.
-Note: The placement is expressed in local coordinate system
-of object being attached.</string>
+      <string/>
      </property>
      <property name="title">
       <string>Attachment Offset:</string>
@@ -169,6 +167,10 @@ of object being attached.</string>
           <height>5</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
@@ -198,6 +200,10 @@ of object being attached.</string>
           <height>5</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="0">
@@ -209,7 +215,7 @@ of object being attached.</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Yaw:</string>
+         <string>Roll:</string>
         </property>
        </widget>
       </item>
@@ -235,7 +241,7 @@ of object being attached.</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Roll:</string>
+         <string>Yaw:</string>
         </property>
        </widget>
       </item>
@@ -253,15 +259,24 @@ of object being attached.</string>
           <height>5</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Rotation around the x-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
@@ -285,6 +300,11 @@ of object being attached.</string>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Rotation around the y-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
+        </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
         </property>
@@ -300,12 +320,17 @@ of object being attached.</string>
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetRoll" native="true">
+       <widget class="Gui::QuantitySpinBox" name="attachmentOffsetYaw" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Rotation around the z-axis
+Note: The placement is expressed in local coordinate system
+of object being attached.</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">deg</string>
@@ -361,9 +386,9 @@ of object being attached.</string>
   <tabstop>attachmentOffsetX</tabstop>
   <tabstop>attachmentOffsetY</tabstop>
   <tabstop>attachmentOffsetZ</tabstop>
-  <tabstop>attachmentOffsetYaw</tabstop>
-  <tabstop>attachmentOffsetPitch</tabstop>
   <tabstop>attachmentOffsetRoll</tabstop>
+  <tabstop>attachmentOffsetPitch</tabstop>
+  <tabstop>attachmentOffsetYaw</tabstop>
   <tabstop>checkBoxFlip</tabstop>
  </tabstops>
  <resources/>
