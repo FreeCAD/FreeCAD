@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>277</width>
-    <height>400</height>
+    <height>359</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -206,6 +206,18 @@
    </item>
    <item row="1" column="0" colspan="2">
     <widget class="QGroupBox" name="GroupBox5_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>136</height>
+      </size>
+     </property>
      <property name="title">
       <string>Rotation:</string>
      </property>
