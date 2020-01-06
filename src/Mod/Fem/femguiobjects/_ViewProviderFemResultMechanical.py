@@ -631,27 +631,13 @@ class _TaskPanelFemResultShow:
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(None, "No result object", error_message)
 
-    def reset_mesh_deformation(self):
-        self.mesh_obj.ViewObject.applyDisplacement(0.0)
-
     def reset_mesh_color(self):
         self.mesh_obj.ViewObject.NodeColor = {}
         self.mesh_obj.ViewObject.ElementColor = {}
-        node_numbers = list(self.mesh_obj.FemMesh.Nodes.keys())
-        zero_values = [0] * len(node_numbers)
-        self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
-        # TODO it seams a result mesh reset has to be done for transparency mesh separately
-        # see https://forum.freecadweb.org/viewtopic.php?f=18&t=41951&p=357700#p357698
-        # TODO restore color will be green and not orange which is standard for meshes in FreeCAD
-        # somehow the setNodeColorByScalars overwrites the ShapeColor and the above code just
-        # sets all colors back to zero result value which will be green color
-        # the setNodeColorByScalars color should somehow removed to get back the ShapeColor
-        # TODO expose resetColorByNodeId and resetDisplacementByNodeId
-        # from C++ FemMesh ViewProvider to Python and use these methods for a clean mesh reset
-        # https://github.com/FreeCAD/FreeCAD/blob/eab5a6a/src/Mod/Fem/Gui/ViewProviderFemMesh.h#L117
+        self.mesh_obj.ViewObject.resetNodeColor()
 
     def reset_result_mesh(self):
-        self.reset_mesh_deformation()
+        self.mesh_obj.ViewObject.resetNodeDisplacement()
         self.reset_mesh_color()
 
     def reject(self):
