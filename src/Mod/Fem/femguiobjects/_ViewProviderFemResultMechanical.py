@@ -323,7 +323,6 @@ class _TaskPanelFemResultShow:
             "disp_factor": 0,
             "disp_factor_max": 100
         }
-        self.reset_result_mesh()
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -613,6 +612,7 @@ class _TaskPanelFemResultShow:
             self.form.rb_peeq.setEnabled(0)
 
     def update(self):
+        self.reset_result_mesh()
         self.suitable_results = False
         self.disable_empty_result_buttons()
         if (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
