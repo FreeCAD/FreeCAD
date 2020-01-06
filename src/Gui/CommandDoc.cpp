@@ -1355,6 +1355,7 @@ StdCmdPlacement::StdCmdPlacement()
     sToolTipText  = QT_TR_NOOP("Place the selected objects");
     sStatusTip    = QT_TR_NOOP("Place the selected objects");
     sWhatsThis    = "Std_Placement";
+    sPixmap       = "Std_Placement";
 }
 
 void StdCmdPlacement::activated(int iMsg)
