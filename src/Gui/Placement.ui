@@ -26,25 +26,34 @@
       <string>Translation:</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
        <number>6</number>
       </property>
       <item row="4" column="0">
-      <widget class="QLabel" name="TextLabelAxial">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Axial:</string>
-       </property>
-      </widget>
-     </item>
+       <widget class="QLabel" name="TextLabelAxial">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Axial:</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="TextLabelZ">
         <property name="sizePolicy">
@@ -98,12 +107,12 @@
       </item>
       <item row="5" column="1">
        <widget class="QPushButton" name="applyAxial">
-       <property name="text">
-        <string>Apply axial</string>
-       </property>
-       <property name="toolTip">
-       <string>Shift click for opposite direction</string>
-       </property>
+        <property name="toolTip">
+         <string>Shift click for opposite direction</string>
+        </property>
+        <property name="text">
+         <string>Apply axial</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -115,7 +124,16 @@
       <string>Center:</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -192,7 +210,16 @@
       <string>Rotation:</string>
      </property>
      <layout class="QGridLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <property name="spacing">
@@ -201,11 +228,20 @@
       <item row="1" column="0">
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="page">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -213,7 +249,16 @@
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -261,7 +306,16 @@
         </widget>
         <widget class="QWidget" name="page_3">
          <layout class="QGridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
            <number>9</number>
           </property>
           <property name="spacing">
@@ -269,7 +323,16 @@
           </property>
           <item row="0" column="0">
            <layout class="QGridLayout">
-            <property name="margin">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
              <number>0</number>
             </property>
             <property name="spacing">
@@ -297,7 +360,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Roll:</string>
+               <string>Yaw:</string>
               </property>
              </widget>
             </item>
@@ -310,18 +373,30 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Yaw:</string>
+               <string>Roll:</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="yawAngle"/>
+             <widget class="Gui::QuantitySpinBox" name="rollAngle">
+              <property name="toolTip">
+               <string>Rotation around the x-axis</string>
+              </property>
+             </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="pitchAngle"/>
+             <widget class="Gui::QuantitySpinBox" name="pitchAngle">
+              <property name="toolTip">
+               <string>Rotation around the y-axis</string>
+              </property>
+             </widget>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="rollAngle"/>
+             <widget class="Gui::QuantitySpinBox" name="yawAngle">
+              <property name="toolTip">
+               <string>Rotation around the z-axis</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
