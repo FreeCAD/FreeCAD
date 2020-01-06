@@ -70,9 +70,11 @@ public:
                         QWidget *widget = nullptr ) override;
     void setLabelCenter();
     void setPosFromCenter(const double &xCenter, const double &yCenter);
+    void setRotateAngle(double angle);
     double X() const { return posX; }
     double Y() const { return posY; }
     
+    double rotationAngle() const { return m_angle; }
     double marginHeight() const { return m_marginHeight; }
     double marginWidth() const { return m_marginWidth; }
 
@@ -92,7 +94,6 @@ public:
     bool hasHover;
 
     QGIViewGDTReference *parent;
-    double m_angle;
 
 Q_SIGNALS:
     void dragging(bool);
@@ -117,7 +118,7 @@ protected:
     double posY;
     double m_marginHeight;
     double m_marginWidth;
-    
+    double m_angle;
 
 private:
 };
@@ -174,16 +175,20 @@ protected:
     QGIView *parent;
     Base::Vector3d m_linkDir;
     double m_arrowAngle;
+    double m_lineAngle;
+    //Base::Vector2d m_edgeDir;
 
 private:
     Base::Vector3d calculateCenter(TechDraw::PointPair & segment);
-    void labelPlacementAndRotation(TechDraw::PointPair & segment, Base::Vector3d & origin, double length);
-    //static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
+    Base::Vector2d labelPlacementAndRotation(TechDraw::PointPair & segment, double distance);
     // TODO move to utils (using in QGIViewDimension)
     double getIsoStandardLinePlacement(double labelAngle);
     static inline double toDeg(double a) { return a*180/M_PI; }
     static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
     static inline double toQtDeg(double a) { return -a*180.0/M_PI; }
+    static inline double toQtRad(double a) { return -a*M_PI/180.0; }
+    Base::Vector2d computePerpendicularIntersection(const Base::Vector2d &linePoint,
+    		const Base::Vector2d &perpendicularPoint, double lineAngle);
 };
 
 } // namespace

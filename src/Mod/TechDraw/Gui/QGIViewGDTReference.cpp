@@ -75,6 +75,7 @@ QGIReferenceLabel::QGIReferenceLabel(QGIViewGDTReference * parent)
 
 	posX = 0;
     posY = 0;
+    m_angle = 0.;
 
     m_marginHeight = 1.0;
     m_marginWidth = 2.0;
@@ -140,9 +141,7 @@ void QGIReferenceLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIReferenceLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
-	// TODO add task managment
-    //Gui::Control().showDialog(new TaskDlgReference(parent));
-    //QGraphicsItem::mouseDoubleClickEvent(event);
+	// TODO nothing doing : no task managment
 }
 
 void QGIReferenceLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -199,6 +198,11 @@ void QGIReferenceLabel::setLabelCenter()
     //set label center (posX,posY) frome the given Qt position (top,left) == (x(),y())
     posX = x() + m_labelText->boundingRect().width() / 2.;
     posY = y() + m_labelText->boundingRect().height() / 2.;
+}
+
+void QGIReferenceLabel::setRotateAngle(double angle)
+{
+	m_angle = angle;
 }
 
 void QGIReferenceLabel::setFont(QFont f)
@@ -328,35 +332,33 @@ double QGIViewGDTReference::getIsoStandardLinePlacement(double labelAngle)
            ? +1.0 : -1.0;
 }
 
-
-void QGIViewGDTReference::labelPlacementAndRotation(TechDraw::PointPair & segment, Base::Vector3d & origin, double length){
-	Base::Vector3d result;
-	Base::Vector3d dir = segment.first-segment.second;
-	Base::Vector3d base = segment.second;
-	Base::Vector3d perp = origin.Perpendicular(base, dir);
+Base::Vector2d QGIViewGDTReference::labelPlacementAndRotation(TechDraw::PointPair & segment, double distance)
+{
+	Base::Vector3d origin = (segment.first + segment.second)/2.0;
+	Base::Vector3d dir = segment.second - segment.first;
+	Base::Vector3d perp = origin.Perpendicular(segment.second, dir);
 	perp = perp.Normalize();
-
 	// check orientation
 	if(origin.Dot(perp) < 0)
 		perp = -perp;
-	result = origin + perp * length;
+	Base::Vector3d labelCenter = origin + perp * distance;
 
 	double lineAngle = (fromQtApp(segment.second) - fromQtApp(segment.first)).Angle();
 	double placementFactor = getIsoStandardLinePlacement(lineAngle);
 	double labelAngle = placementFactor > 0.0 ? DrawUtil::angleComposition(lineAngle, M_PI) : lineAngle;
-	double angle = toQtDeg(labelAngle);
-	referenceLabel->m_angle = angle;
+	m_lineAngle = lineAngle;
+	referenceLabel->setRotateAngle(toQtDeg(labelAngle));
+
 	m_arrowAngle = atan2(-perp.y, -perp.x) * 180 / M_PI;
 	m_linkDir = perp;
 
-	//referenceLabel->setTransformOriginPoint(centerPt);
-	float x = Rez::guiX(result.x);
-	float y = Rez::guiX(result.y);
+	float x = Rez::guiX(labelCenter.x);
+	float y = Rez::guiX(labelCenter.y);
 	referenceLabel->setPosFromCenter(x, y);
+	Base::Vector2d result = fromQtApp(origin);
 
-	Base::Console().Message("result %.3f %.3f\n",result.x, result.y);
+	return result;
 }
-
 
 void QGIViewGDTReference::setViewPartFeature(TechDraw::DrawViewGDTReference *reference)
 {
@@ -369,9 +371,8 @@ void QGIViewGDTReference::setViewPartFeature(TechDraw::DrawViewGDTReference *ref
     double symbWidth = Rez::guiX(referenceLabel->marginWidth()) * 2 + textWidth;
     double distance = Rez::appX(2.5 * symbWidth);
     PointPair edge = reference->getLinearPoints();
-    Base::Vector3d origin = calculateCenter(edge);
-    labelPlacementAndRotation(edge, origin, distance);
 
+    Base::Vector2d origin = labelPlacementAndRotation(edge, distance);
     reference->X.setValue(origin.x);
     reference->Y.setValue(origin.y);
     referenceLabel->setColor(getNormalColor());
@@ -440,6 +441,24 @@ void QGIViewGDTReference::updateReference()
 
 void QGIViewGDTReference::referenceLabelDragged(bool ctrl)
 {
+	// update reference origin
+	const auto reference( dynamic_cast<TechDraw::DrawViewGDTReference *>(getViewObject()) );
+	if( reference == nullptr ) {
+		return;
+	}
+	Base::Vector2d labelCenter, intersectionPt;
+	labelCenter.x = Rez::appX(referenceLabel->X());
+	labelCenter.y = - Rez::appX(referenceLabel->Y());
+	PointPair edge = reference->getLinearPoints();
+	Base::Vector2d startPt = fromQtApp(edge.first);
+	//Base::Vector2d endPt = fromQtApp(edge.second);
+	intersectionPt = computePerpendicularIntersection(startPt, labelCenter, m_lineAngle);
+
+	//if((startPt-endPt)*(labelCenter-intersectionPt) < 0)
+	//	m_linkDir = m_linkDir * -1;
+
+	reference->X.setValue(intersectionPt.x);
+	reference->Y.setValue(intersectionPt.y);
     draw_modifier(ctrl);
 }
 
@@ -465,6 +484,8 @@ void QGIViewGDTReference::draw()
 
 void QGIViewGDTReference::draw_modifier(bool modifier)
 {
+	Q_UNUSED(modifier);
+
     if (!isVisible()) {		//should this be controlled by parent ViewPart?
         return;
     }
@@ -522,7 +543,7 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
 
     Base::Vector2d origin, centerLabel;
     origin.x = Rez::guiX(reference->X.getValue());
-    origin.y = Rez::guiX(reference->Y.getValue());
+    origin.y = -Rez::guiX(reference->Y.getValue());
     centerLabel.x = referenceLabel->X();
     centerLabel.y = referenceLabel->Y();
 
@@ -637,6 +658,14 @@ QColor QGIViewGDTReference::getNormalColor()
 
     m_colNormal = viewProvider->Color.getValue().asValue<QColor>();
     return m_colNormal;
+}
+
+Base::Vector2d QGIViewGDTReference::computePerpendicularIntersection(const Base::Vector2d &linePoint,
+                                     const Base::Vector2d &perpendicularPoint, double lineAngle)
+{
+    return linePoint
+           + Base::Vector2d::FromPolar((perpendicularPoint - linePoint)*Base::Vector2d::FromPolar(1.0, lineAngle),
+                                       lineAngle);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewGDTReference.cpp>
