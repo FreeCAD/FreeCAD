@@ -233,22 +233,22 @@ class FemInputWriter():
             )
             if femobj["RefShapeType"] == "Vertex":
                 FreeCAD.Console.PrintLog(
-                    "load on vertices --> we do not need the "
-                    "femelement_table and femnodes_mesh for node load calculation"
+                    "    load on vertices --> The femelement_table "
+                    "and femnodes_mesh are not needed for node load calculation.\n"
                 )
             elif femobj["RefShapeType"] == "Face" \
                     and meshtools.is_solid_femmesh(self.femmesh) \
                     and not meshtools.has_no_face_data(self.femmesh):
                 FreeCAD.Console.PrintLog(
-                    "solid_mesh with face data --> we do not need the "
-                    "femelement_table but we need the femnodes_mesh for node load calculation"
+                    "    solid_mesh with face data --> The femelement_table is not "
+                    "needed but the femnodes_mesh is needed for node load calculation.\n"
                 )
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
             else:
                 FreeCAD.Console.PrintLog(
-                    "mesh without needed data --> we need the "
-                    "femelement_table and femnodes_mesh for node load calculation"
+                    "    mesh without needed data --> The femelement_table "
+                    "and femnodes_mesh are not needed for node load calculation.\n"
                 )
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
@@ -257,12 +257,12 @@ class FemInputWriter():
                         self.femmesh
                     )
         # get node loads
-        FreeCAD.Console.PrintMessage(
-            "  Finite element mesh nodes will be retrieved by searching "
+        FreeCAD.Console.PrintLog(
+            "    Finite element mesh nodes will be retrieved by searching "
             "the appropriate nodes in the finite element mesh.\n"
         )
-        FreeCAD.Console.PrintMessage(
-            "  The appropriate finite element mesh node load values will "
+        FreeCAD.Console.PrintLog(
+            "    The appropriate finite element mesh node load values will "
             "be calculated according to the finite element definition.\n"
         )
         for femobj in self.force_objects:

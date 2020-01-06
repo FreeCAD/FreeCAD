@@ -99,13 +99,14 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
     def write_calculix_input_file(self):
         timestart = time.clock()
         FreeCAD.Console.PrintMessage("Start writing CalculiX input file\n")
+        FreeCAD.Console.PrintMessage("Write ccx input file to: {}\n".format(self.file_name))
         FreeCAD.Console.PrintLog(
             "writerbaseCcx --> self.dir_name  -->  " + self.dir_name + "\n"
         )
         FreeCAD.Console.PrintLog(
             "writerbaseCcx --> self.main_file_name  -->  " + self.main_file_name + "\n"
         )
-        FreeCAD.Console.PrintMessage(
+        FreeCAD.Console.PrintLog(
             "writerbaseCcx --> self.file_name  -->  " + self.file_name + "\n"
         )
         if self.solver_obj.SplitInputWriter is True:
