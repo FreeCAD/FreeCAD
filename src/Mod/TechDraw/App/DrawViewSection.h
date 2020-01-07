@@ -71,6 +71,8 @@ public:
     App::PropertyEnumeration CutSurfaceDisplay;        //new v019
     App::PropertyFile   FileHatchPattern;
     App::PropertyFile   FileGeomPattern;               //new v019
+    App::PropertyFileIncluded SvgIncluded;
+    App::PropertyFileIncluded PatIncluded;
     App::PropertyString NameGeomPattern;
     App::PropertyFloat  HatchScale;
 
@@ -87,8 +89,8 @@ public:
     }
     virtual void unsetupObject() override;
     virtual short mustExecute() const override;
+    virtual void onSettingDocument() override;
 
-public:
     std::vector<TechDraw::Face*> getFaceGeometry();
 
     void setCSFromBase(const std::string sectionName);
@@ -129,6 +131,18 @@ protected:
     bool debugSection(void) const;
 
     TopoDS_Shape m_cutShape;
+
+    void copyFile(std::string inSpec, std::string outSpec);
+
+
+    virtual void onDocumentRestored();
+    virtual void setupObject();
+    void setupSvgIncluded(void);
+    void setupPatIncluded(void);
+    void replaceSvgIncluded(std::string newSvgFile);
+    void replacePatIncluded(std::string newPatFile);
+
+
 };
 
 typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;
