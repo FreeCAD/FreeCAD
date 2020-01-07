@@ -179,7 +179,7 @@ class _ViewProviderFemMeshGmsh:
         childs = self.claimChildren()
         if len(childs) > 0:
             try:
-                for obj in self.claimChildren():
+                for obj in childs:
                     obj.ViewObject.show()
             except Exception as err:
                 FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
