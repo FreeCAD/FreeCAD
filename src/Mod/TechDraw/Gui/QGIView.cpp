@@ -159,6 +159,7 @@ bool QGIView::isVisible(void)
 }
 
 //Set selection state for this and it's children
+//required for items like dimensions & balloons
 void QGIView::setGroupSelection(bool b)
 {
     setSelected(b);
@@ -268,6 +269,7 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+//    Base::Console().Message("QGIV::hoverEnterEvent()\n");
     Q_UNUSED(event);
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {

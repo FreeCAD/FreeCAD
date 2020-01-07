@@ -69,6 +69,10 @@
 #include "ViewProviderDimension.h"
 #include "DrawGuiUtil.h"
 
+#define NORMAL 0
+#define PRE 1
+#define SEL 2
+
 
 //TODO: hide the Qt coord system (+y down).  
 
@@ -91,6 +95,7 @@ QGIDatumLabel::QGIDatumLabel()
     setFlag(ItemIsMovable, true);
     setFlag(ItemIsSelectable, true);
     setAcceptHoverEvents(true);
+    setFiltersChildEvents(true);
 
     m_dimText = new QGCustomText();
     m_dimText->setParentItem(this);
@@ -111,10 +116,8 @@ QVariant QGIDatumLabel::itemChange(GraphicsItemChange change, const QVariant &va
 {
     if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
-            Q_EMIT selected(true);
             setPrettySel();
         } else {
-            Q_EMIT selected(false);
             setPrettyNormal();
         }
         update();
@@ -167,10 +170,6 @@ void QGIDatumLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    QGIView *view = dynamic_cast<QGIView *> (parentItem());
-    assert(view != 0);
-    Q_UNUSED(view);
-
     Q_EMIT hover(false);
     if (!isSelected()) {
         setPrettyNormal();
@@ -194,6 +193,9 @@ void QGIDatumLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
     Q_UNUSED(painter);
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+
+//    painter->setPen(Qt::blue);
+//    painter->drawRect(boundingRect());          //good for debugging
 
     if (m_isFramed) {
         QPen prevPen = painter->pen();
@@ -379,7 +381,7 @@ void QGIDatumLabel::setPrettySel(void)
     m_tolTextOver->setPrettySel();
     m_tolTextUnder->setPrettySel();
     m_unitText->setPrettySel();
-    update();
+    Q_EMIT setPretty(SEL);
 }
 
 void QGIDatumLabel::setPrettyPre(void)
@@ -389,6 +391,7 @@ void QGIDatumLabel::setPrettyPre(void)
     m_tolTextOver->setPrettyPre();
     m_tolTextUnder->setPrettyPre();
     m_unitText->setPrettyPre();
+    Q_EMIT setPretty(PRE);
 }
 
 void QGIDatumLabel::setPrettyNormal(void)
@@ -398,10 +401,12 @@ void QGIDatumLabel::setPrettyNormal(void)
     m_tolTextOver->setPrettyNormal();
     m_tolTextUnder->setPrettyNormal();
     m_unitText->setPrettyNormal();
+    Q_EMIT setPretty(NORMAL);
 }
 
 void QGIDatumLabel::setColor(QColor c)
 {
+//    Base::Console().Message("QGIDL::setColor(%s)\n", qPrintable(c.name()));
     m_colNormal = c;
     m_dimText->setColor(m_colNormal);
     m_tolTextOver->setColor(m_colNormal);
@@ -414,34 +419,25 @@ QGIViewDimension::QGIViewDimension() :
     hasHover(false),
     m_lineWidth(0.0)
 {
-
     setHandlesChildEvents(false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
+    setFlag(QGraphicsItem::ItemIsSelectable, false);
+    setAcceptHoverEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
 
     datumLabel = new QGIDatumLabel();
 //    datumLabel->m_parent = this;         //for dialog setup eventually
 
     addToGroup(datumLabel);
-    datumLabel->setColor(getNormalColor());
-    datumLabel->setPrettyNormal();
 
     dimLines = new QGIDimLines();
     addToGroup(dimLines);
-    dimLines->setNormalColor(getNormalColor());
-    dimLines->setPrettyNormal();
 
     aHead1 = new QGIArrow();
     addToGroup(aHead1);
-    aHead1->setNormalColor(getNormalColor());
-    aHead1->setFillColor(getNormalColor());
-    aHead1->setPrettyNormal();
 
     aHead2 = new QGIArrow();
     addToGroup(aHead2);
-    aHead2->setNormalColor(getNormalColor());
-    aHead2->setFillColor(getNormalColor());
-    aHead2->setPrettyNormal();
 
     datumLabel->setZValue(ZVALUE::DIMENSION);
     aHead1->setZValue(ZVALUE::DIMENSION);
@@ -451,7 +447,6 @@ QGIViewDimension::QGIViewDimension() :
 
     //centerMark = new QGICMark();
     //addToGroup(centerMark);
-
 
     // connecting the needed slots and signals
     QObject::connect(
@@ -470,6 +465,10 @@ QGIViewDimension::QGIViewDimension() :
         datumLabel, SIGNAL(hover(bool)),
         this  , SLOT  (hover(bool)));
 
+    QObject::connect(
+        datumLabel, SIGNAL(setPretty(int)),
+        this  , SLOT  (onPrettyChanged(int)));
+
     setZValue(ZVALUE::DIMENSION);         //note: this won't paint dimensions over another View if it stacks
                                           //above this Dimension's parent view.   need Layers?
 }
@@ -478,6 +477,7 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant 
 {
    if (change == ItemSelectedHasChanged && scene()) {
         if(isSelected()) {
+            setSelected(false);
             datumLabel->setSelected(true);
         } else {
             datumLabel->setSelected(false);
@@ -500,9 +500,13 @@ void QGIViewDimension::setGroupSelection(bool b)
 
 void QGIViewDimension::select(bool state)
 {
-//    Base::Console().Message("QGIVDim::select(%d)\n", state);
-    setSelected(state);
-    draw();
+//    Base::Console().Message("QGIVD::select(%d)\n", state);
+    if (state) {
+//        setPrettySel();
+    } else {
+//        setPrettyNormal();
+    }
+//    draw();
 }
 
 //surrogate for hover enter (true), hover leave (false) events
@@ -514,6 +518,7 @@ void QGIViewDimension::hover(bool state)
 
 void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 {
+//    Base::Console().Message("QGIVD::setViewPartFeature()\n");
     if(obj == 0)
         return;
 
@@ -525,9 +530,24 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 
     datumLabel->setPosFromCenter(x, y);
 
+    setNormalColorAll();
+    setPrettyNormal();
+
     updateDim();
     draw();
 }
+
+void QGIViewDimension::setNormalColorAll()
+{
+    QColor qc = prefNormalColor();
+    datumLabel->setColor(qc); 
+    dimLines->setNormalColor(qc);
+    aHead1->setNormalColor(qc);
+    aHead1->setFillColor(qc);
+    aHead2->setNormalColor(qc);
+    aHead2->setFillColor(qc);
+}
+
 
 //special handling to prevent unwanted repositioning
 //clicking on the dimension, but outside the label, should do nothing to position
@@ -685,8 +705,6 @@ void QGIViewDimension::draw()
     }
 
     m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
-    m_colNormal = getNormalColor();
-
     datumLabel->setRotation(0.0);
     datumLabel->show();
 
@@ -718,14 +736,6 @@ void QGIViewDimension::draw()
         // No dimension lines are drawn, the arrows are hidden
         dimLines->setPath(QPainterPath());
         drawArrows(0, nullptr, nullptr, false);
-    }
-
-    if (isSelected()) {
-        setPrettySel();
-    } else if (hasHover) {
-        setPrettyPre();
-    } else {
-        setPrettyNormal();
     }
 
     update();
@@ -2044,24 +2054,40 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
     dimLines->setPath(anglePath);
 }
 
-QColor QGIViewDimension::getNormalColor()
+QColor QGIViewDimension::prefNormalColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
+    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00110000));
     m_colNormal = fcColor.asValue<QColor>();
 
-    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
-    if( dim == nullptr )  
-        return m_colNormal;
-
-    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+//    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
+    TechDraw::DrawViewDimension* dim = nullptr;
+    TechDraw::DrawView* dv = getViewObject();
+    if (dv != nullptr) {
+        dim = dynamic_cast<TechDraw::DrawViewDimension*>(dv);
+        if( dim == nullptr ) {
+            return m_colNormal;
+        }
+    } else {
         return m_colNormal;
     }
 
-    m_colNormal = vp->Color.getValue().asValue<QColor>();
+    ViewProviderDimension* vpDim = nullptr;
+    Gui::ViewProvider* vp = getViewProvider(dim);
+    if ( vp != nullptr ) {
+        vpDim = dynamic_cast<ViewProviderDimension*>(vp);
+        if (vpDim == nullptr) {
+            return m_colNormal;
+        }
+    } else {
+        return m_colNormal;
+    }
+
+    fcColor = vpDim->Color.getValue();
+    m_colNormal = fcColor.asValue<QColor>();
     return m_colNormal;
 }
 
@@ -2116,6 +2142,18 @@ Base::Vector3d QGIViewDimension::findIsoExt(Base::Vector3d dir)
     }
 
     return dirExt;
+}
+
+void QGIViewDimension::onPrettyChanged(int state)
+{
+//    Base::Console().Message("QGIVD::onPrettyChange(%d)\n", state);
+    if (state == NORMAL) {
+        setPrettyNormal();
+    } else if (state == PRE) {
+        setPrettyPre();
+    } else {                //if state = SEL
+        setPrettySel();
+    }
 }
 
 void QGIViewDimension::setPrettyPre(void)
@@ -2209,6 +2247,8 @@ void QGIViewDimension::paint ( QPainter * painter, const QStyleOptionGraphicsIte
     } else {
         setPens();
     }
+
+//    painter->setPen(Qt::red);
 //    painter->drawRect(boundingRect());          //good for debugging
 
 //    QGIView::paint (painter, &myOption, widget);

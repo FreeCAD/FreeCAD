@@ -27,6 +27,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <QColor>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -35,10 +37,11 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Material.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 
-
+#include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
 
 using namespace TechDrawGui;
@@ -60,38 +63,21 @@ ViewProviderDimension::ViewProviderDimension()
 
     static const char *group = "Dim Format";
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-
-    hGrp = App::GetApplication().GetUserParameter()
-                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
-    ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),group,App::Prop_None, "The name of the font to use");
-    ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,group,(App::PropertyType)(App::Prop_None),"Dimension text size in units");
-
-
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
-    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
-    double weight = lg->getWeight("Thin");
-    delete lg;                                   //Coverity CID 174670
-    ADD_PROPERTY_TYPE(LineWidth,(weight)    ,group,(App::PropertyType)(App::Prop_None),"Dimension line weight");
-
-
-    hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    ADD_PROPERTY_TYPE(Color,(fcColor),group,App::Prop_None,"The color of the Dimension");
-
-    int standardStyle = hGrp->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
-    ADD_PROPERTY_TYPE(StandardAndStyle, (standardStyle), group, App::Prop_None, "Specifies the standard according to which this dimension is drawn");
+    ADD_PROPERTY_TYPE(Font, (prefFont().c_str()), group, App::Prop_None, "The name of the font to use");
+    ADD_PROPERTY_TYPE(Fontsize, (prefFontSize()), group, (App::PropertyType)(App::Prop_None),
+                                                                     "Dimension text size in units");
+    ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None), 
+                                                        "Dimension line weight");
+    ADD_PROPERTY_TYPE(Color,(prefColor()),group,App::Prop_None,"The color of the Dimension");
+    ADD_PROPERTY_TYPE(StandardAndStyle, (prefStandardAndStyle()), group, App::Prop_None, 
+                                        "Specifies the standard according to which this dimension is drawn");
     StandardAndStyle.setEnums(StandardAndStyleEnums);
 
-    ADD_PROPERTY_TYPE(RenderingExtent, (REND_EXTENT_NORMAL),  group, App::Prop_None,"Select the rendering mode by space requirements");
+    ADD_PROPERTY_TYPE(RenderingExtent, (REND_EXTENT_NORMAL),  group, App::Prop_None,
+                                         "Select the rendering mode by space requirements");
     RenderingExtent.setEnums(RenderingExtentEnums);
-    ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,"Reverts the usual direction of dimension line terminators");
+    ADD_PROPERTY_TYPE(FlipArrowheads, (false), group, App::Prop_None,
+                                          "Reverses the usual direction of dimension line terminators");
 }
 
 ViewProviderDimension::~ViewProviderDimension()
@@ -145,16 +131,75 @@ void ViewProviderDimension::onChanged(const App::Property* p)
         (p == &StandardAndStyle) ||
         (p == &RenderingExtent) ||
         (p == &FlipArrowheads))
- {
+    {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);
         }
     }
+    if (p == &Color) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(qgiv);
+            if (qgivd != nullptr) {
+                qgivd->setNormalColorAll();
+            }
+        }
+    }
+
     ViewProviderDrawingView::onChanged(p);
 }
 
 TechDraw::DrawViewDimension* ViewProviderDimension::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawViewDimension*>(pcObject);
+}
+
+App::Color ViewProviderDimension::prefColor() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00001100));
+    return fcColor;
+}
+
+std::string ViewProviderDimension::prefFont() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Labels");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    return fontName;
+}
+
+double ViewProviderDimension::prefFontSize() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", QGIView::DefaultFontSizeInMM);
+    return fontSize;
+}
+
+double ViewProviderDimension::prefWeight() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                        GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    double weight = lg->getWeight("Thin");
+    delete lg;                                   //Coverity CID 174670
+    return weight;
+}
+
+int ViewProviderDimension::prefStandardAndStyle() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    int standardStyle = hGrp->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
+    return standardStyle;
 }
