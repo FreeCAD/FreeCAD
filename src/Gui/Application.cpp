@@ -518,18 +518,34 @@ void Application::open(const char* FileName, const char* Module)
 
     if (Module != 0) {
         try {
-            // issue module loading
-            Command::doCommand(Command::App, "import %s", Module);
+            if(File.hasExtension("FCStd")) {
+                bool handled = false;
+                std::string filepath = File.filePath();
+                for(auto &v : d->documents) {
+                    auto doc = v.second->getDocument();
+                    std::string fi = Base::FileInfo(doc->FileName.getValue()).filePath();
+                    if(filepath == fi) {
+                        handled = true;
+                        Command::doCommand(Command::App, "FreeCADGui.reload('%s')", doc->getName());
+                        break;
+                    }
+                }
+                if(!handled)
+                    Command::doCommand(Command::App, "FreeCAD.openDocument('%s')", FileName);
+            } else {
+                // issue module loading
+                Command::doCommand(Command::App, "import %s", Module);
 
-            // load the file with the module
-            Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+                // load the file with the module
+                Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
 
-            // ViewFit
-            if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-                    ("User parameter:BaseApp/Preferences/View");
-                if (hGrp->GetBool("AutoFitToView", true))
-                    Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+                // ViewFit
+                if (sendHasMsgToActiveView("ViewFit")) {
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+                        ("User parameter:BaseApp/Preferences/View");
+                    if (hGrp->GetBool("AutoFitToView", true))
+                        Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+                }
             }
 
             // the original file name is required
@@ -2266,6 +2282,17 @@ App::Document *Application::reopen(App::Document *doc) {
                     || d->testStatus(App::Document::PartialRestore) )
                 docs.push_back(d->FileName.getValue());
         }
+
+        if(docs.empty()) {
+            Document *gdoc = getDocument(doc);
+            if(gdoc) {
+                setActiveDocument(gdoc);
+                if(!gdoc->setActiveView())
+                    gdoc->setActiveView(0,View3DInventor::getClassTypeId());
+            }
+            return doc;
+        }
+
         for(auto &file : docs)
             App::GetApplication().openDocument(file.c_str(),false);
     }
