@@ -123,7 +123,8 @@ void QGIViewSection::drawSectionFace()
                 newFace->setFillMode(QGIFace::SvgFill);
                 newFace->setHatchColor(sectionVp->HatchColor.getValue());
                 newFace->setHatchScale(section->HatchScale.getValue());
-                std::string hatchSpec = section->FileHatchPattern.getValue();
+//                std::string hatchSpec = section->FileHatchPattern.getValue();
+                std::string hatchSpec = section->SvgIncluded.getValue();
                 newFace->setHatchFile(hatchSpec);
             }
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {

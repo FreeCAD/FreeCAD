@@ -119,7 +119,8 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(SectionSymbol ,(""),sgroup,App::Prop_None,"The identifier for this section");
     ADD_PROPERTY_TYPE(BaseView ,(0),sgroup,App::Prop_None,"2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0) ,sgroup,App::Prop_None,"Section Plane normal direction");  //direction of extrusion of cutting prism
+    ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0) ,sgroup,App::Prop_None,
+                        "Section Plane normal direction");  //direction of extrusion of cutting prism
     ADD_PROPERTY_TYPE(SectionOrigin ,(0,0,0) ,sgroup,App::Prop_None,"Section Plane Origin");
     SectionDirection.setEnums(SectionDirEnums);
     ADD_PROPERTY_TYPE(SectionDirection,((long)0),sgroup, App::Prop_None, "Direction in Base View for this Section");
@@ -129,6 +130,8 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(CutSurfaceDisplay,((long)2),fgroup, App::Prop_None, "Appearance of Cut Surface");
     ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
     ADD_PROPERTY_TYPE(FileGeomPattern ,(""),fgroup,App::Prop_None,"The PAT pattern file for geometric hatching");
+    ADD_PROPERTY_TYPE(SvgIncluded ,(""),fgroup,App::Prop_None,"Embedded Svg hatch file");   // n/a to end users
+    ADD_PROPERTY_TYPE(PatIncluded ,(""),fgroup,App::Prop_None,"Embedded Pat pattern file"); // n/a to end users
     ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
     ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
 
@@ -138,6 +141,9 @@ DrawViewSection::DrawViewSection()
     FileHatchPattern.setFilter(hatchFilter);
     hatchFilter = ("PAT files (*.pat *.PAT);;All files (*)");
     FileGeomPattern.setFilter(hatchFilter);
+
+//    SvgIncluded.setStatus(App::Property::ReadOnly,true);
+//    PatIncluded.setStatus(App::Property::ReadOnly,true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -162,7 +168,11 @@ short DrawViewSection::mustExecute() const
 
 void DrawViewSection::onChanged(const App::Property* prop)
 {
-//    Base::Console().Message("DVS::onChanged(%s) - restoring: %d\n", prop->getName(), isRestoring());
+    App::Document* doc = getDocument();
+//    bool docRestoring = getDocument()->testStatus(App::Document::Status::Restoring);
+//    Base::Console().Message("DVS::onChanged(%s) - obj restoring: %d\n", 
+//                            prop->getName(), isRestoring());
+
     if (!isRestoring()) {
         if (prop == &SectionSymbol) {
             std::string lblText = "Section " +
@@ -179,31 +189,76 @@ void DrawViewSection::onChanged(const App::Property* prop)
         } else if (prop == &CutSurfaceDisplay) {
 //            Base::Console().Message("DVS::onChanged(%s)\n",prop->getName());
         }
-    }
-    if (prop == &FileGeomPattern    ||
-        prop == &NameGeomPattern ) {
-        std::string fileSpec = FileGeomPattern.getValue();
-        Base::FileInfo fi(fileSpec);
-        std::string ext = fi.extension();
-        if ( (ext == "pat") ||
-             (ext == "PAT") ) {
-            if ((!FileGeomPattern.isEmpty())  &&
-                (!NameGeomPattern.isEmpty())) {
-                std::vector<PATLineSpec> specs = 
-                           DrawGeomHatch::getDecodedSpecsFromFile(FileGeomPattern.getValue(),
-                                                                  NameGeomPattern.getValue());
-                m_lineSets.clear();
-                for (auto& hl: specs) {
-                    //hl.dump("hl from section");
-                    LineSet ls;
-                    ls.setPATLineSpec(hl);
-                    m_lineSets.push_back(ls);
-                }
+
+        if ((prop == &FileHatchPattern) &&
+            (doc != nullptr) ) {
+            if (!FileHatchPattern.isEmpty()) {
+                replaceSvgIncluded(FileHatchPattern.getValue());
+            }
+        }
+
+        if ( (prop == &FileGeomPattern) &&
+             (doc != nullptr) ) {
+            if (!FileGeomPattern.isEmpty()) {
+                replacePatIncluded(FileGeomPattern.getValue());
             }
         }
     }
 
+    if (prop == &FileGeomPattern    ||
+        prop == &NameGeomPattern ) {
+        if (!FileGeomPattern.isEmpty()) {
+            std::string fileSpec = FileGeomPattern.getValue();
+            Base::FileInfo fi(fileSpec);
+            std::string ext = fi.extension();
+            if ( (ext == "pat") ||
+                 (ext == "PAT") ) {
+                if ((!fileSpec.empty())  &&
+                    (!NameGeomPattern.isEmpty())) {
+                    std::vector<PATLineSpec> specs = 
+                               DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
+                                                                      NameGeomPattern.getValue());
+                    m_lineSets.clear();
+                    for (auto& hl: specs) {
+                        //hl.dump("hl from section");
+                        LineSet ls;
+                        ls.setPATLineSpec(hl);
+                        m_lineSets.push_back(ls);
+                    }
+                }
+            }
+        }
+    }
     DrawView::onChanged(prop);
+}
+
+
+//this could probably always use FileHatchPattern as input?
+void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
+{
+//    Base::Console().Message("DVS::replaceSvgHatch(%s)\n", newSvgFile.c_str());
+    const char* temp = SvgIncluded.getValue();
+    //if (SvgIncluded.isEmpty()) {
+    if (temp[0] == '\0') {
+        setupSvgIncluded();
+    } else {
+        std::string tempName = SvgIncluded.getExchangeTempFile();
+        copyFile(newSvgFile, tempName);
+        SvgIncluded.setValue(tempName.c_str());
+    }
+}
+
+void DrawViewSection::replacePatIncluded(std::string newPatFile)
+{
+//    Base::Console().Message("DVS::replacePatHatch(%s)\n", newPatFile.c_str());
+    const char* temp = PatIncluded.getValue();
+    if (temp[0] == '\0') {
+        setupPatIncluded();
+    } else {
+        std::string tempName = PatIncluded.getExchangeTempFile();
+        copyFile(newPatFile, tempName);
+        PatIncluded.setValue(tempName.c_str());
+    }
 }
 
 App::DocumentObjectExecReturn *DrawViewSection::execute(void)
@@ -772,8 +827,22 @@ TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
     return baseDPGI;
 }
 
+//copy whole text file from inSpec to outSpec
+void DrawViewSection::copyFile(std::string inSpec, std::string outSpec)
+{
+//    Base::Console().Message("DVS::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
+    if (inSpec.empty()) {
+        std::ofstream  dst(outSpec);   //make an empty file
+    } else {
+        std::ifstream  src(inSpec);
+        std::ofstream  dst(outSpec);
+        dst << src.rdbuf();
+    }
+}
+
 void DrawViewSection::getParameters()
 {
+//    Base::Console().Message("DVS::getParameters()\n");
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
 
@@ -810,6 +879,79 @@ bool DrawViewSection::debugSection(void) const
 
     bool result = hGrp->GetBool("debugSection",false);
     return result;
+}
+
+
+void DrawViewSection::onDocumentRestored() 
+{
+//    Base::Console().Message("DVS::onDocumentRestored()\n");
+    if (!FileHatchPattern.isEmpty()) {
+        std::string svgFileName = FileHatchPattern.getValue();
+        Base::FileInfo tfi(svgFileName);
+        if (tfi.isReadable()) {
+            const char* svg = SvgIncluded.getValue();
+//            if (SvgIncluded.isEmpty()) {
+            if (svg[0] == '\0') {
+                setupSvgIncluded();
+            }
+        }
+    }
+
+    DrawViewPart::onDocumentRestored();
+}
+
+void DrawViewSection::setupObject()
+{
+    //by this point DVS should have a name and belong to a document
+    setupSvgIncluded();
+    setupPatIncluded();
+
+    DrawViewPart::setupObject();
+}
+
+void DrawViewSection::setupSvgIncluded(void)
+{
+//    Base::Console().Message("DVS::setupSvgIncluded()\n");
+    App::Document* doc = getDocument();
+    std::string special = getNameInDocument();
+    special += "SvgHatch.svg";
+    std::string dir = doc->TransientDir.getValue();
+    std::string svgName = dir + special;
+
+    const char* includedName = SvgIncluded.getValue();
+    //if (SvgIncluded.isEmpty()) {
+//    if (includedName[0] == '\0') {
+        copyFile(std::string(), svgName);
+        SvgIncluded.setValue(svgName.c_str());
+    }
+
+    if (!FileHatchPattern.isEmpty()) {
+        std::string exchName = SvgIncluded.getExchangeTempFile();
+        copyFile(FileHatchPattern.getValue(), exchName);
+        SvgIncluded.setValue(exchName.c_str(), special.c_str());
+    }
+}
+
+void DrawViewSection::setupPatIncluded(void)
+{
+//    Base::Console().Message("DVS::setupPatIncluded()\n");
+    App::Document* doc = getDocument();
+    std::string special = getNameInDocument();
+    special += "PatHatch.pat";
+    std::string dir = doc->TransientDir.getValue();
+    std::string patName = dir + special;
+    //if (PatIncluded.isEmpty()) {
+    const char* includedName = PatIncluded.getValue();
+    if (includedName[0] == '\0') {
+        copyFile(std::string(), patName);
+        PatIncluded.setValue(patName.c_str());
+    }
+
+    if (!FileGeomPattern.isEmpty()) {
+        std::string exchName = PatIncluded.getExchangeTempFile();
+        copyFile(FileGeomPattern.getValue(), exchName);
+        PatIncluded.setValue(exchName.c_str(), special.c_str());
+    }
 }
 
 // Python Drawing feature ---------------------------------------------------------
