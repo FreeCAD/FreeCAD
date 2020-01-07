@@ -57,7 +57,6 @@ QGCustomText::QGCustomText(QGraphicsItem* parent) :
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
-    isHighlighted = false;
     m_colCurrent = getNormalColor();
     m_colNormal  = m_colCurrent;
 }
@@ -144,7 +143,7 @@ void QGCustomText::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGCustomText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
-    if(!isSelected() && !isHighlighted) {
+    if(!isSelected()) {
         setPrettyNormal();
     }
     QGraphicsTextItem::hoverLeaveEvent(event);
@@ -187,6 +186,7 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 QColor QGCustomText::getNormalColor()    //preference!
 {
+//    Base::Console().Message("QGCT::getNormalColor() - pref\n");
     QColor result;
     Base::Reference<ParameterGrp> hGrp = getParmGroup();
     App::Color fcColor;
