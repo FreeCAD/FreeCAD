@@ -228,7 +228,7 @@ class FemInputWriter():
         for femobj in self.force_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             frc_obj = femobj["Object"]
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintLog(
                 "Constraint force:" + " " + frc_obj.Name + "\n"
             )
             if femobj["RefShapeType"] == "Vertex":
@@ -268,6 +268,9 @@ class FemInputWriter():
         for femobj in self.force_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             frc_obj = femobj["Object"]
+            FreeCAD.Console.PrintMessage(
+                "Constraint force:" + " " + frc_obj.Name + "\n"
+            )
             if frc_obj.Force == 0:
                 FreeCAD.Console.PrintMessage("  Warning --> Force = 0\n")
             if femobj["RefShapeType"] == "Vertex":  # point load on vertices
