@@ -206,11 +206,18 @@ class _ViewProviderCompoundFilter:
     def onDelete(self, feature, subelements):  # subelements is a tuple of strings
         if not self.ViewObject.DontUnhideOnDelete:
             try:
-                self.Object.Base.ViewObject.show()
+                if self.Object.Base:
+                    # the base object migt be deleted be the user
+                    # https://forum.freecadweb.org/viewtopic.php?f=3&t=42242
+                    self.Object.Base.ViewObject.show()
                 if self.Object.Stencil:
                     self.Object.Stencil.ViewObject.show()
             except Exception as err:
-                FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+                if hasattr(err, "message"):
+                    error_string = err.message
+                else:
+                    error_string = err
+                FreeCAD.Console.PrintError("Error in onDelete: {}\n".format(error_string))
         return True
 
 
