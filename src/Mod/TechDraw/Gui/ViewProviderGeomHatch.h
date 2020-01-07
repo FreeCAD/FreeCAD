@@ -68,7 +68,7 @@ public:
 
     TechDraw::DrawGeomHatch* getViewObject() const;
 
-    virtual Gui::MDIView *getMDIView() override;
+    virtual Gui::MDIView *getMDIView() const override;
 };
 
 } // namespace TechDrawGui

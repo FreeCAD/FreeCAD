@@ -865,6 +865,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
                     // a redraw is required in order to clear the rubberband
                     draw(true,false);
+                    const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_UseHandler: {

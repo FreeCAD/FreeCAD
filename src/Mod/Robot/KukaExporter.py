@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Kuka export lib (c) Jürgen Riegel 2009 LGPL 2.1 or higher
 
 import time

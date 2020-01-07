@@ -84,6 +84,7 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 
 #include "View3DInventorExamples.h"
+#include "ViewProviderDocumentObject.h"
 #include "SoFCSelectionAction.h"
 #include "View3DPy.h"
 #include "SoFCDB.h"
@@ -514,6 +515,11 @@ void View3DInventor::print(QPrinter* printer)
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);
     p.end();
+}
+
+bool View3DInventor::containsViewProvider(const ViewProvider* vp) const
+{
+    return _viewer->containsViewProvider(vp);
 }
 
 // **********************************************************************************

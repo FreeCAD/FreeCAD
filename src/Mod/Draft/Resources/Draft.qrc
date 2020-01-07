@@ -51,6 +51,7 @@
         <file>icons/Draft_PathLinkArray.svg</file>
         <file>icons/Draft_Point.svg</file>
         <file>icons/Draft_PointArray.svg</file>
+        <file>icons/Draft_PolarArray.svg</file>
         <file>icons/Draft_Polygon.svg</file>
         <file>icons/Draft_Rectangle.svg</file>
         <file>icons/Draft_Rotate.svg</file>
@@ -88,7 +89,7 @@
         <file>icons/Snap_Perpendicular.svg</file>
         <file>icons/Snap_Special.svg</file>
         <file>icons/Snap_WorkingPlane.svg</file>
-        <file>patterns/brick01</file>
+        <file>patterns/brick01.svg</file>
         <file>patterns/concrete.svg</file>
         <file>patterns/cross.svg</file>
         <file>patterns/diagonal1.svg</file>
@@ -148,6 +149,7 @@
         <file>ui/preferences-dxf.ui</file>
         <file>ui/preferences-oca.ui</file>
         <file>ui/preferences-svg.ui</file>
+        <file>ui/TaskPanel_PolarArray.ui</file>
         <file>ui/TaskSelectPlane.ui</file>
         <file>ui/TaskShapeString.ui</file>
     </qresource>

@@ -443,6 +443,8 @@ QString Unit::getTypeString(void) const
     if(*this == Unit::MagneticFluxDensity         )       return QString::fromLatin1("MagneticFluxDensity");
     if(*this == Unit::ElectricalCapacitance       )       return QString::fromLatin1("ElectricalCapacitance");
     if(*this == Unit::ElectricalInductance        )       return QString::fromLatin1("ElectricalInductance");
+    if(*this == Unit::ElectricalConductance       )       return QString::fromLatin1("ElectricalConductance");
+    if(*this == Unit::ElectricalResistance        )       return QString::fromLatin1("ElectricalResistance");
     if(*this == Unit::AmountOfSubstance           )       return QString::fromLatin1("AmountOfSubstance");
     if(*this == Unit::LuminousIntensity           )       return QString::fromLatin1("LuminousIntensity");
     if(*this == Unit::Pressure                    )       return QString::fromLatin1("Pressure");
@@ -486,6 +488,8 @@ Unit Unit::ElectricCharge(0,0,1,1);
 Unit Unit::MagneticFluxDensity(0,1,-2,-1);
 Unit Unit::ElectricalCapacitance(-2,-1,4,2);
 Unit Unit::ElectricalInductance(2,1,-2,-2);
+Unit Unit::ElectricalConductance(-2,-1,3,2);
+Unit Unit::ElectricalResistance(2,1,-3,-2);
 Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
 Unit Unit::LuminousIntensity(0,0,0,0,0,0,1);
 

@@ -163,7 +163,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
 
     menu.addSeparator();
 
-    CONTEXT_ITEM("Sketcher_AlterConstruction","Toggle construction line","Sketcher_ToggleConstruction",doToggleConstruction,true)
+    CONTEXT_ITEM("Sketcher_ToggleConstruction","Toggle construction line","Sketcher_ToggleConstruction",doToggleConstruction,true)
 
     menu.addSeparator();
 

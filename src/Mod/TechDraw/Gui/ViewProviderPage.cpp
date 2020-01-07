@@ -335,7 +335,7 @@ void ViewProviderPage::unsetEdit(int ModNum)
 }
 
 
-MDIViewPage* ViewProviderPage::getMDIViewPage()
+MDIViewPage* ViewProviderPage::getMDIViewPage() const
 {
     if (m_mdiView.isNull()) {
         Base::Console().Log("INFO - ViewProviderPage::getMDIViewPage has no m_mdiView!\n");
@@ -444,7 +444,8 @@ TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);
 }
 
-Gui::MDIView *ViewProviderPage::getMDIView() {
-    showMDIViewPage();
+Gui::MDIView *ViewProviderPage::getMDIView() const
+{
+    const_cast<ViewProviderPage*>(this)->showMDIViewPage();
     return m_mdiView.data();
 }

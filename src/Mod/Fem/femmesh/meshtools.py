@@ -40,13 +40,13 @@ def get_femnodes_by_femobj_with_references(
         node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, "Node")
         # FreeCAD.Console.PrintMessage("node_set_group: {}\n".format(node_set))
         if node_set:
-            FreeCAD.Console.PrintMessage(
-                "  Finite element mesh nodes where retrieved "
+            FreeCAD.Console.PrintLog(
+                "    Finite element mesh nodes where retrieved "
                 "from existent finite element mesh group data.\n"
             )
     if not node_set:
-        FreeCAD.Console.PrintMessage(
-            "  Finite element mesh nodes will be retrieved "
+        FreeCAD.Console.PrintLog(
+            "    Finite element mesh nodes will be retrieved "
             "by searching the appropriate nodes in the finite element mesh.\n"
         )
         node_set = get_femnodes_by_references(femmesh, femobj["Object"].References)
@@ -112,7 +112,7 @@ def get_femnodes_by_refshape(
         # the following method getElement(element) does not return Solid elements
         r = get_element(ref[0], refelement)
         FreeCAD.Console.PrintMessage(
-            "  "
+            "    "
             "ReferenceShape ... Type: {0}, "
             "Object name: {1}, "
             "Object label: {2}, "
@@ -762,7 +762,7 @@ def get_force_obj_vertex_nodeload_table(
         for elem in elem_tup:
             ref_node = o.Shape.getElement(elem)
             FreeCAD.Console.PrintMessage(
-                "  "
+                "    "
                 "ReferenceShape ... Type: {0}, "
                 "Object name: {1}, "
                 "Object label: {2}, "
@@ -771,9 +771,15 @@ def get_force_obj_vertex_nodeload_table(
             )
             node = femmesh.getNodesByVertex(ref_node)
             elem_info_string = "node load on shape: " + o.Name + ":" + elem
-            force_obj_node_load_table.append(
-                (elem_info_string, {node[0]: node_load / node_count})
-            )
+            if len(node) == 1:
+                force_obj_node_load_table.append(
+                    (elem_info_string, {node[0]: node_load / node_count})
+                )
+            else:
+                FreeCAD.Console.PrintError(
+                    "    Problem on retrieving mesh node for: {}\n"
+                    .format(elem_info_string)
+                )
     return force_obj_node_load_table
 
 
@@ -801,7 +807,7 @@ def get_force_obj_edge_nodeload_table(
         for elem in elem_tup:
             ref_edge = o.Shape.getElement(elem)
             FreeCAD.Console.PrintMessage(
-                "  "
+                "    "
                 "ReferenceShape ... Type: {0}, "
                 "Object name: {1}, "
                 "Object label: {2}, "
@@ -1073,7 +1079,7 @@ def get_force_obj_face_nodeload_table(
         for elem in elem_tup:
             ref_face = o.Shape.getElement(elem)
             FreeCAD.Console.PrintMessage(
-                "  "
+                "    "
                 "ReferenceShape ... Type: {0}, "
                 "Object name: {1}, "
                 "Object label: {2}, "

@@ -169,10 +169,11 @@ SheetView *ViewProviderSheet::showSpreadsheetView()
     }
 
     return view;
-} 
+}
 
-Gui::MDIView *ViewProviderSheet::getMDIView() {
-    return showSpreadsheetView();
+Gui::MDIView *ViewProviderSheet::getMDIView() const
+{
+    return const_cast<ViewProviderSheet*>(this)->showSpreadsheetView();
 }
 
 void ViewProviderSheet::updateData(const App::Property* prop)

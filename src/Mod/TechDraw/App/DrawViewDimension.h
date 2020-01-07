@@ -86,7 +86,7 @@ struct arcPoints
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewDimension);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
 
 public:
     /// Constructor
@@ -105,7 +105,7 @@ public:
     App::PropertyFloat             OverTolerance;
     App::PropertyFloat             UnderTolerance;
 
-    short mustExecute() const;
+    short mustExecute() const override;
     bool has2DReferences(void) const;
     bool has3DReferences(void) const;
     bool hasTolerance(void) const;
@@ -113,20 +113,20 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderDimension";
     }
     //return PyObject as DrawViewDimensionPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     virtual std::string getFormatedValue(int partial = 0);
     virtual double getDimValue();
     DrawViewPart* getViewPart() const;
-    virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
+    virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
     static int getRefType1(const std::string s);
     static int getRefType2(const std::string s1, const std::string s2);
     static int getRefType3(const std::string g1,
@@ -145,8 +145,8 @@ public:
     bool isMultiValueSchema(void) const;
 
 protected:
-    virtual void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
+    virtual void onChanged(const App::Property* prop) override;
+    virtual void onDocumentRestored() override;
     bool showUnits() const;
     bool useDecimals() const;
     std::string getPrefix() const;

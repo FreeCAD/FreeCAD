@@ -392,6 +392,13 @@ void TaskSectionView::updateSectionView(void)
         Command::doCommand(Command::Doc,"App.activeDocument().%s.SectionSymbol = '%s'",
                            sectionName.c_str(),
                            temp.c_str());
+        std::string lblText = "Section " +
+                              temp + 
+                              " - " +
+                              temp;
+        Command::doCommand(Command::Doc,"App.activeDocument().%s.Label = '%s'",
+                           sectionName.c_str(),
+                           lblText.c_str());
         Command::doCommand(Command::Doc,"App.activeDocument().%s.Scale = %0.6f",
                            sectionName.c_str(),
                            ui->sbScale->value());
@@ -408,6 +415,8 @@ bool TaskSectionView::accept()
     if (m_createMode) {
         if (m_section == nullptr) {
             apply();
+        } else {
+            updateSectionView();
         }
         Gui::Command::updateActive();
         Gui::Command::commitCommand();

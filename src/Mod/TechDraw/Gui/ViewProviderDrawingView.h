@@ -70,7 +70,7 @@ public:
 
     QGIView* getQView(void);
     MDIViewPage* getMDIViewPage() const;
-    virtual Gui::MDIView *getMDIView() override;
+    virtual Gui::MDIView *getMDIView() const override;
 
     /** @name Restoring view provider from document load */
     //@{

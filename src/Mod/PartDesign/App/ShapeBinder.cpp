@@ -32,6 +32,7 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
+#include <unordered_map>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
@@ -296,13 +297,17 @@ SubShapeBinder::SubShapeBinder()
 }
 
 void SubShapeBinder::setupObject() {
-    _Version.setValue(1);
+    _Version.setValue(2);
     checkPropertyStatus();
 }
 
-void SubShapeBinder::update() {
+void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     std::vector<Part ::TopoShape> shapes;
+    std::vector<const Base::Matrix4D*> shapeMats;
+
+    bool forced = (Shape.getValue().IsNull() || (options & UpdateForced)) ? true : false;
+    bool init = (!forced && (options & UpdateForced)) ? true : false;
 
     std::string errMsg;
     auto parent = Context.getValue();
@@ -329,7 +334,7 @@ void SubShapeBinder::update() {
             Context.setValue(parent,parentSub.c_str());
     }
     bool first = false;
-    std::map<const App::DocumentObject*, Base::Matrix4D> mats;
+    std::unordered_map<const App::DocumentObject*, Base::Matrix4D> mats;
     for(auto &l : Support.getSubListValues()) {
         auto obj = l.getValue();
         if(!obj || !obj->getNameInDocument())
@@ -373,6 +378,9 @@ void SubShapeBinder::update() {
                 }
             }
         }
+        if(init)
+            continue;
+
         const auto &subvals = l.getSubValues();
         std::set<std::string> subs(subvals.begin(),subvals.end());
         static std::string none("");
@@ -384,15 +392,8 @@ void SubShapeBinder::update() {
             try {
                 auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
                 if(!shape.isNull()) {
-                    shape = shape.makETransform(res.first->second);
-                    // if(shape.Hasher
-                    //         && shape.getElementMapSize()
-                    //         && shape.Hasher != getDocument()->getStringHasher())
-                    // {
-                    //     shape.reTagElementMap(getID(),
-                    //             getDocument()->getStringHasher(),TOPOP_SHAPEBINDER);
-                    // }
                     shapes.push_back(shape);
+                    shapeMats.push_back(&res.first->second);
                 }
             } catch(Base::Exception &e) {
                 e.ReportException();
@@ -408,58 +409,130 @@ void SubShapeBinder::update() {
             }
         }
     }
-    if(errMsg.size()) 
-        FC_THROWM(Base::RuntimeError, errMsg);
 
-    if(shapes.size()==_Cache.size()) {
-        bool hit = true;
-        for(size_t i=0;i<shapes.size();++i) {
-            if(!shapes[i].getShape().IsPartner(_Cache[i].getShape())
-                    || shapes[i].getPlacement() != _Cache[i].getPlacement())
-            {
-                hit = false;
-                break;
+    std::string objName;
+    // lambda function for generating matrix cache property
+    auto cacheName = [this,&objName](const App::DocumentObject *obj) {
+        objName = "Cache_";
+        objName += obj->getNameInDocument();
+        if(obj->getDocument() != getDocument()) {
+            objName += "_";
+            objName += obj->getDocument()->getName();
+        }
+        return objName.c_str();
+    };
+
+    if(!init) {
+
+        if(errMsg.size()) {
+            if(!(options & UpdateInit))
+                FC_THROWM(Base::RuntimeError, errMsg);
+            if(!Shape.getValue().IsNull())
+                return;
+        }
+
+        // If not forced, only rebuild when there is any change in
+        // transformation matrix
+        if(!forced) {
+            bool hit = true;
+            for(auto &v : mats) {
+                auto prop = Base::freecad_dynamic_cast<App::PropertyMatrix>(
+                        getDynamicPropertyByName(cacheName(v.first)));
+                if(!prop || prop->getValue()!=v.second) {
+                    hit = false;
+                    break;
+                }
+            }
+            if(hit)
+                return;
+        }
+        
+        if(shapes.size()==1 && !Relative.getValue())
+            shapes.back().setPlacement(Base::Placement());
+        else {
+            for(size_t i=0;i<shapes.size();++i) {
+                auto &shape = shapes[i];
+                shape = shape.makETransform(*shapeMats[i]);
+                // if(shape.Hasher
+                //         && shape.getElementMapSize()
+                //         && shape.Hasher != getDocument()->getStringHasher())
+                // {
+                //     shape.reTagElementMap(getID(),
+                //             getDocument()->getStringHasher(),TOPOP_SHAPEBINDER);
+                // }
             }
         }
-        if(hit)
+
+        if(shapes.empty()) {
+            // Shape.resetElementMapVersion();
             return;
-    }
-    _Cache = std::move(shapes);
-
-    if(_Cache.empty()) {
-        // Shape.resetElementMapVersion();
-        return;
-    }
-
-    result.makECompound(_Cache);
-
-    bool fused = false;
-    if(Fuse.getValue()) {
-        // If the compound has solid, fuse them together, and ignore other type of
-        // shapes
-        std::vector<TopoDS_Shape> solids;
-        for(auto &s : _Cache) {
-            if(s.shapeType(true) == TopAbs_SOLID)
-                solids.push_back(s.getShape());
         }
-        if(solids.size()) {
-            result.fuse(solids);
-            result = result.makERefine();
-            fused = true;
+
+        result.makECompound(shapes);
+
+        bool fused = false;
+        if(Fuse.getValue()) {
+            // If the compound has solid, fuse them together, and ignore other type of
+            // shapes
+            std::vector<TopoDS_Shape> solids;
+            Part::TopoShape solid;
+            for(auto &s : result.getSubTopoShapes(TopAbs_SOLID)) {
+                if(!solid.isNull())
+                    solid = s;
+                else 
+                    solids.push_back(s.getShape());
+            }
+            if(solids.size()) {
+                solid.fuse(solids);
+                result = solid.makERefine();
+                fused = true;
+            } else if (!solid.isNull()) {
+                // wrap the single solid in compound to keep its placement
+                result.makECompound({solid});
+                fused = true;
+            }
+        } 
+        
+        if(!fused && MakeFace.getValue()
+                && !result.hasSubShape(TopAbs_FACE)
+                && result.hasSubShape(TopAbs_EDGE))
+        {
+            result = result.makEWires();
+            try {
+                result = result.makEFace(0);
+            }catch(...){}
         }
-    } 
-    
-    if(!fused && MakeFace.getValue() && 
-       !result.hasSubShape(TopAbs_FACE) &&
-       result.hasSubShape(TopAbs_EDGE))
-    {
-        result = result.makEWires();
+
+        result.setPlacement(Placement.getValue());
+        Shape.setValue(result);
+    }
+
+    // collect transformation matrix cache entires
+    std::unordered_set<std::string> caches;
+    for(const auto &name : getDynamicPropertyNames()) {
+        if(boost::starts_with(name,"Cache_"))
+            caches.emplace(name);
+    }
+
+    // update transformation matrix cache
+    for(auto &v : mats) {
+        const char *name = cacheName(v.first);
+        auto prop = getDynamicPropertyByName(name);
+        if(!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
+            if(prop)
+                removeDynamicProperty(name);
+            prop = addDynamicProperty("App::PropertyMatrix",name,"Cache",0,0,false,true);
+        }
+        caches.erase(name);
+        static_cast<App::PropertyMatrix*>(prop)->setValue(v.second);
+    }
+
+    // remove any non-used cache entries.
+    for(const auto &name : caches) {
         try {
-            result = result.makEFace(0);
-        }catch(...){}
+            removeDynamicProperty(name.c_str());
+        } catch(...) {}
     }
-
-    Shape.setValue(result);
 }
 
 void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
@@ -472,13 +545,13 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
 
 App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
     if(BindMode.getValue()==0)
-        update();
+        update(UpdateForced);
     return inherited::execute();
 }
 
 void SubShapeBinder::onDocumentRestored() {
-    if(Shape.testStatus(App::Property::Transient))
-        update();
+    if(_Version.getValue()<2)
+        update(UpdateInit);
     inherited::onDocumentRestored();
 }
 

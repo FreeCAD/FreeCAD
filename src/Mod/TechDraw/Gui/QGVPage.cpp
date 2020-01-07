@@ -639,7 +639,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
     balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myFeat);
 
     if(balloon) {
-        App::DocumentObject* obj = balloon->sourceView.getValue();
+        App::DocumentObject* obj = balloon->SourceView.getValue();
 
         if(obj) {
             // Attach the dimension to the first object's group
@@ -1163,7 +1163,7 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
             throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
         }
 
-        balloon->sourceView.setValue(getDrawPage()->balloonParent);
+        balloon->SourceView.setValue(getDrawPage()->balloonParent);
         balloon->origin = mapToScene(event->pos());
 
         Gui::Command::commitCommand();

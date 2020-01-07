@@ -176,7 +176,7 @@ class _TaskPanelFemMaterialReinforced:
         # search for exact the mat_card_m and mat_card_r in all known cards
         # choose the current matrix material
         self.card_path_m = self.get_material_card(self.material_m)
-        FreeCAD.Console.PrintLog("card_path: {}".format(self.card_path_m))
+        FreeCAD.Console.PrintLog("card_path: {}\n".format(self.card_path_m))
         if not self.card_path_m:
             # we have not found our material in self.materials dict :-(
             # we're going to add a user-defined temporary material: a document material
@@ -207,7 +207,7 @@ class _TaskPanelFemMaterialReinforced:
 
         # choose the current reinforcement material
         self.card_path_r = self.get_material_card(self.material_r)
-        FreeCAD.Console.PrintLog("card_path: {}".format(self.card_path_r))
+        FreeCAD.Console.PrintLog("card_path: {}\n".format(self.card_path_r))
         if not self.card_path_r:
             # we have not found our material in self.materials dict :-(
             # we're going to add a user-defined temporary material: a document material

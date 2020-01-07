@@ -57,7 +57,7 @@ public:
 
     TechDraw::DrawHatch* getViewObject() const;
 
-    virtual Gui::MDIView *getMDIView() override;
+    virtual Gui::MDIView *getMDIView() const override;
     
 private:
     static App::PropertyFloatConstraint::Constraints scaleRange;

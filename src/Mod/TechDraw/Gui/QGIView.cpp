@@ -158,6 +158,12 @@ bool QGIView::isVisible(void)
     return result;
 }
 
+//Set selection state for this and it's children
+void QGIView::setGroupSelection(bool b)
+{
+    setSelected(b);
+}
+
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {
     alignHash.clear();
@@ -247,6 +253,7 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
     //TODO: this should be done in itemChange - item position has changed
     //TODO: and should check for dragging
 //    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n",getViewName());
+//    if(scene() && this == scene()->mouseGrabberItem()) {
     if(!m_locked) {
         if (!isInnerView()) {
             double tempX = x(),

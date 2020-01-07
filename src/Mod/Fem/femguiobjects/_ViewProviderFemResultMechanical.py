@@ -308,14 +308,21 @@ class _TaskPanelFemResultShow:
             self.restore_initial_result_dialog()
 
     def restore_initial_result_dialog(self):
+        # initialize FreeCAD.FEM_dialog and set standard values
+        # the FEM result mechanical task panel restore values
+        # are saved in a dictionary which is an attribute of FreeCAD
+        # the name is FEM_dialog
+        # in python console after result task panel has been opened once
+        # FreeCAD.FEM_dialog or FreeCAD.__dir__()
+        # This is not smart at all IMHO (Bernd)
+        # It was added with commit 3a7772d
+        # https://github.com/FreeCAD/FreeCAD/commit/3a7772d
         FreeCAD.FEM_dialog = {
             "results_type": "None",
             "show_disp": False,
             "disp_factor": 0,
             "disp_factor_max": 100
         }
-        self.reset_mesh_deformation()
-        self.reset_mesh_color()
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -511,8 +518,6 @@ class _TaskPanelFemResultShow:
         return scalar_list
 
     def result_selected(self, res_type, res_values, res_unit):
-        # What is the FreeCAD.FEM_dialog for ???
-        # Where is it initialized ?
         FreeCAD.FEM_dialog["results_type"] = res_type
         (minm, avg, maxm) = self.get_result_stats(res_type)
         self.update_colors_stats(res_values, res_unit, minm, avg, maxm)
@@ -607,6 +612,7 @@ class _TaskPanelFemResultShow:
             self.form.rb_peeq.setEnabled(0)
 
     def update(self):
+        self.reset_result_mesh()
         self.suitable_results = False
         self.disable_empty_result_buttons()
         if (self.mesh_obj.FemMesh.NodeCount == len(self.result_obj.NodeNumbers)):
@@ -625,17 +631,17 @@ class _TaskPanelFemResultShow:
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(None, "No result object", error_message)
 
-    def reset_mesh_deformation(self):
-        self.mesh_obj.ViewObject.applyDisplacement(0.0)
-
     def reset_mesh_color(self):
         self.mesh_obj.ViewObject.NodeColor = {}
         self.mesh_obj.ViewObject.ElementColor = {}
-        node_numbers = list(self.mesh_obj.FemMesh.Nodes.keys())
-        zero_values = [0] * len(node_numbers)
-        self.mesh_obj.ViewObject.setNodeColorByScalars(node_numbers, zero_values)
+        self.mesh_obj.ViewObject.resetNodeColor()
+
+    def reset_result_mesh(self):
+        self.mesh_obj.ViewObject.resetNodeDisplacement()
+        self.reset_mesh_color()
 
     def reject(self):
+        self.reset_result_mesh()
         # if the tasks panel is called from Command obj is not in edit mode
         # thus reset edit does not close the dialog, maybe don't call but set in edit instead
         FreeCADGui.Control.closeDialog()

@@ -72,6 +72,16 @@ void AbstractSplitView::deleteSelf()
     MDIView::deleteSelf();
 }
 
+bool AbstractSplitView::containsViewProvider(const ViewProvider* vp) const
+{
+    for (auto it = _viewer.begin(); it != _viewer.end(); ++it) {
+        if ((*it)->containsViewProvider(vp))
+            return true;
+    }
+
+    return false;
+}
+
 void AbstractSplitView::setupSettings()
 {
     // attach Parameter Observer

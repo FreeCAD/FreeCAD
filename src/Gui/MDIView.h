@@ -35,6 +35,7 @@ QT_END_NAMESPACE
 namespace Gui 
 {
 class Document;
+class ViewProvider;
 class ViewProviderDocumentObject;
 
 /** Base class of all windows belonging to a document.
@@ -129,6 +130,16 @@ public:
     bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=0) const
     {
         return ActiveObjects.hasObject(o,n,subname);
+    }
+
+    /*!
+     * \brief containsViewProvider
+     * Checks if the given view provider is part of this view. The default implementation
+     * returns false.
+     * \return bool
+     */
+    virtual bool containsViewProvider(const ViewProvider*) const {
+        return false;
     }
 
 public Q_SLOTS:

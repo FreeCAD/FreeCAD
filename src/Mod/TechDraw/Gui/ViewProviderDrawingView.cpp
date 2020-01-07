@@ -257,7 +257,8 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
     return result;
 }
 
-Gui::MDIView *ViewProviderDrawingView::getMDIView() {
+Gui::MDIView *ViewProviderDrawingView::getMDIView() const
+{
     return getMDIViewPage();
 }
 

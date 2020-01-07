@@ -373,7 +373,7 @@ Py::Float RotationPy::getAngle(void) const
 void RotationPy::setAngle(Py::Float arg)
 {
     Base::Vector3d axis; double angle;
-    this->getRotationPtr()->getValue(axis, angle);
+    this->getRotationPtr()->getRawValue(axis, angle);
     angle = static_cast<double>(arg);
     this->getRotationPtr()->setValue(axis, angle);
 }

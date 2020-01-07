@@ -27,7 +27,7 @@
           <item row="1" column="0">
            <widget class="QRadioButton" name="rb_abs_displacement">
             <property name="text">
-             <string>Abs displacement</string>
+             <string>Displacement Magnitude</string>
             </property>
            </widget>
           </item>
@@ -44,14 +44,14 @@
           <item row="3" column="0">
            <widget class="QRadioButton" name="rb_y_displacement">
             <property name="text">
-             <string>Y displacement</string>
+             <string>Displacement Y</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QRadioButton" name="rb_x_displacement">
             <property name="text">
-             <string>X displacement</string>
+             <string>Displacement X</string>
             </property>
            </widget>
           </item>
@@ -65,7 +65,7 @@
           <item row="5" column="0">
            <widget class="QRadioButton" name="rb_z_displacement">
             <property name="text">
-             <string>Z displacement</string>
+             <string>Displacement Z</string>
             </property>
            </widget>
           </item>
@@ -79,28 +79,28 @@
           <item row="1" column="1">
            <widget class="QRadioButton" name="rb_vm_stress">
             <property name="text">
-             <string>Von Mises stress</string>
+             <string>von Mises Stress</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
            <widget class="QRadioButton" name="rb_maxprin">
             <property name="text">
-             <string>Max Principal stress</string>
+             <string>Max Principal Stress</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
            <widget class="QRadioButton" name="rb_minprin">
             <property name="text">
-             <string>Min Principal stress</string>
+             <string>Min Principal Stress</string>
             </property>
            </widget>
           </item>
           <item row="5" column="1">
            <widget class="QRadioButton" name="rb_max_shear_stress">
             <property name="text">
-             <string>Max shear stress(Tresca)</string>
+             <string>Max Shear Stress (Tresca)</string>
             </property>
            </widget>
           </item>

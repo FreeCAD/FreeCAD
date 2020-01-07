@@ -137,11 +137,20 @@ public:
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = 0 ) override;
-    virtual QColor getNormalColor(void) override;
+
     QString getLabelText(void);
     void draw_modifier(bool modifier);
     void placeBalloon(QPointF pos);
     TechDraw::DrawViewBalloon *dvBalloon;
+    void setPrettyPre(void);
+    void setPrettySel(void);
+    void setPrettyNormal(void);
+
+    virtual void setGroupSelection(bool b) override;
+    virtual QGIBalloonLabel* getBalloonLabel(void) { return balloonLabel; }
+
+    virtual QColor getNormalColor(void) override;
+    int prefDefaultArrow() const;
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
@@ -168,7 +177,7 @@ protected:
     bool m_obtuse;
     void parentViewMousePressed(QGIView *view, QPointF pos);
     QPointF *oldLabelCenter;
-    QGIView *parent;
+    QGIView *parent;           //used to create edit dialog
 
 };
 

@@ -331,6 +331,14 @@ Quantity Quantity::Volt             (1e+6          ,Unit(2,1,-3,-1)); // Volt (k
 Quantity Quantity::MilliVolt        (1e+3          ,Unit(2,1,-3,-1));
 Quantity Quantity::KiloVolt         (1e+9          ,Unit(2,1,-3,-1));
 
+Quantity Quantity::Siemens          (1e-6          ,Unit(-2,-1,3,2)); // Siemens (A^2*s^3/kg/m^2)
+Quantity Quantity::MilliSiemens     (1e-9          ,Unit(-2,-1,3,2));
+Quantity Quantity::MicroSiemens     (1e-12         ,Unit(-2,-1,3,2));
+
+Quantity Quantity::Ohm              (1e+6          ,Unit(2,1,-3,-2)); // Ohm (kg*m^2/A^2/s^3)
+Quantity Quantity::KiloOhm          (1e+9          ,Unit(2,1,-3,-2));
+Quantity Quantity::MegaOhm          (1e+12         ,Unit(2,1,-3,-2));
+
 Quantity Quantity::Coulomb          (1.0           ,Unit(0,0,1,1)); // Coulomb (A*s)
 
 Quantity Quantity::Tesla            (1.0           ,Unit(0,1,-2,-1)); // Tesla (kg/s^2/A)

@@ -209,7 +209,7 @@ class _TaskPanelFemMaterial:
 
         # search for exact this mat_card in all known cards, choose the current material
         self.card_path = self.get_material_card(self.material)
-        FreeCAD.Console.PrintLog("card_path: {}".format(self.card_path))
+        FreeCAD.Console.PrintLog("card_path: {}\n".format(self.card_path))
         if not self.card_path:
             # we have not found our material in self.materials dict :-(
             # we're going to add a user-defined temporary material: a document material

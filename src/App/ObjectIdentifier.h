@@ -292,9 +292,10 @@ public:
     template<typename C>
     void addComponents(const C &cs) { components.insert(components.end(), cs.begin(), cs.end()); }
 
-    const Component & getPropertyComponent(int i) const;
+    const Component & getPropertyComponent(int i, int *idx=0) const;
 
-    Component & getPropertyComponent(int i);
+    void setComponent(int idx, Component &&comp);
+    void setComponent(int idx, const Component &comp);
 
     std::vector<Component> getPropertyComponents() const;
     const std::vector<Component> &getComponents() const { return components; }

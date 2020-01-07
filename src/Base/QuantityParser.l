@@ -145,6 +145,15 @@ CGRP     '\,'[0-9][0-9][0-9]
 "kV"       yylval = Quantity::KiloVolt;            return UNIT; // kilo Volt
 "mV"       yylval = Quantity::MilliVolt;           return UNIT; // milli Volt
 
+"S"        yylval = Quantity::Siemens;             return UNIT; // Siemens (A^2*s^3/kg/m^2)
+"mS"       yylval = Quantity::MilliSiemens;        return UNIT; // milli Siemens
+"\xC2\xB5S"     yylval = Quantity::MicroSiemens;   return UNIT; // micro Siemens
+"uS"       yylval = Quantity::MicroSiemens;        return UNIT; // micro Siemens
+
+"Ohm"      yylval = Quantity::Ohm;                 return UNIT; // Ohm (kg*m^2/A^2/s^3)
+"kOhm"     yylval = Quantity::KiloOhm;             return UNIT; // kilo Ohm
+"MOhm"     yylval = Quantity::MegaOhm;             return UNIT; // mega Ohm
+
 "C"        yylval = Quantity::Coulomb;             return UNIT; // Coulomb (A*s)
 
 "T"        yylval = Quantity::Tesla;               return UNIT; // Tesla (kg/s^2/A)
@@ -182,7 +191,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "gon"      yylval = Quantity::Gon;                 return UNIT; // gon
 "M"        yylval = Quantity::AngMinute;           return UNIT; // minute(Angular)
 "\xE2\x80\xB2" yylval = Quantity::AngMinute;       return UNIT; // minute(Angular)
-"S"        yylval = Quantity::AngSecond;           return UNIT; // second(Angular) 
+"AS"       yylval = Quantity::AngSecond;           return UNIT; // second(Angular) 
 "\xE2\x80\xB3" yylval = Quantity::AngSecond;       return UNIT; // second(Angular) 
 
 "1"        yylval = Quantity(1.0);                 return ONE;

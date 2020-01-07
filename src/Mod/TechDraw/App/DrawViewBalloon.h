@@ -42,14 +42,15 @@ class DrawViewPart;
 
 class TechDrawExport DrawViewBalloon : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewBalloon);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewBalloon);
 
 public:
     /// Constructor
     DrawViewBalloon();
     virtual ~DrawViewBalloon();
 
-    App::PropertyLink        sourceView;
+/*    App::PropertyLink        sourceView;*/
+    App::PropertyLink        SourceView;
     App::PropertyString      Text;
     App::PropertyEnumeration EndType;
     App::PropertyEnumeration Symbol;
@@ -59,28 +60,31 @@ public:
     App::PropertyBool        OriginIsSet;
     App::PropertyFloat       TextWrapLen;
 
-    short mustExecute() const;
+    short mustExecute() const override;
 
     DrawViewPart* getViewPart() const;
     QPointF origin;
 
     //virtual PyObject *getPyObject(void);
 
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderBalloon";
     }
 
     static const char* balloonTypeEnums[];
     static const char* endTypeEnums[];
 
+    void handleXYLock(void) override;
+
 protected:
-    void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-	virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+    void onChanged(const App::Property* prop) override;
+/*    virtual void onDocumentRestored();*/
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
 
 private:
 };

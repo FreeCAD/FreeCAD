@@ -203,7 +203,8 @@ TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
     return dynamic_cast<TechDraw::DrawGeomHatch*>(pcObject);
 }
 
-Gui::MDIView *ViewProviderGeomHatch::getMDIView() {
+Gui::MDIView *ViewProviderGeomHatch::getMDIView() const
+{
     auto obj = getViewObject();
     if(!obj) return 0;
     auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());

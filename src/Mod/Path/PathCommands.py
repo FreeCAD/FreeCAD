@@ -35,6 +35,7 @@ from PathScripts.PathUtils import findParentJob
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore
+    from PySide import QtGui
 else:
     def translate(ctxt, txt):
         return txt
@@ -68,7 +69,8 @@ class _CommandSelectLoop:
             self.obj = sel.Object
             self.sub = sel.SubElementNames
             if sel.SubObjects:
-                self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+                #self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
+                self.active = True
             else:
                 self.active = False
             return self.active
@@ -102,6 +104,10 @@ class _CommandSelectLoop:
                 for i in loopwire.Edges:
                     if e.hashCode() == i.hashCode():
                         FreeCADGui.Selection.addSelection(obj, "Edge" + str(elist.index(e) + 1))
+        elif FreeCAD.GuiUp:
+            QtGui.QMessageBox.information(None,
+                    QtCore.QT_TRANSLATE_NOOP('Path_SelectLoop', 'Feature Completion'),
+                    QtCore.QT_TRANSLATE_NOOP('Path_SelectLoop', 'Closed loop detection failed.'))
 
     def formsPartOfALoop(self, obj, sub, names):
         try: 

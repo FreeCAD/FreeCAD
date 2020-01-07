@@ -26,9 +26,11 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import os
+
 import FreeCAD
 from femmesh import meshtools
-import os
+from femtools.femutils import type_of_obj
 
 
 class FemInputWriter():
@@ -125,9 +127,7 @@ class FemInputWriter():
         # get nodes
         for femobj in self.fixed_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            FreeCAD.Console.PrintMessage(
-                "Constraint fixed:" + " " + femobj["Object"].Name + "\n"
-            )
+            print_obj_info(femobj["Object"])
             femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
                 self.femmesh,
                 femobj
@@ -164,9 +164,7 @@ class FemInputWriter():
         # get nodes
         for femobj in self.displacement_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            FreeCAD.Console.PrintMessage(
-                "Constraint displacement:" + " " + femobj["Object"].Name + "\n"
-            )
+            print_obj_info(femobj["Object"])
             femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
                 self.femmesh,
                 femobj
@@ -179,9 +177,7 @@ class FemInputWriter():
         # get nodes
         for femobj in self.planerotation_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            FreeCAD.Console.PrintMessage(
-                "Constraint plane rotation:" + " " + femobj["Object"].Name + "\n"
-            )
+            print_obj_info(femobj["Object"])
             femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
                 self.femmesh,
                 femobj
@@ -191,9 +187,7 @@ class FemInputWriter():
         # get nodes
         for femobj in self.transform_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            FreeCAD.Console.PrintMessage(
-                "Constraint transform nodes:" + " " + femobj["Object"].Name + "\n"
-            )
+            print_obj_info(femobj["Object"])
             femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
                 self.femmesh,
                 femobj
@@ -203,9 +197,7 @@ class FemInputWriter():
         # get nodes
         for femobj in self.temperature_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            FreeCAD.Console.PrintMessage(
-                "Constraint temperature:" + " " + femobj["Object"].Name + "\n"
-            )
+            print_obj_info(femobj["Object"])
             femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
                 self.femmesh,
                 femobj
@@ -215,9 +207,7 @@ class FemInputWriter():
         # get nodes
         for femobj in self.fluidsection_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            FreeCAD.Console.PrintMessage(
-                "Constraint fluid section:" + " " + femobj["Object"].Name + "\n"
-            )
+            print_obj_info(femobj["Object"])
             femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
                 self.femmesh,
                 femobj
@@ -227,28 +217,25 @@ class FemInputWriter():
         # check shape type of reference shape
         for femobj in self.force_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            frc_obj = femobj["Object"]
-            FreeCAD.Console.PrintMessage(
-                "Constraint force:" + " " + frc_obj.Name + "\n"
-            )
+            print_obj_info(femobj["Object"], log=True)
             if femobj["RefShapeType"] == "Vertex":
                 FreeCAD.Console.PrintLog(
-                    "load on vertices --> we do not need the "
-                    "femelement_table and femnodes_mesh for node load calculation"
+                    "    load on vertices --> The femelement_table "
+                    "and femnodes_mesh are not needed for node load calculation.\n"
                 )
             elif femobj["RefShapeType"] == "Face" \
                     and meshtools.is_solid_femmesh(self.femmesh) \
                     and not meshtools.has_no_face_data(self.femmesh):
                 FreeCAD.Console.PrintLog(
-                    "solid_mesh with face data --> we do not need the "
-                    "femelement_table but we need the femnodes_mesh for node load calculation"
+                    "    solid_mesh with face data --> The femelement_table is not "
+                    "needed but the femnodes_mesh is needed for node load calculation.\n"
                 )
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
             else:
                 FreeCAD.Console.PrintLog(
-                    "mesh without needed data --> we need the "
-                    "femelement_table and femnodes_mesh for node load calculation"
+                    "    mesh without needed data --> The femelement_table "
+                    "and femnodes_mesh are not needed for node load calculation.\n"
                 )
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
@@ -257,17 +244,18 @@ class FemInputWriter():
                         self.femmesh
                     )
         # get node loads
-        FreeCAD.Console.PrintMessage(
-            "  Finite element mesh nodes will be retrieved by searching "
+        FreeCAD.Console.PrintLog(
+            "    Finite element mesh nodes will be retrieved by searching "
             "the appropriate nodes in the finite element mesh.\n"
         )
-        FreeCAD.Console.PrintMessage(
-            "  The appropriate finite element mesh node load values will "
+        FreeCAD.Console.PrintLog(
+            "    The appropriate finite element mesh node load values will "
             "be calculated according to the finite element definition.\n"
         )
         for femobj in self.force_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             frc_obj = femobj["Object"]
+            print_obj_info(frc_obj)
             if frc_obj.Force == 0:
                 FreeCAD.Console.PrintMessage("  Warning --> Force = 0\n")
             if femobj["RefShapeType"] == "Vertex":  # point load on vertices
@@ -316,9 +304,7 @@ class FemInputWriter():
 
         for femobj in self.pressure_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            FreeCAD.Console.PrintMessage(
-                "Constraint pressure: " + femobj["Object"].Name + "\n"
-            )
+            print_obj_info(femobj["Object"])
             pressure_faces = meshtools.get_pressure_obj_faces(
                 self.femmesh,
                 self.femelement_table,
@@ -442,5 +428,19 @@ class FemInputWriter():
                 self.femelement_edges_table,
                 self.material_objects
             )
+
+
+# helper
+def print_obj_info(obj, log=False):
+    if log is False:
+        FreeCAD.Console.PrintMessage("{}:\n".format(obj.Label))
+        FreeCAD.Console.PrintMessage(
+            "    Type: {}, Name: {}\n".format(type_of_obj(obj), obj.Name)
+        )
+    else:
+        FreeCAD.Console.PrintLog("{}:\n".format(obj.Label))
+        FreeCAD.Console.PrintLog(
+            "    Type: {}, Name: {}\n".format(type_of_obj(obj), obj.Name)
+        )
 
 ##  @}

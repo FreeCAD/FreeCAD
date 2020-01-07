@@ -14,10 +14,39 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="Sketcher_ToggleActiveConstraint.svg">
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="Sketcher_ToggleActiveConstraint.svg"
+   inkscape:export-filename="/home/vocx/Downloads/Sketcher_ToggleActiveConstraint.svg.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
+  <title
+     id="title1152">Sketcher ToggleActiveConstraint</title>
   <defs
      id="defs2818">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1146">
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="0"
+         id="stop1142" />
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="1"
+         id="stop1144" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1130">
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="0"
+         id="stop1126" />
+      <stop
+         style="stop-color:#204a87;stop-opacity:1"
+         offset="1"
+         id="stop1128" />
+    </linearGradient>
     <linearGradient
        id="linearGradient3602">
       <stop
@@ -722,6 +751,24 @@
        inkscape:vp_z="1 : 0.5 : 1"
        inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
        id="perspective2850-0" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1130"
+       id="linearGradient1132"
+       x1="15"
+       y1="13"
+       x2="50"
+       y2="50"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1146"
+       id="linearGradient1150"
+       gradientUnits="userSpaceOnUse"
+       x1="50"
+       y1="50"
+       x2="15"
+       y2="13" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -730,18 +777,20 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="14.171875"
-     inkscape:cx="20.765007"
-     inkscape:cy="29.225239"
-     inkscape:current-layer="g3134-7"
+     inkscape:zoom="8"
+     inkscape:cx="41.038494"
+     inkscape:cy="33.460222"
+     inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="1107"
-     inkscape:window-x="0"
-     inkscape:window-y="29"
-     inkscape:window-maximized="1">
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="1791"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     showguides="false"
+     inkscape:snap-grids="true">
     <inkscape:grid
        type="xygrid"
        id="grid3105"
@@ -758,21 +807,21 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title>Sketcher ToggleActiveConstraint</dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>[Abdullah Tahiri]</dc:title>
+            <dc:title>[openBrain]</dc:title>
           </cc:Agent>
         </dc:creator>
         <dc:title>Sketcher_ToggleConstraint</dc:title>
-        <dc:date>2015-05-26</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:date>2020-01-03</dc:date>
+        <dc:relation></dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_ToggleConstraint.svg</dc:identifier>
+        <dc:identifier></dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
@@ -781,7 +830,7 @@
         <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
         <dc:contributor>
           <cc:Agent>
-            <dc:title>[agryson] Alexander Gryson</dc:title>
+            <dc:title>[agryson] Alexander Gryson, bitacovir, vocx</dc:title>
           </cc:Agent>
         </dc:contributor>
       </cc:Work>
@@ -792,53 +841,51 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <g
-       transform="translate(22,-22)"
-       id="g3134-7">
-      <rect
-         y="28"
-         x="6"
-         height="30"
-         width="30"
-         id="rect3107-5"
-         style="fill:none;stroke:#0b1521;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.50000000000000000;stroke-opacity:1;stroke-dasharray:none" />
-      <rect
-         y="28"
-         x="6"
-         height="30"
-         width="30"
-         id="rect3107-3-3"
-         style="fill:none;stroke:#808080;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-opacity:1;stroke-dasharray:none" />
-      <rect
-         y="27"
-         x="5"
-         height="32"
-         width="32"
-         id="rect3107-6-5"
-         style="fill:none;stroke:#bfbfbf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-opacity:1;stroke-dasharray:none" />
-    </g>
-    <g
-       id="g3134">
-      <rect
-         y="28"
-         x="6"
-         height="30"
-         width="30"
-         id="rect3107"
-         style="fill:none;stroke:#280000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-opacity:1;stroke-dasharray:none" />
-      <rect
-         y="28"
-         x="6"
-         height="30"
-         width="30"
-         id="rect3107-3"
-         style="fill:none;stroke:#cc0000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-opacity:1;stroke-dasharray:none" />
-      <rect
-         y="27"
-         x="5"
-         height="32"
-         width="32"
-         id="rect3107-6"
-         style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-opacity:1;stroke-dasharray:none" />
+       id="g1958">
+      <g
+         transform="translate(218.9668,13.671875)"
+         id="g1122">
+        <path
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke:#280000;stroke-width:9.60000038;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1"
+           d="m -198.75391,7.8085938 h -13.69336 V 43.808594 h 36 V 30.003906 Z"
+           id="path1104" />
+        <path
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke:#cc0000;stroke-width:4.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1"
+           d="m -199.29297,7.8085938 h -13.1543 V 43.808594 h 36 V 30.654297 Z"
+           id="path1114" />
+        <path
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke:#ef2929;stroke-width:2.4000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1"
+           d="m -198.9707,6.609375 h -14.67578 v 38.400391 h 38.40039 V 30.525391 Z"
+           id="path1109" />
+        <path
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke:#0b1521;stroke-width:9.60000038;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1"
+           d="M -197.9668,-6.671875 V 7.8085938 l 21.51953,21.5195312 h 14.48047 v -36 z"
+           id="rect3107-5-2-4" />
+        <path
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke:#808080;stroke-width:4.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1"
+           d="m -197.9668,-6.671875 v 17.126953 c 4.12917,4.092482 5.27533,5.112301 10.2793,10.123047 4.37809,4.384026 4.98435,5.006318 8.70898,8.75 h 17.01172 v -36 z"
+           id="rect3107-3-3-1-3" />
+        <path
+           inkscape:connector-curvature="0"
+           style="fill:none;stroke:#bfbfbf;stroke-width:2.4000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1"
+           d="M -199.16602,-7.8710938 V 6.609375 l 23.91797,23.917969 h 14.48243 V -7.8710938 Z"
+           id="rect3107-6-5-4-5" />
+      </g>
+      <path
+         inkscape:connector-curvature="0"
+         id="path936-3"
+         d="M 10,10 54,54"
+         style="fill:none;fill-rule:evenodd;stroke:#0b1521;stroke-width:12;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path936"
+         d="M 10,10 54,54"
+         style="fill:url(#linearGradient1132);fill-opacity:1;fill-rule:evenodd;stroke:url(#linearGradient1150);stroke-width:6;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
   </g>
 </svg>

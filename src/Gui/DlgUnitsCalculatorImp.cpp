@@ -79,6 +79,8 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::Density
           << Base::Unit::ElectricalCapacitance
           << Base::Unit::ElectricalInductance
+          << Base::Unit::ElectricalConductance
+          << Base::Unit::ElectricalResistance
           << Base::Unit::ElectricCharge
           << Base::Unit::ElectricCurrent
           << Base::Unit::ElectricPotential
