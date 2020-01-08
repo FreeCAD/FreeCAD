@@ -46,6 +46,14 @@ DlgSettingsImageImp::DlgSettingsImageImp( QWidget* parent )
     _width = width();
     _height = height();
     _fRatio = (float)_width/(float)_height;
+
+    comboMethod->addItem(tr("Offscreen (New)"), QByteArray("QtOffscreenRenderer"));
+    comboMethod->addItem(tr("Offscreen (Old)"), QByteArray("CoinOffscreenRenderer"));
+    comboMethod->addItem(tr("Framebuffer (custom)"), QByteArray("FramebufferObject"));
+    comboMethod->addItem(tr("Framebuffer (as is)"), QByteArray("GrabFramebuffer"));
+#if QT_VERSION < 0x050000
+    comboMethod->addItem(tr("Pixel buffer"), QByteArray("PixelBuffer"));
+#endif
 }
 
 /**
@@ -218,6 +226,29 @@ void DlgSettingsImageImp::on_standardSizeBox_activated(int index)
         pos = rx.indexIn(text, pos);
         QString h = text.mid(pos, rx.matchedLength());
         spinHeight->setValue(h.toInt());
+    }
+}
+
+void DlgSettingsImageImp::setMethod(const QByteArray& m)
+{
+    int index = comboMethod->findData(m);
+    if (index >= 0)
+        comboMethod->setCurrentIndex(index);
+}
+
+QByteArray DlgSettingsImageImp::method() const
+{
+    return comboMethod->currentData().toByteArray();
+}
+
+void DlgSettingsImageImp::on_comboMethod_activated(int index)
+{
+    QByteArray data = comboMethod->itemData(index).toByteArray();
+    if (data == QByteArray("GrabFramebuffer")) {
+        groupBoxProp->setEnabled(false);
+    }
+    else {
+        groupBoxProp->setEnabled(true);
     }
 }
 

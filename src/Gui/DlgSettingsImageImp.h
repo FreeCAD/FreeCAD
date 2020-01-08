@@ -55,6 +55,8 @@ public:
 
     /** @name Image meta information */
     //@{
+    void setMethod(const QByteArray&);
+    QByteArray method() const;
     QString comment() const;
     int backgroundType() const;
     void setBackgroundType( int );
@@ -70,6 +72,7 @@ protected Q_SLOTS:
     void on_buttonRatio16x9_clicked();
     void on_buttonRatio1x1_clicked();
     void on_standardSizeBox_activated(int);
+    void on_comboMethod_activated(int);
 
 protected:
     // helper to force an aspect ratio

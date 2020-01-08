@@ -1730,6 +1730,10 @@ void StdViewScreenShot::activated(int iMsg)
         QString ext = QString::fromLatin1(hExt->GetASCII("OffscreenImageFormat").c_str());
         int backtype = hExt->GetInt("OffscreenImageBackground",0);
 
+        Base::Reference<ParameterGrp> methodGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+        QByteArray method = methodGrp->GetASCII("SavePicture").c_str();
+
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
@@ -1752,6 +1756,7 @@ void StdViewScreenShot::activated(int iMsg)
         SbVec2s sz = vp.getWindowSize();
         opt->setImageSize((int)sz[0], (int)sz[1]);
         opt->setBackgroundType(backtype);
+        opt->setMethod(method);
 
         fd.setOptionsWidget(FileOptionsDialog::ExtensionRight, opt);
         fd.setConfirmOverwrite(true);
@@ -1782,6 +1787,9 @@ void StdViewScreenShot::activated(int iMsg)
             }
 
             hExt->SetASCII("OffscreenImageFormat", (const char*)format.toLatin1());
+
+            method = opt->method();
+            methodGrp->SetASCII("SavePicture", method.constData());
 
             // which background chosen
             const char* background;
