@@ -270,6 +270,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>5</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>Rotation around the x-axis
 Note: The placement is expressed in local space of object being attached.</string>
@@ -296,6 +302,12 @@ Note: The placement is expressed in local space of object being attached.</strin
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>5</height>
+         </size>
+        </property>
         <property name="toolTip">
          <string>Rotation around the y-axis
 Note: The placement is expressed in local space of object being attached.</string>
@@ -321,6 +333,12 @@ Note: The placement is expressed in local space of object being attached.</strin
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>5</height>
+         </size>
         </property>
         <property name="toolTip">
          <string>Rotation around the z-axis
