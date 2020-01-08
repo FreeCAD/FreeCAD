@@ -138,6 +138,13 @@ void Placement::showDefaultButtons(bool ok)
     ui->oKButton->setVisible(ok);
     ui->closeButton->setVisible(ok);
     ui->applyButton->setVisible(ok);
+    ui->horizontalLayout_2->invalidate();
+    if (ok) {
+        ui->spacerItem1->changeSize(88, 24, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    }
+    else {
+        ui->spacerItem1->changeSize(88, 24, QSizePolicy::Ignored, QSizePolicy::Ignored);
+    }
 }
 
 void Placement::open()
