@@ -176,10 +176,10 @@ class _ViewProviderFemMeshGmsh:
         return (reg_childs + gro_childs + bou_childs)
 
     def onDelete(self, feature, subelements):
-        childs = self.claimChildren()
-        if len(childs) > 0:
+        children = self.claimChildren()
+        if len(children) > 0:
             try:
-                for obj in childs:
+                for obj in children:
                     obj.ViewObject.show()
             except Exception as err:
                 FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
