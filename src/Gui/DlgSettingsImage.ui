@@ -6,88 +6,323 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>459</width>
-    <height>552</height>
+    <width>308</width>
+    <height>466</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>1</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Image settings</string>
   </property>
-  <layout class="QGridLayout">
-   <property name="leftMargin">
-    <number>9</number>
-   </property>
-   <property name="topMargin">
-    <number>9</number>
-   </property>
-   <property name="rightMargin">
-    <number>9</number>
-   </property>
-   <property name="bottomMargin">
-    <number>9</number>
-   </property>
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="buttonGroupComment">
-     <property name="enabled">
-      <bool>false</bool>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBoxDim">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>170</height>
+      </size>
      </property>
      <property name="title">
-      <string>Image comment</string>
+      <string>Image dimensions</string>
      </property>
-     <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>9</number>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>21</y>
+        <width>221</width>
+        <height>136</height>
+       </rect>
       </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="radioButtonMiba">
-        <property name="text">
-         <string>Insert MIBA</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QTextEdit" name="textEditComment">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="radioButtonComment">
-        <property name="text">
-         <string>Insert comment</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="checkWatermark">
-        <property name="text">
-         <string>Add watermark</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Standard sizes:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="standardSizeBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>Current screen</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Icon       32  x 32</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Icon       64 x 64</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Icon       128 x 128</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>CGA       320 x 200</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>QVGA     320 x 240</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>VGA       640 x 480</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>NTSC     720 x 480</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>PAL        768 x 578</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>SVGA     800 x 600</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>XGA       1024 x 768</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>HD720   1280 x 720</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>SXGA     1280 x 1024</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>SXGA+   1400 x 1050</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>UXGA     1600 x 1200</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>HD1080 1920 x 1080</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>WUXGA  1920 x 1200</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>QXGA     2048 x 1538</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>WQXGA  2560 x 1600</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>QSXGA   2560 x 2048</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>QUXGA   3200 × 2400</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>HUXGA   6400 × 4800</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>!!!          10000 x 10000</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="textLabelWidth">
+         <property name="text">
+          <string>&amp;Width:</string>
+         </property>
+         <property name="buddy">
+          <cstring>spinWidth</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" rowspan="2">
+        <layout class="QFormLayout" name="formLayout">
+         <item row="0" column="0">
+          <widget class="QSpinBox" name="spinWidth">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>32767</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Pixel</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QSpinBox" name="spinHeight">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>32767</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Pixel</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="textLabelHeight">
+         <property name="text">
+          <string>&amp;Height:</string>
+         </property>
+         <property name="buddy">
+          <cstring>spinHeight</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="textLabel1">
+         <property name="text">
+          <string>Aspect ratio:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="buttonRatioScreen">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>&amp;Screen</string>
+           </property>
+           <property name="shortcut">
+            <string>Alt+S</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="buttonRatio4x3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>&amp;4:3</string>
+           </property>
+           <property name="shortcut">
+            <string>Alt+4</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="buttonRatio16x9">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>1&amp;6:9</string>
+           </property>
+           <property name="shortcut">
+            <string>Alt+6</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="buttonRatio1x1">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>&amp;1:1</string>
+           </property>
+           <property name="shortcut">
+            <string>Alt+1</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxProp">
      <property name="title">
       <string>Image properties</string>
@@ -120,6 +355,12 @@
       </item>
       <item row="0" column="2">
        <widget class="QComboBox" name="comboBackground">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <item>
          <property name="text">
           <string>Current</string>
@@ -145,335 +386,7 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBoxDim">
-     <property name="title">
-      <string>Image dimensions</string>
-     </property>
-     <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <layout class="QGridLayout">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <item row="1" column="1">
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="2">
-         <widget class="QSpinBox" name="spinHeight">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>32767</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QSpinBox" name="spinWidth">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>32767</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Pixel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="textLabelWidth">
-          <property name="text">
-           <string>&amp;Width:</string>
-          </property>
-          <property name="buddy">
-           <cstring>spinWidth</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2" colspan="2">
-         <widget class="QComboBox" name="standardSizeBox">
-          <item>
-           <property name="text">
-            <string>Current screen</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Icon       32  x 32</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Icon       64 x 64</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Icon       128 x 128</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>CGA       320 x 200</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>QVGA     320 x 240</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>VGA       640 x 480</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>NTSC     720 x 480</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>PAL        768 x 578</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>SVGA     800 x 600</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>XGA       1024 x 768</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>HD720   1280 x 720</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>SXGA     1280 x 1024</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>SXGA+   1400 x 1050</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>UXGA     1600 x 1200</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>HD1080 1920 x 1080</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>WUXGA  1920 x 1200</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>QXGA     2048 x 1538</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>WQXGA  2560 x 1600</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>QSXGA   2560 x 2048</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>QUXGA   3200 × 2400</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>HUXGA   6400 × 4800</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>!!!          10000 x 10000</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Standard sizes:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="3">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Pixel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="textLabelHeight">
-          <property name="text">
-           <string>&amp;Height:</string>
-          </property>
-          <property name="buddy">
-           <cstring>spinHeight</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="textLabel1">
-          <property name="text">
-           <string>Aspect ratio:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonRatioScreen">
-          <property name="text">
-           <string>&amp;Screen</string>
-          </property>
-          <property name="shortcut">
-           <string>Alt+S</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonRatio4x3">
-          <property name="text">
-           <string>&amp;4:3</string>
-          </property>
-          <property name="shortcut">
-           <string>Alt+4</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonRatio16x9">
-          <property name="text">
-           <string>1&amp;6:9</string>
-          </property>
-          <property name="shortcut">
-           <string>Alt+6</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="buttonRatio1x1">
-          <property name="text">
-           <string>&amp;1:1</string>
-          </property>
-          <property name="shortcut">
-           <string>Alt+1</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxMethod">
      <property name="title">
       <string>Method</string>
@@ -487,9 +400,111 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="comboMethod"/>
+       <widget class="QComboBox" name="comboMethod">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="buttonGroupComment">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>150</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Image comment</string>
+     </property>
+     <widget class="QRadioButton" name="radioButtonMiba">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>23</y>
+        <width>80</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Insert MIBA</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="textEditComment">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>69</y>
+        <width>221</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>240</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="radioButtonComment">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>46</y>
+        <width>98</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Insert comment</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkWatermark">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>124</y>
+        <width>96</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add watermark</string>
+      </property>
+     </widget>
     </widget>
    </item>
   </layout>
