@@ -1489,7 +1489,7 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Text, Qt::lightGray);
         setPalette(p);
-        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -1497,9 +1497,8 @@ void ExpLineEdit::onChange() {
         QPalette p(palette());
         p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
         setPalette(p);
-
+        iconLabel->setToolTip(QString());
     }
-    iconLabel->setToolTip(QString());
 }
 
 void ExpLineEdit::resizeEvent(QResizeEvent * event)
@@ -1520,7 +1519,7 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Text, Qt::lightGray);
             setPalette(p);
-            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -1530,9 +1529,8 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
             QPalette p(palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             setPalette(p);
-
+            iconLabel->setToolTip(QString());
         }
-        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);

@@ -394,8 +394,7 @@ void Gui::QuantitySpinBox::onChange()
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        iconLabel->setToolTip(QString());
-        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -406,7 +405,6 @@ void Gui::QuantitySpinBox::onChange()
         lineEdit()->setPalette(p);
         iconLabel->setToolTip(QString());
     }
-    iconLabel->setToolTip(QString());
 }
 
 
@@ -460,7 +458,7 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -470,9 +468,8 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-
+            iconLabel->setToolTip(QString());
         }
-        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
@@ -489,7 +486,7 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
     else if (!hasExpression())
-            QAbstractSpinBox::keyPressEvent(event);
+        QAbstractSpinBox::keyPressEvent(event);
 }
 
 
