@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>277</width>
-    <height>451</height>
+    <height>394</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -405,19 +405,6 @@
         <widget class="QWidget" name="page_2"/>
        </widget>
       </item>
-      <item row="2" column="0">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>41</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
        <widget class="QComboBox" name="rotationInput">
         <item>
@@ -436,6 +423,19 @@
     </widget>
    </item>
    <item row="2" column="0" colspan="2">
+    <spacer name="vSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>41</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QCheckBox" name="applyIncrementalPlacement">
@@ -451,7 +451,7 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_2">
+      <spacer name="hSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -472,10 +472,10 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item row="4" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="buttonBoxLayout">
      <item>
-      <spacer>
+      <spacer name="buttonBoxSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
