@@ -1218,8 +1218,9 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
         'dvec' vector to offset is now derived (and can be ignored) in this function if widthList and alignList are provided - 'dvec' to be obsolete in future ?
     '''
 
-    # Accept 'wire' as a list of edges, use the list directly, or previously a wire
-    if isinstance(wire,Part.Wire):
+    # Accept 'wire' as a list of edges (use the list directly), or previously as a wire or a face (Draft Wire with MakeFace True or False supported)
+
+    if isinstance(wire,Part.Wire) or isinstance(wire,Part.Face):
         edges = wire.Edges							# Seems has repeatedly sortEdges, remark out here - edges = Part.__sortEdges__(wire.Edges)
     elif isinstance(wire, list):
         if isinstance(wire[0],Part.Edge):
@@ -1273,7 +1274,7 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
             firstDir = 1
             firstAlign = 'Center'
     except:
-        print ("alignListC[0] has no value ")  # Should no longer happen for ArchWall - as aligns are 'filled in' by ArchWall
+        pass  # Should no longer happen for ArchWall - as aligns are 'filled in' by ArchWall
 
     # If not provided by alignListC checked above, check the direction of offset in dvec (not 'align') 
 
