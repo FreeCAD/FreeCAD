@@ -237,7 +237,7 @@ it inside the Placement property.</string>
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBoxUseLinkGroup">
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseAppPart">
         <property name="toolTip">
          <string>Select this to use App::Part as group container, or else use App::LinkGroup.</string>
         </property>
@@ -408,7 +408,7 @@ it inside the Placement property.</string>
   <tabstop>radioButtonAP203</tabstop>
   <tabstop>radioButtonAP214</tabstop>
   <tabstop>checkBoxMergeCompound</tabstop>
-  <tabstop>checkBoxUseLinkGroup</tabstop>
+  <tabstop>checkBoxUseAppPart</tabstop>
   <tabstop>checkBoxImportHiddenObj</tabstop>
   <tabstop>checkBoxReduceObjects</tabstop>
   <tabstop>checkBoxExpandCompound</tabstop>

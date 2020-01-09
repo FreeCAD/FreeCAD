@@ -149,10 +149,10 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-    merge = hGrp->GetBool("ReadShapeCompoundMode", true);
+    merge = hGrp->GetBool("ReadShapeCompoundMode", false);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
-    useLinkGroup = !hGrp->GetBool("UseAppPart",false);
+    useLinkGroup = !hGrp->GetBool("UseAppPart",true);
     useLegacyImporter = hGrp->GetBool("UseLegacyImporter",false);
     useBaseName = hGrp->GetBool("UseBaseName",true);
     importHidden = hGrp->GetBool("ImportHiddenObject",true);
