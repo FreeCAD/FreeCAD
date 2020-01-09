@@ -218,9 +218,9 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
 
     // set tooltips because the ones in the .ui file are not taken for QuantitySpinBoxes (see bug https://freecadweb.org/tracker/view.php?id=4059)
     // FIXME: remove this once the bug is fixed
-    ui->attachmentOffsetRoll->setTooltipLE(QString::fromUtf8("Rotation around the x-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
-    ui->attachmentOffsetPitch->setTooltipLE(QString::fromUtf8("Rotation around the y-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
-    ui->attachmentOffsetYaw->setTooltipLE(QString::fromUtf8("Rotation around the z-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
+    ui->attachmentOffsetRoll->setEditorToolTip(QString::fromUtf8("Rotation around the x-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
+    ui->attachmentOffsetPitch->setEditorToolTip(QString::fromUtf8("Rotation around the y-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
+    ui->attachmentOffsetYaw->setEditorToolTip(QString::fromUtf8("Rotation around the z-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
 }
 
 TaskAttacher::~TaskAttacher()
