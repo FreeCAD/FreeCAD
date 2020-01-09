@@ -836,9 +836,10 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                         obj.PostalCode = product.SiteAddress.PostalCode
                 project = product.Decomposes[0].RelatingObject
                 modelRC = next((rc for rc in project.RepresentationContexts if rc.ContextType == "Model"), None)
-                if modelRC and modelRC.TrueNorth and modelRC.TrueNorth.DirectionRatios[1] > 0:
-                    obj.Declination = -math.degrees(math.atan(modelRC.TrueNorth.DirectionRatios[0] / modelRC.TrueNorth.DirectionRatios[1]))
-                    if(FreeCAD.GuiUp):
+                if modelRC and modelRC.TrueNorth:
+                    (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
+                    obj.Declination = ((math.degrees(math.atan2(y,x))-90+180)%360)-180
+                    if (FreeCAD.GuiUp):
                         obj.ViewObject.CompassRotation.Value = obj.Declination
 
         try:
