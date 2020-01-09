@@ -44,6 +44,7 @@ MACHINE_NAME = '''Max Computer GmbH nccad9 MCS/KOSY'''
 
 
 # gCode for changing tools
+# M01 <Comment> ; Displays <Comment> and waits for user interaction
 TOOL_CHANGE = '''G77      ; Move to release position
 M10 O6.0 ; Stop spindle
 M01 Insert tool TOOL
