@@ -103,6 +103,7 @@ public:
     void setLineWidth(double lineWidth) { m_lineWidth = lineWidth; }
 
 Q_SIGNALS:
+    void setPretty(int state);
     void dragging(bool);
     void hover(bool state);
     void selected(bool state);
@@ -154,7 +155,7 @@ public:
 
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
-    virtual QColor getNormalColor(void) override;
+    virtual QColor prefNormalColor(void);
     QString getLabelText(void);
     void setPrettyPre(void);
     void setPrettySel(void);
@@ -163,7 +164,10 @@ public:
     virtual void setGroupSelection(bool b) override;
     virtual QGIDatumLabel* getDatumLabel(void) { return datumLabel; }
 
+    void setNormalColorAll(void);
+
 public Q_SLOTS:
+    void onPrettyChanged(int state);
     void datumLabelDragged(bool ctrl);
     void datumLabelDragFinished(void);
     void select(bool state);
@@ -248,7 +252,6 @@ protected:
 
     virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
-protected:
     bool hasHover;
     QGIDatumLabel* datumLabel;                                         //dimension text
     QGIDimLines* dimLines;                                       //dimension lines + extension lines

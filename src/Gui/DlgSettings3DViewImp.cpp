@@ -33,6 +33,7 @@
 #endif
 
 #include "DlgSettings3DViewImp.h"
+#include "ui_DlgSettings3DView.h"
 #include "MainWindow.h"
 #include "NavigationStyle.h"
 #include "PrefWidgets.h"
@@ -56,9 +57,10 @@ bool DlgSettings3DViewImp::showMsg = true;
  */
 DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     : PreferencePage( parent )
+    , ui(new Ui_DlgSettings3DView)
     , q0(0), q1(0), q2(0), q3(1)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
     retranslate();
 }
 
@@ -76,43 +78,43 @@ void DlgSettings3DViewImp::saveSettings()
     // where we set some attributes afterwards
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
-    QVariant data = comboNavigationStyle->itemData(comboNavigationStyle->currentIndex(), Qt::UserRole);
+    QVariant data = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     hGrp->SetASCII("NavigationStyle", (const char*)data.toByteArray());
 
-    int index = comboOrbitStyle->currentIndex();
+    int index = ui->comboOrbitStyle->currentIndex();
     hGrp->SetInt("OrbitStyle", index);
     
-    index = this->comboAliasing->currentIndex();
+    index = ui->comboAliasing->currentIndex();
     hGrp->SetInt("AntiAliasing", index);
 
-    index = this->naviCubeCorner->currentIndex();
+    index = ui->naviCubeCorner->currentIndex();
     hGrp->SetInt("CornerNaviCube", index);
 
-    index = this->renderCache->currentIndex();
+    index = ui->renderCache->currentIndex();
     hGrp->SetInt("RenderCache", index);
 
-    QVariant const &vBoxMarkerSize = this->boxMarkerSize->itemData(this->boxMarkerSize->currentIndex());
+    QVariant const &vBoxMarkerSize = ui->boxMarkerSize->itemData(ui->boxMarkerSize->currentIndex());
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
 
-    checkBoxZoomAtCursor->onSave();
-    checkBoxInvertZoom->onSave();
-    checkBoxDisableTilt->onSave();
-    spinBoxZoomStep->onSave();
-    checkBoxDragAtCursor->onSave();
-    CheckBox_CornerCoordSystem->onSave();
-    CheckBox_ShowFPS->onSave();
-    CheckBox_useVBO->onSave();
-    CheckBox_NaviCube->onSave();
-    CheckBox_UseAutoRotation->onSave();
-    FloatSpinBox_EyeDistance->onSave();
-    checkBoxBacklight->onSave();
-    backlightColor->onSave();
-    sliderIntensity->onSave();
-    radioPerspective->onSave();
-    radioOrthographic->onSave();
-    qspinNewDocScale->onSave();
+    ui->checkBoxZoomAtCursor->onSave();
+    ui->checkBoxInvertZoom->onSave();
+    ui->checkBoxDisableTilt->onSave();
+    ui->spinBoxZoomStep->onSave();
+    ui->checkBoxDragAtCursor->onSave();
+    ui->CheckBox_CornerCoordSystem->onSave();
+    ui->CheckBox_ShowFPS->onSave();
+    ui->CheckBox_useVBO->onSave();
+    ui->CheckBox_NaviCube->onSave();
+    ui->CheckBox_UseAutoRotation->onSave();
+    ui->FloatSpinBox_EyeDistance->onSave();
+    ui->checkBoxBacklight->onSave();
+    ui->backlightColor->onSave();
+    ui->sliderIntensity->onSave();
+    ui->radioPerspective->onSave();
+    ui->radioOrthographic->onSave();
+    ui->qspinNewDocScale->onSave();
 
-    QVariant camera = comboNewDocView->itemData(comboNewDocView->currentIndex(), Qt::UserRole);
+    QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(), Qt::UserRole);
     hGrp->SetASCII("NewDocumentCameraOrientation", (const char*)camera.toByteArray());
     if (camera == QByteArray("Custom")) {
         ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
@@ -125,71 +127,71 @@ void DlgSettings3DViewImp::saveSettings()
 
 void DlgSettings3DViewImp::loadSettings()
 {
-    checkBoxZoomAtCursor->onRestore();
-    checkBoxInvertZoom->onRestore();
-    checkBoxDisableTilt->onRestore();
-    spinBoxZoomStep->onRestore();
-    checkBoxDragAtCursor->onRestore();
-    CheckBox_CornerCoordSystem->onRestore();
-    CheckBox_ShowFPS->onRestore();
-    CheckBox_useVBO->onRestore();
-    CheckBox_NaviCube->onRestore();
-    CheckBox_UseAutoRotation->onRestore();
-    FloatSpinBox_EyeDistance->onRestore();
-    checkBoxBacklight->onRestore();
-    backlightColor->onRestore();
-    sliderIntensity->onRestore();
-    radioPerspective->onRestore();
-    radioOrthographic->onRestore();
-    qspinNewDocScale->onRestore();
+    ui->checkBoxZoomAtCursor->onRestore();
+    ui->checkBoxInvertZoom->onRestore();
+    ui->checkBoxDisableTilt->onRestore();
+    ui->spinBoxZoomStep->onRestore();
+    ui->checkBoxDragAtCursor->onRestore();
+    ui->CheckBox_CornerCoordSystem->onRestore();
+    ui->CheckBox_ShowFPS->onRestore();
+    ui->CheckBox_useVBO->onRestore();
+    ui->CheckBox_NaviCube->onRestore();
+    ui->CheckBox_UseAutoRotation->onRestore();
+    ui->FloatSpinBox_EyeDistance->onRestore();
+    ui->checkBoxBacklight->onRestore();
+    ui->backlightColor->onRestore();
+    ui->sliderIntensity->onRestore();
+    ui->radioPerspective->onRestore();
+    ui->radioOrthographic->onRestore();
+    ui->qspinNewDocScale->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
     std::string model = hGrp->GetASCII("NavigationStyle",CADNavigationStyle::getClassTypeId().getName());
-    int index = comboNavigationStyle->findData(QByteArray(model.c_str()));
-    if (index > -1) comboNavigationStyle->setCurrentIndex(index);
+    int index = ui->comboNavigationStyle->findData(QByteArray(model.c_str()));
+    if (index > -1) ui->comboNavigationStyle->setCurrentIndex(index);
 
     index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::Trackball));
-    index = Base::clamp(index, 0, comboOrbitStyle->count()-1);
-    comboOrbitStyle->setCurrentIndex(index);
+    index = Base::clamp(index, 0, ui->comboOrbitStyle->count()-1);
+    ui->comboOrbitStyle->setCurrentIndex(index);
     
     index = hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None));
-    index = Base::clamp(index, 0, comboAliasing->count()-1);
-    comboAliasing->setCurrentIndex(index);
+    index = Base::clamp(index, 0, ui->comboAliasing->count()-1);
+    ui->comboAliasing->setCurrentIndex(index);
     // connect after setting current item of the combo box
-    connect(comboAliasing, SIGNAL(currentIndexChanged(int)),
+    connect(ui->comboAliasing, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onAliasingChanged(int)));
 
     index = hGrp->GetInt("CornerNaviCube", 1);
-    naviCubeCorner->setCurrentIndex(index);
+    ui->naviCubeCorner->setCurrentIndex(index);
 
     index = hGrp->GetInt("RenderCache", 0);
-    renderCache->setCurrentIndex(index);
+    ui->renderCache->setCurrentIndex(index);
 
     int const current = hGrp->GetInt("MarkerSize", 9L);
-    this->boxMarkerSize->addItem(tr("5px"), QVariant(5));
-    this->boxMarkerSize->addItem(tr("7px"), QVariant(7));
-    this->boxMarkerSize->addItem(tr("9px"), QVariant(9));
-    this->boxMarkerSize->addItem(tr("11px"), QVariant(11));
-    this->boxMarkerSize->addItem(tr("13px"), QVariant(13));
-    this->boxMarkerSize->addItem(tr("15px"), QVariant(15));
-    index = this->boxMarkerSize->findData(QVariant(current));
+    ui->boxMarkerSize->addItem(tr("5px"), QVariant(5));
+    ui->boxMarkerSize->addItem(tr("7px"), QVariant(7));
+    ui->boxMarkerSize->addItem(tr("9px"), QVariant(9));
+    ui->boxMarkerSize->addItem(tr("11px"), QVariant(11));
+    ui->boxMarkerSize->addItem(tr("13px"), QVariant(13));
+    ui->boxMarkerSize->addItem(tr("15px"), QVariant(15));
+    index = ui->boxMarkerSize->findData(QVariant(current));
     if (index < 0) index = 2;
-    this->boxMarkerSize->setCurrentIndex(index);
+    ui->boxMarkerSize->setCurrentIndex(index);
 
-    comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
-    comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));
-    comboNewDocView->addItem(tr("Trimetric"), QByteArray("Trimetric"));
-    comboNewDocView->addItem(tr("Top"), QByteArray("Top"));
-    comboNewDocView->addItem(tr("Front"), QByteArray("Front"));
-    comboNewDocView->addItem(tr("Left"), QByteArray("Left"));
-    comboNewDocView->addItem(tr("Right"), QByteArray("Right"));
-    comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
-    comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
-    comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
+    ui->comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
+    ui->comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));
+    ui->comboNewDocView->addItem(tr("Trimetric"), QByteArray("Trimetric"));
+    ui->comboNewDocView->addItem(tr("Top"), QByteArray("Top"));
+    ui->comboNewDocView->addItem(tr("Front"), QByteArray("Front"));
+    ui->comboNewDocView->addItem(tr("Left"), QByteArray("Left"));
+    ui->comboNewDocView->addItem(tr("Right"), QByteArray("Right"));
+    ui->comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
+    ui->comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
+    ui->comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
     std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
-    index = comboNewDocView->findData(QByteArray(camera.c_str()));
-    if (index > -1) comboNewDocView->setCurrentIndex(index);
+    index = ui->comboNewDocView->findData(QByteArray(camera.c_str()));
+    if (index > -1) ui->comboNewDocView->setCurrentIndex(index);
     if (camera == "Custom") {
         ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
         q0 = hCustom->GetFloat("Q0", q0);
@@ -198,33 +200,33 @@ void DlgSettings3DViewImp::loadSettings()
         q3 = hCustom->GetFloat("Q3", q3);
     }
 
-    connect(comboNewDocView, SIGNAL(currentIndexChanged(int)),
+    connect(ui->comboNewDocView, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onNewDocViewChanged(int)));
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()
 {
     QDialog dlg(this);
-    Ui_MouseButtons ui;
-    ui.setupUi(&dlg);
+    Ui_MouseButtons uimb;
+    uimb.setupUi(&dlg);
 
-    QVariant data = comboNavigationStyle->itemData(comboNavigationStyle->currentIndex(), Qt::UserRole);
+    QVariant data = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
     std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    ui.groupBox->setTitle(ui.groupBox->title()+QString::fromLatin1(" ")+comboNavigationStyle->currentText());
+    uimb.groupBox->setTitle(uimb.groupBox->title()+QString::fromLatin1(" ")+ui->comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.selectionLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.selectionLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::PANNING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.panningLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.panningLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::DRAGGING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.rotationLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.rotationLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::ZOOMING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.zoomingLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
+    uimb.zoomingLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     dlg.exec();
 }
 
@@ -234,18 +236,18 @@ void DlgSettings3DViewImp::on_mouseButton_clicked()
 void DlgSettings3DViewImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        comboAliasing->blockSignals(true);
-        int navigation = comboNavigationStyle->currentIndex();
-        int orbit = comboOrbitStyle->currentIndex();
-        int aliasing = comboAliasing->currentIndex();
-        int corner = naviCubeCorner->currentIndex();
-        retranslateUi(this);
+        ui->comboAliasing->blockSignals(true);
+        int navigation = ui->comboNavigationStyle->currentIndex();
+        int orbit = ui->comboOrbitStyle->currentIndex();
+        int aliasing = ui->comboAliasing->currentIndex();
+        int corner = ui->naviCubeCorner->currentIndex();
+        ui->retranslateUi(this);
         retranslate();
-        comboNavigationStyle->setCurrentIndex(navigation);
-        comboOrbitStyle->setCurrentIndex(orbit);
-        comboAliasing->setCurrentIndex(aliasing);
-        comboAliasing->blockSignals(false);
-        naviCubeCorner->setCurrentIndex(corner);
+        ui->comboNavigationStyle->setCurrentIndex(navigation);
+        ui->comboOrbitStyle->setCurrentIndex(orbit);
+        ui->comboAliasing->setCurrentIndex(aliasing);
+        ui->comboAliasing->blockSignals(false);
+        ui->naviCubeCorner->setCurrentIndex(corner);
     }
     else {
         QWidget::changeEvent(e);
@@ -254,7 +256,7 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
 
 void DlgSettings3DViewImp::retranslate()
 {
-    comboNavigationStyle->clear();
+    ui->comboNavigationStyle->clear();
 
     // add submenu at the end to select navigation style
     std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
@@ -262,7 +264,7 @@ void DlgSettings3DViewImp::retranslate()
         QByteArray data(it->first.getName());
         QString name = QApplication::translate(it->first.getName(), it->second.c_str());
 
-        comboNavigationStyle->addItem(name, data);
+        ui->comboNavigationStyle->addItem(name, data);
     }
 }
 
@@ -281,7 +283,7 @@ void DlgSettings3DViewImp::onAliasingChanged(int index)
 
 void DlgSettings3DViewImp::onNewDocViewChanged(int index)
 {
-    QVariant camera = comboNewDocView->itemData(index, Qt::UserRole);
+    QVariant camera = ui->comboNewDocView->itemData(index, Qt::UserRole);
     if (camera == QByteArray("Custom")) {
         CameraDialog dlg(this);
         dlg.setValues(q0, q1, q2, q3);

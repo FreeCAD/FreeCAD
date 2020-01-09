@@ -27,16 +27,19 @@
 #include <Inventor/SoOffscreenRenderer.h> 
 #include <Inventor/SbMatrix.h> 
 
-#include "ui_DlgSettingsImage.h"
+#include <QWidget>
+#include <memory>
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgSettingsImage;
+
 /**
  * The DlgSettings3DViewImp class implements a preference page to change settings
  * for the Inventor viewer.
  * @author Werner Mayer
  */
-class DlgSettingsImageImp : public QWidget, public Ui::DlgSettingsImage
+class DlgSettingsImageImp : public QWidget
 {
     Q_OBJECT
 
@@ -55,6 +58,8 @@ public:
 
     /** @name Image meta information */
     //@{
+    void setMethod(const QByteArray&);
+    QByteArray method() const;
     QString comment() const;
     int backgroundType() const;
     void setBackgroundType( int );
@@ -70,6 +75,7 @@ protected Q_SLOTS:
     void on_buttonRatio16x9_clicked();
     void on_buttonRatio1x1_clicked();
     void on_standardSizeBox_activated(int);
+    void on_comboMethod_activated(int);
 
 protected:
     // helper to force an aspect ratio
@@ -78,6 +84,7 @@ protected:
 
 
 private:
+    std::unique_ptr<Ui_DlgSettingsImage> ui;
     float _fRatio;
     int _width, _height;
     SbMatrix _Matrix;

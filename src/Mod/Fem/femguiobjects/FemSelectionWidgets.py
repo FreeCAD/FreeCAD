@@ -554,7 +554,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                 )
                 continue
             FreeCAD.Console.PrintLog(
-                "  ReferenceShape : {}, {}, {} --> {}"
+                "  ReferenceShape : {}, {}, {} --> {}\n"
                 .format(r.ShapeType, ref[0].Name, ref[0].Label, ref[1])
             )
             if not ref_shty:

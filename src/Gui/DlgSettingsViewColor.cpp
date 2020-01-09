@@ -27,6 +27,7 @@
 #endif
 
 #include "DlgSettingsViewColor.h"
+#include "ui_DlgSettingsViewColor.h"
 #include "PrefWidgets.h"
 
 using namespace Gui::Dialog;
@@ -39,10 +40,11 @@ using namespace Gui::Dialog;
  */
 DlgSettingsViewColor::DlgSettingsViewColor(QWidget* parent)
     : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsViewColor)
 {
-    this->setupUi(this);
-    this->HighlightColor->setEnabled(this->checkBoxPreselection->isChecked());
-    this->SelectionColor->setEnabled(this->checkBoxSelection->isChecked());
+    ui->setupUi(this);
+    ui->HighlightColor->setEnabled(ui->checkBoxPreselection->isChecked());
+    ui->SelectionColor->setEnabled(ui->checkBoxSelection->isChecked());
 }
 
 /** 
@@ -55,38 +57,38 @@ DlgSettingsViewColor::~DlgSettingsViewColor()
 
 void DlgSettingsViewColor::saveSettings()
 {
-    SelectionColor_Background->onSave();
-    backgroundColorFrom->onSave();
-    backgroundColorTo->onSave();
-    backgroundColorMid->onSave();
-    radioButtonSimple->onSave();
-    radioButtonGradient->onSave();
-    checkMidColor->onSave();
-    checkBoxPreselection->onSave();
-    checkBoxSelection->onSave();
-    HighlightColor->onSave();
-    SelectionColor->onSave();
-    spinPickRadius->onSave();
-    TreeEditColor->onSave();
-    TreeActiveColor->onSave();
+    ui->SelectionColor_Background->onSave();
+    ui->backgroundColorFrom->onSave();
+    ui->backgroundColorTo->onSave();
+    ui->backgroundColorMid->onSave();
+    ui->radioButtonSimple->onSave();
+    ui->radioButtonGradient->onSave();
+    ui->checkMidColor->onSave();
+    ui->checkBoxPreselection->onSave();
+    ui->checkBoxSelection->onSave();
+    ui->HighlightColor->onSave();
+    ui->SelectionColor->onSave();
+    ui->spinPickRadius->onSave();
+    ui->TreeEditColor->onSave();
+    ui->TreeActiveColor->onSave();
 }
 
 void DlgSettingsViewColor::loadSettings()
 {
-    SelectionColor_Background->onRestore();
-    backgroundColorFrom->onRestore();
-    backgroundColorTo->onRestore();
-    backgroundColorMid->onRestore();
-    radioButtonSimple->onRestore();
-    radioButtonGradient->onRestore();
-    checkMidColor->onRestore();
-    checkBoxPreselection->onRestore();
-    checkBoxSelection->onRestore();
-    HighlightColor->onRestore();
-    SelectionColor->onRestore();
-    spinPickRadius->onRestore();
-    TreeEditColor->onRestore();
-    TreeActiveColor->onRestore();
+    ui->SelectionColor_Background->onRestore();
+    ui->backgroundColorFrom->onRestore();
+    ui->backgroundColorTo->onRestore();
+    ui->backgroundColorMid->onRestore();
+    ui->radioButtonSimple->onRestore();
+    ui->radioButtonGradient->onRestore();
+    ui->checkMidColor->onRestore();
+    ui->checkBoxPreselection->onRestore();
+    ui->checkBoxSelection->onRestore();
+    ui->HighlightColor->onRestore();
+    ui->SelectionColor->onRestore();
+    ui->spinPickRadius->onRestore();
+    ui->TreeEditColor->onRestore();
+    ui->TreeActiveColor->onRestore();
 }
 
 /**
@@ -95,7 +97,7 @@ void DlgSettingsViewColor::loadSettings()
 void DlgSettingsViewColor::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

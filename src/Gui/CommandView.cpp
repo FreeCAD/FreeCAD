@@ -29,12 +29,15 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <QApplication>
+# include <QDialog>
 # include <QFile>
 # include <QFileInfo>
 # include <QFont>
 # include <QFontMetrics>
 # include <QMessageBox>
 # include <QPainter>
+# include <QPointer>
 # include <QTextStream>
 # include <boost/bind.hpp>
 #endif
@@ -1076,17 +1079,26 @@ StdCmdSetAppearance::StdCmdSetAppearance()
 void StdCmdSetAppearance::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+#if 0
     static QPointer<QDialog> dlg = 0;
     if (!dlg)
-        dlg = new Gui::Dialog::DlgDisplayPropertiesImp(getMainWindow());
+        dlg = new Gui::Dialog::DlgDisplayPropertiesImp(true, getMainWindow());
     dlg->setModal(false);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
+#else
+    Gui::Control().showDialog(new Gui::Dialog::TaskDisplayProperties());
+#endif
 }
 
 bool StdCmdSetAppearance::isActive(void)
 {
+#if 0
     return Gui::Selection().size() != 0;
+#else
+    return (Gui::Control().activeDialog() == nullptr) &&
+           (Gui::Selection().size() != 0);
+#endif
 }
 
 //===========================================================================
@@ -1730,6 +1742,10 @@ void StdViewScreenShot::activated(int iMsg)
         QString ext = QString::fromLatin1(hExt->GetASCII("OffscreenImageFormat").c_str());
         int backtype = hExt->GetInt("OffscreenImageBackground",0);
 
+        Base::Reference<ParameterGrp> methodGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+        QByteArray method = methodGrp->GetASCII("SavePicture").c_str();
+
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
@@ -1752,6 +1768,7 @@ void StdViewScreenShot::activated(int iMsg)
         SbVec2s sz = vp.getWindowSize();
         opt->setImageSize((int)sz[0], (int)sz[1]);
         opt->setBackgroundType(backtype);
+        opt->setMethod(method);
 
         fd.setOptionsWidget(FileOptionsDialog::ExtensionRight, opt);
         fd.setConfirmOverwrite(true);
@@ -1782,6 +1799,9 @@ void StdViewScreenShot::activated(int iMsg)
             }
 
             hExt->SetASCII("OffscreenImageFormat", (const char*)format.toLatin1());
+
+            method = opt->method();
+            methodGrp->SetASCII("SavePicture", method.constData());
 
             // which background chosen
             const char* background;

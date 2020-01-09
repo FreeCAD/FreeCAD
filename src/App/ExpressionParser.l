@@ -266,6 +266,11 @@ EXPO     [eE][-+]?[0-9]+
 "C"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Coulomb;             yylval.quantity.unitStr = yytext; return UNIT; // Coulomb (A*s)
 
 "T"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Tesla;               yylval.quantity.unitStr = yytext; return UNIT; // Tesla (kg/s^2/A)
+"G"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Gauss;               yylval.quantity.unitStr = yytext; return UNIT; // Gauss (1 G = 1e-4 T)
+
+"Wb"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Weber;               yylval.quantity.unitStr = yytext; return UNIT; // Weber (kg*m^2/s^2/A)
+
+"Oe"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Oersted;             yylval.quantity.unitStr = yytext; return UNIT; // Oersted (A/m)
 
 "F"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Farad;               yylval.quantity.unitStr = yytext; return UNIT; // Farad (s^4*A^2/m^2/kg)
 "mF"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliFarad;          yylval.quantity.unitStr = yytext; return UNIT; // milli Farad

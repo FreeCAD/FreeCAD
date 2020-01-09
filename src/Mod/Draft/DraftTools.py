@@ -4278,7 +4278,7 @@ class SubelementHighlight(Modifier):
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_SubelementHighlight',
-                'Accel' : "D, E",
+                'Accel' : "H, S",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_SubelementHighlight", "Subelement highlight"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_SubelementHighlight",
                                                     "Highlight the subelements "

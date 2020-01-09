@@ -188,6 +188,21 @@ public:
         }
         connect(this, &CustomGLWidget::resized, this, &CustomGLWidget::slotResized);
     }
+    // paintGL() is invoked when e.g. using the method grabFramebuffer of this class
+    // \code
+    // from PySide2 import QtWidgets
+    // mw = Gui.getMainWindow()
+    // mdi = mw.findChild(QtWidgets.QMdiArea)
+    // gl = mdi.findChild(QtWidgets.QOpenGLWidget)
+    // img = gl.grabFramebuffer()
+    // \endcode
+    void paintGL()
+    {
+        QuarterWidget* qw = qobject_cast<QuarterWidget*>(parentWidget());
+        if (qw) {
+            qw->redraw();
+        }
+    }
     void aboutToDestroyGLContext()
     {
 #if QT_VERSION >= 0x050900

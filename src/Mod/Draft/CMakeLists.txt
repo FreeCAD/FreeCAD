@@ -47,24 +47,33 @@ SET(Draft_tests
     drafttests/test_airfoildat.py
 )
 
+SET(Draft_utilities
+    draftutils/__init__.py
+    draftutils/utils.py
+)
+
 SET(Draft_objects
     draftobjects/__init__.py
+    draftobjects/circulararray.py
     draftobjects/polararray.py
 )
 
 SET(Draft_view_providers
     draftviewproviders/__init__.py
+    draftviewproviders/view_circulararray.py
     draftviewproviders/view_polararray.py
 )
 
 SET(Draft_GUI_tools
     draftguitools/__init__.py
     draftguitools/gui_base.py
+    draftguitools/gui_circulararray.py
     draftguitools/gui_polararray.py
 )
 
 SET(Draft_task_panels
     drafttaskpanels/__init__.py
+    drafttaskpanels/task_circulararray.py
     drafttaskpanels/task_polararray.py
 )
 
@@ -72,6 +81,7 @@ SET(Draft_SRCS_all
     ${Draft_SRCS_base}
     ${Draft_import}
     ${Draft_tests}
+    ${Draft_utilities}
     ${Draft_objects}
     ${Draft_view_providers}
     ${Draft_GUI_tools}
@@ -114,6 +124,7 @@ INSTALL(
 )
 
 INSTALL(FILES ${Draft_tests} DESTINATION Mod/Draft/drafttests)
+INSTALL(FILES ${Draft_utilities} DESTINATION Mod/Draft/draftutils)
 INSTALL(FILES ${Draft_objects} DESTINATION Mod/Draft/draftobjects)
 INSTALL(FILES ${Draft_view_providers} DESTINATION Mod/Draft/draftviewproviders)
 INSTALL(FILES ${Draft_GUI_tools} DESTINATION Mod/Draft/draftguitools)

@@ -202,6 +202,16 @@ def convertToDxf(dwgfilename):
         The new file produced.
     """
     import os, tempfile, subprocess, sys
+
+    import shutil
+    if shutil.which("dwg2dxf"):
+        outdir = tempfile.mkdtemp()
+        basename = os.path.basename(dwgfilename)
+        result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
+        proc = subprocess.Popen(("dwg2dxf", dwgfilename, "-o", result))
+        proc.communicate()
+        return result
+
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dwgfilename)
@@ -248,6 +258,13 @@ def convertToDwg(dxffilename, dwgfilename):
         The same `dwgfilename` file path.
     """
     import os, subprocess
+
+    import shutil
+    if shutil.which("dxf2dwg"):
+        proc = subprocess.Popen(("dxf2dwg", dxffilename, "-o", dwgfilename))
+        proc.communicate()
+        return dwgfilename
+
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dxffilename)
