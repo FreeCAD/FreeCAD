@@ -419,17 +419,17 @@ def getSelectedFace(selectionex):
     aFace = None
     # print(selectionex)
     if len(selectionex) != 1:
-        FreeCAD.Console.PrintMessage("none OR more than one object selected")
+        FreeCAD.Console.PrintMessage("No or more than one object selected.\n")
     else:
         sel = selectionex[0]
         if len(sel.SubObjects) != 1:
-            FreeCAD.Console.PrintMessage("more than one element selected")
+            FreeCAD.Console.PrintMessage("More than one element selected.\n")
         else:
             aFace = sel.SubObjects[0]
             if aFace.ShapeType != "Face":
-                FreeCAD.Console.PrintMessage("not a Face selected")
+                FreeCAD.Console.PrintMessage("Not a Face selected.\n")
             else:
-                FreeCAD.Console.PrintMessage(":-)")
+                FreeCAD.Console.PrintMessage(":-)\n")
                 return aFace
     return aFace
 

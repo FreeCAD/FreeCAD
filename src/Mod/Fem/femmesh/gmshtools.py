@@ -201,7 +201,7 @@ class GmshTools():
             else:
                 self.dimension = "0"
                 Console.PrintError(
-                    "Could not retrieve Dimension from shape type. Please choose dimension."
+                    "Could not retrieve Dimension from shape type. Please choose dimension.\n"
                 )
         elif self.dimension == "3D":
             self.dimension = "3"
@@ -552,7 +552,7 @@ class GmshTools():
                             setting["FacesList"] = belem_list
                         else:
                             Console.PrintError(
-                                "boundary layer is only supported for 2D and 3D mesh"
+                                "boundary layer is only supported for 2D and 3D mesh.\n"
                             )
                         self.bl_setting_list.append(setting)
                     else:
