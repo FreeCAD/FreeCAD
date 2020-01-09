@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>459</width>
-    <height>552</height>
+    <width>291</width>
+    <height>498</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,122 +29,6 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="buttonGroupComment">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="title">
-      <string>Image comment</string>
-     </property>
-     <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QRadioButton" name="radioButtonMiba">
-        <property name="text">
-         <string>Insert MIBA</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QTextEdit" name="textEditComment">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="radioButtonComment">
-        <property name="text">
-         <string>Insert comment</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="checkWatermark">
-        <property name="text">
-         <string>Add watermark</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBoxProp">
-     <property name="title">
-      <string>Image properties</string>
-     </property>
-     <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="textLabelColor">
-        <property name="text">
-         <string>Back&amp;ground:</string>
-        </property>
-        <property name="buddy">
-         <cstring>comboBackground</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QComboBox" name="comboBackground">
-        <item>
-         <property name="text">
-          <string>Current</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>White</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Black</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Transparent</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBoxDim">
      <property name="title">
@@ -183,57 +67,14 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="1" column="1">
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="2">
-         <widget class="QSpinBox" name="spinHeight">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>32767</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QSpinBox" name="spinWidth">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>32767</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QLabel" name="label_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Pixel</string>
+           <string>Standard sizes:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="textLabelWidth">
-          <property name="text">
-           <string>&amp;Width:</string>
-          </property>
-          <property name="buddy">
-           <cstring>spinWidth</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2" colspan="2">
+        <item row="0" column="1" colspan="2">
          <widget class="QComboBox" name="standardSizeBox">
           <item>
            <property name="text">
@@ -352,45 +193,32 @@
           </item>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabelWidth">
           <property name="text">
-           <string>Standard sizes:</string>
+           <string>&amp;Width:</string>
+          </property>
+          <property name="buddy">
+           <cstring>spinWidth</cstring>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spinWidth">
+          <property name="minimum">
+           <number>1</number>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
+          <property name="maximum">
+           <number>32767</number>
           </property>
-         </spacer>
+         </widget>
         </item>
-        <item row="2" column="3">
-         <widget class="QLabel" name="label_3">
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Pixel</string>
           </property>
          </widget>
-        </item>
-        <item row="2" column="1">
-         <spacer>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="textLabelHeight">
@@ -399,6 +227,23 @@
           </property>
           <property name="buddy">
            <cstring>spinHeight</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinHeight">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>32767</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Pixel</string>
           </property>
          </widget>
         </item>
@@ -429,7 +274,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="buttonRatioScreen">
+         <widget class="QToolButton" name="buttonRatioScreen">
           <property name="text">
            <string>&amp;Screen</string>
           </property>
@@ -439,7 +284,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="buttonRatio4x3">
+         <widget class="QToolButton" name="buttonRatio4x3">
           <property name="text">
            <string>&amp;4:3</string>
           </property>
@@ -449,7 +294,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="buttonRatio16x9">
+         <widget class="QToolButton" name="buttonRatio16x9">
           <property name="text">
            <string>1&amp;6:9</string>
           </property>
@@ -459,7 +304,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="buttonRatio1x1">
+         <widget class="QToolButton" name="buttonRatio1x1">
           <property name="text">
            <string>&amp;1:1</string>
           </property>
@@ -473,21 +318,140 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="groupBoxMethod">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBoxProp">
      <property name="title">
-      <string>Method</string>
+      <string>Image properties</string>
      </property>
-     <layout class="QGridLayout" name="gridLayoutMethod">
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
       <item row="0" column="0">
+       <widget class="QLabel" name="textLabelColor">
+        <property name="text">
+         <string>Back&amp;ground:</string>
+        </property>
+        <property name="buddy">
+         <cstring>comboBackground</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBackground">
+        <item>
+         <property name="text">
+          <string>Current</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>White</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Black</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Transparent</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Creation method:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <widget class="QComboBox" name="comboMethod"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="buttonGroupComment">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="title">
+      <string>Image comment</string>
+     </property>
+     <layout class="QGridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="radioButtonMiba">
+        <property name="text">
+         <string>Insert MIBA</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="radioButtonComment">
+        <property name="text">
+         <string>Insert comment</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QTextEdit" name="textEditComment">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>70</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="checkWatermark">
+        <property name="text">
+         <string>Add watermark</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -504,6 +468,7 @@
   <tabstop>buttonRatio16x9</tabstop>
   <tabstop>buttonRatio1x1</tabstop>
   <tabstop>comboBackground</tabstop>
+  <tabstop>comboMethod</tabstop>
   <tabstop>radioButtonMiba</tabstop>
   <tabstop>radioButtonComment</tabstop>
   <tabstop>textEditComment</tabstop>

@@ -252,10 +252,10 @@ void DlgSettingsImageImp::on_comboMethod_activated(int index)
 {
     QByteArray data = ui->comboMethod->itemData(index).toByteArray();
     if (data == QByteArray("GrabFramebuffer")) {
-        ui->groupBoxProp->setEnabled(false);
+        ui->comboBackground->setEnabled(false);
     }
     else {
-        ui->groupBoxProp->setEnabled(true);
+        ui->comboBackground->setEnabled(true);
     }
 }
 
