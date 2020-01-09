@@ -90,7 +90,7 @@ def urlopen(url):
     timeout = 5
 
     if sys.version_info.major < 3:
-        import urllib2     
+        import urllib2
     else:
         import urllib.request as urllib2
         
