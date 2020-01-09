@@ -290,12 +290,12 @@ void Gui::QuantitySpinBox::setExpression(boost::shared_ptr<Expression> expr)
     }
 }
 
-void Gui::QuantitySpinBox::setTooltipLE(const QString &name)
+void Gui::QuantitySpinBox::setEditorToolTip(const QString &name)
 {
     lineEdit()->setToolTip(name);
 }
 
-void Gui::QuantitySpinBox::setTooltipIL(const QString &name)
+void Gui::QuantitySpinBox::setIconToolTip(const QString &name)
 {
     iconLabel->setToolTip(name);
 }
