@@ -106,7 +106,26 @@ class DraftModification(unittest.TestCase):
         self.assertTrue(obj.Start.isEqual(c, 1e-12),
                         "'{}' failed".format(operation))
 
-    def test_offset(self):
+    def test_offset_open(self):
+        """Create a wire, then produce an offset copy."""
+        operation = "Draft Offset"
+        _msg("  Test '{}'".format(operation))
+        a = Vector(0, 2, 0)
+        b = Vector(2, 4, 0)
+        c = Vector(5, 2, 0)
+        _msg("  Wire")
+        _msg("  a={0}, b={1}".format(a, b))
+        _msg("  c={0}".format(c))
+        wire = Draft.makeWire([a, b, c])
+        App.ActiveDocument.recompute()
+
+        offset = Vector(-1, 1, 0)
+        _msg("  Offset")
+        _msg("  vector={}".format(offset))
+        obj = Draft.offset(wire, offset, copy=True)
+        self.assertTrue(obj, "'{}' failed".format(operation))
+
+    def test_offset_closed(self):
         """Create a rectangle, then produce an offset copy."""
         operation = "Draft Offset"
         _msg("  Test '{}'".format(operation))
