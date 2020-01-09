@@ -251,7 +251,7 @@ void DlgDisplayPropertiesImp::on_buttonUserDefinedMaterial_clicked()
     dlg.setViewProviders(Provider);
     dlg.exec();
 
-    d->ui.buttonColor->setColor(dlg.diffuseColor->color());
+    d->ui.buttonColor->setColor(dlg.diffuseColor());
 }
 
 /**

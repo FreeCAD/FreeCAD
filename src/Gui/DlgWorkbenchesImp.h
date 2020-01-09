@@ -24,13 +24,17 @@
 #ifndef GUI_DIALOG_DLGWORKBENCHES_IMP_H
 #define GUI_DIALOG_DLGWORKBENCHES_IMP_H
 
-#include "ui_DlgWorkbenches.h"
 #include "PropertyPage.h"
+#include <memory>
+
+class QListWidgetCustom;
+class QListWidgetItem;
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgWorkbenches;
 
-class DlgWorkbenchesImp : public CustomizeActionPage, public Ui_DlgWorkbenches
+class DlgWorkbenchesImp : public CustomizeActionPage
 {
     Q_OBJECT
 
@@ -63,6 +67,9 @@ private:
                         QListWidgetItem *wi);
     void save_workbenches();
     void shift_workbench(bool up);
+
+private:
+    std::unique_ptr<Ui_DlgWorkbenches> ui;
 };
 
 } // namespace Dialog

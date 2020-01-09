@@ -29,6 +29,7 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <QApplication>
 # include <QDialog>
 # include <QFile>
 # include <QFileInfo>

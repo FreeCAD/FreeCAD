@@ -33,6 +33,7 @@
 #include "Application.h"
 #include "MainWindow.h"
 #include "DlgMacroRecordImp.h"
+#include "ui_DlgMacroRecord.h"
 #include "FileDialog.h"
 
 
@@ -48,9 +49,11 @@ using namespace Gui::Dialog;
  *  true to construct a modal dialog.
  */
 DlgMacroRecordImp::DlgMacroRecordImp( QWidget* parent, Qt::WindowFlags fl )
-    : QDialog(parent, fl), WindowParameter("Macro")
+    : QDialog(parent, fl)
+    , WindowParameter("Macro")
+    , ui(new Ui_DlgMacroRecord)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 
     // get the macro home path
     this->macroPath = QString::fromUtf8(getWindowParameter()->GetASCII("MacroPath",
@@ -58,13 +61,13 @@ DlgMacroRecordImp::DlgMacroRecordImp( QWidget* parent, Qt::WindowFlags fl )
     this->macroPath = QDir::toNativeSeparators(QDir(this->macroPath).path() + QDir::separator());
 
     // set the edit fields
-    this->lineEditMacroPath->setText(macroPath);
+    ui->lineEditMacroPath->setText(macroPath);
 
     // get a pointer to the macro manager
     this->macroManager = Application::Instance->macroManager();
 
     // check if a macro recording is in progress
-    this->macroManager->isOpen() ? buttonStart->setEnabled(false) : buttonStop->setEnabled(false);
+    this->macroManager->isOpen() ? ui->buttonStart->setEnabled(false) : ui->buttonStop->setEnabled(false);
 }
 
 /** 
@@ -81,7 +84,7 @@ DlgMacroRecordImp::~DlgMacroRecordImp()
 void DlgMacroRecordImp::on_buttonStart_clicked()
 {
     // test if the path already set
-    if (lineEditPath->text().isEmpty()) {
+    if (ui->lineEditPath->text().isEmpty()) {
         QMessageBox::information(getMainWindow(), tr("Macro recorder"),
             tr("Specify first a place to save."));
         return;
@@ -95,7 +98,7 @@ void DlgMacroRecordImp::on_buttonStart_clicked()
     }
 
     // search in the macro path first for an already existing macro
-    QString fn = this->macroPath + lineEditPath->text();
+    QString fn = this->macroPath + ui->lineEditPath->text();
     if (!fn.endsWith(QLatin1String(".FCMacro"))) fn += QLatin1String(".FCMacro");
     QFileInfo fi(fn);
     if (fi.isFile() && fi.exists()) {
@@ -151,7 +154,7 @@ void DlgMacroRecordImp::on_pushButtonChooseDir_clicked()
     QString newDir = QFileDialog::getExistingDirectory(0,tr("Choose macro directory"),macroPath);
     if (!newDir.isEmpty()) {
         macroPath = QDir::toNativeSeparators(newDir + QDir::separator());
-        this->lineEditMacroPath->setText(macroPath);
+        ui->lineEditMacroPath->setText(macroPath);
         getWindowParameter()->SetASCII("MacroPath",macroPath.toUtf8());
     }
 }

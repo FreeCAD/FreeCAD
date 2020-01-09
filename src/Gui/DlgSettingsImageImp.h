@@ -27,16 +27,19 @@
 #include <Inventor/SoOffscreenRenderer.h> 
 #include <Inventor/SbMatrix.h> 
 
-#include "ui_DlgSettingsImage.h"
+#include <QWidget>
+#include <memory>
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgSettingsImage;
+
 /**
  * The DlgSettings3DViewImp class implements a preference page to change settings
  * for the Inventor viewer.
  * @author Werner Mayer
  */
-class DlgSettingsImageImp : public QWidget, public Ui::DlgSettingsImage
+class DlgSettingsImageImp : public QWidget
 {
     Q_OBJECT
 
@@ -81,6 +84,7 @@ protected:
 
 
 private:
+    std::unique_ptr<Ui_DlgSettingsImage> ui;
     float _fRatio;
     int _width, _height;
     SbMatrix _Matrix;

@@ -24,11 +24,12 @@
 #ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
 #define GUI_DIALOG_DLGTOOLBARS_IMP_H
 
-#include "ui_DlgToolbars.h"
 #include "PropertyPage.h"
+#include <memory>
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgCustomToolbars;
 
 /** This class implements the creation of user defined toolbars.
  * In the left panel are shown all command groups with their command objects.
@@ -38,7 +39,7 @@ namespace Dialog {
  * 
  * \author Werner Mayer
  */
-class DlgCustomToolbars : public CustomizeActionPage, public Ui_DlgCustomToolbars
+class DlgCustomToolbars : public CustomizeActionPage
 { 
     Q_OBJECT
 
@@ -77,6 +78,8 @@ private:
     void importCustomToolbars(const QByteArray&);
     void exportCustomToolbars(const QByteArray&);
 
+protected:
+    std::unique_ptr<Ui_DlgCustomToolbars> ui;
 private:
     Type type;
 };

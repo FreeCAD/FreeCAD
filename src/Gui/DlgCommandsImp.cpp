@@ -30,6 +30,7 @@
 #endif
 
 #include "DlgCommandsImp.h"
+#include "ui_DlgCommands.h"
 #include "Application.h"
 #include "Command.h"
 #include "BitmapFactory.h"
@@ -62,18 +63,19 @@ struct GroupMap_find {
  */
 DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
   : CustomizeActionPage(parent)
+  , ui(new Ui_DlgCustomCommands)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 
     // paints for active and inactive the same color
-    QPalette pal = categoryTreeWidget->palette();
+    QPalette pal = ui->categoryTreeWidget->palette();
     pal.setColor(QPalette::Inactive, QPalette::Highlight, pal.color(QPalette::Active, QPalette::Highlight));
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
-    categoryTreeWidget->setPalette( pal );
+    ui->categoryTreeWidget->setPalette( pal );
 
-    connect(commandTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), 
+    connect(ui->commandTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
             this, SLOT(onDescription(QTreeWidgetItem*)));
-    connect(categoryTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), 
+    connect(ui->categoryTreeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
             this, SLOT(onGroupActivated(QTreeWidgetItem*)));
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
@@ -104,25 +106,25 @@ DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
     }
 
     QStringList labels; labels << tr("Category");
-    categoryTreeWidget->setHeaderLabels(labels);
+    ui->categoryTreeWidget->setHeaderLabels(labels);
     for (GroupMap::iterator it = groupMap.begin(); it != groupMap.end(); ++it) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(categoryTreeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->categoryTreeWidget);
         item->setText(0, it->second);
         item->setData(0, Qt::UserRole, QVariant(it->first));
     }
 
     labels.clear();
     labels << tr("Icon") << tr("Command");
-    commandTreeWidget->setHeaderLabels(labels);
-    commandTreeWidget->header()->hide();
-    commandTreeWidget->setIconSize(QSize(32, 32));
+    ui->commandTreeWidget->setHeaderLabels(labels);
+    ui->commandTreeWidget->header()->hide();
+    ui->commandTreeWidget->setIconSize(QSize(32, 32));
 #if QT_VERSION >= 0x050000
-    commandTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->commandTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 #else
-    commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+    ui->commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
 #endif
 
-    categoryTreeWidget->setCurrentItem(categoryTreeWidget->topLevelItem(0));
+    ui->categoryTreeWidget->setCurrentItem(ui->categoryTreeWidget->topLevelItem(0));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -134,9 +136,9 @@ DlgCustomCommandsImp::~DlgCustomCommandsImp()
 void DlgCustomCommandsImp::onDescription(QTreeWidgetItem *item)
 {
     if (item)
-        textLabel->setText(item->toolTip(1));
+        ui->textLabel->setText(item->toolTip(1));
     else
-        textLabel->setText(QString());
+        ui->textLabel->setText(QString());
 }
 
 /** Shows all commands of this category */
@@ -147,13 +149,13 @@ void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
 
     QVariant data = item->data(0, Qt::UserRole);
     QString group = data.toString();
-    commandTreeWidget->clear();
+    ui->commandTreeWidget->clear();
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(group.toLatin1());
     if (group == QLatin1String("Macros")) {
         for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
-            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
             item->setText(1, QString::fromUtf8((*it)->getMenuText()));
             item->setToolTip(1, QString::fromUtf8((*it)->getToolTipText()));
             item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
@@ -164,7 +166,7 @@ void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
     }
     else {
         for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
-            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
             item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
             item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
             item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
@@ -174,12 +176,12 @@ void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
         }
     }
 
-    textLabel->setText(QString());
+    ui->textLabel->setText(QString());
 }
 
 void DlgCustomCommandsImp::onAddMacroAction(const QByteArray& macro)
 {
-    QTreeWidgetItem* item = categoryTreeWidget->currentItem();
+    QTreeWidgetItem* item = ui->categoryTreeWidget->currentItem();
     if (!item)
         return;
 
@@ -190,7 +192,7 @@ void DlgCustomCommandsImp::onAddMacroAction(const QByteArray& macro)
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         Command* pCmd = cCmdMgr.getCommandByName(macro);
 
-        QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
         item->setText(1, QString::fromUtf8(pCmd->getMenuText()));
         item->setToolTip(1, QString::fromUtf8(pCmd->getToolTipText()));
         item->setData(1, Qt::UserRole, macro);
@@ -202,7 +204,7 @@ void DlgCustomCommandsImp::onAddMacroAction(const QByteArray& macro)
 
 void DlgCustomCommandsImp::onRemoveMacroAction(const QByteArray& macro)
 {
-    QTreeWidgetItem* item = categoryTreeWidget->currentItem();
+    QTreeWidgetItem* item = ui->categoryTreeWidget->currentItem();
     if (!item)
         return;
 
@@ -210,11 +212,11 @@ void DlgCustomCommandsImp::onRemoveMacroAction(const QByteArray& macro)
     QString group = data.toString();
     if (group == QLatin1String("Macros"))
     {
-        for (int i=0; i<commandTreeWidget->topLevelItemCount(); i++) {
-            QTreeWidgetItem* item = commandTreeWidget->topLevelItem(i);
+        for (int i=0; i<ui->commandTreeWidget->topLevelItemCount(); i++) {
+            QTreeWidgetItem* item = ui->commandTreeWidget->topLevelItem(i);
             QByteArray command = item->data(1, Qt::UserRole).toByteArray();
             if (command == macro) {
-                commandTreeWidget->takeTopLevelItem(i);
+                ui->commandTreeWidget->takeTopLevelItem(i);
                 delete item;
                 break;
             }
@@ -224,7 +226,7 @@ void DlgCustomCommandsImp::onRemoveMacroAction(const QByteArray& macro)
 
 void DlgCustomCommandsImp::onModifyMacroAction(const QByteArray& macro)
 {
-    QTreeWidgetItem* item = categoryTreeWidget->currentItem();
+    QTreeWidgetItem* item = ui->categoryTreeWidget->currentItem();
     if (!item)
         return;
 
@@ -234,8 +236,8 @@ void DlgCustomCommandsImp::onModifyMacroAction(const QByteArray& macro)
     {
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         Command* pCmd = cCmdMgr.getCommandByName(macro);
-        for (int i=0; i<commandTreeWidget->topLevelItemCount(); i++) {
-            QTreeWidgetItem* item = commandTreeWidget->topLevelItem(i);
+        for (int i=0; i<ui->commandTreeWidget->topLevelItemCount(); i++) {
+            QTreeWidgetItem* item = ui->commandTreeWidget->topLevelItem(i);
             QByteArray command = item->data(1, Qt::UserRole).toByteArray();
             if (command == macro) {
                 item->setText(1, QString::fromUtf8(pCmd->getMenuText()));
@@ -244,7 +246,7 @@ void DlgCustomCommandsImp::onModifyMacroAction(const QByteArray& macro)
                 item->setSizeHint(0, QSize(32, 32));
                 if (pCmd->getPixmap())
                     item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
-                if (commandTreeWidget->isItemSelected(item))
+                if (ui->commandTreeWidget->isItemSelected(item))
                     onDescription(item);
                 break;
             }
@@ -255,12 +257,12 @@ void DlgCustomCommandsImp::onModifyMacroAction(const QByteArray& macro)
 void DlgCustomCommandsImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        this->retranslateUi(this);
+        ui->retranslateUi(this);
         QStringList labels; labels << tr("Category");
-        categoryTreeWidget->setHeaderLabels(labels);
+        ui->categoryTreeWidget->setHeaderLabels(labels);
 
         CommandManager & cCmdMgr = Application::Instance->commandManager();
-        QTreeWidgetItemIterator it(categoryTreeWidget);
+        QTreeWidgetItemIterator it(ui->categoryTreeWidget);
         while (*it) {
             QVariant data = (*it)->data(0, Qt::UserRole);
             std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(data.toByteArray());
@@ -270,7 +272,7 @@ void DlgCustomCommandsImp::changeEvent(QEvent *e)
             }
             ++it;
         }
-        onGroupActivated(categoryTreeWidget->topLevelItem(0));
+        onGroupActivated(ui->categoryTreeWidget->topLevelItem(0));
     }
     QWidget::changeEvent(e);
 }

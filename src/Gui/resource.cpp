@@ -49,6 +49,7 @@
 #include "DlgCustomizeSpNavSettings.h"
 #include "InputField.h"
 #include "QuantitySpinBox.h"
+#include "PrefWidgets.h"
 
 using namespace Gui;
 using namespace Gui::Dialog;
