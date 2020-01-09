@@ -29,12 +29,14 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <QDialog>
 # include <QFile>
 # include <QFileInfo>
 # include <QFont>
 # include <QFontMetrics>
 # include <QMessageBox>
 # include <QPainter>
+# include <QPointer>
 # include <QTextStream>
 # include <boost/bind.hpp>
 #endif
