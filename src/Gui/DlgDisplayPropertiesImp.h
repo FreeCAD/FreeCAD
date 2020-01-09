@@ -28,7 +28,9 @@
 #include <vector>
 #include <QDialog>
 
-#include "Selection.h"
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 #include <App/Material.h>
 
 namespace App
@@ -54,11 +56,13 @@ class DlgDisplayPropertiesImp : public QDialog,
     Q_OBJECT
 
 public:
-    DlgDisplayPropertiesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = 0);
+    DlgDisplayPropertiesImp(bool floating, QWidget* parent = nullptr, Qt::WindowFlags fl = 0);
     ~DlgDisplayPropertiesImp();
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                   Gui::SelectionSingleton::MessageType Reason);
+    void showDefaultButtons(bool);
+    void reject();
 
 private Q_SLOTS:
     void on_changeMaterial_activated(int);
@@ -78,7 +82,6 @@ protected:
 
 private:
     void slotChangedObject(const Gui::ViewProvider&, const App::Property& Prop);
-    void reject();
     void setDisplayModes(const std::vector<ViewProvider*>&);
     void setMaterial(const std::vector<ViewProvider*>&);
     void setColorPlot(const std::vector<ViewProvider*>&);
@@ -94,6 +97,30 @@ private:
 private:
     class Private;
     std::unique_ptr<Private> d;
+};
+
+class TaskDisplayProperties : public Gui::TaskView::TaskDialog
+{
+    Q_OBJECT
+
+public:
+    TaskDisplayProperties();
+    ~TaskDisplayProperties();
+
+public:
+    bool reject();
+
+    bool isAllowedAlterDocument(void) const
+    { return true; }
+    bool isAllowedAlterView(void) const
+    { return true; }
+    bool isAllowedAlterSelection(void) const
+    { return true; }
+    QDialogButtonBox::StandardButtons getStandardButtons() const;
+
+private:
+    DlgDisplayPropertiesImp* widget;
+    Gui::TaskView::TaskBox* taskbox;
 };
 
 } // namespace Dialog

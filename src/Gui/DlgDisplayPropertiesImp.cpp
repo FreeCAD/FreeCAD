@@ -64,6 +64,7 @@ class DlgDisplayPropertiesImp::Private
     typedef boost::signals2::connection DlgDisplayPropertiesImp_Connection;
 public:
     Ui::DlgDisplayProperties ui;
+    bool floating;
     DlgDisplayPropertiesImp_Connection connectChangedObject;
 };
 
@@ -74,7 +75,7 @@ public:
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(QWidget* parent, Qt::WindowFlags fl)
+DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(bool floating, QWidget* parent, Qt::WindowFlags fl)
   : QDialog( parent, fl )
   , d(new Private)
 {
@@ -83,6 +84,7 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(QWidget* parent, Qt::WindowFlag
     d->ui.changePlot->hide();
     d->ui.buttonLineColor->setModal(false);
     d->ui.buttonColor->setModal(false);
+    d->floating = floating;
 
     std::vector<Gui::ViewProvider*> views = getSelection();
     setDisplayModes(views);
@@ -97,11 +99,13 @@ DlgDisplayPropertiesImp::DlgDisplayPropertiesImp(QWidget* parent, Qt::WindowFlag
     setLineTransparency(views);
 
     // embed this dialog into a dockable widget container
-    Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
-    QDockWidget* dw = pDockMgr->addDockWindow("Display properties", this, Qt::AllDockWidgetAreas);
-    dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
-    dw->setFloating(true);
-    dw->show();
+    if (floating) {
+        Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+        QDockWidget* dw = pDockMgr->addDockWindow("Display properties", this, Qt::AllDockWidgetAreas);
+        dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
+        dw->setFloating(true);
+        dw->show();
+    }
 
     Gui::Selection().Attach(this);
 
@@ -118,6 +122,11 @@ DlgDisplayPropertiesImp::~DlgDisplayPropertiesImp()
     // no need to delete child widgets, Qt does it all for us
     d->connectChangedObject.disconnect();
     Gui::Selection().Detach(this);
+}
+
+void DlgDisplayPropertiesImp::showDefaultButtons(bool ok)
+{
+    d->ui.buttonBox->setVisible(ok);
 }
 
 void DlgDisplayPropertiesImp::changeEvent(QEvent *e)
@@ -224,9 +233,11 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
  */
 void DlgDisplayPropertiesImp::reject()
 {
-    // closes the dock window
-    Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
-    pDockMgr->removeDockWindow(this);
+    if (d->floating) {
+        // closes the dock window
+        Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+        pDockMgr->removeDockWindow(this);
+    }
     QDialog::reject();
 }
 
@@ -624,6 +635,36 @@ std::vector<Gui::ViewProvider*> DlgDisplayPropertiesImp::getSelection() const
     }
 
     return views;
+}
+
+// ----------------------------------------------------------------------------
+
+/* TRANSLATOR Gui::Dialog::TaskDisplayProperties */
+
+TaskDisplayProperties::TaskDisplayProperties()
+{
+    this->setButtonPosition(TaskDisplayProperties::South);
+    widget = new DlgDisplayPropertiesImp(false);
+    widget->showDefaultButtons(false);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, 0);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
+}
+
+TaskDisplayProperties::~TaskDisplayProperties()
+{
+    // automatically deleted in the sub-class
+}
+
+QDialogButtonBox::StandardButtons TaskDisplayProperties::getStandardButtons() const
+{
+    return QDialogButtonBox::Close;
+}
+
+bool TaskDisplayProperties::reject()
+{
+    widget->reject();
+    return (widget->result() == QDialog::Rejected);
 }
 
 #include "moc_DlgDisplayPropertiesImp.cpp"
