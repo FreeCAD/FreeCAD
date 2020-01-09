@@ -89,6 +89,7 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
 
     propertyName = "Placement"; // default name
     ui = new Ui_PlacementComp(this);
+    ui->gridLayout->removeItem(ui->vSpacer);
 
     ui->xPos->setUnit(Base::Unit::Length);
     ui->yPos->setUnit(Base::Unit::Length);
@@ -138,6 +139,15 @@ void Placement::showDefaultButtons(bool ok)
     ui->oKButton->setVisible(ok);
     ui->closeButton->setVisible(ok);
     ui->applyButton->setVisible(ok);
+    ui->buttonBoxLayout->invalidate();
+    if (ok) {
+        //ui->buttonBoxSpacer->changeSize(88, 24, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui->buttonBoxLayout->insertItem(0, ui->buttonBoxSpacer);
+    }
+    else {
+        //ui->buttonBoxSpacer->changeSize(0, 0, QSizePolicy::Ignored, QSizePolicy::Ignored);
+        ui->buttonBoxLayout->removeItem(ui->buttonBoxSpacer);
+    }
 }
 
 void Placement::open()

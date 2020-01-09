@@ -239,13 +239,13 @@ def read_fenics_mesh_xml(xmlfilename):
         Console.PrintMessage("Mesh found\n")
         (nodes, cells_dict, cell_type, dim) = read_mesh_block(find_mesh)
         element_dict = generate_lower_dimensional_structures(nodes, cells_dict, cell_type, dim)
-        Console.PrintMessage("Show min max element dict")
+        Console.PrintMessage("Show min max element dict\n")
         for (elm, numbers) in list(element_dict.items()):
             lst = sorted(list(numbers.items()), key=lambda x: x[0])
             if lst != []:
                 Console.PrintWarning(elm, " min: ", lst[0], " max: ", lst[-1], "\n")
     else:
-        Console.PrintError("No mesh found")
+        Console.PrintError("No mesh found\n")
 
     if root.find("data") is not None:
         Console.PrintLog("Internal mesh data found\n")

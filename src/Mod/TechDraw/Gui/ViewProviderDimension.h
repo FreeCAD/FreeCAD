@@ -75,6 +75,12 @@ public:
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;
 
+    App::Color prefColor() const;
+    std::string prefFont() const;
+    double prefFontSize() const;
+    double prefWeight() const;
+    int prefStandardAndStyle() const;
+
 private:
 
     static const char *StandardAndStyleEnums[];

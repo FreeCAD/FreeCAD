@@ -100,7 +100,7 @@ def import_z88_disp(
             )
             result_mesh_object.FemMesh = femmesh
         else:
-            Console.PrintError("Z88 mesh file z88i1.txt not found!")
+            Console.PrintError("Z88 mesh file z88i1.txt not found.\n")
 
         # create result obj
         for result_set in disp_read["Results"]:

@@ -29,12 +29,14 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <QDialog>
 # include <QFile>
 # include <QFileInfo>
 # include <QFont>
 # include <QFontMetrics>
 # include <QMessageBox>
 # include <QPainter>
+# include <QPointer>
 # include <QTextStream>
 # include <boost/bind.hpp>
 #endif
@@ -1076,17 +1078,26 @@ StdCmdSetAppearance::StdCmdSetAppearance()
 void StdCmdSetAppearance::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+#if 0
     static QPointer<QDialog> dlg = 0;
     if (!dlg)
-        dlg = new Gui::Dialog::DlgDisplayPropertiesImp(getMainWindow());
+        dlg = new Gui::Dialog::DlgDisplayPropertiesImp(true, getMainWindow());
     dlg->setModal(false);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->show();
+#else
+    Gui::Control().showDialog(new Gui::Dialog::TaskDisplayProperties());
+#endif
 }
 
 bool StdCmdSetAppearance::isActive(void)
 {
+#if 0
     return Gui::Selection().size() != 0;
+#else
+    return (Gui::Control().activeDialog() == nullptr) &&
+           (Gui::Selection().size() != 0);
+#endif
 }
 
 //===========================================================================

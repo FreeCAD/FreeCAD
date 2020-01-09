@@ -214,7 +214,7 @@ def make_femmesh(
                 e = elms_seg3[i]
                 mesh.addEdge([e[0], e[1], e[2]], i)
             Console.PrintLog(
-                "imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15"
+                "imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15\n"
                 .format(
                     len(nds),
                     len(elms_hexa8),
@@ -225,7 +225,8 @@ def make_femmesh(
                 )
             )
             Console.PrintLog(
-                "imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3"
+                "imported mesh: {} "
+                "HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3\n"
                 .format(
                     len(elms_hexa20),
                     len(elms_tria3),
