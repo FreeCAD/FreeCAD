@@ -215,12 +215,6 @@ TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget
     Gui::Document* document = Gui::Application::Instance->getDocument(ViewProvider->getObject()->getDocument());
     connectDelObject = document->signalDeletedObject.connect(bnd1);
     connectDelDocument = document->signalDeleteDocument.connect(bnd2);
-
-    // set tooltips because the ones in the .ui file are not taken for QuantitySpinBoxes (see bug https://freecadweb.org/tracker/view.php?id=4059)
-    // FIXME: remove this once the bug is fixed
-    ui->attachmentOffsetRoll->setEditorToolTip(QString::fromUtf8("Rotation around the x-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
-    ui->attachmentOffsetPitch->setEditorToolTip(QString::fromUtf8("Rotation around the y-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
-    ui->attachmentOffsetYaw->setEditorToolTip(QString::fromUtf8("Rotation around the z-axis\nNote: The placement is expressed in local coordinate system\nof object being attached."));
 }
 
 TaskAttacher::~TaskAttacher()
@@ -745,10 +739,12 @@ void TaskAttacher::updateAttachmentOffsetUI()
     ui->attachmentOffsetPitch->setEnabled(!bRotationBound);
     ui->attachmentOffsetRoll->setEnabled(!bRotationBound);
 
-    QString tooltip = bRotationBound ? tr("Not editable because rotation of AttachmentOffset is bound by expressions.") : QString();
-    ui->attachmentOffsetYaw->setToolTip(tooltip);
-    ui->attachmentOffsetPitch->setToolTip(tooltip);
-    ui->attachmentOffsetRoll->setToolTip(tooltip);
+    if (bRotationBound) {
+        QString tooltip = tr("Not editable because rotation of AttachmentOffset is bound by expressions.");
+        ui->attachmentOffsetYaw->setToolTip(tooltip);
+        ui->attachmentOffsetPitch->setToolTip(tooltip);
+        ui->attachmentOffsetRoll->setToolTip(tooltip);
+    }
 
     bBlock = false;
     ui->attachmentOffsetX->blockSignals(bBlock);
