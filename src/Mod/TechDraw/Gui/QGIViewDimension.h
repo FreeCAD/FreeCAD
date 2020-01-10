@@ -23,6 +23,10 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 
+#ifndef _PreComp_
+ #include <Standard_math.hxx>
+#endif
+
 #include <QObject>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
