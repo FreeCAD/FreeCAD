@@ -198,6 +198,8 @@ static const std::map<std::string, int> &getStatusMap() {
         statusMap["LockDynamic"] = Property::LockDynamic;
         statusMap["NoModify"] = Property::NoModify;
         statusMap["PartialTrigger"] = Property::PartialTrigger;
+        statusMap["NoRecompute"] = Property::NoRecompute;
+        statusMap["CopyOnChange"] = Property::CopyOnChange;
     }
     return statusMap;
 }
