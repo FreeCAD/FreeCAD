@@ -129,10 +129,6 @@ public:
     bool event(QEvent *event);
 
     void setExpression(boost::shared_ptr<App::Expression> expr);
-    /// Sets a tooltip for the LineEdit
-    void setEditorToolTip(const QString &name);
-    /// Sets a tooltip for the IconLabel
-    void setIconToolTip(const QString &name);
     void bind(const App::ObjectIdentifier &_path);
     bool apply(const std::string &propName);
 
