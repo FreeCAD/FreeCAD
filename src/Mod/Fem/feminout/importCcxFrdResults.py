@@ -74,6 +74,8 @@ def importFrd(
 
     m = read_frd_result(filename)
     result_mesh_object = None
+    res_obj = None
+
     if len(m["Nodes"]) > 0:
         mesh = importToolsFem.make_femmesh(m)
         result_mesh_object = ObjectsFem.makeMeshResult(
@@ -166,15 +168,29 @@ def importFrd(
 
         else:
             error_message = (
-                "We have nodes but no results in frd file, "
-                "which means we only have a mesh in frd file. "
-                "Usually this happens for analysis type 'NOANALYSIS' "
-                "or if CalculiX returned no results because "
-                "of nonpositive jacobian determinant in at least one element.\n"
+                "Nodes, but no results found in frd file. "
+                "It means there only is a mesh but no results in frd file. "
+                "Usually this happens for: \n"
+                "- analysis type 'NOANALYSIS'\n"
+                "- if CalculiX returned no results "
+                "(happens on nonpositive jacobian determinant in at least one element)\n"
+                "- just no frd results where requestet in input file "
+                "(neither 'node file' nor 'el file' in output section')\n"
             )
             Console.PrintMessage(error_message)
+
+        # create a result obj, even if we have no results but a result mesh in frd file
+        # see error message above for more information
+        if not res_obj:
+            if result_name_prefix:
+                results_name = ("{}_Results".format(result_name_prefix))
+            else:
+                results_name = ("Results".format(result_name_prefix))
+            res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+            res_obj.Mesh = result_mesh_object
+            # TODO, node numbers in result obj could be set
             if analysis:
-                analysis.addObject(result_mesh_object)
+                analysis.addObject(res_obj)
 
         if FreeCAD.GuiUp:
             if analysis:
@@ -186,6 +202,9 @@ def importFrd(
         Console.PrintError(
             "Problem on frd file import. No nodes found in frd file.\n"
         )
+        # None will be returned
+        # or would it be better to raise an exception if there are not even nodes in frd file
+
     return res_obj
 
 

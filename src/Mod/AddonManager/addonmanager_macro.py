@@ -103,6 +103,9 @@ class Macro(object):
         except:
             print("AddonManager: Debug: unable to open URL",url)
             return
+        if u is None :
+            print("AddonManager: Debug: connection is lost (proxy setting changed?)",url)
+            return
         p = u.read()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode('utf-8')

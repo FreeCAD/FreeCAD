@@ -589,6 +589,10 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         self.config.checkUpdates.setChecked(pref.GetBool("AutoCheck",False))
         self.config.customRepositories.setPlainText(pref.GetString("CustomRepositories",""))
+        self.config.radioButtonNoProxy.setChecked(pref.GetBool("NoProxyCheck",True))
+        self.config.radioButtonSystemProxy.setChecked(pref.GetBool("SystemProxyCheck",False))
+        self.config.radioButtonUserProxy.setChecked(pref.GetBool("UserProxyCheck",False))
+        self.config.userProxy.setPlainText(pref.GetString("ProxyUrl",""))
 
         # center the dialog over the Addon Manager
         self.config.move(self.dialog.frameGeometry().topLeft() + self.dialog.rect().center() - self.config.rect().center())
@@ -599,6 +603,10 @@ class CommandAddonManager:
             # OK button has been pressed
             pref.SetBool("AutoCheck",self.config.checkUpdates.isChecked())
             pref.SetString("CustomRepositories",self.config.customRepositories.toPlainText())
+            pref.SetBool("NoProxyCheck",self.config.radioButtonNoProxy.isChecked())
+            pref.SetBool("SystemProxyCheck",self.config.radioButtonSystemProxy.isChecked())
+            pref.SetBool("UserProxyCheck",self.config.radioButtonUserProxy.isChecked())
+            pref.SetString("ProxyUrl",self.config.userProxy.toPlainText())
 
 def check_updates(addon_name,callback):
 
