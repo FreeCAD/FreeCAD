@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="GeometryExtensionPy"
+      Name="GeometryDoubleExtensionPy"
+      PythonName="Part.GeometryDoubleExtension"
+      Twin="GeometryDoubleExtension"
+      TwinPointer="GeometryDoubleExtension"
+      Include="Mod/Part/App/GeometryDefaultExtension.h"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/GeometryExtensionPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo@gmail.com" />
+      <UserDocu>A GeometryExtension extending geometry objects with a double.</UserDocu>
+    </Documentation>
+    <Attribute Name="Value" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                returns the value of the GeometryDoubleExtension.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="Value" Type="Float"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

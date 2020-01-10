@@ -31,25 +31,34 @@ import FreeCAD
 
 from PySide import QtCore
 
+import addonmanager_utilities as utils
+from addonmanager_utilities import translate # this needs to be as is for pylupdate
 from addonmanager_macro import Macro
-from addonmanager_utilities import urlopen
-from addonmanager_utilities import translate
-from addonmanager_utilities import symlink
-from addonmanager_utilities import getserver
 
-MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
-OBSOLETE = ["assembly2","drawing_dimensioning","cura_engine"] # These addons will print an additional message informing the user
+## @package AddonManager_workers
+#  \ingroup ADDONMANAGER
+#  \brief Multithread workers for the addon manager
+
+# Blacklisted addons
+MACROS_BLACKLIST = ["BOLTS",
+                    "WorkFeatures",
+                    "how to install",
+                    "PartsLibrary",
+                    "FCGear"]
+
+# These addons will print an additional message informing the user
+OBSOLETE =         ["assembly2",
+                    "drawing_dimensioning",
+                    "cura_engine"]
+
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 
-
-"Multithread workers for the Addon Manager"
-
+"""Multithread workers for the Addon Manager"""
 
 
 class UpdateWorker(QtCore.QThread):
-
-    "This worker updates the list of available workbenches"
+    """This worker updates the list of available workbenches"""
 
     info_label = QtCore.Signal(str)
     addon_repo = QtCore.Signal(object)
@@ -65,7 +74,7 @@ class UpdateWorker(QtCore.QThread):
         "populates the list of addons"
 
         self.progressbar_show.emit(True)
-        u = urlopen("https://github.com/FreeCAD/FreeCAD-addons")
+        u = utils.urlopen("https://github.com/FreeCAD/FreeCAD-addons")
         if not u:
             self.progressbar_show.emit(False)
             self.done.emit()
@@ -83,17 +92,24 @@ class UpdateWorker(QtCore.QThread):
         # querying official addons
         for l in p:
             #name = re.findall("data-skip-pjax=\"true\">(.*?)<",l)[0]
-            name = re.findall("title=\"(.*?) @",l)[0]
+            res = re.findall("title=\"(.*?) @",l)
+            if res:
+                name = res[0]
+            else:
+                print("AddonMananger: Debug: couldn't find title in",l)
+                continue
             self.info_label.emit(name)
             #url = re.findall("title=\"(.*?) @",l)[0]
-            url = "https://github.com/" + re.findall("href=\"\/(.*?)\/tree",l)[0]
-            addondir = moddir + os.sep + name
-            #print ("found:",name," at ",url)
-            if not os.path.exists(addondir):
-                state = 0
-            else:
-                state = 1
-            repos.append([name,url,state])
+            url = utils.getRepoUrl(l)
+            if url:
+                addondir = moddir + os.sep + name
+                #print ("found:",name," at ",url)
+                if os.path.exists(addondir) and os.listdir(addondir):
+                    # make sure the folder exists and it contains files!
+                    state = 1
+                else:
+                    state = 0
+                repos.append([name,url,state])
         # querying custom addons
         customaddons = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons").GetString("CustomRepositories","").split("\n")
         for url in customaddons:
@@ -120,8 +136,7 @@ class UpdateWorker(QtCore.QThread):
 
 
 class InfoWorker(QtCore.QThread):
-
-    "This worker retrieves the description text of a workbench"
+    """This worker retrieves the description text of a workbench"""
 
     addon_repos = QtCore.Signal(object)
 
@@ -134,7 +149,7 @@ class InfoWorker(QtCore.QThread):
         i = 0
         for repo in self.repos:
             url = repo[1]
-            u = urlopen(url)
+            u = utils.urlopen(url)
             if not u:
                 self.stop = True
                 return
@@ -154,11 +169,11 @@ class InfoWorker(QtCore.QThread):
 
 
 class CheckWBWorker(QtCore.QThread):
-
-    "This worker checks for available updates for all workbenches"
+    """This worker checks for available updates for all workbenches"""
 
     enable = QtCore.Signal(int)
     mark = QtCore.Signal(str)
+    addon_repos = QtCore.Signal(object)
 
     def __init__(self,repos):
 
@@ -184,6 +199,7 @@ class CheckWBWorker(QtCore.QThread):
                 #print("Checking for updates for",repo[0])
                 clonedir = moddir + os.sep + repo[0]
                 if os.path.exists(clonedir):
+                    self.repos[self.repos.index(repo)][2] = 2 # mark as already installed AND already checked for updates
                     if not os.path.exists(clonedir + os.sep + '.git'):
                         # Repair addon installed with raw download
                         bare_repo = git.Repo.clone_from(repo[1], clonedir + os.sep + '.git', bare=True)
@@ -200,17 +216,22 @@ class CheckWBWorker(QtCore.QThread):
                         repo = git.Repo(clonedir)
                         repo.head.reset('--hard')
                     gitrepo = git.Git(clonedir)
-                    gitrepo.fetch()
-                    if "git pull" in gitrepo.status():
-                        self.mark.emit(repo[0])
-                        upds.append(repo[0])
+                    try:
+                        gitrepo.fetch()
+                    except:
+                        print("AddonManager: Unable to fetch git updates for repo",repo[0])
+                    else:
+                        if "git pull" in gitrepo.status():
+                            self.mark.emit(repo[0])
+                            upds.append(repo[0])
+                            self.repos[self.repos.index(repo)][2] = 3 # mark as already installed AND already checked for updates AND update available
+        self.addon_repos.emit(self.repos)
         self.enable.emit(len(upds))
         self.stop = True
 
 
 class FillMacroListWorker(QtCore.QThread):
-
-    "This worker opulates the list of macros"
+    """This worker opulates the list of macros"""
 
     add_macro_signal = QtCore.Signal(Macro)
     info_label_signal = QtCore.Signal(str)
@@ -250,7 +271,10 @@ class FillMacroListWorker(QtCore.QThread):
             return
 
         self.info_label_signal.emit('Downloading list of macros from git...')
-        git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
+        try:
+            git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
+        except:
+            FreeCAD.Console.PrintWarning(translate('AddonsInstaller', 'Something went wrong with the Git Macro Retieval, possibly the Git executable is not in the path')+"\n")
         for dirpath, _, filenames in os.walk(self.repo_dir):
              if '.git' in dirpath:
                  continue
@@ -266,14 +290,14 @@ class FillMacroListWorker(QtCore.QThread):
         """Retrieve macros from the wiki
 
         Read the wiki and emit a signal for each found macro.
-        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes.
+        Reads only the page https://www.freecadweb.org/wiki/Macros_recipes
         """
 
         self.info_label_signal.emit("Downloading list of macros from the FreeCAD wiki...")
         self.progressbar_show.emit(True)
-        u = urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
+        u = utils.urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
         if not u:
-           return 
+           return
         p = u.read()
         u.close()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
@@ -290,14 +314,22 @@ class FillMacroListWorker(QtCore.QThread):
 
 
 class ShowWorker(QtCore.QThread):
-
-    "This worker retrieves info of a given workbench"
+    """This worker retrieves info of a given workbench"""
 
     info_label = QtCore.Signal(str)
     addon_repos = QtCore.Signal(object)
     progressbar_show = QtCore.Signal(bool)
 
     def __init__(self, repos, idx):
+
+        # repos is a list of [name,url,installbit,descr]
+        #   name      : Addon name
+        #   url       : Addon repository location
+        #   installbit: 0 = Addon is not installed
+        #               1 = Addon is installed
+        #               2 = Addon is installed and checked for available updates (none pending)
+        #               3 = Addon is installed and has a pending update
+        #   descr     : Addon description
 
         QtCore.QThread.__init__(self)
         self.repos = repos
@@ -315,18 +347,25 @@ class ShowWorker(QtCore.QThread):
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from") + ' ' + str(url))
             desc = ""
             # get the README if possible
-            u = urlopen(url+"/blob/master/README.md")
+            readmeurl = utils.getReadmeUrl(url)
+            if not readmeurl:
+                print("Debug: README not found for",url)
+            u = utils.urlopen(readmeurl)
+            if not u:
+                print("Debug: README not found at",readmeurl)
             if u:
                 p = u.read()
                 if sys.version_info.major >= 3 and isinstance(p, bytes):
                     p = p.decode("utf-8")
                 u.close()
-                readme = re.findall("<article.*?>(.*?)</article>",p,flags=re.MULTILINE|re.DOTALL)
-                if readme:
-                    desc += readme[0]
-            else:
+                readmeregex = utils.getReadmeRegex(url)
+                if readmeregex:
+                    readme = re.findall(readmeregex,p,flags=re.MULTILINE|re.DOTALL)
+                    if readme:
+                        desc += readme[0]
+            if not desc:
                 # fall back to the description text
-                u = urlopen(url)
+                u = utils.urlopen(url)
                 if not u:
                     self.progressbar_show.emit(False)
                     self.stop = True
@@ -335,13 +374,16 @@ class ShowWorker(QtCore.QThread):
                 if sys.version_info.major >= 3 and isinstance(p, bytes):
                     p = p.decode("utf-8")
                 u.close()
-                desc = re.findall("<meta property=\"og:description\" content=\"(.*?)\"",p)
-                if desc:
-                    desc = desc[0]
+                descregex = utils.getDescRegex(url)
+                if descregex:
+                    desc = re.findall(descregex,p)
+                    if desc:
+                        desc = "<br/>"+desc[0]
             if not desc:
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
             self.addon_repos.emit(self.repos)
+        # Addon is installed so lets check if it has an update
         if self.repos[self.idx][2] == 1:
             upd = False
             # checking for updates
@@ -371,25 +413,51 @@ class ShowWorker(QtCore.QThread):
                         gitrepo.fetch()
                         if "git pull" in gitrepo.status():
                             upd = True
+            # If there is an update pending, lets user know via the UI
             if upd:
-                message = "<strong style=\"background: #B65A00;\">" + translate("AddonsInstaller", "An update is available for this addon.") + "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                message = "<div style=\"width: 100%;text-align: center;background: #75AFFD;\"><br/><strong style=\"background: #397FF7;color: #FFFFFF;\">" + translate("AddonsInstaller", "An update is available for this addon.") 
+                message += "</strong><br/></div><hr/>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                self.repos[self.idx][2] = 3 # mark as already installed AND already checked for updates AND update is available
+            # If there isn't, indicate that this addon is already installed
             else:
-                message = "<strong style=\"background: #00B629;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                message = "<div style=\"width: 100%;text-align: center;background: #C1FEB2;\"><br/><strong style=\"background: #00B629;color: #FFFFFF;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br/></div><hr/>" 
+                message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+                self.repos[self.idx][2] = 2 # mark as already installed AND already checked for updates
+            # Let the user know the install path for this addon
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
+            self.addon_repos.emit(self.repos)
+        elif self.repos[self.idx][2] == 2:
+            message = "<div style=\"width: 100%;text-align: center;background: #C1FEB2;\"><br/><strong style=\"background: #00B629;color: #FFFFFF;\">" + translate("AddonsInstaller", "This addon is already installed.") + "</strong><br></div><hr/>"
+            message += desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
+        elif self.repos[self.idx][2] == 3:
+            message = "<div style=\"width: 100%;text-align: center;background: #75AFFD;\"><br/><strong style=\"background: #397FF7;color: #FFFFFF;\">" + translate("AddonsInstaller", "An update is available for this addon.") 
+            message += "</strong><br/></div><hr/>" + desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
+            message += '<br/>' + translate("AddonInstaller","Installed location")+": "+ FreeCAD.getUserAppDataDir() + os.sep + "Mod" + os.sep + self.repos[self.idx][0]
         else:
             message = desc + '<br/><br/>Addon repository: <a href="' + self.repos[self.idx][1] + '">' + self.repos[self.idx][1] + '</a>'
 
+        # If the Addon is obsolete, let the user know through the Addon UI
         if self.repos[self.idx][0] in OBSOLETE:
-            message = " <strong style=\"background: #FF0000;\">"+translate("AddonsInstaller","This add-on is marked as obsolete")+"</strong><br/><br/>"+translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced add-on in this list provides the same functionality.")+"<br/><br/>" + message
+            message = " <div style=\"width: 100%; text-align:center; background: #FFB3B3;\"><strong style=\"color: #FFFFFF; background: #FF0000;\">"+translate("AddonsInstaller","This addon is marked as obsolete")+"</strong><br/><br/>"
+            message += translate("AddonsInstaller","This usually means it is no longer maintained, and some more advanced addon in this list provides the same functionality.")+"<br/></div><hr/>" + desc
 
         self.info_label.emit( message )
         self.progressbar_show.emit(False)
-        l = self.loadImages( message, self.repos[self.idx][1] )
+        self.mustLoadImages = True
+        l = self.loadImages( message, self.repos[self.idx][1], self.repos[self.idx][0])
         if l:
             self.info_label.emit( l )
         self.stop = True
 
-    def loadImages(self,message,url):
-        
+    def stopImageLoading(self):
+
+        "this stops the image loading process and allow the thread to terminate earlier"
+
+        self.mustLoadImages = False
+
+    def loadImages(self,message,url,wbName):
+
         "checks if the given page contains images and downloads them"
 
         # QTextBrowser cannot display online images. So we download them
@@ -403,28 +471,32 @@ class ShowWorker(QtCore.QThread):
             if not os.path.exists(store):
                 os.makedirs(store)
             for path in imagepaths:
+                if not self.mustLoadImages:
+                    return None
                 origpath = path
                 if "?" in path:
                     # remove everything after the ?
                     path = path.split("?")[0]
                 if not path.startswith("http"):
-                    path = getserver(url) + path
+                    path = utils.getserver(url) + path
                 name = path.split("/")[-1]
                 if name and path.startswith("http"):
                     storename = os.path.join(store,name)
+                    if len(storename) >= 260:
+                        remainChars = 259 - (len(store) + len(wbName) + 1)
+                        storename = os.path.join(store,wbName+name[-remainChars:])
                     if not os.path.exists(storename):
                         try:
-                            u = urlopen(path)
+                            u = utils.urlopen(path)
                             imagedata = u.read()
                             u.close()
                         except:
                             print("AddonManager: Debug: Error retrieving image from",path)
-                            return None
                         else:
                             f = open(storename,"wb")
                             f.write(imagedata)
                             f.close()
-    
+
                             # resize the image to 300x300px if needed
                             from PySide import QtCore,QtGui
                             img = QtGui.QImage(storename)
@@ -432,7 +504,8 @@ class ShowWorker(QtCore.QThread):
                                 pix = QtGui.QPixmap()
                                 pix = pix.fromImage(img.scaled(300,300,QtCore.Qt.KeepAspectRatio,QtCore.Qt.FastTransformation))
                                 pix.save(storename, "jpeg",100)
-                    message = message.replace(origpath,"file:///"+storename.replace("\\","/"))
+                    message = message.replace("src=\""+origpath,"src=\"file:///"+storename.replace("\\","/"))
+            #print(message)
             return message
         return None
 
@@ -586,7 +659,7 @@ class InstallWorker(QtCore.QThread):
                 for f in os.listdir(clonedir):
                     if f.lower().endswith(".fcmacro"):
                         print("copying macro:",f)
-                        symlink(os.path.join(clonedir, f), os.path.join(macro_dir, f))
+                        utils.symlink(os.path.join(clonedir, f), os.path.join(macro_dir, f))
                         FreeCAD.ParamGet('User parameter:Plugins/'+self.repos[idx][0]).SetString("destination",clonedir)
                         answer += "\n\n"+translate("AddonsInstaller", "A macro has been installed and is available under Macro -> Macros menu")+":"
                         answer += "\n<b>" + f + "</b>"
@@ -606,7 +679,7 @@ class InstallWorker(QtCore.QThread):
         if not depsurl.endswith("/"):
             depsurl += "/"
         depsurl += "master/metadata.txt"
-        mu = urlopen(depsurl)
+        mu = utils.urlopen(depsurl)
         if mu:
             # metadata.txt found
             depsfile = mu.read()
@@ -650,9 +723,9 @@ class InstallWorker(QtCore.QThread):
             message += translate("AddonsInstaller","Please install the missing components first.")
         return ok, message
 
-    def download(self,giturl,clonedir):
+    def download(self,baseurl,clonedir):
 
-        "downloads and unzip from github"
+        "downloads and unzip a zip version from a git repo"
 
         import zipfile
         bakdir = None
@@ -662,11 +735,15 @@ class InstallWorker(QtCore.QThread):
                 shutil.rmtree(bakdir)
             os.rename(clonedir,bakdir)
         os.makedirs(clonedir)
-        zipurl = giturl+"/archive/master.zip"
+        zipurl = utils.getZipUrl(baseurl)
+        if not zipurl:
+            return translate("AddonsInstaller", "Error: Unable to locate zip from") + " " + baseurl
         try:
             print("Downloading "+zipurl)
-            u = urlopen(zipurl)
+            u = utils.urlopen(zipurl)
         except:
+            return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
+        if not u:
             return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
         if sys.version_info.major < 3:
             import StringIO as io
@@ -688,3 +765,35 @@ class InstallWorker(QtCore.QThread):
             shutil.rmtree(bakdir)
         return translate("AddonsInstaller", "Successfully installed") + " " + zipurl
 
+
+class CheckSingleWorker(QtCore.QThread):
+
+    """Worker to check for updates for a single addon"""
+
+    updateAvailable = QtCore.Signal(bool)
+
+    def __init__(self, name):
+
+        QtCore.QThread.__init__(self)
+        self.name = name
+
+    def run(self):
+
+        try:
+            import git
+        except:
+            return
+        FreeCAD.Console.PrintLog("Checking for available updates of the "+name+" addon\n")
+        addondir = os.path.join(FreeCAD.getUserAppDataDir(),"Mod",name)
+        if os.path.exists(addondir):
+            if os.path.exists(addondir + os.sep + '.git'):
+                gitrepo = git.Git(addondir)
+                try:
+                    gitrepo.fetch()
+                    if "git pull" in gitrepo.status():
+                        self.updateAvailable.emit(True)
+                        return
+                except:
+                    # can fail for any number of reasons, ex. not being online
+                    pass
+        self.updateAvailable.emit(False)

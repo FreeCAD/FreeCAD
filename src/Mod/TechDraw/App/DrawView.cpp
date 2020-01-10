@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,16 +54,15 @@
 #include "DrawView.h"
 
 using namespace TechDraw;
-using namespace TechDrawGeometry;
 
 //===========================================================================
 // DrawView
 //===========================================================================
 
 const char* DrawView::ScaleTypeEnums[]= {"Page",
-                                            "Automatic",
-                                            "Custom",
-                                             NULL};
+                                         "Automatic",
+                                         "Custom",
+                                         NULL};
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
                                                                   pow(10,- Base::UnitsApi::getDecimals())};
@@ -76,17 +75,17 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in internal units (mm)");
-    ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in internal units (mm)");
-    ADD_PROPERTY_TYPE(LockPosition ,(false),group,App::Prop_None,"Lock View position to parent Page or Group");
-    ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
+    ADD_PROPERTY_TYPE(X, (0.0), group, App::Prop_None, "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, App::Prop_None, "Y position");
+    ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_None, "Lock View position to parent Page or Group");
+    ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_None, "Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
-    ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
+    ADD_PROPERTY_TYPE(ScaleType, ((long)0), group, App::Prop_None, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
-    ADD_PROPERTY_TYPE(Caption ,(""),group,App::Prop_None,"Short text about the view");
+    ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_None, "Short text about the view");
 }
 
 DrawView::~DrawView()
@@ -154,6 +153,11 @@ bool DrawView::isLocked(void) const
     return LockPosition.getValue();
 }
 
+bool DrawView::showLock(void) const
+{
+    return true;
+}
+
 //override this for View inside a group (ex DPGI in DPG)
 void DrawView::handleXYLock(void) 
 {
@@ -186,7 +190,8 @@ short DrawView::mustExecute() const
                     ScaleType.isTouched() ||
                     Caption.isTouched() ||
                     X.isTouched() ||
-                    Y.isTouched() );
+                    Y.isTouched() ||
+                    LockPosition.isTouched());
     }
     if ((bool) result) {
         return result;
@@ -339,19 +344,20 @@ void DrawView::handleChangedPropertyType(
             Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
             // no idea
         }
-    } else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId()) 
-            && strcmp(prop->getName(),"Source")==0) 
-    {
+    }
+    else if (prop->isDerivedFrom(App::PropertyLinkList::getClassTypeId())
+        && strcmp(prop->getName(), "Source") == 0) {
         App::PropertyLinkGlobal glink;
         App::PropertyLink link;
-        if (strcmp(glink.getTypeId().getName(),TypeName) == 0) {            //property in file is plg
+        if (strcmp(glink.getTypeId().getName(), TypeName) == 0) {            //property in file is plg
             glink.setContainer(this);
             glink.Restore(reader);
             if (glink.getValue() != nullptr) {
                 static_cast<App::PropertyLinkList*>(prop)->setScope(App::LinkScope::Global);
                 static_cast<App::PropertyLinkList*>(prop)->setValue(glink.getValue());
             }
-        } else if (strcmp(link.getTypeId().getName(),TypeName) == 0) {            //property in file is pl
+        }
+        else if (strcmp(link.getTypeId().getName(), TypeName) == 0) {            //property in file is pl
             link.setContainer(this);
             link.Restore(reader);
             if (link.getValue() != nullptr) {
@@ -360,15 +366,66 @@ void DrawView::handleChangedPropertyType(
             }
         }
     }
+
+    // property X had App::PropertyFloat and was changed to App::PropertyLength
+    // and later to PropertyDistance because some X,Y are relative to existing points on page
+    else if (prop == &X && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat XProperty;
+        XProperty.setContainer(this);
+        // restore the PropertyFloat to be able to set its value
+        XProperty.Restore(reader);
+        X.setValue(XProperty.getValue());
+    }
+    else if (prop == &X && strcmp(TypeName, "App::PropertyLength") == 0) {
+        App::PropertyLength X2Property;
+        X2Property.Restore(reader);
+        X.setValue(X2Property.getValue());
+    }
+    else if (prop == &Y && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat YProperty;
+        YProperty.setContainer(this);
+        YProperty.Restore(reader);
+        Y.setValue(YProperty.getValue());
+    }
+    else if (prop == &Y && strcmp(TypeName, "App::PropertyLength") == 0) {
+        App::PropertyLength Y2Property;
+        Y2Property.Restore(reader);
+        Y.setValue(Y2Property.getValue());
+    }
+       
+// property Rotation had App::PropertyFloat and was changed to App::PropertyAngle
+    else if (prop == &Rotation && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat RotationProperty;
+        RotationProperty.setContainer(this);
+        RotationProperty.Restore(reader);
+        Rotation.setValue(RotationProperty.getValue());
+    }
 }
 
 bool DrawView::keepUpdated(void)
 {
     bool result = false;
+
+    bool pageUpdate = false;
+    bool force = false;
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
-        result = page->KeepUpdated.getValue();
+        pageUpdate = page->KeepUpdated.getValue();
+        force = page->forceRedraw();
     }
+
+    if (DrawPage::GlobalUpdateDrawings() &&
+        pageUpdate)  {
+        result = true;
+    } else if (!DrawPage::GlobalUpdateDrawings() &&
+                DrawPage::AllowPageOverride()    &&
+                pageUpdate) {
+        result = true;
+    }
+    if (force) {         //when do we turn this off??
+        result = true;
+    }
+
     return result;
 }
 

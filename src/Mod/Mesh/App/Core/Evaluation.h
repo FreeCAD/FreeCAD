@@ -239,7 +239,7 @@ public:
     void GetFacetIndices (std::vector<unsigned long> &facets) const;
     const std::list<std::vector<unsigned long> >& GetFacetIndices () const { return facetsOfNonManifoldPoints; }
     const std::vector<unsigned long>& GetIndices() const { return nonManifoldPoints; }
-    unsigned long CountManifolds() const { return nonManifoldPoints.size(); }
+    unsigned long CountManifolds() const { return static_cast<unsigned long>(nonManifoldPoints.size()); }
 
 protected:
     std::vector<unsigned long> nonManifoldPoints;

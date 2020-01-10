@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>         *
+# *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -44,7 +43,7 @@ class _FemMaterial:
             "Material",
             "Material type: fluid or solid"
         )
-        obj.Category = ['Solid', 'Fluid']  # used in TaskPanel
+        obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
         obj.Proxy = self
         self.Type = "Fem::Material"
 

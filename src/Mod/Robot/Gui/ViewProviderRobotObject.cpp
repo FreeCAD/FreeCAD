@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ PROPERTY_SOURCE(RobotGui::ViewProviderRobotObject, Gui::ViewProviderGeometryObje
 ViewProviderRobotObject::ViewProviderRobotObject()
   : pcDragger(0),toolShape(0)
 {
-    ADD_PROPERTY(Manipulator,(0));   
+    ADD_PROPERTY(Manipulator,(0));
 
     pcRobotRoot = new Gui::SoFCSelection();
     pcRobotRoot->highlightMode = Gui::SoFCSelection::OFF;
@@ -350,7 +350,7 @@ void ViewProviderRobotObject::setAxisTo(float A1,float A2,float A3,float A4,floa
     Robot::RobotObject* robObj = static_cast<Robot::RobotObject*>(pcObject);
 
 	if(Axis1Node)
-        // FIXME Uggly hack for the wrong transformation of the Kuka 500 robot VRML the minus sign on Axis 1
+        // FIXME Ugly hack for the wrong transformation of the Kuka 500 robot VRML the minus sign on Axis 1
 		Axis1Node->rotation.setValue(SbVec3f(0.0,1.0,0.0),A1*(M_PI/180));
 	if(Axis2Node)
 		Axis2Node->rotation.setValue(SbVec3f(0.0,1.0,0.0),A2*(M_PI/180));
@@ -391,4 +391,3 @@ void ViewProviderRobotObject::DraggerMotionCallback(SoDragger *dragger)
     Base::Vector3d pos(translation[0],translation[1],translation[2]);
     robObj->Tcp.setValue(Base::Placement(pos,rot));
 }
-

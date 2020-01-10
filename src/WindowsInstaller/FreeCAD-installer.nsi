@@ -34,22 +34,21 @@ ManifestDPIAware true
 !define MULTIUSER_MUI
 
 # included NSIS files
-!include MUI2.nsh
+!include InstallOptions.nsh
+!include LangFile.nsh
+!include Library.nsh
 !include LogicLib.nsh
+!include MUI2.nsh
+!include MultiUser.nsh
 !include Sections.nsh
 !include WinVer.nsh
-!include LangFile.nsh
-!include MultiUser.nsh
-!include InstallOptions.nsh
 !include x64.nsh
+
 # load the nsPprocess plugin
 !include nsProcess.nsh
 
 # Set of various macros and functions
 !include include\utils.nsh
-
-# detect third-party programs
-!include include\detection.nsh
 
 # set up the installer pages
 !include include\gui.nsh

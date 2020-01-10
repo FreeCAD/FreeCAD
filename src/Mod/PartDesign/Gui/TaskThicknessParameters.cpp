@@ -73,12 +73,16 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     bool r = pcThickness->Reversed.getValue();
     ui->checkReverse->setChecked(r);
 
+    bool i = pcThickness->Intersection.getValue();
+    ui->checkIntersection->setChecked(i);
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->Value, SIGNAL(valueChanged(double)),
             this, SLOT(onValueChanged(double)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
             this, SLOT(onReversedChanged(bool)));
+    connect(ui->checkIntersection, SIGNAL(toggled(bool)),
+            this, SLOT(onIntersectionChanged(bool)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
             this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
@@ -188,6 +192,19 @@ bool TaskThicknessParameters::getReversed(void) const
     return ui->checkReverse->isChecked();
 }
 
+void TaskThicknessParameters::onIntersectionChanged(const bool on) {
+    clearButtons(none);
+    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    setupTransaction();
+    pcThickness->Intersection.setValue(on);
+    pcThickness->getDocument()->recomputeFeature(pcThickness);
+}
+
+bool TaskThicknessParameters::getIntersection(void) const
+{
+    return ui->checkIntersection->isChecked();
+}
+
 int TaskThicknessParameters::getJoinType(void) const {
     
     return ui->joinComboBox->currentIndex();
@@ -260,6 +277,7 @@ bool TaskDlgThicknessParameters::accept()
     FCMD_OBJ_CMD(obj,"Value = " << draftparameter->getValue());
     FCMD_OBJ_CMD(obj,"Reversed = " << draftparameter->getReversed());
     FCMD_OBJ_CMD(obj,"Mode = " << draftparameter->getMode());
+    FCMD_OBJ_CMD(obj,"Intersection = " << draftparameter->getIntersection());
     FCMD_OBJ_CMD(obj,"Join = " << draftparameter->getJoinType());
 
     return TaskDlgDressUpParameters::accept();

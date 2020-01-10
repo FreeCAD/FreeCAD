@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,7 +62,7 @@ class ObjectIdentifier;
  */
 class AppExport Property : public Base::Persistence
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum Status
@@ -115,7 +115,7 @@ public:
      * This method is defined in Base::Persistence
      * @see Base::Persistence
      */
-    virtual unsigned int getMemSize (void) const {
+    virtual unsigned int getMemSize (void) const override {
         // you have to implement this method in all property classes!
         return sizeof(father) + sizeof(StatusBits);
     }
@@ -163,7 +163,7 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
-    /** Called at the begining of Document::afterRestore()
+    /** Called at the beginning of Document::afterRestore()
      *
      * This function is called without dependency sorting, because some
      * types of link property can only reconstructs the linking information
@@ -178,7 +178,7 @@ public:
      * restored expression in afterRestore(). The reason, in addition to
      * subname mapping like PropertyLinkSub, is that it can handle document
      * name adjustment as well. It internally relies on PropertyXLink to store
-     * the external document path for external linking. When the extenal
+     * the external document path for external linking. When the external
      * document is restored, its internal name may change due to name conflict
      * with existing documents.  PropertyExpressionEngine can now auto adjust
      * external references without any problem.
@@ -188,7 +188,7 @@ public:
     /** Called before calling DocumentObject::onDocumentRestored()
      *
      * This function is called after finished calling Property::afterRestore()
-     * of all properies of objects. By then, the object dependency information
+     * of all properties of objects. By then, the object dependency information
      * is assumed ready. So, unlike Property::afterRestore(), this function is
      * called on objects with dependency order.
      */
@@ -287,7 +287,7 @@ private:
 /** A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties.
  *
  * A template class that is used to inhibit multiple nested calls to
- * aboutToSetValue/hasSetValue for properties, and only invoke it the first and
+ * aboutToSetValue/hasSetValue for properties, and only invoke it on change and
  * last time it is needed. This is useful in cases where you want to change multiple
  * values in a property "atomically", using possibly multiple primitive functions
  * that normally would trigger aboutToSetValue/hasSetValue calls on their own.
@@ -295,16 +295,22 @@ private:
  * To use, inherit privately from the AtomicPropertyChangeInterface class, using
  * your class name as the template argument. In all cases where you normally would
  * call aboutToSetValue/hasSetValue before and after a change, create an
- * AtomicPropertyChange object before you do the change. Depending on a counter
- * in the main property, the constructor might invoke aboutToSetValue. When the
- * AtomicPropertyChange object is destructed, it might call hasSetValue if it is
- * found necessary to do (i.e last item on the AtomicPropertyChange stack).
- * This makes it easy to match the calls, and it is also exception safe in the
- * sense that the destructors are guaranteed to be called during unwinding and
- * exception handling, making the calls to boutToSetValue and hasSetValue balanced.
+ * AtomicPropertyChange object. The default constructor assume you are about to
+ * change the property and will call property's aboutToSetValue() if the
+ * property has not been marked as changed before by any other
+ * AtomicPropertyChange instances in current call stack. You can pass 'false'
+ * as the a second argument to the constructor, and manually call
+ * AtomicPropertyChange::aboutToChange() before actual change, this enables you
+ * to prevent unnecessary property copy for undo/redo where there is actual
+ * changes. AtomicPropertyChange will guaranetee calling hasSetValue() when the
+ * last instance in the current call stack is destroyed.
  *
+ * One thing to take note is that, because C++ does not allow throwing
+ * exception in destructor, any exception thrown when calling property's
+ * hasSetValue() will be caught and swallowed. To allow exception propagation,
+ * you can manually call AtomicPropertyChange::tryInvoke(). If the condition is
+ * satisfied, it will call hasSetValue() that allows exception propagation.
  */
-
 template<class P> class AtomicPropertyChangeInterface {
 protected:
     AtomicPropertyChangeInterface() : signalCounter(0), hasChanged(false) { }
@@ -313,12 +319,24 @@ public:
 
     class AtomicPropertyChange {
     public:
+        /** Constructor
+         *
+         * @param prop: the property
+         * @param markChange: If true, marks the property as changed if it
+         *                    hasn't been marked before, and calls its
+         *                    aboutToSetValue().
+         */
         AtomicPropertyChange(P & prop, bool markChange=true) : mProp(prop) {
             mProp.signalCounter++;
             if (markChange)
                 aboutToChange();
         }
 
+        /** Mark the property as changed
+         *
+         * It will mark the property as changed only if it has been marked
+         * before, and only then will it call the property's aboutToSetValue().
+         */
         void aboutToChange() {
             if(!mProp.hasChanged) {
                 mProp.hasChanged = true;
@@ -326,32 +344,43 @@ public:
             }
         }
 
+        /** Destructor
+         *
+         * If the property is marked as changed, and this is the last instance
+         * of the class in current call stack, it will call property's
+         * hasSetValue()
+         */
         ~AtomicPropertyChange() {
             // Signal counter == 1? meaning we are the last one. Invoke
             // hasSetValue() before decrease counter to prevent recursive call
             // triggered by another AtomicPropertyChange created inside
             // hasSetValue(), as it has now been changed to a virtual function.
             if (mProp.signalCounter == 1 && mProp.hasChanged) {
-                mProp.hasChanged = false;
                 // Must make sure to not throw in a destructor
                 try {
                     mProp.hasSetValue();
                 }catch(Base::Exception &e) {
                     e.ReportException();
                 }catch(...) {}
+                mProp.hasChanged = false;
             }
             if(mProp.signalCounter>0)
                 mProp.signalCounter--;
         }
 
+        /** Check and invoke property's hasSetValue()
+         *
+         * Check if this is the last instance and the property has been marked
+         * as changed. If so, invoke property's hasSetValue().
+         */
         // Destructor cannot throw. So we provide this function to allow error
         // propagation.
         void tryInvoke() {
             if(mProp.signalCounter==1 && mProp.hasChanged) {
-                mProp.hasChanged = false;
                 mProp.hasSetValue();
                 if(mProp.signalCounter>0)
                     --mProp.signalCounter;
+                mProp.hasChanged = false;
             }
         }
 
@@ -364,6 +393,7 @@ private:
     bool hasChanged;
 };
 
+
 /** Helper class to construct list like properties
  *
  * This class is not derived from Property so that we can have more that one
@@ -373,8 +403,8 @@ private:
 class AppExport PropertyListsBase
 {
 public:
-    virtual void setSize(int newSize)=0;   
-    virtual int getSize(void) const =0;   
+    virtual void setSize(int newSize)=0;
+    virtual int getSize(void) const =0;
 
     const std::set<int> &getTouchList() const {
         return _touchList;
@@ -409,7 +439,7 @@ protected:
 class AppExport PropertyLists : public Property, public PropertyListsBase
 
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     virtual void setPyObject(PyObject *obj) override {
         _setPyObject(obj);
@@ -421,10 +451,10 @@ public:
     inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
     inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
 
-    virtual void Save(Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-    virtual void SaveDocFile (Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    virtual void Save(Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
+    virtual void SaveDocFile (Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
 
 protected:
     /** Returns the XML element name when saving into document XML

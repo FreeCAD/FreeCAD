@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,7 +46,7 @@ using namespace App;
 using namespace Base;
 using namespace std;
 
-TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence);
+TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence)
 
 
 //**************************************************************************
@@ -246,7 +246,7 @@ void PropertyContainer::Save (Base::Writer &writer) const
 
     // First store transient properties to persisit their status value. We use
     // a new element named "_Property" so that the save file can be opened by
-    // older version FC.
+    // older versions of FC.
     writer.incInd();
     for(auto prop : transients) {
         writer.Stream() << writer.ind() << "<_Property name=\"" << prop->getName() 
@@ -638,4 +638,3 @@ void PropertyContainer::Restore(Base::Reader &reader)
 \endcode
 
 */
-

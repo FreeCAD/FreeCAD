@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +26,7 @@
 #include <Base/MatrixPy.h>
 #include "DocumentObject.h"
 #include "Document.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include "GeoFeature.h"
 #include "GroupExtension.h"
 #include "GeoFeatureGroupExtension.h"
@@ -508,7 +508,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
             }
             Py::Tuple rret(retType==1?2:3);
             rret.setItem(0,ret[0].obj);
-            rret.setItem(1,Py::Object(new Base::MatrixPy(ret[0].mat)));
+            rret.setItem(1,Py::asObject(new Base::MatrixPy(ret[0].mat)));
             if(retType!=1)
                 rret.setItem(2,ret[0].pyObj);
             return Py::new_reference_to(rret);
@@ -534,7 +534,7 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
             } else {
                 Py::Tuple rret(retType==1?2:3);
                 rret.setItem(0,ret[i].obj);
-                rret.setItem(1,Py::Object(new Base::MatrixPy(ret[i].mat)));
+                rret.setItem(1,Py::asObject(new Base::MatrixPy(ret[i].mat)));
                 if(retType!=1)
                     rret.setItem(2,ret[i].pyObj);
                 tuple.setItem(i,rret);
@@ -601,7 +601,7 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
         if(mat) {
             Py::Tuple ret(2);
             ret.setItem(0,pyObj);
-            ret.setItem(1,Py::Object(new Base::MatrixPy(*mat)));
+            ret.setItem(1,Py::asObject(new Base::MatrixPy(*mat)));
             return Py::new_reference_to(ret);
         }
         return Py::new_reference_to(pyObj);
@@ -722,7 +722,7 @@ PyObject *DocumentObjectPy::getElementMapVersion(PyObject *args) {
 
 PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
-    // Dynamic proeprty is now directly supported in PropertyContainer. So we
+    // Dynamic property is now directly supported in PropertyContainer. So we
     // can comment out here and let PropertyContainerPy handle it.
 #if 1
     (void)attr;
@@ -739,7 +739,7 @@ PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
 {
     // The following code is practically the same as in PropertyContainerPy,
-    // especially since now dynamic proeprty is directly supported in
+    // especially since now dynamic property is directly supported in
     // PropertyContainer. So we can comment out here and let PropertyContainerPy
     // handle it.
 #if 1

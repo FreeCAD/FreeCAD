@@ -53,7 +53,7 @@ class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
 class TransactionViewProvider;
-enum  HighlightMode;
+enum  class HighlightMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping

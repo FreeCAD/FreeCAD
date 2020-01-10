@@ -86,7 +86,7 @@ struct arcPoints
 
 class TechDrawExport DrawViewDimension : public TechDraw::DrawView
 {
-    PROPERTY_HEADER(TechDraw::DrawViewDimension);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDimension);
 
 public:
     /// Constructor
@@ -97,12 +97,15 @@ public:
     App::PropertyLinkSubList       References2D;                       //Points to Projection SubFeatures
     App::PropertyLinkSubList       References3D;                       //Points to 3D Geometry SubFeatures
     App::PropertyEnumeration       Type;                               //DistanceX,DistanceY,Diameter, etc
+
+    App::PropertyBool              TheoreticalExact;
+    App::PropertyBool              Inverted;
     App::PropertyString            FormatSpec;
     App::PropertyBool              Arbitrary;
     App::PropertyFloat             OverTolerance;
     App::PropertyFloat             UnderTolerance;
 
-    short mustExecute() const;
+    short mustExecute() const override;
     bool has2DReferences(void) const;
     bool has3DReferences(void) const;
     bool hasTolerance(void) const;
@@ -110,20 +113,20 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderDimension";
     }
     //return PyObject as DrawViewDimensionPy
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual std::string getFormatedValue(bool obtuse = false);
+    virtual std::string getFormatedValue(int partial = 0);
     virtual double getDimValue();
     DrawViewPart* getViewPart() const;
-    virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
+    virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
     static int getRefType1(const std::string s);
     static int getRefType2(const std::string s1, const std::string s2);
     static int getRefType3(const std::string g1,
@@ -132,37 +135,40 @@ public:
     int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
-    bool checkReferences2D(void) const;
+    virtual bool checkReferences2D(void) const;
     pointPair getLinearPoints(void) {return m_linearPoints; }
     arcPoints getArcPoints(void) {return m_arcPoints; }
     anglePoints getAnglePoints(void) {return m_anglePoints; }
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
+    bool references(std::string geomName) const;
+
+    bool isMultiValueSchema(void) const;
 
 protected:
-    void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
+    virtual void onChanged(const App::Property* prop) override;
+    virtual void onDocumentRestored() override;
     bool showUnits() const;
     bool useDecimals() const;
     std::string getPrefix() const;
     std::string getDefaultFormatSpec() const;
-    pointPair getPointsOneEdge();
-    pointPair getPointsTwoEdges();
-    pointPair getPointsTwoVerts();
-    pointPair getPointsEdgeVert();
+    virtual pointPair getPointsOneEdge();
+    virtual pointPair getPointsTwoEdges();
+    virtual pointPair getPointsTwoVerts();
+    virtual pointPair getPointsEdgeVert();
 
 protected:
     Measure::Measurement *measurement;
-    double dist2Segs(Base::Vector2d s1,
-                     Base::Vector2d e1,
-                     Base::Vector2d s2,
-                     Base::Vector2d e2) const;
+    double dist2Segs(Base::Vector3d s1,
+                     Base::Vector3d e1,
+                     Base::Vector3d s2,
+                     Base::Vector3d e2) const;
     pointPair closestPoints(TopoDS_Shape s1,
                             TopoDS_Shape s2) const;
 
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
-    void dumpRefs2D(char* text) const;
+    void dumpRefs2D(const char* text) const;
     //Dimension "geometry"
     pointPair   m_linearPoints;
     arcPoints   m_arcPoints;

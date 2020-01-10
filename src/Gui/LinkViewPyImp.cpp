@@ -80,7 +80,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
             lv->setMaterial(-1,0);
             Py_Return;
         }
-        if(PyObject_TypeCheck(&pyObj,&App::MaterialPy::Type)) {
+        if(PyObject_TypeCheck(pyObj,&App::MaterialPy::Type)) {
             lv->setMaterial(-1,static_cast<App::MaterialPy*>(pyObj)->getMaterialPtr());
             Py_Return;
         }
@@ -92,7 +92,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
                 Py::Int idx(key);
                 if(value == Py_None)
                     materials[(int)idx] = 0;
-                else if(!PyObject_TypeCheck(&value,&App::MaterialPy::Type)) {
+                else if(!PyObject_TypeCheck(value,&App::MaterialPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of material");
                     return 0;
                 }else
@@ -109,7 +109,7 @@ PyObject* LinkViewPy::setMaterial(PyObject *args) {
             for(size_t i=0;i<seq.size();++i) {
                 PyObject* item = seq[i].ptr();
                 if(item == Py_None) continue;
-                if(!PyObject_TypeCheck(&item,&App::MaterialPy::Type)) {
+                if(!PyObject_TypeCheck(item,&App::MaterialPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of material");
                     return 0;
                 }
@@ -142,7 +142,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
             std::map<int,Base::Matrix4D*> mat;
             while(PyDict_Next(pyObj, &pos, &key, &value)) {
                 Py::Int idx(key);
-                if(!PyObject_TypeCheck(&value,&Base::MatrixPy::Type)) {
+                if(!PyObject_TypeCheck(value,&Base::MatrixPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix");
                     return 0;
                 }else
@@ -158,7 +158,7 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
             mat.resize(seq.size(),0);
             for(size_t i=0;i<seq.size();++i) {
                 PyObject* item = seq[i].ptr();
-                if(!PyObject_TypeCheck(&item,&Base::MatrixPy::Type)) {
+                if(!PyObject_TypeCheck(item,&Base::MatrixPy::Type)) {
                     PyErr_SetString(PyExc_TypeError, "exepcting a type of Matrix");
                     return 0;
                 }

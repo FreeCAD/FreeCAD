@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -196,7 +194,7 @@ class CommandPanel:
         "this function is called by the snapper when it has a 3D point"
 
         self.tracker.finalize()
-        if point == None:
+        if point is None:
             return
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Panel"))
         FreeCADGui.addModule("Arch")
@@ -458,7 +456,7 @@ class _Panel(ArchComponent.Component):
 
         # base tests
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.isNull():
                     return
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
@@ -478,16 +476,17 @@ class _Panel(ArchComponent.Component):
         else:
             if not obj.Base:
                 return
-            elif obj.Base.isDerivedFrom("Part::Feature"):
+            elif hasattr(obj.Base,'Shape'):
                 if not obj.Base.Shape.Solids:
                     return
         if hasattr(obj,"Material"):
             if obj.Material:
                 if hasattr(obj.Material,"Materials"):
                     varwidth = 0
-                    restwidth = thickness - sum(obj.Material.Thicknesses)
+                    thicknesses = [t for t in obj.Material.Thicknesses if t >= 0]
+                    restwidth = thickness - sum(thicknesses)
                     if restwidth > 0:
-                        varwidth = [t for t in obj.Material.Thicknesses if t == 0]
+                        varwidth = [t for t in thicknesses if t == 0]
                         if varwidth:
                             varwidth = restwidth/len(varwidth)
                     for t in obj.Material.Thicknesses:
@@ -517,13 +516,14 @@ class _Panel(ArchComponent.Component):
                         layeroffset = 0
                         shps = []
                         for l in layers:
-                            n = Vector(normal).normalize().multiply(l)
-                            b = base.extrude(n)
-                            if layeroffset:
-                                o = Vector(normal).normalize().multiply(layeroffset)
-                                b.translate(o)
-                            shps.append(b)
-                            layeroffset += l
+                            if l >= 0:
+                                n = Vector(normal).normalize().multiply(abs(l))
+                                b = base.extrude(n)
+                                if layeroffset:
+                                    o = Vector(normal).normalize().multiply(layeroffset)
+                                    b.translate(o)
+                                shps.append(b)
+                            layeroffset += abs(l)
                         base = Part.makeCompound(shps)
                     else:
                         base = base.extrude(normal)
@@ -550,13 +550,14 @@ class _Panel(ArchComponent.Component):
                         layeroffset = 0
                         shps = []
                         for l in layers:
-                            n = Vector(normal).normalize().multiply(l)
-                            b = baseprofile.extrude(n)
-                            if layeroffset:
-                                o = Vector(normal).normalize().multiply(layeroffset)
-                                b.translate(o)
-                            shps.append(b)
-                            layeroffset += l
+                            if l >= 0:
+                                n = Vector(normal).normalize().multiply(abs(l))
+                                b = baseprofile.extrude(n)
+                                if layeroffset:
+                                    o = Vector(normal).normalize().multiply(layeroffset)
+                                    b.translate(o)
+                                shps.append(b)
+                            layeroffset += abs(l)
                         base = Part.makeCompound(shps)
                     else:
                         base = baseprofile.extrude(normal)
@@ -571,21 +572,22 @@ class _Panel(ArchComponent.Component):
                 shps = []
                 layeroffset = 0
                 for l in layers:
-                    if normal:
-                        n = Vector(normal).normalize().multiply(l)
-                    else:
-                        n = Vector(0,0,1).multiply(l)
-                    l2 = length/2 or 0.5
-                    w2 = width/2 or 0.5
-                    v1 = Vector(-l2,-w2,layeroffset)
-                    v2 = Vector(l2,-w2,layeroffset)
-                    v3 = Vector(l2,w2,layeroffset)
-                    v4 = Vector(-l2,w2,layeroffset)
-                    base = Part.makePolygon([v1,v2,v3,v4,v1])
-                    baseprofile = Part.Face(base)
-                    base = baseprofile.extrude(n)
-                    shps.append(base)
-                    layeroffset += l
+                    if l >= 0:
+                        if normal:
+                            n = Vector(normal).normalize().multiply(l)
+                        else:
+                            n = Vector(0,0,1).multiply(abs(l))
+                        l2 = length/2 or 0.5
+                        w2 = width/2 or 0.5
+                        v1 = Vector(-l2,-w2,layeroffset)
+                        v2 = Vector(l2,-w2,layeroffset)
+                        v3 = Vector(l2,w2,layeroffset)
+                        v4 = Vector(-l2,w2,layeroffset)
+                        base = Part.makePolygon([v1,v2,v3,v4,v1])
+                        baseprofile = Part.Face(base)
+                        base = baseprofile.extrude(n)
+                        shps.append(base)
+                    layeroffset += abs(l)
                 base = Part.makeCompound(shps)
             else:
                 if not normal:
@@ -719,12 +721,10 @@ class _Panel(ArchComponent.Component):
                     w = Part.makePolygon([p1,p2,p3,p4])
                     basewire = Part.Wire(upwire.Edges+w.Edges)
 
-                #
                 FreeCAD.basewire = basewire
                 if not basewire.isClosed():
                     print("Error closing base wire - check FreeCAD.basewire")
                     return
-                #
 
                 baseface = Part.Face(basewire)
                 base = baseface.extrude(Vector(0,bb.YLength,0))
@@ -795,13 +795,14 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
 
     def updateData(self,obj,prop):
 
-        if prop in ["Placement","Shape"]:
+        if prop in ["Placement","Shape","Material"]:
             if hasattr(obj,"Material"):
                 if obj.Material:
                     if hasattr(obj.Material,"Materials"):
-                        if len(obj.Material.Materials) == len(obj.Shape.Solids):
+                        activematerials = [obj.Material.Materials[i] for i in range(len(obj.Material.Materials)) if obj.Material.Thicknesses[i] >= 0]
+                        if len(activematerials) == len(obj.Shape.Solids):
                             cols = []
-                            for i,mat in enumerate(obj.Material.Materials):
+                            for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
                                 c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:
@@ -822,6 +823,11 @@ class PanelView:
     def __init__(self, obj):
 
         obj.Proxy = self
+
+        # setProperties of ArchComponent will be overwritten
+        # thus setProperties from ArchComponent will be explicit called to get the properties
+        ArchComponent.ViewProviderComponent.setProperties(self, vobj)
+
         self.setProperties(obj)
         obj.X = 10
         obj.Y = 10
@@ -921,6 +927,11 @@ class PanelCut(Draft._DraftObject):
     def __init__(self, obj):
         Draft._DraftObject.__init__(self,obj)
         obj.Proxy = self
+
+        # setProperties of ArchComponent will be overwritten
+        # thus setProperties from ArchComponent will be explicit called to get the properties
+        ArchComponent.ViewProviderComponent.setProperties(self, obj)
+
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -967,7 +978,7 @@ class PanelCut(Draft._DraftObject):
                 if obj.Source.Base:
                     baseobj = obj.Source.Base
                 if baseobj:
-                    if baseobj.isDerivedFrom("Part::Feature"):
+                    if hasattr(baseobj,'Shape'):
                         if baseobj.Shape.Solids:
                             center = baseobj.Shape.BoundBox.Center
                             diag = baseobj.Shape.BoundBox.DiagonalLength
@@ -1262,7 +1273,7 @@ class PanelSheet(Draft._DraftObject):
             area = obj.Width.Value * obj.Height.Value
             subarea = 0
             for v in obj.Group:
-                if v.isDerivedFrom("Part::Feature"):
+                if hasattr(v,'Shape'):
                     wires.extend(v.Shape.Wires)
                     if Draft.getType(v) == "PanelCut":
                         if v.Source:
@@ -1308,7 +1319,7 @@ class PanelSheet(Draft._DraftObject):
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
             if not ispanel:
-                if p.isDerivedFrom("Part::Feature"):
+                if hasattr(p,'Shape'):
                     for w in p.Shape.Wires:
                         w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:
@@ -1568,7 +1579,7 @@ class NestTaskPanel:
 
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 1:
-            if s[0].isDerivedFrom("Part::Feature"):
+            if hasattr(s[0],'Shape'):
                 if len(s[0].Shape.Faces) == 1:
                     if not (s[0] in self.shapes):
                         self.form.Container.clear()
@@ -1585,7 +1596,7 @@ class NestTaskPanel:
 
         s = FreeCADGui.Selection.getSelection()
         for o in s:
-            if o.isDerivedFrom("Part::Feature"):
+            if hasattr(o,'Shape'):
                 if not o in self.shapes:
                     if o != self.container:
                         self.addObject(o,self.form.Shapes)

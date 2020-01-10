@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2014     *
+ *   Copyright (c) 2014 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -80,7 +80,7 @@ void View3DInventorViewerPy::init_type()
         "setupEditingRoot(matrix=None): setup the editing ViewProvider's root node.\n"
         "All child coin nodes of the current editing ViewProvider will be transferred to\n"
         "an internal editing node of this viewer, with a new transformation node specified\n"
-        "by 'matrix'. All ViewProviderLink to the editing ViewProvider will be temperary\n"
+        "by 'matrix'. All ViewProviderLink to the editing ViewProvider will be temporary\n"
         "hidden. Call resetEditingRoot() to restore everything back to normal");
     add_varargs_method("resetEditingRoot", &View3DInventorViewerPy::resetEditingRoot,
         "resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node");

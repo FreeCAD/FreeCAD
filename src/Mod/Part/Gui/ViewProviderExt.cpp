@@ -119,7 +119,6 @@
 #include <Gui/ViewProviderLink.h>
 #include <Gui/TaskElementColors.h>
 #include <Gui/ViewParams.h>
-
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
 #include "SoBrepEdgeSet.h"
@@ -131,7 +130,7 @@
 
 #include "ViewProviderPartExtPy.h"
 
-FC_LOG_LEVEL_INIT("Part", true, true);
+FC_LOG_LEVEL_INIT("Part", true, true)
 
 using namespace PartGui;
 
@@ -525,6 +524,12 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     ViewProviderGeometryObject::onChanged(prop);
 }
 
+bool ViewProviderPartExt::allowOverride(const App::DocumentObject &) const {
+    // Many derived view providers still uses static_cast to get object
+    // pointer, so check for exact type here.
+    return getTypeId() == ViewProviderPartExt::getClassTypeId();
+}
+
 void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
@@ -706,7 +711,7 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
         if (subShape.ShapeType() == TopAbs_VERTEX) {
             const TopoDS_Vertex& v = TopoDS::Vertex(subShape);
             gp_Pnt p = BRep_Tool::Pnt(v);
-            pts.push_back(Base::Vector3d(p.X(),p.Y(),p.Z()));
+            pts.emplace_back(p.X(),p.Y(),p.Z());
         }
         // get the nearest point on the edge
         else if (subShape.ShapeType() == TopAbs_EDGE) {
@@ -715,7 +720,7 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
             BRepExtrema_DistShapeShape distSS(subShape, mkVert.Vertex(), 0.1);
             if (distSS.NbSolution() > 0) {
                 gp_Pnt p = distSS.PointOnShape1(1);
-                pts.push_back(Base::Vector3d(p.X(),p.Y(),p.Z()));
+                pts.emplace_back(p.X(),p.Y(),p.Z());
             }
         }
         // get the nearest point on the face
@@ -725,7 +730,7 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
             BRepExtrema_DistShapeShape distSS(subShape, mkVert.Vertex(), 0.1);
             if (distSS.NbSolution() > 0) {
                 gp_Pnt p = distSS.PointOnShape1(1);
-                pts.push_back(Base::Vector3d(p.X(),p.Y(),p.Z()));
+                pts.emplace_back(p.X(),p.Y(),p.Z());
             }
         }
 
@@ -1829,7 +1834,6 @@ void ViewProviderPartExt::forceUpdate(bool enable) {
         --forceUpdateCount;
 }
 
-
 PyObject* ViewProviderPartExt::getPyObject()
 {
     if (!pyViewObject)
@@ -1837,4 +1841,3 @@ PyObject* ViewProviderPartExt::getPyObject()
     pyViewObject->IncRef();
     return pyViewObject;
 }
-

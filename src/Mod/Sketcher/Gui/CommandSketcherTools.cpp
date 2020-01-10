@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
+ *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
+# include <memory>
 # include <QMessageBox>
 # include <Precision.hxx>
 # include <QApplication>
@@ -37,9 +38,9 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
@@ -76,21 +77,20 @@ bool isSketcherAcceleratorActive(Gui::Document *doc, bool actsOnSelection )
     return false;
 }
 
-void ActivateAcceleratorHandler(Gui::Document *doc,DrawSketchHandler *handler)
+void ActivateAcceleratorHandler(Gui::Document *doc, DrawSketchHandler *handler)
 {
+    std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
-           (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(handler);
+            vp->activateHandler(ptr.release());
         }
     }
 }
 
 // Close Shape Command
-DEF_STD_CMD_A(CmdSketcherCloseShape);
+DEF_STD_CMD_A(CmdSketcherCloseShape)
 
 CmdSketcherCloseShape::CmdSketcherCloseShape()
     :Command("Sketcher_CloseShape")
@@ -170,14 +170,14 @@ void CmdSketcherCloseShape::activated(int iMsg)
                 return;
             }
 
-            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                selection[0].getObject(),GeoId1,Sketcher::end,GeoId2,Sketcher::start);
+            Gui::cmdAppObjectArgs(selection[0].getObject(), "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                GeoId1,Sketcher::end,GeoId2,Sketcher::start);
         }
     }
 
     // Close Last Edge with First Edge
-    FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-        selection[0].getObject(),GeoIdLast,Sketcher::end,GeoIdFirst,Sketcher::start);
+    Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+        GeoIdLast,Sketcher::end,GeoIdFirst,Sketcher::start);
 
     // finish the transaction and update
     commitCommand();
@@ -195,7 +195,7 @@ bool CmdSketcherCloseShape::isActive(void)
 
 
 // Connect Edges Command
-DEF_STD_CMD_A(CmdSketcherConnect);
+DEF_STD_CMD_A(CmdSketcherConnect)
 
 CmdSketcherConnect::CmdSketcherConnect()
     :Command("Sketcher_ConnectLines")
@@ -258,8 +258,8 @@ void CmdSketcherConnect::activated(int iMsg)
                 return;
             }
 
-            FCMD_OBJ_CMD2("addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                selection[0].getObject(),GeoId1,Sketcher::end,GeoId2,Sketcher::start);
+            Gui::cmdAppObjectArgs(selection[0].getObject(),"addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                GeoId1,Sketcher::end,GeoId2,Sketcher::start);
         }
     }
 
@@ -278,7 +278,7 @@ bool CmdSketcherConnect::isActive(void)
 }
 
 // Select Constraints of selected elements
-DEF_STD_CMD_A(CmdSketcherSelectConstraints);
+DEF_STD_CMD_A(CmdSketcherSelectConstraints)
 
 CmdSketcherSelectConstraints::CmdSketcherSelectConstraints()
     :Command("Sketcher_SelectConstraints")
@@ -342,7 +342,7 @@ bool CmdSketcherSelectConstraints::isActive(void)
 }
 
 // Select Origin
-DEF_STD_CMD_A(CmdSketcherSelectOrigin);
+DEF_STD_CMD_A(CmdSketcherSelectOrigin)
 
 CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
     :Command("Sketcher_SelectOrigin")
@@ -390,7 +390,7 @@ bool CmdSketcherSelectOrigin::isActive(void)
 }
 
 // Select Vertical Axis
-DEF_STD_CMD_A(CmdSketcherSelectVerticalAxis);
+DEF_STD_CMD_A(CmdSketcherSelectVerticalAxis)
 
 CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
     :Command("Sketcher_SelectVerticalAxis")
@@ -434,7 +434,7 @@ bool CmdSketcherSelectVerticalAxis::isActive(void)
 }
 
 // Select Horizontal Axis
-DEF_STD_CMD_A(CmdSketcherSelectHorizontalAxis);
+DEF_STD_CMD_A(CmdSketcherSelectHorizontalAxis)
 
 CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
     :Command("Sketcher_SelectHorizontalAxis")
@@ -477,7 +477,7 @@ bool CmdSketcherSelectHorizontalAxis::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectRedundantConstraints);
+DEF_STD_CMD_A(CmdSketcherSelectRedundantConstraints)
 
 CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
     :Command("Sketcher_SelectRedundantConstraints")
@@ -530,7 +530,7 @@ bool CmdSketcherSelectRedundantConstraints::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectConflictingConstraints);
+DEF_STD_CMD_A(CmdSketcherSelectConflictingConstraints)
 
 CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints()
     :Command("Sketcher_SelectConflictingConstraints")
@@ -581,7 +581,7 @@ bool CmdSketcherSelectConflictingConstraints::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectElementsAssociatedWithConstraints);
+DEF_STD_CMD_A(CmdSketcherSelectElementsAssociatedWithConstraints)
 
 CmdSketcherSelectElementsAssociatedWithConstraints::CmdSketcherSelectElementsAssociatedWithConstraints()
     :Command("Sketcher_SelectElementsAssociatedWithConstraints")
@@ -703,7 +703,7 @@ bool CmdSketcherSelectElementsAssociatedWithConstraints::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
 
-DEF_STD_CMD_A(CmdSketcherSelectElementsWithDoFs);
+DEF_STD_CMD_A(CmdSketcherSelectElementsWithDoFs)
 
 CmdSketcherSelectElementsWithDoFs::CmdSketcherSelectElementsWithDoFs()
 :Command("Sketcher_SelectElementsWithDoFs")
@@ -810,7 +810,7 @@ bool CmdSketcherSelectElementsWithDoFs::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherRestoreInternalAlignmentGeometry);
+DEF_STD_CMD_A(CmdSketcherRestoreInternalAlignmentGeometry)
 
 CmdSketcherRestoreInternalAlignmentGeometry::CmdSketcherRestoreInternalAlignmentGeometry()
     :Command("Sketcher_RestoreInternalAlignmentGeometry")
@@ -873,12 +873,12 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
                 try {
                     Gui::Command::openCommand("Exposing Internal Geometry");
-                    FCMD_OBJ_CMD2("exposeInternalGeometry(%d)", Obj, GeoId);
+                    Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
 
                     int aftergeoid = Obj->getHighestCurveIndex();
 
                     if(aftergeoid == currentgeoid) { // if we did not expose anything, deleteunused
-                        FCMD_OBJ_CMD2("deleteUnusedInternalGeometry(%d)", Obj, GeoId);
+                        Gui::cmdAppObjectArgs(Obj, "deleteUnusedInternalGeometry(%d)", GeoId);
                     }
                 }
                 catch (const Base::Exception& e) {
@@ -903,7 +903,7 @@ bool CmdSketcherRestoreInternalAlignmentGeometry::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
 
-DEF_STD_CMD_A(CmdSketcherSymmetry);
+DEF_STD_CMD_A(CmdSketcherSymmetry)
 
 CmdSketcherSymmetry::CmdSketcherSymmetry()
     :Command("Sketcher_Symmetry")
@@ -1076,7 +1076,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
     Gui::Command::openCommand("Create Symmetric geometry");
 
     try{
-        FCMD_OBJ_CMD2("addSymmetric(%s,%d,%d)", Obj, geoIdList.c_str(), LastGeoId, LastPointPos);
+        Gui::cmdAppObjectArgs(Obj, "addSymmetric(%s,%d,%d)", geoIdList.c_str(), LastGeoId, LastPointPos);
 
         Gui::Command::commitCommand();
     }
@@ -1220,14 +1220,12 @@ static const char *cursor_createcopy[]={
 
                 try{
                     if( Op != SketcherCopy::Move) {
-                        FCMD_OBJ_CMD2("addCopy(%s,App.Vector(%f,%f,0),%s)",
-                                            sketchgui->getObject(),
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addCopy(%s,App.Vector(%f,%f,0),%s)",
                                             geoIdList.c_str(), vector.x, vector.y,
                                             (Op == SketcherCopy::Clone?"True":"False"));
                     }
                     else {
-                        FCMD_OBJ_CMD2("addMove(%s,App.Vector(%f,%f,0))",
-                            sketchgui->getObject(),
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addMove(%s,App.Vector(%f,%f,0))",
                             geoIdList.c_str(), vector.x, vector.y);
                     }
 
@@ -1525,7 +1523,7 @@ bool CmdSketcherMove::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), true );
 }
 
-DEF_STD_CMD_ACL(CmdSketcherCompCopy);
+DEF_STD_CMD_ACL(CmdSketcherCompCopy)
 
 CmdSketcherCompCopy::CmdSketcherCompCopy()
 : Command("Sketcher_CompCopy")
@@ -1545,7 +1543,7 @@ void CmdSketcherCompCopy::activated(int iMsg)
     if (iMsg<0 || iMsg>2)
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -1743,13 +1741,12 @@ static const char *cursor_createrectangulararray[]={
                 Gui::Command::openCommand("Create copy of geometry");
 
                 try {
-                    FCMD_OBJ_CMD2("addRectangularArray(%s, App.Vector(%f,%f,0),%s,%d,%d,%s,%f)",
-                                            sketchgui->getObject(),
-                                            geoIdList.c_str(), vector.x, vector.y,
-                                            (Clone?"True":"False"),
-                                            Cols, Rows,
-                                            (ConstraintSeparation?"True":"False"),
-                                            (EqualVerticalHorizontalSpacing?1.0:0.5));
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addRectangularArray(%s, App.Vector(%f,%f,0),%s,%d,%d,%s,%f)",
+                                          geoIdList.c_str(), vector.x, vector.y,
+                                          (Clone?"True":"False"),
+                                          Cols, Rows,
+                                          (ConstraintSeparation?"True":"False"),
+                                          (EqualVerticalHorizontalSpacing?1.0:0.5));
 
                     Gui::Command::commitCommand();
                 }
@@ -1791,7 +1788,7 @@ static const char *cursor_createrectangulararray[]={
     };
 
 
-DEF_STD_CMD_A(CmdSketcherRectangularArray);
+DEF_STD_CMD_A(CmdSketcherRectangularArray)
 
 CmdSketcherRectangularArray::CmdSketcherRectangularArray()
 :Command("Sketcher_RectangularArray")
@@ -1929,7 +1926,7 @@ bool CmdSketcherRectangularArray::isActive(void)
 }
 
 // Select Origin
-DEF_STD_CMD_A(CmdSketcherDeleteAllGeometry);
+DEF_STD_CMD_A(CmdSketcherDeleteAllGeometry)
 
 CmdSketcherDeleteAllGeometry::CmdSketcherDeleteAllGeometry()
 :Command("Sketcher_DeleteAllGeometry")
@@ -1964,7 +1961,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
 
         try {
             Gui::Command::openCommand("Delete All Geometry");
-            FCMD_OBJ_CMD2("deleteAllGeometry()", Obj);
+            Gui::cmdAppObjectArgs(Obj, "deleteAllGeometry()");
 
             Gui::Command::commitCommand();
         }
@@ -1992,7 +1989,7 @@ bool CmdSketcherDeleteAllGeometry::isActive(void)
     return isSketcherAcceleratorActive( getActiveGuiDocument(), false );
 }
 
-DEF_STD_CMD_A(CmdSketcherDeleteAllConstraints);
+DEF_STD_CMD_A(CmdSketcherDeleteAllConstraints)
 
 CmdSketcherDeleteAllConstraints::CmdSketcherDeleteAllConstraints()
 :Command("Sketcher_DeleteAllConstraints")
@@ -2027,7 +2024,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
         try {
             Gui::Command::openCommand("Delete All Constraints");
-            FCMD_OBJ_CMD2("deleteAllConstraints()", Obj);
+            Gui::cmdAppObjectArgs(Obj, "deleteAllConstraints()");
 
             Gui::Command::commitCommand();
         }

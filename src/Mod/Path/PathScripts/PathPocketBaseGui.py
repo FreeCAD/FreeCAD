@@ -24,13 +24,10 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathPocket as PathPocket
-import PathScripts.PathSelection as PathSelection
 
-from PySide import QtCore, QtGui
+from PySide import QtCore #, QtGui
 
 __title__ = "Path Pocket Base Operation UI"
 __author__ = "sliptonic (Brad Collette)"
@@ -57,7 +54,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
           FeatureFacing  ... used for face milling operation
           FeatureOutline ... used for pocket-shape operation
         Must be overwritten by subclasses'''
-        pass
+        pass # pylint: disable=unnecessary-pass
 
     def getForm(self):
         '''getForm() ... returns UI, adapted to the results from pocketFeatures()'''
@@ -73,9 +70,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if not (FeatureOutline & self.pocketFeatures()):
             form.useOutline.hide()
 
-        if True:
-            # currently doesn't have an effect or is experimental
-            form.minTravel.hide()
+        # if True:
+        #     # currently doesn't have an effect or is experimental
+        #     form.minTravel.hide()
 
         return form
 
@@ -109,6 +106,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         PathGui.updateInputField(obj, 'ExtraOffset', self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
         self.updateZigZagAngle(obj)
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
@@ -141,6 +139,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.OffsetPattern, self.form.offsetPattern)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
 
         if FeatureFacing & self.pocketFeatures():
             self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
@@ -158,6 +157,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.useOutline.clicked)
         signals.append(self.form.minTravel.clicked)
+        signals.append(self.form.coolantController.currentIndexChanged)
 
         if FeatureFacing & self.pocketFeatures():
             signals.append(self.form.boundaryShape.currentIndexChanged)

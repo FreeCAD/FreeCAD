@@ -26,6 +26,7 @@
 # include <QDebug>
 # include <QLineEdit>
 # include <QFocusEvent>
+# include <QFontMetrics>
 # include <QHBoxLayout>
 # include <QLabel>
 # include <QStyle>
@@ -231,6 +232,7 @@ end:
     double maximum;
     double minimum;
     double singleStep;
+    std::unique_ptr<Base::UnitsSchema> scheme;
 };
 }
 
@@ -373,7 +375,7 @@ void Gui::QuantitySpinBox::onChange()
             std::stringstream s;
             s << value->getValue();
 
-            lineEdit()->setText(value->getQuantity().getUserString());
+            lineEdit()->setText(getUserString(value->getQuantity()));
             setReadOnly(true);
             QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
             iconLabel->setPixmap(pixmap);
@@ -476,10 +478,8 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
 {
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
-    else {
-        if (!hasExpression())
+    else if (!hasExpression())
             QAbstractSpinBox::keyPressEvent(event);
-    }
 }
 
 
@@ -488,7 +488,7 @@ void QuantitySpinBox::updateText(const Quantity &quant)
     Q_D(QuantitySpinBox);
 
     double dFactor;
-    QString txt = quant.getUserString(dFactor,d->unitStr);
+    QString txt = getUserString(quant, dFactor, d->unitStr);
     d->unitValue = quant.getValue()/dFactor;
     lineEdit()->setText(txt);
 }
@@ -566,7 +566,7 @@ void QuantitySpinBox::userInput(const QString & text)
     }
 
     double factor;
-    res.getUserString(factor,d->unitStr);
+    getUserString(res, factor, d->unitStr);
     d->unitValue = res.getValue()/factor;
     d->quantity = res;
 
@@ -682,6 +682,59 @@ void QuantitySpinBox::setRange(double minimum, double maximum)
     d->maximum = maximum;
 }
 
+int QuantitySpinBox::decimals() const
+{
+    Q_D(const QuantitySpinBox);
+    return d->quantity.getFormat().precision;
+}
+
+void QuantitySpinBox::setDecimals(int v)
+{
+    Q_D(QuantitySpinBox);
+    Base::QuantityFormat f = d->quantity.getFormat();
+    f.precision = v;
+    d->quantity.setFormat(f);
+    updateText(d->quantity);
+}
+
+void QuantitySpinBox::setSchema(const Base::UnitSystem& s)
+{
+    Q_D(QuantitySpinBox);
+    d->scheme = Base::UnitsApi::createSchema(s);
+    updateText(d->quantity);
+}
+
+void QuantitySpinBox::clearSchema()
+{
+    Q_D(QuantitySpinBox);
+    d->scheme = nullptr;
+    updateText(d->quantity);
+}
+
+QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor, QString& unitString) const
+{
+    Q_D(const QuantitySpinBox);
+    if (d->scheme) {
+        return val.getUserString(d->scheme.get(), factor, unitString);
+    }
+    else {
+        return val.getUserString(factor, unitString);
+    }
+}
+
+QString QuantitySpinBox::getUserString(const Base::Quantity& val) const
+{
+    Q_D(const QuantitySpinBox);
+    if (d->scheme) {
+        double factor;
+        QString unitString;
+        return val.getUserString(d->scheme.get(), factor, unitString);
+    }
+    else {
+        return val.getUserString();
+    }
+}
+
 QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 {
     Q_D(const QuantitySpinBox);
@@ -713,6 +766,67 @@ void QuantitySpinBox::stepBy(int steps)
     lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
     update();
     selectNumber();
+}
+
+QSize QuantitySpinBox::sizeHint() const
+{
+    Q_D(const QuantitySpinBox);
+    ensurePolished();
+
+    const QFontMetrics fm(fontMetrics());
+    int h = lineEdit()->sizeHint().height();
+    int w = 0;
+
+    QString s;
+    QString fixedContent = QLatin1String(" ");
+
+    Base::Quantity q(d->quantity);
+    q.setValue(d->maximum);
+    s = textFromValue(q);
+    s.truncate(18);
+    s += fixedContent;
+    w = qMax(w, fm.width(s));
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
+                        .expandedTo(QApplication::globalStrut());
+    return size;
+}
+
+QSize QuantitySpinBox::minimumSizeHint() const
+{
+    Q_D(const QuantitySpinBox);
+    ensurePolished();
+
+    const QFontMetrics fm(fontMetrics());
+    int h = lineEdit()->minimumSizeHint().height();
+    int w = 0;
+
+    QString s;
+    QString fixedContent = QLatin1String(" ");
+
+    Base::Quantity q(d->quantity);
+    q.setValue(d->maximum);
+    s = textFromValue(q);
+    s.truncate(18);
+    s += fixedContent;
+    w = qMax(w, fm.width(s));
+
+    w += 2; // cursor blinking space
+    w += iconHeight;
+
+    QStyleOptionSpinBox opt;
+    initStyleOption(&opt);
+    QSize hint(w, h);
+
+    QSize size = style()->sizeFromContents(QStyle::CT_SpinBox, &opt, hint, this)
+                               .expandedTo(QApplication::globalStrut());
+    return size;
 }
 
 void QuantitySpinBox::showEvent(QShowEvent * event)
@@ -812,7 +926,7 @@ QString QuantitySpinBox::textFromValue(const Base::Quantity& value) const
 {
     double factor;
     QString unitStr;
-    QString str = value.getUserString(factor, unitStr);
+    QString str = getUserString(value, factor, unitStr);
     if (qAbs(value.getValue()) >= 1000.0) {
         str.remove(locale().groupSeparator());
     }

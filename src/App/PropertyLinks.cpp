@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -51,7 +51,7 @@
 
 #include "PropertyLinks.h"
 
-FC_LOG_LEVEL_INIT("PropertyLinks",true,true);
+FC_LOG_LEVEL_INIT("PropertyLinks",true,true)
 
 using namespace App;
 using namespace Base;
@@ -150,7 +150,7 @@ std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject *pa
         return std::string();
 
     // Because the label is allowed to be the same across different
-    // hierarchy, we have to search for all occurance, and make sure the
+    // hierarchies, we have to search for all occurrences, and make sure the
     // referenced sub-object at the found hierarchy is actually the given
     // object.
     for(const char *pos=subname; ((pos=strstr(pos,ref.c_str()))!=0); pos+=ref.size()) {
@@ -280,7 +280,7 @@ void PropertyLinkBase::restoreLabelReference(const DocumentObject *obj,
             StringGuard guard(dot-1);
             sobj = obj->getSubObject(subname.c_str());
             if(!sobj) {
-                FC_ERR("Failed to restore lable reference " << obj->getFullName() 
+                FC_ERR("Failed to restore label reference " << obj->getFullName() 
                         << '.' << ss.str());
                 return;
             }
@@ -789,7 +789,7 @@ void PropertyLinkList::setValues(std::vector<DocumentObject*> &&lValue) {
         return;
     }
 
-    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
             throw Base::ValueError("PropertyLinkList: invalid document object");
@@ -853,7 +853,7 @@ void PropertyLinkList::Save(Base::Writer &writer) const
     for (int i = 0; i<getSize(); i++) {
         DocumentObject* obj = _lValueList[i];
         if (obj)
-            writer.Stream() << writer.ind() << "<Link value=\"" << obj->getExportName() << "\"/>\n";
+            writer.Stream() << writer.ind() << "<Link value=\"" << obj->getExportName() << "\"/>" << endl;
         else
             writer.Stream() << writer.ind() << "<Link value=\"\"/>\n";
     }
@@ -920,7 +920,7 @@ Property *PropertyLinkList::CopyOnLinkReplace(const App::DocumentObject *parent,
             links.push_back(res.first);
         } else if(*it == newObj) {
             // in case newObj already exists here, we shall remove all existing
-            // entry, and instert it to take over oldObj's position.
+            // entry, and insert it to take over oldObj's position.
             if(!copied) {
                 copied = true;
                 links.insert(links.end(),_lValueList.begin(),it);
@@ -1051,7 +1051,7 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue,
 void PropertyLinkSub::setValue(App::DocumentObject * lValue, 
         std::vector<std::string> &&subs, std::vector<ShadowSub> &&shadows)
 {
-    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(lValue) {
         if(!lValue->getNameInDocument())
             throw Base::ValueError("PropertyLinkSub: invalid document object");
@@ -1376,7 +1376,7 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
         StringGuard guard(dot);
         auto sobj = obj->getSubObject(subname.c_str());
         if(!sobj) {
-            FC_ERR("Failed to restore lable reference " << obj->getFullName() << '.' << subname);
+            FC_ERR("Failed to restore label reference " << obj->getFullName() << '.' << subname);
             return std::string();
         }
         dot[0] = 0;
@@ -1427,7 +1427,7 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
         const auto &shadow = _ShadowSubList[i];
         // shadow.second stores the old style element name. For backward
         // compatibility reason, we shall store the old name into attribute
-        // 'value' whenver possible.
+        // 'value' whenever possible.
         const auto &sub = shadow.second.empty()?_cSubList[i]:shadow.second;
         writer.Stream() << writer.ind() << "<Sub value=\"";
         if(exporting) {
@@ -1725,7 +1725,7 @@ int PropertyLinkSubList::getSize(void) const
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 {
-    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(lValue) {
         if(!lValue->getNameInDocument())
             throw Base::ValueError("PropertyLinkSubList: invalid document object");
@@ -1767,7 +1767,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 
 void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue, const std::vector<const char*>& lSubNames)
 {
-    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
             throw Base::ValueError("PropertyLinkSubList: invalid document object");
@@ -1823,7 +1823,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
 void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
         std::vector<std::string>&& lSubNames, std::vector<ShadowSub> &&ShadowSubList)
 {
-    auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto parent = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
             throw Base::ValueError("PropertyLinkSubList: invalid document object");
@@ -1904,7 +1904,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
     if (size == 0) {
         if (lValue) {
             this->_lValueList.push_back(lValue);
-            this->_lSubList.push_back(std::string());
+            this->_lSubList.emplace_back();
         }
     }
     else {
@@ -2016,7 +2016,7 @@ std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues(b
             sub = _lSubList[i];
         if (values.size() == 0 || values.back().first != link){
             //new object started, start a new subset.
-            values.push_back(SubSet(link, std::vector<std::string>()));
+            values.emplace_back(link, std::vector<std::string>());
         }
         values.back().second.push_back(sub);
     }
@@ -2057,7 +2057,7 @@ PyObject *PropertyLinkSubList::getPyObject(void)
 #endif
     for (unsigned int i = 0; i<count; i++) {
         Py::Tuple tup(2);
-        tup[0] = Py::Object(_lValueList[i]->getPyObject());
+        tup[0] = Py::asObject(_lValueList[i]->getPyObject());
         std::string subItem;
         if (_lSubList.size() > i)
             subItem = _lSubList[i];
@@ -2205,7 +2205,7 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
         const auto &shadow = _ShadowSubList[i];
         // shadow.second stores the old style element name. For backward
         // compatibility reason, we shall store the old name into attribute
-        // 'value' whenver possible.
+        // 'value' whenever possible.
         const auto &sub = shadow.second.empty()?_lSubList[i]:shadow.second;
 
         writer.Stream() << writer.ind() << "<Link obj=\"" << obj->getExportName() << "\" sub=\"";
@@ -2552,14 +2552,14 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inLis
 // DocInfo
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// Key on aboslute path. 
-// Becuase of possible symbolic links, multiple entry may refer to the same
+// Key on absolute path.
+// Because of possible symbolic links, multiple entry may refer to the same
 // file. We use QFileInfo::canonicalPath to resolve that.
 typedef std::map<QString,DocInfoPtr> DocInfoMap;
 DocInfoMap _DocInfoMap;
 
 class App::DocInfo : 
-    public std::enable_shared_from_this<App::DocInfo> 
+    public std::enable_shared_from_this<App::DocInfo>
 {
 public:
     typedef boost::signals2::scoped_connection Connection;
@@ -3026,6 +3026,8 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
     if(lValue == owner)
         throw Base::ValueError("self linking");
 
+    aboutToSetValue();
+
     DocInfoPtr info;
     const char *name = "";
     if(lValue) {
@@ -3045,7 +3047,6 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
     }
 
     setFlag(LinkDetached,false);
-    aboutToSetValue();
 #ifndef USE_OLD_DAG
     if (!owner->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden) {
         if(_pcLink)
@@ -3058,10 +3059,12 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
         unlink();
         docInfo = info;
     }
+    if(!docInfo)
+        filePath.clear();
     _pcLink=lValue;
     if(docInfo && docInfo->pcDoc)
         stamp=docInfo->pcDoc->LastModifiedDate.getValue();
-    objectName = std::move(name);
+    objectName = name;
     setSubValues(std::move(subs),std::move(shadows));
     hasSetValue();
 }
@@ -3101,6 +3104,8 @@ void PropertyXLink::setValue(std::string &&filename, std::string &&name,
         unlink();
         docInfo = info;
     }
+    if(!docInfo)
+        filePath.clear();
     if(docInfo && docInfo->pcDoc)
         stamp=docInfo->pcDoc->LastModifiedDate.getValue();
     objectName = std::move(name);
@@ -3229,7 +3234,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         std::string _path;
         if(exporting) {
             // Here means we are exporting the owner but not exporting the
-            // linked object.  Try to use aboslute file path for easy transition
+            // linked object.  Try to use absolute file path for easy transition
             // into document at different directory
             if(docInfo) 
                 _path = docInfo->filePath();
@@ -3284,7 +3289,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
             const auto &shadow = _ShadowSubList[i];
             // shadow.second stores the old style element name. For backward
             // compatibility reason, we shall store the old name into attribute
-            // 'value' whenver possible.
+            // 'value' whenever possible.
             const auto &sub = shadow.second.empty()?_SubList[i]:shadow.second;
             writer.Stream() << writer.ind() << "<Sub value=\"";
             if(exporting) {
@@ -3472,7 +3477,7 @@ Property *PropertyXLink::Copy(void) const
 void PropertyXLink::Paste(const Property &from)
 {
     if(!from.isDerivedFrom(PropertyXLink::getClassTypeId()))
-        throw Base::TypeError("Incompatible proeprty to paste to");
+        throw Base::TypeError("Incompatible property to paste to");
 
     const auto &other = static_cast<const PropertyXLink&>(from);
     if(other.docName.size()) {
@@ -3969,7 +3974,8 @@ void PropertyXLinkSubList::setPyObject(PyObject *value)
             s.reserve(s.size()+subs.size());
             s.insert(s.end(),subs.begin(),subs.end());
         }
-    }catch(Base::Exception &e){
+    }
+    catch(Base::Exception&){
         throw Base::TypeError("Invalid type inside sequence. Must be type of (DocumentObject, (subname...))");
     }
     setValues(std::move(values));
@@ -4154,7 +4160,7 @@ Property *PropertyXLinkSubList::Copy(void) const
 void PropertyXLinkSubList::Paste(const Property &from)
 {
     if(!from.isDerivedFrom(PropertyXLinkSubList::getClassTypeId()))
-        throw Base::TypeError("Incompatible proeprty to paste to");
+        throw Base::TypeError("Incompatible property to paste to");
 
     aboutToSetValue();
     _Links.clear();
@@ -4560,4 +4566,3 @@ void PropertyXLinkContainer::getLinks(std::vector<App::DocumentObject *> &objs,
 {
     objs.insert(objs.end(),_Deps.begin(),_Deps.end());
 }
-

@@ -35,7 +35,7 @@ import FemGui  # needed to display the icons in TreeView
 
 from pivy import coin
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class ViewProxy(object):
@@ -73,7 +73,7 @@ class ViewProxy(object):
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True

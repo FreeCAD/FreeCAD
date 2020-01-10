@@ -41,6 +41,7 @@ if open.__module__ in ['__builtin__','io']:
 
 def export(objectslist, filename,argstring):
     "called when freecad exports a list of objects"
+    # pylint: disable=unused-argument
     if len(objectslist) > 1:
         print("This script is unable to write more than one Path object")
         return

@@ -104,7 +104,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         std::vector<std::vector<TopoShape>> wiresections;
         wiresections.reserve(wires.size());
         for(auto& wire : wires)
-            wiresections.emplace_back(1,wire);
+            wiresections.emplace_back(1, wire);
                 
         for(App::DocumentObject* obj : multisections) {
             auto shape = getTopoShape(obj);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -106,6 +106,7 @@ namespace Part {
 #include "SketchObject.h"
 #include "Sketch.h"
 #include <Mod/Sketcher/App/SketchObjectPy.h>
+#include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
 
 
 #undef DEBUG
@@ -114,7 +115,7 @@ namespace Part {
 using namespace Sketcher;
 using namespace Base;
 
-FC_LOG_LEVEL_INIT("Sketcher",true,true);
+FC_LOG_LEVEL_INIT("Sketch",true,true)
 
 const int GeoEnum::RtPnt  = -1;
 const int GeoEnum::HAxis  = -1;
@@ -696,6 +697,64 @@ int SketchObject::testDrivingChange(int ConstrId, bool isdriving)
 
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving==true)
         return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
+
+    return 0;
+}
+
+int SketchObject::setActive(int ConstrId, bool isactive)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isActive = isactive;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
+int SketchObject::getActive(int ConstrId, bool &isactive)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    isactive = vals[ConstrId]->isActive;
+
+    return 0;
+}
+
+int SketchObject::toggleActive(int ConstrId)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isActive = !constNew->isActive;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(newVals);
+
+    delete constNew;
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
 
     return 0;
 }
@@ -5511,7 +5570,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     for (std::vector<Part::Geometry *>::const_iterator it=svals.begin(); it != svals.end(); ++it){
         Part::Geometry *geoNew = (*it)->copy();
         GEN_ID(geoNew);
-        if(construction) {
+        if(construction && geoNew->getTypeId() != Part::GeomPoint::getClassTypeId()) {
             geoNew->Construction = true;
         }
         newVals.push_back(geoNew);
@@ -5545,11 +5604,13 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
     int sourceid = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= scvals.begin(); it != scvals.end(); ++it,nextcid++,sourceid++) {
 
-        if ((*it)->Type == Sketcher::Distance ||
-            (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Diameter ||
-            (*it)->Type == Sketcher::Angle ||
-            (*it)->Type == Sketcher::SnellsLaw) {
+        if ((*it)->Type == Sketcher::Distance   ||
+            (*it)->Type == Sketcher::Radius     ||
+            (*it)->Type == Sketcher::Diameter   ||
+            (*it)->Type == Sketcher::Angle      ||
+            (*it)->Type == Sketcher::SnellsLaw  ||
+            (*it)->Type == Sketcher::DistanceX  ||
+            (*it)->Type == Sketcher::DistanceY ) {
             // then we link its value to the parent
             // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
             if ((*it)->isDriving) {
@@ -5562,45 +5623,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
 
                 boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
                 setExpression(Constraints.createPath(nextcid), expr);
-
-
             }
-
-        }
-        else if ((*it)->Type == Sketcher::DistanceX) {
-            // then we link its value to the parent
-            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
-
-                if(xinv) {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-                else {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-            }
-
-        }
-        else if ((*it)->Type == Sketcher::DistanceY ) {
-            // then we link its value to the parent
-            // (there is a plausible alternative for a slightly different use case to copy the expression of the parent if one is existing)
-            if ((*it)->isDriving) {
-                App::ObjectIdentifier spath = psObj->Constraints.createPath(sourceid);
-
-                if(yinv) {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, std::string(1,'-') + spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-                else {
-                    boost::shared_ptr<App::Expression> expr(App::Expression::parse(this, spath.getDocumentObjectName().getString() +std::string(1,'.') + spath.toString()));
-                    setExpression(Constraints.createPath(nextcid), expr);
-                }
-            }
-
         }
     }
 
@@ -5632,7 +5655,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName, boo
 
     // add the new ones
     Objects.push_back(Obj);
-    SubElements.push_back(std::string(SubName));
+    SubElements.emplace_back(SubName);
 
     // set the Link list.
     ExternalGeometry.setValues(Objects,SubElements);

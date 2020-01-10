@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
+# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,7 +19,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
 
 __title__ = "FreeCAD Fenics XML mesh writer"
 __author__ = "Johannes Hartung"
@@ -30,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Fenics Mesh XML writer for FEM workbench
 
 
+from FreeCAD import Console
 from .importToolsFem import get_FemMeshObjectDimension
 from .importToolsFem import get_FemMeshObjectElementTypes
 from .importToolsFem import get_MaxDimElementFromList
@@ -68,17 +68,18 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         "hexahedron": 8
     }
 
-    print("Converting " + fem_mesh_obj.Label + " to fenics XML File")
-    print("Dimension of mesh: %d" % (get_FemMeshObjectDimension(fem_mesh_obj),))
+    Console.Message("Converting " + fem_mesh_obj.Label + " to fenics XML File\n")
+    Console.Message("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
 
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
-    print("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
+    Console.Message("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
     num_verts_cell = XML_Number_of_Nodes_dict[cellname_fenics]
-    print(
-        "Celltype in mesh -> %s and its Fenics name: %s" % (str(celltype_in_mesh), cellname_fenics)
+    Console.Message(
+        "Celltype in mesh -> %s and its Fenics name: %s\n"
+        % (str(celltype_in_mesh), cellname_fenics)
     )
 
     root = ET.Element("dolfin", dolfin="http://fenicsproject.org")

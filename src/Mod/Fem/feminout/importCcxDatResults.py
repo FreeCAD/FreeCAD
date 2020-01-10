@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 - FreeCAD Developers                               *
+# *   Copyright (c) 2015 FreeCAD Developers                                 *
 # *   Author: Przemo Firszt <przemo@firszt.eu>                              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD Calculix DAT reader for FEM workbench
 
 import FreeCAD
+from FreeCAD import Console
 import os
 
 
@@ -36,10 +37,10 @@ EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
@@ -71,7 +72,6 @@ def import_dat(
     Analysis=None
 ):
     r = readResult(filename)
-    # print("Results {}".format(r))
     return r
 
 
@@ -79,7 +79,7 @@ def import_dat(
 def readResult(
     dat_input
 ):
-    FreeCAD.Console.PrintMessage('Read ccx results from dat file: {}\n'.format(dat_input))
+    Console.PrintMessage("Read ccx results from dat file: {}\n".format(dat_input))
     dat_file = pyopen(dat_input, "r")
     eigenvalue_output_section_found = False
     mode_reading = False
@@ -94,8 +94,8 @@ def readResult(
                 mode = int(line[0:7])
                 mode_frequency = float(line[39:55])
                 m = {}
-                m['eigenmode'] = mode
-                m['frequency'] = mode_frequency
+                m["eigenmode"] = mode
+                m["frequency"] = mode_frequency
                 results.append(m)
                 mode_reading = True
             except:

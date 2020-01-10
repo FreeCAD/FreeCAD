@@ -37,7 +37,7 @@ using namespace Spreadsheet;
 const int PropertyColumnWidths::defaultWidth = 100;
 const int PropertyColumnWidths::defaultHeaderWidth = 50;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertyColumnWidths , App::Property);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertyColumnWidths , App::Property)
 
 PropertyColumnWidths::PropertyColumnWidths()
 {

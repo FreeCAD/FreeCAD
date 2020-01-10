@@ -83,7 +83,7 @@ App::Part* assertActivePart () {
 
 // PartDesign_Body
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignBody);
+DEF_STD_CMD_A(CmdPartDesignBody)
 
 CmdPartDesignBody::CmdPartDesignBody()
   : Command("PartDesign_Body")
@@ -94,7 +94,7 @@ CmdPartDesignBody::CmdPartDesignBody()
     sToolTipText  = QT_TR_NOOP("Create a new body and make it active");
     sWhatsThis    = "PartDesign_Body";
     sStatusTip    = sToolTipText;
-    sPixmap       = "PartDesign_Body_Create_New";
+    sPixmap       = "PartDesign_Body";
 }
 
 void CmdPartDesignBody::activated(int iMsg)
@@ -218,7 +218,8 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+    doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
+                                 "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PDBODYKEY, bodyName.c_str());
 
     // Make the "Create sketch" prompt appear in the task panel
@@ -328,7 +329,7 @@ bool CmdPartDesignBody::isActive(void)
 // PartDesign_Migrate
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartDesignMigrate);
+DEF_STD_CMD_A(CmdPartDesignMigrate)
 
 CmdPartDesignMigrate::CmdPartDesignMigrate()
   : Command("PartDesign_Migrate")
@@ -393,7 +394,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
             // we are basing on some partdesign feature which supposed to belong to some body
             PartDesign::Feature *baseFeat = static_cast <PartDesign::Feature *>( base );
 
-            auto baseFeatSetIt = find ( migrateFeatures.begin (), migrateFeatures.end (), baseFeat );
+            auto baseFeatSetIt = migrateFeatures.find(baseFeat);
 
             if ( baseFeatSetIt != migrateFeatures.end() ) {
                 // base feature is pending for migration, switch to it and continue over
@@ -542,7 +543,7 @@ bool CmdPartDesignMigrate::isActive(void)
 //===========================================================================
 // PartDesign_MoveTip
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDesignMoveTip);
+DEF_STD_CMD_A(CmdPartDesignMoveTip)
 
 CmdPartDesignMoveTip::CmdPartDesignMoveTip()
   : Command("PartDesign_MoveTip")
@@ -621,7 +622,7 @@ bool CmdPartDesignMoveTip::isActive(void)
 // PartDesign_DuplicateSelection
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartDesignDuplicateSelection);
+DEF_STD_CMD_A(CmdPartDesignDuplicateSelection)
 
 CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
   :Command("PartDesign_DuplicateSelection")
@@ -676,7 +677,7 @@ bool CmdPartDesignDuplicateSelection::isActive(void)
 // PartDesign_MoveFeature
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartDesignMoveFeature);
+DEF_STD_CMD_A(CmdPartDesignMoveFeature)
 
 CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
   :Command("PartDesign_MoveFeature")
@@ -838,7 +839,7 @@ bool CmdPartDesignMoveFeature::isActive(void)
     return hasActiveDocument () && !PartDesignGui::isLegacyWorkflow ( getDocument () );
 }
 
-DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree);
+DEF_STD_CMD_A(CmdPartDesignMoveFeatureInTree)
 
 CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
   :Command("PartDesign_MoveFeatureInTree")

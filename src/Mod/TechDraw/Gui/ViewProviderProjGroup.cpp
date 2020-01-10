@@ -90,29 +90,11 @@ std::vector<std::string> ViewProviderProjGroup::getDisplayModes(void) const
 void ViewProviderProjGroup::updateData(const App::Property* prop)
 {
     ViewProviderDrawingView::updateData(prop);
-
-    if(prop == &(getObject()->Scale) ||
-       prop == &(getObject()->ScaleType) ||
-       prop == &(getObject()->Views) ||
-       prop == &(getObject()->ProjectionType) ||
-       prop == &(getObject()->LockPosition) ) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-    }
-
  }
 
 void ViewProviderProjGroup::onChanged(const App::Property *prop)
 {
-    if (prop == &(getViewObject()->Scale)) {
-            if (getViewObject()->ScaleType.isValue("Automatic")) {
-                    getMDIViewPage()->redraw1View(getViewObject());
-            }
-    } else if (prop == &(getViewObject()->ScaleType)) {
-        getMDIViewPage()->redraw1View(getViewObject());
-    }
+    ViewProviderDrawingView::onChanged(prop);
 }
 
 void ViewProviderProjGroup::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

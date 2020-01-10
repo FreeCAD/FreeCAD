@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 #ifndef APP_APPLICATION_H
@@ -96,7 +95,7 @@ public:
     /** Open multiple documents
      *
      * @param filenames: input file names
-     * @param pathes: optional input file path in case it is different from
+     * @param paths: optional input file path in case it is different from
      * filenames (mainly used during recovery).
      * @param labels: optional label assign to document (mainly used during recovery).
      * @param errs: optional output error message corresponding to each input
@@ -111,7 +110,7 @@ public:
      * This function will also open any external referenced files.
      */
     std::vector<Document*> openDocuments(const std::vector<std::string> &filenames, 
-            const std::vector<std::string> *pathes=0,
+            const std::vector<std::string> *paths=0,
             const std::vector<std::string> *labels=0,
             std::vector<std::string> *errs=0,
             bool createView = true);
@@ -141,14 +140,14 @@ public:
     /** Setup a pending application-wide active transaction
      *
      * @param name: new transaction name
-     * @param persist: by default, if the calling code is inside any invokation
+     * @param persist: by default, if the calling code is inside any invocation
      * of a command, it will be auto closed once all command within the current
      * stack exists. To disable auto closing, set persist=true
      *
      * @return The new transaction ID.
      *
      * Call this function to setup an application-wide transaction. All current
-     * pending transactions of opening documents will be commited first.
+     * pending transactions of opening documents will be committed first.
      * However, no new transaction is created by this call. Any subsequent
      * changes in any current opening document will auto create a transaction
      * with the given name and ID. If more than one document is changed, the
@@ -163,7 +162,7 @@ public:
      *
      * Bsides calling this function directly, it will be called by automatically
      * if 1) any new transaction is created with a different ID, or 2) any
-     * transaction with the current active transaction ID is either commited or
+     * transaction with the current active transaction ID is either committed or
      * aborted
      */
     void closeActiveTransaction(bool abort=false, int id=0);
@@ -478,10 +477,10 @@ private:
     static PyObject* sGetHomePath       (PyObject *self,PyObject *args);
 
     static PyObject* sLoadFile          (PyObject *self,PyObject *args);
-    static PyObject* sOpenDocument      (PyObject *self,PyObject *args);
+    static PyObject* sOpenDocument      (PyObject *self,PyObject *args, PyObject *kwd);
     static PyObject* sSaveDocument      (PyObject *self,PyObject *args);
     static PyObject* sSaveDocumentAs    (PyObject *self,PyObject *args);
-    static PyObject* sNewDocument       (PyObject *self,PyObject *args);
+    static PyObject* sNewDocument       (PyObject *self,PyObject *args, PyObject *kwd);
     static PyObject* sCloseDocument     (PyObject *self,PyObject *args);
     static PyObject* sActiveDocument    (PyObject *self,PyObject *args);
     static PyObject* sSetActiveDocument (PyObject *self,PyObject *args);

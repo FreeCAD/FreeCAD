@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -160,16 +160,16 @@ public:
      *
      * @param guard: The guard is used to protect against over reading when
      * calling readEndElement(). When the guard is not given, it is possible
-     * for the matching readEndElement() call to acsend above the current
-     * level (at the time of calling readElement()) and look for end element
-     * in parent or sibling elements, potentially skipping elements in between
-     * without caller noticing. When are guard is gien, it will be assigned the
+     * for the matching readEndElement() call to acsend above the current level
+     * (at the time of calling readElement()) and look for end element in
+     * parent or sibling elements, potentially skipping elements in between
+     * without caller noticing. If the guard is given, it will be assigned the
      * element level immediate above the found start element, and you must pass
      * the same pointered integer when calling readEndElement() to disarm the
-     * guard.  Every following read(End)Element() will check if the current
-     * level goes above the current guard, and throw exception if it does.  The
-     * reader internally keeps a stack of guards, so you can setup additional
-     * guard when calling readElement() at deeper level.
+     * guard. Every following call of read(End)Element() will check if the
+     * current level goes above the current guard, and throw exception if it
+     * does. The reader internally keeps a stack of guards, so you can setup
+     * additional guard when calling readElement() at deeper level.
      */
     void readElement   (const char* ElementName=0, int *guard=0);
     /** read until an end element is found

@@ -60,7 +60,7 @@ using namespace App;
 
 /* TRANSLATOR SpreadsheetGui::SheetView */
 
-TYPESYSTEM_SOURCE_ABSTRACT(SpreadsheetGui::SheetView, Gui::MDIView);
+TYPESYSTEM_SOURCE_ABSTRACT(SpreadsheetGui::SheetView, Gui::MDIView)
 
 SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWidget *parent)
     : MDIView(pcDocument, parent)
@@ -364,7 +364,7 @@ QModelIndex SheetView::currentIndex() const
 
 PyObject *SheetView::getPyObject()
 {
-    Py_Return;
+    return Gui::MDIView::getPyObject();
 }
 
 void SheetView::deleteSelf()

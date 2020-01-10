@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
+# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,8 +19,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
 
+__title__ = "FreeCAD Fenics XDMF mesh writer"
+__author__ = "Johannes Hartung"
+__url__ = "http://www.freecadweb.org"
+
+## @package exportFenicsXDMF
+#  \ingroup FEM
+#  \brief FreeCAD Fenics Mesh XDMF writer for FEM workbench
+
+from FreeCAD import Console
 from .importToolsFem import \
     get_FemMeshObjectDimension,\
     get_FemMeshObjectElementTypes,\
@@ -31,16 +39,8 @@ from xml.etree import ElementTree as ET  # parsing xml files and exporting
 import numpy as np
 
 
-__title__ = "FreeCAD Fenics XDMF mesh writer"
-__author__ = "Johannes Hartung"
-__url__ = "http://www.freecadweb.org"
-
-## @package exportFenicsXDMF
-#  \ingroup FEM
-#  \brief FreeCAD Fenics Mesh XDMF writer for FEM workbench
-
-ENCODING_ASCII = 'ASCII'
-ENCODING_HDF5 = 'HDF5'
+ENCODING_ASCII = "ASCII"
+ENCODING_HDF5 = "HDF5"
 
 FreeCAD_Group_Dimensions = {
     "Vertex": 0,
@@ -68,9 +68,9 @@ def numpy_array_to_str(
 ):
     res = ""
     dt = str(npa.dtype)
-    if 'int' in dt:
+    if "int" in dt:
         res = "\n".join([" ".join([("%d" % s) for s in a]) for a in npa.tolist()])
-    elif 'float' in dt:
+    elif "float" in dt:
         res = "\n".join([" ".join([("%3.6f" % s) for s in a]) for a in npa.tolist()])
     return res
 
@@ -141,11 +141,11 @@ def write_fenics_mesh_codim_xdmf(
     element_types = get_FemMeshObjectElementTypes(fem_mesh_obj, remove_zero_element_entries=True)
     element_order = get_FemMeshObjectOrder(fem_mesh_obj)
     # we get all elements from mesh to decide which one to write by selection of codim
-    '''
+    """
     nodeindices = [(
         nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_volume_ind)
     ) for (fen_ind, fc_volume_ind) in enumerate(fc_cells)]
-    '''
+    """
     writeout_element_dimension = mesh_dimension - codim
 
     (num_topo, name_topo, dim_topo) = (0, "", 0)
@@ -169,7 +169,10 @@ def write_fenics_mesh_codim_xdmf(
         fc_topo = fem_mesh_obj.FemMesh.Nodes
     else:
         fc_topo = []
-        print("Dimension of mesh incompatible with export XDMF function: %d" % (dim_topo,))
+        Console.PrintError(
+            "Dimension of mesh incompatible with export XDMF function: %d\n"
+            % (dim_topo,)
+        )
 
     nodeindices = [(
         nodes_dict[ind] for ind in fem_mesh_obj.FemMesh.getElementNodes(fc_topo_ind)
@@ -272,16 +275,16 @@ def write_fenics_mesh_xdmf(
         "Prism": "unknown", "Pyramid": "unknown",
     }
 
-    print("Converting " + fem_mesh_obj.Label + " to fenics XDMF File")
-    print("Dimension of mesh: %d" % (get_FemMeshObjectDimension(fem_mesh_obj),))
+    Console.PrintMessage("Converting " + fem_mesh_obj.Label + " to fenics XDMF File\n")
+    Console.PrintMessage("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
 
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
-    print("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
+    Console.PrintMessage("Elements appearing in mesh: %s\n" % (str(elements_in_mesh),))
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
-    print(
-        "Celltype in mesh -> {} and its Fenics dolfin name: {}"
+    Console.PrintMessage(
+        "Celltype in mesh -> {} and its Fenics dolfin name: {}\n"
         .format(celltype_in_mesh, cellname_fenics)
     )
 
@@ -314,15 +317,17 @@ def write_fenics_mesh_xdmf(
     gmshgroups = get_FemMeshObjectMeshGroups(fem_mesh_obj)
 
     if gmshgroups is not ():
-        print('found mesh groups')
+        Console.PrintMessage("found mesh groups\n")
 
     for g in gmshgroups:
         mesh_function_type = fem_mesh.getGroupElementType(g)
         mesh_function_codim = dim_cell - FreeCAD_Group_Dimensions[mesh_function_type]
         mesh_function_name = fem_mesh.getGroupName(g)
 
-        print('group id: %d (label: %s) with element type %s and codim %d'
-              % (g, mesh_function_name, mesh_function_type, mesh_function_codim))
+        Console.PrintMessage(
+            "group id: %d (label: %s) with element type %s and codim %d\n"
+            % (g, mesh_function_name, mesh_function_type, mesh_function_codim)
+        )
 
         mesh_function_grid = ET.SubElement(
             domain, "Grid",

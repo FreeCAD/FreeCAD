@@ -43,6 +43,7 @@ SET(Python_SRCS
     PathPy.xml
     PathPyImp.cpp
     ToolPy.xml
+    ToolPyImp.cpp
     TooltablePy.xml
     TooltablePyImp.cpp
     FeaturePathCompoundPy.xml
@@ -65,6 +66,8 @@ SET(Path_SRCS
     Command.h
     Path.cpp
     Path.h
+    Tool.cpp
+    Tool.h
     Tooltable.cpp
     Tooltable.h
     PropertyPath.cpp
@@ -85,6 +88,8 @@ SET(Path_SRCS
     ParamsHelper.h
     FeatureArea.cpp
     FeatureArea.h
+    PathSegmentWalker.h
+    PathSegmentWalker.cpp
     ${Mod_SRCS}
     ${Python_SRCS}
 )

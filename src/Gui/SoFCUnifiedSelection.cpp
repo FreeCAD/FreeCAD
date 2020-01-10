@@ -32,7 +32,6 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoWindowElement.h>
 
 #include <Inventor/SoFullPath.h>
@@ -45,6 +44,7 @@
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
@@ -96,7 +96,7 @@
 #include "ViewProviderGeometryObject.h"
 #include "ViewParams.h"
 
-FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true);
+FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 
 using namespace Gui;
 
@@ -104,7 +104,7 @@ SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = NULL;
 
 // *************************************************************************
 
-SO_NODE_SOURCE(SoFCUnifiedSelection);
+SO_NODE_SOURCE(SoFCUnifiedSelection)
 
 /*!
   Constructor.
@@ -582,7 +582,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
         return true;
     }
 
-    // Hierarchy acending
+    // Hierarchy ascending
     //
     // If the clicked subelement is already selected, check if there is an
     // upper hierarchy, and select that hierarchy instead. 
@@ -782,7 +782,7 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoHighlightElementAction);
+SO_ACTION_SOURCE(SoHighlightElementAction)
 
 void SoHighlightElementAction::initClass()
 {
@@ -851,7 +851,7 @@ const SoDetail* SoHighlightElementAction::getElement() const
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoSelectionElementAction);
+SO_ACTION_SOURCE(SoSelectionElementAction)
 
 void SoSelectionElementAction::initClass()
 {
@@ -918,7 +918,7 @@ const SoDetail* SoSelectionElementAction::getElement() const
 
 // ---------------------------------------------------------------
 
-SO_ACTION_SOURCE(SoVRMLAction);
+SO_ACTION_SOURCE(SoVRMLAction)
 
 void SoVRMLAction::initClass()
 {
@@ -1002,7 +1002,7 @@ bool SoFCSelectionRoot::StackComp::operator()(const Stack &a, const Stack &b) co
 }
 // ---------------------------------------------------------------------------------
 SoSeparator::CacheEnabled SoFCSeparator::CacheMode = SoSeparator::AUTO;
-SO_NODE_SOURCE(SoFCSeparator);
+SO_NODE_SOURCE(SoFCSeparator)
 
 SoFCSeparator::SoFCSeparator(bool trackCacheMode)
     :trackCacheMode(trackCacheMode)
@@ -1075,16 +1075,16 @@ SoFCSelectionRoot::ColorStack SoFCSelectionRoot::SelColorStack;
 SoFCSelectionRoot::ColorStack SoFCSelectionRoot::HlColorStack;
 SoFCSelectionRoot* SoFCSelectionRoot::ShapeColorNode;
 
-SO_NODE_SOURCE(SoFCSelectionRoot);
+SO_NODE_SOURCE(SoFCSelectionRoot)
 
 SoFCSelectionRoot::SoFCSelectionRoot(bool trackCacheMode)
     :SoFCSeparator(trackCacheMode)
 {
     SO_NODE_CONSTRUCTOR(SoFCSelectionRoot);
-    SO_NODE_ADD_FIELD(selectionStyle,(FULL));
-    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, FULL);
-    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, BOX);
-    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, PASSTHROUGH);
+    SO_NODE_ADD_FIELD(selectionStyle,(Full));
+    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Full);
+    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, Box);
+    SO_NODE_DEFINE_ENUM_VALUE(SelectStyles, PassThrough);
     SO_NODE_SET_SF_ENUM_TYPE(selectionStyle, SelectStyles);
 }
 
@@ -1231,8 +1231,9 @@ bool SoFCSelectionRoot::renderBBox(SoGLRenderAction *action, SoNode *node, SbCol
 
     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
     SoLazyElement::setEmissive(state, &color);
-    SoLazyElement::setDiffuse(state, node,1, &color,data->packer);
-    SoDrawStyleElement::set(state,node,SoDrawStyleElement::LINES);
+    SoLazyElement::setDiffuse(state, node,1, &color, data->packer);
+    SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
+    SoLineWidthElement::set(state, node, 1.0f);
 
     const static float trans = 0.0;
     SoLazyElement::setTransparency(state, node, 1, &trans, data->packer);
@@ -1286,11 +1287,12 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
     auto state = action->getState();
     SelContextPtr ctx = getRenderContext<SelContext>(this);
     int style = selectionStyle.getValue();
-    if((style==SoFCSelectionRoot::BOX || ViewParams::instance()->getShowSelectionBoundingBox())
+    if((style==SoFCSelectionRoot::Box || ViewParams::instance()->getShowSelectionBoundingBox())
        && ctx && !ctx->hideAll && (ctx->selAll || ctx->hlAll)) 
     {
-        if(style==SoFCSelectionRoot::PASSTHROUGH)
-            style = SoFCSelectionRoot::BOX;
+        if (style==SoFCSelectionRoot::PassThrough) {
+            style = SoFCSelectionRoot::Box;
+        }
         else {
             renderBBox(action,this,ctx->hlAll?ctx->hlColor:ctx->selColor);
             return true;
@@ -1308,7 +1310,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
     bool colorPushed = false;
     if(!ShapeColorNode && overrideColor && 
         !SoOverrideElement::getDiffuseColorOverride(state) &&
-        (style==SoFCSelectionRoot::BOX || !ctx || (!ctx->selAll && !ctx->hideAll))) 
+        (style==SoFCSelectionRoot::Box || !ctx || (!ctx->selAll && !ctx->hideAll)))
     {
         ShapeColorNode = this;
         colorPushed = true;
@@ -1339,7 +1341,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
         if((selPushed = ctx->selAll)) {
             SelColorStack.push_back(ctx->selColor);
 
-            if(style != SoFCSelectionRoot::BOX) {
+            if(style != SoFCSelectionRoot::Box) {
                 state->push();
                 auto &color = SelColorStack.back();
                 SoLazyElement::setEmissive(state, &color);
@@ -1365,7 +1367,7 @@ bool SoFCSelectionRoot::_renderPrivate(SoGLRenderAction * action, bool inPath) {
         if(selPushed) {
             SelColorStack.pop_back();
 
-            if(style != SoFCSelectionRoot::BOX)
+            if(style != SoFCSelectionRoot::Box)
                 state->pop();
         }
         if(hlPushed)
@@ -1526,8 +1528,8 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     // Selection action short-circuit optimization. In case of whole object
     // selection/pre-selection, we shall store a SelContext keyed by ourself.
     // And the action traversal can be short-curcuited once the first targeted
-    // SoFCSelectionRoot is found here. New fuction checkSelection() is exposed
-    // to check for whole object selection. This greatly imporve performance on
+    // SoFCSelectionRoot is found here. New function checkSelection() is exposed
+    // to check for whole object selection. This greatly improve performance on
     // large group.
 
     SelContextPtr ctx2;
@@ -1589,7 +1591,7 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
         if(selAction->getType() == SoSelectionElementAction::None) {
             if(action->getWhatAppliedTo() == SoAction::NODE) {
                 // Here the 'select none' action is applied to a node, and we
-                // are the first SoFCSelectionRoot encounted (which means all
+                // are the first SoFCSelectionRoot encountered (which means all
                 // children stores selection context here, both whole object
                 // and element selection), then we can simply perform the
                 // action by clearing the selection context here, and save the
@@ -1666,7 +1668,7 @@ int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr
 
 /////////////////////////////////////////////////////////////////////////////
 
-SO_NODE_SOURCE(SoFCPathAnnotation);
+SO_NODE_SOURCE(SoFCPathAnnotation)
 
 SoFCPathAnnotation::SoFCPathAnnotation()
 {
@@ -1748,7 +1750,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
                     if(!path->getNode(i)->isOfType(SoFCSelectionRoot::getClassTypeId()))
                         continue;
                     auto node = static_cast<SoFCSelectionRoot*>(path->getNode(i));
-                    if(node->selectionStyle.getValue()==SoFCSelectionRoot::BOX) {
+                    if(node->selectionStyle.getValue()==SoFCSelectionRoot::Box) {
                         bbox = true;
                         break;
                     }

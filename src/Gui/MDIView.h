@@ -35,6 +35,7 @@ QT_END_NAMESPACE
 namespace Gui 
 {
 class Document;
+class ViewProvider;
 class ViewProviderDocumentObject;
 
 /** Base class of all windows belonging to a document.
@@ -54,7 +55,6 @@ class GuiExport MDIView : public QMainWindow, public BaseView
     Q_OBJECT
 
     TYPESYSTEM_HEADER();
-
 
 public:
     /** View constructor
@@ -80,10 +80,12 @@ public:
     virtual bool canClose(void);
     /// delete itself
     virtual void deleteSelf();
+    virtual PyObject *getPyObject();
     /** @name Printing */
     //@{
 public Q_SLOTS:
     virtual void print(QPrinter* printer);
+
 public:
     /** Print content of view */
     virtual void print();
@@ -130,6 +132,16 @@ public:
         return ActiveObjects.hasObject(o,n,subname);
     }
 
+    /*!
+     * \brief containsViewProvider
+     * Checks if the given view provider is part of this view. The default implementation
+     * returns false.
+     * \return bool
+     */
+    virtual bool containsViewProvider(const ViewProvider*) const {
+        return false;
+    }
+
 public Q_SLOTS:
     virtual void setOverrideCursor(const QCursor&);
     virtual void restoreOverrideCursor();
@@ -148,6 +160,9 @@ protected:
     void closeEvent(QCloseEvent *e);
     /** \internal */
     void changeEvent(QEvent *e);
+
+protected:
+    PyObject* pythonObject;
 
 private:
     ViewMode currentMode;

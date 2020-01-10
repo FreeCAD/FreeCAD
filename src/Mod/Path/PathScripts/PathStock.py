@@ -30,18 +30,16 @@ import math
 
 from PySide import QtCore
 
-
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class StockType:
+    # pylint: disable=no-init
+
     NoStock        = 'None'
     FromBase       = 'FromBase'
     CreateBox      = 'CreateBox'
@@ -118,6 +116,12 @@ class StockFromBase(Stock):
         else:
             PathLog.track(obj.Label, base.Label)
         obj.Proxy = self
+
+        # debugging aids
+        self.origin = None
+        self.length = None
+        self.width  = None
+        self.height = None
 
     def __getstate__(self):
         return None
@@ -223,11 +227,24 @@ def SetupStockObject(obj, stockType):
         obj.ViewObject.Transparency = 90
         obj.ViewObject.DisplayMode = 'Wireframe'
 
+class FakeJob(object):
+    def __init__(self, base):
+        self.Group = [base]
+
+def _getBase(job):
+    if job and hasattr(job, 'Model'):
+        return job.Model
+    if job:
+        import PathScripts.PathUtils as PathUtils
+        job = PathUtils.findParentJob(job)
+        return job.Model if job else None
+    return None
+
 def CreateFromBase(job, neg=None, pos=None, placement=None):
     PathLog.track(job.Label, neg, pos, placement)
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockFromBase(obj, base)
+    obj.Proxy = StockFromBase(obj, base)
 
     if neg:
         obj.ExtXneg = neg.x
@@ -243,14 +260,14 @@ def CreateFromBase(job, neg=None, pos=None, placement=None):
         obj.Placement = placement
 
     SetupStockObject(obj, StockType.FromBase)
-    proxy.execute(obj)
+    obj.Proxy.execute(obj)
     obj.purgeTouched()
     return obj
 
 def CreateBox(job, extent=None, placement=None):
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockCreateBox(obj)
+    obj.Proxy = StockCreateBox(obj)
 
     if extent:
         obj.Length = extent.x
@@ -273,9 +290,9 @@ def CreateBox(job, extent=None, placement=None):
     return obj
 
 def CreateCylinder(job, radius=None, height=None, placement=None):
-    base = job.Model if job else None
+    base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Stock')
-    proxy = StockCreateCylinder(obj)
+    obj.Proxy = StockCreateCylinder(obj)
 
     if radius:
         obj.Radius = radius

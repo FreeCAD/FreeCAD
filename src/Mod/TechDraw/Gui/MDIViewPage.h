@@ -51,6 +51,7 @@ class QGIView;
 class TechDrawGuiExport MDIViewPage : public Gui::MDIView, public Gui::SelectionObserver
 {
     Q_OBJECT
+    TYPESYSTEM_HEADER();
 
 public:
     MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = 0);

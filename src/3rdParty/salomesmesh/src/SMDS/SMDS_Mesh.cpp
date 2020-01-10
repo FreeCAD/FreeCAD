@@ -26,6 +26,11 @@
 #pragma warning(disable:4786)
 #endif
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Winconsistent-missing-override"
+#endif
+
 #include "SMDS_FaceOfEdges.hxx"
 #include "SMDS_FaceOfNodes.hxx"
 #include "SMDS_Mesh.hxx"
@@ -4851,3 +4856,7 @@ bool SMDS_Mesh::isCompacted()
     }
   return true;
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

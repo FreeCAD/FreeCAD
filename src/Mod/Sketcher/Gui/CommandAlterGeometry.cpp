@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,10 +32,10 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -66,7 +66,7 @@ namespace SketcherGui {
 extern GeometryCreationMode geometryCreationMode;
 
 /* Constrain commands =======================================================*/
-DEF_STD_CMD_A(CmdSketcherToggleConstruction);
+DEF_STD_CMD_A(CmdSketcherToggleConstruction)
 
 CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     :Command("Sketcher_ToggleConstruction")
@@ -77,7 +77,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     sToolTipText    = QT_TR_NOOP("Toggles the toolbar or selected geometry to/from construction mode");
     sWhatsThis      = "Sketcher_ToggleConstruction";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_AlterConstruction";
+    sPixmap         = "Sketcher_ToggleConstruction";
     sAccel          = "C,M";
     eType           = ForEdit;
 
@@ -143,7 +143,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             // only handle edges
             if (boost::starts_with(sub,"Edge") || boost::starts_with(sub, "ExternalEdge")) {
                 // issue the actual commands to toggle
-                FCMD_OBJ_CMD(selection[0].getObject(),"toggleConstruction('" << sub << "')");
+                Gui::cmdAppObjectArgs(selection[0].getObject(),"toggleConstruction('%s')", sub);
             }
         }
         // finish the transaction and update
@@ -169,5 +169,3 @@ void CreateSketcherCommandsAlterGeo(void)
 
     rcCmdMgr.addCommand(new CmdSketcherToggleConstruction());
 }
-
-

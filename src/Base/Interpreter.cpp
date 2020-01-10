@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -53,9 +52,9 @@ using namespace Base;
 
 PyException::PyException(const Py::Object &obj) {
     _sErrMsg = obj.as_string();
-    // WARNING: we are assumming that python type object will never be
-    // destroied, so we don't keep reference here to save book-keeping in
-    // our copy constructor and desctructor
+    // WARNING: we are assuming that python type object will never be
+    // destroyed, so we don't keep reference here to save book-keeping in
+    // our copy constructor and destructor
     _exceptionType = (PyObject*)obj.ptr()->ob_type;
     _errorType = obj.ptr()->ob_type->tp_name;
 }
@@ -84,9 +83,9 @@ PyException::PyException(void)
     _exceptionType = PP_last_exception_type;
 
     if(PP_last_exception_type) {
-        // WARNING: we are assumming that python type object will never be
-        // destroied, so we don't keep reference here to save book-keeping in
-        // our copy constructor and desctructor
+        // WARNING: we are assuming that python type object will never be
+        // destroyed, so we don't keep reference here to save book-keeping in
+        // our copy constructor and destructor
         Py_DECREF(PP_last_exception_type);
         PP_last_exception_type = 0;
 
@@ -851,7 +850,7 @@ int getSWIGVersionFromModule(const std::string& module)
             Py::String file(mod.getAttr("__file__"));
             std::string filename = (std::string)file;
             // file can have the extension .py or .pyc
-            filename = filename.substr(0, filename.rfind("."));
+            filename = filename.substr(0, filename.rfind('.'));
             filename += ".py";
             boost::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
             boost::cmatch what;

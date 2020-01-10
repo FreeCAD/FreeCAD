@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen <eivind@kvedalen.name> 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -265,9 +265,10 @@ public:
 
     std::string getPropertyName() const;
 
-    const Component & getPropertyComponent(int i) const;
+    const Component & getPropertyComponent(int i, int *idx=0) const;
 
-    Component & getPropertyComponent(int i);
+    void setComponent(int idx, Component &&comp);
+    void setComponent(int idx, const Component &comp);
 
     std::vector<Component> getPropertyComponents() const;
     const std::vector<Component> &getComponents() const { return components; }
@@ -348,8 +349,8 @@ public:
 
     Py::Object getPyValue(bool pathValue=false, bool *isPseudoProperty=0) const;
 
-    // Setter; is const because it does not alter the object state,
-    // but does have a aide effect.
+    // Setter: is const because it does not alter the object state,
+    // but does have an aiding effect.
 
     void setValue(const App::any & value) const;
 
@@ -434,7 +435,6 @@ inline std::size_t hash_value(const App::ObjectIdentifier & path) {
 App::any AppExport pyObjectToAny(Py::Object pyobj, bool check=true);
 Py::Object AppExport pyObjectFromAny(const App::any &value);
 //@}
-
 }
 
 namespace std {

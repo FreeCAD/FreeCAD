@@ -37,6 +37,17 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
+#include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
+
+#include "TaskSectionView.h"
+
 #include "ViewProviderViewSection.h"
 
 using namespace TechDrawGui;
@@ -51,9 +62,11 @@ ViewProviderViewSection::ViewProviderViewSection()
     static const char *sgroup = "Cut Surface";
     static const char *hgroup = "Surface Hatch";
     sPixmap = "TechDraw_Tree_Section";
-    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_None,"Show/hide the cut surface");
+    //ShowCutSurface is obsolete - use CutSurfaceDisplay
+    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),sgroup,App::Prop_Hidden,"Show/hide the cut surface");
     ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),sgroup,App::Prop_None,"The color to shade the cut surface");
-    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),hgroup,App::Prop_None,"Hatch the cut surface");
+    //HatchCutSurface is obsolete - use CutSurfaceDisplay
+    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),hgroup,App::Prop_Hidden,"Hatch the cut surface");
     ADD_PROPERTY_TYPE(HatchColor,(0.0,0.0,0.0),hgroup,App::Prop_None,"The color of the hatch pattern");
     ADD_PROPERTY_TYPE(WeightPattern,(0.1),hgroup,App::Prop_None,"GeomHatch pattern line thickness");
 
@@ -88,9 +101,9 @@ std::vector<std::string> ViewProviderViewSection::getDisplayModes(void) const
 void ViewProviderViewSection::onChanged(const App::Property* prop)
 {
     if (prop == &WeightPattern   ||
-        prop == &HatchCutSurface ||
+//        prop == &HatchCutSurface ||
         prop == &HatchColor      ||
-        prop == &ShowCutSurface  ||
+//        prop == &ShowCutSurface  ||
         prop == &CutSurfaceColor ) {
         updateGraphic();   
     }
@@ -102,6 +115,7 @@ void ViewProviderViewSection::onChanged(const App::Property* prop)
 void ViewProviderViewSection::updateData(const App::Property* prop)
 {
     if (prop == &(getViewObject()->FileHatchPattern)   ||
+        prop == &(getViewObject()->CutSurfaceDisplay)    ||
         prop == &(getViewObject()->NameGeomPattern)    ||
         prop == &(getViewObject()->HatchScale)   ) {
         updateGraphic();
@@ -123,6 +137,40 @@ void ViewProviderViewSection::updateGraphic(void)
         qgiv->updateView(true);
     }
 }
+
+bool ViewProviderViewSection::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default ) {
+        if (Gui::Control().activeDialog())  {         //TaskPanel already open!
+            return false;
+        }
+        // clear the selection (convenience)
+        Gui::Selection().clearSelection();
+        Gui::Control().showDialog(new TaskDlgSectionView(getViewObject()));
+        return true;
+    } else {
+        return ViewProviderDrawingView::setEdit(ModNum);
+    }
+    return true;
+}
+
+void ViewProviderViewSection::unsetEdit(int ModNum)
+{
+    Q_UNUSED(ModNum);
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        ViewProviderDrawingView::unsetEdit(ModNum);
+    }
+}
+
+bool ViewProviderViewSection::doubleClicked(void)
+{
+    setEdit(ViewProvider::Default);
+    return true;
+}
+
 
 void ViewProviderViewSection::getParameters(void)
 {

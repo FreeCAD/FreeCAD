@@ -52,7 +52,7 @@ Thickness::Thickness()
     Join.setEnums(JoinEnums);
     ADD_PROPERTY_TYPE(Reversed,(false),"Thickness",App::Prop_None,"Apply the thickness towards the solids interior");
     ADD_PROPERTY_TYPE(Refine,(false),"Thickness",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges)");
-
+    ADD_PROPERTY_TYPE(Intersection,(false),"Thickness",App::Prop_None,"Enable intersection-handling");
 }
 
 void Thickness::setupObject() {
@@ -99,6 +99,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     }
 
     bool reversed = Reversed.getValue();
+    bool intersection = Intersection.getValue();
     double thickness =  (reversed ? -1. : 1. )*Value.getValue();
     double tol = Precision::Confusion();
     short mode = (short)Mode.getValue();
@@ -111,21 +112,24 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     int count = baseShape.countSubShapes(TopAbs_SOLID);
     if(!count)
         return new App::DocumentObjectExecReturn("No solid");
-    auto it = closeFaces.begin();
-    for(int i=1;i<=count;++i) {
-        if(it==closeFaces.end() || i<it->first) {
-            shapes.push_back(baseShape.getSubTopoShape(TopAbs_SOLID,i));
-            continue;
+
+    if (fabs(thickness) > 2*tol) {
+        auto it = closeFaces.begin();
+        for(int i=1;i<=count;++i) {
+            if(it==closeFaces.end() || i<it->first) {
+                shapes.push_back(baseShape.getSubTopoShape(TopAbs_SOLID,i));
+                continue;
+            }
+            shapes.emplace_back(0,getDocument()->getStringHasher());
+            try {
+                shapes.back().makEThickSolid(
+                        baseShape.getSubTopoShape(TopAbs_SOLID,it->first), 
+                        it->second, thickness, tol, intersection, false, mode, join);
+            }catch(Standard_Failure &) {
+                return new App::DocumentObjectExecReturn("Failed to make thick solid");
+            }
+            ++it;
         }
-        shapes.emplace_back(0,getDocument()->getStringHasher());
-        try {
-            shapes.back().makEThickSolid(
-                    baseShape.getSubTopoShape(TopAbs_SOLID,it->first), 
-                    it->second, thickness, tol, false, false, mode, join);
-        }catch(Standard_Failure &) {
-            return new App::DocumentObjectExecReturn("Failed to make thick solid");
-        }
-        ++it;
     }
     TopoShape result(0,getDocument()->getStringHasher());
     if(shapes.size()>1) {

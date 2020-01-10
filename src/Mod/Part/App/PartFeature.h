@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,7 +46,7 @@ class PartFeaturePy;
  */
 class PartExport Feature : public App::GeoFeature
 {
-    PROPERTY_HEADER(Part::Feature);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Feature);
 
 public:
     /// Constructor
@@ -58,14 +58,34 @@ public:
 
     /** @name methods override feature */
     //@{
-    virtual short mustExecute(void) const;
+    virtual short mustExecute() const override;
     //@}
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const;
-    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const;
+    virtual const char* getViewProviderName() const override;
+    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
 
-    virtual PyObject* getPyObject(void);
+    virtual PyObject* getPyObject(void) override;
+
+    struct HistoryItem {
+        App::DocumentObject *obj;
+        long tag;
+        std::string element;
+        std::vector<std::string> intermediates;
+        HistoryItem(App::DocumentObject *obj, const char *name)
+            :obj(obj),tag(0),element(name)
+        {
+            if(obj)
+                tag = obj->getID();
+        }
+    };
+    static std::list<HistoryItem> getElementHistory(App::DocumentObject *obj,
+            const char *name, bool recursive=true, bool sameType=false);
+
+    static std::vector<std::pair<std::string,std::string> > 
+    getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true, bool withCache=true);
+
+    TopLoc_Location getLocation() const;
 
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const override;
@@ -99,21 +119,6 @@ public:
             App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true, 
             bool noElementMap=false);
 
-    struct HistoryItem {
-        App::DocumentObject *obj;
-        long tag;
-        std::string element;
-        std::vector<std::string> intermediates;
-        HistoryItem(App::DocumentObject *obj, const char *name)
-            :obj(obj),tag(0),element(name)
-        {
-            if(obj)
-                tag = obj->getID();
-        }
-    };
-    static std::list<HistoryItem> getElementHistory(App::DocumentObject *obj,
-            const char *name, bool recursive=true, bool sameType=false);
-
     static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=0);
 
     static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=0) {
@@ -121,17 +126,12 @@ public:
         return owner && owner->isDerivedFrom(getClassTypeId());
     }
 
-    static std::vector<std::pair<std::string,std::string> > 
-    getRelatedElements(App::DocumentObject *obj, const char *name, bool sameType=true, bool withCache=true);
-
-    TopLoc_Location getLocation() const;
-    
 protected:
     /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute(void);
+    virtual App::DocumentObjectExecReturn *recompute() override;
     /// recalculate the feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onChanged(const App::Property* prop);
+    virtual App::DocumentObjectExecReturn *execute() override;
+    virtual void onChanged(const App::Property* prop) override;
 };
 
 class FilletBase : public Part::Feature

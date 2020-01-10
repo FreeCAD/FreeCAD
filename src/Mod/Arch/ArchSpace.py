@@ -1,9 +1,7 @@
 # -*- coding: utf8 -*-
 
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -363,7 +361,7 @@ class _Space(ArchComponent.Component):
         # 1: if we have a base shape, we use it
 
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.Solids:
                     shape = obj.Base.Shape.copy()
                     shape = shape.removeSplitter()
@@ -375,7 +373,7 @@ class _Space(ArchComponent.Component):
         else:
             bb = None
             for b in obj.Boundaries:
-                if b[0].isDerivedFrom("Part::Feature"):
+                if hasattr(b[0],'Shape'):
                     if not bb:
                         bb = b[0].Shape.BoundBox
                     else:
@@ -388,7 +386,7 @@ class _Space(ArchComponent.Component):
         # 3: identifying boundary faces
         goodfaces = []
         for b in obj.Boundaries:
-                if b[0].isDerivedFrom("Part::Feature"):
+                if hasattr(b[0],'Shape'):
                     for sub in b[1]:
                         if "Face" in sub:
                             fn = int(sub[4:])-1
@@ -425,7 +423,7 @@ class _Space(ArchComponent.Component):
                         obj.Area = a
                 return
 
-        print("Arch: error computing space boundary")
+        print("Arch: error computing space boundary for",obj.Label)
 
     def getArea(self,obj,notouch=False):
 

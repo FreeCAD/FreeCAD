@@ -164,6 +164,22 @@ def getInfo(filename):
             hsize = str(int(size)) + "b"
         return hsize
 
+    def getFreeDesktopThumbnail(filename):
+        "if we have gnome libs available, try to find a system-generated thumbnail"
+        try:
+            import gnome.ui
+            import gnomevfs
+        except:
+            return None
+
+        path = os.path.abspath(filename)
+        uri = gnomevfs.get_uri_from_local_path(path)
+        thumb = gnome.ui.thumbnail_path_for_uri(uri, "normal")
+        if os.path.exists(thumb):
+            return thumb
+        return None
+
+
     if os.path.exists(filename):
 
         docfile = None
@@ -221,6 +237,9 @@ def getInfo(filename):
             r = _Re_CreatedBy.search(doc)
             if r:
                 author = r.group(1)
+                # remove email if present in author field
+                if "&lt;" in author:
+                    author = author.split("&lt;")[0].strip()
             r = _Re_Company.search(doc)
             if r:
                 company = r.group(1)
@@ -236,6 +255,18 @@ def getInfo(filename):
             r = _Re_LastModifiedDate.search(doc)
             if r:
                 mtime = r.group(1)
+
+        if not image:
+            # use image itself as icon if it's an image file
+            if os.path.splitext(filename)[1].lower() in [".jpg",".jpeg",".png",".svg"]:
+                image = filename
+                iconbank[filename] = image
+
+            # use freedesktop thumbnail if available
+            fdthumb = getFreeDesktopThumbnail(filename)
+            if fdthumb:
+                image = fdthumb
+                iconbank[filename] = fdthumb
 
         # retrieve default mime icon if needed
         if not image:
@@ -299,8 +330,8 @@ def buildCard(filename,method,arg=None):
                 result += '<img src="file:///'+image+'">'
                 result += '<div class="caption">'
                 result += '<h4>'+encode(basename)+'</h4>'
-                result += '<p>'+size+'</p>'
                 result += '<p>'+encode(author)+'</p>'
+                result += '<p>'+size+'</p>'
                 result += '</div>'
                 result += '</li>'
                 result += '</a>'
@@ -436,9 +467,12 @@ def handle():
             filename = os.path.join(cfolder,basename)
             SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="))
         SECTION_CUSTOM += "</ul>"
+        # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
+        HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
-	# build IMAGE_SRC paths
+    # build IMAGE_SRC paths
+
     HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png'))
     HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
     HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))
@@ -615,6 +649,8 @@ def postStart():
 
     # switch workbench
     wb = param.GetString("AutoloadModule","")
+    if "$LastModule" == wb:
+        wb = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetString("LastModule","")
     if wb:
         # don't switch workbenches if we are not in Start anymore
         if FreeCADGui.activeWorkbench() and (FreeCADGui.activeWorkbench().name() == "StartWorkbench"):

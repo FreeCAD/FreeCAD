@@ -51,6 +51,7 @@ generate_from_xml(DrawSVGTemplatePy)
 generate_from_xml(DrawViewSymbolPy)
 generate_from_xml(DrawViewClipPy)
 generate_from_xml(DrawViewDimensionPy)
+generate_from_xml(DrawViewDimExtentPy)
 generate_from_xml(DrawHatchPy)
 generate_from_xml(DrawGeomHatchPy)
 generate_from_xml(DrawViewCollectionPy)
@@ -59,7 +60,14 @@ generate_from_xml(DrawProjGroupItemPy)
 generate_from_xml(DrawViewAnnotationPy)
 generate_from_xml(DrawLeaderLinePy)
 generate_from_xml(DrawRichAnnoPy)
-
+generate_from_xml(GeomFormatPy)
+generate_from_xml(CenterLinePy)
+generate_from_xml(CosmeticEdgePy)
+generate_from_xml(CosmeticVertexPy)
+generate_from_xml(DrawTilePy)
+generate_from_xml(DrawTileWeldPy)
+generate_from_xml(DrawWeldSymbolPy)
+generate_from_xml(CosmeticExtensionPy)
 
 SET(Draw_SRCS
     DrawPage.cpp
@@ -90,6 +98,8 @@ SET(Draw_SRCS
     DrawViewCollection.h
     DrawViewDimension.cpp
     DrawViewDimension.h
+    DrawViewDimExtent.cpp
+    DrawViewDimExtent.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp
@@ -114,6 +124,12 @@ SET(Draw_SRCS
     DrawRichAnno.h
     QDomNodeModel.cpp
     QDomNodeModel.h
+    DrawTile.cpp
+    DrawTile.h
+    DrawTileWeld.cpp
+    DrawTileWeld.h
+    DrawWeldSymbol.cpp
+    DrawWeldSymbol.h
     )
 
 SET(TechDraw_SRCS
@@ -121,6 +137,10 @@ SET(TechDraw_SRCS
     AppTechDrawPy.cpp
     DrawUtil.cpp
     DrawUtil.h
+    ShapeExtractor.cpp
+    ShapeExtractor.h
+    DrawDimHelper.cpp
+    DrawDimHelper.h
     HatchLine.cpp
     HatchLine.h
     PreCompiled.cpp
@@ -140,6 +160,16 @@ SET(Geometry_SRCS
     GeometryObject.h
     Cosmetic.cpp
     Cosmetic.h
+    PropertyGeomFormatList.cpp
+    PropertyGeomFormatList.h
+    PropertyCenterLineList.cpp
+    PropertyCenterLineList.h
+    PropertyCosmeticEdgeList.cpp
+    PropertyCosmeticEdgeList.h
+    PropertyCosmeticVertexList.cpp
+    PropertyCosmeticVertexList.h
+    CosmeticExtension.cpp
+    CosmeticExtension.h
 )
 
 SET(Python_SRCS
@@ -161,6 +191,8 @@ SET(Python_SRCS
     DrawViewClipPyImp.cpp
     DrawViewDimensionPy.xml
     DrawViewDimensionPyImp.cpp
+    DrawViewDimExtentPy.xml
+    DrawViewDimExtentPyImp.cpp
     DrawHatchPy.xml
     DrawHatchPyImp.cpp
     DrawGeomHatchPy.xml
@@ -177,6 +209,22 @@ SET(Python_SRCS
     DrawLeaderLinePyImp.cpp
     DrawRichAnnoPy.xml
     DrawRichAnnoPyImp.cpp
+    GeomFormatPy.xml
+    GeomFormatPyImp.cpp
+    CenterLinePy.xml
+    CenterLinePyImp.cpp
+    CosmeticEdgePy.xml
+    CosmeticEdgePyImp.cpp
+    CosmeticVertexPy.xml
+    CosmeticVertexPyImp.cpp
+    DrawTilePy.xml
+    DrawTilePyImp.cpp
+    DrawTileWeldPy.xml
+    DrawTileWeldPyImp.cpp
+    DrawWeldSymbolPy.xml
+    DrawWeldSymbolPyImp.cpp
+    CosmeticExtensionPy.xml
+    CosmeticExtensionPyImp.cpp
     )
 
 SOURCE_GROUP("Mod" FILES ${TechDraw_SRCS})
@@ -206,6 +254,13 @@ ADD_CUSTOM_COMMAND(TARGET TechDraw
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Templates
                    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Templates
+)
+
+ADD_CUSTOM_COMMAND(TARGET TechDraw
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw/Symbols
+                   ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw/Symbols
 )   
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)

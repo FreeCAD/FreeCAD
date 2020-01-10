@@ -54,6 +54,11 @@
 # include <Inventor/nodes/SoTransform.h>
 #endif
 
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QtConcurrentMap>
+#include <boost/bind.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -314,8 +319,9 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
         CreaseAngle.setValue(angle);
     }
 
-    if (hGrp->GetBool("ShowBoundingBox", false))
+    if (hGrp->GetBool("ShowBoundingBox", false)) {
         SelectionStyle.setValue(1);
+    }
 
     Coloring.setStatus(App::Property::Hidden, true);
 }
@@ -372,7 +378,11 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pLineColor->diffuseColor.setValue(c.r,c.g,c.b);
     }
     else if (prop == &Coloring) {
-        tryColorPerVertex(Coloring.getValue());
+        tryColorPerVertexOrFace(Coloring.getValue());
+    }
+    else if (prop == &SelectionStyle) {
+        pcHighlight->style = SelectionStyle.getValue() ? Gui::SoFCSelection::BOX
+                                                       : Gui::SoFCSelection::EMISSIVE;
     }
     else if (prop == &SelectionStyle) {
         pcHighlight->style = SelectionStyle.getValue()
@@ -546,7 +556,7 @@ App::PropertyColorList* ViewProviderMesh::getColorProperty() const
     return 0; // no such property found
 }
 
-void ViewProviderMesh::tryColorPerVertex(bool on)
+void ViewProviderMesh::tryColorPerVertexOrFace(bool on)
 {
     if (on) {
         App::PropertyColorList* colors = getColorProperty();
@@ -554,9 +564,13 @@ void ViewProviderMesh::tryColorPerVertex(bool on)
             const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
             const Mesh::MeshObject& mesh = meshProp.getValue();
             int numPoints = static_cast<int>(mesh.countPoints());
+            int numFacets = static_cast<int>(mesh.countFacets());
 
             if (colors->getSize() == numPoints) {
                 setColorPerVertex(colors);
+            }
+            else if (colors->getSize() == numFacets) {
+                setColorPerFace(colors);
             }
         }
     }
@@ -572,6 +586,22 @@ void ViewProviderMesh::setColorPerVertex(const App::PropertyColorList* prop)
     pcMatBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
     const std::vector<App::Color>& val = prop->getValues();
 
+    pcShapeMaterial->diffuseColor.setNum(val.size());
+    SbColor* col = pcShapeMaterial->diffuseColor.startEditing();
+
+    std::size_t i=0;
+    for (std::vector<App::Color>::const_iterator it = val.begin(); it != val.end(); ++it) {
+        col[i++].setValue(it->r, it->g, it->b);
+    }
+
+    pcShapeMaterial->diffuseColor.finishEditing();
+}
+
+void ViewProviderMesh::setColorPerFace(const App::PropertyColorList* prop)
+{
+    pcMatBinding->value = SoMaterialBinding::PER_FACE;
+    const std::vector<App::Color>& val = prop->getValues();
+    
     pcShapeMaterial->diffuseColor.setNum(val.size());
     SbColor* col = pcShapeMaterial->diffuseColor.startEditing();
 
@@ -692,7 +722,7 @@ void ViewProviderMesh::exportMesh(const char* filename, const char* fmt) const
     mat.diffuseColor.reserve(numColors);
     for (int i=0; i<numColors; i++) {
         const SbColor& c = colors[i];
-        mat.diffuseColor.push_back(App::Color(c[0], c[1], c[2]));
+        mat.diffuseColor.emplace_back(c[0], c[1], c[2]);
     }
 
     Mesh::MeshObject mesh = static_cast<Mesh::Feature*>(getObject())->Mesh.getValue();
@@ -715,8 +745,15 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(QObject::tr("Display components"));
     act->setCheckable(true);
-    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE);
+    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
+                    highlightMode == "Component");
     func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, _1));
+
+    QAction* seg = menu->addAction(QObject::tr("Display segments"));
+    seg->setCheckable(true);
+    seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
+                    highlightMode == "Segment");
+    func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, _1));
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -777,12 +814,12 @@ bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly, const
 
         if (it+1 < rclPoly.end()) {
             pt1.getValue(fX, fY, fZ);
-            top.push_back( Base::Vector3f(fX, fY, fZ) );
+            top.emplace_back(fX, fY, fZ );
             pt2.getValue(fX, fY, fZ);
-            bottom.push_back( Base::Vector3f(fX, fY, fZ) );
+            bottom.emplace_back(fX, fY, fZ );
             // polygon we need to triangulate (in x,y-plane)
             it->getValue(fX, fY);
-            polygon.push_back( Base::Vector3f(fX, fY, 0.0f) );
+            polygon.emplace_back(fX, fY, 0.0f );
         }
     }
 
@@ -893,7 +930,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
         Gui::Application::Instance->activeDocument()->openCommand("Cut");
         bool commitCommand = false;
@@ -954,7 +991,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     if (!views.empty()) {
         Gui::Application::Instance->activeDocument()->openCommand("Trim");
         bool commitCommand = false;
@@ -1036,7 +1073,7 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     Gui::Application::Instance->activeDocument()->openCommand("Split");
 
     try {
-        std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+        std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
             if (that->getEditingMode() > -1) {
@@ -1100,7 +1137,7 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     Gui::Application::Instance->activeDocument()->openCommand("Segment");
 
     try {
-        std::vector<Gui::ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+        std::vector<Gui::ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
         for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
             if (that->getEditingMode() > -1) {
@@ -1165,7 +1202,7 @@ void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
     if (h<0) h = -h;
 
     std::vector<Gui::ViewProvider*> views;
-    views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+    views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
     for (std::vector<Gui::ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
         if (that->getEditingMode() > -1) {
@@ -1304,9 +1341,71 @@ void ViewProviderMesh::renderGLCallback(void * ud, SoAction * action)
     }
 }
 
+namespace MeshGui {
+
+class Vertex
+{
+public:
+    Vertex(const MeshCore::MeshKernel& kernel,
+           const MeshCore::MeshFacetGrid& grid,
+           const Base::Vector3f& pos)
+    : kernel(kernel)
+    , grid(grid)
+    , pos(pos)
+    {
+    }
+    bool visible(const Base::Vector3f& base) const
+    {
+        MeshCore::MeshAlgorithm meshAlg(kernel);
+        bool ok = meshAlg.IsVertexVisible(base, pos, grid);
+        return ok;
+    }
+
+private:
+    const MeshCore::MeshKernel& kernel;
+    const MeshCore::MeshFacetGrid& grid;
+    Base::Vector3f pos;
+};
+
+}
+
 std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRegion& vp,
                                                               SoCamera* camera) const
 {
+#if 0
+    Q_UNUSED(vp)
+
+    SbVec3f pos = camera->position.getValue();
+
+    const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
+    const Mesh::MeshObject& mesh = meshProp.getValue();
+
+    const MeshCore::MeshKernel& kernel = mesh.getKernel();
+    MeshCore::MeshFacetGrid grid(kernel);
+
+    std::vector<Base::Vector3f> points;
+    points.reserve(kernel.CountFacets());
+    for (unsigned long i = 0; i < kernel.CountFacets(); i++) {
+        points.push_back(kernel.GetFacet(i).GetGravityPoint());
+    }
+
+    Vertex v(kernel, grid, Base::convertTo<Base::Vector3f>(pos));
+    QFuture<bool> future = QtConcurrent::mapped
+        (points, boost::bind(&Vertex::visible, &v, _1));
+    QFutureWatcher<bool> watcher;
+    watcher.setFuture(future);
+    watcher.waitForFinished();
+
+    unsigned long index = 0;
+    std::vector<unsigned long> faces;
+    for (QFuture<bool>::const_iterator i = future.begin(); i != future.end(); ++i, index++) {
+        if ((*i)) {
+            faces.push_back(index);
+        }
+    }
+
+    return faces;
+#else
     const Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
     const Mesh::MeshObject& mesh = meshProp.getValue();
     uint32_t count = (uint32_t)mesh.countFacets();
@@ -1346,9 +1445,16 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
     root->addChild(this->getCoordNode());
     root->addChild(this->getShapeNode());
 
+    // Coin3d's off-screen renderer doesn't work out-of-the-box any more on most recent Linux systems.
+    // So, use FreeCAD's offscreen renderer now.
+#if 0
     Gui::SoFCOffscreenRenderer& renderer = Gui::SoFCOffscreenRenderer::instance();
     renderer.setViewportRegion(vp);
     renderer.setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
+#else
+    Gui::SoQtOffscreenRenderer renderer(vp);
+    renderer.setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f));
+#endif
 
     QImage img;
     renderer.render(root);
@@ -1374,6 +1480,7 @@ std::vector<unsigned long> ViewProviderMesh::getVisibleFacets(const SbViewportRe
     faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
 
     return faces;
+#endif
 }
 
 void ViewProviderMesh::cutMesh(const std::vector<SbVec2f>& picked, 
@@ -1501,7 +1608,7 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
             return;
 
@@ -1559,6 +1666,7 @@ void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
         QAction* id = menu.exec(QCursor::pos());
         if (cl == id) {
             view->setEditing(false);
+            view->setSelectionEnabled(true);
             view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), fillHoleCallback,ud);
         }
@@ -1574,7 +1682,7 @@ void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
 
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
-        Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+        Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
         if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
             return;
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
@@ -1606,22 +1714,23 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
             QAction* id = menu.exec(QCursor::pos());
             if (cl == id) {
                 view->setEditing(false);
+                view->setSelectionEnabled(true);
                 view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), markPartCallback,ud);
 
-                std::vector<ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                std::vector<ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
                 for (std::vector<ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
                     static_cast<ViewProviderMesh*>(*it)->clearSelection();
                 }
             }
             else if (cf == id) {
-                std::vector<ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                std::vector<ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
                 for (std::vector<ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
                     static_cast<ViewProviderMesh*>(*it)->clearSelection();
                 }
             }
             else if (rm == id) {
                 Gui::Application::Instance->activeDocument()->openCommand("Delete");
-                std::vector<ViewProvider*> views = view->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
+                std::vector<ViewProvider*> views = view->getDocument()->getViewProvidersOfType(ViewProviderMesh::getClassTypeId());
                 for (std::vector<ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
                     static_cast<ViewProviderMesh*>(*it)->deleteSelection();
                 }
@@ -1640,7 +1749,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
 
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
-            Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
+            Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(point->getPath());
             if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId()))
                 return;
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
@@ -1768,6 +1877,8 @@ void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
 
     // get the colour property if there
     App::PropertyColorList* prop = getColorProperty();
+    bool ok = Coloring.getValue();
+
     if (prop && prop->getSize() == static_cast<int>(kernel->countPoints())) {
         std::vector<unsigned long> pointDegree;
         unsigned long invalid = kernel->getPointDegree(facets, pointDegree);
@@ -1788,11 +1899,32 @@ void ViewProviderMesh::removeFacets(const std::vector<unsigned long>& facets)
             prop->setValues(valid_colors);
         }
     }
+    else if (prop && prop->getSize() == static_cast<int>(kernel->countFacets())) {
+        // switch off coloring mode
+        Coloring.setValue(false);
+
+        std::vector<bool> validFacets(kernel->countFacets(), true);
+        for (auto it : facets)
+            validFacets[it] = false;
+
+        const std::vector<App::Color>& colors = prop->getValues();
+        std::vector<App::Color> valid_colors;
+        valid_colors.reserve(colors.size());
+        std::size_t numColors = colors.size();
+        for (std::size_t index = 0; index < numColors; index++) {
+            if (validFacets[index])
+                valid_colors.push_back(colors[index]);
+        }
+
+        prop->setValues(valid_colors);
+    }
 
     //Remove the facets from the mesh and open a transaction object for the undo/redo stuff
     kernel->deleteFacets(facets);
     meshProp.finishEditing();
     pcObject->purgeTouched();
+
+    Coloring.setValue(ok);
 }
 
 void ViewProviderMesh::selectFacet(unsigned long facet)
@@ -2014,9 +2146,11 @@ void ViewProviderMesh::unhighlightSelection()
 void ViewProviderMesh::setHighlightedComponents(bool on)
 {
     if (on) {
+        highlightMode = "Component";
         highlightComponents();
     }
     else {
+        highlightMode.clear();
         unhighlightSelection();
     }
 }
@@ -2042,6 +2176,34 @@ void ViewProviderMesh::highlightComponents()
         }
     }
     pcShapeMaterial->diffuseColor.finishEditing();
+}
+
+void ViewProviderMesh::setHighlightedSegments(bool on)
+{
+    if (on) {
+        highlightMode = "Segment";
+        highlightSegments();
+    }
+    else {
+        highlightMode.clear();
+        unhighlightSelection();
+    }
+}
+
+void ViewProviderMesh::highlightSegments()
+{
+    std::vector<App::Color> colors;
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    unsigned long numSegm = rMesh.countSegments();
+    colors.resize(numSegm, this->ShapeColor.getValue());
+
+    for (unsigned long i=0; i<numSegm; i++) {
+        App::Color col;
+        if (col.fromHexString(rMesh.getSegment(i).getColor()))
+            colors[i] = col;
+    }
+
+    highlightSegments(colors);
 }
 
 void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)

@@ -1,6 +1,6 @@
 
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,7 +41,7 @@
 #include "PropertyContainerPy.h"
 #include "PropertyContainerPy.cpp"
 
-FC_LOG_LEVEL_INIT("Property", true, 2);
+FC_LOG_LEVEL_INIT("Property", true, 2)
 
 using namespace App;
 
@@ -279,6 +279,11 @@ PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
     }else{
         App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
         if (prop) {
+
+            auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+            if(linkProp && linkProp->testFlag(App::PropertyLinkBase::LinkAllowPartial))
+                ret.append(Py::String("AllowPartial"));
+
             std::bitset<32> bits(prop->getStatus());
             for(size_t i=1;i<bits.size();++i) {
                 if(!bits[i]) continue;
@@ -521,11 +526,16 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
         if(_getShape != Py_None) {
             Py::Tuple args(1);
             args.setItem(0,Py::Object(const_cast<PropertyContainerPy*>(this)));
-            Py::Object res(PyObject_CallObject(_getShape, args.ptr()),true);
-            if(res.hasAttr("isNull")) {
-                Py::Callable func(res.getAttr("isNull"));
-                if(!func.apply().isTrue())
-                    return Py::new_reference_to(res);
+            auto res = PyObject_CallObject(_getShape, args.ptr());
+            if(!res) 
+                PyErr_Clear();
+            else {
+                Py::Object pyres(res,true);
+                if(pyres.hasAttr("isNull")) {
+                    Py::Callable func(pyres.getAttr("isNull"));
+                    if(!func.apply().isTrue())
+                        return Py::new_reference_to(res);
+                }
             }
         }
     }

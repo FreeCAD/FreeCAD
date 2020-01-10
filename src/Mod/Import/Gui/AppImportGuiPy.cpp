@@ -30,6 +30,10 @@
 # include <iostream>
 # include <climits>
 # include <QString>
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wextra-semi"
+#endif
 # include <Standard_Version.hxx>
 # include <NCollection_Vector.hxx>
 # include <BRep_Builder.hxx>
@@ -70,6 +74,9 @@
 # else
 # include <TDataStd_Shape.hxx>
 # endif
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 #endif
 
 #include <CXX/Extensions.hxx>

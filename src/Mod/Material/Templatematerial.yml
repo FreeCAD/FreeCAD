@@ -155,6 +155,11 @@
       Type: 'Quantity'
       URL: 'https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient'
       Description: "Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]"
+- Electrical:
+    RelativePermittivity:
+      Type: 'Float'
+      URL: 'https://en.wikipedia.org/wiki/Relative_permittivity'
+      Description: "a material property, expressing the ratio to the permittivity of the Vacuum"
 - Architectural:
     Color:
       Type:  'String'
@@ -231,7 +236,7 @@
       Type: 'String'
       URL: ''
       Description: " "
-- Vector rendering:
+- VectorRendering:
     SectionFillPattern:
       Type: 'File'
       URL: ''

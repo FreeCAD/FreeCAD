@@ -32,14 +32,15 @@ __url__ = "http://www.freecadweb.org"
 
 import os
 import FreeCAD
+from FreeCAD import Console
 import Fem
 
 
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
@@ -71,27 +72,27 @@ def export(
 ):
     "called when freecad exports an object to vtk"
     if len(objectslist) > 1:  # the case of no selected obj is caught by FreeCAD already
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "This exporter can only export one object at once\n"
         )
         return
 
     obj = objectslist[0]
     if obj.isDerivedFrom("Fem::FemPostPipeline"):
-        FreeCAD.Console.PrintError(
-            'Export of a VTK post object to vtk is not yet implemented !\n'
+        Console.PrintError(
+            "Export of a VTK post object to vtk is not yet implemented!\n"
         )
         return
     elif obj.isDerivedFrom("Fem::FemMeshObject"):
-        FreeCAD.Console.PrintError(
-            'Use export to FEM mesh formats to export a FEM mesh object to vtk!\n'
+        Console.PrintError(
+            "Use export to FEM mesh formats to export a FEM mesh object to vtk!\n"
         )
         return
     elif obj.isDerivedFrom("Fem::FemResultObject"):
         Fem.writeResult(filename, obj)
     else:
-        FreeCAD.Console.PrintError(
-            'Selected object is not supported by export to VTK.\n'
+        Console.PrintError(
+            "Selected object is not supported by export to VTK.\n"
         )
         return
 
@@ -119,8 +120,8 @@ def importVtk(
         # FreeCAD result object
         importVtkFCResult(filename, object_name)
     else:
-        FreeCAD.Console.PrintError(
-            'Error, wrong parameter in VTK import pref: {}\n'
+        Console.PrintError(
+            "Error, wrong parameter in VTK import pref: {}\n"
             .format(object_type)
         )
 
@@ -158,11 +159,11 @@ def importVtkFCResult(
 
     import ObjectsFem
     if result_name_prefix is None:
-        result_name_prefix = ''
+        result_name_prefix = ""
     if analysis:
         analysis_object = analysis
 
-    results_name = result_name_prefix + 'results'
+    results_name = result_name_prefix + "results"
     result_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
     # readResult always creates a new femmesh named ResultMesh
     Fem.readResult(filename, result_obj.Name)
@@ -172,14 +173,14 @@ def importVtkFCResult(
         import femresult.resulttools as restools
         result_obj = restools.add_disp_apps(result_obj)  # DisplacementLengths
 
-    ''' seems unused at the moment
-    filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk
-    ts = filenamebase.split('_')[-1]
+    """ seems unused at the moment
+    filenamebase = ".".join(filename.split(".")[:-1])  # pattern: filebase_timestamp.vtk
+    ts = filenamebase.split("_")[-1]
     try:
         time_step = float(ts)
     except:
         time_step = 0.0
-    '''
+    """
 
     if analysis:
         analysis_object.addObject(result_obj)

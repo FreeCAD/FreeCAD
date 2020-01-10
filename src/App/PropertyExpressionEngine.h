@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,7 +64,7 @@ private:
 class AppExport PropertyExpressionEngine : public App::PropertyExpressionContainer, 
                                            private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
     virtual void updateElementReference(
@@ -103,7 +103,7 @@ public:
     PropertyExpressionEngine();
     ~PropertyExpressionEngine();
 
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize (void) const override;
 
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
@@ -111,17 +111,17 @@ public:
 
     void setValue() { } // Dummy
 
-    Property *Copy(void) const;
+    Property *Copy(void) const override;
 
-    void Paste(const Property &from);
+    void Paste(const Property &from) override;
 
-    void Save (Base::Writer & writer) const;
+    void Save (Base::Writer & writer) const override;
 
-    void Restore(Base::XMLReader &reader);
+    void Restore(Base::XMLReader &reader) override;
 
     void setValue(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr);
 
-    App::any getPathValue(const App::ObjectIdentifier & path) const;
+    App::any getPathValue(const App::ObjectIdentifier & path) const override;
 
     /// Execute options
     enum ExecuteOption {
@@ -153,7 +153,7 @@ public:
 
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
-    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const;
+    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const override;
 
     size_t numExpressions() const;
 
@@ -164,8 +164,8 @@ public:
     virtual void onContainerRestored() override;
 
     /* Python interface */
-    PyObject *getPyObject(void);
-    void setPyObject(PyObject *);
+    PyObject *getPyObject(void) override;
+    void setPyObject(PyObject *) override;
 
 protected:
     virtual void hasSetValue() override;

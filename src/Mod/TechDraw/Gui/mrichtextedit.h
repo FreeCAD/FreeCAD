@@ -33,7 +33,7 @@
 #include "ui_mrichtextedit.h"
 
 /**
- * @Brief A simple rich-text editor
+ * @brief A simple rich-text editor
  */
 class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
     Q_OBJECT

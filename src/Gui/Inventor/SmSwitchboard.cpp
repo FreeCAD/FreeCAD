@@ -84,7 +84,7 @@ SmSwitchboard::initClass(void)
   SO_NODE_INIT_CLASS(SmSwitchboard, SoGroup, SoGroup);
 }
 
-SO_NODE_SOURCE(SmSwitchboard);
+SO_NODE_SOURCE(SmSwitchboard)
 
 /*!
   Default constructor.

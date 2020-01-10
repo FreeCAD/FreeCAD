@@ -41,6 +41,7 @@ class DrawView;
 namespace TechDrawGui
 {
 class QGIFace;
+class QGIEdge;
 
 class TechDrawGuiExport QGIViewPart : public QGIView
 {
@@ -73,7 +74,7 @@ public:
     virtual void rotateView(void) override;
 
 
-    static QPainterPath geomToPainterPath(TechDrawGeometry::BaseGeom *baseGeom, double rotation = 0.0);
+    static QPainterPath geomToPainterPath(TechDraw::BaseGeom *baseGeom, double rotation = 0.0);
     /// Helper for pathArc()
     /*!
      * x_axis_rotation is in radian
@@ -89,11 +90,13 @@ public:
                                      bool large_arc_flag, bool sweep_flag,
                                      double x, double y,
                                      double curx, double cury);
+    void setExporting(bool b) { m_isExporting = b; }
+    bool getExporting(void) { return m_isExporting; }
 
 protected:
-    QPainterPath drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) const;
+    QPainterPath drawPainterPath(TechDraw::BaseGeom *baseGeom) const;
     void drawViewPart();
-    QGIFace* drawFace(TechDrawGeometry::Face* f, int idx);
+    QGIFace* drawFace(TechDraw::Face* f, int idx);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
@@ -102,7 +105,13 @@ protected:
     void dumpPath(const char* text,QPainterPath path);
     void removePrimitives(void);
     void removeDecorations(void);
-    bool getFaceEdgesPref(void);
+    bool prefFaceEdges(void);
+    bool prefPrintCenters(void);
+
+    bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
+    bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
+
+    bool m_isExporting;
 
 private:
     QList<QGraphicsItem*> deleteItems;

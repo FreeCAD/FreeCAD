@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::CADNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::CADNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::CADNavigationStyle, Gui::UserNavigationStyle)
 
 CADNavigationStyle::CADNavigationStyle() : lockButton1(false)
 {

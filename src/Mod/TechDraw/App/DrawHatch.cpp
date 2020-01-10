@@ -43,6 +43,7 @@
 #include <Base/UnitsApi.h>
 
 #include "DrawViewPart.h"
+#include "DrawUtil.h"
 #include "DrawHatch.h"
 
 #include <Mod/TechDraw/App/DrawHatchPy.h>  // generated from DrawHatchPy.xml
@@ -74,9 +75,13 @@ DrawHatch::DrawHatch(void)
         patternFileName = QString::fromStdString(defaultFileName);
     }
     QFileInfo tfi(patternFileName);
-        if (tfi.isReadable()) {
-            HatchPattern.setValue(patternFileName.toUtf8().constData());
-        }
+    if (tfi.isReadable()) {
+        HatchPattern.setValue(patternFileName.toUtf8().constData());
+    }
+    
+    std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
+    HatchPattern.setFilter(svgFilter);
+
 }
 
 DrawHatch::~DrawHatch()
@@ -118,6 +123,78 @@ PyObject *DrawHatch::getPyObject(void)
     }
     return Py::new_reference_to(PythonObject);
 }
+
+bool DrawHatch::faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs)
+{
+    bool result = false;
+    bool found = false;
+    for (auto& h:hatchObjs) {
+        const std::vector<std::string> &sourceNames = h->Source.getSubValues();
+        for (auto& s : sourceNames) {
+            int fdx = TechDraw::DrawUtil::getIndexFromName(s);
+            if (fdx == i) {
+                result = true;
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            break;
+        }
+    }
+    return result;
+}
+
+//does this hatch affect face i
+bool DrawHatch::affectsFace(int i)
+{
+    bool result = false;
+    const std::vector<std::string> &sourceNames = Source.getSubValues();
+    for (auto& s : sourceNames) {
+        int fdx = TechDraw::DrawUtil::getIndexFromName(s);
+            if (fdx == i) {
+                result = true;
+                break;
+            }
+    }
+    return result;
+}
+
+//remove a subElement(Face) from Source PropertyLinkSub
+bool DrawHatch::removeSub(std::string toRemove)
+{
+//    Base::Console().Message("DH::removeSub(%s)\n",toRemove.c_str());
+    bool removed = false;
+    const std::vector<std::string> &sourceNames = Source.getSubValues();
+    std::vector<std::string> newList;
+    App::DocumentObject* sourceFeat = Source.getValue();
+    for (auto& s: sourceNames) {
+        if (s == toRemove) {
+            removed = true;
+        } else {
+            newList.push_back(s);
+        }
+    }
+    if (removed) {
+        Source.setValue(sourceFeat, newList);
+    }
+    return removed;
+}
+
+bool DrawHatch::removeSub(int i)
+{
+//    Base::Console().Message("DH::removeSub(%d)\n",i);
+    std::stringstream ss;
+    ss << "Face" << i;
+    return removeSub(ss.str());
+}
+
+bool DrawHatch::empty(void)
+{
+    const std::vector<std::string> &sourceNames = Source.getSubValues();
+    return sourceNames.empty();
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 

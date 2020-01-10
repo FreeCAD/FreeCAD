@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com	     *
+ *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,7 +48,7 @@ public:
     explicit ElementView(QWidget *parent = 0);
     ~ElementView();
 
-        
+
 Q_SIGNALS:
     void onFilterShortcutPressed();
     
@@ -75,6 +75,8 @@ private:
     void slotElementsChanged(void);
     void updateIcons(int element);
     void updatePreselection();
+    void updateVisibility(int filterindex);
+    void setItemVisibility(int elementindex,int filterindex);
     void clearWidget();
 
 public Q_SLOTS:
@@ -82,6 +84,7 @@ public Q_SLOTS:
     void on_elementsWidget_itemEntered(QTreeWidgetItem *item);
     void on_elementsWidget_filterShortcutPressed();
     void on_elementsWidget_currentFilterChanged ( int index );
+    void on_elementsWidget_currentModeFilterChanged ( int index );
     void on_autoSwitchBox_stateChanged(int state);
 
 protected:
@@ -100,7 +103,7 @@ private:
     std::map<int,QTreeWidgetItem*> itemMap;
     
     bool isautoSwitchBoxChecked;
-    
+
     bool inhibitSelectionUpdate;
 };
 

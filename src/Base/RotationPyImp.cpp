@@ -256,6 +256,18 @@ PyObject* RotationPy::multVec(PyObject * args)
     return new VectorPy(new Vector3d(vec));
 }
 
+PyObject* RotationPy::slerp(PyObject * args)
+{
+    PyObject *rot;
+    double t;
+    if (!PyArg_ParseTuple(args, "O!d", &(RotationPy::Type), &rot, &t))
+        return 0;
+    Rotation *rot0 = this->getRotationPtr();
+    Rotation *rot1 = static_cast<RotationPy*>(rot)->getRotationPtr();
+    Rotation sl = Rotation::slerp(*rot0, *rot1, t);
+    return new RotationPy(new Rotation(sl));
+}
+
 PyObject* RotationPy::toEuler(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -268,6 +280,15 @@ PyObject* RotationPy::toEuler(PyObject * args)
     tuple.setItem(1, Py::Float(B));
     tuple.setItem(2, Py::Float(C));
     return Py::new_reference_to(tuple);
+}
+
+PyObject* RotationPy::toMatrix(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    Base::Matrix4D mat;
+    getRotationPtr()->getValue(mat);
+    return new MatrixPy(new Matrix4D(mat));
 }
 
 PyObject* RotationPy::isSame(PyObject *args)
@@ -352,7 +373,7 @@ Py::Float RotationPy::getAngle(void) const
 void RotationPy::setAngle(Py::Float arg)
 {
     Base::Vector3d axis; double angle;
-    this->getRotationPtr()->getValue(axis, angle);
+    this->getRotationPtr()->getRawValue(axis, angle);
     angle = static_cast<double>(arg);
     this->getRotationPtr()->setValue(axis, angle);
 }
@@ -444,19 +465,16 @@ PyObject * RotationPy::number_power_handler (PyObject* self, PyObject* other, Py
     }
 
     Rotation a = static_cast<RotationPy*>(self)->value();
-
     long b = Py::Int(other);
-    if(!b)
-        return new RotationPy(Rotation());
 
-    if(b < 0) {
-        b = -b;
-        a.invert();
-    }
-    auto res = a;
-    for(--b;b;--b)
-        res *= a;
-    return new RotationPy(res);
+    Vector3d axis;
+    double rfAngle;
+
+    a.getRawValue(axis, rfAngle);
+    rfAngle *= b;
+    a.setValue(axis, rfAngle);
+
+    return new RotationPy(a);
 }
 
 PyObject* RotationPy::number_add_handler(PyObject * /*self*/, PyObject * /*other*/)

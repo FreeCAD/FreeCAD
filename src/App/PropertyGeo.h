@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -56,7 +56,7 @@ class Placement;
  */
 class AppExport PropertyVector: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -77,25 +77,25 @@ public:
     void setValue(double x, double y, double z);
 
     /// Get valid paths for this property; used by auto completer
-    void getPaths(std::vector<ObjectIdentifier> &paths) const;
+    void getPaths(std::vector<ObjectIdentifier> &paths) const override;
 
     /** This method returns a string representation of the property
      */
     const Base::Vector3d &getValue(void) const;
-    const char* getEditorName(void) const {
+    const char* getEditorName(void) const override {
         return "Gui::PropertyEditor::PropertyVectorItem";
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize (void) const {
+    virtual unsigned int getMemSize (void) const override {
         return sizeof(Base::Vector3d);
     }
 
@@ -193,7 +193,7 @@ public:
 /// Double precision vector list
 class AppExport PropertyVectorList: public PropertyListsT<Base::Vector3d>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     typedef PropertyListsT<Base::Vector3d> inherited;
 
@@ -213,10 +213,10 @@ public:
     void setValue(double x, double y, double z);
     using inherited::setValue;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
 protected:
     Base::Vector3d getPyValue(PyObject *) const override;
@@ -236,10 +236,10 @@ public:
     void setValue(float x, float y, float z);
     using inherited::setValue;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
 protected:
     virtual Base::Vector3f getPyValue(PyObject *) const override;
@@ -250,7 +250,7 @@ protected:
     virtual void restoreStream(Base::InputStream &s, unsigned count) override;
     virtual void saveStream(Base::OutputStream &) const override;
 
-    virtual const char *xmlName() const { return "VectorList"; }
+    virtual const char *xmlName() const  override { return "VectorList"; }
 };
 
 
@@ -308,7 +308,7 @@ private:
  */
 class AppExport PropertyPlacement: public Property
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -340,28 +340,28 @@ public:
     const Base::Placement &getValue(void) const;
 
     /// Get valid paths for this property; used by auto completer
-    void getPaths(std::vector<ObjectIdentifier> &paths) const;
+    void getPaths(std::vector<ObjectIdentifier> &paths) const override;
 
-    void setPathValue(const ObjectIdentifier &path, const App::any &value);
+    void setPathValue(const ObjectIdentifier &path, const App::any &value) override;
 
-    App::any getPathValue(const ObjectIdentifier &path) const;
+    virtual App::any getPathValue(const ObjectIdentifier &path) const override;
 
-    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const;
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
 
-    const char* getEditorName(void) const {
+    const char* getEditorName(void) const override {
         return "Gui::PropertyEditor::PropertyPlacementItem";
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize (void) const {
+    virtual unsigned int getMemSize (void) const override {
         return sizeof(Base::Placement);
     }
 
@@ -402,7 +402,7 @@ public:
 
 class AppExport PropertyPlacementList: public PropertyListsT<Base::Placement>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -412,12 +412,12 @@ public:
 
     virtual ~PropertyPlacementList();
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize (void) const override;
 
 protected:
     Base::Placement getPyValue(PyObject *) const override;

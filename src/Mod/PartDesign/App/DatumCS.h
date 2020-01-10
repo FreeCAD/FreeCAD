@@ -31,13 +31,13 @@ namespace PartDesign
 
 class PartDesignExport CoordinateSystem : public Part::Datum
 {
-    PROPERTY_HEADER(PartDesign::CoordinateSystem);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::CoordinateSystem);
 
 public:
     CoordinateSystem();
     virtual ~CoordinateSystem();
 
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderDatumCoordinateSystem";
     }
 

@@ -44,6 +44,7 @@
 #endif
 
 #include "CurveOnMesh.h"
+#include <Base/Converter.h>
 #include <App/Document.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -506,9 +507,9 @@ void CurveOnMeshHandler::approximateEdge(const TopoDS_Edge& edge, double toleran
         pts.reserve(numNodes);
         for (int i=aNodes.Lower(); i<=aNodes.Upper(); i++) {
             const gp_Pnt& p = aNodes.Value(i);
-            pts.push_back(SbVec3f(static_cast<float>(p.X()),
+            pts.emplace_back(static_cast<float>(p.X()),
                                   static_cast<float>(p.Y()),
-                                  static_cast<float>(p.Z())));
+                                  static_cast<float>(p.Z()));
         }
 
         d_ptr->curve->setPoints(pts);
@@ -599,7 +600,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void * ud, SoEventCallback * n)
             if (pp) {
                 CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
                 if (!self->d_ptr->wireClosed) {
-                    Gui::ViewProvider* vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(pp->getPath()));
+                    Gui::ViewProvider* vp = view->getDocument()->getViewProviderByPathFromTail(pp->getPath());
                     if (vp && vp->getTypeId().isDerivedFrom(MeshGui::ViewProviderMesh::getClassTypeId())) {
                         MeshGui::ViewProviderMesh* mesh = static_cast<MeshGui::ViewProviderMesh*>(vp);
                         const SoDetail* detail = pp->getDetail();

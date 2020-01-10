@@ -992,14 +992,14 @@ class GuiExport PropertyLinkItem: public PropertyItem
     Q_OBJECT
     PROPERTYITEM_HEADER
 
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const override;
+    virtual QVariant editorData(QWidget *editor) const override;
 
 protected:
-    virtual QVariant toString(const QVariant&) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
+    virtual QVariant toString(const QVariant&) const override;
+    virtual QVariant value(const App::Property*) const override;
+    virtual void setValue(const QVariant&) override;
     virtual QVariant data(int column, int role) const override;
 
 protected:

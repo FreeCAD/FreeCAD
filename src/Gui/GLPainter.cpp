@@ -32,7 +32,7 @@
 
 using namespace Gui;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass)
 
 GLPainter::GLPainter()
   : viewer(0)

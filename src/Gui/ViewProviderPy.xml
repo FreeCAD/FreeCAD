@@ -26,7 +26,7 @@
             <Documentation>
                 <UserDocu>
                     removeProperty(string) -- Remove a generic property.
-                    Note, you can only remove user-defined properties but not built-in ones.
+                    Note, you can only remove user-defined properties, not built-in ones.
                 </UserDocu>
             </Documentation>
         </Methode>
@@ -86,7 +86,7 @@ Check whether the child object can be removed from other parent and added here b
                 <UserDocu>
 replaceObject(oldObj, newObj) -> Int: replace a child object
 
-Returns 1 if succeed, 0 if not found, -1 if not supported
+Returns 1 if succeeded, 0 if not found, -1 if not supported
                 </UserDocu>
 			</Documentation>
 		</Methode>
@@ -143,7 +143,7 @@ getElementColors(elementName=None) -> dict(elementName:color)
                 <UserDocu>
 setElementColors(colors): set element colors
 
-colors: color dictonary of type elementName:(r,g,b,a)
+colors: color dictionary of type elementName:(r,g,b,a)
                 </UserDocu>
 			</Documentation>
 		</Methode>
@@ -182,7 +182,7 @@ getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box
         </Methode>
 		<Attribute Name="Annotation" ReadOnly="false">
 			<Documentation>
-				<UserDocu>A pivy Separator to add a custom scene graph to this ViewProvider</UserDocu>
+				<UserDocu>A pivy Separator to add a custom scenegraph to this ViewProvider</UserDocu>
 			</Documentation>
 			<Parameter Name="Annotation" Type="Object" />
 		</Attribute>
@@ -218,13 +218,13 @@ getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box
     </Attribute>
     <Attribute Name="CanRemoveChildrenFromRoot" ReadOnly="true">
       <Documentation>
-        <UserDocu>Tells the tree view whether to remvoe the children item from root or not</UserDocu>
+        <UserDocu>Tells the tree view whether to remove the children item from root or not</UserDocu>
       </Documentation>
       <Parameter Name="CanRemoveChildrenFromRoot" Type="Boolean" />
     </Attribute>
     <Attribute Name="LinkVisibility">
       <Documentation>
-          <UserDocu>Get/set visiblities of all links to this view object</UserDocu>
+          <UserDocu>Get/set visibilities of all links to this view object</UserDocu>
       </Documentation>
       <Parameter Name="LinkVisibility" Type="Boolean" />
     </Attribute>

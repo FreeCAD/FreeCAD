@@ -93,9 +93,8 @@ void ViewProviderDragger::updateData(const App::Property* prop)
         Base::Placement p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
         updateTransform(p, pcTransform);
     }
-    else {
-        ViewProviderDocumentObject::updateData(prop);
-    }
+
+    ViewProviderDocumentObject::updateData(prop);
 }
 
 bool ViewProviderDragger::doubleClicked(void)
@@ -121,7 +120,7 @@ ViewProvider *ViewProviderDragger::startEditing(int mode) {
 bool ViewProviderDragger::checkLink() {
     // Trying to detect if the editing request is forwarded by a link object,
     // usually by doubleClicked(). If so, we route the request back. There shall
-    // be no risk of infinit recursion, as ViewProviderLink handles
+    // be no risk of infinite recursion, as ViewProviderLink handles
     // ViewProvider::Transform request by itself.
     ViewProviderDocumentObject *vpParent = 0;
     std::string subname;
@@ -215,6 +214,7 @@ void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int M
       csysDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
       auto mat = viewer->getDocument()->getEditingTransform();
+      viewer->getDocument()->setEditingTransform(mat);
       auto feat = dynamic_cast<App::GeoFeature *>(getObject());
       if(feat) {
           auto matInverse = feat->Placement.getValue().toMatrix();

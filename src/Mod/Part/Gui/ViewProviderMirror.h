@@ -193,6 +193,17 @@ protected:
     virtual void unsetEdit(int ModNum);
 };
 
+class ViewProviderRefine : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderRefine);
+
+public:
+    /// constructor
+    ViewProviderRefine();
+    /// destructor
+    virtual ~ViewProviderRefine();
+};
+
 } // namespace PartGui
 
 

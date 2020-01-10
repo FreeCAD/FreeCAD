@@ -53,6 +53,12 @@ public:
     virtual PyObject *getPyObject(void);
 
     DrawViewPart* getSourceView(void) const;
+    bool affectsFace(int i);
+    bool removeSub(std::string toRemove);
+    bool removeSub(int i);
+    bool empty(void);
+    static bool faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs);
+
 
 protected:
     void onChanged(const App::Property* prop);

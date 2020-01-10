@@ -56,7 +56,7 @@
 #include <boost/bind.hpp>
 #include <deque>
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
 using namespace Base;
 using namespace App;
@@ -1500,7 +1500,7 @@ void Sheet::onChanged(const App::Property *prop) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity)
 
 Property *PropertySpreadsheetQuantity::Copy() const
 {

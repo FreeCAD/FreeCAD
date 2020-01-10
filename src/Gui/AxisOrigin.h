@@ -66,7 +66,7 @@ public:
 
     /** Set customized names for axis components
      *
-     * @param labels: the input names. Avaiable keys are, O: origin,
+     * @param labels: the input names. Available keys are, O: origin,
      *                X: x axis, Y: y axis, Z: z axis, XY: XY plane,
      *                XZ: XY plane, YZ: YZ plane
      *
@@ -104,6 +104,6 @@ private:
     std::map<std::string, CoinPtr<SoNode> > nodeMap;
 };
 
-} // namepsace Gui
+} // namespace Gui
 
 #endif //GUI_AxisOrigin_H

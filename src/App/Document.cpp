@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,7 +21,16 @@
  ***************************************************************************/
 
 
-/*! \namespace App \class App::Document
+/*!
+\defgroup Document Document
+\ingroup APP
+\brief The Base class of the FreeCAD Document
+
+This is (besides the App::Application class) the most important class in FreeCAD.
+It contains all the data of the opened, saved, or newly created FreeCAD Document.
+The App::Document manages the Undo and Redo mechanism and the linking of documents.
+
+\namespace App \class App::Document
 This is besides the Application class the most important class in FreeCAD
 It contains all the data of the opened, saved or newly created FreeCAD Document.
 The Document manage the Undo and Redo mechanism and the linking of documents.
@@ -31,16 +40,16 @@ App::Application. Only the Application can Open or destroy a document.
 
 \section Exception Exception handling
 As the document is the main data structure of FreeCAD we have to take a close
-look on how Exceptions affect the integrity of the App::Document.
+look at how Exceptions affect the integrity of the App::Document.
 
 \section UndoRedo Undo Redo an Transactions
-Undo Redo handling is one of the major mechanism of an document in terms of
+Undo Redo handling is one of the major mechanism of a document in terms of
 user friendliness and speed (no one will wait for Undo too long).
 
 \section Dependency Graph and dependency handling
 The FreeCAD document handles the dependencies of its DocumentObjects with
 an adjacence list. This gives the opportunity to calculate the shortest
-recompute path. Also enables more complicated dependencies beyond trees.
+recompute path. Also, it enables more complicated dependencies beyond trees.
 
 
 @see App::Application
@@ -120,7 +129,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Link.h"
 #include "GeoFeature.h"
 
-FC_LOG_LEVEL_INIT("App", true, true, true);
+FC_LOG_LEVEL_INIT("App", true, true, true)
 
 using Base::Console;
 using Base::streq;
@@ -193,7 +202,7 @@ struct DocumentP
         static std::random_device _RD;
         static std::mt19937 _RGEN(_RD());
         static std::uniform_int_distribution<> _RDIST(0,5000);
-        // Set some random offset to reduce likelyhood of ID collison when
+        // Set some random offset to reduce likelihood of ID collision when
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
         lastObjectId = _RDIST(_RGEN); 
@@ -1276,6 +1285,34 @@ bool Document::isTransactionEmpty() const
     return true;
 }
 
+void Document::clearDocument()
+{
+    this->d->activeObject = 0;
+
+    if(this->d->objectArray.size()) {
+        GetApplication().signalDeleteDocument(*this);
+        this->d->objectArray.clear();
+        for(auto &v : this->d->objectMap) {
+            v.second->setStatus(ObjectStatus::Destroy, true);
+            delete(v.second);
+        }
+        this->d->objectMap.clear();
+        this->d->objectIdMap.clear();
+        GetApplication().signalNewDocument(*this,false);
+    }
+
+    Base::FlagToggler<> flag(_IsRestoring,false);
+
+    setStatus(Document::PartialDoc,false);
+
+    this->d->clearRecomputeLog();
+    this->d->objectArray.clear();
+    this->d->objectMap.clear();
+    this->d->objectIdMap.clear();
+    this->d->lastObjectId = 0;
+}
+
+
 void Document::clearUndos()
 {
     if(isPerformingTransaction() || d->committing) {
@@ -1508,27 +1545,27 @@ Document::Document(const char *name)
             licenseUrl = "http://en.wikipedia.org/wiki/All_rights_reserved";
             break;
         case 1:
-            license = "CreativeCommons Attribution";
+            license = "Creative Commons Attribution";
             licenseUrl = "http://creativecommons.org/licenses/by/4.0/";
             break;
         case 2:
-            license = "CreativeCommons Attribution-ShareAlike";
+            license = "Creative Commons Attribution-ShareAlike";
             licenseUrl = "http://creativecommons.org/licenses/by-sa/4.0/";
             break;
         case 3:
-            license = "CreativeCommons Attribution-NoDerivatives";
+            license = "Creative Commons Attribution-NoDerivatives";
             licenseUrl = "http://creativecommons.org/licenses/by-nd/4.0/";
             break;
         case 4:
-            license = "CreativeCommons Attribution-NonCommercial";
+            license = "Creative Commons Attribution-NonCommercial";
             licenseUrl = "http://creativecommons.org/licenses/by-nc/4.0/";
             break;
         case 5:
-            license = "CreativeCommons Attribution-NonCommercial-ShareAlike";
+            license = "Creative Commons Attribution-NonCommercial-ShareAlike";
             licenseUrl = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
             break;
         case 6:
-            license = "CreativeCommons Attribution-NonCommercial-NoDerivatives";
+            license = "Creative Commons Attribution-NonCommercial-NoDerivatives";
             licenseUrl = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
             break;
         case 7:
@@ -1904,8 +1941,12 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         writer.Stream() << writer.ind() << "<Object "
         << "type=\"" << (*it)->getTypeId().getName()     << "\" "
         << "name=\"" << (*it)->getExportName()       << "\" "
-        << "id=\"" << (*it)->getID()       << "\" "
-        << "ViewType=\"" << (*it)->getViewProviderNameStored() << "\" ";
+        << "id=\"" << (*it)->getID()       << "\" ";
+
+        // Only write out custom view provider types
+        std::string viewType = (*it)->getViewProviderNameStored();
+        if (viewType != (*it)->getViewProviderName())
+            writer.Stream() << "ViewType=\"" << viewType << "\" ";
 
         // See DocumentObjectPy::getState
         if ((*it)->testStatus(ObjectStatus::Touch))
@@ -2114,7 +2155,7 @@ Document::readObjects(Base::XMLReader& reader)
         reader.readElement("Object");
         std::string type = reader.getAttribute("type");
         std::string name = reader.getAttribute("name");
-        const char *viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):0;
+        std::string viewType = reader.hasAttribute("ViewType")?reader.getAttribute("ViewType"):"";
 
         bool partial = false;
         if(d->partialLoadObjects.size()) {
@@ -2151,7 +2192,7 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false, viewType, partial);
+            App::DocumentObject* obj = addObject(type.c_str(), obj_name, /*isNew=*/ false, viewType.c_str(), partial);
             if (obj) {
                 if(lastId < obj->_Id)
                     lastId = obj->_Id;
@@ -2227,7 +2268,6 @@ Document::importObjects(Base::XMLReader& reader)
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
     ExpressionParser::ExpressionImporter expImporter(reader);
-
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -2293,7 +2333,7 @@ static std::string checkFileName(const char *file) {
     std::string fn(file);
 
     // Append extension if missing. This option is added for security reason, so
-    // that the user won't accidently overwrite other file that may be critical.
+    // that the user won't accidentally overwrite other file that may be critical.
     if(App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Document")->GetBool("CheckExtension",true))
     {
@@ -2310,11 +2350,6 @@ static std::string checkFileName(const char *file) {
 
 bool Document::saveAs(const char* _file)
 {
-    if(testStatus(Document::PartialDoc)) {
-        FC_ERR("Partial loaded document '" << Label.getValue() << "' cannot be saved");
-        return false;
-    }
-
     std::string file = checkFileName(_file);
     Base::FileInfo fi(file.c_str());
     if (this->FileName.getStrValue() != file) {
@@ -2328,11 +2363,6 @@ bool Document::saveAs(const char* _file)
 
 bool Document::saveCopy(const char* _file) const
 {
-    if(testStatus(Document::PartialDoc)) {
-        FC_ERR("Partial loaded document '" << Label.getValue() << "' cannot be saved");
-        return false;
-    }
-
     std::string file = checkFileName(_file);
     if (this->FileName.getStrValue() != file) {
         bool result = saveToFile(file.c_str());
@@ -2563,7 +2593,10 @@ void Document::restore (const char *filename,
     d->activeObject = 0;
     d->files.clear();
 
-    if(d->objectArray.size()) {
+    bool signal = false;
+    Document *activeDoc = GetApplication().getActiveDocument();
+    if (!d->objectArray.empty()) {
+        signal = true;
         GetApplication().signalDeleteDocument(*this);
         d->objectArray.clear();
         for(auto &v : d->objectMap) {
@@ -2572,7 +2605,6 @@ void Document::restore (const char *filename,
         }
         d->objectMap.clear();
         d->objectIdMap.clear();
-        GetApplication().signalNewDocument(*this,false);
     }
 
     Base::FlagToggler<> flag(_IsRestoring,false);
@@ -2584,6 +2616,12 @@ void Document::restore (const char *filename,
     d->objectMap.clear();
     d->objectIdMap.clear();
     d->lastObjectId = 0;
+
+    if(signal) {
+        GetApplication().signalNewDocument(*this,true);
+        if(activeDoc == this)
+            GetApplication().setActiveDocument(this);
+    }
 
     if(!filename)
         filename = FileName.getValue();
@@ -3310,10 +3348,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
             FC_WARN("Please reload partial document '" << Label.getValue() << "' for recomputation.");
         return 0;
     }
-
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
-        FC_ERR("Recusrive calling of recomput for dcument " << getName());
+        FC_ERR("Recursive calling of recompute for document " << getName());
         return 0;
     }
     // The 'SkipRecompute' flag can be (tmp.) set to avoid too many
@@ -3333,7 +3370,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 #if 0
     //////////////////////////////////////////////////////////////////////////
-    // Comment by Realthunder: 
+    // FIXME Comment by Realthunder: 
     // the topologicalSrot() below cannot handle partial recompute, haven't got
     // time to figure out the code yet, simply use back boost::topological_sort
     // for now, that is, rely on getDependencyList() to do the sorting. The
@@ -3636,6 +3673,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     }
     catch(Base::AbortException &e){
         e.ReportException();
+        FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog("User abort",Feat);
         return -1;
     }
@@ -3646,6 +3684,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
     }
     catch (Base::Exception &e) {
         e.ReportException();
+        FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << e.what());
         d->addRecomputeLog(e.what(),Feat);
         return 1;
     }
@@ -3679,11 +3718,6 @@ int Document::_recomputeFeature(DocumentObject* Feat)
 
 bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 {
-    if (d->undoing && d->rollback) {
-        FC_LOG("Ignore object recompute on undo/redo");
-        return false;
-    }
-
     // delete recompute log
     d->clearRecomputeLog(Feat);
 
@@ -3703,7 +3737,7 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 }
 
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName, 
-        bool isNew, const char *viewType, bool isPartial)
+                                     bool isNew, const char* viewType, bool isPartial)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
@@ -3764,9 +3798,10 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
 
     pcObject->setStatus(ObjectStatus::PartialObject, isPartial);
 
-    if(!viewType)
+    if (!viewType || viewType[0] == '\0')
         viewType = pcObject->getViewProviderNameOverride();
-    if(viewType) 
+
+    if (viewType && viewType[0] != '\0')
         pcObject->_pcViewProviderName = viewType;
 
     signalNewObject(*pcObject);
@@ -3859,7 +3894,7 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
         pcObject->setStatus(ObjectStatus::New, true);
 
         const char *viewType = pcObject->getViewProviderNameOverride();
-        pcObject->_pcViewProviderName = viewType?viewType:"";
+        pcObject->_pcViewProviderName = viewType ? viewType : "";
 
         signalNewObject(*pcObject);
 
@@ -3918,7 +3953,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     pcObject->setStatus(ObjectStatus::New, true);
 
     const char *viewType = pcObject->getViewProviderNameOverride();
-    pcObject->_pcViewProviderName = viewType?viewType:"";
+    pcObject->_pcViewProviderName = viewType ? viewType : "";
 
     signalNewObject(*pcObject);
 
@@ -3950,7 +3985,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
     }
 
     const char *viewType = pcObject->getViewProviderNameOverride();
-    pcObject->_pcViewProviderName = viewType?viewType:"";
+    pcObject->_pcViewProviderName = viewType ? viewType : "";
 
     // send the signal
     signalNewObject(*pcObject);
@@ -3974,7 +4009,7 @@ void Document::removeObject(const char* sName)
         return;
 
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
-        // TODO: shall we allow removal if there is active udno transaction?
+        // TODO: shall we allow removal if there is active undo transaction?
         FC_LOG("pending remove of " << sName << " after recomputing document " << getName());
         pos->second->setStatus(ObjectStatus::PendingRemove,true);
         return;
@@ -4280,7 +4315,7 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
 
     // Then change them in one go. Note that we don't make change in previous
     // loop, because a changed link property may break other depending link
-    // properties, e.g. a link sub refering to some sub object of an xlink, If
+    // properties, e.g. a link sub referring to some sub object of an xlink, If
     // that sub object is imported with a different name, and xlink is changed
     // before this link sub, it will break.
     for(auto &v : propMap) 
@@ -4319,7 +4354,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
     if(objs.empty()) 
         return 0;
     // Some object may delete its children if deleted, so we collect the IDs
-    // or all depdending objects for saftey reason.
+    // or all depending objects for safety reason.
     std::vector<int> ids;
     ids.reserve(deps.size());
     for(auto o : deps)
@@ -4584,4 +4619,3 @@ bool Document::mustExecute() const
             return true;
     return false;
 }
-

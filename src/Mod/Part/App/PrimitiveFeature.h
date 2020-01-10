@@ -42,9 +42,9 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    PyObject* getPyObject();
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
+    PyObject* getPyObject() override;
     //@}
 
 protected:

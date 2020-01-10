@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>409</width>
-    <height>405</height>
+    <height>460</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -98,6 +98,9 @@
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
            <widget class="QRadioButton" name="rbVertical">
+            <property name="toolTip">
+             <string>Top to Bottom line</string>
+            </property>
             <property name="text">
              <string>Vertical</string>
             </property>
@@ -111,6 +114,9 @@
             <property name="enabled">
              <bool>true</bool>
             </property>
+            <property name="toolTip">
+             <string>Left to Right line</string>
+            </property>
             <property name="text">
              <string>Horizontal</string>
             </property>
@@ -118,8 +124,72 @@
           </item>
           <item row="0" column="2">
            <widget class="QRadioButton" name="rbAligned">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string>Option not implemented yet</string>
+            </property>
             <property name="text">
              <string>Aligned</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,3,0,3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Shift Horiz</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Shift Vert</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Rotate</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QDoubleSpinBox" name="dsbRotate">
+            <property name="toolTip">
+             <string>Rotate line +CCW or -CW</string>
+            </property>
+            <property name="minimum">
+             <double>-360.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>360.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="Gui::QuantitySpinBox" name="qsbVertShift">
+            <property name="toolTip">
+             <string>Move line +Up or -Down</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="Gui::QuantitySpinBox" name="qsbHorizShift">
+            <property name="toolTip">
+             <string>Move line -Left or +Right</string>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -182,13 +252,8 @@
           <item row="4" column="1">
            <widget class="QComboBox" name="cboxStyle">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
-            <item>
-             <property name="text">
-              <string>NoLine</string>
-             </property>
-            </item>
             <item>
              <property name="text">
               <string>Solid</string>

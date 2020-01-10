@@ -34,6 +34,9 @@
 
 #include "DrawViewCollection.h"
 
+class gp_Dir;
+class gp_Pnt;
+
 namespace TechDraw
 {
 
@@ -57,9 +60,9 @@ public:
 
     App::PropertyBool AutoDistribute;
     /// Default horizontal spacing between adjacent views on Drawing, in mm
-    App::PropertyFloat spacingX;
+    App::PropertyLength spacingX;
     /// Default vertical spacing between adjacent views on Drawing, in mm
-    App::PropertyFloat spacingY;
+    App::PropertyLength spacingY;
 
     App::PropertyLink Anchor; /// Anchor Element to align views to
 
@@ -124,8 +127,13 @@ public:
     void spinCW(void);
     void spinCCW(void);
     
-    void dumpISO(char * title);
+    void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();
+
+    void recomputeChildren(void);
+    void updateChildrenScale(void);
+    void autoPositionChildren(void);
+    void updateChildrenEnforce(void);
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -158,11 +166,15 @@ protected:
 
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage(void) const;
-    void updateChildren(void);
+
     void updateChildrenSource(void);
     void updateChildrenLock(void);
     int getViewIndex(const char *viewTypeCStr) const;
     int getDefProjConv(void) const;
+    Base::Vector3d dir2vec(gp_Dir d);
+    gp_Dir vec2dir(Base::Vector3d v);
+
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
 
 };
 

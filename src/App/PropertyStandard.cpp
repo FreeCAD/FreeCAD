@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -61,7 +61,7 @@ using namespace std;
 // PropertyInteger
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyInteger , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyInteger , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -168,7 +168,7 @@ void PropertyInteger::setPathValue(const ObjectIdentifier &path, const App::any 
 // PropertyPath
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPath , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyPath , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -294,7 +294,7 @@ unsigned int PropertyPath::getMemSize (void) const
 // PropertyEnumeration
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyEnumeration, App::PropertyInteger);
+TYPESYSTEM_SOURCE(App::PropertyEnumeration, App::PropertyInteger)
 
 //**************************************************************************
 // Construction/Destruction
@@ -669,7 +669,7 @@ void PropertyIntegerConstraint::setPyObject(PyObject *value)
 // PropertyPercent
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPercent , App::PropertyIntegerConstraint);
+TYPESYSTEM_SOURCE(App::PropertyPercent , App::PropertyIntegerConstraint)
 
 const PropertyIntegerConstraint::Constraints percent = {0,100,1};
 
@@ -691,7 +691,7 @@ PropertyPercent::~PropertyPercent()
 // PropertyIntegerList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyIntegerList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyIntegerList , App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -783,7 +783,7 @@ void PropertyIntegerList::Paste(const Property &from)
 // PropertyIntegerSet
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyIntegerSet , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyIntegerSet , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -941,7 +941,7 @@ unsigned int PropertyIntegerSet::getMemSize (void) const
 // PropertyFloat
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFloat , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyFloat , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1166,7 +1166,7 @@ void PropertyFloatConstraint::setPyObject(PyObject *value)
 // PropertyPrecision
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPrecision, App::PropertyFloatConstraint);
+TYPESYSTEM_SOURCE(App::PropertyPrecision, App::PropertyFloatConstraint)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1188,7 +1188,7 @@ PropertyPrecision::~PropertyPrecision()
 // PropertyFloatList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFloatList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyFloatList , App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1371,7 +1371,7 @@ void _PropertyFloatList::Paste(const Property &from)
 // PropertyString
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyString , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyString , App::Property)
 
 PropertyString::PropertyString()
 {
@@ -1631,7 +1631,7 @@ App::any PropertyString::getPathValue(const ObjectIdentifier &path) const
 // PropertyUUID
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyUUID , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyUUID , App::Property)
 
 PropertyUUID::PropertyUUID()
 {
@@ -1754,7 +1754,7 @@ unsigned int PropertyUUID::getMemSize (void) const
 // PropertyFont
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFont , App::PropertyString);
+TYPESYSTEM_SOURCE(App::PropertyFont , App::PropertyString)
 
 PropertyFont::PropertyFont()
 {
@@ -1770,7 +1770,7 @@ PropertyFont::~PropertyFont()
 // PropertyStringList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyStringList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyStringList , App::PropertyLists)
 
 PropertyStringList::PropertyStringList()
 {
@@ -1810,7 +1810,8 @@ PyObject *PropertyStringList::getPyObject(void)
     return list;
 }
 
-std::string PropertyStringList::getPyValue(PyObject *item) const {
+std::string PropertyStringList::getPyValue(PyObject *item) const
+{
     std::string ret;
     if (PyUnicode_Check(item)) {
 #if PY_MAJOR_VERSION >= 3
@@ -1883,7 +1884,7 @@ void PropertyStringList::Paste(const Property &from)
 // PropertyMap
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyMap , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyMap , App::Property)
 
 PropertyMap::PropertyMap()
 {
@@ -2070,7 +2071,7 @@ void PropertyMap::Paste(const Property &from)
 // PropertyBool
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyBool , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyBool , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -2185,7 +2186,7 @@ App::any PropertyBool::getPathValue(const ObjectIdentifier &path) const
 // PropertyBoolList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyBoolList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyBoolList , App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -2299,7 +2300,7 @@ unsigned int PropertyBoolList::getMemSize (void) const
 // PropertyColor
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyColor , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyColor , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -2448,7 +2449,7 @@ void PropertyColor::Paste(const Property &from)
 // PropertyColorList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyColorList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyColorList , App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -2552,7 +2553,7 @@ void PropertyColorList::Paste(const Property &from)
 // PropertyMaterial
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyMaterial , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyMaterial , App::Property)
 
 PropertyMaterial::PropertyMaterial()
 {
@@ -2686,7 +2687,7 @@ void PropertyMaterial::Paste(const Property &from)
 // PropertyMaterialList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyMaterialList, App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyMaterialList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -2816,7 +2817,7 @@ void PropertyMaterialList::Paste(const Property &from)
 // PropertyPersistentObject
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyPersistentObject , App::PropertyString);
+TYPESYSTEM_SOURCE(App::PropertyPersistentObject , App::PropertyString)
 
 PyObject *PropertyPersistentObject::getPyObject(void){
     if(_pObject)
@@ -2827,13 +2828,13 @@ PyObject *PropertyPersistentObject::getPyObject(void){
 void PropertyPersistentObject::Save(Base::Writer &writer) const{
     inherited::Save(writer);
 #define ELEMENT_PERSISTENT_OBJ "PersistentObject"
-    writer.Stream() << writer.ind() << "<" ELEMENT_PERSISTENT_OBJ ">\n";
+    writer.Stream() << writer.ind() << "<" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
     if(_pObject) {
         writer.incInd();
         _pObject->Save(writer);
         writer.decInd();
     }
-    writer.Stream() << writer.ind() << "</" ELEMENT_PERSISTENT_OBJ ">\n";
+    writer.Stream() << writer.ind() << "</" ELEMENT_PERSISTENT_OBJ ">" << std::endl;
 }
 
 void PropertyPersistentObject::Restore(Base::XMLReader &reader){

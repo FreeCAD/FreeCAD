@@ -35,7 +35,7 @@
 #include <App/Application.h>
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <boost/bind.hpp>
 #include "../App/Utils.h"
@@ -252,8 +252,8 @@ std::vector<Range> SheetTableView::selectedRanges() const
         std::pair<int, int> ul = (*i).first;
         std::pair<int, int> size = (*i).second;
 
-        result.push_back(Range(ul.first, ul.second,
-                                                   ul.first + size.first - 1, ul.second + size.second - 1));
+        result.emplace_back(ul.first, ul.second,
+                                                   ul.first + size.first - 1, ul.second + size.second - 1);
     }
 
     return result;
@@ -298,8 +298,7 @@ void SheetTableView::insertRows()
                 break;
         }
 
-        FCMD_OBJ_CMD2("insertRows('%s', %d)", sheet,
-                                rowName(prev).c_str(), count);
+        Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -331,8 +330,7 @@ void SheetTableView::removeRows()
     /* Remove rows */
     Gui::Command::openCommand("Remove rows");
     for (std::vector<int>::const_iterator it = sortedRows.begin(); it != sortedRows.end(); ++it) {
-        FCMD_OBJ_CMD2("removeRows('%s', %d)", sheet,
-                                rowName(*it).c_str(), 1);
+        Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(*it).c_str(), 1);
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -379,8 +377,8 @@ void SheetTableView::insertColumns()
                 break;
         }
 
-        FCMD_OBJ_CMD2("insertColumns('%s', %d)", sheet,
-                                columnName(prev).c_str(), count);
+        Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)",
+                                     columnName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -411,8 +409,8 @@ void SheetTableView::removeColumns()
     /* Remove columns */
     Gui::Command::openCommand("Remove rows");
     for (std::vector<int>::const_iterator it = sortedColumns.begin(); it != sortedColumns.end(); ++it)
-        FCMD_OBJ_CMD2("removeColumns('%s', %d)", sheet,
-                                columnName(*it).c_str(), 1);
+        Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)",
+                                     columnName(*it).c_str(), 1);
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 

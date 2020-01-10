@@ -70,8 +70,8 @@ namespace KDL
                 rotate=false;
                 rotations=0;
                 //Perform rotations between columns of B
-                for(unsigned int i=0;i<B.cols();i++){
-                    for(unsigned int j=i+1;j<B.cols();j++){
+                for(auto i=0;i<B.cols();i++){
+                    for(auto j=i+1;j<B.cols();j++){
                         //calculate plane rotation
                         double p = B.col(i).dot(B.col(j));
                         double qi =B.col(i).dot(B.col(i));
@@ -111,7 +111,7 @@ namespace KDL
                 }
                 //Only calculate new U and S if there were any rotations
                 if(rotations!=0){
-                    for(unsigned int i=0;i<U.rows();i++) {
+                    for(auto i=0;i<U.rows();i++) {
                         if(i<B.cols()){
                             double si=sqrt(B.col(i).dot(B.col(i)));
                             if(si==0)
@@ -134,8 +134,8 @@ namespace KDL
                 rotate=false;
                 rotations=0;
                 //Perform rotations between rows of B
-                for(unsigned int i=0;i<B.cols();i++){
-                    for(unsigned int j=i+1;j<B.cols();j++){
+                for(auto i=0;i<B.cols();i++){
+                    for(auto j=i+1;j<B.cols();j++){
                         //calculate plane rotation
                         double p = B.row(i).dot(B.row(j));
                         double qi = B.row(i).dot(B.row(i));
@@ -179,7 +179,7 @@ namespace KDL
 
                 //Only calculate new U and S if there were any rotations
                 if(rotations!=0){
-                    for(unsigned int i=0;i<V.rows();i++) {
+                    for(auto i=0;i<V.rows();i++) {
                         double si=sqrt(B.row(i).dot(B.row(i)));
                         if(si==0)
                             V.col(i) = B.row(i);

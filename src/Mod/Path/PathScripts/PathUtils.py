@@ -38,11 +38,8 @@ from PathScripts import PathLog
 from PySide import QtCore
 from PySide import QtGui
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 
 def translate(context, text, disambig=None):
@@ -68,57 +65,6 @@ def waiting_effects(function):
             QtGui.QApplication.restoreOverrideCursor()
         return res
     return new_function
-
-
-def cleanedges(splines, precision):
-    '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
-    Returns Lines as is. Filters Circle and Arcs for over 180 degrees. Discretizes Ellipses. Ignores other geometry. '''
-    PathLog.track()
-    edges = []
-    for spline in splines:
-        if geomType(spline) == "BSplineCurve":
-            arcs = spline.Curve.toBiArcs(precision)
-            for i in arcs:
-                edges.append(Part.Edge(i))
-
-        elif geomType(spline) == "BezierCurve":
-            newspline = spline.Curve.toBSpline()
-            arcs = newspline.toBiArcs(precision)
-            for i in arcs:
-                edges.append(Part.Edge(i))
-
-        elif geomType(spline) == "Ellipse":
-            edges = curvetowire(spline, 1.0)  # fixme hardcoded value
-
-        elif geomType(spline) == "Circle":
-            arcs = filterArcs(spline)
-            for i in arcs:
-                edges.append(Part.Edge(i))
-
-        elif geomType(spline) == "Line":
-            edges.append(spline)
-
-        elif geomType(spline) == "LineSegment":
-            edges.append(spline)
-
-        else:
-            pass
-
-    return edges
-
-
-def curvetowire(obj, steps):
-    '''adapted from DraftGeomUtils, because the discretize function changed a bit '''
-
-    PathLog.track()
-    points = obj.copy().discretize(Distance=eval('steps'))
-    p0 = points[0]
-    edgelist = []
-    for p in points[1:]:
-        edge = Part.makeLine((p0.x, p0.y, p0.z), (p.x, p.y, p.z))
-        edgelist.append(edge)
-        p0 = p
-    return edgelist
 
 
 def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
@@ -199,12 +145,12 @@ def isDrillable(obj, candidate, tooldiameter=None, includePartials=False):
                         else:
                             drillable = True
         PathLog.debug("candidate is drillable: {}".format(drillable))
-    except Exception as ex:
+    except Exception as ex: # pylint: disable=broad-except
         PathLog.warning(translate("PathUtils", "Issue determine drillability: {}").format(ex))
     return drillable
 
 
-# fixme set at 4 decimal places for testing
+# set at 4 decimal places for testing
 def fmt(val):
     return format(val, '.4f')
 
@@ -272,7 +218,7 @@ def horizontalFaceLoop(obj, face, faceList=None):
         outline = TechDraw.findShapeOutline(comp, 1, FreeCAD.Vector(0, 0, 1))
 
         # findShapeOutline always returns closed wires, by removing the
-        # trace-backs single edge spikes don't contriubte to the bound box
+        # trace-backs single edge spikes don't contribute to the bound box
         uniqueEdges = []
         for edge in outline.Edges:
             if any(PathGeom.edgesMatch(edge, e) for e in uniqueEdges):
@@ -406,7 +352,7 @@ def getToolControllers(obj):
     '''returns all the tool controllers'''
     try:
         job = findParentJob(obj)
-    except:
+    except Exception: # pylint: disable=broad-except
         job = None
 
     if job:
@@ -469,6 +415,8 @@ def addToJob(obj, jobname=None):
     obj = obj
     jobname = None'''
     PathLog.track(jobname)
+
+    job = None
     if jobname is not None:
         jobs = GetJobs(jobname)
         if len(jobs) == 1:
@@ -507,7 +455,6 @@ def rapid(x=None, y=None, z=None):
 
 def feed(x=None, y=None, z=None, horizFeed=0, vertFeed=0):
     """ Return gcode string to perform a linear feed."""
-    global feedxy
     retstr = "G01 F"
     if(x is None) and (y is None):
         retstr += str("%.4f" % horizFeed)
@@ -577,9 +524,8 @@ def helicalPlunge(plungePos, rampangle, destZ, startZ, toold, plungeR, horizFeed
     # toold = self.radius * 2
 
     helixCmds = "(START HELICAL PLUNGE)\n"
-    if(plungePos is None):
+    if plungePos is None:
         raise Exception("Helical plunging requires a position!")
-        return None
 
     helixX = plungePos.x + toold / 2 * plungeR
     helixY = plungePos.y
@@ -628,12 +574,10 @@ def rampPlunge(edge, rampangle, destZ, startZ):
     rampCmds = "(START RAMP PLUNGE)\n"
     if(edge is None):
         raise Exception("Ramp plunging requires an edge!")
-        return None
 
     sPoint = edge.Vertexes[0].Point
     ePoint = edge.Vertexes[1].Point
     # Evidently edges can get flipped- pick the right one in this case
-    # FIXME: This is iffy code, based on what already existed in the "for vpos ..." loop below
     if ePoint == sPoint:
         # print "FLIP"
         ePoint = edge.Vertexes[-1].Point
@@ -645,7 +589,6 @@ def rampPlunge(edge, rampangle, destZ, startZ):
     rampCmds += rapid(z=startZ)
 
     # Ramp down to the requested depth
-    # FIXME: This might be an arc, so handle that as well
 
     curZ = max(startZ - rampDZ, destZ)
     done = False
@@ -665,11 +608,13 @@ def rampPlunge(edge, rampangle, destZ, startZ):
     return rampCmds
 
 
-def sort_jobs(locations, keys, attractors=[]):
+def sort_jobs(locations, keys, attractors=None):
     """ sort holes by the nearest neighbor method
         keys: two-element list of keys for X and Y coordinates. for example ['x','y']
         originally written by m0n5t3r for PathHelix
     """
+    if attractors is None:
+        attractors = []
     try:
         from queue import PriorityQueue
     except ImportError:
@@ -701,7 +646,7 @@ def sort_jobs(locations, keys, attractors=[]):
             # prevent dictionary comparison by inserting the index
             q.put((dist(j, location) + weight(j), i, j))
 
-        prio, i, result = q.get()
+        prio, i, result = q.get() # pylint: disable=unused-variable
 
         return result
 
@@ -753,14 +698,14 @@ def guessDepths(objshape, subs=None):
 
 def drillTipLength(tool):
     """returns the length of the drillbit tip."""
-    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or tool.Diameter == 0.0:
+    if tool.CuttingEdgeAngle == 180 or tool.CuttingEdgeAngle == 0.0 or float(tool.Diameter) == 0.0:
         return 0.0
     else:
         if tool.CuttingEdgeAngle <= 0 or tool.CuttingEdgeAngle >= 180:
             PathLog.error(translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % tool.CuttingEdgeAngle)
             return 0.0
         theta = math.radians(tool.CuttingEdgeAngle)
-        length = (tool.Diameter / 2) / math.tan(theta / 2)
+        length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
         if length < 0:
             PathLog.error(translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length") % tool.CuttingEdgeAngle)
             return 0.0

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,6 +37,7 @@
 #include <Gui/WidgetFactory.h>
 
 #include "Workbench.h"
+#include "MDIViewPage.h"
 
 #include "DlgPrefsTechDrawImp.h"
 #include "DlgPrefsTechDraw2Imp.h"
@@ -58,6 +59,10 @@
 #include "ViewProviderImage.h"
 #include "ViewProviderRichAnno.h"
 #include "ViewProviderLeader.h"
+#include "ViewProviderTile.h"
+#include "ViewProviderWeld.h"
+
+#include "ViewProviderCosmeticExtension.h"
 
 
 // use a different name to CreateCommand()
@@ -112,6 +117,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommandsAnnotate();
 
     TechDrawGui::Workbench::init();
+    TechDrawGui::MDIViewPage::init();
 
     TechDrawGui::ViewProviderPage::init();
     TechDrawGui::ViewProviderDrawingView::init();
@@ -134,6 +140,10 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderImage::init();
     TechDrawGui::ViewProviderLeader::init();
     TechDrawGui::ViewProviderRichAnno::init();
+    TechDrawGui::ViewProviderTile::init();
+    TechDrawGui::ViewProviderWeld::init();
+
+    TechDrawGui::ViewProviderCosmeticExtension::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");

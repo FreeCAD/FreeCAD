@@ -64,7 +64,7 @@ class BoxCylinder:
 
 def makeParallelepiped():
 	doc = FreeCAD.activeDocument()
-	if doc == None:
+	if doc is None:
 		doc = FreeCAD.newDocument()
 	obj=doc.addObject("Part::FeaturePython","Parallelepiped")
 	obj.Label = "Parallelepiped"
@@ -74,7 +74,7 @@ def makeParallelepiped():
 
 def makeBoxCylinder():
 	doc = FreeCAD.activeDocument()
-	if doc == None:
+	if doc is None:
 		doc = FreeCAD.newDocument()
 	cyl=doc.addObject("Part::Cylinder","Cylinder")
 	cyl.Radius=16.0

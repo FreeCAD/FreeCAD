@@ -31,10 +31,16 @@ Base::Vector3d toVector3d(const double* a)
 
 CDxfWrite::CDxfWrite(const char* filepath) :
 //TODO: these should probably be parms in config file
-m_entityHandle(0x300),
-m_layerHandle(0x30),
-m_blockHandle(0x210),
-m_blkRecordHandle(0x110),
+//handles:
+//boilerplate 0 - A00
+//used by dxf.cpp A01 - FFFE
+//ACAD HANDSEED  FFFF
+
+m_handle(0xA00),                       //room for 2560 handles in boilerplate files
+//m_entityHandle(0x300),               //don't need special ranges for handles
+//m_layerHandle(0x30),
+//m_blockHandle(0x210),
+//m_blkRecordHandle(0x110),
 m_polyOverride(false),
 m_layerName("none")
 {
@@ -435,40 +441,53 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     return outString.str();
 }
 
-std::string CDxfWrite::getEntityHandle(void)
+std::string CDxfWrite::getHandle(void)
 {
-    m_entityHandle++;
+    m_handle++;
     std::stringstream ss;
     ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
-    ss << m_entityHandle;
+    ss << m_handle;
     return ss.str();
+}
+
+std::string CDxfWrite::getEntityHandle(void)
+{
+    return getHandle();
+//    m_entityHandle++;
+//    std::stringstream ss;
+//    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
+//    ss << m_entityHandle;
+//    return ss.str();
 }
 
 std::string CDxfWrite::getLayerHandle(void)
 {
-    m_layerHandle++;
-    std::stringstream ss;
-    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
-    ss << m_layerHandle;
-    return ss.str();
+    return getHandle();
+//    m_layerHandle++;
+//    std::stringstream ss;
+//    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
+//    ss << m_layerHandle;
+//    return ss.str();
 }
 
 std::string CDxfWrite::getBlockHandle(void)
 {
-    m_blockHandle++;
-    std::stringstream ss;
-    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
-    ss << m_blockHandle;
-    return ss.str();
+    return getHandle();
+//    m_blockHandle++;
+//    std::stringstream ss;
+//    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
+//    ss << m_blockHandle;
+//    return ss.str();
 }
 
 std::string CDxfWrite::getBlkRecordHandle(void)
 {
-    m_blkRecordHandle++;
-    std::stringstream ss;
-    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
-    ss << m_blkRecordHandle;
-    return ss.str();
+    return getHandle();
+//    m_blkRecordHandle++;
+//    std::stringstream ss;
+//    ss << std::uppercase << std::hex << std::setfill('0') << std::setw(2);
+//    ss << m_blkRecordHandle;
+//    return ss.str();
 }
 
 void CDxfWrite::addBlockName(std::string b, std::string h) 

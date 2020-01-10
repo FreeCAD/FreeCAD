@@ -52,11 +52,9 @@
 using namespace TechDrawGui;
 
 QGTracker::QGTracker(QGraphicsScene* inScene, TrackerMode m):
-    m_width(0),
     m_sleep(false),
     m_qgParent(nullptr),
-    m_lastClick(QPointF(FLT_MAX,FLT_MAX)),
-    m_2clickPending(false)
+    m_lastClick(QPointF(FLT_MAX,FLT_MAX))
 {
     setTrackerMode(m);
     if (inScene != nullptr) {

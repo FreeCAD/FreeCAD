@@ -1,4 +1,3 @@
-#line 2 "lex.ExpressionParser.c"
 
 #line 4 "lex.ExpressionParser.c"
 

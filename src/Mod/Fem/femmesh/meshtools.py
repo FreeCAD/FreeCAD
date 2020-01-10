@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -37,20 +37,20 @@ def get_femnodes_by_femobj_with_references(
 ):
     node_set = []
     if femmesh.GroupCount:
-        node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, 'Node')
-        # FreeCAD.Console.PrintMessage('node_set_group: {}\n'.format(node_set))
+        node_set = get_femmesh_groupdata_sets_by_name(femmesh, femobj, "Node")
+        # FreeCAD.Console.PrintMessage("node_set_group: {}\n".format(node_set))
         if node_set:
-            FreeCAD.Console.PrintMessage(
-                "  Finite element mesh nodes where retrieved "
+            FreeCAD.Console.PrintLog(
+                "    Finite element mesh nodes where retrieved "
                 "from existent finite element mesh group data.\n"
             )
     if not node_set:
-        FreeCAD.Console.PrintMessage(
-            "  Finite element mesh nodes will be retrieved "
+        FreeCAD.Console.PrintLog(
+            "    Finite element mesh nodes will be retrieved "
             "by searching the appropriate nodes in the finite element mesh.\n"
         )
-        node_set = get_femnodes_by_references(femmesh, femobj['Object'].References)
-        # FreeCAD.Console.PrintMessage('node_set_nogroup: {}\n'.format(node_set))
+        node_set = get_femnodes_by_references(femmesh, femobj["Object"].References)
+        # FreeCAD.Console.PrintMessage("node_set_nogroup: {}\n".format(node_set))
 
     return node_set
 
@@ -62,8 +62,8 @@ def get_femelements_by_references(
     references,
     femnodes_ele_table=None
 ):
-    '''get the femelements for a list of references
-    '''
+    """get the femelements for a list of references
+    """
     references_femelements = []
     for ref in references:
         # femnodes for the current ref
@@ -91,8 +91,8 @@ def get_femnodes_by_references(
     femmesh,
     references
 ):
-    '''get the femnodes for a list of references
-    '''
+    """get the femnodes for a list of references
+    """
     references_femnodes = []
     for ref in references:
         references_femnodes += get_femnodes_by_refshape(femmesh, ref)
@@ -112,25 +112,25 @@ def get_femnodes_by_refshape(
         # the following method getElement(element) does not return Solid elements
         r = get_element(ref[0], refelement)
         FreeCAD.Console.PrintMessage(
-            '  '
-            'ReferenceShape ... Type: {0}, '
-            'Object name: {1}, '
-            'Object label: {2}, '
-            'Element name: {3}\n'
+            "    "
+            "ReferenceShape ... Type: {0}, "
+            "Object name: {1}, "
+            "Object label: {2}, "
+            "Element name: {3}\n"
             .format(r.ShapeType, ref[0].Name, ref[0].Label, refelement)
         )
-        if r.ShapeType == 'Vertex':
+        if r.ShapeType == "Vertex":
             nodes += femmesh.getNodesByVertex(r)
-        elif r.ShapeType == 'Edge':
+        elif r.ShapeType == "Edge":
             nodes += femmesh.getNodesByEdge(r)
-        elif r.ShapeType == 'Face':
+        elif r.ShapeType == "Face":
             nodes += femmesh.getNodesByFace(r)
-        elif r.ShapeType == 'Solid':
+        elif r.ShapeType == "Solid":
             nodes += femmesh.getNodesBySolid(r)
         else:
             FreeCAD.Console.PrintMessage(
-                '  '
-                'No Vertice, Edge, Face or Solid as reference shapes!\n'
+                "  "
+                "No Vertice, Edge, Face or Solid as reference shapes!\n"
             )
     return nodes
 
@@ -151,7 +151,7 @@ def get_femelement_table(
         for i in femmesh.Edges:
             femelement_table[i] = femmesh.getElementNodes(i)
     else:
-        FreeCAD.Console.PrintError('Neither solid nor face nor edge femmesh!\n')
+        FreeCAD.Console.PrintError("Neither solid nor face nor edge femmesh!\n")
     return femelement_table
 
 
@@ -199,7 +199,7 @@ def get_femnodes_ele_table(
     femnodes_mesh,
     femelement_table
 ):
-    '''the femnodes_ele_table contains for each node its membership in elements
+    """the femnodes_ele_table contains for each node its membership in elements
     {nodeID : [[eleID, NodePosition], [], ...], nodeID : [[], [], ...], ...}
     stored information is:
     element number, the number of nodes per element
@@ -213,22 +213,22 @@ def get_femnodes_ele_table(
     volume or face or edgemesh the femnodes_ele_table only
     has either volume or face or edge elements
     see get_femelement_table()
-    '''
+    """
     femnodes_ele_table = {}  # node_dict in ulrichs class
     for n in femnodes_mesh:  # initialize it with sorted node keys and empty lists
         femnodes_ele_table[n] = []
     for ele in femelement_table:
         ele_list = femelement_table[ele]
-        # FreeCAD.Console.PrintMessage('{}\n'.format(ele_list))
+        # FreeCAD.Console.PrintMessage("{}\n".format(ele_list))
         pos = int(1)
         for ele_node in ele_list:
             femnodes_ele_table[ele_node].append([ele, pos])
             pos = pos << 1
     FreeCAD.Console.PrintLog(
-        'len femnodes_ele_table: {}\n'
+        "len femnodes_ele_table: {}\n"
         .format(len(femnodes_ele_table))
     )
-    FreeCAD.Console.PrintLog('femnodes_ele_table: {}\n'.format(femnodes_ele_table))
+    FreeCAD.Console.PrintLog("femnodes_ele_table: {}\n".format(femnodes_ele_table))
     return femnodes_ele_table
 
 
@@ -236,8 +236,8 @@ def get_femnodes_ele_table(
 def get_copy_of_empty_femelement_table(
     femelement_table
 ):
-    '''{eleID : 0, eleID : 0, ...}
-    '''
+    """{eleID : 0, eleID : 0, ...}
+    """
     empty_femelement_table = {}
     for ele in femelement_table:  # initialize it with sorted element keys and empty int
         empty_femelement_table[ele] = 0
@@ -250,9 +250,9 @@ def get_bit_pattern_dict(
     femnodes_ele_table,
     node_set
 ):
-    '''Now we are looking for nodes inside of the Faces = filling the bit_pattern_dict
+    """Now we are looking for nodes inside of the Faces = filling the bit_pattern_dict
     {eleID : [lenEleNodes, binary_position]}
-    see forum post for a very good explanation of what's really happening
+    see forum post for a very good explanation of what"s really happening
     https://forum.freecadweb.org/viewtopic.php?f=18&t=17318&start=50#p141108
     The bit_pattern_dict holds later an integer (bit array) for each element, which gives us
     the information we are searching for:
@@ -260,10 +260,10 @@ def get_bit_pattern_dict(
     or has this element a face we are searching for?
     The number in the ele_dict is organized as a bit array.
     The corresponding bit is set, if the node of the node_set is contained in the element.
-    '''
-    FreeCAD.Console.PrintLog('len femnodes_ele_table: ' + str(len(femnodes_ele_table)) + '\n')
-    FreeCAD.Console.PrintLog('len node_set: ' + str(len(node_set)) + '\n')
-    FreeCAD.Console.PrintLog('node_set: {}\n'.format(node_set))
+    """
+    FreeCAD.Console.PrintLog("len femnodes_ele_table: " + str(len(femnodes_ele_table)) + "\n")
+    FreeCAD.Console.PrintLog("len node_set: " + str(len(node_set)) + "\n")
+    FreeCAD.Console.PrintLog("node_set: {}\n".format(node_set))
     bit_pattern_dict = get_copy_of_empty_femelement_table(femelement_table)
     # # initializing the bit_pattern_dict
     for ele in femelement_table:
@@ -272,8 +272,8 @@ def get_bit_pattern_dict(
     for node in node_set:
         for nList in femnodes_ele_table[node]:
             bit_pattern_dict[nList[0]][1] += nList[1]
-    FreeCAD.Console.PrintLog('len bit_pattern_dict: ' + str(len(bit_pattern_dict)) + '\n')
-    # FreeCAD.Console.PrintMessage('bit_pattern_dict: {}\n'.format(bit_pattern_dict))
+    FreeCAD.Console.PrintLog("len bit_pattern_dict: " + str(len(bit_pattern_dict)) + "\n")
+    # FreeCAD.Console.PrintMessage("bit_pattern_dict: {}\n".format(bit_pattern_dict))
     return bit_pattern_dict
 
 
@@ -281,8 +281,8 @@ def get_bit_pattern_dict(
 def get_ccxelement_faces_from_binary_search(
     bit_pattern_dict
 ):
-    '''get the CalculiX element face numbers
-    '''
+    """get the CalculiX element face numbers
+    """
     tet10_mask = {
         119: 1,
         411: 2,
@@ -332,8 +332,8 @@ def get_ccxelement_faces_from_binary_search(
         for key in mask_dict:
             if (key & bit_pattern_dict[ele][1]) == key:
                 faces.append([ele, mask_dict[key]])
-    FreeCAD.Console.PrintLog('found Faces: {}\n'.format(len(faces)))
-    # FreeCAD.Console.PrintMessage('faces: {}\n'.format(faces))
+    FreeCAD.Console.PrintLog("found Faces: {}\n".format(len(faces)))
+    # FreeCAD.Console.PrintMessage("faces: {}\n".format(faces))
     return faces
 
 
@@ -343,12 +343,12 @@ def get_femelements_by_femnodes_bin(
     femnodes_ele_table,
     node_list
 ):
-    '''for every femelement of femelement_table
+    """for every femelement of femelement_table
     if all nodes of the femelement are in node_list,
     the femelement is added to the list which is returned
     blind fast binary search, but works for volumes only
-    '''
-    FreeCAD.Console.PrintMessage('binary search: get_femelements_by_femnodes_bin\n')
+    """
+    FreeCAD.Console.PrintMessage("binary search: get_femelements_by_femnodes_bin\n")
     vol_masks = {
         4: 15,
         6: 63,
@@ -358,7 +358,7 @@ def get_femelements_by_femnodes_bin(
         20: 1048575}
     # Now we are looking for nodes inside of the Volumes = filling the bit_pattern_dict
     FreeCAD.Console.PrintMessage(
-        'len femnodes_ele_table: {}\n'
+        "len femnodes_ele_table: {}\n"
         .format(len(femnodes_ele_table))
     )
     bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_list)
@@ -366,12 +366,12 @@ def get_femelements_by_femnodes_bin(
     ele_list = []  # The ele_list contains the result of the search.
     for ele in bit_pattern_dict:
         FreeCAD.Console.PrintLog(
-            'bit_pattern_dict[ele][0]: {}\n'.format(bit_pattern_dict[ele][0])
+            "bit_pattern_dict[ele][0]: {}\n".format(bit_pattern_dict[ele][0])
         )
         if bit_pattern_dict[ele][1] == vol_masks[bit_pattern_dict[ele][0]]:
             ele_list.append(ele)
-    FreeCAD.Console.PrintMessage('found Volumes: {}\n'.format(len(ele_list)))
-    # FreeCAD.Console.PrintMessage('   volumes: {}\n'.format(ele_list))
+    FreeCAD.Console.PrintMessage("found Volumes: {}\n".format(len(ele_list)))
+    # FreeCAD.Console.PrintMessage("   volumes: {}\n".format(ele_list))
     return ele_list
 
 
@@ -380,12 +380,12 @@ def get_femelements_by_femnodes_std(
     femelement_table,
     node_list
 ):
-    '''for every femelement of femelement_table
+    """for every femelement of femelement_table
     if all nodes of the femelement are in node_list,
     the femelement is added to the list which is returned
     e: elementlist
-    nodes: nodelist '''
-    FreeCAD.Console.PrintMessage('std search: get_femelements_by_femnodes_std\n')
+    nodes: nodelist """
+    FreeCAD.Console.PrintMessage("std search: get_femelements_by_femnodes_std\n")
     e = []  # elementlist
     for elementID in sorted(femelement_table):
         nodecount = 0
@@ -402,7 +402,7 @@ def get_femvolumeelements_by_femfacenodes(
     femelement_table,
     node_list
 ):
-    '''assume femelement_table only has volume elements
+    """assume femelement_table only has volume elements
     for every femvolumeelement of femelement_table
     for tetra4 and tetra10 the C++ methods could be used --> test again to be sure
     if hexa8 volume element
@@ -414,7 +414,7 @@ def get_femvolumeelements_by_femfacenodes(
     if penta15 volume element
         --> if exact 6 or 8 element nodes are in node_list --> add femelement
     e: elementlist
-    nodes: nodelist '''
+    nodes: nodelist """
     e = []  # elementlist
     for elementID in sorted(femelement_table):
         nodecount = 0
@@ -457,11 +457,11 @@ def get_femvolumeelements_by_femfacenodes(
                 e.append(elementID)
         else:
             FreeCAD.Console.PrintError(
-                'Error in get_femvolumeelements_by_femfacenodes(): '
-                'unknown volume element: {}\n'
+                "Error in get_femvolumeelements_by_femfacenodes(): "
+                "unknown volume element: {}\n"
                 .format(el_nd_ct)
             )
-    # FreeCAD.Console.PrintMessage('{}\n'.format(sorted(e)))
+    # FreeCAD.Console.PrintMessage("{}\n".format(sorted(e)))
     return e
 
 
@@ -478,14 +478,14 @@ def get_femelement_sets(
     referenced_femelements = []
     has_remaining_femelements = None
     for fem_object_i, fem_object in enumerate(fem_objects):
-        obj = fem_object['Object']
+        obj = fem_object["Object"]
         FreeCAD.Console.PrintMessage(
             "Constraint: {} --> We're going to search "
             "in the mesh for the element ID's.\n"
             .format(obj.Name)
         )
         # unique short identifier
-        fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)
+        fem_object["ShortName"] = get_elset_short_name(obj, fem_object_i)
         if obj.References:
             ref_shape_femelements = []
             ref_shape_femelements = get_femelements_by_references(
@@ -495,7 +495,7 @@ def get_femelement_sets(
             )
             referenced_femelements += ref_shape_femelements
             count_femelements += len(ref_shape_femelements)
-            fem_object['FEMElements'] = ref_shape_femelements
+            fem_object["FEMElements"] = ref_shape_femelements
         else:
             has_remaining_femelements = obj.Name
     # get remaining femelements for the fem_objects
@@ -506,15 +506,15 @@ def get_femelement_sets(
                 remaining_femelements.append(elemid)
         count_femelements += len(remaining_femelements)
         for fem_object in fem_objects:
-            obj = fem_object['Object']
+            obj = fem_object["Object"]
             if obj.Name == has_remaining_femelements:
-                fem_object['FEMElements'] = sorted(remaining_femelements)
+                fem_object["FEMElements"] = sorted(remaining_femelements)
     # check if all worked out well
     if femelements_count_ok(len(femelement_table), count_femelements):
         return True
     else:
         FreeCAD.Console.PrintError(
-            'Error in get_femelement_sets -- > femelements_count_ok() failed!\n'
+            "Error in get_femelement_sets -- > femelements_count_ok() failed!\n"
         )
         return False
 
@@ -526,17 +526,17 @@ def get_femelement_direction1D_set(
     beamrotation_objects,
     theshape=None
 ):
-    '''
+    """
     get for each geometry edge direction, the normal and the element ids and
     # write all into the beamrotation_objects
     means no return value, we're going to write into the beamrotation_objects dictionary
     FEMRotations1D is a list of dictionaries for every beamdirection of all edges
-    beamrot_obj['FEMRotations1D'] = [{
-        'ids' : [theids],
-        'direction' : direction,
-        'normal' : normal
+    beamrot_obj["FEMRotations1D"] = [{
+        "ids" : [theids],
+        "direction" : direction,
+        "normal" : normal
     }, ... ]
-    '''
+    """
     if len(beamrotation_objects) == 0:
         # no beamrotation document object, all beams use standard rotation of 0 degree (angle)
         # we need theshape (the shape which was meshed)
@@ -545,9 +545,9 @@ def get_femelement_direction1D_set(
         # add normals for each direction
         rotation_angle = 0
         for rot in rotations_ids:
-            rot['normal'] = get_beam_normal(rot['direction'], rotation_angle)
-        # key 'Object' will be empty
-        beamrotation_objects.append({'FEMRotations1D': rotations_ids, 'ShortName': 'Rstd'})
+            rot["normal"] = get_beam_normal(rot["direction"], rotation_angle)
+        # key "Object" will be empty
+        beamrotation_objects.append({"FEMRotations1D": rotations_ids, "ShortName": "Rstd"})
     elif len(beamrotation_objects) == 1:
         # one beamrotation document object with no references
         # all beams use rotation from this object
@@ -555,11 +555,11 @@ def get_femelement_direction1D_set(
         # since ccx needs to split them in sets anyway we need to take care of this too
         rotations_ids = get_femelement_directions_theshape(femmesh, femelement_table, theshape)
         # add normals for each direction
-        rotation_angle = beamrotation_objects[0]['Object'].Rotation
+        rotation_angle = beamrotation_objects[0]["Object"].Rotation
         for rot in rotations_ids:
-            rot['normal'] = get_beam_normal(rot['direction'], rotation_angle)
-        beamrotation_objects[0]['FEMRotations1D'] = rotations_ids
-        beamrotation_objects[0]['ShortName'] = 'R0'
+            rot["normal"] = get_beam_normal(rot["direction"], rotation_angle)
+        beamrotation_objects[0]["FEMRotations1D"] = rotations_ids
+        beamrotation_objects[0]["ShortName"] = "R0"
     elif len(beamrotation_objects) > 1:
         # multiple beam rotation document objects
         # rotations defined by reference shapes, TODO implement this
@@ -573,9 +573,9 @@ def get_femelement_direction1D_set(
         # pre check, only one beam rotation with empty ref shapes is allowed
         # we need theshape for multiple rotations too
         # because of the corner cases mentioned above
-        FreeCAD.Console.PrintError('Multiple Rotations not yet supported!\n')
+        FreeCAD.Console.PrintError("Multiple Rotations not yet supported!\n")
     for rot_object in beamrotation_objects:  # debug output
-        FreeCAD.Console.PrintMessage('{}\n'.format(rot_object['FEMRotations1D']))
+        FreeCAD.Console.PrintMessage("{}\n".format(rot_object["FEMRotations1D"]))
 
 
 # ************************************************************************************************
@@ -585,15 +585,15 @@ def get_femelement_directions_theshape(femmesh, femelement_table, theshape):
     # add directions and all ids for each direction
     for e in theshape.Shape.Edges:
         the_edge = {}
-        the_edge['direction'] = e.Vertexes[1].Point - e.Vertexes[0].Point
+        the_edge["direction"] = e.Vertexes[1].Point - e.Vertexes[0].Point
         edge_femnodes = femmesh.getNodesByEdge(e)  # femnodes for the current edge
         # femelements for this edge
-        the_edge['ids'] = get_femelements_by_femnodes_std(femelement_table, edge_femnodes)
+        the_edge["ids"] = get_femelements_by_femnodes_std(femelement_table, edge_femnodes)
         for rot in rotations_ids:
             # tolerance will be managed by FreeCAD
             # see https://forum.freecadweb.org/viewtopic.php?f=22&t=14179
-            if rot['direction'] == the_edge['direction']:
-                rot['ids'] += the_edge['ids']
+            if rot["direction"] == the_edge["direction"]:
+                rot["ids"] += the_edge["ids"]
                 break
         else:
             rotations_ids.append(the_edge)
@@ -651,8 +651,8 @@ def get_beam_normal(beam_direction, defined_angle):
         dot_nt = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
 
     dot = vector_a[0] * normal_n[0] + vector_a[1] * normal_n[1] + vector_a[2] * normal_n[2]
-    FreeCAD.Console.PrintLog('{}\n'.format(dot))
-    FreeCAD.Console.PrintLog('{}\n'.format(normal_n))
+    FreeCAD.Console.PrintLog("{}\n".format(dot))
+    FreeCAD.Console.PrintLog("{}\n".format(normal_n))
 
     # dummy usage of the axis dot to get flake8 quiet
     del dot_x, dot_y, dot_z, dot, dot_nt
@@ -672,14 +672,14 @@ def get_femmesh_groupdata_sets_by_name(
     # we just check for the group name and the group data type
     # what happens if a reference shape was changed
     # but the mesh and the mesh groups were not created new !?!
-    obj = fem_object['Object']
+    obj = fem_object["Object"]
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
             if grp_name.startswith(obj.Name + "_"):
                 if femmesh.getGroupElementType(g) == group_data_type:
                     FreeCAD.Console.PrintMessage(
-                        '  found mesh group for the IDs: {}, Type: {}\n'
+                        "  found mesh group for the IDs: {}, Type: {}\n"
                         .format(grp_name, group_data_type)
                     )
                     return femmesh.getGroupElements(g)  # == ref_shape_femelements
@@ -695,24 +695,24 @@ def get_femelement_sets_from_group_data(
     count_femelements = 0
     sum_group_elements = []
     for fem_object_i, fem_object in enumerate(fem_objects):
-        obj = fem_object['Object']
+        obj = fem_object["Object"]
         FreeCAD.Console.PrintMessage(
             "Constraint: {} --> We have mesh groups. "
             "We will search for appropriate group data.\n"
             .format(obj.Name)
         )
         # unique short identifier
-        fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)
+        fem_object["ShortName"] = get_elset_short_name(obj, fem_object_i)
         # see comments over there !
-        group_elements = get_femmesh_groupdata_sets_by_name(femmesh, fem_object, 'Volume')
+        group_elements = get_femmesh_groupdata_sets_by_name(femmesh, fem_object, "Volume")
         sum_group_elements += group_elements
         count_femelements += len(group_elements)
-        fem_object['FEMElements'] = group_elements
+        fem_object["FEMElements"] = group_elements
     # check if all worked out well
     if not femelements_count_ok(femmesh.VolumeCount, count_femelements):
         FreeCAD.Console.PrintError(
-            'Error in get_femelement_sets_from_group_data -- > '
-            'femelements_count_ok() failed!\n'
+            "Error in get_femelement_sets_from_group_data -- > "
+            "femelements_count_ok() failed!\n"
         )
         return False
     else:
@@ -724,20 +724,20 @@ def get_elset_short_name(
     obj,
     i
 ):
-    if hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::Material':
-        return 'M' + str(i)
-    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementGeometry1D':
-        return 'B' + str(i)
-    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementRotation1D':
-        return 'R' + str(i)
-    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementFluid1D':
-        return 'F' + str(i)
-    elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'Fem::FemElementGeometry2D':
-        return 'S' + str(i)
+    if hasattr(obj, "Proxy") and obj.Proxy.Type == "Fem::Material":
+        return "M" + str(i)
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == "Fem::FemElementGeometry1D":
+        return "B" + str(i)
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == "Fem::FemElementRotation1D":
+        return "R" + str(i)
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == "Fem::FemElementFluid1D":
+        return "F" + str(i)
+    elif hasattr(obj, "Proxy") and obj.Proxy.Type == "Fem::FemElementGeometry2D":
+        return "S" + str(i)
     else:
         FreeCAD.Console.PrintError(
-            'Error in creating short elset name '
-            'for obj: {} --> Proxy.Type: {}\n'
+            "Error in creating short elset name "
+            "for obj: {} --> Proxy.Type: {}\n"
             .format(obj.Name, obj.Proxy.Type)
         )
 
@@ -751,9 +751,9 @@ def get_force_obj_vertex_nodeload_table(
 ):
     # force_obj_node_load_table:
     #     [
-    #         ('refshape_name.elemname', node_load_table),
+    #         ("refshape_name.elemname", node_load_table),
     #         ...,
-    #         ('refshape_name.elemname', node_load_table)
+    #         ("refshape_name.elemname", node_load_table)
     #     ]
     force_obj_node_load_table = []
     node_load = frc_obj.Force / len(frc_obj.References)
@@ -762,15 +762,15 @@ def get_force_obj_vertex_nodeload_table(
         for elem in elem_tup:
             ref_node = o.Shape.getElement(elem)
             FreeCAD.Console.PrintMessage(
-                '  '
-                'ReferenceShape ... Type: {0}, '
-                'Object name: {1}, '
-                'Object label: {2}, '
-                'Element name: {3}\n'
+                "    "
+                "ReferenceShape ... Type: {0}, "
+                "Object name: {1}, "
+                "Object label: {2}, "
+                "Element name: {3}\n"
                 .format(ref_node.ShapeType, o.Name, o.Label, elem)
             )
             node = femmesh.getNodesByVertex(ref_node)
-            elem_info_string = 'node load on shape: ' + o.Name + ':' + elem
+            elem_info_string = "node load on shape: " + o.Name + ":" + elem
             force_obj_node_load_table.append(
                 (elem_info_string, {node[0]: node_load / node_count})
             )
@@ -789,9 +789,9 @@ def get_force_obj_edge_nodeload_table(
 ):
     # force_obj_node_load_table:
     #     [
-    #         ('refshape_name.elemname', node_load_table),
+    #         ("refshape_name.elemname", node_load_table),
     #         ...,
-    #         ('refshape_name.elemname', node_load_table)
+    #         ("refshape_name.elemname", node_load_table)
     #     ]
     force_obj_node_load_table = []
     sum_ref_edge_length = 0
@@ -801,11 +801,11 @@ def get_force_obj_edge_nodeload_table(
         for elem in elem_tup:
             ref_edge = o.Shape.getElement(elem)
             FreeCAD.Console.PrintMessage(
-                '  '
-                'ReferenceShape ... Type: {0}, '
-                'Object name: {1}, '
-                'Object label: {2}, '
-                'Element name: {3}\n'
+                "    "
+                "ReferenceShape ... Type: {0}, "
+                "Object name: {1}, "
+                "Object label: {2}, "
+                "Element name: {3}\n"
                 .format(ref_edge.ShapeType, o.Name, o.Label, elem)
             )
             sum_ref_edge_length += ref_edge.Length
@@ -840,14 +840,14 @@ def get_force_obj_edge_nodeload_table(
             ratio_refedge_lengths = sum_node_lengths / ref_edge.Length
             if ratio_refedge_lengths < 0.99 or ratio_refedge_lengths > 1.01:
                 FreeCAD.Console.PrintError(
-                    'Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n'
+                    "Error on: " + frc_obj.Name + " --> " + o.Name + "." + elem + "\n"
                 )
-                FreeCAD.Console.PrintMessage('  sum_node_lengths: {}\n'.format(sum_node_lengths))
-                FreeCAD.Console.PrintMessage('  refedge_length: {}\n'.format(ref_edge.Length))
+                FreeCAD.Console.PrintMessage("  sum_node_lengths: {}\n".format(sum_node_lengths))
+                FreeCAD.Console.PrintMessage("  refedge_length: {}\n".format(ref_edge.Length))
                 bad_refedge = ref_edge
             sum_ref_edge_node_length += sum_node_lengths
 
-            elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
+            elem_info_string = "node loads on shape: " + o.Name + ":" + elem
             force_obj_node_load_table.append((elem_info_string, node_load_table))
 
     for ref_shape in force_obj_node_load_table:
@@ -857,74 +857,74 @@ def get_force_obj_edge_nodeload_table(
     ratio = sum_node_load / frc_obj.Force
     if ratio < 0.99 or ratio > 1.01:
         FreeCAD.Console.PrintMessage(
-            'Deviation  sum_node_load to frc_obj.Force is more than 1% : {}\n'
+            "Deviation  sum_node_load to frc_obj.Force is more than 1% : {}\n"
             .format(ratio)
         )
         FreeCAD.Console.PrintMessage(
-            '  sum_ref_edge_node_length: {}\n'
+            "  sum_ref_edge_node_length: {}\n"
             .format(sum_ref_edge_node_length)
         )
         FreeCAD.Console.PrintMessage(
-            '  sum_ref_edge_length:      {}\n'
+            "  sum_ref_edge_length:      {}\n"
             .format(sum_ref_edge_length)
         )
         FreeCAD.Console.PrintMessage(
-            '  sum_node_load:            {}\n'
+            "  sum_node_load:            {}\n"
             .format(sum_node_load)
         )
         FreeCAD.Console.PrintMessage(
-            '  frc_obj.Force:            {}\n'
+            "  frc_obj.Force:            {}\n"
             .format(frc_obj.Force)
         )
         FreeCAD.Console.PrintMessage(
-            '  the reason could be simply a circle length --> '
-            'see method get_ref_edge_node_lengths\n'
+            "  the reason could be simply a circle length --> "
+            "see method get_ref_edge_node_lengths\n"
         )
         FreeCAD.Console.PrintMessage(
-            '  the reason could also be a problem in '
-            'retrieving the ref_edge_node_length\n'
+            "  the reason could also be a problem in "
+            "retrieving the ref_edge_node_length\n"
         )
 
         # try debugging of the last bad refedge
-        FreeCAD.Console.PrintMessage('DEBUGGING\n')
-        FreeCAD.Console.PrintMessage('\n'.format(bad_refedge))
+        FreeCAD.Console.PrintMessage("DEBUGGING\n")
+        FreeCAD.Console.PrintMessage("\n".format(bad_refedge))
 
-        FreeCAD.Console.PrintMessage('bad_refedge_nodes\n')
+        FreeCAD.Console.PrintMessage("bad_refedge_nodes\n")
         bad_refedge_nodes = femmesh.getNodesByEdge(bad_refedge)
-        FreeCAD.Console.PrintMessage('{}\n'.format(len(bad_refedge_nodes)))
-        FreeCAD.Console.PrintMessage('{}\n'.format(bad_refedge_nodes))
+        FreeCAD.Console.PrintMessage("{}\n".format(len(bad_refedge_nodes)))
+        FreeCAD.Console.PrintMessage("{}\n".format(bad_refedge_nodes))
         # import FreeCADGui
         # FreeCADGui.ActiveDocument.Compound_Mesh.HighlightedNodes = bad_refedge_nodes
 
-        FreeCAD.Console.PrintMessage('bad_edge_table\n')
+        FreeCAD.Console.PrintMessage("bad_edge_table\n")
         # bad_edge_table:
         #     { meshedgeID : ( nodeID, ... , nodeID ) }
         bad_edge_table = get_ref_edgenodes_table(femmesh, femelement_table, bad_refedge)
-        FreeCAD.Console.PrintMessage('{}\n'.format(len(bad_edge_table)))
+        FreeCAD.Console.PrintMessage("{}\n".format(len(bad_edge_table)))
         bad_edge_table_nodes = []
         for elem in bad_edge_table:
-            FreeCAD.Console.PrintMessage(elem, ' --> \n'.format(bad_edge_table[elem]))
+            FreeCAD.Console.PrintMessage(elem, " --> \n".format(bad_edge_table[elem]))
             for node in bad_edge_table[elem]:
                 if node not in bad_edge_table_nodes:
                     bad_edge_table_nodes.append(node)
-        FreeCAD.Console.PrintMessage('sorted(bad_edge_table_nodes)\n')
+        FreeCAD.Console.PrintMessage("sorted(bad_edge_table_nodes)\n")
         # should be == bad_refedge_nodes
-        FreeCAD.Console.PrintMessage('{}\n'.format(sorted(bad_edge_table_nodes)))
+        FreeCAD.Console.PrintMessage("{}\n".format(sorted(bad_edge_table_nodes)))
         # import FreeCADGui
         # FreeCADGui.ActiveDocument.Compound_Mesh.HighlightedNodes = bad_edge_table_nodes
         # bad_node_length_table:
         #     [ (nodeID, length), ... , (nodeID, length) ]
         # some nodes will have more than one entry
 
-        FreeCAD.Console.PrintMessage('good_edge_table\n')
+        FreeCAD.Console.PrintMessage("good_edge_table\n")
         good_edge_table = delete_duplicate_mesh_elements(bad_edge_table)
         for elem in good_edge_table:
-            FreeCAD.Console.PrintMessage('{} --> {}\n'.format(elem, bad_edge_table[elem]))
+            FreeCAD.Console.PrintMessage("{} --> {}\n".format(elem, bad_edge_table[elem]))
 
-        FreeCAD.Console.PrintMessage('bad_node_length_table\n')
+        FreeCAD.Console.PrintMessage("bad_node_length_table\n")
         bad_node_length_table = get_ref_edgenodes_lengths(femnodes_mesh, bad_edge_table)
         for n, l in bad_node_length_table:
-            FreeCAD.Console.PrintMessage('{} --> {}\n'.format(n, l))
+            FreeCAD.Console.PrintMessage("{} --> {}\n".format(n, l))
 
     return force_obj_node_load_table
 
@@ -1012,7 +1012,7 @@ def get_ref_edgenodes_lengths(
         return []
     node_length_table = []
     mesh_edge_length = 0
-    # FreeCAD.Console.PrintMessage('{}\n'.format(len(edge_table)))
+    # FreeCAD.Console.PrintMessage("{}\n".format(len(edge_table)))
     for me in edge_table:
         femmesh_edgetype = len(edge_table[me])
         if femmesh_edgetype == 2:  # 2 node femmesh edge
@@ -1023,7 +1023,7 @@ def get_ref_edgenodes_lengths(
             P2 = femnodes_mesh[edge_table[me][1]]
             edge_vec = P2 - P1
             mesh_edge_length = edge_vec.Length
-            # FreeCAD.Console.PrintMessage('{}\n'.format(mesh_edge_length))
+            # FreeCAD.Console.PrintMessage("{}\n".format(mesh_edge_length))
             end_node_length = mesh_edge_length / 2.0
             node_length_table.append((edge_table[me][0], end_node_length))
             node_length_table.append((edge_table[me][1], end_node_length))
@@ -1039,7 +1039,7 @@ def get_ref_edgenodes_lengths(
             edge_vec1 = P3 - P1
             edge_vec2 = P2 - P3
             mesh_edge_length = edge_vec1.Length + edge_vec2.Length
-            # FreeCAD.Console.PrintMessage('{} --> {}\n'.format(me, mesh_edge_length))
+            # FreeCAD.Console.PrintMessage("{} --> {}\n".format(me, mesh_edge_length))
             end_node_length = mesh_edge_length / 6.0
             middle_node_length = mesh_edge_length * 2.0 / 3.0
             node_length_table.append((edge_table[me][0], end_node_length))
@@ -1061,9 +1061,9 @@ def get_force_obj_face_nodeload_table(
 ):
     # force_obj_node_load_table:
     #     [
-    #         ('refshape_name.elemname',node_load_table),
+    #         ("refshape_name.elemname",node_load_table),
     #         ...,
-    #         ('refshape_name.elemname',node_load_table)
+    #         ("refshape_name.elemname",node_load_table)
     #     ]
     force_obj_node_load_table = []
     sum_ref_face_area = 0
@@ -1073,11 +1073,11 @@ def get_force_obj_face_nodeload_table(
         for elem in elem_tup:
             ref_face = o.Shape.getElement(elem)
             FreeCAD.Console.PrintMessage(
-                '  '
-                'ReferenceShape ... Type: {0}, '
-                'Object name: {1}, '
-                'Object label: {2}, '
-                'Element name: {3}\n'
+                "    "
+                "ReferenceShape ... Type: {0}, "
+                "Object name: {1}, "
+                "Object label: {2}, "
+                "Element name: {3}\n"
                 .format(ref_face.ShapeType, o.Name, o.Label, elem)
             )
             sum_ref_face_area += ref_face.Area
@@ -1112,13 +1112,13 @@ def get_force_obj_face_nodeload_table(
             ratio_refface_areas = sum_node_areas / ref_face.Area
             if ratio_refface_areas < 0.99 or ratio_refface_areas > 1.01:
                 FreeCAD.Console.PrintError(
-                    'Error on: ' + frc_obj.Name + ' --> ' + o.Name + '.' + elem + '\n'
+                    "Error on: " + frc_obj.Name + " --> " + o.Name + "." + elem + "\n"
                 )
-                FreeCAD.Console.PrintMessage('  sum_node_areas: {}\n'.format(sum_node_areas))
-                FreeCAD.Console.PrintMessage('  ref_face_area:  {}\n'.format(ref_face.Area))
+                FreeCAD.Console.PrintMessage("  sum_node_areas: {}\n".format(sum_node_areas))
+                FreeCAD.Console.PrintMessage("  ref_face_area:  {}\n".format(ref_face.Area))
             sum_ref_face_node_area += sum_node_areas
 
-            elem_info_string = 'node loads on shape: ' + o.Name + ':' + elem
+            elem_info_string = "node loads on shape: " + o.Name + ":" + elem
             force_obj_node_load_table.append((elem_info_string, node_load_table))
 
     for ref_shape in force_obj_node_load_table:
@@ -1128,32 +1128,32 @@ def get_force_obj_face_nodeload_table(
     ratio = sum_node_load / frc_obj.Force
     if ratio < 0.99 or ratio > 1.01:
         FreeCAD.Console.PrintMessage(
-            'Deviation sum_node_load to frc_obj.Force is more than 1% :  {}\n'
+            "Deviation sum_node_load to frc_obj.Force is more than 1% :  {}\n"
             .format(ratio)
         )
         FreeCAD.Console.PrintMessage(
-            '  sum_ref_face_node_area: {}\n'
+            "  sum_ref_face_node_area: {}\n"
             .format(sum_ref_face_node_area)
         )
         FreeCAD.Console.PrintMessage(
-            '  sum_ref_face_area:      {}\n'
+            "  sum_ref_face_area:      {}\n"
             .format(sum_ref_face_area)
         )
         FreeCAD.Console.PrintMessage(
-            '  sum_node_load:          {}\n'
+            "  sum_node_load:          {}\n"
             .format(sum_node_load)
         )
         FreeCAD.Console.PrintMessage(
-            '  frc_obj.Force:          {}\n'
+            "  frc_obj.Force:          {}\n"
             .format(frc_obj.Force)
         )
         FreeCAD.Console.PrintMessage(
-            '  the reason could be simply a circle area --> '
-            'see method get_ref_face_node_areas\n'
+            "  the reason could be simply a circle area --> "
+            "see method get_ref_face_node_areas\n"
         )
         FreeCAD.Console.PrintMessage(
-            '  the reason could also be a problem in '
-            'retrieving the ref_face_node_area\n'
+            "  the reason could also be a problem in "
+            "retrieving the ref_face_node_area\n"
         )
 
     return force_obj_node_load_table
@@ -1169,9 +1169,9 @@ def get_ref_facenodes_table(
     if is_solid_femmesh(femmesh):
         if has_no_face_data(femmesh):
             FreeCAD.Console.PrintMessage(
-                '  No face data in finite volume element mesh. '
-                'FreeCAD uses getccxVolumesByFace() '
-                'to retrieve the volume elements of the ref_face.\n'
+                "  No face data in finite volume element mesh. "
+                "FreeCAD uses getccxVolumesByFace() "
+                "to retrieve the volume elements of the ref_face.\n"
             )
             # there is no face data
             # if we retrieve the nodes ourself we will have a problem:
@@ -1186,8 +1186,8 @@ def get_ref_facenodes_table(
             ref_face_volume_elements = femmesh.getccxVolumesByFace(ref_face)
             if ref_face_volume_elements:  # mesh with tetras
                 FreeCAD.Console.PrintLog(
-                    '  Use of getccxVolumesByFace() has '
-                    'returned volume elements of the ref_face.\n'
+                    "  Use of getccxVolumesByFace() has "
+                    "returned volume elements of the ref_face.\n"
                 )
                 for ve in ref_face_volume_elements:
                     veID = ve[0]
@@ -1199,9 +1199,9 @@ def get_ref_facenodes_table(
                     face_table[veID] = ve_ref_face_nodes
             else:  # mesh with hexa or penta
                 FreeCAD.Console.PrintLog(
-                    '  The use of getccxVolumesByFace() has NOT returned '
-                    'volume elements of the ref_face. '
-                    'FreeCAD tries to use get_femvolumeelements_by_femfacenodes().\n'
+                    "  The use of getccxVolumesByFace() has NOT returned "
+                    "volume elements of the ref_face. "
+                    "FreeCAD tries to use get_femvolumeelements_by_femfacenodes().\n"
                 )
                 # list of integer [mv]
                 ref_face_volume_elements = get_femvolumeelements_by_femfacenodes(
@@ -1226,7 +1226,7 @@ def get_ref_facenodes_table(
         ref_face_elements = get_femelements_by_femnodes_std(femelement_table, ref_face_nodes)
         for mf in ref_face_elements:
             face_table[mf] = femelement_table[mf]
-    # FreeCAD.Console.PrintMessage('{}\n'.format(face_table))
+    # FreeCAD.Console.PrintMessage("{}\n".format(face_table))
     return face_table
 
 
@@ -1287,7 +1287,7 @@ def get_ref_facenodes_areas(
 
             mesh_face_t1_area = get_triangle_area(P1, P2, P3)
             mesh_face_t2_area = get_triangle_area(P1, P3, P4)
-            mesh_face_area = mesh_face_t1_area + mesh_face_t1_area
+            mesh_face_area = mesh_face_t1_area + mesh_face_t2_area
             corner_node_area = mesh_face_area / 4.0
 
             node_area_table.append((face_table[mf][0], corner_node_area))
@@ -1397,13 +1397,13 @@ def build_mesh_faces_of_volume_elements(
         face_nodenumber_table[veID] = []
         for n in face_table[veID]:
             index = femelement_table[veID].index(n)
-            # FreeCAD.Console.PrintMessage('{}\n'.format(index))
+            # FreeCAD.Console.PrintMessage("{}\n".format(index))
             # local node number = index + 1
             face_nodenumber_table[veID].append(index + 1)
-        FreeCAD.Console.PrintLog('VolElement: {}\n'.format(veID))
-        FreeCAD.Console.PrintLog('  --> {}\n'.format(femelement_table[veID]))
-        FreeCAD.Console.PrintLog('  --> {}\n'.format(face_table[veID]))
-        FreeCAD.Console.PrintLog('  --> {}\n'.format(face_nodenumber_table[veID]))
+        FreeCAD.Console.PrintLog("VolElement: {}\n".format(veID))
+        FreeCAD.Console.PrintLog("  --> {}\n".format(femelement_table[veID]))
+        FreeCAD.Console.PrintLog("  --> {}\n".format(face_table[veID]))
+        FreeCAD.Console.PrintLog("  --> {}\n".format(face_nodenumber_table[veID]))
     for veID in face_nodenumber_table:
         vol_node_ct = len(femelement_table[veID])
         face_node_indexs = sorted(face_nodenumber_table[veID])
@@ -1539,7 +1539,7 @@ def build_mesh_faces_of_volume_elements(
             # index = node number - 1i -= 1
             face_nodes.append(femelement_table[veID][i])
         face_table[veID] = face_nodes  # reset the entry in face_table
-        # FreeCAD.Console.PrintMessage('  --> {}\n'.format(face_table[veID]))
+        # FreeCAD.Console.PrintMessage("  --> {}\n".format(face_table[veID]))
     return face_table
 
 
@@ -1551,7 +1551,7 @@ def get_ref_shape_node_sum_geom_table(
     # sum of length or area for each node of the ref_shape
     node_sum_geom_table = {}
     for n, A in node_geom_table:
-        # FreeCAD.Console.PrintMessage('{} --> {}\n'.format(n, A))
+        # FreeCAD.Console.PrintMessage("{} --> {}\n".format(n, A))
         if n in node_sum_geom_table:
             node_sum_geom_table[n] = node_sum_geom_table[n] + A
         else:
@@ -1571,7 +1571,7 @@ def get_pressure_obj_faces(
         # get the nodes
         # sorted and duplicates removed
         prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)
-        # FreeCAD.Console.PrintMessage('prs_face_node_set: {}\n'.format(prs_face_node_set))
+        # FreeCAD.Console.PrintMessage("prs_face_node_set: {}\n".format(prs_face_node_set))
         # fill the bit_pattern_dict and search for the faces
         bit_pattern_dict = get_bit_pattern_dict(
             femelement_table,
@@ -1584,8 +1584,8 @@ def get_pressure_obj_faces(
         # normally we should call get_femelements_by_references and
         # the group check should be integrated there
         if femmesh.GroupCount:
-            meshfaces = get_femmesh_groupdata_sets_by_name(femmesh, femobj, 'Face')
-            # FreeCAD.Console.PrintMessage('{}\n'.format(meshfaces))
+            meshfaces = get_femmesh_groupdata_sets_by_name(femmesh, femobj, "Face")
+            # FreeCAD.Console.PrintMessage("{}\n".format(meshfaces))
             if not meshfaces:
                 FreeCAD.Console.PrintError(
                     "Error: Something went wrong in getting the group element faces.\n"
@@ -1615,12 +1615,12 @@ def get_pressure_obj_faces_depreciated(
     femobj
 ):
     pressure_faces = []
-    for o, elem_tup in femobj['Object'].References:
+    for o, elem_tup in femobj["Object"].References:
         for elem in elem_tup:
             ref_shape = o.Shape.getElement(elem)
-            elem_info_string = 'face load on shape: ' + o.Name + ':' + elem
-            FreeCAD.Console.PrintMessage('{}\n'.format(elem_info_string))
-            if ref_shape.ShapeType == 'Face':
+            elem_info_string = "face load on shape: " + o.Name + ":" + elem
+            FreeCAD.Console.PrintMessage("{}\n".format(elem_info_string))
+            if ref_shape.ShapeType == "Face":
                 pressure_faces.append(
                     (elem_info_string, femmesh.getccxVolumesByFace(ref_shape))
                 )
@@ -1633,17 +1633,17 @@ def get_mesh_group_elements(
     mesh_group_obj,
     aPart
 ):
-    '''the Reference shapes of the mesh_group_object are searched in the Shape of aPart.
+    """the Reference shapes of the mesh_group_object are searched in the Shape of aPart.
        If found in shape they are added to a dict
-       {MeshGroupIdentifier : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
-    '''
+       {MeshGroupIdentifier : ["ShapeType of the Elements"], [ElementID, ElementID, ...], ...}
+    """
     group_elements = {}  # { name : [element, element, ... , element]}
     if mesh_group_obj.References:
         grp_ele = get_reference_group_elements(mesh_group_obj, aPart)
         group_elements[grp_ele[0]] = grp_ele[1]
     else:
         FreeCAD.Console.PrintError(
-            '  Empty reference in mesh group object: {} {}\n'
+            "  Empty reference in mesh group object: {} {}\n"
             .format(mesh_group_obj.Name, mesh_group_obj.Label)
         )
     return group_elements
@@ -1654,10 +1654,10 @@ def get_analysis_group_elements(
     aAnalysis,
     aPart
 ):
-    ''' all Reference shapes of all Analysis member are searched in the Shape of aPart.
+    """ all Reference shapes of all Analysis member are searched in the Shape of aPart.
         If found in shape they are added to a dict
-        {ConstraintName : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
-    '''
+        {ConstraintName : ["ShapeType of the Elements"], [ElementID, ElementID, ...], ...}
+    """
     group_elements = {}  # { name : [element, element, ... , element]}
     empty_references = []
     for m in aAnalysis.Group:
@@ -1668,7 +1668,7 @@ def get_analysis_group_elements(
                 grp_ele = get_reference_group_elements(m, aPart)
                 group_elements[grp_ele[0]] = grp_ele[1]
             else:
-                FreeCAD.Console.PrintMessage('  Empty reference: ' + m.Name + '\n')
+                FreeCAD.Console.PrintMessage("  Empty reference: " + m.Name + "\n")
                 empty_references.append(m)
     if empty_references:
         if len(empty_references) == 1:
@@ -1679,29 +1679,29 @@ def get_analysis_group_elements(
             )
         else:
             FreeCAD.Console.PrintError(
-                'Problem: more than one object with empty references.\n'
+                "Problem: more than one object with empty references.\n"
             )
             FreeCAD.Console.PrintMessage(
-                'We are going to try to get the empty material references anyway.\n'
+                "We are going to try to get the empty material references anyway.\n"
             )
             # FemElementGeometry2D, ElementGeometry1D and
             # FemElementFluid1D could have empty references,
             # but on solid meshes only materials should have empty references
             for er in empty_references:
-                FreeCAD.Console.PrintMessage(er.Name + '\n')
+                FreeCAD.Console.PrintMessage(er.Name + "\n")
             group_elements = get_anlysis_empty_references_group_elements(
                 group_elements,
                 aAnalysis,
                 aPart.Shape
             )
     # check if all groups have at least one element,
-    # it doesn't mean ALL reference shapes for a group have been found
+    # it doesn"t mean ALL reference shapes for a group have been found
     for g in group_elements:
-        # FreeCAD.Console.PrintMessage('{}\n'.format(group_elements[g]))
+        # FreeCAD.Console.PrintMessage("{}\n".format(group_elements[g]))
         if len(group_elements[g]) == 0:
             FreeCAD.Console.PrintError(
-                'Error: The shapes for the mesh group for the reference '
-                'shapes of analysis member: {} could not be found!\n'
+                "Error: The shapes for the mesh group for the reference "
+                "shapes of analysis member: {} could not be found!\n"
                 .format(g)
             )
     return group_elements
@@ -1712,14 +1712,14 @@ def get_reference_group_elements(
     obj,
     aPart
 ):
-    ''' obj is an FEM object which has reference shapes like the group object
+    """ obj is an FEM object which has reference shapes like the group object
     the material, most of the constraints
     aPart is geometry feature normally CompSolid
     the method searches all reference shapes of obj inside aPart even if
     the reference shapes are a totally different geometry feature.
-    a tuple is returned ('Name or Label of the FEMobject', ['Element1', 'Element2', ...])
+    a tuple is returned ("Name or Label of the FEMobject", ["Element1", "Element2", ...])
     The names in the list are the Elements of the geometry aPart
-    whereas 'Solid1' == aPart.Shape.Solids[0]
+    whereas "Solid1" == aPart.Shape.Solids[0]
     !!! It is strongly recommended to use as reference shapes the Solids of a CompSolid
     and not the Solids the CompSolid is made of !!!
     see https://forum.freecadweb.org/viewtopic.php?f=18&t=12212&p=175777#p175777
@@ -1727,7 +1727,7 @@ def get_reference_group_elements(
     Occt might change the Solids a CompSolid is made of during
     creation of the CompSolid by adding Edges and vertices
     Thus the Elements do not have the same geometry anymore
-    '''
+    """
     aShape = aPart.Shape
     if hasattr(obj, "UseLabel") and obj.UseLabel:
         # TODO: check the character of the Label
@@ -1740,8 +1740,8 @@ def get_reference_group_elements(
     for r in obj.References:
         parent = r[0]
         childs = r[1]
-        # FreeCAD.Console.PrintMessage('{}\n'.format(parent))
-        # FreeCAD.Console.PrintMessage('{}\n'.format(childs))
+        # FreeCAD.Console.PrintMessage("{}\n".format(parent))
+        # FreeCAD.Console.PrintMessage("{}\n".format(childs))
         for child in childs:
             # the method getElement(element) does not return Solid elements
             ref_shape = get_element(parent, child)
@@ -1749,42 +1749,42 @@ def get_reference_group_elements(
                 stype = ref_shape.ShapeType
             elif stype != ref_shape.ShapeType:
                 FreeCAD.Console.PrintError(
-                    'Error, two refshapes in References with different ShapeTypes.\n'
+                    "Error, two refshapes in References with different ShapeTypes.\n"
                 )
-            FreeCAD.Console.PrintLog('\n'.format(ref_shape))
+            FreeCAD.Console.PrintLog("\n".format(ref_shape))
             found_element = find_element_in_shape(aShape, ref_shape)
             if found_element is not None:
                 elements.append(found_element)
             else:
                 FreeCAD.Console.PrintError(
-                    'Problem: For the geometry of the '
-                    'following shape was no Shape found: {}\n'
+                    "Problem: For the geometry of the "
+                    "following shape was no Shape found: {}\n"
                     .format(ref_shape)
                 )
-                FreeCAD.Console.PrintMessage('    ' + obj.Name + '\n')
-                FreeCAD.Console.PrintMessage('    ' + str(obj.References) + '\n')
-                FreeCAD.Console.PrintMessage('    ' + r[0].Name + '\n')
+                FreeCAD.Console.PrintMessage("    " + obj.Name + "\n")
+                FreeCAD.Console.PrintMessage("    " + str(obj.References) + "\n")
+                FreeCAD.Console.PrintMessage("    " + r[0].Name + "\n")
                 if parent.Name != aPart.Name:
                     FreeCAD.Console.PrintError(
-                        'The reference Shape is not a child '
-                        'nor it is the shape the mesh is made of. : {}\n'
+                        "The reference Shape is not a child "
+                        "nor it is the shape the mesh is made of. : {}\n"
                         .format(ref_shape)
                     )
                     FreeCAD.Console.PrintMessage(
-                        '{}--> Name of the Feature we where searching in.\n'
+                        "{}--> Name of the Feature we where searching in.\n"
                         .format(aPart.Name)
                     )
                     FreeCAD.Console.PrintMessage(
-                        '{} --> Name of the parent Feature of reference Shape '
-                        '(Use the same as in the line before and you '
-                        'will have less trouble :-) !!!!!!).\n'
+                        "{} --> Name of the parent Feature of reference Shape "
+                        "(Use the same as in the line before and you "
+                        "will have less trouble :-) !!!!!!).\n"
                         .format(parent.Name)
                     )
                     # import Part
                     # Part.show(aShape)
                     # Part.show(ref_shape)
                 else:
-                    FreeCAD.Console.PrintError('This should not happen, please debug!\n')
+                    FreeCAD.Console.PrintError("This should not happen, please debug!\n")
                     # in this case we would not have needed to use the
                     # is_same_geometry() inside find_element_in_shape()
                     # AFAIK we could have used the Part methods isPartner() or even isSame()
@@ -1798,16 +1798,16 @@ def get_anlysis_empty_references_group_elements(
     aAnalysis,
     aShape
 ):
-    '''get the elementIDs if the Reference shape is empty
+    """get the elementIDs if the Reference shape is empty
     see get_analysis_group_elements() for more information
     on solid meshes only material objects could have an
     empty reference without there being something wrong!
     face meshes could have empty ShellThickness and
     edge meshes could have empty BeamSection/FluidSection
-    '''
-    # FreeCAD.Console.PrintMessage('{}\n'.format(group_elements))
+    """
+    # FreeCAD.Console.PrintMessage("{}\n".format(group_elements))
     material_ref_shapes = []
-    material_shape_type = ''
+    material_shape_type = ""
     missed_material_refshapes = []
     empty_reference_material = None
     for m in aAnalysis.Group:
@@ -1817,52 +1817,52 @@ def get_anlysis_empty_references_group_elements(
                     empty_reference_material = m.Name
                 else:
                     FreeCAD.Console.PrintError(
-                        'Problem in get_anlysis_empty_references_group_elements, '
-                        'we seem to have two or more materials with empty references\n'
+                        "Problem in get_anlysis_empty_references_group_elements, "
+                        "we seem to have two or more materials with empty references\n"
                     )
                     return {}
             elif hasattr(m, "References") and m.References:
                 # ShapeType of the group elements, strip the number of the first group element
                 # http://stackoverflow.com/questions/12851791/removing-numbers-from-string
-                group_shape_type = ''.join(i for i in group_elements[m.Name][0] if not i.isdigit())
+                group_shape_type = "".join(i for i in group_elements[m.Name][0] if not i.isdigit())
                 if not material_shape_type:
                     material_shape_type = group_shape_type
                 elif material_shape_type != group_shape_type:
                     FreeCAD.Console.PrintError(
-                        'Problem, material shape type does not match '
-                        'get_anlysis_empty_references_group_elements\n'
+                        "Problem, material shape type does not match "
+                        "get_anlysis_empty_references_group_elements\n"
                     )
                 for ele in group_elements[m.Name]:
                     material_ref_shapes.append(ele)
-    if material_shape_type == 'Solid':
-        # FreeCAD.Console.PrintMessage('{}\n'.format(len(aShape.Solids)))
+    if material_shape_type == "Solid":
+        # FreeCAD.Console.PrintMessage("{}\n".format(len(aShape.Solids)))
         for i in range(len(aShape.Solids)):
-            ele = 'Solid' + str(i + 1)
+            ele = "Solid" + str(i + 1)
             if ele not in material_ref_shapes:
                 missed_material_refshapes.append(ele)
-    elif material_shape_type == 'Face':
-        # FreeCAD.Console.PrintMessage('{}\n'.format(len(aShape.Faces)))
+    elif material_shape_type == "Face":
+        # FreeCAD.Console.PrintMessage("{}\n".format(len(aShape.Faces)))
         for i in range(len(aShape.Faces)):
-            ele = 'Face' + str(i + 1)
+            ele = "Face" + str(i + 1)
             if ele not in material_ref_shapes:
                 missed_material_refshapes.append(ele)
-    elif material_shape_type == 'Edge':
-        # FreeCAD.Console.PrintMessage('{}\n'.format(len(aShape.Edges)))
+    elif material_shape_type == "Edge":
+        # FreeCAD.Console.PrintMessage("{}\n".format(len(aShape.Edges)))
         for i in range(len(aShape.Edges)):
-            ele = 'Edge' + str(i + 1)
+            ele = "Edge" + str(i + 1)
             if ele not in material_ref_shapes:
                 missed_material_refshapes.append(ele)
     else:
         FreeCAD.Console.PrintMessage(
-            '  One material with no reference shapes. No need to make a group for materials.\n'
+            "  One material with no reference shapes. No need to make a group for materials.\n"
         )
         # make no changes group_elements
         return group_elements
-    # FreeCAD.Console.PrintMessage('{}\n'.format(sorted(material_ref_shapes)))
-    # FreeCAD.Console.PrintMessage('{}\n'.format(sorted(missed_material_refshapes)))
+    # FreeCAD.Console.PrintMessage("{}\n".format(sorted(material_ref_shapes)))
+    # FreeCAD.Console.PrintMessage("{}\n".format(sorted(missed_material_refshapes)))
     # FreeCAD.Console.PrintMessage(group_elements)
     group_elements[empty_reference_material] = sorted(missed_material_refshapes)
-    # FreeCAD.Console.PrintMessage('{}\n'.format(group_elements))
+    # FreeCAD.Console.PrintMessage("{}\n".format(group_elements))
     return group_elements
 
 
@@ -1873,52 +1873,52 @@ def find_element_in_shape(
 ):
     # import Part
     ele_st = anElement.ShapeType
-    if ele_st == 'Solid' or ele_st == 'CompSolid':
+    if ele_st == "Solid" or ele_st == "CompSolid":
         for index, solid in enumerate(aShape.Solids):
-            # FreeCAD.Console.PrintMessage('{}\n'.format(is_same_geometry(solid, anElement)))
+            # FreeCAD.Console.PrintMessage("{}\n".format(is_same_geometry(solid, anElement)))
             if is_same_geometry(solid, anElement):
-                # FreeCAD.Console.PrintMessage('{}\n'.format(index))
+                # FreeCAD.Console.PrintMessage("{}\n".format(index))
                 # Part.show(aShape.Solids[index])
                 ele = ele_st + str(index + 1)
                 return ele
         FreeCAD.Console.PrintError(
-            'Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n'
+            "Solid " + str(anElement) + " not found in: " + str(aShape) + "\n"
         )
-        if ele_st == 'Solid' and aShape.ShapeType == 'Solid':
+        if ele_st == "Solid" and aShape.ShapeType == "Solid":
             message_part = (
-                'We have been searching for a Solid in a Solid and we have not found it. '
-                'In most cases this should be searching for a Solid inside a CompSolid. '
-                'Check the ShapeType of your Part to mesh.'
+                "We have been searching for a Solid in a Solid and we have not found it. "
+                "In most cases this should be searching for a Solid inside a CompSolid. "
+                "Check the ShapeType of your Part to mesh."
             )
-            FreeCAD.Console.PrintMessage(message_part + '\n')
+            FreeCAD.Console.PrintMessage(message_part + "\n")
         # Part.show(anElement)
         # Part.show(aShape)
-    elif ele_st == 'Face' or ele_st == 'Shell':
+    elif ele_st == "Face" or ele_st == "Shell":
         for index, face in enumerate(aShape.Faces):
-            # FreeCAD.Console.PrintMessage('{}\n'.format(is_same_geometry(face, anElement)))
+            # FreeCAD.Console.PrintMessage("{}\n".format(is_same_geometry(face, anElement)))
             if is_same_geometry(face, anElement):
-                # FreeCAD.Console.PrintMessage('{}\n'.format(index))
+                # FreeCAD.Console.PrintMessage("{}\n".format(index))
                 # Part.show(aShape.Faces[index])
                 ele = ele_st + str(index + 1)
                 return ele
-    elif ele_st == 'Edge' or ele_st == 'Wire':
+    elif ele_st == "Edge" or ele_st == "Wire":
         for index, edge in enumerate(aShape.Edges):
-            # FreeCAD.Console.PrintMessage('{}\n'.format(is_same_geometry(edge, anElement)))
+            # FreeCAD.Console.PrintMessage("{}\n".format(is_same_geometry(edge, anElement)))
             if is_same_geometry(edge, anElement):
-                # FreeCAD.Console.PrintMessage(index, '\n')
+                # FreeCAD.Console.PrintMessage(index, "\n")
                 # Part.show(aShape.Edges[index])
                 ele = ele_st + str(index + 1)
                 return ele
-    elif ele_st == 'Vertex':
+    elif ele_st == "Vertex":
         for index, vertex in enumerate(aShape.Vertexes):
-            # FreeCAD.Console.PrintMessage('{}\n'.format(is_same_geometry(vertex, anElement)))
+            # FreeCAD.Console.PrintMessage("{}\n".format(is_same_geometry(vertex, anElement)))
             if is_same_geometry(vertex, anElement):
-                # FreeCAD.Console.PrintMessage('{}\n'.format(index))
+                # FreeCAD.Console.PrintMessage("{}\n".format(index))
                 # Part.show(aShape.Vertexes[index])
                 ele = ele_st + str(index + 1)
                 return ele
-    elif ele_st == 'Compound':
-        FreeCAD.Console.PrintError('Compound is not supported.\n')
+    elif ele_st == "Compound":
+        FreeCAD.Console.PrintError("Compound is not supported.\n")
 
 
 # ************************************************************************************************
@@ -1930,44 +1930,44 @@ def get_vertexes_by_element(
     # import Part
     ele_vertexes = []
     ele_st = anElement.ShapeType
-    if ele_st == 'Solid' or ele_st == 'CompSolid':
+    if ele_st == "Solid" or ele_st == "CompSolid":
         for index, solid in enumerate(aShape.Solids):
             if is_same_geometry(solid, anElement):
                 for vele in aShape.Solids[index].Vertexes:
                     for i, v in enumerate(aShape.Vertexes):
                         if vele.isSame(v):  # use isSame, because orientation could be different
                             ele_vertexes.append(i)
-                # FreeCAD.Console.PrintMessage('  ' + str(sorted(ele_vertexes)), '\n')
+                # FreeCAD.Console.PrintMessage("  " + str(sorted(ele_vertexes)), "\n")
                 return ele_vertexes
         FreeCAD.Console.PrintError(
-            'Error, Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n'
+            "Error, Solid " + str(anElement) + " not found in: " + str(aShape) + "\n"
         )
-    elif ele_st == 'Face' or ele_st == 'Shell':
+    elif ele_st == "Face" or ele_st == "Shell":
         for index, face in enumerate(aShape.Faces):
             if is_same_geometry(face, anElement):
                 for vele in aShape.Faces[index].Vertexes:
                     for i, v in enumerate(aShape.Vertexes):
                         if vele.isSame(v):  # use isSame, because orientation could be different
                             ele_vertexes.append(i)
-                # FreeCAD.Console.PrintMessage('  ' + str(sorted(ele_vertexes)) + '\n')
+                # FreeCAD.Console.PrintMessage("  " + str(sorted(ele_vertexes)) + "\n")
                 return ele_vertexes
-    elif ele_st == 'Edge' or ele_st == 'Wire':
+    elif ele_st == "Edge" or ele_st == "Wire":
         for index, edge in enumerate(aShape.Edges):
             if is_same_geometry(edge, anElement):
                 for vele in aShape.Edges[index].Vertexes:
                     for i, v in enumerate(aShape.Vertexes):
                         if vele.isSame(v):  # use isSame, because orientation could be different
                             ele_vertexes.append(i)
-                # FreeCAD.Console.PrintMessage('  ' + str(sorted(ele_vertexes)) + '\n')
+                # FreeCAD.Console.PrintMessage("  " + str(sorted(ele_vertexes)) + "\n")
                 return ele_vertexes
-    elif ele_st == 'Vertex':
+    elif ele_st == "Vertex":
         for index, vertex in enumerate(aShape.Vertexes):
             if is_same_geometry(vertex, anElement):
                 ele_vertexes.append(index)
-                # FreeCAD.Console.PrintMessage('  ' + str(sorted(ele_vertexes)) + '\n')
+                # FreeCAD.Console.PrintMessage("  " + str(sorted(ele_vertexes)) + "\n")
                 return ele_vertexes
-    elif ele_st == 'Compound':
-        FreeCAD.Console.PrintError('Compound is not supported.\n')
+    elif ele_st == "Compound":
+        FreeCAD.Console.PrintError("Compound is not supported.\n")
 
 
 # ************************************************************************************************
@@ -1979,8 +1979,8 @@ def is_same_geometry(
     # it is a hack, but I do not know any better !
     # check of Volume and Area before starting with the vertices could be added
     # BoundBox is possible too, but is BB calculations robust?!
-    # FreeCAD.Console.PrintMessage('{}\n'.format(shape1))
-    # FreeCAD.Console.PrintMessage('{}\n'.format(shape2))
+    # FreeCAD.Console.PrintMessage("{}\n".format(shape1))
+    # FreeCAD.Console.PrintMessage("{}\n".format(shape2))
     same_Vertexes = 0
     if len(shape1.Vertexes) == len(shape2.Vertexes) and len(shape1.Vertexes) > 1:
         # compare CenterOfMass
@@ -1993,7 +1993,7 @@ def is_same_geometry(
                     if vs1.X == vs2.X and vs1.Y == vs2.Y and vs1.Z == vs2.Z:
                         same_Vertexes += 1
                         continue
-            # FreeCAD.Console.PrintMessage('{}\n'.(same_Vertexes))
+            # FreeCAD.Console.PrintMessage("{}\n".(same_Vertexes))
             if same_Vertexes == len(shape1.Vertexes):
                 return True
             else:
@@ -2014,11 +2014,11 @@ def get_element(
     part,
     element
 ):
-    if element.startswith('Solid'):
-        index = int(element.lstrip('Solid')) - 1
+    if element.startswith("Solid"):
+        index = int(element.lstrip("Solid")) - 1
         if index >= len(part.Shape.Solids):
             FreeCAD.Console.PrintError(
-                'Index out of range. This Solid does not exist in the Shape!\n'
+                "Index out of range. This Solid does not exist in the Shape!\n"
             )
             return None
         else:
@@ -2033,18 +2033,18 @@ def femelements_count_ok(
     count_femelements
 ):
     FreeCAD.Console.PrintMessage(
-        'Count finite elements as sum of constraints:   {}\n'
+        "Count finite elements as sum of constraints:   {}\n"
         .format(count_femelements)
     )
     FreeCAD.Console.PrintMessage(
-        'Count finite elements of the finite element mesh: {}\n'
+        "Count finite elements of the finite element mesh: {}\n"
         .format(len_femelement_table)
     )
     if count_femelements == len_femelement_table:
         return True
     else:
         FreeCAD.Console.PrintMessage(
-            'ERROR: femelement_table != count_femelements\n'
+            "ERROR: femelement_table != count_femelements\n"
         )
         return False
 
@@ -2144,8 +2144,8 @@ def get_three_non_colinear_nodes(
     # Code to obtain three non-colinear nodes on the PlaneRotation support face
     # nodes_coords --> [(nodenumber, x, y, z), (nodenumber, x, y, z), ...]
     if not nodes_coords:
-        FreeCAD.Console.PrintMessage('{}\n'.format(len(nodes_coords)))
-        FreeCAD.Console.PrintMessage('Error: No nodes in nodes_coords\n')
+        FreeCAD.Console.PrintMessage("{}\n".format(len(nodes_coords)))
+        FreeCAD.Console.PrintMessage("Error: No nodes in nodes_coords\n")
         return []
     dum_max = [1, 2, 3, 4, 5, 6, 7, 8, 0]
     for i in range(len(nodes_coords)):
@@ -2180,7 +2180,7 @@ def get_three_non_colinear_nodes(
             node_dis = [node_3, tot]
     node_1 = int(dum_max[0])
     node_2 = int(dum_max[4])
-    FreeCAD.Console.PrintMessage('{}\n'.format([node_1, node_2, node_3]))
+    FreeCAD.Console.PrintMessage("{}\n".format([node_1, node_2, node_3]))
     return [node_1, node_2, node_3]
 
 
@@ -2194,43 +2194,32 @@ def get_rectangular_coords(
     a_x = A[0]
     a_y = A[1]
     a_z = A[2]
-    b_x = A[0]
-    b_y = A[1]
-    b_z = A[2]
+    b_x = B[0]
+    b_y = B[1]
+    b_z = B[2]
     x_rot = radians(obj.X_rot)
     y_rot = radians(obj.Y_rot)
     z_rot = radians(obj.Z_rot)
     if obj.X_rot != 0:
-        a_x = A[0]
         a_y = A[1] * cos(x_rot) + A[2] * sin(x_rot)
         a_z = A[2] * cos(x_rot) - A[1] * sin(x_rot)
-        b_x = B[0]
         b_y = B[1] * cos(x_rot) + B[2] * sin(x_rot)
         b_z = B[2] * cos(x_rot) - B[1] * sin(x_rot)
-        A = [a_x, a_y, a_z]
-        B = [b_x, b_y, b_z]
     if obj.Y_rot != 0:
         a_x = A[0] * cos(y_rot) - A[2] * sin(y_rot)
-        a_y = A[1]
         a_z = A[2] * cos(y_rot) + A[0] * sin(y_rot)
         b_x = B[0] * cos(y_rot) - B[2] * sin(y_rot)
-        b_y = B[1]
         b_z = B[2] * cos(y_rot) + B[0] * sin(z_rot)
-        A = [a_x, a_y, a_z]
-        B = [b_x, b_y, b_z]
     if obj.Z_rot != 0:
         a_x = A[0] * cos(z_rot) + A[1] * sin(z_rot)
         a_y = A[1] * cos(z_rot) - A[0] * sin(z_rot)
-        a_z = A[2]
         b_x = B[0] * cos(z_rot) + B[1] * sin(z_rot)
         b_y = B[1] * cos(z_rot) - B[0] * sin(z_rot)
-        b_z = B[2]
-        A = [a_x, a_y, a_z]
-        B = [b_x, b_y, b_z]
-
-    A_coords = str(round(A[0], 4)) + ',' + str(round(A[1], 4)) + ',' + str(round(A[2], 4))
-    B_coords = str(round(B[0], 4)) + ',' + str(round(B[1], 4)) + ',' + str(round(B[2], 4))
-    coords = A_coords + ',' + B_coords
+    A = [a_x, a_y, a_z]
+    B = [b_x, b_y, b_z]
+    A_coords = str(round(A[0], 4)) + "," + str(round(A[1], 4)) + "," + str(round(A[2], 4))
+    B_coords = str(round(B[0], 4)) + "," + str(round(B[1], 4)) + "," + str(round(B[2], 4))
+    coords = A_coords + "," + B_coords
     return coords
 
 
@@ -2248,9 +2237,9 @@ def get_cylindrical_coords(
     Bz = base[2] - 10 * vec[2]
     A = [Ax, Ay, Az]
     B = [Bx, By, Bz]
-    A_coords = str(A[0]) + ',' + str(A[1]) + ',' + str(A[2])
-    B_coords = str(B[0]) + ',' + str(B[1]) + ',' + str(B[2])
-    coords = A_coords + ',' + B_coords
+    A_coords = str(A[0]) + "," + str(A[1]) + "," + str(A[2])
+    B_coords = str(B[0]) + "," + str(B[1]) + "," + str(B[2])
+    coords = A_coords + "," + B_coords
     return coords
 
 
@@ -2259,7 +2248,7 @@ def write_D_network_element_to_inputfile(
     fileName
 ):
     # replace B32 elements with D elements for fluid section
-    f = open(fileName, 'r+')
+    f = open(fileName, "r+")
     lines = f.readlines()
     f.seek(0)
     for line in lines:
@@ -2278,7 +2267,7 @@ def use_correct_fluidinout_ele_def(
     fileName,
     fluid_inout_nodes_file
 ):
-    f = open(fileName, 'r')
+    f = open(fileName, "r")
     cnt = 0
     line = f.readline()
 
@@ -2291,7 +2280,7 @@ def use_correct_fluidinout_ele_def(
 
     # obtain element line numbers for inlet and outlet
     while (len(line) > 1):
-        ind = line.find(',')
+        ind = line.find(",")
         elem = line[0:ind]
         for i in range(len(FluidInletoutlet_ele)):
             if (elem == FluidInletoutlet_ele[i][0]):
@@ -2301,30 +2290,30 @@ def use_correct_fluidinout_ele_def(
     f.close()
 
     # re-define elements for INLET and OUTLET
-    f = open(fileName, 'r+')
+    f = open(fileName, "r+")
     lines = f.readlines()
     f.seek(0)
     cnt = 0
     elem_counter = 0
     FreeCAD.Console.PrintMessage(
-        '1DFlow inout nodes file: {}\n'
+        "1DFlow inout nodes file: {}\n"
         .format(fluid_inout_nodes_file)
     )
     inout_nodes_file = open(fluid_inout_nodes_file, "w")
     for line in lines:
-        new_line = ''
+        new_line = ""
         for i in range(len(FluidInletoutlet_ele)):
             if (cnt == FluidInletoutlet_ele[i][2]):
                 elem_counter = elem_counter + 1
-                a = line.split(',')
+                a = line.split(",")
                 for j in range(len(a)):
                     if elem_counter == 1:
                         if j == 1:
-                            new_line = new_line + ' 0,'
+                            new_line = new_line + " 0,"
                             node1 = int(a[j + 2])
                             node2 = int(a[j + 1])
                             node3 = int(a[j])
-                            inout_nodes_file.write('{},{},{},{}\n'.format(
+                            inout_nodes_file.write("{},{},{},{}\n".format(
                                 node1,
                                 node2,
                                 node3,
@@ -2333,22 +2322,22 @@ def use_correct_fluidinout_ele_def(
                         elif j == 3:
                             new_line = new_line + a[j]
                         else:
-                            new_line = new_line + a[j] + ','
+                            new_line = new_line + a[j] + ","
                     else:
                         if j == 3:
-                            new_line = new_line + ' 0\n'
+                            new_line = new_line + " 0\n"
                             node1 = int(a[j - 2])
                             node2 = int(a[j - 1])
                             node3 = int(a[j])
-                            inout_nodes_file.write('{},{},{},{}\n'.format(
+                            inout_nodes_file.write("{},{},{},{}\n".format(
                                 node1,
                                 node2,
                                 node3,
                                 FluidInletoutlet_ele[i][1]
                             ))
                         else:
-                            new_line = new_line + a[j] + ','
-        if new_line == '':
+                            new_line = new_line + a[j] + ","
+        if new_line == "":
             f.write(line)
         else:
             f.write(new_line)
@@ -2362,10 +2351,10 @@ def use_correct_fluidinout_ele_def(
 def compact_mesh(
     old_femmesh
 ):
-    '''
+    """
     removes all gaps in node and element ids, start ids with 1
     returns a tuple (FemMesh, node_assignment_map, element_assignment_map)
-    '''
+    """
     node_map = {}  # {old_node_id: new_node_id, ...}
     elem_map = {}  # {old_elem_id: new_elem_id, ...}
     old_nodes = old_femmesh.Nodes

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) York van Havre 2016 yorik@uncreated.net                 *
+ *   Copyright (c) 2016 York van Havre <yorik@uncreated.net>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,6 +50,8 @@ public:
     App::PropertyBool         ShowFill;
     App::PropertyFloat        LineWidth;
     App::PropertyFloat        FontSize;
+    App::PropertyFloat        CutLineWidth;
+    App::PropertyBool         JoinArch;
 
     /** @name methods override Feature */
     //@{
@@ -61,7 +63,7 @@ public:
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderArch";
     }
-    
+
     virtual short mustExecute() const override;
 
 
@@ -70,7 +72,7 @@ protected:
     Base::BoundBox3d bbox;
     std::string getSVGHead(void);
     std::string getSVGTail(void);
-    
+
 private:
     static const char* RenderModeEnums[];
 };

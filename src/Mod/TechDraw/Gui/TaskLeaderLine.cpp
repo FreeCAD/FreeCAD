@@ -123,6 +123,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     saveState();
 
     m_trackerMode = QGTracker::TrackerMode::Line;
+    m_saveContextPolicy = m_mdi->contextMenuPolicy();
 }
 
 //ctor for creation
@@ -165,6 +166,8 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     ui->pbCancelEdit->setEnabled(false);
 
     m_trackerMode = QGTracker::TrackerMode::Line;
+    m_saveContextPolicy = m_mdi->contextMenuPolicy();
+
 }
 
 TaskLeaderLine::~TaskLeaderLine()
@@ -625,7 +628,9 @@ bool TaskLeaderLine::accept()
 {
 //    Base::Console().Message("TTL::accept()\n");
     if (m_inProgressLock) {
+        //accept() button shouldn't be available if there is an edit in progress.
         abandonEditSession();
+        removeTracker();
         return true;
     }
 
@@ -633,15 +638,18 @@ bool TaskLeaderLine::accept()
     if (!doc) return false;
 
     if (!getCreateMode())  {
+//        removeTracker();
         updateLeaderFeature();
     } else {
-        removeTracker();
+//        removeTracker();
         createLeaderFeature(m_trackerPoints);
     }
-    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     m_trackerMode = QGTracker::TrackerMode::None;
+    removeTracker();
+
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
+    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     return true;
 }
 
@@ -649,6 +657,7 @@ bool TaskLeaderLine::reject()
 {
     if (m_inProgressLock) {
 //        Base::Console().Message("TTL::reject - edit in progress!!\n");
+        //reject() button shouldn't be available if there is an edit in progress.
         abandonEditSession();
         removeTracker();
         return false;
@@ -657,9 +666,6 @@ bool TaskLeaderLine::reject()
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
-    if (m_mdi != nullptr) {
-        m_mdi->setContextMenuPolicy(m_saveContextPolicy);
-    }
     if (getCreateMode() &&
         (m_lineFeat != nullptr) )  {
         removeFeature();
@@ -671,10 +677,15 @@ bool TaskLeaderLine::reject()
     }
 
     m_trackerMode = QGTracker::TrackerMode::None;
+    removeTracker();
 
     //make sure any dangling objects are cleaned up 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+
+    if (m_mdi != nullptr) {
+        m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+    }
 
     return false;
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -102,7 +102,7 @@ protected:
 /// Parent class of all link type properties
 class AppExport PropertyLinkBase : public Property, public ScopedLink
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     typedef std::pair<std::string,std::string> ShadowSub;
 
@@ -135,15 +135,15 @@ public:
     /** Register label reference for future object relabel update
      *
      *  @param labels: labels to be registered
-     *  @param reset: if ture, then calls unregisterLabelReference() before
+     *  @param reset: if true, then calls unregisterLabelReference() before
      *  registering
      */
     void registerLabelReferences(std::vector<std::string> &&labels, bool reset=true);
 
-    /** Check subnames for label registeration
+    /** Check subnames for label registration
      *
      *  @param subs: subname references
-     *  @param reset: if ture, then calls unregisterLabelReference() before
+     *  @param reset: if true, then calls unregisterLabelReference() before
      *  registering
      *
      *  Check the give subname references and extract any label reference
@@ -186,7 +186,7 @@ public:
     /** Called to reset this link property
      *
      * @param obj: reset link property if it is linked to this object
-     * @param clear: if true, then also reset property if the owner of this proeprty is \a obj
+     * @param clear: if true, then also reset property if the owner of this property is \a obj
      *
      * @sa breakLinks()
      */
@@ -294,7 +294,7 @@ public:
      * tracking of external objects, therefore the link will not by auto broken
      * when external document is closed. Only use this for temporary case, or
      * if you handle signalDeleteDocument yourself, or use one of the
-     * ProeprtyXLink related property.
+     * PropertyXLink related property.
      */
     void setAllowExternal(bool allow);
 
@@ -324,7 +324,7 @@ public:
             const App::DocumentObject *parent, App::DocumentObject *oldObj, 
             App::DocumentObject *newObj, const char *sub=0);
 
-    /** Helper function to check and replace a link with multiple subname refereces
+    /** Helper function to check and replace a link with multiple subname references
      *
      * @param owner: the owner of the current property
      * @param obj: the current linked object
@@ -385,7 +385,7 @@ public:
      *
      * @param link: reset link property if it is linked to this object
      * @param objs: the objects to check for the link properties
-     * @param clear: if ture, then also reset property if the owner of the link property is \a link
+     * @param clear: if true, then also reset property if the owner of the link property is \a link
      *
      * App::Document::breakDependency() calls this function to break the link property
      */
@@ -495,7 +495,7 @@ public:
      *
      * @sa registerLabelReferences()
      *
-     * This function is used to extrac label from subname reference for
+     * This function is used to extract label from subname reference for
      * registering of label changes.
      */
     static void getLabelReferences(std::vector<std::string> &labels, const char *subname);
@@ -571,7 +571,7 @@ private:
  */
 class AppExport PropertyLink : public PropertyLinkBase
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -607,19 +607,19 @@ public:
         return _pcLink ? dynamic_cast<_type>(_pcLink) : 0;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
-    virtual unsigned int getMemSize (void) const{
+    virtual unsigned int getMemSize (void) const override {
         return sizeof(App::DocumentObject *);
     }
-    virtual const char* getEditorName(void) const
+    virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
@@ -665,7 +665,7 @@ public:
 
 class AppExport PropertyLinkListBase: public PropertyLinkBase, public PropertyListsBase
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     virtual void setPyObject(PyObject *obj) override {
         _setPyObject(obj);
@@ -675,7 +675,7 @@ public:
 class AppExport PropertyLinkList : 
     public PropertyListsT<DocumentObject*,std::vector<DocumentObject*>, PropertyLinkListBase>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
     typedef PropertyListsT<DocumentObject*,std::vector<DocumentObject*>,PropertyLinkListBase> inherited;
 
 public:
@@ -773,7 +773,7 @@ class PropertyXLinkSub;
  */
 class AppExport PropertyLinkSub : public PropertyLinkBase
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     /**
@@ -826,14 +826,14 @@ public:
         return _pcLinkSub ? dynamic_cast<_type>(_pcLinkSub) : 0;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
     /// Return a copy of the property if any changes caused by importing external object 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
@@ -844,7 +844,7 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    virtual unsigned int getMemSize (void) const{
+    virtual unsigned int getMemSize (void) const override {
         return sizeof(App::DocumentObject *);
     }
 
@@ -897,7 +897,7 @@ public:
 
 class AppExport PropertyLinkSubList : public PropertyLinkBase
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     typedef std::pair<DocumentObject*, std::vector<std::string> > SubSet;
@@ -968,14 +968,14 @@ public:
     void setSubListValues(const std::vector<SubSet>&);
     std::vector<SubSet> getSubListValues(bool newStyle=false) const;
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
     /// Return a copy of the property if any changes caused by importing external object 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
@@ -986,7 +986,7 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize (void) const override;
 
     virtual void updateElementReference(
             DocumentObject *feature,bool reverse=false, bool notify=false) override;
@@ -1042,7 +1042,7 @@ class PropertyXLinkSubList;
  */
 class AppExport PropertyXLink : public PropertyLinkGlobal
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=0);
@@ -1080,11 +1080,11 @@ public:
 
     virtual int checkRestore(std::string *msg=0) const override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
     /// Return a copy of the property if any changes caused by importing external object 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
@@ -1095,8 +1095,8 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
     friend class DocInfo;
 
@@ -1126,6 +1126,10 @@ public:
     std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle=false) const;
 
     virtual void setAllowPartial(bool enable) override;
+
+    const char *getFilePath() const {
+        return filePath.c_str();
+    }
 
 protected:
     void unlink();
@@ -1161,7 +1165,7 @@ protected:
 /** Link to one or more (sub)object from the same or different document
  */
 class AppExport PropertyXLinkSub: public PropertyXLink {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyXLinkSub(bool allowPartial=false, PropertyLinkBase *parent=0);
@@ -1173,14 +1177,14 @@ public:
     virtual PyObject *getPyObject(void) override;
 
 protected:
-    virtual PropertyXLink *createInstance() const;
+    virtual PropertyXLink *createInstance() const override;
 };
 
 
 /** Link to one or more (sub)object(s) of one or more object(s) from the same or different document
  */
 class AppExport PropertyXLinkSubList: public PropertyLinkBase {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyXLinkSubList();
@@ -1233,14 +1237,14 @@ public:
         return _Links;
     }
 
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
 
@@ -1250,7 +1254,7 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize (void) const override;
 
     virtual void updateElementReference(
             DocumentObject *feature,bool reverse=false, bool notify=false) override;
@@ -1282,7 +1286,7 @@ protected:
  * @sa See PropertyExpressionEngine for example usage
  */
 class AppExport PropertyXLinkContainer : public PropertyLinkBase {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     PropertyXLinkContainer();
     ~PropertyXLinkContainer();

@@ -159,11 +159,11 @@ bool ViewProviderBody::doubleClicked(void)
         //active body double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
-
     } else {
 
         // assure the PartDesign workbench
-        Gui::Command::assureWorkbench("PartDesignWorkbench");
+        if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign")->GetBool("SwitchToWB", true))
+            Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // and set correct active objects
         auto* part = App::Part::getPartOfObject ( getObject() );
@@ -231,7 +231,7 @@ void ViewProviderBody::updateData(const App::Property* prop)
 
         // restore icons
         for (auto feature : features) {
-            Gui::ViewProvider* vp = Gui::Application::Instance->activeDocument()->getViewProvider(feature);
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(feature);
             if (vp && vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
                 static_cast<PartDesignGui::ViewProvider*>(vp)->setTipIcon(feature == tip);
             }

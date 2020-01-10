@@ -37,7 +37,7 @@
 
 using namespace Gui;
 
-SO_NODE_ABSTRACT_SOURCE(SoFCColorBarBase);
+SO_NODE_ABSTRACT_SOURCE(SoFCColorBarBase)
 
 /*!
   Constructor.
@@ -99,7 +99,7 @@ private:
 };
 }
 
-SO_NODE_SOURCE(SoFCColorBar);
+SO_NODE_SOURCE(SoFCColorBar)
 
 /*!
   Constructor.

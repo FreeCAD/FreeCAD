@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+ *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -32,7 +32,7 @@ class TaskDlgTransformedParameters;
 
 class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderTransformed);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderTransformed);
 
 public:
     /// constructor
@@ -42,9 +42,9 @@ public:
     virtual ~ViewProviderTransformed()
         {}
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool onDelete(const std::vector<std::string> &) override;
 
     /// signals if the transformation contains errors
     boost::signals2::signal<void (QString msg)> signalDiagnosis;
@@ -55,8 +55,8 @@ public:
     virtual Gui::ViewProvider *startEditing(int ModNum=0) override;
 
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
 
     bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
 

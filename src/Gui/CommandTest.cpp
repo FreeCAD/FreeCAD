@@ -43,6 +43,7 @@
 #include "MainWindow.h"
 #include "MDIView.h"
 #include "Command.h"
+#include "CommandT.h"
 #include "Language/Translator.h"
 
 #include "ProgressBar.h"
@@ -55,7 +56,7 @@ using namespace Gui;
 //===========================================================================
 // Std_TestQM
 //===========================================================================
-DEF_STD_CMD(Std_TestQM);
+DEF_STD_CMD(Std_TestQM)
 
 Std_TestQM::Std_TestQM()
   : Command("Std_TestQM")
@@ -93,7 +94,7 @@ void Std_TestQM::activated(int iMsg)
 //===========================================================================
 // Std_TestReloadQM
 //===========================================================================
-DEF_STD_CMD(Std_TestReloadQM);
+DEF_STD_CMD(Std_TestReloadQM)
 
 Std_TestReloadQM::Std_TestReloadQM()
   : Command("Std_TestReloadQM")
@@ -114,7 +115,7 @@ void Std_TestReloadQM::activated(int iMsg)
 //===========================================================================
 // Std_Test1
 //===========================================================================
-DEF_STD_CMD_A(FCCmdTest1);
+DEF_STD_CMD_A(FCCmdTest1)
 
 FCCmdTest1::FCCmdTest1()
   : Command("Std_Test1")
@@ -142,7 +143,7 @@ bool FCCmdTest1::isActive(void)
 //===========================================================================
 // Std_Test2
 //===========================================================================
-DEF_STD_CMD_A(FCCmdTest2);
+DEF_STD_CMD_A(FCCmdTest2)
 
 FCCmdTest2::FCCmdTest2()
   : Command("Std_Test2")
@@ -169,7 +170,7 @@ bool FCCmdTest2::isActive(void)
 //===========================================================================
 // Std_Test3
 //===========================================================================
-DEF_STD_CMD_A(FCCmdTest3);
+DEF_STD_CMD_A(FCCmdTest3)
 
 FCCmdTest3::FCCmdTest3()
   : Command("Std_Test3")
@@ -199,7 +200,7 @@ bool FCCmdTest3::isActive(void)
 // Std_Test4
 //===========================================================================
 
-DEF_STD_CMD_A(FCCmdTest4);
+DEF_STD_CMD_A(FCCmdTest4)
 
 FCCmdTest4::FCCmdTest4()
   : Command("Std_Test4")
@@ -228,7 +229,7 @@ bool FCCmdTest4::isActive(void)
 //===========================================================================
 // Std_Test5
 //===========================================================================
-DEF_STD_CMD_A(FCCmdTest5);
+DEF_STD_CMD_A(FCCmdTest5)
 
 FCCmdTest5::FCCmdTest5()
   : Command("Std_Test5")
@@ -257,7 +258,7 @@ bool FCCmdTest5::isActive(void)
 //===========================================================================
 // Std_Test6
 //===========================================================================
-DEF_STD_CMD_A(FCCmdTest6);
+DEF_STD_CMD_A(FCCmdTest6)
 
 FCCmdTest6::FCCmdTest6()
   : Command("Std_Test6")
@@ -283,9 +284,58 @@ bool FCCmdTest6::isActive(void)
 }
 
 //===========================================================================
+// Std_TestCmdFuncs
+//===========================================================================
+DEF_STD_CMD_A(CmdTestCmdFuncs)
+
+CmdTestCmdFuncs::CmdTestCmdFuncs()
+  : Command("Std_TestCmdFuncs")
+{
+    sGroup          = "Standard-Test";
+    sMenuText       = "Test functions";
+    sToolTipText    = "Test functions";
+    sWhatsThis      = "Std_TestCmdFuncs";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdTestCmdFuncs::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document *doc = getDocument();
+    auto obj = doc->addObject("App::Annotation", "obj");
+    if (!obj) return;
+
+    std::string objName = obj->getNameInDocument();
+
+    Gui::cmdAppDocument(doc, std::ostringstream() << "getObject('" << objName << "')");
+    std::string cmd = "getObject('"; cmd += objName; cmd += "')";
+    Gui::cmdAppDocument(doc, cmd);
+
+    Gui::cmdAppDocument(doc, std::ostringstream() << "getObject('" << objName << "')");
+    Gui::cmdAppDocument(obj, std::ostringstream() << "getObject('" << objName << "')");
+    Gui::cmdGuiDocument(obj, std::ostringstream() << "getObject('" << objName << "')");
+    Gui::cmdAppObject(obj, "Visibility = False");
+    Gui::cmdGuiObject(obj, "Visibility = False");
+    Gui::cmdAppObject(obj, std::ostringstream() << "Visibility =" << "False");
+    Gui::cmdGuiObject(obj, std::ostringstream() << "Visibility =" << "False");
+    Gui::cmdAppObjectHide(obj);
+    Gui::cmdAppObjectShow(obj);
+    Gui::cmdAppObjectArgs(obj, "%s = %s", "Visibility", "True");
+    Gui::cmdGuiObjectArgs(obj, "%s = %s", "Visibility", "True");
+    Gui::cmdSetEdit(obj);
+    Gui::doCommandT(Gui::Command::Gui, "print('%s %s')", "Hello,", "World");
+    Gui::copyVisualT(objName.c_str(), "DisplayMode", objName.c_str());
+}
+
+bool CmdTestCmdFuncs::isActive(void)
+{
+    return (getDocument()!=NULL);
+}
+
+//===========================================================================
 // Std_TestProgress1
 //===========================================================================
-DEF_STD_CMD_A(CmdTestProgress1);
+DEF_STD_CMD_A(CmdTestProgress1)
 
 CmdTestProgress1::CmdTestProgress1()
   : Command("Std_TestProgress1")
@@ -327,7 +377,7 @@ bool CmdTestProgress1::isActive(void)
 //===========================================================================
 // Std_TestProgress2
 //===========================================================================
-DEF_STD_CMD_A(CmdTestProgress2);
+DEF_STD_CMD_A(CmdTestProgress2)
 
 CmdTestProgress2::CmdTestProgress2()
   : Command("Std_TestProgress2")
@@ -370,7 +420,7 @@ bool CmdTestProgress2::isActive(void)
 //===========================================================================
 // Std_TestProgress3
 //===========================================================================
-DEF_STD_CMD_A(CmdTestProgress3);
+DEF_STD_CMD_A(CmdTestProgress3)
 
 CmdTestProgress3::CmdTestProgress3()
   : Command("Std_TestProgress3")
@@ -440,7 +490,7 @@ bool CmdTestProgress3::isActive(void)
 //===========================================================================
 // Std_TestProgress4
 //===========================================================================
-DEF_STD_CMD_A(CmdTestProgress4);
+DEF_STD_CMD_A(CmdTestProgress4)
 
 CmdTestProgress4::CmdTestProgress4()
   : Command("Std_TestProgress4")
@@ -495,7 +545,7 @@ bool CmdTestProgress4::isActive(void)
 //===========================================================================
 // Std_TestProgress5
 //===========================================================================
-DEF_STD_CMD_A(CmdTestProgress5);
+DEF_STD_CMD_A(CmdTestProgress5)
 
 CmdTestProgress5::CmdTestProgress5()
   : Command("Std_TestProgress5")
@@ -575,7 +625,7 @@ bool CmdTestProgress5::isActive(void)
 //===========================================================================
 // Std_MDITest
 //===========================================================================
-DEF_STD_CMD_A(CmdTestMDI1);
+DEF_STD_CMD_A(CmdTestMDI1)
 
 CmdTestMDI1::CmdTestMDI1()
   : Command("Std_MDITest1")
@@ -599,7 +649,7 @@ bool CmdTestMDI1::isActive(void)
     return getMainWindow()->activeWindow();
 }
 
-DEF_STD_CMD_A(CmdTestMDI2);
+DEF_STD_CMD_A(CmdTestMDI2)
 
 CmdTestMDI2::CmdTestMDI2()
   : Command("Std_MDITest2")
@@ -627,7 +677,7 @@ bool CmdTestMDI2::isActive(void)
     return getMainWindow()->activeWindow();
 }
 
-DEF_STD_CMD_A(CmdTestMDI3);
+DEF_STD_CMD_A(CmdTestMDI3)
 
 CmdTestMDI3::CmdTestMDI3()
   : Command("Std_MDITest3")
@@ -655,7 +705,7 @@ bool CmdTestMDI3::isActive(void)
     return getMainWindow()->activeWindow();
 }
 
-DEF_STD_CMD(CmdTestConsoleOutput);
+DEF_STD_CMD(CmdTestConsoleOutput)
 
 CmdTestConsoleOutput::CmdTestConsoleOutput()
   : Command("Std_TestConsoleOutput")
@@ -667,7 +717,7 @@ CmdTestConsoleOutput::CmdTestConsoleOutput()
 }
 
 namespace Gui {
-class TestConsoleObserver : public Base::ConsoleObserver
+class TestConsoleObserver : public Base::ILogger
 {
     QMutex mutex;
 public:
@@ -675,25 +725,24 @@ public:
     TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
     {
     }
-    virtual void Warning(const char * msg)
-    {
+    void SendLog(const std::string& msg, Base::LogStyle level){
+
         QMutexLocker ml(&mutex);
-        matchWrn += strcmp(msg, "Write a warning to the console output.\n");
-    }
-    virtual void Message(const char * msg)
-    {
-        QMutexLocker ml(&mutex);
-        matchMsg += strcmp(msg, "Write a message to the console output.\n");
-    }
-    virtual void Error(const char * msg)
-    {
-        QMutexLocker ml(&mutex);
-        matchErr += strcmp(msg, "Write an error to the console output.\n");
-    }
-    virtual void Log(const char * msg)
-    {
-        QMutexLocker ml(&mutex);
-        matchLog += strcmp(msg, "Write a log to the console output.\n");
+
+        switch(level){
+            case Base::LogStyle::Warning:
+                matchWrn += strcmp(msg.c_str(), "Write a warning to the console output.\n");
+                break;
+            case Base::LogStyle::Message:
+                matchMsg += strcmp(msg.c_str(), "Write a message to the console output.\n");
+                break;
+            case Base::LogStyle::Error:
+                matchErr += strcmp(msg.c_str(), "Write an error to the console output.\n");
+                break;
+            case Base::LogStyle::Log:
+                matchLog += strcmp(msg.c_str(), "Write a log to the console output.\n");
+                break;
+        }
     }
 };
 
@@ -771,6 +820,7 @@ void CreateTestCommands(void)
     rcCmdMgr.addCommand(new FCCmdTest4());
     rcCmdMgr.addCommand(new FCCmdTest5());
     rcCmdMgr.addCommand(new FCCmdTest6());
+    rcCmdMgr.addCommand(new CmdTestCmdFuncs);
     rcCmdMgr.addCommand(new CmdTestProgress1());
     rcCmdMgr.addCommand(new CmdTestProgress2());
     rcCmdMgr.addCommand(new CmdTestProgress3());

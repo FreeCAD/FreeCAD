@@ -47,6 +47,7 @@ void DlgPrefsTechDraw2Imp::saveSettings()
 {
     cbShowUnits->onSave();
     plsb_FontSize->onSave();
+    pdsb_TolFactor->onSave();
     colDimColor->onSave();
     leDiameter->onSave();
     pcbMatting->onSave();
@@ -62,12 +63,14 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     leLineGroup->onSave();
     pdsb_VertexScale->onSave();
     pcb_VertexColor->onSave();
+    pcbStandardAndStyle->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
 {
     cbShowUnits->onRestore();
     plsb_FontSize->onRestore();
+    pdsb_TolFactor->onRestore();
     colDimColor->onRestore();
     leDiameter->onRestore();
     pcbMatting->onRestore();
@@ -83,6 +86,7 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     leLineGroup->onRestore();
     pdsb_VertexScale->onRestore();
     pcb_VertexColor->onRestore();
+    pcbStandardAndStyle->onRestore();
 }
 
 /**

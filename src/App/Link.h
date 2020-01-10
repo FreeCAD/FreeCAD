@@ -23,6 +23,7 @@
 #ifndef APP_LINK_H
 #define APP_LINK_H
 
+#include <unordered_set>
 #include <boost/signals2.hpp>
 #include <boost/preprocessor/facilities/expand.hpp>
 #include <boost/preprocessor/cat.hpp>
@@ -38,6 +39,12 @@
 #include "FeaturePython.h"
 #include "GroupExtension.h"
 
+//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
+
 #define LINK_THROW(_type,_msg) do{\
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))\
         FC_ERR(_msg);\
@@ -49,7 +56,7 @@ namespace App
 
 class AppExport LinkBaseExtension : public App::DocumentObjectExtension 
 {
-    EXTENSION_PROPERTY_HEADER(App::LinkExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
     typedef App::DocumentObjectExtension inherited;
 
 public:
@@ -317,7 +324,7 @@ typedef ExtensionPythonT<LinkBaseExtension> LinkBaseExtensionPython;
 
 class AppExport LinkExtension : public LinkBaseExtension
 {
-    EXTENSION_PROPERTY_HEADER(App::LinkExtension);
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
     typedef LinkBaseExtension inherited;
 
 public:
@@ -537,5 +544,9 @@ typedef App::FeaturePythonT<LinkGroup> LinkGroupPython;
 
 } //namespace App
 
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 #endif // APP_LINK_H

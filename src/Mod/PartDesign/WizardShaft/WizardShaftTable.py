@@ -1,5 +1,5 @@
 #/******************************************************************************
-# *   Copyright (c)2012 Jan Rheinlaender <jrheinlaender@users.sourceforge.net> *
+# *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
 # *                                                                            *
 # *   This file is part of the FreeCAD CAx development system.                 *
 # *                                                                            *
@@ -198,7 +198,7 @@ class WizardShaftTable:
         self.editedValue = value
 
     def slotEditingFinished(self):
-        if self.editedRow == None:
+        if self.editedRow is None:
             return
         rowName = self.rowDictReverse[self.editedRow]
         if rowName is None:

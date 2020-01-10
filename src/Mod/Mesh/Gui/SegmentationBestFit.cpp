@@ -197,14 +197,17 @@ ParametersDialog::ParametersDialog(std::vector<float>& val, FitParameter* fitPar
     Gui::SelectionObject obj(mesh);
     std::vector<Gui::SelectionObject> sel;
     sel.push_back(obj);
+    Gui::Selection().clearSelection();
     meshSel.setObjects(sel);
     meshSel.setCheckOnlyPointToUserTriangles(true);
     meshSel.setCheckOnlyVisibleTriangles(true);
+    meshSel.setEnabledViewerSelection(false);
 }
 
 ParametersDialog::~ParametersDialog()
 {
     meshSel.clearSelection();
+    meshSel.setEnabledViewerSelection(true);
     delete fitParameter;
 }
 

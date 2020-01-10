@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,10 +25,15 @@
 # include <unistd.h>
 #endif
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
+#endif
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <Base/Console.h>
-#include <Base/Exception.h>
+#include "Base/Exception.h"
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <App/Application.h>
@@ -3568,7 +3573,8 @@ void VariableExpression::_moveCells(const CellAddress &address,
     if(var.hasDocumentObjectName(true))
         return;
 
-    auto &comp = var.getPropertyComponent(0);
+    int idx = 0;
+    const auto &comp = var.getPropertyComponent(0,&idx);
     CellAddress addr = stringToAddress(comp.getName().c_str(),true);
     if(!addr.isValid())
         return;
@@ -3579,7 +3585,7 @@ void VariableExpression::_moveCells(const CellAddress &address,
         v.aboutToChange();
         addr.setRow(thisRow + rowCount);
         addr.setCol(thisCol + colCount);
-        comp = ObjectIdentifier::SimpleComponent(addr.toString());
+        var.setComponent(idx,ObjectIdentifier::SimpleComponent(addr.toString()));
     }
 }
 
@@ -3587,7 +3593,8 @@ void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVi
     if(var.hasDocumentObjectName(true))
         return;
 
-    auto &comp = var.getPropertyComponent(0);
+    int idx = 0;
+    const auto &comp = var.getPropertyComponent(0,&idx);
     CellAddress addr = stringToAddress(comp.getName().c_str(),true);
     if(!addr.isValid() || (addr.isAbsoluteCol() && addr.isAbsoluteRow()))
         return;
@@ -3597,7 +3604,7 @@ void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVi
         addr.setCol(addr.col()+colOffset);
     if(!addr.isAbsoluteRow())
         addr.setRow(addr.row()+rowOffset);
-    comp = ObjectIdentifier::SimpleComponent(addr.toString());
+    var.setComponent(idx,ObjectIdentifier::SimpleComponent(addr.toString()));
 }
 
 //

@@ -34,7 +34,7 @@ class Container(object):
     def self_check(self):
         if self.Object is None:
             raise ValueError("Null!")
-        if not isAContainer(self.Object):
+        if not isAContainer(self.Object, links_too= True):
             raise NotAContainerError(self.Object)
     
     def getAllChildren(self):
@@ -58,7 +58,7 @@ class Container(object):
             return container.OriginFeatures
         elif container.hasExtension('App::GroupExtension'):
             return []
-        elif container.hasChildElement():
+        elif container.hasChildElement(): # Link
             return []
         raise RuntimeError("getStaticChildren: unexpected container type!")
 
@@ -102,7 +102,7 @@ class Container(object):
             return True #Document is a special thing... is it a CS or not is a matter of coding convenience. 
         elif container.hasExtension('App::GeoFeatureGroupExtension'):
             return True
-        elif container.hasElement():
+        elif container.hasChildElement(): # Link
             return True
         else:
             return False
@@ -118,7 +118,7 @@ class Container(object):
             return True
         elif container.isDerivedFrom('App::Origin'):
             return True
-        elif container.hasChildElement():
+        elif container.hasChildElement(): # Link
             return True
         else:
             return False
@@ -180,11 +180,13 @@ def _getMetacontainerChildren(container, isrightcontainer_func):
         
     
 
-def isAContainer(obj):
-    '''isAContainer(obj): returns True if obj is an object container, such as 
-    Group, Part, Body. The important characterisic of an object being a 
+def isAContainer(obj, links_too = False):
+    '''isAContainer(obj, links_too): returns True if obj is an object container, such as 
+    Group, Part, Body. The important characteristic of an object being a 
     container is that it can be activated to receive new objects. Documents 
-    are considered containers, too.'''
+    are considered containers, too.
+    If links_too, App::Link objects are considered containers, too. Then, container tree 
+    isn't necessarily a tree.'''
     
     if obj.isDerivedFrom('App::Document'):
         return True
@@ -193,7 +195,7 @@ def isAContainer(obj):
     if obj.isDerivedFrom('App::Origin'):
         return True
     if obj.hasChildElement():
-        return True
+        return True if links_too else False
     return False
 
 #from Part-o-magic...

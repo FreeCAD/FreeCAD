@@ -275,6 +275,8 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
         dlg.setDirectory(dirName);
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         dlg.onSelectedFilter(dlg.selectedNameFilter());
         dlg.setNameFilterDetailsVisible(true);
         dlg.setConfirmOverwrite(true);
@@ -374,6 +376,8 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         dlg.setNameFilterDetailsVisible(true);
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
@@ -450,6 +454,8 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         dlg.setOptions(options);
         dlg.setNameFilters(filter.split(QLatin1String(";;")));
         dlg.setNameFilterDetailsVisible(true);
+        if (selectedFilter && !selectedFilter->isEmpty())
+            dlg.selectNameFilter(*selectedFilter);
         if (dlg.exec() == QDialog::Accepted) {
             if (selectedFilter)
                 *selectedFilter = dlg.selectedNameFilter();
@@ -692,7 +698,10 @@ QString FileIconProvider::type(const QFileInfo & info) const
  * Constructs a file chooser called \a name with the parent \a parent.
  */
 FileChooser::FileChooser ( QWidget * parent )
-  : QWidget(parent), md( File ), _filter( QString::null )
+  : QWidget(parent)
+  , md( File )
+  , accMode( AcceptOpen )
+  , _filter( QString::null )
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );
@@ -783,7 +792,10 @@ void FileChooser::chooseFile()
 
     QString fn;
     if ( mode() == File ) {
-        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), prechosenDirectory, _filter,0,dlgOpt );
+        if (acceptMode() == AcceptOpen)
+            fn = QFileDialog::getOpenFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, 0, dlgOpt);
+        else
+            fn = QFileDialog::getSaveFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, 0, dlgOpt);
     } else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
         fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory,option );

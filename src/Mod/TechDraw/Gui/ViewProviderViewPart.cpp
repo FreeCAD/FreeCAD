@@ -43,6 +43,7 @@
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include<Mod/TechDraw/App/DrawPage.h>
@@ -98,6 +99,8 @@ ViewProviderViewPart::ViewProviderViewPart()
     
     //properties that affect Detail Highlights
     ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
+
+    ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup,App::Prop_None,"Temporarily show invisible lines");
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
@@ -211,4 +214,34 @@ TechDraw::DrawViewPart* ViewProviderViewPart::getViewObject() const
 TechDraw::DrawViewPart* ViewProviderViewPart::getViewPart() const
 {
     return getViewObject();
+}
+
+void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+// transforms properties that had been changed
+{
+    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat LineWidthProperty;
+        // restore the PropertyFloat to be able to set its value
+        LineWidthProperty.Restore(reader);
+        LineWidth.setValue(LineWidthProperty.getValue());
+    }
+    // property HiddenWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    else if (prop == &HiddenWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat HiddenWidthProperty;
+        HiddenWidthProperty.Restore(reader);
+        HiddenWidth.setValue(HiddenWidthProperty.getValue());
+    }
+    // property IsoWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    else if (prop == &IsoWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat IsoWidthProperty;
+        IsoWidthProperty.Restore(reader);
+        IsoWidth.setValue(IsoWidthProperty.getValue());
+    }
+    // property ExtraWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    else if (prop == &ExtraWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat  ExtraWidthProperty;
+        ExtraWidthProperty.Restore(reader);
+        ExtraWidth.setValue(ExtraWidthProperty.getValue());
+    }
 }

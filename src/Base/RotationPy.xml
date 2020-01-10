@@ -73,12 +73,28 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="toEuler" Const="true">
+        <Methode Name="slerp" Const="true">
+			<Documentation>
+				<UserDocu>
+					slerp(Rotation, Float) -> Rotation
+					Spherical linear interpolation of this and a given rotation. The float must be in the range of 0 and 1
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="toEuler" Const="true">
 			<Documentation>
 				<UserDocu>
 					toEuler(Vector) -> list
 					Get the Euler angles of this rotation
 					as yaw-pitch-roll in XY'Z'' convention
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="toMatrix" Const="true">
+			<Documentation>
+				<UserDocu>
+					toMatrix()
+					convert the rotation to a matrix representation
 				</UserDocu>
 			</Documentation>
 		</Methode>

@@ -217,8 +217,8 @@ public:
      * @param ctx2: secondary context output
      *
      * @return Returned the primary context for selection, and the context is
-     * always stored in the first encounted SoFCSelectionRoot in the path. It
-     * is keyed using the entires sequence of SoFCSelectionRoot along the path
+     * always stored in the first encountered SoFCSelectionRoot in the path. It
+     * is keyed using the entire sequence of SoFCSelectionRoot along the path
      * to \c node, replacing the first SoFCSelectionRoot with the given node. 
      *
      * @return Secondary context returned in \c ctx2 is for customized
@@ -318,7 +318,7 @@ public:
     }
 
     enum SelectStyles {
-        FULL, BOX, PASSTHROUGH
+        Full, Box, PassThrough
     };
     SoSFEnum selectionStyle;
 

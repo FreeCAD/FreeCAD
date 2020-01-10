@@ -1,0 +1,51 @@
+# In case people don't have core.autocrlf set, this will manage the default line-ending
+# behaviour for all files recursively
+# * text=auto
+# to be save this will be commented
+
+
+# for more information see forum topic and pull request
+# https://github.com/FreeCAD/FreeCAD/pull/2752
+# https://forum.freecadweb.org/viewtopic.php?f=17&t=41117
+
+
+# get all used file types
+# in a directory in a bash use
+# find . -type f -name '*.*' | sed 's|.*\.||' | sort -u
+# add all of them either to text or binary
+
+
+# Explicitly declare which files we wish to always normalize line-endings on
+
+# standard endings
+*.csv text
+*.py text
+*.qrc text
+*.sh text
+*.ts text
+*.txt text
+*.ui text
+*.yml text
+
+
+# These files will always be checked out with CRLF, i.e. windows-style line endings. This
+# really should not be needed...
+# *.SomeWindowsFileExtensionThatReallyRequiresCRLFEvenInLinux eol=crlf
+
+
+# These files should be ignored as it pertains to line-endings, because they are binary.
+# Since auto normalize is deactivated all these could be commented too.
+# *.dox binary
+# *.jpg binary
+# *.png binary
+# *.pyc binary
+# *.qm binary
+# *.svg binary
+
+# Material specific endings
+# *.FCMat binary
+#￼ *.ods binary
+￼
+
+# use git to manually correct the file endings
+# git add --renormalize .

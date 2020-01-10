@@ -38,7 +38,7 @@ from PySide import QtCore
 from PySide import QtGui
 import sys
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns "FemGui"
 
 if sys.version_info.major >= 3:
     unicode = str
@@ -96,11 +96,11 @@ class _ViewProviderFemMaterialReinforced:
         else:
             from PySide.QtGui import QMessageBox
             message = (
-                'Active Task Dialog found! '
-                'Please close this one before opening  a new one!'
+                "Active Task Dialog found! "
+                "Please close this one before opening  a new one!"
             )
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -111,22 +111,22 @@ class _ViewProviderFemMaterialReinforced:
 
 
 class _TaskPanelFemMaterialReinforced:
-    '''The editmode TaskPanel for FemMaterialReinforced objects'''
+    """The editmode TaskPanel for FemMaterialReinforced objects"""
 
     if sys.version_info.major >= 3:
         unicode = str
 
     def __init__(self, obj):
 
-        FreeCAD.Console.PrintMessage('\n')  # empty line on start task panel
+        FreeCAD.Console.PrintMessage("\n")  # empty line on start task panel
         self.obj = obj
 
         # init matrix and reinforcement material
         self.material_m = self.obj.Material
-        self.card_path_m = ''
+        self.card_path_m = ""
         self.has_transient_mat_m = False
         self.material_r = self.obj.Reinforcement
-        self.card_path_r = ''
+        self.card_path_r = ""
         self.has_transient_mat_r = False
         # mat_card is the FCMat file
         # card_name is the file name of the mat_card
@@ -176,7 +176,7 @@ class _TaskPanelFemMaterialReinforced:
         # search for exact the mat_card_m and mat_card_r in all known cards
         # choose the current matrix material
         self.card_path_m = self.get_material_card(self.material_m)
-        FreeCAD.Console.PrintLog('card_path: {}'.format(self.card_path_m))
+        FreeCAD.Console.PrintLog("card_path: {}\n".format(self.card_path_m))
         if not self.card_path_m:
             # we have not found our material in self.materials dict :-(
             # we're going to add a user-defined temporary material: a document material
@@ -184,7 +184,7 @@ class _TaskPanelFemMaterialReinforced:
                 "Previously used material card cannot be found in material directories. "
                 "Add document material.\n"
             )
-            self.card_path_m = '_Document_Matrix_Material'
+            self.card_path_m = "_Document_Matrix_Material"
             self.materials[self.card_path_m] = self.material_m
             self.parameterWidget.cb_materials_m.addItem(
                 QtGui.QIcon(":/icons/help-browser.svg"),
@@ -207,7 +207,7 @@ class _TaskPanelFemMaterialReinforced:
 
         # choose the current reinforcement material
         self.card_path_r = self.get_material_card(self.material_r)
-        FreeCAD.Console.PrintLog('card_path: {}'.format(self.card_path_r))
+        FreeCAD.Console.PrintLog("card_path: {}\n".format(self.card_path_r))
         if not self.card_path_r:
             # we have not found our material in self.materials dict :-(
             # we're going to add a user-defined temporary material: a document material
@@ -215,7 +215,7 @@ class _TaskPanelFemMaterialReinforced:
                 "Previously used material card cannot be found in material directories. "
                 "Add document material.\n"
             )
-            self.card_path_r = '_Document_Reinforcement_Material'
+            self.card_path_r = "_Document_Reinforcement_Material"
             self.materials[self.card_path_r] = self.material_r
             self.parameterWidget.cb_materials_r.addItem(
                 QtGui.QIcon(":/icons/help-browser.svg"),
@@ -247,8 +247,8 @@ class _TaskPanelFemMaterialReinforced:
             self.obj.Reinforcement = self.material_r
         else:
             error_message = (
-                'Due to some wrong material quantity units in the changed '
-                'material data, the task panel changes where not accepted.\n'
+                "Due to some wrong material quantity units in the changed "
+                "material data, the task panel changes where not accepted.\n"
             )
             FreeCAD.Console.PrintError(error_message)
             QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
@@ -268,23 +268,23 @@ class _TaskPanelFemMaterialReinforced:
     def output_obj_mat_param(self):
         self.print_mat_dict(self.obj.Material)
         self.print_mat_dict(self.obj.Reinforcement)
-        print('\n')
+        print("\n")
 
     def print_mat_dict(self, mat_dict):
-        if 'Name' in mat_dict:
-            print('Material: {}'.format(mat_dict['Name']))
+        if "Name" in mat_dict:
+            print("Material: {}".format(mat_dict["Name"]))
         else:
-            print('Matrix material: no Name')
+            print("Matrix material: no Name")
         for key in mat_dict:
-            print('    {}: {}'.format(key, mat_dict[key]))
+            print("    {}: {}".format(key, mat_dict[key]))
 
     # choose material card ***********************************************************************
     def get_material_card(self, material):
         for a_mat in self.materials:
             unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
-            # print(a_mat + '  -->  unmatched_items = ' + str(len(unmatched_items)))
+            # print(a_mat + "  -->  unmatched_items = " + str(len(unmatched_items)))
             if len(unmatched_items) < 4:
-                FreeCAD.Console.PrintLog('{}\n'.format(unmatched_items))
+                FreeCAD.Console.PrintLog("{}\n".format(unmatched_items))
             if len(unmatched_items) == 0:
                 return a_mat
         return ""
@@ -295,17 +295,17 @@ class _TaskPanelFemMaterialReinforced:
         # get the whole card path
         self.card_path_m = self.parameterWidget.cb_materials_m.itemData(index)
         FreeCAD.Console.PrintMessage(
-            'choose_material in FEM material task panel:\n'
-            '    {}\n'.format(self.card_path_m)
+            "choose_material in FEM material task panel:\n"
+            "    {}\n".format(self.card_path_m)
         )
         self.material_m = self.materials[self.card_path_m]
         self.parameterWidget.cb_materials_m.setCurrentIndex(index)
         gen_mat_desc = ""
         gen_mat_name = ""
-        if 'Description' in self.material_m:
-            gen_mat_desc = self.material_m['Description']
-        if 'Name' in self.material_m:
-            gen_mat_name = self.material_m['Name']
+        if "Description" in self.material_m:
+            gen_mat_desc = self.material_m["Description"]
+        if "Name" in self.material_m:
+            gen_mat_name = self.material_m["Name"]
         self.parameterWidget.l_description_m.setText(gen_mat_desc)
         self.parameterWidget.l_name_m.setText(gen_mat_name)
 
@@ -315,30 +315,30 @@ class _TaskPanelFemMaterialReinforced:
         # get the whole card path
         self.card_path_r = self.parameterWidget.cb_materials_r.itemData(index)
         FreeCAD.Console.PrintMessage(
-            'choose_material in FEM material task panel:\n'
-            '    {}\n'.format(self.card_path_r)
+            "choose_material in FEM material task panel:\n"
+            "    {}\n".format(self.card_path_r)
         )
         self.material_r = self.materials[self.card_path_r]
         self.parameterWidget.cb_materials_r.setCurrentIndex(index)
         gen_mat_desc = ""
         gen_mat_name = ""
-        if 'Description' in self.material_r:
-            gen_mat_desc = self.material_r['Description']
-        if 'Name' in self.material_r:
-            gen_mat_name = self.material_r['Name']
+        if "Description" in self.material_r:
+            gen_mat_desc = self.material_r["Description"]
+        if "Name" in self.material_r:
+            gen_mat_name = self.material_r["Name"]
         self.parameterWidget.l_description_r.setText(gen_mat_desc)
         self.parameterWidget.l_name_r.setText(gen_mat_name)
 
     # transient material is needed if the user changed mat parameter by the mat editor
     def set_transient_material_m(self):
-        self.card_path_m = '_Transient_Matrix_Material'
+        self.card_path_m = "_Transient_Matrix_Material"
         self.materials[self.card_path_m] = self.material_m  # = the current matrix mat dict
         index = self.parameterWidget.cb_materials_m.findData(self.card_path_m)
         self.choose_material_m(index)
 
     def add_transient_material_m(self):
         self.has_transient_mat_m = True
-        self.card_path_m = '_Transient_Matrix_Material'
+        self.card_path_m = "_Transient_Matrix_Material"
         self.parameterWidget.cb_materials_m.addItem(
             QtGui.QIcon(":/icons/help-browser.svg"),
             self.card_path_m,
@@ -347,14 +347,14 @@ class _TaskPanelFemMaterialReinforced:
         self.set_transient_material_m()
 
     def set_transient_material_r(self):
-        self.card_path_r = '_Transient_Reinforcement_Material'
+        self.card_path_r = "_Transient_Reinforcement_Material"
         self.materials[self.card_path_r] = self.material_r  # = the current reinforced mat dict
         index = self.parameterWidget.cb_materials_r.findData(self.card_path_r)
         self.choose_material_r(index)
 
     def add_transient_material_r(self):
         self.has_transient_mat_r = True
-        self.card_path_r = '_Transient_Reinforcement_Material'
+        self.card_path_r = "_Transient_Reinforcement_Material"
         self.parameterWidget.cb_materials_r.addItem(
             QtGui.QIcon(":/icons/help-browser.svg"),
             self.card_path_r,
@@ -371,7 +371,7 @@ class _TaskPanelFemMaterialReinforced:
         import MaterialEditor
         if self.card_path_m not in self.cards:
             FreeCAD.Console.PrintLog(
-                'Card path not in cards, material dict will be used to open Material Editor.\n'
+                "Card path not in cards, material dict will be used to open Material Editor.\n"
             )
             new_material_params = MaterialEditor.editMaterial(material=self.material_m)
         else:
@@ -379,14 +379,14 @@ class _TaskPanelFemMaterialReinforced:
         # material editor returns the mat_dict only, not a card_path
         # if the material editor was canceled a empty dict will be returned
         # do not change the self.material
-        # check if dict is not empty (do not use 'is True')
+        # check if dict is not empty (do not use "is True")
         if new_material_params:
             # check material quantity units
             from materialtools.cardutils import check_mat_units as checkunits
             if checkunits(new_material_params) is True:
                 self.material_m = new_material_params
                 self.card_path_m = self.get_material_card(self.material_m)
-                FreeCAD.Console.PrintMessage('card_path: {}\n'.format(self.card_path_m))
+                FreeCAD.Console.PrintMessage("card_path: {}\n".format(self.card_path_m))
                 if not self.card_path_m:
                     FreeCAD.Console.PrintMessage(
                         "Material card chosen by the material editor "
@@ -411,20 +411,20 @@ class _TaskPanelFemMaterialReinforced:
                 self.choose_material_m(index)
             else:
                 error_message = (
-                    'Due to some wrong material quantity units in data passed '
-                    'by the material editor, the material data was not changed.\n'
+                    "Due to some wrong material quantity units in data passed "
+                    "by the material editor, the material data was not changed.\n"
                 )
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
         else:
-            FreeCAD.Console.PrintMessage('No changes where made by the material editor.\n')
+            FreeCAD.Console.PrintMessage("No changes where made by the material editor.\n")
 
     def edit_material_r(self):
         # opens the material editor to choose a material or edit material params
         import MaterialEditor
         if self.card_path_r not in self.cards:
             FreeCAD.Console.PrintLog(
-                'Card path not in cards, material dict will be used to open Material Editor.\n'
+                "Card path not in cards, material dict will be used to open Material Editor.\n"
             )
             new_material_params = MaterialEditor.editMaterial(material=self.material_r)
         else:
@@ -432,14 +432,14 @@ class _TaskPanelFemMaterialReinforced:
         # material editor returns the mat_dict only, not a card_path
         # if the material editor was canceled a empty dict will be returned
         # do not change the self.material
-        # check if dict is not empty (do not use 'is True')
+        # check if dict is not empty (do not use "is True")
         if new_material_params:
             # check material quantity units
             from materialtools.cardutils import check_mat_units as checkunits
             if checkunits(new_material_params) is True:
                 self.material_r = new_material_params
                 self.card_path_r = self.get_material_card(self.material_r)
-                FreeCAD.Console.PrintMessage('card_path: {}\n'.format(self.card_path_r))
+                FreeCAD.Console.PrintMessage("card_path: {}\n".format(self.card_path_r))
                 if not self.card_path_r:
                     FreeCAD.Console.PrintMessage(
                         "Material card chosen by the material editor "
@@ -464,13 +464,13 @@ class _TaskPanelFemMaterialReinforced:
                 self.choose_material_r(index)
             else:
                 error_message = (
-                    'Due to some wrong material quantity units in data passed '
-                    'by the material editor, the material data was not changed.\n'
+                    "Due to some wrong material quantity units in data passed "
+                    "by the material editor, the material data was not changed.\n"
                 )
                 FreeCAD.Console.PrintError(error_message)
                 QtGui.QMessageBox.critical(None, "Material data not changed", error_message)
         else:
-            FreeCAD.Console.PrintMessage('No changes where made by the material editor.\n')
+            FreeCAD.Console.PrintMessage("No changes where made by the material editor.\n")
 
     # fill the combo box with cards **************************************************************
     def add_cards_to_combo_boxes(self):

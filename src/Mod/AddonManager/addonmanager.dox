@@ -1,0 +1,4 @@
+/** \defgroup ADDONMANAGER Addon Manager
+ *  \ingroup PYTHONWORKBENCHES 
+ *  \brief Application that handles the installation of user-made workbenches and macros
+ */

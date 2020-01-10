@@ -39,7 +39,7 @@ class SheetObserver;
 
 class SpreadsheetExport PropertySheet : public App::PropertyExpressionContainer
                                       , private App::AtomicPropertyChangeInterface<PropertySheet> {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
     PropertySheet(Sheet * _owner = 0);
@@ -67,13 +67,13 @@ public:
     virtual void afterRestore() override;
     virtual void onContainerRestored() override;
 
-    virtual Property *Copy(void) const;
+    virtual Property *Copy(void) const override;
 
-    virtual void Paste(const Property &from);
+    virtual void Paste(const Property &from) override;
 
-    virtual void Save (Base::Writer & writer) const;
+    virtual void Save (Base::Writer & writer) const override;
 
-    virtual void Restore(Base::XMLReader & reader);
+    virtual void Restore(Base::XMLReader & reader) override;
 
     void copyCells(Base::Writer &writer, const std::vector<App::Range> &ranges) const;
 
@@ -141,7 +141,7 @@ public:
 
     void removeColumns(int col, int count);
 
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize (void) const override;
 
     bool mergeCells(App::CellAddress from, App::CellAddress to);
 
@@ -159,8 +159,8 @@ public:
 
     void recomputeDependencies(App::CellAddress key);
 
-    PyObject *getPyObject(void);
-    void setPyObject(PyObject *);
+    PyObject *getPyObject(void) override;
+    void setPyObject(PyObject *) override;
 
     void invalidateDependants(const App::DocumentObject *docObj);
 

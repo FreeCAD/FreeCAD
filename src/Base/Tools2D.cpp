@@ -165,13 +165,6 @@ bool BoundBox2d::Intersect(const Polygon2d &rclPoly) const
   return false;
 }
 
-bool BoundBox2d::Contains (const Vector2d &rclV) const
-{
-  return
-    (rclV.x >= MinX) && (rclV.x <= MaxX) &&
-    (rclV.y >= MinY) && (rclV.y <= MaxY);
-}
-
 /********************************************************/
 /** LINE2D **********************************************/
 

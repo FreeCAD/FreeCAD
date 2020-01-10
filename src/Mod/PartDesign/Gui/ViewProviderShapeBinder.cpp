@@ -42,7 +42,7 @@
 #include "ViewProviderShapeBinder.h"
 #include "TaskShapeBinder.h"
 
-FC_LOG_LEVEL_INIT("ShapeBinder",true,true);
+FC_LOG_LEVEL_INIT("ShapeBinder",true,true)
 
 using namespace PartDesignGui;
 
@@ -205,7 +205,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderSubShapeBinder,PartGui::ViewProviderP
 ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
     sPixmap = "PartDesign_SubShapeBinder.svg";
 
-    //get the datum coloring sheme
+    //get the datum coloring scheme
     // set default color for datums (golden yellow with 60% transparency)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath (
             "User parameter:BaseApp/Preferences/Mod/PartDesign");
@@ -326,7 +326,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     if(!transaction) {
         if(relative)
             self->Context.setValue(parent,parentSub.c_str());
-        self->update();
+        self->update(PartDesign::SubShapeBinder::UpdateForced);
         return;
     }
 
@@ -334,7 +334,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     try{
         if(relative)
             self->Context.setValue(parent,parentSub.c_str());
-        self->update();
+        self->update(PartDesign::SubShapeBinder::UpdateForced);
         App::GetApplication().closeActiveTransaction();
         return;
     }catch(Base::Exception &e) {

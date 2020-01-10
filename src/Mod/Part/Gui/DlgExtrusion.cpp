@@ -57,7 +57,7 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Utilities.h>
 
-FC_LOG_LEVEL_INIT("Part",true,true);
+FC_LOG_LEVEL_INIT("Part",true,true)
 
 using namespace PartGui;
 
@@ -186,7 +186,7 @@ void DlgExtrusion::on_btnSelectEdge_clicked()
         try{
             QString code = QString::fromLatin1(
                         "import Show\n"
-                        "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::DlgExtrusion')\n"
                         "tv.hide([%1])"
                         );
             std::vector<App::DocumentObject*>sources = getShapesToExtrude();

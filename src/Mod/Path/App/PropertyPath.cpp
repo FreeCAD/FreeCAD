@@ -42,7 +42,7 @@
 
 using namespace Path;
 
-TYPESYSTEM_SOURCE(Path::PropertyPath, App::Property);
+TYPESYSTEM_SOURCE(Path::PropertyPath, App::Property)
 
 PropertyPath::PropertyPath()
 {

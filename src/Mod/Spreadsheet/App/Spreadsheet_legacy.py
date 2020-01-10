@@ -158,7 +158,7 @@ class MathParser:
                 break
 
         value = self.vars.get(var, None)
-        if value == None:
+        if value is None:
             raise ValueError(
                 "Unrecognized variable: '" +
                 var +
@@ -233,7 +233,7 @@ class Spreadsheet:
         if self.isKey(key):
             key = key.lower()
             if DEBUG: print("Setting key ",key," to value ",value)
-            if (value == "") or (value == None):
+            if (value == "") or (value is None):
                 # remove cell
                 if key in self._cells.keys():
                     del self._cells[key]
@@ -809,7 +809,7 @@ class SpreadsheetView(QtGui.QWidget):
                     content = getattr(self.spreadsheet.Proxy,cell)
                     if self.spreadsheet.Proxy.isFunction(cell):
                         self.doNotChange = True
-                    if content == None:
+                    if content is None:
                         content = ""
                     if DEBUG: print("Updating ",cell," to ",content)
                     if self.table.item(r,c):
@@ -838,7 +838,7 @@ class SpreadsheetView(QtGui.QWidget):
             self.doNotChange = False
         elif self.spreadsheet:
             key = "abcdefghijklmnopqrstuvwxyz"[c]+str(r+1)
-            if value == None:
+            if value is None:
                 value = self.table.item(r,c).text()
             if value == "":
                 if DEBUG: print("Wiping "+key)
@@ -874,7 +874,7 @@ class SpreadsheetView(QtGui.QWidget):
             from DraftTools import translate
             self.label.setText(str(translate("Spreadsheet","Cell"))+" "+c.upper()+str(r)+" :")
             content = self.spreadsheet.Proxy.getFunction(c+str(r))
-            if content == None:
+            if content is None:
                 content = ""
             self.lineEdit.setText(str(content))
 

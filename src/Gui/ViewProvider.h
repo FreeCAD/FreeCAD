@@ -79,6 +79,7 @@ enum ViewStatus {
     Detach = 1,
     isRestoring = 2,
     UpdatingView = 3,
+    TouchDocument = 4,
 };
 
 
@@ -127,10 +128,10 @@ public:
     virtual ~ViewProvider();
 
     // returns the root node of the Provider (3D)
-    virtual SoSeparator* getRoot(void){return pcRoot;}
+    virtual SoSeparator* getRoot(void) const {return pcRoot;}
     // return the mode switch node of the Provider (3D)
-    SoSwitch *getModeSwitch(void){return pcModeSwitch;}
-    SoTransform *getTransformNode(){return pcTransform;}
+    SoSwitch *getModeSwitch(void) const {return pcModeSwitch;}
+    SoTransform *getTransformNode() const {return pcTransform;}
     // returns the root for the Annotations.
     SoSeparator* getAnnotation(void);
     // returns the root node of the Provider (3D)
@@ -241,6 +242,7 @@ public:
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon(void) const;
+
     /** deliver the children belonging to this object
       * this method is used to deliver the objects to
       * the tree framework which should be grouped under its
@@ -286,7 +288,7 @@ public:
      *
      * @param owner: the (grand)parent object of the dropping object. Maybe
      * null. This may not be the top parent object, as tree view will try to
-     * find a parent of the dropping object realtive to this object to avoid
+     * find a parent of the dropping object relative to this object to avoid
      * cyclic dependency
      *
      * @param subname: subname reference to the dropping object
@@ -308,7 +310,7 @@ public:
      *
      * @param owner: the (grand)parent object of the dropping object. Maybe
      * null. This may not be the top parent object, as tree view will try to
-     * find a parent of the dropping object realtive to this object to avoid
+     * find a parent of the dropping object relative to this object to avoid
      * cyclic dependency
      *
      * @param subname: subname reference to the dropping object
@@ -327,12 +329,12 @@ public:
      * @param oldObj: object to be replaced
      * @param newObj: object to replace with
      *
-     * @return Returns 0 if not found, 1 if succeed, -1 if not supported
+     * @return Returns 0 if not found, 1 if succeeded, -1 if not supported
      */
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
     //@}
 
-    /** Tell the tree view if this object should apear there */
+    /** Tell the tree view if this object should appear there */
     virtual bool showInTree() const { return true; }
     /** Tell the tree view to remove children items from the tree root*/
     virtual bool canRemoveChildrenFromRoot() const {return true;}
@@ -391,7 +393,7 @@ public:
     const std::string getOverrideMode();
     //@}
 
-    /** @name Color mangement methods 
+    /** @name Color management methods 
      */
     //@{
     virtual std::map<std::string, App::Color> getElementColors(const char *element=0) const {
@@ -468,7 +470,9 @@ public:
     static Base::Matrix4D convert(const SbMatrix &sbMat);
     //@}
 
-    virtual MDIView *getMDIView() {return 0;}
+    virtual MDIView *getMDIView() const {
+        return nullptr;
+    }
 
 public:
     // this method is called by the viewer when the ViewProvider is in edit
@@ -519,6 +523,14 @@ protected:
                                  const View3DInventorViewer* viewer) const;
     /// Reimplemented from subclass
     void onChanged(const App::Property* prop);
+
+
+    /** @name Methods used by the Tree
+     * If you want to take control over the
+     * viewprovider specific overlay icons, such as status, you
+     * can reimplement this method.
+     */
+    virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
 
 protected:
     /// The root Separator of the ViewProvider

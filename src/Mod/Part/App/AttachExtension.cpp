@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -119,6 +118,7 @@ bool AttachExtension::changeAttacherType(const char* typeName)
 
 bool AttachExtension::positionBySupport()
 {
+    _active = 0;
     if (!_attacher)
         throw Base::RuntimeError("AttachExtension: can't positionBySupport, because no AttachEngine is set.");
     updateAttacherVals();
@@ -131,11 +131,24 @@ bool AttachExtension::positionBySupport()
         if(subChanged) 
             Support.setValues(Support.getValues(),_attacher->getSubValues());
 
+        _active = 1;
         return true;
     } catch (ExceptionCancel&) {
         //disabled, don't do anything
         return false;
     };
+}
+
+bool AttachExtension::isAttacherActive() const {
+    if(_active < 0) {
+        _active = 0;
+        try {
+            _attacher->calculateAttachedPlacement(getPlacement().getValue());
+            _active = 1;
+        } catch (ExceptionCancel&) {
+        }
+    }
+    return _active!=0;
 }
 
 short int AttachExtension::extensionMustExecute(void) {
@@ -263,7 +276,7 @@ void AttachExtension::updateAttacherVals()
                      this->AttachmentOffset.getValue());
 }
 
-App::PropertyPlacement& AttachExtension::getPlacement() {
+App::PropertyPlacement& AttachExtension::getPlacement() const {
     auto pla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
             getExtendedObject()->getPropertyByName("Placement"));
     if(!pla)

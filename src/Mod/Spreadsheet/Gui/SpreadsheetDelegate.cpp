@@ -86,8 +86,11 @@ void SpreadsheetDelegate::commitAndCloseEditor()
             editor->hideCompleter();
             return;
         }
-        Q_EMIT commitData(editor);
-        Q_EMIT closeEditor(editor);
+        // See https://forum.freecadweb.org/viewtopic.php?f=3&t=41694
+        // It looks like the slot commitAndCloseEditor() is not needed any more and even
+        // causes a crash when doing so because the LineEdit is still accessed after its destruction.
+        // Q_EMIT commitData(editor);
+        // Q_EMIT closeEditor(editor);
         return;
     }
     QPushButton *button = qobject_cast<QPushButton*>(sender());
@@ -98,7 +101,7 @@ void SpreadsheetDelegate::commitAndCloseEditor()
     QComboBox *combo = qobject_cast<QComboBox*>(sender());
     if(button) {
         Q_EMIT commitData(combo);
-        Q_EMIT closeEditor(combo);
+        // Q_EMIT closeEditor(combo);
         return;
     }
 }

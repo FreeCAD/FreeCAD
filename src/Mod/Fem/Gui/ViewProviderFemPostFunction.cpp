@@ -318,7 +318,7 @@ void ViewProviderFemPostFunction::onChanged(const App::Property* prop) {
 
 
 
-//#################################################################################################
+// ***************************************************************************
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFemPostFunction)
 
@@ -457,7 +457,7 @@ void PlaneWidget::originChanged(double) {
 
 
 
-//#################################################################################################
+// ***************************************************************************
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostSphereFunction, FemGui::ViewProviderFemPostFunction)
 

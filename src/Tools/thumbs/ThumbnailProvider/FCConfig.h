@@ -102,7 +102,7 @@
 
 #ifndef HAVE_INT8_T
 #define HAVE_INT8_T
-typedef char                int8_t;
+typedef signed char         int8_t;
 #endif
 
 #ifndef HAVE_UINT8_T

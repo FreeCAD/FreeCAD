@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import Path
 import PathScripts.PathLog as PathLog
 
 __title__ = "Setup Sheet for a Job."
@@ -32,11 +30,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Prototype objects to allow extraction of setup sheet values and editing."
 
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 class Property(object):
     '''Base class for all prototype properties'''
@@ -90,9 +85,9 @@ class PropertyEnumeration(Property):
 
     def setValue(self, value):
         if list == type(value):
-            self.enums = value
+            self.enums = value # pylint: disable=attribute-defined-outside-init
         else:
-            super(self.__class__, self).setValue(value)
+            super(PropertyEnumeration, self).setValue(value)
 
     def getEnumValues(self):
         return self.enums
@@ -105,6 +100,10 @@ class PropertyQuantity(Property):
         if self.value is None:
             return Property.displayString(self)
         return self.value.getUserPreferred()[0]
+
+class PropertyAngle(PropertyQuantity):
+    def typeString(self):
+        return "Angle"
 
 class PropertyDistance(PropertyQuantity):
     def typeString(self):
@@ -122,13 +121,22 @@ class PropertyFloat(Property):
     def typeString(self):
         return "Float"
 
+    def valueFromString(self, string):
+        return float(string)
+
 class PropertyInteger(Property):
     def typeString(self):
         return "Integer"
 
+    def valueFromString(self, string):
+        return int(string)
+
 class PropertyBool(Property):
     def typeString(self):
         return "Bool"
+
+    def valueFromString(self, string):
+        return bool(string)
 
 class PropertyString(Property):
     def typeString(self):
@@ -137,24 +145,25 @@ class PropertyString(Property):
 class OpPrototype(object):
 
     PropertyType = {
-            'App::PropertyBool': PropertyBool,
-            'App::PropertyDistance': PropertyDistance,
-            'App::PropertyEnumeration': PropertyEnumeration,
-            'App::PropertyFloat': PropertyFloat,
-            'App::PropertyFloatConstraint': Property,
-            'App::PropertyFloatList': Property,
-            'App::PropertyInteger': PropertyInteger,
-            'App::PropertyIntegerList': PropertyInteger,
-            'App::PropertyLength': PropertyLength,
-            'App::PropertyLink': Property,
-            'App::PropertyLinkList': Property,
-            'App::PropertyLinkSubListGlobal': Property,
-            'App::PropertyPercent': PropertyPercent,
-            'App::PropertyString': PropertyString,
-            'App::PropertyStringList': Property,
-            'App::PropertyVectorDistance': Property,
-            'App::PropertyVectorList': Property,
-            'Part::PropertyPartShape': Property,
+            'App::PropertyAngle':               PropertyAngle,
+            'App::PropertyBool':                PropertyBool,
+            'App::PropertyDistance':            PropertyDistance,
+            'App::PropertyEnumeration':         PropertyEnumeration,
+            'App::PropertyFloat':               PropertyFloat,
+            'App::PropertyFloatConstraint':     Property,
+            'App::PropertyFloatList':           Property,
+            'App::PropertyInteger':             PropertyInteger,
+            'App::PropertyIntegerList':         PropertyInteger,
+            'App::PropertyLength':              PropertyLength,
+            'App::PropertyLink':                Property,
+            'App::PropertyLinkList':            Property,
+            'App::PropertyLinkSubListGlobal':   Property,
+            'App::PropertyPercent':             PropertyPercent,
+            'App::PropertyString':              PropertyString,
+            'App::PropertyStringList':          Property,
+            'App::PropertyVectorDistance':      Property,
+            'App::PropertyVectorList':          Property,
+            'Part::PropertyPartShape':          Property,
             }
 
     def __init__(self, name):
@@ -167,7 +176,7 @@ class OpPrototype(object):
         if name in ['Label', 'DoNotSetDefaultValues', 'properties', 'Proxy']:
             if name == 'Proxy':
                 val = None # make sure the proxy is never set
-            return super(self.__class__, self).__setattr__(name, val)
+            return super(OpPrototype, self).__setattr__(name, val)
         self.properties[name].setValue(val)
 
     def addProperty(self, typeString, name, category, info = None):

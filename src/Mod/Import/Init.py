@@ -1,8 +1,8 @@
 # FreeCAD init script of the Import module  
-# (c) 2001 Juergen Riegel
+# (c) 2001 Jürgen Riegel
 
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *   
+#*   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -22,10 +22,9 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-
+import FreeCAD
 
 # Append the open handler
 #FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
@@ -45,7 +44,8 @@ paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import/hSTE
 _checkParamBool(paramGetV,"ReadShapeCompoundMode",False)
 
 paramGetV = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Import")
-for p in (("UseLinkGroup",True),
+for p in (("UseAppPart",True),
+          ("UseLegacyImporter", False),
           ("UseBaseName",True),
           ("ImportHiddenObject",True),
           ("ExportHiddenObject",True),

@@ -68,7 +68,7 @@
 //===========================================================================
 // CmdSurfaceCut THIS IS THE SURFACE CUT COMMAND
 //===========================================================================
-DEF_STD_CMD(CmdSurfaceCut);
+DEF_STD_CMD(CmdSurfaceCut)
 
 CmdSurfaceCut::CmdSurfaceCut()
   :Command("Surface_Cut")

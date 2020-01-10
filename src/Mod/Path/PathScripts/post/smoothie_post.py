@@ -106,6 +106,8 @@ POST_OPERATION = ''''''
 # Tool Change commands will be inserted before a tool change
 TOOL_CHANGE = ''''''
 
+# Number of digits after the decimal point
+PRECISION = 5
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ in ['__builtin__', 'io']:
@@ -113,6 +115,7 @@ if open.__module__ in ['__builtin__', 'io']:
 
 
 def processArguments(argstring):
+    # pylint: disable=global-statement
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -159,7 +162,7 @@ def processArguments(argstring):
         IP_ADDR = args.IP_ADDR
         VERBOSE = args.verbose
 
-    except Exception:
+    except Exception: # pylint: disable=broad-except
         return False
 
     return True
@@ -167,8 +170,7 @@ def processArguments(argstring):
 
 def export(objectslist, filename, argstring):
     processArguments(argstring)
-    global UNITS
-    global IP_ADDR
+    global UNITS # pylint: disable=global-statement
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             FreeCAD.Console.PrintError("the object " + obj.Name + " is not a path. Please select only path and Compounds.\n")
@@ -252,11 +254,10 @@ def export(objectslist, filename, argstring):
     return final
 
 
-def sendToSmoothie(IP_ADDR, GCODE, fname):
+def sendToSmoothie(ip, GCODE, fname):
     import sys
     import socket
     import os
-    global VERBOSE
 
     fname = os.path.basename(fname)
     FreeCAD.Console.PrintMessage('sending to smoothie: {}\n'.format(fname))
@@ -266,7 +267,7 @@ def sendToSmoothie(IP_ADDR, GCODE, fname):
     # make connection to sftp server
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(4.0)
-    s.connect((IP_ADDR, 115))
+    s.connect((ip, 115))
     tn = s.makefile(mode='rw')
 
 # read startup prompt
@@ -330,7 +331,7 @@ def sendToSmoothie(IP_ADDR, GCODE, fname):
 
 
 def linenumber():
-    global LINENR
+    global LINENR # pylint: disable=global-statement
     if OUTPUT_LINE_NUMBERS is True:
         LINENR += 10
         return "N" + str(LINENR) + " "
@@ -338,10 +339,10 @@ def linenumber():
 
 
 def parse(pathobj):
-    global PRECISION
+    global SPINDLE_SPEED # pylint: disable=global-statement
+
     out = ""
     lastcommand = None
-    global SPINDLE_SPEED
     precision_string = '.' + str(PRECISION) + 'f'
 
     # params = ['X','Y','Z','A','B','I','J','K','F','S'] #This list control

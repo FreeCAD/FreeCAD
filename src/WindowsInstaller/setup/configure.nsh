@@ -43,7 +43,7 @@ Section -InstallData
   
   WriteRegStr SHCTX ${APP_UNINST_KEY} "UninstallString" '"$INSTDIR\${SETUP_UNINSTALLER}"'
   WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayVersion" "${APP_VERSION}"
-  WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayIcon" "$INSTDIR\bin\FreeCAD.exe"
+  WriteRegStr SHCTX ${APP_UNINST_KEY} "DisplayIcon" "$INSTDIR\bin\${APP_NAME}.exe"
   WriteRegStr SHCTX ${APP_UNINST_KEY} "URLUpdateInfo" "${APP_WEBPAGE}"
   WriteRegStr SHCTX ${APP_UNINST_KEY} "URLInfoAbout" "https://www.freecadweb.org/"
   WriteRegStr SHCTX ${APP_UNINST_KEY} "Publisher" "${APP_NAME} Team"
@@ -53,10 +53,15 @@ Section -InstallData
   WriteRegStr SHCTX ${APP_UNINST_KEY} "StartMenu" "$SMPROGRAMS\$StartmenuFolder"
   
   # if we install over an older existing version, remove the old uninstaller information
-  ${if} $OldVersionNumber < ${APP_SERIES_KEY}
+  # NSIS cannot handle numbers with leading zero, thus cut it off before comparing
+  StrCpy $1 $OldVersionNumber "" 1
+  StrCpy $2 ${APP_SERIES_KEY} "" 1
+  ${if} $1 < $2
    DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}$OldVersionNumber"
+   DeleteRegKey SHCTX "SOFTWARE\${APP_NAME}$OldVersionNumber"
    # also delete in the case of an emergency release
    DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}$OldVersionNumber1"
+   DeleteRegKey SHCTX "SOFTWARE\${APP_NAME}$OldVersionNumber1"
   ${endif}
   
 SectionEnd
@@ -70,9 +75,6 @@ Section -Configure
 
   ${if} $CreateFileAssociations == "true"
    WriteRegStr SHCTX "${APP_DIR_REGKEY}" "" "$INSTDIR\${APP_RUN}"
-  ${endif}
-
-  ${if} $CreateFileAssociations == "true"
    WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}" "" "${APP_NAME} Document"
    WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}\DefaultIcon" "" "$INSTDIR\${APP_RUN},0"
    WriteRegStr SHCTX "Software\Classes\${APP_REGNAME_DOC}\Shell\open\command" "" '"$INSTDIR\${APP_RUN}" "%1"'
@@ -85,9 +87,15 @@ Section -Configure
    # .FCStd
    WriteRegStr SHCTX "Software\Classes\${APP_EXT}" "" "${APP_REGNAME_DOC}"
    WriteRegStr SHCTX "Software\Classes\${APP_EXT}" "Content Type" "${APP_MIME_TYPE}"
-   # FIXME: what about .FCMat and .FCMacro?
-  
-   # Refresh shell
+   # if the user is admin, also install the DLL toe preview .FCStd files
+   ${if} $MultiUser.Privileges == "Admin"
+    # see https://nsis.sourceforge.io/Docs/AppendixB.html#library_install for a description of InstallLib
+    !insertmacro InstallLib REGDLL NOTSHARED NOREBOOT_NOTPROTECTED ${FILES_THUMBS}\FCStdThumbnail.dll $SYSDIR\FCStdThumbnail.dll $SYSDIR
+   ${endif}
+   # in any case remove the FCStdThumbnail.dll
+   RMDir /r "$INSTDIR\thumbnail"
+   
+   # Eventually refresh shell icons
    ${RefreshShellIcons}
   ${endif}
   

@@ -46,7 +46,7 @@
  * @endcode
  *
  * Translates to command (assuming doc's name is 'DocName', and
- * and objName constains value 'ObjName'):
+ * and objName contains value 'ObjName'):
  * @code{.py}
  *       Gui.getDocument('DocName').getObject('ObjName')
  * @endcode
@@ -444,11 +444,17 @@ public:
     /// Print to Python console the current calling source file and line number
     static void printCaller(const char *file, int line);
 
+    // ISO C++11 requires at least one argument for the "..." in a variadic macro
+    // https://en.wikipedia.org/wiki/Variadic_macro#Example
     /** Convenience macro to run a command with printf like formatter
      *
      * @sa Command::_doCommand()
      */
-#define doCommand(_type,_cmd,...) _doCommand(__FILE__,__LINE__,_type,_cmd,##__VA_ARGS__)
+#ifdef FC_OS_WIN32
+#define doCommand(_type,...) _doCommand(__FILE__,__LINE__,_type,##__VA_ARGS__)
+#else
+#define doCommand(...) _doCommand(__FILE__,__LINE__,__VA_ARGS__)
+#endif
 
     /** Run a command with printf like formatter
      *
@@ -515,7 +521,7 @@ public:
     /** @name Methods for copying visiual properties */
     //@{
     /// Convenience macro to copy visual properties
-#define copyVisual(...) _copyVisual(__FILE__,__LINE__,## __VA_ARGS__)
+#define copyVisual(...) _copyVisual(__FILE__,__LINE__,__VA_ARGS__)
     static void _copyVisual(const char *file, int line, const char* to, const char* attr, const char* from);
     static void _copyVisual(const char *file, int line, const char* to, const char* attr_to, const char* from, const char* attr_from);
     static void _copyVisual(const char *file, int line, const App::DocumentObject *to, const char *attr, const App::DocumentObject *from);

@@ -31,7 +31,7 @@
         <item>
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Path to ODA (formerly Teigha) File Converter</string>
+           <string>Path to ODA file converter</string>
           </property>
          </widget>
         </item>

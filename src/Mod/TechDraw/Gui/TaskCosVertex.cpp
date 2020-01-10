@@ -30,6 +30,8 @@
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -65,14 +67,12 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-//ctor for creation
 TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
                                TechDraw::DrawPage* page) :
     ui(new Ui_TaskCosVertex),
     m_tracker(nullptr),
     m_baseFeat(baseFeat),
     m_basePage(page),
-    m_createMode(true),
     m_inProgressLock(false),
     m_pbTrackerState(TRACKERPICK),
     m_savePoint(QPointF(0.0,0.0)),
@@ -132,23 +132,23 @@ void TaskCosVertex::setUiPrimary()
     }
     ui->pbTracker->setText(QString::fromUtf8("Point Picker"));
     ui->pbTracker->setEnabled(true);
-    ui->qsbX->setEnabled(true);
-    ui->qsbY->setEnabled(true);
-    ui->qsbZ->setEnabled(false);
+    ui->dsbX->setEnabled(true);
+    ui->dsbY->setEnabled(true);
+    ui->dsbZ->setEnabled(false);
+    int decimals = Base::UnitsApi::getDecimals();
+    ui->dsbX->setDecimals(decimals);
+    ui->dsbY->setDecimals(decimals);
+    ui->dsbZ->setDecimals(decimals);
 }
 
 void TaskCosVertex::updateUi(void)
 {
-    //need to unscale & unRez m_savePoint for display
-//    double scale = m_baseFeat->getScale();
-//    double x = Rez::appX(m_savePoint.x() / scale);
-//    double y = Rez::appX(- m_savePoint.y() / scale) ;
     double x = m_savePoint.x();
     double y = - m_savePoint.y();
     double z = 0.0;
-    ui->qsbX->setValue(x);
-    ui->qsbY->setValue(y);
-    ui->qsbZ->setValue(z);
+    ui->dsbX->setValue(x);
+    ui->dsbY->setValue(y);
+    ui->dsbZ->setValue(z);
 }
 
 void TaskCosVertex::addCosVertex(QPointF qPos)
@@ -156,7 +156,7 @@ void TaskCosVertex::addCosVertex(QPointF qPos)
 //    Base::Console().Message("TCV::addCosVertex(%s)\n", TechDraw::DrawUtil::formatVector(qPos).c_str());
     Base::Vector3d pos(qPos.x(), -qPos.y());
 //    int idx = 
-    (void) m_baseFeat->addRandomVertex(pos);
+    (void) m_baseFeat->addCosmeticVertex(pos);
     m_baseFeat->requestPaint();
 }
 
@@ -178,22 +178,20 @@ void TaskCosVertex::onTrackerClicked(bool b)
         return;
     }
 
-    if (getCreateMode()) {
-        m_inProgressLock = true;
-        m_saveContextPolicy = m_mdi->contextMenuPolicy();
-        m_mdi->setContextMenuPolicy(Qt::PreventContextMenu);
-        m_trackerMode = QGTracker::TrackerMode::Point;
-        setEditCursor(Qt::CrossCursor);
-        startTracker();
+    m_inProgressLock = true;
+    m_saveContextPolicy = m_mdi->contextMenuPolicy();
+    m_mdi->setContextMenuPolicy(Qt::PreventContextMenu);
+    m_trackerMode = QGTracker::TrackerMode::Point;
+    setEditCursor(Qt::CrossCursor);
+    startTracker();
 
-        QString msg = tr("Pick a point for cosmetic vertex");
-        getMainWindow()->statusBar()->show();
-        Gui::getMainWindow()->showMessage(msg,3000);
-        ui->pbTracker->setText(QString::fromUtf8("Escape picking"));
-        ui->pbTracker->setEnabled(true);
-        m_pbTrackerState = TRACKERCANCEL;
-        enableTaskButtons(false);
-    } 
+    QString msg = tr("Pick a point for cosmetic vertex");
+    getMainWindow()->statusBar()->show();
+    Gui::getMainWindow()->showMessage(msg,3000);
+    ui->pbTracker->setText(QString::fromUtf8("Escape picking"));
+    ui->pbTracker->setEnabled(true);
+    m_pbTrackerState = TRACKERCANCEL;
+    enableTaskButtons(false);
 }
 
 void TaskCosVertex::startTracker(void)
@@ -249,6 +247,8 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     ui->pbTracker->setEnabled(false);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);
+    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+
 }
 
 void TaskCosVertex::removeTracker(void)
@@ -306,9 +306,9 @@ bool TaskCosVertex::accept()
     if (pointFromTracker) {
         addCosVertex(m_savePoint);
     } else {
-        double x = ui->qsbX->rawValue();
-        double y = ui->qsbY->rawValue();
-//        double z = ui->qsbZ->rawValue();
+        double x = ui->dsbX->value();
+        double y = ui->dsbY->value();
+//        double z = ui->dsbZ->value();
         QPointF uiPoint(x,-y);
         addCosVertex(uiPoint);
     }
@@ -326,10 +326,11 @@ bool TaskCosVertex::reject()
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc) return false;
 
+    removeTracker();
+    m_trackerMode = QGTracker::TrackerMode::None;
     if (m_mdi != nullptr) {
         m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     }
-    m_trackerMode = QGTracker::TrackerMode::None;
 
     //make sure any dangling objects are cleaned up 
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");

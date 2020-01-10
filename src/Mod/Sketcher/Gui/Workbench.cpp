@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -238,7 +238,8 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons){
             << "Sketcher_ConstrainSnellsLaw"
             << "Sketcher_ConstrainInternalAlignment"
             << "Separator"
-            << "Sketcher_ToggleDrivingConstraint";
+            << "Sketcher_ToggleDrivingConstraint"
+            << "Sketcher_ToggleActiveConstraint";
 }
 
 template <>
@@ -262,7 +263,8 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
             << "Separator"
-            << "Sketcher_ToggleDrivingConstraint";
+            << "Sketcher_ToggleDrivingConstraint"
+            << "Sketcher_ToggleActiveConstraint";
 }
 
 template <typename T>

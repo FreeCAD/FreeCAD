@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tr�ger          (stefantroeger@gmx.net) 2015     *
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2015 Stefan Tr�ger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -95,7 +95,7 @@ App::Plane *Origin::getPlane( const char *role ) const {
         return static_cast<App::Plane *> (feat);
     } else {
         std::stringstream err;
-        err << "Origin \"" << getFullName () << "\" comtains bad Plane object for role \""
+        err << "Origin \"" << getFullName () << "\" contains bad Plane object for role \""
             << role << '"';
         throw Base::RuntimeError ( err.str().c_str () );
     }

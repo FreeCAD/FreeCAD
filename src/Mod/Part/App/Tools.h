@@ -24,6 +24,7 @@
 #ifndef PART_TOOLS_H
 #define PART_TOOLS_H
 
+#include <Base/Converter.h>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <gp_Dir.hxx>
@@ -41,9 +42,9 @@ struct vec_traits<gp_Pnt> {
     typedef gp_Pnt vec_type;
     typedef double float_type;
     vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.X(); }
-    inline float_type y() { return v.Y(); }
-    inline float_type z() { return v.Z(); }
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v.X(), v.Y(), v.Z());
+    }
 private:
     const vec_type& v;
 };
@@ -53,9 +54,9 @@ struct vec_traits<gp_Vec> {
     typedef gp_Vec vec_type;
     typedef double float_type;
     vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.X(); }
-    inline float_type y() { return v.Y(); }
-    inline float_type z() { return v.Z(); }
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v.X(), v.Y(), v.Z());
+    }
 private:
     const vec_type& v;
 };
@@ -65,9 +66,9 @@ struct vec_traits<gp_Dir> {
     typedef gp_Dir vec_type;
     typedef double float_type;
     vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.X(); }
-    inline float_type y() { return v.Y(); }
-    inline float_type z() { return v.Z(); }
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v.X(), v.Y(), v.Z());
+    }
 private:
     const vec_type& v;
 };
@@ -77,9 +78,9 @@ struct vec_traits<gp_XYZ> {
     typedef gp_XYZ vec_type;
     typedef double float_type;
     vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.X(); }
-    inline float_type y() { return v.Y(); }
-    inline float_type z() { return v.Z(); }
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v.X(), v.Y(), v.Z());
+    }
 private:
     const vec_type& v;
 };

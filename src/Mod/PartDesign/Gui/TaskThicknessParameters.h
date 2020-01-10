@@ -41,6 +41,7 @@ public:
 
     double getValue(void) const;
     bool getReversed(void) const;
+    bool getIntersection(void) const;
     int  getMode(void) const;
     int  getJoinType(void) const;
 
@@ -49,6 +50,7 @@ private Q_SLOTS:
     void onModeChanged(int mode);
     void onJoinTypeChanged(int join);
     void onReversedChanged(bool reversed);
+    void onIntersectionChanged(bool intersection);
     void onRefDeleted(void);
 
 protected:

@@ -39,7 +39,7 @@ namespace MeshCore
 class MeshKernel;
 class MeshGeomFacet;
 class MeshFacetGrid;
-};
+}
 
 using MeshCore::MeshKernel;
 using MeshCore::MeshGeomFacet;
@@ -196,6 +196,18 @@ public:
      * taken if the distance between the curve point and the projected point is <= \a fMaxDist.
      */
     void projectToMesh (const TopoDS_Shape &aShape, float fMaxDist, std::vector<PolyLine>& rPolyLines) const;
+    /**
+     * @brief projectOnMesh
+     * Projects the given points onto the mesh along a given direction. The points can can be projected
+     * will be saved to \a pointsOut
+     * @brief projectOnMesh
+     * @param pointsIn
+     * @param dir
+     * @param tolerance
+     * @param pointsOut
+     */
+    void projectOnMesh(const std::vector<Base::Vector3f>& pointsIn, const Base::Vector3f& dir,
+                       float tolerance, std::vector<Base::Vector3f>& pointsOut) const;
     /**
      * Project all edges of the shape onto the mesh using parallel projection.
      */

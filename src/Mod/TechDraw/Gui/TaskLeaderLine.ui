@@ -153,7 +153,7 @@
           <item row="1" column="1">
            <widget class="QComboBox" name="cboxStartSym">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <item>
              <property name="text">
@@ -212,6 +212,15 @@
              <property name="icon">
               <iconset resource="Resources/TechDraw.qrc">
                <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Pyramid</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowpyramid.svg</normaloff>:/icons/arrowpyramid.svg</iconset>
              </property>
             </item>
            </widget>
@@ -284,6 +293,15 @@
                <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Pyramid</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/arrowpyramid.svg</normaloff>:/icons/arrowpyramid.svg</iconset>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="3" column="0">
@@ -295,7 +313,7 @@
           </item>
           <item row="3" column="1">
            <widget class="Gui::ColorButton" name="cpLineColor">
-            <property name="color">
+            <property name="color" stdset="0">
              <color>
               <red>0</red>
               <green>0</green>

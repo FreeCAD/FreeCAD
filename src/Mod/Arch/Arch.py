@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -43,6 +41,7 @@ if FreeCAD.GuiUp:
 from ArchWall import *
 from ArchFloor import *
 from ArchFence import *
+from ArchProject import *
 from ArchSite import *
 from ArchBuilding import *
 from ArchStructure import *

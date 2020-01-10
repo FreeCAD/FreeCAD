@@ -47,10 +47,23 @@ public:
     /** Convert a 2D point on the projection plane in 3D space */
     virtual Vector3d inverse (const Vector3d &rclPt) const = 0;
     /** Calculate the projection (+ mapping) matrix */
-    virtual Matrix4D getProjectionMatrix (void) const = 0; 
+    virtual Matrix4D getProjectionMatrix (void) const = 0;
+    /** Calculate the composed projection matrix */
+    Matrix4D getComposedProjectionMatrix (void) const;
+    /** Apply an additional transformation to the input points */
+    void setTransform(const Base::Matrix4D&);
+    const Base::Matrix4D& getTransform() const {
+        return transform;
+    }
 
 protected:
-    ViewProjMethod(){}
+    ViewProjMethod();
+    void transformInput(const Base::Vector3f&, Base::Vector3f&) const;
+    void transformInput(const Base::Vector3d&, Base::Vector3d&) const;
+
+private:
+    bool hasTransform;
+    Base::Matrix4D transform;
 };
 
 /**

@@ -80,7 +80,7 @@ ViewProvider2DObject::ViewProvider2DObject()
 
     pcRoot->addChild(GridRoot);
 
-    sPixmap = "PartFeatureImport";
+    sPixmap = "Tree_Part2D";
 }
 
 ViewProvider2DObject::~ViewProvider2DObject()
@@ -155,7 +155,7 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     // pre-selection highlight. No idea why the setting can leak out of a
     // separator.
     //
-    // What's the purpose of using SoDepthBuffer here anyway? If the intension
+    // What's the purpose of using SoDepthBuffer here anyway? If the intention
     // is to render grid always on top, shouldn't it be better to use
     // SoAnnotation?
 #if 0

@@ -102,7 +102,7 @@ class Solve(run.Solve):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
+        # output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
 
@@ -114,12 +114,12 @@ class Solve(run.Solve):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
         self.signalAbort.add(self._process.terminate)
-        output = self._observeSolver(self._process)
+        # output = self._observeSolver(self._process)
         self._process.communicate()
         self.signalAbort.remove(self._process.terminate)
         # if not self.aborted:
         #     self._updateOutput(output)
-        del output   # get flake8 quiet
+        # del output   # get flake8 quiet
 
 
 class Results(run.Results):
@@ -140,14 +140,14 @@ class Results(run.Results):
 
     def load_results_z88o2(self):
         disp_result_file = os.path.join(
-            self.directory, 'z88o2.txt')
+            self.directory, "z88o2.txt")
         if os.path.isfile(disp_result_file):
-            result_name_prefix = 'Z88_' + self.solver.AnalysisType + '_'
+            result_name_prefix = "Z88_" + self.solver.AnalysisType + "_"
             importZ88O2Results.import_z88_disp(
                 disp_result_file, self.analysis, result_name_prefix)
         else:
             raise Exception(
-                'FEM: No results found at {}!'.format(disp_result_file))
+                "FEM: No results found at {}!".format(disp_result_file))
 
 
 class _Container(object):
@@ -166,33 +166,33 @@ class _Container(object):
                     "Missing prerequisite",
                     message
                 )
-            raise Exception(message + '\n')
+            raise Exception(message + "\n")
 
         # get member, empty lists are not supported by z88
         # materials
         self.materials_linear = self.get_several_member(
-            'Fem::Material'
+            "Fem::Material"
         )
         self.materials_nonlinear = []
 
         # geometries
         self.beam_sections = self.get_several_member(
-            'Fem::FemElementGeometry1D'
+            "Fem::FemElementGeometry1D"
         )
         self.beam_rotations = []
         self.fluid_sections = []
         self.shell_thicknesses = self.get_several_member(
-            'Fem::FemElementGeometry2D'
+            "Fem::FemElementGeometry2D"
         )
 
         # constraints
         self.constraints_contact = []
         self.constraints_displacement = []
         self.constraints_fixed = self.get_several_member(
-            'Fem::ConstraintFixed'
+            "Fem::ConstraintFixed"
         )
         self.constraints_force = self.get_several_member(
-            'Fem::ConstraintForce'
+            "Fem::ConstraintForce"
         )
         self.constraints_heatflux = []
         self.constraints_initialtemperature = []

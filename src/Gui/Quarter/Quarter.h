@@ -41,7 +41,7 @@ namespace Quarter {
   void QUARTER_DLL_API init(bool initCoin = true);
   void QUARTER_DLL_API clean(void);
   void QUARTER_DLL_API setTimerEpsilon(double sec);
-};
+}
 
 }}} // namespace
 

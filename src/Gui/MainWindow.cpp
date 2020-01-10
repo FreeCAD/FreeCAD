@@ -117,7 +117,7 @@
 #include "View3DInventorViewer.h"
 #include "DlgObjectSelection.h"
 
-FC_LOG_LEVEL_INIT("MainWindow",false,true,true);
+FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
 
 #if defined(Q_OS_WIN32)
 #define slots
@@ -451,6 +451,8 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         pcReport->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Report view")));
         pDockMgr->registerDockWindow("Std_ReportView", pcReport);
+        ReportOutputObserver* rvObserver = new ReportOutputObserver(pcReport);
+        qApp->installEventFilter(rvObserver);
     }
 
     // Python console
@@ -472,7 +474,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     //TODO: Add external object support for DAGView
-#if 0
+#if 1
     //Dag View.
     if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
         //work through parameter.
@@ -994,10 +996,8 @@ void MainWindow::onSetActiveSubWindow(QWidget *window)
 
 void MainWindow::setActiveWindow(MDIView* view)
 {
-    if(!view || d->activeView == view)
+    if (!view || d->activeView == view)
         return;
-    if(!windows().contains(view->parentWidget()))
-        addWindow(view);
     onSetActiveSubWindow(view->parentWidget());
     d->activeView = view;
     Application::Instance->viewActivated(view);
@@ -1025,7 +1025,7 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     // set active the appropriate window (it needs not to be part of mdiIds, e.g. directly after creation)
     d->activeView = view;
     Application::Instance->viewActivated(view);
-    updateActions();
+    updateActions(true);
 }
 
 void MainWindow::onWindowsMenuAboutToShow()
@@ -1276,22 +1276,27 @@ void MainWindow::appendRecentFile(const QString& filename)
     }
 }
 
-void MainWindow::updateActions(bool delay) {
+void MainWindow::updateActions(bool delay)
+{
     //make it safe to call before the main window is actually created
-    if(!this)
+    if (!instance)
         return;
-    if(!d->activityTimer->isActive())
+
+    if (!d->activityTimer->isActive()) {
         d->activityTimer->start(150);
-    else if(delay) {
-        if(!d->actionUpdateDelay)
-            d->actionUpdateDelay=1;
-    }else
-        d->actionUpdateDelay=-1;
+    }
+    else if (delay) {
+        if (!d->actionUpdateDelay)
+            d->actionUpdateDelay = 1;
+    }
+    else {
+        d->actionUpdateDelay = -1;
+    }
 }
 
 void MainWindow::_updateActions()
 {
-    if (isVisible() && d->actionUpdateDelay<=0) {
+    if (isVisible() && d->actionUpdateDelay <= 0) {
         FC_LOG("update actions");
         d->activityTimer->stop();
         Application::Instance->commandManager().testActive();
@@ -1351,10 +1356,10 @@ void MainWindow::loadWindowSettings()
     this->move(pos);
 
     // tmp. disable the report window to suppress some bothering warnings
-    Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, false);
+    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, false);
     this->restoreState(config.value(QString::fromLatin1("MainWindowState")).toByteArray());
     std::clog << "Main window restored" << std::endl;
-    Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, true);
+    Base::Console().SetEnabledMsgType("ReportOutput", Base::ConsoleSingleton::MsgType_Wrn, true);
 
     bool max = config.value(QString::fromLatin1("Maximized"), false).toBool();
     max ? showMaximized() : show();
@@ -1587,11 +1592,13 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     // if less than ~10 MB
     bool use_buffer=(memsize < 0xA00000);
     QByteArray res;
-    try {
-        res.reserve(memsize);
-    }
-    catch (const Base::MemoryException&) {
-        use_buffer = false;
+    if(use_buffer) {
+        try {
+            res.reserve(memsize);
+        }
+        catch (const std::bad_alloc &) {
+            use_buffer = false;
+        }
     }
 
     WaitCursor wc;
@@ -1647,9 +1654,11 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
     else if(mimeData->hasFormat(_MimeDocObjX)) {
         format = _MimeDocObjX;
         hasXLink = true;
-    }else if(mimeData->hasFormat(_MimeDocObjFile))
+    }else if(mimeData->hasFormat(_MimeDocObjFile)) {
+        format = _MimeDocObjFile;
         fromDoc = true;
-    else if(mimeData->hasFormat(_MimeDocObjXFile)) {
+    }else if(mimeData->hasFormat(_MimeDocObjXFile)) {
+        format = _MimeDocObjXFile;
         fromDoc = true;
         hasXLink = true;
     }else {
@@ -1970,43 +1979,26 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
     }
 }
 
-/** Get called when a message is issued. 
- * The message is displayed on the ststus bar. 
- */
-void StatusBarObserver::Message(const char * m)
+void StatusBarObserver::SendLog(const std::string& msg, Base::LogStyle level)
 {
-    // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    CustomMessageEvent* ev = new CustomMessageEvent(MainWindow::Msg, QString::fromUtf8(m));
-    QApplication::postEvent(getMainWindow(), ev);
-}
+    int messageType = -1;
+    switch(level){
+        case Base::LogStyle::Warning:
+            messageType = MainWindow::Wrn;
+            break;
+        case Base::LogStyle::Message:
+            messageType = MainWindow::Msg;
+            break;
+        case Base::LogStyle::Error:
+            messageType = MainWindow::Err;
+            break;
+        case Base::LogStyle::Log:
+            messageType = MainWindow::Log;
+            break;
+    }
 
-/** Get called when a warning is issued. 
- * The message is displayed on the ststus bar. 
- */
-void StatusBarObserver::Warning(const char *m)
-{
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    CustomMessageEvent* ev = new CustomMessageEvent(MainWindow::Wrn, QString::fromUtf8(m));
-    QApplication::postEvent(getMainWindow(), ev);
-}
-
-/** Get called when an error is issued. 
- * The message is displayed on the ststus bar. 
- */
-void StatusBarObserver::Error  (const char *m)
-{
-    // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    CustomMessageEvent* ev = new CustomMessageEvent(MainWindow::Err, QString::fromUtf8(m));
-    QApplication::postEvent(getMainWindow(), ev);
-}
-
-/** Get called when a log message is issued. 
- * The message is used to create an Inventor node for debug purposes. 
- */
-void StatusBarObserver::Log(const char *m)
-{
-    // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    CustomMessageEvent* ev = new CustomMessageEvent(MainWindow::Log, QString::fromUtf8(m));
+    CustomMessageEvent* ev = new CustomMessageEvent(messageType, QString::fromUtf8(msg.c_str()));
     QApplication::postEvent(getMainWindow(), ev);
 }
 

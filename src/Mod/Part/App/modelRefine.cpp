@@ -1074,7 +1074,7 @@ bool FaceUniter::process()
                     if (!temp.empty())
                     {
                         for (FaceVectorType::iterator f = temp.begin(); f != temp.end(); ++f)
-                              modifiedShapes.push_back(std::make_pair(*f, newFace));
+                              modifiedShapes.emplace_back(*f, newFace);
                     }
                 }
             }
@@ -1160,7 +1160,7 @@ bool FaceUniter::process()
                 // Catch faces that were not united but whose boundary was changed (probably because
                 // several adjacent faces were united)
                 // See https://sourceforge.net/apps/mantisbt/free-cad/view.php?id=873
-                modifiedShapes.push_back(std::make_pair(mapIt.Key(), mapIt.Value()));
+                modifiedShapes.emplace_back(mapIt.Key(), mapIt.Value());
             }
         }
         // Handle edges that were fused. See https://sourceforge.net/apps/mantisbt/free-cad/view.php?id=873
@@ -1177,7 +1177,7 @@ bool FaceUniter::process()
             for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
             {
                 if (newEdges.IsBound(idx))
-                    modifiedShapes.push_back(std::make_pair(edgeIt.Value(), newEdges(idx)));
+                    modifiedShapes.emplace_back(edgeIt.Value(), newEdges(idx));
             }
             // TODO: Handle vertices that have disappeared in the fusion of the edges
         }

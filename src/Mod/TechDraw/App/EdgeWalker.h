@@ -45,23 +45,23 @@
 #include <TopoDS_Wire.hxx>
 
 namespace TechDraw {
-using namespace boost;
+//using namespace boost;
 
 typedef
-    adjacency_list
-        < vecS,
-          vecS,
-          undirectedS,
-          property<vertex_index_t, int>,
-          property<edge_index_t, int>
+    boost::adjacency_list
+        < boost::vecS,
+          boost::vecS,
+          boost::undirectedS,
+          boost::property<boost::vertex_index_t, int>,
+          boost::property<boost::edge_index_t, int>
         >
         graph;
-
+        
 typedef
-    graph_traits < graph >::vertex_descriptor
+    boost::graph_traits < graph >::vertex_descriptor
         vertex_t;
 typedef
-    graph_traits < graph >::edge_descriptor
+    boost::graph_traits < graph >::edge_descriptor
         edge_t;
 
 typedef
@@ -70,7 +70,7 @@ typedef
 
 typedef
     boost::iterator_property_map< planar_embedding_storage_t::iterator,
-                                  property_map<graph, vertex_index_t>::type
+                                  boost::property_map<graph, boost::vertex_index_t>::type
                                 >
         planar_embedding_t;
 
@@ -110,7 +110,7 @@ public:
 
 
 
-class edgeVisitor : public planar_face_traversal_visitor
+class edgeVisitor : public boost::planar_face_traversal_visitor
 {
 public:
     template <typename Edge>

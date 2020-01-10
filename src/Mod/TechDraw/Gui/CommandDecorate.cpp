@@ -32,17 +32,19 @@
 
 #include <QGraphicsView>
 
+# include <Base/Tools.h>
 # include <App/DocumentObject.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
 # include <Gui/BitmapFactory.h>
-# include <Gui/Command.h>
+# include <Gui/CommandT.h>
 # include <Gui/Control.h>
 # include <Gui/Document.h>
 # include <Gui/Selection.h>
 # include <Gui/MainWindow.h>
 # include <Gui/FileDialog.h>
 # include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
 
 # include <Mod/Part/App/PartFeature.h>
 
@@ -73,7 +75,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //// TechDraw_Leader
 ////===========================================================================
 
-//DEF_STD_CMD_A(CmdTechDrawLeaderLine);
+//DEF_STD_CMD_A(CmdTechDrawLeaderLine)
 
 //CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
 //  : Command("TechDraw_LeaderLine")
@@ -130,24 +132,24 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //}
 
 ////===========================================================================
-//// TechDraw_RichAnno
+//// TechDraw_RichTextAnnotation
 ////===========================================================================
 
-//DEF_STD_CMD_A(CmdTechDrawRichAnno);
+//DEF_STD_CMD_A(CmdTechDrawRichTextAnnotation)
 
-//CmdTechDrawRichAnno::CmdTechDrawRichAnno()
-//  : Command("TechDraw_RichAnno")
+//CmdTechDrawRichTextAnnotation::CmdTechDrawRichTextAnnotation()
+//  : Command("TechDraw_RichTextAnnotation")
 //{
 //    sAppModule      = "TechDraw";
 //    sGroup          = QT_TR_NOOP("TechDraw");
-//    sMenuText       = QT_TR_NOOP("Add a rich text annotation");
-//    sToolTipText    = QT_TR_NOOP("Add a rich text annotation");
-//    sWhatsThis      = "TechDraw_RichAnno";
+//    sMenuText       = QT_TR_NOOP("Add Rich Text Annotation");
+//    sToolTipText    = sMenuText;
+//    sWhatsThis      = "TechDraw_RichTextAnnotation";
 //    sStatusTip      = sToolTipText;
-//    sPixmap         = "actions/techdraw-textleader";
+//    sPixmap         = "actions/techdraw-RichTextAnnotation";
 //}
 
-//void CmdTechDrawRichAnno::activated(int iMsg)
+//void CmdTechDrawRichTextAnnotation::activated(int iMsg)
 //{
 //    Q_UNUSED(iMsg);
 //    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -181,7 +183,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //                                                  page));
 //}
 
-//bool CmdTechDrawRichAnno::isActive(void)
+//bool CmdTechDrawRichTextAnnotation::isActive(void)
 //{
 //    bool havePage = DrawGuiUtil::needPage(this);
 //    bool haveView = DrawGuiUtil::needView(this, false);
@@ -189,24 +191,24 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //}
 
 //===========================================================================
-// TechDraw_NewHatch
+// TechDraw_Hatch
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewHatch);
+DEF_STD_CMD_A(CmdTechDrawHatch)
 
-CmdTechDrawNewHatch::CmdTechDrawNewHatch()
-  : Command("TechDraw_NewHatch")
+CmdTechDrawHatch::CmdTechDrawHatch()
+  : Command("TechDraw_Hatch")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Hatch a Face using image file");
-    sToolTipText    = QT_TR_NOOP("Hatch a Face using image file");
+    sMenuText       = QT_TR_NOOP("Hatch a Face using Image File");
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-hatch";
 }
 
-void CmdTechDrawNewHatch::activated(int iMsg)
+void CmdTechDrawHatch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (!_checkSelectionHatch(this)) {
@@ -214,35 +216,82 @@ void CmdTechDrawNewHatch::activated(int iMsg)
     }
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( objFeat == nullptr ) {
+    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( partFeat == nullptr ) {
         return;
     }
     const std::vector<std::string> &subNames = selection[0].getSubNames();
-    TechDraw::DrawPage* page = objFeat->findParentPage();
+    TechDraw::DrawPage* page = partFeat->findParentPage();
+    std::vector<int> selFaces;
+    for (auto& s: subNames) {
+        int f = TechDraw::DrawUtil::getIndexFromName(s);
+        selFaces.push_back(f);
+    }
+
+    bool removeOld = false;
+    std::vector<TechDraw::DrawHatch*> hatchObjs = partFeat->getHatches();
+    for (auto& s: subNames) {                             //all the faces selected in DVP
+        int face = TechDraw::DrawUtil::getIndexFromName(s);
+        if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {
+            QMessageBox::StandardButton rc =
+                    QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace Hatch?"),
+                            QObject::tr("Some Faces in selection are already hatched.  Replace?"));
+            if (rc == QMessageBox::StandardButton::NoButton) {
+                return;
+            } else {
+                removeOld = true;
+                break;
+            }
+        }
+    }
+
+    openCommand("Create Hatch");
+    if (removeOld) {
+        std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
+        for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
+            std::vector<std::string> hatchSubs = h->Source.getSubValues();
+            for (auto& hs: hatchSubs) {        //all the Faces in this hatch object
+                int hatchFace = TechDraw::DrawUtil::getIndexFromName(hs);
+                std::vector<int>::iterator it = std::find(selFaces.begin(), selFaces.end(), hatchFace);
+                if (it != selFaces.end()) {
+                    std::pair< int, TechDraw::DrawHatch*> removeItem;
+                    removeItem.first = hatchFace;
+                    removeItem.second = h;
+                    toRemove.push_back(removeItem);
+                }
+            }
+        }
+        for (auto& r: toRemove) {
+            r.second->removeSub(r.first);
+            if (r.second->empty()) {
+                Gui::cmdAppDocument(r.second, std::ostringstream() << "removeObject('" << r.second->getNameInDocument() << "')");
+            }
+        }
+    }
 
     std::string FeatName = getUniqueObjectName("Hatch",page);
     std::stringstream featLabel;
-    featLabel << FeatName << "F" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
+    featLabel << FeatName << "F" << 
+                    TechDraw::DrawUtil::getIndexFromName(subNames.at(0)); //use 1st face# for label
 
-    openCommand("Create Hatch");
-    FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawHatch','" << FeatName << "')");
+    Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawHatch','" << FeatName << "')");
     auto hatch( static_cast<TechDraw::DrawHatch *>(getDocument()->getObject(FeatName.c_str())) );
-    FCMD_OBJ_CMD2("Label = '%s'",hatch,featLabel.str().c_str());
+    Gui::cmdAppObjectArgs(hatch, "Label = '%s'", featLabel.str().c_str());
 
-    hatch->Source.setValue(objFeat, subNames);
+    hatch->Source.setValue(partFeat, subNames);
     //should this be: doCommand(Doc,"App..Feat..Source = [(App...%s,%s),(App..%s,%s),...]",objs[0]->getNameInDocument(),subs[0],...);
     //seems very unwieldy
 
     // Signal tree view update
-    objFeat->touch(true);
+    partFeat->touch(true);
 
     updateActive();
 
     commitCommand();
 }
 
-bool CmdTechDrawNewHatch::isActive(void)
+
+bool CmdTechDrawHatch::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -250,24 +299,24 @@ bool CmdTechDrawNewHatch::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewGeomHatch
+// TechDraw_GeometricHatch
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewGeomHatch);
+DEF_STD_CMD_A(CmdTechDrawGeometricHatch)
 
-CmdTechDrawNewGeomHatch::CmdTechDrawNewGeomHatch()
-  : Command("TechDraw_NewGeomHatch")
+CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
+  : Command("TechDraw_GeometricHatch")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Apply geometric hatch to a Face");
-    sToolTipText    = QT_TR_NOOP("Apply geometric hatch to a Face");
-    sWhatsThis      = "TechDraw_GeomHatch";
+    sMenuText       = QT_TR_NOOP("Apply Geometric Hatch to a Face");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-geomhatch";
+    sPixmap         = "actions/techdraw-GeometricHatch";
 }
 
-void CmdTechDrawNewGeomHatch::activated(int iMsg)
+void CmdTechDrawGeometricHatch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (!_checkSelectionHatch(this)) {                 //same requirements as hatch - page, DrawViewXXX, face
@@ -306,7 +355,7 @@ void CmdTechDrawNewGeomHatch::activated(int iMsg)
     Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch,hvp,true));
 }
 
-bool CmdTechDrawNewGeomHatch::isActive(void)
+bool CmdTechDrawGeometricHatch::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -317,17 +366,17 @@ bool CmdTechDrawNewGeomHatch::isActive(void)
 // TechDraw_Image
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawImage);
+DEF_STD_CMD_A(CmdTechDrawImage)
 
 CmdTechDrawImage::CmdTechDrawImage()
   : Command("TechDraw_Image")
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert bitmap image");
-    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file into a Page");
+    sMenuText     = QT_TR_NOOP("Insert Bitmap Image");
+    sToolTipText  = QT_TR_NOOP("Insert Bitmap from a file into a page");
     sWhatsThis    = "TechDraw_Image";
-    sStatusTip    = QT_TR_NOOP("Inserts a bitmap from a file into a Page");
+    sStatusTip    = QT_TR_NOOP("Insert Bitmap from a file into a page");
     sPixmap       = "actions/techdraw-image";
 }
 
@@ -350,11 +399,12 @@ void CmdTechDrawImage::activated(int iMsg)
     if (!fileName.isEmpty())
     {
         std::string FeatName = getUniqueObjectName("Image",page);
+        fileName = Base::Tools::escapeEncodeFilename(fileName);
         openCommand("Create Image");
-        FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewImage','" << FeatName << "')");
+        Gui::cmdAppDocument(page, std::ostringstream() << "addObject('TechDraw::DrawViewImage','" << FeatName << "')");
         auto feat = page->getDocument()->getObject(FeatName.c_str());
-        FCMD_OBJ_CMD2("ImageFile = '%s'",feat,fileName.toUtf8().constData());
-        FCMD_OBJ_CMD(page,"addView(" << getObjectCmd(feat) << ")");
+        Gui::cmdAppObjectArgs(feat, "ImageFile = '%s'", fileName.toUtf8().constData());
+        Gui::cmdAppObject(page, std::ostringstream() << "addView(" << getObjectCmd(feat) << ")");
         updateActive();
         commitCommand();
     }
@@ -369,7 +419,7 @@ bool CmdTechDrawImage::isActive(void)
 // TechDraw_ToggleFrame
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawToggleFrame);
+DEF_STD_CMD_A(CmdTechDrawToggleFrame)
 
 CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
   : Command("TechDraw_ToggleFrame")
@@ -411,57 +461,17 @@ bool CmdTechDrawToggleFrame::isActive(void)
     return (havePage && haveView);
 }
 
-//===========================================================================
-// TechDraw_RedrawPage
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawRedrawPage);
-
-CmdTechDrawRedrawPage::CmdTechDrawRedrawPage()
-  : Command("TechDraw_RedrawPage")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Redraw a page");
-    sToolTipText    = QT_TR_NOOP("Redraw a page");
-    sWhatsThis      = "TechDraw_Redraw";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Tree_Page_Sync";
-}
-
-void CmdTechDrawRedrawPage::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    bool keepUpdated = page->KeepUpdated.getValue();
-    if (!keepUpdated) {
-        FCMD_OBJ_CMD(page,"KeepUpdated = True");
-        FCMD_OBJ_CMD(page,"KeepUpdated = False");
-    } else {
-        page->requestPaint();
-    }
-}
-
-bool CmdTechDrawRedrawPage::isActive(void)
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    return (havePage);
-}
 
 void CreateTechDrawCommandsDecorate(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdTechDrawNewHatch());
-    rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawGeometricHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
-//    rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
-//    rcCmdMgr.addCommand(new CmdTechDrawRichAnno());
+//    rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());
 }
 
 //===========================================================================

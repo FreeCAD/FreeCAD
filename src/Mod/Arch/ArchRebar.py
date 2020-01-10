@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -120,7 +118,7 @@ class _CommandRebar:
             if Draft.getType(obj) == "Structure":
                 if len(sel) > 1:
                     sk = sel[1].Object
-                    if sk.isDerivedFrom("Part::Feature"):
+                    if hasattr(sk,'Shape'):
                         if len(sk.Shape.Wires) == 1:
                             # we have a structure and a wire: create the rebar now
                             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
@@ -136,7 +134,7 @@ class _CommandRebar:
                     FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Rebar")
                     FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
                     return
-            elif obj.isDerivedFrom("Part::Feature"):
+            elif hasattr(obj,'Shape'):
                 if len(obj.Shape.Wires) == 1:
                     # we have only a wire: extract its support object, if available, and make the rebar
                     support = "None"
@@ -321,7 +319,7 @@ class _Rebar(ArchComponent.Component):
                     if obj in obj.InList[0].Armatures:
                         father = obj.InList[0]
         if father:
-            if father.isDerivedFrom("Part::Feature"):
+            if hasattr(father,'Shape'):
                 fathershape = father.Shape
 
         wire = obj.Base.Shape.Wires[0]
@@ -355,8 +353,9 @@ class _Rebar(ArchComponent.Component):
             if obj.CustomSpacing:
                 spacinglist = strprocessOfCustomSpacing(obj.CustomSpacing)
                 influenceArea = sum(spacinglist) - spacinglist[0] / 2 - spacinglist[-1] / 2
-        if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
-            return
+        # Drop this check to solve issue as discussed here: https://github.com/FreeCAD/FreeCAD/pull/2550
+        # if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
+        #        return
         # all tests ok!
         if hasattr(obj, "Length"):
             length = getLengthOfRebar(obj)
@@ -378,7 +377,10 @@ class _Rebar(ArchComponent.Component):
         self.wires = []
         rot = FreeCAD.Rotation()
         if obj.Amount == 1:
-            barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+            if obj.ViewObject:
+                barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+            else:
+                barplacement = CalculatePlacement(obj.Amount, 1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
             placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = 0
@@ -387,13 +389,16 @@ class _Rebar(ArchComponent.Component):
                 baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
             else:
                 baseoffset = None
-            if obj.ViewObject.RebarShape == "Stirrup":
+            if obj.ViewObject and obj.ViewObject.RebarShape == "Stirrup":
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value + obj.Diameter.Value)
             else:
                 interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
             interval = interval / (obj.Amount - 1)
             for i in range(obj.Amount):
-                barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+                if obj.ViewObject:
+                    barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value, obj.ViewObject.RebarShape)
+                else:
+                    barplacement = CalculatePlacement(obj.Amount, i+1, obj.Diameter.Value, size, axis, rot, obj.OffsetStart.Value, obj.OffsetEnd.Value)
                 placementlist.append(barplacement)
             if hasattr(obj,"Spacing"):
                 obj.Spacing = interval

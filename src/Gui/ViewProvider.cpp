@@ -168,18 +168,18 @@ void ViewProvider::finishEditing()
 
 bool ViewProvider::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum); 
+    Q_UNUSED(ModNum);
     return true;
 }
 
 void ViewProvider::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum); 
+    Q_UNUSED(ModNum);
 }
 
 void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 {
-    Q_UNUSED(ModNum); 
+    Q_UNUSED(ModNum);
 }
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
@@ -198,7 +198,7 @@ void ViewProvider::setUpdatesEnabled (bool enable)
 
 void highlight(const HighlightMode& high)
 {
-    Q_UNUSED(high); 
+    Q_UNUSED(high);
 }
 
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
@@ -302,7 +302,20 @@ void ViewProvider::update(const App::Property* prop)
 
 QIcon ViewProvider::getIcon(void) const
 {
-    return Gui::BitmapFactory().pixmap(sPixmap);
+    return mergeOverlayIcons (Gui::BitmapFactory().pixmap(sPixmap));
+}
+
+QIcon ViewProvider::mergeOverlayIcons (const QIcon & orig) const
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+
+    QIcon overlayedIcon = orig;
+
+    for (Gui::ViewProviderExtension* ext : vector) {
+        overlayedIcon = ext->extensionMergeOverlayIcons(overlayedIcon);
+    }
+
+    return overlayedIcon;
 }
 
 void ViewProvider::setTransformation(const Base::Matrix4D &rcMatrix)
@@ -334,9 +347,10 @@ SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix)
 Base::Matrix4D ViewProvider::convert(const SbMatrix &smat)
 {
     Base::Matrix4D mat;
-    for(int i=0;i<4;++i)
+    for(int i=0;i<4;++i) {
         for(int j=0;j<4;++j)
             mat[i][j] = smat[j][i];
+    }
     return mat;
 }
 
@@ -598,7 +612,7 @@ std::vector<Base::Vector3d> ViewProvider::getModelPoints(const SoPickedPoint* pp
     // the default implementation just returns the picked point from the visual representation
     std::vector<Base::Vector3d> pts;
     const SbVec3f& vec = pp->getPoint();
-    pts.push_back(Base::Vector3d(vec[0],vec[1],vec[2]));
+    pts.emplace_back(vec[0],vec[1],vec[2]);
     return pts;
 }
 
@@ -823,7 +837,7 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const
     for (Gui::ViewProviderExtension* ext : vector) {
         std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
         if (!nvec.empty())
-            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
+            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
     }
     return vec;
 }
@@ -835,16 +849,17 @@ std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const
     for (Gui::ViewProviderExtension* ext : vector) {
         std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren3D();
         if (!nvec.empty())
-            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
+            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));
     }
     return vec;
 }
 bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
     if(!isSelectable()) return false;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for(Gui::ViewProviderExtension* ext : vector) {
         if(ext->extensionGetElementPicked(pp,subname))
             return true;
+    }
     subname = getElement(pp?pp->getDetail():0);
     return true;
 }
@@ -862,9 +877,10 @@ bool ViewProvider::getDetailPath(const char *subname, SoFullPath *pPath, bool ap
         pPath->append(pcModeSwitch);
     }
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for(Gui::ViewProviderExtension* ext : vector) {
         if(ext->extensionGetDetailPath(subname,pPath,det))
             return true;
+    }
     det = getDetail(subname);
     return true;
 }

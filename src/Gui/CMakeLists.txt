@@ -180,9 +180,17 @@ if(SHIBOKEN_INCLUDE_DIR)
     include_directories(
         ${SHIBOKEN_INCLUDE_DIR}
     )
-    list(APPEND FreeCADGui_LIBS
-        ${SHIBOKEN_LIBRARY}
-    )
+    if (SHIBOKEN_LIBRARY)
+        list(APPEND FreeCADGui_LIBS
+            ${SHIBOKEN_LIBRARY}
+        )
+    else (SHIBOKEN_LIBRARY)
+        if (TARGET Shiboken2::libshiboken)
+            list(APPEND FreeCADGui_LIBS
+                Shiboken2::libshiboken
+            )
+        endif (TARGET Shiboken2::libshiboken)
+    endif (SHIBOKEN_LIBRARY)
 endif(SHIBOKEN_INCLUDE_DIR)
 
 if(PYSIDE_INCLUDE_DIR)
@@ -191,9 +199,17 @@ if(PYSIDE_INCLUDE_DIR)
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
     )
-    list(APPEND FreeCADGui_LIBS
-        ${PYSIDE_LIBRARY}
-    )
+    if (PYSIDE_LIBRARY)
+        list(APPEND FreeCADGui_LIBS
+            ${PYSIDE_LIBRARY}
+        )
+    else (PYSIDE_LIBRARY)
+        if (TARGET PySide2::pyside2)
+            list(APPEND FreeCADGui_LIBS
+                PySide2::pyside2
+            )
+        endif (TARGET PySide2::pyside2)
+    endif (PYSIDE_LIBRARY)
     if (BUILD_QT5)
         include_directories(
             ${PYSIDE_INCLUDE_DIR}/QtWidgets
@@ -285,7 +301,7 @@ set(Gui_MOC_HDRS
     DlgMacroExecuteImp.h
     DlgMacroRecordImp.h
     DlgRunExternal.h
-    DlgEditFileIncludeProptertyExternal.h
+    DlgEditFileIncludePropertyExternal.h
     DlgMaterialPropertiesImp.h
     DlgOnlineHelpImp.h
     DlgParameterImp.h
@@ -483,6 +499,7 @@ SET(Command_SRCS
     Action.h
     ActionFunction.h
     Command.h
+    CommandT.h
 )
 SOURCE_GROUP("Command" FILES ${Command_SRCS})
 
@@ -496,7 +513,7 @@ SET(Dialog_CPP_SRCS
     DlgInputDialogImp.cpp
     DlgMacroExecuteImp.cpp
     DlgRunExternal.cpp
-    DlgEditFileIncludeProptertyExternal.cpp
+    DlgEditFileIncludePropertyExternal.cpp
     DlgMacroRecordImp.cpp
     DlgMaterialPropertiesImp.cpp
     DlgParameterImp.cpp
@@ -532,7 +549,7 @@ SET(Dialog_HPP_SRCS
     DlgInputDialogImp.h
     DlgMacroExecuteImp.h
     DlgRunExternal.h
-    DlgEditFileIncludeProptertyExternal.h
+    DlgEditFileIncludePropertyExternal.h
     DlgMacroRecordImp.h
     DlgMaterialPropertiesImp.h
     DlgParameterImp.h
@@ -1133,11 +1150,13 @@ SOURCE_GROUP("Widget" FILES ${Widget_SRCS})
 # The view sources
 SET(View_CPP_SRCS
     MDIView.cpp
+    MDIViewPy.cpp
     GraphvizView.cpp
     ActiveObjectList.cpp
 )
 SET(View_HPP_SRCS
     MDIView.h
+    MDIViewPy.h
     GraphvizView.h
     ActiveObjectList.h
 )
@@ -1323,21 +1342,27 @@ SET_BIN_DIR(FreeCADGui FreeCADGui)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADGui
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)
     INSTALL(TARGETS FreeCADGui
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
-    INSTALL(FILES Icons/freecad.xpm
-        Icons/freecad-icon-16.png
-        Icons/freecad-icon-32.png
-        Icons/freecad-icon-48.png
-        Icons/freecad-icon-64.png
-        Icons/freecad.svg
-        Icons/freecad-doc.png
-        DESTINATION ${CMAKE_INSTALL_DATADIR}
-    )
+    #INSTALL(FILES Icons/freecad.xpm
+    #    Icons/freecad-icon-16.png
+    #    Icons/freecad-icon-32.png
+    #    Icons/freecad-icon-48.png
+    #    Icons/freecad-icon-64.png
+    #    Icons/freecad.svg
+    #    Icons/freecad-doc.png
+    #    DESTINATION ${CMAKE_INSTALL_DATADIR}
+    #)
+    INSTALL(FILES Icons/freecad-icon-16.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps RENAME freecad.png)
+    INSTALL(FILES Icons/freecad-icon-32.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps RENAME freecad.png)
+    INSTALL(FILES Icons/freecad-icon-48.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps RENAME freecad.png)
+    INSTALL(FILES Icons/freecad-icon-64.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps RENAME freecad.png)
+    INSTALL(FILES Icons/freecad.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/apps)
+    INSTALL(FILES Icons/freecad.xpm DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pixmaps)
+    INSTALL(FILES Icons/freecad-doc.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes RENAME application-x-extension-fcstd.svg)
 endif(WIN32)
-

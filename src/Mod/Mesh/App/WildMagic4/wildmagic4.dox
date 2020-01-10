@@ -1,6 +1,6 @@
 
 /** \defgroup WM4 WildMagic4
- *  \ingroup MESH
+ *  \ingroup EMBEDDED
  *  Excerpts from version 4.0.0 of Wild Magic Library which were integrated
  *  to FreeCAD's Mesh module.
  *  

@@ -160,14 +160,6 @@ public:
 
 protected:
     /**
-     * Converts point from Wm4::Vector3 to Base::Vector3f.
-     */
-    static void Convert( const Wm4::Vector3<double>&, Base::Vector3f&);
-    /**
-     * Converts point from Base::Vector3f to Wm4::Vector3.
-     */
-    static void Convert( const Base::Vector3f&, Wm4::Vector3<double>&);
-    /**
      * Creates a vector of Wm4::Vector3 elements.
      */
     void GetMgcVectorArray( std::vector< Wm4::Vector3<double> >& rcPts ) const;
@@ -267,7 +259,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~QuadraticFit(){};
+    virtual ~QuadraticFit(){}
     /**
      * Get the quadric coefficients
      * @param ulIndex Number of coefficient (0..9)
@@ -515,7 +507,9 @@ public:
     Base::Vector3f GetGradient( double x, double y, double z ) const
     {
         Wm4::Vector3<double> grad = pImplSurf->GetGradient( Wm4::Vector3<double>(x, y, z) );
-        return Base::Vector3f( (float)grad.X(), (float)grad.Y(), (float)grad.Z() );
+        return Base::Vector3f(static_cast<float>(grad.X()),
+                              static_cast<float>(grad.Y()),
+                              static_cast<float>(grad.Z()));
     }
 
     Base::Matrix4D GetHessian( double x, double y, double z ) const
@@ -535,16 +529,16 @@ public:
         double zx = - ( Fx(x,y,z) / dQuot );
         double zy = - ( Fy(x,y,z) / dQuot );
         
-        double zxx = - ( 2.0f * ( dKoeff[5] + dKoeff[6] * zx * zx + dKoeff[8] * zx ) ) / dQuot;
-        double zyy = - ( 2.0f * ( dKoeff[5] + dKoeff[6] * zy * zy + dKoeff[9] * zy ) ) / dQuot;
+        double zxx = - ( 2.0 * ( dKoeff[5] + dKoeff[6] * zx * zx + dKoeff[8] * zx ) ) / dQuot;
+        double zyy = - ( 2.0 * ( dKoeff[5] + dKoeff[6] * zy * zy + dKoeff[9] * zy ) ) / dQuot;
         double zxy = - ( dKoeff[6] * zx * zy + dKoeff[7] + dKoeff[8] * zy + dKoeff[9] * zx ) / dQuot;
 
         double dNen = 1 + zx*zx + zy*zy;
-        double dNenSqrt = (double)sqrt( dNen );
+        double dNenSqrt = sqrt( dNen );
         double K = ( zxx * zyy - zxy * zxy ) / ( dNen * dNen );
-        double H = 0.5f * ( ( 1.0f+zx*zx - 2*zx*zy*zxy + (1.0f+zy*zy)*zxx ) / ( dNenSqrt * dNenSqrt * dNenSqrt ) ) ;
+        double H = 0.5 * ( ( 1.0+zx*zx - 2*zx*zy*zxy + (1.0+zy*zy)*zxx ) / ( dNenSqrt * dNenSqrt * dNenSqrt ) ) ;
 
-        double dDiscr = (double)sqrt(fabs(H*H-K));
+        double dDiscr = sqrt(fabs(H*H-K));
         rfCurv0 = H - dDiscr;
         rfCurv1 = H + dDiscr;
 
@@ -562,22 +556,22 @@ public:
     //+++++++++ 1. derivations ++++++++++++++++++++++++++++++++
     double Fx ( double x, double y, double z )
     {
-        return( dKoeff[1] + 2.0f*dKoeff[4]*x + dKoeff[7]*y + dKoeff[8]*z );
+        return( dKoeff[1] + 2.0*dKoeff[4]*x + dKoeff[7]*y + dKoeff[8]*z );
     }
     double Fy ( double x, double y, double z ) 
     {
-        return( dKoeff[2] + 2.0f*dKoeff[5]*y + dKoeff[7]*x + dKoeff[9]*z );
+        return( dKoeff[2] + 2.0*dKoeff[5]*y + dKoeff[7]*x + dKoeff[9]*z );
     }
     double Fz ( double x, double y, double z ) 
     {
-        return( dKoeff[3] + 2.0f*dKoeff[6]*z + dKoeff[8]*x + dKoeff[9]*y );
+        return( dKoeff[3] + 2.0*dKoeff[6]*z + dKoeff[8]*x + dKoeff[9]*y );
     }
 
     //+++++++++ 2. derivations ++++++++++++++++++++++++++++++++
     double Fxx( double x, double y, double z ) 
     {
         (void)x; (void)y; (void)z;
-        return( 2.0f*dKoeff[4] );
+        return( 2.0*dKoeff[4] );
     }
     double Fxy( double x, double y, double z ) 
     {
@@ -592,7 +586,7 @@ public:
     double Fyy( double x, double y, double z ) 
     {
         (void)x; (void)y; (void)z;
-        return( 2.0f*dKoeff[5] );
+        return( 2.0*dKoeff[5] );
     }
     double Fyz( double x, double y, double z ) 
     {
@@ -602,7 +596,7 @@ public:
     double Fzz( double x, double y, double z ) 
     {
         (void)x; (void)y; (void)z;
-        return( 2.0f*dKoeff[6] );
+        return( 2.0*dKoeff[6] );
     }
    
 protected:
@@ -613,7 +607,7 @@ private:
     /**
      * Private construction.
      */
-    FunctionContainer(){};
+    FunctionContainer(){}
 };
 
 class MeshExport PolynomialFit : public Approximation

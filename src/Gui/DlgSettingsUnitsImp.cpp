@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QRegExp>
 #endif
 
@@ -43,6 +44,17 @@ using namespace Base;
 
 /* TRANSLATOR Gui::Dialog::DlgSettingsUnitsImp */
 
+#if 0 // needed for Qt's lupdate utility
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "Standard (mm/kg/s/degree)");
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "MKS (m/kg/s/degree)");
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "US customary (in/lb)");
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "Imperial decimal (in/lb)");
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "Building Euro (cm/m²/m³)");
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "Building US (ft-in/sqft/cft)");
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "Metric small parts & CNC(mm, mm/min)");
+    qApp->translate("Gui::Dialog::DlgSettingsUnits", "Imperial for Civil Eng (ft, ft/sec)");
+#endif
+
 /**
  *  Constructs a DlgSettingsUnitsImp which is a child of 'parent', with the 
  *  name 'name' and widget flags set to 'f' 
@@ -53,11 +65,17 @@ DlgSettingsUnitsImp::DlgSettingsUnitsImp(QWidget* parent)
     ui->setupUi(this);
     ui->spinBoxDecimals->setMaximum(std::numeric_limits<double>::digits10 + 1);
 
+    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+    for (int i = 0; i < num; i++) {
+        QString item = qApp->translate("Gui::Dialog::DlgSettingsUnits", Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i)));
+        ui->comboBox_ViewSystem->addItem(item, i);
+    }
+
     //fillUpListBox();
     ui->tableWidget->setVisible(false);
     //
     // Enable/disable the fractional inch option depending on system
-    if( UnitsApi::getSchema() == ImperialBuilding )
+    if( UnitsApi::getSchema() == UnitSystem::ImperialBuilding )
     {
         ui->comboBox_FracInch->setEnabled(true);
     }
@@ -82,7 +100,7 @@ void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
         return; // happens when clearing the combo box in retranslateUi()
 
     // Enable/disable the fractional inch option depending on system
-    if( (UnitSystem)index == ImperialBuilding )
+    if( (UnitSystem)index == UnitSystem::ImperialBuilding )
     {
         ui->comboBox_FracInch->setEnabled(true);
     }

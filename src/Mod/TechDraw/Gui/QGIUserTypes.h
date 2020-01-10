@@ -10,6 +10,7 @@ QGraphicsItemFace: 104
 QGraphicsItemVertex: 105
 QGraphicsItemViewDimension : 106
 QGraphicsItemViewBalloon : 140
+QGraphicsItemBalloonLabel : 141
 QGraphicsItemDatumLabel : 107
 QGraphicsItemViewSection : 108
 QGraphicsItemArrow: 109
@@ -47,6 +48,8 @@ QGIRichAnno: 233
 QGMText: 300
 QGEPath: 301
 QGMarker: 302
+QGITile: 325
+QGIWeldSymbol: 340
 */
 
 /*

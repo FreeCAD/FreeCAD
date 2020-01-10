@@ -64,7 +64,7 @@ class SoBrepPointSet;
 
 class PartGuiExport ViewProviderPartExt : public Gui::ViewProviderGeometryObject
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPartExt);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderPartExt);
 
 public:
     /// constructor
@@ -98,14 +98,14 @@ public:
     App::PropertyBool MapTransparency;    
     App::PropertyBool ForceMapColors;
 
-    virtual void attach(App::DocumentObject *);
-    virtual void setDisplayMode(const char* ModeName);
+    virtual void attach(App::DocumentObject *) override;
+    virtual void setDisplayMode(const char* ModeName) override;
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes(void) const override;
     /// Update the view representation
     void reload();
 
-    virtual void updateData(const App::Property*);
+    virtual void updateData(const App::Property*) override;
 
     virtual PyObject *getPyObject() override;
 
@@ -116,13 +116,13 @@ public:
      */
     //@{
     /// indicates if the ViewProvider use the new Selection model
-    virtual bool useNewSelectionModel(void) const {return true;}
+    virtual bool useNewSelectionModel(void) const override {return true;}
     /// return a hit element to the selection path or 0
-    virtual std::string getElement(const SoDetail*) const;
-    virtual SoDetail* getDetail(const char*) const;
-    virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const;
+    virtual std::string getElement(const SoDetail*) const override;
+    virtual SoDetail* getDetail(const char*) const override;
+    virtual std::vector<Base::Vector3d> getModelPoints(const SoPickedPoint *) const override;
     /// return the highlight lines for a given element or the whole shape
-    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
+    virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const override;
     //@}
 
     /** @name Highlight handling
@@ -150,6 +150,8 @@ public:
     }
     virtual void forceUpdate(bool enable = true) override;
 
+    virtual bool allowOverride(const App::DocumentObject &) const override;
+
     void updateColors(App::Document *sourceDoc=0, bool forceColorMap=false);
 
     static App::Color getElementColor(App::Color color, Part::TopoShape shape, App::Document *doc, 
@@ -160,17 +162,17 @@ public:
 
     /** @name Edit methods */
     //@{
-    void setupContextMenu(QMenu*, QObject*, const char*);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
 
 protected:
-    bool setEdit(int ModNum);
-    void unsetEdit(int ModNum);
+    bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
     //@}
 
 protected:
     /// get called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     bool loadParameter();
     void updateVisual();
     void getNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
@@ -199,7 +201,6 @@ protected:
     bool NormalsFromUV;
     bool UpdatingColor;
 
-
 private:
     // settings stuff
     int forceUpdateCount;
@@ -213,4 +214,3 @@ private:
 }
 
 #endif // PARTGUI_VIEWPROVIDERPARTEXT_H
-

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,14 +19,9 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
-
-
-
-#ifndef BASE_CONSOLE_H
-#define BASE_CONSOLE_H
+#pragma once
 
 // Std. configurations
 #include <Base/PyExport.h>
@@ -39,6 +34,12 @@
 #include <cstring>
 #include <sstream>
 #include <chrono>
+
+//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
 
 //**************************************************************************
 // Logging levels
@@ -443,11 +444,12 @@
 
 #endif //FC_LOG_NO_TIMING
 
+//TODO: Get rid of this forward-declaration
 namespace Base {
-class ConsoleSingleton;
+    class ConsoleSingleton;
 } // namespace Base
 
-typedef Base::ConsoleSingleton ConsoleMsgType;
+//TODO: Get rid of this typedef
 typedef unsigned int ConsoleMsgFlags;
 
 namespace Base {
@@ -462,221 +464,224 @@ namespace Base {
     }
 #endif
 
-/** The console observer class
- *  This class distribute the Messages issued to the FCConsole class.
- *  If you need to catch some of the Messages you need to inherit from
- *  this class and implement some of the methods.
- *  @see Console
-  */
-class BaseExport ConsoleObserver
-{
-public:
-    ConsoleObserver()
-        :bErr(true),bMsg(true),bLog(true),bWrn(true) {}
-    virtual ~ConsoleObserver() {}
-    /// get calls when a Warning is issued
-    virtual void Warning(const char *){}
-    /// get calls when a Message is issued
-    virtual void Message(const char *){}
-    /// get calls when a Error is issued
-    virtual void Error  (const char *)=0;
-    /// get calls when a Log Message is issued
-    virtual void Log    (const char *){}
-
-    virtual const char *Name(void){return 0L;}
-    bool bErr,bMsg,bLog,bWrn;
-};
-
-
-/** The console class
- *  This class manage all the stdio stuff. This includes
- *  Messages, Warnings, Log entries and Errors. The incoming
- *  Messages are distributed with the FCConsoleObserver. The
- *  FCConsole class itself makes no IO, it's more like a manager.
- *  \par
- *  ConsoleSingleton is a singleton! That means you can access the only
- *  instance of the class from every where in c++ by simply using:
- *  \code
- *  #include <Base/Console.h>
- *  Base::Console().Log("Stage: %d",i);
- *  \endcode
- *  \par
- *  ConsoleSingleton is able to switch between several modes to, e.g. switch
- *  the logging on or off, or treat Warnings as Errors, and so on...
- *  @see ConsoleObserver
- */
-class BaseExport ConsoleSingleton
-{
-
-public:
-    static const unsigned int BufferSize = 4024;
-    // exported functions goes here +++++++++++++++++++++++++++++++++++++++
-    /// Prints a Message
-    virtual void Message ( const char * pMsg, ... ) ;
-    /// Prints a warning Message
-    virtual void Warning ( const char * pMsg, ... ) ;
-    /// Prints a error Message
-    virtual void Error   ( const char * pMsg, ... ) ;
-    /// Prints a log Message
-    virtual void Log     ( const char * pMsg, ... ) ;
-
-    // observer processing 
-    void NotifyMessage(const char *sMsg);
-    void NotifyWarning(const char *sMsg);
-    void NotifyError  (const char *sMsg);
-    void NotifyLog    (const char *sMsg);
-
-    /// Delivers a time/date string 
-    const char* Time(void);
-    /// Attaches an Observer to FCConsole
-    void AttachObserver(ConsoleObserver *pcObserver);
-    /// Detaches an Observer from FCConsole
-    void DetachObserver(ConsoleObserver *pcObserver);
-    /// enumaration for the console modes
-    enum ConsoleMode{
-        Verbose = 1,	// suppress Log messages
-    };
-    enum ConnectionMode {
-        Direct = 0,
-        Queued =1
+    /** Used to identify log level*/
+    enum class LogStyle{
+        Warning,
+        Message,
+        Error,
+        Log
     };
 
-    enum FreeCAD_ConsoleMsgType {
-        MsgType_Txt = 1,
-        MsgType_Log = 2, // ConsoleObserverStd sends this and higher to stderr
-        MsgType_Wrn = 4,
-        MsgType_Err = 8
+    /** The Logger Interface
+     *  This class describes an Interface for logging within FreeCAD. If you want to add a new
+     *  "sink" to FreeCAD's logging mechanism, then inherit this class. You'll also need to
+     *  register your derived class with ConsoleSingleton.
+     *
+     *  @see ConsoleSingleton
+     */
+    class BaseExport ILogger
+    {
+        public:
+            ILogger()
+                :bErr(true),bMsg(true),bLog(true),bWrn(true){};
+            virtual ~ILogger() = 0;
+
+            /** Used to send a Log message at the given level. 
+             */
+            virtual void SendLog(const std::string& msg, LogStyle level) = 0;
+
+            virtual const char *Name(void){return 0L;}
+            bool bErr,bMsg,bLog,bWrn;
     };
 
-    /// Change mode
-    void SetConsoleMode(ConsoleMode m);
-    /// Change mode
-    void UnsetConsoleMode(ConsoleMode m);
-    /// Enables or disables message types of a certain console observer
-    ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
-    /// Enables or disables message types of a certain console observer
-    bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
-    void SetConnectionMode(ConnectionMode mode);
 
-    int *GetLogLevel(const char *tag, bool create=true);
+    /** The console class
+     *  This class manage all the stdio stuff. This includes
+     *  Messages, Warnings, Log entries and Errors. The incoming
+     *  Messages are distributed with the FCConsoleObserver. The
+     *  FCConsole class itself makes no IO, it's more like a manager.
+     *  \par
+     *  ConsoleSingleton is a singleton! That means you can access the only
+     *  instance of the class from every where in c++ by simply using:
+     *  \code
+     *  #include <Base/Console.h>
+     *  Base::Console().Log("Stage: %d",i);
+     *  \endcode
+     *  \par
+     *  ConsoleSingleton is able to switch between several modes to, e.g. switch
+     *  the logging on or off, or treat Warnings as Errors, and so on...
+     *  @see ConsoleObserver
+     */
+    class BaseExport ConsoleSingleton
+    {
 
-    void SetDefaultLogLevel(int level) {
-        _defaultLogLevel = level;
+        public:
+            static const unsigned int BufferSize = 4024;
+            // exported functions goes here +++++++++++++++++++++++++++++++++++++++
+            /// Prints a Message
+            virtual void Message ( const char * pMsg, ... );
+            /// Prints a warning Message
+            virtual void Warning ( const char * pMsg, ... );
+            /// Prints a error Message
+            virtual void Error   ( const char * pMsg, ... );
+            /// Prints a log Message
+            virtual void Log     ( const char * pMsg, ... );
+
+            // observer processing 
+            void NotifyMessage(const char *sMsg);
+            void NotifyWarning(const char *sMsg);
+            void NotifyError  (const char *sMsg);
+            void NotifyLog    (const char *sMsg);
+
+            /// Delivers a time/date string 
+            const char* Time(void);
+            /// Attaches an Observer to FCConsole
+            void AttachObserver(ILogger *pcObserver);
+            /// Detaches an Observer from FCConsole
+            void DetachObserver(ILogger *pcObserver);
+            /// enumaration for the console modes
+            enum ConsoleMode{
+                Verbose = 1,	// suppress Log messages
+            };
+            enum ConnectionMode {
+                Direct = 0,
+                Queued =1
+            };
+
+            enum FreeCAD_ConsoleMsgType {
+                MsgType_Txt = 1,
+                MsgType_Log = 2, // ConsoleObserverStd sends this and higher to stderr
+                MsgType_Wrn = 4,
+                MsgType_Err = 8
+            };
+
+            /// Change mode
+            void SetConsoleMode(ConsoleMode m);
+            /// Change mode
+            void UnsetConsoleMode(ConsoleMode m);
+            /// Enables or disables message types of a certain console observer
+            ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
+            /// Enables or disables message types of a certain console observer
+            bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
+            void SetConnectionMode(ConnectionMode mode);
+
+            int *GetLogLevel(const char *tag, bool create=true);
+
+            void SetDefaultLogLevel(int level) {
+                _defaultLogLevel = level;
+            }
+
+            inline int LogLevel(int level) const{
+                return level<0?_defaultLogLevel:level;
+            }
+
+            /// singleton
+            static ConsoleSingleton &Instance(void);
+
+            // retrieval of an observer by name
+            ILogger *Get(const char *Name) const;
+
+            static PyMethodDef    Methods[];
+
+            void Refresh();
+            void EnableRefresh(bool enable);
+
+        protected:
+            // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
+            // static python wrapper of the exported functions
+            static PyObject *sPyLog      (PyObject *self,PyObject *args);
+            static PyObject *sPyMessage  (PyObject *self,PyObject *args);
+            static PyObject *sPyWarning  (PyObject *self,PyObject *args);
+            static PyObject *sPyError    (PyObject *self,PyObject *args);
+            static PyObject *sPySetStatus(PyObject *self,PyObject *args);
+            static PyObject *sPyGetStatus(PyObject *self,PyObject *args);
+
+            bool _bVerbose;
+            bool _bCanRefresh;
+            ConnectionMode connectionMode;
+
+            // Singleton!
+            ConsoleSingleton(void);
+            virtual ~ConsoleSingleton();
+
+        private:
+            // singleton
+            static void Destruct(void);
+            static ConsoleSingleton *_pcSingleton;
+
+            // observer list
+            std::set<ILogger * > _aclObservers;
+
+            std::map<std::string, int> _logLevels;
+            int _defaultLogLevel;
+
+            friend class ConsoleOutput;
+    };
+
+    /** Access to the Console
+     *  This method is used to gain access to the one and only instance of
+     *  the ConsoleSingleton class.
+     */
+    inline ConsoleSingleton &Console(void){
+        return ConsoleSingleton::Instance();
     }
 
-    inline int LogLevel(int level) const{
-        return level<0?_defaultLogLevel:level;
-    }
+    class BaseExport ConsoleRefreshDisabler {
+        public:
+            ConsoleRefreshDisabler() {
+                Console().EnableRefresh(false);
+            }
 
-    /// singleton
-    static ConsoleSingleton &Instance(void);
-
-    // retrieval of an observer by name
-    ConsoleObserver *Get(const char *Name) const;
-
-    static PyMethodDef    Methods[];
-
-    void Refresh();
-    void EnableRefresh(bool enable);
-
-protected:
-    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
-    // static python wrapper of the exported functions
-    static PyObject *sPyLog      (PyObject *self,PyObject *args);
-    static PyObject *sPyMessage  (PyObject *self,PyObject *args);
-    static PyObject *sPyWarning  (PyObject *self,PyObject *args);
-    static PyObject *sPyError    (PyObject *self,PyObject *args);
-    static PyObject *sPySetStatus(PyObject *self,PyObject *args);
-    static PyObject *sPyGetStatus(PyObject *self,PyObject *args);
-
-    bool _bVerbose;
-    bool _bCanRefresh;
-    ConnectionMode connectionMode;
-
-    // Singleton!
-    ConsoleSingleton(void);
-    virtual ~ConsoleSingleton();
-
-private:
-    // singleton
-    static void Destruct(void);
-    static ConsoleSingleton *_pcSingleton;
-
-    // observer list
-    std::set<ConsoleObserver * > _aclObservers;
-
-    std::map<std::string, int> _logLevels;
-    int _defaultLogLevel;
-
-    friend class ConsoleOutput;
-};
-
-/** Access to the Console
- *  This method is used to gain access to the one and only instance of
- *  the ConsoleSingleton class.
- */
-inline ConsoleSingleton &Console(void){
-    return ConsoleSingleton::Instance();
-}
-
-class BaseExport ConsoleRefreshDisabler {
-public:
-    ConsoleRefreshDisabler() {
-        Console().EnableRefresh(false);
-    }
-
-    ~ConsoleRefreshDisabler() {
-        Console().EnableRefresh(true);
-    }
-};
+            ~ConsoleRefreshDisabler() {
+                Console().EnableRefresh(true);
+            }
+    };
 
 
-/** LogLevel helper class */
-class BaseExport LogLevel {
-public:
-    std::string tag;
-    int &lvl;
-    bool print_tag;
-    int print_src;
-    bool print_time;
-    bool add_eol;
-    bool refresh;
+    /** LogLevel helper class */
+    class BaseExport LogLevel {
+        public:
+            std::string tag;
+            int &lvl;
+            bool print_tag;
+            int print_src;
+            bool print_time;
+            bool add_eol;
+            bool refresh;
 
-    LogLevel(const char *tag, bool print_tag=true, int print_src=0,
-            bool print_time=false, bool add_eol=true, bool refresh=false)
-        :tag(tag),lvl(*Console().GetLogLevel(tag))
-        ,print_tag(print_tag),print_src(print_src),print_time(print_time)
-        ,add_eol(add_eol),refresh(refresh)
-    {}
+            LogLevel(const char *tag, bool print_tag=true, int print_src=0,
+                    bool print_time=false, bool add_eol=true, bool refresh=false)
+                :tag(tag),lvl(*Console().GetLogLevel(tag))
+                 ,print_tag(print_tag),print_src(print_src),print_time(print_time)
+                 ,add_eol(add_eol),refresh(refresh)
+        {}
 
-    bool isEnabled(int l) {
-        return l<=level();
-    }
+            bool isEnabled(int l) {
+                return l<=level();
+            }
 
-    int level() const {
-        return Console().LogLevel(lvl);
-    }
+            int level() const {
+                return Console().LogLevel(lvl);
+            }
 
-    std::stringstream &prefix(std::stringstream &str, const char *src, int line);
-};
+            std::stringstream &prefix(std::stringstream &str, const char *src, int line);
+    };
 
 
-//=========================================================================
-// some special observers
+    //=========================================================================
+    // some special observers
 
-/** The LoggingConsoleObserver class
- *  This class is used by the main modules to write Console messages and logs to a file
- */
-class BaseExport ConsoleObserverFile : public ConsoleObserver
+    /** The LoggingConsoleObserver class
+     *  This class is used by the main modules to write Console messages and logs to a file
+     */
+    class BaseExport ConsoleObserverFile : public ILogger
 {
 public:
     ConsoleObserverFile(const char *sFileName);
-    virtual ~ConsoleObserverFile();
-    virtual void Warning(const char *sWarn);
-    virtual void Message(const char *sMsg);
-    virtual void Error  (const char *sErr);
-    virtual void Log    (const char *sLog);
-    const char* Name(void){return "File";}
+    ~ConsoleObserverFile() override;
+
+    void SendLog(const std::string& message, LogStyle level) override;
+    const char* Name(void) override {return "File";}
 
 protected:
     Base::ofstream cFileStream;
@@ -685,18 +690,20 @@ protected:
 /** The CmdConsoleObserver class
  *  This class is used by the main modules to write Console messages and logs the system con.
  */
-class BaseExport ConsoleObserverStd: public ConsoleObserver
+class BaseExport ConsoleObserverStd: public ILogger
 {
 public:
     ConsoleObserverStd();
-    virtual ~ConsoleObserverStd();
-    virtual void Warning(const char *sWarn);
-    virtual void Message(const char *sMsg);
-    virtual void Error  (const char *sErr);
-    virtual void Log    (const char *sErr);
-    const char* Name(void){return "Console";}
+    ~ConsoleObserverStd() override;
+    void SendLog(const std::string& message, LogStyle level) override;
+    const char* Name(void) override {return "Console";}
 protected:
     bool useColorStderr;
+private:
+    void Warning(const char *sWarn);
+    void Message(const char *sMsg);
+    void Error  (const char *sErr);
+    void Log    (const char *sErr);
 };
 
 class BaseExport RedirectStdOutput : public std::streambuf
@@ -741,4 +748,6 @@ private:
 
 } // namespace Base
 
-#endif // BASE_CONSOLE_H
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

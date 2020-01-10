@@ -5,6 +5,7 @@
         <file>icons/Arch_Cell.svg</file>
         <file>icons/Arch_Wall.svg</file>
         <file>icons/Arch_Site.svg</file>
+        <file>icons/Arch_Project.svg</file>
         <file>icons/Arch_Structure.svg</file>
         <file>icons/Arch_Add.svg</file>
         <file>icons/Arch_Remove.svg</file>
@@ -21,6 +22,7 @@
         <file>icons/Arch_Floor_Tree.svg</file>
         <file>icons/Arch_SectionPlane_Tree.svg</file>
         <file>icons/Arch_Site_Tree.svg</file>
+        <file>icons/Arch_Project_Tree.svg</file>
         <file>icons/Arch_Structure_Tree.svg</file>
         <file>icons/Arch_Structure_Clone.svg</file>
         <file>icons/Arch_Window_Tree.svg</file>

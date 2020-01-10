@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -200,7 +200,7 @@ Py::Tuple SketchPy::getGeometries(void) const
 
 Py::Object SketchPy::getShape(void) const
 {
-    return Py::Object(new TopoShapePy(new TopoShape(getSketchPtr()->toShape())));
+    return Py::asObject(new TopoShapePy(new TopoShape(getSketchPtr()->toShape())));
 }
 
 

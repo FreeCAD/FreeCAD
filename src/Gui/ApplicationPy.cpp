@@ -102,8 +102,11 @@ PyMethodDef Application::Methods[] = {
    "addIcon(string, string or list) -> None\n\n"
    "Add an icon as file name or in XPM format to the system"},
   {"getIcon",                 (PyCFunction) Application::sGetIcon, METH_VARARGS,
-   "getIcon(string -> QIcon\n\n"
+   "getIcon(string) -> QIcon\n\n"
    "Get an icon in the system"},
+  {"isIconCached",           (PyCFunction) Application::sIsIconCached, METH_VARARGS,
+   "isIconCached(String) -> Bool\n\n"
+   "Check if an icon with the given name is cached"},
   {"getMainWindow",           (PyCFunction) Application::sGetMainWindow, METH_VARARGS,
    "getMainWindow() -> QMainWindow\n\n"
    "Return the main window instance"},
@@ -141,6 +144,9 @@ PyMethodDef Application::Methods[] = {
   {"listCommands",               (PyCFunction) Application::sListCommands, METH_VARARGS,
    "listCommands() -> list of strings\n\n"
    "Returns a list of all commands known to FreeCAD."},
+  {"updateCommands",        (PyCFunction) Application::sUpdateCommands, METH_VARARGS,
+   "updateCommands\n\n"
+   "Update all command active status"},
   {"SendMsgToActiveView",     (PyCFunction) Application::sSendActiveView, METH_VARARGS,
    "deprecated -- use class View"},
   {"sendMsgToFocusView",     (PyCFunction) Application::sSendFocusView, METH_VARARGS,
@@ -848,7 +854,8 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     }
 
     try {
-        Instance->activateWorkbench(psKey);
+        bool ok = Instance->activateWorkbench(psKey);
+        return Py::new_reference_to(Py::Boolean(ok));
     }
     catch (const Base::Exception& e) {
         std::stringstream err;
@@ -874,9 +881,6 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
         PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
         return 0;
     }
-
-    Py_INCREF(Py_None);
-    return Py_None;
 }
 
 PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args)
@@ -1064,9 +1068,11 @@ PyObject* Application::sAddIconPath(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
 {
-    char *iconName;
-    char *pixmap;
-    if (!PyArg_ParseTuple(args, "ss", &iconName,&pixmap))
+    const char *iconName;
+    const char *content;
+    Py_ssize_t size = 0;
+    const char *format = "XPM";
+    if (!PyArg_ParseTuple(args, "ss#|s", &iconName,&content,&size,&format))
         return NULL;
     
     QPixmap icon;
@@ -1075,16 +1081,11 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
         return NULL;
     }
 
-    QByteArray ary;
-    std::string content = pixmap;
-    int strlen = (int)content.size();
-    ary.resize(strlen);
-    for (int j=0; j<strlen; j++)
-        ary[j]=content[j];
-    icon.loadFromData(ary, "XPM");
+    QByteArray ary(content,size);
+    icon.loadFromData(ary, format);
 
     if (icon.isNull()){
-        QString file = QString::fromUtf8(pixmap);
+        QString file = QString::fromUtf8(content);
         icon.load(file);
     }
 
@@ -1114,6 +1115,16 @@ PyObject* Application::sGetIcon(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
+PyObject* Application::sIsIconCached(PyObject * /*self*/, PyObject *args)
+{
+    char *iconName;
+    if (!PyArg_ParseTuple(args, "s", &iconName))
+        return NULL;
+    
+    QPixmap icon;
+    return Py::new_reference_to(Py::Boolean(BitmapFactory().findPixmapInCache(iconName, icon)));
+}
+
 PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
 {
     char*       pName;
@@ -1133,12 +1144,20 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
             return 0;
         }
         Py::Callable inspect(mod.getAttr("stack"));
-        Py::Tuple args;
-        Py::List list(inspect.apply(args));
-        args = list.getItem(0);
+        Py::List list(inspect.apply());
 
+        std::string file;
         // usually this is the file name of the calling script
-        std::string file = args.getItem(1).as_string();
+#if (PY_MAJOR_VERSION > 3 || (PY_MAJOR_VERSION==3 && PY_MINOR_VERSION>=5))
+        Py::Object info = list.getItem(0);
+        PyObject *pyfile = PyStructSequence_GET_ITEM(*info,1);
+        if(!pyfile)
+            throw Py::Exception();
+        file = Py::Object(pyfile).as_string();
+#else
+        Py::Tuple info = list.getItem(0);
+        file = info.getItem(1).as_string();
+#endif
         Base::FileInfo fi(file);
         // convert backslashes to slashes
         file = fi.filePath();
@@ -1238,6 +1257,14 @@ PyObject* Application::sIsCommandActive(PyObject * /*self*/, PyObject *args)
     }PY_CATCH;
 }
 
+PyObject* Application::sUpdateCommands(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    getMainWindow()->updateActions();
+    Py_Return;
+}
 
 PyObject* Application::sListCommands(PyObject * /*self*/, PyObject *args)
 {

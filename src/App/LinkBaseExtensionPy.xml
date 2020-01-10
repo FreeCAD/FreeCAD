@@ -19,7 +19,7 @@
 configLinkProperty(key=val,...): property configuration
 configLinkProperty(key,...): property configuration with default name
 
-This methode is here to impelement what I called Property Design
+This methode is here to implement what I called Property Design
 Pattern. The extension operates on a predefined set of properties,
 but it relies on the extended object to supply the actual property by
 calling this methode. You can choose a sub set of functionality of
@@ -35,7 +35,7 @@ depending on the actual extension object underlying this python
 object.
 
 If 'val' is omitted, i.e. calling configLinkProperty(key,...), then
-it is assumed the the actualy property name is the same as 'key'
+it is assumed the the actually property name is the same as 'key'
         </UserDocu>
       </Documentation>
     </Methode>
@@ -109,7 +109,7 @@ Return an expanded subname in case it references an object inside a linked plain
     <CustomAttributes />
     <Attribute Name="LinkedChildren" ReadOnly="true">
         <Documentation>
-            <UserDocu>Return a flattend (in case grouped by plain group) list of linked children</UserDocu>
+            <UserDocu>Return a flattened (in case grouped by plain group) list of linked children</UserDocu>
         </Documentation>
         <Parameter Name="LinkedChildren" Type="List"/>
     </Attribute>

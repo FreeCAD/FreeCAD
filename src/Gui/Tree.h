@@ -24,6 +24,7 @@
 #ifndef GUI_TREE_H
 #define GUI_TREE_H
 
+#include <unordered_map>
 #include <QTreeWidget>
 #include <QTime>
 #include <QStyledItemDelegate>
@@ -48,20 +49,22 @@ typedef std::shared_ptr<DocumentObjectData> DocumentObjectDataPtr;
 class DocumentItem;
 
 /// highlight modes for the tree items
-enum HighlightMode {  Underlined,
-                      Italic,
-                      Overlined,
-                      Bold,
-                      Blue,
-                      LightBlue,
-                      UserDefined
+enum class HighlightMode {
+    Underlined,
+    Italic,
+    Overlined,
+    Bold,
+    Blue,
+    LightBlue,
+    UserDefined
 };
 
 /// highlight modes for the tree items
-enum TreeItemMode {  ExpandItem,
-                     ExpandPath,
-                     CollapseItem,
-                     ToggleItem
+enum class TreeItemMode {
+    ExpandItem,
+    ExpandPath,
+    CollapseItem,
+    ToggleItem
 };
 
 
@@ -82,7 +85,7 @@ public:
     void selectAllLinks(App::DocumentObject *obj); 
     void expandSelectedItems(TreeItemMode mode);
 
-    bool eventFilter(QObject *, QEvent *ev);
+    bool eventFilter(QObject *, QEvent *ev) override;
 
     struct SelInfo {
         App::DocumentObject *topParent;
@@ -105,6 +108,8 @@ public:
     void markItem(const App::DocumentObject* Obj,bool mark);
     void syncView(ViewProviderDocumentObject *vp);
 
+    virtual void selectAll() override;
+
     const char *getTreeName() const;
 
     static void updateStatus(bool delay=true);
@@ -126,24 +131,24 @@ public:
 
 protected:
     /// Observer message from the Selection
-    void onSelectionChanged(const SelectionChanges& msg);
-    void contextMenuEvent (QContextMenuEvent * e);
-    void drawRow(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const;
+    void onSelectionChanged(const SelectionChanges& msg) override;
+    void contextMenuEvent (QContextMenuEvent * e) override;
+    void drawRow(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     /** @name Drag and drop */
     //@{
-    void startDrag(Qt::DropActions supportedActions);
+    void startDrag(Qt::DropActions supportedActions) override;
     bool dropMimeData(QTreeWidgetItem *parent, int index, const QMimeData *data,
-                      Qt::DropAction action);
-    Qt::DropActions supportedDropActions () const;
-    QMimeData * mimeData (const QList<QTreeWidgetItem *> items) const;
-    void dragEnterEvent(QDragEnterEvent * event);
-    void dragLeaveEvent(QDragLeaveEvent * event);
-    void dragMoveEvent(QDragMoveEvent *event);
-    void dropEvent(QDropEvent *event);
+                      Qt::DropAction action) override;
+    Qt::DropActions supportedDropActions () const override;
+    QMimeData * mimeData (const QList<QTreeWidgetItem *> items) const override;
+    void dragEnterEvent(QDragEnterEvent * event) override;
+    void dragLeaveEvent(QDragLeaveEvent * event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
     //@}
-    bool event(QEvent *e);
-    void keyPressEvent(QKeyEvent *event);
-    void mouseDoubleClickEvent(QMouseEvent * event);
+    bool event(QEvent *e) override;
+    void keyPressEvent(QKeyEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent * event) override;
 
 protected:
     void showEvent(QShowEvent *) override;
@@ -194,7 +199,7 @@ private:
     void slotChangeObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
     void slotTouchedObject(const App::DocumentObject&);
 
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void setupText();
 
     void updateChildren(App::DocumentObject *obj, 
@@ -280,7 +285,7 @@ public:
     void selectItems(SelectionReason reason=SR_SELECT);
 
     void testStatus(void);
-    void setData(int column, int role, const QVariant & value);
+    void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
     bool populateObject(App::DocumentObject *obj);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
@@ -402,7 +407,7 @@ public:
     App::DocumentObject *getFullSubName(std::ostringstream &str,
             DocumentObjectItem *parent = 0) const;
 
-    // return the immediate decendent of the common ancestor of this item and
+    // return the immediate descendent of the common ancestor of this item and
     // 'cousin'.
     App::DocumentObject *getRelativeParent(
             std::ostringstream &str,
@@ -416,7 +421,7 @@ public:
     // subname in selection
     int getSubName(std::ostringstream &str, App::DocumentObject *&topParent) const;
 
-    void setHighlight(bool set, Gui::HighlightMode mode = Gui::LightBlue);
+    void setHighlight(bool set, HighlightMode mode = HighlightMode::LightBlue);
 
     const char *getName() const;
     const char *getTreeName() const;
@@ -493,8 +498,23 @@ public:
             const QStyleOptionViewItem &, const QModelIndex &index) const;
 };
 
-
-/// Helper class to read/write tree view options
+/** Helper class to read/write tree view options
+ *
+ * The parameters are stored under group "User parameter:BaseApp/Preferences/TreeView".
+ * Call TreeParams::Instance()->ParamName/setParamName() to get/set parameter.
+ * To add a new parameter, add a new line under FC_TREEPARAM_DEFS using macro
+ *
+ * @code
+ *      FC_TREEPARAM_DEF(parameter_name, c_type, parameter_type, default_value)
+ * @endcode
+ *
+ * If there is special handling on parameter change, use FC_TREEPARAM_DEF2()
+ * instead, and add a function with the following signature in Tree.cpp,
+ *
+ * @code
+ *      void TreeParams:on<ParamName>Changed()
+ * @endcode
+ */
 class GuiExport TreeParams : public ParameterGrp::ObserverType {
 public:
     TreeParams();
@@ -502,12 +522,12 @@ public:
     static TreeParams *Instance();
 
 #define FC_TREEPARAM_DEFS \
-    FC_TREEPARAM_DEF(SyncSelection,bool,Bool,true) \
+    FC_TREEPARAM_DEF2(SyncSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF(SyncView,bool,Bool,true) \
     FC_TREEPARAM_DEF(PreSelection,bool,Bool,true) \
     FC_TREEPARAM_DEF(SyncPlacement,bool,Bool,false) \
     FC_TREEPARAM_DEF(RecordSelection,bool,Bool,true) \
-    FC_TREEPARAM_DEF(DocumentMode,int,Int,1) \
+    FC_TREEPARAM_DEF2(DocumentMode,int,Int,2) \
     FC_TREEPARAM_DEF(StatusTimeout,int,Int,100) \
     FC_TREEPARAM_DEF(SelectionTimeout,int,Int,100) \
     FC_TREEPARAM_DEF(PreSelectionTimeout,int,Int,500) \
@@ -515,30 +535,33 @@ public:
     FC_TREEPARAM_DEF(RecomputeOnDrop,bool,Bool,true) \
     FC_TREEPARAM_DEF(KeepRootOrder,bool,Bool,true) \
     FC_TREEPARAM_DEF(TreeActiveAutoExpand,bool,Bool,true) \
-
-#define FC_TREEPARAM_FUNCS(_name,_type,_Type,_default) \
-    _type _name() const {return _##_name;} \
-    void set##_name(_type);\
-    void on##_name##Changed();
+    FC_TREEPARAM_DEF(Indentation,int,Int,0) \
 
 #undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF FC_TREEPARAM_FUNCS
+#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    _type _name() const {return _##_name;} \
+    void set##_name(_type);\
+
+#undef FC_TREEPARAM_DEF2
+#define FC_TREEPARAM_DEF2(_name,_type,_Type,_default) \
+    FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
+    void on##_name##Changed();\
+
     FC_TREEPARAM_DEFS
 
 private:
 
-#define FC_TREEPARAM_DECLARE(_name,_type,_Type,_default) \
+#undef FC_TREEPARAM_DEF
+#define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \
     _type _##_name;
 
-#undef FC_TREEPARAM_DEF
-#define FC_TREEPARAM_DEF FC_TREEPARAM_DECLARE
+#undef FC_TREEPARAM_DEF2
+#define FC_TREEPARAM_DEF2 FC_TREEPARAM_DEF
+
     FC_TREEPARAM_DEFS
 
     ParameterGrp::handle handle;
 };
-
-#define FC_TREEPARAM(_name) (Gui::TreeParams::Instance()->_name())
-#define FC_TREEPARAM_SET(_name,_v) Gui::TreeParams::Instance()->set##_name(_v)
 
 }
 

@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -50,8 +49,8 @@ class _FemMaterialReinforced:
             "Material",
             "Matrix material properties"
         )
-        obj.Category = ['Solid']
-        obj.Category = 'Solid'
+        obj.Category = ["Solid"]
+        obj.Category = "Solid"
         obj.Proxy = self
         self.Type = "Fem::MaterialReinforced"
 

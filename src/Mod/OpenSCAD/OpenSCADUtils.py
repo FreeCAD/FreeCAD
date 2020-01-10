@@ -22,7 +22,7 @@
 
 __title__="FreeCAD OpenSCAD Workbench - Utility Functions"
 __author__ = "Sebastian Hoogen"
-__url__ = ["http://www.freecadweb.org"]
+__url__ = ["https://www.freecadweb.org"]
 
 '''
 This Script includes various python helper functions that are shared across
@@ -57,6 +57,17 @@ class OpenSCADError(BaseError):
     def __str__(self):
         return repr(self.value)
 
+def getopenscadexe(osfilename=None):
+    import os,subprocess,time
+    if not osfilename:
+        import FreeCAD
+        osfilename = FreeCAD.ParamGet(\
+            "User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+            GetString('openscadexecutable')
+    if osfilename and os.path.isfile(osfilename):
+        return osfilename
+    return searchforopenscadexe()
+
 def searchforopenscadexe():
     import os,sys,subprocess
     if sys.platform == 'win32':
@@ -70,14 +81,14 @@ def searchforopenscadexe():
                 return testpath
     elif sys.platform == 'darwin':
         ascript = (b'tell application "Finder"\n'
-        b'POSIX path of (application file id "org.openscad.OpenSCAD"'
-        b'as alias)\n'
-        b'end tell')
+                   b'POSIX path of (application file id "org.openscad.OpenSCAD"'
+                   b'as alias)\n'
+                   b'end tell')
         p1=subprocess.Popen(['osascript','-'],stdin=subprocess.PIPE,\
                 stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         stdout,stderr = p1.communicate(ascript)
         if p1.returncode == 0:
-            opathl=stdout.split('\n')
+            opathl = stdout.decode().split('\n') if sys.version_info.major >= 3 else stdout.split('\n')
             if len(opathl) >=1:
                 return opathl[0]+'Contents/MacOS/OpenSCAD'
         #test the default path
@@ -488,7 +499,7 @@ def meshoponobjs(opname,inobjs):
 def process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc):
     import FreeCAD,importDXF
     import os,tempfile
-    # Mantis 3419
+    # https://www.freecadweb.org/tracker/view.php?id=3419
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
     fn  = params.GetInt('fnForImport',32)
     fnStr = ",$fn=" + str(fn)
@@ -499,7 +510,7 @@ def process2D_ObjectsViaOpenSCADShape(ObjList,Operation,doc):
         outputfilename=os.path.join(dir1,'%s.dxf' % next(tempfilenamegen))
         importDXF.export([item],outputfilename,True,True)
         filenames.append(outputfilename)
-    # Mantis 3419
+    # https://www.freecadweb.org/tracker/view.php?id=3419
     dxfimports = ' '.join("import(file = \"%s\" %s);" % \
         #filename \
         (os.path.split(filename)[1], fnStr) for filename in filenames)

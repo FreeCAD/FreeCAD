@@ -330,28 +330,22 @@ inline MainWindow* getMainWindow()
  * error messages are in red. Log messages are completely ignored.
  * The class is implemented to be thread-safe.
  * @see Console
- * @see ConsoleObserver
+ * @see ILogger
  * @author Werner Mayer
  */
-class StatusBarObserver: public WindowParameter, public Base::ConsoleObserver
+class StatusBarObserver: public WindowParameter, public Base::ILogger
 {
 public:
     StatusBarObserver();
     virtual ~StatusBarObserver();
 
     /** Observes its parameter group. */
-    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
+    void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
 
-    /// get called when a Warning is issued
-    void Warning(const char *m);
-    /// get called when a Message is issued
-    void Message(const char * m);
-    /// get called when a Error is issued
-    void Error  (const char *m);
-    /// get called when a Log Message is issued
-    void Log    (const char *);
+    void SendLog(const std::string& msg, Base::LogStyle level) override;
+
     /// name of the observer
-    const char *Name(void){return "StatusBar";}
+    const char *Name(void) override {return "StatusBar";}
 
     friend class MainWindow;
 private:

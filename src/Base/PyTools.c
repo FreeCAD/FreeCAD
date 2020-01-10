@@ -201,7 +201,7 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
  * so you should call one of these, one time, per exception:
  * caveats: not thread-specific since saves data in globals,
  * and only exports traceback object (the exception type and 
- * data are converted to text strings and disgarded);  the 
+ * data are converted to text strings and discarded);  the 
  * PyErr_Print() built-in also does a bit more on syntax errors,
  * and sends its text to sys.stderr: in principle, we could
  * assign stderr to a StringIO object and call PyErr_Print, but

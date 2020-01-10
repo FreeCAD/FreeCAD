@@ -45,6 +45,7 @@ class DrawViewImage;
 class DrawLeaderLine;
 class DrawViewBalloon;
 class DrawRichAnno;
+class DrawWeldSymbol;
 }
 
 namespace TechDrawGui
@@ -56,6 +57,7 @@ class ViewProviderPage;
 class QGIViewBalloon;
 class QGILeaderLine;
 class QGIRichAnno;
+class QGITile;
 
 class TechDrawGuiExport QGVPage : public QGraphicsView
 {
@@ -84,6 +86,7 @@ public:
     QGIView * addDrawViewImage(TechDraw::DrawViewImage *view);
     QGIView * addViewLeader(TechDraw::DrawLeaderLine* view);
     QGIView * addRichAnno(TechDraw::DrawRichAnno* anno);
+    QGIView * addWeldSymbol(TechDraw::DrawWeldSymbol* weld);
 
     QGIView* findQViewForDocObj(App::DocumentObject *obj) const;
     QGIView* getQGIVByName(std::string name);
@@ -93,7 +96,6 @@ public:
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
 
-//    const std::vector<QGIView *> & getViews() const { return views; }    //only used in MDIVP
     std::vector<QGIView *> getViews() const;
 
     int addQView(QGIView * view);
@@ -101,7 +103,6 @@ public:
     int removeQViewByName(const char* name);
     void removeQViewFromScene(QGIView *view);
 
-    //void setViews(const std::vector<QGIView *> &view) {views = view; }
     void setPageTemplate(TechDraw::DrawTemplate *pageTemplate);
 
     QGITemplate * getTemplate() const;
@@ -109,15 +110,13 @@ public:
 
     TechDraw::DrawPage * getDrawPage();
 
-    void toggleHatch(bool enable);
+    void setExporting(bool enable);
     virtual void refreshViews(void);
 
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile& tempFile, QString filename, QString pagename);
-
-/*    int balloonIndex;*/
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -154,10 +153,12 @@ private:
     double m_zoomIncrement;
     int m_reversePan;
     int m_reverseScroll;
-/*    bool m_borderState;*/
     QLabel *balloonCursor;
     QPoint balloonCursorPos;
     void cancelBalloonPlacing(void);
+
+    QPoint panOrigin;
+    bool panningActive;
 };
 
 } // namespace 

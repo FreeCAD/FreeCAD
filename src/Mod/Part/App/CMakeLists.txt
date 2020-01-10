@@ -51,6 +51,11 @@ generate_from_xml(ArcOfHyperbolaPy)
 generate_from_xml(ParabolaPy)
 generate_from_xml(OffsetCurvePy)
 generate_from_xml(GeometryPy)
+generate_from_xml(GeometryExtensionPy)
+generate_from_xml(GeometryIntExtensionPy)
+generate_from_xml(GeometryStringExtensionPy)
+generate_from_xml(GeometryBoolExtensionPy)
+generate_from_xml(GeometryDoubleExtensionPy)
 generate_from_xml(GeometryCurvePy)
 generate_from_xml(BoundedCurvePy)
 generate_from_xml(TrimmedCurvePy)
@@ -211,6 +216,16 @@ SET(Python_SRCS
     OffsetCurvePyImp.cpp
     GeometryPy.xml
     GeometryPyImp.cpp
+    GeometryExtensionPy.xml
+    GeometryExtensionPyImp.cpp
+    GeometryIntExtensionPy.xml
+    GeometryIntExtensionPyImp.cpp
+    GeometryStringExtensionPy.xml
+    GeometryStringExtensionPyImp.cpp
+    GeometryBoolExtensionPy.xml
+    GeometryBoolExtensionPyImp.cpp
+    GeometryDoubleExtensionPy.xml
+    GeometryDoubleExtensionPyImp.cpp
     GeometryCurvePy.xml
     GeometryCurvePyImp.cpp
     BoundedCurvePy.xml
@@ -340,6 +355,10 @@ SET(Part_SRCS
     BSplineCurveBiArcs.cpp
     CrossSection.cpp
     CrossSection.h
+    GeometryExtension.cpp
+    GeometryExtension.h
+    GeometryDefaultExtension.cpp
+    GeometryDefaultExtension.h
     Geometry.cpp
     Geometry.h
     Geometry2d.cpp

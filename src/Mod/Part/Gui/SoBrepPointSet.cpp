@@ -64,7 +64,7 @@
 
 using namespace PartGui;
 
-SO_NODE_SOURCE(SoBrepPointSet);
+SO_NODE_SOURCE(SoBrepPointSet)
 
 void SoBrepPointSet::initClass()
 {

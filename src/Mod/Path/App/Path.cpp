@@ -40,11 +40,12 @@
 //#include "Mod/Robot/App/kdl_cp/utilities/error.h"
 
 #include "Path.h"
+#include <Mod/Path/App/PathSegmentWalker.h>
 
 using namespace Path;
 using namespace Base;
 
-TYPESYSTEM_SOURCE(Path::Toolpath , Base::Persistence);
+TYPESYSTEM_SOURCE(Path::Toolpath , Base::Persistence)
 
 Toolpath::Toolpath()
 {
@@ -146,6 +147,78 @@ double Toolpath::getLength()
     return l;
 }
 
+class BoundBoxSegmentVisitor : public PathSegmentVisitor
+{
+public:
+    BoundBoxSegmentVisitor()
+    { }
+
+    virtual void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    {
+      (void)id;
+      processPt(last);
+      processPts(pts);
+      processPt(next);
+    }
+    virtual void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts)
+    {
+      (void)id;
+      processPt(last);
+      processPts(pts);
+      processPt(next);
+    }
+    virtual void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center)
+    {
+      (void)id;
+      (void)center;
+      processPt(last);
+      processPts(pts);
+      processPt(next);
+    }
+    virtual void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
+                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q)
+    {
+      (void)id;
+      (void)q; // always within the bounds of p
+      processPt(last);
+      processPts(pts);
+      processPts(p);
+      processPt(next);
+    }
+    virtual void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next)
+    {
+      (void)id;
+      processPt(last);
+      processPt(next);
+    }
+
+    Base::BoundBox3d bb;
+
+private:
+    void processPts(const std::deque<Base::Vector3d> &pts) {
+        for (std::deque<Base::Vector3d>::const_iterator it=pts.begin(); pts.end() != it; ++it) {
+            processPt(*it);
+        }
+    }
+    void processPt(const Base::Vector3d &pt) {
+        bb.MaxX = std::max(bb.MaxX, pt.x);
+        bb.MinX = std::min(bb.MinX, pt.x);
+        bb.MaxY = std::max(bb.MaxY, pt.y);
+        bb.MinY = std::min(bb.MinY, pt.y);
+        bb.MaxZ = std::max(bb.MaxZ, pt.z);
+        bb.MinZ = std::min(bb.MinZ, pt.z);
+    }
+};
+
+Base::BoundBox3d Toolpath::getBoundBox() const
+{
+    BoundBoxSegmentVisitor visitor;
+    PathSegmentWalker walker(*this);
+    walker.walk(visitor, Vector3d(0, 0, 0));
+    
+    return visitor.bb;
+}
+
 static void bulkAddCommand(const std::string &gcodestr, std::vector<Command*> &commands, bool &inches)
 {
     Command *cmd = new Command();
@@ -189,7 +262,7 @@ void Toolpath::setFromGCode(const std::string instr)
             }
             mode = "comment";
             last = found;
-            found = str.find_first_of(")", found+1);
+            found = str.find_first_of(')', found+1);
         } else if (str[found] == ')') {
             // end of comment
             std::string gcodestr = str.substr(last, found-last+1);

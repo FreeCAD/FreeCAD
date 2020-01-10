@@ -49,6 +49,8 @@ public:
     void renderCoordsGLArray(SoGLRenderAction *action);
     bool canRenderGLArray(SoGLRenderAction *action) const;
     bool matchMaterial(SoState*) const;
+    void update();
+    bool needUpdate(SoGLRenderAction *action);
     static bool shouldRenderDirectly(bool);
 
 private:

@@ -43,6 +43,7 @@ class MeshHelpEdge;
  * The MeshFacetIterator allows to iterate over the facets that
  * hold the topology of the mesh and provides access to their
  * geometric information.
+ * \note This class is not thread-safe.
  */
 class MeshFacetIterator
 {
@@ -167,6 +168,7 @@ protected:
 /**
  * The MeshPointIterator allows to iterate over the vertices of the mesh and provides access to their
  * geometric information.
+ * \note This class is not thread-safe.
  */
 class MeshExport MeshPointIterator
 {
@@ -338,7 +340,7 @@ inline void MeshFacetIterator::Transform( const Base::Matrix4D& rclTrf )
 {
   _clTrf = rclTrf;
   Base::Matrix4D tmp;
-  // cecks for unit matrix
+  // checks for unit matrix
   _clTrf != tmp ? _bApply = true : _bApply = false;
 }
 
@@ -436,7 +438,7 @@ inline void MeshPointIterator::Transform( const Base::Matrix4D& rclTrf )
 {
   _clTrf = rclTrf;
   Base::Matrix4D tmp;
-  // cecks for unit matrix
+  // checks for unit matrix
   _clTrf != tmp ? _bApply = true : _bApply = false;
 }
 

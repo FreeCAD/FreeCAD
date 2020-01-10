@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -186,7 +184,7 @@ def makeRailing(stairs):
                     railList.append(lrRail)
                     stair.Additions = railList
 
-    if stairs == None:
+    if stairs is None:
         sel = FreeCADGui.Selection.getSelection()
         sel0 = sel[0]
         stairs = []
@@ -444,7 +442,7 @@ class _Stairs(ArchComponent.Component):
         # special case NumberOfSteps = 1 : multi-edges landing
         if (not base) and obj.Width.Value and obj.Height.Value and (obj.NumberOfSteps > 0):
             if obj.Base:
-                if not obj.Base.isDerivedFrom("Part::Feature"):
+                if not hasattr(obj.Base,'Shape'):
                     return
                 if obj.Base.Shape.Solids:
                     obj.Shape = obj.Base.Shape.copy()
@@ -560,7 +558,7 @@ class _Stairs(ArchComponent.Component):
             l = obj.Length.Value
             h = obj.Height.Value
             if obj.Base:
-                if obj.Base.isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Base,'Shape'):
                     l = obj.Base.Shape.Length
                     if obj.Base.Shape.BoundBox.ZLength:
                         h = obj.Base.Shape.BoundBox.ZLength
@@ -945,7 +943,7 @@ class _Stairs(ArchComponent.Component):
         if obj.RiserHeightEnforce != 0:
             h = obj.RiserHeightEnforce * numberofsteps
         elif obj.Base: # TODO - should this happen? - though in original code
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 #l = obj.Base.Shape.Length
                 #if obj.Base.Shape.BoundBox.ZLength:
                 if round(obj.Base.Shape.BoundBox.ZLength,Draft.precision()) != 0: # ? - need precision
@@ -965,7 +963,7 @@ class _Stairs(ArchComponent.Component):
                 else:
                     l += obj.Width.Value
         elif obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 l = obj.Base.Shape.Length #.Value?
         elif obj.Length.Value != 0:
             l = obj.Length.Value

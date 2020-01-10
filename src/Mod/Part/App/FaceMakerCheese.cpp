@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Victor Titov (DeepSOIC)      <vv.titov@gmail.com>  *
+ *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,7 +52,7 @@
 
 using namespace Part;
 
-TYPESYSTEM_SOURCE(Part::FaceMakerCheese, Part::FaceMakerPublic);
+TYPESYSTEM_SOURCE(Part::FaceMakerCheese, Part::FaceMakerPublic)
 
 
 TopoDS_Face FaceMakerCheese::validateFace(const TopoDS_Face& face)
@@ -236,7 +236,7 @@ TopoDS_Shape FaceMakerCheese::makeFace(const std::vector<TopoDS_Wire>& w)
                 builder.Add(comp, aFace);
         }
 
-        return comp;
+        return TopoDS_Shape(std::move(comp));
     }
     else {
         return TopoDS_Shape(); // error

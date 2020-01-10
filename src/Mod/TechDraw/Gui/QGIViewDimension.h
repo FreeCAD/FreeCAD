@@ -31,6 +31,7 @@
 #include <QColor>
 #include <QFont>
 #include <Base/Vector3D.h>
+#include "Rez.h"
 #include "QGIView.h"
 #include "QGCustomText.h"
 
@@ -38,7 +39,7 @@ namespace TechDraw {
 class DrawViewDimension;
 }
 
-namespace TechDrawGeometry {
+namespace TechDraw {
 class BaseGeom;
 class AOC;
 }
@@ -48,6 +49,7 @@ namespace TechDrawGui
 class QGIArrow;
 class QGIDimLines;
 class QGIViewDimension;
+class ViewProviderDimension;
 
 class QGIDatumLabel : public QGraphicsObject
 {
@@ -74,6 +76,7 @@ public:
     QFont getFont(void) { return m_dimText->font(); }
     void setDimString(QString t);
     void setDimString(QString t, qreal maxWidth);
+    void setUnitString(QString t);
     void setTolString();
     void setPrettySel(void);
     void setPrettyPre(void);
@@ -85,12 +88,19 @@ public:
 
     QGCustomText* getDimText(void) { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
-    QGCustomText* getTolText(void) { return m_tolText; }
-    void setTolText(QGCustomText* newTol) { m_tolText = newTol; }
+    QGCustomText* getTolTextOver(void) { return m_tolTextOver; }
+    void setTolTextOver(QGCustomText* newTol) { m_tolTextOver = newTol; }
+    QGCustomText* getTolTextUnder(void) { return m_tolTextUnder; }
+    void setTolTextUnder(QGCustomText* newTol) { m_tolTextOver = newTol; }
 
     double getTolAdjust(void);
-    bool hasHover;
+/*    bool hasHover;*/
 
+    bool isFramed(void) { return m_isFramed; }
+    void setFramed(bool framed) { m_isFramed = framed; }
+
+    double getLineWidth(void) { return m_lineWidth; }
+    void setLineWidth(double lineWidth) { m_lineWidth = lineWidth; }
 
 Q_SIGNALS:
     void dragging(bool);
@@ -107,13 +117,18 @@ protected:
 //    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
     QGCustomText* m_dimText;
-    QGCustomText* m_tolText;
+    QGCustomText* m_tolTextOver;
+    QGCustomText* m_tolTextUnder;
+    QGCustomText* m_unitText;
     int getPrecision(void);
     QColor m_colNormal;
     bool m_ctrl;
 
     double posX;
     double posY;
+
+    bool m_isFramed;
+    double m_lineWidth;
     
 private:
 };
@@ -145,16 +160,84 @@ public:
     void setPrettySel(void);
     void setPrettyNormal(void);
 
+    virtual void setGroupSelection(bool b) override;
+    virtual QGIDatumLabel* getDatumLabel(void) { return datumLabel; }
 
 public Q_SLOTS:
     void datumLabelDragged(bool ctrl);
     void datumLabelDragFinished(void);
     void select(bool state);
     void hover(bool state);
-    void updateDim(bool obtuse = false);
+    void updateDim();
 
 protected:
+
+    static double getAnglePlacementFactor(double testAngle, double endAngle, double startRotation);
+    static int compareAngleStraightness(double straightAngle, double leftAngle, double rightAngle,
+                                        double leftStrikeFactor, double rightStrikeFactor);
+
+    static double getIsoStandardLinePlacement(double labelAngle);
+    Base::Vector2d getIsoRefOutsetPoint(const Base::BoundBox2d &labelRectangle, bool right) const;
+    Base::Vector2d getIsoRefJointPoint(const Base::BoundBox2d &labelRectangle, bool right) const;
+    Base::Vector2d getAsmeRefOutsetPoint(const Base::BoundBox2d &labelRectangle, bool right) const;
+    Base::Vector2d getAsmeRefJointPoint(const Base::BoundBox2d &labelRectangle, bool right) const;
+
+    static Base::Vector2d computePerpendicularIntersection(const Base::Vector2d &linePoint,
+                              const Base::Vector2d &perpendicularPoint, double lineAngle);
+    static Base::Vector2d computeExtensionLinePoints(const Base::Vector2d &originPoint,
+                              const Base::Vector2d &linePoint, double hintAngle,
+                              double overhangSize, double gapSize, Base::Vector2d &startPoint);
+    static double computeLineAndLabelAngles(const Base::Vector2d &rotationCenter, const Base::Vector2d &labelCenter,
+                                            double lineLabelDistance, double &lineAngle, double &labelAngle);
+    static double computeLineStrikeFactor(const Base::BoundBox2d &labelRectangle, const Base::Vector2d &lineOrigin,
+                                          double lineAngle, const std::vector<std::pair<double, bool>> &drawMarking);
+    static double computeArcStrikeFactor(const Base::BoundBox2d &labelRectangle, const Base::Vector2d &arcCenter,
+                                         double arcRadius, const std::vector<std::pair<double, bool>> &drawMarking);
+
+    static double normalizeStartPosition(double &startPosition, double &lineAngle);
+    static double normalizeStartRotation(double &startRotation);
+    bool constructDimensionLine(const Base::Vector2d &targetPoint, double lineAngle,
+                                double startPosition, double jointPosition, const Base::BoundBox2d &labelRectangle,
+                                int arrowCount, int standardStyle, bool flipArrows,
+                                std::vector<std::pair<double, bool>> &outputMarking) const;
+    bool constructDimensionArc(const Base::Vector2d &arcCenter, double arcRadius, double endAngle,
+                               double startRotation, double handednessFactor, double jointRotation,
+                               const Base::BoundBox2d &labelRectangle, int arrowCount, int standardStyle,
+                               bool flipArrows, std::vector<std::pair<double, bool>> &outputMarking) const;
+
     void draw() override;
+
+    void resetArrows(void) const;
+    void drawArrows(int count, const Base::Vector2d positions[], double angles[], bool flipped) const;
+
+    void drawSingleLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,
+                        double startPosition, double endPosition) const;
+    void drawMultiLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,
+                       const std::vector<std::pair<double, bool>> &drawMarking) const;
+    void drawSingleArc(QPainterPath &painterPath, const Base::Vector2d &arcCenter, double arcRadius,
+                       double startAngle, double endAngle) const;
+    void drawMultiArc(QPainterPath &painterPath, const Base::Vector2d &arcCenter, double arcRadius,
+                      const std::vector<std::pair<double, bool>> &drawMarking) const;
+
+    void drawDimensionLine(QPainterPath &painterPath, const Base::Vector2d &targetPoint, double lineAngle,
+                           double startPosition, double jointPosition, const Base::BoundBox2d &labelRectangle,
+                           int arrowCount, int standardStyle, bool flipArrows) const;
+    void drawDimensionArc(QPainterPath &painterPath, const Base::Vector2d &arcCenter, double arcRadius,
+                          double endAngle, double startRotation, double jointAngle,
+                          const Base::BoundBox2d &labelRectangle, int arrowCount,
+                          int standardStyle, bool flipArrows) const;
+
+    void drawDistanceExecutive(const Base::Vector2d &startPoint, const Base::Vector2d &endPoint, double lineAngle,
+             const Base::BoundBox2d &labelRectangle, int standardStyle, int renderExtent, bool flipArrows) const;
+    void drawRadiusExecutive(const Base::Vector2d &centerPoint, const Base::Vector2d &midPoint, double radius,
+                             double endAngle, double startRotation, const Base::BoundBox2d &labelRectangle,
+                             double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
+
+    void drawDistance(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
@@ -162,6 +245,8 @@ protected:
     Base::Vector3d findIsoDir(Base::Vector3d ortho);
     Base::Vector3d findIsoExt(Base::Vector3d isoDir);
     QString getPrecision(void);
+
+    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
 protected:
     bool hasHover;
@@ -171,13 +256,31 @@ protected:
     QGIArrow* aHead2;
     //QGICMark* centerMark
     double m_lineWidth;
-    bool m_obtuse;
 
 private:
-    static const double TextOffsetFudge;
+    static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
+    static inline Base::BoundBox2d fromQtGui(const QRectF &r)
+                                       { return Base::BoundBox2d(Rez::appX(r.left()), -Rez::appX(r.top()),
+                                                                 Rez::appX(r.right()), -Rez::appX(r.bottom())); }
 
-    double getDefaultTextHorizontalOffset(bool toLeft) const;
-    double getDefaultTextVerticalOffset() const;
+    static inline QPointF toQtGui(const Base::Vector2d &v) { return QPointF(Rez::guiX(v.x), -Rez::guiX(v.y)); }
+    static inline QRectF toQtGui(const Base::BoundBox2d &r)
+                             { return QRectF(Rez::guiX(r.MinX), -Rez::guiX(r.MaxY),
+                                             Rez::guiX(r.Width()), Rez::guiX(r.Height())); }
+
+    static inline double toDeg(double a) { return a*180/M_PI; }
+    static inline double toQtRad(double a) { return -a; }
+    static inline double toQtDeg(double a) { return -a*180.0/M_PI; }
+
+    double getDefaultExtensionLineOverhang() const;
+    double getDefaultArrowTailLength() const;
+    double getDefaultIsoDimensionLineSpacing() const;
+    double getDefaultIsoReferenceLineOverhang() const;
+    double getDefaultAsmeHorizontalLeaderLength() const;
+    double getDefaultAsmeExtensionLineGap() const;
+
+/*    QGIView* m_parent;      //for edit dialog set up eventually*/
+
 };
 
 } // namespace MDIViewPageGui

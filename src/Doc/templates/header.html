@@ -9,7 +9,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen $doxygenversion"/>
         
-        <script type="text/javascript" src="//www.freecadweb.org/js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="$relpath^jquery.js"></script>
 
         <!--BEGIN PROJECT_NAME--><title>$projectname: $title</title><!--END PROJECT_NAME-->
         <!--BEGIN !PROJECT_NAME--><title>$title</title><!--END !PROJECT_NAME-->
@@ -21,59 +21,16 @@
         <link href="$relpath^$stylesheet" rel="stylesheet" type="text/css" />
         $extrastylesheet
         <link href='//fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="//www.freecadweb.org/css/bootstrap-3.3.5.min.css">
-        <link rel="stylesheet" href="//www.freecadweb.org/css/font-awesome-4.4.0.min.css">
-        <link rel="stylesheet" href="//www.freecadweb.org/css/freecad.css">
-        <script src="//www.freecadweb.org/js/bootstrap-3.3.5.min.js"></script>
+        <link rel="stylesheet" href="$relpath^freecad.css">
         <script type="text/javascript" src="$relpath^doxy-boot.js"></script>
-        <link rel="shortcut icon" href="//www.freecadweb.org/images/favicon.ico">
+        <link rel="shortcut icon" href="favicon.ico">
     </head>
     <body>        
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only"><?php echo _('Toggle navigation'); ?></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/"><img alt="FreeCAD-logo" src="//www.freecadweb.org/images/logo.png"/> FreeCAD</a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/api/index.html" title="Welcome page">API Home</a></li>
-                        <li><a href="/api/modules.html" title="List of FreeCAD Modules">Modules</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contents <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/api/annotated.html" title="Annotated list">Annotated list</a></li>
-                                <li><a href="/api/namespaces.html" title="Namespaces">Namespaces</a></li>
-                                <li><a href="/api/classes.html" title="Classes">Classes</a></li>
-                                <li><a href="/api/functions.html" title="Functions">Functions</a></li>
-                                <li><a href="/api/hierarchy.html" title="Tree view of classes">Class hierarchy</a></li>
-                                <li><a href="/api/page.html" title="Related pages">Related pages</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="https://github.com/FreeCAD/FreeCAD" title="Browse the source code on GitHub">Source code</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <form class="navbar-search navbar-form" action="//duckduckgo.com/" id="searchform" role="search" method="get">
-                            <div>
-                                <input type="hidden" name="sites" value="freecadweb.org"/>
-                                <input type="text" name="q" class="form-control" placeholder="Search" title="Search FreeCAD documentation, forum and bugs" maxlength=300>
-                                <input type="submit" name="title" value="DuckDuckGo Search" style="width: 0; visibility: hidden;">
-                            </div>
-                        </form>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a title="Forum" href="http://forum.freecadweb.org"><i class="fa fa-commenting"></i></a></li>
-                        <li><a title="Wiki" href="/wiki/"><i class="fa fa-book"></i></a></li>
-                        <li><a title="Tracker" href="/tracker/"><i class="fa fa-bug"></i></a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </div>
+        <ul class="navbar" role="navigation">
+            <li><a href="$relpath^index.html" title="Index">Index</a></li>
+            <li><a href="$relpath^modules.html" title="Modules list">Modules Hierarchy</a></li>
+            <li><a href="$relpath^annotated.html" title="Annotated list">Alphabetical list</a></li>
+        </ul>
         
         <div id="top" class="maincontents"><!-- do not remove this div, it is closed by doxygen! -->
             <div class="content" id="content">

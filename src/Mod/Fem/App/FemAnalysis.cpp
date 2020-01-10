@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,21 +46,6 @@ FemAnalysis::FemAnalysis()
 
 FemAnalysis::~FemAnalysis()
 {
-}
-
-short FemAnalysis::mustExecute(void) const
-{
-    return 0;
-}
-
-PyObject *FemAnalysis::getPyObject()
-{
-    return App::DocumentObjectGroup::getPyObject();
-}
-
-void FemAnalysis::onChanged(const Property* prop)
-{
-    App::DocumentObjectGroup::onChanged(prop);
 }
 
 void FemAnalysis::handleChangedPropertyName(Base::XMLReader &reader,

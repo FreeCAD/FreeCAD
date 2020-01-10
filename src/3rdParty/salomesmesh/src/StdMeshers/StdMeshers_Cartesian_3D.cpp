@@ -348,7 +348,9 @@ namespace
       }
       return _surfaceInt;
     }
+#ifdef WITH_TBB
     bool IsThreadSafe(set< const Standard_Transient* >& noSafeTShapes) const;
+#endif
   };
   // --------------------------------------------------------------------------
   /*!
@@ -1350,6 +1352,7 @@ namespace
       addIntPoint(/*toClassify=*/false);
     }
   }
+#ifdef WITH_TBB
   //================================================================================
   /*
    * check if its face can be safely intersected in a thread
@@ -1414,6 +1417,7 @@ namespace
     }
     return isSafe;
   }
+#endif
   //================================================================================
   /*!
    * \brief Creates topology of the hexahedron

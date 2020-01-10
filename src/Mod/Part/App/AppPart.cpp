@@ -57,7 +57,13 @@
 #include "Part2DObject.h"
 #include "CustomFeature.h"
 #include "Geometry.h"
+#include "GeometryExtension.h"
+#include "GeometryDefaultExtension.h"
 #include "Geometry2d.h"
+#include "Mod/Part/App/GeometryIntExtensionPy.h"
+#include "Mod/Part/App/GeometryStringExtensionPy.h"
+#include "Mod/Part/App/GeometryBoolExtensionPy.h"
+#include "Mod/Part/App/GeometryDoubleExtensionPy.h"
 #include "Mod/Part/App/TopoShapePy.h"
 #include "Mod/Part/App/TopoShapeVertexPy.h"
 #include "Mod/Part/App/TopoShapeFacePy.h"
@@ -330,8 +336,8 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::ArcPy                ::Type,partModule,"Arc");
     Base::Interpreter().addType(&Part::ArcOfCirclePy        ::Type,partModule,"ArcOfCircle");
     Base::Interpreter().addType(&Part::ArcOfEllipsePy       ::Type,partModule,"ArcOfEllipse");
-    Base::Interpreter().addType(&Part::ArcOfParabolaPy      ::Type,partModule,"ArcOfParabola");    
-    Base::Interpreter().addType(&Part::ArcOfHyperbolaPy     ::Type,partModule,"ArcOfHyperbola");    
+    Base::Interpreter().addType(&Part::ArcOfParabolaPy      ::Type,partModule,"ArcOfParabola");
+    Base::Interpreter().addType(&Part::ArcOfHyperbolaPy     ::Type,partModule,"ArcOfHyperbola");
     Base::Interpreter().addType(&Part::BezierCurvePy        ::Type,partModule,"BezierCurve");
     Base::Interpreter().addType(&Part::BSplineCurvePy       ::Type,partModule,"BSplineCurve");
     Base::Interpreter().addType(&Part::OffsetCurvePy        ::Type,partModule,"OffsetCurve");
@@ -352,6 +358,11 @@ PyMOD_INIT_FUNC(Part)
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
     Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
+
+    Base::Interpreter().addType(&Part::GeometryIntExtensionPy ::Type,partModule,"GeometryIntExtension");
+    Base::Interpreter().addType(&Part::GeometryStringExtensionPy ::Type,partModule,"GeometryStringExtension");
+    Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
+    Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
 
 #if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef BRepOffsetAPIDef = {
@@ -417,7 +428,7 @@ PyMOD_INIT_FUNC(Part)
     Attacher::AttachEnginePlane   ::init();
     Attacher::AttachEngineLine    ::init();
     Attacher::AttachEnginePoint   ::init();
-    
+
     Part::AttachExtension       ::init();
     Part::AttachExtensionPython ::init();
 
@@ -476,8 +487,14 @@ PyMOD_INIT_FUNC(Part)
     Part::Offset                ::init();
     Part::Offset2D              ::init();
     Part::Thickness             ::init();
+    Part::Refine                ::init();
 
     // Geometry types
+    Part::GeometryExtension	  ::init();
+    Part::GeometryIntExtension	  ::init();
+    Part::GeometryStringExtension ::init();
+    Part::GeometryBoolExtension	  ::init();
+    Part::GeometryDoubleExtension ::init();
     Part::Geometry                ::init();
     Part::GeomPoint               ::init();
     Part::GeomCurve               ::init();

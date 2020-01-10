@@ -45,6 +45,7 @@
 #include "Mod/Part/App/DatumFeature.h"
 
 #include <Base/Console.h>
+
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 
@@ -219,7 +220,7 @@ Body* Feature::getFeatureBody() const {
     }
     
     return nullptr;
-};
+}
 
 }//namespace PartDesign
 

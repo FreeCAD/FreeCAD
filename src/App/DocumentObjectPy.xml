@@ -76,7 +76,7 @@ referencing subobject.
 * retType: return type, 0=PyObject, 1=DocObject, 2=DocAndPyObject, 3=Placement
 
     PyObject: return a python binding object for the (sub)object referenced in
-    each 'subname' The actual type of 'PyObject' is impelementation dependent.
+    each 'subname' The actual type of 'PyObject' is implementation dependent.
     For Part::Feature compatible objects, this will be of type TopoShapePy and
     pre-transformed by accumulated transformation matrix along the object path.  
 
@@ -116,11 +116,11 @@ Return a list of objects referenced by a given subname including this object
 getLinkedObject(recursive=True, matrix=None, transform=True, depth=0)
 Returns the linked object if there is one, or else return itself
 
-* recusive: whether to recursively resolve the links
+* recursive: whether to recursively resolve the links
 
 * transform: whether to transform the sub object using this object's placement
 
-* matrix: If not none, this sepcifies the initial transformation to be applied
+* matrix: If not none, this specifies the initial transformation to be applied
 to the sub object. And cause the method to return a tuple (object, matrix)
 containing the accumulated transformation matrix
 
@@ -158,7 +158,7 @@ Return -1 if element visibility is not supported or element not found, 0 if invi
         </Methode>
         <Methode Name="getParentGeoFeatureGroup">
             <Documentation>
-                <UserDocu>Returns the GeoFeatureGroup, and hence the local coorinate system, the object 
+                <UserDocu>Returns the GeoFeatureGroup, and hence the local coordinate system, the object 
                           is in or None if it is not part of a group. Note that an object can only be 
                           in a single group, hence only a single return value.</UserDocu>
             </Documentation>
@@ -186,7 +186,7 @@ non-object sub-element name if any.
                 <UserDocu>
 resolveSubElement(subname,append,type) -- resolve both new and old style sub element
 
-subname: subname reference contianing object hierarchy
+subname: subname reference containing object hierarchy
 append: Whether to append object hierarchy prefix inside subname to returned element name
 type: 0: normal, 1: for import, 2: for export
 

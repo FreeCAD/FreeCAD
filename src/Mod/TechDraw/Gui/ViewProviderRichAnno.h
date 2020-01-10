@@ -47,6 +47,9 @@ public:
     /// destructor
     virtual ~ViewProviderRichAnno();
 
+    App::PropertyFloat    LineWidth;
+    App::PropertyInteger  LineStyle;
+    App::PropertyColor    LineColor;
 
     virtual void attach(App::DocumentObject *);
     virtual bool useNewSelectionModel(void) const {return false;}
@@ -63,6 +66,8 @@ protected:
     App::Color getDefLineColor(void);
     std::string getDefFont(void);
     double getDefFontSize(void);
+    double getDefLineWeight(void);
+
 
 };
 

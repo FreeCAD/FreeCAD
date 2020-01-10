@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -149,7 +149,7 @@
 
 #include "ViewProviderLink.h"
 
-FC_LOG_LEVEL_INIT("3DViewer",true,true);
+FC_LOG_LEVEL_INIT("3DViewer",true,true)
 
 //#define FC_LOGGING_CB
 
@@ -507,13 +507,13 @@ void View3DInventorViewer::init()
     pcGroupOnTop->addChild(pcOnTopMaterial);
 
     auto selRoot = new SoFCSelectionRoot;
-    selRoot->selectionStyle = SoFCSelectionRoot::PASSTHROUGH;
+    selRoot->selectionStyle = SoFCSelectionRoot::PassThrough;
     pcGroupOnTopSel = selRoot;
     pcGroupOnTopSel->setName("GroupOnTopSel");
     pcGroupOnTopSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopSel);
     selRoot = new SoFCSelectionRoot;
-    selRoot->selectionStyle = SoFCSelectionRoot::PASSTHROUGH;
+    selRoot->selectionStyle = SoFCSelectionRoot::PassThrough;
     pcGroupOnTopPreSel = selRoot;
     pcGroupOnTopPreSel->setName("GroupOnTopPreSel");
     pcGroupOnTopPreSel->ref();
@@ -611,6 +611,14 @@ View3DInventorViewer::~View3DInventorViewer()
 {
     // to prevent following OpenGL error message: "Texture is not valid in the current context. Texture has not been destroyed"
     aboutToDestroyGLContext();
+
+    // It can happen that a document has several MDI views and when the about to be
+    // closed 3D view is in edit mode the corresponding view provider must be restored
+    // because otherwise it might be left in a broken state
+    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=39720
+    if (restoreEditingRoot) {
+        resetEditingRoot(false);
+    }
 
     // cleanup
     this->backgroundroot->unref();
@@ -719,7 +727,7 @@ void View3DInventorViewer::clearGroupOnTop() {
         action.apply(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopPreSel);
-        FC_LOG("clear annoation");
+        FC_LOG("clear annotation");
     }
 }
 
@@ -760,7 +768,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             SoSelectionElementAction action(node->getDetail()?
                     SoSelectionElementAction::Remove:SoSelectionElementAction::None,true);
             auto path = node->getPath();
-            SoTempPath tmpPath(2+path?path->getLength():0);
+            SoTempPath tmpPath(2 + (path ? path->getLength() : 0));
             tmpPath.ref();
             tmpPath.append(pcGroup);
             tmpPath.append(node);
@@ -769,9 +777,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             action.apply(&tmpPath);
             tmpPath.unrefNoDelete();
             pcGroup->removeChild(index);
-            FC_LOG("remove annoation " << Reason.Type << " " << key);
+            FC_LOG("remove annotation " << Reason.Type << " " << key);
         }else
-            FC_LOG("remove annoation object " << Reason.Type << " " << key);
+            FC_LOG("remove annotation object " << Reason.Type << " " << key);
         objs.erase(it);
         return;
     }
@@ -888,7 +896,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             node->setDetail(det);
             det = 0;
         }
-        FC_LOG("add annoation " << Reason.Type << " " << key);
+        FC_LOG("add annotation " << Reason.Type << " " << key);
         objs[key.c_str()] = node;
     }
     delete det;
@@ -918,6 +926,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
     case SelectionChanges::SetPreselect:
         if(Reason.SubType!=2) // 2 means it is triggered from tree view
             break;
+        // fall through
     case SelectionChanges::RmvPreselect:
     case SelectionChanges::RmvPreselectSignal:
     case SelectionChanges::SetSelection:
@@ -957,6 +966,15 @@ SbBool View3DInventorViewer::searchNode(SoNode* node) const
 SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 {
     return _ViewProviderSet.find(pcProvider) != _ViewProviderSet.end();
+}
+
+SbBool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
+{
+    SoSearchAction sa;
+    sa.setNode(vp->getRoot());
+    sa.setSearchingAll(true);
+    sa.apply(getSoRenderManager()->getSceneGraph());
+    return sa.getPath() != nullptr;
 }
 
 /// adds an ViewProvider to the view, e.g. from a feature
@@ -1470,10 +1488,14 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
         ("User parameter:BaseApp/Preferences/View")->GetASCII("SavePicture");
 
     bool useFramebufferObject = false;
+    bool useGrabFramebuffer = false;
     bool usePixelBuffer = false;
     bool useCoinOffscreenRenderer = false;
     if (saveMethod == "FramebufferObject") {
         useFramebufferObject = true;
+    }
+    else if (saveMethod == "GrabFramebuffer") {
+        useGrabFramebuffer = true;
     }
     else if (saveMethod == "PixelBuffer") {
         usePixelBuffer = true;
@@ -1485,6 +1507,13 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     if (useFramebufferObject) {
         View3DInventorViewer* self = const_cast<View3DInventorViewer*>(this);
         self->imageFromFramebuffer(w, h, s, bg, img);
+        return;
+    }
+    else if (useGrabFramebuffer) {
+        View3DInventorViewer* self = const_cast<View3DInventorViewer*>(this);
+        img = self->grabFramebuffer();
+        img = img.mirrored();
+        img = img.scaledToWidth(w);
         return;
     }
 
@@ -1564,6 +1593,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
         if (!useCoinOffscreenRenderer) {
             SoQtOffscreenRenderer renderer(vp);
             renderer.setNumPasses(s);
+            renderer.setInternalTextureFormat(getInternalTextureFormat());
             renderer.setPbufferEnable(usePixelBuffer);
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor4f(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF()));
@@ -1657,6 +1687,18 @@ bool View3DInventorViewer::isSelecting() const
 const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SelectionRole* role) const
 {
     return navigation->getPolygon(role);
+}
+
+void View3DInventorViewer::setSelectionEnabled(const SbBool enable)
+{
+    SoNode* root = getSceneGraph();
+    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(enable);
+}
+
+SbBool View3DInventorViewer::isSelectionEnabled(void) const
+{
+    SoNode* root = getSceneGraph();
+    return static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.getValue();
 }
 
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const
@@ -1866,6 +1908,53 @@ int View3DInventorViewer::getNumSamples()
     }
 }
 
+GLenum View3DInventorViewer::getInternalTextureFormat() const
+{
+#if defined(HAVE_QT5_OPENGL)
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    std::string format = hGrp->GetASCII("InternalTextureFormat", "Default");
+
+    if (format == "GL_RGB") {
+        return GL_RGB;
+    }
+    else if (format == "GL_RGBA") {
+        return GL_RGBA;
+    }
+    else if (format == "GL_RGB8") {
+        return GL_RGB8;
+    }
+    else if (format == "GL_RGBA8") {
+        return GL_RGBA8;
+    }
+    else if (format == "GL_RGB10") {
+        return GL_RGB10;
+    }
+    else if (format == "GL_RGB10_A2") {
+        return GL_RGB10_A2;
+    }
+    else if (format == "GL_RGB16") {
+        return GL_RGB16;
+    }
+    else if (format == "GL_RGBA16") {
+        return GL_RGBA16;
+    }
+    else if (format == "GL_RGB32F") {
+        return GL_RGB32F_ARB;
+    }
+    else if (format == "GL_RGBA32F") {
+        return GL_RGBA32F_ARB;
+    }
+    else {
+        QOpenGLFramebufferObjectFormat fboFormat;
+        return fboFormat.internalTextureFormat();
+    }
+#else
+    //return GL_RGBA;
+    return GL_RGB;
+#endif
+}
+
 void View3DInventorViewer::setRenderType(const RenderType type)
 {
     renderType = type;
@@ -1953,7 +2042,7 @@ QImage View3DInventorViewer::grabFramebuffer()
         fboFormat.setSamples(getNumSamples());
         fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
         fboFormat.setTextureTarget(GL_TEXTURE_2D);
-        fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
+        fboFormat.setInternalTextureFormat(getInternalTextureFormat());
 
         QOpenGLFramebufferObject fbo(width, height, fboFormat);
         renderToFramebuffer(&fbo);
@@ -1985,18 +2074,8 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     // is to use a certain background color using GL_RGB as texture
     // format and in the output image search for the above color and
     // replaces it with the color requested by the user.
-#if defined(HAVE_QT5_OPENGL)
-    if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("SaveThumbnailFix",false)) {
-        fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
-    }
-    else {
-        fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
-    }
-#else
-    //fboFormat.setInternalTextureFormat(GL_RGBA);
-    fboFormat.setInternalTextureFormat(GL_RGB);
-#endif
+    fboFormat.setInternalTextureFormat(getInternalTextureFormat());
+
     QtGLFramebufferObject fbo(width, height, fboFormat);
 
     const QColor col = backgroundColor();
@@ -2132,6 +2211,9 @@ void View3DInventorViewer::renderFramebuffer()
     for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
         (*it)->paintGL();
 
+    if (naviCubeEnabled)
+        naviCube->drawNaviCube();
+
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
 }
@@ -2164,6 +2246,9 @@ void View3DInventorViewer::renderGLImage()
 
     for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
         (*it)->paintGL();
+
+    if (naviCubeEnabled)
+        naviCube->drawNaviCube();
 
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);

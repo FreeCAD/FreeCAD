@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -129,6 +129,7 @@
 #include "PartFeature.h"
 #include "PartPyCXX.h"
 #include "TopoShapeOpCode.h"
+#include "modelRefine.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
@@ -152,15 +153,15 @@ PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes) {
     if(PyObject_TypeCheck(obj,&Part::TopoShapePy::Type))
         shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
     else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) 
-        shapes.push_back(TopoShape(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape()));
+        shapes.emplace_back(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape());
     else if(PySequence_Check(obj)) {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type)))
                 shapes.push_back(*static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
             else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type)) 
-                shapes.push_back(TopoShape(static_cast<GeometryPy*>(
-                                (*it).ptr())->getGeometryPtr()->toShape()));
+                shapes.emplace_back(static_cast<GeometryPy*>(
+                                (*it).ptr())->getGeometryPtr()->toShape());
             else
                 throw Py::TypeError("expect shape in sequence");
         }
@@ -544,7 +545,7 @@ private:
         }
     }
 
-    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args) override
     {
         try {
             return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
@@ -760,21 +761,13 @@ private:
         TopoDS_Compound Comp;
         builder.MakeCompound(Comp);
 
-        try {
-            Py::Sequence list(pcObj);
-            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
-                    const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                        getTopoShapePtr()->getShape();
-                    if (!sh.IsNull())
-                        builder.Add(Comp, sh);
-                }
+        PY_TRY {
+            for(auto &s : getPyShapes(pcObj)) {
+                const auto &sh = s.getShape();
+                if (!sh.IsNull())
+                    builder.Add(Comp, sh);
             }
-        }
-        catch (Standard_Failure& e) {
-            throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
-        }
-
+        } _PY_CATCH_OCC(throw Py::Exception())
         return Py::asObject(new TopoShapeCompoundPy(new TopoShape(Comp)));
 #endif
     }
@@ -2213,7 +2206,7 @@ private:
         if(retType==0)
             return sret;
 
-        return Py::TupleN(sret,Py::Object(new Base::MatrixPy(new Base::Matrix4D(mat))),
+        return Py::TupleN(sret,Py::asObject(new Base::MatrixPy(new Base::Matrix4D(mat))),
                 subObj?Py::Object(subObj->getPyObject(),true):Py::Object());
     }
 
@@ -2307,8 +2300,6 @@ private:
         subname += element;
         return Py::String(subname);
     }
-
-
 };
 
 PyObject* initModule()

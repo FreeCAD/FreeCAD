@@ -31,19 +31,19 @@ namespace PartDesignGui {
 // TODO may be derive from something else e.g. ViewProviderGeometryObject (2015-09-11, Fat-Zer)
 class PartDesignGuiExport ViewProviderShapeBinder : public PartGui::ViewProviderPart
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderShapeBinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderShapeBinder);
 
 public:
     /// Constructor
     ViewProviderShapeBinder();
     virtual ~ViewProviderShapeBinder();
 
-    void setupContextMenu(QMenu*, QObject*, const char*);
-    virtual void highlightReferences(const bool on, bool auxiliary);
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
+    void highlightReferences(const bool on, bool auxiliary);
     
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    virtual bool setEdit(int ModNum) override;
+    virtual void unsetEdit(int ModNum) override;
     
 private:
     std::vector<App::Color> originalLineColors;
@@ -53,7 +53,7 @@ private:
 
 class PartDesignGuiExport ViewProviderSubShapeBinder : public PartGui::ViewProviderPart
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderShapeBinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderShapeBinder);
 
 public:
 

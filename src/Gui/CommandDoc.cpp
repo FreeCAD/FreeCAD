@@ -76,7 +76,7 @@
 #include "GraphvizView.h"
 #include "DlgObjectSelection.h"
 
-FC_LOG_LEVEL_INIT("Command", false);
+FC_LOG_LEVEL_INIT("Command", false)
 
 using namespace Gui;
 
@@ -85,7 +85,7 @@ using namespace Gui;
 // Std_Open
 //===========================================================================
 
-DEF_STD_CMD(StdCmdOpen);
+DEF_STD_CMD(StdCmdOpen)
 
 StdCmdOpen::StdCmdOpen()
   : Command("Std_Open")
@@ -168,7 +168,7 @@ void StdCmdOpen::activated(int iMsg)
 // Std_Import
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdImport);
+DEF_STD_CMD_A(StdCmdImport)
 
 StdCmdImport::StdCmdImport()
   : Command("Std_Import")
@@ -254,7 +254,7 @@ bool StdCmdImport::isActive(void)
 // Std_Export
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdExport);
+DEF_STD_CMD_A(StdCmdExport)
 
 StdCmdExport::StdCmdExport()
   : Command("Std_Export")
@@ -320,7 +320,7 @@ bool StdCmdExport::isActive(void)
 // Std_MergeProjects
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdMergeProjects);
+DEF_STD_CMD_A(StdCmdMergeProjects)
 
 StdCmdMergeProjects::StdCmdMergeProjects()
   : Command("Std_MergeProjects")
@@ -372,7 +372,7 @@ bool StdCmdMergeProjects::isActive(void)
 // Std_ExportGraphviz
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdExportGraphviz);
+DEF_STD_CMD_A(StdCmdExportGraphviz)
 
 StdCmdExportGraphviz::StdCmdExportGraphviz()
   : Command("Std_ExportGraphviz")
@@ -404,7 +404,7 @@ bool StdCmdExportGraphviz::isActive(void)
 // Std_New
 //===========================================================================
 
-DEF_STD_CMD(StdCmdNew);
+DEF_STD_CMD(StdCmdNew)
 
 StdCmdNew::StdCmdNew()
   :Command("Std_New")
@@ -435,7 +435,7 @@ void StdCmdNew::activated(int iMsg)
 //===========================================================================
 // Std_Save
 //===========================================================================
-DEF_STD_CMD_A(StdCmdSave);
+DEF_STD_CMD_A(StdCmdSave)
 
 StdCmdSave::StdCmdSave()
   :Command("Std_Save")
@@ -475,7 +475,7 @@ bool StdCmdSave::isActive(void)
 //===========================================================================
 // Std_SaveAs
 //===========================================================================
-DEF_STD_CMD_A(StdCmdSaveAs);
+DEF_STD_CMD_A(StdCmdSaveAs)
 
 StdCmdSaveAs::StdCmdSaveAs()
   :Command("Std_SaveAs")
@@ -517,7 +517,7 @@ bool StdCmdSaveAs::isActive(void)
 //===========================================================================
 // Std_SaveCopy
 //===========================================================================
-DEF_STD_CMD_A(StdCmdSaveCopy);
+DEF_STD_CMD_A(StdCmdSaveCopy)
 
 StdCmdSaveCopy::StdCmdSaveCopy()
   :Command("Std_SaveCopy")
@@ -550,7 +550,7 @@ bool StdCmdSaveCopy::isActive(void)
 //===========================================================================
 // Std_SaveAll
 //===========================================================================
-DEF_STD_CMD_A(StdCmdSaveAll);
+DEF_STD_CMD_A(StdCmdSaveAll)
 
 StdCmdSaveAll::StdCmdSaveAll()
   :Command("Std_SaveAll")
@@ -577,7 +577,7 @@ bool StdCmdSaveAll::isActive(void)
 //===========================================================================
 // Std_Revert
 //===========================================================================
-DEF_STD_CMD_A(StdCmdRevert);
+DEF_STD_CMD_A(StdCmdRevert)
 
 StdCmdRevert::StdCmdRevert()
   :Command("Std_Revert")
@@ -615,7 +615,7 @@ bool StdCmdRevert::isActive(void)
 // Std_ProjectInfo
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdProjectInfo);
+DEF_STD_CMD_A(StdCmdProjectInfo)
 
 StdCmdProjectInfo::StdCmdProjectInfo()
   :Command("Std_ProjectInfo")
@@ -647,7 +647,7 @@ bool StdCmdProjectInfo::isActive(void)
 // Std_ProjectUtil
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdProjectUtil);
+DEF_STD_CMD_A(StdCmdProjectUtil)
 
 StdCmdProjectUtil::StdCmdProjectUtil()
   :Command("Std_ProjectUtil")
@@ -675,7 +675,7 @@ bool StdCmdProjectUtil::isActive(void)
 //===========================================================================
 // Std_Print
 //===========================================================================
-DEF_STD_CMD_A(StdCmdPrint );
+DEF_STD_CMD_A(StdCmdPrint)
 
 StdCmdPrint::StdCmdPrint()
   :Command("Std_Print")
@@ -706,7 +706,7 @@ bool StdCmdPrint::isActive(void)
 //===========================================================================
 // Std_PrintPreview
 //===========================================================================
-DEF_STD_CMD_A(StdCmdPrintPreview);
+DEF_STD_CMD_A(StdCmdPrintPreview)
 
 StdCmdPrintPreview::StdCmdPrintPreview()
   :Command("Std_PrintPreview")
@@ -735,7 +735,7 @@ bool StdCmdPrintPreview::isActive(void)
 //===========================================================================
 // Std_PrintPdf
 //===========================================================================
-DEF_STD_CMD_A(StdCmdPrintPdf);
+DEF_STD_CMD_A(StdCmdPrintPdf)
 
 StdCmdPrintPdf::StdCmdPrintPdf()
   :Command("Std_PrintPdf")
@@ -765,7 +765,7 @@ bool StdCmdPrintPdf::isActive(void)
 // Std_Quit
 //===========================================================================
 
-DEF_STD_CMD(StdCmdQuit );
+DEF_STD_CMD(StdCmdQuit)
 
 StdCmdQuit::StdCmdQuit()
   :Command("Std_Quit")
@@ -793,7 +793,7 @@ void StdCmdQuit::activated(int iMsg)
 // Std_Undo
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdUndo);
+DEF_STD_CMD_AC(StdCmdUndo)
 
 StdCmdUndo::StdCmdUndo()
   :Command("Std_Undo")
@@ -837,7 +837,7 @@ Action * StdCmdUndo::createAction(void)
 // Std_Redo
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdRedo );
+DEF_STD_CMD_AC(StdCmdRedo)
 
 StdCmdRedo::StdCmdRedo()
   :Command("Std_Redo")
@@ -880,7 +880,7 @@ Action * StdCmdRedo::createAction(void)
 //===========================================================================
 // Std_Cut
 //===========================================================================
-DEF_STD_CMD_A(StdCmdCut);
+DEF_STD_CMD_A(StdCmdCut)
 
 StdCmdCut::StdCmdCut()
   : Command("Std_Cut")
@@ -908,7 +908,7 @@ bool StdCmdCut::isActive(void)
 //===========================================================================
 // Std_Copy
 //===========================================================================
-DEF_STD_CMD_A(StdCmdCopy);
+DEF_STD_CMD_A(StdCmdCopy)
 
 StdCmdCopy::StdCmdCopy()
   : Command("Std_Copy")
@@ -943,7 +943,7 @@ bool StdCmdCopy::isActive(void)
 //===========================================================================
 // Std_Paste
 //===========================================================================
-DEF_STD_CMD_A(StdCmdPaste);
+DEF_STD_CMD_A(StdCmdPaste)
 
 StdCmdPaste::StdCmdPaste()
   : Command("Std_Paste")
@@ -981,7 +981,7 @@ bool StdCmdPaste::isActive(void)
     return getMainWindow()->canInsertFromMimeData(mime);
 }
 
-DEF_STD_CMD_A(StdCmdDuplicateSelection);
+DEF_STD_CMD_A(StdCmdDuplicateSelection)
 
 StdCmdDuplicateSelection::StdCmdDuplicateSelection()
   :Command("Std_DuplicateSelection")
@@ -1069,7 +1069,7 @@ bool StdCmdDuplicateSelection::isActive(void)
 // Std_SelectAll
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdSelectAll);
+DEF_STD_CMD_A(StdCmdSelectAll)
 
 StdCmdSelectAll::StdCmdSelectAll()
   : Command("Std_SelectAll")
@@ -1102,7 +1102,7 @@ bool StdCmdSelectAll::isActive(void)
 //===========================================================================
 // Std_Delete
 //===========================================================================
-DEF_STD_CMD_A(StdCmdDelete);
+DEF_STD_CMD_A(StdCmdDelete)
 
 StdCmdDelete::StdCmdDelete()
   :Command("Std_Delete")
@@ -1274,7 +1274,7 @@ bool StdCmdDelete::isActive(void)
 //===========================================================================
 // Std_Refresh
 //===========================================================================
-DEF_STD_CMD_A(StdCmdRefresh);
+DEF_STD_CMD_A(StdCmdRefresh)
 
 StdCmdRefresh::StdCmdRefresh()
   : Command("Std_Refresh")
@@ -1297,9 +1297,10 @@ void StdCmdRefresh::activated(int iMsg)
         App::AutoTransaction trans("Recompute");
         try {
             doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
-        } catch(Base::Exception &e) {
+        }
+        catch (Base::Exception& /*e*/) {
             int ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
-                QObject::tr("The document contains dependency cycles.\n"
+                qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
                             "Please check the Report View for more details.\n\n"
                             "Do you still want to proceed?"),
                     QMessageBox::Yes, QMessageBox::No);
@@ -1318,7 +1319,7 @@ bool StdCmdRefresh::isActive(void)
 //===========================================================================
 // Std_Transform
 //===========================================================================
-DEF_STD_CMD_A(StdCmdTransform);
+DEF_STD_CMD_A(StdCmdTransform)
 
 StdCmdTransform::StdCmdTransform()
   : Command("Std_Transform")
@@ -1344,7 +1345,7 @@ bool StdCmdTransform::isActive(void)
 //===========================================================================
 // Std_Placement
 //===========================================================================
-DEF_STD_CMD_A(StdCmdPlacement);
+DEF_STD_CMD_A(StdCmdPlacement)
 
 StdCmdPlacement::StdCmdPlacement()
   : Command("Std_Placement")
@@ -1377,7 +1378,7 @@ bool StdCmdPlacement::isActive(void)
 //===========================================================================
 // Std_TransformManip
 //===========================================================================
-DEF_STD_CMD_A(StdCmdTransformManip);
+DEF_STD_CMD_A(StdCmdTransformManip)
 
 StdCmdTransformManip::StdCmdTransformManip()
   : Command("Std_TransformManip")
@@ -1410,7 +1411,7 @@ bool StdCmdTransformManip::isActive(void)
 //===========================================================================
 // Std_Alignment
 //===========================================================================
-DEF_STD_CMD_A(StdCmdAlignment);
+DEF_STD_CMD_A(StdCmdAlignment)
 
 StdCmdAlignment::StdCmdAlignment()
   : Command("Std_Alignment")
@@ -1479,7 +1480,7 @@ bool StdCmdAlignment::isActive(void)
 //===========================================================================
 // Std_Edit
 //===========================================================================
-DEF_STD_CMD_A(StdCmdEdit);
+DEF_STD_CMD_A(StdCmdEdit)
 
 StdCmdEdit::StdCmdEdit()
   : Command("Std_Edit")
@@ -1489,6 +1490,7 @@ StdCmdEdit::StdCmdEdit()
     sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
     sWhatsThis    = "Std_Edit";
     sStatusTip    = QT_TR_NOOP("Activates or Deactivates the selected object's edit mode");
+    sAccel        = "Shift+E";
 #if QT_VERSION >= 0x040200
     sPixmap       = "edit-edit";
 #endif

@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net>*
+ *   Copyright (c) 2013 Jan Rheinländer                                    *
+ *                                   <jrheinlaender@users.sourceforge.net> *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,7 +50,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Mod/Part/Gui/TaskAttacher.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
 #include <Mod/Part/App/AttachExtension.h>
@@ -940,25 +941,37 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         if (!ViewProvider->getObject()->getNameInDocument())
             return;
+
+        auto editDoc = Gui::Application::Instance->editDocument();
+        App::DocumentObject *editObj = ViewProvider->getObject();
+        std::string editSubName;
+        ViewProviderDocumentObject *editVp = 0;
+        if(editDoc) {
+            editDoc->getInEdit(&editVp,&editSubName);
+            if(editVp)
+                editObj = editVp->getObject();
+        }
         try{
             QString code = QString::fromLatin1(
                 "import Show\n"
-                "from Show.DepGraphTools import getAllDependent, isContainer\n"
-                "tv = Show.TempoVis(App.ActiveDocument)\n"
-                "dep_features = [o for o in getAllDependent(%1) if not isContainer(o)]\n"
-                "if %1.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\tvisible_features = [feat for feat in %1.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
+                "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
+                "tvObj = %1\n"
+                "dep_features = tv.get_all_dependent(%2, '%3')\n"
+                "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
                 "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
+                "\tdel(visible_features)\n"
                 "tv.hide(dep_features)\n"
-                "if not %1.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\t\tif len(%1.Support) > 0:\n"
-                "\t\t\ttv.show([lnk[0] for lnk in %1.Support])"
-                );
-            QByteArray code_2 = code.arg(
-                QString::fromLatin1("App.ActiveDocument.") +
-                QString::fromLatin1(ViewProvider->getObject()->getNameInDocument())
-                ).toLatin1();
-                Base::Interpreter().runString(code_2.constData());
+                "del(dep_features)\n"
+                "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\t\tif len(tvObj.Support) > 0:\n"
+                "\t\t\ttv.show([lnk[0] for lnk in tvObj.Support])\n"
+                "del(tvObj)"
+                ).arg(
+                    QString::fromLatin1(Gui::Command::getObjectCmd(ViewProvider->getObject()).c_str()),
+                    QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
+                    QString::fromLatin1(editSubName.c_str()));
+            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
         }
         catch (const Base::Exception &e){
             e.ReportException();
@@ -1029,21 +1042,19 @@ bool TaskDlgAttacher::accept()
             Base::Placement plm = pcAttach->AttachmentOffset.getValue();
             double yaw, pitch, roll;
             plm.getRotation().getYawPitchRoll(yaw,pitch,roll);
-            FCMD_OBJ_CMD2("AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
-                                    obj,
-                                    plm.getPosition().x, plm.getPosition().y, plm.getPosition().z,
-                                    yaw, pitch, roll);
+            Gui::cmdAppObjectArgs(obj, "AttachmentOffset = App.Placement(App.Vector(%.10f, %.10f, %.10f),  App.Rotation(%.10f, %.10f, %.10f))",
+                                  plm.getPosition().x, plm.getPosition().y, plm.getPosition().z, yaw, pitch, roll);
         }
 
-        FCMD_OBJ_CMD2("MapReversed = %s", obj, pcAttach->MapReversed.getValue() ? "True" : "False");
+        Gui::cmdAppObjectArgs(obj, "MapReversed = %s", pcAttach->MapReversed.getValue() ? "True" : "False");
 
-        FCMD_OBJ_CMD2("Support = %s", obj, pcAttach->Support.getPyReprString().c_str());
+        Gui::cmdAppObjectArgs(obj, "Support = %s", pcAttach->Support.getPyReprString().c_str());
 
-        FCMD_OBJ_CMD2("MapMode = '%s'", obj, AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
+        Gui::cmdAppObjectArgs(obj, "MapMode = '%s'", AttachEngine::getModeName(eMapMode(pcAttach->MapMode.getValue())).c_str());
 
-        FCMD_OBJ_DOC_CMD(obj, "recompute()");
+        Gui::cmdAppObject(obj, "recompute()");
 
-        FCMD_VOBJ_DOC_CMD(obj,"resetEdit()");
+        Gui::cmdGuiDocument(obj, "resetEdit()");
         document->commitCommand();
     }
     catch (const Base::Exception& e) {

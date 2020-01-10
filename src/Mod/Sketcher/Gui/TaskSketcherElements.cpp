@@ -82,6 +82,8 @@ public:
         EndVertex = sketch->getVertexIndexGeoPos(elementnr,Sketcher::end),
         GeometryType = geo->getTypeId();
         isMissing = geo->testFlag(Part::Geometry::Missing);
+        isConstruction = geo->Construction;
+        isExternal = !geo->Ref.empty();
 
         static std::map<Base::Type,QString> typeMap;
         if(typeMap.empty()) {
@@ -246,6 +248,8 @@ public:
     bool isMidPointSelected;
     bool isMissing;
     Base::Type GeometryType;
+    bool isConstruction;
+    bool isExternal;
 };
 
 ElementView::ElementView(QWidget *parent)
@@ -398,6 +402,10 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
         this                     , SLOT  (on_elementsWidget_currentFilterChanged(int))
        );
     QObject::connect(
+        ui->comboBoxModeFilter, SIGNAL(currentIndexChanged(int)),
+        this                  , SLOT  (on_elementWidget_currentModeFilterChanged(int))
+        );
+    QObject::connect(
         ui->autoSwitchBox, SIGNAL(stateChanged(int)),
         this                     , SLOT  (on_autoSwitchBox_stateChanged(int))
        );
@@ -408,12 +416,14 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     this->groupLayout()->addWidget(proxy);
 
     ui->comboBoxElementFilter->setCurrentIndex(0);
+    ui->comboBoxModeFilter->setCurrentIndex(0);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
 
     ui->autoSwitchBox->setChecked(hGrp->GetBool("Auto-switch to edge", true));
 
     ui->comboBoxElementFilter->setEnabled(!isautoSwitchBoxChecked);
+    ui->comboBoxModeFilter->setEnabled(true);
 
     slotElementsChanged();
 }
@@ -834,6 +844,11 @@ void TaskSketcherElements::on_elementsWidget_currentFilterChanged ( int index )
 
 }
 
+void TaskSketcherElements::on_elementsWidget_currentModeFilterChanged ( int index )
+{
+    updateVisibility(index);
+}
+
 void TaskSketcherElements::updatePreselection()
 {
     inhibitSelectionUpdate=true;
@@ -855,6 +870,37 @@ void TaskSketcherElements::clearWidget()
       item->isStartingPointSelected=false;
       item->isEndPointSelected=false;
       item->isMidPointSelected=false;
+    }
+}
+
+void TaskSketcherElements::setItemVisibility(int elementindex,int filterindex)
+{
+    // index
+    // 0 => all
+    // 1 => Normal
+    // 2 => Construction
+    // 3 => External
+
+    ElementItem* item = static_cast<ElementItem*> (ui->elementsWidget->topLevelItem(elementindex));
+
+    if (filterindex == 0)
+        item->setHidden(false);
+    else {
+        if( (!item->isConstruction && !item->isExternal && filterindex == 1)  ||
+            (item->isConstruction  && filterindex == 2)  ||
+            (item->isExternal && filterindex == 3) ) {
+            item->setHidden(false);
+        }
+        else {
+            item->setHidden(true);
+        }
+    }
+}
+
+void TaskSketcherElements::updateVisibility(int filterindex)
+{
+    for (int i=0;i<ui->elementsWidget->topLevelItemCount(); i++) {
+        setItemVisibility(i,filterindex);
     }
 }
 

@@ -60,6 +60,7 @@ Function .onInit
   # check if it is a 64bit system
   ${if} ${RunningX64}
    SetRegView 64
+   !define LIBRARY_X64
   ${endif}
   
   # Check that FreeCAD is not currently running
@@ -130,7 +131,10 @@ Function .onInit
    ${endif} 
   ${next}
   
-  ${if} $OldVersionNumber > ${APP_SERIES_KEY}
+  # NSIS cannot handle numbers with leading zero, thus cut it off before comparing
+  StrCpy $1 $OldVersionNumber "" 1
+  StrCpy $2 ${APP_SERIES_KEY} "" 1
+  ${if} $1 > $2
    # store the version number and reformat it temporarily for the error message
    StrCpy $R0 $OldVersionNumber
    StrCpy $OldVersionNumber $R5
@@ -146,11 +150,6 @@ Function .onInit
   ${IfNot} ${Silent}
     # Show banner while installer is intializating 
     Banner::show /NOUNLOAD "Checking system"
-  ${EndIf}
- 
-  Call SearchExternal
-  
-  ${IfNot} ${Silent}
     Banner::destroy
   ${EndIf}
 

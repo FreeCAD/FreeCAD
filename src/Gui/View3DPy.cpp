@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -94,7 +94,16 @@ void View3DInventorPy::init_type()
     add_varargs_method("viewIsometric",&View3DInventorPy::viewIsometric,"viewIsometric()");
     add_varargs_method("viewDimetric",&View3DInventorPy::viewDimetric,"viewDimetric()");
     add_varargs_method("viewTrimetric",&View3DInventorPy::viewTrimetric,"viewTrimetric()");
-    add_varargs_method("viewDefaultOrientation",&View3DInventorPy::viewDefaultOrientation,"viewDefaultOrientation()");
+    add_varargs_method("viewDefaultOrientation",&View3DInventorPy::viewDefaultOrientation,
+                       "viewDefaultOrientation(ori_str = '', scale = -1.0): sets camera rotation to a predefined one, \n"
+                       "and camera position and zoom to show certain amount of model space. \n"
+                       "ori_string can be 'Top', 'Bottom', 'Front', 'Rear', 'Left', 'Right', \n"
+                       "'Isometric', 'Dimetric', 'Trimetric', 'Custom'. If empty, the value is \n"
+                       "fetched from Parameters.\n"
+                       "scale sets distance from camera to origin, and height of the screen in \n"
+                       "model space, so that a sphere of diameter <scale> fits the height of the\n"
+                       "viewport. If zero, scaling is not done. If negative, the value is \n"
+                       "fetched from Parameters.");
     add_varargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
     add_varargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
     add_varargs_method("zoomIn",&View3DInventorPy::zoomIn,"zoomIn()");
@@ -183,14 +192,16 @@ void View3DInventorPy::init_type()
     add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name,resolve=True)\nreturns the active object for the given type");
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
-
+    add_varargs_method("setName",&View3DInventorPy::setName,"setName(str): sets a name to this viewer\nThe name sets the widget's windowTitle and appears on the viewer tab");
     add_keyword_method("toggleClippingPlane", &View3DInventorPy::toggleClippingPlane,
         "toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()\n"
-        "Toggle a golbal clipping plane\n\n"
+        "Toggle a global clipping plane\n\n"
         "toggle: -1 toggle, 1 show, 0 hide\n"
-        "beforeEditing: whether insert the clipping node before or after editing root node\n"
-        "noManip: wether to create a manipulator\n"
+        "beforeEditing: whether to insert the clipping node before or after editing root node\n"
+        "noManip: whether to create a manipulator\n"
         "pla: clipping plane placement");
+    add_varargs_method("hasClippingPlane",&View3DInventorPy::hasClippingPlane,
+        "hasClippingPlane(): check whether this clipping plane is active");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -637,7 +648,8 @@ Py::Object View3DInventorPy::viewTrimetric(const Py::Tuple& args)
 Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
 {
     char* view = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "|s", &view))
+    double scale = -1.0;
+    if (!PyArg_ParseTuple(args.ptr(), "|sd", &view, &scale))
         throw Py::Exception();
 
     try {
@@ -648,7 +660,7 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
         }
         else {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-            newDocView = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
+            newDocView = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
         }
 
         if (newDocView == "Top") {
@@ -687,7 +699,29 @@ Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
             rot.setValue(q0, q1, q2, q3);
         }
 
-        _view->getViewer()->setCameraOrientation(rot);
+        SoCamera* cam = _view->getViewer()->getCamera();
+        cam->orientation = rot;
+
+        if (scale < 0.0){
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            scale = hGrp->GetFloat("NewDocumentCameraScale",100.0);
+        }
+        if (scale > 1e-7) {
+            double f = 0.0; //focal dist
+            if (cam->isOfType(SoOrthographicCamera::getClassTypeId())){
+                static_cast<SoOrthographicCamera*>(cam)->height = scale;
+                f = scale;
+            } else if (cam->isOfType(SoPerspectiveCamera::getClassTypeId())){
+                //nothing to do
+                double ang = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue();
+                f = 0.5 * scale / sin(ang * 0.5);
+            }
+            SbVec3f lookDir;
+            rot.multVec(SbVec3f(0,0,-1), lookDir);
+            SbVec3f pos = lookDir * -f;
+            cam->focalDistance = f;
+            cam->position = pos;
+        }
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -919,8 +953,9 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 {
     char *cFileName,*cColor="Current",*cComment="$MIBA";
     int w=-1,h=-1;
+    int s=View3DInventorViewer::getNumSamples();
 
-    if (!PyArg_ParseTuple(args.ptr(), "et|iiss","utf-8",&cFileName,&w,&h,&cColor,&cComment))
+    if (!PyArg_ParseTuple(args.ptr(), "et|iissi","utf-8",&cFileName,&w,&h,&cColor,&cComment,&s))
         throw Py::Exception();
 
     std::string encodedName = std::string(cFileName);
@@ -938,7 +973,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
-    _view->getViewer()->savePicture(w, h, 8, bg, img);
+    _view->getViewer()->savePicture(w, h, s, bg, img);
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
@@ -2510,6 +2545,27 @@ Py::Object View3DInventorPy::redraw(const Py::Tuple& args)
     return Py::None();
 }
 
+Py::Object View3DInventorPy::setName(const Py::Tuple& args)
+{
+    char* buffer;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &buffer))
+        throw Py::Exception();
+
+    try {
+        _view->setWindowTitle(QString::fromUtf8(buffer));
+        return Py::None();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+}
+
 Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py::Dict& kwds)
 {
     static char* keywords[] = {"toggle", "beforeEditing", "noManip", "pla", NULL};
@@ -2529,3 +2585,9 @@ Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py
     return Py::None();
 }
 
+Py::Object View3DInventorPy::hasClippingPlane(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::Boolean(_view->getViewer()->hasClippingPlane());
+}

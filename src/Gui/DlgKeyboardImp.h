@@ -39,7 +39,7 @@ namespace Dialog {
  */
 class DlgCustomKeyboardImp : public CustomizeActionPage, public Ui_DlgCustomKeyboard
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 public:
     DlgCustomKeyboardImp( QWidget* parent = 0 );

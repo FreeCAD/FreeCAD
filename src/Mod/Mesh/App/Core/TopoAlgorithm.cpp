@@ -107,7 +107,7 @@ bool MeshTopoAlgorithm::SnapVertex(unsigned long ulFacetPos, const Base::Vector3
   if (!rFace.HasOpenEdge())
     return false;
   Base::Vector3f cNo1 = _rclMesh.GetNormal(rFace);
-  for (short i=0; i<3; i++)
+  for (unsigned short i=0; i<3; i++)
   {
     if (rFace._aulNeighbours[i]==ULONG_MAX)
     {
@@ -383,7 +383,7 @@ int MeshTopoAlgorithm::DelaunayFlip()
 {
     int cnt_swap=0;
     _rclMesh._aclFacetArray.ResetFlag(MeshFacet::TMP0);
-    unsigned long cnt_facets = _rclMesh._aclFacetArray.size();
+    size_t cnt_facets = _rclMesh._aclFacetArray.size();
     for (unsigned long i=0;i<cnt_facets;i++) {
         const MeshFacet& f_face = _rclMesh._aclFacetArray[i];
         if (f_face.IsFlag(MeshFacet::TMP0))
@@ -425,7 +425,7 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
   MeshPointIterator cPIt( _rclMesh );
   aPnts.reserve(_rclMesh.CountPoints());
   for ( cPIt.Init(); cPIt.More(); cPIt.Next() )
-    aPnts.push_back( Wm4::Vector3<float>( cPIt->x, cPIt->y, cPIt->z ) );
+    aPnts.emplace_back( cPIt->x, cPIt->y, cPIt->z );
 
   // get all point connections
   std::vector<int> aIdx;
@@ -444,12 +444,13 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
       unsigned long ulP0 = std::min<unsigned long>(ulT0, ulT1);
       unsigned long ulP1 = std::max<unsigned long>(ulT0, ulT1);
       aclEdgeMap[std::make_pair(ulP0, ulP1)].push_front(k);
-      aIdx.push_back( (int)jt->_aulPoints[i] );
+      aIdx.push_back( static_cast<int>(jt->_aulPoints[i]) );
     }
   }
 
   // compute vertex based curvatures
-  Wm4::MeshCurvature<float> meshCurv(_rclMesh.CountPoints(), &(aPnts[0]), _rclMesh.CountFacets(), &(aIdx[0]));
+  Wm4::MeshCurvature<float> meshCurv(static_cast<int>(_rclMesh.CountPoints()), &(aPnts[0]),
+                                     static_cast<int>(_rclMesh.CountFacets()), &(aIdx[0]));
 
   // get curvature information now
   const Wm4::Vector3<float>* aMaxCurvDir = meshCurv.GetMaxDirections();
@@ -1496,7 +1497,7 @@ void MeshTopoAlgorithm::FindComponents(unsigned long count, std::vector<unsigned
   comp.SearchForComponents(MeshComponents::OverEdge,segments);
 
   for (std::vector<std::vector<unsigned long> >::iterator it = segments.begin(); it != segments.end(); ++it) {
-    if (it->size() <= (unsigned long)count)
+    if (it->size() <= count)
       findIndices.insert(findIndices.end(), it->begin(), it->end());
   }
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Riegel         <juergen.riegel@web.de>                  *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -403,7 +403,7 @@ void FileWriter::writeFiles(void)
         if (shouldWrite(entry.FileName, entry.Object)) {
             std::string filePath = entry.FileName;
             std::string::size_type pos = 0;
-            while ((pos = filePath.find("/", pos)) != std::string::npos) {
+            while ((pos = filePath.find('/', pos)) != std::string::npos) {
                 std::string dirName = DirName + "/" + filePath.substr(0, pos);
                 pos++;
                 Base::FileInfo fi(dirName);

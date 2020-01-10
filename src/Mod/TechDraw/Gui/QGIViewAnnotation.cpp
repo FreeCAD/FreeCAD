@@ -48,6 +48,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include "Rez.h"
@@ -151,13 +152,12 @@ void QGIViewAnnotation::drawAnnotation()
     ss << "color:" << c.asCSSString() << "; ";
     ss << "}\n</style>\n</head>\n<body>\n<p>";
     for(std::vector<std::string>::const_iterator it = annoText.begin(); it != annoText.end(); it++) {
-        if (it == annoText.begin()) {
-            ss << *it;
-        } else {
-            ss << "<br>" << *it ;
+        if (it != annoText.begin()) {
+            ss << "<br>";
         }
+        ss << Base::Tools::escapedUnicodeToUtf8(*it);
     }
-    ss << "</p>\n</body>\n</html> ";
+    ss << "<br></p>\n</body>\n</html> ";
 
     prepareGeometryChange();
     m_textItem->setTextWidth(Rez::guiX(viewAnno->MaxWidth.getValue()));

@@ -78,7 +78,7 @@
 using namespace FemGui;
 using namespace Gui;
 
-// ----------------------------------------------------------------------------
+// ***************************************************************************
 
 PointMarker::PointMarker(Gui::View3DInventorViewer* iv, std::string ObjName) : view(iv),
     vp(new ViewProviderPointMarker)
@@ -145,7 +145,7 @@ ViewProviderPointMarker::~ViewProviderPointMarker()
     pCoords->unref();
 }
 
-// ----------------------------------------------------------------------------
+// ***************************************************************************
 
 DataMarker::DataMarker(Gui::View3DInventorViewer* iv, std::string ObjName) : view(iv),
     vp(new ViewProviderDataMarker)
@@ -218,10 +218,10 @@ ViewProviderDataMarker::~ViewProviderDataMarker()
     pMarker->unref();
 }
 
-//**************************************************************************
-//**************************************************************************
+// ***************************************************************************
+// ***************************************************************************
 // TaskDialog
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ***************************************************************************
 
 TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject *view)
     : TaskDialog(), m_view(view)
@@ -299,7 +299,7 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box) {
         box->button(QDialogButtonBox::Apply)->setDefault(true);
 }
 
-//############################################################################################
+// ***************************************************************************
 // some task box methods
 TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget* parent)
     : TaskBox(icon, title, true, parent) {
@@ -341,7 +341,7 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
     box->setCurrentIndex(index);
 }
 
-//###########################################################################################################
+// ***************************************************************************
 // post pipeline results
 TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-result-show"), tr("Result display options"), parent)
@@ -398,7 +398,7 @@ void TaskPostDisplay::applyPythonCode() {
 
 }
 
-//############################################################################################
+// ***************************************************************************
 // ?
 // the icon fem-post-geo-plane might be wrong but I do not know any better since the plane is one of the implicit functions
 TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent) {
@@ -421,7 +421,7 @@ void TaskPostFunction::applyPythonCode() {
     //we apply the views widgets python code
 }
 
-//############################################################################################
+// ***************************************************************************
 // region clip filter
 TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
     : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-post-filter-clip-region"), tr("Clip region, choose implicit function"), parent) {
@@ -543,7 +543,7 @@ void TaskPostClip::on_InsideOut_toggled(bool val) {
     recompute();
 }
 
-//############################################################################################
+// ***************************************************************************
 // data along a line
 TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-post-filter-data-along-line"), tr("Data along a line options"), parent) {
@@ -760,7 +760,7 @@ plt.show()\n";
 
 }
 
-//############################################################################################
+// ***************************************************************************
 // data at point
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-post-filter-data-at-point"), tr("Data at point options"), parent) {
@@ -924,7 +924,7 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     Base::Console().Error(PointData.c_str());
 }
 
-//############################################################################################
+// ***************************************************************************
 // scalar clip filter
 TaskPostScalarClip::TaskPostScalarClip(ViewProviderDocumentObject* view, QWidget* parent) :
     TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-filter-clip-scalar"), tr("Scalar clip options"), parent) {
@@ -1030,8 +1030,7 @@ void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
     recompute();
 }
 
-
-//############################################################################################
+// ***************************************************************************
 // warp filter
 // spinbox min, slider, spinbox max
 // spinbox warp factor
@@ -1174,7 +1173,7 @@ void TaskPostWarpVector::on_Min_valueChanged(double) {
     ui->Slider->blockSignals(false);
 }
 
-//############################################################################################
+// ***************************************************************************
 // function clip filter
 TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
     : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-post-filter-cut-function"), tr("Function cut, choose implicit function"), parent) {

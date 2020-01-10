@@ -85,11 +85,44 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="inverse" Const="true">
+        <Methode Name="inverse" Const="true">
 			<Documentation>
 				<UserDocu>
 					inverse() -> Placement
 					compute the inverse placement
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="pow" Const="true">
+			<Documentation>
+				<UserDocu>
+					pow(t, shorten = true): raise this placement to real power using ScLERP interpolation.
+                    If 'shorten' is true, ensures rotation quaternion is net positive, to make the path shorter.
+                    Also available as ** operator.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="sclerp" Const="true">
+			<Documentation>
+				<UserDocu>
+                    sclerp(placement2, t, shorten = True): interpolate between self and placement2.
+                    Interpolation is a continuous motion along a helical path, made of equal transforms if discretized.
+                    t = 0.0 - return self. t = 1.0 - return placement2. t can also be outside of 0..1 range, for extrapolation.
+                    If quaternions of rotations of the two placements differ in sign, the interpolation will 
+                     take a long path. If 'shorten' is true, the signs are harmonized before interpolation, and the 
+                     interpolation takes the shorter path.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="slerp" Const="true">
+			<Documentation>
+				<UserDocu>
+					slerp(placement2, t, shorten = True): interpolate between self and placement2.
+                    This function performs independent interpolation of rotation and movement.
+                    Result of such interpolation might be not what application expects, thus this
+                    tool might be considered for simple cases or for interpolating between small intervals.
+                    
+                    For more complex cases you better use the advanced sclerp() function.
 				</UserDocu>
 			</Documentation>
 		</Methode>

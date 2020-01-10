@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -271,10 +269,10 @@ class _CommandStructure:
         "this function is called by the snapper when it has a 3D point"
 
         self.bmode = self.modeb.isChecked()
-        if point == None:
+        if point is None:
             self.tracker.finalize()
             return
-        if self.bmode and (self.bpoint == None):
+        if self.bmode and (self.bpoint is None):
             self.bpoint = point
             FreeCADGui.Snapper.getPoint(last=point,callback=self.getPoint,movecallback=self.update,extradlg=[self.taskbox(),self.precast.form,self.dents.form],title=translate("Arch","Next point")+":",mode="line")
             return
@@ -686,7 +684,7 @@ class _Structure(ArchComponent.Component):
             else:
                 base = Part.makeCompound(base)
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.isValid():
@@ -730,14 +728,11 @@ class _Structure(ArchComponent.Component):
         height = obj.Height.Value
         normal = None
         if not height:
-            for p in obj.InList:
-                if Draft.getType(p) in ["Floor","BuildingPart"]:
-                    if p.Height.Value:
-                        height = p.Height.Value
+            height = self.getParentHeight(obj)
         base = None
         placement = None
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
                         return None
@@ -896,6 +891,11 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     def __init__(self,vobj):
 
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+
+        # setProperties of ArchComponent will be overwritten
+        # thus setProperties from ArchComponent will be explicit called to get the properties
+        ArchComponent.ViewProviderComponent.setProperties(self, vobj)
+
         self.setProperties(vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Structure")
 
@@ -942,12 +942,12 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                         p.append([n.x,n.y,n.z])
                     self.coords.point.setValues(0,len(p),p)
                     self.pointset.numPoints.setValue(len(p))
-                    self.lineset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
+                    self.lineset.coordIndex.setValues(0,len(p)+1,list(range(len(p)))+[-1])
                     if hasattr(obj.ViewObject,"NodeType"):
                         if (obj.ViewObject.NodeType == "Area") and (len(p) > 2):
                             self.coords.point.set1Value(len(p),p[0][0],p[0][1],p[0][2])
-                            self.lineset.coordIndex.setValues(0,len(p)+2,range(len(p)+1)+[-1])
-                            self.faceset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
+                            self.lineset.coordIndex.setValues(0,len(p)+2,list(range(len(p)+1))+[-1])
+                            self.faceset.coordIndex.setValues(0,len(p)+1,list(range(len(p)))+[-1])
 
         elif prop in ["IfcType"]:
             if hasattr(obj.ViewObject,"NodeType"):
@@ -1213,7 +1213,7 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
         # creating base shape
         pl = obj.Placement
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.Solids:

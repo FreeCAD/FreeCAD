@@ -59,7 +59,10 @@ class _Fence(ArchComponent.Component):
         self.Type = "Fence"
 
     def __getstate__(self):
-        return (self.sectionFaceNumbers)
+        if hasattr(self, 'sectionFaceNumbers'):
+            return (self.sectionFaceNumbers)
+        
+        return None
 
     def __setstate__(self, state):
         if state is not None and isinstance(state, tuple):
@@ -117,8 +120,7 @@ class _Fence(ArchComponent.Component):
 
         self.sectionFaceNumbers = sectionFaceNumbers
 
-        self.applyShape(obj, compound, obj.Placement,
-                        allowinvalid=True, allownosolid=True)
+        obj.Shape = compound
 
     def calculateNumberOfSections(self, pathLength, sectionLength, postLength):
         withoutLastPost = pathLength - postLength
@@ -229,6 +231,9 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
 
     def __init__(self, vobj):
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
+        # setProperties of ArchComponent will be overwritten
+        # thus setProperties from ArchComponent will be explicit called to get the properties
+        ArchComponent.ViewProviderComponent.setProperties(self, vobj)
         self.setProperties(vobj)
 
     def setProperties(self, vobj):
@@ -238,8 +243,10 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             vobj.addProperty("App::PropertyBool", "UseOriginalColors", "Fence", QT_TRANSLATE_NOOP(
                 "App::Property", "When true, the fence will be colored like the original post and section."))
 
-    def onDocumentRestored(self, vobj):
+    def attach(self, vobj):
         self.setProperties(vobj)
+
+        return super().attach(vobj)
 
     def getIcon(self):
         import Arch_rc
@@ -325,7 +332,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             # 2. "Set colors" was called on the tip and the individual faces where colorized.
             #   We use the diffuseColors of the tip in that case
             tipColors = obj.Tip.ViewObject.DiffuseColor
-            
+
             if len(tipColors) > 1:
                 colors = tipColors
 
@@ -421,7 +428,7 @@ if __name__ == '__main__':
 
         for i in range(8):
             parts.append(Part.makeBox(20, 20, 1000 - 60,
-                                      FreeCAD.Vector((2000 / 9 * (i + 1)) - 10, 15, 30)))
+                                      FreeCAD.Vector((2000.0 / 9 * (i + 1)) - 10, 15, 30)))
 
         Part.show(Part.makeCompound(parts), "Section")
 
@@ -470,3 +477,5 @@ if __name__ == '__main__':
     colorizeFaces(post)
 
     print(makeFence(section, post, path))
+
+    # _CommandFence().Activated()

@@ -571,8 +571,8 @@ void MeshAlgos::LoftOnCurve(MeshCore::MeshKernel &ResultMesh, const TopoDS_Shape
                      p3 = prePoint[l],
                      p4 = actPoint[l];
 
-            cVAry.push_back(MeshGeomFacet(p1,p2,p3));
-            cVAry.push_back(MeshGeomFacet(p3,p2,p4));
+            cVAry.emplace_back(p1,p2,p3);
+            cVAry.emplace_back(p3,p2,p4);
           }
         }
       }

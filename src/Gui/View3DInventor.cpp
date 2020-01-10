@@ -84,6 +84,7 @@
 #include <Inventor/nodes/SoOrthographicCamera.h>
 
 #include "View3DInventorExamples.h"
+#include "ViewProviderDocumentObject.h"
 #include "SoFCSelectionAction.h"
 #include "View3DPy.h"
 #include "SoFCDB.h"
@@ -105,7 +106,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent*)
 
 /* TRANSLATOR Gui::View3DInventor */
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView)
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
                                const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
@@ -486,7 +487,9 @@ void View3DInventor::printPreview()
 {
     QPrinter printer(QPrinter::ScreenResolution);
     printer.setFullPage(true);
-    //printer.setPageSize(QPrinter::A3);
+#if (QT_VERSION > QT_VERSION_CHECK(5, 9, 0))
+    printer.setPageSize(QPrinter::A4);
+#endif
     printer.setOrientation(QPrinter::Landscape);
 
     QPrintPreviewDialog dlg(&printer, this);
@@ -512,6 +515,11 @@ void View3DInventor::print(QPrinter* printer)
     _viewer->imageFromFramebuffer(rect.width(), rect.height(), 8, QColor(255,255,255), img);
     p.drawImage(0,0,img);
     p.end();
+}
+
+bool View3DInventor::containsViewProvider(const ViewProvider* vp) const
+{
+    return _viewer->containsViewProvider(vp);
 }
 
 // **********************************************************************************

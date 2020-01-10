@@ -94,6 +94,12 @@
 #include "Area.h"
 #include "../libarea/Area.h"
 
+//FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
+
 
 namespace bg = boost::geometry;
 namespace bgi = boost::geometry::index;
@@ -152,7 +158,7 @@ CAreaConfig::~CAreaConfig() {
 
 //////////////////////////////////////////////////////////////////////////////
 
-TYPESYSTEM_SOURCE(Path::Area, Base::BaseClass);
+TYPESYSTEM_SOURCE(Path::Area, Base::BaseClass)
 
 bool Area::s_aborting;
 
@@ -883,8 +889,8 @@ struct WireJoiner {
                     if(vit->pt().SquareDistance(pt[i]) > tol)
                         break;
                     auto &vinfo = *vit;
-                    // yse, we push ourself, too, because other edges require
-                    // this info in the adjcent list. We'll do filtering later.
+                    // yes, we push ourself too, because other edges require
+                    // this info in the adjacent list. We'll do filtering later.
                     adjacentList.push_back(vinfo);
                     ++info.iEnd[i];
                 }
@@ -1730,7 +1736,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill, int reorient) {
                 builder.Add(compound,s);\
             }\
             if(TopExp_Explorer(compound,TopAbs_EDGE).More())\
-                return compound;\
+                return TopoDS_Shape(std::move(compound));\
             return TopoDS_Shape();\
         }\
         return mySections[_index]->_op(_index, ## __VA_ARGS__);\
@@ -1768,7 +1774,7 @@ TopoDS_Shape Area::getShape(int index) {
 
     FC_TIME_INIT(t);
 
-    // do offset first, then pocket the inner most offsetted shape
+    // do offset first, then pocket the inner most offset shape
     std::list<shared_ptr<CArea> > areas;
     makeOffset(areas,PARAM_FIELDS(AREA_MY,AREA_PARAMS_OFFSET));
 
@@ -1867,8 +1873,9 @@ TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET
     }
     if(thicken)
         FC_DURATION_LOG(d,"Thicken");
-    if(TopExp_Explorer(compound,TopAbs_EDGE).More())
-        return compound;
+    if(TopExp_Explorer(compound,TopAbs_EDGE).More()) {
+        return TopoDS_Shape(std::move(compound));
+    }
     return TopoDS_Shape();
 }
 
@@ -2255,7 +2262,7 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, in
             AREA_WARN("FaceMakerBullseye failed: "<<e.what());
         }
     }
-    return compound;
+    return TopoDS_Shape(std::move(compound));
 }
 
 struct WireInfo {
@@ -2970,7 +2977,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
         FC_TIME_LOG(t,"plane merging");
     }
 
-    FC_DURATION_DECL_INIT(td);
+    //FC_DURATION_DECL_INIT(td);
 
     if(use_bound) {
         bounds.SetGap(0.0);
@@ -3417,3 +3424,6 @@ const AreaStaticParams &Area::getDefaultParams() {
     return s_params;
 }
 
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif

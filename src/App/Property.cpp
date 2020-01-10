@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,7 +45,7 @@ using namespace App;
 // Property
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence);
+TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence)
 
 //**************************************************************************
 // Construction/Destruction
@@ -151,7 +151,7 @@ App::any Property::getPathValue(const ObjectIdentifier &path) const
 
 void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
-    paths.push_back(App::ObjectIdentifier(*this));
+    paths.emplace_back(*this);
 }
 
 ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
@@ -252,7 +252,7 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
 #else
             if(!PyLong_Check(key))
 #endif
-                throw Base::TypeError("expect key type to be interger");
+                throw Base::TypeError("expect key type to be integer");
             long idx = PyLong_AsLong(key);
             if(idx<-1 || idx>listSize) 
                 throw Base::ValueError("index out of bound");
@@ -286,12 +286,13 @@ void PropertyListsBase::_setPyObject(PyObject *value) {
     setPyValues(vals,indices);
 }
 
+
 //**************************************************************************
 //**************************************************************************
 // PropertyLists
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property);
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLists , App::Property)
 
 const char *PropertyLists::xmlName() const {
     const char *name = getTypeId().getName();
@@ -356,4 +357,3 @@ void PropertyLists::RestoreDocFile(Base::Reader &reader)
     str >> uCt;
     restoreStream(str,uCt);
 }
-

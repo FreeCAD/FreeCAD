@@ -456,7 +456,7 @@ PyObject* ViewProviderPy::setElementColors(PyObject* args)
     for(auto it=dict.begin();it!=dict.end();++it) {
         const auto &value = *it;
         if(!value.first.isString() || !value.second.isSequence())
-            throw Py::TypeError("Expect the dictonary contain items of type elementName:(r,g,b,a)");
+            throw Py::TypeError("Expect the dictionary to contain items of type elementName:(r,g,b,a)");
 
         App::PropertyColor prop;
         prop.setPyObject(value.second.ptr());

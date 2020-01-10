@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Juergen Riegel                                     *
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +33,12 @@
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "Console.h"
+#include <boost/math/special_functions/fpclassify.hpp>
+
+/** \defgroup Units Units system
+    \ingroup BASE
+    \brief The quantities and units system enables FreeCAD to work transparently with many different units
+*/
 
 // suppress annoying warnings from generated source files
 #ifdef _MSC_VER
@@ -82,7 +88,7 @@ double Quantity::getValueAs(const Quantity &q)const
 
 bool Quantity::operator ==(const Quantity& that) const
 {
-    return (this->_Value == that._Value) && (this->_Unit == that._Unit) ;
+    return (this->_Value == that._Value) && (this->_Unit == that._Unit);
 }
 
 bool Quantity::operator <(const Quantity& that) const
@@ -143,7 +149,7 @@ Quantity Quantity::pow(const Quantity &p) const
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     return Quantity(
         std::pow(this->_Value, p._Value),
-        this->_Unit.pow((short)p._Value)
+        this->_Unit.pow(static_cast<signed char>(p._Value))
         );
 }
 
@@ -207,26 +213,32 @@ QString Quantity::getUserString(double& factor, QString& unitString) const
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
 }
 
+QString Quantity::getUserString(UnitsSchema* schema, double &factor, QString &unitString) const
+{
+    return schema->schemaTranslate(*this, factor, unitString);
+}
+
 /// true if it has a number without a unit
 bool Quantity::isDimensionless(void)const
 {
-    return _Value != DOUBLE_MIN && _Unit.isEmpty();
+    return isValid() && _Unit.isEmpty();
 }
 
 // true if it has a number and a valid unit
 bool Quantity::isQuantity(void)const
 {
-    return _Value != DOUBLE_MIN && !_Unit.isEmpty();
+    return isValid() && !_Unit.isEmpty();
 }
+
 // true if it has a number with or without a unit
 bool Quantity::isValid(void)const
 {
-    return _Value != DOUBLE_MIN ;
+    return !boost::math::isnan(_Value);
 }
 
 void Quantity::setInvalid(void)
 {
-    _Value = DOUBLE_MIN ;
+    _Value = std::numeric_limits<double>::quiet_NaN();
 }
 
 // === Predefined types =====================================================
@@ -239,7 +251,14 @@ Quantity Quantity::DeciMetre        (100.0          ,Unit(1));
 Quantity Quantity::Metre            (1.0e3          ,Unit(1));
 Quantity Quantity::KiloMetre        (1.0e6          ,Unit(1));
 
-Quantity Quantity::Liter            (1000000.0      ,Unit(3));
+Quantity Quantity::MilliLiter       (1000.0         ,Unit(3));
+Quantity Quantity::Liter            (1.0e6          ,Unit(3));
+
+Quantity Quantity::Hertz            (1.0            ,Unit(0,0,-1));
+Quantity Quantity::KiloHertz        (1.0e3          ,Unit(0,0,-1));
+Quantity Quantity::MegaHertz        (1.0e6          ,Unit(0,0,-1));
+Quantity Quantity::GigaHertz        (1.0e9          ,Unit(0,0,-1));
+Quantity Quantity::TeraHertz        (1.0e12         ,Unit(0,0,-1));
 
 Quantity Quantity::MicroGram        (1.0e-9         ,Unit(0,1));
 Quantity Quantity::MilliGram        (1.0e-6         ,Unit(0,1));
@@ -260,6 +279,7 @@ Quantity Quantity::Kelvin           (1.0           ,Unit(0,0,0,0,1));
 Quantity Quantity::MilliKelvin      (0.001         ,Unit(0,0,0,0,1));
 Quantity Quantity::MicroKelvin      (0.000001      ,Unit(0,0,0,0,1));
 
+Quantity Quantity::MilliMole        (0.001         ,Unit(0,0,0,0,0,1));
 Quantity Quantity::Mole             (1.0           ,Unit(0,0,0,0,0,1));
 
 Quantity Quantity::Candela          (1.0           ,Unit(0,0,0,0,0,0,1));
@@ -270,22 +290,29 @@ Quantity Quantity::Thou             (0.0254        ,Unit(1));
 Quantity Quantity::Yard             (914.4         ,Unit(1));
 Quantity Quantity::Mile             (1609344.0     ,Unit(1));
 
+Quantity Quantity::MilePerHour      (447.04        ,Unit(1,0,-1));
+Quantity Quantity::SquareFoot       (92903.04      ,Unit(2));
+Quantity Quantity::CubicFoot        (28316846.592  ,Unit(3));
+
 Quantity Quantity::Pound            (0.45359237    ,Unit(0,1));
 Quantity Quantity::Ounce            (0.0283495231  ,Unit(0,1));
 Quantity Quantity::Stone            (6.35029318    ,Unit(0,1));
 Quantity Quantity::Hundredweights   (50.80234544   ,Unit(0,1));
 
-Quantity Quantity::PoundForce       (224.81        ,Unit(1,1,-2));  // Newton  are ~= 0.22481 lbF
+Quantity Quantity::PoundForce       (224.81        ,Unit(1,1,-2)); // Newton  are ~= 0.22481 lbF
 
-Quantity Quantity::Newton           (1000.0        ,Unit(1,1,-2));  // Newton (kg*m/s^2)
+Quantity Quantity::Newton           (1000.0        ,Unit(1,1,-2)); // Newton (kg*m/s^2)
+Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 Quantity Quantity::KiloNewton       (1e+6          ,Unit(1,1,-2));
 Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
-Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 
 Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
 Quantity Quantity::MegaPascal       (1000.0        ,Unit(-1,1,-2));
 Quantity Quantity::GigaPascal       (1e+6          ,Unit(-1,1,-2));
+
+Quantity Quantity::MilliBar         (0.1           ,Unit(-1,1,-2));
+Quantity Quantity::Bar              (100.0         ,Unit(-1,1,-2)); // 1 bar = 100 kPa
 
 Quantity Quantity::Torr             (101.325/760.0 ,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::mTorr            (0.101325/760.0,Unit(-1,1,-2)); // Torr is a defined fraction of Pascal (kg/m/s^2 or N/m^2)
@@ -293,16 +320,52 @@ Quantity Quantity::yTorr            (0.000101325/760.0 ,Unit(-1,1,-2)); // Torr 
 
 Quantity Quantity::PSI              (6.894744825494,Unit(-1,1,-2)); // pounds/in^2
 Quantity Quantity::KSI              (6894.744825494,Unit(-1,1,-2)); // 1000 x pounds/in^2
+Quantity Quantity::MPSI             (6894744.825494,Unit(-1,1,-2)); // 1000 ksi
 
-Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3));  // Watt (kg*m^2/s^3)
-Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3));  // VoltAmpere (kg*m^2/s^3)
+Quantity Quantity::Watt             (1e+6          ,Unit(2,1,-3)); // Watt (kg*m^2/s^3)
+Quantity Quantity::MilliWatt        (1e+3          ,Unit(2,1,-3));
+Quantity Quantity::KiloWatt         (1e+9          ,Unit(2,1,-3));
+Quantity Quantity::VoltAmpere       (1e+6          ,Unit(2,1,-3)); // VoltAmpere (kg*m^2/s^3)
 
-Quantity Quantity::Volt             (1e+6          ,Unit(2,1,-3,-1));  // Volt (kg*m^2/A/s^3)
+Quantity Quantity::Volt             (1e+6          ,Unit(2,1,-3,-1)); // Volt (kg*m^2/A/s^3)
+Quantity Quantity::MilliVolt        (1e+3          ,Unit(2,1,-3,-1));
+Quantity Quantity::KiloVolt         (1e+9          ,Unit(2,1,-3,-1));
 
-Quantity Quantity::Joule            (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
-Quantity Quantity::NewtonMeter      (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
-Quantity Quantity::VoltAmpereSecond (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
-Quantity Quantity::WattSecond       (1e+6          ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::Siemens          (1e-6          ,Unit(-2,-1,3,2)); // Siemens (A^2*s^3/kg/m^2)
+Quantity Quantity::MilliSiemens     (1e-9          ,Unit(-2,-1,3,2));
+Quantity Quantity::MicroSiemens     (1e-12         ,Unit(-2,-1,3,2));
+
+Quantity Quantity::Ohm              (1e+6          ,Unit(2,1,-3,-2)); // Ohm (kg*m^2/A^2/s^3)
+Quantity Quantity::KiloOhm          (1e+9          ,Unit(2,1,-3,-2));
+Quantity Quantity::MegaOhm          (1e+12         ,Unit(2,1,-3,-2));
+
+Quantity Quantity::Coulomb          (1.0           ,Unit(0,0,1,1)); // Coulomb (A*s)
+
+Quantity Quantity::Tesla            (1.0           ,Unit(0,1,-2,-1)); // Tesla (kg/s^2/A)
+
+Quantity Quantity::PicoFarad        (1e-18         ,Unit(-2,-1,4,2));
+Quantity Quantity::NanoFarad        (1e-15         ,Unit(-2,-1,4,2));
+Quantity Quantity::MicroFarad       (1e-12         ,Unit(-2,-1,4,2));
+Quantity Quantity::MilliFarad       (1e-9          ,Unit(-2,-1,4,2));
+Quantity Quantity::Farad            (1e-6          ,Unit(-2,-1,4,2)); // Farad (s^4*A^2/m^2/kg)
+
+Quantity Quantity::NanoHenry        (1e-3          ,Unit(2,1,-2,-2));
+Quantity Quantity::MicroHenry       (1.0           ,Unit(2,1,-2,-2));
+Quantity Quantity::MilliHenry       (1e+3          ,Unit(2,1,-2,-2));
+Quantity Quantity::Henry            (1e+6          ,Unit(2,1,-2,-2)); // Henry (kg*m^2/s^2/A^2)
+
+Quantity Quantity::Joule            (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::MilliJoule       (1e+3            ,Unit(2,1,-2));
+Quantity Quantity::KiloJoule        (1e+9            ,Unit(2,1,-2));
+Quantity Quantity::NewtonMeter      (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::VoltAmpereSecond (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::WattSecond       (1e+6            ,Unit(2,1,-2));  // Joule (kg*m^2/s^2)
+Quantity Quantity::KiloWattHour     (3.6e+12         ,Unit(2,1,-2));  // 1 kWh = 3.6e6 J
+Quantity Quantity::ElectronVolt     (1.602176634e-13 ,Unit(2,1,-2));  // 1 eV = 1.602176634e-19 J
+Quantity Quantity::KiloElectronVolt (1.602176634e-10 ,Unit(2,1,-2));
+Quantity Quantity::MegaElectronVolt (1.602176634e-7  ,Unit(2,1,-2));
+Quantity Quantity::Calorie          (4.1868e+6       ,Unit(2,1,-2));  // 1 cal = 4.1868 J
+Quantity Quantity::KiloCalorie      (4.1868e+9       ,Unit(2,1,-2));
 
 Quantity Quantity::KMH              (277.778       ,Unit(1,0,-1));  // km/h
 Quantity Quantity::MPH              (447.04        ,Unit(1,0,-1));  // Mile/h
@@ -343,7 +406,7 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     
     ret_val = atof( temp ); 
     return ret_val;
-};
+}
 
 // error func
 void Quantity_yyerror(char *errorinfo)

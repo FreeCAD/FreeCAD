@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,7 +48,7 @@
 //===========================================================================
 // Part_SimpleCylinder
 //===========================================================================
-DEF_STD_CMD_A(CmdPartSimpleCylinder);
+DEF_STD_CMD_A(CmdPartSimpleCylinder)
 
 CmdPartSimpleCylinder::CmdPartSimpleCylinder()
   :Command("Part_SimpleCylinder")
@@ -99,7 +99,7 @@ bool CmdPartSimpleCylinder::isActive(void)
 //===========================================================================
 // Part_ShapeFromMesh
 //===========================================================================
-DEF_STD_CMD_A(CmdPartShapeFromMesh);
+DEF_STD_CMD_A(CmdPartShapeFromMesh)
 
 CmdPartShapeFromMesh::CmdPartShapeFromMesh()
   :Command("Part_ShapeFromMesh")
@@ -168,11 +168,60 @@ bool CmdPartShapeFromMesh::isActive(void)
     Base::Type meshid = Base::Type::fromName("Mesh::Feature");
     return Gui::Selection().countObjectsOfType(meshid) > 0;
 }
+//===========================================================================
+// Part_PointsFromMesh
+//===========================================================================
+DEF_STD_CMD_A(CmdPartPointsFromMesh)
+
+CmdPartPointsFromMesh::CmdPartPointsFromMesh()
+  :Command("Part_PointsFromMesh")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Create points object from mesh");
+    sToolTipText  = QT_TR_NOOP("Create selectable points object from selected mesh object");
+    sWhatsThis    = "Part_PointsFromMesh";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Points_from_Mesh";
+}
+
+void CmdPartPointsFromMesh::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
+    std::vector<App::DocumentObject*> meshes;
+    meshes = Gui::Selection().getObjectsOfType(meshid);
+    Gui::WaitCursor wc;
+    std::vector<App::DocumentObject*>::iterator it;
+    openCommand("Points from mesh");
+
+    for (it = meshes.begin(); it != meshes.end(); ++it) {
+        App::Document* doc = (*it)->getDocument();
+        std::string mesh = (*it)->getNameInDocument();
+        if (!(*it)->isDerivedFrom(Base::Type::fromName("Mesh::Feature")))
+            continue;
+        doCommand(Doc,"import Part");
+        doCommand(Doc,"mesh_pts = FreeCAD.getDocument(\"%s\").getObject(\"%s\").Mesh.Points\n",
+                     doc->getName(), mesh.c_str());
+        doCommand(Doc,"Part.show(Part.makeCompound([Part.Point(m.Vector).toShape() for m in mesh_pts]),\"%s\")\n",
+                  (mesh+"_pts").c_str());
+        doCommand(Doc,"del mesh_pts\n");
+    }
+
+    commitCommand();
+}
+
+bool CmdPartPointsFromMesh::isActive(void)
+{
+    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
+    return Gui::Selection().countObjectsOfType(meshid) > 0;
+}
 
 //===========================================================================
 // Part_SimpleCopy
 //===========================================================================
-DEF_STD_CMD_A(CmdPartSimpleCopy);
+DEF_STD_CMD_A(CmdPartSimpleCopy)
 
 CmdPartSimpleCopy::CmdPartSimpleCopy()
   : Command("Part_SimpleCopy")
@@ -255,7 +304,7 @@ bool CmdPartSimpleCopy::isActive(void)
 //===========================================================================
 // Part_TransformedCopy
 //===========================================================================
-DEF_STD_CMD_A(CmdPartTransformedCopy);
+DEF_STD_CMD_A(CmdPartTransformedCopy)
 
 CmdPartTransformedCopy::CmdPartTransformedCopy()
   : Command("Part_TransformedCopy")
@@ -283,7 +332,7 @@ bool CmdPartTransformedCopy::isActive(void)
 //===========================================================================
 // Part_ElementCopy
 //===========================================================================
-DEF_STD_CMD_A(CmdPartElementCopy);
+DEF_STD_CMD_A(CmdPartElementCopy)
 
 CmdPartElementCopy::CmdPartElementCopy()
   : Command("Part_ElementCopy")
@@ -311,7 +360,7 @@ bool CmdPartElementCopy::isActive(void)
 //===========================================================================
 // Part_RefineShape
 //===========================================================================
-DEF_STD_CMD_A(CmdPartRefineShape);
+DEF_STD_CMD_A(CmdPartRefineShape)
 
 CmdPartRefineShape::CmdPartRefineShape()
   : Command("Part_RefineShape")
@@ -339,7 +388,7 @@ bool CmdPartRefineShape::isActive(void)
 //===========================================================================
 // Part_Defeaturing
 //===========================================================================
-DEF_STD_CMD_A(CmdPartDefeaturing);
+DEF_STD_CMD_A(CmdPartDefeaturing)
 
 CmdPartDefeaturing::CmdPartDefeaturing()
   : Command("Part_Defeaturing")
@@ -432,6 +481,7 @@ void CreateSimplePartCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPartSimpleCylinder());
     rcCmdMgr.addCommand(new CmdPartShapeFromMesh());
+    rcCmdMgr.addCommand(new CmdPartPointsFromMesh());
     rcCmdMgr.addCommand(new CmdPartSimpleCopy());
     rcCmdMgr.addCommand(new CmdPartElementCopy());
     rcCmdMgr.addCommand(new CmdPartTransformedCopy());

@@ -36,7 +36,7 @@ import FemGui  # needed to display the icons in TreeView
 from PySide import QtCore
 from . import FemSelectionWidgets
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns 'FemGui'
+False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
 
 class _ViewProviderFemMeshBoundaryLayer:
@@ -90,9 +90,9 @@ class _ViewProviderFemMeshBoundaryLayer:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -103,7 +103,7 @@ class _ViewProviderFemMeshBoundaryLayer:
 
 
 class _TaskPanelFemMeshBoundaryLayer:
-    '''The TaskPanel for editing References property of FemMeshBoundaryLayer objects'''
+    """The TaskPanel for editing References property of FemMeshBoundaryLayer objects"""
 
     def __init__(self, obj):
 
@@ -135,7 +135,7 @@ class _TaskPanelFemMeshBoundaryLayer:
         # start with Solid in list!
         self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
             obj.References,
-            ['Solid', 'Face', 'Edge', 'Vertex']
+            ["Solid", "Face", "Edge", "Vertex"]
         )
 
         # form made from param and selection widget

@@ -182,6 +182,10 @@ int main( int argc, char ** argv )
     App::Application::Config()["SplashTextColor" ] = "#ffffff"; // white
     App::Application::Config()["SplashInfoColor" ] = "#c8c8c8"; // light grey
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 7, 0))
+    QGuiApplication::setDesktopFileName(QStringLiteral("org.freecadweb.FreeCAD.desktop"));
+#endif
+
     try {
         // Init phase ===========================================================
         // sets the default run mode for FC, starts with gui if not overridden in InitConfig...

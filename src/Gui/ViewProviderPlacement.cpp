@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2012    *
+ *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -73,7 +73,7 @@ ViewProviderPlacement::ViewProviderPlacement()
     pcRoot->unref();
     pcRoot = newRoot;
     pcRoot->ref();
-    sPixmap = "CoordinateSystem";
+    sPixmap = "Std_Placement";
 
     OnTopWhenSelected.setValue(1);
 }

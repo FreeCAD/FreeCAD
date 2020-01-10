@@ -67,7 +67,7 @@
 #include <App/AutoTransaction.h>
 #include <Gui/ViewProviderLink.h>
 
-FC_LOG_LEVEL_INIT("Command", true, true);
+FC_LOG_LEVEL_INIT("Command", true, true)
 
 using Base::Interpreter;
 using namespace Gui;
@@ -769,7 +769,8 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
         _doCommand(file,line,Gui,
                 "%s.ViewObject.%s=getattr(%s.getLinkedObject(True).ViewObject,'%s',%s.ViewObject.%s)",
                 objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
-    }catch(Base::Exception &e) {
+    }
+    catch(Base::Exception& /*e*/) {
         // e.ReportException();
     }
 }
@@ -1500,7 +1501,7 @@ void PythonGroupCommand::activated(int iMsg)
         // text change. The net effect is that the GUI won't change by user
         // inovking command through runCommandByName()
 #if 0
-        // Since the default icon is reset when enabing/disabling the command we have
+        // Since the default icon is reset when enabling/disabling the command we have
         // to explicitly set the icon of the used command.
         pcAction->setIcon(a[iMsg]->icon());
 #endif

@@ -79,9 +79,9 @@ class _ViewProviderFemSolverCalculix:
             doc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
             QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + '\n')
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -92,7 +92,7 @@ class _ViewProviderFemSolverCalculix:
 
 
 class _TaskPanelFemSolverCalculix:
-    '''The TaskPanel for CalculiX ccx tools solver object'''
+    """The TaskPanel for CalculiX ccx tools solver object"""
 
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(
@@ -109,7 +109,7 @@ class _TaskPanelFemSolverCalculix:
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
 
-        self.fem_console_message = ''
+        self.fem_console_message = ""
 
         # Connect Signals and Slots
         QtCore.QObject.connect(
@@ -189,15 +189,15 @@ class _TaskPanelFemSolverCalculix:
         FreeCADGui.ActiveDocument.resetEdit()
 
     def update(self):
-        'fills the widgets'
+        "fills the widgets"
         self.form.le_working_dir.setText(self.fea.working_dir)
-        if self.fea.solver.AnalysisType == 'static':
+        if self.fea.solver.AnalysisType == "static":
             self.form.rb_static_analysis.setChecked(True)
-        elif self.fea.solver.AnalysisType == 'frequency':
+        elif self.fea.solver.AnalysisType == "frequency":
             self.form.rb_frequency_analysis.setChecked(True)
-        elif self.fea.solver.AnalysisType == 'thermomech':
+        elif self.fea.solver.AnalysisType == "thermomech":
             self.form.rb_thermomech_analysis.setChecked(True)
-        elif self.fea.solver.AnalysisType == 'check':
+        elif self.fea.solver.AnalysisType == "check":
             self.form.rb_check_mesh.setChecked(True)
         return
 
@@ -212,41 +212,57 @@ class _TaskPanelFemSolverCalculix:
         self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
     def printCalculiXstdout(self):
+
         out = self.Calculix.readAllStandardOutput()
+        # print(type(out))
+        # <class 'PySide2.QtCore.QByteArray'>
+
         if out.isEmpty():
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
+            return False
+
+        if sys.version_info.major >= 3:
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=39195
+            # convert QByteArray to a binary string an decode it to "utf-8"
+            out = out.data().decode()  # "utf-8" can be omitted
+            # print(type(out))
+            # print(out)
         else:
             try:
-                out = unicode(out, 'utf-8', 'replace')
+                out = unicode(out, "utf-8", "replace")
                 rx = QtCore.QRegExp("\\*ERROR.*\\n\\n")
-                print(rx)
+                # print(rx)
                 rx.setMinimal(True)
                 pos = rx.indexIn(out)
                 while not pos < 0:
                     match = rx.cap(0)
-                    FreeCAD.Console.PrintError(match.strip().replace('\n', ' ') + '\n')
+                    FreeCAD.Console.PrintError(match.strip().replace("\n", " ") + "\n")
                     pos = rx.indexIn(out, pos + 1)
-                out = os.linesep.join([s for s in out.splitlines() if s])
-                self.femConsoleMessage(out.replace('\n', '<br>'))
             except UnicodeDecodeError:
                 self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
-        if '*ERROR in e_c3d: nonpositive jacobian' in out:
+        out = os.linesep.join([s for s in out.splitlines() if s])
+        out = out.replace("\n", "<br>")
+        # print(out)
+        self.femConsoleMessage(out)
+
+        if "*ERROR in e_c3d: nonpositive jacobian" in out:
             error_message = (
                 "\n\nCalculiX returned an error due to "
                 "nonpositive jacobian determinant in at least one element\n"
                 "Use the run button on selected solver to get a better error output.\n"
             )
             FreeCAD.Console.PrintError(error_message)
-        if '*ERROR' in out:
+
+        if "*ERROR" in out:
             return False
         else:
             return True
 
     def UpdateText(self):
         if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
-            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+            self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
-    def calculixError(self, error=''):
+    def calculixError(self, error=""):
         print("Error() {}".format(error))
         self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
 
@@ -255,8 +271,8 @@ class _TaskPanelFemSolverCalculix:
         self.femConsoleMessage("CalculiX done without error!", "#00AA00")
 
     def calculixStarted(self):
-        print("calculixStarted()")
-        print(self.Calculix.state())
+        # print("calculixStarted()")
+        FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
         self.form.pb_run_ccx.setText("Break CalculiX")
 
     def calculixStateChanged(self, newState):
@@ -268,8 +284,8 @@ class _TaskPanelFemSolverCalculix:
                 self.femConsoleMessage("CalculiX stopped.")
 
     def calculixFinished(self, exitCode):
-        print("calculixFinished() {}".format(exitCode))
-        print(self.Calculix.state())
+        # print("calculixFinished(), exit code: {}".format(exitCode))
+        FreeCAD.Console.PrintLog("calculix state: {}\n".format(self.Calculix.state()))
 
         # Restore previous cwd
         QtCore.QDir.setCurrent(self.cwd)
@@ -283,26 +299,38 @@ class _TaskPanelFemSolverCalculix:
 
         self.form.pb_run_ccx.setText("Re-run CalculiX")
         self.femConsoleMessage("Loading result sets...")
-        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
         self.fea.reset_mesh_purge_results_checked()
         self.fea.inp_file_name = self.fea.inp_file_name
+
+        # check if ccx is greater than 2.10, if not do not read results
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548#p183829 Point 3
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548&start=20#p183909
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=23548&start=30#p185027
+        # https://github.com/FreeCAD/FreeCAD/commit/3dd1c9f
+        majorVersion, minorVersion = self.fea.get_ccx_version()
+        if majorVersion == 2 and minorVersion <= 10:
+            message = (
+                "The used CalculiX version {}.{} creates broken output files. "
+                "The result file will not be read by FreeCAD FEM. "
+                "You still can try to read it stand alone with FreeCAD, but it is "
+                "strongly recommended to upgrade CalculiX to a newer version.\n"
+                .format(majorVersion, minorVersion)
+            )
+            QtGui.QMessageBox.warning(None, "Upgrade CalculiX", message)
+            raise
+
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             self.fea.load_results()
         except:
-            QApplication.restoreOverrideCursor()
-            majorVersion, minorVersion = self.fea.get_ccx_version()
-            if majorVersion == 2 and minorVersion <= 10:
-                message = "The used CalculiX version {}.{} creates broken output files.\n" \
-                    "Please upgrade to a newer version.".format(majorVersion, minorVersion)
-                QtGui.QMessageBox.warning(None, "Upgrade CalculiX", message)
-            raise
-        else:
-            QApplication.restoreOverrideCursor()
-            self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+            FreeCAD.Console.PrintError("loading results failed\n")
+
+        QApplication.restoreOverrideCursor()
+        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
     def choose_working_dir(self):
-        wd = QtGui.QFileDialog.getExistingDirectory(None, 'Choose CalculiX working directory',
+        wd = QtGui.QFileDialog.getExistingDirectory(None, "Choose CalculiX working directory",
                                                     self.fea.working_dir)
         if os.path.isdir(wd):
             self.fea.setup_working_dir(wd)
@@ -310,7 +338,7 @@ class _TaskPanelFemSolverCalculix:
 
     def write_input_file_handler(self):
         self.Start = time.time()
-        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
         QApplication.restoreOverrideCursor()
         if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -322,12 +350,12 @@ class _TaskPanelFemSolverCalculix:
             else:
                 self.femConsoleMessage("Write .inp file failed!", "#FF0000")
             QApplication.restoreOverrideCursor()
-        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
     def check_prerequisites_helper(self):
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
-        self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
         self.fea.update_objects()
         message = self.fea.check_prerequisites()
@@ -343,7 +371,7 @@ class _TaskPanelFemSolverCalculix:
             self.ext_editor_process.start(ext_editor_path, [filename])
 
     def editCalculixInputFile(self):
-        print('editCalculixInputFile {}'.format(self.fea.inp_file_name))
+        print("editCalculixInputFile {}".format(self.fea.inp_file_name))
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
         if ccx_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(self.fea.inp_file_name)
@@ -359,23 +387,23 @@ class _TaskPanelFemSolverCalculix:
                 FemGui.open(self.fea.inp_file_name)
 
     def runCalculix(self):
-        print('runCalculix')
+        # print("runCalculix")
         self.Start = time.time()
 
         self.femConsoleMessage("CalculiX binary: {}".format(self.fea.ccx_binary))
+        self.femConsoleMessage("CalculiX input file: {}".format(self.fea.inp_file_name))
         self.femConsoleMessage("Run CalculiX...")
 
-        # run Calculix
-        print(
-            'run CalculiX at: {} with: {}'
-            .format(self.fea.ccx_binary, os.path.splitext(self.fea.inp_file_name)[0])
+        FreeCAD.Console.PrintMessage(
+            "run CalculiX at: {} with: {}\n"
+            .format(self.fea.ccx_binary, self.fea.inp_file_name)
         )
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
         fi = QtCore.QFileInfo(self.fea.inp_file_name)
         QtCore.QDir.setCurrent(fi.path())
-        self.Calculix.start(self.fea.ccx_binary, ['-i', fi.baseName()])
+        self.Calculix.start(self.fea.ccx_binary, ["-i", fi.baseName()])
 
         QApplication.restoreOverrideCursor()
 
@@ -386,13 +414,13 @@ class _TaskPanelFemSolverCalculix:
             self.form.pb_run_ccx.setEnabled(False)
 
     def select_static_analysis(self):
-        self.select_analysis_type('static')
+        self.select_analysis_type("static")
 
     def select_frequency_analysis(self):
-        self.select_analysis_type('frequency')
+        self.select_analysis_type("frequency")
 
     def select_thermomech_analysis(self):
-        self.select_analysis_type('thermomech')
+        self.select_analysis_type("thermomech")
 
     def select_check_mesh(self):
-        self.select_analysis_type('check')
+        self.select_analysis_type("check")

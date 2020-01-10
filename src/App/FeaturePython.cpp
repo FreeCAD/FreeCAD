@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -84,11 +84,11 @@ bool FeaturePythonImp::execute()
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
-        e.ReportException();
-        std::stringstream str;
-        str << object->Label.getValue() << ": " << e.what();
-        throw Base::RuntimeError(str.str());
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
+        Base::PyException::ThrowException(); // extract the Python error text
     }
 
     return false;
@@ -116,7 +116,6 @@ bool FeaturePythonImp::mustExecute() const
     }
     return false;
 }
-
 
 void FeaturePythonImp::onBeforeChange(const Property* prop)
 {
@@ -161,7 +160,7 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string &newLabel)
         Py::Object ret(Base::pyCall(py_onBeforeChangeLabel.ptr(),args.ptr()));
         if(!ret.isNone()) {
             if(!ret.isString())
-                throw Base::TypeError("onBeforeChangeLabel expects to return a string");
+                throw Py::TypeError("onBeforeChangeLabel expects to return a string");
             newLabel = ret.as_string();
             return true;
         }
@@ -236,7 +235,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         args.setItem(2,Py::Int(pyObj?2:1));
         Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
-        args.setItem(3,Py::Object(pyMat));
+        args.setItem(3,Py::asObject(pyMat));
         args.setItem(4,Py::Boolean(transform));
         args.setItem(5,Py::Int(depth));
 
@@ -248,14 +247,14 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         if(!res.isTrue())
             return false;
         if(!res.isSequence())
-            throw Base::TypeError("getSubObject expects return type of tuple");
+            throw Py::TypeError("getSubObject expects return type of tuple");
         Py::Sequence seq(res);
         if(seq.length() < 2 ||
                 (!seq.getItem(0).isNone() && 
                  !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
                 !PyObject_TypeCheck(seq.getItem(1).ptr(),&Base::MatrixPy::Type))
         {
-            throw Base::TypeError("getSubObject expects return type of (obj,matrix,pyobj)");
+            throw Py::TypeError("getSubObject expects return type of (obj,matrix,pyobj)");
         }
         if(_mat) 
             *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(1).ptr())->getMatrixPtr();
@@ -272,6 +271,10 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         return true;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         ret = 0;
@@ -290,17 +293,21 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
         if(!res.isTrue())
             return true;
         if(!res.isSequence())
-            throw Base::TypeError("getSubObjects expects return type of tuple");
+            throw Py::TypeError("getSubObjects expects return type of tuple");
         Py::Sequence seq(res);
         for(size_t i=0;i<seq.length();++i) {
             Py::Object name(seq[i].ptr());
             if(!name.isString())
-                throw Base::TypeError("getSubObjects expects string in returned sequence");
+                throw Py::TypeError("getSubObjects expects string in returned sequence");
             ret.push_back(name.as_string());
         }
         return true;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         return true;
@@ -318,7 +325,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
         args.setItem(1,Py::Boolean(recurse));
         Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
-        args.setItem(2,Py::Object(pyMat));
+        args.setItem(2,Py::asObject(pyMat));
         args.setItem(3,Py::Boolean(transform));
         args.setItem(4,Py::Int(depth));
 
@@ -328,14 +335,14 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
             return true;
         }
         if(!res.isSequence())
-            throw Base::TypeError("getLinkedObject expects return type of (object,matrix)");
+            throw Py::TypeError("getLinkedObject expects return type of (object,matrix)");
         Py::Sequence seq(res);
         if(seq.length() != 2 ||
                 (!seq.getItem(0).isNone() && 
                  !PyObject_TypeCheck(seq.getItem(0).ptr(),&DocumentObjectPy::Type)) ||
                 !PyObject_TypeCheck(seq.getItem(1).ptr(),&Base::MatrixPy::Type))
         {
-            throw Base::TypeError("getLinkedObject expects return type of (object,matrix)");
+            throw Py::TypeError("getLinkedObject expects return type of (object,matrix)");
         }
         if(_mat) 
             *_mat = *static_cast<Base::MatrixPy*>(seq.getItem(1).ptr())->getMatrixPtr();
@@ -346,6 +353,10 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
         return true;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
         ret = 0;
@@ -359,21 +370,27 @@ PyObject *FeaturePythonImp::getPyObject(void)
     return new FeaturePythonPyT<DocumentObjectPy>(object);
 }
 
-int FeaturePythonImp::hasChildElement() const {
-    _FC_PY_CALL_CHECK(hasChildElement,return(-1));
+FeaturePythonImp::ValueT
+FeaturePythonImp::hasChildElement() const
+{
+    _FC_PY_CALL_CHECK(hasChildElement,return(NotImplemented));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         Py::Boolean ok(Base::pyCall(py_hasChildElement.ptr(),args.ptr()));
-        return static_cast<bool>(ok) ? 1 : 0;
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return Rejected;
     }
-
-    return -1;
 }
 
 int FeaturePythonImp::isElementVisible(const char *element) const {
@@ -386,10 +403,14 @@ int FeaturePythonImp::isElementVisible(const char *element) const {
         return Py::Int(Base::pyCall(py_isElementVisible.ptr(),args.ptr()));
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -2;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return -1;
     }
-    return -2;
 }
 
 int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
@@ -403,11 +424,14 @@ int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
         return Py::Int(Base::pyCall(py_setElementVisible.ptr(),args.ptr()));
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -2;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return -1;
     }
-
-    return -2;
 }
 
 std::string FeaturePythonImp::getViewProviderName()
@@ -427,35 +451,48 @@ std::string FeaturePythonImp::getViewProviderName()
     return std::string();
 }
 
-int FeaturePythonImp::canLinkProperties() const {
-    _FC_PY_CALL_CHECK(canLinkProperties,return(-1));
+FeaturePythonImp::ValueT
+FeaturePythonImp::canLinkProperties() const
+{
+    _FC_PY_CALL_CHECK(canLinkProperties,return(NotImplemented));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         Py::Boolean ok(Base::pyCall(py_canLinkProperties.ptr(),args.ptr()));
-        return ok?1:0;
+        return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
-        return 0;
+        return Rejected;
     }
 }
 
-int FeaturePythonImp::allowDuplicateLabel() const {
-    _FC_PY_CALL_CHECK(allowDuplicateLabel,return(-1));
+FeaturePythonImp::ValueT
+FeaturePythonImp::allowDuplicateLabel() const
+{
+    _FC_PY_CALL_CHECK(allowDuplicateLabel,return(NotImplemented));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         Py::Boolean ok(Base::pyCall(py_allowDuplicateLabel.ptr(),args.ptr()));
-        return ok?1:0;
+        return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+
         Base::PyException e; // extract the Python error text
         e.ReportException();
-        return 0;
+        return Rejected;
     }
 }
 
@@ -469,16 +506,22 @@ int FeaturePythonImp::canLoadPartial() const {
         return ret;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -1;
+        }
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return 0;
     }
-    return -1;
 }
 
-bool FeaturePythonImp::redirectSubName(std::ostringstream &ss,
-        App::DocumentObject *topParent, App::DocumentObject *child) const 
+FeaturePythonImp::ValueT
+FeaturePythonImp::redirectSubName(std::ostringstream &ss,
+                                  App::DocumentObject *topParent,
+                                  App::DocumentObject *child) const 
 {
-    FC_PY_CALL_CHECK(redirectSubName);
+    _FC_PY_CALL_CHECK(redirectSubName,return(NotImplemented));
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(4);
@@ -487,17 +530,22 @@ bool FeaturePythonImp::redirectSubName(std::ostringstream &ss,
         args.setItem(2,topParent?Py::Object(topParent->getPyObject(),true):Py::Object());
         args.setItem(3,child?Py::Object(child->getPyObject(),true):Py::Object());
         Py::Object ret(Base::pyCall(py_redirectSubName.ptr(),args.ptr()));
-        if(ret.isNone())
-            return false;
+        if (ret.isNone())
+            return Rejected;
         ss.str("");
         ss << ret.as_string();
-        return true;
+        return Accepted;
     }
     catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return Rejected;
     }
-    return false;
 }
 
 // ---------------------------------------------------------

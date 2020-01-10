@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -142,6 +142,8 @@ public:
     bool isDriving;
     int InternalAlignmentIndex; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline). It is not a GeoId!!
     bool isInVirtualSpace;
+
+    bool isActive;
 
 protected:
     boost::uuids::uuid tag;

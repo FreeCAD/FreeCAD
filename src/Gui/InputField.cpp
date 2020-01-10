@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Juergen Riegel                                     *
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,6 +34,7 @@
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/PropertyUnits.h>
+#include <App/ExpressionParser.h>
 #include <App/DocumentObject.h>
 #include "App/ExpressionParser.h"
 #include "ExpressionCompleter.h"

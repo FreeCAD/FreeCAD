@@ -21,9 +21,9 @@
 #include <App/ExpressionParser.h>
 #include <App/PropertyLinks.h>
 
-FC_LOG_LEVEL_INIT("Completer",true,true);
+FC_LOG_LEVEL_INIT("Completer",true,true)
 
-Q_DECLARE_METATYPE(App::ObjectIdentifier);
+Q_DECLARE_METATYPE(App::ObjectIdentifier)
 
 using namespace App;
 using namespace Gui;
@@ -61,7 +61,7 @@ public:
     // 64-bit system, the index is 32bit. 
     //
     // The "virtual" items are organized as a tree. The root items are special,
-    // which are consists of three types in the following order,
+    // which consists of three types in the following order,
     //
     // * Document, even index contains item using document's name, while
     //   odd index with quoted document label.
@@ -273,7 +273,6 @@ public:
     }
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const {
-        const auto &docs = App::GetApplication().getDocuments();
         Info info;
         int row = 0;
         if(!parent.isValid()) {
@@ -440,8 +439,8 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     // in the middle of a token, and we shall include that token.
     for(auto it=tokens.begin();it!=tokens.end();++it) {
         if(get<1>(*it) >= pos) {
-            // Include the immediatly followed '.' or '#', because we'll be
-            // inserting these separater too, in ExpressionCompleteModel::pathFromIndex()
+            // Include the immediately followed '.' or '#', because we'll be
+            // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
             if(it!=tokens.begin() && get<0>(*it)!='.' && get<0>(*it)!='#')
                 it = it-1;
             tokens.resize(it-tokens.begin()+1);

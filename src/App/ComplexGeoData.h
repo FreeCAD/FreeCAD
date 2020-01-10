@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -164,13 +164,13 @@ public:
 
     /** @name Element name mapping */
     //@{
-    /// Sepecial prefix to mark the begining of a mapped sub-element name
+    /// Special prefix to mark the beginning of a mapped sub-element name
     static const std::string &elementMapPrefix();
-    /// Sepecial postfix to mark the following tag
+    /// Special postfix to mark the following tag
     static const std::string &tagPostfix();
-    /// Speical postfix to mark the index of an array element
+    /// Special postfix to mark the index of an array element
     static const std::string &indexPostfix();
-    /// Speical prefix to mark a missing element
+    /// Special prefix to mark a missing element
     static const std::string &missingPrefix();
     /// Check if a subname contains missing element
     static bool hasMissingElement(const char *subname);
@@ -182,7 +182,7 @@ public:
      */
     static const char *isMappedElement(const char *name);
 
-    /// Strip out the trailing element name if there is mapped element name preceeds it.
+    /// Strip out the trailing element name if there is mapped element name precedes it.
     static std::string newElementName(const char *name);
     /// Strip out the mapped element name if there is one.
     static std::string oldElementName(const char *name);

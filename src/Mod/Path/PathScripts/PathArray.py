@@ -29,7 +29,7 @@ import PathScripts
 from PySide import QtCore
 import math
 
-"""Path Array object and FreeCAD command"""
+__doc__ = """Path Array object and FreeCAD command"""
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -213,6 +213,7 @@ class ObjectArray:
 class ViewProviderArray:
 
     def __init__(self, vobj):
+        self.Object = vobj.Object
         vobj.Proxy = self
 
     def attach(self, vobj):

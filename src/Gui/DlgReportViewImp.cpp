@@ -59,6 +59,7 @@ void DlgReportViewImp::saveSettings()
     checkLogging->onSave();
     checkWarning->onSave();
     checkError->onSave();
+    checkShowReportViewOnWarningOrError->onSave();
     colorText->onSave();
     colorLogging->onSave();
     colorWarning->onSave();
@@ -72,6 +73,7 @@ void DlgReportViewImp::loadSettings()
     checkLogging->onRestore();
     checkWarning->onRestore();
     checkError->onRestore();
+    checkShowReportViewOnWarningOrError->onRestore();
     colorText->onRestore();
     colorLogging->onRestore();
     colorWarning->onRestore();

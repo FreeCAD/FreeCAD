@@ -36,9 +36,9 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 
 #include <Gui/Action.h>
 #include <Gui/BitmapFactory.h>
@@ -87,7 +87,7 @@ void ActivateVirtualSpaceHandler(Gui::Document *doc,DrawSketchHandler *handler)
 }
 
 // Show/Hide B-spline degree
-DEF_STD_CMD_A(CmdSketcherSwitchVirtualSpace);
+DEF_STD_CMD_A(CmdSketcherSwitchVirtualSpace)
 
 CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
 :Command("Sketcher_SwitchVirtualSpace")
@@ -169,7 +169,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
                 Gui::Command::openCommand("Update constraint's virtual space");
                 try {
-                    FCMD_OBJ_CMD2("toggleVirtualSpace(%d)", Obj, ConstrId);
+                    Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }
                 catch(const Base::Exception&) {
                     successful--;

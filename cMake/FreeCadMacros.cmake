@@ -161,6 +161,19 @@ macro(generate_from_py BASE_NAME OUTPUT_FILE)
 				COMMENT "Building files out of ${BASE_NAME}.py")
 endmacro(generate_from_py)
 
+macro(generate_from_any INPUT_FILE OUTPUT_FILE VARIABLE)
+		set(TOOL_PATH "${CMAKE_SOURCE_DIR}/src/Tools/PythonToCPP.py")
+		file(TO_NATIVE_PATH "${TOOL_PATH}" TOOL_NATIVE_PATH)
+		file(TO_NATIVE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_FILE}" SOURCE_NATIVE_PATH)
+		add_custom_command(
+		 		OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}"
+		 		COMMAND "${PYTHON_EXECUTABLE}" "${TOOL_NATIVE_PATH}" "${SOURCE_NATIVE_PATH}" "${OUTPUT_FILE}" "${VARIABLE}"
+				MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_FILE}"
+				DEPENDS "${TOOL_PATH}"
+				WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+				COMMENT "Building files out of ${INPUT_FILE}")
+endmacro(generate_from_any)
+
 
 # generates the ui -> cpp h files
 #macro(qt4_wrap_ui infiles )
@@ -237,8 +250,10 @@ MACRO(SET_BIN_DIR ProjectName OutputName)
         # FreeCADBase, SMDS, Driver, MEFISTO2 and area-native libs don't depend on parts from CMAKE_INSTALL_LIBDIR
         if(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2|area-native)$")
             if(${ARGC} STREQUAL 4)
-                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}${ARGV3})
-            else(${ARGC} STREQUAL 4)
+                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${ARGV3})
+            elseif(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
+                set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
+            else()
                 set_property(TARGET ${ProjectName} APPEND PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_LIBDIR})
             endif()
         endif()

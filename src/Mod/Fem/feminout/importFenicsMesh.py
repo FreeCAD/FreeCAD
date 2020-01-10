@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
+# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -31,6 +31,7 @@ __url__ = "http://www.freecadweb.org"
 import os
 
 import FreeCAD
+from FreeCAD import Console
 from . import importToolsFem
 from . import readFenicsXML
 from . import writeFenicsXML
@@ -43,10 +44,10 @@ if FreeCAD.GuiUp:
 
 # Template copied from importZ88Mesh.py. Thanks Bernd!
 # ********* generic FreeCAD import and export methods *********
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     # because we'll redefine open below (Python2)
     pyopen = open
-elif open.__module__ == 'io':
+elif open.__module__ == "io":
     # because we'll redefine open below (Python3)
     pyopen = open
 
@@ -122,7 +123,7 @@ if FreeCAD.GuiUp:
                     default_value = int(self.form.tableGroups.item(r, 3).text())
                     marked_value = int(self.form.tableGroups.item(r, 4).text())
                 except ValueError:
-                    FreeCAD.Console.PrintError(
+                    Console.PrintError(
                         "ERROR: value conversion failed "
                         "in table to dict: assuming 0 for default, "
                         "1 for marked.\n"
@@ -165,24 +166,24 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
     of (marked_value (default=1), default_value (default=0))
     """
     if len(objectslist) != 1:
-        FreeCAD.Console.PrintError(
+        Console.PrintError(
             "This exporter can only export one object.\n")
         return
     obj = objectslist[0]
     if not obj.isDerivedFrom("Fem::FemMeshObject"):
-        FreeCAD.Console.PrintError("No FEM mesh object selected.\n")
+        Console.PrintError("No FEM mesh object selected.\n")
         return
 
     if fileString != "":
         fileName, fileExtension = os.path.splitext(fileString)
-        if fileExtension.lower() == '.xml':
-            FreeCAD.Console.PrintWarning(
+        if fileExtension.lower() == ".xml":
+            Console.PrintWarning(
                 "XML is not designed to save higher order elements.\n")
-            FreeCAD.Console.PrintWarning(
+            Console.PrintWarning(
                 "Reducing order for second order mesh.\n")
-            FreeCAD.Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
+            Console.PrintWarning("Tri6 -> Tri3, Tet10 -> Tet4, etc.\n")
             writeFenicsXML.write_fenics_mesh_xml(obj, fileString)
-        elif fileExtension.lower() == '.xdmf':
+        elif fileExtension.lower() == ".xdmf":
             mesh_groups = importToolsFem.get_FemMeshObjectMeshGroups(obj)
             if mesh_groups is not ():
                 # if there are groups found, make task panel available if GuiUp
@@ -203,13 +204,13 @@ def export(objectslist, fileString, group_values_dict_nogui=None):
 
 # ********* module specific methods *********
 def import_fenics_mesh(filename, analysis=None):
-    '''insert a FreeCAD FEM Mesh object in the ActiveDocument
-    '''
+    """insert a FreeCAD FEM Mesh object in the ActiveDocument
+    """
     mesh_data = readFenicsXML.read_fenics_mesh_xml(filename)
     # xdmf not operational
 
     mesh_name = os.path.basename(os.path.splitext(filename)[0])
     femmesh = importToolsFem.make_femmesh(mesh_data)
     if femmesh:
-        mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObject", mesh_name)
         mesh_object.FemMesh = femmesh

@@ -88,9 +88,17 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         //TODO: would be good to start the QGIV creation process here, but no guarantee we actually have
         //      MDIVP or QGVP yet.
+        // but parent page might.  we may not be part of the document yet though!
+        // :( we're not part of the page yet either!
     } else {
         Base::Console().Warning("VPDV::attach has no Feature!\n");
     }
+//    TechDraw::DrawView* view = static_cast<TechDraw::DrawView*>(pcFeat);
+//    TechDraw::DrawPage* page = view->findParentPage();
+//    TechDraw::DrawPage* page = feature->findParentPage();
+//    Base::Console().Message("VPDV::attach(%X) - parent: %X\n", 
+//            pcFeat, page);
+//            pcFeat->getNameInDocument(), page->getNameInDocument());
 }
 
 void ViewProviderDrawingView::setDisplayMode(const char* ModeName)
@@ -113,11 +121,11 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
     }
 
     if (prop == &Visibility) {
-       if(Visibility.getValue()) {
-            show();
-        } else {
-            hide();
-        }
+//       if(Visibility.getValue()) {
+//            show();
+//        } else {
+//            hide();
+//        }
     } else if (prop == &KeepLabel) {
         QGIView* qgiv = getQView();
         if (qgiv) {
@@ -153,11 +161,20 @@ void ViewProviderDrawingView::hide(void)
     if (obj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         QGIView* qView = getQView();
         if (qView) {
-            qView->draw();
-            qView->hide();
+            //note: hiding an item in the scene clears its selection status
+            //      this confuses Gui::Selection.
+            //      So we block selection changes while we are hiding the qgiv
+            //      in FC Tree hiding does not change selection state.
+            //      block/unblock selection protects against crash in Gui::SelectionSingleton::setVisible
+            MDIViewPage* mdi = getMDIViewPage();
+            if (mdi != nullptr) {                  //if there is no mdivp, there is nothing to hide!
+                mdi->blockSelection(true);
+                qView->hide();
+                ViewProviderDocumentObject::hide();
+                mdi->blockSelection(false);
+            }
         }
     }
-    ViewProviderDocumentObject::hide();
 }
 
 QGIView* ViewProviderDrawingView::getQView(void)
@@ -232,7 +249,7 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 {
     MDIViewPage* result = nullptr;
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-    Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+    Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage()); //if not in page.views, !@#$%
     ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
     if (dvp) {
         result = dvp->getMDIViewPage();
@@ -240,7 +257,8 @@ MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
     return result;
 }
 
-Gui::MDIView *ViewProviderDrawingView::getMDIView() {
+Gui::MDIView *ViewProviderDrawingView::getMDIView() const
+{
     return getMDIViewPage();
 }
 
@@ -256,6 +274,9 @@ void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
             } else {                                //we are not part of the Gui page yet. ask page to add us.
                 //TODO: this bit causes trouble.  Should move QGIV creation to attach?
                 //      is MDIVP/QGVP available at attach time?
+                // wf: mdivp/qgvp is not necessarily directly available at attach time.  It should be available
+                //     via the parent DrawPage since the DP is created before any views.
+//                Base::Console().Message("VPDV::onGuiRepaint - no QGIV for: %s\n",dv->getNameInDocument());
                 MDIViewPage* page = getMDIViewPage();
                 if (page != nullptr) {
                     page->addView(dv);

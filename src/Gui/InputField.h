@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Juergen Riegel                                     *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -177,14 +177,14 @@ Q_SIGNALS:
     /** gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
      *  like: minimum, maximum and/or the right Unit (if specified). 
-     *  If you want the unfiltered/unvalidated input use textChanged(const QString&) 
+     *  If you want the unfiltered/non-validated input use textChanged(const QString&) 
      *  instead:
      */
     void valueChanged(const Base::Quantity&);
     /** gets emitted if the user has entered a VALID input
      *  Valid means the user inputted string obeys all restrictions
      *  like: minimum, maximum and/or the right Unit (if specified). 
-     *  If you want the unfiltered/unvalidated input use textChanged(const QString&) 
+     *  If you want the unfiltered/non-validated input use textChanged(const QString&) 
      *  instead:
      */
     void valueChanged(double);

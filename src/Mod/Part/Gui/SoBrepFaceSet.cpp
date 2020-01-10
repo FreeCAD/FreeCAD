@@ -83,7 +83,7 @@
 
 using namespace PartGui;
 
-SO_NODE_SOURCE(SoBrepFaceSet);
+SO_NODE_SOURCE(SoBrepFaceSet)
 
 #define PRIVATE(p) ((p)->pimpl)
 
@@ -715,7 +715,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
     //
     // Criteria of using material binding override:
     // 1) original material binding is either overall or per_part. We can
-    //    support others, but ommitted here to simplify coding logic, and
+    //    support others, but omitted here to simplify coding logic, and
     //    because it seems FC only uses these two.
     // 2) either of the following :
     //      a) has highlight or selection and Selection().needPickPoint, so that
@@ -1452,7 +1452,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     }
 
     if ((buf.vertex_array_size != (sizeof(float) * num_indices * 10)) ||
-        (buf.index_array_size != (sizeof(GLuint) * num_indices * 3))) {
+        (buf.index_array_size != (sizeof(GLuint) * num_indices))) {
         if ((buf.vertex_array_size != 0 ) && ( buf.index_array_size != 0))
             buf.updateVbo = true;
     }
@@ -1478,9 +1478,9 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         glDeleteBuffersARB(2, buf.myvbo);
         glGenBuffersARB(2, buf.myvbo);
         vertex_array = ( float * ) malloc ( sizeof(float) * num_indices * 10 );
-        index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices * 3 );
+        index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices );
         buf.vertex_array_size = sizeof(float) * num_indices * 10;
-        buf.index_array_size = sizeof(GLuint) * num_indices * 3;
+        buf.index_array_size = sizeof(GLuint) * num_indices;
         this->vbomap[contextId] = buf;
         this->indice_array = 0;
 

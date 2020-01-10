@@ -117,6 +117,9 @@ public:
     void setNumPasses(const int num);
     int getNumPasses(void) const;
 
+    void setInternalTextureFormat(GLenum internalTextureFormat);
+    GLenum internalTextureFormat() const;
+
     void setPbufferEnable(SbBool enable);
     SbBool getPbufferEnable(void) const;
 
@@ -148,6 +151,7 @@ private:
     SbBool didallocation;
     SbBool pbuffer;
     int numSamples;
+    GLenum texFormat;
 #if defined(HAVE_QT5_OPENGL)
     QImage glImage;
 #endif

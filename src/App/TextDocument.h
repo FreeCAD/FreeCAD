@@ -42,17 +42,19 @@ public:
     using TextSlot = TextSignal::slot_type;
 
     PropertyString Text;
-    PropertyBool ReadOnly;
 
     TextDocument();
-    ~TextDocument() {};
+    ~TextDocument() {}
 
     void onChanged(const Property* prop);
     const char* getViewProviderName() const;
 
-    boost::signals2::connection connect(const TextSlot &sub);
+    boost::signals2::connection connectText(const TextSlot &sub);
+    boost::signals2::connection connectLabel(const TextSlot &sub);
+
 private:
     TextSignal textChanged;
+    TextSignal labelChanged;
 };
 
 }

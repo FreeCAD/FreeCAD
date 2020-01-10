@@ -86,7 +86,7 @@
 
 #elif defined(FC_OS_WIN32)
 #define NOMINMAX
-#include <windows.h>
+#include <Windows.h>
 #endif  //_PreComp_
 
 #endif // MESHGUI_PRECOMPILED_H 

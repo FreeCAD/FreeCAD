@@ -2504,7 +2504,7 @@ static std::vector<std::string> getBoxSelection(
     const auto &subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
     if(subs.empty()) {
         if(!selectElement) {
-            if(mode==INTERSECT || bbox.Contains(bbox.GetCenter()))
+            if(mode==INTERSECT || polygon.Contains(bbox.GetCenter()))
                 ret.emplace_back("");
             return ret;
         }
@@ -3079,7 +3079,7 @@ void CmdViewMeasureToggleAll::activated(int iMsg)
 // Std_SelBack
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdSelBack);
+DEF_STD_CMD_A(StdCmdSelBack)
 
 StdCmdSelBack::StdCmdSelBack()
   :Command("Std_SelBack")
@@ -3109,7 +3109,7 @@ bool StdCmdSelBack::isActive(void)
 // Std_SelForward
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdSelForward);
+DEF_STD_CMD_A(StdCmdSelForward)
 
 StdCmdSelForward::StdCmdSelForward()
   :Command("Std_SelForward")
@@ -3122,8 +3122,6 @@ StdCmdSelForward::StdCmdSelForward()
   sPixmap       = "sel-forward";
   sAccel        = "S, F";
   eType         = AlterSelection;
-
-
 }
 
 void StdCmdSelForward::activated(int iMsg)
@@ -3143,7 +3141,7 @@ bool StdCmdSelForward::isActive(void)
 #define TREEVIEW_DOC_CMD_DEF(_name,_v) \
 DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
-    FC_TREEPARAM_SET(DocumentMode,_v);\
+    TreeParams::Instance()->setDocumentMode(_v);\
     if(_pcAction) _pcAction->setChecked(true,true);\
 }\
 Action * StdTree##_name::createAction(void) {\
@@ -3155,7 +3153,7 @@ Action * StdTree##_name::createAction(void) {\
     return pcAction;\
 }\
 bool StdTree##_name::isActive() {\
-    bool checked = FC_TREEPARAM(DocumentMode)==_v;\
+    bool checked = TreeParams::Instance()->DocumentMode()==_v;\
     if(_pcAction && _pcAction->isChecked()!=checked)\
         _pcAction->setChecked(checked,true);\
     return true;\
@@ -3215,8 +3213,8 @@ StdTreeCollapseDocument::StdTreeCollapseDocument()
 #define TREEVIEW_CMD_DEF(_name) \
 DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
-    auto checked = !FC_TREEPARAM(_name);\
-    FC_TREEPARAM_SET(_name,checked);\
+    auto checked = !TreeParams::Instance()->_name();\
+    TreeParams::Instance()->set##_name(checked);\
     if(_pcAction) _pcAction->setChecked(checked,true);\
 }\
 Action * StdTree##_name::createAction(void) {\
@@ -3228,7 +3226,7 @@ Action * StdTree##_name::createAction(void) {\
     return pcAction;\
 }\
 bool StdTree##_name::isActive() {\
-    bool checked = FC_TREEPARAM(_name);\
+    bool checked = TreeParams::Instance()->_name();\
     if(_pcAction && _pcAction->isChecked()!=checked)\
         _pcAction->setChecked(checked,true);\
     return true;\
@@ -3393,7 +3391,7 @@ public:
 //======================================================================
 // Std_SelBoundingBox
 //===========================================================================
-DEF_STD_CMD_AC(StdCmdSelBoundingBox);
+DEF_STD_CMD_AC(StdCmdSelBoundingBox)
 
 StdCmdSelBoundingBox::StdCmdSelBoundingBox()
   :Command("Std_SelBoundingBox")

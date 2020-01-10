@@ -1,6 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2001 - Juergen Riegel <juergen.riegel@web.de>           *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2001 Juergen Riegel <juergen.riegel@web.de>             *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -51,7 +51,7 @@ FreeCAD.addExportType("FEM mesh Z88 (*i1.txt)", "feminout.importZ88Mesh")
 
 FreeCAD.addImportType("FEM result Z88 displacements (*o2.txt)", "feminout.importZ88O2Results")
 
-if("BUILD_FEM_VTK" in FreeCAD.__cmake__):
+if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
     FreeCAD.addImportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
     FreeCAD.addExportType("FEM result VTK (*.vtk *.vtu)", "feminout.importVTKResults")
 

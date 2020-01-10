@@ -24,9 +24,9 @@
 
 import FreeCAD
 import FreeCADGui
-from PySide import QtCore, QtGui
+from PySide import QtCore
 
-"""Path Copy object and FreeCAD command"""
+__doc__ = """Path Copy object and FreeCAD command"""
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -57,6 +57,7 @@ class ObjectPathCopy:
 class ViewProviderPathCopy:
 
     def __init__(self, vobj):
+        self.Object = vobj.Object
         vobj.Proxy = self
 
     def attach(self, vobj):
@@ -84,7 +85,7 @@ class CommandPathCopy:
         if FreeCAD.ActiveDocument is not None:
             for o in FreeCAD.ActiveDocument.Objects:
                 if o.Name[:3] == "Job":
-                        return True
+                    return True
         return False
 
     def Activated(self):

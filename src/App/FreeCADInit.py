@@ -1,12 +1,12 @@
 # FreeCAD init module
-# (c) 2001 Juergen Riegel
+# (c) 2001 Jürgen Riegel
 #
 # Gathering all the information to start FreeCAD
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
 
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
+#*   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -26,7 +26,6 @@
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
 #*                                                                         *
-#*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
 
@@ -192,7 +191,6 @@ def InitApplications():
 			PathEnvironment += path + os.pathsep
 		except UnicodeDecodeError:
 			Wrn('Filter invalid module path: u{}\n'.format(repr(path)))
-			pass
 
 	# new paths must be prepended to avoid to load a wrong version of a library
 	try:
@@ -260,9 +258,9 @@ class FCADLogger(object):
        The default output format is:
            <timestamp> <tag> <source file>(line number): message
 
-       The message is formated using new style Python string formating, e.g.
-       'test {}'.format(1). It is strongly recommanded to not directly use
-       Python string formating, but pass additional argument indirectly through
+       The message is formatted using new style Python string formatting, e.g.
+       'test {}'.format(1). It is strongly recommended to not directly use
+       Python string formatting, but pass additional argument indirectly through
        various logger print function, because the logger can skip string
        evaluation in case the logging level is disabled. For more options,
        please consult the docstring of __init__(), catch() and report().
@@ -285,7 +283,7 @@ class FCADLogger(object):
         you to define your own levels. The level set is persisted to user
         configuration file.
 
-        By defult any tag has a log level of 2 for release, and 3 for debug
+        By default any tag has a log level of 2 for release, and 3 for debug
         build.
     '''
 
@@ -325,7 +323,7 @@ class FCADLogger(object):
 
         * lineno (True): whether to print source file and line number
 
-        * parent (None): provide a parent logger, so that the log printting will
+        * parent (None): provide a parent logger, so that the log printing will
                          check for parent's log level in addition of its own
 
         * title ('FreeCAD'): message box title used by report()
@@ -363,8 +361,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -379,8 +377,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -395,8 +393,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -413,8 +411,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -431,8 +429,8 @@ class FCADLogger(object):
 
             This function accepts additional positional and keyword arguments,
             which are forward to string.format() to generate the logging
-            message. It is strongly recommanded to not directly use Python
-            string formating, but pass additional arguments here, because the
+            message. It is strongly recommended to not directly use Python
+            string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
         '''
@@ -639,7 +637,14 @@ App.Units.DeciMetre     = App.Units.Quantity('dm')
 App.Units.Metre         = App.Units.Quantity('m')
 App.Units.KiloMetre     = App.Units.Quantity('km')
 
+App.Units.MilliLiter    = App.Units.Quantity('ml')
 App.Units.Liter         = App.Units.Quantity('l')
+
+App.Units.Hertz         = App.Units.Quantity('Hz')
+App.Units.KiloHertz     = App.Units.Quantity('kHz')
+App.Units.MegaHertz     = App.Units.Quantity('MHz')
+App.Units.GigaHertz     = App.Units.Quantity('GHz')
+App.Units.TeraHertz     = App.Units.Quantity('THz')
 
 App.Units.MicroGram     = App.Units.Quantity('ug')
 App.Units.MilliGram     = App.Units.Quantity('mg')
@@ -660,6 +665,7 @@ App.Units.Kelvin        = App.Units.Quantity('K')
 App.Units.MilliKelvin   = App.Units.Quantity('mK')
 App.Units.MicroKelvin   = App.Units.Quantity('uK')
 
+App.Units.MilliMole     = App.Units.Quantity('mmol')
 App.Units.Mole          = App.Units.Quantity('mol')
 
 App.Units.Candela       = App.Units.Quantity('cd')
@@ -670,42 +676,83 @@ App.Units.Thou          = App.Units.Quantity('thou')
 App.Units.Yard          = App.Units.Quantity('yd')
 App.Units.Mile          = App.Units.Quantity('mi')
 
+App.Units.SquareFoot    = App.Units.Quantity('sqft')
+App.Units.CubicFoot     = App.Units.Quantity('cft')
+
 App.Units.Pound         = App.Units.Quantity('lb')
 App.Units.Ounce         = App.Units.Quantity('oz')
 App.Units.Stone         = App.Units.Quantity('st')
 App.Units.Hundredweights= App.Units.Quantity('cwt')
 
 App.Units.Newton        = App.Units.Quantity('N')
+App.Units.MilliNewton   = App.Units.Quantity('mN')
 App.Units.KiloNewton    = App.Units.Quantity('kN')
 App.Units.MegaNewton    = App.Units.Quantity('MN')
-App.Units.MilliNewton   = App.Units.Quantity('mN')
 
 App.Units.Pascal        = App.Units.Quantity('Pa')
 App.Units.KiloPascal    = App.Units.Quantity('kPa')
 App.Units.MegaPascal    = App.Units.Quantity('MPa')
 App.Units.GigaPascal    = App.Units.Quantity('GPa')
 
-App.Units.PoundForce    = App.Units.Quantity().PoundForce
-App.Units.Torr          = App.Units.Quantity().Torr
-App.Units.mTorr         = App.Units.Quantity().mTorr
-App.Units.yTorr         = App.Units.Quantity().yTorr
+App.Units.MilliBar      = App.Units.Quantity('mbar')
+App.Units.Bar           = App.Units.Quantity('bar')
+
+App.Units.PoundForce    = App.Units.Quantity('lbf')
+App.Units.Torr          = App.Units.Quantity('Torr')
+App.Units.mTorr         = App.Units.Quantity('mTorr')
+App.Units.yTorr         = App.Units.Quantity('uTorr')
 
 App.Units.PSI           = App.Units.Quantity('psi')
 App.Units.KSI           = App.Units.Quantity('ksi')
+App.Units.MPSI          = App.Units.Quantity('Mpsi')
 
 App.Units.Watt          = App.Units.Quantity('W')
+App.Units.MilliWatt     = App.Units.Quantity('mW')
+App.Units.KiloWatt      = App.Units.Quantity('kW')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
 
 App.Units.Volt          = App.Units.Quantity('V')
+App.Units.MilliVolt     = App.Units.Quantity('mV')
+App.Units.KiloVolt      = App.Units.Quantity('kV')
+
+App.Units.Siemens       = App.Units.Quantity('S')
+App.Units.MilliSiemens  = App.Units.Quantity('mS')
+App.Units.MicroSiemens  = App.Units.Quantity('uS')
+
+App.Units.Ohm          = App.Units.Quantity('Ohm')
+App.Units.KiloOhm      = App.Units.Quantity('kOhm')
+App.Units.MegaOhm      = App.Units.Quantity('MOhm')
+
+App.Units.Coulomb       = App.Units.Quantity('C')
+
+App.Units.Tesla         = App.Units.Quantity('T')
+
+App.Units.PicoFarad     = App.Units.Quantity('pF')
+App.Units.NanoFarad     = App.Units.Quantity('nF')
+App.Units.MicroFarad    = App.Units.Quantity('uF')
+App.Units.MilliFarad    = App.Units.Quantity('mF')
+App.Units.Farad         = App.Units.Quantity('F')
+
+App.Units.NanoHenry     = App.Units.Quantity('nH')
+App.Units.MicroHenry    = App.Units.Quantity('uH')
+App.Units.MilliHenry    = App.Units.Quantity('mH')
+App.Units.Henry         = App.Units.Quantity('H')
 
 App.Units.Joule         = App.Units.Quantity('J')
+App.Units.MilliJoule    = App.Units.Quantity('mJ')
+App.Units.KiloJoule     = App.Units.Quantity('kJ')
 App.Units.NewtonMeter   = App.Units.Quantity('Nm')
 App.Units.VoltAmpereSecond   = App.Units.Quantity('VAs')
 App.Units.WattSecond    = App.Units.Quantity('Ws')
+App.Units.KiloWattHour  = App.Units.Quantity('kWh')
+App.Units.ElectronVolt  = App.Units.Quantity('eV')
+App.Units.KiloElectronVolt = App.Units.Quantity('keV')
+App.Units.MegaElectronVolt = App.Units.Quantity('MeV')
+App.Units.Calorie       = App.Units.Quantity('cal')
+App.Units.KiloCalorie   = App.Units.Quantity('kcal')
 
 App.Units.MPH           = App.Units.Quantity('mi/h')
 App.Units.KMH           = App.Units.Quantity('km/h')
-
 
 App.Units.Degree        = App.Units.Quantity('deg')
 App.Units.Radian        = App.Units.Quantity('rad')
@@ -717,6 +764,7 @@ App.Units.Length        = App.Units.Unit(1)
 App.Units.Area          = App.Units.Unit(2)
 App.Units.Volume        = App.Units.Unit(3)
 App.Units.Mass          = App.Units.Unit(0,1) 
+# (length, weight, time, current, temperature, amount of substance, luminous intensity, angle)
 
 # Angle
 App.Units.Angle            = App.Units.Unit(0,0,0,0,0,0,0,1)
@@ -725,12 +773,19 @@ App.Units.AngleOfFriction  = App.Units.Unit(0,0,0,0,0,0,0,1)
 App.Units.Density       = App.Units.Unit(-3,1)
 
 App.Units.TimeSpan      = App.Units.Unit(0,0,1) 
+App.Units.Frequency     = App.Units.Unit(0,0,-1)
 App.Units.Velocity      = App.Units.Unit(1,0,-1) 
 App.Units.Acceleration  = App.Units.Unit(1,0,-2) 
 App.Units.Temperature   = App.Units.Unit(0,0,0,0,1) 
 
-App.Units.ElectricCurrent   = App.Units.Unit(0,0,0,1) 
-App.Units.ElectricPotential = App.Units.Unit(2,1,-3,-1)
+App.Units.ElectricCurrent       = App.Units.Unit(0,0,0,1) 
+App.Units.ElectricPotential     = App.Units.Unit(2,1,-3,-1)
+App.Units.ElectricCharge        = App.Units.Unit(0,0,1,1)
+App.Units.MagneticFluxDensity   = App.Units.Unit(0,1,-2,-1)
+App.Units.ElectricalCapacitance = App.Units.Unit(-2,-1,4,2)
+App.Units.ElectricalInductance  = App.Units.Unit(2,1,-2,-2)
+App.Units.ElectricalConductance = App.Units.Unit(-2,-1,3,2)
+App.Units.ElectricalResistance  = App.Units.Unit(2,1,-3,-2)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 
@@ -755,6 +810,7 @@ App.Units.ThermalTransferCoefficient   = App.Units.Unit(0,1,-3,0,-1)
 App.Units.HeatFlux                     = App.Units.Unit(0,1,-3,0,0)
 App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
 App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
+App.Units.VacuumPermittivity           = App.Units.Unit(-3,-1,4,2)
 
 # clean up namespace
 del(InitApplications)

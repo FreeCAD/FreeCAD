@@ -5,7 +5,7 @@ OBJECTS
   0
 DICTIONARY
   5
-500
+F000
 330
 0
 100
@@ -13,13 +13,13 @@ AcDbDictionary
   3
 ACAD_GROUP
 350
-501
+F001
   0
 DICTIONARY
   5
-501
+F001
 330
-500
+F000
 100
 AcDbDictionary
   0

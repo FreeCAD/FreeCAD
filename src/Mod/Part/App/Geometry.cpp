@@ -195,6 +195,7 @@ Geometry::Geometry()
 
 Geometry::~Geometry()
 {
+
 }
 
 // Persistence implementer
@@ -205,22 +206,148 @@ unsigned int Geometry::getMemSize (void) const
 
 void Geometry::Save(Base::Writer &writer) const
 {
+    if( extensions.size()>0 ) {
+
+        writer.incInd();
+
+        writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">\n";
+
+        for(auto att:extensions) {
+            att->Save(writer);
+        }
+
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</GeoExtensions>\n";
+    }
+
     const char c = Construction?'1':'0';
-    writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>\n";
 }
 
 void Geometry::Restore(Base::XMLReader &reader)
 {
-    // read my Element
-    reader.readElement("Construction");
-    // get the value of my Attribute
+    reader.readElement();
+
+    if(strcmp(reader.localName(),"GeoExtensions") == 0) {
+
+        int count = reader.getAttributeAsInteger("count");
+
+        for (int i = 0; i < count; i++) {
+            reader.readElement("GeoExtension");
+            const char* TypeName = reader.getAttribute("type");
+            Base::Type type = Base::Type::fromName(TypeName);
+            GeometryExtension *newE = (GeometryExtension *)type.createInstance();
+            newE->Restore(reader);
+
+            extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
+        }
+
+        reader.readEndElement("GeoExtensions");
+
+        reader.readElement("Construction"); // prepare for reading construction attribute
+    }
+    else if(strcmp(reader.localName(),"Construction") != 0) { // ignore anything not known
+        reader.readElement("Construction");
+    }
+
     Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+
 }
 
 boost::uuids::uuid Geometry::getTag() const
 {
     return tag;
 }
+
+const std::vector<std::weak_ptr<GeometryExtension>> Geometry::getExtensions() const
+{
+    std::vector<std::weak_ptr<GeometryExtension>> wp;
+
+    for(auto & ext:extensions)
+        wp.push_back(ext);
+
+    return wp;
+}
+
+bool Geometry::hasExtension(Base::Type type) const
+{
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == type)
+            return true;
+    }
+
+    return false;
+}
+
+bool Geometry::hasExtension(std::string name) const
+{
+    for( auto ext : extensions) {
+        if(ext->getName() == name)
+            return true;
+    }
+
+    return false;
+}
+
+const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) const
+{
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == type)
+            return ext;
+    }
+
+    throw Base::ValueError("No geometry extension of the requested type.");
+}
+
+const std::weak_ptr<GeometryExtension> Geometry::getExtension(std::string name) const
+{
+    for( auto ext : extensions) {
+        if(ext->getName() == name)
+            return ext;
+    }
+
+    throw Base::ValueError("No geometry extension with the requested name.");
+}
+
+void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
+{
+    bool hasext=false;
+
+    for( auto & ext : extensions) {
+        // if same type and name, this modifies the existing extension.
+        if( ext->getTypeId() == geo->getTypeId() &&
+            ext->getName() == geo->getName()){
+            ext = std::move(geo);
+            hasext = true;
+        }
+    }
+
+    if(!hasext) // new type-name unique id, so add.
+        extensions.push_back(std::move(geo));
+}
+
+void Geometry::deleteExtension(Base::Type type)
+{
+    extensions.erase(
+        std::remove_if( extensions.begin(),
+                        extensions.end(),
+                        [&type](const std::shared_ptr<GeometryExtension>& ext){
+                            return ext->getTypeId() == type;
+                        }),
+        extensions.end());
+}
+
+void Geometry::deleteExtension(std::string name)
+{
+    extensions.erase(
+        std::remove_if( extensions.begin(),
+                        extensions.end(),
+                        [&name](const std::shared_ptr<GeometryExtension>& ext){
+                            return ext->getName() == name;
+                        }),
+        extensions.end());
+}
+
 
 void Geometry::createNewTag()
 {
@@ -253,6 +380,10 @@ Geometry *Geometry::clone(void) const
     cpy->Ref = this->Ref;
     cpy->RefIndex = this->RefIndex;
     cpy->Flags = this->Flags;
+
+    for(auto & ext: extensions)
+        cpy->extensions.push_back(ext->copy());
+
     return cpy;
 }
 
@@ -330,7 +461,7 @@ void GeomPoint::Save(Base::Writer &writer) const
                 << "X=\"" <<  Point.x <<
                 "\" Y=\"" <<  Point.y <<
                 "\" Z=\"" <<  Point.z <<
-             "\"/>" << endl;
+             "\"/>\n";
 }
 
 void GeomPoint::Restore(Base::XMLReader &reader)
@@ -763,7 +894,7 @@ std::vector<Base::Vector3d> GeomBezierCurve::getPoles() const
 
     for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
         const gp_Pnt& pnt = p(i);
-        poles.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+        poles.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
     }
     return poles;
 }
@@ -800,7 +931,7 @@ void GeomBezierCurve::Save(Base::Writer& writer) const
          << writer.ind()
              << "<BezierCurve "
                 << "PolesCount=\"" <<  poles.size() <<
-             "\">" << endl;
+             "\">\n";
 
     writer.incInd();
 
@@ -815,11 +946,11 @@ void GeomBezierCurve::Save(Base::Writer& writer) const
             "\" Y=\"" << (*itp).y <<
             "\" Z=\"" << (*itp).z <<
             "\" Weight=\"" << (*itw) <<
-        "\"/>" << endl;
+        "\"/>\n";
     }
 
     writer.decInd();
-    writer.Stream() << writer.ind() << "</BezierCurve>" << endl ;
+    writer.Stream() << writer.ind() << "</BezierCurve>\n" ;
 }
 
 void GeomBezierCurve::Restore(Base::XMLReader& reader)
@@ -997,7 +1128,7 @@ std::vector<Base::Vector3d> GeomBSplineCurve::getPoles() const
 
     for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
         const gp_Pnt& pnt = p(i);
-        poles.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+        poles.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
     }
     return poles;
 }
@@ -1277,7 +1408,7 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
                  "\" KnotsCount=\"" <<  knots.size() <<
                  "\" Degree=\"" <<  degree <<
                  "\" IsPeriodic=\"" <<  (int) isperiodic <<
-             "\">" << endl;
+             "\">\n";
 
     writer.incInd();
 
@@ -1292,7 +1423,7 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
             "\" Y=\"" << (*itp).y <<
             "\" Z=\"" << (*itp).z <<
             "\" Weight=\"" << (*itw) <<
-        "\"/>" << endl;
+        "\"/>\n";
     }
 
     std::vector<double>::const_iterator itk;
@@ -1304,11 +1435,11 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
             << "<Knot "
             << "Value=\"" << (*itk)
             << "\" Mult=\"" << (*itm) <<
-        "\"/>" << endl;
+        "\"/>\n";
     }
 
     writer.decInd();
-    writer.Stream() << writer.ind() << "</BSplineCurve>" << endl ;
+    writer.Stream() << writer.ind() << "</BSplineCurve>\n" ;
 }
 
 void GeomBSplineCurve::Restore(Base::XMLReader& reader)
@@ -1910,7 +2041,7 @@ void GeomCircle::Save(Base::Writer& writer) const
                 "\" NormalZ=\"" <<  normal.Z() <<
                 "\" AngleXU=\"" <<  AngleXU <<
                 "\" Radius=\"" <<  this->myCurve->Radius() <<
-             "\"/>" << endl;
+             "\"/>\n";
 }
 
 void GeomCircle::Restore(Base::XMLReader& reader)
@@ -2139,7 +2270,7 @@ void GeomArcOfCircle::Save(Base::Writer &writer) const
                 "\" Radius=\"" <<  circle->Radius() <<
                 "\" StartAngle=\"" <<  this->myCurve->FirstParameter() <<
                 "\" EndAngle=\"" <<  this->myCurve->LastParameter() <<
-             "\"/>" << endl;
+             "\"/>\n";
 }
 
 void GeomArcOfCircle::Restore(Base::XMLReader &reader)
@@ -2390,7 +2521,7 @@ void GeomEllipse::Save(Base::Writer& writer) const
             << "MajorRadius=\"" <<  this->myCurve->MajorRadius() << "\" "
             << "MinorRadius=\"" <<  this->myCurve->MinorRadius() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
-            << "/>" << endl;
+            << "/>\n";
 }
 
 void GeomEllipse::Restore(Base::XMLReader& reader)
@@ -2660,7 +2791,7 @@ void GeomArcOfEllipse::Save(Base::Writer &writer) const
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
             << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
-            << "/>" << endl;
+            << "/>\n";
 }
 
 void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
@@ -2833,7 +2964,7 @@ void GeomHyperbola::Save(Base::Writer& writer) const
             << "MajorRadius=\"" <<  this->myCurve->MajorRadius() << "\" "
             << "MinorRadius=\"" <<  this->myCurve->MinorRadius() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
-            << "/>" << endl;
+            << "/>\n";
 }
 
 void GeomHyperbola::Restore(Base::XMLReader& reader)
@@ -3090,7 +3221,7 @@ void GeomArcOfHyperbola::Save(Base::Writer &writer) const
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
             << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
-            << "/>" << endl;
+            << "/>\n";
 }
 
 void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
@@ -3243,7 +3374,7 @@ void GeomParabola::Save(Base::Writer& writer) const
             << "NormalZ=\"" <<  normal.Z() << "\" "
             << "Focal=\"" <<  this->myCurve->Focal() << "\" "
             << "AngleXU=\"" << AngleXU << "\" "
-            << "/>" << endl;
+            << "/>\n";
 }
 
 void GeomParabola::Restore(Base::XMLReader& reader)
@@ -3443,7 +3574,7 @@ void GeomArcOfParabola::Save(Base::Writer &writer) const
             << "AngleXU=\"" << AngleXU << "\" "
             << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
             << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "
-            << "/>" << endl;
+            << "/>\n";
 }
 
 void GeomArcOfParabola::Restore(Base::XMLReader &reader)
@@ -3588,7 +3719,7 @@ void GeomLine::Save(Base::Writer &writer) const
                 "\" DirX=\"" <<  Dir.x <<
                 "\" DirY=\"" <<  Dir.y <<
                 "\" DirZ=\"" <<  Dir.z <<
-             "\"/>" << endl;
+             "\"/>\n";
 }
 void GeomLine::Restore(Base::XMLReader &reader)
 {
@@ -3729,7 +3860,7 @@ void GeomLineSegment::Save       (Base::Writer &writer) const
                 "\" EndX=\"" <<  End.x <<
                 "\" EndY=\"" <<  End.y <<
                 "\" EndZ=\"" <<  End.z <<
-             "\"/>" << endl;
+             "\"/>\n";
 }
 
 void GeomLineSegment::Restore    (Base::XMLReader &reader)

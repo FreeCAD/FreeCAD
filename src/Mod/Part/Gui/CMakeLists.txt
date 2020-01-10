@@ -183,6 +183,8 @@ SET(PartGui_SRCS
     SoBrepPointSet.h
     ViewProvider.cpp
     ViewProvider.h
+    ViewProviderAttachExtension.h
+    ViewProviderAttachExtension.cpp
     ViewProviderExt.cpp
     ViewProviderExt.h
     ViewProviderReference.cpp

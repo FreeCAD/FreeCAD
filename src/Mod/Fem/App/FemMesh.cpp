@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
+ *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -595,7 +595,7 @@ std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &fac
 
             // For curved faces it is possible that a volume contributes more than one face
             if (element_face_nodes.size() == static_cast<std::size_t>(numNodes)) {
-                result.push_back(std::make_pair(vol->GetID(), face->GetID()));
+                result.emplace_back(vol->GetID(), face->GetID());
             }
         }
     }
@@ -1023,7 +1023,7 @@ void FemMesh::readNastran(const std::string &Filename)
     {
         std::getline(inputfile,line1);
         if (line1.size() == 0) continue;
-        if (!nastran_free_format && line1.find(",")!= std::string::npos)
+        if (!nastran_free_format && line1.find(',')!= std::string::npos)
             nastran_free_format = true;
         if (!nastran_free_format && line1.find("GRID*")!= std::string::npos ) //We found a Grid line
         {
@@ -1135,8 +1135,9 @@ void FemMesh::readNastran(const std::string &Filename)
 
     for(unsigned int i=0;i<all_elements.size();i++)
     {
-        //Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
-        //Ansonsten ist eine konsistente Datenstruktur nicht möglich
+        // an consistent data structure is only possible
+        // if the elements are added in the right order
+        // thus the order is very important
         //meshds->AddVolumeWithID
         //(
         //    meshds->FindNode(all_elements[i][0]),
@@ -1178,7 +1179,7 @@ void FemMesh::readAbaqus(const std::string &FileName)
     /*
     Python command to read Abaqus inp mesh file from test suite:
     from feminout.importInpMesh import read as read_inp
-    femmesh = read_inp(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/mesh/tetra10_mesh.inp')
+    femmesh = read_inp(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/mesh/tetra10_mesh.inp')
     */
 
     PyObject* module = PyImport_ImportModule("feminout.importInpMesh");
@@ -1214,7 +1215,7 @@ void FemMesh::readZ88(const std::string &FileName)
     /*
     Python command to read Z88 mesh file from test suite:
     from feminout.importZ88Mesh import read as read_z88
-    femmesh = read_z88(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/mesh/tetra10_mesh.z88')
+    femmesh = read_z88(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/data/mesh/tetra10_mesh.z88')
     */
 
     PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
@@ -1524,8 +1525,9 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 
     // write all data to file
-    std::ofstream anABAQUS_Output;
-    anABAQUS_Output.open(Filename.c_str());
+    // take also care of special characters in path https://forum.freecadweb.org/viewtopic.php?f=10&t=37436
+    Base::FileInfo fi(Filename);
+    Base::ofstream anABAQUS_Output(fi);
     anABAQUS_Output.precision(13);  // https://forum.freecadweb.org/viewtopic.php?f=18&t=22759#p176669
 
     // add some text and make sure one of the known elemParam values is used
@@ -1958,8 +1960,9 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{
 }
 //    for(unsigned int i=0;i<all_elements.size();i++)
 //        {
-//            //Die Reihenfolge wie hier die Elemente hinzugefügt werden ist sehr wichtig.
-//            //Ansonsten ist eine konsistente Datenstruktur nicht möglich
+//                // an consistent data structure is only possible
+//                // if the elements are added in the right order
+//                // thus the order is very important
 //                meshds->AddVolumeWithID(
 //                meshds->FindNode(all_elements[i][0]),
 //                meshds->FindNode(all_elements[i][2]),

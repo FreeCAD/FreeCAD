@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,7 +41,7 @@
 
 using namespace std;
 
-DEF_STD_CMD_A(CmdRobotExportKukaCompact);
+DEF_STD_CMD_A(CmdRobotExportKukaCompact)
 
 CmdRobotExportKukaCompact::CmdRobotExportKukaCompact()
 	:Command("Robot_ExportKukaCompact")
@@ -60,7 +60,7 @@ void CmdRobotExportKukaCompact::activated(int)
 {
     unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
     unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
- 
+
     if (n1 != 1 || n2 != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one Robot and one Trajectory object."));
@@ -103,7 +103,7 @@ bool CmdRobotExportKukaCompact::isActive(void)
 // #####################################################################################################
 
 
-DEF_STD_CMD_A(CmdRobotExportKukaFull);
+DEF_STD_CMD_A(CmdRobotExportKukaFull)
 
 CmdRobotExportKukaFull::CmdRobotExportKukaFull()
 	:Command("Robot_ExportKukaFull")
@@ -122,7 +122,7 @@ void CmdRobotExportKukaFull::activated(int)
 {
     unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
     unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
- 
+
     if (n1 != 1 || n2 != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one Robot and one Trajectory object."));

@@ -145,7 +145,7 @@ protected:
     /** Called internally to obtain the combined children shapes */
     TopoDS_Shape toShape(CArea &area, short fill, int reorient=0);
 
-    /** Obtain a list of offsetted areas
+    /** Obtain a list of offset areas
      *
      * See #AREA_PARAMS_OFFSET for description of the arguments.
      */

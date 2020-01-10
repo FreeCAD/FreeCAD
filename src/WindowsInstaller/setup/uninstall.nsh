@@ -28,6 +28,8 @@ Section "un.FreeCAD" un.SecUnProgramFiles
   ${endif}
   ${if} $MultiUser.Privileges == "Admin"
    DeleteRegKey HKCR "${APP_NAME}.Document"
+   # see https://nsis.sourceforge.io/Docs/AppendixB.html#library_install for a description of UnInstallLib
+   !insertmacro UnInstallLib REGDLL NOTSHARED NOREBOOT_NOTPROTECTED $SYSDIR\FCStdThumbnail.dll
   ${endif}
 
   # Uninstaller itself
@@ -55,6 +57,9 @@ Section "un.FreeCAD" un.SecUnProgramFiles
   # clean other registry entries
   DeleteRegKey SHCTX "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\${APP_NAME}.exe"
   DeleteRegKey SHCTX "SOFTWARE\${APP_REGKEY}"
+  
+  # Eventually refresh shell icons
+   ${RefreshShellIcons}
 
 SectionEnd
 

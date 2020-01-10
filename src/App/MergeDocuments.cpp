@@ -66,10 +66,10 @@ protected:
 
     // It is not safe to change potential object name reference at this level.
     // For example, a LinkSub with sub element name Face1 may also be some
-    // object's name that may potentially be mapped. On the other hand, with
-    // the introduction of full quanlified SubName reference, the Sub value
-    // inside LinkSub may require customized mapping. So we move the mapping
-    // logic to the Property's Restore() function.
+    // object's name that may potentially be mapped. In addition, with the
+    // introduction of full quanlified SubName reference, the Sub value inside
+    // LinkSub may require customized mapping. So we move the mapping logic to
+    // various link property's Restore() function.
 #if 0
     void startElement(const XMLCh* const uri, const XMLCh* const localname,
                       const XMLCh* const qname,

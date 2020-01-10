@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -40,6 +40,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
@@ -81,7 +82,7 @@
 //===========================================================================
 // Part_PickCurveNet
 //===========================================================================
-DEF_STD_CMD(CmdPartPickCurveNet);
+DEF_STD_CMD(CmdPartPickCurveNet)
 
 CmdPartPickCurveNet::CmdPartPickCurveNet()
   :Command("Part_PickCurveNet")
@@ -103,7 +104,7 @@ void CmdPartPickCurveNet::activated(int iMsg)
 //===========================================================================
 // Part_NewDoc
 //===========================================================================
-DEF_STD_CMD(CmdPartNewDoc);
+DEF_STD_CMD(CmdPartNewDoc)
 
 CmdPartNewDoc::CmdPartNewDoc()
   :Command("Part_NewDoc")
@@ -127,7 +128,7 @@ void CmdPartNewDoc::activated(int iMsg)
 //===========================================================================
 // Part_Box2
 //===========================================================================
-DEF_STD_CMD_A(CmdPartBox2);
+DEF_STD_CMD_A(CmdPartBox2)
 
 CmdPartBox2::CmdPartBox2()
   :Command("Part_Box2")
@@ -168,7 +169,7 @@ bool CmdPartBox2::isActive(void)
 //===========================================================================
 // Part_Box3
 //===========================================================================
-DEF_STD_CMD_A(CmdPartBox3);
+DEF_STD_CMD_A(CmdPartBox3)
 
 CmdPartBox3::CmdPartBox3()
   :Command("Part_Box3")
@@ -209,7 +210,7 @@ bool CmdPartBox3::isActive(void)
 //===========================================================================
 // Part_Primitives
 //===========================================================================
-DEF_STD_CMD_A(CmdPartPrimitives);
+DEF_STD_CMD_A(CmdPartPrimitives)
 
 CmdPartPrimitives::CmdPartPrimitives()
   :Command("Part_Primitives")
@@ -263,7 +264,7 @@ bool checkForSolids(const TopoDS_Shape& shape)
 //===========================================================================
 // Part_Cut
 //===========================================================================
-DEF_STD_CMD_A(CmdPartCut);
+DEF_STD_CMD_A(CmdPartCut)
 
 CmdPartCut::CmdPartCut()
   :Command("Part_Cut")
@@ -341,7 +342,7 @@ bool CmdPartCut::isActive(void)
 //===========================================================================
 // Part_Common
 //===========================================================================
-DEF_STD_CMD_A(CmdPartCommon);
+DEF_STD_CMD_A(CmdPartCommon)
 
 CmdPartCommon::CmdPartCommon()
   :Command("Part_Common")
@@ -441,7 +442,7 @@ bool CmdPartCommon::isActive(void)
 //===========================================================================
 // Part_Fuse
 //===========================================================================
-DEF_STD_CMD_A(CmdPartFuse);
+DEF_STD_CMD_A(CmdPartFuse)
 
 CmdPartFuse::CmdPartFuse()
   :Command("Part_Fuse")
@@ -542,7 +543,7 @@ bool CmdPartFuse::isActive(void)
 // Part_CompJoinFeatures (dropdown toolbar button for Connect, Embed and Cutout)
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdPartCompJoinFeatures);
+DEF_STD_CMD_ACL(CmdPartCompJoinFeatures)
 
 CmdPartCompJoinFeatures::CmdPartCompJoinFeatures()
   : Command("Part_CompJoinFeatures")
@@ -567,7 +568,7 @@ void CmdPartCompJoinFeatures::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -648,7 +649,7 @@ bool CmdPartCompJoinFeatures::isActive(void)
 // Part_CompSplitFeatures (dropdown toolbar button for BooleanFragments, Slice)
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdPartCompSplitFeatures);
+DEF_STD_CMD_ACL(CmdPartCompSplitFeatures)
 
 CmdPartCompSplitFeatures::CmdPartCompSplitFeatures()
   : Command("Part_CompSplitFeatures")
@@ -675,7 +676,7 @@ void CmdPartCompSplitFeatures::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -770,7 +771,7 @@ bool CmdPartCompSplitFeatures::isActive(void)
 // Part_CompCompoundTools (dropdown toolbar button for BooleanFragments, Slice)
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdPartCompCompoundTools);
+DEF_STD_CMD_ACL(CmdPartCompCompoundTools)
 
 CmdPartCompCompoundTools::CmdPartCompCompoundTools()
   : Command("Part_CompCompoundTools")
@@ -795,7 +796,7 @@ void CmdPartCompCompoundTools::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -877,7 +878,7 @@ bool CmdPartCompCompoundTools::isActive(void)
 //===========================================================================
 // Part_Compound
 //===========================================================================
-DEF_STD_CMD_A(CmdPartCompound);
+DEF_STD_CMD_A(CmdPartCompound)
 
 CmdPartCompound::CmdPartCompound()
   :Command("Part_Compound")
@@ -934,7 +935,7 @@ bool CmdPartCompound::isActive(void)
 //===========================================================================
 // Part_Section
 //===========================================================================
-DEF_STD_CMD_A(CmdPartSection);
+DEF_STD_CMD_A(CmdPartSection)
 
 CmdPartSection::CmdPartSection()
   :Command("Part_Section")
@@ -982,7 +983,7 @@ bool CmdPartSection::isActive(void)
 //===========================================================================
 // CmdPartImport
 //===========================================================================
-DEF_STD_CMD_A(CmdPartImport);
+DEF_STD_CMD_A(CmdPartImport)
 
 CmdPartImport::CmdPartImport()
   :Command("Part_Import")
@@ -1012,6 +1013,8 @@ void CmdPartImport::activated(int iMsg)
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
         if (!pDoc) return; // no document
+
+        fn = Base::Tools::escapeEncodeFilename(fn);
         openCommand("Import Part");
         if (select == filter[1] ||
             select == filter[3]) {
@@ -1042,7 +1045,7 @@ bool CmdPartImport::isActive(void)
 //===========================================================================
 // CmdPartExport
 //===========================================================================
-DEF_STD_CMD_A(CmdPartExport);
+DEF_STD_CMD_A(CmdPartExport)
 
 CmdPartExport::CmdPartExport()
   : Command("Part_Export")
@@ -1089,7 +1092,7 @@ bool CmdPartExport::isActive(void)
 //===========================================================================
 // PartImportCurveNet
 //===========================================================================
-DEF_STD_CMD_A(CmdPartImportCurveNet);
+DEF_STD_CMD_A(CmdPartImportCurveNet)
 
 CmdPartImportCurveNet::CmdPartImportCurveNet()
   :Command("Part_ImportCurveNet")
@@ -1137,7 +1140,7 @@ bool CmdPartImportCurveNet::isActive(void)
 //===========================================================================
 // Part_MakeSolid
 //===========================================================================
-DEF_STD_CMD_A(CmdPartMakeSolid);
+DEF_STD_CMD_A(CmdPartMakeSolid)
 
 CmdPartMakeSolid::CmdPartMakeSolid()
   :Command("Part_MakeSolid")
@@ -1215,7 +1218,7 @@ bool CmdPartMakeSolid::isActive(void)
 //===========================================================================
 // Part_ReverseShape
 //===========================================================================
-DEF_STD_CMD_A(CmdPartReverseShape);
+DEF_STD_CMD_A(CmdPartReverseShape)
 
 CmdPartReverseShape::CmdPartReverseShape()
   :Command("Part_ReverseShape")
@@ -1269,7 +1272,7 @@ bool CmdPartReverseShape::isActive(void)
 //===========================================================================
 // Part_Boolean
 //===========================================================================
-DEF_STD_CMD_A(CmdPartBoolean);
+DEF_STD_CMD_A(CmdPartBoolean)
 
 CmdPartBoolean::CmdPartBoolean()
   :Command("Part_Boolean")
@@ -1300,7 +1303,7 @@ bool CmdPartBoolean::isActive(void)
 //===========================================================================
 // Part_Extrude
 //===========================================================================
-DEF_STD_CMD_A(CmdPartExtrude);
+DEF_STD_CMD_A(CmdPartExtrude)
 
 CmdPartExtrude::CmdPartExtrude()
   :Command("Part_Extrude")
@@ -1328,7 +1331,7 @@ bool CmdPartExtrude::isActive(void)
 //===========================================================================
 // Part_MakeFace
 //===========================================================================
-DEF_STD_CMD_A(CmdPartMakeFace);
+DEF_STD_CMD_A(CmdPartMakeFace)
 
 CmdPartMakeFace::CmdPartMakeFace()
   : Command("Part_MakeFace")
@@ -1377,7 +1380,7 @@ bool CmdPartMakeFace::isActive(void)
 //===========================================================================
 // Part_Revolve
 //===========================================================================
-DEF_STD_CMD_A(CmdPartRevolve);
+DEF_STD_CMD_A(CmdPartRevolve)
 
 CmdPartRevolve::CmdPartRevolve()
   :Command("Part_Revolve")
@@ -1405,7 +1408,7 @@ bool CmdPartRevolve::isActive(void)
 //===========================================================================
 // Part_Fillet
 //===========================================================================
-DEF_STD_CMD_A(CmdPartFillet);
+DEF_STD_CMD_A(CmdPartFillet)
 
 CmdPartFillet::CmdPartFillet()
   :Command("Part_Fillet")
@@ -1433,7 +1436,7 @@ bool CmdPartFillet::isActive(void)
 //===========================================================================
 // Part_Chamfer
 //===========================================================================
-DEF_STD_CMD_A(CmdPartChamfer);
+DEF_STD_CMD_A(CmdPartChamfer)
 
 CmdPartChamfer::CmdPartChamfer()
   :Command("Part_Chamfer")
@@ -1461,7 +1464,7 @@ bool CmdPartChamfer::isActive(void)
 //===========================================================================
 // Part_Mirror
 //===========================================================================
-DEF_STD_CMD_A(CmdPartMirror);
+DEF_STD_CMD_A(CmdPartMirror)
 
 CmdPartMirror::CmdPartMirror()
   :Command("Part_Mirror")
@@ -1489,7 +1492,7 @@ bool CmdPartMirror::isActive(void)
 //===========================================================================
 // Part_CrossSections
 //===========================================================================
-DEF_STD_CMD_A(CmdPartCrossSections);
+DEF_STD_CMD_A(CmdPartCrossSections)
 
 CmdPartCrossSections::CmdPartCrossSections()
   :Command("Part_CrossSections")
@@ -1529,7 +1532,7 @@ bool CmdPartCrossSections::isActive(void)
 // Part_Builder
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartBuilder);
+DEF_STD_CMD_A(CmdPartBuilder)
 
 CmdPartBuilder::CmdPartBuilder()
   :Command("Part_Builder")
@@ -1558,7 +1561,7 @@ bool CmdPartBuilder::isActive(void)
 // Part_Loft
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartLoft);
+DEF_STD_CMD_A(CmdPartLoft)
 
 CmdPartLoft::CmdPartLoft()
   : Command("Part_Loft")
@@ -1587,7 +1590,7 @@ bool CmdPartLoft::isActive(void)
 // Part_Sweep
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartSweep);
+DEF_STD_CMD_A(CmdPartSweep)
 
 CmdPartSweep::CmdPartSweep()
   : Command("Part_Sweep")
@@ -1616,7 +1619,7 @@ bool CmdPartSweep::isActive(void)
 // Part_Offset
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartOffset);
+DEF_STD_CMD_A(CmdPartOffset)
 
 CmdPartOffset::CmdPartOffset()
   : Command("Part_Offset")
@@ -1665,7 +1668,7 @@ bool CmdPartOffset::isActive(void)
 // Part_Offset2D
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartOffset2D);
+DEF_STD_CMD_A(CmdPartOffset2D)
 
 CmdPartOffset2D::CmdPartOffset2D()
   : Command("Part_Offset2D")
@@ -1713,7 +1716,7 @@ bool CmdPartOffset2D::isActive(void)
 // Part_CompOffset (dropdown toolbar button for Offset features)
 //===========================================================================
 
-DEF_STD_CMD_ACL(CmdPartCompOffset);
+DEF_STD_CMD_ACL(CmdPartCompOffset)
 
 CmdPartCompOffset::CmdPartCompOffset()
   : Command("Part_CompOffset")
@@ -1736,7 +1739,7 @@ void CmdPartCompOffset::activated(int iMsg)
     else
         return;
 
-    // Since the default icon is reset when enabing/disabling the command we have
+    // Since the default icon is reset when enabling/disabling the command we have
     // to explicitly set the icon of the used command.
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
@@ -1806,7 +1809,7 @@ bool CmdPartCompOffset::isActive(void)
 // Part_Thickness
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartThickness);
+DEF_STD_CMD_A(CmdPartThickness)
 
 CmdPartThickness::CmdPartThickness()
   : Command("Part_Thickness")
@@ -1881,7 +1884,7 @@ bool CmdPartThickness::isActive(void)
 // Part_ShapeInfo
 //===========================================================================
 
-DEF_STD_CMD_A(CmdShapeInfo);
+DEF_STD_CMD_A(CmdShapeInfo)
 
 CmdShapeInfo::CmdShapeInfo()
   :Command("Part_ShapeInfo")
@@ -1981,7 +1984,7 @@ bool CmdShapeInfo::isActive(void)
 // Part_RuledSurface
 //===========================================================================
 
-DEF_STD_CMD_A(CmdPartRuledSurface);
+DEF_STD_CMD_A(CmdPartRuledSurface)
 
 CmdPartRuledSurface::CmdPartRuledSurface()
   : Command("Part_RuledSurface")
@@ -2097,7 +2100,7 @@ bool CmdPartRuledSurface::isActive(void)
 // Part_CheckGeometry
 //===========================================================================
 
-DEF_STD_CMD_A(CmdCheckGeometry);
+DEF_STD_CMD_A(CmdCheckGeometry)
 
 CmdCheckGeometry::CmdCheckGeometry()
   : Command("Part_CheckGeometry")
@@ -2131,7 +2134,7 @@ bool CmdCheckGeometry::isActive(void)
 // Part_ColorPerFace
 //===========================================================================
 
-DEF_STD_CMD_A(CmdColorPerFace);
+DEF_STD_CMD_A(CmdColorPerFace)
 
 CmdColorPerFace::CmdColorPerFace()
   : Command("Part_ColorPerFace")
@@ -2168,7 +2171,7 @@ bool CmdColorPerFace::isActive(void)
 // Part_Measure_Linear
 //===========================================================================
 
-DEF_STD_CMD_A(CmdMeasureLinear);
+DEF_STD_CMD_A(CmdMeasureLinear)
 
 CmdMeasureLinear::CmdMeasureLinear()
   : Command("Part_Measure_Linear")
@@ -2197,7 +2200,7 @@ bool CmdMeasureLinear::isActive(void)
 // Part_Measure_Angular
 //===========================================================================
 
-DEF_STD_CMD_A(CmdMeasureAngular);
+DEF_STD_CMD_A(CmdMeasureAngular)
 
 CmdMeasureAngular::CmdMeasureAngular()
   : Command("Part_Measure_Angular")
@@ -2226,7 +2229,7 @@ bool CmdMeasureAngular::isActive(void)
 // Part_Measure_Refresh
 //===========================================================================
 
-DEF_STD_CMD_A(CmdMeasureRefresh);
+DEF_STD_CMD_A(CmdMeasureRefresh)
 
 CmdMeasureRefresh::CmdMeasureRefresh()
   : Command("Part_Measure_Refresh")
@@ -2255,7 +2258,7 @@ bool CmdMeasureRefresh::isActive(void)
 // Part_Measure_Clear_All
 //===========================================================================
 
-DEF_STD_CMD_A(CmdMeasureClearAll);
+DEF_STD_CMD_A(CmdMeasureClearAll)
 
 CmdMeasureClearAll::CmdMeasureClearAll()
   : Command("Part_Measure_Clear_All")
@@ -2284,7 +2287,7 @@ bool CmdMeasureClearAll::isActive(void)
 // Part_Measure_Toggle_All
 //===========================================================================
 
-DEF_STD_CMD_A(CmdMeasureToggleAll);
+DEF_STD_CMD_A(CmdMeasureToggleAll)
 
 CmdMeasureToggleAll::CmdMeasureToggleAll()
   : Command("Part_Measure_Toggle_All")
@@ -2319,7 +2322,7 @@ bool CmdMeasureToggleAll::isActive(void)
 // Part_Measure_Toggle_3d
 //===========================================================================
 
-DEF_STD_CMD_A(CmdMeasureToggle3d);
+DEF_STD_CMD_A(CmdMeasureToggle3d)
 
 CmdMeasureToggle3d::CmdMeasureToggle3d()
   : Command("Part_Measure_Toggle_3d")
@@ -2348,7 +2351,7 @@ bool CmdMeasureToggle3d::isActive(void)
 // Part_Measure_Toggle_Delta
 //===========================================================================
 
-DEF_STD_CMD_A(CmdMeasureToggleDelta);
+DEF_STD_CMD_A(CmdMeasureToggleDelta)
 
 CmdMeasureToggleDelta::CmdMeasureToggleDelta()
   : Command("Part_Measure_Toggle_Delta")
@@ -2406,7 +2409,7 @@ bool CmdBoxSelection::isActive(void)
 //===========================================================================
 // Part_projectionOnSurface
 //===========================================================================
-DEF_STD_CMD_A(CmdPartProjectionOnSurface);
+DEF_STD_CMD_A(CmdPartProjectionOnSurface)
 
 CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
   :Command("Part_projectionOnSurface")

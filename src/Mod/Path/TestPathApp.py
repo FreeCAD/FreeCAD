@@ -25,18 +25,41 @@
 import TestApp
 
 from PathTests.TestPathLog   import TestPathLog
+from PathTests.TestPathPreferences  import TestPathPreferences
 from PathTests.TestPathCore  import TestPathCore
 #from PathTests.TestPathPost  import PathPostTestCases
 from PathTests.TestPathGeom  import TestPathGeom
 from PathTests.TestPathOpTools  import TestPathOpTools
 from PathTests.TestPathUtil  import TestPathUtil
-from PathTests.TestPathDepthParams        import depthTestCases
+from PathTests.TestPathDepthParams import depthTestCases
 from PathTests.TestPathDressupHoldingTags import TestHoldingTags
 from PathTests.TestPathDressupDogbone import TestDressupDogbone
 from PathTests.TestPathStock import TestPathStock
 from PathTests.TestPathTool import TestPathTool
+from PathTests.TestPathToolBit  import TestPathToolBit
 from PathTests.TestPathTooltable import TestPathTooltable
 from PathTests.TestPathToolController import TestPathToolController
 from PathTests.TestPathSetupSheet import TestPathSetupSheet
 from PathTests.TestPathDeburr  import TestPathDeburr
+from PathTests.TestPathHelix  import TestPathHelix
+
+# dummy usage to get flake8 and lgtm quiet
+False if TestApp.__name__ else True
+False if TestPathLog.__name__ else True
+False if TestPathCore.__name__ else True
+False if TestPathGeom.__name__ else True
+False if TestPathOpTools.__name__ else True
+False if TestPathUtil.__name__ else True
+False if depthTestCases.__name__ else True
+False if TestHoldingTags.__name__ else True
+False if TestDressupDogbone.__name__ else True
+False if TestPathStock.__name__ else True
+False if TestPathTool.__name__ else True
+False if TestPathTooltable.__name__ else True
+False if TestPathToolController.__name__ else True
+False if TestPathSetupSheet.__name__ else True
+False if TestPathDeburr.__name__ else True
+False if TestPathHelix.__name__ else True
+False if TestPathPreferences.__name__ else True
+False if TestPathToolBit.__name__ else True
 

@@ -34,7 +34,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -227,15 +227,15 @@ bool ThicknessWidget::accept()
 
     try {
         if (!d->selection.empty()) {
-            FCMD_OBJ_CMD2("Faces = %s", d->thickness,d->selection.c_str());
+            Gui::cmdAppObjectArgs(d->thickness, "Faces = %s", d->selection.c_str());
         }
-        FCMD_OBJ_CMD2("Value = %f", d->thickness,d->ui.spinOffset->value().getValue());
-        FCMD_OBJ_CMD2("Mode = %i", d->thickness,d->ui.modeType->currentIndex());
-        FCMD_OBJ_CMD2("Join = %i", d->thickness,d->ui.joinType->currentIndex());
-        FCMD_OBJ_CMD2("Intersection = %s", 
-            d->thickness,d->ui.intersection->isChecked() ? "True" : "False");
-        FCMD_OBJ_CMD2("SelfIntersection = %s", 
-            d->thickness,d->ui.selfIntersection->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(d->thickness, "Value = %f", d->ui.spinOffset->value().getValue());
+        Gui::cmdAppObjectArgs(d->thickness, "Mode = %i", d->ui.modeType->currentIndex());
+        Gui::cmdAppObjectArgs(d->thickness, "Join = %i", d->ui.joinType->currentIndex());
+        Gui::cmdAppObjectArgs(d->thickness, "Intersection = %s", 
+            d->ui.intersection->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(d->thickness, "SelfIntersection = %s", 
+            d->ui.selfIntersection->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->thickness->isValid())

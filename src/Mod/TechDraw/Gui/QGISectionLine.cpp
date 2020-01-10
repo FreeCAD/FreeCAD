@@ -40,6 +40,7 @@
 #include "QGISectionLine.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGISectionLine::QGISectionLine()
 {
@@ -198,32 +199,26 @@ void QGISectionLine::makeSymbolsTrad()
     m_symFont.setPixelSize(QGIView::calculateFontPixelSize(m_symSize));
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
-    if (m_arrowDir.y < 0.0) {         //pointing down
-        extLineStart  += QPointF (0.0, m_symSize);  //move text down a bit
-    } else if (m_arrowDir.y >  0.0) {  //pointing up
-        extLineStart  -= QPointF (0.0, m_symSize);  //move text up a bit
+
+    QRectF symRect = m_symbol1->boundingRect();
+    double symWidth = symRect.width();
+    double symHeight = symRect.height();
+    double symbolFudge = 1.0;
+    double angle = atan2f(m_arrowDir.y,m_arrowDir.x);
+    if (angle < 0.0) {
+        angle = 2 * M_PI + angle;
     }
-    if (m_arrowDir.x < 0.0) {         //pointing left
-        extLineStart  -= QPointF (m_symSize, 0.0);  //move text left a bit
-    } else if (m_arrowDir.x >  0.0) {  //pointing rightup
-        extLineStart  += QPointF (m_symSize, 0.0);  //move text right a bit
-    }
+    Base::Vector3d adjustVector(cos(angle) * symWidth, sin(angle) * symHeight, 0.0);
+    adjustVector = (DrawUtil::invertY(adjustVector) / 2.0) * symbolFudge;
+    QPointF qAdjust(adjustVector.x, adjustVector.y);
+
+    extLineStart += qAdjust;
     m_symbol1->centerAt(extLineStart);
 
     m_symbol2->setFont(m_symFont);
     m_symbol2->setPlainText(QString::fromUtf8(m_symbol));
-    if (m_arrowDir.y < 0.0) {         //pointing down
-        extLineEnd  += QPointF (0.0, m_symSize);  //move text down a bit
-    } else if (m_arrowDir.y > 0.0) {  //pointing up
-        extLineEnd  -= QPointF (0.0, m_symSize);  //move text up a bit
-    }
-     if (m_arrowDir.x < 0.0) {         //pointing left
-        extLineEnd  -= QPointF (m_symSize, 0.0);  //move text left a bit
-    } else if (m_arrowDir.x >  0.0) {  //pointing rightup
-        extLineEnd  += QPointF (m_symSize, 0.0);  //move text right a bit
-    }
+    extLineEnd += qAdjust;
     m_symbol2->centerAt(extLineEnd);
-
 }
 
 void QGISectionLine::makeSymbolsISO()
@@ -346,10 +341,12 @@ void QGISectionLine::setTools()
 
     m_line->setPen(m_pen);
 
-    m_arrow1->setPen(m_pen);
-    m_arrow2->setPen(m_pen);
-    m_arrow1->setBrush(m_brush);
-    m_arrow2->setBrush(m_brush);
+//    m_arrow1->setPen(m_pen);
+//    m_arrow2->setPen(m_pen);
+//    m_arrow1->setBrush(m_brush);
+//    m_arrow2->setBrush(m_brush);
+    m_arrow1->setPrettyNormal();
+    m_arrow2->setPrettyNormal();
 
     m_symbol1->setDefaultTextColor(m_colCurrent);
     m_symbol2->setDefaultTextColor(m_colCurrent);

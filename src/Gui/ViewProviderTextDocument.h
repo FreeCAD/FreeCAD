@@ -25,9 +25,10 @@
 #define GUI_ViewProviderTextDocument_H
 
 
-#include "PreCompiled.h"
 #include "ViewProviderDocumentObject.h"
+#include <QPointer>
 
+class QPlainTextEdit;
 
 namespace Gui {
 
@@ -37,11 +38,23 @@ public:
     ViewProviderTextDocument();
     ~ViewProviderTextDocument() {}
 
+    App::PropertyBool ReadOnly;
+    App::PropertyFloat FontSize;
+    App::PropertyFont FontName;
+    App::PropertyEnumeration SyntaxHighlighter;
+
     bool doubleClicked();
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     bool isShow() const { return true; }
+
+    void onChanged(const App::Property* prop);
+
 private:
     bool activateView() const;
+
+private:
+    QPointer<QPlainTextEdit> editorWidget;
+    static const char* SyntaxEnums[];
 };
 
 }

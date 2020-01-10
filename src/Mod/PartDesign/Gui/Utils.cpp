@@ -52,7 +52,7 @@
 #include "Utils.h"
 #include "WorkflowManager.h"
 
-FC_LOG_LEVEL_INIT("PartDesignGui",true,true);
+FC_LOG_LEVEL_INIT("PartDesignGui",true,true)
 
 //===========================================================================
 // Helper for Body

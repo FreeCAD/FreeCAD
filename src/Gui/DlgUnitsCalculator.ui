@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>425</width>
-    <height>187</height>
+    <width>424</width>
+    <height>262</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Units calculator</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
@@ -23,6 +23,9 @@
          <width>100</width>
          <height>0</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Input the source value and unit</string>
        </property>
       </widget>
      </item>
@@ -34,12 +37,18 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::InputField" name="UnitInput">
+      <widget class="QLineEdit" name="UnitInput">
        <property name="minimumSize">
         <size>
          <width>100</width>
          <height>0</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string>Input here the unit for the result</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
@@ -58,6 +67,9 @@
          <height>0</height>
         </size>
        </property>
+       <property name="toolTip">
+        <string>Result</string>
+       </property>
        <property name="readOnly">
         <bool>true</bool>
        </property>
@@ -67,58 +79,101 @@
    </item>
    <item row="1" column="0">
     <widget class="QTextEdit" name="textEdit">
+     <property name="toolTip">
+      <string>List of last used calculations 
+To add a calculation press Return in the value input field</string>
+     </property>
      <property name="readOnly">
       <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Quantity:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Gui::QuantitySpinBox" name="quantitySpinBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Units:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="unitsBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Quantity</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Quantity:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="quantitySpinBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Unit system:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QComboBox" name="comboBoxScheme">
+        <property name="toolTip">
+         <string>Unit system to be used for the Quantity
+The preference system is the one set in the general preferences.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Decimals:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="spinBoxDecimals">
+        <property name="toolTip">
+         <string>Decimals for the Quantity</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>12</number>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Unit category:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QComboBox" name="unitsBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Unit category for the Quantity</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButton_Help">
-       <property name="text">
-        <string>Help</string>
-       </property>
-      </widget>
-     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -134,6 +189,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_Copy">
+       <property name="toolTip">
+        <string>Copy the result into the clipboard</string>
+       </property>
        <property name="text">
         <string>Copy</string>
        </property>

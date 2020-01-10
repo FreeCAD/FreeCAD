@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen        (eivind@kvedalen.name) 2015      *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -185,25 +185,36 @@ std::string App::ObjectIdentifier::getPropertyName() const
 
 /**
  * @brief Get Component at given index \a i.
- * @param i Index to get
+ * @param i: Index to get
+ * @param idx: optional return of adjusted component index
  * @return A component.
  */
 
-const App::ObjectIdentifier::Component &App::ObjectIdentifier::getPropertyComponent(int i) const
+const App::ObjectIdentifier::Component &App::ObjectIdentifier::getPropertyComponent(int i, int *idx) const
 {
     ResolveResults result(*this);
 
-    assert(result.propertyIndex + i >=0 && static_cast<std::size_t>(result.propertyIndex) + i < components.size());
+    i += result.propertyIndex;
+    if (i < 0 || i >= static_cast<int>(components.size()))
+        FC_THROWM(Base::ValueError, "Invalid property component index");
 
-    return components[result.propertyIndex + i];
+    if (idx)
+        *idx = i;
+
+    return components[i];
 }
 
-App::ObjectIdentifier::Component &App::ObjectIdentifier::getPropertyComponent(int i)
+void App::ObjectIdentifier::setComponent(int idx, Component &&comp)
 {
-    ResolveResults result(*this);
-    assert(result.propertyIndex + i >=0 && 
-            static_cast<std::size_t>(result.propertyIndex) + i < components.size());
-    return components[result.propertyIndex + i];
+    if (idx < 0 || idx >= static_cast<int>(components.size()))
+        FC_THROWM(Base::ValueError, "Invalid component index");
+    components[idx] = std::move(comp);
+    _cache.clear();
+}
+
+void App::ObjectIdentifier::setComponent(int idx, const Component &comp)
+{
+    setComponent(idx, Component(comp));
 }
 
 std::vector<ObjectIdentifier::Component> ObjectIdentifier::getPropertyComponents() const {
@@ -555,11 +566,12 @@ std::string ObjectIdentifier::getSubPathStr(bool toPython) const {
     return ss.str();
 }
 
+
 /**
  * @brief Construct a Component part
  * @param _name Name of component
  * @param _type Type; simple, array, range or map
- * @param _begin Array index or begining of a Range, or INT_MAX for other type.
+ * @param _begin Array index or beginning of a Range, or INT_MAX for other type.
  * @param _end ending of a Range, or INT_MAX for other type.
  */
 
@@ -582,7 +594,6 @@ ObjectIdentifier::Component::Component(String &&_name,
     , step(_step)
 {
 }
-
 
 size_t ObjectIdentifier::Component::getIndex(size_t count) const {
     if(begin>=0) {

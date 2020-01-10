@@ -33,7 +33,7 @@ using namespace Gui;
 // BaseView
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::BaseView,Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::BaseView,Base::BaseClass)
 
 
 BaseView::BaseView( Gui::Document* pcDocument)

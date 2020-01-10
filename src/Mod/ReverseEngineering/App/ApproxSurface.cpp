@@ -638,7 +638,7 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
         const gp_Pnt& pnt = (*_pvcPoints)(ii);
         Wm4::Vector3d clProjPnt = clRotMatTrans * Wm4::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
-        vcProjPts.push_back(Base::Vector2d(clProjPnt.X(), clProjPnt.Y()));
+        vcProjPts.emplace_back(clProjPnt.X(), clProjPnt.Y());
         clBBox.Add(Base::Vector2d(clProjPnt.X(), clProjPnt.Y()));
     }
 

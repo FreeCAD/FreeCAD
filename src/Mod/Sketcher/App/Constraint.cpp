@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -60,7 +60,8 @@ Constraint::Constraint()
   LabelPosition(0.f),
   isDriving(true),
   InternalAlignmentIndex(-1),
-  isInVirtualSpace(false)
+  isInVirtualSpace(false),
+  isActive(true)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     static boost::mt19937 ran;
@@ -98,6 +99,7 @@ Constraint *Constraint::copy(void) const
     temp->isDriving = this->isDriving;
     temp->InternalAlignmentIndex = this->InternalAlignmentIndex;
     temp->isInVirtualSpace = this->isInVirtualSpace;
+    temp->isActive = this->isActive;
     // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
     return temp;
 }
@@ -165,7 +167,8 @@ void Constraint::Save (Writer &writer) const
     << "LabelDistance=\""               <<  LabelDistance           << "\" "
     << "LabelPosition=\""               <<  LabelPosition           << "\" "
     << "IsDriving=\""                   <<  (int)isDriving          << "\" "
-    << "IsInVirtualSpace=\""            <<  (int)isInVirtualSpace   << "\" />"
+    << "IsInVirtualSpace=\""            <<  (int)isInVirtualSpace   << "\" "
+    << "IsActive=\""                    <<  (int)isActive           << "\" />"
 
     << std::endl;
 }
@@ -209,4 +212,7 @@ void Constraint::Restore(XMLReader &reader)
 
     if (reader.hasAttribute("IsInVirtualSpace"))
         isInVirtualSpace = reader.getAttributeAsInteger("IsInVirtualSpace") ? true : false;
+
+    if (reader.hasAttribute("IsActive"))
+        isActive = reader.getAttributeAsInteger("IsActive") ? true : false;
 }

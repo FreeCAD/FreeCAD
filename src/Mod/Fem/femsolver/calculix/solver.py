@@ -102,8 +102,8 @@ class Proxy(solverbase.Proxy):
             "Fem",
             "Number of modes for frequency calculations"
         )
-        noe = ccx_prefs.GetInt("EigenmodesCount", 10)
-        obj.EigenmodesCount = (noe, 1, 100, 1)
+        noem = ccx_prefs.GetInt("EigenmodesCount", 10)
+        obj.EigenmodesCount = (noem, 1, 100, 1)
 
         obj.addProperty(
             "App::PropertyFloatConstraint",
@@ -179,47 +179,47 @@ class Proxy(solverbase.Proxy):
 
         ccx_default_time_incrementation_control_parameter = {
             # iteration parameter
-            'I_0': 4,
-            'I_R': 8,
-            'I_P': 9,
-            'I_C': 200,  # ccx default = 16
-            'I_L': 10,
-            'I_G': 400,  # ccx default = 4
-            'I_S': None,
-            'I_A': 200,  # ccx default = 5
-            'I_J': None,
-            'I_T': None,
+            "I_0": 4,
+            "I_R": 8,
+            "I_P": 9,
+            "I_C": 200,  # ccx default = 16
+            "I_L": 10,
+            "I_G": 400,  # ccx default = 4
+            "I_S": None,
+            "I_A": 200,  # ccx default = 5
+            "I_J": None,
+            "I_T": None,
             # cutback parameter
-            'D_f': 0.25,
-            'D_C': 0.5,
-            'D_B': 0.75,
-            'D_A': 0.85,
-            'D_S': None,
-            'D_H': None,
-            'D_D': 1.5,
-            'W_G': None}
+            "D_f": 0.25,
+            "D_C": 0.5,
+            "D_B": 0.75,
+            "D_A": 0.85,
+            "D_S": None,
+            "D_H": None,
+            "D_D": 1.5,
+            "W_G": None}
         p = ccx_default_time_incrementation_control_parameter
-        p_iter = '{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}'.format(
-            p['I_0'],
-            p['I_R'],
-            p['I_P'],
-            p['I_C'],
-            p['I_L'],
-            p['I_G'],
-            '',
-            p['I_A'],
-            '',
-            ''
+        p_iter = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}".format(
+            p["I_0"],
+            p["I_R"],
+            p["I_P"],
+            p["I_C"],
+            p["I_L"],
+            p["I_G"],
+            "",
+            p["I_A"],
+            "",
+            ""
         )
-        p_cutb = '{0},{1},{2},{3},{4},{5},{6},{7}'.format(
-            p['D_f'],
-            p['D_C'],
-            p['D_B'],
-            p['D_A'],
-            '',
-            '',
-            p['D_D'],
-            ''
+        p_cutb = "{0},{1},{2},{3},{4},{5},{6},{7}".format(
+            p["D_f"],
+            p["D_C"],
+            p["D_B"],
+            p["D_A"],
+            "",
+            "",
+            p["D_D"],
+            ""
         )
         obj.addProperty(
             "App::PropertyString",
@@ -298,7 +298,7 @@ class Proxy(solverbase.Proxy):
 
     def edit(self, directory):
         pattern = os.path.join(directory, "*.inp")
-        print(pattern)
+        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
         f = glob.glob(pattern)[0]
         FemGui.open(f)
 

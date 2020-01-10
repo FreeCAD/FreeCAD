@@ -1,5 +1,5 @@
-/***************************************************************************
-*   (c) Jürgen Riegel (juergen.riegel@web.de) 2014                        *
+/**************************************************************************
+*   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
 *                                                                         *
 *   This file is part of the FreeCAD CAx development system.              *
 *                                                                         *
@@ -59,7 +59,7 @@ namespace Gui
             return dynamic_cast<_T>(getObject(it->second,true,parent,subname));
         }
         void setObject(App::DocumentObject*, const char*, const char *subname=0,
-                const Gui::HighlightMode& m = Gui::LightBlue);
+                const Gui::HighlightMode& m = HighlightMode::UserDefined);
         bool hasObject(const char*)const;
         void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
         bool hasObject(App::DocumentObject *obj, const char *, const char *subname=0) const;

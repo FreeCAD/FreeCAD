@@ -838,7 +838,7 @@ public:
 
 /* TRANSLATOR Gui::GestureNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::GestureNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::GestureNavigationStyle, Gui::UserNavigationStyle)
 
 
 GestureNavigationStyle::GestureNavigationStyle()
@@ -940,6 +940,16 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
         (this->shiftdown   ? NS::Event::SHIFTDOWN : 0) |
         (this->altdown     ? NS::Event::ALTDOWN : 0);
 
+#ifdef FC_OS_MACOSX
+    // On Mac, Qt gesture events seem to be broken. At least that's what event
+    // logs from @chrisb tell me. So, for until a developer on a mac gets here to
+    // make gestures work, I disable them. --DeepSOIC
+
+    if (smev.isGestureEvent())
+        return superclass::processSoEvent(ev);
+#endif
+
+
     if (! smev.flags->processed)
         this->naviMachine->processEvent(smev);
     if(! smev.flags->propagated && ! smev.flags->processed)
@@ -998,7 +1008,7 @@ void GestureNavigationStyle::onRollGesture(int direction)
     code << "Gui.runCommand(\"" << cmd << "\")";
     try {
         Base::Interpreter().runString(code.str().c_str());
-    } catch (Base::PyException exc) {
+    } catch (Base::PyException& exc) {
         exc.ReportException();
     } catch (...) {
         Base::Console().Error("GestureNavigationStyle::onRollGesture: unknown C++ exception when invoking command %s\n", cmd.c_str());

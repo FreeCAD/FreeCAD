@@ -56,7 +56,7 @@ class VersionControl:
         self.date = ""
         self.url = ""
 
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         return False
 
     def printInfo(self):
@@ -72,9 +72,9 @@ class VersionControl:
         return content
 
 class UnknownControl(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(srcdir+"/src/Build/Version.h.out"):
+        if os.path.exists(bindir+"/src/Build/Version.h.out"):
             return False
         self.rev = "Unknown"
         self.date = "Unknown"
@@ -85,9 +85,9 @@ class UnknownControl(VersionControl):
         print("Unknown version control")
 
 class DebianChangelog(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         # Do not overwrite existing file with almost useless information
-        if os.path.exists(srcdir+"/src/Build/Version.h.out"):
+        if os.path.exists(bindir+"/src/Build/Version.h.out"):
             return False
         try:
             f = open(srcdir+"/debian/changelog")
@@ -108,7 +108,7 @@ class DebianChangelog(VersionControl):
         print("debian/changelog")
 
 class BazaarControl(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         info=os.popen("bzr log -l 1 %s" % (srcdir)).read()
         if len(info) == 0:
             return False
@@ -232,7 +232,7 @@ class GitControl(VersionControl):
             if hasnames >=2: # merging master into dev is not enough
                 self.branch=','.join(names)
 
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         self.hash=os.popen("git log -1 --pretty=format:%H").read().strip()
         if self.hash == "":
             return False # not a git repo
@@ -294,14 +294,14 @@ class GitControl(VersionControl):
         return content
 
 class MercurialControl(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         return False
 
     def printInfo(self):
         print("mercurial")
 
 class Subversion(VersionControl):
-    def extractInfo(self, srcdir):
+    def extractInfo(self, srcdir, bindir):
         parser=xml.sax.make_parser()
         handler=SvnHandler()
         parser.setContentHandler(handler)
@@ -376,7 +376,7 @@ def main():
 
     vcs=[GitControl(), BazaarControl(), Subversion(), MercurialControl(), DebianChangelog(), UnknownControl()]
     for i in vcs:
-        if i.extractInfo(srcdir):
+        if i.extractInfo(srcdir, bindir):
             # Open the template file and the version file
             inp = open("%s/src/Build/Version.h.in" % (bindir))
             lines = inp.readlines()

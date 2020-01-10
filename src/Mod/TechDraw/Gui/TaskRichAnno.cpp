@@ -35,7 +35,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -145,6 +145,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
         return;
     }
 
+    
     ui->setupUi(this);
     m_title = QObject::tr("Rich text creator");
 
@@ -278,16 +279,17 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand("Create Annotation");
-    FCMD_OBJ_DOC_CMD(m_basePage,"addObject('TechDraw::DrawRichAnno','" << annoName << "')");
+    Gui::Command::openCommand("Create Anno");
+    Gui::cmdAppDocument(m_basePage, std::ostringstream() << "addObject('" << annoType << "','" << annoName << "')");
+
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
     if (obj == nullptr) {
         throw Base::RuntimeError("TaskRichAnno - new RichAnno object not found");
     }
-    FCMD_OBJ_CMD(m_basePage,"addView(" << Gui::Command::getObjectCmd(obj) << ")");
+    Gui::cmdAppObject(m_basePage, std::ostringstream() << "addView(" << Gui::Command::getObjectCmd(obj) << ")");
 
     if (m_baseFeat != nullptr) {
-        FCMD_OBJ_CMD(obj,"AnnoParent = " << Gui::Command::getObjectCmd(m_baseFeat));
+        Gui::cmdAppObject(obj, std::ostringstream() << "AnnoParent = " << Gui::Command::getObjectCmd(m_baseFeat));
     }
     if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
@@ -306,7 +308,7 @@ void TaskRichAnno::createAnnoFeature()
 void TaskRichAnno::updateAnnoFeature()
 {
 //    Base::Console().Message("TRA::updateAnnoFeature()\n");
-    Gui::Command::openCommand("Edit Leader");
+    Gui::Command::openCommand("Edit Anno");
     commonFeatureUpdate();
 
     Gui::Command::commitCommand();
@@ -329,8 +331,8 @@ void TaskRichAnno::removeFeature(void)
         if (m_createMode) {
             try {
                 // this doesn't remove the QGMText item??
-                FCMD_OBJ_CMD(m_basePage,"removeView(" << Gui::Command::getObjectCmd(m_annoFeat) << ")");
-                FCMD_OBJ_DOC_CMD(m_annoFeat,"removeObject('" << m_annoFeat->getNameInDocument() << "')");
+                Gui::cmdAppObject(m_basePage, std::ostringstream() << "removeView(" << Gui::Command::getObjectCmd(m_annoFeat) << ")");
+                Gui::cmdAppDocument(m_annoFeat, std::ostringstream() << "removeObject('" << m_annoFeat->getNameInDocument() << "')");
             }
             catch (...) {
                 Base::Console().Warning("TRA::removeFeature - failed to delete feature\n");
@@ -338,8 +340,7 @@ void TaskRichAnno::removeFeature(void)
             }
         } else {
             if (Gui::Command::hasPendingCommand()) {
-                std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
-                Gui::Application::Instance->activeDocument()->undo(1);
+                Gui::Command::abortCommand();
             } else {
                 Base::Console().Log("TaskRichAnno: Edit mode - NO command is active\n");
             }
@@ -369,16 +370,19 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
             TechDraw::DrawLeaderLine* dll = dynamic_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
             points = dll->WayPoints.getValues();
         } else {
-            Base::Console().Log("TRA::calcTextPos - m_baseFeat is not Leader\n");
+//            Base::Console().Message("TRA::calcTextPos - m_baseFeat is not Leader\n");
             QPointF result(0.0,0.0);
             return result;
         }
     } else {
+//        Base::Console().Message("TRA::calcStartPos - no m_baseFeat\n");
         if (m_basePage != nullptr) {
             double w = Rez::guiX(m_basePage->getPageWidth() / 2.0);
             double h = Rez::guiX(m_basePage->getPageHeight() / 2.0);
             QPointF result(w,h);
             return result;
+        } else {
+            Base::Console().Message("TRA::calcStartPos - no m_basePage\n");
         }
     }
 
@@ -493,7 +497,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
     : TaskDialog()
 {
     widget  = new TaskRichAnno(baseFeat,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-textleader"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-RichTextAnnotation"),
                                               widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -503,7 +507,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP)
     : TaskDialog()
 {
     widget  = new TaskRichAnno(leadVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-textleader"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-RichTextAnnotation"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

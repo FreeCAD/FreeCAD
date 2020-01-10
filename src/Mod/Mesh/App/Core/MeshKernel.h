@@ -83,16 +83,16 @@ public:
     //@{
     /// Returns the number of facets
     unsigned long CountFacets (void) const
-    { return (unsigned long)(_aclFacetArray.size()); }
+    { return static_cast<unsigned long>(_aclFacetArray.size()); }
     /// Returns the number of edge
     unsigned long CountEdges (void) const;
     // Returns the number of points
     unsigned long CountPoints (void) const
-    { return (unsigned long)(_aclPointArray.size()); }
+    { return static_cast<unsigned long>(_aclPointArray.size()); }
     /// Returns the number of required memory in bytes
     unsigned int GetMemSize (void) const
-    { return _aclPointArray.size() * sizeof(MeshPoint) +
-           _aclFacetArray.size() * sizeof(MeshFacet); }
+    { return static_cast<unsigned int>(_aclPointArray.size() * sizeof(MeshPoint) +
+                                       _aclFacetArray.size() * sizeof(MeshFacet)); }
     /// Determines the bounding box
     const Base::BoundBox3f& GetBoundBox (void) const
     { return _clBoundBox; }

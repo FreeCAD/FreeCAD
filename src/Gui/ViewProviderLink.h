@@ -71,7 +71,7 @@ protected:
 };
 
 class GuiExport LinkView : public Base::BaseClass, public LinkOwner {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
     LinkView();
@@ -79,7 +79,7 @@ public:
     LinkView &operator=(const LinkView&) = delete;
     LinkView(const LinkView&) = delete;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     virtual void unlink(LinkInfoPtr) override;
     virtual void onLinkedIconChange(LinkInfoPtr) override;
@@ -181,7 +181,7 @@ protected:
 
 class GuiExport ViewProviderLink : public ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(Gui::ViewProviderLink);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderLink);
     typedef ViewProviderDocumentObject inherited;
 
 public:
@@ -265,6 +265,10 @@ public:
     virtual ViewProviderDocumentObject *getLinkedViewProvider(
             std::string *subname=0, bool recursive=false) const override;
 
+    virtual bool allowOverride(const App::DocumentObject &) const override {
+        return true;
+    }
+
 protected:
     bool setEdit(int ModNum) override;
     void setEditViewer(View3DInventorViewer*, int ModNum) override;
@@ -331,7 +335,7 @@ typedef ViewProviderPythonFeatureT<ViewProviderLink> ViewProviderLinkPython;
 } //namespace Gui
 
 #ifdef _MSC_VER
-// forward decleration to please VC 2013
+// forward declaration to please VC 2013
 void intrusive_ptr_add_ref(Gui::LinkInfo *px);
 void intrusive_ptr_release(Gui::LinkInfo *px);
 #endif

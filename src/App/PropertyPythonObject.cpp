@@ -44,7 +44,7 @@ using namespace App;
 using namespace Base;
 
 
-TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyPythonObject , App::Property)
 
 PropertyPythonObject::PropertyPythonObject()
 {

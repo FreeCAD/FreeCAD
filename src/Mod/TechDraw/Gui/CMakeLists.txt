@@ -54,6 +54,8 @@ set(TechDrawGui_MOC_HDRS
     TaskRichAnno.h
     TaskCosVertex.h
     TaskCenterLine.h
+    TaskLineDecor.h
+    TaskWeldingSymbol.h
     QGEPath.h
     QGTracker.h
     QGILeaderLine.h
@@ -62,6 +64,9 @@ set(TechDrawGui_MOC_HDRS
     mrichtextedit.h
     mtextedit.h
     TaskBalloon.h
+    QGIWeldSymbol.h
+    SymbolChooser.h
+    TaskActiveView.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -87,6 +92,12 @@ set(TechDrawGui_UIC_SRCS
     TaskBalloon.ui
     TaskCosVertex.ui
     TaskCenterLine.ui
+    TaskCL2Lines.ui
+    TaskLineDecor.ui
+    TaskRestoreLines.ui
+    TaskWeldingSymbol.ui
+    SymbolChooser.ui
+    TaskActiveView.ui
 )
 
 if(BUILD_QT5)
@@ -159,10 +170,26 @@ SET(TechDrawGui_SRCS
     TaskCenterLine.ui
     TaskCenterLine.cpp
     TaskCenterLine.h
+    TaskLineDecor.ui
+    TaskLineDecor.cpp
+    TaskLineDecor.h
+    TaskRestoreLines.ui
+    TaskCL2Lines.ui
+    TaskWeldingSymbol.ui
+    TaskWeldingSymbol.cpp
+    TaskWeldingSymbol.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
     Rez.h
+    SymbolChooser.ui
+    SymbolChooser.cpp
+    SymbolChooser.h
+    TaskActiveView.ui
+    TaskActiveView.cpp
+    TaskActiveView.h
+    Grabber3d.cpp
+    Grabber3d.h
 )
 
 SET(TechDrawGuiView_SRCS
@@ -252,6 +279,10 @@ SET(TechDrawGuiView_SRCS
     QGIRichAnno.h
     QGMText.h
     QGMText.cpp
+    QGIWeldSymbol.h
+    QGIWeldSymbol.cpp
+    QGITile.h
+    QGITile.cpp
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h
@@ -293,6 +324,12 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderLeader.h
     ViewProviderRichAnno.cpp
     ViewProviderRichAnno.h
+    ViewProviderTile.cpp
+    ViewProviderTile.h
+    ViewProviderWeld.cpp
+    ViewProviderWeld.h
+    ViewProviderCosmeticExtension.cpp
+    ViewProviderCosmeticExtension.h 
 )
 
 SOURCE_GROUP("MRTE" FILES ${MRTE_SRCS})
@@ -311,6 +348,12 @@ SET(TechDrawGuiTaskDlgs_SRCS
     mrichtextedit.ui
     TaskBalloon.ui
     TaskCenterLine.ui
+    TaskLineDecor.ui
+    TaskRestoreLines.ui
+    TaskCL2Lines.ui
+    TaskWeldingSymbol.ui
+    SymbolChooser.ui
+    TaskActiveView.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

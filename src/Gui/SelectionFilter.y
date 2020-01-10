@@ -1,5 +1,5 @@
 /* Parser for the FreeCAD selection filter language */
-/* (c) 2010 Juergen Riegel  LGPL   
+/* Copyright (c) 2010 Jürgen Riegel  LGPL           */
 
 /*  bison -o SelectionFilter.tab.c  SelectionFilter.y  */
 

@@ -77,11 +77,8 @@ __created__ = "2016"
 __scriptVersion__ = "3t Usable"
 __lastModified__ = "2019-05-10 10:37 CST"
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 
 # Qt translation handling
@@ -115,7 +112,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def opFeatures(self, obj):
         '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown  | PathOp.FeatureCoolant
 
     def initOperation(self, obj):
         '''initPocketOp(obj) ... create facing specific properties'''
@@ -472,9 +469,11 @@ class ObjectSurface(PathOp.ObjectOp):
         # self.reportThis("--pntsPerLine: " + str(pntsPerLine))
         if math.ceil(pntsPerLine) != math.floor(pntsPerLine):
             pntsPerLine = None
+        else:
+            pntsPerLine = math.ceil(pntsPerLine)
 
         # Create topo map for ignoring waste material
-        if ignoreWasteFlag is True:
+        if ignoreWasteFlag is True and pntsPerLine is not None:
             topoMap = createTopoMap(scanCLP, obj.IgnoreWasteDepth)
             self.topoMap = listToMultiDimensional(topoMap, numLines, pntsPerLine)
             self._bufferTopoMap(numLines, pntsPerLine)
@@ -1258,8 +1257,8 @@ class ObjectSurface(PathOp.ObjectOp):
         pnt.y = RNG[0].y
         pnt.z = RNG[0].z + float(obj.DepthOffset.Value)
 
-        # Adjust feed rate based on radius/circumferance of cutter.
-        # Original feed rate based on travel at circumferance.
+        # Adjust feed rate based on radius/circumference of cutter.
+        # Original feed rate based on travel at circumference.
         if rN > 0:
             # if pnt.z > self.layerEndPnt.z:
             if pnt.z >= self.layerEndzMax:
@@ -1788,10 +1787,11 @@ class ObjectSurface(PathOp.ObjectOp):
     def setOclCutter(self, obj):
         # Set cutter details
         #  https://www.freecadweb.org/api/dd/dfe/classPath_1_1Tool.html#details
-        diam_1 = obj.ToolController.Tool.Diameter
-        lenOfst = obj.ToolController.Tool.LengthOffset
-        FR = obj.ToolController.Tool.FlatRadius
-        CEH = obj.ToolController.Tool.CuttingEdgeHeight
+        diam_1 = float(obj.ToolController.Tool.Diameter)
+        lenOfst = obj.ToolController.Tool.LengthOffset if hasattr(obj.ToolController.Tool, 'LengthOffset') else 0
+        FR = obj.ToolController.Tool.FlatRadius if hasattr(obj.ToolController.Tool, 'FlatRadius') else 0
+        CEH = obj.ToolController.Tool.CuttingEdgeHeight if hasattr(obj.ToolController.Tool, 'CuttingEdgeHeight') else 0
+        CEA = obj.ToolController.Tool.CuttingEdgeAngle if hasattr(obj.ToolController.Tool, 'CuttingEdgeAngle') else 0
 
         if obj.ToolController.Tool.ToolType == 'EndMill':
             # Standard End Mill
@@ -1813,13 +1813,13 @@ class ObjectSurface(PathOp.ObjectOp):
             # Bull Nose or Corner Radius cutter
             # Reference: https://www.fine-tools.com/halbstabfraeser.html
             # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            self.cutter = ocl.ConeCutter(diam_1, (obj.ToolController.Tool.CuttingEdgeAngle / 2), lenOfst)
+            self.cutter = ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
 
         elif obj.ToolController.Tool.ToolType == 'ChamferMill':
             # Bull Nose or Corner Radius cutter
             # Reference: https://www.fine-tools.com/halbstabfraeser.html
             # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            self.cutter = ocl.ConeCutter(diam_1, (obj.ToolController.Tool.CuttingEdgeAngle / 2), lenOfst)
+            self.cutter = ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
         else:
             # Default to standard end mill
             self.cutter = ocl.CylCutter(diam_1, (CEH + lenOfst))
@@ -1917,5 +1917,5 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Surface operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectSurface(obj, name)
+    obj.Proxy = ObjectSurface(obj, name)
     return obj

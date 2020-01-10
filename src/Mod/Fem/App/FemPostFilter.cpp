@@ -622,5 +622,3 @@ DocumentObjectExecReturn* FemPostCutFilter::execute(void) {
 
     return Fem::FemPostFilter::execute();
 }
-
-

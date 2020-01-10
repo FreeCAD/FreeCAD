@@ -78,6 +78,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Base/Parameter.h>
 #include <Base/Console.h>
@@ -88,7 +89,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
 #include <Gui/Utilities.h>
@@ -96,7 +97,7 @@
 #include <Gui/MenuManager.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
@@ -116,7 +117,7 @@
 #include "TaskSketcherValidation.h"
 #include "CommandConstraints.h"
 
-FC_LOG_LEVEL_INIT("Sketch",true,true);
+FC_LOG_LEVEL_INIT("Sketch",true,true)
 
 // The first is used to point at a SoDatumLabel for some
 // constraints, and at a SoMaterial for others...
@@ -155,6 +156,7 @@ SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   //
 SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
 SbColor ViewProviderSketch::CreateCurveColor            (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
+SbColor ViewProviderSketch::DeactivatedConstrDimColor   (0.8f,0.8f,0.8f);     // #CCCCCC -> (204,204,204)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec2s ViewProviderSketch::prvClickPos;
@@ -300,6 +302,7 @@ ViewProviderSketch::ViewProviderSketch()
     ADD_PROPERTY_TYPE(ShowLinks,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects used in links to external geometry are shown when opening sketch.");
     ADD_PROPERTY_TYPE(ShowSupport,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, all objects this sketch is attached to are shown when opening sketch.");
     ADD_PROPERTY_TYPE(RestoreCamera,(true),"Visibility automation",(App::PropertyType)(App::Prop_None),"If true, camera position before entering sketch is remembered, and restored after closing it.");
+    ADD_PROPERTY_TYPE(EditingWorkbench,("SketcherWorkbench"),"Visibility automation",(App::PropertyType)(App::Prop_None),"Name of the workbench to activate when editing this sketch.");
 
     {//visibility automation: update defaults to follow preferences
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
@@ -596,7 +599,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                             const Gui::View3DInventorViewer *viewer)
 {
     assert(edit);
-    App::AutoTransaction comitter;
+    App::AutoTransaction committer;
 
     // Calculate 3d point to the mouse position
     SbLine line;
@@ -791,8 +794,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
                             getDocument()->openCommand("Drag Point");
                             try {
-                                FCMD_OBJ_CMD2("movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                        ,getObject()
+                                Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                         ,GeoId, PosId, x-xInit, y-yInit, 0);
                                 getDocument()->commitCommand();
 
@@ -823,8 +825,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                             getDocument()->openCommand("Drag Curve");
                             try {
-                                FCMD_OBJ_CMD2("movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                        ,getObject()
+                                Gui::cmdAppObjectArgs(getObject(), "movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                         ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0);
                                 getDocument()->commitCommand();
 
@@ -869,6 +870,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 
                     // a redraw is required in order to clear the rubberband
                     draw(true,false);
+                    const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_UseHandler: {
@@ -1021,7 +1023,7 @@ void ViewProviderSketch::editDoubleClicked(void)
             if (Constr->isDimensional()) {
 
                 if(!Constr->isDriving) {
-                    FCMD_OBJ_CMD2("setDriving(%i,%s)", getObject(),id,"True");
+                    Gui::cmdAppObjectArgs(getObject(), "setDriving(%i,%s)", id, "True");
                 }
 
                 // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
@@ -2852,11 +2854,20 @@ void ViewProviderSketch::updateColor(void)
             if (hasDatumLabel) {
                 SoDatumLabel *l = static_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
 
-                l->textColor = (getSketchObject()->constraintHasExpression(i) ? ExprBasedConstrDimColor:
-                                        (constraint->isDriving ? ConstrDimColor : NonDrivingConstrDimColor));
+                l->textColor = constraint->isActive ?
+                                    (getSketchObject()->constraintHasExpression(i) ?
+                                        ExprBasedConstrDimColor
+                                        :(constraint->isDriving ?
+                                            ConstrDimColor
+                                            : NonDrivingConstrDimColor))
+                                    :DeactivatedConstrDimColor;
 
             } else if (hasMaterial) {
-                m->diffuseColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
+                m->diffuseColor = constraint->isActive ?
+                                    (constraint->isDriving ?
+                                        ConstrDimColor
+                                        :NonDrivingConstrDimColor)
+                                    :DeactivatedConstrDimColor;
             }
         }
     }
@@ -2892,6 +2903,9 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
     double                          factor; // unit scaling factor, currently not used
     Base::UnitSystem                unitSys; // current unit system
 
+    if(!constraint->isActive)
+        return QString::fromLatin1(" ");
+
     // Get value of HideUnits option. Default is false.
     hGrpSketcher = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher");
     iHideUnits = hGrpSketcher->GetBool("HideUnits", 0);
@@ -2913,20 +2927,20 @@ QString ViewProviderSketch::getPresentationString(const Constraint *constraint)
         // If this is a supported unit system then define what the base unit is.
         switch (unitSys)
         {
-            case Base::SI1:
-            case Base::MmMin:
+            case Base::UnitSystem::SI1:
+            case Base::UnitSystem::MmMin:
                 baseUnitStr = QString::fromLatin1("mm");
                 break;
 
-            case Base::SI2:
+            case Base::UnitSystem::SI2:
                 baseUnitStr = QString::fromLatin1("m");
                 break;
 
-            case Base::ImperialDecimal:
+            case Base::UnitSystem::ImperialDecimal:
                 baseUnitStr = QString::fromLatin1("in");
                 break;
 
-            case Base::Centimeters:
+            case Base::UnitSystem::Centimeters:
                 baseUnitStr = QString::fromLatin1("cm");
                 break;
 
@@ -3015,12 +3029,18 @@ QColor ViewProviderSketch::constrColor(int constraintId)
                                          (int)(PreselectColor[1] * 255.0f),
                                          (int)(PreselectColor[2] * 255.0f));
 
+    static QColor constrIconDisabledColor ((int)(DeactivatedConstrDimColor[0] * 255.0f),
+                                           (int)(DeactivatedConstrDimColor[1] * 255.0f),
+                                           (int)(DeactivatedConstrDimColor[2] * 255.0f));
+
     const std::vector<Sketcher::Constraint *> &constraints = getSketchObject()->Constraints.getValues();
 
     if (edit->PreselectConstraintSet.count(constraintId))
         return constrIconPreselColor;
     else if (edit->SelConstraintSet.find(constraintId) != edit->SelConstraintSet.end())
         return constrIconSelColor;
+    else if(!constraints[constraintId]->isActive)
+        return constrIconDisabledColor;
     else if(!constraints[constraintId]->isDriving)
         return nonDrivingConstrIcoColor;
     else
@@ -3567,7 +3587,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
 
     // RootPoint
-    Points.push_back(Base::Vector3d(0.,0.,0.));
+    Points.emplace_back(0.,0.,0.);
 
     for (std::vector<Part::Geometry *>::const_iterator it = geomlist->begin(); it != geomlist->end()-2; ++it, GeoId++) {
         if (GeoId >= intGeoCount)
@@ -3598,11 +3618,11 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             double segment = (2 * M_PI) / countSegments;
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(i*segment);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
             }
 
             gp_Pnt pnt = curve->Value(0);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3618,11 +3638,11 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             double segment = (2 * M_PI) / countSegments;
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(i*segment);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
             }
 
             gp_Pnt pnt = curve->Value(0);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3648,13 +3668,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 startangle += segment;
             }
 
             // end point
             gp_Pnt pnt = curve->Value(endangle);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3684,13 +3704,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 startangle += segment;
             }
 
             // end point
             gp_Pnt pnt = curve->Value(endangle);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3720,13 +3740,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 startangle += segment;
             }
 
             // end point
             gp_Pnt pnt = curve->Value(endangle);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3756,13 +3776,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 startangle += segment;
             }
 
             // end point
             gp_Pnt pnt = curve->Value(endangle);
-            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+            Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -3792,13 +3812,13 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(first);
-                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                Coords.emplace_back(pnt.X(), pnt.Y(), pnt.Z());
                 first += segment;
             }
 
             // end point
             gp_Pnt end = curve->Value(last);
-            Coords.push_back(Base::Vector3d(end.X(), end.Y(), end.Z()));
+            Coords.emplace_back(end.X(), end.Y(), end.Z());
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
@@ -4350,7 +4370,7 @@ Restart:
                 continue;
             }
 
-            // distinquish different constraint types to build up
+            // distinguish different constraint types to build up
             switch (Constr->Type) {
                 case Block:
                 case Horizontal: // write the new position of the Horizontal constraint Same as vertical position.
@@ -5341,7 +5361,11 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         // every constrained visual node gets its own material for preselection and selection
         SoMaterial *mat = new SoMaterial;
         mat->ref();
-        mat->diffuseColor = (*it)->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
+        mat->diffuseColor = (*it)->isActive ?
+                                ((*it)->isDriving ?
+                                    ConstrDimColor
+                                    :NonDrivingConstrDimColor)
+                                :DeactivatedConstrDimColor;
         // Get sketch normal
         Base::Vector3d RN(0,0,1);
 
@@ -5365,7 +5389,11 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 SoDatumLabel *text = new SoDatumLabel();
                 text->norm.setValue(norm);
                 text->string = "";
-                text->textColor = (*it)->isDriving?ConstrDimColor:NonDrivingConstrDimColor;;
+                text->textColor = (*it)->isActive ?
+                                        ((*it)->isDriving ?
+                                            ConstrDimColor
+                                            :NonDrivingConstrDimColor)
+                                        :DeactivatedConstrDimColor;
                 text->size.setValue(fontSize);
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
@@ -5602,9 +5630,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
 
-    // always change to sketcher WB, remember where we come from
-    oldWb = Gui::Command::assureWorkbench("SketcherWorkbench");
-
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -5672,23 +5697,22 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     //visibility automation
     try{
-        Gui::Command::addModule(Gui::Command::Gui,"Show.TempoVis");
+        Gui::Command::addModule(Gui::Command::Gui,"Show");
         try{
             QString cmdstr = QString::fromLatin1(
                         "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
-                        "tv = Show.TempoVis(App.ActiveDocument)\n"
+                        "tv = Show.TempoVis(App.ActiveDocument, tag= ActiveSketch.ViewObject.TypeId)\n"
+                        "ActiveSketch.ViewObject.TempoVis = tv\n"
+                        "if ActiveSketch.ViewObject.EditingWorkbench:\n"
+                        "  tv.activateWorkbench(ActiveSketch.ViewObject.EditingWorkbench)\n"
                         "if ActiveSketch.ViewObject.HideDependent:\n"
-                        "  objs = tv.get_all_dependent(%3, '%4')\n"
-                        "  objs = filter(lambda x: not x.TypeId.startswith(\"TechDraw::\"), objs)\n"
-                        "  objs = filter(lambda x: not x.TypeId.startswith(\"Drawing::\"), objs)\n"
-                        "  tv.hide(objs)\n"
+                        "  tv.hide(tv.get_all_dependent(%3, '%4'))\n"
                         "if ActiveSketch.ViewObject.ShowSupport:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.Support if not ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                         "if ActiveSketch.ViewObject.ShowLinks:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                         "tv.hide(ActiveSketch.Exports)\n"
                         "tv.hide(ActiveSketch)\n"
-                        "ActiveSketch.ViewObject.TempoVis = tv\n"
                         "del(tv)\n"
                         ).arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
                               QString::fromLatin1(getSketchObject()->getNameInDocument()),
@@ -5749,6 +5773,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(ExprBasedConstrDimColor.getPackedValue());
     color = hGrp->GetUnsigned("ExprBasedConstrDimColor", color);
     ExprBasedConstrDimColor.setPackedValue((uint32_t)color, transparency);
+    // set expression based constraint color
+    color = (unsigned long)(DeactivatedConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("DeactivatedConstrDimColor", color);
+    DeactivatedConstrDimColor.setPackedValue((uint32_t)color, transparency);
 
     // set the external geometry color
     color = (unsigned long)(CurveExternalColor.getPackedValue());
@@ -5911,6 +5939,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     assert(edit);
 
     edit->EditRoot = new SoSeparator;
+    edit->EditRoot->ref();
     edit->EditRoot->setName("Sketch_EditRoot");
     pcRoot->addChild(edit->EditRoot);
     edit->EditRoot->renderCaching = SoSeparator::OFF ;
@@ -6111,24 +6140,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
         Gui::coinRemoveAllChildren(edit->EditRoot);
         pcRoot->removeChild(edit->EditRoot);
-
-        //visibility autoation
-        try{
-            QString cmdstr = QString::fromLatin1(
-                        "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
-                        "tv = ActiveSketch.ViewObject.TempoVis\n"
-                        "if tv:\n"
-                        "  tv.restore()\n"
-                        "ActiveSketch.ViewObject.TempoVis = None\n"
-                        "del(tv)\n"
-                        ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
-                              QString::fromLatin1(getSketchObject()->getNameInDocument()));
-            QByteArray cmdstr_bytearray = cmdstr.toLatin1();
-            Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
-        } catch (Base::PyException &e){
-            Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
-            e.ReportException();
-        }
+        edit->EditRoot->unref();
 
         delete edit;
         edit = 0;
@@ -6154,10 +6166,23 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
 
-    //Gui::Application::Instance->
-
-    // return to the WB before edeting the sketch
-    Gui::Command::assureWorkbench(oldWb.c_str());
+    //visibility autoation
+    try{
+        QString cmdstr = QString::fromLatin1(
+                    "ActiveSketch = App.getDocument('%1').getObject('%2')\n"
+                    "tv = ActiveSketch.ViewObject.TempoVis\n"
+                    "if tv:\n"
+                    "  tv.restore()\n"
+                    "ActiveSketch.ViewObject.TempoVis = None\n"
+                    "del(tv)\n"
+                    ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
+                          QString::fromLatin1(getSketchObject()->getNameInDocument()));
+        QByteArray cmdstr_bytearray = cmdstr.toLatin1();
+        Gui::Command::runCommand(Gui::Command::Gui, cmdstr_bytearray);
+    } catch (Base::PyException &e){
+        Base::Console().Error("ViewProviderSketch::unsetEdit: visibility automation failed with an error: \n");
+        e.ReportException();
+    }
 }
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
@@ -6458,7 +6483,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
-                FCMD_OBJ_CMD2("delConstraint(%i)" ,getObject(), *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delConstraint(%i)", *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -6481,7 +6506,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                     if (((*it)->Type == Sketcher::Coincident) && (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
                         ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) ) {
                         try {
-                            FCMD_OBJ_CMD2("delConstraintOnPoint(%i,%i)" ,getObject(), GeoId, (int)PosId);
+                            Gui::cmdAppObjectArgs(getObject(), "delConstraintOnPoint(%i,%i)", GeoId, (int)PosId);
                         }
                         catch (const Base::Exception& e) {
                             Base::Console().Error("%s\n", e.what());
@@ -6494,7 +6519,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delInternalGeometries.rbegin(); rit != delInternalGeometries.rend(); ++rit) {
             try {
-                FCMD_OBJ_CMD2("delGeometry(%i)" ,getObject(), *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delGeometry(%i)", *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -6503,7 +6528,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 
         for (rit = delExternalGeometries.rbegin(); rit != delExternalGeometries.rend(); ++rit) {
             try {
-                FCMD_OBJ_CMD2("delExternal(%i)",getObject(), *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delExternal(%i)", *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());

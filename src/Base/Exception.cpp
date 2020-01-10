@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -31,12 +30,12 @@
 #include "Console.h"
 #include <CXX/Objects.hxx>
 
-FC_LOG_LEVEL_INIT("Exception", true, true);
+FC_LOG_LEVEL_INIT("Exception", true, true)
 
 using namespace Base;
 
 
-TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass);
+TYPESYSTEM_SOURCE(Base::Exception,Base::BaseClass)
 
 
 Exception::Exception(void)
@@ -151,7 +150,7 @@ void Exception::setPyObject( PyObject * pydict)
 
 // ---------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Base::AbortException,Base::Exception);
+TYPESYSTEM_SOURCE(Base::AbortException,Base::Exception)
 
 AbortException::AbortException(const char * sMessage)
   : Exception( sMessage )

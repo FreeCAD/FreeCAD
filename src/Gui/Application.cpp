@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -85,6 +85,7 @@
 #include "SoFCDB.h"
 #include "PythonConsolePy.h"
 #include "PythonDebugger.h"
+#include "MDIViewPy.h"
 #include "View3DPy.h"
 #include "DlgOnlineHelpImp.h"
 #include "SpaceballEvent.h"
@@ -93,6 +94,7 @@
 #include "TransactionObject.h"
 #include "FileDialog.h"
 
+#include "TextDocumentEditorView.h"
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
@@ -430,6 +432,7 @@ Application::Application(bool GUIenabled)
     OutputStdout                ::init_type();
     OutputStderr                ::init_type();
     PythonStdin                 ::init_type();
+    MDIViewPy                   ::init_type();
     View3DInventorPy            ::init_type();
     View3DInventorViewerPy      ::init_type();
     AbstractSplitViewPy         ::init_type();
@@ -502,6 +505,8 @@ void Application::open(const char* FileName, const char* Module)
     Base::FileInfo File(FileName);
     string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
+
     // if the active document is empty and not modified, close it
     // in case of an automatically created empty document at startup
     App::Document* act = App::GetApplication().getActiveDocument();
@@ -553,6 +558,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     Base::FileInfo File(FileName);
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module != 0) {
         try {
@@ -610,6 +616,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     Base::FileInfo File(FileName);
     std::string te = File.extension();
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
+    unicodepath = Base::Tools::escapeEncodeFilename(unicodepath);
 
     if (Module != 0) {
         try {
@@ -699,7 +706,7 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     if(isMainDoc)
         pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
-    // unpredicatable way. At least it seems that with Qt5 we don't need this any more.
+    // unpredictable way. At least it seems that with Qt5 we don't need this any more.
 #if QT_VERSION < 0x050000
     // qApp->processEvents(); // make sure to show the window stuff on the right place
 #endif
@@ -713,14 +720,16 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         return;
     }
 
+    // Inside beforeDelete() a view provider may finish editing mode
+    // and therefore can alter the selection.
+    doc->second->beforeDelete();
+
     // We must clear the selection here to notify all observers.
     // And because of possible cross document link, better clear all selection
     // to be safe
     Gui::Selection().clearCompleteSelection();
     doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
-
-    doc->second->beforeDelete();
 
     // If the active document gets destructed we must set it to 0. If there are further existing documents then the
     // view that becomes active sets the active document again. So, we needn't worry about this.
@@ -958,6 +967,9 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
 {
     if (d->activeDocument == pcDocument)
         return; // nothing needs to be done
+
+    getMainWindow()->updateActions();
+
     if (pcDocument) {
         // This happens if a document with more than one view is about being
         // closed and a second view is activated. The document is still not
@@ -1244,8 +1256,14 @@ bool Application::activateWorkbench(const char* name)
 
         // now get the newly activated workbench
         Workbench* newWb = WorkbenchManager::instance()->active();
-        if (newWb)
+        if (newWb) {
+            if (!Instance->d->startingUp) {
+                std::string name = newWb->name();
+                App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                                      SetASCII("LastModule", name.c_str());
+            }
             newWb->activated();
+        }
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1651,6 +1669,7 @@ void Application::initTypes(void)
     Gui::View3DInventor                         ::init();
     Gui::AbstractSplitView                      ::init();
     Gui::SplitView3DInventor                    ::init();
+    Gui::TextDocumentEditorView                 ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();
@@ -1729,27 +1748,34 @@ void Application::runApplication(void)
     std::map<std::string,std::string>::const_iterator it;
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-    QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
-#endif
-
-    // A new QApplication
-    Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
-
-#if defined(QTWEBENGINE) && defined(Q_OS_LINUX)
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#elif defined(QTWEBENGINE) && defined(Q_OS_LINUX)
     // Avoid warning of 'Qt WebEngine seems to be initialized from a plugin...'
     // QTWEBENGINE is defined in src/Gui/CMakeLists.txt, currently only enabled
     // when build with Conda.
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 #endif
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
+    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
+#endif
+#if QT_VERSION >= 0x050600
+    //Enable automatic scaling based on pixel density of display (added in Qt 5.6)
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+#if QT_VERSION >= 0x050100
+    //Enable support for highres images (added in Qt 5.1, but off by default)
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
+
+    // A new QApplication
+    Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
+
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
-    mainApp.setAttribute(Qt::AA_UseDesktopOpenGL);
-#endif
 
 #ifdef Q_OS_UNIX
     // Make sure that we use '.' as decimal point. See also
@@ -1786,14 +1812,6 @@ void Application::runApplication(void)
         return;
     }
 
-#if QT_VERSION >= 0x050600
-    //Enable automatic scaling based on pixel density of display (added in Qt 5.6)
-    mainApp.setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-#if QT_VERSION >= 0x050100
-    //Enable support for highres images (added in Qt 5.1, but off by default)
-    mainApp.setAttribute(Qt::AA_UseHighDpiPixmaps);
-#endif
     // set application icon and window title
     it = cfg.find("Application");
     if (it != cfg.end()) {
@@ -2008,15 +2026,26 @@ void Application::runApplication(void)
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
     Base::Console().Log("Init: Activating default workbench %s\n", start.c_str());
-    start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+    std::string autoload = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                            GetASCII("AutoloadModule", start.c_str());
+    if ("$LastModule" == autoload) {
+        start = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                               GetASCII("LastModule", start.c_str());
+    } else {
+        start = autoload;
+    }
     // if the auto workbench is not visible then force to use the default workbech
     // and replace the wrong entry in the parameters
     QStringList wb = app.workbenches();
     if (!wb.contains(QString::fromLatin1(start.c_str()))) {
         start = App::Application::Config()["StartWorkbench"];
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                              SetASCII("AutoloadModule", start.c_str());
+        if ("$LastModule" == autoload) {
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                                  SetASCII("LastModule", start.c_str());
+        } else {
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                                  SetASCII("AutoloadModule", start.c_str());
+        }
     }
 
     // Call this before showing the main window because otherwise:
@@ -2035,6 +2064,13 @@ void Application::runApplication(void)
     mdi->setProperty("showImage", hGrp->GetBool("TiledBackground", false));
 
     std::string style = hGrp->GetASCII("StyleSheet");
+    if (style.empty()) {
+        // check the branding settings
+        const auto& config = App::Application::Config();
+        auto it = config.find("StyleSheet");
+        if (it != config.end())
+            style = it->second;
+    }
     if (!style.empty()) {
         QFile f(QLatin1String(style.c_str()));
         if (f.open(QFile::ReadOnly)) {

@@ -60,7 +60,7 @@
 using namespace Gui;
 
 
-SO_KIT_SOURCE(SoShapeScale);
+SO_KIT_SOURCE(SoShapeScale)
 
 //  Constructor.
 SoShapeScale::SoShapeScale(void)
@@ -116,7 +116,7 @@ SoShapeScale::GLRender(SoGLRenderAction * action)
 
 // --------------------------------------------------------------
 
-SO_KIT_SOURCE(SoAxisCrossKit);
+SO_KIT_SOURCE(SoAxisCrossKit)
 
 void
 SoAxisCrossKit::initClass()
@@ -240,7 +240,7 @@ SoAxisCrossKit::createAxes()
 
 // --------------------------------------------------------------
 
-SO_NODE_SOURCE(SoRegPoint);
+SO_NODE_SOURCE(SoRegPoint)
 
 void SoRegPoint::initClass()
 {

@@ -12,3 +12,5 @@ VolumetricThermalExpansionCoefficient = 2.07e-4 m/m/K
 SpecificHeat = 4.182 J/kg/K
 ThermalConductivity = 0.591 W/m/K
 
+RelativePermittivity = 80.0
+; at 20°C and 50Hz

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de)                             *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -154,7 +153,7 @@ inline StrXUTF8::StrXUTF8(const XMLCh* const toTranscode)
     while (inputLength)
     {
         outputLength = transcoder->transcodeTo(toTranscode + offset, inputLength, outBuff, 128, eaten, XMLTranscoder::UnRep_RepChar);
-        str.append((const char*)outBuff, outputLength);
+        str.append(reinterpret_cast<const char*>(outBuff), outputLength);
         offset += eaten;
         inputLength -= eaten;
 
@@ -258,7 +257,7 @@ inline XUTF8Str::XUTF8Str(const char* const fromTranscode)
     }
 
     static XMLCh outBuff[128];
-    XMLByte* xmlBytes = (XMLByte*)fromTranscode;
+    const XMLByte* xmlBytes = reinterpret_cast<const XMLByte*>(fromTranscode);
 #if (XERCES_VERSION_MAJOR == 2)
     unsigned int outputLength;
     unsigned int eaten = 0;

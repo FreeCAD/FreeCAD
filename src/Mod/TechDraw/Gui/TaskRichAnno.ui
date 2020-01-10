@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
-    <normaloff>:/icons/actions/techdraw-textleader.svg</normaloff>:/icons/actions/techdraw-textleader.svg</iconset>
+    <normaloff>:/icons/actions/techdraw-RichTextAnnotation.svg</normaloff>:/icons/actions/techdraw-RichTextAnnotation.svg</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>

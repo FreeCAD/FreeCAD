@@ -158,7 +158,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		// constructors etc...
 		Matrix();													// create a unit matrix
 		Matrix(double m[16]);										// from an array
-		Matrix(const Matrix& m);									// copy constructor
+		//Matrix(const Matrix& m);									// copy constructor
 
 		~Matrix(){};
 
@@ -213,9 +213,11 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	Point(){x=0; y=0; ok=false;}																// Point p1
 		inline	Point( double xord, double yord, bool okay = true) {					// Point p1(10,30);
 			x = xord; y = yord; ok = okay;}
-		inline	Point( const Point& p ) {												// copy constructor  Point p1(p2);
-			x = p.x; y = p.y; ok = p.ok;}
-				Point( const Point3d& p );												// copy constructor  Point p1(p2);
+
+		//inline	Point( const Point& p ) {												// copy constructor  Point p1(p2);
+			//x = p.x; y = p.y; ok = p.ok;}
+
+		Point( const Point3d& p );												// copy constructor  Point p1(p2);
 		Point(const Vector2d& v);
 
 		// operators
@@ -257,8 +259,8 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	Point3d(const double* xyz) {x = xyz[0], y = xyz[1]; z = xyz[2];}
 		inline	Point3d( double xord, double yord, double zord = 0/*, bool okay = true*/) {	// Point p1(10,30.5);
 			x = xord; y = yord; z = zord;/* ok = okay;*/}
-		inline	Point3d( const Point3d& p ) {											// copy constructor  Point p1(p2);
-			x = p.x; y = p.y;  z = p.z;/* ok = p.ok;*/}
+		//inline	Point3d( const Point3d& p ) {											// copy constructor  Point p1(p2);
+			//x = p.x; y = p.y;  z = p.z;[> ok = p.ok;<]}
 		inline	Point3d( const Point& p ) {												// copy constructor  Point p1(p2);
 			x = p.x; y = p.y;  z = 0; /*ok = p.ok;*/}
 		inline	Point3d( const Point& p, double zord ) {								// copy constructor  Point p1(p2, z);
@@ -297,8 +299,8 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		// constructors
 		inline	Vector2d() {dx = 0; dy = 0;}
-		inline	Vector2d(const Vector2d &v) { dx = v.dx; dy = v.dy;}
-				Vector2d(const Vector3d &v);		// careful
+		//inline	Vector2d(const Vector2d &v) { dx = v.dx; dy = v.dy;}
+	        Vector2d(const Vector3d &v);		// careful
 		inline	Vector2d(double x, double y) {dx = x, dy = y;}
 		inline	Vector2d(const Point& p0, const Point& p1) {dx = p1.x - p0.x; dy = p1.y - p0.y;}
 		inline	Vector2d(const Point *p0, const Point *p1) {dx = p1->x - p0->x; dy = p1->y - p0->y;}
@@ -307,7 +309,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 		// operators
-		inline	const	Vector2d& operator=(const Vector2d &v){dx = v.dx; dy = v.dy; return *this;}			// v1 = v2;
+		//inline	const	Vector2d& operator=(const Vector2d &v){dx = v.dx; dy = v.dy; return *this;}			// v1 = v2;
 		inline			Vector2d operator+(const Vector2d &v)const{return Vector2d(dx + v.dx, dy + v.dy);}	// v2 = v0 + v1;
 		inline			Point	operator+(const Point &p)const{return Point(this->dx + p.x, this->dy + p.y);}			// p1 = v0 + p0;
 		inline			Vector2d operator+(const double d){ return Vector2d(dx + d, dy + d); };
@@ -365,7 +367,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		// constructors
 		Vector3d() {dx = 0; dy = 0; dz = 0;}
-		Vector3d(const Vector3d &v) { dx = v.dx; dy = v.dy; dz = v.dz;}
+		//Vector3d(const Vector3d &v) { dx = v.dx; dy = v.dy; dz = v.dz;}
 		Vector3d(double x, double y, double z = 0) {dx = x, dy = y; dz = z;}
 		Vector3d(const double* x) {dx = x[0], dy = x[1]; dz = x[2];}
 		Vector3d(const double* x0, const double* x1) {dx = x1[0] - x0[0], dy = x1[1] - x0[1]; dz = x1[2] - x0[2];}
@@ -376,7 +378,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		// operators
 		bool operator==(const Vector3d &v)const { return(FEQ(dx, v.dx, UNIT_VECTOR_TOLERANCE) && FEQ(dy, v.dy, UNIT_VECTOR_TOLERANCE) && FEQ(dz, v.dz, UNIT_VECTOR_TOLERANCE)); }		// v1 == v2 (unit only!)
 		bool operator!=(const Vector3d &v)const { return (!(*this == v)); }											// v1 != v2
-		const	Vector3d& operator=(const Vector3d &v){dx = v.dx; dy = v.dy; dz = v.dz;return *this;}				// v1 = v2;
+		//const	Vector3d& operator=(const Vector3d &v){dx = v.dx; dy = v.dy; dz = v.dz;return *this;}				// v1 = v2;
 		//	const	Vector3d& operator=(const Vector2d &v){dx = v.getx(); dy = v.gety(); dz = 0.0;return *this;}	// v1 = v2;
 		inline		Point3d	operator+(const Point3d &p)const{return Point3d(dx + p.x, dy + p.y, dz + p.z);}			// p1 = v0 + p0;
 		Vector3d operator+(const Vector3d &v)const{return Vector3d(dx + v.dx, dy + v.dy, dz + v.dz);}				// v2 = v0 + v1;
@@ -440,7 +442,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	CLine()	{ok = false;};
 		inline	CLine(const Point& p0, double dx, double dy, bool normalise = true){ p = p0; v = Vector2d(dx, dy); if(normalise) Normalise();};
 		inline	CLine(const Point& p0, const Vector2d& v0, bool normalise = true) {p = p0; v = v0; if(normalise) Normalise();};
-		inline	CLine(const CLine& s) {p = s.p; v = s.v; ok = s.ok;}				// copy constructor  CLine s1(s2);
+		//inline	CLine(const CLine& s) {p = s.p; v = s.v; ok = s.ok;}				// copy constructor  CLine s1(s2);
 		inline	CLine(const Point& p0, const Point& p1) {p = p0; v = Vector2d(p0, p1); Normalise();};
 		CLine(const Span& sp);
 
@@ -480,7 +482,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		inline	Circle() {ok = false; radius = 0;}
 		Circle( const Point& p, double r);										// Circle  c1(Point(10,30), 20);
 		Circle( const Point& p, const Point& pc);								// Circle  c1(p[222], p[223]);
-		Circle( const Circle& c ){*this = c;}									// copy constructor  Circle c1(c2);
+		//Circle( const Circle& c ){*this = c;}									// copy constructor  Circle c1(c2);
 		Circle( const Span& sp);														// constructor
 
 		// methods
@@ -531,7 +533,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		if(p.y > pmax.y) pmax.y = p.y;
 		if(p.x < pmin.x) pmin.x = p.x;
 		if(p.y < pmin.y) pmin.y = p.y;
-	};
+	}
 
 	inline void MinMax(const Point3d& p, Point3d& pmin, Point3d& pmax) {
 		if(p.x > pmax.x) pmax.x = p.x;
@@ -540,7 +542,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		if(p.x < pmin.x) pmin.x = p.x;
 		if(p.y < pmin.y) pmin.y = p.y;
 		if(p.z < pmin.z) pmin.z = p.z;
-	};
+	}
 
 
 
@@ -873,7 +875,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 
 		void	AddIndex(int vertexNumber, const SpanDataObject* data);
-		bool	Split(double MaximumRadius, double reslution);	// split arcs larger than MaximumRadius to resoultion
+		bool	Split(double MaximumRadius, double reslution);	// split arcs larger than MaximumRadius to resolution
 		int	IntExtWire( Kurve& kSec, double Ref, double Sec, double height, Kurve* kOut);	// interpolate / extrapolate a mid height kurve (wire)
 		void	SetZ(double z) { e[11] = z; if(fabs(z) > 1.0e-6) m_unit = false;}				// assigns kurve to fixed height (wire)
 

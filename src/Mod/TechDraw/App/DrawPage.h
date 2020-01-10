@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +37,7 @@ namespace TechDraw
 
 class TechDrawExport DrawPage: public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawPage);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawPage);
 
 public:
     DrawPage(void);
@@ -55,22 +55,22 @@ public:
     /** @name methods override Feature */
     //@{
     /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void) override;
     //@}
     virtual void handleChangedPropertyType(
             Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     int addView(App::DocumentObject *docObj);
     int removeView(App::DocumentObject* docObj);
-    short mustExecute() const;
+    short mustExecute() const override;
     boost::signals2::signal<void (const DrawPage*)> signalGuiPaint;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderPage";
     }
 
-    PyObject *getPyObject(void);
+    PyObject *getPyObject(void) override;
 
 //App::DocumentObjectExecReturn * recompute(void);
 
@@ -97,13 +97,21 @@ public:
     DrawViewPart *balloonParent;    //could be many balloons on page? 
     
     int getNextBalloonIndex(void);
+    
+    void updateAllViews(void);
+    static bool GlobalUpdateDrawings(void);
+    static bool AllowPageOverride(void);
+    void forceRedraw(bool b) { m_forceRedraw = b; }
+    bool forceRedraw(void)   { return m_forceRedraw; }
+    void redrawCommand();
 
 protected:
-    void onBeforeChange(const App::Property* prop);
-    void onChanged(const App::Property* prop);
-    virtual void onDocumentRestored();
-    virtual void unsetupObject();
+    void onBeforeChange(const App::Property* prop) override;
+    void onChanged(const App::Property* prop) override;
+    virtual void onDocumentRestored() override;
+    virtual void unsetupObject() override;
 
+    bool m_forceRedraw;
 
 private:
     static const char* ProjectionTypeEnums[];

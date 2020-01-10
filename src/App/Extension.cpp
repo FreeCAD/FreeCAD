@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
+ *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,7 +38,7 @@
 /* We do not use a standard property macro for type initiation. The reason is that we have the first
  * PropertyData in the extension chain, there is no parent property data. 
  */
-EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension);
+EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension)
 const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(void){return &propertyData;}
 const App::PropertyData & App::Extension::extensionGetPropertyData(void) const{return propertyData;}
 App::PropertyData App::Extension::propertyData;
@@ -111,7 +111,7 @@ std::string Extension::name() const {
         throw Base::RuntimeError("Extension::name: Extension type not set");
     
     std::string temp(m_extensionType.getName());
-    std::string::size_type pos = temp.find_last_of(":");
+    std::string::size_type pos = temp.find_last_of(':');
 
     if(pos != std::string::npos)
         return temp.substr(pos+1);

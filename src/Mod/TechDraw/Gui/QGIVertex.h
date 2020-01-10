@@ -42,14 +42,10 @@ public:
 
     float getRadius() { return m_radius; }
     virtual void setRadius(float r);
-    Qt::BrushStyle getFill() { return m_fill; }
-    void setFill(Qt::BrushStyle f) { m_fill = f; }
 
 protected:
     int projIndex;
     float m_radius;
-    QBrush m_brush;
-    Qt::BrushStyle m_fill;
 
 private:
 };

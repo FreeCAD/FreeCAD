@@ -53,7 +53,7 @@
 using namespace PartGui;
 
 
-SO_NODE_SOURCE(SoFCControlPoints);
+SO_NODE_SOURCE(SoFCControlPoints)
 
 void SoFCControlPoints::initClass()
 {

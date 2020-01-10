@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>446</width>
-    <height>792</height>
+    <height>811</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -211,6 +211,25 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>MoveBase</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_6">
+        <property name="toolTip">
+         <string>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</string>
+        </property>
+        <property name="text">
+         <string>Use material color as shape color</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseMaterialColor</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>
@@ -563,7 +582,8 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit">
           <property name="toolTip">
-           <string>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</string>
+           <string>This is the SVG stroke-dasharray property to apply
+to projections of hidden objects.</string>
           </property>
           <property name="text">
            <string>30, 10</string>
@@ -622,7 +642,8 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>Scaling factor for patterns used by object that have a Footprint display mode</string>
+           <string>Scaling factor for patterns used by object that have
+a Footprint display mode</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -664,7 +685,7 @@
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit_2">
           <property name="toolTip">
-           <string>The URL of a bim server instance (www.bimserver.org)  to connect to.</string>
+           <string>The URL of a bim server instance (www.bimserver.org) to connect to.</string>
           </property>
           <property name="text">
            <string>http://localhost:8082</string>
@@ -684,7 +705,9 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_3">
           <property name="toolTip">
-           <string>If this is checked, the &quot;Open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
+           <string>If this is selected, the &quot;Open BimServer in browser&quot;
+button will open the Bim Server interface in an external browser
+instead of the FreeCAD web workbench</string>
           </property>
           <property name="text">
            <string>Open in external browser</string>

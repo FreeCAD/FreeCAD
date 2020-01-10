@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -69,7 +69,7 @@ PyObject*  ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
     Py::List vertex;
     for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
         it != points.end(); ++it)
-        vertex.append(Py::Object(new Base::VectorPy(*it)));
+        vertex.append(Py::asObject(new Base::VectorPy(*it)));
     tuple.setItem(0, vertex);
     Py::List facet;
     for (std::vector<Data::ComplexGeoData::Facet>::const_iterator

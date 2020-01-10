@@ -24,12 +24,14 @@
 #define GUI_UTILITIES_H
 
 #include <Base/ViewProj.h>
+#include <Base/Converter.h>
 #include <App/Material.h>
 #include <vector>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbMatrix.h>
+#include <Inventor/SbRotation.h>
 
 class SbViewVolume;
 class QAbstractItemView;
@@ -41,9 +43,9 @@ struct vec_traits<SbVec3f> {
     typedef SbVec3f vec_type;
     typedef float float_type;
     vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v[0]; }
-    inline float_type y() { return v[1]; }
-    inline float_type z() { return v[2]; }
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v[0], v[1], v[2]);
+    }
 private:
     const vec_type& v;
 };
@@ -54,9 +56,24 @@ struct vec_traits<SbVec3d> {
     typedef SbVec3d vec_type;
     typedef double float_type;
     vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v[0]; }
-    inline float_type y() { return v[1]; }
-    inline float_type z() { return v[2]; }
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v[0], v[1], v[2]);
+    }
+private:
+    const vec_type& v;
+};
+
+// Specialization for SbRotation
+template <>
+struct vec_traits<SbRotation> {
+    typedef SbRotation vec_type;
+    typedef float float_type;
+    vec_traits(const vec_type& v) : v(v){}
+    inline std::tuple<float_type,float_type,float_type,float_type> get() const {
+        float_type q1,q2,q3,q4;
+        v.getValue(q1,q2,q3,q4);
+        return std::make_tuple(q1, q2, q3, q4);
+    }
 private:
     const vec_type& v;
 };
@@ -67,9 +84,9 @@ struct vec_traits<SbColor> {
     typedef SbColor vec_type;
     typedef float float_type;
     vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v[0]; }
-    inline float_type y() { return v[1]; }
-    inline float_type z() { return v[2]; }
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v[0], v[1], v[2]);
+    }
 private:
     const vec_type& v;
 };
@@ -80,9 +97,9 @@ struct vec_traits<App::Color> {
     typedef App::Color vec_type;
     typedef float float_type;
     vec_traits(const vec_type& v) : v(v){}
-    inline float_type x() { return v.r; }
-    inline float_type y() { return v.g; }
-    inline float_type z() { return v.b; }
+    inline std::tuple<float_type,float_type,float_type> get() const {
+        return std::make_tuple(v.r, v.g, v.b);
+    }
 private:
     const vec_type& v;
 };
@@ -104,15 +121,12 @@ public:
     Base::Vector3f inverse (const Base::Vector3f &rclPt) const;
     Base::Vector3d inverse (const Base::Vector3d &rclPt) const;
 
-    void setTransform(const Base::Matrix4D&);
     Base::Matrix4D getProjectionMatrix () const;
 
 protected:
     SbViewVolume viewVolume;
     SbMatrix matrix;
     SbMatrix invert;
-    bool hasTransform;
-    Base::Matrix4D transform;
 };
 
 class GuiExport Tessellator

@@ -46,6 +46,7 @@ if open.__module__ in ['__builtin__','io']:
 # Entrypoint used by FreeCAD
 def export(objectslist, filename, argstring):
     "Export objects as Roland Modela code."
+    # pylint: disable=unused-argument
 
     code = ""
     for obj in objectslist:
@@ -68,8 +69,8 @@ def home():
     return [ "H;" ]
 
 def setjog():
-   # "!PZ%d,%d;",iz_down,iz_up); // set z down, jog
-   return ""
+    # "!PZ%d,%d;",iz_down,iz_up); // set z down, jog
+    return ""
 
 def addheader():
     return [ "PA;PA;" ] # absolute positioning
@@ -80,8 +81,10 @@ def mm2cord(mm):
     mm = float(mm)
     return int(40.0*mm)
 
-def feed(x=None, y=None, z=None, state={}):
+def feed(x=None, y=None, z=None, state=None):
     c = []
+    if state is None:
+        state = {}
 
     if x is not None:
         x = float(x)
@@ -100,21 +103,22 @@ def feed(x=None, y=None, z=None, state={}):
         # 2d in XY plane
         c.append("PD%d,%d;" % (mm2cord(x), mm2cord(y)))
     elif z is not None:
-        pass # XXX: is this used?
+        pass
     return c
 
-def jog(x=None, y=None, z=None, state={}):
+def jog(x=None, y=None, z=None, state=None):
     c = []
+    if state is None:
+        state = {}
     if x is not None and y is not None:
-      x, y = float(x), float(y)
-      c.append("PU%d,%d;" % (mm2cord(x), mm2cord(y)))
-      state['X'] = x
-      state['Y'] = y
+        x, y = float(x), float(y)
+        c.append("PU%d,%d;" % (mm2cord(x), mm2cord(y)))
+        state['X'] = x
+        state['Y'] = y
     if z is not None:
-      z = float(z)
-      c.append("PU;")
-      # TODO: use !ZZ command
-      state['Z'] = z
+        z = float(z)
+        c.append("PU;")
+        state['Z'] = z
 
     return c
 
@@ -132,16 +136,18 @@ def xyarc(args, state):
     p0 = circle.parameter(lastPoint)
     p1 = circle.parameter(newPoint)
     arc = Part.ArcOfCircle(circle, p0, p1)
-    steps = 64 # TODO: specify max error instead
+    steps = 64 # specify max error instead?
     points = arc.discretize(steps)
-    # TODO: consider direction
+    # consider direction?
     #print('p = Part.ArcOfCircle(Part.Circle(FreeCAD.Vector(%f, %f), FreeCAD.Vector(0, 0, 1), %f), %f, %f)' % (center.x, center.y, radius, p0, p1))
     for p in points:
         c += feed(p.x, p.y, state['Z'], state)
     return c
 
-def speed(xy=None, z=None, state={}):
+def speed(xy=None, z=None, state=None):
     c = []
+    if state is None:
+        state = {}
     print(xy, z, state)
     if xy is not None:
         xy = float(xy)
@@ -223,7 +229,7 @@ def parse(inputstring):
 
     output += speed(2.0, 1.0, state) # defaults
 
-    # TODO: respect clearance height
+    # respect clearance height?
 
     # treat the input line by line
     lines = inputstring.split("\n")

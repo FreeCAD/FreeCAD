@@ -48,7 +48,7 @@
 #include <App/DocumentObserver.h>
 #include <App/Link.h>
 
-FC_LOG_LEVEL_INIT("CommandLink",true,true);
+FC_LOG_LEVEL_INIT("CommandLink",true,true)
 
 using namespace Gui;
 
@@ -855,6 +855,34 @@ public:
     virtual const char* className() const {return "StdCmdLinkSelectActions";}
 };
 
+//======================================================================
+// Std_LinkActions
+//===========================================================================
+
+class StdCmdLinkActions : public GroupCommand
+{
+public:
+    StdCmdLinkActions()
+        : GroupCommand("Std_LinkActions")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("Link actions");
+        sToolTipText  = QT_TR_NOOP("Link actions");
+        sWhatsThis    = "Std_LinkActions";
+        sStatusTip    = QT_TR_NOOP("Link actions");
+        eType         = AlterDoc;
+        bCanLog       = false;
+
+        addCommand(new StdCmdLinkMakeRelative());
+        addCommand(new StdCmdLinkReplace());
+        addCommand(new StdCmdLinkUnlink());
+        addCommand(new StdCmdLinkImport());
+        addCommand(new StdCmdLinkImportAll());
+    }
+
+    virtual const char* className() const {return "StdCmdLinkActions";}
+};
+
 //===========================================================================
 // Instantiation
 //===========================================================================
@@ -866,12 +894,8 @@ void CreateLinkCommands(void)
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
     rcCmdMgr.addCommand(new StdCmdLinkMake());
-    rcCmdMgr.addCommand(new StdCmdLinkMakeRelative());
+    rcCmdMgr.addCommand(new StdCmdLinkActions());
     rcCmdMgr.addCommand(new StdCmdLinkMakeGroup());
-    rcCmdMgr.addCommand(new StdCmdLinkReplace());
-    rcCmdMgr.addCommand(new StdCmdLinkUnlink());
-    rcCmdMgr.addCommand(new StdCmdLinkImport());
-    rcCmdMgr.addCommand(new StdCmdLinkImportAll());
     rcCmdMgr.addCommand(new StdCmdLinkSelectActions());
 
 }

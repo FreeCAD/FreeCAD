@@ -64,7 +64,7 @@
 #include <QDomDocument>
 #include <boost/interprocess/sync/file_lock.hpp>
 
-FC_LOG_LEVEL_INIT("Gui",true,true);
+FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -244,7 +244,7 @@ void DocumentRecovery::accept()
         WaitCursor wc;
         int index = -1;
         std::vector<int> indices;
-        std::vector<std::string> filenames, pathes, labels, errs;
+        std::vector<std::string> filenames, paths, labels, errs;
         for(auto &info : d->recoveryInfo) {
             ++index;
             std::string documentName;
@@ -257,7 +257,7 @@ void DocumentRecovery::accept()
                 if (fi.fileName() == QLatin1String("Document.xml"))
                     file = createProjectFile(info.projectFile);
 
-                pathes.emplace_back(file.toUtf8().constData());
+                paths.emplace_back(file.toUtf8().constData());
                 filenames.emplace_back(info.fileName.toUtf8().constData());
                 labels.emplace_back(info.label.toUtf8().constData());
                 indices.push_back(index);
@@ -284,7 +284,7 @@ void DocumentRecovery::accept()
             }
         }
 
-        auto docs = App::GetApplication().openDocuments(filenames,&pathes,&labels,&errs);
+        auto docs = App::GetApplication().openDocuments(filenames,&paths,&labels,&errs);
 
         for(int i=0;i<(int)docs.size();++i) {
             auto &info = d->recoveryInfo[indices[i]];

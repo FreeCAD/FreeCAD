@@ -36,7 +36,7 @@ using namespace Spreadsheet;
 
 const int PropertyRowHeights::defaultHeight = 30;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertyRowHeights , App::Property);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertyRowHeights , App::Property)
 
 PropertyRowHeights::PropertyRowHeights()
 {

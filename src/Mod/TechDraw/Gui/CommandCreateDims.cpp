@@ -53,6 +53,7 @@
 # include <Mod/TechDraw/App/DrawProjGroupItem.h>
 # include <Mod/TechDraw/App/DrawProjGroup.h>
 # include <Mod/TechDraw/App/DrawViewDimension.h>
+# include <Mod/TechDraw/App/DrawDimHelper.h>
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
 # include <Mod/TechDraw/App/Geometry.h>
@@ -66,6 +67,7 @@
 #include "TaskLinkDim.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 using namespace std;
 
 
@@ -99,6 +101,9 @@ bool _isValidVertexToEdge(Gui::Command* cmd);
 char* _edgeTypeToText(int e);
 //bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
 
+void execHExtent(Gui::Command* cmd);
+void execVExtent(Gui::Command* cmd);
+
 
 //NOTE: this is not shown in toolbar and doesn't always work right in the menu.
 //      should be removed.
@@ -108,21 +113,21 @@ char* _edgeTypeToText(int e);
 
 // this is deprecated. use individual add dimension commands.
 
-DEF_STD_CMD_A(CmdTechDrawNewDimension);
+DEF_STD_CMD_A(CmdTechDrawDimension)
 
-CmdTechDrawNewDimension::CmdTechDrawNewDimension()
-  : Command("TechDraw_NewDimension")
+CmdTechDrawDimension::CmdTechDrawDimension()
+  : Command("TechDraw_Dimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a dimension into a drawing");
-    sToolTipText    = QT_TR_NOOP("Insert a new dimension");
-    sWhatsThis      = "TechDraw_NewDimension";
+    sMenuText       = QT_TR_NOOP("Insert Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_Dimension";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension";
 }
 
-void CmdTechDrawNewDimension::activated(int iMsg)
+void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -216,7 +221,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
     dim->recomputeFeature();
 }
 
-bool CmdTechDrawNewDimension::isActive(void)
+bool CmdTechDrawDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -224,24 +229,24 @@ bool CmdTechDrawNewDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewRadiusDimension
+// TechDraw_RadiusDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewRadiusDimension);
+DEF_STD_CMD_A(CmdTechDrawRadiusDimension)
 
-CmdTechDrawNewRadiusDimension::CmdTechDrawNewRadiusDimension()
-  : Command("TechDraw_NewRadiusDimension")
+CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
+  : Command("TechDraw_RadiusDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new radius dimension");
-    sToolTipText    = QT_TR_NOOP("Insert a new radius dimension");
-    sWhatsThis      = "TechDraw_Dimension_Radius";
+    sMenuText       = QT_TR_NOOP("Insert Radius Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_RadiusDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Radius";
+    sPixmap         = "TechDraw_RadiusDimension";
 }
 
-void CmdTechDrawNewRadiusDimension::activated(int iMsg)
+void CmdTechDrawRadiusDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,1);
@@ -332,7 +337,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
     dim->recomputeFeature();
 }
 
-bool CmdTechDrawNewRadiusDimension::isActive(void)
+bool CmdTechDrawRadiusDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -340,24 +345,24 @@ bool CmdTechDrawNewRadiusDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewDiameterDimension
+// TechDraw_DiameterDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewDiameterDimension);
+DEF_STD_CMD_A(CmdTechDrawDiameterDimension)
 
-CmdTechDrawNewDiameterDimension::CmdTechDrawNewDiameterDimension()
-  : Command("TechDraw_NewDiameterDimension")
+CmdTechDrawDiameterDimension::CmdTechDrawDiameterDimension()
+  : Command("TechDraw_DiameterDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new diameter dimension");
-    sToolTipText    = QT_TR_NOOP("Insert a new diameter dimension feature");
-    sWhatsThis      = "TechDraw_Dimension_Diameter";
+    sMenuText       = QT_TR_NOOP("Insert Diameter Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_DiameterDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Diameter";
+    sPixmap         = "TechDraw_DiameterDimension";
 }
 
-void CmdTechDrawNewDiameterDimension::activated(int iMsg)
+void CmdTechDrawDiameterDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,1);
@@ -447,7 +452,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     dim->recomputeFeature();
 }
 
-bool CmdTechDrawNewDiameterDimension::isActive(void)
+bool CmdTechDrawDiameterDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -455,24 +460,24 @@ bool CmdTechDrawNewDiameterDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewLengthDimension
+// TechDraw_LengthDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewLengthDimension);
+DEF_STD_CMD_A(CmdTechDrawLengthDimension)
 
-CmdTechDrawNewLengthDimension::CmdTechDrawNewLengthDimension()
-  : Command("TechDraw_NewLengthDimension")
+CmdTechDrawLengthDimension::CmdTechDrawLengthDimension()
+  : Command("TechDraw_LengthDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new length dimension");
-    sToolTipText    = QT_TR_NOOP("Insert a new length dimension");
-    sWhatsThis      = "TechDraw_Dimension_Length";
+    sMenuText       = QT_TR_NOOP("Insert Length Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_LengthDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Length";
+    sPixmap         = "TechDraw_LengthDimension";
 }
 
-void CmdTechDrawNewLengthDimension::activated(int iMsg)
+void CmdTechDrawLengthDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -554,7 +559,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     dim->Y.setValue(-mid.y);
 }
 
-bool CmdTechDrawNewLengthDimension::isActive(void)
+bool CmdTechDrawLengthDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -562,24 +567,24 @@ bool CmdTechDrawNewLengthDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewDistanceXDimension
+// TechDraw_HorizontalDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewDistanceXDimension);
+DEF_STD_CMD_A(CmdTechDrawHorizontalDimension)
 
-CmdTechDrawNewDistanceXDimension::CmdTechDrawNewDistanceXDimension()
-  : Command("TechDraw_NewDistanceXDimension")
+CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
+  : Command("TechDraw_HorizontalDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new horizontal dimension");
-    sToolTipText    = QT_TR_NOOP("Insert a new horizontal distance dimension");
-    sWhatsThis      = "TechDraw_Dimension_Horizontal";
+    sMenuText       = QT_TR_NOOP("Insert Horizontal Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_HorizontalDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Horizontal";
+    sPixmap         = "TechDraw_HorizontalDimension";
 }
 
-void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
+void CmdTechDrawHorizontalDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -661,7 +666,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     dim->Y.setValue(-mid.y);
 }
 
-bool CmdTechDrawNewDistanceXDimension::isActive(void)
+bool CmdTechDrawHorizontalDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -669,24 +674,24 @@ bool CmdTechDrawNewDistanceXDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewDistanceYDimension
+// TechDraw_VerticalDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewDistanceYDimension);
+DEF_STD_CMD_A(CmdTechDrawVerticalDimension)
 
-CmdTechDrawNewDistanceYDimension::CmdTechDrawNewDistanceYDimension()
-  : Command("TechDraw_NewDistanceYDimension")
+CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
+  : Command("TechDraw_VerticalDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new vertical dimension");
-    sToolTipText    = QT_TR_NOOP("Insert a new vertical distance dimension");
-    sWhatsThis      = "TechDraw_Dimension_Vertical";
+    sMenuText       = QT_TR_NOOP("Insert Vertical Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_VerticalDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Vertical";
+    sPixmap         = "TechDraw_VerticalDimension";
 }
 
-void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
+void CmdTechDrawVerticalDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -767,7 +772,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     dim->Y.setValue(-mid.y);
 }
 
-bool CmdTechDrawNewDistanceYDimension::isActive(void)
+bool CmdTechDrawVerticalDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -775,24 +780,24 @@ bool CmdTechDrawNewDistanceYDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewAngleDimension
+// TechDraw_AngleDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewAngleDimension);
+DEF_STD_CMD_A(CmdTechDrawAngleDimension)
 
-CmdTechDrawNewAngleDimension::CmdTechDrawNewAngleDimension()
-  : Command("TechDraw_NewAngleDimension")
+CmdTechDrawAngleDimension::CmdTechDrawAngleDimension()
+  : Command("TechDraw_AngleDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new angle dimension");
-    sToolTipText    = QT_TR_NOOP("Insert a new angle dimension");
-    sWhatsThis      = "TechDraw_Dimension_Angle";
+    sMenuText       = QT_TR_NOOP("Insert Angle Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_AngleDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Angle";
+    sPixmap         = "TechDraw_AngleDimension";
 }
 
-void CmdTechDrawNewAngleDimension::activated(int iMsg)
+void CmdTechDrawAngleDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,2);
@@ -837,7 +842,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     FCMD_OBJ_DOC_CMD(page,"addObject('TechDraw::DrawViewDimension','" << FeatName << "')");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::TypeError("CmdTechDrawNewAngleDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawAngleDimension - dim not found\n");
     }
     FCMD_OBJ_CMD(dim,"Type = 'Angle'");
     dim->References2D.setValues(objs, subs);
@@ -849,7 +854,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
     dim->recomputeFeature();
 }
 
-bool CmdTechDrawNewAngleDimension::isActive(void)
+bool CmdTechDrawAngleDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -857,24 +862,24 @@ bool CmdTechDrawNewAngleDimension::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewAngle3PtDimension
+// TechDraw_3PtAngleDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewAngle3PtDimension);
+DEF_STD_CMD_A(CmdTechDraw3PtAngleDimension)
 
-CmdTechDrawNewAngle3PtDimension::CmdTechDrawNewAngle3PtDimension()
-  : Command("TechDraw_NewAngle3PtDimension")
+CmdTechDraw3PtAngleDimension::CmdTechDraw3PtAngleDimension()
+  : Command("TechDraw_3PtAngleDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a new 3 point Angle dimension");
-    sToolTipText    = QT_TR_NOOP("Insert a new 3 point Angle dimension");
-    sWhatsThis      = "TechDraw_Dimension_Angle3Pt";
+    sMenuText       = QT_TR_NOOP("Insert 3-Point Angle Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_3PtAngleDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Angle3Pt";
+    sPixmap         = "TechDraw_3PtAngleDimension";
 }
 
-void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
+void CmdTechDraw3PtAngleDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool result = _checkSelection(this,3);
@@ -932,7 +937,7 @@ void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
     dim->recomputeFeature();
 }
 
-bool CmdTechDrawNewAngle3PtDimension::isActive(void)
+bool CmdTechDraw3PtAngleDimension::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -946,15 +951,15 @@ bool CmdTechDrawNewAngle3PtDimension::isActive(void)
 // TechDraw_LinkDimension
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawLinkDimension);
+DEF_STD_CMD_A(CmdTechDrawLinkDimension)
 
 CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
   : Command("TechDraw_LinkDimension")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Link a dimension to 3D geometry");
-    sToolTipText    = QT_TR_NOOP("Link a dimension to 3D geometry");
+    sMenuText       = QT_TR_NOOP("Link Dimension to 3D Geometry");
+    sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Dimension_Link";
     sStatusTip      = sToolTipText;
     sPixmap         = "TechDraw_Dimension_Link";
@@ -1020,18 +1025,285 @@ bool CmdTechDrawLinkDimension::isActive(void)
     return (havePage && haveView && !taskInProgress);
 }
 
+//===========================================================================
+// TechDraw_ExtentGroup
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdTechDrawExtentGroup)
+
+CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
+  : Command("TechDraw_ExtentGroup")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Extent Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_ExtentGroup";
+    sStatusTip      = sToolTipText;
+//    eType           = ForEdit;
+}
+
+void CmdTechDrawExtentGroup::activated(int iMsg)
+{
+//    Base::Console().Message("CMD::ExtentGrp - activated(%d)\n", iMsg);
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
+    switch(iMsg) {
+        case 0:
+            execHExtent(this);
+            break;
+        case 1:
+            execVExtent(this);
+            break;
+        default:
+            Base::Console().Message("CMD::ExtGrp - invalid iMsg: %d\n",iMsg);
+    };
+}
+
+Gui::Action * CmdTechDrawExtentGroup::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* p1 = pcAction->addAction(QString());
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_HorizontalExtentDimension"));
+    p1->setObjectName(QString::fromLatin1("TechDraw_HorizontalExtentDimension"));
+    p1->setWhatsThis(QString::fromLatin1("TechDraw_HorizontalExtentDimension"));
+    QAction* p2 = pcAction->addAction(QString());
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_VerticalExtentDimension"));
+    p2->setObjectName(QString::fromLatin1("TechDraw_VerticalExtentDimension"));
+    p2->setWhatsThis(QString::fromLatin1("TechDraw_VerticalExtentDimension"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(p1->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdTechDrawExtentGroup::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* arc1 = a[0];
+    arc1->setText(QApplication::translate("CmdTechDrawExtentGroup","Horizontal Extent"));
+    arc1->setToolTip(QApplication::translate("TechDraw_HorizontalExtent","Insert Horizontal Extent Dimension"));
+    arc1->setStatusTip(arc1->toolTip());
+    QAction* arc2 = a[1];
+    arc2->setText(QApplication::translate("CmdTechDrawExtentGroup","Vertical Extent"));
+    arc2->setToolTip(QApplication::translate("TechDraw_VerticalExtentDimension","Insert Vertical Extent Dimension"));
+    arc2->setStatusTip(arc2->toolTip());
+}
+
+bool CmdTechDrawExtentGroup::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_HorizontalExtentDimension
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawHorizontalExtentDimension)
+
+CmdTechDrawHorizontalExtentDimension::CmdTechDrawHorizontalExtentDimension()
+  : Command("TechDraw_HorizontalExtentDimension")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Horizontal Extent Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_HorizontalExtentDimension";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_HorizontalExtentDimension";
+}
+
+void CmdTechDrawHorizontalExtentDimension::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    execHExtent(this);
+}
+
+bool CmdTechDrawHorizontalExtentDimension::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+void execHExtent(Gui::Command* cmd)
+{
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No base View in Selection."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("Please select a View [and Edges]."));
+            return;
+    }
+
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+ //           baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+            if (SubNames.empty() || SubNames[0].empty()) {
+                SubNames.clear();
+            }
+        }
+    }
+
+    std::vector<std::string> edgeNames;
+    for (auto& s: SubNames) {
+        std::string geomType = DrawUtil::getGeomTypeFromName(s);
+        if (geomType == "Edge") {
+            edgeNames.push_back(s);
+        }
+    }
+
+    DrawDimHelper::makeExtentDim(baseFeat,
+                                 edgeNames,
+                                 0);
+}
+
+//===========================================================================
+// TechDraw_VerticalExtentDimension
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawVerticalExtentDimension)
+
+CmdTechDrawVerticalExtentDimension::CmdTechDrawVerticalExtentDimension()
+  : Command("TechDraw_VerticalExtentDimension")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert Vertical Extent Dimension");
+    sToolTipText    = sMenuText;
+    sWhatsThis      = "TechDraw_VerticalExtentDimension";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_VerticalExtentDimension";
+}
+
+void CmdTechDrawVerticalExtentDimension::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
+    if (dlg != nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+            QObject::tr("Close active task dialog and try again."));
+        return;
+    }
+
+    execVExtent(this);
+}
+
+bool CmdTechDrawVerticalExtentDimension::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, false);
+    return (havePage && haveView);
+}
+
+void execVExtent(Gui::Command* cmd)
+{
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
+    if (!page) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    TechDraw::DrawViewPart* baseFeat = nullptr;
+    if (!selection.empty()) {
+        baseFeat =  dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
+        if( baseFeat == nullptr ) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("No base View in Selection."));
+            return;
+        }
+    } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Error"),
+                                 QObject::tr("Please select a View [and Edges]."));
+            return;
+    }
+
+    std::vector<std::string> SubNames;
+
+    std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
+    for (; itSel != selection.end(); itSel++)  {
+        if ((*itSel).getObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            baseFeat = static_cast<TechDraw::DrawViewPart*> ((*itSel).getObject());
+            SubNames = (*itSel).getSubNames();
+        }
+    }
+    std::vector<std::string> edgeNames;
+    for (auto& s: SubNames) {
+        std::string geomType = DrawUtil::getGeomTypeFromName(s);
+        if (geomType == "Edge") {
+            edgeNames.push_back(s);
+        }
+    }
+
+    DrawDimHelper::makeExtentDim(baseFeat,
+                                 edgeNames,
+                                 1);
+}
+
+//------------------------------------------------------------------------------
 void CreateTechDrawCommandsDims(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdTechDrawNewDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawNewRadiusDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawNewDiameterDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawNewLengthDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawNewDistanceXDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawNewDistanceYDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawNewAngleDimension());
-    rcCmdMgr.addCommand(new CmdTechDrawNewAngle3PtDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawRadiusDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawDiameterDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawLengthDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawHorizontalDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawVerticalDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawAngleDimension());
+    rcCmdMgr.addCommand(new CmdTechDraw3PtAngleDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawExtentGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawVerticalExtentDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawHorizontalExtentDimension());
     rcCmdMgr.addCommand(new CmdTechDrawLinkDimension());
 }
 
@@ -1107,18 +1379,18 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     if (SubNames.size() == 1) {                                                 //only 1 subshape selected
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
             int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-            TechDrawGeometry::BaseGeom* geom = objFeat->getProjEdgeByIndex(GeoId);
+            TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
             if (!geom) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
                 return isInvalid;
             }
 
-            if(geom->geomType == TechDrawGeometry::GENERIC) {
-                TechDrawGeometry::Generic* gen1 = static_cast<TechDrawGeometry::Generic *>(geom);
+            if(geom->geomType == TechDraw::GENERIC) {
+                TechDraw::Generic* gen1 = static_cast<TechDraw::Generic *>(geom);
                 if(gen1->points.size() > 2) {                                   //the edge is a polyline
                     return isInvalid;
                 }
-                Base::Vector2d line = gen1->points.at(1) - gen1->points.at(0);
+                Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
                 if(fabs(line.y) < FLT_EPSILON ) {
                     edgeType = isHorizontal;
                 } else if(fabs(line.x) < FLT_EPSILON) {
@@ -1126,14 +1398,14 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                 } else {
                     edgeType = isDiagonal;
                 }
-            } else if (geom->geomType == TechDrawGeometry::CIRCLE ||
-                       geom->geomType == TechDrawGeometry::ARCOFCIRCLE ) {
+            } else if (geom->geomType == TechDraw::CIRCLE ||
+                       geom->geomType == TechDraw::ARCOFCIRCLE ) {
                 edgeType = isCircle;
-            } else if (geom->geomType == TechDrawGeometry::ELLIPSE ||
-                       geom->geomType == TechDrawGeometry::ARCOFELLIPSE) {
+            } else if (geom->geomType == TechDraw::ELLIPSE ||
+                       geom->geomType == TechDraw::ARCOFELLIPSE) {
                 edgeType = isEllipse;
-            } else if (geom->geomType == TechDrawGeometry::BSPLINE) {
-                TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*>(geom);
+            } else if (geom->geomType == TechDraw::BSPLINE) {
+                TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*>(geom);
                 if (spline->isCircle()) {
                     edgeType = isBSplineCircle;
                 } else {
@@ -1184,23 +1456,23 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
             int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
-            TechDrawGeometry::BaseGeom* geom0 = objFeat0->getProjEdgeByIndex(GeoId0);
-            TechDrawGeometry::BaseGeom* geom1 = objFeat0->getProjEdgeByIndex(GeoId1);
+            TechDraw::BaseGeom* geom0 = objFeat0->getGeomByIndex(GeoId0);
+            TechDraw::BaseGeom* geom1 = objFeat0->getGeomByIndex(GeoId1);
             if ((!geom0) || (!geom1)) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
                 return isInvalid;
             }
 
-            if(geom0->geomType == TechDrawGeometry::GENERIC &&
-               geom1->geomType == TechDrawGeometry::GENERIC) {
-                TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
-                TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);
+            if(geom0->geomType == TechDraw::GENERIC &&
+               geom1->geomType == TechDraw::GENERIC) {
+                TechDraw::Generic *gen0 = static_cast<TechDraw::Generic *>(geom0);
+                TechDraw::Generic *gen1 = static_cast<TechDraw::Generic *>(geom1);
                 if(gen0->points.size() > 2 ||
                    gen1->points.size() > 2) {                          //the edge is a polyline
                     return isInvalid;
                 }
-                Base::Vector2d line0 = gen0->points.at(1) - gen0->points.at(0);
-                Base::Vector2d line1 = gen1->points.at(1) - gen1->points.at(0);
+                Base::Vector3d line0 = gen0->points.at(1) - gen0->points.at(0);
+                Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
                 double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
                 if(xprod > FLT_EPSILON) {                              //edges are not parallel
                     return isAngle;
@@ -1229,8 +1501,8 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         int eId,vId;
-        TechDrawGeometry::BaseGeom* e;
-        TechDrawGeometry::Vertex* v;
+        TechDraw::BaseGeom* e;
+        TechDraw::Vertex* v;
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
             eId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
@@ -1242,13 +1514,13 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
         } else {
             return false;
         }
-        e = objFeat0->getProjEdgeByIndex(eId);
+        e = objFeat0->getGeomByIndex(eId);
         v = objFeat0->getProjVertexByIndex(vId);
         if ((!e) || (!v)) {
             Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",eId,vId);
             return false;
         }
-        if (e->geomType != TechDrawGeometry::GENERIC)  {      //only vertex-line for now.
+        if (e->geomType != TechDraw::GENERIC)  {      //only vertex-line for now.
             return false;
         }
         result = true;

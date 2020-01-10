@@ -55,7 +55,7 @@
 
 using namespace Fem;
 
-TYPESYSTEM_SOURCE(Fem::PropertyPostDataObject , App::Property);
+TYPESYSTEM_SOURCE(Fem::PropertyPostDataObject , App::Property)
 
 PropertyPostDataObject::PropertyPostDataObject()
 {
@@ -192,26 +192,22 @@ void PropertyPostDataObject::Save (Base::Writer &writer) const
     if(!m_dataObject)
         return;
 
-    bool forceXML = writer.isForceXML() > 1;
-    if(!forceXML)
-        extension = ".";
-
     switch( m_dataObject->GetDataObjectType() ) {
 
         case VTK_POLY_DATA:
-            extension += "vtp";
+            extension = "vtp";
             break;
         case VTK_STRUCTURED_GRID:
-            extension += "vts";
+            extension = "vts";
             break;
         case VTK_RECTILINEAR_GRID:
-            extension += "vtr";
+            extension = "vtr";
             break;
         case VTK_UNSTRUCTURED_GRID:
-            extension += "vtu";
+            extension = "vtu";
             break;
         case VTK_UNIFORM_GRID:
-            extension += "vti"; //image data
+            extension = "vti"; //image data
             break;
         //TODO:multi-datasets use multiple files, this needs to be implemented specially
 //         case VTK_COMPOSITE_DATA_SET:
@@ -227,27 +223,18 @@ void PropertyPostDataObject::Save (Base::Writer &writer) const
             break;
     };
 
-    if(forceXML) {
-        writer.Stream() << writer.ind() << "<Data cdata=\"" 
-            << extension << "\"/>\n";
-        save(writer.beginCharStream(false) << '\n', writer);
-        writer.endCharStream() << '\n' << writer.ind() << "</Data>\n";
-    } else {
+    if(!writer.isForceXML()) {
+        std::string file = "Data." + extension;
         writer.Stream() << writer.ind() << "<Data file=\""
-                        << writer.addFile(getFileName(extension.c_str()), this)
-                        << "\"/>\n";
+                        << writer.addFile(file.c_str(), this)
+                        << "\"/>" << std::endl;
     }
 }
 
 void PropertyPostDataObject::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Data");
-
-    std::string ext = reader.getAttribute("cdata","");
-    if(ext.size()) {
-        restore(reader.beginCharStream(false),ext);
-        return;
-    } else if(!reader.hasAttribute("file"))
+    if(!reader.hasAttribute("file"))
         return;
 
     std::string file (reader.getAttribute("file") );
@@ -260,25 +247,20 @@ void PropertyPostDataObject::Restore(Base::XMLReader &reader)
 
 void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
 {
-    save(writer.Stream(),writer);
-}
-
-void PropertyPostDataObject::save(std::ostream &s, Base::Writer &writer) const
-{
     // If the shape is empty we simply store nothing. The file size will be 0 which
     // can be checked when reading in the data.
     if (!m_dataObject)
         return;
 
-    Base::FileInfo fi(App::Application::getTempFileName(), true);
+    // create a temporary file and copy the content to the zip stream
+    // once the tmp. filename is known use always the same because otherwise
+    // we may run into some problems on the Linux platform
+    static Base::FileInfo fi(App::Application::getTempFileName());
 
     vtkSmartPointer<vtkXMLDataSetWriter> xmlWriter = vtkSmartPointer<vtkXMLDataSetWriter>::New();
     xmlWriter->SetInputDataObject(m_dataObject);
     xmlWriter->SetFileName(fi.filePath().c_str());
-    if(writer.isPreferBinary())
-        xmlWriter->SetDataModeToBinary();
-    else
-        xmlWriter->SetDataModeToAscii();
+    xmlWriter->SetDataModeToBinary();
 
     if ( xmlWriter->Write() != 1 ) {
         // Note: Do NOT throw an exception here because if the tmp. file could
@@ -303,20 +285,17 @@ void PropertyPostDataObject::save(std::ostream &s, Base::Writer &writer) const
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
     if (file){
         std::streambuf* buf = file.rdbuf();
-        s << buf;
+        writer.Stream() << buf;
     }
 
     file.close();
+    // remove temp file
+    fi.deleteFile();
 }
 
 void PropertyPostDataObject::RestoreDocFile(Base::Reader &reader)
 {
     Base::FileInfo xml(reader.getFileName());
-    restore(reader,xml.extension());
-}
-
-void PropertyPostDataObject::restore(std::istream &reader, const std::string &extension) {
-
     // create a temporary file and copy the content from the zip stream
     Base::FileInfo fi(App::Application::getTempFileName());
 
@@ -333,6 +312,8 @@ void PropertyPostDataObject::restore(std::istream &reader, const std::string &ex
 
     // Read the data from the temp file
     if (ulSize > 0) {
+        std::string extension = xml.extension();
+
         //TODO: read in of composite data structures need to be coded, including replace of "GetOutputAsDataSet()"
         vtkSmartPointer<vtkXMLReader> xmlReader;
         if(extension == "vtp")

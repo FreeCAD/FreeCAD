@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) WandererFan - 2016    (wandererfan@gmail.com)           *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,6 +50,7 @@ public:
     App::PropertyColor        Color;
     App::PropertyString       LineStyle;
     App::PropertyFloat        LineSpacing;
+    App::PropertyBool         OverrideStyle;
 
     /** @name methods override Feature */
     //@{

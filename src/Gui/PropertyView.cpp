@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -136,6 +136,12 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectDelDocument = 
         Application::Instance->signalDeleteDocument.connect(
                 boost::bind(&PropertyView::slotDeleteDocument, this, _1));
+    this->connectDelViewObject = 
+        Application::Instance->signalDeletedObject.connect(
+                boost::bind(&PropertyView::slotDeletedViewObject, this, _1));
+    this->connectDelObject = 
+        App::GetApplication().signalDeletedObject.connect(
+                boost::bind(&PropertyView::slotDeletedObject, this, _1));
 }
 
 PropertyView::~PropertyView()
@@ -149,6 +155,8 @@ PropertyView::~PropertyView()
     this->connectRedoDocument.disconnect();
     this->connectActiveDoc.disconnect();
     this->connectDelDocument.disconnect();
+    this->connectDelObject.disconnect();
+    this->connectDelViewObject.disconnect();
 }
 
 static bool _ShowAll;
@@ -253,6 +261,25 @@ void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
         propertyEditorView->buildUp();
         propertyEditorData->buildUp();
         clearPropertyItemSelection();
+        timer->start(50);
+    }
+}
+
+void PropertyView::slotDeletedViewObject(const Gui::ViewProvider &vp) {
+    if(propertyEditorView->propOwners.count(&vp)) {
+        propertyEditorView->buildUp();
+        propertyEditorData->buildUp();
+        clearPropertyItemSelection();
+        timer->start(50);
+    }
+}
+
+void PropertyView::slotDeletedObject(const App::DocumentObject &obj) {
+    if(propertyEditorData->propOwners.count(&obj)) {
+        propertyEditorView->buildUp();
+        propertyEditorData->buildUp();
+        clearPropertyItemSelection();
+        timer->start(50);
     }
 }
 
@@ -297,10 +324,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         return;
 
     // clear the properties.
-    propertyEditorData->buildUp();
-    propertyEditorView->buildUp();
-    clearPropertyItemSelection();
-    timer->start(100);
+    timer->start(50);
 }
 
 void PropertyView::onTimer() {
@@ -309,6 +333,9 @@ void PropertyView::onTimer() {
     propertyEditorView->buildUp();
     clearPropertyItemSelection();
     timer->stop();
+
+    if(!this->isConnectionAttached())
+        return;
 
     if(!Gui::Selection().hasSelection()) {
         auto gdoc = TreeWidget::selectedDocument();
@@ -335,35 +362,10 @@ void PropertyView::onTimer() {
     std::vector<PropInfo> propViewMap;
     bool checkLink = true;
     ViewProviderDocumentObject *vpLast = 0;
-    const auto &array = Gui::Selection().getCompleteSelection(false);
-    for(auto &sel : array) {
-        if(!sel.pObject) continue;
-        App::DocumentObject *parent = 0;
-        App::DocumentObject *ob = sel.pObject->resolve(sel.SubName,&parent);
+    auto sels = Gui::Selection().getSelectionEx("*");
+    for(auto &sel : sels) {
+        App::DocumentObject *ob = sel.getObject();
         if(!ob) continue;
-
-        // App::Link should be able to handle special case below now, besides, the new
-        // support of plain group in App::Link breaks because of the code below
-#if 0
-        if(parent) {
-            auto parentVp = Application::Instance->getViewProvider(parent);
-            if(parentVp) {
-                // For special case where the SubName reference can resolve to
-                // a non-child object (e.g. link array element), the tree view
-                // will select the parent instead.  So we shall show the
-                // property of the parent as well.
-                bool found = false;
-                for(auto child : parentVp->claimChildren()) {
-                    if(ob == child) {
-                        found = true;
-                        break;
-                    }
-                }
-                if(!found)
-                    ob = parent;
-            }
-        }
-#endif
 
         // Do not process an object more than once
         if(!objSet.insert(ob).second)
@@ -491,7 +493,7 @@ void PropertyView::onTimer() {
     dataPropsMap.clear();
 
     for (it = propDataMap.begin(); it != propDataMap.end(); ++it) {
-        if (it->propList.size() == array.size()) {
+        if (it->propList.size() == sels.size()) {
             if(it->propList[0]->testStatus(App::Property::PropDynamic))
                 dataPropsMap.emplace(it->propName, std::move(it->propList));
             else
@@ -502,10 +504,10 @@ void PropertyView::onTimer() {
     for(auto &v : dataPropsMap)
         dataProps.emplace_back(v.first,std::move(v.second));
 
-    propertyEditorData->buildUp(std::move(dataProps));
+    propertyEditorData->buildUp(std::move(dataProps),true);
 
     for (it = propViewMap.begin(); it != propViewMap.end(); ++it) {
-        if (it->propList.size() == array.size())
+        if (it->propList.size() == sels.size())
             viewProps.emplace_back(it->propName, std::move(it->propList));
     }
 

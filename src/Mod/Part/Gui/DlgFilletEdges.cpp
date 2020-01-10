@@ -227,7 +227,7 @@ namespace PartGui {
             }
         };
     };
-};
+}
 
 /* TRANSLATOR PartGui::DlgFilletEdges */
 
@@ -677,9 +677,9 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 
         App::Document* doc = d->object->getDocument();
         // get current selection and their sub-elements
-        std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx(doc->getName());
-        std::vector<Gui::SelectionObject>::iterator selIt = std::find_if(selObj.begin(), selObj.end(),
-            Private::SelectionObjectCompare(d->object));
+        //std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx(doc->getName());
+        //std::vector<Gui::SelectionObject>::iterator selIt = std::find_if(selObj.begin(), selObj.end(),
+        //    Private::SelectionObjectCompare(d->object));
 
 
          /*

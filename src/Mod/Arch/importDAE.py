@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -215,7 +213,7 @@ def export(exportList,filename,tessellation=1,colors=None):
     ver = FreeCAD.Version()
     appli = "FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + "\n"
     cont.authoring_tool = appli
-    print(author, appli)
+    #print(author, appli)
     colmesh.assetInfo.contributors.append(cont)
     colmesh.assetInfo.unitname = "meter"
     colmesh.assetInfo.unitmeter = 1.0

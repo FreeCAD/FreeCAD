@@ -40,6 +40,8 @@
 
 using namespace Gui;
 
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::TextDocumentEditorView, Gui::MDIView)
+
 TextDocumentEditorView::TextDocumentEditorView(
         App::TextDocument* txtDoc, QPlainTextEdit* e,
         QWidget* parent)
@@ -71,7 +73,6 @@ void TextDocumentEditorView::setupEditor()
 {
     connect(getEditor()->document(), SIGNAL(modificationChanged(bool)),
             this, SLOT(setWindowModified(bool)));
-    getEditor()->setReadOnly(textDocument->ReadOnly.getValue());
     setWindowTitle(QString::fromUtf8(textDocument->Label.getValue())
             + QString::fromLatin1("[*]"));
     getEditor()->setPlainText(
@@ -80,8 +81,10 @@ void TextDocumentEditorView::setupEditor()
 
 void TextDocumentEditorView::setupConnection()
 {
-    textConnection = textDocument->connect(
+    textConnection = textDocument->connectText(
             boost::bind(&TextDocumentEditorView::sourceChanged, this));
+    labelConnection = textDocument->connectLabel(
+            boost::bind(&TextDocumentEditorView::labelChanged, this));
 }
 
 void TextDocumentEditorView::sourceChanged()
@@ -92,6 +95,12 @@ void TextDocumentEditorView::sourceChanged()
     } else {
         sourceModified = true;
     }
+}
+
+void TextDocumentEditorView::labelChanged()
+{
+    setWindowTitle(QString::fromUtf8(textDocument->Label.getValue())
+            + QString::fromLatin1("[*]"));
 }
 
 void TextDocumentEditorView::refresh()

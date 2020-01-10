@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Konstantinos Poulios      (logari81@gmail.com) 2011     *
+ *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -4060,14 +4060,14 @@ SolverReportingManager::Manager().LogToFile("GCS::System::diagnose()\n");
 
         // If not independent, must be dependent
         for(int j=0; j < paramsNum; j++) {
-            auto result = std::find(indepParamCols.begin(), indepParamCols.end(), j);
+            auto result = indepParamCols.find(j);
             if(result == indepParamCols.end()) {
                 depParamCols.insert(j);
             }
         }
 
         // Last (NumParams-rank) rows of Q construct the dependent part of J
-        // in conjuntion with the R matrix
+        // in conjunction with the R matrix
         // Last (NumParams-rank) cols of Q never contribute as R is zero after the rank
         /*std::set<int> associatedParamCols;
         for(int i = rank; i < paramsNum; i++) {

@@ -36,21 +36,22 @@ import Path
 import FreeCAD
 import PathScripts.PathLog as PathLog
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+# LEVEL = PathLog.Level.DEBUG
+LEVEL = PathLog.Level.INFO
+PathLog.setLevel(LEVEL, PathLog.thisModule())
+
+if LEVEL == PathLog.Level.DEBUG:
     PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
 
 def open(filename):
-    PathLog.track(filename)
     "called when freecad opens a file."
+    PathLog.track(filename)
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     insert(filename, doc.Name)
@@ -68,6 +69,7 @@ def insert(filename, docname):
     path = Path.Path(gcode)
     obj.Path = path
 
+
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
     print("preprocessing...")
@@ -77,31 +79,30 @@ def parse(inputstring):
     lines = inputstring.split("\n")
     output = ""
     lastcommand = None
-    print (lines)
+    print(lines)
 
-    for l in lines:
+    for lin in lines:
         # remove any leftover trailing and preceding spaces
-        l = l.strip()
-        if not l:
+        lin = lin.strip()
+        if not lin:
             # discard empty lines
             continue
-        if l[0].upper() in ["N"]:
+        if lin[0].upper() in ["N"]:
             # remove line numbers
-            l = l.split(" ",1)
-            if len(l)>=1:
-                l = l[1]
+            lin = lin.split(" ", 1)
+            if len(lin) >= 1:
+                lin = lin[1]
             else:
                 continue
 
-
-        if l[0] in ["(","%","#",";"]:
+        if lin[0] in ["(", "%", "#", ";"]:
             # discard comment and other non strictly gcode lines
             continue
-        if l[0].upper() in ["G","M"]:
+        if lin[0].upper() in ["G", "M"]:
             # found a G or M command: we store it
-            output += l + "\n"
-            last = l[0].upper()
-            for c in l[1:]:
+            output += lin + "\n"
+            last = lin[0].upper()
+            for c in lin[1:]:
                 if not c.isdigit():
                     break
                 else:
@@ -109,7 +110,7 @@ def parse(inputstring):
             lastcommand = last
         elif lastcommand:
             # no G or M command: we repeat the last one
-            output += lastcommand + " " + l + "\n"
+            output += lastcommand + " " + lin + "\n"
 
     print("done preprocessing.")
     return output

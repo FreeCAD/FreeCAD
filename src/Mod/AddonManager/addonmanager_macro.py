@@ -21,6 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
+## @package AddonManager_macro
+#  \ingroup ADDONMANAGER
+#  \brief Unified handler for FreeCAD macros that can be obtained from different sources
+
 import os
 import re
 import sys
@@ -31,6 +35,8 @@ from addonmanager_utilities import urlopen
 
 
 class Macro(object):
+    """This class provides a unified way to handle macros coming from different sources"""
+
     def __init__(self, name):
         self.name = name
         self.on_wiki = False

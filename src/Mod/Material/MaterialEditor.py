@@ -294,7 +294,7 @@ class MaterialEditor:
             item = model.findItems(key, QtCore.Qt.MatchRecursive, 0)
             if not item:
 
-                top = model.findItems(translate("Material", "User defined"),
+                top = model.findItems(translate("Material", "UserDefined"),
                                       QtCore.Qt.MatchExactly, 0)[0]
                 item = QtGui.QStandardItem(key)
                 it = QtGui.QStandardItem(value)

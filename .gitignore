@@ -20,6 +20,7 @@ ui_*.h
 moc_*.cpp
 Makefile
 CMakeCache.txt
+CMakeLists.txt.user
 config.h
 install_manifest.txt
 /bin/

@@ -25,6 +25,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <QLocale>
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include "Cell.h"
@@ -32,13 +34,15 @@
 #include <boost/tokenizer.hpp>
 #include <Base/Reader.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
 #include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
 
-FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true)
 
 #ifdef _MSC_VER
 #define __func__ __FUNCTION__
@@ -129,7 +133,7 @@ Cell &Cell::operator =(const Cell &rhs)
 
     address = rhs.address;
 
-    setExpression(rhs.expression ? rhs.expression->copy() : ExpressionPtr());
+    setExpression(App::ExpressionPtr(rhs.expression ? rhs.expression->copy() : nullptr));
     setAlignment(rhs.alignment);
     setStyle(rhs.style);
     setBackground(rhs.backgroundColor);
@@ -245,7 +249,11 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
         auto sexpr = SimpleStatement::cast<App::StringExpression>(expression.get());
         if(sexpr) {
             const auto &txt = sexpr->getText();
-            if(txt.size() && txt[0]!='=') {
+            char * end;
+            errno = 0;
+            double d = strtod(txt.c_str(), &end);
+            (void)d; // fix gcc warning
+            if (!*end && errno == 0) {
                 s = "'";
                 s += txt;
             }else
@@ -1183,4 +1191,58 @@ void Cell::setEditMode(EditMode mode) {
     PropertySheet::AtomicPropertyChange signaler(*owner);
     editMode = mode;
     signaler.tryInvoke();
+}
+
+//roughly based on Spreadsheet/Gui/SheetModel.cpp
+std::string Cell::getFormattedQuantity(void)
+{
+    std::string result;
+    QString qFormatted;
+    App::CellAddress thisCell = getAddress();
+    Property* prop = owner->sheet()->getPropertyByName(thisCell.toString().c_str());
+
+    if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+        const App::PropertyString * stringProp = static_cast<const App::PropertyString*>(prop);
+        qFormatted = QString::fromUtf8(stringProp->getValue());
+
+    } else if (prop->isDerivedFrom(App::PropertyQuantity::getClassTypeId())) {
+        double rawVal = static_cast<App::PropertyQuantity*>(prop)->getValue();
+        const App::PropertyQuantity * floatProp = static_cast<const App::PropertyQuantity*>(prop);
+        DisplayUnit du;
+        bool hasDisplayUnit = getDisplayUnit(du);
+        double duScale = du.scaler;
+        const Base::Unit& computedUnit = floatProp->getUnit();
+        qFormatted = QLocale::system().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        if (hasDisplayUnit) {
+            if (computedUnit.isEmpty() || computedUnit == du.unit) {
+                QString number =
+                    QLocale::system().toString(rawVal / duScale,'f',Base::UnitsApi::getDecimals());
+                qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+            }
+        }
+
+    } else if (prop->isDerivedFrom(App::PropertyFloat::getClassTypeId())){
+        double rawVal = static_cast<const App::PropertyFloat*>(prop)->getValue();
+        DisplayUnit du;
+        bool hasDisplayUnit = getDisplayUnit(du);
+        double duScale = du.scaler;
+        qFormatted = QLocale::system().toString(rawVal,'f',Base::UnitsApi::getDecimals());
+        if (hasDisplayUnit) {
+            QString number = QLocale::system().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+        }
+    } else if (prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        double rawVal = static_cast<const App::PropertyInteger*>(prop)->getValue();
+        DisplayUnit du;
+        bool hasDisplayUnit = getDisplayUnit(du);
+        double duScale = du.scaler;
+        int iRawVal = std::round(rawVal);
+        qFormatted = QLocale::system().toString(iRawVal);
+        if (hasDisplayUnit) {
+            QString number = QLocale::system().toString(rawVal / duScale, 'f',Base::UnitsApi::getDecimals());
+            qFormatted = number + Base::Tools::fromStdString(" " + displayUnit.stringRep);
+        }
+    }
+    result = Base::Tools::toStdString(qFormatted);
+    return result;
 }

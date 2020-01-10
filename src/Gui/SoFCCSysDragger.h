@@ -239,7 +239,7 @@ public:
     bool isHiddenRotationZ(); //!< is x rotation dragger hidden.
     //@}
 
-    virtual void GLRender(SoGLRenderAction * action);
+    virtual void GLRender(SoGLRenderAction * action) override;
 
 protected:
     virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;

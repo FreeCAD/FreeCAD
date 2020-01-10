@@ -70,8 +70,8 @@ using namespace MeshGui;
 
 class MeshRenderer::Private {
 public:
-    Gui::OpenGLBuffer vertices;
-    Gui::OpenGLBuffer indices;
+    Gui::OpenGLMultiBuffer vertices;
+    Gui::OpenGLMultiBuffer indices;
     const SbColor * pcolors;
     SoMaterialBindingElement::Binding matbinding;
     bool initialized;
@@ -84,6 +84,8 @@ public:
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction*);
     void renderCoordsGLArray(SoGLRenderAction *);
+    void update();
+    bool needUpdate(SoGLRenderAction *);
 
 private:
     void renderGLArray(SoGLRenderAction *, GLenum);
@@ -115,13 +117,7 @@ bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *action) const
         init = true;
     }
 
-    if (!vboAvailable)
-        return false;
-
-    // if no buffer is created we must pass here in order to create it afterwards
-    if (!indices.isCreated())
-        return true;
-    return indices.getBoundContext() == action->getCacheContext();
+    return vboAvailable;
 }
 
 void MeshRenderer::Private::generateGLArrays(SoGLRenderAction* action,
@@ -135,11 +131,9 @@ void MeshRenderer::Private::generateGLArrays(SoGLRenderAction* action,
     vertices.setCurrentContext(action->getCacheContext());
     indices.setCurrentContext(action->getCacheContext());
 
-    if (!initialized) {
-        vertices.create();
-        indices.create();
-        initialized = true;
-    }
+    initialized = true;
+    vertices.create();
+    indices.create();
 
     vertices.bind();
     vertices.allocate(&(vertex[0]),
@@ -164,8 +158,9 @@ void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
     vertices.setCurrentContext(action->getCacheContext());
     indices.setCurrentContext(action->getCacheContext());
 
-    glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
 
     vertices.bind();
     indices.bind();
@@ -181,8 +176,9 @@ void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
     vertices.release();
     indices.release();
 
-    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
@@ -193,6 +189,18 @@ void MeshRenderer::Private::renderFacesGLArray(SoGLRenderAction *action)
 void MeshRenderer::Private::renderCoordsGLArray(SoGLRenderAction *action)
 {
     renderGLArray(action, GL_POINTS);
+}
+
+void MeshRenderer::Private::update()
+{
+    vertices.destroy();
+    indices.destroy();
+}
+
+bool MeshRenderer::Private::needUpdate(SoGLRenderAction *action)
+{
+    return !vertices.isCreated(action->getCacheContext()) ||
+           !indices.isCreated(action->getCacheContext());
 }
 #elif defined RENDER_GLARRAYS
 class MeshRenderer::Private {
@@ -214,6 +222,13 @@ public:
         std::vector<float>& vertex, std::vector<int32_t>& index);
     void renderFacesGLArray(SoGLRenderAction *action);
     void renderCoordsGLArray(SoGLRenderAction *action);
+    void update()
+    {
+    }
+    bool needUpdate(SoGLRenderAction *)
+    {
+        return false;
+    }
 };
 
 bool MeshRenderer::Private::canRenderGLArray(SoGLRenderAction *) const
@@ -321,6 +336,13 @@ public:
     void renderCoordsGLArray(SoGLRenderAction *)
     {
     }
+    void update()
+    {
+    }
+    bool needUpdate(SoGLRenderAction *)
+    {
+        return false;
+    }
 };
 #endif
 
@@ -332,6 +354,16 @@ MeshRenderer::MeshRenderer()
 MeshRenderer::~MeshRenderer()
 {
     delete p;
+}
+
+void MeshRenderer::update()
+{
+    p->update();
+}
+
+bool MeshRenderer::needUpdate(SoGLRenderAction *action)
+{
+    return p->needUpdate(action);
 }
 
 void MeshRenderer::generateGLArrays(SoGLRenderAction* action, SoMaterialBindingElement::Binding matbind,
@@ -415,7 +447,7 @@ bool MeshRenderer::shouldRenderDirectly(bool direct)
 
 // ----------------------------------------------------------------------------
 
-SO_ENGINE_SOURCE(SoFCMaterialEngine);
+SO_ENGINE_SOURCE(SoFCMaterialEngine)
 
 SoFCMaterialEngine::SoFCMaterialEngine()
 {
@@ -446,7 +478,7 @@ void SoFCMaterialEngine::evaluate()
 
 // ----------------------------------------------------------------------------
 
-SO_NODE_SOURCE(SoFCIndexedFaceSet);
+SO_NODE_SOURCE(SoFCIndexedFaceSet)
 
 void SoFCIndexedFaceSet::initClass()
 {
@@ -497,6 +529,10 @@ void SoFCIndexedFaceSet::GLRender(SoGLRenderAction *action)
     if (useVBO) {
         if (updateGLArray.getValue()) {
             updateGLArray.setValue(false);
+            render.update();
+            generateGLArrays(action);
+        }
+        else if (render.needUpdate(action)) {
             generateGLArrays(action);
         }
 
@@ -970,8 +1006,7 @@ void SoFCIndexedFaceSet::stopSelection(SoAction * action)
     GLint index=0;
     for (GLint ii=0;ii<hits && index<bufSize;ii++) {
         GLint ct = (GLint)selectBuf[index];
-        hit.push_back(std::pair<double,unsigned int>
-            (selectBuf[index+1]/4294967295.0,selectBuf[index+3]));
+        hit.emplace_back(selectBuf[index+1]/4294967295.0,selectBuf[index+3]);
         index = index+ct+3;
     }
 

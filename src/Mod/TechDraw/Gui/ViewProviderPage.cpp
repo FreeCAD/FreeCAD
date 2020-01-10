@@ -58,6 +58,7 @@
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "MDIViewPage.h"
@@ -258,8 +259,8 @@ bool ViewProviderPage::showMDIViewPage()
         Gui::getMainWindow()->addWindow(m_mdiView);
         m_mdiView->viewAll();  //this is empty function
         m_mdiView->showMaximized();
-        if(!getDrawPage()->KeepUpdated.getValue())
-            getDrawPage()->KeepUpdated.setValue(true);
+//        if(!getDrawPage()->KeepUpdated.getValue())
+//            getDrawPage()->KeepUpdated.setValue(true);
     } else {
         m_mdiView->updateDrawing(true);
         m_mdiView->redrawAllViews();
@@ -283,10 +284,11 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     // for Page, valid children are any View except: DrawProjGroupItem
     //                                               DrawViewDimension
     //                                               DrawViewBalloon
-    //                                               DrawLeader
-    //                                               DrawRichAnno (if not a child of View)
+    //                                               DrawLeaderLine
+    //                                               DrawRichAnno 
     //                                               any FeatuerView in a DrawViewClip
     //                                               DrawHatch
+    //                                               DrawWeldSymbol
 
     const std::vector<App::DocumentObject *> &views = getDrawPage()->Views.getValues();
 
@@ -312,6 +314,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
              docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())      ||
              docObj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())         ||
              docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())       ||
+             docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())       ||
              (featView && featView->isInClip()) )
               continue;
           else
@@ -332,7 +335,7 @@ void ViewProviderPage::unsetEdit(int ModNum)
 }
 
 
-MDIViewPage* ViewProviderPage::getMDIViewPage()
+MDIViewPage* ViewProviderPage::getMDIViewPage() const
 {
     if (m_mdiView.isNull()) {
         Base::Console().Log("INFO - ViewProviderPage::getMDIViewPage has no m_mdiView!\n");
@@ -441,7 +444,8 @@ TechDraw::DrawPage* ViewProviderPage::getDrawPage() const
     return dynamic_cast<TechDraw::DrawPage*>(pcObject);
 }
 
-Gui::MDIView *ViewProviderPage::getMDIView() {
-    showMDIViewPage();
+Gui::MDIView *ViewProviderPage::getMDIView() const
+{
+    const_cast<ViewProviderPage*>(this)->showMDIViewPage();
     return m_mdiView.data();
 }

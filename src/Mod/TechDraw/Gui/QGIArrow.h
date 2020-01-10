@@ -35,6 +35,16 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
+enum ArrowType {
+    FILLED_TRIANGLE = 0,
+    OPEN_ARROW,
+    HASH_MARK,
+    DOT,
+    OPEN_CIRCLE,
+    FORK,
+    PYRAMID
+};
+
 class TechDrawGuiExport QGIArrow : public QGIPrimPath
 {
 public:
@@ -46,15 +56,18 @@ public:
 
 public:
     void draw();
-    void flip(bool state);
+    bool isFlipped() { return m_flipped; }
+    void setFlipped(bool flipped) { m_flipped = flipped; }
+    void flip() { m_flipped = !m_flipped; }
     double getSize() { return m_size; }
     void setSize(double s);
     int getStyle() { return m_style; }
     void setStyle(int s) { m_style = s; }
     bool getDirMode() { return m_dirMode; }
     void setDirMode(bool b) { m_dirMode = b; }
-    Base::Vector3d getDirection(void) { return m_dir; }
+    Base::Vector3d getDirection(void) { return m_flipped ? -m_dir : m_dir; }
     void setDirection(Base::Vector3d v) { m_dir = v; }
+    void setDirection(double angle) { m_dir = Base::Vector3d(cos(angle), sin(angle), 0.0); }
     static int getPrefArrowStyle();
     static double getPrefArrowSize();
     static double getOverlapAdjust(int style, double size);
@@ -72,13 +85,15 @@ protected:
     QPainterPath makeOpenDot(double length, double width, bool flipped); 
     QPainterPath makeForkArrow(double length, double width, bool flipped);
     QPainterPath makeForkArrow(Base::Vector3d dir, double length, double width);
+    QPainterPath makePyramid(double length, bool flipped);
+    QPainterPath makePyramid(Base::Vector3d dir, double length);
 
 private:
     QBrush m_brush;
     Qt::BrushStyle m_fill;
     double m_size;
     int m_style;
-    bool isFlipped;
+    bool m_flipped;
     bool m_dirMode;
     Base::Vector3d m_dir;
 };

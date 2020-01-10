@@ -87,7 +87,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::MayaGestureNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::MayaGestureNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::MayaGestureNavigationStyle, Gui::UserNavigationStyle)
 
 MayaGestureNavigationStyle::MayaGestureNavigationStyle()
 {

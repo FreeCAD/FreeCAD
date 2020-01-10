@@ -583,13 +583,13 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 	int t = m_VertexArray.size();
 
 	m_VertexArray.push_back(z - x - y);
-	m_TextureCoordArray.push_back(Vector2f(0, 0));
+	m_TextureCoordArray.emplace_back(0, 0);
 	m_VertexArray.push_back(z + x - y);
-	m_TextureCoordArray.push_back(Vector2f(1, 0));
+	m_TextureCoordArray.emplace_back(1, 0);
 	m_VertexArray.push_back(z + x + y);
-	m_TextureCoordArray.push_back(Vector2f(1, 1));
+	m_TextureCoordArray.emplace_back(1, 1);
 	m_VertexArray.push_back(z - x + y);
-	m_TextureCoordArray.push_back(Vector2f(0, 1));
+	m_TextureCoordArray.emplace_back(0, 1);
 
 	// TEX_TOP, TEX_BACK_FACE, TEX_FRONT_FACE, TEX_TOP
 	// TEX_TOP 			frontTex,
@@ -854,6 +854,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+	glLineWidth(2.0);
 
 	glDisable(GL_LIGHTING);
 	//glDisable(GL_BLEND);

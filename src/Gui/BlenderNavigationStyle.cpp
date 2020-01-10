@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::BlenderNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::BlenderNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::BlenderNavigationStyle, Gui::UserNavigationStyle)
 
 BlenderNavigationStyle::BlenderNavigationStyle() : lockButton1(false)
 {

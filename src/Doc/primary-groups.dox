@@ -1,9 +1,10 @@
 /** \defgroup CORE Core 
-    This is the core functionality of FreeCAD.
+    These are the core components of FreeCAD.
 
     It groups the Base classes, and the main components of FreeCAD core,
     spread over their App and Gui sides. Core components are programmed in
-    C++ but provide a broad Python API.
+    C++ but provide a broad Python API too. Most of FreeCAD functionality,
+    however, is defined in Workbenches.
  */
 
 /** \defgroup WORKBENCHES Workbenches

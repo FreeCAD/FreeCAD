@@ -22,10 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 import PathScripts.PathAreaOp as PathAreaOp
 import PathScripts.PathLog as PathLog
-import PathScripts.PathOp as PathOp
 
 from PySide import QtCore
 
@@ -34,11 +32,8 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path profile operations."
 
-if False:
-    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
-    PathLog.trackModule(PathLog.thisModule())
-else:
-    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+#PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
 def translate(context, text, disambig=None):

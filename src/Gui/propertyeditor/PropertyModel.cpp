@@ -218,6 +218,15 @@ struct PropItemInfo {
     {}
 };
 
+static void setPropertyItemName(PropertyItem *item, const char *propName, QString groupName) {
+    QString name = QString::fromLatin1(propName);
+    if(name.size()>groupName.size()+1 
+            && name.startsWith(groupName + QLatin1Char('_')))
+        name = name.right(name.size()-groupName.size()-1);
+
+    item->setPropertyName(name);
+}
+
 void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
 {
     beginResetModel();
@@ -264,7 +273,7 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     child->setParent(rootItem);
                     rootItem->appendChild(child);
 
-                    child->setPropertyName(*prop);
+                    setPropertyItemName(child,prop->getName(),groupName);
 
                     child->setPropertyData(info.props);
                 }
@@ -374,7 +383,7 @@ void PropertyModel::appendProperty(const App::Property& prop)
         std::vector<App::Property*> data;
         data.push_back(const_cast<App::Property*>(&prop));
 
-        item->setPropertyName(prop);
+        setPropertyItemName(item,prop.getName(),groupName);
         item->setPropertyData(data);
 
         endInsertRows();

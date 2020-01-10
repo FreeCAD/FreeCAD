@@ -132,6 +132,8 @@ public:
     void setEditData(const char *data);
     std::vector<std::string> getEditData(bool silent=false) const;
 
+    std::string getFormattedQuantity(void);
+
     /* Alignment */
     static const int ALIGNMENT_LEFT;
     static const int ALIGNMENT_HCENTER;

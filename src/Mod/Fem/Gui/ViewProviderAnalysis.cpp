@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -114,9 +114,9 @@ void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* , const cha
 bool ViewProviderFemAnalysis::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
-        //// When double-clicking on the item for this pad the
-        //// object unsets and sets its edit mode without closing
-        //// the task panel
+        // When double-clicking on the item for this pad the object
+        // unsets and sets its edit mode without closing the task panel
+
         //Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         //TaskDlgAnalysis *anaDlg = qobject_cast<TaskDlgAnalysis *>(dlg);
         //if (padDlg && anaDlg->getPadView() != this)
@@ -162,7 +162,8 @@ void ViewProviderFemAnalysis::unsetEdit(int ModNum)
 
 bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
 {
-    //// get the support and Sketch
+    // get the support and Sketch
+
     //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
     //Sketcher::SketchObject *pcSketch = 0;
     //App::DocumentObject    *pcSupport = 0;
@@ -171,7 +172,8 @@ bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
     //    pcSupport = pcSketch->Support.getValue();
     //}
 
-    //// if abort command deleted the object the support is visible again
+    // if abort command deleted the object the support is visible again
+
     //if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
     //    Gui::Application::Instance->getViewProvider(pcSketch)->show();
     //if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))

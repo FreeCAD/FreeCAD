@@ -120,7 +120,7 @@ unsigned long MeshSearchNeighbours::NeighboursFromFacet (unsigned long ulFacetId
 
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
-    int i = 0;
+    size_t i = 0;
     for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
         raclResultPoints[i] = _rclPAry[*pI];
 
@@ -140,7 +140,7 @@ void MeshSearchNeighbours::SampleAllFacets (void)
 
     _aclSampledFacets.resize(_rclMesh.CountFacets());
     MeshFacetIterator clFIter(_rclMesh);
-    int i = 0;
+    size_t i = 0;
     for (clFIter.Init(); clFIter.More(); clFIter.Next(), i++) {
         std::vector<Base::Vector3f> clPoints;
         clFIter->SubSample(_fSampleDistance, clPoints);
@@ -322,7 +322,7 @@ unsigned long MeshSearchNeighbours::NeighboursFacetFromFacet (unsigned long ulFa
 
     // copy points in result container
     raclResultPoints.resize(_aclResult.size());
-    int i = 0;
+    size_t i = 0;
     for (std::set<unsigned long>::iterator pI = _aclResult.begin(); pI != _aclResult.end(); ++pI, i++)
         raclResultPoints[i] = _rclPAry[*pI];
 

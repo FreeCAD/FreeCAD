@@ -47,6 +47,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawRichAnno.h>
+#include <Mod/TechDraw/App/LineGroup.h>
 
 #include "MDIViewPage.h"
 #include "QGVPage.h"
@@ -63,8 +64,13 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderRichAnno, TechDrawGui::ViewProviderDraw
 
 ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/techdraw-textleader";
+    sPixmap = "actions/techdraw-RichTextAnnotation";
 
+    static const char *group = "Frame Format";
+
+    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()), group,(App::PropertyType)(App::Prop_None),"Frame line weight");
+    ADD_PROPERTY_TYPE(LineStyle,(1), group,(App::PropertyType)(App::Prop_None),"Frame line style");
+    ADD_PROPERTY_TYPE(LineColor,(getDefLineColor()),group,App::Prop_None,"The color of the frame");
 }
 
 ViewProviderRichAnno::~ViewProviderRichAnno()
@@ -155,3 +161,18 @@ double ViewProviderRichAnno::getDefFontSize()
     double fontSize = hGrp->GetFloat("FontSize", 5.0);
     return fontSize;
 }
+
+double ViewProviderRichAnno::getDefLineWeight(void)
+{
+    double result = 0.0;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    result = lg->getWeight("Graphics");
+    delete lg;
+    return result;
+}
+
+

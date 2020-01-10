@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) WandererFan - 2016    (wandererfan@gmail.com)           *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,12 +54,13 @@ DrawViewDraft::DrawViewDraft(void)
 
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Draft object for this view");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view");
+    ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view. If Override Style is false, this value multiplies the object line width");
     ADD_PROPERTY_TYPE(FontSize,(12.0),group,App::Prop_None,"Text size for this view");
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0),group,App::Prop_None,"Projection direction. The direction you are looking from.");
     ADD_PROPERTY_TYPE(Color,(0.0f,0.0f,0.0f),group,App::Prop_None,"The default color of text and lines");
     ADD_PROPERTY_TYPE(LineStyle,("Solid") ,group,App::Prop_None,"A line style to use for this view. Can be Solid, Dashed, Dashdot, Dot or a SVG pattern like 0.20,0.20");
     ADD_PROPERTY_TYPE(LineSpacing,(1.0f),group,App::Prop_None,"The spacing between lines to use for multiline texts");
+    ADD_PROPERTY_TYPE(OverrideStyle,(false),group,App::Prop_None,"If True, line color, width and style of this view will override those of rendered objects");
     ScaleType.setValue("Custom");
 }
 
@@ -77,7 +78,8 @@ short DrawViewDraft::mustExecute() const
                     Direction.isTouched() ||
                     Color.isTouched() ||
                     LineStyle.isTouched() ||
-                    LineSpacing.isTouched();
+                    LineSpacing.isTouched() ||
+                    OverrideStyle.isTouched();
     }
     if ((bool) result) {
         return result;
@@ -112,8 +114,9 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
                  << ",color=\"" << Color.getValue().asCSSString() << "\""
                  << ",linespacing=" << LineSpacing.getValue()
                  // We must set techdraw to "true" becausea couple of things behave differently than in Drawing
-                 << ",techdraw=True)"
-            << " + '" << getSVGTail() << "'";
+                 << ",techdraw=True"
+                 << ",override=" << (OverrideStyle.getValue() ? "True" : "False")
+            << ") + '" << getSVGTail() << "'";
 
 // this is ok for a starting point, but should eventually make dedicated Draft functions that build the svg for all the special cases
 // (Arch section, etc)

@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::InventorNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::InventorNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::InventorNavigationStyle, Gui::UserNavigationStyle)
 
 InventorNavigationStyle::InventorNavigationStyle()
 {

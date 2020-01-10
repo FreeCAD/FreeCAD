@@ -598,7 +598,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     *tool << "Std_DlgParameter" << "Separator"
           << "Std_ViewScreenShot" << "Std_SceneInspector"
           << "Std_ExportGraphviz" << "Std_ProjectUtil" << "Separator"
-          << "Std_MeasureDistance" << "Separator" 
+          << "Std_MeasureDistance" << "Separator"
+          << "Std_TextDocument" << "Separator"
           << "Std_DemoMode" << "Std_UnitsCalculator" << "Separator" << "Std_DlgCustomize";
 #ifdef BUILD_ADDONMGR
     *tool << "Std_AddonMgr";
@@ -664,12 +665,12 @@ ToolBarItem* StdWorkbench::setupToolBars() const
           << "Separator" << "Std_TreeViewActions" << "Std_ViewIsometric" << "Separator" << "Std_ViewFront"
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance" ;
-    
+
     // Structure
     ToolBarItem* structure = new ToolBarItem( root );
     structure->setCommand("Structure");
-    *structure << "Std_Part" << "Std_Group" << "Std_LinkMake" << "Std_LinkMakeRelative";
-          
+    *structure << "Std_Part" << "Std_Group" << "Std_LinkMake" << "Std_LinkActions";
+
     return root;
 }
 
@@ -706,7 +707,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
 
     bool enabled = group->GetBool("Enabled", false);
     if (enabled)

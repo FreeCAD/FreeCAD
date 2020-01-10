@@ -83,6 +83,9 @@ public:
     virtual void drawBorder(void);
     virtual void isVisible(bool state);
     virtual bool isVisible(void);
+
+    virtual void setGroupSelection(bool b);
+
     virtual void draw(void);
     virtual void drawCaption(void);
     virtual void rotateView(void);
@@ -105,13 +108,17 @@ public:
     void alignTo(QGraphicsItem*, const QString &alignment);
     void setLocked(bool b) { m_locked = b; }
 
-    virtual QColor getNormalColor(void);
-    virtual QColor getPreColor(void);
-    virtual QColor getSelectColor(void);
+    virtual QColor getNormalColor(void);  //preference
+    virtual QColor getPreColor(void);     //preference
+    virtual QColor getSelectColor(void);  //preference
+    virtual QColor getCurrentColor(void) { return m_colCurrent; }
+    virtual QColor getSettingColor(void) { return m_colSetting; }
+    virtual void   setSettingColor(QColor c) { m_colSetting = c; }
     
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     static QGVPage* getGraphicsView(TechDraw::DrawView* dv);
     static int calculateFontPixelSize(double sizeInMillimetres);
+    static int calculateFontPixelWidth(const QFont &font);
     static const double DefaultFontSizeInMM;
 
     MDIViewPage* getMDIViewPage(void) const;
@@ -133,7 +140,7 @@ protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual QRectF customChildrenBoundingRect(void) const;
-    void dumpRect(char* text, QRectF r);
+    void dumpRect(const char* text, QRectF r);
 
     QString getPrefFont(void);
     double getPrefFontSize(void);
@@ -156,6 +163,7 @@ protected:
     QColor m_colNormal;
     QColor m_colPre;
     QColor m_colSel;
+    QColor m_colSetting;
     QFont m_font;
     QGCustomLabel* m_label;
     QGCustomBorder* m_border;
@@ -165,6 +173,7 @@ protected:
     double m_lockWidth;
     double m_lockHeight;
 
+/*    int m_selectState;*/
 };
 
 } // namespace

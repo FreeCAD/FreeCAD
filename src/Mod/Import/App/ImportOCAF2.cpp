@@ -190,7 +190,7 @@ void ImportOCAF2::setMode(int m) {
             Base::FileInfo fi(pDocument->FileName.getValue());
             filePath = fi.dirPath();
         }else
-            FC_WARN("Diable multi-document mode because the input document is not saved.");
+            FC_WARN("Disable multi-document mode because the input document is not saved.");
     }
 }
 
@@ -975,7 +975,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
             names.push_back(prefix + obj->getNameInDocument() + "_i" + name + ".");
         }
         // Finally, the subname reference allows to use the label for naming
-        // with preceeding '$'
+        // with preceding '$'
         names.push_back(prefix + "$" + obj->Label.getValue() + ".");
     }
 

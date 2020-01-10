@@ -74,17 +74,21 @@ App::DocumentObjectExecReturn *Compound::execute(void)
         const std::vector<DocumentObject*>& links = Links.getValues();
         std::vector<TopoShape> shapes;
         for (std::vector<DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-            if(!tempLinks.insert(*it).second)
-                continue;
-            auto sh = Feature::getTopoShape(*it);
-            if(!sh.isNull()) {
-                shapes.push_back(sh);
-                TopTools_IndexedMapOfShape faceMap;
-                TopExp::MapShapes(sh.getShape(), TopAbs_FACE, faceMap);
-                ShapeHistory hist;
-                hist.type = TopAbs_FACE;
-                for (int i=1; i<=faceMap.Extent(); i++) {
-                    hist.shapeMap[i-1].push_back(countFaces++);
+            if (*it) {
+                auto pos = tempLinks.insert(*it);
+                if (pos.second) {
+                    const TopoDS_Shape& sh = Feature::getShape(*it);
+                    if (!sh.IsNull()) {
+                        builder.Add(comp, sh);
+                        TopTools_IndexedMapOfShape faceMap;
+                        TopExp::MapShapes(sh, TopAbs_FACE, faceMap);
+                        ShapeHistory hist;
+                        hist.type = TopAbs_FACE;
+                        for (int i=1; i<=faceMap.Extent(); i++) {
+                            hist.shapeMap[i-1].push_back(countFaces++);
+                        }
+                        history.push_back(hist);
+                    }
                 }
                 history.push_back(hist);
             }
@@ -125,15 +129,8 @@ Compound2::Compound2() {
 }
 
 void Compound2::onDocumentRestored() {
-    std::vector<TopoShape> shapes;
-    for(auto obj : Links.getValues()) {
-        auto sh = Feature::getTopoShape(obj);
-        if(!sh.isNull())
-            shapes.push_back(sh);
-    }
-    if(shapes.size()) {
-        auto shape = TopoShape().makECompound(shapes);
-        shape.setPlacement(Placement.getValue());
-        Shape.setValue(shape);
-    }
+    Base::Placement pla = Placement.getValue();
+    auto res = execute();
+    delete res;
+    Placement.setValue(pla);
 }

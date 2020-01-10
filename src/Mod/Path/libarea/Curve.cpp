@@ -161,11 +161,11 @@ void CCurve::AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices,
 		{
 			if(arc.AlmostALine())
 			{
-				new_vertices.push_back(CVertex(arc.m_e, arc.m_user_data));
+				new_vertices.emplace_back(arc.m_e, arc.m_user_data);
 			}
 			else
 			{
-				new_vertices.push_back(CVertex(arc.m_dir ? 1:-1, arc.m_e, arc.m_c, arc.m_user_data));
+				new_vertices.emplace_back(arc.m_dir ? 1:-1, arc.m_e, arc.m_c, arc.m_user_data);
 			}
 
 			arc_added = true;
@@ -350,7 +350,7 @@ void CCurve::UnFitArcs()
 					double nx = vertex.m_c.x * CArea::m_units + radius * cos(phi-dphi);
 					double ny = vertex.m_c.y * CArea::m_units + radius * sin(phi-dphi);
 
-					new_pts.push_back(Point(nx, ny));
+					new_pts.emplace_back(nx, ny);
 
 					px = nx;
 					py = ny;
@@ -535,7 +535,7 @@ void CCurve::ChangeStart(const Point &p) {
 					}
 					else
 					{
-						new_curve.m_vertices.push_back(CVertex(p));
+						new_curve.m_vertices.emplace_back(p);
 						started = true;
 						start_span = span_index;
 						if(p != vertex.m_p)new_curve.m_vertices.push_back(vertex);
@@ -826,7 +826,7 @@ void CCurve::GetSpans(std::list<Span> &spans)const
 		const CVertex& vertex = *It;
 		if(prev_p)
 		{
-			spans.push_back(Span(*prev_p, vertex));
+			spans.emplace_back(*prev_p, vertex);
 		}
 		prev_p = &(vertex.m_p);
 	}
@@ -880,7 +880,7 @@ void CCurve::OffsetForward(double forwards_value, bool refit_arcs)
 				// add an arc to the start of the next span
 				int arc_type = ((sin_angle > 0) ? 1 : (-1));
 				Point centre = span.m_v.m_p - v * forwards_value;
-				m_vertices.push_back(CVertex(arc_type, next_span.m_p, centre));
+				m_vertices.emplace_back(arc_type, next_span.m_p, centre);
 			}
 		}
 	}
@@ -978,7 +978,7 @@ void CCurve::operator+=(const CCurve& curve)
 		{
 			if((m_vertices.size() == 0) || (It->m_p != m_vertices.back().m_p))
 			{
-				m_vertices.push_back(CVertex(It->m_p));
+				m_vertices.emplace_back(It->m_p);
 			}
 		}
 		else
@@ -1307,8 +1307,8 @@ void Span::Intersect(const Span& s, std::list<Point> &pts)const
 	geoff_geometry::Point pInt1, pInt2;
 	double t[4];
 	int num_int = MakeSpan(*this).Intof(MakeSpan(s), pInt1, pInt2, t);
-	if(num_int > 0)pts.push_back(Point(pInt1.x, pInt1.y));
-	if(num_int > 1)pts.push_back(Point(pInt2.x, pInt2.y));
+	if(num_int > 0)pts.emplace_back(pInt1.x, pInt1.y);
+	if(num_int > 1)pts.emplace_back(pInt2.x, pInt2.y);
 }
 
 void tangential_arc(const Point &p0, const Point &p1, const Point &v0, Point &c, int &dir)

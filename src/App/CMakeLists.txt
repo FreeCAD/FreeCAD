@@ -195,6 +195,7 @@ SET(Document_HPP_SRCS
     DocumentObserver.h
     DocumentObserverPython.h
     Expression.h
+    ExpressionParser.h
     ExpressionVisitors.h
     FeatureCustom.h
     FeaturePython.h
@@ -312,7 +313,7 @@ SET_BIN_DIR(FreeCADApp FreeCADApp)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADApp
-        RUNTIME DESTINATION bin
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 else(WIN32)

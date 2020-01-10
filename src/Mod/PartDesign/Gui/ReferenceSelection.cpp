@@ -1,5 +1,5 @@
 /******************************************************************************
- *   Copyright (c)2012 Konstantinos Poulios <logari81@gmail.com>              *
+ *   Copyright (c) 2012 Konstantinos Poulios <logari81@gmail.com>             *
  *                                                                            *
  *   This file is part of the FreeCAD CAx development system.                 *
  *                                                                            *
@@ -212,7 +212,7 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     
     //check if the selection is an external reference and ask the user what to do
     //of course only if thisObj is in a body, as otherwise the old workflow would not 
-    //be supportet
+    //be supported
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
     bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
     if (!originfeature && body) {

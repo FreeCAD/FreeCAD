@@ -32,6 +32,7 @@ import subprocess
 import tempfile
 
 from FreeCAD import Units
+from FreeCAD import Console
 import Fem
 import femtools.femutils as femutils
 import femmesh.gmshtools as gmshtools
@@ -124,7 +125,7 @@ class Writer(object):
         groups.extend(self._builder.getBoundaryNames())
         self._exportToUnv(groups, mesh, unvPath)
         if self.testmode:
-            print("We are in testmode ElmerGrid may not be installed!")
+            Console.PrintMessage("We are in testmode ElmerGrid may not be installed.\n")
         else:
             binary = settings.get_binary("ElmerGrid")
             if binary is None:
@@ -134,11 +135,11 @@ class Writer(object):
                     _ELMERGRID_OFORMAT,
                     unvPath,
                     "-out", self.directory]
-            subprocess.call(args)
+            subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
         path = os.path.join(self.directory, _STARTINFO_NAME)
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             f.write(_SIF_NAME)
 
     def _exportToUnv(self, groups, mesh, meshPath):
@@ -164,7 +165,7 @@ class Writer(object):
         tools.write_part_file()
         tools.write_geo()
         if self.testmode:
-            print("We are in testmode, GMSH may not be installed!")
+            Console.PrintMessage("We are in testmode, Gmsh may not be installed.\n")
             import shutil
             shutil.copyfile(geoPath, os.path.join(self.directory, "group_mesh.geo"))
         else:
@@ -481,7 +482,7 @@ class Writer(object):
                 dimension = "M/L^3"
                 if name.startswith("Edge"):
                     # not tested, but it seems needed
-                    # because denisty does not exist (IMHO, bernd)
+                    # because density does not exist (IMHO, bernd)
                     density = None
                     if density:
                         density.Unit = Units.Unit(-2, 1)
@@ -741,7 +742,7 @@ class Writer(object):
 
     def _writeSif(self):
         sifPath = os.path.join(self.directory, _SIF_NAME)
-        with open(sifPath, 'w') as fstream:
+        with open(sifPath, "w") as fstream:
             sif = sifio.Sif(self._builder)
             sif.write(fstream)
 

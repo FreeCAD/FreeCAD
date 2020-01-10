@@ -1,9 +1,7 @@
 # -*- coding: utf8 -*-
 
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -116,7 +114,7 @@ def addComponents(objectsList,host):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
-    if hostType in ["Floor","Building","Site","BuildingPart"]:
+    if hostType in ["Floor","Building","Site","Project","BuildingPart"]:
         for o in objectsList:
             host.addObject(o)
     elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel","Component"]:
@@ -125,7 +123,7 @@ def addComponents(objectsList,host):
         if hasattr(host,"Axes"):
             x = host.Axes
         for o in objectsList:
-            if o.isDerivedFrom("Part::Feature"):
+            if hasattr(o,'Shape'):
                 if Draft.getType(o) == "Window":
                     if hasattr(o,"Hosts"):
                         if not host in o.Hosts:
@@ -237,7 +235,7 @@ def makeComponent(baseobj=None,name="Component",delete=False):
         ArchComponent.ViewProviderComponent(obj.ViewObject)
     if baseobj:
         import Part
-        if baseobj.isDerivedFrom("Part::Feature"):
+        if hasattr(baseobj,'Shape'):
             obj.Shape = baseobj.Shape
             obj.Placement = baseobj.Placement
             if delete:
@@ -275,6 +273,8 @@ def setAsSubcomponent(obj):
             color = getDefaultColor("Construction")
             if hasattr(obj.ViewObject,"LineColor"):
                 obj.ViewObject.LineColor = color
+            if hasattr(obj.ViewObject, "PointColor"):
+                obj.ViewObject.PointColor = color
             if hasattr(obj.ViewObject,"ShapeColor"):
                 obj.ViewObject.ShapeColor = color
             if hasattr(obj.ViewObject,"Transparency"):
@@ -696,7 +696,7 @@ def check(objectslist,includehidden=False):
         objs = Draft.removeHidden(objs)
     bad = []
     for o in objs:
-        if not o.isDerivedFrom("Part::Feature"):
+        if not hasattr(o,'Shape'):
             bad.append([o,"is not a Part-based object"])
         else:
             s = o.Shape
@@ -744,7 +744,7 @@ def pruneIncluded(objectslist,strict=False):
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe","Rebar"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder","Window","Roof","Clone","Site"]):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Space","Facebinder","Window","Roof","Clone","Site","Project"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"Host") and (parent.Host == obj):
@@ -764,6 +764,8 @@ def pruneIncluded(objectslist,strict=False):
                             toplevel = True
         if toplevel:
             newlist.append(obj)
+        else:
+            FreeCAD.Console.PrintLog("pruning "+obj.Label+"\n")
     return newlist
 
 def getAllChildren(objectlist):
@@ -836,7 +838,7 @@ def survey(callback=False):
                         newsels.append(o)
                 if newsels:
                     for o in newsels:
-                        if o.Object.isDerivedFrom("Part::Feature"):
+                        if hasattr(o.Object, 'Shape'):
                             n = o.Object.Label
                             showUnit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True)
                             t = ""
@@ -1184,13 +1186,14 @@ def cleanArchSplitter(objects=None):
     if not isinstance(objects,list):
         objects = [objects]
     for obj in objects:
-        if obj.isDerivedFrom("Part::Feature"):
+        if hasattr(obj,'Shape'):
             if hasattr(obj,"Base"):
                 if obj.Base:
                     print("Attempting to clean splitters from ", obj.Label)
-                    if obj.Base.isDerivedFrom("Part::Feature"):
-                        if not obj.Base.Shape.isNull():
-                            obj.Base.Shape = obj.Base.Shape.removeSplitter()
+                    base = obj.Base.getLinkedObject()
+                    if base.isDerivedFrom("Part::Feature"):
+                        if not base.Shape.isNull():
+                            base.Shape = base.Shape.removeSplitter()
     FreeCAD.ActiveDocument.recompute()
 
 
@@ -1204,15 +1207,16 @@ def rebuildArchShape(objects=None):
         objects = [objects]
     for obj in objects:
         success = False
-        if obj.isDerivedFrom("Part::Feature"):
+        if hasattr(obj,'Shape'):
             if hasattr(obj,"Base"):
                 if obj.Base:
                     try:
                         print("Attempting to rebuild ", obj.Label)
-                        if obj.Base.isDerivedFrom("Part::Feature"):
-                            if not obj.Base.Shape.isNull():
+                        base = obj.Base.getLinkedObject()
+                        if base.isDerivedFrom("Part::Feature"):
+                            if not base.Shape.isNull():
                                 faces = []
-                                for f in obj.Base.Shape.Faces:
+                                for f in base.Shape.Faces:
                                     f2 = Part.Face(f.Wires)
                                     #print("rebuilt face: isValid is ", f2.isValid())
                                     faces.append(f2)
@@ -1227,7 +1231,7 @@ def rebuildArchShape(objects=None):
                                                 solid = Part.Solid(solid)
                                             #print("rebuilt solid: isValid is ",solid.isValid())
                                             if solid.isValid():
-                                                obj.Base.Shape = solid
+                                                base.Shape = solid
                                                 success = True
                     except:
                         pass
@@ -1661,7 +1665,7 @@ class _ToggleSubs:
             if hasattr(obj, "Subtractions"):
                 for sub in obj.Subtractions:
                     if not (Draft.getType(sub) in ["Window","Roof"]):
-                        if mode == None:
+                        if mode is None:
                             # take the first sub as base
                             mode = sub.ViewObject.isVisible()
                         if mode == True:

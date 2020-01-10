@@ -81,6 +81,7 @@
 #include <Base/Vector3D.h>
 
 using namespace Drawing;
+using namespace std;
 
 TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
 {

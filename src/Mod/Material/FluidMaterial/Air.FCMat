@@ -13,3 +13,5 @@ PrandtlNumber = 0.7
 SpecificHeat = 1.005 J/kg/K
 ThermalConductivity = 0.0257 W/m/K
 
+RelativePermittivity = 1.00059
+; at 18°C and 50Hz

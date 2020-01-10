@@ -72,7 +72,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Let FreeCAD manage (create, delete) the working directories for all solver. Use temporary directories.</string>
+             <string>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>

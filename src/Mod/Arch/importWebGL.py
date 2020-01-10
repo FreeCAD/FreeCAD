@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -36,7 +34,7 @@ if FreeCAD.GuiUp:
 else:
     FreeCADGui = None
     # \cond
-    def translate(ctxt,txt):
+    def translate(ctxt,txt,utf8_decode=True):
         return txt
     # \endcond
 
@@ -52,68 +50,68 @@ wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial", or None
 cameraPosition = None # set this to a tuple to change, for ex. (0,0,0)
 linewidth = 1
 template = """<!DOCTYPE html>
-        <html>
-        <head>
-            <title>FreeCAD model</title>
-            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r50/three.min.js"></script>
-            
-            <script>
-            
-            var camera, controls, scene, renderer;
-            
-            window.onload = function() {
+<html>
+<head>
+    <title>FreeCAD model</title>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r50/three.min.js"></script>
 
-                var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-                var VIEW_ANGLE = 35, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+    <script>
 
-                renderer = new THREE.WebGLRenderer();
-                renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-                document.body.appendChild( renderer.domElement );
-        
-                scene = new THREE.Scene();
-        
-                camera = new THREE.PerspectiveCamera(
-                    VIEW_ANGLE,      // Field of view
-                    ASPECT,          // Aspect ratio
-                    NEAR,            // Near plane
-                    FAR              // Far plane
-                );
-                $CameraData // placeholder for the FreeCAD camera
-                
-                controls = new THREE.TrackballControls( camera );
-                controls.rotateSpeed = 1.0;
-                controls.zoomSpeed = 1.2;
-                controls.panSpeed = 0.8;
-                controls.noZoom = false;
-                controls.noPan = false;
-                controls.staticMoving = true;
-                controls.dynamicDampingFactor = 0.3;
-                controls.keys = [ 65, 83, 68 ]; 
-        
-                $ObjectsData // placeholder for the FreeCAD objects
-        
-                var light = new THREE.PointLight( 0xFFFF00 );
-                light.position.set( -10000, -10000, 10000 );
-                scene.add( light );
-        
-                renderer.render( scene, camera );
-                
-                animate();
-            };
-            
-            function animate(){
-                requestAnimationFrame( animate );
-                render();
-            };
-            
-            function render(){
-                controls.update();
-                renderer.render( scene, camera );
-            };
-            </script>
-        </head>
-        <body></body>
-        </html>"""
+    var camera, controls, scene, renderer;
+
+    window.onload = function() {
+
+        var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+        var VIEW_ANGLE = 35, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+        document.body.appendChild( renderer.domElement );
+
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera(
+            VIEW_ANGLE,      // Field of view
+            ASPECT,          // Aspect ratio
+            NEAR,            // Near plane
+            FAR              // Far plane
+        );
+        $CameraData // placeholder for the FreeCAD camera
+
+        controls = new THREE.TrackballControls( camera );
+        controls.rotateSpeed = 1.0;
+        controls.zoomSpeed = 1.2;
+        controls.panSpeed = 0.8;
+        controls.noZoom = false;
+        controls.noPan = false;
+        controls.staticMoving = true;
+        controls.dynamicDampingFactor = 0.3;
+        controls.keys = [ 65, 83, 68 ]; 
+
+        $ObjectsData // placeholder for the FreeCAD objects
+
+        var light = new THREE.PointLight( 0xFFFF00 );
+        light.position.set( -10000, -10000, 10000 );
+        scene.add( light );
+
+        renderer.render( scene, camera );
+
+        animate();
+    };
+
+    function animate(){
+        requestAnimationFrame( animate );
+        render();
+    };
+
+    function render(){
+        controls.update();
+        renderer.render( scene, camera );
+    };
+    </script>
+</head>
+<body></body>
+</html>"""
 
 
 if open.__module__ in ['__builtin__','io']:
@@ -126,7 +124,7 @@ def export(exportList,filename):
     outfile = pythonopen(filename,"w")
     outfile.write(html)
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","Successfully written", utf8_decode=True) + ' ' + filename + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch", "Successfully written", utf8_decode=True) + ' ' + filename + "\n")
     
 def getHTML(objectsList):
     "returns the complete HTML code of a viewer for the given objects"
@@ -165,7 +163,7 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
     result = ""
     wires = []
 
-    if obj.isDerivedFrom("Part::Feature"):
+    if hasattr(obj,'Shape'):
         fcmesh = obj.Shape.tessellate(0.1)
         result = "var geom = new THREE.Geometry();\n"
         # adding vertices data
@@ -236,4 +234,3 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
             result += tab+"scene.add( mesh );\n"+tab
         
     return result
-        

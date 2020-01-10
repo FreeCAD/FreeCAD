@@ -154,6 +154,25 @@ private:
     static const char* JoinEnums[];
 };
 
+class Refine : public Part::Feature
+{
+    PROPERTY_HEADER(Part::Refine);
+
+public:
+    Refine();
+
+    App::PropertyLink Source;
+
+    /** @name methods override feature */
+    //@{
+    /// recalculate the feature
+    App::DocumentObjectExecReturn *execute(void);
+    const char* getViewProviderName(void) const {
+        return "PartGui::ViewProviderRefine";
+    }
+    //@}
+};
+
 } //namespace Part
 
 

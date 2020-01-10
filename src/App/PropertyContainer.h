@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2005     *
+ *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -243,7 +243,7 @@ protected:
   /// get called before the value is changed
   virtual void onBeforeChange(const Property* /*prop*/){}
 
-  //void hasChanged(Propterty* prop);
+  //void hasChanged(Property* prop);
   static const  PropertyData * getPropertyDataPtr(void); 
   virtual const PropertyData& getPropertyData(void) const; 
 
@@ -303,7 +303,7 @@ private: \
   static App::PropertyData propertyData 
 /// 
 #define PROPERTY_SOURCE(_class_, _parentclass_) \
-TYPESYSTEM_SOURCE_P(_class_);\
+TYPESYSTEM_SOURCE_P(_class_)\
 const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
 const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
 App::PropertyData _class_::propertyData; \
@@ -313,7 +313,7 @@ void _class_::init(void){\
 }
 
 #define PROPERTY_SOURCE_ABSTRACT(_class_, _parentclass_) \
-TYPESYSTEM_SOURCE_ABSTRACT_P(_class_);\
+TYPESYSTEM_SOURCE_ABSTRACT_P(_class_)\
 const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
 const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
 App::PropertyData _class_::propertyData; \
@@ -331,7 +331,7 @@ template<> void * _class_::create(void){\
 }
 
 #define PROPERTY_SOURCE_TEMPLATE(_class_, _parentclass_) \
-TYPESYSTEM_SOURCE_TEMPLATE(_class_);\
+TYPESYSTEM_SOURCE_TEMPLATE(_class_)\
 template<> App::PropertyData _class_::propertyData = App::PropertyData(); \
 template<> const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
 template<> const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \

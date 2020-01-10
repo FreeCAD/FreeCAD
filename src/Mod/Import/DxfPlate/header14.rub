@@ -31,8 +31,24 @@ $CMLSTYLE
   2
 STANDARD
   9
+$PEXTMAX
+ 10
+50
+ 20
+50
+ 30
+50
+  9
+$PEXTMIN
+ 10
+0
+ 20
+0
+ 30
+0
+  9
 $HANDSEED
   5
-FFF
+FFFF
   0
 ENDSEC

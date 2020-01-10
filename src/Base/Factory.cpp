@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *   
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -97,7 +96,7 @@ void ScriptFactorySingleton::Destruct (void)
 
 const char* ScriptFactorySingleton::ProduceScript (const char* sScriptName) const
 {
-  const char* script = (const char*)Produce(sScriptName);
+  const char* script = static_cast<const char*>(Produce(sScriptName));
 
   if ( !script )
   {

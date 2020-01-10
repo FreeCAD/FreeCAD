@@ -156,6 +156,7 @@ def write(filename, dictionary, write_group_section=True):
 
     # sort the data into sections
     contents = []
+    user = {}
     template_data = get_material_template()
     for group in template_data:
         groupName = list(group.keys())[0]  # group dict has only one key
@@ -203,7 +204,8 @@ def write(filename, dictionary, write_group_section=True):
         FreeCAD.Console.PrintMessage("File CardName is used: {}\n".format(card_name_file))
     if sys.version_info.major >= 3:
         f.write("; " + card_name_file + "\n")
-        f.write("; " + header["AuthorAndLicense"] + "\n")
+        # f.write("; " + header["AuthorAndLicense"] + "\n")
+        f.write("; " + header.get("AuthorAndLicense", "no author") + "\n")
     else:
         f.write("; " + header["CardName"].encode("utf8") + "\n")
         f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")

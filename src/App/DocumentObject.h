@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +34,7 @@
 #include <Base/Matrix.h>
 #include <CXX/Objects.hxx>
 
+#include <unordered_map>
 #include <bitset>
 #include <boost/signals2.hpp>
 
@@ -90,7 +92,7 @@ public:
  */
 class AppExport DocumentObject: public App::TransactionalObject
 {
-    PROPERTY_HEADER(App::DocumentObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::DocumentObject);
 
 public:
 
@@ -112,10 +114,19 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "";
     }
-    /// This function is introduced to allow Python feature override its view provider
+    /**
+     * This function is introduced to allow Python feature override its view provider.
+     * The default implementation just returns \ref getViewProviderName().
+     *
+     * The core will only accept the overridden view provider if it returns
+     * true when calling Gui::ViewProviderDocumentObject::allowOverride(obj).
+     * If not, the view provider will be reverted to the one returned from \ref
+     * getViewProviderName().
+     */
     virtual const char *getViewProviderNameOverride() const {
         return getViewProviderName();
     }
+
     /// Constructor
     DocumentObject(void);
     virtual ~DocumentObject();
@@ -129,8 +140,8 @@ public:
     /// Return the object full name of the form DocName#ObjName
     virtual std::string getFullName(bool python=false) const override;
     virtual App::Document *getOwnerDocument() const override;
-    virtual bool isAttachedToDocument() const;
-    virtual const char* detachFromDocument();
+    virtual bool isAttachedToDocument() const override;
+    virtual const char* detachFromDocument() override;
     /// gets the document in which this Object is handled
     App::Document *getDocument(void) const;
 
@@ -178,14 +189,14 @@ public:
      * For performance reason, \c element must not contain any further
      * sub-elements, i.e. there should be no '.' inside \c element.
      *
-     * @return -1 if element visiblity is not supported, 0 if element is not
+     * @return -1 if element visibility is not supported, 0 if element is not
      * found, 1 if success
      */
     virtual int setElementVisible(const char *element, bool visible); 
 
     /** Get sub-element visibility
      *
-     * @return -1 if element visiblity is not supported or element not found, 0
+     * @return -1 if element visibility is not supported or element not found, 0
      * if element is invisible, or else 1
      */
     virtual int isElementVisible(const char *element) const;
@@ -310,7 +321,7 @@ public:
      * additional or different behavior.
      */
     virtual void onLostLinkToObject(DocumentObject*);
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     /** Get the sub element/object by name
      *
@@ -336,7 +347,7 @@ public:
      *
      * @param depth: depth limitation as hint for cyclic link detection
      *
-     * @return The last document object refered in subname. If subname is empty,
+     * @return The last document object referred in subname. If subname is empty,
      * then it shall return itself. If subname is invalid, then it shall return
      * zero.
      */
@@ -412,7 +423,7 @@ public:
 
     static DocumentObjectExecReturn *StdReturn;
 
-    virtual void Save (Base::Writer &writer) const;
+    virtual void Save (Base::Writer &writer) const override;
 
     /* Expression support */
 
@@ -454,13 +465,13 @@ public:
     /** Resolve a link reference that is relative to this object reference
      *
      * @param subname: on input, this is the subname reference to the object
-     * that is to be assigned a link. On output, the reference may be offseted
-     * to be rid off any common parent.
+     * that is to be assigned a link. On output, the reference may be offset
+     * to be rid of any common parent.
      * @param link: on input, this is the top parent of the link reference. On
      * output, it may be altered to one of its child to be rid off any common
      * parent.
      * @param linkSub: on input, this the subname of the link reference. On
-     * output, it may be offseted to be rid off any common parent.
+     * output, it may be offset to be rid off any common parent.
      *
      * @return The corrected top parent of the object that is to be assigned the
      * link. If the output 'subname' is empty, then return the object itself.
@@ -541,7 +552,7 @@ public:
     virtual bool redirectSubName(std::ostringstream &ss,
             DocumentObject *topParent, DocumentObject *child) const;
 
-    /** Sepecial marker to mark the object as hidden
+    /** Special marker to mark the object as hidden
      *
      * It is used by Gui::ViewProvider::getElementColors(), but exposed here
      * for convenience
@@ -583,9 +594,9 @@ protected:
     void setDocument(App::Document* doc);
 
     /// get called before the value is changed
-    virtual void onBeforeChange(const Property* prop);
+    virtual void onBeforeChange(const Property* prop) override;
     /// get called by the container when a property was changed
-    virtual void onChanged(const Property* prop);
+    virtual void onChanged(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
     /// get called after setting the document
@@ -614,7 +625,7 @@ private:
     // accessed by App::Document to record and restore the correct view provider type
     std::string _pcViewProviderName;
 
-    // unique identifier (ammong a document) of this object.
+    // unique identifier (among a document) of this object.
     long _Id;
     
 private:

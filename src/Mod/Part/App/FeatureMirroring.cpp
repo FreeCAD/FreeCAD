@@ -103,7 +103,7 @@ App::DocumentObjectExecReturn *Mirroring::execute(void)
 #ifdef FC_NO_ELEMENT_MAP
         const TopoDS_Shape& shape = Feature::getShape(link);
         if (shape.IsNull())
-            Standard_Failure::Raise("Cannot mirroR empty shape");
+            Standard_Failure::Raise("Cannot mirror empty shape");
         gp_Trsf mat;
         mat.SetMirror(ax2);
         TopLoc_Location loc = shape.Location();

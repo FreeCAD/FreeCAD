@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,7 +53,7 @@ using namespace std;
 // PropertyFileIncluded
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFileIncluded , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyFileIncluded , App::Property)
 
 
 PropertyFileIncluded::PropertyFileIncluded()
@@ -614,15 +614,25 @@ unsigned int PropertyFileIncluded::getMemSize (void) const
 // PropertyFile
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyFile , App::PropertyString);
+TYPESYSTEM_SOURCE(App::PropertyFile , App::PropertyString)
 
 PropertyFile::PropertyFile()
 {
-
+    m_filter = "";
 }
 
 PropertyFile::~PropertyFile()
 {
 
+}
+
+void PropertyFile::setFilter(const std::string f)
+{
+    m_filter = f;
+}
+
+std::string PropertyFile::getFilter(void) const
+{
+    return m_filter;
 }
 

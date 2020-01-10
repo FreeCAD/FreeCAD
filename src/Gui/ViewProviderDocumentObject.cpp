@@ -183,18 +183,22 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             Visibility.getValue() ? show() : hide();
             Visibility.setStatus(App::Property::User2, false);
         }
-        if(getObject() && getObject()->Visibility.getValue()!=Visibility.getValue())
+        if (!Visibility.testStatus(App::Property::User1)
+                && getObject() 
+                && getObject()->Visibility.getValue()!=Visibility.getValue())
+        {
             getObject()->Visibility.setValue(Visibility.getValue());
+        }
     }
     else if (prop == &SelectionStyle) {
         if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
             static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
-                ?SoFCSelectionRoot::BOX:SoFCSelectionRoot::FULL;
+                ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
         }
     }
 
-    if (pcDocument && !pcDocument->isModified()) {
-        if(prop)
+    if (pcDocument && !pcDocument->isModified() && testStatus(Gui::ViewStatus::TouchDocument)) {
+        if (prop)
             FC_LOG(prop->getFullName() << " changed");
         pcDocument->setModified(true);
     }
@@ -239,6 +243,9 @@ void ViewProviderDocumentObject::updateView()
 
     Base::ObjectStatusLocker<ViewStatus,ViewProviderDocumentObject> lock(ViewStatus::UpdatingView,this);
 
+    // Disable object visibility syncing
+    Base::ObjectStatusLocker<App::Property::Status,App::Property> lock2(App::Property::User1, &Visibility);
+
     std::map<std::string, App::Property*> Map;
     pcObject->getPropertyMap(Map);
 
@@ -274,10 +281,12 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     aDisplayEnumsArray.push_back(0); // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));
 
-    // set the active mode
-    const char* defmode = this->getDefaultDisplayMode();
-    if (defmode)
-        DisplayMode.setValue(defmode);
+    if(!isRestoring()) {
+        // set the active mode
+        const char* defmode = this->getDefaultDisplayMode();
+        if (defmode)
+            DisplayMode.setValue(defmode);
+    }
 
     //attach the extensions
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
@@ -298,8 +307,12 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
     if(prop == &getObject()->Visibility) {
         if(!isRestoring() && Visibility.getValue()!=getObject()->Visibility.getValue())
             Visibility.setValue(!Visibility.getValue());
-    }else
+    } else {
+        // Disable object visibility syncing
+        Base::ObjectStatusLocker<App::Property::Status,App::Property>
+            guard(App::Property::User1, &Visibility);
         ViewProvider::update(prop);
+    }
 }
 
 Gui::Document* ViewProviderDocumentObject::getDocument() const

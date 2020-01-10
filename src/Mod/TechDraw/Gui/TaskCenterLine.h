@@ -28,7 +28,8 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
-/*#include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>*/
+#include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
+#include <Mod/TechDraw/Gui/ui_TaskCL2Lines.h>
 
 /*#include "QGTracker.h"*/
 
@@ -41,6 +42,7 @@
 #define TRACKERSAVE 5
 
 class Ui_TaskCenterLine;
+class Ui_TaskCL2Lines;
 
 namespace App {
 class DocumentObject;
@@ -51,9 +53,11 @@ namespace TechDraw
 class DrawPage;
 class DrawView;
 class DrawViewPart;
+class CosmeticEdge;
+class LineFormat;
 }
 
-namespace TechDrawGeometry
+namespace TechDraw
 {
 class Face;
 }
@@ -74,7 +78,9 @@ public:
     TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
                    TechDraw::DrawPage* page,
                    std::vector<std::string> subNames);
-/*    TaskCenterLine(TechDrawGui::ViewProviderViewPart* partVP);*/
+    TaskCenterLine(TechDraw::DrawViewPart* baseFeat,
+                   TechDraw::DrawPage* page,
+                   std::string edgeName);
     ~TaskCenterLine();
 
 public Q_SLOTS:
@@ -88,6 +94,7 @@ public:
     void saveButtons(QPushButton* btnOK,
                      QPushButton* btnCancel);
     void enableTaskButtons(bool b);
+    void setFlipped(bool b);
 
 
 protected Q_SLOTS:
@@ -97,23 +104,15 @@ protected:
 
     void blockButtons(bool b);
     void setUiPrimary(void);
-/*    void setUiEdit(void);*/
-/*    void enableVPUi(bool b);*/
-/*    void setEditCursor(QCursor c);*/
+    void setUiEdit(void);
 
-    void addCenterLine(void);
     void createCenterLine(void);
+    void create2Lines(void);
+    void create2Points(void);
 
-
-    QGIView* findParentQGIV();
     void updateCenterLine(void);
-    void removeCenterLine(void);
-    TechDraw::CosmeticEdge* calcEndPoints(std::vector<std::string> faceNames,
-                                        bool vert,
-                                        double ext);
-
-   void saveState(void);
-   void restoreState(void);
+    void update2Lines(void);
+    void update2Points(void);
 
     double getCenterWidth();
     QColor getCenterColor();
@@ -123,25 +122,49 @@ protected:
 
 private:
     Ui_TaskCenterLine * ui;
-    bool blockUpdate;
 
-    MDIViewPage* m_mdi;
-    QGraphicsScene* m_scene;
-    QGVPage* m_view;
-    ViewProviderViewPart* m_partVP;
     TechDraw::DrawViewPart* m_partFeat;
     TechDraw::DrawPage* m_basePage;
     bool m_createMode;
-
-    Qt::ContextMenuPolicy  m_saveContextPolicy;
-    bool m_inProgressLock;
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
 
     std::vector<std::string> m_subNames;
+    std::string m_edgeName;
     double m_extendBy;
+    int m_geomIndex;
+    TechDraw::CenterLine* m_cl;
+    int m_clIdx;
+    bool m_flipped;
+    int m_type;
+    int m_mode;
 };
+
+class TaskCL2Lines : public QWidget
+{
+    Q_OBJECT
+
+public:
+    TaskCL2Lines(TaskCenterLine* tcl);
+    ~TaskCL2Lines();
+
+public:
+    virtual bool accept();
+    virtual bool reject();
+
+protected Q_SLOTS:
+    void onFlipToggled(bool b);
+
+protected:
+    void changeEvent(QEvent *e);
+    void initUi(void);
+
+private:
+    Ui_TaskCL2Lines* ui;
+    TechDrawGui::TaskCenterLine* m_tcl;
+};
+
 
 class TaskDlgCenterLine : public Gui::TaskView::TaskDialog
 {
@@ -151,7 +174,9 @@ public:
     TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
                       TechDraw::DrawPage* page,
                       std::vector<std::string> subNames);
-/*    TaskDlgCenterLine(TechDrawGui::ViewProviderLeader* partVP);*/
+    TaskDlgCenterLine(TechDraw::DrawViewPart* baseFeat,
+                      TechDraw::DrawPage* page,
+                      std::string edgeName);
     ~TaskDlgCenterLine();
 
 public:
@@ -174,8 +199,12 @@ public:
 protected:
 
 private:
-    TaskCenterLine * widget;
+    TaskCenterLine* widget;
     Gui::TaskView::TaskBox* taskbox;
+
+    TaskCL2Lines* cl2Lines;
+    Gui::TaskView::TaskBox* linesBox;
+
 };
 
 } //namespace TechDrawGui

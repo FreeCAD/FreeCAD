@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
+ *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -72,7 +72,7 @@ void * _class_::create(void){return 0;}
 
 /// define to implement a subclass of Base::BaseClass
 #define EXTENSION_TYPESYSTEM_SOURCE(_class_, _parentclass_) \
-EXTENSION_TYPESYSTEM_SOURCE_P(_class_);\
+EXTENSION_TYPESYSTEM_SOURCE_P(_class_)\
 void _class_::init(void){\
   initExtensionSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
 }
@@ -104,7 +104,7 @@ private: \
   static App::PropertyData propertyData
 
 #define EXTENSION_PROPERTY_SOURCE(_class_, _parentclass_) \
-EXTENSION_TYPESYSTEM_SOURCE_P(_class_);\
+EXTENSION_TYPESYSTEM_SOURCE_P(_class_)\
 const App::PropertyData * _class_::extensionGetPropertyDataPtr(void){return &propertyData;} \
 const App::PropertyData & _class_::extensionGetPropertyData(void) const{return propertyData;} \
 App::PropertyData _class_::propertyData; \
@@ -114,7 +114,7 @@ void _class_::init(void){\
 }
 
 #define EXTENSION_PROPERTY_SOURCE_TEMPLATE(_class_, _parentclass_) \
-EXTENSION_TYPESYSTEM_SOURCE_TEMPLATE(_class_);\
+EXTENSION_TYPESYSTEM_SOURCE_TEMPLATE(_class_)\
 template<> App::PropertyData _class_::propertyData = App::PropertyData(); \
 template<> const App::PropertyData * _class_::extensionGetPropertyDataPtr(void){return &propertyData;} \
 template<> const App::PropertyData & _class_::extensionGetPropertyData(void) const{return propertyData;} \

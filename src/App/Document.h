@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,7 +64,7 @@ namespace App
 /// The document class
 class AppExport Document : public App::PropertyContainer
 {
-    PROPERTY_HEADER(App::Document);
+    PROPERTY_HEADER_WITH_OVERRIDE(App::Document);
 
 public:
     enum Status {
@@ -193,6 +193,9 @@ public:
     boost::signals2::signal<void (const App::Document&,const App::Property&)> signalChangePropertyEditor;
     //@}
 
+
+    void clearDocument();
+
     /** @name File handling of the document */
     //@{
     /// Save the Document under a new Name
@@ -236,13 +239,13 @@ public:
     const char* getName() const;
     //@}
 
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-    virtual void SaveDocFile(Base::Writer &writer) const;
-    virtual void RestoreDocFile(Base::Reader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
+    virtual void SaveDocFile(Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
 
     /// returns the complete document memory consumption, including all managed DocObjects and Undo Redo.
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize (void) const override;
 
     /** @name Object handling  */
     //@{
@@ -364,7 +367,7 @@ public:
      * transactions, meaning that there are other transactions before the given
      * ID. The Gui component shall ask user if he wants to undo multiple steps.
      * And if the user agrees, call undo(id) to unroll all transaction before
-     * and including the the one with the give ID. Same apllies for redo.
+     * and including the the one with the give ID. Same applies for redo.
      *
      * The new transaction ID describe here is fully backward compatible.
      * Calling the APIs with a default id=0 gives the original behavior.
@@ -446,9 +449,9 @@ public:
     };
     /** Get a complete list of all objects the given objects depend on. 
      *
-     * This function is defined as static because it accpets objects from
+     * This function is defined as static because it accepts objects from
      * different documents, and the returned list will contain dependent
-     * objects from all relavent documents
+     * objects from all relevant documents
      *
      * @param objs: input objects to query for dependency. 
      * @param options: See DependencyOption
@@ -523,7 +526,7 @@ public:
     /// Function called to signal that an object identifier has been renamed
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths, const std::function<bool(const App::DocumentObject*)> &selector = [](const App::DocumentObject *) { return true; });
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     virtual std::string getFullName(bool python=false) const override;
 
@@ -558,14 +561,14 @@ protected:
     void writeObjects(const std::vector<App::DocumentObject*>&, Base::Writer &writer) const;
     bool saveToFile(const char* filename) const;
 
-    void onBeforeChange(const Property* prop);
-    void onChanged(const Property* prop);
+    void onBeforeChange(const Property* prop) override;
+    void onChanged(const Property* prop) override;
     /// callback from the Document objects before property will be changed
     void onBeforeChangeProperty(const TransactionalObject *Who, const Property *What);
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature
-    /// @return True if the recompute process of the Document shall be stopped, False if it shall be continued.
+    /// @return 0 if succeeded, 1 if failed, -1 if aborted by user.
     int _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
 

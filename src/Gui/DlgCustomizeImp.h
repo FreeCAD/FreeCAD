@@ -70,7 +70,7 @@ private:
     //@{
     QPushButton* buttonHelp; /**< the help button */
     QPushButton* buttonClose; /**< the cancel button */
-    QTabWidget* tabWidget; /**< tab wigdets containing all pages */ 
+    QTabWidget* tabWidget; /**< tab widgets containing all pages */ 
     QGridLayout* customLayout; /**< layout */
     QHBoxLayout* layout; /** horizontal layout */
     static QList<QByteArray> _pages; /**< Name of all registered preference pages */

@@ -105,6 +105,7 @@ public:
     App::PropertyBool ShowLinks;
     App::PropertyBool ShowSupport;
     App::PropertyBool RestoreCamera;
+    App::PropertyString EditingWorkbench;
 
     /// Draw all constraint icons
     /*! Except maybe the radius and lock ones? */
@@ -398,6 +399,7 @@ protected:
     static SbColor SelectColor;
     static SbColor PreselectSelectedColor;
     static SbColor InformationColor;
+    static SbColor DeactivatedConstrDimColor;
 
     static SbTime prvClickTime;
     static SbVec2s prvClickPos; //used by double-click-detector
@@ -422,8 +424,6 @@ protected:
     // reference coordinates for relative operations
     double xInit,yInit;
     bool relative;
-
-    std::string oldWb;
 
     Gui::Rubberband* rubberband;
 

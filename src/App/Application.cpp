@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -81,6 +80,7 @@
 #include <Base/UnitsApi.h>
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
+#include <Base/TypePy.h>
 
 #include "StringHasherPy.h"
 #include "GeoFeature.h"
@@ -134,12 +134,13 @@ using namespace boost;
 using namespace boost::program_options;
 
 
-// scriptings (scripts are build in but can be overridden by command line option)
+// scriptings (scripts are built-in but can be overridden by command line option)
 #include <App/InitScript.h>
 #include <App/TestScript.h>
 #include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
+# pragma warning( disable : 4535 )
 # if !defined(_DEBUG) && defined(HAVE_SEH)
 # define FC_SE_TRANSLATOR
 # endif
@@ -304,6 +305,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::RotationPy        ::Type,pBaseModule,"Rotation");
     Base::Interpreter().addType(&Base::AxisPy            ::Type,pBaseModule,"Axis");
     Base::Interpreter().addType(&Base::CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
+    Base::Interpreter().addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
 
@@ -595,21 +597,20 @@ Document* Application::openDocument(const char * FileName, bool createView) {
     return 0;
 }
 
-std::vector<Document*> Application::openDocuments(
-        const std::vector<std::string> &filenames, 
-        const std::vector<std::string> *pathes, 
-        const std::vector<std::string> *labels, 
-        std::vector<std::string> *errs,
-        bool createView)
+std::vector<Document*> Application::openDocuments(const std::vector<std::string> &filenames,
+                                                  const std::vector<std::string> *paths,
+                                                  const std::vector<std::string> *labels,
+                                                  std::vector<std::string> *errs,
+                                                  bool createView)
 {
-    std::vector<Document*> res(filenames.size(),nullptr);
-    if(filenames.empty())
+    std::vector<Document*> res(filenames.size(), nullptr);
+    if (filenames.empty())
         return res;
 
-    if(errs)
+    if (errs)
         errs->resize(filenames.size());
 
-    DocOpenGuard guard(_isRestoring,signalFinishOpenDocument);
+    DocOpenGuard guard(_isRestoring, signalFinishOpenDocument);
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
@@ -619,88 +620,102 @@ std::vector<Document*> Application::openDocuments(
     ParameterGrp::handle hGrp = GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
-    for(auto &name : filenames)
+    for (auto &name : filenames)
         _pendingDocs.push_back(name.c_str());
 
     std::deque<std::pair<Document *, DocTiming> > newDocs;
 
     FC_TIME_INIT(t);
 
-    for(std::size_t count=0;;++count) {
+    for (std::size_t count=0;; ++count) {
         const char *name = _pendingDocs.front();
         _pendingDocs.pop_front();
-        bool isMainDoc = count<filenames.size();
+        bool isMainDoc = count < filenames.size();
+
         try {
             _objCount = -1;
             std::set<std::string> objNames;
-            if(_allowPartial) {
+            if (_allowPartial) {
                 auto it = _pendingDocMap.find(name);
-                if(it!=_pendingDocMap.end())
+                if (it != _pendingDocMap.end())
                     objNames.swap(it->second);
             }
+
             FC_TIME_INIT(t1);
             DocTiming timing;
+
             const char *path = name;
             const char *label = 0;
-            if(isMainDoc) {
-                if(pathes && pathes->size()>count)
-                    path = (*pathes)[count].c_str();
-                if(labels && labels->size()>count)
+            if (isMainDoc) {
+                if (paths && paths->size()>count)
+                    path = (*paths)[count].c_str();
+
+                if (labels && labels->size()>count)
                     label = (*labels)[count].c_str();
             }
-            auto doc = openDocumentPrivate(path,name,label,isMainDoc,createView,objNames);
+
+            auto doc = openDocumentPrivate(path, name, label, isMainDoc, createView, objNames);
             FC_DURATION_PLUS(timing.d1,t1);
-            if(doc)
+            if (doc)
                 newDocs.emplace_front(doc,timing);
-            if(isMainDoc)
+
+            if (isMainDoc)
                 res[count] = doc;
             _objCount = -1;
-        }catch(const Base::Exception &e) {
-            if(!errs && isMainDoc) 
+        }
+        catch (const Base::Exception &e) {
+            if (!errs && isMainDoc)
                 throw;
-            if(errs && isMainDoc)
+            if (errs && isMainDoc)
                 (*errs)[count] = e.what();
             else
                 Console().Error("Exception opening file: %s [%s]\n", name, e.what());
-        }catch(const std::exception &e) {
-            if(!errs && isMainDoc) 
+        }
+        catch (const std::exception &e) {
+            if (!errs && isMainDoc)
                 throw;
-            if(errs && isMainDoc)
+            if (errs && isMainDoc)
                 (*errs)[count] = e.what();
             else
                 Console().Error("Exception opening file: %s [%s]\n", name, e.what());
-        }catch(...) {
-            if(errs) {
-                if(isMainDoc)
+        }
+        catch (...) {
+            if (errs) {
+                if (isMainDoc)
                     (*errs)[count] = "unknown error";
-            } else {
+            }
+            else {
                 _pendingDocs.clear();
                 _pendingDocsReopen.clear();
                 _pendingDocMap.clear();
                 throw;
             }
         }
-        if(_pendingDocs.empty()) {
-            if(_pendingDocsReopen.empty())
+
+        if (_pendingDocs.empty()) {
+            if (_pendingDocsReopen.empty())
                 break;
             _allowPartial = false;
             _pendingDocs.swap(_pendingDocsReopen);
         }
     }
+
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
 
     Base::SequencerLauncher seq("Postprocessing...", newDocs.size());
-    for(auto &v : newDocs) {
+    for (auto &v : newDocs) {
         FC_TIME_INIT(t1);
         v.first->afterRestore(true);
         FC_DURATION_PLUS(v.second.d2,t1);
         seq.next();
     }
-    setActiveDocument(newDocs.back().first);
 
-    for(auto &v : newDocs) {
+    if (!newDocs.empty())
+        setActiveDocument(newDocs.back().first);
+
+    for (auto &v : newDocs) {
         FC_DURATION_LOG(v.second.d1, v.first->getName() << " restore");
         FC_DURATION_LOG(v.second.d2, v.first->getName() << " postprocess");
     }
@@ -1635,6 +1650,7 @@ void Application::initTypes(void)
     App ::PropertyLength            ::init();
     App ::PropertyArea              ::init();
     App ::PropertyVolume            ::init();
+    App ::PropertyFrequency         ::init();
     App ::PropertySpeed             ::init();
     App ::PropertyAcceleration      ::init();
     App ::PropertyForce             ::init();
@@ -2082,6 +2098,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                 std::vector<std::string> mods = App::GetApplication().getImportModules(ext.c_str());
                 if (!mods.empty()) {
                     std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.filePath().c_str());
+                    escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
+
                     Base::Interpreter().loadModule(mods.front().c_str());
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
@@ -2132,6 +2150,8 @@ void Application::processCmdLineFiles(void)
     std::map<std::string,std::string>::const_iterator it = cfg.find("SaveFile");
     if (it != cfg.end()) {
         std::string output = it->second;
+        output = Base::Tools::escapeEncodeFilename(output);
+
         Base::FileInfo fi(output);
         std::string ext = fi.extension();
         try {
@@ -2262,7 +2282,7 @@ void Application::LoadParameters(void)
 
 #if defined(_MSC_VER)
 // fix weird error while linking boost (all versions of VC)
-// VS2010: http://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+// VS2010: https://forum.freecadweb.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
 namespace boost { namespace program_options { std::string arg="arg"; } }
 #if (defined (BOOST_VERSION) && (BOOST_VERSION >= 104100))
 namespace boost { namespace program_options {
@@ -2477,7 +2497,7 @@ void Application::ParseOptions(int ac, char ** av)
     if (vm.count("help")) {
         std::stringstream str;
         str << mConfig["ExeName"] << endl << endl;
-        str << "For detailed description see http://www.freecadweb.org" << endl<<endl;
+        str << "For a detailed description see https://www.freecadweb.org/wiki/Start_up_and_Configuration" << endl<<endl;
         str << "Usage: " << mConfig["ExeName"] << " [options] File1 File2 ..." << endl << endl;
         str << visible << endl;
         throw Base::ProgramInformation(str.str());
@@ -2952,7 +2972,7 @@ std::string Application::FindHomePath(const char* sCall)
     binPath += L"bin";
     SetDllDirectoryW(binPath.c_str());
 
-    // http://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
+    // https://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
 #ifdef _MSC_VER
     QString str = QString::fromUtf16(reinterpret_cast<const ushort *>(homePath.c_str()));
 #else
@@ -2965,4 +2985,3 @@ std::string Application::FindHomePath(const char* sCall)
 #else
 # error "std::string Application::FindHomePath(const char*) not implemented"
 #endif
-

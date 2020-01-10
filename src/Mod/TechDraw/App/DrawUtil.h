@@ -31,7 +31,9 @@
 
 #include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Dir2d.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Pnt2d.hxx>
 #include <gp_Vec.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -49,7 +51,15 @@
 
 #include "LineGroup.h"
 
+
+#ifndef M_2PI
+    #define M_2PI ((M_PI)*2.0)
+#endif
+
 #define VERTEXTOLERANCE (2.0 * Precision::Confusion())
+
+#define SVG_NS_URI         "http://www.w3.org/2000/svg"
+#define FREECAD_SVG_NS_URI "http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
 
 namespace TechDraw
 {
@@ -71,10 +81,11 @@ class TechDrawExport DrawUtil {
         static bool fpCompare(const double& d1, const double& d2, double tolerance = FLT_EPSILON);
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
         static std::string formatVector(const Base::Vector3d& v);
-        static std::string formatVector(const Base::Vector2d& v);
         static std::string formatVector(const gp_Dir& v);
+        static std::string formatVector(const gp_Dir2d& v);
         static std::string formatVector(const gp_Vec& v);
         static std::string formatVector(const gp_Pnt& v);
+        static std::string formatVector(const gp_Pnt2d& v);
         static std::string formatVector(const QPointF& v);
 
         static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
@@ -87,8 +98,8 @@ class TechDrawExport DrawUtil {
                                         Base::Vector3d org = Base::Vector3d(0.0,0.0,0.0));
         static Base::Vector3d closestBasis(Base::Vector3d v);
         static double getDefaultLineWeight(std::string s);
-        static Base::Vector3d vector23(const Base::Vector2d& v2) { return Base::Vector3d(v2.x,v2.y,0.0); }
-        static Base::Vector2d vector32(const Base::Vector3d& v3) { return Base::Vector2d(v3.x,v3.y); }
+/*        static Base::Vector3d vector23(const Base::Vector3d& v2) { return Base::Vector3d(v2.x,v2.y,0.0); }*/
+/*        static Base::Vector3d vector32(const Base::Vector3d& v3) { return Base::Vector3d(v3.x,v3.y); }*/
         //! is pt between end1 and end2?
         static bool isBetween(const Base::Vector3d pt, const Base::Vector3d end1, const Base::Vector3d end2);
         //! find intersection in 2d for 2 lines in point+direction form
@@ -96,16 +107,69 @@ class TechDrawExport DrawUtil {
                                    Base::Vector3d p2, Base::Vector3d d2);
         static Base::Vector3d gpPnt2V3(const gp_Pnt gp) { return Base::Vector3d(gp.X(),gp.Y(),gp.Z()); }
         static gp_Pnt         V32gpPnt(const Base::Vector3d v)  { return gp_Pnt(v.x,v.y,v.z); }
+        static std::string shapeToString(TopoDS_Shape s);
+        static TopoDS_Shape shapeFromString(std::string s);
+        static Base::Vector3d invertY(Base::Vector3d v);
+        static std::vector<std::string> split(std::string csvLine);
+        static std::vector<std::string> tokenize(std::string csvLine, std::string delimiter = ",$$$,");
+        static App::Color pyTupleToColor(PyObject* pColor);
+        static PyObject* colorToPyTuple(App::Color color);
+        static bool isCrazy(TopoDS_Edge e);
+
+        // Supplementary mathematical functions
+        static int sgn(double x);
+        static double sqr(double x);
+        static void angleNormalize(double &fi);
+        static double angleComposition(double fi, double delta);
+        static double angleDifference(double fi1, double fi2, bool reflex = false);
+
+        // Interval marking functions
+        static unsigned int intervalMerge(std::vector<std::pair<double, bool>> &marking,
+                                          double boundary, bool wraps);
+        static void intervalMarkLinear(std::vector<std::pair<double, bool>> &marking,
+                                       double start, double length, bool value);
+        static void intervalMarkCircular(std::vector<std::pair<double, bool>> &marking,
+                                         double start, double length, bool value);
+
+        // Supplementary 2D analytic geometry functions
+        static int findRootForValue(double Ax2, double Bxy, double Cy2, double Dx, double Ey, double F,
+                                    double value, bool findX, double roots[]);
+        static bool mergeBoundedPoint(const Base::Vector2d &point, const Base::BoundBox2d &boundary,
+                                      std::vector<Base::Vector2d> &storage);
+
+        static void findConicRectangleIntersections(double conicAx2, double conicBxy, double conicCy2,
+                                                    double conicDx, double conicEy, double conicF,
+                                                    const Base::BoundBox2d &rectangle,
+                                                    std::vector<Base::Vector2d> &intersections);
+        static void findLineRectangleIntersections(const Base::Vector2d &linePoint, double lineAngle,
+                                                   const Base::BoundBox2d &rectangle,
+                                                   std::vector<Base::Vector2d> &intersections);
+        static void findCircleRectangleIntersections(const Base::Vector2d &circleCenter, double circleRadius,
+                                                     const Base::BoundBox2d &rectangle,
+                                                     std::vector<Base::Vector2d> &intersections);
+
+        static void findLineSegmentRectangleIntersections(const Base::Vector2d &linePoint, double lineAngle,
+                                                          double segmentBasePosition, double segmentLength,
+                                                          const Base::BoundBox2d &rectangle,
+                                                          std::vector<Base::Vector2d> &intersections);
+        static void findCircularArcRectangleIntersections(const Base::Vector2d &circleCenter, double circleRadius,
+                                                          double arcBaseAngle, double arcRotation,
+                                                          const Base::BoundBox2d &rectangle,
+                                                          std::vector<Base::Vector2d> &intersections);
 
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);
-        static void dumpEdge(char* label, int i, TopoDS_Edge e);
+        static void dumpEdge(const char* label, int i, TopoDS_Edge e);
         static void dump1Vertex(const char* label, const TopoDS_Vertex& v);
         static void countFaces(const char* label, const TopoDS_Shape& s);
         static void countWires(const char* label, const TopoDS_Shape& s);
         static void countEdges(const char* label, const TopoDS_Shape& s);
         static const char* printBool(bool b);
         static QString qbaToDebug(const QByteArray& line);
+        static void dumpCS(const char* text, gp_Ax2 CS);
+        static void dumpCS3(const char* text, gp_Ax3 CS);
+        static void dumpEdges(const char* text, const TopoDS_Shape& s);
+
 };
 
 } //end namespace TechDraw

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
+ *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,10 +29,10 @@
 #include "ViewProviderDocumentObject.h"
 
 namespace Gui {
-    
+
 /**
  * @brief Extension with special viewprovider calls
- * 
+ *
  */
 class GuiExport ViewProviderExtension : public App::Extension
 {
@@ -48,10 +48,10 @@ public:
 
     Gui::ViewProviderDocumentObject*       getExtendedViewProvider();
     const Gui::ViewProviderDocumentObject* getExtendedViewProvider() const;
-   
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void) const { 
+
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void) const {
         return std::vector<App::DocumentObject*>(); }
-        
+
     virtual bool extensionOnDelete(const std::vector<std::string> &){ return true;}
     virtual void extensionBeforeDelete(){}
  
@@ -81,7 +81,7 @@ public:
     virtual void extensionShow(void) { }
 
     virtual void extensionModeSwitchChange(void) { }
-    
+
     virtual SoSeparator* extensionGetFrontRoot(void) const {return nullptr;}
     virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
     virtual SoSeparator* extensionGetBackRoot(void) const {return nullptr;}
@@ -92,6 +92,8 @@ public:
 
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);
+
+    virtual QIcon extensionMergeOverlayIcons(const QIcon & orig) const {return orig;}
 
     virtual void extensionStartRestoring() {}
     virtual void extensionFinishRestoring() {}
@@ -114,11 +116,11 @@ class ViewProviderExtensionPythonT : public ExtensionT
 
 public:
     typedef ExtensionT Inherited;
-    
+
     ViewProviderExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
         ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
-        
+
         EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }
     virtual ~ViewProviderExtensionPythonT() {

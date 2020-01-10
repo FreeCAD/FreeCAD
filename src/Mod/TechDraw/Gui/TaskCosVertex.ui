@@ -38,6 +38,18 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>300</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>300</width>
+       <height>300</height>
+      </size>
+     </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
@@ -127,13 +139,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2">
-           <widget class="Gui::QuantitySpinBox" name="qsbX">
-            <property name="unit" stdset="0">
-             <string notr="true"/>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="1">
            <spacer name="horizontalSpacer_3">
             <property name="orientation">
@@ -146,13 +151,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item row="1" column="2">
-           <widget class="Gui::QuantitySpinBox" name="qsbY">
-            <property name="unit" stdset="0">
-             <string notr="true"/>
-            </property>
-           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label">
@@ -168,10 +166,42 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="2">
+           <widget class="QDoubleSpinBox" name="dsbX">
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-2147483647.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>2147483647.000000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QDoubleSpinBox" name="dsbY">
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-2147483647.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>2147483647.000000000000000</double>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="2">
-           <widget class="Gui::QuantitySpinBox" name="qsbZ">
-            <property name="unit" stdset="0">
-             <string notr="true"/>
+           <widget class="QDoubleSpinBox" name="dsbZ">
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>-2147483647.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>2147483647.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -197,13 +227,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="Resources/TechDraw.qrc"/>
  </resources>

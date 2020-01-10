@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Kirill Gavrilov <kirill.gavrilov[at]opencascade.com> *
+ *   Copyright (c) 2015 Kirill Gavrilov <kirill.gavrilov@opencascade.com>  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -51,7 +51,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::OpenCascadeNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::OpenCascadeNavigationStyle, Gui::UserNavigationStyle);
+TYPESYSTEM_SOURCE(Gui::OpenCascadeNavigationStyle, Gui::UserNavigationStyle)
 
 OpenCascadeNavigationStyle::OpenCascadeNavigationStyle()
 {

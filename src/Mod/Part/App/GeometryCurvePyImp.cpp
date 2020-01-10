@@ -769,7 +769,7 @@ PyObject* GeometryCurvePy::intersectCS(PyObject *args)
             Py::List points;
             for (int i = 1; i <= intersector.NbPoints(); i++) {
                 gp_Pnt p = intersector.Point(i);
-                points.append(Py::Object(new PointPy(new GeomPoint(Base::Vector3d(p.X(), p.Y(), p.Z())))));
+                points.append(Py::asObject(new PointPy(new GeomPoint(Base::Vector3d(p.X(), p.Y(), p.Z())))));
             }
             Py::List segments;
             for (int i = 1; i <= intersector.NbSegments(); i++) {

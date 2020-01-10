@@ -229,6 +229,40 @@ PyObject* PlacementPy::inverse(PyObject * args)
     return new PlacementPy(new Placement(p));
 }
 
+PyObject* PlacementPy::pow(PyObject* args)
+{
+    double t;
+    PyObject* shorten = Py_True;
+    if (!PyArg_ParseTuple(args, "d|O!", &t, &(PyBool_Type), &shorten))
+        return nullptr;
+    Base::Placement ret = getPlacementPtr()->pow(t, PyObject_IsTrue(shorten));
+    return new PlacementPy(new Placement(ret));
+}
+
+
+PyObject* PlacementPy::sclerp(PyObject* args)
+{
+    PyObject* pyplm2;
+    double t;
+    PyObject* shorten = Py_True;
+    if (!PyArg_ParseTuple(args, "O!d|O!", &(PlacementPy::Type), &pyplm2, &t, &(PyBool_Type), &shorten))
+        return nullptr;
+    Base::Placement plm2 = static_cast<Base::PlacementPy*>(pyplm2)->value();
+    Base::Placement ret = Base::Placement::sclerp(*getPlacementPtr(), plm2, t, PyObject_IsTrue(shorten));
+    return new PlacementPy(new Placement(ret));
+}
+
+PyObject* PlacementPy::slerp(PyObject* args)
+{
+    PyObject* pyplm2;
+    double t;
+    if (!PyArg_ParseTuple(args, "O!d", &(PlacementPy::Type), &pyplm2, &t))
+        return nullptr;
+    Base::Placement plm2 = static_cast<Base::PlacementPy*>(pyplm2)->value();
+    Base::Placement ret = Base::Placement::slerp(*getPlacementPtr(), plm2, t);
+    return new PlacementPy(new Placement(ret));
+}
+
 PyObject* PlacementPy::isIdentity(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -342,34 +376,24 @@ PyObject* PlacementPy::number_multiply_handler(PyObject *self, PyObject *other)
 
 PyObject * PlacementPy::number_power_handler (PyObject* self, PyObject* other, PyObject* arg)
 {
-    if (!PyObject_TypeCheck(self, &(PlacementPy::Type)) ||
+    Py::Object pw(other);
+    Py::Tuple tup(1);
+    tup[0] = pw;
 
-#if PY_MAJOR_VERSION < 3
-            !PyInt_Check(other)
-#else
-            !PyLong_Check(other)
-#endif
-            || arg != Py_None
-       )
+    double pw_v;
+    if (!PyArg_ParseTuple(tup.ptr(), "d", &pw_v)){
+        //PyErr_SetString(PyExc_NotImplementedError, "Wrong exponent type (expect float).");
+        return nullptr;
+    }
+    if (!PyObject_TypeCheck(self, &(PlacementPy::Type))
+        || arg != Py_None)
     {
         PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
         return 0;
     }
 
-    auto a = static_cast<PlacementPy*>(self)->value();
-
-    long b = Py::Int(other);
-    if(!b)
-        return new PlacementPy(Placement());
-
-    if(b < 0) {
-        b = -b;
-        a.invert();
-    }
-    auto res = a;
-    for(--b;b;--b)
-        res *= a;
-    return new PlacementPy(res);
+    Placement a = static_cast<PlacementPy*>(self)->value();
+    return new PlacementPy(a.pow(pw_v));
 }
 
 PyObject* PlacementPy::number_add_handler(PyObject * /*self*/, PyObject * /*other*/)

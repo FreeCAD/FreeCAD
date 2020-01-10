@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -29,22 +29,21 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD FEM import tools
 
 import FreeCAD
+from FreeCAD import Console
 
 
 def get_FemMeshObjectMeshGroups(
     fem_mesh_obj
 ):
     """
-        Get mesh groups from mesh. This also throws no exception if there
-        is no Groups property at all (e.g. Netgen meshes).
+        Get mesh groups from mesh.
     """
-    fem_mesh = fem_mesh_obj.FemMesh
-    try:
-        gmshgroups = fem_mesh.Groups
-    except:
-        gmshgroups = ()
+    # this method is not really needed. It is used in Fenics mesh only.
+    # there was an exception handling if there was no Group property, but
+    # any FemMesh should have the Group property
+    # if not it would be a bug SMESH
 
-    return gmshgroups
+    return fem_mesh_obj.FemMesh.Groups
 
 
 def get_FemMeshObjectOrder(
@@ -71,7 +70,9 @@ def get_FemMeshObjectOrder(
         else:
             presumable_order = [el - 1 for el in edges_length_set]
     else:
-        print("Found no edges in mesh: Element order determination does not work without them.")
+        Console.PrintMessage(
+            "Found no edges in mesh: Element order determination does not work without them.\n"
+        )
 
     return presumable_order
 
@@ -133,86 +134,86 @@ def get_MaxDimElementFromList(
 def make_femmesh(
     mesh_data
 ):
-    ''' makes an FreeCAD FEM Mesh object from FEM Mesh data
-    '''
+    """ makes an FreeCAD FEM Mesh object from FEM Mesh data
+    """
     import Fem
     mesh = Fem.FemMesh()
     m = mesh_data
-    if ('Nodes' in m) and (len(m['Nodes']) > 0):
+    if ("Nodes" in m) and (len(m["Nodes"]) > 0):
         FreeCAD.Console.PrintLog("Found: nodes\n")
         if (
-            ('Seg2Elem' in m)
-            or ('Seg3Elem' in m)
-            or ('Tria3Elem' in m)
-            or ('Tria6Elem' in m)
-            or ('Quad4Elem' in m)
-            or ('Quad8Elem' in m)
-            or ('Tetra4Elem' in m)
-            or ('Tetra10Elem' in m)
-            or ('Penta6Elem' in m)
-            or ('Penta15Elem' in m)
-            or ('Hexa8Elem' in m)
-            or ('Hexa20Elem' in m)
+            ("Seg2Elem" in m)
+            or ("Seg3Elem" in m)
+            or ("Tria3Elem" in m)
+            or ("Tria6Elem" in m)
+            or ("Quad4Elem" in m)
+            or ("Quad8Elem" in m)
+            or ("Tetra4Elem" in m)
+            or ("Tetra10Elem" in m)
+            or ("Penta6Elem" in m)
+            or ("Penta15Elem" in m)
+            or ("Hexa8Elem" in m)
+            or ("Hexa20Elem" in m)
         ):
 
-            nds = m['Nodes']
+            nds = m["Nodes"]
             FreeCAD.Console.PrintLog("Found: elements\n")
             for i in nds:
                 n = nds[i]
                 mesh.addNode(n[0], n[1], n[2], i)
-            elms_hexa8 = m['Hexa8Elem']
+            elms_hexa8 = m["Hexa8Elem"]
             for i in elms_hexa8:
                 e = elms_hexa8[i]
                 mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]], i)
-            elms_penta6 = m['Penta6Elem']
+            elms_penta6 = m["Penta6Elem"]
             for i in elms_penta6:
                 e = elms_penta6[i]
                 mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5]], i)
-            elms_tetra4 = m['Tetra4Elem']
+            elms_tetra4 = m["Tetra4Elem"]
             for i in elms_tetra4:
                 e = elms_tetra4[i]
                 mesh.addVolume([e[0], e[1], e[2], e[3]], i)
-            elms_tetra10 = m['Tetra10Elem']
+            elms_tetra10 = m["Tetra10Elem"]
             for i in elms_tetra10:
                 e = elms_tetra10[i]
                 mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9]], i)
-            elms_penta15 = m['Penta15Elem']
+            elms_penta15 = m["Penta15Elem"]
             for i in elms_penta15:
                 e = elms_penta15[i]
                 mesh.addVolume([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
                                 e[10], e[11], e[12], e[13], e[14]], i)
-            elms_hexa20 = m['Hexa20Elem']
+            elms_hexa20 = m["Hexa20Elem"]
             for i in elms_hexa20:
                 e = elms_hexa20[i]
                 mesh.addVolume([
                     e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9],
                     e[10], e[11], e[12], e[13], e[14], e[15], e[16], e[17], e[18], e[19]
                 ], i)
-            elms_tria3 = m['Tria3Elem']
+            elms_tria3 = m["Tria3Elem"]
             for i in elms_tria3:
                 e = elms_tria3[i]
                 mesh.addFace([e[0], e[1], e[2]], i)
-            elms_tria6 = m['Tria6Elem']
+            elms_tria6 = m["Tria6Elem"]
             for i in elms_tria6:
                 e = elms_tria6[i]
                 mesh.addFace([e[0], e[1], e[2], e[3], e[4], e[5]], i)
-            elms_quad4 = m['Quad4Elem']
+            elms_quad4 = m["Quad4Elem"]
             for i in elms_quad4:
                 e = elms_quad4[i]
                 mesh.addFace([e[0], e[1], e[2], e[3]], i)
-            elms_quad8 = m['Quad8Elem']
+            elms_quad8 = m["Quad8Elem"]
             for i in elms_quad8:
                 e = elms_quad8[i]
                 mesh.addFace([e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7]], i)
-            elms_seg2 = m['Seg2Elem']
+            elms_seg2 = m["Seg2Elem"]
             for i in elms_seg2:
                 e = elms_seg2[i]
                 mesh.addEdge([e[0], e[1]], i)
-            elms_seg3 = m['Seg3Elem']
+            elms_seg3 = m["Seg3Elem"]
             for i in elms_seg3:
                 e = elms_seg3[i]
                 mesh.addEdge([e[0], e[1], e[2]], i)
-            FreeCAD.Console.PrintLog(
+            Console.PrintLog(
                 "imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15"
                 .format(
                     len(nds),
@@ -223,7 +224,7 @@ def make_femmesh(
                     len(elms_penta15)
                 )
             )
-            FreeCAD.Console.PrintLog(
+            Console.PrintLog(
                 "imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3"
                 .format(
                     len(elms_hexa20),
@@ -236,9 +237,9 @@ def make_femmesh(
                 )
             )
         else:
-            FreeCAD.Console.PrintError("No Elements found!\n")
+            Console.PrintError("No Elements found!\n")
     else:
-        FreeCAD.Console.PrintError("No Nodes found!\n")
+        Console.PrintError("No Nodes found!\n")
     return mesh
 
 
@@ -302,24 +303,24 @@ def make_dict_from_femmesh(
         len_to_volume[len(t)].append((v, t))
 
     mesh_data = {
-        'Nodes': dict([(k, (v.x, v.y, v.z))
+        "Nodes": dict([(k, (v.x, v.y, v.z))
                        for (k, v) in femmesh.Nodes.items()]),
-        'Seg2Elem': dict(seg2),
-        'Seg3Elem': dict(seg3),
+        "Seg2Elem": dict(seg2),
+        "Seg3Elem": dict(seg3),
 
-        'Tria3Elem': dict(tri3),
-        'Tria6Elem': dict(tri6),
-        'Quad4Elem': dict(quad4),
-        'Quad8Elem': dict(quad8),
+        "Tria3Elem": dict(tri3),
+        "Tria6Elem": dict(tri6),
+        "Quad4Elem": dict(quad4),
+        "Quad8Elem": dict(quad8),
 
-        'Tetra4Elem': dict(tet4),
-        'Tetra10Elem': dict(tet10),
-        'Hexa8Elem': dict(hex8),
-        'Hexa20Elem': dict(hex20),
-        'Penta6Elem': dict(pent6),
-        'Penta15Elem': dict(pent15),
+        "Tetra4Elem": dict(tet4),
+        "Tetra10Elem": dict(tet10),
+        "Hexa8Elem": dict(hex8),
+        "Hexa20Elem": dict(hex20),
+        "Penta6Elem": dict(pent6),
+        "Penta15Elem": dict(pent15),
 
-        'Groups': dict([(
+        "Groups": dict([(
             group_num, (
                 femmesh.getGroupName(group_num),
                 femmesh.getGroupElements(group_num)
@@ -336,16 +337,22 @@ def fill_femresult_mechanical(
     res_obj,
     result_set
 ):
-    ''' fills a FreeCAD FEM mechanical result object with result data
-    '''
-    if 'time' in result_set:
-        step_time = result_set['time']
+    """ fills a FreeCAD FEM mechanical result object with result data
+    """
+    if "number" in result_set:
+        eigenmode_number = result_set["number"]
+    else:
+        eigenmode_number = 0
+
+    if "time" in result_set:
+        step_time = result_set["time"]
         step_time = round(step_time, 2)
 
     # if disp exists, fill res_obj.NodeNumbers and
     # res_obj.DisplacementVectors as well as stress and strain
-    if 'disp' in result_set:
-        disp = result_set['disp']
+    # furthermore the eigenmode number
+    if "disp" in result_set:
+        disp = result_set["disp"]
         res_obj.DisplacementVectors = list(map((lambda x: x), disp.values()))
         res_obj.NodeNumbers = list(disp.keys())
 
@@ -353,8 +360,8 @@ def fill_femresult_mechanical(
         # list values are just added
         # Should we check if the key in stress and strain dict
         # is the same as the number in NodeNumbers?
-        if 'stress' in result_set:
-            stress = result_set['stress']
+        if "stress" in result_set:
+            stress = result_set["stress"]
             Sxx = []
             Syy = []
             Szz = []
@@ -377,8 +384,8 @@ def fill_femresult_mechanical(
             res_obj.NodeStressYZ = Syz
 
         # fill res_obj.NodeStrainXX etc if they exist in result_set
-        if 'strain' in result_set:
-            strain = result_set['strain']
+        if "strain" in result_set:
+            strain = result_set["strain"]
             Exx = []
             Eyy = []
             Ezz = []
@@ -401,12 +408,12 @@ def fill_femresult_mechanical(
             res_obj.NodeStrainYZ = Eyz
 
         # fill Equivalent Plastic strain if they exist
-        if 'peeq' in result_set:
-            Peeq = result_set['peeq']
+        if "peeq" in result_set:
+            Peeq = result_set["peeq"]
             if len(Peeq) > 0:
                 if len(Peeq.values()) != len(disp.values()):
                     # how is this possible? An example is needed!
-                    FreeCAD.Console.PrintError('PEEQ seams to have exptra nodes.\n')
+                    Console.PrintError("PEEQ seams to have exptra nodes.\n")
                     Pe = []
                     Pe_extra_nodes = list(Peeq.values())
                     nodes = len(disp.values())
@@ -417,11 +424,15 @@ def fill_femresult_mechanical(
                 else:
                     res_obj.Peeq = list(Peeq.values())
 
+        # fill eigenmode number if they exist
+        if eigenmode_number > 0:
+            res_obj.Eigenmode = eigenmode_number
+
     # fill res_obj.Temperature if they exist
     # TODO, check if it is possible to have Temperature without disp
     # we would need to set NodeNumbers than
-    if 'temp' in result_set:
-        Temperature = result_set['temp']
+    if "temp" in result_set:
+        Temperature = result_set["temp"]
         if len(Temperature) > 0:
             if len(Temperature.values()) != len(disp.values()):
                 Temp = []
@@ -429,7 +440,7 @@ def fill_femresult_mechanical(
                 nodes = len(disp.values())
                 for i in range(nodes):
                     # how is this possible? An example is needed!
-                    FreeCAD.Console.PrintError('Temperature seams to have exptra nodes.\n')
+                    Console.PrintError("Temperature seams to have exptra nodes.\n")
                     Temp_value = Temp_extra_nodes[i]
                     Temp.append(Temp_value)
                 res_obj.Temperature = list(map((lambda x: x), Temp))
@@ -438,8 +449,8 @@ def fill_femresult_mechanical(
             res_obj.Time = step_time
 
     # fill res_obj.MassFlow
-    if 'mflow' in result_set:
-        MassFlow = result_set['mflow']
+    if "mflow" in result_set:
+        MassFlow = result_set["mflow"]
         if len(MassFlow) > 0:
             res_obj.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
             res_obj.Time = step_time
@@ -447,8 +458,8 @@ def fill_femresult_mechanical(
             res_obj.NodeNumbers = list(MassFlow.keys())
 
     # fill res_obj.NetworkPressure, disp does not exist, see MassFlow
-    if 'npressure' in result_set:
-        NetworkPressure = result_set['npressure']
+    if "npressure" in result_set:
+        NetworkPressure = result_set["npressure"]
         if len(NetworkPressure) > 0:
             res_obj.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
             res_obj.Time = step_time

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) York van Havre 2016 yorik@uncreated.net                 *
+ *   Copyright (c) 2016 York van Havre <yorik@uncreated.net>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,14 +48,16 @@ using namespace std;
 PROPERTY_SOURCE(TechDraw::DrawViewArch, TechDraw::DrawViewSymbol)
 
 const char* DrawViewArch::RenderModeEnums[]= {"Wireframe",
-                                      "Solid",
-                                      NULL};
+                                              "Solid",
+                                              "Coin",
+                                              "Coin mono",
+                                              NULL};
 
 DrawViewArch::DrawViewArch(void)
 {
     static const char *group = "Arch view";
 
-    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Section Plane object for this view");
+    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"SectionPlane or BuildingPart object for this view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(AllOn ,(false),group,App::Prop_None,"If hidden objects must be shown or not");
     RenderMode.setEnums(RenderModeEnums);
@@ -63,8 +65,10 @@ DrawViewArch::DrawViewArch(void)
     ADD_PROPERTY_TYPE(FillSpaces ,(false),group,App::Prop_None,"If True, Arch Spaces are shown as a colored area");
     ADD_PROPERTY_TYPE(ShowHidden ,(false),group,App::Prop_None,"If the hidden geometry behind the section plane is shown or not");
     ADD_PROPERTY_TYPE(ShowFill ,(false),group,App::Prop_None,"If cut areas must be filled with a hatch pattern or not");
-    ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view");
+    ADD_PROPERTY_TYPE(LineWidth,(0.25),group,App::Prop_None,"Line width of this view");
     ADD_PROPERTY_TYPE(FontSize,(12.0),group,App::Prop_None,"Text size for this view");
+    ADD_PROPERTY_TYPE(CutLineWidth,(0.50),group,App::Prop_None,"Width of cut lines of this view");
+    ADD_PROPERTY_TYPE(JoinArch ,(false),group,App::Prop_None,"If True, walls and structure will be fused by material");
     ScaleType.setValue("Custom");
 }
 
@@ -82,7 +86,9 @@ short DrawViewArch::mustExecute() const
                 ShowHidden.isTouched() ||
                 ShowFill.isTouched() ||
                 LineWidth.isTouched() ||
-                FontSize.isTouched());
+                FontSize.isTouched() ||
+                CutLineWidth.isTouched() ||
+                JoinArch.isTouched());
     }
     if ((bool) result) {
         return result;
@@ -116,6 +122,8 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                     << ",techdraw=True"
                     << ",rotation=" << Rotation.getValue()
                     << ",fillSpaces=" << (FillSpaces.getValue() ? "True" : "False")
+                    << ",cutlinewidth=" << CutLineWidth.getValue()
+                    << ",joinArch=" << (JoinArch.getValue() ? "True" : "False")
                     << ")"
                 << " + '" << getSVGTail() << "'";
 
@@ -138,4 +146,3 @@ std::string DrawViewArch::getSVGTail(void)
     std::string tail = "\\n</svg>";
     return tail;
 }
-

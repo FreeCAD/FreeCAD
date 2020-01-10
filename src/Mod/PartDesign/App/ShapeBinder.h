@@ -42,7 +42,7 @@ namespace PartDesign
 
 class PartDesignExport ShapeBinder : public Part::Feature
 {
-    PROPERTY_HEADER(PartDesign::ShapeBinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::ShapeBinder);
 
 public:
     ShapeBinder();
@@ -54,30 +54,30 @@ public:
     static void getFilteredReferences(App::PropertyLinkSubList* prop, App::GeoFeature*& object, std::vector< std::string >& subobjects);
     static Part::TopoShape buildShapeFromReferences(App::GeoFeature* obj, std::vector< std::string > subs);
 
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderShapeBinder";
     }
 
 protected:
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
-    virtual short int mustExecute(void) const;
-    virtual App::DocumentObjectExecReturn* execute(void);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    virtual short int mustExecute(void) const override;
+    virtual App::DocumentObjectExecReturn* execute(void) override;
 
 private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    virtual void onSettingDocument();
+    virtual void onSettingDocument() override;
 
     typedef boost::signals2::connection Connection;
     Connection connectDocumentChangedObject;
 };
 
 class PartDesignExport SubShapeBinder : public Part::Feature {
-    PROPERTY_HEADER(PartDesign::SubShapeBinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::SubShapeBinder);
 public:
     typedef Part::Feature inherited;
 
     SubShapeBinder();
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderSubShapeBinder";
     }
 
@@ -93,13 +93,18 @@ public:
     App::PropertyXLink Context;
     App::PropertyInteger _Version;
 
-    void update();
+    enum UpdateOption {
+        UpdateNone = 0,
+        UpdateInit = 1,
+        UpdateForced = 2,
+    };
+    void update(UpdateOption options = UpdateNone);
 
     virtual int canLoadPartial() const override {
         return PartialLoad.getValue()?1:0;
     }
 
-    virtual bool canLinkProperties() const {return false;}
+    virtual bool canLinkProperties() const override {return false;}
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;
@@ -118,8 +123,6 @@ protected:
     typedef boost::signals2::scoped_connection Connection;
     Connection connRecomputedObj;
     App::Document *contextDoc=0;
-
-    std::vector<Part::TopoShape> _Cache;
 };
 
 } //namespace PartDesign

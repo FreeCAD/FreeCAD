@@ -24,11 +24,8 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathLog as PathLog
 import PathScripts.PathGui as PathGui
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathProfileFaces as PathProfileFaces
-import PathScripts.PathSelection as PathSelection
 
 from PySide import QtCore
 
@@ -83,6 +80,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Direction = str(self.form.direction.currentText())
 
         self.updateToolController(obj, self.form.toolController)
+        self.updateCoolant(obj, self.form.coolantController)
 
         if FeatureSide & self.profileFeatures():
             if obj.Side != str(self.form.cutSide.currentText()):
@@ -104,6 +102,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         self.selectInComboBox(obj.Direction, self.form.direction)
         self.setupToolController(obj, self.form.toolController)
+        self.setupCoolant(obj, self.form.coolantController)
 
         if FeatureSide & self.profileFeatures():
             self.selectInComboBox(obj.Side, self.form.cutSide)
@@ -120,6 +119,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.useCompensation.clicked)
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.toolController.currentIndexChanged)
+        signals.append(self.form.coolantController.currentIndexChanged)
 
         if FeatureSide & self.profileFeatures():
             signals.append(self.form.cutSide.currentIndexChanged)

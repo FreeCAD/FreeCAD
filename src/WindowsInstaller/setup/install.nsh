@@ -15,7 +15,7 @@ Section -ProgramFiles SecProgramFiles
   # be installed directly to C:\programs - the uninstaller will then delete the whole
   # C:\programs directory
   StrCpy $String $INSTDIR
-  StrCpy $Search "FreeCAD"
+  StrCpy $Search ${APP_NAME}
   Call StrPoint # function from Utils.nsh
   ${if} $Pointer == "-1"
    StrCpy $INSTDIR "$INSTDIR\${APP_DIR}"
@@ -43,6 +43,8 @@ Section -ProgramFiles SecProgramFiles
   File /r "${FILES_FREECAD}\Ext"
   File /r "${FILES_FREECAD}\lib"
   File /r "${FILES_FREECAD}\Mod"
+  File /r "${FILES_FREECAD}\resources"
+  File /r "${FILES_THUMBS}"
     
   # Create uninstaller
   WriteUninstaller "$INSTDIR\${SETUP_UNINSTALLER}"

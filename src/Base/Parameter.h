@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,9 +19,15 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
+ /** 
+ * \file Parameter.h
+ * \brief The classes defined here are used to interface with the XML-based
+ * FreeCAD config files: user.cfg and system.cfg files. It can parse, get,
+ * and store the parameters/configurations for the user's preferences.
+ * 3rd party Xerces-C++ XML parser is used to parse and write the XML.
+ */
 
 #ifndef BASE__PARAMETER_H
 #define BASE__PARAMETER_H
@@ -93,7 +99,7 @@ class ParameterManager;
  *  kind of preferences and so on.
  *  @see ParameterManager
  */
-class  BaseExport ParameterGrp	: public Base::Handled,public Base::Subject <const char*>
+class  BaseExport ParameterGrp : public Base::Handled,public Base::Subject <const char*>
 {
 
 
@@ -236,6 +242,7 @@ protected:
     ~ParameterGrp();
     /// helper function for GetGroup
     Base::Reference<ParameterGrp> _GetGroup(const char* Name);
+    bool ShouldRemove() const;
 
     XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *FindNextElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode *Prev, const char* Type) const;
 

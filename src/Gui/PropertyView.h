@@ -75,12 +75,12 @@ public Q_SLOTS:
     void onTimer();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e) override;
     void showEvent(QShowEvent *) override;
     void hideEvent(QHideEvent *) override;
 
 private:
-    void onSelectionChanged(const SelectionChanges& msg);
+    void onSelectionChanged(const SelectionChanges& msg) override;
     void slotChangePropertyData(const App::DocumentObject&, const App::Property&);
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
     void slotAppendDynamicProperty(const App::Property&);
@@ -89,6 +89,8 @@ private:
     void slotRollback();
     void slotActiveDocument(const Gui::Document&);
     void slotDeleteDocument(const Gui::Document&);
+    void slotDeletedViewObject(const Gui::ViewProvider&);
+    void slotDeletedObject(const App::DocumentObject&);
 
     void checkEnable(const char *doc = 0);
 
@@ -105,6 +107,8 @@ private:
     Connection connectRedoDocument;
     Connection connectActiveDoc;
     Connection connectDelDocument;
+    Connection connectDelObject;
+    Connection connectDelViewObject;
     QTabWidget* tabs;
     QTimer* timer;
 };

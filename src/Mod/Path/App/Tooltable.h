@@ -28,80 +28,10 @@
 #include <string>
 #include <map>
 #include <Base/Persistence.h>
+#include "Tool.h"
 
 namespace Path
-{
-
-    /** The representation of a single tool */
-    class PathExport Tool : public Base::Persistence
-    {
-    TYPESYSTEM_HEADER();
-
-    public:
-        enum ToolType {
-            UNDEFINED,
-            DRILL,
-            CENTERDRILL,
-            COUNTERSINK,
-            COUNTERBORE,
-            FLYCUTTER,
-            REAMER,
-            TAP,
-            ENDMILL,
-            SLOTCUTTER,
-            BALLENDMILL,
-            CHAMFERMILL,
-            CORNERROUND,
-            ENGRAVER };
-
-        enum ToolMaterial {
-            MATUNDEFINED,
-            HIGHSPEEDSTEEL,
-            HIGHCARBONTOOLSTEEL,
-            CASTALLOY,
-            CARBIDE,
-            CERAMICS,
-            DIAMOND,
-            SIALON };
-
-        //constructors
-        Tool();
-        Tool(const char* name,
-             ToolType type=Tool::UNDEFINED,
-             ToolMaterial material=Tool::MATUNDEFINED,
-             double diameter=10.0,
-             double lengthoffset=100,
-             double flatradius=0,
-             double cornerradius=0,
-             double cuttingedgeangle=0,
-             double cuttingedgeheight=0);
-        ~Tool();
-
-        // from base class
-        virtual unsigned int getMemSize (void) const;
-        virtual void Save (Base::Writer &/*writer*/) const;
-        virtual void Restore(Base::XMLReader &/*reader*/);
-
-        // attributes
-        std::string Name;
-        ToolType Type;
-        ToolMaterial Material;
-        double Diameter;
-        double LengthOffset;
-        double FlatRadius;
-        double CornerRadius;
-        double CuttingEdgeAngle;
-        double CuttingEdgeHeight;
-
-        static const std::vector<std::string> ToolTypes(void);
-        static const std::vector<std::string> ToolMaterials(void);
-        static const char* TypeName(ToolType typ);
-        static ToolType getToolType(std::string type);
-        static ToolMaterial getToolMaterial(std::string mat);
-        static const char* MaterialName(ToolMaterial mat);
-    };
-
-    /** The representation of a table of tools */
+{    /** The representation of a table of tools */
     class PathExport Tooltable : public Base::Persistence
     {
     TYPESYSTEM_HEADER();
@@ -129,6 +59,8 @@ namespace Path
 
         // attributes
         std::map<int,Tool*> Tools;
+        int Version;
+        std::string Name;
     };
 
 } //namespace Path

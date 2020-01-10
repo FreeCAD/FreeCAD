@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -79,7 +79,7 @@ FC_LOG_LEVEL_INIT("PropShape",true,true);
 
 using namespace Part;
 
-TYPESYSTEM_SOURCE(Part::PropertyPartShape , App::PropertyComplexGeoData);
+TYPESYSTEM_SOURCE(Part::PropertyPartShape , App::PropertyComplexGeoData)
 
 PropertyPartShape::PropertyPartShape()
 {
@@ -391,14 +391,14 @@ static void BRepTools_Write(const TopoDS_Shape& Sh, Standard_OStream& S) {
   SS.Write(S);
   SS.Write(Sh,S);
 }
-static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh,
-                                   const Standard_CString File)
+
+static Standard_Boolean  BRepTools_Write(const TopoDS_Shape& Sh, const Standard_CString File)
 {
-  ofstream os;
+  std::ofstream os;
 #if OCC_VERSION_HEX >= 0x060800
-  OSD_OpenStream(os, File, ios::out);
+  OSD_OpenStream(os, File, std::ios::out);
 #else
-  os.open(File, ios::out);
+  os.open(File, std::ios::out);
 #endif
   if (!os.rdbuf()->is_open()) return Standard_False;
 
@@ -651,7 +651,7 @@ void ShapeHistory::join(const ShapeHistory& newH)
 
 // -------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::PropertyShapeHistory , App::PropertyLists);
+TYPESYSTEM_SOURCE(Part::PropertyShapeHistory , App::PropertyLists)
 
 PropertyShapeHistory::PropertyShapeHistory()
 {
@@ -717,7 +717,7 @@ void PropertyShapeHistory::Paste(const Property &from)
 
 // -------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::PropertyFilletEdges , App::PropertyLists);
+TYPESYSTEM_SOURCE(Part::PropertyFilletEdges , App::PropertyLists)
 
 PropertyFilletEdges::PropertyFilletEdges()
 {

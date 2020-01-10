@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -705,6 +705,11 @@ Py::Boolean ConstraintPy::getDriving(void) const
 Py::Boolean ConstraintPy::getInVirtualSpace(void) const
 {
     return Py::Boolean(this->getConstraintPtr()->isInVirtualSpace);
+}
+
+Py::Boolean ConstraintPy::getIsActive(void) const
+{
+    return Py::Boolean(this->getConstraintPtr()->isActive);
 }
 
 PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const

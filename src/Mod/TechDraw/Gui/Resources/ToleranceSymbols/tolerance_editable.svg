@@ -2,6 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
+   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -94,12 +95,13 @@
          id="text5269"
          y="1041.7535"
          x="23.514435"
-         style="font-size:5.07499981px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:'Arial Narrow, Condensed'"
-         xml:space="preserve"><tspan
+         style="font-size:5.07499981px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:'Arial Narrow, Condensed'">
+	 <tspan
            style="font-size:5.07499981px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Narrow;-inkscape-font-specification:'Arial Narrow, Condensed'"
            y="1041.7535"
            x="23.514435"
            id="tspan5271"
+           xml:space="preserve"
            sodipodi:role="line">0.01</tspan></text>
     </g>
   </g>

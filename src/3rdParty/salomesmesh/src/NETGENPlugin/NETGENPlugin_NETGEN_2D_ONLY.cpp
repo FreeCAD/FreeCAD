@@ -62,9 +62,24 @@ namespace nglib {
 # define OCCGEOMETRY
 #endif
 
+// DLL_HEADER is re-defined in netgen headers
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmacro-redefined"
+#endif
+
+#ifdef NETGEN_PYTHON
+#undef NETGEN_PYTHON
+#endif
+
 #include <occgeom.hpp>
 #include <meshing.hpp>
 //#include <meshing/meshtype.hpp>
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
+
 namespace netgen {
 #if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);

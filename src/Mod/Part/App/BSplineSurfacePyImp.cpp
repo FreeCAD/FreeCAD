@@ -721,7 +721,7 @@ PyObject* BSplineSurfacePy::getPoles(PyObject *args)
             Py::List row;
             for (Standard_Integer j=p.LowerCol(); j<=p.UpperCol(); j++) {
                 const gp_Pnt& pole = p(i,j);
-                row.append(Py::Object(new Base::VectorPy(
+                row.append(Py::asObject(new Base::VectorPy(
                     Base::Vector3d(pole.X(),pole.Y(),pole.Z()))));
             }
             poles.append(row);
@@ -1405,7 +1405,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         Standard_Integer lv = col.size();
         TColgp_Array2OfPnt occpoles(1, lu, 1, lv);
         TColStd_Array2OfReal occweights(1, lu, 1, lv);
-        Standard_Boolean genweights = PyObject_Not(weights) ? Standard_True : Standard_False; //cache
+        Standard_Boolean genweights = (weights==Py_None) ? Standard_True : Standard_False; //cache
         Standard_Integer index1 = 0;
         Standard_Integer index2 = 0;
         for (Py::Sequence::iterator it1 = list.begin(); it1 != list.end(); ++it1) {
@@ -1445,8 +1445,8 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
         }
         number_of_uknots = PyObject_Length(umults);
         number_of_vknots = PyObject_Length(vmults);
-        if ((PyObject_IsTrue(uknots) && PyObject_Length(uknots) != number_of_uknots) ||
-                (PyObject_IsTrue(vknots) && PyObject_Length(vknots) != number_of_vknots)){
+        if (((uknots != Py_None) && PyObject_Length(uknots) != number_of_uknots) ||
+                ((vknots != Py_None) && PyObject_Length(vknots) != number_of_vknots)){
             Standard_Failure::Raise("number of knots and mults mismatch");
             return 0;
         }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -152,6 +152,12 @@ void ViewProviderOrigin::resetTemporaryVisibility() {
         pair.first->setVisible(pair.second);
     }
     tempVisMap.clear ();
+}
+
+double ViewProviderOrigin::defaultSize()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    return 0.25 * hGrp->GetFloat("NewDocumentCameraScale",100.0);
 }
 
 bool ViewProviderOrigin::isTemporaryVisibility() {

@@ -27,7 +27,7 @@
 #include "Document.h"
 #include "AutoTransaction.h"
 
-FC_LOG_LEVEL_INIT("App",true,true);
+FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace App;
 

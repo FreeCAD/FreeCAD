@@ -110,6 +110,7 @@ void DlgSettings3DViewImp::saveSettings()
     sliderIntensity->onSave();
     radioPerspective->onSave();
     radioOrthographic->onSave();
+    qspinNewDocScale->onSave();
 
     QVariant camera = comboNewDocView->itemData(comboNewDocView->currentIndex(), Qt::UserRole);
     hGrp->SetASCII("NewDocumentCameraOrientation", (const char*)camera.toByteArray());
@@ -140,6 +141,7 @@ void DlgSettings3DViewImp::loadSettings()
     sliderIntensity->onRestore();
     radioPerspective->onRestore();
     radioOrthographic->onRestore();
+    qspinNewDocScale->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
@@ -185,7 +187,7 @@ void DlgSettings3DViewImp::loadSettings()
     comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
     comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
     comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
-    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
+    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Trimetric");
     index = comboNewDocView->findData(QByteArray(camera.c_str()));
     if (index > -1) comboNewDocView->setCurrentIndex(index);
     if (camera == "Custom") {

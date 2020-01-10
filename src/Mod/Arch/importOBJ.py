@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -20,7 +19,8 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, os, sys
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh, MeshPart, os, sys
+# import numpy as np
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -59,64 +59,80 @@ def findVert(aVertex,aList):
                     return i
     return None
 
-def getIndices(shape,offset):
-    "returns a list with 2 lists: vertices and face indexes, offsetted with the given amount"
+def getIndices(obj,shape,offsetv,offsetvn):
+    "returns a list with 2 lists: vertices and face indexes, offset with the given amount"
     vlist = []
+    vnlist = []
     elist = []
     flist = []
     curves = None
+
     if isinstance(shape,Part.Shape):
         for e in shape.Edges:
             try:
                 if not isinstance(e.Curve,Part.LineSegment):
                     if not curves:
-                        curves = shape.tessellate(1)
+                        myshape = obj.Shape.copy(False)
+                        myshape.Placement=obj.getGlobalPlacement()
+                        mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                         FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                         break
             except: # unimplemented curve type
-                curves = shape.tessellate(1)
+                myshape = obj.Shape.copy(False)
+                myshape.Placement=obj.getGlobalPlacement()
+                mesh=MeshPart.meshFromShape(Shape=myshape, LinearDeflection=0.1, AngularDeflection=0.7, Relative=True)
                 FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating")+"\n")
                 break
     elif isinstance(shape,Mesh.Mesh):
         curves = shape.Topology
-    if curves:
-        for v in curves[0]:
-            vlist.append(" "+str(round(v.x,p))+" "+str(round(v.y,p))+" "+str(round(v.z,p)))
-        for f in curves[1]:
-            fi = ""
-            for vi in f:
-                fi += " " + str(vi + offset)
-            flist.append(fi)
+    if mesh:
+        for v in mesh.Topology[0]:
+              vlist.append(" "+str(round(v[0],p))+" "+str(round(v[1],p))+" "+str(round(v[2],p)))
+
+        for vn in mesh.Facets:
+              vnlist.append(" "+str(vn.Normal[0]) + " " + str(vn.Normal[1]) + " " + str(vn.Normal[2]))
+
+        for i, vn in enumerate(mesh.Topology[1]):
+              flist.append(" "+str(vn[0]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[1]+offsetv)+"//"+str(i+offsetvn)+" "+str(vn[2]+offsetv)+"//"+str(i+offsetvn)+" ")
     else:
-        for v in shape.Vertexes:
-            vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
-        if not shape.Faces:
-            for e in shape.Edges:
-                if DraftGeomUtils.geomType(e) == "Line":
-                    ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes) + offset)
-                    ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes) + offset)
-                    elist.append(ei)
-        for f in shape.Faces:
-            if len(f.Wires) > 1:
-                # if we have holes, we triangulate
-                tris = f.tessellate(1)
-                for fdata in tris[1]:
-                    fi = ""
-                    for vi in fdata:
-                        vdata = Part.Vertex(tris[0][vi])
-                        fi += " " + str(findVert(vdata,shape.Vertexes) + offset)
-                    flist.append(fi)
-            else:
+        if curves:
+            for v in curves[0]:
+                vlist.append(" "+str(round(v.x,p))+" "+str(round(v.y,p))+" "+str(round(v.z,p)))
+            for f in curves[1]:
                 fi = ""
-                for e in f.OuterWire.OrderedEdges:
-                    #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
-                    v = e.Vertexes[0]
-                    ind = findVert(v,shape.Vertexes)
-                    if ind == None:
-                        return None,None,None
-                    fi += " " + str(ind + offset)
+                for vi in f:
+                    fi += " " + str(vi + offsetv)
                 flist.append(fi)
-    return vlist,elist,flist
+        else:
+            for v in shape.Vertexes:
+                vlist.append(" "+str(round(v.X,p))+" "+str(round(v.Y,p))+" "+str(round(v.Z,p)))
+            if not shape.Faces:
+                for e in shape.Edges:
+                   if DraftGeomUtils.geomType(e) == "Line":
+                        ei = " " + str(findVert(e.Vertexes[0],shape.Vertexes) + offsetv)
+                        ei += " " + str(findVert(e.Vertexes[-1],shape.Vertexes) + offsetv)
+                        elist.append(ei)
+            for f in shape.Faces:
+                if len(f.Wires) > 1:
+                    # if we have holes, we triangulate
+                    tris = f.tessellate(1)
+                    for fdata in tris[1]:
+                        fi = ""
+                        for vi in fdata:
+                            vdata = Part.Vertex(tris[0][vi])
+                            fi += " " + str(findVert(vdata,shape.Vertexes) + offsetv)
+                        flist.append(fi)
+                else:
+                    fi = ""
+                    for e in f.OuterWire.OrderedEdges:
+                        #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
+                        v = e.Vertexes[0]
+                        ind = findVert(v,shape.Vertexes)
+                        if ind is None:
+                            return None,None,None
+                        fi += " " + str(ind + offsetv)
+                    flist.append(fi)
+    return vlist,vnlist,elist,flist
 
 
 def export(exportList,filename,colors=None):
@@ -133,7 +149,8 @@ def export(exportList,filename,colors=None):
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
     outfile.write("# http://www.freecadweb.org\n")
-    offset = 1
+    offsetv = 1
+    offsetvn = 1
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
     filenamemtl = filename[:-4] + ".mtl"
@@ -169,16 +186,17 @@ def export(exportList,filename,colors=None):
                 visible = True
             if visible:
                 if hires:
-                    vlist,elist,flist = getIndices(hires,offset)
+                    vlist,vnlist,elist,flist = getIndices(obj,hires,offsetv,offsetvn)
                 else:
                     if hasattr(obj,"Shape") and obj.Shape:
-                        vlist,elist,flist = getIndices(obj.Shape,offset)
+                        vlist,vnlist,elist,flist = getIndices(obj,obj.Shape,offsetv,offsetvn)
                     elif hasattr(obj,"Mesh") and obj.Mesh:
-                        vlist,elist,flist = getIndices(obj.Mesh,offset)
-                if vlist == None:
+                        vlist,vnlist, elist,flist = getIndices(obj,obj.Mesh,offsetv,offsetvn)
+                if vlist is None:
                     FreeCAD.Console.PrintError("Unable to export object "+obj.Label+". Skipping.\n")
                 else:
-                    offset += len(vlist)
+                    offsetv += len(vlist)
+                    offsetvn += len(vnlist)
                     outfile.write("o " + obj.Name + "\n")
 
                     # write material
@@ -210,6 +228,8 @@ def export(exportList,filename,colors=None):
                     # write geometry
                     for v in vlist:
                         outfile.write("v" + v + "\n")
+                    for vn in vnlist:
+                        outfile.write("vn" + vn + "\n")
                     for e in elist:
                         outfile.write("l" + e + "\n")
                     for f in flist:
@@ -227,7 +247,7 @@ def export(exportList,filename,colors=None):
                 if not mat[0] in done:
                     outfile.write("newmtl " + mat[0] + "\n")
                     outfile.write("Kd " + str(mat[1][0]) + " " + str(mat[1][1]) + " " + str(mat[1][2]) + "\n")
-                    outfile.write("d " + str(mat[2]) + "\n")
+                    outfile.write("Tr " + str(mat[2]/100) + "\n")
                     done.append(mat[0])
             else:
                 if not mat.Name in done:

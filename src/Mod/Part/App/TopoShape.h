@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,6 +42,7 @@ class BRepOffsetAPI_DraftAngle;
 class BRepPrimAPI_MakeHalfSpace; 
 class gp_Ax1;
 class gp_Ax2;
+class gp_Pln;
 class gp_Vec;
 class gp_Trsf;
 class gp_GTrsf;

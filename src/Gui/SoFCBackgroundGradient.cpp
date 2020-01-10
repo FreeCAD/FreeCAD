@@ -27,7 +27,7 @@
 
 using namespace Gui;
 
-SO_NODE_SOURCE(SoFCBackgroundGradient);
+SO_NODE_SOURCE(SoFCBackgroundGradient)
 
 void SoFCBackgroundGradient::finish()
 {

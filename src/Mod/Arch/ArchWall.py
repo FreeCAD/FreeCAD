@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -68,7 +66,7 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)
     if baseobj:
-        if baseobj.isDerivedFrom("Part::Feature") or baseobj.isDerivedFrom("Mesh::Feature"):
+        if hasattr(baseobj,'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
             obj.Base = baseobj
         else:
             FreeCAD.Console.PrintWarning(str(translate("Arch","Walls can only be based on Part or Mesh objects")))
@@ -95,6 +93,7 @@ def joinWalls(walls,delete=False):
     """joins the given list of walls into one sketch-based wall. If delete
     is True, merged wall objects are deleted"""
 
+    import Part
     if not walls:
         return None
     if not isinstance(walls,list):
@@ -116,7 +115,10 @@ def joinWalls(walls,delete=False):
         if w.Base:
             if not w.Base.Shape.Faces:
                 for e in w.Base.Shape.Edges:
-                    sk.addGeometry(e.Curve)
+                    l = e.Curve
+                    if isinstance(l,Part.Line):
+                        l = Part.LineSegment(e.Vertexes[0].Point,e.Vertexes[-1].Point)
+                    sk.addGeometry(l)
                     deleteList.append(w.Name)
     if delete:
         for n in deleteList:
@@ -245,7 +247,7 @@ class _CommandWall:
             if Draft.getType(obj) == "Wall":
                 if not obj in self.existing:
                     self.existing.append(obj)
-        if point == None:
+        if point is None:
             self.tracker.finalize()
             return
         self.points.append(point)
@@ -428,7 +430,7 @@ class _CommandWall:
         self.Width = d
         self.tracker.width(d)
         FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetFloat("WallWidth",d)
-        
+
 
     def setHeight(self,d):
 
@@ -517,21 +519,29 @@ class _Wall(ArchComponent.Component):
 
     "The Wall object"
 
-    def __init__(self,obj):
+    def __init__(self, obj):
 
-        ArchComponent.Component.__init__(self,obj)
+        ArchComponent.Component.__init__(self, obj)
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
-    def setProperties(self,obj):
+    def setProperties(self, obj):
 
         lp = obj.PropertiesList
         if not "Length" in lp:
             obj.addProperty("App::PropertyLength","Length","Wall",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Not used if this wall is based on an underlying object"))
         if not "Width" in lp:
             obj.addProperty("App::PropertyLength","Width","Wall",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face"))
+
+        # To be combined into Width when PropertyLengthList is available
+        if not "OverrideWidth" in lp:
+            obj.addProperty("App::PropertyFloatList","OverrideWidth","Wall",QT_TRANSLATE_NOOP("App::Property","This override Width attribute to set width of each segment of wall (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)"))			# see DraftGeomUtils.offsetwire()
+
         if not "Height" in lp:
             obj.addProperty("App::PropertyLength","Height","Wall",QT_TRANSLATE_NOOP("App::Property","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
+        if not "Area" in lp:
+            obj.addProperty("App::PropertyArea","Area","Wall",QT_TRANSLATE_NOOP("App::Property","The area of this wall as a simple Height * Length calculation"))
+            obj.setEditorMode("Area",1)
         if not "Align" in lp:
             obj.addProperty("App::PropertyEnumeration","Align","Wall",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable"))
             obj.Align = ['Left','Right','Center']
@@ -541,6 +551,12 @@ class _Wall(ArchComponent.Component):
             obj.addProperty("App::PropertyInteger","Face","Wall",QT_TRANSLATE_NOOP("App::Property","The face number of the base object used to build this wall"))
         if not "Offset" in lp:
             obj.addProperty("App::PropertyDistance","Offset","Wall",QT_TRANSLATE_NOOP("App::Property","The offset between this wall and its baseline (only for left and right alignments)"))
+
+        # See getExtrusionData(), removeSplitters are no longer used
+        #if not "Refine" in lp:
+        #    obj.addProperty("App::PropertyEnumeration","Refine","Wall",QT_TRANSLATE_NOOP("App::Property","Select whether or not and the method to remove splitter of the Wall. Currently Draft removeSplitter and Part removeSplitter available but may not work on complex sketch."))
+        #    obj.Refine = ['No','DraftRemoveSplitter','PartRemoveSplitter']
+        # TODO - To implement in Arch Component ?
 
         if not "MakeBlocks" in lp:
             obj.addProperty("App::PropertyBool","MakeBlocks","Blocks",QT_TRANSLATE_NOOP("App::Property","Enable this to make the wall generate blocks"))
@@ -583,16 +599,33 @@ class _Wall(ArchComponent.Component):
             extv = extdata[2].Rotation.multVec(extdata[1])
             if isinstance(bplates,list):
                 shps = []
+                # Test : if base is Sketch, then fuse all solid; otherwise, makeCompound
+                sketchBaseToFuse = obj.Base.getLinkedObject().isDerivedFrom("Sketcher::SketchObject")
                 for b in bplates:
                     b.Placement = extdata[2].multiply(b.Placement)
                     b = b.extrude(extv)
-                    shps.append(b)
-                base = Part.makeCompound(shps)
+
+                    # See getExtrusionData() - not fusing baseplates there - fuse solids here
+                    # Remarks - If solids are fused, but exportIFC.py use underlying baseplates w/o fuse, the result in ifc look slightly different from in FC.
+
+                    if sketchBaseToFuse:
+                        if shps:
+                            shps = shps.fuse(b) #shps.fuse(b)
+                        else:
+                            shps=b
+                    else:
+                        shps.append(b)
+                    # TODO - To let user to select whether to fuse (slower) or to do a compound (faster) only ?
+
+                if sketchBaseToFuse:
+                    base = shps
+                else:
+                    base = Part.makeCompound(shps)
             else:
                 bplates.Placement = extdata[2].multiply(bplates.Placement)
                 base = bplates.extrude(extv)
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.isValid():
@@ -725,7 +758,7 @@ class _Wall(ArchComponent.Component):
 
         # set the length property
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape.Edges:
                     if not obj.Base.Shape.Faces:
                         if hasattr(obj.Base.Shape,"Length"):
@@ -734,16 +767,17 @@ class _Wall(ArchComponent.Component):
                                 obj.Length = l
                                 self.oldLength = None # delete the stored value to prevent triggering base change below
 
-    def onBeforeChange(self,obj,prop):
+        # set the Area property
+        obj.Area = obj.Length.Value * obj.Height.Value
 
+    def onBeforeChange(self,obj,prop):
         if prop == "Length":
             self.oldLength = obj.Length.Value
 
-    def onChanged(self,obj,prop):
-
+    def onChanged(self, obj, prop):
         if prop == "Length":
             if obj.Base and obj.Length.Value and hasattr(self,"oldLength") and (self.oldLength != None) and (self.oldLength != obj.Length.Value):
-                if obj.Base.isDerivedFrom("Part::Feature"):
+                if hasattr(obj.Base,'Shape'):
                     if len(obj.Base.Shape.Edges) == 1:
                         import DraftGeomUtils
                         e = obj.Base.Shape.Edges[0]
@@ -757,7 +791,10 @@ class _Wall(ArchComponent.Component):
                                     #print "modifying p2"
                                     obj.Base.End = p2
                                 elif Draft.getType(obj.Base) == "Sketch":
-                                    obj.Base.movePoint(0,2,p2,0)
+                                    try:
+                                        obj.Base.movePoint(0,2,p2,0)
+                                    except:
+                                        print("Debug: The base sketch of this wall could not be changed, because the sketch has not been edited yet in this session (this is a bug in FreeCAD). Try entering and exiting edit mode in this sketch first, and then changing the wall length should work.")
                                 else:
                                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to modify the base object of this wall")+"\n")
         self.hideSubobjects(obj,prop)
@@ -783,13 +820,24 @@ class _Wall(ArchComponent.Component):
                 # multifuses not considered here
                 return data
         length  = obj.Length.Value
-        width = obj.Width.Value
+
+        # TODO currently layers were not supported when len(basewires) > 0
+        width = 0
+        widths = obj.OverrideWidth
+
+        if obj.OverrideWidth:
+            if obj.OverrideWidth[0]:
+                width = obj.OverrideWidth[0]
+        if not width:
+            if obj.Width:
+                width = obj.Width.Value
+            else:
+                print("Width or OverrideWidth[0] should not be 0")
+                return
+
         height = obj.Height.Value
         if not height:
-            for p in obj.InList:
-                if Draft.getType(p) in ["Floor","BuildingPart"]:
-                    if p.Height.Value:
-                        height = p.Height.Value
+            height = self.getParentHeight(obj)
         if not height:
             return None
         if obj.Normal == Vector(0,0,0):
@@ -804,10 +852,12 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj,"Material"):
             if obj.Material:
                 if hasattr(obj.Material,"Materials"):
+                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
+                    # multimaterials
                     varwidth = 0
-                    restwidth = width - sum(obj.Material.Thicknesses)
+                    restwidth = width - sum(thicknesses)
                     if restwidth > 0:
-                        varwidth = [t for t in obj.Material.Thicknesses if t == 0]
+                        varwidth = [t for t in thicknesses if t == 0]
                         if varwidth:
                             varwidth = restwidth/len(varwidth)
                     for t in obj.Material.Thicknesses:
@@ -816,7 +866,7 @@ class _Wall(ArchComponent.Component):
                         elif varwidth:
                             layers.append(varwidth)
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
                         return None
@@ -852,12 +902,16 @@ class _Wall(ArchComponent.Component):
                             for c in Part.sortEdges(cluster):
                                 self.basewires.append(Part.Wire(c))
 
-                    if self.basewires and width:
+                    if self.basewires: # and width:				# width already tested earlier...
+
                         if (len(self.basewires) == 1) and layers:
                             self.basewires = [self.basewires[0] for l in layers]
+
                         layeroffset = 0
                         baseface = None
                         for i,wire in enumerate(self.basewires):
+
+                            edgeNum = len(wire.Edges)
                             e = wire.Edges[0]
                             if isinstance(e.Curve,Part.Circle):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
@@ -870,14 +924,16 @@ class _Wall(ArchComponent.Component):
                                 off = obj.Offset.Value
                                 if layers:
                                     off = off+layeroffset
-                                    dvec.multiply(layers[i])
-                                    layeroffset += layers[i]
+                                    dvec.multiply(abs(layers[i]))
+                                    layeroffset += abs(layers[i])
                                 else:
                                     dvec.multiply(width)
                                 if off:
                                     dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+
+                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, widths)
+
                                 w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                 sh = DraftGeomUtils.bind(w1,w2)
                             elif obj.Align == "Right":
@@ -885,14 +941,16 @@ class _Wall(ArchComponent.Component):
                                 off = obj.Offset.Value
                                 if layers:
                                     off = off+layeroffset
-                                    dvec.multiply(layers[i])
-                                    layeroffset += layers[i]
+                                    dvec.multiply(abs(layers[i]))
+                                    layeroffset += abs(layers[i])
                                 else:
                                     dvec.multiply(width)
                                 if off:
                                     dvec2 = DraftVecUtils.scaleTo(dvec,off)
                                     wire = DraftGeomUtils.offsetWire(wire,dvec2)
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec)
+
+                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, widths)
+
                                 w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
                                 sh = DraftGeomUtils.bind(w1,w2)
                             elif obj.Align == "Center":
@@ -900,50 +958,77 @@ class _Wall(ArchComponent.Component):
                                     off = width/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
                                     w1 = DraftGeomUtils.offsetWire(wire,d1)
-                                    layeroffset += layers[i]
+                                    layeroffset += abs(layers[i])
                                     off = width/2-layeroffset
                                     d1 = Vector(dvec).multiply(off)
                                     w2 = DraftGeomUtils.offsetWire(wire,d1)
                                 else:
-                                    dvec.multiply(width/2)
-                                    w1 = DraftGeomUtils.offsetWire(wire,dvec)
+                                    dvec.multiply(width/2)			## TODO width Value should be of no use (width/2), width Direction remains 'in use'
+
+                                    overrideWidthHalfen = [i/2 for i in widths]
+
+                                    w1 = DraftGeomUtils.offsetWire(wire,dvec,False, False, overrideWidthHalfen)
                                     dvec = dvec.negative()
-                                    w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                                    w2 = DraftGeomUtils.offsetWire(wire,dvec,False, False, overrideWidthHalfen)
+
                                 sh = DraftGeomUtils.bind(w1,w2)
+
+                            del widths[0:edgeNum]
+
                             if sh:
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
                                 f = Part.Face(sh)
                                 if baseface:
-                                    if layers:
-                                        baseface.append(f)
-                                    else:
-                                        baseface = baseface.fuse(f)
-                                        # baseface = baseface.removeSplitter()
-                                        s = DraftGeomUtils.removeSplitter(baseface)
-                                        if s:
-                                            baseface = s
+
+                                    # To allow exportIFC.py to work properly on sketch, which use only 1st face / wire, do not fuse baseface here
+                                    # So for a sketch with multiple wires, each returns individual face (rather than fusing together) for exportIFC.py to work properly
+                                    # "ArchWall - Based on Sketch Issues" - https://forum.freecadweb.org/viewtopic.php?f=39&t=31235
+                                    #
+                                    baseface.append(f)
+                                    # The above make Refine methods below (in else) useless, regardless removeSpitters yet to be improved for cases do not work well
+
+                                    '''  Whether layers or not, all baseface.append(f) '''
+
+                                    #if layers:
+                                    #    if layers[i] >= 0:
+                                    #        baseface.append(f)
+                                    #else:
+                                        #baseface = baseface.fuse(f)
+                                        #if obj.Refine == 'DraftRemoveSplitter':
+                                        #    s = DraftGeomUtils.removeSplitter(baseface)
+                                        #    if s:
+                                        #        baseface = s
+                                        #elif obj.Refine == 'PartRemoveSplitter':
+                                        #    baseface = baseface.removeSplitter()
                                 else:
-                                    if layers:
-                                        baseface = [f]
-                                    else:
-                                        baseface = f
+                                    baseface = [f]
+
+                                    '''  Whether layers or not, all baseface = [f] '''
+
+                                    #if layers:
+                                    #    if layers[i] >= 0:
+                                    #        baseface = [f]
+                                    #else:
+                                        #baseface = f
+
                         if baseface:
                             base,placement = self.rebase(baseface)
         else:
             if layers:
-                totalwidth = sum(layers)
+                totalwidth = sum([abs(l) for l in layers])
                 offset = 0
                 base = []
                 for l in layers:
-                    l2 = length/2 or 0.5
-                    w1 = -totalwidth/2 + offset
-                    w2 = w1 + l
-                    v1 = Vector(-l2,w1,0)
-                    v2 = Vector(l2,w1,0)
-                    v3 = Vector(l2,w2,0)
-                    v4 = Vector(-l2,w2,0)
-                    base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
-                    offset += l
+                    if l > 0:
+                        l2 = length/2 or 0.5
+                        w1 = -totalwidth/2 + offset
+                        w2 = w1 + l
+                        v1 = Vector(-l2,w1,0)
+                        v2 = Vector(l2,w1,0)
+                        v3 = Vector(l2,w2,0)
+                        v4 = Vector(-l2,w2,0)
+                        base.append(Part.Face(Part.makePolygon([v1,v2,v3,v4,v1])))
+                    offset += abs(l)
             else:
                 l2 = length/2 or 0.5
                 w2 = width/2 or 0.5
@@ -984,7 +1069,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         self.Object = vobj.Object
         from pivy import coin
         tex = coin.SoTexture2()
-        tex.image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+        image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+        if not image is None:
+            tex.image = image
         texcoords = coin.SoTextureCoordinatePlane()
         s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("patternScale",0.01)
         texcoords.directionS.setValue(s,0,0)
@@ -1007,9 +1094,10 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             if hasattr(obj,"Material"):
                 if obj.Material and obj.Shape:
                     if hasattr(obj.Material,"Materials"):
-                        if len(obj.Material.Materials) == len(obj.Shape.Solids):
+                        activematerials = [obj.Material.Materials[i] for i in range(len(obj.Material.Materials)) if obj.Material.Thicknesses[i] >= 0]
+                        if len(activematerials) == len(obj.Shape.Solids):
                             cols = []
-                            for i,mat in enumerate(obj.Material.Materials):
+                            for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
                                 c = (c[0],c[1],c[2],obj.ViewObject.Transparency/100.0)
                                 if 'DiffuseColor' in mat.Material:

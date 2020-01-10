@@ -78,7 +78,7 @@ class Proxy(solverbase.Proxy):
 
     def edit(self, directory):
         pattern = os.path.join(directory, "*.txt")
-        print(pattern)
+        FreeCAD.Console.PrintMessage("{}\n".format(pattern))
         f = glob.glob(pattern)[0]
         FemGui.open(f)
 

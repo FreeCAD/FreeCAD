@@ -95,7 +95,7 @@ QByteArray PrefWidget::paramGrpPath() const
 }
 
 /** 
- * This method is called if one ore more values in the parameter settings are changed 
+ * This method is called if one or more values in the parameter settings are changed 
  * where getParamGrp() points to. 
  * Note: This method is called for each parameter inside the parameter group. So
  * you have to filter out the appropriate parameter with the name \a sReason.
@@ -135,6 +135,22 @@ void PrefWidget::onRestore()
   restorePreferences();
 }
 
+void PrefWidget::failedToSave(const QString& name) const
+{
+    QByteArray objname = name.toLatin1();
+    if (objname.isEmpty())
+        objname = "Undefined";
+    Console().Warning("Cannot save %s (%s)\n", typeid(*this).name(), objname.constData());
+}
+
+void PrefWidget::failedToRestore(const QString& name) const
+{
+    QByteArray objname = name.toLatin1();
+    if (objname.isEmpty())
+        objname = "Undefined";
+    Console().Warning("Cannot restore %s (%s)\n", typeid(*this).name(), objname.constData());
+}
+
 // --------------------------------------------------------------------
 
 PrefSpinBox::PrefSpinBox ( QWidget * parent )
@@ -150,7 +166,7 @@ void PrefSpinBox::restorePreferences()
 {
   if ( getWindowParameter().isNull() )
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -162,7 +178,7 @@ void PrefSpinBox::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -184,7 +200,7 @@ void PrefDoubleSpinBox::restorePreferences()
 {
   if ( getWindowParameter().isNull() )
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -196,7 +212,7 @@ void PrefDoubleSpinBox::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -218,7 +234,7 @@ void PrefLineEdit::restorePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -231,7 +247,7 @@ void PrefLineEdit::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -253,7 +269,7 @@ void PrefFileChooser::restorePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -265,7 +281,7 @@ void PrefFileChooser::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -287,7 +303,7 @@ void PrefComboBox::restorePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -299,7 +315,7 @@ void PrefComboBox::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -321,7 +337,7 @@ void PrefCheckBox::restorePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -333,7 +349,7 @@ void PrefCheckBox::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -355,7 +371,7 @@ void PrefRadioButton::restorePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -367,7 +383,7 @@ void PrefRadioButton::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -389,7 +405,7 @@ void PrefSlider::restorePreferences()
 {
   if ( getWindowParameter().isNull() )
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -401,7 +417,7 @@ void PrefSlider::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -423,7 +439,7 @@ void PrefColorButton::restorePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -445,7 +461,7 @@ void PrefColorButton::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 
@@ -470,7 +486,7 @@ PrefUnitSpinBox::~PrefUnitSpinBox()
 void PrefUnitSpinBox::restorePreferences()
 {
     if (getWindowParameter().isNull()) {
-        Console().Warning("Cannot restore!\n");
+        failedToRestore(objectName());
         return;
     }
 
@@ -481,7 +497,7 @@ void PrefUnitSpinBox::restorePreferences()
 void PrefUnitSpinBox::savePreferences()
 {
     if (getWindowParameter().isNull()) {
-        Console().Warning("Cannot save!\n");
+        failedToSave(objectName());
         return;
     }
 
@@ -689,7 +705,7 @@ void PrefFontBox::restorePreferences()
 {
   if ( getWindowParameter().isNull() )
   {
-    Console().Warning("Cannot restore!\n");
+    failedToRestore(objectName());
     return;
   }
 
@@ -706,7 +722,7 @@ void PrefFontBox::savePreferences()
 {
   if (getWindowParameter().isNull())
   {
-    Console().Warning("Cannot save!\n");
+    failedToSave(objectName());
     return;
   }
 

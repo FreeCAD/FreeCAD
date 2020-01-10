@@ -452,7 +452,7 @@
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
       <source>Insert rows</source>
-      <translation>Reihen einfügen</translation>
+      <translation>Zeilen einfügen</translation>
     </message>
     <message>
       <source>Remove rows</source>

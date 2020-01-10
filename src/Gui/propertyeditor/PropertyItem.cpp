@@ -38,6 +38,7 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -394,8 +395,33 @@ void PropertyItem::setValue(const QVariant& /*value*/)
 
 QString PropertyItem::pythonIdentifier(const App::Property* prop) const
 {
-    if(prop)
-        return QString::fromLatin1(prop->getFullName(true).c_str());
+    App::PropertyContainer* parent = prop->getContainer();
+    QString propPrefix = QString::fromLatin1(parent->getPropertyPrefix());
+    if (parent->getTypeId() == App::Document::getClassTypeId()) {
+        App::Document* doc = static_cast<App::Document*>(parent);
+        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
+        QString propName = QString::fromLatin1(prop->getName());
+        return QString::fromLatin1("FreeCAD.getDocument(\"%1\").%3%2").arg(docName).arg(propName).arg(propPrefix);
+    }
+    if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        App::DocumentObject* obj = static_cast<App::DocumentObject*>(parent);
+        App::Document* doc = obj->getDocument();
+        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
+        QString objName = QString::fromLatin1(obj->getNameInDocument());
+        QString propName = QString::fromLatin1(prop->getName());
+        return QString::fromLatin1("FreeCAD.getDocument(\"%1\").getObject(\"%2\").%4%3")
+            .arg(docName,objName,propName,propPrefix);
+    }
+    auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(parent);
+    if (vp) {
+        App::DocumentObject* obj = vp->getObject();
+        App::Document* doc = obj->getDocument();
+        QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
+        QString objName = QString::fromLatin1(obj->getNameInDocument());
+        QString propName = QString::fromLatin1(prop->getName());
+        return QString::fromLatin1("FreeCADGui.getDocument(\"%1\").getObject(\"%2\").%4%3")
+            .arg(docName,objName,propName,propPrefix);
+    }
     return QString();
 }
 
@@ -472,7 +498,9 @@ void PropertyItem::setPropertyName(QString name, QString realName)
         display += name[i];
     }
 
-    QString str = QApplication::translate("App::Property", display.toLatin1());
+    propName = display;
+
+    QString str = QApplication::translate("App::Property", propName.toUtf8());
     displayText = str;
 }
 
@@ -532,13 +560,15 @@ QVariant PropertyItem::data(int column, int role) const
 {
     // property name
     if (column == 0) {
-        if (role == Qt::BackgroundRole) {
+        if (role == Qt::BackgroundRole || role == Qt::TextColorRole) {
             if(PropertyView::showAll()
                 && propertyItems.size() == 1
                 && propertyItems.front()->testStatus(App::Property::PropDynamic)
                 && !propertyItems.front()->testStatus(App::Property::LockDynamic))
             {
-                return QBrush(QColor(0xFF,0xFF,0x99));
+                return role==Qt::BackgroundRole
+                    ? QVariant::fromValue(QColor(0xFF,0xFF,0x99)) 
+                    : QVariant::fromValue(QColor(0,0,0));
             }
             return QVariant();
         }
@@ -595,7 +625,7 @@ QVariant PropertyItem::data(int column, int role) const
             return toolTip(propertyItems[0]);
         else if( role == Qt::TextColorRole) {
             if(hasExpression())
-                return QVariant::fromValue(QColor(0,0,255.0));
+                return QVariant::fromValue(QApplication::palette().color(QPalette::Link));
             return QVariant();
         } else
             return QVariant();
@@ -1270,6 +1300,40 @@ QVariant PropertyBoolItem::editorData(QWidget *editor) const
 
 // ---------------------------------------------------------------
 
+namespace Gui { namespace PropertyEditor {
+class VectorLineEdit : public Gui::ExpLineEdit
+{
+    int decimals;
+public:
+    VectorLineEdit (int decimals, QWidget * parent=0, bool expressionOnly=false)
+        : Gui::ExpLineEdit(parent, expressionOnly)
+        , decimals(decimals)
+    {
+    }
+
+    bool apply(const std::string &propName) {
+        if (!ExpressionBinding::apply(propName)) {
+            QVariant data = property("coords");
+            if (data.canConvert<Base::Vector3d>()) {
+                const Base::Vector3d& value = data.value<Base::Vector3d>();
+
+                QString str = QString::fromLatin1("(%1, %2, %3)")
+                                .arg(value.x,0,'f',decimals)
+                                .arg(value.y,0,'f',decimals)
+                                .arg(value.z,0,'f',decimals);
+
+                Gui::Command::doCommand(Gui::Command::Doc, "%s = %s", propName.c_str(), str.toLatin1().constData());
+                return true;
+            }
+        }
+
+        return false;
+    }
+};
+}}
+
+// ---------------------------------------------------------------
+
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorItem)
 
 PropertyVectorItem::PropertyVectorItem()
@@ -1295,6 +1359,8 @@ QVariant PropertyVectorItem::toString(const QVariant& prop) const
         .arg(QLocale::system().toString(value.x, 'f', 2),
              QLocale::system().toString(value.y, 'f', 2),
              QLocale::system().toString(value.z, 'f', 2));
+    if (hasExpression())
+        data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     return QVariant(data);
 }
 
@@ -1320,9 +1386,15 @@ void PropertyVectorItem::setValue(const QVariant& value)
 
 QWidget* PropertyVectorItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
 {
-    QLineEdit *le = new QLineEdit(parent);
+    VectorLineEdit *le = new VectorLineEdit(decimals(), parent);
     le->setFrame(false);
     le->setReadOnly(true);
+
+    if (isBound()) {
+        le->bind(getPath());
+        le->setAutoApply(autoApply());
+    }
+
     return le;
 }
 
@@ -1334,6 +1406,7 @@ void PropertyVectorItem::setEditorData(QWidget *editor, const QVariant& data) co
         .arg(QLocale::system().toString(value.x, 'f', 2),
              QLocale::system().toString(value.y, 'f', 2),
              QLocale::system().toString(value.z, 'f', 2));
+    le->setProperty("coords", data);
     le->setText(text);
 }
 
@@ -1407,6 +1480,8 @@ QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
            Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
            Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromLatin1("  ") +
            Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromLatin1("]");
+    if (hasExpression())
+        data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     return QVariant(data);
 }
 
@@ -1438,14 +1513,21 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
 void PropertyVectorDistanceItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     QLineEdit* le = qobject_cast<QLineEdit*>(editor);
+    le->setProperty("coords", data);
     le->setText(toString(data).toString());
 }
 
 QWidget* PropertyVectorDistanceItem::createEditor(QWidget* parent, const QObject* /*receiver*/, const char* /*method*/) const
 {
-    QLineEdit *le = new QLineEdit(parent);
+    VectorLineEdit *le = new VectorLineEdit(decimals(), parent);
     le->setFrame(false);
     le->setReadOnly(true);
+
+    if (isBound()) {
+        le->bind(getPath());
+        le->setAutoApply(autoApply());
+    }
+
     return le;
 }
 
@@ -2323,7 +2405,7 @@ QVariant PropertyStringListItem::value(const App::Property* prop) const
     QStringList list;
     const std::vector<std::string>& value = ((App::PropertyStringList*)prop)->getValues();
     for ( std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt ) {
-        list << QString::fromUtf8(jt->c_str());
+        list << QString::fromUtf8(Base::Tools::escapedUnicodeToUtf8(*jt).c_str());
     }
 
     return QVariant(list);
@@ -2342,6 +2424,7 @@ void PropertyStringListItem::setValue(const QVariant& value)
         text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
         std::string pystr = Base::Tools::escapedUnicodeFromUtf8(text.toUtf8());
+        pystr = Base::Interpreter().strToPython(pystr.c_str());
         str << "u\"" << pystr.c_str() << "\", ";
     }
     str << "]";
@@ -3402,7 +3485,13 @@ QWidget* PropertyFileItem::createEditor(QWidget* parent, const QObject* receiver
 
 void PropertyFileItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
+    const App::Property* prop = getFirstProperty();
+    const App::PropertyFile* propFile = static_cast<const App::PropertyFile*>(prop);
+    std::string filter = propFile->getFilter();
     Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
+    if (!filter.empty()) {
+        fc->setFilter(Base::Tools::fromStdString(filter));
+    }
     fc->setFileName(data.toString());
 }
 
@@ -3622,10 +3711,19 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
 }
 
 QVariant PropertyLinkItem::data(int column, int role) const {
-    if(propertyItems.size() && column == 1 && role == Qt::TextColorRole) {
+    if(propertyItems.size() && column == 1 
+            && (role == Qt::TextColorRole || role == Qt::ToolTipRole))
+    {
         auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
-        if(xlink && xlink->checkRestore()>1)
-            return QVariant::fromValue(QColor(0xff,0,0));
+        if(xlink) {
+            if(role==Qt::TextColorRole && xlink->checkRestore()>1)
+                return QVariant::fromValue(QColor(0xff,0,0));
+            else if(role == Qt::ToolTipRole) {
+                const char *filePath = xlink->getFilePath();
+                if(filePath && filePath[0])
+                    return QVariant::fromValue(QString::fromUtf8(filePath));
+            }
+        }
     }
     return PropertyItem::data(column,role);
 }

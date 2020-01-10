@@ -1,6 +1,6 @@
 /***************************************************************************
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,6 +39,7 @@
 #include <Base/FileInfo.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 
@@ -49,6 +50,7 @@
 
 #include <QDebug>
 
+#include "DrawUtil.h"
 #include "DrawPage.h"
 #include "DrawSVGTemplate.h"
 
@@ -74,6 +76,9 @@ DrawSVGTemplate::DrawSVGTemplate()
     Height.setStatus(App::Property::ReadOnly,true);
     Width.setStatus(App::Property::ReadOnly,true);
     Orientation.setStatus(App::Property::ReadOnly,true);
+
+    std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
+    Template.setFilter(svgFilter);
 }
 
 DrawSVGTemplate::~DrawSVGTemplate()
@@ -129,112 +134,125 @@ void DrawSVGTemplate::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
 {
-    std::string templateFilename = Template.getValue();
-    if (templateFilename.empty())
-        return App::DocumentObject::StdReturn;
+	std::string templateFilename = Template.getValue();
+	if (templateFilename.empty())
+		return App::DocumentObject::StdReturn;
 
-    Base::FileInfo fi(templateFilename);
-    if (!fi.isReadable()) {
-        // non-empty template value, but can't read file
-        // if there is a old absolute template file set use a redirect
-        fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
-        // try the redirect
-        if (!fi.isReadable()) {
-            Base::Console().Log("DrawPage::execute() not able to open %s!\n", Template.getValue());
-            std::string error = std::string("Cannot open file ") + Template.getValue();
-            return new App::DocumentObjectExecReturn(error);
-        }
-    }
+	Base::FileInfo fi(templateFilename);
+	if (!fi.isReadable()) {
+		// non-empty template value, but can't read file
+		// if there is a old absolute template file set use a redirect
+		fi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
+		// try the redirect
+		if (!fi.isReadable()) {
+			Base::Console().Log("DrawSVGTemplate::execute() not able to open %s!\n", Template.getValue());
+			std::string error = std::string("Cannot open file ") + Template.getValue();
+			return new App::DocumentObjectExecReturn(error);
+		}
+	}
 
-    if (std::string(PageResult.getValue()).empty())                    //first time through?
-        PageResult.setValue(fi.filePath().c_str());
+	if (std::string(PageResult.getValue()).empty())                    //first time through?
+		PageResult.setValue(fi.filePath().c_str());
 
-    QFile templateFile(QString::fromUtf8(fi.filePath().c_str()));
-    if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().Log("DrawPage::execute() can't read template %s!\n", Template.getValue());
-        std::string error = std::string("Cannot read file ") + Template.getValue();
-        return new App::DocumentObjectExecReturn(error);
-    }
+	std::string templateFileSpec = fi.filePath();
+	QString qSpec = Base::Tools::fromStdString(templateFileSpec);
+	std::string documentImage;
+	QString qDocImage;
 
-    QDomDocument templateDocument;
-    if (!templateDocument.setContent(&templateFile)) {
-        Base::Console().Message("DrawPage::execute() - failed to parse file: %s\n",
-                                Template.getValue());
-        std::string error = std::string("Cannot parse file ") + Template.getValue();
-        return new App::DocumentObjectExecReturn(error);
-    }
+	qDocImage = processTemplate(qSpec);
 
-    QXmlQuery query(QXmlQuery::XQuery10);
-    QDomNodeModel model(query.namePool(), templateDocument);
-    query.setFocus(QXmlItem(model.fromDomNode(templateDocument.documentElement())));
+	if (!qDocImage.isEmpty()) {
+		// make a temp file for FileIncluded Property
+		string tempName = PageResult.getExchangeTempFile();
+		ofstream outfinal(tempName.c_str());
+		std::string result = Base::Tools::toStdString(qDocImage);
+		outfinal << result;
+		outfinal.close();
+		PageResult.setValue(tempName.c_str());
+	}
+	else {
+		Base::Console().Error("QSVGT::execute - failed to process Template\n");
+	}
 
-    // XPath query to select all <tspan> nodes whose <text> parent
-    // has "freecad:editable" attribute
-    query.setQuery(QString::fromUtf8(
-        "declare default element namespace \"" SVG_NS_URI "\"; "        
-        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-        "//text[@freecad:editable]/tspan"));
+	return TechDraw::DrawTemplate::execute();
+}
 
-    QXmlResultItems queryResult;
-    query.evaluateTo(&queryResult);
+QString DrawSVGTemplate::processTemplate(QString fileSpec)
+{
+	QFile templateFile(fileSpec);
+	if (!templateFile.open(QIODevice::ReadOnly)) {
+		Base::Console().Log("DrawSVGTemplate::execute() can't read template %s!\n", Template.getValue());
+		std::string error = std::string("Cannot read file ") + Template.getValue();
+		return QString();
+	}
 
-    std::map<std::string, std::string> substitutions = EditableTexts.getValues();
-    while (!queryResult.next().isNull())
-    {
-        QDomElement tspan = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+	QDomDocument templateDocument;
+	if (!templateDocument.setContent(&templateFile)) {
+		Base::Console().Message("DrawSVGTemplate::execute() - failed to parse file: %s\n",
+			Template.getValue());
+		std::string error = std::string("Cannot parse file ") + Template.getValue();
+		return QString();
+	}
 
-        // Replace the editable text spans with new nodes holding actual values
-        QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
-        std::map<std::string, std::string>::iterator item =
-            substitutions.find(std::string(editableName.toUtf8().constData()));
-        if (item != substitutions.end()) {
-            // Keep all spaces in the text node
-            tspan.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
+	QXmlQuery query(QXmlQuery::XQuery10);
+	QDomNodeModel model(query.namePool(), templateDocument);
+	query.setFocus(QXmlItem(model.fromDomNode(templateDocument.documentElement())));
 
-            // Remove all child nodes and append text node with editable replacement as the only descendant
-            while (!tspan.lastChild().isNull()) {
-                tspan.removeChild(tspan.lastChild());
-            }
-            tspan.appendChild(templateDocument.createTextNode(QString::fromUtf8(item->second.c_str())));
-        }
-    }
+	// XPath query to select all <tspan> nodes whose <text> parent
+	// has "freecad:editable" attribute
+	query.setQuery(QString::fromUtf8(
+		"declare default element namespace \"" SVG_NS_URI "\"; "
+		"declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
+		"//text[@freecad:editable]/tspan"));
 
-    string pageResultFilename = PageResult.getExchangeTempFile();
-    QFile pageResult(QString::fromUtf8(pageResultFilename.c_str()));
-    if (pageResult.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QTextStream stream(&pageResult);
-        stream << templateDocument.toString();
-        pageResult.close();
-        PageResult.setValue(pageResultFilename.c_str());
-    }
-    else {
-        Base::Console().Message("DrawPage::execute() - failed to open file for writing: %s\n",
-                                pageResultFilename.c_str());
-    }
+	QXmlResultItems queryResult;
+	query.evaluateTo(&queryResult);
 
-    // Calculate the dimensions of the page and store for retrieval
-    // Obtain the size of the SVG document by reading the document attributes
-    QDomElement docElement = templateDocument.documentElement();
-    Base::Quantity quantity;
+	std::map<std::string, std::string> substitutions = EditableTexts.getValues();
+	while (!queryResult.next().isNull())
+	{
+		QDomElement tspan = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
 
-    // Obtain the width
-    QString str = docElement.attribute(QString::fromLatin1("width"));
-    quantity = Base::Quantity::parse(str);
-    quantity.setUnit(Base::Unit::Length);
+		// Replace the editable text spans with new nodes holding actual values
+		QString editableName = tspan.parentNode().toElement().attribute(QString::fromUtf8("freecad:editable"));
+		std::map<std::string, std::string>::iterator item =
+			substitutions.find(std::string(editableName.toUtf8().constData()));
+		if (item != substitutions.end()) {
+			// Keep all spaces in the text node
+			tspan.setAttribute(QString::fromUtf8("xml:space"), QString::fromUtf8("preserve"));
 
-    Width.setValue(quantity.getValue());
+			// Remove all child nodes and append text node with editable replacement as the only descendant
+			while (!tspan.lastChild().isNull()) {
+				tspan.removeChild(tspan.lastChild());
+			}
+			tspan.appendChild(templateDocument.createTextNode(QString::fromUtf8(item->second.c_str())));
+		}
+	}
 
-    str = docElement.attribute(QString::fromLatin1("height"));
-    quantity = Base::Quantity::parse(str);
-    quantity.setUnit(Base::Unit::Length);
+	// Calculate the dimensions of the page and store for retrieval
+	// Obtain the size of the SVG document by reading the document attributes
+	QDomElement docElement = templateDocument.documentElement();
+	Base::Quantity quantity;
 
-    Height.setValue(quantity.getValue());
+	// Obtain the width
+	QString str = docElement.attribute(QString::fromLatin1("width"));
+	quantity = Base::Quantity::parse(str);
+	quantity.setUnit(Base::Unit::Length);
 
-    bool isLandscape = getWidth() / getHeight() >= 1.;
+	Width.setValue(quantity.getValue());
 
-    Orientation.setValue(isLandscape ? 1 : 0);
+	str = docElement.attribute(QString::fromLatin1("height"));
+	quantity = Base::Quantity::parse(str);
+	quantity.setUnit(Base::Unit::Length);
 
-    return TechDraw::DrawTemplate::execute();
+	Height.setValue(quantity.getValue());
+
+	bool isLandscape = getWidth() / getHeight() >= 1.;
+
+	Orientation.setValue(isLandscape ? 1 : 0);
+
+	//all Qt holds on files should be released on exit #4085
+	return templateDocument.toString();
 }
 
 double DrawSVGTemplate::getWidth() const
@@ -262,21 +280,20 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         tfi.setFile(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + tfi.fileName());
         // try the redirect
         if (!tfi.isReadable()) {
-            Base::Console().Log("DrawPage::getEditableTextsFromTemplate() not able to open %s!\n", Template.getValue());
+            Base::Console().Log("DrawSVGTemplate::getEditableTextsFromTemplate() not able to open %s!\n", Template.getValue());
             return editables;
         }
     }
 
     QFile templateFile(QString::fromUtf8(tfi.filePath().c_str()));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().Log("DrawPage::getEditableTextsFromTemplate() can't read template %s!\n", Template.getValue());
+        Base::Console().Log("DrawSVGTemplate::getEditableTextsFromTemplate() can't read template %s!\n", Template.getValue());
         return editables;
     }
 
-
     QDomDocument templateDocument;
     if (!templateDocument.setContent(&templateFile)) {
-        Base::Console().Message("DrawPage::getEditableTextsFromTemplate() - failed to parse file: %s\n",
+        Base::Console().Message("DrawSVGTemplate::getEditableTextsFromTemplate() - failed to parse file: %s\n",
                                 Template.getValue());
         return editables;
     }
@@ -288,7 +305,7 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
     // XPath query to select all <tspan> nodes whose <text> parent
     // has "freecad:editable" attribute
     query.setQuery(QString::fromUtf8(
-        "declare default element namespace \"" SVG_NS_URI "\"; "        
+        "declare default element namespace \"" SVG_NS_URI "\"; "
         "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
         "//text[@freecad:editable]/tspan"));
 

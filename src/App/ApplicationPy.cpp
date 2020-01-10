@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -103,22 +102,24 @@ PyMethodDef Application::Methods[] = {
      "* If no module is given it will be determined by the file extension.\n"
      "* If more than one module can load a file the first one one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
-    {"open",   (PyCFunction) Application::sOpenDocument, METH_VARARGS,
+    {"open",   (PyCFunction) Application::sOpenDocument, METH_VARARGS|METH_KEYWORDS,
      "See openDocument(string)"},
-    {"openDocument",   (PyCFunction) Application::sOpenDocument, METH_VARARGS,
-     "openDocument(string) -> object\n\n"
-     "Create a document and load the project file into the document.\n"
-     "The string argument must point to an existing file. If the file doesn't exist\n"
-     "or the file cannot be loaded an I/O exception is thrown. In this case the\n"
-     "document is kept alive."},
+    {"openDocument",   (PyCFunction) Application::sOpenDocument, METH_VARARGS|METH_KEYWORDS,
+     "openDocument(filepath,hidden=False) -> object\n"
+     "Create a document and load the project file into the document.\n\n"
+     "filepath: file path to an existing file. If the file doesn't exist\n"
+     "          or the file cannot be loaded an I/O exception is thrown.\n"
+     "          In this case the document is kept alive.\n"
+     "hidden: whether to hide document 3D view."},
 //  {"saveDocument",   (PyCFunction) Application::sSaveDocument, METH_VARARGS,
 //   "saveDocument(string) -- Save the document to a file."},
 //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
-    {"newDocument",    (PyCFunction) Application::sNewDocument, METH_VARARGS,
-     "newDocument([string]) -> object\n\n"
-     "Create a new document with a given name.\n"
-     "The document name must be unique which\n"
-     "is checked automatically."},
+    {"newDocument",    (PyCFunction) Application::sNewDocument, METH_VARARGS|METH_KEYWORDS,
+     "newDocument(name, label=None, hidden=False) -> object\n"
+     "Create a new document with a given name.\n\n"
+     "name: unique document name which is checked automatically.\n"
+     "label: optional user changeable label for the document.\n"
+     "hidden: whether to hide document 3D view."},
     {"closeDocument",  (PyCFunction) Application::sCloseDocument, METH_VARARGS,
      "closeDocument(string) -> None\n\n"
      "Close the document with a given name."},
@@ -161,8 +162,8 @@ PyMethodDef Application::Methods[] = {
     {"setActiveTransaction", (PyCFunction) Application::sSetActiveTransaction, METH_VARARGS,
      "setActiveTransaction(name, persist=False) -- setup active transaction with the given name\n\n"
      "name: the transaction name\n"
-     "persist(False): by default, if the calling code is inside any invokation of a command, it\n"
-     "                will be auto closed once all command within the current stack exists. To\n"
+     "persist(False): by default, if the calling code is inside any invocation of a command, it\n"
+     "                will be auto closed once all commands within the current stack exists. To\n"
      "                disable auto closing, set persist=True\n"
      "Returns the transaction ID for the active transaction. An application-wide\n"
      "active transaction causes any document changes to open a transaction with\n"
@@ -239,28 +240,34 @@ PyObject* Application::sIsRestoring(PyObject * /*self*/, PyObject *args) {
     return Py::new_reference_to(Py::Boolean(GetApplication().isRestoring()));
 }
 
-PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
     char* Name;
-    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+    PyObject *hidden = Py_False;
+    static char *kwlist[] = {"name","hidden",0};
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, "et|O", kwlist,
+                "utf-8", &Name, &hidden))
         return NULL;
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     PY_TRY {
         // return new document
-        return (GetApplication().openDocument(EncodedName.c_str())->getPyObject());
+        return (GetApplication().openDocument(EncodedName.c_str(),!PyObject_IsTrue(hidden))->getPyObject());
     } PY_CATCH
 }
 
-PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args)
+PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
     char *docName = 0;
     char *usrName = 0;
-    if (!PyArg_ParseTuple(args, "|etet", "utf-8", &docName, "utf-8", &usrName))
+    PyObject *hidden = Py_False;
+    static char *kwlist[] = {"name","label","hidden",0};
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetO", kwlist,
+                "utf-8", &docName, "utf-8", &usrName, &hidden))
         return NULL;
 
     PY_TRY {
-        App::Document* doc = GetApplication().newDocument(docName, usrName);
+        App::Document* doc = GetApplication().newDocument(docName, usrName,!PyObject_IsTrue(hidden));
         PyMem_Free(docName);
         PyMem_Free(usrName);
         return doc->getPyObject();
@@ -918,15 +925,6 @@ PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *ar
     } PY_CATCH;
 }
 
-PyObject *Application::sDumpSWIG(PyObject * /*self*/, PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return 0;
-
-    Base::Interpreter().dumpSWIG();
-    Py_Return;
-}
-
 PyObject *Application::sCheckAbort(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -937,3 +935,13 @@ PyObject *Application::sCheckAbort(PyObject * /*self*/, PyObject *args)
         Py_Return;
     }PY_CATCH
 }
+
+PyObject *Application::sDumpSWIG(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    Base::Interpreter().dumpSWIG();
+    Py_Return;
+}
+

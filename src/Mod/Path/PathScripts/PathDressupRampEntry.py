@@ -34,7 +34,6 @@ from PySide import QtCore
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui
 
 
 # Qt translation handling
@@ -60,6 +59,15 @@ class ObjectDressup:
         obj.RampFeedRate = ['Horizontal Feed Rate', 'Vertical Feed Rate', 'Custom']
         obj.Proxy = self
         self.setEditorProperties(obj)
+
+        # initialized later
+        self.wire = None
+        self.angle = None
+        self.rapids = None
+        self.method = None
+        self.outedges = None
+        self.ignoreAboveEnabled = None
+        self.ignoreAbove = None
 
     def __getstate__(self):
         return None
@@ -367,6 +375,7 @@ class ObjectDressup:
         curPoint = p0  # start from the upper point of plunge
         done = False
         goingForward = True
+        i = 0
         while not done:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
@@ -433,6 +442,7 @@ class ObjectDressup:
         curPoint = p0  # start from the upper point of plunge
         done = False
 
+        i = 0
         while not done:
             for i, redge in enumerate(rampedges):
                 if redge.Length >= rampremaining:
@@ -491,7 +501,7 @@ class ObjectDressup:
         1. Start from the original startpoint of the plunge
         2. Calculate the distance on the path which is needed to implement the ramp
            and travel that distance while maintaining start depth
-        3. Start ramping while travelling the original path backwards until reaching the
+        3. Start ramping while traveling the original path backwards until reaching the
            original plunge end point
         4. Continue with the original path
         """
@@ -531,7 +541,7 @@ class ObjectDressup:
                     curPoint = newPoint
 
                 else:
-                    # we are travelling on start depth
+                    # we are traveling on start depth
                     newPoint = FreeCAD.Base.Vector(redge.valueAt(redge.LastParameter).x, redge.valueAt(redge.LastParameter).y, p0.z)
                     outedges.append(self.createRampEdge(redge, curPoint, newPoint))
                     curPoint = newPoint
@@ -622,7 +632,7 @@ class ObjectDressup:
 class ViewProviderDressup:
 
     def __init__(self, vobj):
-        vobj.Proxy = self
+        self.obj = vobj.Object
 
     def attach(self, vobj):
         self.obj = vobj.Object
@@ -641,12 +651,15 @@ class ViewProviderDressup:
         return [self.obj.Base]
 
     def onDelete(self, arg1=None, arg2=None):
-        PathLog.debug("Deleting Dressup")
         '''this makes sure that the base operation is added back to the project and visible'''
-        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        job = PathUtils.findParentJob(self.obj)
-        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
-        arg1.Object.Base = None
+        # pylint: disable=unused-argument
+        PathLog.debug("Deleting Dressup")
+        if arg1.Object and arg1.Object.Base:
+            FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+            job = PathUtils.findParentJob(self.obj)
+            if job:
+                job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
+            arg1.Object.Base = None
         return True
 
     def __getstate__(self):
@@ -657,6 +670,7 @@ class ViewProviderDressup:
 
 
 class CommandPathDressupRampEntry:
+    # pylint: disable=no-init
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
@@ -694,7 +708,7 @@ class CommandPathDressupRampEntry:
         FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
         FreeCADGui.doCommand('obj.Base = base')
         FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
-        FreeCADGui.doCommand('PathScripts.PathDressupRampEntry.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('obj.ViewObject.Proxy = PathScripts.PathDressupRampEntry.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()

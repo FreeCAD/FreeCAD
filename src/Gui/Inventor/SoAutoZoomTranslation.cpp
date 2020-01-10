@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c)2011  Luke Parry                                         *
+ *   Copyright (c) 2011 Luke Parry                                         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,7 +47,7 @@ using namespace Gui;
 
 // ------------------------------------------------------
 
-SO_NODE_SOURCE(SoAutoZoomTranslation);
+SO_NODE_SOURCE(SoAutoZoomTranslation)
 
 void SoAutoZoomTranslation::initClass()
 {

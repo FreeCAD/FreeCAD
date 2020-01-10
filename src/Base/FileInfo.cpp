@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2005                        *
+ *   Copyright (c) 2005 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,7 +19,6 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
  *   USA                                                                   *
  *                                                                         *
- *   Juergen Riegel 2002                                                   *
  ***************************************************************************/
 
 
@@ -604,7 +603,7 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent(void) const
     {
         std::string dir = dentry->d_name;
         if (dir != "." && dir != "..")
-            List.push_back(FileInfo(FileName + "/" + dir));
+            List.emplace_back(FileName + "/" + dir);
     }
     closedir(dp);
 #else

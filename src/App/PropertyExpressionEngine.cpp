@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,7 +43,7 @@ using namespace App;
 using namespace Base;
 using namespace boost;
 
-TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer);
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer)
 
 static std::set<PropertyExpressionContainer*> _ExprContainers;
 
@@ -73,7 +73,7 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document &doc) 
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyExpressionContainer);
+TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyExpressionContainer)
 
 /**
  * @brief Construct a new PropertyExpressionEngine object.
@@ -276,7 +276,7 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
                     int s = nodes.size();
                     nodes[cPath] = s;
                 }
-                edges.push_back(std::make_pair(nodes[path], nodes[cPath]));
+                edges.emplace_back(nodes[path], nodes[cPath]);
             }
         }
     }
@@ -583,6 +583,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         /* Set value of property */
         App::any value;
         try {
+            // Evaluate expression
             value = expressions[*it].expression->getValueAsAny(Expression::OptionCallFrame);
             if(option == ExecuteOnRestore && prop->testStatus(Property::EvalOnRestore)) {
                 if(isAnyEqual(value, prop->getPathValue(*it)))
@@ -765,7 +766,7 @@ void PropertyExpressionEngine::setPyObject(PyObject *)
 
 /* The policy implemented in the following function is to auto erase binding in
  * case linked object is gone. I think it is better to cause error and get
- * user's attension
+ * user's attention
  *
 void PropertyExpressionEngine::breakLink(App::DocumentObject *obj, bool clear) {
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
@@ -849,7 +850,11 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
+#ifdef BOOST_NO_CXX11_SMART_PTR
+        boost::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap).release());
+#else
         boost::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap));
+#endif
         if(!expr && !engine) 
             continue;
         if(!engine) {
@@ -873,7 +878,11 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
+#ifdef BOOST_NO_CXX11_SMART_PTR
+        boost::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel).release());
+#else
         boost::shared_ptr<Expression> expr(it->second.expression->updateLabelReference(obj,ref,newLabel));
+#endif
         if(!expr && !engine) 
             continue;
         if(!engine) {
@@ -897,8 +906,13 @@ Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject 
 {
     std::unique_ptr<PropertyExpressionEngine>  engine;
     for(auto it=expressions.begin();it!=expressions.end();++it) {
+#ifdef BOOST_NO_CXX11_SMART_PTR
+        boost::shared_ptr<Expression> expr(
+                it->second.expression->replaceObject(parent,oldObj,newObj).release());
+#else
         boost::shared_ptr<Expression> expr(
                 it->second.expression->replaceObject(parent,oldObj,newObj));
+#endif
         if(!expr && !engine) 
             continue;
         if(!engine) {
@@ -930,8 +944,13 @@ void PropertyExpressionEngine::setExpressions(
         std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs)
 {
     AtomicPropertyChange signaller(*this);
+#ifdef BOOST_NO_CXX11_SMART_PTR
+    for(auto &v : exprs)
+        setValue(v.first,boost::shared_ptr<Expression>(v.second.release()));
+#else
     for(auto &v : exprs)
         setValue(v.first,std::move(v.second));
+#endif
 }
 
 void PropertyExpressionEngine::onRelabeledDocument(const App::Document &doc)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2013     *
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -560,7 +560,7 @@ void QuantityPy::setValue(Py::Float arg)
 
 Py::Object QuantityPy::getUnit(void) const
 {
-    return Py::Object(new UnitPy(new Unit(getQuantityPtr()->getUnit())));
+    return Py::asObject(new UnitPy(new Unit(getQuantityPtr()->getUnit())));
 }
 
 void QuantityPy::setUnit(Py::Object arg)

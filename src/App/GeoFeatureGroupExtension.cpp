@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -255,7 +255,7 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getScopedObjectsFromLin
         return std::vector< DocumentObject* >();
 
     std::vector< App::DocumentObject* > result;
-    auto link = dynamic_cast<PropertyLinkBase*>(prop);
+    auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
     if(link && link->getScope()==scope)
         link->getLinks(result);
 

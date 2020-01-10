@@ -48,7 +48,7 @@ class Document;
 
 class GuiExport ViewProviderDocumentObject : public ViewProvider
 {
-    PROPERTY_HEADER(Gui::ViewProviderDocumentObject);
+    PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDocumentObject);
 
 public:
     /// constructor.
@@ -70,30 +70,30 @@ public:
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
     /// Hide the object in the view
-    virtual void hide(void);
+    virtual void hide(void) override;
     /// Show the object in the view
-    virtual void show(void);
+    virtual void show(void) override;
 
     virtual bool canDropObjectEx(App::DocumentObject *, App::DocumentObject *, 
             const char *, const std::vector<std::string> &) const override;
 
     virtual int replaceObject(App::DocumentObject*, App::DocumentObject*) override;
 
-    virtual bool showInTree() const;
+    virtual bool showInTree() const override;
 
     /// Get a list of TaskBoxes associated with this object
-    virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const;
+    virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>&) const override;
 
     /// Run a redraw
     void updateView();
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
     /// Asks the view provider if the given object can be deleted.
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    virtual bool canDelete(App::DocumentObject* obj) const override;
     /// Get the GUI document to this ViewProvider object
     Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
-    PyObject* getPyObject();
+    PyObject* getPyObject() override;
 
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const override;
@@ -142,6 +142,14 @@ public:
 
     virtual App::Document *getOwnerDocument() const override;
 
+    /** Allow this class to be used as an override for the original view provider of the given object
+     *
+     * @sa App::DocumentObject::getViewProviderNameOverride()
+     */
+    virtual bool allowOverride(const App::DocumentObject &) const {
+        return false;
+    }
+
 protected:
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
@@ -165,9 +173,9 @@ protected:
      */
     Gui::MDIView* getViewOfNode(SoNode* node) const;
     /// get called before the value is changed
-    virtual void onBeforeChange(const App::Property* prop);
+    virtual void onBeforeChange(const App::Property* prop) override;
     /// Gets called by the container whenever a property has been changed
-    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop) override;
     /** Searches in all view providers that are attached to an object that
      * is part of the same document as the object this view provider is
      * attached to for an front root of \a type.
@@ -180,8 +188,8 @@ protected:
     /** @name Transaction handling
      */
     //@{
-    virtual bool isAttachedToDocument() const;
-    virtual const char* detachFromDocument();
+    virtual bool isAttachedToDocument() const override;
+    virtual const char* detachFromDocument() override;
 
     /// get called when a property status has changed
     virtual void onPropertyStatusChanged(const App::Property &prop, unsigned long oldStatus) override;

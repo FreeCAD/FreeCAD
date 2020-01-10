@@ -115,7 +115,7 @@ void CmdPathArea::activated(int iMsg)
     openCommand("Create Path Area");
     doCommand(Doc,"import PathCommands");
     for(const std::string &cmd : cmds)
-        doCommand(Doc,cmd.c_str());
+        doCommand(Doc,"%s", cmd.c_str());
     doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureArea','%s')",FeatName.c_str());
     doCommand(Doc,"FreeCAD.activeDocument().%s.Sources = [ %s ]",FeatName.c_str(),sources.str().c_str());
     commitCommand();
@@ -324,7 +324,7 @@ void CmdPathShape::activated(int iMsg)
     openCommand("Create Path Shape");
     doCommand(Doc,"import PathCommands");
     for(const std::string &cmd : cmds)
-        doCommand(Doc,cmd.c_str());
+        doCommand(Doc, "%s", cmd.c_str());
     doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureShape','%s')",FeatName.c_str());
     doCommand(Doc,"FreeCAD.activeDocument().%s.Sources = [ %s ]",FeatName.c_str(),sources.str().c_str());
     commitCommand();

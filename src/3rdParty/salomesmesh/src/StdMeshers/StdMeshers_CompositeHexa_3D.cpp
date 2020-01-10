@@ -100,6 +100,9 @@ class _FaceSide
 {
 public:
   _FaceSide(const _FaceSide& other);
+  _FaceSide& operator=(const _FaceSide& other);
+  _FaceSide(_FaceSide&&) = default;
+  _FaceSide& operator=(_FaceSide&&) = default;
   _FaceSide(const TopoDS_Edge& edge=TopoDS_Edge());
   _FaceSide(const list<TopoDS_Edge>& edges);
   _FaceSide* GetSide(const int i);
@@ -1566,6 +1569,28 @@ _FaceSide::_FaceSide(const _FaceSide& other)
   myVertices.Assign( other.myVertices );
   myID = other.myID;
 }
+
+
+//=======================================================================
+//function : _FaceSide
+//purpose  : copy assignment
+//=======================================================================
+_FaceSide& _FaceSide::operator=(const _FaceSide& other)
+{
+  if (this == &other) return *this;
+
+  // Use copy-and-swap idiom to ensure exception safety
+  _FaceSide tmp(other);
+
+  std::swap(myEdge, tmp.myEdge);
+  std::swap(myChildren, tmp.myChildren);
+  std::swap(myNbChildren, tmp.myNbChildren);
+  std::swap(myVertices, tmp.myVertices);
+  std::swap(myID, tmp.myID);
+
+  return *this;
+}
+
 
 //================================================================================
 /*!

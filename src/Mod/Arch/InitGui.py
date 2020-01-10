@@ -1,7 +1,5 @@
 #***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -34,7 +32,7 @@ class ArchWorkbench(Workbench):
 
         # arch tools
         self.archtools = ["Arch_Wall","Arch_Structure","Arch_Rebar","Arch_BuildingPart",
-                     "Arch_Floor","Arch_Building","Arch_Site","Arch_Reference",
+                     "Arch_Project", "Arch_Site", "Arch_Building", "Arch_Floor", "Arch_Reference",
                      "Arch_Window","Arch_Roof","Arch_AxisTools",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_PanelTools","Arch_Equipment",
@@ -45,7 +43,7 @@ class ArchWorkbench(Workbench):
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
                      "Arch_ToggleIfcBrepFlag","Arch_3Views",
                      "Arch_IfcSpreadsheet","Arch_ToggleSubs"]
-                     
+
         # try to locate the Rebar addon
         try:
             import RebarTools
@@ -64,6 +62,7 @@ class ArchWorkbench(Workbench):
             FreeCADGui.addCommand('Arch_RebarTools', RebarGroupCommand())
             self.archtools[2] = "Arch_RebarTools"
 
+
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
@@ -72,7 +71,7 @@ class ArchWorkbench(Workbench):
         self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_Clone"]
+                        "Draft_Clone","Draft_Edit"]
         self.draftextratools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint","Draft_ShapeString",
                                 "Draft_PathArray","Draft_Mirror","Draft_Stretch"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup","Draft_AutoGroup",
@@ -140,5 +139,3 @@ FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui","Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui","Import-Export")
 
 FreeCAD.__unit_test__ += [ "TestArch" ]
-
-

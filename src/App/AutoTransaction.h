@@ -32,11 +32,11 @@ private:
     void* operator new(size_t size);
 
 public:
-    /** Construtor
+    /** Constructor
      *
      * @param name: optional new transaction name on construction
      * @param tmpName: if true and a new transaction is setup, the name given is
-     * considered as temperary, and subsequent construction of this class (or
+     * considered as temporary, and subsequent construction of this class (or
      * calling Application::setActiveTransaction()) can override the transaction
      * name.
      *
@@ -66,8 +66,8 @@ public:
 
     /** Enable/Disable any AutoTransaction instance in the current stack
      *
-     * Once disabled, any empty temperary named transaction is closed. If there
-     * are non-empty or non-temperary named active transaction, it will not be
+     * Once disabled, any empty temporary named transaction is closed. If there
+     * are non-empty or non-temporary named active transaction, it will not be
      * auto closed. 
      *
      * This function may be used in, for example, Gui::Document::setEdit() to

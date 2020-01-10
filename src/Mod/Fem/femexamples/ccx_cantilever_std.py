@@ -26,7 +26,7 @@ import FreeCAD
 import ObjectsFem
 import Fem
 
-mesh_name = 'Mesh'  # needs to be Mesh to work with unit tests
+mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
 
 def init_doc(doc=None):
@@ -35,58 +35,57 @@ def init_doc(doc=None):
     return doc
 
 
-def setup_cantileverbase(doc=None, solver='ccxtools'):
+def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever base model
 
     if doc is None:
         doc = init_doc()
 
     # part
-    box_obj = doc.addObject('Part::Box', 'Box')
+    box_obj = doc.addObject("Part::Box", "Box")
     box_obj.Height = box_obj.Width = 1000
     box_obj.Length = 8000
+    doc.recompute()
+
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
-    analysis = ObjectsFem.makeAnalysis(doc, 'Analysis')
+    analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
 
-    solver
-    # TODO How to pass multiple solver for one analysis in one doc
-    if solver is None:
-        pass  # no solver is added
-    elif solver is 'calculix':
+    # solver
+    if solvertype == "calculix":
         solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculix(doc, 'SolverCalculiX')
+            ObjectsFem.makeSolverCalculix(doc, "SolverCalculiX")
         )[0]
-        solver_object.AnalysisType = 'static'
-        solver_object.GeometricalNonlinearity = 'linear'
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = 'default'
-        solver_object.IterationsControlParameterTimeUse = False
-    elif solver is 'ccxtools':
+    elif solvertype == "ccxtools":
         solver_object = analysis.addObject(
-            ObjectsFem.makeSolverCalculixCcxTools(doc, 'CalculiXccxTools')
+            ObjectsFem.makeSolverCalculixCcxTools(doc, "CalculiXccxTools")
         )[0]
-        solver_object.AnalysisType = 'static'
-        solver_object.GeometricalNonlinearity = 'linear'
+        solver_object.WorkingDir = u""
+    elif solvertype == "elmer":
+        analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
+    elif solvertype == "z88":
+        analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
+    if solvertype == "calculix" or solvertype == "ccxtools":
+        solver_object.AnalysisType = "static"
+        solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = 'default'
+        solver_object.MatrixSolverType = "default"
         solver_object.IterationsControlParameterTimeUse = False
-        solver_object.WorkingDir = u''
-    elif solver is 'elmer':
-        analysis.addObject(ObjectsFem.makeSolverElmer(doc, 'SolverElmer'))
-    elif solver is 'z88':
-        analysis.addObject(ObjectsFem.makeSolverZ88(doc, 'SolverZ88'))
 
     # material
     material_object = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, 'FemMaterial')
+        ObjectsFem.makeMaterialSolid(doc, "FemMaterial")
     )[0]
     mat = material_object.Material
-    mat['Name'] = "CalculiX-Steel"
-    mat['YoungsModulus'] = "210000 MPa"
-    mat['PoissonRatio'] = "0.30"
-    mat['Density'] = "7900 kg/m^3"
-    mat['ThermalExpansionCoefficient'] = "0.012 mm/m/K"
+    mat["Name"] = "CalculiX-Steel"
+    mat["YoungsModulus"] = "210000 MPa"
+    mat["PoissonRatio"] = "0.30"
+    mat["Density"] = "7900 kg/m^3"
+    mat["ThermalExpansionCoefficient"] = "0.012 mm/m/K"
     material_object.Material = mat
 
     # fixed_constraint
@@ -96,16 +95,16 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
     fixed_constraint.References = [(doc.Box, "Face1")]
 
     # mesh
-    from femexamples.meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
-        print('ERROR on creating nodes')
+        FreeCAD.Console.PrintError("Error on creating nodes.\n")
     control = create_elements(fem_mesh)
     if not control:
-        print('ERROR on creating elements')
+        FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(
-        doc.addObject('Fem::FemMeshObject', mesh_name)
+        doc.addObject("Fem::FemMeshObject", mesh_name)
     )[0]
     femmesh_obj.FemMesh = fem_mesh
 
@@ -113,10 +112,10 @@ def setup_cantileverbase(doc=None, solver='ccxtools'):
     return doc
 
 
-def setup_cantileverfaceload(doc=None, solver='ccxtools'):
+def setup_cantileverfaceload(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever, apply 9 MN on surface of front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # force_constraint
     force_constraint = doc.Analysis.addObject(
@@ -131,10 +130,10 @@ def setup_cantileverfaceload(doc=None, solver='ccxtools'):
     return doc
 
 
-def setup_cantilevernodeload(doc=None, solver='ccxtools'):
+def setup_cantilevernodeload(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever, apply 9 MN on the 4 nodes of the front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # force_constraint
     force_constraint = doc.Analysis.addObject(
@@ -155,11 +154,11 @@ def setup_cantilevernodeload(doc=None, solver='ccxtools'):
     return doc
 
 
-def setup_cantileverprescribeddisplacement(doc=None, solver='ccxtools'):
+def setup_cantileverprescribeddisplacement(doc=None, solvertype="ccxtools"):
     # setup CalculiX cantilever
     # apply a prescribed displacement of 250 mm in -z on the front end face
 
-    doc = setup_cantileverbase(doc, solver)
+    doc = setup_cantileverbase(doc, solvertype)
 
     # displacement_constraint
     displacement_constraint = doc.Analysis.addObject(
@@ -174,7 +173,7 @@ def setup_cantileverprescribeddisplacement(doc=None, solver='ccxtools'):
     return doc
 
 
-'''
+"""
 from femexamples import ccx_cantilever_std as canti
 
 canti.setup_cantileverbase()
@@ -182,4 +181,4 @@ canti.setup_cantileverfaceload()
 canti.setup_cantilevernodeload()
 canti.setup_cantileverprescribeddisplacement()
 
-'''
+"""

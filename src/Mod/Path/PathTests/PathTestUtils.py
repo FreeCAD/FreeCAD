@@ -181,3 +181,9 @@ class PathTestBase(unittest.TestCase):
                 self.assertCoincide(valueAt(e1, 0.80), valueAt(e2, 0.20))
                 self.assertCoincide(valueAt(e1, 0.90), valueAt(e2, 0.10))
 
+    def assertPointsMatch(self, pts0, pts1):
+        """Verify that two arrays of points are the same, including their order."""
+        self.assertEqual(len(pts0), len(pts1))
+        for i in range(len(pts0)):
+            self.assertCoincide(pts0[i], pts1[i])
+

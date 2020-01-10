@@ -42,7 +42,8 @@ class TaskSectionView : public QWidget
     Q_OBJECT
 
 public:
-    TaskSectionView(TechDraw::DrawViewPart* base, TechDraw::DrawViewSection* section);
+    TaskSectionView(TechDraw::DrawViewPart* base);
+    TaskSectionView(TechDraw::DrawViewSection* section);
     ~TaskSectionView();
 
 public:
@@ -54,40 +55,50 @@ protected Q_SLOTS:
     void onDownClicked(bool b);
     void onLeftClicked(bool b);
     void onRightClicked(bool b);
-    void onResetClicked(bool b);
+    void onApplyClicked(bool b);
 
 protected:
-    void turnOnUp(void);
-    void turnOnDown(void);
-    void turnOnLeft(void);
-    void turnOnRight(void);
-    void checkAll(bool b);
-    void enableAll(bool b);
     void blockButtons(bool b);
+
     void changeEvent(QEvent *e);
-    void resetValues();
-    bool calcValues();
-    void saveInitialValues();
-    void updateValues();
-    QString formatVector(Base::Vector3d v);
+    void saveSectionState();
+    void restoreSectionState();
+
+    bool apply(void);
+    void applyQuick(std::string dir);
+    void applyAligned(void);
+
+    TechDraw::DrawViewSection* createSectionView(void);
+    void updateSectionView(void);
+
+    void setUiPrimary();
+    void setUiEdit();
+
+    void checkAll(bool b);
 
 private:
     Ui_TaskSectionView * ui;
     TechDraw::DrawViewPart* m_base;
     TechDraw::DrawViewSection* m_section;
-    Base::Vector3d sectionNormal;
-    Base::Vector3d sectionProjDir;
-    Base::Vector3d sectionOrigin;
-    char* sectionDir;
-    Base::Vector3d arrowDir;
+    std::string m_symbol;
+    Base::Vector3d m_normal;
+    Base::Vector3d m_direction;
+    Base::Vector3d m_origin;
+    
+    std::string m_saveSymbol;
+    std::string m_saveDirName;
+    Base::Vector3d m_saveNormal;
+    Base::Vector3d m_saveDirection;
+    Base::Vector3d m_saveOrigin;
+    double m_saveScale;
 
-    std::string saveSym;
-    std::string saveLabel;
-  //bool saveHorizSectionLine;
-  //bool saveArrowUpSection;
-    Base::Vector3d saveSectionProjDir;
-    Base::Vector3d saveSectionOrigin;
-    Base::Vector3d saveSectionNormal;
+    std::string m_dirName;
+
+    bool m_createMode;
+    bool m_saved;
+
+    std::string m_saveBaseName;
+    std::string m_savePageName;
 
 };
 
@@ -96,22 +107,28 @@ class TaskDlgSectionView : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgSectionView(TechDraw::DrawViewPart* base, TechDraw::DrawViewSection* section);
+    TaskDlgSectionView(TechDraw::DrawViewPart* base);
+    TaskDlgSectionView(TechDraw::DrawViewSection* section);
     ~TaskDlgSectionView();
 
 public:
     /// is called the TaskView when the dialog is opened
     virtual void open();
     /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
+/*    virtual void clicked(int);*/
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
     /// is called by the framework if the user presses the help button
     virtual void helpRequested() { return;}
+
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
+
+    virtual QDialogButtonBox::StandardButtons getStandardButtons() const
+    { return QDialogButtonBox::Ok | QDialogButtonBox::Cancel; }
+/*    virtual void modifyStandardButtons(QDialogButtonBox* box);*/
 
     void update();
 

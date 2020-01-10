@@ -90,6 +90,11 @@ void ViewProviderMeshDefects::onChanged(const App::Property* prop)
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
     }
+    // Visibility changes must be handled here because in the base class it changes the attribute of the feature
+    // and thus affects the visibility of the mesh view provider which is undesired behaviour
+    else if (prop == &Visibility) {
+        Visibility.getValue() ? show() : hide();
+    }
     else {
         ViewProviderDocumentObject::onChanged(prop);
     }
@@ -646,7 +651,7 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<unsigned l
     for (it = indices.begin(); it != indices.end(); ) {
         unsigned long id1 = *it; ++it;
         unsigned long id2 = *it; ++it;
-        intersection.push_back(std::make_pair(id1,id2));
+        intersection.emplace_back(id1,id2);
     }
 
     std::vector<std::pair<Base::Vector3f, Base::Vector3f> > lines;

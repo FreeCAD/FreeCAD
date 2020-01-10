@@ -42,7 +42,7 @@
 
 using namespace Gui;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView)
 
 AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
@@ -70,6 +70,16 @@ void AbstractSplitView::deleteSelf()
         (*it)->setSceneGraph(0);
     }
     MDIView::deleteSelf();
+}
+
+bool AbstractSplitView::containsViewProvider(const ViewProvider* vp) const
+{
+    for (auto it = _viewer.begin(); it != _viewer.end(); ++it) {
+        if ((*it)->containsViewProvider(vp))
+            return true;
+    }
+
+    return false;
 }
 
 void AbstractSplitView::setupSettings()
@@ -655,7 +665,7 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
         Gui::View3DInventorViewer* view = _view->getViewer(viewIndex);
         if (!view)
             throw Py::IndexError("Index out of range");
-        return Py::Object(view->getPyObject());
+        return Py::asObject(view->getPyObject());
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -674,7 +684,7 @@ Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
     if (viewIndex >= _view->getSize() || viewIndex < 0)
         throw Py::IndexError("Index out of range");
     PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
-    return Py::Object(viewer);
+    return Py::asObject(viewer);
 }
 
 int AbstractSplitViewPy::sequence_length()
@@ -699,7 +709,7 @@ Py::Object AbstractSplitViewPy::close(const Py::Tuple& args)
 
 // ------------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView);
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::SplitView3DInventor, Gui::AbstractSplitView)
 
 SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : AbstractSplitView(pcDocument,parent, wflags)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2014     *
+ *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -80,7 +80,7 @@ public:
     virtual ~Part();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName(void) const override {
         return "Gui::ViewProviderPart";
     }
 
@@ -91,7 +91,7 @@ public:
      */
     static App::Part* getPartOfObject (const DocumentObject* obj);
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;

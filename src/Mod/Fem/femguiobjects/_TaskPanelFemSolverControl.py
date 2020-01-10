@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -283,7 +282,7 @@ class ControlWidget(QtGui.QWidget):
         self._timeLbl.setText(timeStr)
 
     def time(self):
-        if (self._timeLbl.text() == ""):
+        if self._timeLbl.text() == "":
             return None
         return float(self._timeLbl.text())
 

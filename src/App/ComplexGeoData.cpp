@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +33,7 @@
 #include <boost/bimap/unordered_set_of.hpp>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+
 #include <Base/Exception.h>
 #include <Base/Console.h>
 #include "ComplexGeoData.h"
@@ -49,10 +50,10 @@ typedef boost::bimap<
 class ElementMap: public ElementMapBase {};
 }
 
-TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass);
+TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass)
 
 
-TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence);
+TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence)
 
 
 ComplexGeoData::ComplexGeoData(void)

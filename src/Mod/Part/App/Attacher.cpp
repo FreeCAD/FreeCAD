@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -856,7 +855,7 @@ void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
             shapes[i] = &(storage[storage.size()-1]);
         } else {
             Base::Console().Warning("Attacher: linked object %s is unexpected, assuming it has no shape.\n",geof->getNameInDocument());
-            storage.push_back(TopoDS_Shape());
+            storage.emplace_back();
             shapes[i] = &(storage[storage.size()-1]);
         }
 
@@ -1688,7 +1687,7 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
 
 //=================================================================================
 
-TYPESYSTEM_SOURCE(Attacher::AttachEnginePlane, Attacher::AttachEngine);
+TYPESYSTEM_SOURCE(Attacher::AttachEnginePlane, Attacher::AttachEngine)
 
 AttachEnginePlane::AttachEnginePlane()
 {
@@ -1720,7 +1719,7 @@ Base::Placement AttachEnginePlane::_calculateAttachedPlacement(
 
 //=================================================================================
 
-TYPESYSTEM_SOURCE(Attacher::AttachEngineLine, Attacher::AttachEngine);
+TYPESYSTEM_SOURCE(Attacher::AttachEngineLine, Attacher::AttachEngine)
 
 AttachEngineLine::AttachEngineLine()
 {
@@ -2212,7 +2211,7 @@ gp_Pnt AttachEnginePoint::getProximityPoint(eMapMode mmode, const TopoDS_Shape& 
                 return points.front();
         }
     }
-    catch (Standard_Failure) {
+    catch (const Standard_Failure&) {
         // ignore
     }
 

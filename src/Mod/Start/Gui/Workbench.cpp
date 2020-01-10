@@ -62,6 +62,16 @@ StartGui::Workbench::~Workbench()
 
 void StartGui::Workbench::activated()
 {
+    // Automatically display the StartPage only the very first time
+    static bool first = true;
+    if (first) {
+        loadStartPage();
+        first = false;
+    }
+}
+
+void StartGui::Workbench::loadStartPage()
+{
     // Ensure that we don't open the Start page multiple times
     QString title = QCoreApplication::translate("Workbench", "Start page");
     QList<QWidget*> ch = Gui::getMainWindow()->windows();

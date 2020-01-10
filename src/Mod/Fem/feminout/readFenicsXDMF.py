@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
+# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,24 +27,24 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD Fenics Mesh XDMF reader for FEM workbench
 
-import FreeCAD
+from FreeCAD import Console
 
 
 def read_fenics_mesh_xdmf(xdmffilename):
 
-    FreeCAD.Console.PrintMessage("Not operational, yet\n")
+    Console.PrintMessage("Not operational, yet\n")
 
     return {
-        'Nodes': {},
-        'Hexa8Elem': {},
-        'Penta6Elem': {},
-        'Tetra4Elem': {},
-        'Tetra10Elem': {},
-        'Penta15Elem': {},
-        'Hexa20Elem': {},
-        'Tria3Elem': {},
-        'Tria6Elem': {},
-        'Quad4Elem': {},
-        'Quad8Elem': {},
-        'Seg2Elem': {}
+        "Nodes": {},
+        "Hexa8Elem": {},
+        "Penta6Elem": {},
+        "Tetra4Elem": {},
+        "Tetra10Elem": {},
+        "Penta15Elem": {},
+        "Hexa20Elem": {},
+        "Tria3Elem": {},
+        "Tria6Elem": {},
+        "Quad4Elem": {},
+        "Quad8Elem": {},
+        "Seg2Elem": {}
     }
