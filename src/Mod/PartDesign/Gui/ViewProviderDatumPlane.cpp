@@ -60,15 +60,6 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
     ViewProviderDatum::setExtents ( defaultBoundBox () );
     getShapeRoot ()->addChild(pCoords);
 
-    PartGui::SoBrepEdgeSet* lineSet = new PartGui::SoBrepEdgeSet();
-    lineSet->coordIndex.setNum(6);
-    lineSet->coordIndex.set1Value(0, 0);
-    lineSet->coordIndex.set1Value(1, 1);
-    lineSet->coordIndex.set1Value(2, 2);
-    lineSet->coordIndex.set1Value(3, 3);
-    lineSet->coordIndex.set1Value(4, 0);
-    lineSet->coordIndex.set1Value(5, SO_END_LINE_INDEX);
-
     PartGui::SoBrepFaceSet *faceSet = new PartGui::SoBrepFaceSet();
     pFaceSet.reset(faceSet);
     
@@ -87,7 +78,6 @@ void ViewProviderDatumPlane::attach ( App::DocumentObject *obj ) {
     faceSet->coordIndex.set1Value(7, SO_END_FACE_INDEX);
 
     getShapeRoot ()->addChild(faceSet);
-    getShapeRoot ()->addChild(lineSet);
 }
 
 void ViewProviderDatumPlane::updateData(const App::Property* prop)
