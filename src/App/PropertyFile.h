@@ -111,6 +111,8 @@ public:
     std::string getExchangeTempFile(void) const;
     std::string getOriginalFileName(void) const;
 
+    bool isEmpty(void){return _cValue.empty();}
+
 protected:
     // get the transient path if the property is in a DocumentObject
     std::string getDocTransientPath(void) const;
