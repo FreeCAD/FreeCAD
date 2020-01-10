@@ -271,9 +271,9 @@ private:
                              { return QRectF(Rez::guiX(r.MinX), -Rez::guiX(r.MaxY),
                                              Rez::guiX(r.Width()), Rez::guiX(r.Height())); }
 
-    static inline double toDeg(double a) { return a*180/M_PI; }
-    static inline double toQtRad(double a) { return -a; }
-    static inline double toQtDeg(double a) { return -a*180.0/M_PI; }
+    static inline double toDeg(double a);
+    static inline double toQtRad(double a);
+    static inline double toQtDeg(double a);
 
     double getDefaultExtensionLineOverhang() const;
     double getDefaultArrowTailLength() const;
