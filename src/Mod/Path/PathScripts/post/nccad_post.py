@@ -44,7 +44,7 @@ MACHINE_NAME = '''Max Computer GmbH nccad9 MCS/KOSY'''
 
 
 # gCode for changing tools
-# M01 <Comment> ; Displays <Comment> and waits for user interaction
+# M01 <String> ; Displays <String> and waits for user interaction
 TOOL_CHANGE = '''G77      ; Move to release position
 M10 O6.0 ; Stop spindle
 M01 Insert tool TOOL
@@ -65,16 +65,12 @@ HEADER = ''';Exported by FreeCAD
 '''.format(__name__, FreeCAD.ActiveDocument.FileName, str(datetime.datetime.now()))
 
 
-# Post processing function
 def export(objectslist, filename, argstring):
 
-  # Add header with description
   gcode = HEADER
 
-  # Loop through path objects
   for obj in objectslist:
 
-    # Loop through command objects
     for command in obj.Path.Commands:
 
       # Manipulate tool change commands
@@ -96,13 +92,11 @@ def export(objectslist, filename, argstring):
           if 'F' == parameter:
             value *= 10
 
-          # Add command parameters and values
+          # Add command parameters and values and round float as nccad9 does not support exponents
           gcode += ' ' + parameter + str(round(value, 5))
 
-      # Add line-break of command
       gcode += '\n'
 
-  # Add postamble
   gcode += POSTAMBLE + '\n'
 
   # Open editor window
@@ -119,5 +113,4 @@ def export(objectslist, filename, argstring):
     gfile.write(gcode)
     gfile.close()
 
-  # Return
   return filename
