@@ -739,10 +739,12 @@ void TaskAttacher::updateAttachmentOffsetUI()
     ui->attachmentOffsetPitch->setEnabled(!bRotationBound);
     ui->attachmentOffsetRoll->setEnabled(!bRotationBound);
 
-    QString tooltip = bRotationBound ? tr("Not editable because rotation of AttachmentOffset is bound by expressions.") : QString();
-    ui->attachmentOffsetYaw->setToolTip(tooltip);
-    ui->attachmentOffsetPitch->setToolTip(tooltip);
-    ui->attachmentOffsetRoll->setToolTip(tooltip);
+    if (bRotationBound) {
+        QString tooltip = tr("Not editable because rotation of AttachmentOffset is bound by expressions.");
+        ui->attachmentOffsetYaw->setToolTip(tooltip);
+        ui->attachmentOffsetPitch->setToolTip(tooltip);
+        ui->attachmentOffsetRoll->setToolTip(tooltip);
+    }
 
     bBlock = false;
     ui->attachmentOffsetX->blockSignals(bBlock);

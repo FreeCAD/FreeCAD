@@ -111,6 +111,8 @@ public:
     static Unit ElectricCurrent;
     static Unit ElectricPotential;
     static Unit ElectricCharge;
+    static Unit MagneticFieldStrength;
+    static Unit MagneticFlux;
     static Unit MagneticFluxDensity;
     static Unit ElectricalCapacitance;
     static Unit ElectricalInductance;

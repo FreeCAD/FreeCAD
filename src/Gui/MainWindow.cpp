@@ -28,6 +28,7 @@
 # include <QThread>
 # include <QBuffer>
 # include <QByteArray>
+# include <QCheckBox>
 # include <QClipboard>
 # include <QMimeData>
 # include <QCloseEvent>
@@ -72,6 +73,7 @@
 #include "Assistant.h"
 #include "DownloadManager.h"
 #include "WaitCursor.h"
+#include "FileDialog.h"
 
 #include "Action.h"
 #include "Command.h"

@@ -267,8 +267,22 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 1.0;
     }
     else if (unit == Unit::MagneticFluxDensity) {
-        unitString = QString::fromLatin1("T");
-        factor = 1.0;
+        if (UnitValue <= 1e-3) {
+            unitString = QString::fromLatin1("G");
+            factor = 1e-4;
+        }
+        else {
+            unitString = QString::fromLatin1("T");
+            factor = 1.0;
+        }
+    }
+    else if (unit == Unit::MagneticFieldStrength) {
+        unitString = QString::fromLatin1("Oe");
+        factor = 0.07957747;
+    }
+    else if (unit == Unit::MagneticFlux) {
+        unitString = QString::fromLatin1("Wb");
+        factor = 1e6;
     }
     else if (unit == Unit::ElectricalConductance) {
         if (UnitValue < 1e-9) {

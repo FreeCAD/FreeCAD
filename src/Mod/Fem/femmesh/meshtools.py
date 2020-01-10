@@ -771,9 +771,15 @@ def get_force_obj_vertex_nodeload_table(
             )
             node = femmesh.getNodesByVertex(ref_node)
             elem_info_string = "node load on shape: " + o.Name + ":" + elem
-            force_obj_node_load_table.append(
-                (elem_info_string, {node[0]: node_load / node_count})
-            )
+            if len(node) == 1:
+                force_obj_node_load_table.append(
+                    (elem_info_string, {node[0]: node_load / node_count})
+                )
+            else:
+                FreeCAD.Console.PrintError(
+                    "    Problem on retrieving mesh node for: {}\n"
+                    .format(elem_info_string)
+                )
     return force_obj_node_load_table
 
 

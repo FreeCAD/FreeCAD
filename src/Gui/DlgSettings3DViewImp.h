@@ -24,18 +24,21 @@
 #ifndef GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
 #define GUI_DIALOG_DLGSETTINGS3DVIEWIMP_H
 
-#include "ui_DlgSettings3DView.h"
 #include "PropertyPage.h"
+#include <memory>
+
+class QDoubleSpinBox;
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgSettings3DView;
 
 /**
  * The DlgSettings3DViewImp class implements a preference page to change settings
  * for the Inventor viewer.
  * \author Jürgen Riegel
  */
-class DlgSettings3DViewImp : public PreferencePage, public Ui_DlgSettings3DView
+class DlgSettings3DViewImp : public PreferencePage
 {
     Q_OBJECT
 
@@ -56,6 +59,7 @@ protected:
     void retranslate();
 
 private:
+    std::unique_ptr<Ui_DlgSettings3DView> ui;
     static bool showMsg;
     double q0, q1, q2, q3;
 };

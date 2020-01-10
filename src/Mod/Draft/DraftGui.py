@@ -92,16 +92,8 @@ except AttributeError:
             else:
                 return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
 
-def utf8_decode(text):
-    """py2: str     -> unicode
-            unicode -> unicode
-       py3: str     -> str
-            bytes   -> str
-    """
-    try:
-        return text.decode("utf-8")
-    except AttributeError:
-        return text
+import draftutils.utils
+utf8_decode = draftutils.utils.utf8_decode
 
 
 # in-command shortcut definitions: Shortcut / Translation / related UI control

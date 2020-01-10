@@ -108,11 +108,13 @@ class _ViewProviderFemResultMechanical:
         return [self.Object.Mesh]  # claimChildren needs to return a list !
 
     def onDelete(self, feature, subelements):
-        try:
-            for obj in self.claimChildren():
-                obj.ViewObject.show()
-        except Exception as err:
-            FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
+        children = self.claimChildren()
+        if len(children) > 0:
+            try:
+                for obj in children:
+                    obj.ViewObject.show()
+            except Exception as err:
+                FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
         return True
 
 

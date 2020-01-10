@@ -1125,6 +1125,15 @@ def isReallyClosed(wire):
     # aboveWire.isClosed() == True, but Wire[-1] are the 3rd vertex for the rectangle
     # - use Edges[i].Vertexes[0/1] instead
     length = len(wire.Edges)
+
+    # Test if it is full circle / ellipse first
+    if length == 1:
+        if len(wire.Edges[0].Vertexes) == 1:
+            return True # This is a closed wire - full circle / ellipse
+        else:
+            return False # TODO Should be False if 1 edge but not single vertex, correct?  No need to test further below.
+
+    # If more than 1 edge, further test below
     v1 = wire.Edges[0].Vertexes[0].Point  #v1 = wire.Vertexes[0].Point
     v2 = wire.Edges[length-1].Vertexes[1].Point  #v2 = wire.Vertexes[-1].Point
     if DraftVecUtils.equals(v1,v2): return True
@@ -1186,26 +1195,47 @@ def calculatePlacement(shape):
         pla.Rotation = r
     return pla
 
-def offsetWire(wire,dvec,bind=False,occ=False,widthList=None):
+
+def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, alignList=[], normal=None):  # offsetMode="BasewireMode" or None
     '''
-    offsetWire(wire,vector,[bind]): offsets the given wire along the
-    given vector. The vector will be applied at the first vertex of
-    the wire. If bind is True (and the shape is open), the original
-    wire and the offset one are bound by 2 edges, forming a face.
+    offsetWire(wire,vector,[bind]): offsets the given wire along the given
+    vector. The vector will be applied at the first vertex of the wire. If bind
+    is True (and the shape is open), the original wire and the offsetted one
+    are bound by 2 edges, forming a face.
 
         If widthList is provided (values only, not lengths - i.e. no unit),
-        each value will be used to offset each corresponding edge in the wire
+        each value will be used to offset each corresponding edge in the wire.
 
-        (The 1st value override 'dvec' for 1st segment of wire;
+        (The 1st value overrides 'dvec' for 1st segment of wire;
          if a value is zero, value of 'widthList[0]' will follow;
          if widthList[0]' == 0, but dvec still provided, dvec will be followed)
+
+        If alignList is provided,
+        each value will be used to offset each corresponding edge in the wire with corresponding index.
+
+        OffsetWire() is now aware of width and align per edge (Primarily for use with ArchWall based on Sketch object )
+
+        'dvec' vector to offset is now derived (and can be ignored) in this function if widthList and alignList are provided - 'dvec' to be obsolete in future ?
     '''
 
-    ## TODO  In future, 'vector' direction to offset could be 'calculated' in this function - if 'direction' in dvec is not / need not be provided 'outside' the function
-    ##                   'dvec' to be obsolete in future ?
+    # Accept 'wire' as a list of edges, use the list directly, or previously a wire
+    if isinstance(wire,Part.Wire):
+        edges = wire.Edges							# Seems has repeatedly sortEdges, remark out here - edges = Part.__sortEdges__(wire.Edges)
+    elif isinstance(wire, list):
+        if isinstance(wire[0],Part.Edge):
+            edges = wire.copy()
+            wire = Part.Wire( Part.__sortEdges__(edges) )			# How to avoid __sortEdges__ again?  Make getNormal direclty tackle edges ?
+    else:
+        print ("Either Part.Wire or Part.Edges should be provided, returning None ")
+        return None
 
-    edges = wire.Edges								# Seems has repeatedly sortEdges, remark out here - edges = Part.__sortEdges__(wire.Edges)
-    norm = getNormal(wire)
+    # For sketch with a number of wires, getNormal() may result in different direction for each wire
+    # The 'normal' parameter, if provided e.g. by ArchWall, allows normal over different wires e.g. in a Sketch be consistent (over different calls of this function)
+    if normal:
+        norm = normal
+    else:
+        norm = getNormal(wire)	#norm = Vector(0,0,1)
+
     closed = isReallyClosed(wire)
     nedges = []
     if occ:
@@ -1224,48 +1254,170 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None):
 
     # vec of first edge depends on its geometry
     e = edges[0]
-    if isinstance(e.Curve,Part.Circle):
-        firstVec = e.tangentAt(e.FirstParameter)
-    else:
-        firstVec = vec(e)
+
+    # Make a copy of alignList - to avoid changes in this function become starting input of next call of this function ?
+    # https://www.dataquest.io/blog/tutorial-functions-modify-lists-dictionaries-python/
+    alignListC = alignList.copy()
+
+    # Check the direction / offset of starting edge
+
+    firstDir = None
+    try:
+        if alignListC[0] == 'Left':
+            firstDir = 1
+            firstAlign = 'Left'
+        elif alignListC[0] == 'Right':
+            firstDir = -1
+            firstAlign = 'Right'
+        elif alignListC[0] == 'Center':
+            firstDir = 1
+            firstAlign = 'Center'
+    except:
+        print ("alignListC[0] has no value ")  # Should no longer happen for ArchWall - as aligns are 'filled in' by ArchWall
+
+    # If not provided by alignListC checked above, check the direction of offset in dvec (not 'align') 
+
+    if not firstDir:  ## TODO Should check if dvec is provided or not ('legacy/backward-compatible' mode)
+        if isinstance(e.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
+            v0 = e.Vertexes[0].Point.sub(e.Curve.Center)
+        else:
+            v0 = vec(e).cross(norm)
+        # check against dvec provided for the offset direction - would not know if dvec is vector of width (Left/Right Align) or width/2 (Center Align)
+        dvec0 = DraftVecUtils.scaleTo(v0,dvec.Length)
+        if DraftVecUtils.equals(dvec0,dvec):  # if dvec0 == dvec:
+            firstDir = 1  # "Left Offset" (Left Align or 'left offset' in Centre Align)
+            firstAlign = 'Left'
+            alignListC.append('Left')
+        elif DraftVecUtils.equals(dvec0,dvec.negative()):  # elif dvec0 == dvec.negative():
+            firstDir = -1  # "Right Offset" (Right Align or 'right offset' in Centre Align)
+            firstAlign = 'Right'
+            alignListC.append('Right')
+        else:
+            print (" something wrong with firstDir ")
+            firstAlign = 'Left'
+            alignListC.append('Left')
 
     for i in range(len(edges)):
-        curredge = edges[i]
 
-        if widthList:
+        # make a copy so it do not reverse the self.baseWires edges pointed to by _Wall.getExtrusionData() ?
+        curredge = edges[i].copy()
+
+        # record first edge's Orientation, Dir, Align and set Delta
+        if i == 0:
+            firstOrientation = curredge.Vertexes[0].Orientation			# TODO Could be edge.Orientation in fact	# "Forward" or "Reversed"
+            curOrientation = firstOrientation
+            curDir = firstDir
+            curAlign = firstAlign
+            delta = dvec
+
+        # record current edge's Orientation, and set Delta
+        if i != 0:  #else:
+            if isinstance(curredge.Curve,Part.Circle):				# TODO Should also calculate 1st edge direction above
+                delta = curredge.Vertexes[0].Point.sub(curredge.Curve.Center)
+            else:
+                delta = vec(curredge).cross(norm)
+            curOrientation = curredge.Vertexes[0].Orientation			# TODO Could be edge.Orientation in fact
+
+        # Consider individual edge width
+
+        if widthList:  # ArchWall should now always provide widthList
             try:
                 if widthList[i] > 0:
-                    delta = DraftVecUtils.scaleTo(dvec, widthList[i])
-                elif widthList[0] > 0:
-                    delta = DraftVecUtils.scaleTo(dvec, widthList[0])	 	# to follow widthList[0]
-
-                # i.e. if widthList[0] == 0, though widthList is not False
-                # but if dev is provided still, fallback to dvec
+                    delta = DraftVecUtils.scaleTo(delta, widthList[i])
                 elif dvec:
-                    delta = dvec
-
-                else:  
-                    return None
+                    delta = DraftVecUtils.scaleTo(delta, dvec.Length)
+                else:
+                    #just hardcoded default value as ArchWall would provide if dvec is not provided either
+                    delta = DraftVecUtils.scaleTo(delta, 200)
             except:
-                if widthList[0] > 0:
-                    delta = DraftVecUtils.scaleTo(dvec, widthList[0])	 	# to follow widthList[0]
-                delta = dvec
+                if dvec:
+                    delta = DraftVecUtils.scaleTo(delta, dvec.Length)
+                else:
+                    #just hardcoded default value as ArchWall would provide if dvec is not provided either
+                    delta = DraftVecUtils.scaleTo(delta, 200)
         else:
-              delta = dvec
+            delta = DraftVecUtils.scaleTo(delta,dvec.Length)
 
+        # Consider individual edge Align direction - ArchWall should now always provide alignList
+
+        if i == 0:
+            if alignListC[0] == 'Center':
+                delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
+            #No need to do anything for 'Left' and 'Rigtht' as orginal dvec have set both the direction and amount of offset correct
+            #elif alignListC[i] == 'Left':  #elif alignListC[i] == 'Right':
         if i != 0:
-            if isinstance(curredge.Curve,Part.Circle):
-                v = curredge.tangentAt(curredge.FirstParameter)
+            try:
+                if alignListC[i] == 'Left':
+                    curDir = 1
+                    curAlign = 'Left'
+                elif alignListC[i] == 'Right':
+                    curDir = -1
+                    curAlign = 'Right'
+                    delta = delta.negative()
+                elif alignListC[i] == 'Center':
+                    curDir = 1
+                    curAlign = 'Center'
+                    delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
+            except:
+                curDir = firstDir
+                curAlign = firstAlign
+                if firstAlign == 'Right':
+                    delta = delta.negative()
+                elif firstAlign == 'Center':
+                    delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
+
+        # Consider whether generating the 'offset wire' or the 'base wire'
+
+        if offsetMode == None:
+            # Consider if curOrientation and/or curDir match their firstOrientation/firstDir - to determine whether and how to offset the current edge 
+            if (curOrientation == firstOrientation) != (curDir == firstDir):	# i.e. xor
+                if curAlign in ['Left', 'Right']:
+                    nedge = curredge
+                elif curAlign == 'Center':
+                    delta = delta.negative()
+                    nedge = offset(curredge,delta,trim=True)
             else:
-                v = vec(curredge)
+                # if curAlign in ['Left', 'Right']: # elif curAlign == 'Center': # Both conditions same result..
+                nedge = offset(curredge,delta,trim=True)
 
-            ## TODO - 2019.6.16 - 'calculate' 'offset' direction (in vector) edge by edge instead of rotating previous vector based on dvec in future
+            if curOrientation == "Reversed": # TODO arc alway in counter-clockwise directinon ... ( not necessarily 'reversed')
+                if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
+                    # if not arc/circle, assume straight line, reverse it
+                    nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
+                else:
+                    # if arc/circle 
+                    #Part.ArcOfCircle(edge.Curve, edge.FirstParameter,edge.LastParameter,edge.Curve.Axis.z>0)
+                    midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
+                    midOfArc = nedge.valueAt(midParameter)
+                    nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point).toShape()
+                    # TODO any better solution than to calculate midpoint of arc to reverse ?
 
-            angle = DraftVecUtils.angle(firstVec,v,norm)			# use vec deduced depending on geometry instead of - angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
-            delta = DraftVecUtils.rotate(delta,angle,norm)
-
-        #print("edge ",i,": ",curredge.Curve," ",curredge.Orientation," parameters:",curredge.ParameterRange," vector:",delta)
-        nedge = offset(curredge,delta,trim=True)
+        elif offsetMode in ["BasewireMode"]:
+            if not ( (curOrientation == firstOrientation) != (curDir == firstDir) ):
+                if curAlign in ['Left', 'Right']:
+                    nedge = curredge
+                elif curAlign == 'Center':
+                    delta = delta.negative()
+                    nedge = offset(curredge,delta,trim=True)
+            else:
+                if curAlign in ['Left', 'Right']:
+                    nedge = offset(curredge,delta,trim=True)
+                elif curAlign == 'Center':
+                    nedge = offset(curredge,delta,trim=True)
+            if curOrientation == "Reversed":
+                if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
+                    # if not arc/circle, assume straight line, reverse it
+                    nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
+                else:
+                    # if arc/circle
+                    #Part.ArcOfCircle(edge.Curve, edge.FirstParameter,edge.LastParameter,edge.Curve.Axis.z>0)
+                    midParameter = nedge.FirstParameter + (nedge.LastParameter - nedge.FirstParameter)/2
+                    midOfArc = nedge.valueAt(midParameter)
+                    nedge = Part.ArcOfCircle(nedge.Vertexes[1].Point, midOfArc, nedge.Vertexes[0].Point).toShape()
+                    # TODO any better solution than to calculate midpoint of arc to reverse ?
+        else:
+            print (" something wrong ")
+            return
         if not nedge:
             return None
         nedges.append(nedge)
@@ -1311,7 +1463,7 @@ def connect(edges,closed=False):
 
               # If the edge pairs has intersection 
               # ... and if there is prev v2 (prev v2 was calculated intersection), do not calculate again, just use it as current v1 - avoid chance of slight difference in result
-              # Otherwise, if edge pairs has no intersection (parallel edges, line - arc do no intersect, etc.), so just just current edge endpoints as v1
+              # And, if edge pairs has no intersection (parallel edges, line - arc do no intersect, etc.), so just just current edge endpoints as v1
               # ... and connect these 2 non-intersecting edges
 
               # seem have chance that 2 parallel edges offset same width, result in 2 colinear edges - Wall / DraftGeomUtils seem make them 1 edge and thus 1 vertical plane

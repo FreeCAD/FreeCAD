@@ -32,6 +32,7 @@
 #endif
 
 #include "DlgToolbarsImp.h"
+#include "ui_DlgToolbars.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
@@ -67,13 +68,15 @@ struct GroupMap_find {
  *  true to construct a modal dialog.
  */
 DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
-    : CustomizeActionPage(parent), type(t)
+    : CustomizeActionPage(parent)
+    , ui(new Ui_DlgCustomToolbars)
+    , type(t)
 {
-    this->setupUi(this);
-    moveActionRightButton->setIcon(BitmapFactory().pixmap(":/icons/button_right.svg"));
-    moveActionLeftButton->setIcon(BitmapFactory().pixmap(":/icons/button_left.svg"));
-    moveActionDownButton->setIcon(BitmapFactory().pixmap(":/icons/button_down.svg"));
-    moveActionUpButton->setIcon(BitmapFactory().pixmap(":/icons/button_up.svg"));
+    ui->setupUi(this);
+    ui->moveActionRightButton->setIcon(BitmapFactory().pixmap(":/icons/button_right.svg"));
+    ui->moveActionLeftButton->setIcon(BitmapFactory().pixmap(":/icons/button_left.svg"));
+    ui->moveActionDownButton->setIcon(BitmapFactory().pixmap(":/icons/button_down.svg"));
+    ui->moveActionUpButton->setIcon(BitmapFactory().pixmap(":/icons/button_up.svg"));
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::map<std::string,Command*> sCommands = cCmdMgr.getCommands();
@@ -104,52 +107,52 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
 
     int index = 0;
     for (GroupMap::iterator it = groupMap.begin(); it != groupMap.end(); ++it, ++index) {
-        categoryBox->addItem(it->second);
-        categoryBox->setItemData(index, QVariant(it->first), Qt::UserRole);
+        ui->categoryBox->addItem(it->second);
+        ui->categoryBox->setItemData(index, QVariant(it->first), Qt::UserRole);
     }
 
     // fills the combo box with all available workbenches
     QStringList workbenches = Application::Instance->workbenches();
     workbenches.sort();
     index = 1;
-    workbenchBox->addItem(QApplication::windowIcon(), tr("Global"));
-    workbenchBox->setItemData(0, QVariant(QString::fromLatin1("Global")), Qt::UserRole);
+    ui->workbenchBox->addItem(QApplication::windowIcon(), tr("Global"));
+    ui->workbenchBox->setItemData(0, QVariant(QString::fromLatin1("Global")), Qt::UserRole);
     for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         QPixmap px = Application::Instance->workbenchIcon(*it);
         QString mt = Application::Instance->workbenchMenuText(*it);
         if (mt != QLatin1String("<none>")) {
             if (px.isNull())
-                workbenchBox->addItem(mt);
+                ui->workbenchBox->addItem(mt);
             else
-                workbenchBox->addItem(px, mt);
-            workbenchBox->setItemData(index, QVariant(*it), Qt::UserRole);
+                ui->workbenchBox->addItem(px, mt);
+            ui->workbenchBox->setItemData(index, QVariant(*it), Qt::UserRole);
             index++;
         }
     }
 
     QStringList labels; 
     labels << tr("Icon") << tr("Command");
-    commandTreeWidget->setHeaderLabels(labels);
-    commandTreeWidget->header()->hide();
-    commandTreeWidget->setIconSize(QSize(32, 32));
+    ui->commandTreeWidget->setHeaderLabels(labels);
+    ui->commandTreeWidget->header()->hide();
+    ui->commandTreeWidget->setIconSize(QSize(32, 32));
 #if QT_VERSION >= 0x050000
-    commandTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->commandTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 #else
-    commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+    ui->commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
 #endif
 
     labels.clear(); labels << tr("Command");
-    toolbarTreeWidget->setHeaderLabels(labels);
-    toolbarTreeWidget->header()->hide();
+    ui->toolbarTreeWidget->setHeaderLabels(labels);
+    ui->toolbarTreeWidget->header()->hide();
 
-    on_categoryBox_activated(categoryBox->currentIndex());
+    on_categoryBox_activated(ui->categoryBox->currentIndex());
     Workbench* w = WorkbenchManager::instance()->active();
     if (w) {
         QString name = QString::fromLatin1(w->name().c_str());
-        int index = workbenchBox->findData(name);
-        workbenchBox->setCurrentIndex(index);
+        int index = ui->workbenchBox->findData(name);
+        ui->workbenchBox->setCurrentIndex(index);
     }
-    on_workbenchBox_activated(workbenchBox->currentIndex());
+    on_workbenchBox_activated(ui->workbenchBox->currentIndex());
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -187,7 +190,7 @@ void DlgCustomToolbars::moveDownCustomCommand(const QString&, const QByteArray&)
 
 void DlgCustomToolbars::hideEvent(QHideEvent * event)
 {
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     QString workbench = data.toString();
     exportCustomToolbars(workbench.toLatin1());
 
@@ -196,22 +199,22 @@ void DlgCustomToolbars::hideEvent(QHideEvent * event)
 
 void DlgCustomToolbars::on_categoryBox_activated(int index)
 {
-    QVariant data = categoryBox->itemData(index, Qt::UserRole);
+    QVariant data = ui->categoryBox->itemData(index, Qt::UserRole);
     QString group = data.toString();
-    commandTreeWidget->clear();
+    ui->commandTreeWidget->clear();
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(group.toLatin1());
 
     // Create a separator item
-    QTreeWidgetItem* sepitem = new QTreeWidgetItem(commandTreeWidget);
+    QTreeWidgetItem* sepitem = new QTreeWidgetItem(ui->commandTreeWidget);
     sepitem->setText(1, tr("<Separator>"));
     sepitem->setData(1, Qt::UserRole, QByteArray("Separator"));
     sepitem->setSizeHint(0, QSize(32, 32));
 
     if (group == QLatin1String("Macros")) {
         for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
-            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
             item->setText(1, QString::fromUtf8((*it)->getMenuText()));
             item->setToolTip(1, QString::fromUtf8((*it)->getToolTipText()));
             item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
@@ -222,7 +225,7 @@ void DlgCustomToolbars::on_categoryBox_activated(int index)
     }
     else {
         for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
-            QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
             item->setText(1, qApp->translate((*it)->className(), (*it)->getMenuText()));
             item->setToolTip(1, qApp->translate((*it)->className(), (*it)->getToolTipText()));
             item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
@@ -235,9 +238,9 @@ void DlgCustomToolbars::on_categoryBox_activated(int index)
 
 void DlgCustomToolbars::on_workbenchBox_activated(int index)
 {
-    QVariant data = workbenchBox->itemData(index, Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(index, Qt::UserRole);
     QString workbench = data.toString();
-    toolbarTreeWidget->clear();
+    ui->toolbarTreeWidget->clear();
 
     QByteArray workbenchname = workbench.toLatin1();
     importCustomToolbars(workbenchname);
@@ -259,7 +262,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
     CommandManager& rMgr = Application::Instance->commandManager();
     for (std::vector<Base::Reference<ParameterGrp> >::iterator it = hGrps.begin(); it != hGrps.end(); ++it) {
         // create a toplevel item
-        QTreeWidgetItem* toplevel = new QTreeWidgetItem(toolbarTreeWidget);
+        QTreeWidgetItem* toplevel = new QTreeWidgetItem(ui->toolbarTreeWidget);
         bool active = (*it)->GetBool("Active", true);
         toplevel->setCheckState(0, (active ? Qt::Checked : Qt::Unchecked));
 
@@ -303,8 +306,8 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
     hGrp->Clear();
 
     CommandManager& rMgr = Application::Instance->commandManager();
-    for (int i=0; i<toolbarTreeWidget->topLevelItemCount(); i++) {
-        QTreeWidgetItem* toplevel = toolbarTreeWidget->topLevelItem(i);
+    for (int i=0; i<ui->toolbarTreeWidget->topLevelItemCount(); i++) {
+        QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
         QString groupName = QString::fromLatin1("Custom_%1").arg(i+1);
         QByteArray toolbarName = toplevel->text(0).toUtf8();
         ParameterGrp::handle hToolGrp = hGrp->GetGroup(groupName.toLatin1());
@@ -336,11 +339,11 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
 /** Adds a new action */
 void DlgCustomToolbars::on_moveActionRightButton_clicked()
 {
-    QTreeWidgetItem* item = commandTreeWidget->currentItem();
+    QTreeWidgetItem* item = ui->commandTreeWidget->currentItem();
     if (item) {
-        QTreeWidgetItem* current = toolbarTreeWidget->currentItem();
+        QTreeWidgetItem* current = ui->toolbarTreeWidget->currentItem();
         if (!current)
-            current = toolbarTreeWidget->topLevelItem(0);
+            current = ui->toolbarTreeWidget->topLevelItem(0);
         else if (current->parent())
             current = current->parent();
         if (current && !current->parent()) {
@@ -354,7 +357,7 @@ void DlgCustomToolbars::on_moveActionRightButton_clicked()
         }
     }
 
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     QString workbench = data.toString();
     exportCustomToolbars(workbench.toLatin1());
 }
@@ -362,8 +365,8 @@ void DlgCustomToolbars::on_moveActionRightButton_clicked()
 /** Removes an action */
 void DlgCustomToolbars::on_moveActionLeftButton_clicked()
 {
-    QTreeWidgetItem* item = toolbarTreeWidget->currentItem();
-    if (item && item->parent() && toolbarTreeWidget->isItemSelected(item)) {
+    QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
+    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         parent->takeChild(index);
@@ -388,7 +391,7 @@ void DlgCustomToolbars::on_moveActionLeftButton_clicked()
         delete item;
     }
 
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     QString workbench = data.toString();
     exportCustomToolbars(workbench.toLatin1());
 }
@@ -396,8 +399,8 @@ void DlgCustomToolbars::on_moveActionLeftButton_clicked()
 /** Moves up an action */
 void DlgCustomToolbars::on_moveActionUpButton_clicked()
 {
-    QTreeWidgetItem* item = toolbarTreeWidget->currentItem();
-    if (item && item->parent() && toolbarTreeWidget->isItemSelected(item)) {
+    QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
+    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         if (index > 0) {
@@ -420,13 +423,13 @@ void DlgCustomToolbars::on_moveActionUpButton_clicked()
 
             parent->takeChild(index);
             parent->insertChild(index-1, item);
-            toolbarTreeWidget->setCurrentItem(item);
+            ui->toolbarTreeWidget->setCurrentItem(item);
 
             moveUpCustomCommand(parent->text(0), data);
         }
     }
 
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     QString workbench = data.toString();
     exportCustomToolbars(workbench.toLatin1());
 }
@@ -434,8 +437,8 @@ void DlgCustomToolbars::on_moveActionUpButton_clicked()
 /** Moves down an action */
 void DlgCustomToolbars::on_moveActionDownButton_clicked()
 {
-    QTreeWidgetItem* item = toolbarTreeWidget->currentItem();
-    if (item && item->parent() && toolbarTreeWidget->isItemSelected(item)) {
+    QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
+    if (item && item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         if (index < parent->childCount()-1) {
@@ -458,13 +461,13 @@ void DlgCustomToolbars::on_moveActionDownButton_clicked()
 
             parent->takeChild(index);
             parent->insertChild(index+1, item);
-            toolbarTreeWidget->setCurrentItem(item);
+            ui->toolbarTreeWidget->setCurrentItem(item);
 
             moveDownCustomCommand(parent->text(0), data);
         }
     }
 
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     QString workbench = data.toString();
     exportCustomToolbars(workbench.toLatin1());
 }
@@ -472,12 +475,12 @@ void DlgCustomToolbars::on_moveActionDownButton_clicked()
 void DlgCustomToolbars::on_newButton_clicked()
 {
     bool ok;
-    QString text = QString::fromLatin1("Custom%1").arg(toolbarTreeWidget->topLevelItemCount()+1);
+    QString text = QString::fromLatin1("Custom%1").arg(ui->toolbarTreeWidget->topLevelItemCount()+1);
     text = QInputDialog::getText(this, tr("New toolbar"), tr("Toolbar name:"), QLineEdit::Normal, text, &ok);
     if (ok) {
         // Check for duplicated name
-        for (int i=0; i<toolbarTreeWidget->topLevelItemCount(); i++) {
-            QTreeWidgetItem* toplevel = toolbarTreeWidget->topLevelItem(i);
+        for (int i=0; i<ui->toolbarTreeWidget->topLevelItemCount(); i++) {
+            QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
             QString groupName = toplevel->text(0);
             if (groupName == text) {
                 QMessageBox::warning(this, tr("Duplicated name"), tr("The toolbar name '%1' is already used").arg(text));
@@ -485,12 +488,12 @@ void DlgCustomToolbars::on_newButton_clicked()
             }
         }
 
-        QTreeWidgetItem* item = new QTreeWidgetItem(toolbarTreeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->toolbarTreeWidget);
         item->setText(0, text);
         item->setCheckState(0, Qt::Checked);
-        toolbarTreeWidget->setItemExpanded(item, true);
+        ui->toolbarTreeWidget->setItemExpanded(item, true);
 
-        QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+        QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
         QString workbench = data.toString();
         exportCustomToolbars(workbench.toLatin1());
         addCustomToolbar(text);
@@ -499,15 +502,15 @@ void DlgCustomToolbars::on_newButton_clicked()
 
 void DlgCustomToolbars::on_deleteButton_clicked()
 {
-    QTreeWidgetItem* item = toolbarTreeWidget->currentItem();
-    if (item && !item->parent() && toolbarTreeWidget->isItemSelected(item)) {
-        int index = toolbarTreeWidget->indexOfTopLevelItem(item);
-        toolbarTreeWidget->takeTopLevelItem(index);
+    QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
+    if (item && !item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
+        int index = ui->toolbarTreeWidget->indexOfTopLevelItem(item);
+        ui->toolbarTreeWidget->takeTopLevelItem(index);
         removeCustomToolbar(item->text(0));
         delete item;
     }
 
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     QString workbench = data.toString();
     exportCustomToolbars(workbench.toLatin1());
 }
@@ -515,16 +518,16 @@ void DlgCustomToolbars::on_deleteButton_clicked()
 void DlgCustomToolbars::on_renameButton_clicked()
 {
     bool renamed = false;
-    QTreeWidgetItem* item = toolbarTreeWidget->currentItem();
-    if (item && !item->parent() && toolbarTreeWidget->isItemSelected(item)) {
+    QTreeWidgetItem* item = ui->toolbarTreeWidget->currentItem();
+    if (item && !item->parent() && ui->toolbarTreeWidget->isItemSelected(item)) {
         bool ok;
         QString old_text = item->text(0);
         QString text = QInputDialog::getText(this, tr("Rename toolbar"), tr("Toolbar name:"),
             QLineEdit::Normal, old_text, &ok);
         if (ok && text != old_text) {
             // Check for duplicated name
-            for (int i=0; i<toolbarTreeWidget->topLevelItemCount(); i++) {
-                QTreeWidgetItem* toplevel = toolbarTreeWidget->topLevelItem(i);
+            for (int i=0; i<ui->toolbarTreeWidget->topLevelItemCount(); i++) {
+                QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
                 QString groupName = toplevel->text(0);
                 if (groupName == text && toplevel != item) {
                     QMessageBox::warning(this, tr("Duplicated name"), tr("The toolbar name '%1' is already used").arg(text));
@@ -539,7 +542,7 @@ void DlgCustomToolbars::on_renameButton_clicked()
     }
 
     if (renamed) {
-        QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+        QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
         QString workbench = data.toString();
         exportCustomToolbars(workbench.toLatin1());
     }
@@ -547,14 +550,14 @@ void DlgCustomToolbars::on_renameButton_clicked()
 
 void DlgCustomToolbars::onAddMacroAction(const QByteArray& macro)
 {
-    QVariant data = categoryBox->itemData(categoryBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->categoryBox->itemData(ui->categoryBox->currentIndex(), Qt::UserRole);
     QString group = data.toString();
     if (group == QLatin1String("Macros"))
     {
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         Command* pCmd = cCmdMgr.getCommandByName(macro);
 
-        QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->commandTreeWidget);
         item->setText(1, QString::fromUtf8(pCmd->getMenuText()));
         item->setToolTip(1, QString::fromUtf8(pCmd->getToolTipText()));
         item->setData(1, Qt::UserRole, macro);
@@ -566,15 +569,15 @@ void DlgCustomToolbars::onAddMacroAction(const QByteArray& macro)
 
 void DlgCustomToolbars::onRemoveMacroAction(const QByteArray& macro)
 {
-    QVariant data = categoryBox->itemData(categoryBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->categoryBox->itemData(ui->categoryBox->currentIndex(), Qt::UserRole);
     QString group = data.toString();
     if (group == QLatin1String("Macros"))
     {
-        for (int i=0; i<commandTreeWidget->topLevelItemCount(); i++) {
-            QTreeWidgetItem* item = commandTreeWidget->topLevelItem(i);
+        for (int i=0; i<ui->commandTreeWidget->topLevelItemCount(); i++) {
+            QTreeWidgetItem* item = ui->commandTreeWidget->topLevelItem(i);
             QByteArray command = item->data(1, Qt::UserRole).toByteArray();
             if (command == macro) {
-                commandTreeWidget->takeTopLevelItem(i);
+                ui->commandTreeWidget->takeTopLevelItem(i);
                 delete item;
                 break;
             }
@@ -584,15 +587,15 @@ void DlgCustomToolbars::onRemoveMacroAction(const QByteArray& macro)
 
 void DlgCustomToolbars::onModifyMacroAction(const QByteArray& macro)
 {
-    QVariant data = categoryBox->itemData(categoryBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->categoryBox->itemData(ui->categoryBox->currentIndex(), Qt::UserRole);
     QString group = data.toString();
     if (group == QLatin1String("Macros"))
     {
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         Command* pCmd = cCmdMgr.getCommandByName(macro);
         // the left side
-        for (int i=0; i<commandTreeWidget->topLevelItemCount(); i++) {
-            QTreeWidgetItem* item = commandTreeWidget->topLevelItem(i);
+        for (int i=0; i<ui->commandTreeWidget->topLevelItemCount(); i++) {
+            QTreeWidgetItem* item = ui->commandTreeWidget->topLevelItem(i);
             QByteArray command = item->data(1, Qt::UserRole).toByteArray();
             if (command == macro) {
                 item->setText(1, QString::fromUtf8(pCmd->getMenuText()));
@@ -605,8 +608,8 @@ void DlgCustomToolbars::onModifyMacroAction(const QByteArray& macro)
             }
         }
         // the right side
-        for (int i=0; i<toolbarTreeWidget->topLevelItemCount(); i++) {
-            QTreeWidgetItem* toplevel = toolbarTreeWidget->topLevelItem(i);
+        for (int i=0; i<ui->toolbarTreeWidget->topLevelItemCount(); i++) {
+            QTreeWidgetItem* toplevel = ui->toolbarTreeWidget->topLevelItem(i);
             for (int j=0; j<toplevel->childCount(); j++) {
                 QTreeWidgetItem* item = toplevel->child(j);
                 QByteArray command = item->data(0, Qt::UserRole).toByteArray();
@@ -623,19 +626,19 @@ void DlgCustomToolbars::onModifyMacroAction(const QByteArray& macro)
 void DlgCustomToolbars::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        this->retranslateUi(this);
-        int count = categoryBox->count();
+        ui->retranslateUi(this);
+        int count = ui->categoryBox->count();
 
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         for (int i=0; i<count; i++) {
-            QVariant data = categoryBox->itemData(i, Qt::UserRole);
+            QVariant data = ui->categoryBox->itemData(i, Qt::UserRole);
             std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(data.toByteArray());
             if (!aCmds.empty()) {
                 QString text = qApp->translate(aCmds[0]->className(), aCmds[0]->getGroupName());
-                categoryBox->setItemText(i, text);
+                ui->categoryBox->setItemText(i, text);
             }
         }
-        on_categoryBox_activated(categoryBox->currentIndex());
+        on_categoryBox_activated(ui->categoryBox->currentIndex());
     }
     QWidget::changeEvent(e);
 }
@@ -663,7 +666,7 @@ DlgCustomToolbarsImp::~DlgCustomToolbarsImp()
 
 void DlgCustomToolbarsImp::addCustomToolbar(const QString& name)
 {
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QToolBar* bar = getMainWindow()->addToolBar(name);
@@ -673,7 +676,7 @@ void DlgCustomToolbarsImp::addCustomToolbar(const QString& name)
 
 void DlgCustomToolbarsImp::removeCustomToolbar(const QString& name)
 {
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
@@ -688,7 +691,7 @@ void DlgCustomToolbarsImp::removeCustomToolbar(const QString& name)
 
 void DlgCustomToolbarsImp::renameCustomToolbar(const QString& old_name, const QString& new_name)
 {
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(old_name);
@@ -739,7 +742,7 @@ void DlgCustomToolbarsImp::setActionGroup(QAction* action, const QList<QAction*>
 
 void DlgCustomToolbarsImp::addCustomCommand(const QString& name, const QByteArray& cmd)
 {
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
@@ -766,7 +769,7 @@ void DlgCustomToolbarsImp::addCustomCommand(const QString& name, const QByteArra
 
 void DlgCustomToolbarsImp::removeCustomCommand(const QString& name, const QByteArray& userdata)
 {
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
@@ -796,7 +799,7 @@ void DlgCustomToolbarsImp::removeCustomCommand(const QString& name, const QByteA
 
 void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteArray& userdata)
 {
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
@@ -837,7 +840,7 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
 
 void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByteArray& userdata)
 {
-    QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
+    QVariant data = ui->workbenchBox->itemData(ui->workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);

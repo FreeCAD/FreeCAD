@@ -24,15 +24,17 @@
 #ifndef DLGCUSTOMIZESPNAVSETTINGS_H
 #define DLGCUSTOMIZESPNAVSETTINGS_H
 
-#include "ui_DlgCustomizeSpNavSettings.h"
 #include "PropertyPage.h"
 #include <Base/Parameter.h>
+#include <memory>
+
+class Ui_DlgCustomizeSpNavSettings;
 
 namespace Gui
 {
     namespace Dialog
     {
-        class DlgCustomizeSpNavSettings : public CustomizeActionPage, public Ui_DlgCustomizeSpNavSettings
+        class DlgCustomizeSpNavSettings : public CustomizeActionPage
         {
             Q_OBJECT
 
@@ -79,6 +81,7 @@ namespace Gui
             void initialize();
 
         private:
+            std::unique_ptr<Ui_DlgCustomizeSpNavSettings> ui;
             bool init;
         };
     }

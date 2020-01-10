@@ -188,15 +188,11 @@ def read_z88_mesh(
     elemts_first_line = nodes_last_line + 1
     elements_last_line = elemts_first_line - 1 + elements_count * 2
 
-    Console.PrintLog(nodes_count)
-    Console.PrintLog("\n")
-    Console.PrintLog(elements_count)
-    FreeCAD.Console.PrintLog("\n")
-    Console.PrintLog(nodes_last_line)
-    Console.PrintLog("\n")
-    Console.PrintLog(elemts_first_line)
-    Console.PrintLog("\n")
-    Console.PrintLog(elements_last_line)
+    Console.PrintLog("{}\n".format(nodes_count))
+    Console.PrintLog("{}\n".format(elements_count))
+    Console.PrintLog("{}\n".format(nodes_last_line))
+    Console.PrintLog("{}\n".format(elemts_first_line))
+    Console.PrintLog("{}\n".format(elements_last_line))
 
     z88_mesh_file.seek(0)  # go back to the beginning of the file
     for no, line in enumerate(z88_mesh_file):
@@ -559,14 +555,14 @@ def get_z88_element_type(
 ):
     import femmesh.meshtools as FemMeshTools
     if not femmesh:
-        Console.PrintError("Error: No femmesh!")
+        Console.PrintError("Error: No femmesh.\n")
     if not femelement_table:
-        Console.PrintError("We need to get the femelement_table first!")
+        Console.PrintError("The femelement_table need to be calculated.\n")
         femelement_table = FemMeshTools.get_femelement_table(femmesh)
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
         elem_length = len(femelement_table[elem])
-        Console.PrintLog("node count of first element: " + str(elem_length) + "\n")
+        Console.PrintLog("Node count of first element: {}\n".format(elem_length))
         break  # break after the first elem
     if FemMeshTools.is_solid_femmesh(femmesh):
         if femmesh.TetraCount == femmesh.VolumeCount:

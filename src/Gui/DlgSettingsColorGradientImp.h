@@ -24,19 +24,22 @@
 #ifndef GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
 #define GUI_DIALOG_DLGSETTINGSCOLORGRADIENT_IMP_H
 
-#include "ui_DlgSettingsColorGradient.h"
 #include <App/ColorModel.h>
+#include <QDialog>
+#include <memory>
 
 class QDoubleValidator;
 
 namespace Gui {
 namespace Dialog {
+class Ui_DlgSettingsColorGradient;
+
 /**
  * The DlgSettingsColorGradientImp class implements a preference page to change settings
  * for the color gradient bar.
  * @author Werner Mayer
  */
-class DlgSettingsColorGradientImp : public QDialog, public Ui_DlgSettingsColorGradient
+class DlgSettingsColorGradientImp : public QDialog
 {
     Q_OBJECT
 
@@ -74,6 +77,7 @@ public:
     //@}
 
 private:
+    std::unique_ptr<Ui_DlgSettingsColorGradient> ui;
     QDoubleValidator* fMaxVal;
     QDoubleValidator* fMinVal;
 };

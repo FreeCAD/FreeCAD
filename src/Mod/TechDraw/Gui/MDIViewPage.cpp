@@ -1068,12 +1068,7 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 
     blockSelection(true);
     if(view) {
-        bool state = view->isSelected();
-        if (!isSelected) {
-            view->setGroupSelection(false);
-        } else if (state != isSelected) {
-            view->setSelected(isSelected);
-        }
+        view->setGroupSelection(isSelected);
         view->updateView();
     }
     blockSelection(false);

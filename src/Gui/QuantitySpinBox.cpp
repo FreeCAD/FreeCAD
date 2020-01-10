@@ -384,8 +384,7 @@ void Gui::QuantitySpinBox::onChange()
             p.setColor(QPalette::Text, Qt::lightGray);
             lineEdit()->setPalette(p);
         }
-        iconLabel->setToolTip(QString());
-        setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+        iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
     }
     else {
         setReadOnly(false);
@@ -396,7 +395,6 @@ void Gui::QuantitySpinBox::onChange()
         lineEdit()->setPalette(p);
         iconLabel->setToolTip(QString());
     }
-    iconLabel->setToolTip(QString());
 }
 
 
@@ -450,7 +448,7 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
                 p.setColor(QPalette::Text, Qt::lightGray);
                 lineEdit()->setPalette(p);
             }
-            setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
+            iconLabel->setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
             setReadOnly(false);
@@ -460,9 +458,8 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
             QPalette p(lineEdit()->palette());
             p.setColor(QPalette::Active, QPalette::Text, defaultPalette.color(QPalette::Text));
             lineEdit()->setPalette(p);
-
+            iconLabel->setToolTip(QString());
         }
-        iconLabel->setToolTip(QString());
     }
     catch (const Base::Exception & e) {
         setReadOnly(true);
@@ -479,7 +476,7 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
     if (event->text() == QString::fromUtf8("=") && isBound())
         openFormulaDialog();
     else if (!hasExpression())
-            QAbstractSpinBox::keyPressEvent(event);
+        QAbstractSpinBox::keyPressEvent(event);
 }
 
 
@@ -843,6 +840,16 @@ void QuantitySpinBox::showEvent(QShowEvent * event)
 
 bool QuantitySpinBox::event(QEvent * event)
 {
+    // issue #0004059: Tooltips for Gui::QuantitySpinBox not showing
+    // Here we must not try to show the tooltip of the icon label
+    // because it would override a custom tooltip set to this widget.
+    //
+    // We could also check if the text of this tooltip is empty but
+    // it will fail in cases where the widget is embedded into the
+    // property editor and the corresponding item has set a tooltip.
+    // Instead of showing the item's tooltip it will again show the
+    // tooltip of the icon label.
+#if 0
     if (event->type() == QEvent::ToolTip) {
         if (isBound() && getExpression() && lineEdit()->isReadOnly()) {
             QHelpEvent * helpEvent = static_cast<QHelpEvent*>(event);
@@ -852,6 +859,7 @@ bool QuantitySpinBox::event(QEvent * event)
             return true;
         }
     }
+#endif
 
     return QAbstractSpinBox::event(event);
 }

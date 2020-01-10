@@ -26,6 +26,7 @@
 #include <zlib.h>
 
 #include "DlgSettingsDocumentImp.h"
+#include "ui_DlgSettingsDocument.h"
 #include "PrefWidgets.h"
 #include "AutoSaver.h"
 
@@ -39,15 +40,16 @@ using namespace Gui::Dialog;
  */
 DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     : PreferencePage( parent )
+    , ui(new Ui_DlgSettingsDocument)
 {
-    this->setupUi(this);
-    prefSaveTransaction->hide();
-    prefDiscardTransaction->hide();
+    ui->setupUi(this);
+    ui->prefSaveTransaction->hide();
+    ui->prefDiscardTransaction->hide();
 
-    prefCountBackupFiles->setMaximum(INT_MAX);
-    prefCompression->setMinimum(Z_NO_COMPRESSION);
-    prefCompression->setMaximum(Z_BEST_COMPRESSION);
-    connect( prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)) );
+    ui->prefCountBackupFiles->setMaximum(INT_MAX);
+    ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
+    ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
+    connect( ui->prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)) );
 }
 
 /** 
@@ -61,59 +63,59 @@ DlgSettingsDocumentImp::~DlgSettingsDocumentImp()
 
 void DlgSettingsDocumentImp::saveSettings()
 {
-    prefCheckNewDoc->onSave();
-    prefCompression->onSave();
+    ui->prefCheckNewDoc->onSave();
+    ui->prefCompression->onSave();
 
-    prefUndoRedo->onSave();
-    prefUndoRedoSize->onSave();
-    prefSaveTransaction->onSave();
-    prefDiscardTransaction->onSave();
-    prefSaveThumbnail->onSave();
-    prefAddLogo->onSave();
-    prefSaveBackupFiles->onSave();
-    prefCountBackupFiles->onSave();
-    prefDuplicateLabel->onSave();
-    prefPartialLoading->onSave();
-    prefLicenseType->onSave();
-    prefLicenseUrl->onSave();
-    prefAuthor->onSave();
-    prefSetAuthorOnSave->onSave();
-    prefCompany->onSave();
-    prefRecovery->onSave();
-    prefAutoSaveEnabled->onSave();
-    prefAutoSaveTimeout->onSave();
-    prefCanAbortRecompute->onSave();
+    ui->prefUndoRedo->onSave();
+    ui->prefUndoRedoSize->onSave();
+    ui->prefSaveTransaction->onSave();
+    ui->prefDiscardTransaction->onSave();
+    ui->prefSaveThumbnail->onSave();
+    ui->prefAddLogo->onSave();
+    ui->prefSaveBackupFiles->onSave();
+    ui->prefCountBackupFiles->onSave();
+    ui->prefDuplicateLabel->onSave();
+    ui->prefPartialLoading->onSave();
+    ui->prefLicenseType->onSave();
+    ui->prefLicenseUrl->onSave();
+    ui->prefAuthor->onSave();
+    ui->prefSetAuthorOnSave->onSave();
+    ui->prefCompany->onSave();
+    ui->prefRecovery->onSave();
+    ui->prefAutoSaveEnabled->onSave();
+    ui->prefAutoSaveTimeout->onSave();
+    ui->prefCanAbortRecompute->onSave();
 
-    int timeout = prefAutoSaveTimeout->value();
-    if (!prefAutoSaveEnabled->isChecked())
+    int timeout = ui->prefAutoSaveTimeout->value();
+    if (!ui->prefAutoSaveEnabled->isChecked())
         timeout = 0;
     AutoSaver::instance()->setTimeout(timeout * 60000);
 }
 
 void DlgSettingsDocumentImp::loadSettings()
 {
-    prefCheckNewDoc->onRestore();
-    prefCompression->onRestore();
+    ui->prefCheckNewDoc->onRestore();
+    ui->prefCompression->onRestore();
 
-    prefUndoRedo->onRestore();
-    prefUndoRedoSize->onRestore();
-    prefSaveTransaction->onRestore();
-    prefDiscardTransaction->onRestore();
-    prefSaveThumbnail->onRestore();
-    prefAddLogo->onRestore();
-    prefSaveBackupFiles->onRestore();
-    prefCountBackupFiles->onRestore();
-    prefDuplicateLabel->onRestore();
-    prefPartialLoading->onRestore();
-    prefLicenseType->onRestore();
-    prefLicenseUrl->onRestore();
-    prefAuthor->onRestore();
-    prefSetAuthorOnSave->onRestore();
-    prefCompany->onRestore();
-    prefRecovery->onRestore();
-    prefAutoSaveEnabled->onRestore();
-    prefAutoSaveTimeout->onRestore();
-    prefCanAbortRecompute->onRestore();
+    ui->prefUndoRedo->onRestore();
+    ui->prefUndoRedoSize->onRestore();
+    ui->prefSaveTransaction->onRestore();
+    ui->prefDiscardTransaction->onRestore();
+    ui->prefSaveThumbnail->onRestore();
+    ui->prefAddLogo->onRestore();
+    ui->prefSaveBackupFiles->onRestore();
+    ui->prefCountBackupFiles->onRestore();
+    ui->prefDuplicateLabel->onRestore();
+    ui->prefPartialLoading->onRestore();
+    ui->prefLicenseType->onRestore();
+    ui->prefLicenseUrl->onRestore();
+    ui->prefAuthor->onRestore();
+    ui->prefSetAuthorOnSave->onRestore();
+    ui->prefCompany->onRestore();
+    ui->prefRecovery->onRestore();
+    ui->prefAutoSaveEnabled->onRestore();
+    ui->prefAutoSaveTimeout->onRestore();
+    ui->prefCanAbortRecompute->onRestore();
 }
 
 /**
@@ -122,7 +124,7 @@ void DlgSettingsDocumentImp::loadSettings()
 void DlgSettingsDocumentImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);
@@ -134,39 +136,39 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
  */
 void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
 {
-    prefLicenseUrl->setReadOnly(true);
+    ui->prefLicenseUrl->setReadOnly(true);
 
     switch (index) {
         case 0:
-            prefLicenseUrl->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/All_rights_reserved"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/All_rights_reserved"));
             break;
         case 1:
-            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by/4.0/"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by/4.0/"));
             break;
         case 2:
-            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-sa/4.0/"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-sa/4.0/"));
             break;
         case 3:
-            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nd/4.0/"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nd/4.0/"));
             break;
         case 4:
-            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc/4.0/"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc/4.0/"));
             break;
         case 5:
-            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
             break;
         case 6:
-            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
             break;
         case 7:
-            prefLicenseUrl->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/Public_domain"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/Public_domain"));
             break;
         case 8:
-            prefLicenseUrl->setText(QString::fromLatin1("http://artlibre.org/licence/lal"));
+            ui->prefLicenseUrl->setText(QString::fromLatin1("http://artlibre.org/licence/lal"));
             break;
         default:
-            prefLicenseUrl->clear();
-            prefLicenseUrl->setReadOnly(false);
+            ui->prefLicenseUrl->clear();
+            ui->prefLicenseUrl->setReadOnly(false);
             break;
     }
 }

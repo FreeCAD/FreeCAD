@@ -105,7 +105,9 @@ class _ViewProviderFemMeshGmsh:
                                     "mesh object belongs too!\n"
                                 )
                         else:
-                            print("Gmsh FEM mesh object does not belong to the active analysis.")
+                            FreeCAD.Console.PrintMessage(
+                                "Gmsh FEM mesh object does not belong to the active analysis.\n"
+                            )
                             found_mesh_analysis = False
                             for o in gui_doc.Document.Objects:
                                 if o.isDerivedFrom("Fem::FemAnalysisPython"):
@@ -113,26 +115,26 @@ class _ViewProviderFemMeshGmsh:
                                         if m == self.Object:
                                             found_mesh_analysis = True
                                             FemGui.setActiveAnalysis(o)
-                                            print(
+                                            FreeCAD.Console.PrintMessage(
                                                 "The analysis the Gmsh FEM mesh object "
-                                                "belongs to was found and activated: {}"
+                                                "belongs to was found and activated: {}\n"
                                                 .format(o.Name)
                                             )
                                             gui_doc.setEdit(vobj.Object.Name)
                                             break
                             if not found_mesh_analysis:
-                                print(
+                                FreeCAD.Console.PrintMessage(
                                     "Gmsh FEM mesh object does not belong to an analysis. "
-                                    "Analysis group meshing will be deactivated."
+                                    "Analysis group meshing will be deactivated.\n"
                                 )
                                 gui_doc.setEdit(vobj.Object.Name)
                     else:
-                        FreeCAD.Console.PrintError("Active analysis is not in active document.")
+                        FreeCAD.Console.PrintError("Active analysis is not in active document.\n")
                 else:
-                    print(
+                    FreeCAD.Console.PrintMessage(
                         "No active analysis in active document, "
                         "we are going to have a look if the Gmsh FEM mesh object "
-                        "belongs to a non active analysis."
+                        "belongs to a non active analysis.\n"
                     )
                     found_mesh_analysis = False
                     for o in gui_doc.Document.Objects:
@@ -141,20 +143,21 @@ class _ViewProviderFemMeshGmsh:
                                 if m == self.Object:
                                     found_mesh_analysis = True
                                     FemGui.setActiveAnalysis(o)
-                                    print(
+                                    FreeCAD.Console.PrintMessage(
                                         "The analysis the Gmsh FEM mesh object "
-                                        "belongs to was found and activated: {}".format(o.Name)
+                                        "belongs to was found and activated: {}\n"
+                                        .format(o.Name)
                                     )
                                     gui_doc.setEdit(vobj.Object.Name)
                                     break
                     if not found_mesh_analysis:
-                        print(
+                        FreeCAD.Console.PrintMessage(
                             "Gmsh FEM mesh object does not belong to an analysis. "
-                            "Analysis group meshing will be deactivated."
+                            "Analysis group meshing will be deactivated.\n"
                         )
                         gui_doc.setEdit(vobj.Object.Name)
             else:
-                print("No analysis in the active document.")
+                FreeCAD.Console.PrintMessage("No analysis in the active document.\n")
                 gui_doc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
@@ -176,11 +179,13 @@ class _ViewProviderFemMeshGmsh:
         return (reg_childs + gro_childs + bou_childs)
 
     def onDelete(self, feature, subelements):
-        try:
-            for obj in self.claimChildren():
-                obj.ViewObject.show()
-        except Exception as err:
-            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+        children = self.claimChildren()
+        if len(children) > 0:
+            try:
+                for obj in children:
+                    obj.ViewObject.show()
+            except Exception as err:
+                FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
         return True
 
     def canDragObjects(self):
@@ -336,10 +341,10 @@ class _TaskPanelFemMeshGmsh:
         self.form.te_output.moveCursor(QtGui.QTextCursor.End)
 
     def update_timer_text(self):
-        # print("timer1")
+        # FreeCAD.Console.PrintMessage("timer1\n")
         if self.gmsh_runs:
-            print("timer2")
-            # print("Time: {0:4.1f}: ".format(time.time() - self.Start))
+            FreeCAD.Console.PrintMessage("timer2\n")
+            # FreeCAD.Console.PrintMessage("Time: {0:4.1f}: \n".format(time.time() - self.Start))
             self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
 
     def max_changed(self, base_quantity_value):
@@ -393,9 +398,12 @@ class _TaskPanelFemMeshGmsh:
             error = gmsh_mesh.create_mesh()
         except:
             import sys
-            print("Unexpected error when creating mesh: ", sys.exc_info()[0])
+            FreeCAD.Console.PrintMessage(
+                "Unexpected error when creating mesh: {}\n"
+                .format(sys.exc_info()[0])
+            )
         if error:
-            print(error)
+            FreeCAD.Console.PrintMessage("{}\n".format(error))
             self.console_log("Gmsh had warnings ...")
             self.console_log(error, "#FF0000")
         else:
@@ -412,11 +420,16 @@ class _TaskPanelFemMeshGmsh:
         if self.analysis:
             for m in FemGui.getActiveAnalysis().Group:
                 if m.Name == self.mesh_obj.Name:
-                    print("Active analysis found: " + self.analysis.Name)
+                    FreeCAD.Console.PrintMessage(
+                        "Active analysis found: {}\n"
+                        .format(self.analysis.Name)
+                    )
                     return
             else:
-                # print("Mesh is not member of active analysis, means no group meshing")
+                FreeCAD.Console.PrintLog(
+                    "Mesh is not member of active analysis, means no group meshing.\n"
+                )
                 self.analysis = None  # no group meshing
         else:
-            # print("No active analysis, means no group meshing")
+            FreeCAD.Console.PrintLog("No active analysis, means no group meshing.\n")
             self.analysis = None  # no group meshing
