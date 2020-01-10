@@ -36,6 +36,7 @@
 # include <QFileInfo>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -62,6 +63,8 @@ DrawHatch::DrawHatch(void)
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be hatched");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(HatchPattern ,(""),vgroup,App::Prop_None,"The hatch pattern file for this area");
+    ADD_PROPERTY_TYPE(SvgIncluded, (""), vgroup,App::Prop_None,
+                                            "Embedded Svg hatch file. System use only.");   // n/a to end users
 
     DirProjection.setStatus(App::Property::ReadOnly,true);
 
@@ -82,6 +85,8 @@ DrawHatch::DrawHatch(void)
     std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
     HatchPattern.setFilter(svgFilter);
 
+//    SvgIncluded.setStatus(App::Property::ReadOnly,true);
+
 }
 
 DrawHatch::~DrawHatch()
@@ -90,11 +95,17 @@ DrawHatch::~DrawHatch()
 
 void DrawHatch::onChanged(const App::Property* prop)
 {
-    if ((prop == &Source)         ||
-        (prop == &HatchPattern)) {
-        if (!isRestoring()) {
-              DrawHatch::execute();
-          }
+    if (!isRestoring()) {
+        if (prop == &Source) {
+            DrawHatch::execute();
+        }
+        App::Document* doc = getDocument();
+        if ((prop == &HatchPattern) &&
+            (doc != nullptr) ) {
+            if (!HatchPattern.isEmpty()) {
+                replaceSvgIncluded(HatchPattern.getValue());
+            }
+        }
     }
     App::DocumentObject::onChanged(prop);
 }
@@ -193,6 +204,75 @@ bool DrawHatch::empty(void)
 {
     const std::vector<std::string> &sourceNames = Source.getSubValues();
     return sourceNames.empty();
+}
+
+void DrawHatch::replaceSvgIncluded(std::string newSvgFile)
+{
+//    Base::Console().Message("DH::replaceSvgHatch(%s)\n", newSvgFile.c_str());
+    if (SvgIncluded.isEmpty()) {
+        setupSvgIncluded();
+    } else {
+        std::string tempName = SvgIncluded.getExchangeTempFile();
+        copyFile(newSvgFile, tempName);
+        SvgIncluded.setValue(tempName.c_str());
+    }
+}
+
+void DrawHatch::onDocumentRestored() 
+{
+//    Base::Console().Message("DH::onDocumentRestored()\n");
+    if (!HatchPattern.isEmpty()) {
+        std::string svgFileName = HatchPattern.getValue();
+        Base::FileInfo tfi(svgFileName);
+        if (tfi.isReadable()) {
+            if (SvgIncluded.isEmpty()) {
+                setupSvgIncluded();
+            }
+        }
+    }
+    App::DocumentObject::onDocumentRestored();
+}
+
+void DrawHatch::setupObject()
+{
+    //by this point DH should have a name and belong to a document
+    setupSvgIncluded();
+
+    App::DocumentObject::setupObject();
+}
+
+void DrawHatch::setupSvgIncluded(void)
+{
+//    Base::Console().Message("DH::setupSvgIncluded()\n");
+    App::Document* doc = getDocument();
+    std::string special = getNameInDocument();
+    special += "SvgHatch.svg";
+    std::string dir = doc->TransientDir.getValue();
+    std::string svgName = dir + special;
+
+    if (SvgIncluded.isEmpty()) {
+        copyFile(std::string(), svgName);
+        SvgIncluded.setValue(svgName.c_str());
+    }
+
+    if (!HatchPattern.isEmpty()) {
+        std::string exchName = SvgIncluded.getExchangeTempFile();
+        copyFile(HatchPattern.getValue(), exchName);
+        SvgIncluded.setValue(exchName.c_str(), special.c_str());
+    }
+}
+
+//copy whole text file from inSpec to outSpec
+void DrawHatch::copyFile(std::string inSpec, std::string outSpec)
+{
+//    Base::Console().Message("DH::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
+    if (inSpec.empty()) {
+        std::ofstream  dst(outSpec);   //make an empty file
+    } else {
+        std::ifstream  src(inSpec);
+        std::ofstream  dst(outSpec);
+        dst << src.rdbuf();
+    }
 }
 
 
