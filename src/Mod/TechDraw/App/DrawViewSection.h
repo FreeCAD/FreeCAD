@@ -89,7 +89,6 @@ public:
     }
     virtual void unsetupObject() override;
     virtual short mustExecute() const override;
-    virtual void onSettingDocument() override;
 
     std::vector<TechDraw::Face*> getFaceGeometry();
 

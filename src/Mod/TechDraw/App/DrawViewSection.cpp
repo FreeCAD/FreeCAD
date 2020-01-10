@@ -130,8 +130,10 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(CutSurfaceDisplay,((long)2),fgroup, App::Prop_None, "Appearance of Cut Surface");
     ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
     ADD_PROPERTY_TYPE(FileGeomPattern ,(""),fgroup,App::Prop_None,"The PAT pattern file for geometric hatching");
-    ADD_PROPERTY_TYPE(SvgIncluded ,(""),fgroup,App::Prop_None,"Embedded Svg hatch file");   // n/a to end users
-    ADD_PROPERTY_TYPE(PatIncluded ,(""),fgroup,App::Prop_None,"Embedded Pat pattern file"); // n/a to end users
+    ADD_PROPERTY_TYPE(SvgIncluded ,(""),fgroup,App::Prop_None,
+                                            "Embedded Svg hatch file. System use only.");   // n/a to end users
+    ADD_PROPERTY_TYPE(PatIncluded ,(""),fgroup,App::Prop_None,
+                                            "Embedded Pat pattern file. System use only."); // n/a to end users
     ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
     ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
 
@@ -142,8 +144,8 @@ DrawViewSection::DrawViewSection()
     hatchFilter = ("PAT files (*.pat *.PAT);;All files (*)");
     FileGeomPattern.setFilter(hatchFilter);
 
-//    SvgIncluded.setStatus(App::Property::ReadOnly,true);
-//    PatIncluded.setStatus(App::Property::ReadOnly,true);
+    SvgIncluded.setStatus(App::Property::ReadOnly,true);
+    PatIncluded.setStatus(App::Property::ReadOnly,true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -237,9 +239,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
 void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 {
 //    Base::Console().Message("DVS::replaceSvgHatch(%s)\n", newSvgFile.c_str());
-    const char* temp = SvgIncluded.getValue();
-    //if (SvgIncluded.isEmpty()) {
-    if (temp[0] == '\0') {
+    if (SvgIncluded.isEmpty()) {
         setupSvgIncluded();
     } else {
         std::string tempName = SvgIncluded.getExchangeTempFile();
@@ -251,8 +251,7 @@ void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
 void DrawViewSection::replacePatIncluded(std::string newPatFile)
 {
 //    Base::Console().Message("DVS::replacePatHatch(%s)\n", newPatFile.c_str());
-    const char* temp = PatIncluded.getValue();
-    if (temp[0] == '\0') {
+    if (PatIncluded.isEmpty()) {
         setupPatIncluded();
     } else {
         std::string tempName = PatIncluded.getExchangeTempFile();
@@ -889,14 +888,21 @@ void DrawViewSection::onDocumentRestored()
         std::string svgFileName = FileHatchPattern.getValue();
         Base::FileInfo tfi(svgFileName);
         if (tfi.isReadable()) {
-            const char* svg = SvgIncluded.getValue();
-//            if (SvgIncluded.isEmpty()) {
-            if (svg[0] == '\0') {
+            if (SvgIncluded.isEmpty()) {
                 setupSvgIncluded();
             }
         }
     }
 
+    if (!FileGeomPattern.isEmpty()) {
+        std::string patFileName = FileGeomPattern.getValue();
+        Base::FileInfo tfi(patFileName);
+        if (tfi.isReadable()) {
+            if (PatIncluded.isEmpty()) {
+                setupPatIncluded();
+            }
+        }
+    }
     DrawViewPart::onDocumentRestored();
 }
 
@@ -918,9 +924,7 @@ void DrawViewSection::setupSvgIncluded(void)
     std::string dir = doc->TransientDir.getValue();
     std::string svgName = dir + special;
 
-    const char* includedName = SvgIncluded.getValue();
-    //if (SvgIncluded.isEmpty()) {
-//    if (includedName[0] == '\0') {
+    if (SvgIncluded.isEmpty()) {
         copyFile(std::string(), svgName);
         SvgIncluded.setValue(svgName.c_str());
     }
@@ -940,9 +944,7 @@ void DrawViewSection::setupPatIncluded(void)
     special += "PatHatch.pat";
     std::string dir = doc->TransientDir.getValue();
     std::string patName = dir + special;
-    //if (PatIncluded.isEmpty()) {
-    const char* includedName = PatIncluded.getValue();
-    if (includedName[0] == '\0') {
+    if (PatIncluded.isEmpty()) {
         copyFile(std::string(), patName);
         PatIncluded.setValue(patName.c_str());
     }
