@@ -28,13 +28,16 @@
 
 namespace PartGui {
 
-class DlgPartCylinderImp : public Gui::LocationInterface<Ui_DlgPartCylinder>
+class DlgPartCylinderImp : public Gui::LocationDialogUi<Ui_DlgPartCylinder>
 {
     Q_OBJECT
 
 public:
     DlgPartCylinderImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgPartCylinderImp();
+
+    double getRadius() const;
+    double getLength() const;
 };
 
 } // namespace PartGui

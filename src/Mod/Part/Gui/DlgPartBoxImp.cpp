@@ -37,7 +37,7 @@ using namespace PartGui;
  *  true to construct a modal dialog.
  */
 DlgPartBoxImp::DlgPartBoxImp(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationInterface<Ui_DlgPartBox>(parent, fl)
+  : Gui::LocationDialogUi<Ui_DlgPartBox>(parent, fl)
 {
 }
 

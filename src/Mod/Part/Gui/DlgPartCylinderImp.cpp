@@ -37,7 +37,7 @@ using namespace PartGui;
  *  true to construct a modal dialog.
  */
 DlgPartCylinderImp::DlgPartCylinderImp(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationInterface<Ui_DlgPartCylinder>(parent, fl)
+  : Gui::LocationDialogUi<Ui_DlgPartCylinder>(parent, fl)
 {
 }
 
@@ -47,6 +47,16 @@ DlgPartCylinderImp::DlgPartCylinderImp(QWidget* parent, Qt::WindowFlags fl)
 DlgPartCylinderImp::~DlgPartCylinderImp()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+
+double DlgPartCylinderImp::getRadius() const
+{
+    return this->radius->value().getValue();
+}
+
+double DlgPartCylinderImp::getLength() const
+{
+    return this->length->value().getValue();
 }
 
 #include "moc_DlgPartCylinderImp.cpp"

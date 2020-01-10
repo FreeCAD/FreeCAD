@@ -76,7 +76,6 @@ private:
     void autoSolid();
 
 private:
-    //typedef Gui::LocationInterfaceComp<Ui_DlgRevolution> Ui_RevolutionComp;
     Ui_DlgRevolution* ui;
     class EdgeSelection;
     EdgeSelection* filter;

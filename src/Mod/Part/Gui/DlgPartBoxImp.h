@@ -28,7 +28,7 @@
 
 namespace PartGui {
 
-class DlgPartBoxImp : public Gui::LocationInterface<Ui_DlgPartBox>
+class DlgPartBoxImp : public Gui::LocationDialogUi<Ui_DlgPartBox>
 {
     Q_OBJECT
 
