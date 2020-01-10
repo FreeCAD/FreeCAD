@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QCheckBox>
+# include <QLineEdit>
 # include <QMenu>
 #endif
 

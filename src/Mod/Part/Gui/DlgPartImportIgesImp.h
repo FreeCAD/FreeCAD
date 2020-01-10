@@ -23,12 +23,12 @@
 #ifndef DlgPartImportIgesImp_H
 #define DlgPartImportIgesImp_H
 
-#include "ui_DlgPartImportIges.h"
-
+#include <QDialog>
+#include <memory>
 
 namespace PartGui {
-
-class DlgPartImportIgesImp : public QDialog, public Ui_DlgPartImportIges
+class Ui_DlgPartImportIges;
+class DlgPartImportIgesImp : public QDialog
 { 
     Q_OBJECT
 
@@ -40,6 +40,8 @@ public Q_SLOTS:
   virtual void OnApply();
   virtual void onChooseFileName();
 
+private:
+  std::unique_ptr<Ui_DlgPartImportIges> ui;
 };
 
 } // namespace PartGui

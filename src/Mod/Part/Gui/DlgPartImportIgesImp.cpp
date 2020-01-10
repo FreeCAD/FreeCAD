@@ -30,6 +30,7 @@
 #include <Gui/MainWindow.h>
 
 #include "DlgPartImportIgesImp.h"
+#include "ui_DlgPartImportIges.h"
 
 using namespace PartGui;
 
@@ -44,8 +45,9 @@ using namespace PartGui;
  */
 DlgPartImportIgesImp::DlgPartImportIgesImp(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
+    , ui(new Ui_DlgPartImportIges)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 /*  
@@ -71,7 +73,7 @@ void DlgPartImportIgesImp::onChooseFileName()
         .arg(tr("IGES"),
              tr("All Files"));
     if (!fn.isEmpty()) {
-        FileName->setText(fn);
+        ui->FileName->setText(fn);
     }
 }
 

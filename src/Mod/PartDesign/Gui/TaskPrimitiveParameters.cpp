@@ -34,6 +34,7 @@
 #endif
 
 #include "TaskPrimitiveParameters.h"
+#include "ui_TaskPrimitiveParameters.h"
 #include "ViewProviderDatumCS.h"
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 #include <Mod/PartDesign/App/DatumCS.h>
@@ -53,58 +54,60 @@
 using namespace PartDesignGui;
 
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive parameters"), true, parent), vp(vp)
+  : TaskBox(QPixmap(),tr("Primitive parameters"), true, parent)
+  , ui(new Ui_DlgPrimitives)
+  , vp(vp)
 {
     proxy = new QWidget(this);
-    ui.setupUi(proxy);
+    ui->setupUi(proxy);
 
     // box
-    ui.boxLength->setMaximum(INT_MAX);
-    ui.boxWidth->setMaximum(INT_MAX);
-    ui.boxHeight->setMaximum(INT_MAX);
+    ui->boxLength->setMaximum(INT_MAX);
+    ui->boxWidth->setMaximum(INT_MAX);
+    ui->boxHeight->setMaximum(INT_MAX);
 
     // cylinder
-    ui.cylinderRadius->setMaximum(INT_MAX);
-    ui.cylinderHeight->setMaximum(INT_MAX);
+    ui->cylinderRadius->setMaximum(INT_MAX);
+    ui->cylinderHeight->setMaximum(INT_MAX);
 
     // cone
-    ui.coneRadius1->setMaximum(INT_MAX);
-    ui.coneRadius2->setMaximum(INT_MAX);
-    ui.coneHeight->setMaximum(INT_MAX);
+    ui->coneRadius1->setMaximum(INT_MAX);
+    ui->coneRadius2->setMaximum(INT_MAX);
+    ui->coneHeight->setMaximum(INT_MAX);
 
     // sphere
-    ui.sphereRadius->setMaximum(INT_MAX);
+    ui->sphereRadius->setMaximum(INT_MAX);
 
     // ellipsoid
-    ui.ellipsoidRadius1->setMaximum(INT_MAX);
-    ui.ellipsoidRadius2->setMaximum(INT_MAX);
-    ui.ellipsoidRadius3->setMaximum(INT_MAX);
+    ui->ellipsoidRadius1->setMaximum(INT_MAX);
+    ui->ellipsoidRadius2->setMaximum(INT_MAX);
+    ui->ellipsoidRadius3->setMaximum(INT_MAX);
 
     // torus
-    ui.torusRadius1->setMaximum(INT_MAX);
-    ui.torusRadius2->setMaximum(INT_MAX);
+    ui->torusRadius1->setMaximum(INT_MAX);
+    ui->torusRadius2->setMaximum(INT_MAX);
 
     // wedge
-    ui.wedgeXmin->setMinimum(INT_MIN);
-    ui.wedgeXmin->setMaximum(INT_MAX);
-    ui.wedgeYmin->setMinimum(INT_MIN);
-    ui.wedgeYmin->setMaximum(INT_MAX);
-    ui.wedgeZmin->setMinimum(INT_MIN);
-    ui.wedgeZmin->setMaximum(INT_MAX);
-    ui.wedgeX2min->setMinimum(INT_MIN);
-    ui.wedgeX2min->setMaximum(INT_MAX);
-    ui.wedgeZ2min->setMinimum(INT_MIN);
-    ui.wedgeZ2min->setMaximum(INT_MAX);
-    ui.wedgeXmax->setMinimum(INT_MIN);
-    ui.wedgeXmax->setMaximum(INT_MAX);
-    ui.wedgeYmax->setMinimum(INT_MIN);
-    ui.wedgeYmax->setMaximum(INT_MAX);
-    ui.wedgeZmax->setMinimum(INT_MIN);
-    ui.wedgeZmax->setMaximum(INT_MAX);
-    ui.wedgeX2max->setMinimum(INT_MIN);
-    ui.wedgeX2max->setMaximum(INT_MAX);
-    ui.wedgeZ2max->setMinimum(INT_MIN);
-    ui.wedgeZ2max->setMaximum(INT_MAX);
+    ui->wedgeXmin->setMinimum(INT_MIN);
+    ui->wedgeXmin->setMaximum(INT_MAX);
+    ui->wedgeYmin->setMinimum(INT_MIN);
+    ui->wedgeYmin->setMaximum(INT_MAX);
+    ui->wedgeZmin->setMinimum(INT_MIN);
+    ui->wedgeZmin->setMaximum(INT_MAX);
+    ui->wedgeX2min->setMinimum(INT_MIN);
+    ui->wedgeX2min->setMaximum(INT_MAX);
+    ui->wedgeZ2min->setMinimum(INT_MIN);
+    ui->wedgeZ2min->setMaximum(INT_MAX);
+    ui->wedgeXmax->setMinimum(INT_MIN);
+    ui->wedgeXmax->setMaximum(INT_MAX);
+    ui->wedgeYmax->setMinimum(INT_MIN);
+    ui->wedgeYmax->setMaximum(INT_MAX);
+    ui->wedgeZmax->setMinimum(INT_MIN);
+    ui->wedgeZmax->setMaximum(INT_MAX);
+    ui->wedgeX2max->setMinimum(INT_MIN);
+    ui->wedgeX2max->setMaximum(INT_MAX);
+    ui->wedgeZ2max->setMinimum(INT_MIN);
+    ui->wedgeZ2max->setMaximum(INT_MAX);
 
     this->groupLayout()->addWidget(proxy);
 
@@ -113,74 +116,74 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 
         case PartDesign::FeaturePrimitive::Box:
             index = 1;
-            ui.boxLength->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Length.getValue());
-            ui.boxHeight->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Height.getValue());
-            ui.boxWidth->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Width.getValue());
+            ui->boxLength->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Length.getValue());
+            ui->boxHeight->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Height.getValue());
+            ui->boxWidth->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Width.getValue());
             break;
         case PartDesign::FeaturePrimitive::Cylinder:
             index = 2;
-            ui.cylinderAngle->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getValue());
-            ui.cylinderHeight->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height.getValue());
-            ui.cylinderRadius->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getValue());
+            ui->cylinderAngle->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getValue());
+            ui->cylinderHeight->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height.getValue());
+            ui->cylinderRadius->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getValue());
             break;
         case PartDesign::FeaturePrimitive::Sphere:
             index = 4;
-            ui.sphereAngle1->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle1.getValue());
-            ui.sphereAngle2->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle2.getValue());
-            ui.sphereAngle3->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getValue());
-            ui.sphereRadius->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius.getValue());
+            ui->sphereAngle1->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle1.getValue());
+            ui->sphereAngle2->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle2.getValue());
+            ui->sphereAngle3->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getValue());
+            ui->sphereRadius->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius.getValue());
             break;
         case PartDesign::FeaturePrimitive::Cone:
             index = 3;
-            ui.coneAngle->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Angle.getValue());
-            ui.coneHeight->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Height.getValue());
-            ui.coneRadius1->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1.getValue());
-            ui.coneRadius2->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2.getValue());
+            ui->coneAngle->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Angle.getValue());
+            ui->coneHeight->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Height.getValue());
+            ui->coneRadius1->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1.getValue());
+            ui->coneRadius2->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2.getValue());
             break;
         case PartDesign::FeaturePrimitive::Ellipsoid:
             index = 5;
-            ui.ellipsoidAngle1->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle1.getValue());
-            ui.ellipsoidAngle2->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle2.getValue());
-            ui.ellipsoidAngle3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3.getValue());
-            ui.ellipsoidRadius1->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius1.getValue());
-            ui.ellipsoidRadius2->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius2.getValue());
-            ui.ellipsoidRadius3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3.getValue());
+            ui->ellipsoidAngle1->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle1.getValue());
+            ui->ellipsoidAngle2->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle2.getValue());
+            ui->ellipsoidAngle3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3.getValue());
+            ui->ellipsoidRadius1->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius1.getValue());
+            ui->ellipsoidRadius2->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius2.getValue());
+            ui->ellipsoidRadius3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3.getValue());
             break;
         case PartDesign::FeaturePrimitive::Torus:
             index = 6;
-            ui.torusAngle1->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle1.getValue());
-            ui.torusAngle2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle2.getValue());
-            ui.torusAngle3->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3.getValue());
-            ui.torusRadius1->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius1.getValue());
-            ui.torusRadius2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2.getValue());
+            ui->torusAngle1->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle1.getValue());
+            ui->torusAngle2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle2.getValue());
+            ui->torusAngle3->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3.getValue());
+            ui->torusRadius1->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius1.getValue());
+            ui->torusRadius2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2.getValue());
             break;
         case PartDesign::FeaturePrimitive::Prism:
             index = 7;
-            ui.prismPolygon->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Polygon.getValue());
-            ui.prismCircumradius->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius.getValue());
-            ui.prismHeight->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getValue());
+            ui->prismPolygon->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Polygon.getValue());
+            ui->prismCircumradius->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius.getValue());
+            ui->prismHeight->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getValue());
             break;
         case PartDesign::FeaturePrimitive::Wedge:
             index = 8;
-            ui.wedgeXmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmax.getValue());
-            ui.wedgeXmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmin.getValue());
-            ui.wedgeX2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->X2max.getValue());
-            ui.wedgeX2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->X2min.getValue());
-            ui.wedgeYmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymax.getValue());
-            ui.wedgeYmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymin.getValue());
-            ui.wedgeZmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmax.getValue());
-            ui.wedgeZmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmin.getValue());
-            ui.wedgeZ2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2max.getValue());
-            ui.wedgeZ2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min.getValue());
+            ui->wedgeXmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmax.getValue());
+            ui->wedgeXmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmin.getValue());
+            ui->wedgeX2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->X2max.getValue());
+            ui->wedgeX2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->X2min.getValue());
+            ui->wedgeYmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymax.getValue());
+            ui->wedgeYmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymin.getValue());
+            ui->wedgeZmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmax.getValue());
+            ui->wedgeZmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmin.getValue());
+            ui->wedgeZ2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2max.getValue());
+            ui->wedgeZ2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min.getValue());
             break;
     }
 
-    ui.widgetStack->setCurrentIndex(index);
-    ui.widgetStack->setMinimumSize(ui.widgetStack->widget(index)->minimumSize());
-    for(int i=0; i<ui.widgetStack->count(); ++i) {
+    ui->widgetStack->setCurrentIndex(index);
+    ui->widgetStack->setMinimumSize(ui->widgetStack->widget(index)->minimumSize());
+    for(int i=0; i<ui->widgetStack->count(); ++i) {
 
         if(i != index)
-            ui.widgetStack->widget(i)->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
+            ui->widgetStack->widget(i)->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
     }
 
     Gui::Document* doc = vp->getDocument();
@@ -200,58 +203,58 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
     }
 
     // box
-    connect(ui.boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
-    connect(ui.boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
-    connect(ui.boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
+    connect(ui->boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
+    connect(ui->boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
+    connect(ui->boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
 
     // cylinder
-    connect(ui.cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
-    connect(ui.cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
-    connect(ui.cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
+    connect(ui->cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
+    connect(ui->cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
+    connect(ui->cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
 
     // cone
-    connect(ui.coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
-    connect(ui.coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
-    connect(ui.coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
-    connect(ui.coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
+    connect(ui->coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
+    connect(ui->coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
+    connect(ui->coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
+    connect(ui->coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
 
     // sphere
-    connect(ui.sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
-    connect(ui.sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
-    connect(ui.sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
-    connect(ui.sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
+    connect(ui->sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
+    connect(ui->sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
+    connect(ui->sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
+    connect(ui->sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
 
     // ellipsoid
-    connect(ui.ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
-    connect(ui.ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
-    connect(ui.ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
-    connect(ui.ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
-    connect(ui.ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
-    connect(ui.ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
+    connect(ui->ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
+    connect(ui->ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
+    connect(ui->ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
+    connect(ui->ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
+    connect(ui->ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
+    connect(ui->ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
 
     // torus
-    connect(ui.torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
-    connect(ui.torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
-    connect(ui.torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
-    connect(ui.torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
-    connect(ui.torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
+    connect(ui->torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
+    connect(ui->torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
+    connect(ui->torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
+    connect(ui->torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
+    connect(ui->torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
 
     //prism
-    connect(ui.prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
-    connect(ui.prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
-    connect(ui.prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
+    connect(ui->prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
+    connect(ui->prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
+    connect(ui->prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
 
     // wedge
-    connect(ui.wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
-    connect(ui.wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXinChanged(double)));
-    connect(ui.wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
-    connect(ui.wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYinChanged(double)));
-    connect(ui.wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
-    connect(ui.wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZinChanged(double)));
-    connect(ui.wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
-    connect(ui.wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2inChanged(double)));
-    connect(ui.wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
-    connect(ui.wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2inChanged(double)));
+    connect(ui->wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
+    connect(ui->wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXinChanged(double)));
+    connect(ui->wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
+    connect(ui->wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYinChanged(double)));
+    connect(ui->wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
+    connect(ui->wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZinChanged(double)));
+    connect(ui->wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
+    connect(ui->wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2inChanged(double)));
+    connect(ui->wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
+    connect(ui->wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2inChanged(double)));
 }
 
 /*
@@ -521,16 +524,16 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
         if (!doc) {
             return;
         }
-        switch(ui.widgetStack->currentIndex()) {
+        switch(ui->widgetStack->currentIndex()) {
             case 1:         // box
                 cmd = QString::fromLatin1(
                     "%1.Length=%2\n"
                     "%1.Width=%3\n"
                     "%1.Height=%4\n")
                     .arg(name)
-                    .arg(ui.boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->boxLength->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->boxWidth->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->boxHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
 
             case 2:  // cylinder
@@ -539,9 +542,9 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Height=%3\n"
                     "%1.Angle=%4\n")
                     .arg(name)
-                    .arg(ui.cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->cylinderRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->cylinderHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->cylinderAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
 
             case 3:  // cone
@@ -551,10 +554,10 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Height=%4\n"
                     "%1.Angle=%5\n")
                     .arg(name)
-                    .arg(ui.coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->coneRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->coneRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->coneHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->coneAngle->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                  break;
 
             case 4:  // sphere
@@ -564,10 +567,10 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2=%4\n"
                     "%1.Angle3=%5\n")
                     .arg(name)
-                    .arg(ui.sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->sphereRadius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->sphereAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->sphereAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->sphereAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
             case 5:  // ellipsoid
                 cmd = QString::fromLatin1(
@@ -578,12 +581,12 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2=%6\n"
                     "%1.Angle3=%7\n")
                     .arg(name)
-                    .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->ellipsoidRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->ellipsoidRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->ellipsoidRadius3->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->ellipsoidAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->ellipsoidAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->ellipsoidAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
 
             case 6:  // torus
@@ -594,11 +597,11 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Angle2=%5\n"
                     "%1.Angle3=%6\n")
                     .arg(name)
-                    .arg(ui.torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->torusRadius1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->torusRadius2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->torusAngle1->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->torusAngle2->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->torusAngle3->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
             case 7:  // prism
                 cmd = QString::fromLatin1(
@@ -606,9 +609,9 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.Circumradius=%3\n"
                     "%1.Height=%4\n")
                     .arg(name)
-                    .arg(ui.prismPolygon->value())
-                    .arg(ui.prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->prismPolygon->value())
+                    .arg(ui->prismCircumradius->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->prismHeight->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
             case 8:  // wedge
                 cmd = QString::fromLatin1(
@@ -623,16 +626,16 @@ void  TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
                     "%1.X2max=%10\n"
                     "%1.Z2max=%11\n")
                     .arg(name)
-                    .arg(ui.wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
-                    .arg(ui.wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
+                    .arg(ui->wedgeXmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeYmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeZmin->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeX2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeZ2min->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeXmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeYmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeZmax->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeX2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals())
+                    .arg(ui->wedgeZ2max->value().getValue(),0,'f',Base::UnitsApi::getDecimals());
                 break;
 
             default:

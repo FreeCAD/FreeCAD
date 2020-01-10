@@ -26,11 +26,13 @@
 # ifdef FC_OS_WIN32
 # include <windows.h>
 # endif
+# include <QApplication>
 # include <qaction.h>
 # include <qdir.h>
 # include <qfileinfo.h>
 # include <qinputdialog.h>
 # include <qmessagebox.h>
+# include <QPointer>
 # include <qstringlist.h>
 //# include <gts.h>
 # include <map>
@@ -81,7 +83,7 @@ using namespace Mesh;
 
 // deprecated
 #if 0
-DEF_STD_CMD_A(CmdMeshTransform);
+DEF_STD_CMD_A(CmdMeshTransform)
 
 CmdMeshTransform::CmdMeshTransform()
   :Command("Mesh_Transform")
@@ -120,7 +122,7 @@ bool CmdMeshTransform::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
-DEF_STD_CMD_A(CmdMeshDemolding);
+DEF_STD_CMD_A(CmdMeshDemolding)
 
 CmdMeshDemolding::CmdMeshDemolding()
   :Command("Mesh_Demolding")
@@ -159,7 +161,7 @@ bool CmdMeshDemolding::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
-DEF_STD_CMD_A(CmdMeshToolMesh);
+DEF_STD_CMD_A(CmdMeshToolMesh)
 
 CmdMeshToolMesh::CmdMeshToolMesh()
   :Command("Mesh_ToolMesh")
@@ -1526,13 +1528,17 @@ CmdMeshBuildRegularSolid::CmdMeshBuildRegularSolid()
 
 void CmdMeshBuildRegularSolid::activated(int)
 {
-    MeshGui::SingleDlgRegularSolidImp::instance()->show();
+    static QPointer<QDialog> dlg = 0;
+    if (!dlg)
+        dlg = new MeshGui::DlgRegularSolidImp(Gui::getMainWindow());
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->show();
 }
 
 bool CmdMeshBuildRegularSolid::isActive(void)
 {
     // Check for the selected mesh feature (all Mesh types)
-    return (!MeshGui::SingleDlgRegularSolidImp::hasInstance())&&hasActiveDocument();
+    return hasActiveDocument();
 }
 
 //--------------------------------------------------------------------------------------
