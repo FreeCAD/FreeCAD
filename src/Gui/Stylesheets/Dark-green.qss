@@ -1,8 +1,8 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.20
-Qt theme (stylesheet) specially developed for FreeCAD (https://www.freecadweb.org/).
+version 2.21
+Qt theme (stylesheet) specially developed for FreeCAD (http://www.freecadweb.org/).
 It might work with other software that uses Qt styling.
 
 
@@ -57,7 +57,8 @@ If you would like to change the overall look/style of the theme, just find and r
 
 KNOWN BUGS and TO DO
 ============================================================================================================
-- please, follow the link to get updated information: https://forum.freecadweb.org/viewtopic.php?f=10&t=12417
+Please, follow the link to get updated information: http://forum.freecadweb.org/viewtopic.php?f=10&t=12417
+
 */
 
 
@@ -243,10 +244,20 @@ QGroupBox {
     background-color: rgba(255, 255, 255, 15);
 }
 
-QGroupBox:title {
+QGroupBox::title {
     top: -8px;
     left: 12px;
 }
+
+/* NOTE: QGroupBox checkboxes are styles with regular ones so that the all get the same style */
+/* QGroupBox::indicator {
+    width: 13px;
+    height: 13px;
+}
+
+QGroupBox::indicator:unchecked {
+    image: url(:/images/checkbox_unchecked.png);
+} */
 
 
 /*==================================================================================================
@@ -1622,7 +1633,8 @@ QCheckBox:disabled {
     background-color: transparent;
 }
 
-QCheckBox::indicator {
+QCheckBox::indicator,
+QGroupBox::indicator {
     color: black;
     background-color: rgba(255,255,255,20);
     border: 1px solid #5a5a5a;
@@ -1634,11 +1646,16 @@ QCheckBox::indicator {
 QCheckBox::indicator:pressed,
 QCheckBox::indicator:non-exclusive:checked:pressed,
 QCheckBox::indicator:indeterminate:pressed,
-QCheckBox::indicator:checked:pressed {
+QCheckBox::indicator:checked:pressed,
+QGroupBox::indicator:pressed,
+QGroupBox::indicator:non-exclusive:checked:pressed,
+QGroupBox::indicator:indeterminate:pressed,
+QGroupBox::indicator:checked:pressed {
     border-color: #c5d675;
 }
 
-QCheckBox::indicator:checked {
+QCheckBox::indicator:checked,
+QGroupBox::indicator:checked {
     background-color: #94b30f; /* QRadioButton has the same color */
     border: 1px solid #819c0c; /* QRadioButton has the same color */
     image:url(qss:images_dark-light/checkbox_light.svg);
@@ -1649,12 +1666,14 @@ QCheckBox:disabled {
     background-color: transparent;
 }
 
-QCheckBox::indicator:disabled {
+QCheckBox::indicator:disabled,
+QGroupBox::indicator:disabled {
     background-color: rgba(255,255,255,20);
     border: 1px solid rgba(255,255,255,20);
 }
 
-QCheckBox::indicator:indeterminate {
+QCheckBox::indicator:indeterminate,
+QGroupBox::indicator:indeterminate {
     background-color: #94b30f;
     border: 1px solid #819c0c;
     image: url(qss:images_dark-light/checkbox_indeterminate_light.svg);
@@ -2180,9 +2199,4 @@ QDialog QGroupBox QFrame {
 QPushButton#NavigationIndicator::menu-indicator {
     image: none;
     width: 0px;
-}
-
-QToolBar QToolButton[popupMode="1"] {
-    width: 100px;
-    background: red;
 }
