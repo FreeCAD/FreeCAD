@@ -143,7 +143,7 @@ void Placement::showDefaultButtons(bool ok)
 #if QT_VERSION >= 0x050000
     if (ok) {
         //ui->buttonBoxSpacer->changeSize(88, 24, QSizePolicy::Expanding, QSizePolicy::Minimum);
-        ui->buttonBoxLayout->insertItem(0, ui->buttonBoxSpacer);
+        ui->buttonBoxLayout->insertSpacerItem(0, ui->buttonBoxSpacer);
     }
     else {
         //ui->buttonBoxSpacer->changeSize(0, 0, QSizePolicy::Ignored, QSizePolicy::Ignored);
