@@ -31,6 +31,7 @@
 
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoWindowElement.h>
 
@@ -943,6 +944,10 @@ bool SoFCUnifiedSelection::getShowSelectionBoundingBox() {
 
 void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
 {
+    SoState *state = action->getState();
+    SoGLLazyElement::getInstance(state)->reset(state,
+                                               SoLazyElement::BLENDING_MASK);
+
     bool bbox = _ShowBoundBox;
     if(this->selectAll)
         _ShowBoundBox = true;
@@ -957,7 +962,6 @@ void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
         // and the user moved the mouse to an empty area
         this->preSelection = -1;
         QtGLWidget* window;
-        SoState *state = action->getState();
         SoGLWidgetElement::get(state, window);
         QWidget* parent = window ? window->parentWidget() : 0;
         if (parent) {
