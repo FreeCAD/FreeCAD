@@ -114,7 +114,7 @@ def export(objectslist, filename, argstring):
       gcode = dia.editor.toPlainText()
 
   # Save to file
-  if not filename == '-':
+  if filename != '-':
     gfile = open(filename, "w")
     gfile.write(gcode)
     gfile.close()
