@@ -133,7 +133,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>X:</string>
+         <string>In x-direction:</string>
         </property>
         <property name="buddy">
          <cstring>labelOffset</cstring>
@@ -149,7 +149,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Y:</string>
+         <string>In y-direction:</string>
         </property>
        </widget>
       </item>
@@ -181,7 +181,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Z:</string>
+         <string>In z-direction:</string>
         </property>
        </widget>
       </item>
@@ -213,7 +213,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Roll:</string>
+         <string>Around x-axis:</string>
         </property>
        </widget>
       </item>
@@ -226,7 +226,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Pitch:</string>
+         <string>Around y-axis:</string>
         </property>
        </widget>
       </item>
@@ -239,7 +239,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Yaw:</string>
+         <string>Around z-axis:</string>
         </property>
        </widget>
       </item>
