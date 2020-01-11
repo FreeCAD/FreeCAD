@@ -414,7 +414,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Euler angles (XY'Z'')</string>
+          <string>Euler angles (xy'z'')</string>
          </property>
         </item>
        </widget>

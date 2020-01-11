@@ -121,7 +121,7 @@
       <string/>
      </property>
      <property name="title">
-      <string>Attachment Offset:</string>
+      <string>Attachment Offset (in local coordinates):</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
