@@ -58,13 +58,13 @@ public:
     App::PropertyString      NamePattern;
     App::PropertyFloatConstraint ScalePattern;
 
-    virtual short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void);
-    virtual void onChanged(const App::Property* prop);
-    virtual const char* getViewProviderName(void) const {
+    virtual short mustExecute() const override;
+    virtual App::DocumentObjectExecReturn *execute(void) override;
+    virtual void onChanged(const App::Property* prop) override;
+    virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderGeomHatch";
     }
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     DrawViewPart* getSourceView(void) const;
 
@@ -78,8 +78,8 @@ public:
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
 
 protected:
-    virtual void onDocumentRestored();
-    virtual void setupObject();
+    virtual void onDocumentRestored() override;
+    virtual void setupObject() override;
     void setupPatIncluded(void);
     void replacePatIncluded(std::string newPatFile);
     void copyFile(std::string inSpec, std::string outSpec);
