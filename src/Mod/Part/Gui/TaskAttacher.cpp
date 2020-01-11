@@ -318,7 +318,7 @@ bool TaskAttacher::updatePreview()
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
         }
     }
-    QString splmLabelText = attached ? tr("Attachment Offset:") : tr("Attachment Offset (inactive - not attached):");
+    QString splmLabelText = attached ? tr("Attachment Offset (in local coordinates):") : tr("Attachment Offset (inactive - not attached):");
     ui->groupBox_AttachmentOffset->setTitle(splmLabelText);
     ui->groupBox_AttachmentOffset->setEnabled(attached);
 
