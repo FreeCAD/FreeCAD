@@ -408,7 +408,7 @@ void PropertyFileIncluded::Save (Base::Writer &writer) const
         if (!_cValue.empty()) {
             Base::FileInfo file(_cValue.c_str());
             writer.Stream() << writer.ind() << "<FileIncluded data=\""
-                            << file.fileName() << "\">\n";
+                            << encodeAttribute(file.fileName()) << "\">\n";
             // write the file in the XML stream
             writer.insertBinFile(_cValue.c_str());
             writer.Stream() << writer.ind() <<"</FileIncluded>\n";
@@ -420,8 +420,11 @@ void PropertyFileIncluded::Save (Base::Writer &writer) const
     else {
         // instead initiate an extra file 
         if (!_cValue.empty()) {
+            Base::FileInfo file(_cValue.c_str());
+            std::string filename = writer.addFile(file.fileName().c_str(), this);
+            filename = encodeAttribute(filename);
             writer.Stream() << writer.ind() << "<FileIncluded file=\""
-                            << writer.addFile(getFileName(".file"),this) << "\"/>\n";
+                            << filename << "\"/>\n";
         }
         else {
             writer.Stream() << writer.ind() << "<FileIncluded file=\"\"/>\n";
