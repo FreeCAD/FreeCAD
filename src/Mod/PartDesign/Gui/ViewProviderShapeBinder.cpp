@@ -383,3 +383,10 @@ std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren(void
     return ret;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////
+
+namespace Gui {
+PROPERTY_SOURCE_TEMPLATE(PartDesignGui::ViewProviderSubShapeBinderPython,
+                         PartDesignGui::ViewProviderSubShapeBinder)
+template class PartDesignGuiExport ViewProviderPythonFeatureT<ViewProviderSubShapeBinder>;
+}
