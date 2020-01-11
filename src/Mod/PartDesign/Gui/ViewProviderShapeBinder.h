@@ -24,6 +24,7 @@
 #ifndef PARTGUI_ViewProviderShapeBinder_H
 #define PARTGUI_ViewProviderShapeBinder_H
 
+#include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
@@ -83,6 +84,8 @@ private:
     };
     void updatePlacement(bool transaction);
 };
+
+typedef Gui::ViewProviderPythonFeatureT<ViewProviderSubShapeBinder> ViewProviderSubShapeBinderPython;
 
 } // namespace PartDesignGui
 

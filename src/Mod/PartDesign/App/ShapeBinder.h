@@ -28,6 +28,7 @@
 #include <boost_signals2.hpp>
 #include <App/PropertyLinks.h>
 #include <App/DocumentObserver.h>
+#include <App/FeaturePython.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
@@ -145,6 +146,8 @@ protected:
     App::PropertyXLinkSub _CopiedLink;
     std::vector<App::DocumentObjectT> _CopiedObjs;
 };
+
+typedef App::FeaturePythonT<SubShapeBinder> SubShapeBinderPython;
 
 } //namespace PartDesign
 
