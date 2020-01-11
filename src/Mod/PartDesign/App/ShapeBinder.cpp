@@ -907,3 +907,13 @@ void SubShapeBinder::handleChangedPropertyType(
    }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////
+
+namespace App {
+PROPERTY_SOURCE_TEMPLATE(PartDesign::SubShapeBinderPython, PartDesign::SubShapeBinder)
+template<> const char* PartDesign::SubShapeBinderPython::getViewProviderName(void) const {
+    return "PartDesignGui::ViewProviderSubShapeBinderPython";
+}
+template class PartDesignExport FeaturePythonT<PartDesign::SubShapeBinder>;
+}
+
