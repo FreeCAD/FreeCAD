@@ -37,6 +37,7 @@
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Uuid.h>
+#include <Base/Tools.h>
 
 #include "PropertyFile.h"
 #include "Document.h"
@@ -80,9 +81,8 @@ void PropertyFileIncluded::aboutToSetValue(void)
     // If Copy() is directly called (e.g. to copy the file to
     // another document) a copy of the file needs to be created.
     // This copy will be deleted again in the class destructor.
-    this->StatusBits.set(10);
+    Base::ObjectStatusLocker<Status,Property> lock(Status::User2,this);
     Property::aboutToSetValue();
-    this->StatusBits.reset(10);
 }
 
 std::string PropertyFileIncluded::getDocTransientPath(void) const
@@ -513,7 +513,7 @@ Property *PropertyFileIncluded::Copy(void) const
     if (file.exists()) {
         // create a new name in the document transient directory
         Base::FileInfo newName(getUniqueFileName(file.dirPath(), file.fileName()));
-        if (this->StatusBits.test(10)) {
+        if (this->testStatus(Status::User2)) {
             // rename the file
             bool done = file.renameFile(newName.filePath().c_str());
             if (!done) {

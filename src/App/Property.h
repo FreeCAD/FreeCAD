@@ -246,7 +246,7 @@ public:
     friend struct PropertyData;
     friend class DynamicProperty;
 
-protected:
+private:
     /** Status bits of the property
      * The first 8 bits are used for the base system the rest can be used in
      * descendent classes to mark special statuses on the objects.
