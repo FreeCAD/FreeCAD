@@ -134,8 +134,8 @@ protected:
     void copyFile(std::string inSpec, std::string outSpec);
 
 
-    virtual void onDocumentRestored();
-    virtual void setupObject();
+    virtual void onDocumentRestored() override;
+    virtual void setupObject() override;
     void setupSvgIncluded(void);
     void setupPatIncluded(void);
     void replaceSvgIncluded(std::string newSvgFile);
