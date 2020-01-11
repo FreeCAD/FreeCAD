@@ -220,13 +220,18 @@ void DrawHatch::replaceSvgIncluded(std::string newSvgFile)
 
 void DrawHatch::onDocumentRestored() 
 {
+//if this is a restore, we should be checking for SvgIncluded empty,
+// if it is, set it up from hatchPattern,
+// else, don't do anything
 //    Base::Console().Message("DH::onDocumentRestored()\n");
-    if (!HatchPattern.isEmpty()) {
-        std::string svgFileName = HatchPattern.getValue();
-        Base::FileInfo tfi(svgFileName);
-        if (tfi.isReadable()) {
-            if (SvgIncluded.isEmpty()) {
-                setupSvgIncluded();
+    if (SvgIncluded.isEmpty()) {
+        if (!HatchPattern.isEmpty()) {
+            std::string svgFileName = HatchPattern.getValue();
+            Base::FileInfo tfi(svgFileName);
+            if (tfi.isReadable()) {
+                if (SvgIncluded.isEmpty()) {
+                    setupSvgIncluded();
+                }
             }
         }
     }

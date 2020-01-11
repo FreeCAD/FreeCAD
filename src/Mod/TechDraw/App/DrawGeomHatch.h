@@ -54,6 +54,7 @@ public:
 
     App::PropertyLinkSub     Source;                                   //the dvX & face(s) this crosshatch belongs to
     App::PropertyFile        FilePattern;
+    App::PropertyFileIncluded PatIncluded;
     App::PropertyString      NamePattern;
     App::PropertyFloatConstraint ScalePattern;
 
@@ -77,6 +78,14 @@ public:
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
 
 protected:
+    virtual void onDocumentRestored();
+    virtual void setupObject();
+    void setupPatIncluded(void);
+    void replacePatIncluded(std::string newPatFile);
+    void copyFile(std::string inSpec, std::string outSpec);
+
+    void makeLineSets(void);
+
     void getParameters(void);
     std::vector<PATLineSpec> getDecodedSpecsFromFile();
     std::vector<LineSet> m_lineSets;
