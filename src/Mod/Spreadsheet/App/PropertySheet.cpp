@@ -993,6 +993,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
         std::string docObjName = docObj->getFullName();
 
+        owner->observeDocument(doc);
 
         documentObjectToCellMap[docObjName].insert(key);
         cellToDocumentObjectMap[key].insert(docObjName);
