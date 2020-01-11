@@ -2111,7 +2111,8 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
                 bits++;
             }
         }
-    }
+    } else if (alpha == 255)
+        img = img.convertToFormat(QImage::Format_RGB32);
 }
 
 void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
