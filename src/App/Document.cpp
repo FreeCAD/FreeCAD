@@ -1913,7 +1913,8 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 
     if(!isExporting(0)) {
         for(auto o : obj) {
-            const auto &outList = o->getOutList(DocumentObject::OutListNoHidden);
+            const auto &outList = o->getOutList(DocumentObject::OutListNoHidden
+                                                | DocumentObject::OutListNoXLinked);
             writer.Stream() << writer.ind() 
                 << "<" FC_ELEMENT_OBJECT_DEPS " " FC_ATTR_DEP_OBJ_NAME "=\""
                 << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\"" << outList.size();

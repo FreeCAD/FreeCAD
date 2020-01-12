@@ -623,7 +623,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     for (auto &name : filenames)
         _pendingDocs.push_back(name.c_str());
 
-    std::deque<std::pair<Document *, DocTiming> > newDocs;
+    std::map<Document *, DocTiming> newDocs;
 
     FC_TIME_INIT(t);
 
@@ -657,7 +657,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             auto doc = openDocumentPrivate(path, name, label, isMainDoc, createView, objNames);
             FC_DURATION_PLUS(timing.d1,t1);
             if (doc)
-                newDocs.emplace_front(doc,timing);
+                newDocs.emplace(doc,timing);
 
             if (isMainDoc)
                 res[count] = doc;
@@ -705,19 +705,50 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     _pendingDocMap.clear();
 
     Base::SequencerLauncher seq("Postprocessing...", newDocs.size());
+
+    std::vector<Document*> docs;
+    docs.reserve(newDocs.size());
     for (auto &v : newDocs) {
+        // Notify ProeprtyXLink to attach newly opened documents and restore
+        // relavant external links
+        PropertyXLink::restoreDocument(*v.first);
+        docs.push_back(v.first);
+    }
+
+    // After external links has been restored, we can now sort the document
+    // according to their dependency order.
+    docs = Document::getDependentDocuments(docs, true);
+    for (auto it=docs.begin(); it!=docs.end();) {
+        Document *doc = *it;
+        // It is possible that the newly opened document depends on an existing
+        // document, which will be included with the above call to
+        // Document::getDependentDocuments(). Make sure to exclude that.
+        auto dit = newDocs.find(doc);
+        if (dit == newDocs.end()) {
+            it = docs.erase(it);
+            continue;
+        }
+        ++it;
         FC_TIME_INIT(t1);
-        v.first->afterRestore(true);
-        FC_DURATION_PLUS(v.second.d2,t1);
+        // Finalize document restoring with the correct order
+        doc->afterRestore(true);
+        FC_DURATION_PLUS(dit->second.d2,t1);
         seq.next();
     }
 
-    if (!newDocs.empty())
-        setActiveDocument(newDocs.back().first);
+    // Set the active document using the first successfully restored main
+    // document (i.e. documents explicitly asked for by caller).
+    for (auto doc : res) {
+        if (doc) {
+            setActiveDocument(doc);
+            break;
+        }
+    }
 
-    for (auto &v : newDocs) {
-        FC_DURATION_LOG(v.second.d1, v.first->getName() << " restore");
-        FC_DURATION_LOG(v.second.d2, v.first->getName() << " postprocess");
+    for (auto doc : docs) {
+        auto &timing = newDocs[doc];
+        FC_DURATION_LOG(timing.d1, doc->getName() << " restore");
+        FC_DURATION_LOG(timing.d2, doc->getName() << " postprocess");
     }
     FC_TIME_LOG(t,"total");
 
