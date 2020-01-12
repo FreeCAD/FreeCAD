@@ -256,4 +256,36 @@ void LocationDialog::on_direction_activated(int index)
     directionActivated(index);
 }
 
+// -----------------------------------------------------------
+
+LocationDialogUiImp::~LocationDialogUiImp()
+{
+    // no need to delete child widgets, Qt does it all for us
+}
+
+Base::Vector3d LocationDialogUiImp::getDirection() const
+{
+    return ui->getDirection();
+}
+
+Base::Vector3d LocationDialogUiImp::getPosition() const
+{
+    return ui->getPosition();
+}
+
+void LocationDialogUiImp::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslate(this);
+    }
+    else {
+        QDialog::changeEvent(e);
+    }
+}
+
+void LocationDialogUiImp::directionActivated(int index)
+{
+    ui->directionActivated(this,index);
+}
+
 #include "moc_InputVector.cpp"

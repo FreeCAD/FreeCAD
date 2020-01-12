@@ -212,11 +212,11 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
     std::string tileTextL = tileFeat->LeftText.getValue();
     std::string tileTextR = tileFeat->RightText.getValue();
     std::string tileTextC = tileFeat->CenterText.getValue();
-    std::string symbolFile = tileFeat->SymbolFile.getValue();
+//    std::string symbolFile = tileFeat->SymbolFile.getValue();
     int row = tileFeat->TileRow.getValue();
     int col = tileFeat->TileColumn.getValue();
 
-    QGITile* tile = new QGITile();
+    QGITile* tile = new QGITile(tileFeat);
     addToGroup(tile);
 
     QPointF org = getTileOrigin();
@@ -226,7 +226,7 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
     tile->setTileTextLeft(tileTextL);
     tile->setTileTextRight(tileTextR);
     tile->setTileTextCenter(tileTextC);
-    tile->setSymbolFile(symbolFile);
+//    tile->setSymbolFile(symbolFile);
     tile->setZValue(ZVALUE::DIMENSION);
     tile->setTileScale(featScale);
     tile->setTailRight(m_weldFeat->isTailRightSide());

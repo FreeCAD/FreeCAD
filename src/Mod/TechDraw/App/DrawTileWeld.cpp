@@ -25,10 +25,14 @@
 #ifndef _PreComp_
 #endif
 
+#include <sstream>
+#include <fstream>
+
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "DrawUtil.h"
 
@@ -52,6 +56,9 @@ DrawTileWeld::DrawTileWeld(void)
     ADD_PROPERTY_TYPE(RightText, (0), group, App::Prop_None, "Text RHS");
     ADD_PROPERTY_TYPE(CenterText, (0), group, App::Prop_None, "Text above Symbol");
     ADD_PROPERTY_TYPE(SymbolFile, (""), group, App::Prop_None, "Svg Symbol File");
+
+    SymbolFile.setStatus(App::Property::ReadOnly,true);
+
 }
 
 DrawTileWeld::~DrawTileWeld()
@@ -76,6 +83,29 @@ App::DocumentObjectExecReturn *DrawTileWeld::execute(void)
 { 
 //    Base::Console().Message("DTW::execute()\n");
     return DrawTile::execute();
+}
+
+void DrawTileWeld::replaceSymbol(std::string newSymbolFile)
+{
+//    Base::Console().Message("DTW::replaceSymbol(%s)\n", newSymbolFile.c_str());
+    std::string special = getNameInDocument();
+    special += "Symbol.svg";
+    std::string tempName = SymbolFile.getExchangeTempFile();
+    copyFile(newSymbolFile, tempName);
+    SymbolFile.setValue(tempName.c_str(), special.c_str());
+}
+
+//copy whole text file from inSpec to outSpec
+void DrawTileWeld::copyFile(std::string inSpec, std::string outSpec)
+{
+//    Base::Console().Message("DTW::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
+    if (inSpec.empty()) {
+        std::ofstream  dst(outSpec);   //make an empty file
+    } else {
+        std::ifstream  src(inSpec);
+        std::ofstream  dst(outSpec);
+        dst << src.rdbuf();
+    }
 }
 
 PyObject *DrawTileWeld::getPyObject(void)
