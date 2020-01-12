@@ -68,6 +68,7 @@ public:
     void resetFill();
     void setFillColor(QColor c);
     QColor getFillColor(void) { return m_colDefFill; }
+    void setFillOverride(bool b) { m_fillOverride = b; }
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
@@ -101,6 +102,7 @@ protected:
     Qt::BrushStyle m_styleNormal;               //current Normal fill style
     Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
 
+    bool m_fillOverride;
 
 private:
 

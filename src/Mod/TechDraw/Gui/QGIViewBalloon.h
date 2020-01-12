@@ -151,6 +151,8 @@ public:
 
     virtual QColor getNormalColor(void) override;
     int prefDefaultArrow() const;
+    bool prefOrthoPyramid() const;
+
 
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
