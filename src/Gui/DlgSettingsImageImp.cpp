@@ -242,7 +242,7 @@ QByteArray DlgSettingsImageImp::method() const
 {
 #if QT_VERSION < 0x050000
     int index = ui->comboMethod->currentIndex();
-    ui->comboMethod->itemData(index).toByteArray();
+    return ui->comboMethod->itemData(index).toByteArray();
 #else
     return ui->comboMethod->currentData().toByteArray();
 #endif
