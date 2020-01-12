@@ -43,8 +43,9 @@ using namespace TechDrawGui;
 QGIPrimPath::QGIPrimPath():
     m_width(0),
     m_capStyle(Qt::RoundCap),
-    m_fillStyleCurrent (Qt::NoBrush)
-//    m_fillStyleCurrent (Qt::SolidPattern)
+    m_fillStyleCurrent (Qt::NoBrush),
+//    m_fillStyleCurrent (Qt::SolidPattern),
+    m_fillOverride(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -128,13 +129,17 @@ void QGIPrimPath::setPrettyNormal() {
 void QGIPrimPath::setPrettyPre() {
 //    Base::Console().Message("QGIPP::setPrettyPre()\n");
     m_colCurrent = getPreColor();
-    m_fillColorCurrent = getPreColor();
+    if (!m_fillOverride) {
+        m_fillColorCurrent = getPreColor();
+    }
 }
 
 void QGIPrimPath::setPrettySel() {
 //    Base::Console().Message("QGIPP::setPrettySel()\n");
     m_colCurrent = getSelectColor();
-    m_fillColorCurrent = getSelectColor();
+    if (!m_fillOverride) {
+        m_fillColorCurrent = getSelectColor();
+    }
 }
 
 //wf: why would a face use it's parent's normal colour?

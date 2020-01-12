@@ -89,6 +89,7 @@ const char* DrawViewBalloon::endTypeEnums[]= { "FILLED_TRIANGLE",
                                                "OPEN_CIRCLE",
                                                "FORK",
                                                "PYRAMID",
+                                               "NONE",
                                                NULL};
 
 //const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
@@ -123,19 +124,15 @@ DrawViewBalloon::DrawViewBalloon(void)
 
     ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
 
-//    OriginX.setStatus(App::Property::Hidden,false);
-//    OriginY.setStatus(App::Property::Hidden,false);
+    ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
+                                  "Distance from symbol to leader kink");
+
     OriginIsSet.setStatus(App::Property::Hidden,false);
     OriginIsSet.setStatus(App::Property::ReadOnly,true);
 
     SourceView.setScope(App::LinkScope::Global);
-//    SourceView.setStatus(App::Property::Hidden,true);
     Rotation.setStatus(App::Property::Hidden,true);
-//    ScaleType.setStatus(App::Property::Hidden,true);
-//    Scale.setStatus(App::Property::Hidden,true);
     Caption.setStatus(App::Property::Hidden,true);
-//    X.setStatus(App::Property::Hidden,true);
-//    Y.setStatus(App::Property::Hidden,true);
 }
 
 DrawViewBalloon::~DrawViewBalloon()
@@ -145,6 +142,14 @@ DrawViewBalloon::~DrawViewBalloon()
 
 void DrawViewBalloon::onChanged(const App::Property* prop)
 {
+    if (!isRestoring()) {
+        if ( (prop == &EndType) ||
+             (prop == &Symbol)  ||
+             (prop == &Text)    ||
+             (prop == &KinkLength) ) {
+            requestPaint();
+        }
+    }
     DrawView::onChanged(prop);
 }
 
@@ -255,6 +260,16 @@ App::DocumentObjectExecReturn *DrawViewBalloon::execute(void)
     requestPaint();
     return App::DocumentObject::execute();
 }
+
+double DrawViewBalloon::prefKinkLength(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    double length = hGrp->GetFloat("BalloonKink", 5.0);
+    return length;
+}
+
 /*
 PyObject *DrawViewBalloon::getPyObject(void)
 {
