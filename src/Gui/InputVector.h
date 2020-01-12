@@ -552,7 +552,7 @@ private:
  * sub-classes because it uses "type erasure with templates".
  * @author Werner Mayer
  */
-class LocationDialogUiImp : public LocationDialog
+class GuiExport LocationDialogUiImp : public LocationDialog
 {
 public:
     template<class T>
