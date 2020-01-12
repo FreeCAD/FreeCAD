@@ -23,12 +23,13 @@
 #ifndef PARTGUI_DLGPARTCYLINDERIMP_H
 #define PARTGUI_DLGPARTCYLINDERIMP_H
 
-#include "ui_DlgPartCylinder.h"
 #include <Gui/InputVector.h>
 
 namespace PartGui {
+class Ui_DlgPartCylinder;
+typedef std::shared_ptr<Ui_DlgPartCylinder> Ui_DlgPartCylinderPtr;
 
-class DlgPartCylinderImp : public Gui::LocationDialogUi<Ui_DlgPartCylinder>
+class DlgPartCylinderImp : public Gui::LocationDialogUiImp
 {
     Q_OBJECT
 
@@ -38,6 +39,9 @@ public:
 
     double getRadius() const;
     double getLength() const;
+
+private:
+    Ui_DlgPartCylinderPtr getUi() const;
 };
 
 } // namespace PartGui
