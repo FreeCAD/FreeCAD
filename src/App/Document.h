@@ -204,8 +204,12 @@ public:
     bool save (void);
     bool saveAs(const char* file);
     bool saveCopy(const char* file) const;
+    void save(Base::Writer &writer, bool archive) const;
     /// Restore the document from the file in Property Path
     void restore (const char *filename=0, 
+            bool delaySignal=false, const std::set<std::string> &objNames={});
+    /// Restore the document from a pre-constructed xml reader
+    void restore (Base::XMLReader &xmlReader,
             bool delaySignal=false, const std::set<std::string> &objNames={});
     void afterRestore(bool checkPartial=false);
     bool afterRestore(const std::vector<App::DocumentObject *> &, bool checkPartial=false);

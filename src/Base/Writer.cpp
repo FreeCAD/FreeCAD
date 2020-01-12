@@ -369,6 +369,20 @@ ZipWriter::~ZipWriter()
 
 // ----------------------------------------------------------------------------
 
+StringWriter::StringWriter() {
+    setFileVersion(2);
+    setForceXML(9999);
+    setSplitXML(false);
+    setPreferBinary(false);
+}
+
+void StringWriter::writeFiles() {
+    if(FileList.size())
+        throw Base::FileException("StringWriter does not support saving into multiple files");
+}
+
+// ----------------------------------------------------------------------------
+
 FileWriter::FileWriter(const char* DirName) : DirName(DirName)
 {
 }

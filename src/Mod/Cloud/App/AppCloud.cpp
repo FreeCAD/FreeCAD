@@ -39,12 +39,15 @@
 #include <App/DocumentObserverPython.h>
 
 #include <Base/Console.h>
+#include <Base/Sequencer.h>
 #include <Base/PyObjectBase.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
 #include "AppCloud.h"
+
+FC_LOG_LEVEL_INIT("Cloud", true, true)
 
 using namespace App;
 using namespace std;
@@ -470,19 +473,17 @@ void Cloud::CloudReader::checkText(DOMText* text) {
      XMLCh* buffer = new XMLCh[XMLString::stringLen(text->getData()) + 1];
      XMLString::copyString(buffer, text->getData());
      XMLString::trim(buffer);
-     struct Cloud::CloudReader::FileEntry *new_entry;
      char* content=XMLString::transcode(buffer);
      delete[] buffer;
      if ( file )
      {
-             new_entry=new Cloud::CloudReader::FileEntry;
-             strcpy(new_entry->FileName,content);
-             Cloud::CloudReader::FileList.push_back(new_entry);
+         auto res = FileList.emplace(content, FileEntry());
+         res.first->second.FileName = res.first->first.c_str();
      }
      file=0;
      if ( continuation == 1 ) {
-	     strcpy(Cloud::CloudReader::NextFileName, content);
-             continuation = 0;
+         strcpy(Cloud::CloudReader::NextFileName, content);
+         continuation = 0;
      }
      if ( truncated == 1 ) {
 	    if ( strncmp(content, "true", 4) != 0 )
@@ -491,11 +492,6 @@ void Cloud::CloudReader::checkText(DOMText* text) {
 		truncated = 2;
      }
      XMLString::release(&content);
-}
-
-void Cloud::CloudReader::addFile(struct Cloud::CloudReader::FileEntry *new_entry)
-{
-             Cloud::CloudReader::FileList.push_back(new_entry);
 }
 
 void Cloud::CloudReader::checkXML(DOMNode* node) {
@@ -526,6 +522,7 @@ Cloud::CloudReader::~CloudReader()
 }
 
 Cloud::CloudReader::CloudReader(const char* Url, const char* AccessKey, const char* SecretKey, const char* TcpPort, const char* Bucket) 
+    :Base::Reader(Url,0)
 {
         struct Cloud::AmzData *RequestData;
         CURL *curl;
@@ -667,45 +664,57 @@ void Cloud::CloudReader::DownloadFile(Cloud::CloudReader::FileEntry *entry)
                         curl_easy_strerror(res));
                 curl_easy_cleanup(curl);
 
-                entry->FileStream << s;
+                entry->Content = std::move(s);
+                entry->touch = 1;
         }
 }
 
-struct Cloud::CloudReader::FileEntry * Cloud::CloudReader::GetEntry(std::string FileName)
+struct Cloud::CloudReader::FileEntry &Cloud::CloudReader::GetEntry(const char *FileName)
 {
-        struct Cloud::CloudReader::FileEntry *current_entry=NULL;
-        list<FileEntry*>::const_iterator it1;
-
-        for(it1 = FileList.begin(); it1 != FileList.end(); ++it1) {
-                if ( strcmp(FileName.c_str(), (*it1)->FileName) == 0 )
-                {
-                        current_entry = (*it1);
-                        break;
-                }
-        }
-
-        if ( current_entry != NULL )
-        {
-                (*it1)->touch=1;
-                DownloadFile(*it1);
-        }
-
-        return(current_entry);
+    auto it = FileList.find(FileName);
+    if(it == FileList.end())
+        throw Base::FileException("No file entry found", FileName);
+    if(!it->second.touch)
+        DownloadFile(&it->second);
+    return it->second;
 }
 
-int Cloud::CloudReader::isTouched(std::string FileName)
+int Cloud::CloudReader::isTouched(const char *FileName)
 {
-       list<FileEntry*>::const_iterator it1;
-       for(it1 = FileList.begin(); it1 != FileList.end(); ++it1) {
-                if ( strcmp(FileName.c_str(), (*it1)->FileName) == 0 )
-                {
-                        if ( (*it1)->touch )
-                                return(1);
-                        else
-                                return(0);
-                }
+    auto it = FileList.find(FileName);
+    if(it == FileList.end() || !it->second.touch)
+        return 0;
+    return it->second.touch;
+}
+
+void Cloud::CloudReader::readFiles(Base::XMLReader &xmlReader) 
+{
+    const auto &FileList = xmlReader.getFileList();
+    Base::SequencerLauncher seq("Importing project files...", FileList.size());
+    for(size_t i=0; i<FileList.size(); ++i) {
+        const auto &entry = FileList[i];
+        try {
+            std::istringstream iss(GetEntry(entry.FileName.c_str()).Content);
+            Base::Reader reader(iss, entry.FileName, &xmlReader);
+            entry.Object->RestoreDocFile(reader);
+        } catch(Base::AbortException &e) {
+            e.ReportException();
+            FC_ERR("User abort when reading: " << entry.FileName << " url: " << getFileName());
+            throw;
+        } catch(Base::Exception &e) {
+            e.ReportException();
+            FC_ERR("Reading failed: " << entry.FileName << " url: " << getFileName());
         }
-        return(0);
+        catch(...) {
+            // For any exception we just continue with the next file.
+            // It doesn't matter if the last reader has read more or
+            // less data than the file size would allow.
+            // All what we need to do is to notify the user about the
+            // failure.
+            FC_ERR("Reading failed: " << entry.FileName << " url: " << getFileName());
+        }
+        seq.next();
+    }
 }
 
 void Cloud::eraseSubStr(std::string & Str, const std::string & toErase)
@@ -716,7 +725,6 @@ void Cloud::eraseSubStr(std::string & Str, const std::string & toErase)
 		Str.erase(pos, toErase.length());
 	}
 }
-
 
 void Cloud::CloudWriter::putNextEntry(const char* file)
 {
@@ -795,7 +803,6 @@ void Cloud::CloudWriter::pushCloud(const char *FileName, const char *data, long 
 
 void Cloud::CloudWriter::writeFiles(void)
 {
-
     // use a while loop because it is possible that while
     // processing the files, new ones can be added
     std::string tmp="";
@@ -860,64 +867,15 @@ bool Cloud::Module::cloudSave(const char *BucketName)
                                   (const char*)this->TcpPort.getStrValue().c_str(),
                                   BucketName);
 
-        mywriter.putNextEntry("Document.xml");
-
-        if (hGrp->GetBool("SaveBinaryBrep", false))
-            mywriter.setMode("BinaryBrep");
-        mywriter.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
-                        << "<!--" << endl
-                        << " FreeCAD Document, see https://www.freecadweb.org for more information..." << endl
-                        << "-->" << endl;
-        doc->Save(mywriter);
-
-        // Special handling for Gui document.
-        doc->signalSaveDocument(mywriter);
-
-        // write additional files
-        mywriter.writeFiles();
-
-        return(true);
+        doc->save(mywriter,false);
+        return true;
 }
-
-void readFiles(Cloud::CloudReader reader, Base::XMLReader *xmlreader) 
-{
-    // It's possible that not all objects inside the document could be created, e.g. if a module
-    // is missing that would know these object types. So, there may be data files inside the Cloud
-    // file that cannot be read. We simply ignore these files.
-    // On the other hand, however, it could happen that a file should be read that is not part of
-    // the zip file. This happens e.g. if a document is written without GUI up but is read with GUI
-    // up. In this case the associated GUI document asks for its file which is not part of the
-    // file, then.
-    // In either case it's guaranteed that the order of the files is kept.
-
-    std::vector<Base::XMLReader::FileEntry>::const_iterator it = xmlreader->FileList.begin();
-    while ( it != xmlreader->FileList.end()) {
-        if ( reader.isTouched(it->FileName.c_str()) == 0 )
-        {
-                Base::Reader localreader(reader.GetEntry(it->FileName.c_str())->FileStream,it->FileName, xmlreader->FileVersion);
-                it->Object->RestoreDocFile(localreader);
-                if ( localreader.getLocalReader() != nullptr )
-                {
-            readFiles(reader, localreader.getLocalReader().get());
-                }
-        }
-        it++;
-    }
-}
-
 
 bool Cloud::Module::cloudRestore (const char *BucketName)
 {
-
     Document* doc = GetApplication().getActiveDocument();
-    // clean up if the document is not empty
-    // !TODO: mind exceptions while restoring!
-
-    doc->clearUndos();
-
-    doc->clearDocument();
-
-    std::stringstream oss;
+    if(!doc)
+        doc = GetApplication().newDocument();
 
     Cloud::CloudReader myreader((const char*)this->Url.getStrValue().c_str(),
                                   (const char*)this->AccessKey.getStrValue().c_str(),
@@ -925,40 +883,11 @@ bool Cloud::Module::cloudRestore (const char *BucketName)
                                   (const char*)this->TcpPort.getStrValue().c_str(),
                                   BucketName);
 
-    // we shall pass there the initial Document.xml file
+    std::istringstream iss(myreader.GetEntry("Document.xml").Content);
+    myreader.rdbuf(iss.rdbuf());
 
-    Base::XMLReader reader("Document.xml", myreader.GetEntry("Document.xml")->FileStream);
-
-    if (!reader.isValid())
-        throw Base::FileException("Error reading Document.xml file","Document.xml");
-
-
-    GetApplication().signalStartRestoreDocument(*doc);
-    doc->setStatus(Document::Restoring, true);
-    
-    try {
-        // Document::Restore(reader);
-        doc->Restore(reader);
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Error("Invalid Document.xml: %s\n", e.what());
-    }
-
-    // Special handling for Gui document, the view representations must already
-    // exist, what is done in Restore().
-    // Note: This file doesn't need to be available if the document has been created
-    // without GUI. But if available then follow after all data files of the App document.
-
-      doc->signalRestoreDocument(reader);
-
-      readFiles(myreader,&reader);
-
-    // reset all touched
-
-    doc->afterRestore(true);
-
-    GetApplication().signalFinishRestoreDocument(*doc);
-    doc->setStatus(Document::Restoring, false);
-    return(true);
-
+    Base::XMLReader reader(myreader);
+    doc->restore(reader);
+    return true;
 }
+

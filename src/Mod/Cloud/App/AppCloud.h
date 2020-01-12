@@ -61,7 +61,7 @@ struct AmzData *ComputeDigestAmzS3v2(char *operation, char *data_type, const cha
 struct curl_slist *BuildHeaderAmzS3v2(const char *Url, const char *TcpPort, const char *PublicKey, struct AmzData *Data);
 char *MD5Sum(const char *ptr, long size);
 
-class CloudAppExport CloudReader
+class CloudAppExport CloudReader: public Base::Reader
 {
 public:
     CloudReader(const char* Url, const char* AccessKey, const char* SecretKey, const char* TcpPort, const char* Bucket);
@@ -72,19 +72,21 @@ public:
 
     struct FileEntry
     {
-        char FileName[1024];
-        std::stringstream FileStream;
+        const char *FileName;
+        std::string Content;
         int touch=0;
     };
     void checkText(XERCES_CPP_NAMESPACE_QUALIFIER DOMText* text);
     void checkXML(XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node);
     void checkElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* element);
-    void addFile(struct Cloud::CloudReader::FileEntry *new_entry);
-    struct FileEntry *GetEntry(std::string FileName);
+    struct FileEntry &GetEntry(const char *FileName);
     void DownloadFile(Cloud::CloudReader::FileEntry *entry);
-    int isTouched(std::string FileName);
+    int isTouched(const char *FileName);
+
+    void readFiles(Base::XMLReader &xmlreader);
+
 protected:
-    std::list<Cloud::CloudReader::FileEntry*> FileList;
+    std::map<std::string, Cloud::CloudReader::FileEntry> FileList;
     char* NextFileName;
     const char* Url;
     const char* TcpPort;
@@ -184,4 +186,3 @@ protected:
 
 }
 
-void readFiles(Cloud::CloudReader reader, Base::XMLReader *xmlreader);

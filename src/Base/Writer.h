@@ -225,9 +225,11 @@ class BaseExport StringWriter : public Writer
 {
 
 public:
+    StringWriter();
+
     virtual std::ostream &Stream(void){return StrStream;}
     std::string getString(void) const {return StrStream.str();}
-    virtual void writeFiles(void){}
+    virtual void writeFiles(void);
 
 private:
     std::stringstream StrStream;
