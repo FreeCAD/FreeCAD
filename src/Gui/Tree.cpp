@@ -3713,16 +3713,21 @@ void DocumentItem::Save (Base::Writer &writer) const {
 }
 
 void DocumentItem::Restore(Base::XMLReader &reader) {
-    reader.readElement("Expand");
-    if(!reader.hasAttribute("count"))
-        return;
-    _ExpandInfo.reset(new ExpandInfo);
-    _ExpandInfo->restore(reader);
-    for(auto inst : TreeWidget::Instances) {
-        if(inst!=getTree()) {
-            auto docItem = inst->getDocumentItem(document());
-            if(docItem)
-                docItem->_ExpandInfo = _ExpandInfo;
+    int guard;
+    _ExpandInfo.reset();
+    reader.readElement("Expand",&guard);
+    if(reader.hasAttribute("count")) {
+        _ExpandInfo.reset(new ExpandInfo);
+        _ExpandInfo->restore(reader);
+    }
+    reader.readEndElement("Expand",&guard);
+    if(_ExpandInfo) {
+        for(auto inst : TreeWidget::Instances) {
+            if(inst!=getTree()) {
+                auto docItem = inst->getDocumentItem(document());
+                if(docItem)
+                    docItem->_ExpandInfo = _ExpandInfo;
+            }
         }
     }
 }
