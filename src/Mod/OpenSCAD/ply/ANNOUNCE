@@ -1,11 +1,11 @@
-February 17, 2011
+February 15, 2018
 
-                  Announcing :  PLY-3.4 (Python Lex-Yacc)
+                  Announcing :  PLY-3.11 (Python Lex-Yacc)
 
                         http://www.dabeaz.com/ply
 
-I'm pleased to announce PLY-3.4--a pure Python implementation of the
-common parsing tools lex and yacc.  PLY-3.4 is a minor bug fix
+I'm pleased to announce PLY-3.11--a pure Python implementation of the
+common parsing tools lex and yacc.  PLY-3.11 is a minor bug fix
 release.  It supports both Python 2 and Python 3.
 
 If you are new to PLY, here are a few highlights:
