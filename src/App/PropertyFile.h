@@ -103,6 +103,13 @@ public:
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
 
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && _BaseFileName == static_cast<decltype(this)>(&other)->_BaseFileName
+            && _OriginalName == static_cast<decltype(this)>(&other)->_OriginalName
+            && _cValue == static_cast<decltype(this)>(&other)->_cValue;
+    }
+
     /** get a temp file name in the transient path of the document.
       * Using this file for new Version of the file and set 
       * this file with setValue() is the fastest way to change

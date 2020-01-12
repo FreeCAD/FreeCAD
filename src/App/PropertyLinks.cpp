@@ -2586,7 +2586,7 @@ public:
                 return std::string(path.toUtf8().constData());
         }
 
-        const char *docPath = pDoc->FileName.getValue();
+        const char *docPath = pDoc->getFileName();
         if(!docPath || *docPath==0)
             throw Base::RuntimeError("Owner document not saved");
         
@@ -2623,7 +2623,7 @@ public:
                        l->testFlag(PropertyLinkBase::LinkAllowPartial))==0) 
                 {
                     for(App::Document *doc : App::GetApplication().getDocuments()) {
-                        if(getFullPath(doc->FileName.getValue()) == fullpath) {
+                        if(getFullPath(doc->getFileName()) == fullpath) {
                             info->attach(doc);
                             break;
                         }
@@ -2690,7 +2690,7 @@ public:
             FC_ERR("document not found " << filePath());
         else{
             for(App::Document *doc : App::GetApplication().getDocuments()) {
-                if(getFullPath(doc->FileName.getValue()) == fullpath) {
+                if(getFullPath(doc->getFileName()) == fullpath) {
                     attach(doc);
                     return;
                 }
@@ -2704,7 +2704,7 @@ public:
     void attach(Document *doc) {
         assert(!pcDoc);
         pcDoc = doc;
-        FC_LOG("attaching " << doc->getName() << ", " << doc->FileName.getValue());
+        FC_LOG("attaching " << doc->getName() << ", " << doc->getFileName());
         std::map<App::PropertyLinkBase*,std::vector<App::PropertyXLink*> > parentLinks;
         for(auto it=links.begin(),itNext=it;it!=links.end();it=itNext) {
             ++itNext;
@@ -2757,7 +2757,7 @@ public:
     void slotFinishRestoreDocument(const App::Document &doc) {
         if(pcDoc) return;
         QString fullpath(getFullPath());
-        if(!fullpath.isEmpty() && getFullPath(doc.FileName.getValue())==fullpath)
+        if(!fullpath.isEmpty() && getFullPath(doc.getFileName())==fullpath)
             attach(const_cast<App::Document*>(&doc));
     }
 
@@ -2770,7 +2770,7 @@ public:
 
         QFileInfo info(myPos->first);
         QString path(info.canonicalFilePath());
-        const char *filename = doc.FileName.getValue();
+        const char *filename = doc.getFileName();
         QString docPath(getFullPath(filename));
 
         if(path.isEmpty() || path!=docPath) {
@@ -3042,7 +3042,7 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
         if(lValue->getDocument() != owner->getDocument()) {
             if(!docInfo || lValue->getDocument()!=docInfo->pcDoc)
             {
-                const char *filename = lValue->getDocument()->FileName.getValue();
+                const char *filename = lValue->getDocument()->getFileName();
                 if(!filename || *filename==0) 
                     throw Base::RuntimeError("Linked document not saved");
                 FC_LOG("xlink set to new document " << lValue->getDocument()->getName());
@@ -3247,7 +3247,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                 _path = docInfo->filePath();
             else {
                 auto pDoc = owner->getDocument();
-                const char *docPath = pDoc->FileName.getValue();
+                const char *docPath = pDoc->getFileName();
                 if(docPath && docPath[0]) {
                     if(filePath.size())
                         _path = DocInfo::getDocPath(filePath.c_str(),pDoc,false);
@@ -4367,7 +4367,7 @@ void PropertyXLinkContainer::afterRestore() {
             if(info.docLabel != obj->getDocument()->Label.getValue())
                 _DocMap[App::quote(info.docLabel)] = obj->getDocument()->Label.getValue();
         }
-        if(_Deps.insert(obj).second)
+        if(_Deps.insert(std::make_pair(obj,info.xlink->getScope()==LinkScope::Hidden)).second)
             _XLinks[obj->getFullName()] = std::move(info.xlink);
     }
     _XLinkRestores.reset();
@@ -4380,24 +4380,27 @@ void PropertyXLinkContainer::breakLink(App::DocumentObject *obj, bool clear) {
     if(!owner || !owner->getNameInDocument())
         return;
     if(!clear || obj!=owner) {
-        if(!_Deps.erase(obj))
+        auto it = _Deps.find(obj);
+        if(it == _Deps.end())
             return;
         aboutToSetValue();
         onBreakLink(obj);
-        if(obj->getDocument() == owner->getDocument())
-            obj->_removeBackLink(owner);
-        else
+        if (obj->getDocument() != owner->getDocument())
             _XLinks.erase(obj->getFullName());
+        else if (!it->second)
+            obj->_removeBackLink(owner);
+        _Deps.erase(it);
         hasSetValue();
         return;
     }
     if(obj!=owner)
         return;
-    for(auto obj : _Deps) {
+    for(auto &v : _Deps) {
+        auto obj = v.first;
         if(!obj || !obj->getNameInDocument())
             continue;
         onBreakLink(obj);
-        if(obj->getDocument()==owner->getDocument())
+        if(!v.second && obj->getDocument()==owner->getDocument())
             obj->_removeBackLink(owner);
     }
     _XLinks.clear();
@@ -4437,6 +4440,19 @@ void PropertyXLinkContainer::Save (Base::Writer &writer) const {
             writer.Stream() << "\" docs=\"" << docSet.size();
     }
 
+    std::ostringstream ss;
+    int hidden = 0;
+    int i=-1;
+    for(auto &v : _XLinks) {
+        ++i;
+        if(v.second->getScope() == LinkScope::Hidden) {
+            ss << i << ' ';
+            ++hidden;
+        }
+    }
+    if(hidden)
+        writer.Stream() << "\" hidden=\"" << ss.str();
+
     writer.Stream() << "\">\n";
     writer.incInd();
 
@@ -4459,6 +4475,15 @@ void PropertyXLinkContainer::Restore(Base::XMLReader &reader) {
     auto count = reader.getAttributeAsUnsigned("count");
     _XLinkRestores.reset(new std::vector<RestoreInfo>(count));
 
+    if(reader.hasAttribute("hidden")) {
+        std::istringstream iss(reader.getAttribute("hidden"));
+        int index;
+        while(iss >> index) {
+            if(index>=0 && index<static_cast<int>(count))
+                _XLinkRestores->at(index).hidden = true;
+        }
+    }
+
     if(reader.hasAttribute("docs")) {
         auto docCount = reader.getAttributeAsUnsigned("docs");
         _DocMap.clear();
@@ -4477,6 +4502,8 @@ void PropertyXLinkContainer::Restore(Base::XMLReader &reader) {
 
     for(auto &info : *_XLinkRestores) {
         info.xlink.reset(createXLink());
+        if(info.hidden)
+            info.xlink->setScope(LinkScope::Hidden);
         info.xlink->Restore(reader);
     }
     reader.readEndElement("XLinks");
@@ -4508,16 +4535,23 @@ bool PropertyXLinkContainer::isLinkedToDocument(const App::Document &doc) const 
     return false;
 }
 
-void PropertyXLinkContainer::updateDeps(std::set<DocumentObject*> &&newDeps) {
+void PropertyXLinkContainer::updateDeps(std::map<DocumentObject*,bool> &&newDeps) {
     auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
     if(!owner || !owner->getNameInDocument())
         return;
     newDeps.erase(owner);
 
-    for(auto obj : newDeps) {
+    for(auto &v : newDeps) {
+        auto obj = v.first;
         if(obj && obj->getNameInDocument()) {
             auto it = _Deps.find(obj);
             if(it != _Deps.end()) {
+                if(v.second != it->second) {
+                    if(v.second)
+                        obj->_removeBackLink(owner);
+                    else
+                        obj->_addBackLink(owner);
+                }
                 _Deps.erase(it);
                 continue;
             }
@@ -4527,21 +4561,21 @@ void PropertyXLinkContainer::updateDeps(std::set<DocumentObject*> &&newDeps) {
                     xlink.reset(createXLink());
                     xlink->setValue(obj);
                 }
+                xlink->setScope(v.second?LinkScope::Hidden:LinkScope::Global);
             }
-#ifndef USE_OLD_DAG
-            else
+            else if(!v.second)
                 obj->_addBackLink(owner);
-#endif
+
             onAddDep(obj);
         }
     }
-    for(auto obj : _Deps) {
+    for(auto &v : _Deps) {
+        auto obj = v.first;
         if(!obj || !obj->getNameInDocument())
             continue;
         if(obj->getDocument()==owner->getDocument()) {
-#ifndef USE_OLD_DAG
-            obj->_removeBackLink(owner);
-#endif
+            if(!v.second)
+                obj->_removeBackLink(owner);
         }else
             _XLinks.erase(obj->getFullName());
         onRemoveDep(obj);
@@ -4563,8 +4597,9 @@ void PropertyXLinkContainer::clearDeps() {
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument())
         return;
-    for(auto obj : _Deps) {
-        if(obj && obj->getNameInDocument() && obj->getDocument()==owner->getDocument())
+    for(auto &v : _Deps) {
+        auto obj = v.first;
+        if(!v.second && obj && obj->getNameInDocument() && obj->getDocument()==owner->getDocument())
             obj->_removeBackLink(owner);
     }
     _Deps.clear();
@@ -4573,7 +4608,10 @@ void PropertyXLinkContainer::clearDeps() {
 }
 
 void PropertyXLinkContainer::getLinks(std::vector<App::DocumentObject *> &objs, 
-        bool, std::vector<std::string> * /*subs*/, bool /*newStyle*/) const
+        bool all, std::vector<std::string> * /*subs*/, bool /*newStyle*/) const
 {
-    objs.insert(objs.end(),_Deps.begin(),_Deps.end());
+    for(auto &v : _Deps) {
+        if(all || !v.second)
+            objs.push_back(v.first);
+    }
 }

@@ -76,6 +76,8 @@ public:
     //@{
     /// Get all properties of the class (including parent)
     void getPropertyList(std::vector<Property*> &List) const;
+    /// get all properties with their names
+    void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
     /// Get all properties of the class (including parent)
     void getPropertyMap(std::map<std::string,Property*> &Map) const;
     /// Find a dynamic property by its name
@@ -150,7 +152,7 @@ public:
         Property* property;
         std::string name;
         const char *pName;
-        std::string group;
+        mutable std::string group;
         short attr;
         bool readonly;
         bool hidden;
@@ -176,11 +178,13 @@ public:
         friend class DynamicProperty;
 
     private:
-        StringIDRef docID;
-        std::string doc;
+        mutable StringIDRef docID;
+        mutable std::string doc;
     };
 
     PropData getDynamicPropertyData(const Property* prop) const;
+
+    bool changeDynamicProperty(const Property *prop, const char *group, const char *doc);
 
 private:
     std::string getUniquePropertyName(PropertyContainer &pc, const char *Name) const;

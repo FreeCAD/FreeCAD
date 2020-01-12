@@ -68,6 +68,8 @@ public:
     void updateHiddenColumns();
 
 public Q_SLOTS:
+    void mergeCells();
+    void splitCell();
     void deleteSelection();
     void copySelection();
     void cutSelection();
@@ -87,6 +89,8 @@ protected Q_SLOTS:
     void cellProperties();
     void editMode(QAction *);
     void onRecompute();
+    void onBind();
+    void onConfSetup();
 
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
@@ -108,6 +112,7 @@ protected:
     std::set<long> hiddenColumns;
 
     QMenu *contextMenu;
+
     QAction *actionEditNormal;
     QAction *actionEditButton;
     QAction *actionEditCombo;
@@ -116,10 +121,13 @@ protected:
     QAction *actionShowRows;
     QAction *actionShowColumns;
 
+    QAction *actionMerge;
+    QAction *actionSplit;
     QAction *actionCopy;
     QAction *actionPaste;
     QAction *actionCut;
     QAction *actionDel;
+    QAction *actionBind;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };

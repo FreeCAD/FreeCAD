@@ -93,7 +93,7 @@ public:
      * Retrieve what kind of links are allowed. Only in the Local GeoFeatureGroup, in this and 
      * all Childs or to all objects within the Glocal scope.
      */
-    LinkScope getScope() {return _pcScope;};
+    LinkScope getScope() const {return _pcScope;};
     
 protected:
     LinkScope _pcScope = LinkScope::Local;
@@ -287,6 +287,22 @@ public:
         return ret;
     }
     //@}
+
+    virtual bool isSame(const Property &other) const override {
+        if(getTypeId() != other.getTypeId()
+            || getScope() != static_cast<decltype(this)>(&other)->getScope())
+            return false;
+
+        std::vector<App::DocumentObject*> ret;
+        std::vector<std::string> subs;
+        getLinks(ret,true,&subs,false);
+
+        std::vector<App::DocumentObject*> ret2;
+        std::vector<std::string> subs2;
+        static_cast<decltype(this)>(&other)->getLinks(ret2,true,&subs2,false);
+
+        return ret==ret2 && subs==subs2;
+    }
 
     /** Enable/disable temporary holding external object without throwing exception
      *
@@ -1308,11 +1324,11 @@ protected:
     virtual void onBreakLink(App::DocumentObject *obj);
     virtual void onAddDep(App::DocumentObject *) {}
     virtual void onRemoveDep(App::DocumentObject *) {}
-    void updateDeps(std::set<DocumentObject*> &&newDeps);
+    void updateDeps(std::map<DocumentObject*,bool> &&newDeps);
     void clearDeps();
 
 protected:
-    std::set<App::DocumentObject*> _Deps;
+    std::map<App::DocumentObject*,bool> _Deps;
     std::map<std::string, std::unique_ptr<PropertyXLink> > _XLinks;
     std::map<std::string, std::string> _DocMap;
     bool _LinkRestored;
@@ -1322,6 +1338,7 @@ private:
         std::unique_ptr<PropertyXLink> xlink;
         std::string docName;
         std::string docLabel;
+        bool hidden=false;
     };
     std::unique_ptr<std::vector<RestoreInfo> > _XLinkRestores;
 };

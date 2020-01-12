@@ -40,8 +40,6 @@ namespace App {
 _ExpressionAllocDefine(_ExpressionFastAlloc,boost::fast_pool_allocator);
 #define ExpressionFastAlloc(_t) _ExpressionFastAlloc<_t> 
 
-AppExport bool isAnyEqual(const App::any &v1, const App::any &v2);
-AppExport Base::Quantity anyToQuantity(const App::any &value, const char *errmsg = 0);
 AppExport ExpressionPtr expressionFromPy(const App::DocumentObject *owner, const Py::Object &value);
 AppExport Py::Object pyFromQuantity(const Base::Quantity &quantity);
 AppExport bool pyToQuantity(Base::Quantity &q, const Py::Object &pyobj);
@@ -235,9 +233,7 @@ protected:
     virtual bool _isIndexable() const;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual void _getDeps(ExpressionDeps &) const;
-    virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const;
-    virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const;
+    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const;
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &);
     virtual void _importSubNames(const ObjectIdentifier::SubNameMap &);
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *);
@@ -381,7 +377,7 @@ protected:
     BooleanExpression(const App::DocumentObject *_owner, const Base::Quantity &q)
         :NumberExpression(_owner,q)
     {}
-    virtual Py::Object _getPyValue(int *jumpCode=0) const override;
+    virtual Py::Object _getPyValue(int *jumpCode=0) const;
     virtual ExpressionPtr _copy() const;
 };
 
@@ -503,9 +499,73 @@ public:
 
     virtual ExpressionPtr simplify() const;
 
+    enum FunctionType {
+        FUNC_NONE,
+
+        // Normal functions taking one or two arguments
+        ACOS,
+        ASIN,
+        ATAN,
+        ABS,
+        EXP,
+        LOG,
+        LOG10,
+        SIN,
+        SINH,
+        TAN,
+        TANH,
+        SQRT,
+        COS,
+        COSH,
+        ATAN2,
+        FMOD,
+        FPOW,
+        ROUND,
+        TRUNC,
+        CEIL,
+        FLOOR,
+        HYPOT,
+        CATH,
+
+        GET_VAR,
+        HAS_VAR,
+        IMPORT_PY,
+        PRAGMA,
+        LIST,
+        TUPLE,
+        MSCALE,
+        MINVERT,
+        CREATE,
+        STR,
+        HREF,
+
+        CALLABLE_START,
+
+        FUNC,
+        FUNC_D,
+        FUNC_PARSED,
+        EVAL,
+
+        CALLABLE_END,
+
+        // Aggregates
+        AGGREGATES,
+
+        SUM,
+        AVERAGE,
+        STDDEV,
+        COUNT,
+        MIN,
+        MAX,
+
+        // Last one
+        LAST,
+    };
     int type() const {return f;}
 
     static Py::Object evaluate(const Expression *owner, int type, const ExpressionList &args);
+
+    const ExpressionList &getArgs() const {return args;}
 
 protected:
     FunctionExpression(const App::DocumentObject *_owner):Expression(_owner){}
@@ -578,7 +638,7 @@ protected:
 
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
-    virtual void _getDeps(ExpressionDeps &) const;
+    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const;
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &);
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);

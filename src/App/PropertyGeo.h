@@ -107,6 +107,11 @@ public:
         return Base::Unit();
     }
 
+    virtual bool isSame(const Property &other) const override {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
+
 private:
     Base::Vector3d _cVec;
 };
@@ -299,6 +304,11 @@ public:
         return sizeof(Base::Matrix4D);
     }
 
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
+
 private:
     Base::Matrix4D _cMat;
 };
@@ -363,6 +373,11 @@ public:
 
     virtual unsigned int getMemSize (void) const override {
         return sizeof(Base::Placement);
+    }
+
+    virtual bool isSame(const Property &other) const override {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
 
     static const Placement Null;

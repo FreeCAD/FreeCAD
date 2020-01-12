@@ -91,10 +91,18 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 #pragma warning(disable : 4065)
 #endif
 
+static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
+    if(expr) {
+        os << "\nin expression: ";
+        expr->toString(os);
+    }
+    return os;
+}
+
 #define __EXPR_THROW(_e,_msg,_expr) do {\
     std::ostringstream ss;\
     ss << _msg;\
-    if(_expr) ss << std::endl << (_expr)->toStr();\
+    if(_expr) ss << (_expr);\
     throw _e(ss.str().c_str());\
 }while(0)
 
@@ -103,7 +111,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 #define __EXPR_SET_MSG(_e,_msg,_expr) do {\
     std::ostringstream ss;\
     ss << _msg << _e.what();\
-    if(_expr) ss << std::endl << (_expr)->toStr();\
+    if(_expr) ss << (_expr);\
     _e.setMessage(ss.str());\
 }while(0)
 
@@ -291,17 +299,7 @@ enum ExpressionInternalOption {
 //
 // ExpressionVistor
 //
-void ExpressionVisitor::getDeps(Expression &e, ExpressionDeps &deps) {
-    e._getDeps(deps);
-}
-
-void ExpressionVisitor::getDepObjects(Expression &e, 
-        std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels) 
-{
-    e._getDepObjects(deps,labels);
-}
-
-void ExpressionVisitor::getIdentifiers(Expression &e, std::set<App::ObjectIdentifier> &ids) {
+void ExpressionVisitor::getIdentifiers(Expression &e, std::map<App::ObjectIdentifier,bool> &ids) {
     e._getIdentifiers(ids);
 }
 
@@ -489,7 +487,7 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     else if (isAnyPyObject(value))
         return __pyObjectFromAny(value);
     if (is_type(value,typeid(Quantity)))
-        return Py::Object(new QuantityPy(new Quantity(cast<Quantity>(value))));
+        return Py::asObject(new QuantityPy(new Quantity(cast<Quantity>(value))));
     else if (is_type(value,typeid(double)))
         return Py::Float(cast<double>(value));
     else if (is_type(value,typeid(float)))
@@ -622,7 +620,7 @@ ExpressionPtr expressionFromPy(const DocumentObject *owner, const Py::Object &va
 Py::Object pyFromQuantity(const Quantity &quantity) {
     Timing(pyFromQuantity);
     if(!quantity.getUnit().isEmpty())
-        return Py::Object(new QuantityPy(new Quantity(quantity)));
+        return Py::asObject(new QuantityPy(new Quantity(quantity)));
     double v = quantity.getValue();
     long l;
     int i;
@@ -1310,58 +1308,52 @@ ExpressionPtr Expression::parseUnit(const DocumentObject *owner, const char *buf
     return ExpressionParser::parseUnit(owner, buffer, len);
 }
 
-class GetDepsExpressionVisitor : public ExpressionVisitor {
-public:
-    GetDepsExpressionVisitor(ExpressionDeps &deps)
-        :deps(deps)
-    {}
-
-    virtual void visit(Expression &e) {
-        this->getDeps(e,deps);
+void Expression::getDeps(ExpressionDeps &deps, int option)  const {
+    for(auto &v : getIdentifiers()) {
+        bool hidden = v.second;
+        const ObjectIdentifier &var = v.first;
+        if((hidden && option==DepNormal)
+                || (!hidden && option==DepHidden))
+            continue;
+        for(auto &dep : var.getDep(true)) {
+            DocumentObject *obj = dep.first;
+            for(auto &propName : dep.second) {
+                deps[obj][propName].push_back(var);
+            }
+        }
     }
-
-    ExpressionDeps &deps;
-};
-
-void Expression::getDeps(ExpressionDeps &deps)  const {
-    GetDepsExpressionVisitor v(deps);
-    const_cast<Expression*>(this)->visit(v);
 }
 
-ExpressionDeps Expression::getDeps()  const {
+ExpressionDeps Expression::getDeps(int option)  const {
     ExpressionDeps deps;
-    getDeps(deps);
+    getDeps(deps, option);
     return deps;
 }
 
-class GetDepObjsExpressionVisitor : public ExpressionVisitor {
-public:
-    GetDepObjsExpressionVisitor(std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)
-        :deps(deps),labels(labels)
-    {}
-
-    virtual void visit(Expression &e) {
-        this->getDepObjects(e,deps,labels);
+void Expression::getDepObjects(
+        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels)  const 
+{
+    for(auto &v : getIdentifiers()) {
+        bool hidden = v.second;
+        const ObjectIdentifier &var = v.first;
+        for(auto &dep : var.getDep(false,labels)) {
+            DocumentObject *obj = dep.first;
+            auto res = deps.insert(std::make_pair(obj,hidden));
+            if(!hidden || res.second)
+                res.first->second = hidden;
+        }
     }
-
-    std::set<App::DocumentObject*> &deps;
-    std::vector<std::string> *labels;
-};
-
-void Expression::getDepObjects(std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)  const {
-    GetDepObjsExpressionVisitor v(deps,labels);
-    const_cast<Expression *>(this)->visit(v);
 }
 
-std::set<App::DocumentObject*> Expression::getDepObjects(std::vector<std::string> *labels)  const {
-    std::set<App::DocumentObject*> deps;
+std::map<App::DocumentObject*,bool> Expression::getDepObjects(std::vector<std::string> *labels)  const {
+    std::map<App::DocumentObject*,bool> deps;
     getDepObjects(deps,labels);
     return deps;
 }
 
 class GetIdentifiersExpressionVisitor : public ExpressionVisitor {
 public:
-    GetIdentifiersExpressionVisitor(std::set<App::ObjectIdentifier> &deps)
+    GetIdentifiersExpressionVisitor(std::map<App::ObjectIdentifier,bool> &deps)
         :deps(deps)
     {}
 
@@ -1369,16 +1361,16 @@ public:
         this->getIdentifiers(e,deps);
     }
 
-    std::set<App::ObjectIdentifier> &deps;
+    std::map<App::ObjectIdentifier,bool> &deps;
 };
 
-void Expression::getIdentifiers(std::set<App::ObjectIdentifier> &deps)  const {
+void Expression::getIdentifiers(std::map<App::ObjectIdentifier,bool> &deps)  const {
     GetIdentifiersExpressionVisitor v(deps);
     const_cast<Expression*>(this)->visit(v);
 }
 
-std::set<App::ObjectIdentifier> Expression::getIdentifiers()  const {
-    std::set<App::ObjectIdentifier> deps;
+std::map<App::ObjectIdentifier,bool> Expression::getIdentifiers()  const {
+    std::map<App::ObjectIdentifier,bool> deps;
     getIdentifiers(deps);
     return deps;
 }
@@ -1421,7 +1413,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
     if(!owner || !owner->getDocument())
         return 0;
     ObjectIdentifier::SubNameMap subNameMap;
-    for(auto &dep : getDeps()) {
+    for(auto &dep : getDeps(DepAll)) {
         for(auto &info : dep.second) {
             for(auto &path : info.second) {
                 auto obj = path.getDocumentObject();
@@ -1469,7 +1461,8 @@ ExpressionPtr Expression::updateLabelReference(
     if(ref.size()<=2)
         return 0;
     std::vector<std::string> labels;
-    getDepObjects(&labels);
+    for(auto &v : getIdentifiers())
+        v.first.getDepLabels(labels);
     for(auto &label : labels) {
         // ref contains something like $label. and we need to strip '$' and '.'
         if(ref.compare(1,ref.size()-2,label)==0) {
@@ -1571,12 +1564,13 @@ ExpressionPtr Expression::eval(int options) const {
     return expressionFromPy(owner,getPyValue(options));
 }
 
-bool Expression::isSame(const Expression &other) const {
+bool Expression::isSame(const Expression &other, bool checkComment) const {
     if(&other == this)
         return true;
     if(getTypeId()!=other.getTypeId())
         return false;
-    return comment==other.comment && toString(true,true) == other.toString(true,true);
+    return (!checkComment || comment==other.comment)
+        && toString(true,true) == other.toString(true,true);
 }
 
 std::string Expression::toString(bool persistent, bool checkPriority, int indent) const {
@@ -2292,70 +2286,35 @@ public:
     {}
 };
 
+static int _HiddenReference;
+
+struct HiddenReference {
+    HiddenReference(bool cond)
+        :cond(cond)
+    {
+        if(cond)
+            ++_HiddenReference;
+    }
+    ~HiddenReference() {
+        if(cond)
+            --_HiddenReference;
+    }
+
+    static bool check(int option) {
+        return (option==Expression::DepNormal && _HiddenReference)
+            || (option==Expression::DepHidden && !_HiddenReference);
+    }
+
+    static bool isHidden() {
+        return _HiddenReference!=0;
+    }
+
+    bool cond;
+};
+
 //
 // FunctionExpression class. This class handles functions with one or two parameters.
 //
-
-enum ExpressionFunctionType {
-    FUNC_NONE,
-
-    // Normal functions taking one or two arguments
-    ACOS,
-    ASIN,
-    ATAN,
-    ABS,
-    EXP,
-    LOG,
-    LOG10,
-    SIN,
-    SINH,
-    TAN,
-    TANH,
-    SQRT,
-    COS,
-    COSH,
-    ATAN2,
-    FMOD,
-    FPOW,
-    ROUND,
-    TRUNC,
-    CEIL,
-    FLOOR,
-    HYPOT,
-    CATH,
-
-    GET_VAR,
-    HAS_VAR,
-    IMPORT_PY,
-    PRAGMA,
-    LIST,
-    TUPLE,
-    MSCALE,
-    MINVERT,
-    CREATE,
-
-    CALLABLE_START,
-
-    FUNC,
-    FUNC_D,
-    FUNC_PARSED,
-    EVAL,
-
-    CALLABLE_END,
-
-    // Aggregates
-    AGGREGATES,
-
-    SUM,
-    AVERAGE,
-    STDDEV,
-    COUNT,
-    MIN,
-    MAX,
-
-    // Last one
-    LAST,
-};
 
 static std::unordered_map<std::string, int> registered_functions; 
 static std::unordered_map<int, std::string> registered_function_names; 
@@ -2365,50 +2324,52 @@ void init_functions() {
     if(inited)
         return;
     inited = true;
-    registered_functions["acos"] = ACOS;
-    registered_functions["asin"] = ASIN;
-    registered_functions["atan"] = ATAN;
-    registered_functions["abs"] = ABS;
-    registered_functions["exp"] = EXP;
-    registered_functions["log"] = LOG;
-    registered_functions["log10"] = LOG10;
-    registered_functions["sin"] = SIN;
-    registered_functions["sinh"] = SINH;
-    registered_functions["tan"] = TAN;
-    registered_functions["tanh"] = TANH;
-    registered_functions["sqrt"] = SQRT;
-    registered_functions["cos"] = COS;
-    registered_functions["cosh"] = COSH;
-    registered_functions["atan2"] = ATAN2;
-    registered_functions["mod"] = FMOD;
-    registered_functions["pow"] = FPOW;
-    registered_functions["round"] = ROUND;
-    registered_functions["trunc"] = TRUNC;
-    registered_functions["ceil"] = CEIL;
-    registered_functions["floor"] = FLOOR;
-    registered_functions["hypot"] = HYPOT;
-    registered_functions["cath"] = CATH;
+    registered_functions["acos"] = FunctionExpression::ACOS;
+    registered_functions["asin"] = FunctionExpression::ASIN;
+    registered_functions["atan"] = FunctionExpression::ATAN;
+    registered_functions["abs"] = FunctionExpression::ABS;
+    registered_functions["exp"] = FunctionExpression::EXP;
+    registered_functions["log"] = FunctionExpression::LOG;
+    registered_functions["log10"] = FunctionExpression::LOG10;
+    registered_functions["sin"] = FunctionExpression::SIN;
+    registered_functions["sinh"] = FunctionExpression::SINH;
+    registered_functions["tan"] = FunctionExpression::TAN;
+    registered_functions["tanh"] = FunctionExpression::TANH;
+    registered_functions["sqrt"] = FunctionExpression::SQRT;
+    registered_functions["cos"] = FunctionExpression::COS;
+    registered_functions["cosh"] = FunctionExpression::COSH;
+    registered_functions["atan2"] = FunctionExpression::ATAN2;
+    registered_functions["mod"] = FunctionExpression::FMOD;
+    registered_functions["pow"] = FunctionExpression::FPOW;
+    registered_functions["round"] = FunctionExpression::ROUND;
+    registered_functions["trunc"] = FunctionExpression::TRUNC;
+    registered_functions["ceil"] = FunctionExpression::CEIL;
+    registered_functions["floor"] = FunctionExpression::FLOOR;
+    registered_functions["hypot"] = FunctionExpression::HYPOT;
+    registered_functions["cath"] = FunctionExpression::CATH;
 
-    registered_functions["eval"] = EVAL;
-    registered_functions["func"] = FUNC;
-    registered_functions["func_d"] = FUNC_D;
-    registered_functions["getvar"] = GET_VAR;
-    registered_functions["hasvar"] = HAS_VAR;
-    registered_functions["import_py"] = IMPORT_PY;
-    registered_functions["pragma"] = PRAGMA;
-    registered_functions["list"] = LIST;
-    registered_functions["tuple"] = TUPLE;
-    registered_functions["create"] = CREATE;
-    registered_functions["mscale"] = MSCALE;
-    registered_functions["minvert"] = MINVERT;
+    registered_functions["eval"] = FunctionExpression::EVAL;
+    registered_functions["func"] = FunctionExpression::FUNC;
+    registered_functions["func_d"] = FunctionExpression::FUNC_D;
+    registered_functions["getvar"] = FunctionExpression::GET_VAR;
+    registered_functions["hasvar"] = FunctionExpression::HAS_VAR;
+    registered_functions["import_py"] = FunctionExpression::IMPORT_PY;
+    registered_functions["pragma"] = FunctionExpression::PRAGMA;
+    registered_functions["list"] = FunctionExpression::LIST;
+    registered_functions["tuple"] = FunctionExpression::TUPLE;
+    registered_functions["create"] = FunctionExpression::CREATE;
+    registered_functions["mscale"] = FunctionExpression::MSCALE;
+    registered_functions["minvert"] = FunctionExpression::MINVERT;
+    registered_functions["str"] = FunctionExpression::STR;
+    registered_functions["href"] = FunctionExpression::HREF;
 
     // Aggregates
-    registered_functions["sum"] = SUM;
-    registered_functions["count"] = COUNT;
-    registered_functions["average"] = AVERAGE;
-    registered_functions["stddev"] = STDDEV;
-    registered_functions["min"] = MIN;
-    registered_functions["max"] = MAX;
+    registered_functions["sum"] = FunctionExpression::SUM;
+    registered_functions["count"] = FunctionExpression::COUNT;
+    registered_functions["average"] = FunctionExpression::AVERAGE;
+    registered_functions["stddev"] = FunctionExpression::STDDEV;
+    registered_functions["min"] = FunctionExpression::MIN;
+    registered_functions["max"] = FunctionExpression::MAX;
 
     for(auto &v : registered_functions)
         registered_function_names[v.second] = v.first;
@@ -2424,7 +2385,7 @@ ExpressionPtr FunctionExpression::create(const DocumentObject *owner, int f, Exp
 }
 
 /**
-  * Determinte whether the expressions is considered touched, i.e one or both of its arguments
+  * Determine whether the expressions is considered touched, i.e one or both of its arguments
   * are touched.
   *
   * @return True if touched, false if not.
@@ -2714,7 +2675,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
             else {
                 auto mat = static_cast<Base::MatrixPy*>(pymat.ptr())->value();
                 mat.scale(vec);
-                return Py::Object(new Base::MatrixPy(mat));
+                return Py::asObject(new Base::MatrixPy(mat));
             }
         }
         _EXPR_THROW("Function requires arguments to be either "
@@ -2728,15 +2689,15 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
             if (fabs(m.determinant()) <= DBL_EPSILON)
                 _EXPR_THROW("Cannot invert singular matrix.",expr);
             m.inverseGauss();
-            return Py::Object(new Base::MatrixPy(m));
+            return Py::asObject(new Base::MatrixPy(m));
 
         } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::PlacementPy::Type)) {
             const auto &pla = *static_cast<Base::PlacementPy*>(pyobj.ptr())->getPlacementPtr();
-            return Py::Object(new Base::PlacementPy(pla.inverse()));
+            return Py::asObject(new Base::PlacementPy(pla.inverse()));
 
         } else if (PyObject_TypeCheck(pyobj.ptr(),&Base::RotationPy::Type)) {
             const auto &rot = *static_cast<Base::RotationPy*>(pyobj.ptr())->getRotationPtr();
-            return Py::Object(new Base::RotationPy(rot.inverse()));
+            return Py::asObject(new Base::RotationPy(rot.inverse()));
         }
         _EXPR_THROW("Function requires the first argument to be either Matrix, Placement or Rotation.",expr);
 
@@ -2747,13 +2708,13 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
         std::string type(pytype.as_string());
         Py::Object res;
         if(boost::iequals(type,"matrix")) 
-            res = Py::Object(new Base::MatrixPy(Base::Matrix4D()));
+            res = Py::asObject(new Base::MatrixPy(Base::Matrix4D()));
         else if(boost::iequals(type,"vector"))
-            res = Py::Object(new Base::VectorPy(Base::Vector3d()));
+            res = Py::asObject(new Base::VectorPy(Base::Vector3d()));
         else if(boost::iequals(type,"placement"))
-            res = Py::Object(new Base::PlacementPy(Base::Placement()));
+            res = Py::asObject(new Base::PlacementPy(Base::Placement()));
         else if(boost::iequals(type,"rotation"))
-            res = Py::Object(new Base::RotationPy(Base::Rotation()));
+            res = Py::asObject(new Base::RotationPy(Base::Rotation()));
         else
             _EXPR_THROW("Unknown type '" << type << "'.",expr);
         if(args.size()>1) {
@@ -2764,7 +2725,10 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
             PyObjectBase::__PyInit(res.ptr(),tuple.ptr(),dict.ptr());
         }
         return res;
-
+    } case STR: {
+        return Py::String(args[0]->getPyValue().as_string());
+    } case HREF: {
+        return args[0]->getPyValue();
     } default:
         break;
     }
@@ -2899,7 +2863,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
         unit = v1.getUnit();
         break;
     default:
-        _EXPR_THROW("Unknown function: " << f,expr);
+        _EXPR_THROW("Unknown function: " << f,0);
     }
 
     /* Compute result */
@@ -2979,10 +2943,10 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const Exp
         output = floor(value);
         break;
     default:
-        _EXPR_THROW("Unknown function: " << f,expr);
+        _EXPR_THROW("Unknown function: " << f,0);
     }
 
-    return Py::Object(new QuantityPy(new Quantity(scaler * output, unit)));
+    return Py::asObject(new QuantityPy(new Quantity(scaler * output, unit)));
 }
 
 Py::Object FunctionExpression::_getPyValue(int *) const {
@@ -3051,7 +3015,8 @@ ExpressionPtr FunctionExpression::_copy() const
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v) {
-    for(auto &arg:args)
+    HiddenReference ref(f == HREF);
+    for(auto &arg : args)
         arg->visit(v);
 }
 
@@ -3488,26 +3453,14 @@ public:
     }
 };
 
-void VariableExpression::_getDeps(ExpressionDeps &deps) const
+void VariableExpression::_getIdentifiers(std::map<App::ObjectIdentifier,bool> &deps) const
 {
     if(_FunctionDepth)
         return;
-    auto dep = var.getDep();
-    if(dep.first)
-        deps[dep.first][dep.second].push_back(var);
-}
-
-void VariableExpression::_getDepObjects(
-        std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels) const
-{
-    auto dep = var.getDep(labels);
-    if(dep.first)
-        deps.insert(dep.first);
-}
-
-void VariableExpression::_getIdentifiers(std::set<App::ObjectIdentifier> &deps) const
-{
-    deps.insert(var);
+    bool hidden = HiddenReference::isHidden();
+    auto res = deps.insert(std::make_pair(var,hidden));
+    if(!hidden || res.second)
+        res.first->second = hidden;
 }
 
 bool VariableExpression::_relabeledDocument(const std::string &oldName,
@@ -3599,12 +3552,18 @@ void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVi
     if(!addr.isValid() || (addr.isAbsoluteCol() && addr.isAbsoluteRow()))
         return;
 
-    v.aboutToChange();
     if(!addr.isAbsoluteCol())
         addr.setCol(addr.col()+colOffset);
     if(!addr.isAbsoluteRow())
         addr.setRow(addr.row()+rowOffset);
-    var.setComponent(idx,ObjectIdentifier::SimpleComponent(addr.toString()));
+    if(!addr.isValid()) {
+        FC_WARN("Not changing relative cell reference '"
+                << comp.getName() << "' due to invalid offset "
+                << '(' << colOffset << ", " << rowOffset << ')');
+    } else {
+        v.aboutToChange();
+        var.setComponent(idx,ObjectIdentifier::SimpleComponent(addr.toString()));
+    }
 }
 
 //
@@ -3638,7 +3597,8 @@ ExpressionPtr CallableExpression::create(const DocumentObject *owner,
         return CallableExpression::create(owner,
                 VariableExpression::create(owner,std::move(path)), std::move(names),std::move(args));
     }
-    if(it->second < CALLABLE_START || it->second > CALLABLE_END) {
+    if(it->second < FunctionExpression::CALLABLE_START
+            || it->second > FunctionExpression::CALLABLE_END) {
         for(auto &n : names) {
             if(n.size()) {
                 PARSER_THROW("Function '" << name << "' does not support named argument.");
@@ -3720,7 +3680,7 @@ void CallableExpression::_toString(std::ostream &ss, bool persistent,int) const 
 }
 
 std::string CallableExpression::getDocString() const {
-    if(ftype==FUNC_PARSED && 
+    if(ftype == FunctionExpression::FUNC_PARSED && 
        expr && expr->isDerivedFrom(SimpleStatement::getClassTypeId()))
     {
         auto e = static_cast<SimpleStatement*>(expr.get());
@@ -3745,6 +3705,7 @@ bool CallableExpression::isTouched() const
 }
 
 void CallableExpression::_visit(ExpressionVisitor &v) {
+    HiddenReference ref(ftype == FunctionExpression::HREF);
     for(auto &arg : args)
         arg->visit(v);
     if(expr)
@@ -3825,7 +3786,7 @@ enum JumpType {
 
 Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
 
-    if(ftype!=FUNC_PARSED)
+    if(ftype != FunctionExpression::FUNC_PARSED)
         PY_THROW("Unexpected callable expression type: " << ftype);
     if(!expr)
         PY_THROW("Invalid callable expression");
@@ -3930,7 +3891,7 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
 }
 
 Py::Object CallableExpression::_getPyValue(int *) const {
-    if(!expr && ftype == EVAL) {
+    if(!expr && ftype == FunctionExpression::EVAL) {
         if(args.size()<1)
             EXPR_THROW("Expects at least one arg");
 
@@ -3968,7 +3929,7 @@ Py::Object CallableExpression::_getPyValue(int *) const {
     }
 
     Py::Object *pyCallable = 0;
-    if(!expr && ftype!=EVAL && _EvalStack.size() && _EvalStack.front()->PythonMode()) {
+    if(!expr && ftype != FunctionExpression::EVAL && _EvalStack.size() && _EvalStack.front()->PythonMode()) {
         auto &frame = *_EvalStack.back();
         pyCallable = frame.getVar(this,name.c_str(),BindQuery);
         if(pyCallable && !pyCallable->isCallable()) 
@@ -3976,8 +3937,8 @@ Py::Object CallableExpression::_getPyValue(int *) const {
     }
     if(!expr && !pyCallable) {
         switch(ftype) {
-        case FUNC: 
-        case FUNC_D: {
+        case FunctionExpression::FUNC: 
+        case FunctionExpression::FUNC_D: {
 
             if(args.size()<1)
                 EXPR_THROW("Expects at least one argument");
@@ -3990,11 +3951,11 @@ Py::Object CallableExpression::_getPyValue(int *) const {
                 static_cast<Statement&>(*statement).add(parse(owner,cmd,true));
 
             _EXPR_NEW(res,CallableExpression,owner);
-            res->ftype = FUNC_PARSED;
+            res->ftype = FunctionExpression::FUNC_PARSED;
             res->names.reserve(args.size());
             res->args.reserve(args.size());
             res->expr = std::move(statement);
-            if(ftype == FUNC_D) {
+            if(ftype == FunctionExpression::FUNC_D) {
                 // Delay argument evaluation until the function is evaluated.
                 // Just wrap them as it is now.
                 for(size_t i=1;i<args.size();++i) {
@@ -4012,12 +3973,12 @@ Py::Object CallableExpression::_getPyValue(int *) const {
             }
             return Py::Object(new ExpressionPy(_res.release()));
 
-        } case IMPORT_PY: {
+        } case FunctionExpression::IMPORT_PY: {
             Py::Object value(args[0]->getPyValue());
             if(!value.isString())
                 EXPR_THROW("Function expects the first argument to be a string.");
             return ImportModules::instance()->getModule(value.as_string(),this);
-        } case PRAGMA: {
+        } case FunctionExpression::PRAGMA: {
             Py::Object value(args[0]->getPyValue());
             if(!value.isString())
                 EXPR_THROW("Function expects the first argument to be a string.");
@@ -4562,32 +4523,38 @@ ExpressionPtr RangeExpression::_copy() const
     return RangeExpression::create(owner,std::string(begin),std::string(end));
 }
 
-void RangeExpression::_getDeps(ExpressionDeps &deps) const
+void RangeExpression::_getIdentifiers(std::map<App::ObjectIdentifier,bool> &deps) const
 {
+    if(_FunctionDepth)
+        return;
+
+    bool hidden = HiddenReference::isHidden();
+
     assert(owner);
 
     Range i(getRange());
 
-    auto &dep = deps[owner];
     do {
-        std::string address = i.address();
-        dep[address].push_back(ObjectIdentifier(owner,address));
+        ObjectIdentifier var(owner,i.address());
+        auto res = deps.insert(std::make_pair(var,hidden));
+        if(!hidden || res.second)
+            res.first->second = hidden;
     } while (i.next());
 }
 
 Py::Object RangeExpression::_getPyValue(int *) const {
     Range i(getRange());
-    Py::Tuple tuple(i.size());
+    Py::List list(i.size());
     int j=0;
     do {
         try {
             ObjectIdentifier var(owner,i.address());
-            tuple.setItem(j++,var.getPyValue());
+            list.setItem(j++,var.getPyValue());
         }catch(Base::Exception &e) {
             _EXPR_RETHROW(e,"Failed to obtian cell '" << i.address() << "': ",this);
         }
     }while(i.next());
-    return tuple;
+    return list;
 }
 
 Range RangeExpression::getRange() const
@@ -5916,7 +5883,7 @@ static Py::Object makeFunc(const Expression *owner,
                                           body.copy(),
                                           Expression::StringList(names),
                                           std::move(eval_args),
-                                          FUNC_PARSED,
+                                          FunctionExpression::FUNC_PARSED,
                                           std::string(name?name:""),
                                           false);
     Py::Object pyobj(new ExpressionPy(res.release()),false);

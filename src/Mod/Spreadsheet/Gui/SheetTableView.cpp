@@ -36,6 +36,7 @@
 #include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <Gui/CommandT.h>
+#include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <boost/bind.hpp>
 #include "../App/Utils.h"
@@ -44,6 +45,8 @@
 #include "SheetTableView.h"
 #include "LineEdit.h"
 #include "PropertiesDialog.h"
+#include "DlgBindSheet.h"
+#include "DlgSheetConf.h"
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
@@ -115,8 +118,6 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(hideColumns, SIGNAL(triggered()), this, SLOT(hideColumns()));
     connect(actionShowColumns, SIGNAL(toggled(bool)), this, SLOT(showColumns()));
 
-    setTabKeyNavigation(false);
-
     contextMenu = new QMenu(this);
 
     QAction * cellProperties = new QAction(tr("Properties..."), this);
@@ -148,9 +149,27 @@ SheetTableView::SheetTableView(QWidget *parent)
     subMenu->addActions(editGroup->actions());
     connect(editGroup, SIGNAL(triggered(QAction*)), this, SLOT(editMode(QAction*)));
 
+    contextMenu->addSeparator();
     QAction *recompute = new QAction(tr("Recompute"),this);
     connect(recompute, SIGNAL(triggered()), this, SLOT(onRecompute()));
     contextMenu->addAction(recompute);
+
+    actionBind = new QAction(tr("Bind..."),this);
+    connect(actionBind, SIGNAL(triggered()), this, SLOT(onBind()));
+    contextMenu->addAction(actionBind);
+
+    QAction *actionConf = new QAction(tr("Configuration table..."),this);
+    connect(actionConf, SIGNAL(triggered()), this, SLOT(onConfSetup()));
+    contextMenu->addAction(actionConf);
+
+    horizontalHeader()->addAction(actionBind);
+    verticalHeader()->addAction(actionBind);
+
+    contextMenu->addSeparator();
+    actionMerge = contextMenu->addAction(tr("Merge cells"));
+    connect(actionMerge,SIGNAL(triggered()), this, SLOT(mergeCells()));
+    actionSplit = contextMenu->addAction(tr("Split cells"));
+    connect(actionSplit,SIGNAL(triggered()), this, SLOT(splitCell()));
 
     contextMenu->addSeparator();
     actionCut = contextMenu->addAction(tr("Cut"));
@@ -161,6 +180,8 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(actionPaste,SIGNAL(triggered()), this, SLOT(pasteClipboard()));
     actionDel = contextMenu->addAction(tr("Delete"));
     connect(actionDel,SIGNAL(triggered()), this, SLOT(deleteSelection()));
+
+    setTabKeyNavigation(false);
 }
 
 void SheetTableView::updateHiddenRows() {
@@ -216,11 +237,26 @@ void SheetTableView::editMode(QAction *action) {
 void SheetTableView::onRecompute() {
     Gui::Command::openCommand("Recompute cells");
     for(auto &range : selectedRanges()) {
-        FCMD_OBJ_CMD(sheet, "touchCells('" << range.fromCellString()
-                << "','" << range.toCellString() << "')");
+        Gui::cmdAppObjectArgs(sheet, "recomputeCells('%s', '%s')",
+                range.fromCellString(), range.toCellString());
     }
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     Gui::Command::commitCommand();
+}
+
+void SheetTableView::onBind() {
+    auto ranges = selectedRanges();
+    if(ranges.size()>=1 && ranges.size()<=2) {
+        DlgBindSheet dlg(sheet,ranges,this);
+        dlg.exec();
+    }
+}
+
+void SheetTableView::onConfSetup() {
+    auto ranges = selectedRanges();
+    if(ranges.empty())
+        return;
+    DlgSheetConf dlg(sheet,ranges.back(),this);
+    dlg.exec();
 }
 
 void SheetTableView::cellProperties()
@@ -674,18 +710,16 @@ void SheetTableView::pasteClipboard()
     if(!mimeData || !mimeData->hasText())
         return;
 
-    if(selectionModel()->selectedIndexes().size()>1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Spreadsheet"),
-                QObject::tr("Spreadsheet does not support range selection when pasting.\n"
-                            "Please select one cell only."));
+    auto ranges = selectedRanges();
+    if(ranges.empty())
         return;
-    }
 
-    QModelIndex current = currentIndex();
+    Range range = ranges.back();
 
     App::AutoTransaction committer("Paste cell");
     try {
         if (!mimeData->hasFormat(_SheetMime)) {
+            CellAddress current = range.from();
             QStringList cells;
             QString text = mimeData->text();
             int i=0;
@@ -693,7 +727,7 @@ void SheetTableView::pasteClipboard()
                 QStringList cols = it.split(QLatin1Char('\t'));
                 int j=0;
                 for (auto jt : cols) {
-                    QModelIndex index = model()->index(current.row()+i, current.column()+j);
+                    QModelIndex index = model()->index(current.row()+i, current.col()+j);
                     model()->setData(index, jt);
                     j++;
                 }
@@ -705,7 +739,7 @@ void SheetTableView::pasteClipboard()
             std::istream in(0);
             in.rdbuf(&buf);
             Base::XMLReader reader("<memory>", in);
-            sheet->getCells()->pasteCells(reader,CellAddress(current.row(),current.column()));
+            sheet->getCells()->pasteCells(reader,range);
         }
 
         GetApplication().getActiveDocument()->recompute();
@@ -714,7 +748,17 @@ void SheetTableView::pasteClipboard()
         e.ReportException();
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Copy & Paste failed"),
                 QString::fromLatin1(e.what()));
+        return;
     }
+    clearSelection();
+}
+
+void SheetTableView::mergeCells() {
+    Gui::Application::Instance->commandManager().runCommandByName("Spreadsheet_MergeCells");
+}
+
+void SheetTableView::splitCell() {
+    Gui::Application::Instance->commandManager().runCommandByName("Spreadsheet_SplitCell");
 }
 
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
@@ -772,12 +816,19 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
         actionCopy->setEnabled(false);
         actionDel->setEnabled(false);
         actionPaste->setEnabled(false);
+        actionSplit->setEnabled(false);
+        actionMerge->setEnabled(false);
     }else{
         actionPaste->setEnabled(mimeData && (mimeData->hasText() || mimeData->hasText()));
         actionCut->setEnabled(true);
         actionCopy->setEnabled(true);
         actionDel->setEnabled(true);
+        actionSplit->setEnabled(true);
+        actionMerge->setEnabled(true);
     }
+
+    auto ranges = selectedRanges();
+    actionBind->setEnabled(ranges.size()>=1 && ranges.size()<=2);
 
     contextMenu->exec(QCursor::pos());
 }

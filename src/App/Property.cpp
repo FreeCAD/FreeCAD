@@ -34,6 +34,7 @@
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include "Application.h"
 #include "DocumentObject.h"
 
@@ -159,8 +160,48 @@ ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
     return p;
 }
 
+static std::vector<Property*> _RemovedProps;
+static int _PropCleanerCounter;
+
+struct PropertyCleaner {
+    PropertyCleaner(Property *p)
+        : prop(p)
+    {
+        ++_PropCleanerCounter;
+    }
+    ~PropertyCleaner() {
+        if(--_PropCleanerCounter)
+            return;
+        bool found = false;
+        while(_RemovedProps.size()) {
+            auto p = _RemovedProps.back();
+            _RemovedProps.pop_back();
+            if(p != prop)
+                delete p;
+            else
+                found = true;
+        }
+        if(found)
+            _RemovedProps.push_back(prop);
+    }
+
+    Property *prop;
+};
+
+void Property::destroy(Property *p) {
+    if(p) {
+        // Is it necessary to nullify the container? May cause crash if any
+        // onChanged() caller assumes a non-null container.
+        //
+        // p->setContainer(0);
+
+        _RemovedProps.push_back(p);
+    }
+}
+
 void Property::touch()
 {
+    PropertyCleaner guard(this);
     if (father)
         father->onChanged(this);
     StatusBits.set(Touched);
@@ -173,8 +214,14 @@ void Property::setReadOnly(bool readOnly)
 
 void Property::hasSetValue(void)
 {
-    if (father)
+    PropertyCleaner guard(this);
+    if (father) {
         father->onChanged(this);
+        if(!testStatus(Busy)) {
+            Base::BitsetLocker<decltype(StatusBits)> guard(StatusBits,Busy);
+            signalChanged(*this);
+        }
+    }
     StatusBits.set(Touched);
 }
 
@@ -209,7 +256,8 @@ void Property::setStatusValue(unsigned long status) {
         |(1<<PropReadOnly)
         |(1<<PropTransient)
         |(1<<PropOutput)
-        |(1<<PropHidden);
+        |(1<<PropHidden)
+        |(1<<Busy);
 
     status &= ~mask;
     status |= StatusBits.to_ulong() & mask;
@@ -228,6 +276,17 @@ void Property::setStatus(Status pos, bool on) {
     bits.set(pos,on);
     setStatusValue(bits.to_ulong());
 }
+
+bool Property::isSame(const Property &other) const {
+    if(other.getTypeId() != getTypeId() || getMemSize() != other.getMemSize())
+        return false;
+
+    Base::StringWriter writer,writer2;
+    Save(writer);
+    other.Save(writer2);
+    return writer.getString() == writer2.getString();
+}
+
 //**************************************************************************
 //**************************************************************************
 // PropertyListsBase

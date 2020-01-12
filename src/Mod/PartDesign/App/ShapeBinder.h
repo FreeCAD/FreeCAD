@@ -27,6 +27,8 @@
 #include <QString>
 #include <boost/signals2.hpp>
 #include <App/PropertyLinks.h>
+#include <App/DocumentObserver.h>
+#include <App/FeaturePython.h>
 #include <Mod/Part/App/DatumFeature.h>
 
 namespace PartDesign
@@ -77,6 +79,8 @@ public:
     typedef Part::Feature inherited;
 
     SubShapeBinder();
+    ~SubShapeBinder();
+
     const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderSubShapeBinder";
     }
@@ -92,6 +96,7 @@ public:
     App::PropertyBool PartialLoad;
     App::PropertyXLink Context;
     App::PropertyInteger _Version;
+    App::PropertyEnumeration BindCopyOnChange;
 
     enum UpdateOption {
         UpdateNone = 0,
@@ -116,14 +121,26 @@ protected:
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;
 
+    void setupCopyOnChange();
+    void checkCopyOnChange(const App::Property &prop);
+    void clearCopiedObjects();
+
     void checkPropertyStatus();
 
     void slotRecomputedObject(const App::DocumentObject& Obj);
 
     typedef boost::signals2::scoped_connection Connection;
     Connection connRecomputedObj;
-    App::Document *contextDoc=0;
+    App::Document *contextDoc = 0;
+
+    std::vector<Connection> copyOnChangeConns;
+    bool hasCopyOnChange = true;
+
+    App::PropertyXLinkSub _CopiedLink;
+    std::vector<App::DocumentObjectT> _CopiedObjs;
 };
+
+typedef App::FeaturePythonT<SubShapeBinder> SubShapeBinderPython;
 
 } //namespace PartDesign
 

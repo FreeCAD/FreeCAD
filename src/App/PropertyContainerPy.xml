@@ -68,6 +68,11 @@ If the list contains 'Hidden' then the item even doesn't appear in the property 
 			  <UserDocu>Return the name of the group which the property belongs to in this class. The properties sorted in different named groups for convenience.</UserDocu>
 		  </Documentation>
 	  </Methode>
+      <Methode Name="setGroupOfProperty">
+		  <Documentation>
+			  <UserDocu>Set the name of the group of a dynamic property.</UserDocu>
+		  </Documentation>
+	  </Methode>
       <Methode Name="setPropertyStatus">
             <Documentation>
                 <UserDocu>
@@ -95,6 +100,11 @@ text names of the status.
 	  <Methode Name="getDocumentationOfProperty">
 		  <Documentation>
 			  <UserDocu>Return the documentation string of the property of this class.</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="setDocumentationOfProperty">
+		  <Documentation>
+			  <UserDocu>Set the documentation string of a dynamic property of this class.</UserDocu>
 		  </Documentation>
 	  </Methode>
       <Methode Name="dumpPropertyContent" Keyword="true" Const="true">

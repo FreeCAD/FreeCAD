@@ -289,8 +289,8 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
-    PyObject *obj, *rec=Py_False;
-    if (!PyArg_ParseTuple(args, "O|O",&obj,&rec))
+    PyObject *obj, *rec=Py_False, *retAll=Py_False;
+    if (!PyArg_ParseTuple(args, "O|OO",&obj,&rec,&retAll))
         return NULL;    // NULL triggers exception
 
     std::vector<App::DocumentObject*> objs;
@@ -314,7 +314,7 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
     }
 
     PY_TRY {
-        auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec));
+        auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec),PyObject_IsTrue(retAll));
         if(ret.size()==1 && single)
             return ret[0]->getPyObject();
 
@@ -879,5 +879,9 @@ Py::Boolean DocumentPy::getTransacting() const {
 
 Py::String DocumentPy::getOldLabel() const {
     return Py::String(getDocumentPtr()->getOldLabel());
+}
+
+Py::Boolean DocumentPy::getTemporary() const {
+    return Py::Boolean(getDocumentPtr()->testStatus(Document::TempDoc));
 }
 

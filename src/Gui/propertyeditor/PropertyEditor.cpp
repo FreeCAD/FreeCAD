@@ -31,7 +31,10 @@
 # include <QDialog>
 # include <QMessageBox>
 # include <QCheckBox>
+# include <QInputDialog>
 #endif
+
+#include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -51,7 +54,8 @@ FC_LOG_LEVEL_INIT("PropertyView",true,true)
 using namespace Gui::PropertyEditor;
 
 PropertyEditor::PropertyEditor(QWidget *parent)
-    : QTreeView(parent), autoupdate(false), committing(false), delaybuild(false), binding(false)
+    : QTreeView(parent), autoupdate(false), committing(false)
+    , delaybuild(false), binding(false), checkDocument(false)
 {
     propertyModel = new PropertyModel(this);
     setModel(propertyModel);
@@ -322,8 +326,10 @@ void PropertyEditor::drawBranches(QPainter *painter, const QRect &rect, const QM
     //painter->setPen(savedPen);
 }
 
-void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool checkDocument)
+void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDocument)
 {
+    checkDocument = _checkDocument;
+
     if (committing) {
         Base::Console().Warning("While committing the data to the property the selection has changed.\n");
         delaybuild = true;
@@ -448,6 +454,7 @@ enum MenuAction {
     MA_Expression,
     MA_RemoveProp,
     MA_AddProp,
+    MA_EditPropGroup,
     MA_Transient,
     MA_Output,
     MA_NoRecompute,
@@ -455,6 +462,7 @@ enum MenuAction {
     MA_Hidden,
     MA_Touched,
     MA_EvalOnRestore,
+    MA_CopyOnChange,
 };
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
@@ -469,23 +477,50 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     auto contextIndex = currentIndex();
 
     std::unordered_set<App::Property*> props;
-
-    if(PropertyView::showAll()) {
-        for(auto index : selectedIndexes()) {
-            auto item = static_cast<PropertyItem*>(index.internalPointer());
-            if(item->isSeparator())
-                continue;
-            for(auto parent=item;parent;parent=parent->parent()) {
-                const auto &ps = parent->getPropertyData();
-                if(ps.size()) {
-                    props.insert(ps.begin(),ps.end());
-                    break;
-                }
+    for(auto index : selectedIndexes()) {
+        auto item = static_cast<PropertyItem*>(index.internalPointer());
+        if(item->isSeparator())
+            continue;
+        for(auto parent=item;parent;parent=parent->parent()) {
+            const auto &ps = parent->getPropertyData();
+            if(ps.size()) {
+                props.insert(ps.begin(),ps.end());
+                break;
             }
         }
+    }
 
-        if(props.size())
+    if(props.size() == 1) {
+        auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
+        auto prop = *props.begin();
+        if(item->isBound() 
+            && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
+            && !prop->isReadOnly() 
+            && !prop->testStatus(App::Property::Immutable)
+            && !(prop->getType() & App::Prop_ReadOnly))
+        {
+            contextIndex = propertyModel->buddy(contextIndex);
+            setCurrentIndex(contextIndex);
+            menu.addSeparator();
+            menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
+        }
+    }
+
+    if(PropertyView::showAll()) {
+        if(props.size()) {
             menu.addAction(tr("Add property"))->setData(QVariant(MA_AddProp));
+            unsigned count = 0;
+            for(auto prop : props) {
+                if(prop->testStatus(App::Property::PropDynamic)
+                        && !boost::starts_with(prop->getName(),prop->getGroup()))
+                {
+                    ++count;
+                } else
+                    break;
+            }
+            if(count == props.size())
+                menu.addAction(tr("Rename property group"))->setData(QVariant(MA_EditPropGroup));
+        }
 
         bool canRemove = !props.empty();
         unsigned long propType = 0;
@@ -501,21 +536,6 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         }
         if(canRemove)
             menu.addAction(tr("Remove property"))->setData(QVariant(MA_RemoveProp));
-
-        if(props.size() == 1) {
-            auto item = static_cast<PropertyItem*>(contextIndex.internalPointer());
-            auto prop = *props.begin();
-            if(item->isBound() 
-                && !prop->isDerivedFrom(App::PropertyExpressionEngine::getClassTypeId())
-                && !prop->isReadOnly() 
-                && !(prop->getType() & App::Prop_ReadOnly))
-            {
-                contextIndex = propertyModel->buddy(contextIndex);
-                setCurrentIndex(contextIndex);
-                menu.addSeparator();
-                menu.addAction(tr("Expression..."))->setData(QVariant(MA_Expression));
-            }
-        }
 
         if(props.size()) {
             menu.addSeparator();
@@ -545,6 +565,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
             ACTION_SETUP(Transient);
             _ACTION_SETUP(Touched);
             _ACTION_SETUP(EvalOnRestore);
+            _ACTION_SETUP(CopyOnChange);
         }
     }
 
@@ -581,6 +602,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     ACTION_CHECK(Output);
     ACTION_CHECK(Hidden);
     ACTION_CHECK(EvalOnRestore);
+    ACTION_CHECK(CopyOnChange);
     case MA_Touched:
         for(auto prop : props) {
             if(action->isChecked())
@@ -605,6 +627,22 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         Gui::Dialog::DlgAddProperty dlg(
                 Gui::getMainWindow(),std::move(containers));
         dlg.exec();
+        return;
+    }
+    case MA_EditPropGroup: {
+        // This operation is not undoable yet.
+        const char *groupName = (*props.begin())->getGroup();
+        if(!groupName)
+            groupName = "Base";
+        QString res = QInputDialog::getText(Gui::getMainWindow(),
+                tr("Rename property group"), tr("Group name:"),
+                QLineEdit::Normal, QString::fromUtf8(groupName));
+        if(res.size()) {
+            std::string group = res.toUtf8().constData();
+            for(auto prop : props)
+                prop->getContainer()->changeDynamicProperty(prop,group.c_str(),0);
+            buildUp(PropertyModel::PropertyList(propList),checkDocument);
+        }
         return;
     }
     case MA_RemoveProp: {

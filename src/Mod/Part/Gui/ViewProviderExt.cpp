@@ -416,7 +416,8 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         if (c != LineMaterial.getValue().diffuseColor)
             LineMaterial.setDiffuseColor(c);
         LineColorArray.setValue(LineColor.getValue());
-        updateColors();
+        if(!prop->testStatus(App::Property::User3))
+            updateColors();
     }
     else if (prop == &PointColor) {
         const App::Color& c = PointColor.getValue();
@@ -424,7 +425,8 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         if (c != PointMaterial.getValue().diffuseColor)
             PointMaterial.setDiffuseColor(c);
         PointColorArray.setValue(PointColor.getValue());
-        updateColors();
+        if(!prop->testStatus(App::Property::User3))
+            updateColors();
     }
     else if (prop == &LineMaterial) {
         const App::Material& Mat = LineMaterial.getValue();
@@ -488,11 +490,13 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             ShapeMaterial.setTransparency(trans);
             ShapeMaterial.setContainer(parent);
 
-            if(MapTransparency.getValue())
-                updateColors();
-            else{
-                Gui::SoUpdateVBOAction action;
-                action.apply(this->faceset);
+            if(!prop->testStatus(App::Property::User3)) {
+                if(MapTransparency.getValue()) {
+                    updateColors();
+                } else{
+                    Gui::SoUpdateVBOAction action;
+                    action.apply(this->faceset);
+                }
             }
         }
     }

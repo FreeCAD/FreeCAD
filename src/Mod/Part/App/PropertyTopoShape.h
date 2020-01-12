@@ -183,8 +183,15 @@ struct PartExport FilletElement {
     FilletElement(int id=0,double r1=1.0,double r2=1.0)
         :edgeid(id),radius1(r1),radius2(r2)
     {}
+
     bool operator<(const FilletElement &other) const {
         return edgeid < other.edgeid;
+    }
+
+    bool operator==(const FilletElement &other) const {
+        return edgeid == other.edgeid
+            && radius1 == other.radius1
+            && radius2 == other.radius2;
     }
 };
 

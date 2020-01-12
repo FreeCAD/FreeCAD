@@ -131,6 +131,7 @@ struct AppExport PropertyData
   Property *getPropertyByName(OffsetBase offsetBase,const char* name) const;
   void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
+  void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
 
   void merge(PropertyData *other=0) const;
   void split(PropertyData *other);
@@ -179,6 +180,8 @@ public:
   virtual void getPropertyMap(std::map<std::string,Property*> &Map) const;
   /// get all properties of the class (including properties of the parent)
   virtual void getPropertyList(std::vector<Property*> &List) const;
+  /// get all properties with their names
+  virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
   /// set the Status bit of all properties at once
   void setPropertyStatus(unsigned char bit,bool value);
   /// get the Type of a Property
@@ -208,6 +211,10 @@ public:
 
   DynamicProperty::PropData getDynamicPropertyData(const Property* prop) const {
       return dynamicProps.getDynamicPropertyData(prop);
+  }
+
+  bool changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
+      return dynamicProps.changeDynamicProperty(prop,group,doc);
   }
 
   virtual bool removeDynamicProperty(const char* name) {

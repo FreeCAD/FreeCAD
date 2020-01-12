@@ -38,7 +38,9 @@
 #include <Base/UnitsApi.h>
 #include <Base/Writer.h>
 #include <Base/Console.h>
+#include <Base/Parameter.h>
 #include <App/ExpressionParser.h>
+#include <App/Application.h>
 #include "Sheet.h"
 #include <iomanip>
 
@@ -117,13 +119,13 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , foregroundColor(other.foregroundColor)
     , backgroundColor(other.backgroundColor)
     , displayUnit(other.displayUnit)
-    , alias(other.alias)
     , computedUnit(other.computedUnit)
     , rowSpan(other.rowSpan)
     , colSpan(other.colSpan)
     , editMode(other.editMode)
 {
     setUsed(MARK_SET, false);
+    setAlias(other.alias);
     setDirty();
 }
 
@@ -246,6 +248,11 @@ const App::Expression *Cell::getExpression(bool withFormat) const
 bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
+        s.clear();
+        if(expression->hasComponent()) {
+            s = "=" + expression->toString(persistent);
+            return true;
+        }
         auto sexpr = SimpleStatement::cast<App::StringExpression>(expression.get());
         if(sexpr) {
             const auto &txt = sexpr->getText();
@@ -283,7 +290,13 @@ void Cell::afterRestore() {
 void Cell::setContent(const char * value)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
-    App::ExpressionPtr expr;
+    ExpressionPtr expr;
+
+    static ParameterGrp::handle hGrp;
+    if(!hGrp) {
+       hGrp = GetApplication().GetParameterGroupByPath(
+               "User parameter:BaseApp/Preferences/Mod/Spreadsheet");
+    }
 
     clearException();
     if (value != 0) {
@@ -309,15 +322,18 @@ void Cell::setContent(const char * value)
             double float_value = strtod(value, &end);
             if (!*end && errno == 0)
                 expr = App::NumberExpression::create(owner->sheet(), Quantity(float_value));
-            else {
+            else if (hGrp->GetBool("AutoParseContent", true)) {
                 try {
                     expr = owner->parse(value);
                     owner->eval(expr.get());
                 }
                 catch (Base::Exception &e) {
-                    expr = App::StringExpression::create(owner->sheet(), value);
+                    expr.reset();
                 }
             }
+
+            if(!expr)
+                expr = StringExpression::create(owner->sheet(), value);
         }
     }
 

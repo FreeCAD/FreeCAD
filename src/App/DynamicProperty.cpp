@@ -66,6 +66,12 @@ void DynamicProperty::getPropertyList(std::vector<Property*> &List) const
         List.push_back(v.property);
 }
 
+void DynamicProperty::getPropertyNamedList(std::vector<std::pair<const char*, Property*> > &List) const
+{
+    for (auto &v : props.get<0>())
+        List.emplace_back(v.getName(),v.property);
+}
+
 void DynamicProperty::getPropertyMap(std::map<std::string,Property*> &Map) const
 {
     for (auto &v : props.get<0>())
@@ -228,7 +234,7 @@ bool DynamicProperty::removeDynamicProperty(const char* name)
             throw Base::RuntimeError("property is not dynamic");
         Property *prop = it->property;
         GetApplication().signalRemoveDynamicProperty(*prop);
-        delete prop;
+        Property::destroy(prop);
         index.erase(it);
         return true;
     }
@@ -316,6 +322,26 @@ DynamicProperty::PropData DynamicProperty::getDynamicPropertyData(const Property
     if(it != index.end())
         return *it;
     return PropData();
+}
+
+bool DynamicProperty::changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
+    auto &index = props.get<1>();
+    auto it = index.find(const_cast<Property*>(prop));
+    if (it == index.end())
+        return false;
+    if(group)
+        it->group = group;
+    if(doc) {
+        auto container = prop->getContainer();
+        if(container && container->getOwnerDocument()) {
+            it->docID = container->getOwnerDocument()->Hasher->getID(doc);
+            it->doc.clear();
+        } else {
+            it->docID = StringIDRef();
+            it->doc = doc;
+        }
+    }
+    return true;
 }
 
 const char *DynamicProperty::getPropertyName(const Property *prop) const

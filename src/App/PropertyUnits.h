@@ -71,6 +71,12 @@ public:
     virtual void setPathValue(const App::ObjectIdentifier &path, const App::any &value);
     virtual App::any getPathValue(const App::ObjectIdentifier &path) const;
 
+    virtual bool isSame(const Property &other) const {
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue()
+            && _Unit == static_cast<decltype(this)>(&other)->_Unit;
+    }
+
 protected:
     Base::Quantity createQuantityFromPy(PyObject *value);
     Base::Unit _Unit;

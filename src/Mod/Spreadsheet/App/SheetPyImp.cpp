@@ -1126,6 +1126,31 @@ PyObject *SheetPy::touchCells(PyObject *args) {
     }PY_CATCH;
 }
 
+PyObject *SheetPy::recomputeCells(PyObject *args) {
+    const char *address;
+    const char *address2=0;
+
+    if (!PyArg_ParseTuple(args, "s|s:touchCells", &address, &address2))
+        return 0;
+
+    PY_TRY {
+        std::string a1 = getSheetPtr()->getAddressFromAlias(address);
+        if(a1.empty())
+            a1 = address;
+
+        std::string a2;
+        if(!address2) {
+            a2 = a1;
+        } else {
+            a2 = getSheetPtr()->getAddressFromAlias(address2);
+            if(a2.empty())
+                a2 = address2;
+        }
+        getSheetPtr()->recomputeCells(Range(a1.c_str(),a2.c_str()));
+        Py_Return;
+    }PY_CATCH;
+}
+
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
 PyObject *SheetPy::getCustomAttributes(const char*) const
@@ -1137,3 +1162,4 @@ int SheetPy::setCustomAttributes(const char* , PyObject* )
 {
     return 0;
 }
+

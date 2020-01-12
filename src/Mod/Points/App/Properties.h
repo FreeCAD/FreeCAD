@@ -82,6 +82,13 @@ struct PointsExport CurvatureInfo
 {
     float fMaxCurvature, fMinCurvature;
     Base::Vector3f cMaxCurvDir, cMinCurvDir;
+
+    bool operator == (const CurvatureInfo &other) const {
+        return fMaxCurvature == other.fMaxCurvature
+            && fMinCurvature == other.fMinCurvature
+            && cMaxCurvDir == other.cMaxCurvDir
+            && cMinCurvDir == other.cMinCurvDir;
+    }
 };
 
 /** The Curvature property class.

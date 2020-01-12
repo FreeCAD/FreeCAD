@@ -101,6 +101,12 @@ void PropertyContainer::getPropertyList(std::vector<Property*> &List) const
     getPropertyData().getPropertyList(this,List);
 }
 
+void PropertyContainer::getPropertyNamedList(std::vector<std::pair<const char*, Property*> > &List) const
+{
+    dynamicProps.getPropertyNamedList(List);
+    getPropertyData().getPropertyNamedList(this,List);
+}
+
 void PropertyContainer::setPropertyStatus(unsigned char bit,bool value)
 {
     std::vector<Property*> List;
@@ -587,6 +593,18 @@ void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> 
     List.reserve(base+propertyData.size());
     for (auto &spec : propertyData.get<0>())
         List.push_back((Property *) (spec.Offset + offsetBase.getOffset()));
+}
+
+void PropertyData::getPropertyNamedList(OffsetBase offsetBase,
+        std::vector<std::pair<const char*,Property*> > &List) const
+{
+    merge();
+    size_t base = List.size();
+    List.reserve(base+propertyData.size());
+    for (auto &spec : propertyData.get<0>()) {
+        auto prop = (Property *) (spec.Offset + offsetBase.getOffset());
+        List.emplace_back(prop->getName(),prop);
+    }
 }
 
 
