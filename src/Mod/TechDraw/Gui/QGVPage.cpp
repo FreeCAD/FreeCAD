@@ -516,15 +516,13 @@ QGIView * QGVPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
     return nullptr;
 }
 
+//assign leader to correct parent if not already so
 void QGVPage::addLeaderToParent(QGILeaderLine* lead, QGIView* parent)
 {
-    assert(lead);
-    assert(parent);          //blow up if we don't have Leader or Parent
-    QPointF posRef(0.,0.);
-    QPointF mapPos = lead->mapToItem(parent, posRef);
-    lead->moveBy(-mapPos.x(), -mapPos.y());
-    parent->addToGroup(lead);              //vs lead->setParentItem(parent)??
-    lead->setZValue(ZVALUE::DIMENSION);
+    QGraphicsItem* qgiParent = lead->parentItem();
+    if (qgiParent != parent) {
+        parent->addToGroup(lead);
+    }
 }
 
 QGIView * QGVPage::addRichAnno(TechDraw::DrawRichAnno* anno)
@@ -610,7 +608,7 @@ QGIView* QGVPage::getQGIVByName(std::string name)
     return nullptr;
 }
 
-
+//find the parent of a QGIV based on the corresponding feature's parentage
 QGIView * QGVPage::findParent(QGIView *view) const
 {
     const std::vector<QGIView *> qviews = getViews();

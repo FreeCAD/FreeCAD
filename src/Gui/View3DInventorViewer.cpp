@@ -2022,7 +2022,7 @@ QImage View3DInventorViewer::grabFramebuffer()
     int w = gl->width();
     int h = gl->height();
     QImage img(QSize(w,h), QImage::Format_RGB32);
-    glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
+    glReadPixels(0, 0, w, h, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
     res = img;
 #else
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
@@ -2111,7 +2111,8 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
                 bits++;
             }
         }
-    }
+    } else if (alpha == 255)
+        img = img.convertToFormat(QImage::Format_RGB32);
 }
 
 void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)

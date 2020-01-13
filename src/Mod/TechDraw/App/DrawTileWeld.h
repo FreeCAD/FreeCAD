@@ -23,6 +23,8 @@
 #ifndef _TechDraw_DrawTileWeld_h_
 #define _TechDraw_DrawTileWeld_h_
 
+#include <QString>
+
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
@@ -56,8 +58,11 @@ public:
     virtual PyObject *getPyObject(void);
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}
 
+    void replaceSymbol(std::string newSymbolFile);
+
 protected:
     virtual void onChanged(const App::Property* prop);
+    void copyFile(std::string inSpec, std::string outSpec);
 
 private:
 };

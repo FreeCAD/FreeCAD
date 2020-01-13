@@ -81,9 +81,7 @@ void EditDatumDialog::exec(bool atCursor)
         }
 
         Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-        QDialog dlg(viewer->getGLWidget());
+        QDialog dlg(mdi);
 
         Ui::InsertDatum ui_ins_datum;
         ui_ins_datum.setupUi(&dlg);

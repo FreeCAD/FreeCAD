@@ -83,6 +83,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG1(ActivateDocument, ActiveDocument)
     FC_PY_ELEMENT_ARG1(CreatedObject, NewObject)
     FC_PY_ELEMENT_ARG1(DeletedObject, DeletedObject)
+    FC_PY_ELEMENT_ARG2(BeforeChangeObject, BeforeChangeObject)
     FC_PY_ELEMENT_ARG2(ChangedObject, ChangedObject)
     FC_PY_ELEMENT_ARG1(InEdit, InEdit)
     FC_PY_ELEMENT_ARG1(ResetEdit, ResetEdit)
@@ -183,6 +184,27 @@ void DocumentObserverPython::slotDeletedObject(const Gui::ViewProvider& Obj)
         Py::Tuple args(1);
         args.setItem(0, Py::Object(const_cast<Gui::ViewProvider&>(Obj).getPyObject(), true));
         Base::pyCall(pyDeletedObject.ptr(),args.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotBeforeChangeObject(const Gui::ViewProvider& Obj,
+                                                    const App::Property& Prop)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(2);
+        args.setItem(0, Py::Object(const_cast<Gui::ViewProvider&>(Obj).getPyObject(), true));
+        // If a property is touched but not part of a document object then its name is null.
+        // In this case the slot function must not be called.
+        const char* prop_name = Obj.getPropertyName(&Prop);
+        if (prop_name) {
+            args.setItem(1, Py::String(prop_name));
+            Base::pyCall(pyBeforeChangeObject.ptr(),args.ptr());
+        }
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text

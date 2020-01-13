@@ -60,6 +60,7 @@
 #endif
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -92,7 +93,9 @@ DrawGeomHatch::DrawGeomHatch(void)
 
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
-   ADD_PROPERTY_TYPE(FilePattern ,(""),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
+    ADD_PROPERTY_TYPE(FilePattern ,(""),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
+    ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup,App::Prop_None,
+                                            "Embedded Pat hatch file. System use only.");   // n/a to end users
     ADD_PROPERTY_TYPE(NamePattern,(""),vgroup,App::Prop_None,"The name of the pattern");
     ADD_PROPERTY_TYPE(ScalePattern,(1.0),vgroup,App::Prop_None,"GeomHatch pattern size adjustment");
     ScalePattern.setConstraints(&scaleRange);
@@ -113,12 +116,18 @@ DrawGeomHatch::~DrawGeomHatch()
 
 void DrawGeomHatch::onChanged(const App::Property* prop)
 {
-    if (prop == &Source )   {
-        if (!isRestoring()) {
+    if (!isRestoring()) {
+        if (prop == &Source) {
             DrawGeomHatch::execute();
         }
-    }
-    if (isRestoring()) {
+        App::Document* doc = getDocument();
+        if ((prop == &FilePattern) &&
+            (doc != nullptr) ) {
+            if (!FilePattern.isEmpty()) {
+                replacePatIncluded(FilePattern.getValue());
+            }
+        }
+    } else {
         if ((prop == &FilePattern) ||                //make sure right pattern gets loaded at start up
             (prop == &NamePattern))   {
             DrawGeomHatch::execute();
@@ -146,12 +155,24 @@ short DrawGeomHatch::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
 {
-    //save names & check if different
-    if ((!FilePattern.isEmpty())  &&
+//    Base::Console().Message("DGH::execute()\n");
+    makeLineSets();
+    DrawViewPart* parent = getSourceView();
+    if (parent != nullptr) {
+        parent->requestPaint();
+    }
+    return App::DocumentObject::StdReturn;
+}
+
+
+void DrawGeomHatch::makeLineSets(void)
+{
+//    Base::Console().Message("DGH::makeLineSets()\n");
+    if ((!PatIncluded.isEmpty())  &&
         (!NamePattern.isEmpty())) {
-        if ((m_saveFile != FilePattern.getValue()) ||
+        if ((m_saveFile != PatIncluded.getValue()) ||
             (m_saveName != NamePattern.getValue()))  {
-            m_saveFile = FilePattern.getValue();
+            m_saveFile = PatIncluded.getValue();
             m_saveName = NamePattern.getValue();
             std::vector<PATLineSpec> specs = getDecodedSpecsFromFile();
             m_lineSets.clear();
@@ -163,7 +184,6 @@ App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
             }
         }
     }
-    return App::DocumentObject::StdReturn;
 }
 
 DrawViewPart* DrawGeomHatch::getSourceView(void) const
@@ -175,7 +195,7 @@ DrawViewPart* DrawGeomHatch::getSourceView(void) const
 
 std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile()
 {
-    std::string fileSpec = FilePattern.getValue();
+    std::string fileSpec = PatIncluded.getValue();
     std::string myPattern = NamePattern.getValue();
     return getDecodedSpecsFromFile(fileSpec,myPattern);
 }
@@ -215,7 +235,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::v
     std::vector<LineSet> result;
 
     if (lineSets.empty()) {
-        Base::Console().Log("INFO - DGH::getTrimmedLines - no LineSets!\n");
+        Base::Console().Log("DGH::getTrimmedLines - no LineSets!\n");
         return result;
     }
 
@@ -516,6 +536,79 @@ PyObject *DrawGeomHatch::getPyObject(void)
     }
     return Py::new_reference_to(PythonObject);
 }
+
+void DrawGeomHatch::replacePatIncluded(std::string newPatFile)
+{
+//    Base::Console().Message("DGH::replacePatHatch(%s)\n", newPatFile.c_str());
+    if (PatIncluded.isEmpty()) {
+        setupPatIncluded();
+    } else {
+        std::string tempName = PatIncluded.getExchangeTempFile();
+        copyFile(newPatFile, tempName);
+        PatIncluded.setValue(tempName.c_str());
+    }
+}
+
+void DrawGeomHatch::onDocumentRestored() 
+{
+//    Base::Console().Message("DGH::onDocumentRestored()\n");
+    if (PatIncluded.isEmpty()) {
+        if (!FilePattern.isEmpty()) {
+            std::string patFileName = FilePattern.getValue();
+            Base::FileInfo tfi(patFileName);
+            if (tfi.isReadable()) {
+                if (PatIncluded.isEmpty()) {
+                    setupPatIncluded();
+                }
+            }
+        }
+    }
+    execute();
+    App::DocumentObject::onDocumentRestored();
+}
+
+void DrawGeomHatch::setupObject()
+{
+    //by this point DGH should have a name and belong to a document
+    setupPatIncluded();
+
+    App::DocumentObject::setupObject();
+}
+
+void DrawGeomHatch::setupPatIncluded(void)
+{
+//    Base::Console().Message("DGH::setupPatIncluded()\n");
+    App::Document* doc = getDocument();
+    std::string special = getNameInDocument();
+    special += "PatHatch.pat";
+    std::string dir = doc->TransientDir.getValue();
+    std::string patName = dir + special;
+
+    if (PatIncluded.isEmpty()) {
+        copyFile(std::string(), patName);
+        PatIncluded.setValue(patName.c_str());
+    }
+
+    if (!FilePattern.isEmpty()) {
+        std::string exchName = PatIncluded.getExchangeTempFile();
+        copyFile(FilePattern.getValue(), exchName);
+        PatIncluded.setValue(exchName.c_str(), special.c_str());
+    }
+}
+
+//copy whole text file from inSpec to outSpec
+void DrawGeomHatch::copyFile(std::string inSpec, std::string outSpec)
+{
+//    Base::Console().Message("DGH::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
+    if (inSpec.empty()) {
+        std::ofstream  dst(outSpec);   //make an empty file
+    } else {
+        std::ifstream  src(inSpec);
+        std::ofstream  dst(outSpec);
+        dst << src.rdbuf();
+    }
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 

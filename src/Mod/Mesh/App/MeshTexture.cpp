@@ -48,6 +48,29 @@ MeshTexture::MeshTexture(const Mesh::MeshObject& mesh, const MeshCore::Material 
 
 void MeshTexture::apply(const Mesh::MeshObject& mesh, const App::Color& defaultColor, MeshCore::Material &material)
 {
+    apply(mesh, true, defaultColor, -1.0f, material);
+}
+
+void MeshTexture::apply(const Mesh::MeshObject& mesh, const App::Color& defaultColor, float max_dist, MeshCore::Material &material)
+{
+    apply(mesh, true, defaultColor, max_dist, material);
+}
+
+void MeshTexture::apply(const Mesh::MeshObject& mesh, MeshCore::Material &material)
+{
+    App::Color defaultColor;
+    apply(mesh, false, defaultColor, -1.0f, material);
+}
+
+void MeshTexture::apply(const Mesh::MeshObject& mesh, float max_dist, MeshCore::Material &material)
+{
+    App::Color defaultColor;
+    apply(mesh, false, defaultColor, max_dist, material);
+}
+
+void MeshTexture::apply(const Mesh::MeshObject& mesh, bool addDefaultColor, const App::Color& defaultColor,
+                        float max_dist, MeshCore::Material &material)
+{
     // copy the color values because the passed material could be the same instance as 'materialRefMesh'
     std::vector<App::Color> textureColor = materialRefMesh.diffuseColor;
     material.diffuseColor.clear();
@@ -62,11 +85,11 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, const App::Color& defaultC
         if (binding == MeshCore::MeshIO::PER_VERTEX) {
             diffuseColor.reserve(points.size());
             for (size_t index=0; index<points.size(); index++) {
-                unsigned long pos = kdTree->FindExact(points[index]);
+                unsigned long pos = findIndex(points[index], max_dist);
                 if (pos < countPointsRefMesh) {
                     diffuseColor.push_back(textureColor[pos]);
                 }
-                else {
+                else if (addDefaultColor) {
                     diffuseColor.push_back(defaultColor);
                 }
             }
@@ -81,11 +104,11 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, const App::Color& defaultC
             std::vector<unsigned long> pointMap;
             pointMap.reserve(points.size());
             for (size_t index=0; index<points.size(); index++) {
-                unsigned long pos = kdTree->FindExact(points[index]);
+                unsigned long pos = findIndex(points[index], max_dist);
                 if (pos < countPointsRefMesh) {
                     pointMap.push_back(pos);
                 }
-                else {
+                else if (addDefaultColor) {
                     pointMap.push_back(ULONG_MAX);
                 }
             }
@@ -103,67 +126,8 @@ void MeshTexture::apply(const Mesh::MeshObject& mesh, const App::Color& defaultC
                             diffuseColor.push_back(textureColor[found.front()]);
                         }
                     }
-                    else {
+                    else if (addDefaultColor) {
                         diffuseColor.push_back(defaultColor);
-                    }
-                }
-            }
-
-            if (diffuseColor.size() == facets.size()) {
-                material.diffuseColor.swap(diffuseColor);
-                material.binding = MeshCore::MeshIO::PER_FACE;
-            }
-        }
-    }
-}
-
-void MeshTexture::apply(const Mesh::MeshObject& mesh, MeshCore::Material &material)
-{
-    // copy the color values because the passed material could be the same instance as 'materialRefMesh'
-    std::vector<App::Color> textureColor = materialRefMesh.diffuseColor;
-    material.diffuseColor.clear();
-    material.binding = MeshCore::MeshIO::OVERALL;
-
-    if (kdTree.get()) {
-        // the points of the current mesh
-        std::vector<App::Color> diffuseColor;
-        const MeshCore::MeshPointArray& points = mesh.getKernel().GetPoints();
-        const MeshCore::MeshFacetArray& facets = mesh.getKernel().GetFacets();
-
-        if (binding == MeshCore::MeshIO::PER_VERTEX) {
-            diffuseColor.reserve(points.size());
-            for (size_t index=0; index<points.size(); index++) {
-                unsigned long pos = kdTree->FindExact(points[index]);
-                if (pos < countPointsRefMesh) {
-                    diffuseColor.push_back(textureColor[pos]);
-                }
-            }
-
-            if (diffuseColor.size() == points.size()) {
-                material.diffuseColor.swap(diffuseColor);
-                material.binding = MeshCore::MeshIO::PER_VERTEX;
-            }
-        }
-        else if (binding == MeshCore::MeshIO::PER_FACE) {
-            // the values of the map give the point indices before the cut
-            std::vector<unsigned long> pointMap;
-            pointMap.reserve(points.size());
-            for (size_t index=0; index<points.size(); index++) {
-                unsigned long pos = kdTree->FindExact(points[index]);
-                if (pos < countPointsRefMesh) {
-                    pointMap.push_back(pos);
-                }
-            }
-
-            // now determine the facet indices before the cut
-            if (pointMap.size() == points.size()) {
-                diffuseColor.reserve(facets.size());
-                for (auto it : facets) {
-                    std::vector<unsigned long> found = refPnt2Fac->GetIndices(pointMap[it._aulPoints[0]],
-                                                                              pointMap[it._aulPoints[1]],
-                                                                              pointMap[it._aulPoints[2]]);
-                    if (found.size() == 1) {
-                        diffuseColor.push_back(textureColor[found.front()]);
                     }
                 }
             }

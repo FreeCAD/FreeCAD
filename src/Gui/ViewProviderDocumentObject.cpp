@@ -169,6 +169,8 @@ void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
             onBeforeChangeProperty(doc, prop);
         }
     }
+
+    ViewProvider::onBeforeChange(prop);
 }
 
 void ViewProviderDocumentObject::onChanged(const App::Property* prop)

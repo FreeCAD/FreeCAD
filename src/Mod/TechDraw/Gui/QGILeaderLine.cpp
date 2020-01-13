@@ -132,6 +132,7 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
         m_editPath, SIGNAL(pointsUpdated(QPointF, std::vector<QPointF>)),
         this  , SLOT  (onLineEditFinished(QPointF, std::vector<QPointF>))
             );
+
 }
 
 QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -358,18 +359,13 @@ void QGILeaderLine::draw()
         return;
     }
     TechDraw::DrawView* parent = featLeader->getBaseView();
-    QGVPage* view = QGIView::getGraphicsView(parent);
-    if (view == nullptr) {
-//        Base::Console().Message("QGIL::draw - no graphcisView for parent!! - setup?\n");
-        return;
-    }
+
     if (m_editPath->inEdit()) {
 //        Base::Console().Message("QGIL::draw - m_editPath in edit\n");
         return;
     }
 
 //********
-
     if (featLeader->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
@@ -453,6 +449,7 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
 
 QPointF QGILeaderLine::getAttachFromFeature(void)
 {
+//    Base::Console().Message("QGILL::getAttachFromFeature()\n");
     QPointF result;
     TechDraw::DrawLeaderLine* featLeader = getFeature();
     if((!featLeader) ) {

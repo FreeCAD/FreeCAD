@@ -68,6 +68,7 @@ void CmdPartSimpleCylinder::activated(int iMsg)
     PartGui::DlgPartCylinderImp dlg(Gui::getMainWindow());
     if (dlg.exec()== QDialog::Accepted) {
         Base::Vector3d dir = dlg.getDirection();
+        Base::Vector3d pos = dlg.getPosition();
         openCommand("Create Part Cylinder");
         doCommand(Doc,"from FreeCAD import Base");
         doCommand(Doc,"import Part");
@@ -75,11 +76,9 @@ void CmdPartSimpleCylinder::activated(int iMsg)
                       ".Shape=Part.makeCylinder(%f,%f,"
                       "Base.Vector(%f,%f,%f),"
                       "Base.Vector(%f,%f,%f))"
-                     ,dlg.radius->value().getValue()
-                     ,dlg.length->value().getValue()
-                     ,dlg.xPos->value().getValue()
-                     ,dlg.yPos->value().getValue()
-                     ,dlg.zPos->value().getValue()
+                     ,dlg.getRadius()
+                     ,dlg.getLength()
+                     ,pos.x,pos.y,pos.z
                      ,dir.x,dir.y,dir.z);
         commitCommand();
         updateActive();

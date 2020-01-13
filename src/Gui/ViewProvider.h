@@ -522,6 +522,8 @@ protected:
     SoPickedPoint* getPointOnRay(const SbVec3f& pos, const SbVec3f& dir,
                                  const View3DInventorViewer* viewer) const;
     /// Reimplemented from subclass
+    void onBeforeChange(const App::Property* prop);
+    /// Reimplemented from subclass
     void onChanged(const App::Property* prop);
 
 
