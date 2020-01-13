@@ -40,6 +40,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QLabel>
+#include <QTextCodec>
 #include <cmath>
 #endif
 
@@ -947,8 +948,9 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
 
     QTextStream stream( &outFile );
     stream.setGenerateByteOrderMark(true);
+    stream.setCodec("UTF-8");
 
-    stream << exportDoc.toString();
+    stream << exportDoc.toByteArray();
     outFile.close();
 }
 
