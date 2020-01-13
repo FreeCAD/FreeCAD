@@ -39,7 +39,7 @@ public:
     ViewProviderGroupExtension(void);
     virtual ~ViewProviderGroupExtension();
 
-    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
+    virtual void extensionClaimChildren(std::vector<App::DocumentObject*> &)const override;
     virtual bool extensionCanDragObjects() const override; 
     virtual bool extensionCanDragObject(App::DocumentObject*) const override;
     virtual void extensionDragObject(App::DocumentObject*) override;
@@ -47,14 +47,9 @@ public:
     virtual bool extensionCanDropObject(App::DocumentObject*) const override;
     virtual void extensionDropObject(App::DocumentObject*) override;   
  
-    virtual void extensionHide(void) override;
-    virtual void extensionShow(void) override;
-
     virtual bool extensionOnDelete(const std::vector<std::string> &) override;
 
-private:
-    bool guard;
-    std::vector<ViewProvider*> nodes;
+    virtual void extensionAttach(App::DocumentObject* pcObject) override;
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProviderGroupExtensionPython;

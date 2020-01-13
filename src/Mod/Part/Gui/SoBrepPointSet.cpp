@@ -58,9 +58,17 @@
 # include <Inventor/misc/SoState.h>
 #endif
 
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
+
 #include "SoBrepPointSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <Gui/ViewParams.h>
 
 using namespace PartGui;
 
@@ -78,10 +86,26 @@ SoBrepPointSet::SoBrepPointSet()
     SO_NODE_CONSTRUCTOR(SoBrepPointSet);
 }
 
+bool SoBrepPointSet::isSelected(SelContextPtr ctx) {
+    if(ctx) 
+        return ctx->isSelected();
+    for(auto node : siblings) {
+        auto sctx = Gui::SoFCSelectionRoot::getRenderContext<Gui::SoFCSelectionContext>(node);
+        if(sctx && sctx->isSelected())
+            return true;
+    }
+    return false;
+}
+
+void SoBrepPointSet::setSiblings(std::vector<SoNode*> &&s) {
+    // No need to ref() here, because we only use the pointer as keys to lookup
+    // selection context
+    siblings = std::move(s);
+}
+
 void SoBrepPointSet::GLRender(SoGLRenderAction *action)
 {
     auto state = action->getState();
-    selCounter.checkRenderCache(state);
 
     const SoCoordinateElement* coords = SoCoordinateElement::getInstance(state);
     int num = coords->getNum() - this->startIndex.getValue();
@@ -89,63 +113,83 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
         // Fixes: #0000545: Undo revolve causes crash 'illegal storage'
         return;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Copied from SoShape::shouldGLRender(). Put here for early render skipping
+    // TODO: check SoShape::shouldGLRender() code in case we want to render shadow
+    const SoShapeStyleElement * shapestyle = SoShapeStyleElement::get(state);
+    unsigned int shapestyleflags = shapestyle->getFlags();
+    if (shapestyleflags & SoShapeStyleElement::INVISIBLE)
+        return;
+    if (getBoundingBoxCache() && !state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+        if (getBoundingBoxCache()->isValid(state)) {
+            if (SoCullElement::cullTest(state, getBoundingBoxCache()->getProjectedBox())) {
+                return;
+            }
+        }
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
+    selCounter.checkCache(state);
+
     SelContextPtr ctx2;
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext<SelContext>(this,selContext,ctx2);
     if(ctx2 && ctx2->selectionIndex.empty())
         return;
-    if(selContext2->checkGlobal(ctx))
-        ctx = selContext2;
 
-    if(ctx && ctx->highlightIndex==INT_MAX) {
-        if(ctx->selectionIndex.empty() || ctx->isSelectAll()) {
-            if(ctx2) {
-                ctx2->selectionColor = ctx->highlightColor;
-                renderSelection(action,ctx2); 
-            } else
-                renderHighlight(action,ctx);
-        }else{
-            if(!action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
-            if(ctx2) {
-                ctx2->selectionColor = ctx->highlightColor;
-                renderSelection(action,ctx2); 
-            } else
-                renderHighlight(action,ctx);
-            if(action->isRenderingDelayedPaths())
-                renderSelection(action,ctx); 
-        }
+    if(selContext2->checkGlobal(ctx)) {
+        SoCacheElement::invalidate(state);
+        ctx = selContext2;
+    }
+
+    Gui::FCDepthFunc depthGuard;
+    if(!action->isRenderingDelayedPaths())
+        depthGuard.set(GL_LEQUAL);
+
+    if(ctx && ctx->isHighlightAll()) {
+        if(ctx2) {
+            ctx2->selectionColor = ctx->highlightColor;
+            renderSelection(action,ctx2); 
+        } else
+            renderHighlight(action,ctx);
         return;
     }
 
-    if(!action->isRenderingDelayedPaths())
-        renderHighlight(action,ctx);
+    if(Gui::ViewParams::instance()->getShowSelectionOnTop()
+            && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
+            && !action->isRenderingDelayedPaths()
+            && !ctx2 
+            && isSelected(ctx))
+    {
+        // If 'ShowSelectionOnTop' is enabled, and we are not rendering on top
+        // (!isRenderingDelayedPaths) and we are not doing partial rendering
+        // (!ctx2), and we are selected, just skip render to avoid duplicate
+        // rendering in group on top.
+        return;
+    }
+
     if(ctx && ctx->selectionIndex.size()) {
-        if(ctx->isSelectAll()) {
+        if(ctx->isSelectAll() && ctx->hasSelectionColor()) {
             if(ctx2 && ctx2->selectionIndex.size()) {
                 ctx2->selectionColor = ctx->selectionColor;
                 renderSelection(action,ctx2); 
             }else
                 renderSelection(action,ctx); 
-            if(action->isRenderingDelayedPaths())
-                renderHighlight(action,ctx);
+            renderHighlight(action,ctx);
             return;
         }
-        if(!action->isRenderingDelayedPaths())
-            renderSelection(action,ctx); 
     }
-    if(ctx2 && ctx2->selectionIndex.size())
+
+    if(ctx2 && ctx2->isSelected())
         renderSelection(action,ctx2,false);
     else
         inherited::GLRender(action);
 
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
-    if(!action->isRenderingDelayedPaths())
-        renderHighlight(action,ctx);
-    if(ctx && ctx->selectionIndex.size())
+    if(ctx && ctx->selectionIndex.size() && ctx->hasSelectionColor())
         renderSelection(action,ctx);
-    if(action->isRenderingDelayedPaths())
-        renderHighlight(action,ctx);
+    renderHighlight(action,ctx);
 //#endif
 }
 
@@ -155,6 +199,8 @@ void SoBrepPointSet::GLRenderBelowPath(SoGLRenderAction * action)
 }
 
 void SoBrepPointSet::getBoundingBox(SoGetBoundingBoxAction * action) {
+    auto state = action->getState();
+    selCounter.checkCache(state, true);
 
     SelContextPtr ctx2 = Gui::SoFCSelectionRoot::getSecondaryActionContext<SelContext>(action,this);
     if(!ctx2 || ctx2->isSelectAll()) {
@@ -165,7 +211,6 @@ void SoBrepPointSet::getBoundingBox(SoGetBoundingBoxAction * action) {
     if(ctx2->selectionIndex.empty())
         return;
 
-    auto state = action->getState();
     auto coords = SoCoordinateElement::getInstance(state);
     const SbVec3f *coords3d = coords->getArrayPtr3();
     int numverts = coords->getNum();
@@ -181,6 +226,17 @@ void SoBrepPointSet::getBoundingBox(SoGetBoundingBoxAction * action) {
         action->extendBy(bbox);
 }
 
+static inline void setupRendering(
+        SoState *state, SoNode *node, const uint32_t *color) 
+{
+    float ps = SoPointSizeElement::get(state);
+    if (ps < 4.0f) SoPointSizeElement::set(state, node, 4.0f);
+
+    SoLightModelElement::set(state,SoLightModelElement::BASE_COLOR);
+    SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
+    SoLazyElement::setPacked(state, node,1, color, false);
+}
+
 void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 {
     if(!ctx || ctx->highlightIndex<0)
@@ -188,12 +244,9 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
 
     SoState * state = action->getState();
     state->push();
-    float ps = SoPointSizeElement::get(state);
-    if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
 
-    SoLazyElement::setEmissive(state, &ctx->highlightColor);
-    packedColor = ctx->highlightColor.getPackedValue(0.0);
-    SoLazyElement::setPacked(state, this,1, &packedColor,false);
+    uint32_t color = ctx->highlightColor.getPackedValue(0.0);
+    setupRendering(state, this, &color);
 
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
@@ -226,14 +279,11 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
 void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
 {
     SoState * state = action->getState();
+    uint32_t color;
     if(push) {
         state->push();
-        float ps = SoPointSizeElement::get(state);
-        if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
-
-        SoLazyElement::setEmissive(state, &ctx->selectionColor);
-        packedColor = ctx->selectionColor.getPackedValue(0.0);
-        SoLazyElement::setPacked(state, this,1, &packedColor,false);
+        color = ctx->selectionColor.getPackedValue(0.0);
+        setupRendering(state,this,&color);
     }
 
     const SoCoordinateElement * coords;

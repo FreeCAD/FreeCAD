@@ -191,7 +191,14 @@ public:
 
     /// Find the start of an element name in a subname
     static const char *findElementName(const char *subname);
+    
+    /// Check if the given subname contains element name
+    static bool hasElementName(const char *subname) {
+        subname = findElementName(subname);
+        return subname && *subname;
+    }
 
+    /// Return the element name portion of the subname without mapping prefix
     static inline const char *hasMappedElementName(const char *subname) {
         return isMappedElement(findElementName(subname));
     }
@@ -302,6 +309,11 @@ public:
     size_t getElementMapSize() const;
 
     virtual std::string getElementMapVersion() const;
+
+    /// Check if the given subname only contains an element name
+    static bool isElementName(const char *subname) {
+        return subname && *subname && findElementName(subname)==subname;
+    }
     //@}
 
     /** @name Save/restore */

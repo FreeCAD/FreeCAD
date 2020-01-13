@@ -150,10 +150,6 @@ bool ViewProviderPlacement::getDetailPath(
     return true;
 }
 
-bool ViewProviderPlacement::isSelectable(void) const
-{
-    return true;
-}
 // ----------------------------------------------------------------------------
 
 // Python feature -----------------------------------------------------------------------

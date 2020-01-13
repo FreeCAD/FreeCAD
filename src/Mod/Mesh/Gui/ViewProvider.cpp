@@ -476,6 +476,7 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     offset->units = 1.0f;
 
     SoSeparator* pcWireSep = new SoSeparator();
+    pcWireSep->renderCaching = SoSeparator::OFF;
     pcWireSep->addChild(pcLineStyle);
     pcWireSep->addChild(pcLightModel);
     pcWireSep->addChild(binding);
@@ -483,12 +484,12 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     pcWireSep->addChild(pcHighlight);
 
     SoGroup* pcFlatWireRoot = new SoGroup();
-    pcFlatWireRoot->addChild(pcWireSep);
     pcFlatWireRoot->addChild(offset);
     pcFlatWireRoot->addChild(pShapeHints);
     pcFlatWireRoot->addChild(pcShapeMaterial);
     pcFlatWireRoot->addChild(pcMatBinding);
     pcFlatWireRoot->addChild(pcShapeGroup);
+    pcFlatWireRoot->addChild(pcWireSep);
     addDisplayMaskMode(pcFlatWireRoot, "Flat Lines");
 
     if (getColorProperty()) {

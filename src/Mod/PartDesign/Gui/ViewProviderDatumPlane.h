@@ -28,6 +28,10 @@
 #include "Gui/ViewProviderGeometryObject.h"
 #include "ViewProviderDatum.h"
 
+namespace PartGui {
+class SoBrepFaceSet;
+}
+
 namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatumPlane : public PartDesignGui::ViewProviderDatum
@@ -44,9 +48,11 @@ public:
 
     void setExtents (Base::BoundBox3d bbox);
     void setExtents(double l, double w);
+    virtual void updateExtents();
 
 private:
-    SoCoordinate3 *pCoords;
+    Gui::CoinPtr<SoCoordinate3> pCoords;
+    Gui::CoinPtr<PartGui::SoBrepFaceSet> pFaceSet;
 };
 
 } // namespace PartDesignGui

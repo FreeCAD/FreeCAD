@@ -63,6 +63,9 @@ public:
     App::PropertyBool ShowInTree;
     App::PropertyEnumeration OnTopWhenSelected;
     App::PropertyEnumeration SelectionStyle;
+    App::PropertyBool Selectable;
+
+    virtual bool isSelectable(void) const override {return Selectable.getValue();}
 
     virtual void attach(App::DocumentObject *pcObject);
     virtual void reattach(App::DocumentObject *);
@@ -150,7 +153,35 @@ public:
         return false;
     }
 
+    virtual void beforeDelete() override;
+
+    /// Signal on changed claimed children
+    boost::signals2::signal<void (const ViewProviderDocumentObject &)> signalChangedChildren;
+
+    /// Return cached claimed children
+    const std::vector<App::DocumentObject*> &getCachedChildren() const;
+
+    /// Return a set of parent that claim this view object
+    const std::set<App::DocumentObject*> &claimedBy() const;
+
+    /** Check if the object is showable by its Visibility property
+     *
+     * An object is not showable if it is only claimed by Link type objects.
+     * They will be shown by ViewProviderLink through node tree snapshot.
+     */
+    bool isShowable() const;
+
+    /** Obtain a group node holding all claimed children
+     *
+     * The group node is only available for object that does not implement getChildRoot()
+     */
+    SoGroup* getChildrenGroup() const;
+
 protected:
+    virtual Base::BoundBox3d _getBoundingBox(const char *subname=0, 
+            const Base::Matrix4D *mat=0, bool transform=true,
+            const View3DInventorViewer *viewer=0, int depth=0) const override;
+
     /*! Get the active mdi view of the document this view provider is part of.
       @note The returned mdi view doesn't need to be a 3d view but can be e.g.
       an image view, an SVG view or something else.
@@ -196,6 +227,13 @@ protected:
 
     //@}
 
+    virtual void setModeSwitch() override;
+
+    void setSelectable(bool Selectable=true);
+
+private:
+    void updateChildren(bool propagate=false);
+
 protected:
     App::DocumentObject *pcObject;
     Gui::Document* pcDocument;
@@ -205,9 +243,12 @@ private:
     std::vector<std::string> aDisplayModesArray;
     bool _UpdatingView;
 
+    std::vector<App::DocumentObject*> claimedChildren;
+    std::set<App::DocumentObject*> childSet;
+    std::set<App::DocumentObject*> parentSet;
+
     friend class Document;
 };
-
 
 } // namespace Gui
 

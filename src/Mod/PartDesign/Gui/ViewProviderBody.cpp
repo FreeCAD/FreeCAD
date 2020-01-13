@@ -82,8 +82,6 @@ ViewProviderBody::ViewProviderBody()
 
 ViewProviderBody::~ViewProviderBody()
 {
-    connectChangedObjectApp.disconnect();
-    connectChangedObjectGui.disconnect();
 }
 
 void ViewProviderBody::attach(App::DocumentObject *pcFeat)
@@ -94,17 +92,6 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
     //set default display mode
     onChanged(&DisplayModeBody);
 
-    App::Document *adoc  = pcObject->getDocument ();
-    Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
-
-    assert ( adoc );
-    assert ( gdoc );
-
-    connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectApp, this, _1, _2) );
-
-    connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderBody::slotChangedObjectGui, this, _1, _2) );
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -216,14 +203,12 @@ void ViewProviderBody::updateData(const App::Property* prop)
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
-    if (prop == &body->Group || prop == &body->BaseFeature) {
-        // update sizes of origins and datums
-        updateOriginDatumSize ();
+    if (prop == &body->Group)
+        setVisualBodyMode(true);
+    else if (prop == &body->BaseFeature) {
         //ensure all model features are in visual body mode
         setVisualBodyMode(true);
-    }
-
-    if (prop == &body->Tip) {
+    } else if (prop == &body->Tip) {
         // We changed Tip
         App::DocumentObject* tip = body->Tip.getValue();
 
@@ -242,86 +227,34 @@ void ViewProviderBody::updateData(const App::Property* prop)
 }
 
 
-void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, const App::Property& prop ) {
-
-    if(App::GetApplication().isRestoring())
-        return;
-    
-    if (!obj.isDerivedFrom ( Part::Feature::getClassTypeId () ) ||
-        obj.isDerivedFrom ( Part::BodyBase::getClassTypeId () )    ) { // we are interested only in Part::Features, not in bodies
-        return;
-    }
-
-    const Part::Feature *feat = static_cast <const Part::Feature *>(&obj);
-
-    if ( &feat->Shape != &prop && &feat->Placement != &prop) { // react only on changes in shapes and placement
-        return;
-    }
-
-    PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
-    if ( body && body->hasObject (&obj ) ) {
-        updateOriginDatumSize ();
-    }
-}
-
-void ViewProviderBody::slotChangedObjectGui (
-        const Gui::ViewProviderDocumentObject& vp, const App::Property& prop )
-{
-    if (&vp.Visibility != &prop) { // react only on visibility changes
-        return;
-    }
-
-    if ( !vp.isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) &&
-         !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () ) ) {
-        // Ignore origins to avoid infinite recursion (not likely in a well-formed document,
-        //          but may happen in documents designed in old versions of assembly branch )
-        return;
-    }
-
-    PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
-    App::DocumentObject *obj = vp.getObject ();
-
-    if ( body && obj && body->hasObject ( obj ) ) {
-        updateOriginDatumSize ();
-    }
-}
-
-void ViewProviderBody::updateOriginDatumSize () {
-    if(App::GetApplication().isRestoring())
-        return;
-
+void ViewProviderBody::updateOriginSize () {
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
-
-    // Use different bounding boxes for datums and for origins:
-    Gui::Document* gdoc = Gui::Application::Instance->getDocument(getObject()->getDocument());
-    if(!gdoc)
-        return;
-
-    Gui::MDIView* view = gdoc->getViewOfViewProvider(this);
-    if(!view)
-        return;
-
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
 
     const auto & model = body->getFullModel ();
 
     // BBox for Datums is calculated from all visible objects but treating datums as their basepoints only
-    SbBox3f bboxDatums = ViewProviderDatum::getRelevantBoundBox ( bboxAction, model );
+    SbBox3f bboxDatums = ViewProviderDatum::getRelevantBoundBox ( model );
     // BBox for origin should take into account datums size also
-    SbBox3f bboxOrigins = bboxDatums;
+    SbBox3f bboxOrigins(0,0,0,0,0,0);
+    bool isDatumEmpty = bboxDatums.isEmpty();
+    if(!isDatumEmpty)
+        bboxOrigins.extendBy(bboxDatums);
 
     for(App::DocumentObject* obj : model) {
         if ( obj->isDerivedFrom ( Part::Datum::getClassTypeId () ) ) {
             ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
-            if (!vp) { continue; }
+            if (!vp || !vp->isVisible()) { continue; }
 
             ViewProviderDatum *vpDatum = static_cast <ViewProviderDatum *> (vp) ;
 
-            vpDatum->setExtents ( bboxDatums );
+            if(!isDatumEmpty)
+                vpDatum->setExtents ( bboxDatums );
 
-            bboxAction.apply ( vp->getRoot () );
-            bboxOrigins.extendBy ( bboxAction.getBoundingBox () );
+            if(App::GroupExtension::getGroupOfObject(obj))
+                continue;
+            auto bbox = vp->getBoundingBox();
+            if(bbox.IsValid())
+                bboxOrigins.extendBy ( SbBox3f(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ) );
         }
     }
 
@@ -352,12 +285,12 @@ void ViewProviderBody::updateOriginDatumSize () {
 
     for (uint_fast8_t i=0; i<3; i++) {
         size[i] = std::max ( fabs ( max[i] ), fabs ( min[i] ) );
-        if (size[i] < Precision::Confusion() ) {
+        if (min[i]>max[i] || size[i] < Precision::Confusion() ) {
             size[i] = Gui::ViewProviderOrigin::defaultSize();
         }
     }
 
-    vpOrigin->Size.setValue ( size*1.2 );
+    vpOrigin->Size.setValue ( size );
 }
 
 void ViewProviderBody::onChanged(const App::Property* prop) {
@@ -494,13 +427,16 @@ bool ViewProviderBody::canDropObjects() const
 
 bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 {
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
     if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
         return false;
     }
-    else if (PartDesign::Body::findBodyOf(obj)) {
+    auto other = PartDesign::Body::findBodyOf(obj);
+    if(other == body) {
+        return true;
+    } else if (other) {
         return false;
-    }
-    else if (obj->isDerivedFrom (Part::BodyBase::getClassTypeId())) {
+    } else if (obj->isDerivedFrom (Part::BodyBase::getClassTypeId())) {
         return false;
     }
 
@@ -525,7 +461,9 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
         move.insert(std::end(move), std::begin(deps), std::end(deps));
 
         PartDesign::Body* source = PartDesign::Body::findBodyOf(obj);
-        if (source)
+        if (source == body)
+            return;
+        if( source )
             source->removeObjects(move);
         try {
             body->addObjects(move);
@@ -552,4 +490,8 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
             }
         }
     }
+}
+
+int ViewProviderBody::replaceObject(App::DocumentObject *, App::DocumentObject *) {
+    return 0;
 }

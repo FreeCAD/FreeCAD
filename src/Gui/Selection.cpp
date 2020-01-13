@@ -49,9 +49,11 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
+#include <App/DocumentObserver.h>
 #include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 #include "Tree.h"
+#include "ViewParams.h"
 #include "ViewProviderDocumentObject.h"
 #include "Macro.h"
 
@@ -355,6 +357,23 @@ void SelectionObserverPython::removePreselection(const SelectionChanges& msg)
 
 // -------------------------------------------
 
+static int _DisableTopParentCheck;
+
+SelectionNoTopParentCheck::SelectionNoTopParentCheck() {
+    ++_DisableTopParentCheck;
+}
+
+SelectionNoTopParentCheck::~SelectionNoTopParentCheck() {
+    if(_DisableTopParentCheck>0)
+        --_DisableTopParentCheck;
+}
+
+bool SelectionNoTopParentCheck::enabled() {
+    return _DisableTopParentCheck>0;
+}
+
+// -------------------------------------------
+
 bool SelectionSingleton::hasSelection() const
 {
     return !_SelList.empty();
@@ -367,6 +386,17 @@ bool SelectionSingleton::hasPreselection() const {
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getCompleteSelection(int resolve) const
 {
     return getSelection("*",resolve);
+}
+
+std::vector<App::SubObjectT> SelectionSingleton::getSelectionT(
+        const char* pDocName, int resolve, bool single) const
+{
+    auto sels = getSelection(pDocName,resolve,single);
+    std::vector<App::SubObjectT> res;
+    res.reserve(sels.size());
+    for(auto &sel : sels)
+        res.emplace_back(sel.pObject,sel.SubName);
+    return res;
 }
 
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const char* pDocName, 
@@ -1060,8 +1090,6 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
     getMainWindow()->updateActions();
 
-    rmvPreselect(true);
-
     // There is a possibility that some observer removes or clears selection
     // inside signal handler, hence the check here
     return isSelected(temp.DocName.c_str(),temp.FeatName.c_str(), temp.SubName.c_str());
@@ -1097,7 +1125,8 @@ void SelectionSingleton::selStackGoBack(int count) {
     if(_SelList.size()) {
         selStackPush(false,true);
         clearCompleteSelection();
-    }
+    } else 
+        --count;
     for(int i=0;i<count;++i) {
         _SelStackForward.push_front(_SelStackBack.back());
         _SelStackBack.pop_back();
@@ -1216,22 +1245,22 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
         return false;
     if(!pSubName)
         pSubName = "";
-    if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
+    auto pDoc = getDocument(pDocName);
+    if(!pDoc) return false;
+    auto pObject = pDoc->getObject(pObjectName);
+    if(!pObject) return false;
+    _SelObj sel;
+    if(checkSelection(pDocName,pObjectName,pSubName,0,sel,&_SelList)<=0)
+        return false;
+    if(DocName==sel.DocName && FeatName==sel.FeatName && SubName==sel.SubName) {
         if(show) {
             FC_TRACE("preselect signal");
             notify(SelectionChanges(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName));
         }else
             rmvPreselect();
     }
-    auto pDoc = getDocument(pDocName);
-    if(!pDoc) return false;
-    auto pObject = pDoc->getObject(pObjectName);
-    if(!pObject) return false;
-    if (!isSelected(pObject, pSubName,0))
-        return false;
-
     SelectionChanges Chng(show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection,
-            pDocName,pObjectName,pSubName,pObject->getTypeId().getName());
+            sel.DocName, sel.FeatName, sel.SubName, sel.pObject->getTypeId().getName());
 
     FC_LOG("Update Selection "<<Chng.DocName << '#' << Chng.ObjName << '.' <<Chng.SubName);
 
@@ -1347,7 +1376,7 @@ struct SelInfo {
     {}
 };
 
-void SelectionSingleton::setVisible(VisibleState vis) {
+void SelectionSingleton::setVisible(VisibleState vis, const std::vector<App::SubObjectT> &_sels) {
     std::set<std::pair<App::DocumentObject*,App::DocumentObject*> > filter;
     int visible;
     switch(vis) {
@@ -1361,25 +1390,15 @@ void SelectionSingleton::setVisible(VisibleState vis) {
         visible = 0;
     }
 
-    // Copy the selection in case it changes during this function
-    std::vector<SelInfo> sels;
-    sels.reserve(_SelList.size());
-    for(auto &sel : _SelList) {
-        if(sel.DocName.empty() || sel.FeatName.empty() || !sel.pObject) 
-            continue;
-        sels.emplace_back(sel.DocName,sel.FeatName,sel.SubName);
-    }
-
+    const auto &sels = _sels.size()?_sels:getSelectionT(0,0);
     for(auto &sel : sels) {
-        App::Document *doc = App::GetApplication().getDocument(sel.DocName.c_str());
-        if(!doc) continue;
-        App::DocumentObject *obj = doc->getObject(sel.FeatName.c_str());
+        App::DocumentObject *obj = sel.getObject();
         if(!obj) continue;
 
         // get parent object
         App::DocumentObject *parent = 0;
         std::string elementName;
-        obj = obj->resolve(sel.SubName.c_str(),&parent,&elementName);
+        obj = obj->resolve(sel.getSubName().c_str(),&parent,&elementName);
         if(!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
             continue;
         // try call parent object's setElementVisible
@@ -1387,7 +1406,8 @@ void SelectionSingleton::setVisible(VisibleState vis) {
             // prevent setting the same object visibility more than once
             if(!filter.insert(std::make_pair(obj,parent)).second)
                 continue;
-            int vis = parent->isElementVisible(elementName.c_str());
+            int vis = parent->hasChildElement()?
+                parent->isElementVisible(elementName.c_str()):-1;
             if(vis>=0) {
                 if(vis>0) vis = 1;
                 if(visible>=0) {
@@ -1398,10 +1418,10 @@ void SelectionSingleton::setVisible(VisibleState vis) {
                     vis = !vis;
 
                 if(!vis)
-                    updateSelection(false,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                    updateSelection(false,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
                 parent->setElementVisible(elementName.c_str(),vis?true:false);
-                if(vis)
-                    updateSelection(true,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                if(vis && ViewParams::instance()->getUpdateSelectionVisual())
+                    updateSelection(true,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
                 continue;
             }
 
@@ -1422,9 +1442,10 @@ void SelectionSingleton::setVisible(VisibleState vis) {
 
             if(vis) {
                 vp->show();
-                updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                if(ViewParams::instance()->getUpdateSelectionVisual())
+                    updateSelection(vis,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
             } else {
-                updateSelection(vis,sel.DocName.c_str(),sel.FeatName.c_str(), sel.SubName.c_str());
+                updateSelection(vis,sel.getDocumentName().c_str(),sel.getObjectName().c_str(), sel.getSubName().c_str());
                 vp->hide();
             }
         }
@@ -1559,6 +1580,10 @@ bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pS
             pObject->getNameInDocument(),pSubName,resolve,sel,&_SelList)>0;
 }
 
+void SelectionSingleton::checkTopParent(App::DocumentObject *&obj, std::string &subname) {
+    TreeWidget::checkTopParent(obj,subname);
+}
+
 int SelectionSingleton::checkSelection(const char *pDocName, const char *pObjectName, 
         const char *pSubName, int resolve, _SelObj &sel, const std::list<_SelObj> *selList) const
 {
@@ -1582,8 +1607,8 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     }
     if(pSubName)
        sel.SubName = pSubName;
-    if(!resolve)
-        TreeWidget::checkTopParent(sel.pObject,sel.SubName);
+    if(!resolve && !SelectionNoTopParentCheck::enabled())
+        checkTopParent(sel.pObject,sel.SubName);
     pSubName = sel.SubName.size()?sel.SubName.c_str():0;
     sel.FeatName = sel.pObject->getNameInDocument();
     sel.TypeName = sel.pObject->getTypeId().getName();
@@ -1836,6 +1861,10 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "\n          0: do not resolve, 1: resolve, 2: resolve with element map"
      "\nindex - select stack index, 0 is the last pushed selection, positive index to trace further back,\n"
      "          and negative for forward stack item"},
+    {"checkTopParent",   (PyCFunction) SelectionSingleton::sCheckTopParent, METH_VARARGS,
+     "checkTopParent(obj, subname='')\n\n"
+     "Check object hierarchy to find the top parent of the given (sub)object.\n"
+     "Returns (topParent,subname)\n"},
     {NULL, NULL, 0, NULL}  /* Sentinel */
 };
 
@@ -2342,5 +2371,20 @@ PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObje
         for(auto &sel : Selection().selStackGet(documentName, resolve, index))
             list.append(Py::asObject(sel.getPyObject()));
         return Py::new_reference_to(list);
+    } PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sCheckTopParent(PyObject *, PyObject *args) {
+    PyObject *pyObj;
+    const char *subname = 0;
+    if (!PyArg_ParseTuple(args, "O!|s", &App::DocumentObjectPy::Type,&pyObj,&subname))
+        return 0;
+    PY_TRY {
+        std::string sub;
+        if(subname)
+            sub = subname;
+        App::DocumentObject *obj = static_cast<App::DocumentObjectPy*>(pyObj)->getDocumentObjectPtr();
+        checkTopParent(obj,sub);
+        return Py::new_reference_to(Py::TupleN(Py::asObject(obj->getPyObject()),Py::String(sub)));
     } PY_CATCH;
 }

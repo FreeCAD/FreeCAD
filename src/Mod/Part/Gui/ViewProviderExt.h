@@ -191,6 +191,7 @@ protected:
     SoShapeHints      * pShapeHints;
 
     SoCoordinate3     * coords;
+    SoCoordinate3     * pcoords;
     SoBrepFaceSet     * faceset;
     SoNormal          * norm;
     SoNormalBinding   * normb;

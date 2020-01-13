@@ -72,7 +72,6 @@ public:
     void setDisplayMode(const char* ModeName);
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
-    void recomputeBoundingBox();
     virtual QIcon getIcon() const;
 
     virtual bool useNewSelectionModel(void) const;
@@ -88,6 +87,9 @@ public:
     friend class PathSelectionObserver;
 
 protected:
+    virtual Base::BoundBox3d _getBoundingBox(
+            const char *subname=0, const Base::Matrix4D *mat=0, unsigned transform=true,
+            const Gui::View3DInventorViewer *viewer=0, int depth=0) const;
 
     virtual void onChanged(const App::Property* prop);
     virtual unsigned long getBoundColor() const;
@@ -115,6 +117,8 @@ protected:
     int coordStart;
     int coordEnd;
 
+    mutable Base::BoundBox3d bboxCache;
+    mutable bool bboxCached;
  };
  
  typedef Gui::ViewProviderPythonFeatureT<ViewProviderPath> ViewProviderPathPython;

@@ -38,6 +38,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 
@@ -56,6 +57,9 @@ ViewProviderBoolean::ViewProviderBoolean()
 
     ADD_PROPERTY(Display,((long)0));
     Display.setEnums(DisplayEnum);
+
+    if(pcModeSwitch->isOfType(Gui::SoFCSwitch::getClassTypeId()))
+        static_cast<Gui::SoFCSwitch*>(pcModeSwitch)->defaultChild = 1;
 }
 
 ViewProviderBoolean::~ViewProviderBoolean()

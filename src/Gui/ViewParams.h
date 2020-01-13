@@ -25,12 +25,26 @@
 
 
 #include <Base/Parameter.h>
+#include <App/DynamicProperty.h>
 
 namespace Gui {
 
 /** Convenient class to obtain view provider related parameters 
  *
  * The parameters are under group "User parameter:BaseApp/Preferences/View"
+ *
+ * To add a new parameter, add a new line under FC_VIEW_PARAMS using macro
+ *
+ * @code
+ *      FC_VIEW_PARAM(parameter_name, c_type, parameter_type, default_value)
+ * @endcode
+ *
+ * If there is special handling on parameter change, use FC_VIEW_PARAM2()
+ * instead, and add a function with the following signature in ViewParams.cpp,
+ *
+ * @code
+ *      void ViewParams:on<ParamName>Changed()
+ * @endcode
  */
 class GuiExport ViewParams: public ParameterGrp::ObserverType {
 public:
@@ -47,23 +61,59 @@ public:
     FC_VIEW_PARAM(UseNewSelection,bool,Bool,true) \
     FC_VIEW_PARAM(UseSelectionRoot,bool,Bool,true) \
     FC_VIEW_PARAM(EnableSelection,bool,Bool,true) \
+    FC_VIEW_PARAM(EnablePreselection,bool,Bool,true) \
     FC_VIEW_PARAM(RenderCache,int,Int,0) \
     FC_VIEW_PARAM(RandomColor,bool,Bool,false) \
-    FC_VIEW_PARAM(BoundingBoxColor,unsigned long,Unsigned,4294967295UL) \
-    FC_VIEW_PARAM(AnnotationTextColor,unsigned long,Unsigned,4294967295UL) \
+    FC_VIEW_PARAM(BoundingBoxColor,unsigned long,Unsigned,0xffffffff) \
+    FC_VIEW_PARAM(AnnotationTextColor,unsigned long,Unsigned,0xffffffff) \
+    FC_VIEW_PARAM(HighlightColor,unsigned long,Unsigned,0xe1e114ff) \
+    FC_VIEW_PARAM(SelectionColor,unsigned long,Unsigned,0x1cad1cff) \
     FC_VIEW_PARAM(MarkerSize,int,Int,9) \
-    FC_VIEW_PARAM(DefaultLinkColor,unsigned long,Unsigned,0x66FFFF00) \
-    FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,421075455UL) \
-    FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCC00) \
+    FC_VIEW_PARAM(DefaultLinkColor,unsigned long,Unsigned,0x66FFFFFF) \
+    FC_VIEW_PARAM(DefaultShapeLineColor,unsigned long,Unsigned,0x191919FF) \
+    FC_VIEW_PARAM(DefaultShapeColor,unsigned long,Unsigned,0xCCCCCCFF) \
     FC_VIEW_PARAM(DefaultShapeLineWidth,int,Int,2) \
     FC_VIEW_PARAM(CoinCycleCheck,bool,Bool,true) \
     FC_VIEW_PARAM(EnablePropertyViewForInactiveDocument,bool,Bool,true) \
     FC_VIEW_PARAM(ShowSelectionBoundingBox,bool,Bool,false) \
+    FC_VIEW_PARAM(UpdateSelectionVisual,bool,Bool,true) \
+    FC_VIEW_PARAM(LinkChildrenDirect,bool,Bool,true) \
+    FC_VIEW_PARAM2(ShowSelectionOnTop,bool,Bool,false) \
+    FC_VIEW_PARAM(SelectionLineThicken,double,Float,1.0) \
+    FC_VIEW_PARAM(PickRadius,double,Float,5.0) \
+    FC_VIEW_PARAM(SelectionTransparency,double,Float,0.5) \
+    FC_VIEW_PARAM(SelectionLinePattern,int,Int,0) \
+    FC_VIEW_PARAM(SelectionHiddenLineWidth,double,Float,1.0) \
+    FC_VIEW_PARAM(SelectionBBoxLineWidth,double,Float,3.0) \
+    FC_VIEW_PARAM(ShowHighlightEdgeOnly,bool,Bool,false) \
+    FC_VIEW_PARAM(PreSelectionDelay,double,Float,0.1) \
+    FC_VIEW_PARAM(SelectionPickThreshold,int,Int,50) \
+    FC_VIEW_PARAM(UseNewRayPick,bool,Bool,true) \
+    FC_VIEW_PARAM(ViewSelectionExtend,bool,Bool,true) \
+    FC_VIEW_PARAM(ViewSelectionExtendFactor,double,Float,0.5) \
+    FC_VIEW_PARAM(UseTightBoundingBox,bool,Bool,true) \
+    FC_VIEW_PARAM(UseBoundingBoxCache,bool,Bool,true) \
+    FC_VIEW_PARAM(RenderProjectedBBox,bool,Bool,true) \
+    FC_VIEW_PARAM(SelectionFaceWire,bool,Bool,false) \
+    FC_VIEW_PARAM(NewDocumentCameraScale,double,Float,100.0) \
+    FC_VIEW_PARAM(MaxOnTopSelections,int,Int,20) \
+    FC_VIEW_PARAM2(MapChildrenPlacement,bool,Bool,false) \
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
     _ctype get##_name() const { return _name; }\
-    void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }
+    void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }\
+    static void update##_name(ViewParams *self) { self->_name = self->handle->Get##_type(#_name,_def); }\
+
+#undef FC_VIEW_PARAM2
+#define FC_VIEW_PARAM2(_name,_ctype,_type,_def) \
+    _ctype get##_name() const { return _name; }\
+    void set##_name(_ctype _v) { handle->Set##_type(#_name,_v); _name=_v; }\
+    void on##_name##Changed();\
+    static void update##_name(ViewParams *self) { \
+        self->_name = self->handle->Get##_type(#_name,_def); \
+        self->on##_name##Changed();\
+    }\
 
     FC_VIEW_PARAMS
 
@@ -72,11 +122,16 @@ private:
 #define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
     _ctype _name;
 
+#undef FC_VIEW_PARAM2
+#define FC_VIEW_PARAM2 FC_VIEW_PARAM
+
     FC_VIEW_PARAMS
     ParameterGrp::handle handle;
+    std::unordered_map<const char *,void(*)(ViewParams*),App::CStringHasher,App::CStringHasher> funcs;
 };
 
 #undef FC_VIEW_PARAM
+#undef FC_VIEW_PARAM2
 
 } // namespace Gui
 

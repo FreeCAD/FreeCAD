@@ -46,6 +46,7 @@
 #include <App/Material.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObserver.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include "Application.h"
 #include "Document.h"
@@ -58,13 +59,15 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "SoFCUnifiedSelection.h"
+#include "SoFCSelection.h"
+#include "ViewParams.h"
 #include "Tree.h"
+#include "ViewProviderLink.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
 FC_LOG_LEVEL_INIT("Gui",true,true)
 
 using namespace Gui;
-
 
 PROPERTY_SOURCE(Gui::ViewProviderDocumentObject, Gui::ViewProvider)
 
@@ -79,6 +82,9 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY(SelectionStyle,((long)0));
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
+
+    ADD_PROPERTY(Selectable,(true));
+    Selectable.setValue(ViewParams::instance()->getEnableSelection());
 
     static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
     ADD_PROPERTY(OnTopWhenSelected,((long int)0));
@@ -105,16 +111,12 @@ void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::T
 void ViewProviderDocumentObject::startRestoring()
 {
     hide();
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        ext->extensionStartRestoring();
+    callExtension(&ViewProviderExtension::extensionStartRestoring);
 }
 
 void ViewProviderDocumentObject::finishRestoring()
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        ext->extensionFinishRestoring();
+    callExtension(&ViewProviderExtension::extensionFinishRestoring);
 }
 
 bool ViewProviderDocumentObject::isAttachedToDocument() const
@@ -190,11 +192,17 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
             getObject()->Visibility.setValue(Visibility.getValue());
         }
     }
-    else if (prop == &SelectionStyle) {
+    else if (prop == &SelectionStyle || prop == &Selectable) {
         if(getRoot()->isOfType(SoFCSelectionRoot::getClassTypeId())) {
-            static_cast<SoFCSelectionRoot*>(getRoot())->selectionStyle = SelectionStyle.getValue()
-                ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
+            auto root = static_cast<SoFCSelectionRoot*>(getRoot());
+            if(Selectable.getValue()) {
+                root->selectionStyle = SelectionStyle.getValue()
+                    ? SoFCSelectionRoot::Box : SoFCSelectionRoot::Full;
+            } else
+                root->selectionStyle = SoFCSelectionRoot::Unpickable;
         }
+        if(prop == &Selectable)
+            setSelectable(Selectable.getValue());
     }
 
     if (pcDocument && !pcDocument->isModified() && testStatus(Gui::ViewStatus::TouchDocument)) {
@@ -208,28 +216,45 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 
 void ViewProviderDocumentObject::hide(void)
 {
+    auto obj = getObject();
+    if(obj && obj->getDocument() && obj->getNameInDocument())
+        Gui::Selection().updateSelection(
+                false, obj->getDocument()->getName(), obj->getNameInDocument(),0);
+
     ViewProvider::hide();
+
     // use this bit to check whether 'Visibility' must be adjusted
-    if (Visibility.testStatus(App::Property::User2) == false) {
+    if (Visibility.getValue() && Visibility.testStatus(App::Property::User2) == false) {
         Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(false);
         Visibility.setStatus(App::Property::User2, false);
     }
 }
 
+void ViewProviderDocumentObject::setModeSwitch() {
+    if(!isShowable()) {
+        if(pcModeSwitch->whichChild.getValue()!=-1) {
+            pcModeSwitch->whichChild = -1;
+            callExtension(&ViewProviderExtension::extensionModeSwitchChange);
+        }
+        return;
+    }
+    ViewProvider::setModeSwitch();
+}
+
 void ViewProviderDocumentObject::show(void)
 {
-    if(TreeWidget::isObjectShowable(getObject()))
-        ViewProvider::show();
-    else {
-        Visibility.setValue(false);
-        if(getObject())
-            getObject()->Visibility.setValue(false);
-        return;
+    ViewProvider::show();
+
+    if(ViewParams::instance()->getUpdateSelectionVisual()) {
+        auto obj = getObject();
+        if(obj && obj->getDocument() && obj->getNameInDocument())
+            Gui::Selection().updateSelection(
+                    true, obj->getDocument()->getName(), obj->getNameInDocument(),0);
     }
 
     // use this bit to check whether 'Visibility' must be adjusted
-    if (Visibility.testStatus(App::Property::User2) == false) {
+    if (!Visibility.getValue() && Visibility.testStatus(App::Property::User2) == false) {
         Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(true);
         Visibility.setStatus(App::Property::User2, false);
@@ -263,6 +288,8 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     // save Object pointer
     pcObject = pcObj;
 
+    pcObj->setStatus(App::ObjectStatus::ViewProviderAttached,true);
+
     if(pcObj && pcObj->getNameInDocument() &&
        Visibility.getValue()!=pcObj->Visibility.getValue())
         pcObj->Visibility.setValue(Visibility.getValue());
@@ -289,15 +316,14 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     }
 
     //attach the extensions
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionAttach(pcObj);
+    callExtension(&ViewProviderExtension::extensionAttach,pcObj);
+
+    updateChildren();
 }
 
 void ViewProviderDocumentObject::reattach(App::DocumentObject *pcObj) {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for (Gui::ViewProviderExtension* ext : vector)
-        ext->extensionReattach(pcObj);
+    callExtension(&ViewProviderExtension::extensionReattach,pcObj);
+    updateChildren();
 }
 
 void ViewProviderDocumentObject::update(const App::Property* prop)
@@ -312,6 +338,9 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
         Base::ObjectStatusLocker<App::Property::Status,App::Property>
             guard(App::Property::User1, &Visibility);
         ViewProvider::update(prop);
+
+        updateChildren(prop->testStatus(App::Property::Output)
+                        || prop->testStatus(App::Property::PropOutput));
     }
 }
 
@@ -432,11 +461,8 @@ PyObject* ViewProviderDocumentObject::getPyObject()
 bool ViewProviderDocumentObject::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
         const char *subname, const std::vector<std::string> &elements) const
 {
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(ext->extensionCanDropObjectEx(obj,owner,subname,elements))
-            return true;
-    }
+    if(queryExtension(&ViewProviderExtension::extensionCanDropObjectEx,obj,owner,subname,elements))
+        return true;
     if(obj && obj->getDocument()!=getObject()->getDocument())
         return false;
     return canDropObject(obj);
@@ -508,79 +534,103 @@ bool ViewProviderDocumentObject::showInTree() const {
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
-    if(!isSelectable()) return false;
-    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
-        if(ext->extensionGetElementPicked(pp,subname))
-            return true;
-
-    auto childRoot = getChildRoot();
-    int idx;
-    if(!childRoot || 
-       (idx=pcModeSwitch->whichChild.getValue())<0 ||
-       pcModeSwitch->getChild(idx)!=childRoot)
-    {
-        return ViewProvider::getElementPicked(pp,subname);
-    }
+    if(queryExtension(&ViewProviderExtension::extensionGetElementPicked,pp,subname))
+        return true;
 
     SoPath* path = pp->getPath();
-    idx = path->findNode(childRoot);
-    if(idx<0 || idx+1>=path->getLength())
-        return false;
-    auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
-    if(!vp) return false;
-    auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
-        return false;
-    std::ostringstream str;
-    str << obj->getNameInDocument() << '.';
-    if(vp->getElementPicked(pp,subname))
-        str << subname;
-    subname = str.str();
+    int idx = -1;
+    auto childRoot = getChildRoot();
+    if(!childRoot && ViewParams::instance()->getMapChildrenPlacement())
+        childRoot = getChildrenGroup();
+    if(childRoot) 
+        idx = path->findNode(childRoot);
+    if(idx < 0) {
+        subname = getElement(pp?pp->getDetail():0);
+        return true;
+    }
+
+    if(idx+1<path->getLength()) {
+        auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
+        if(!vp) return false;
+        auto obj = vp->getObject();
+        if(!obj || !obj->getNameInDocument())
+            return false;
+        std::ostringstream str;
+        str << obj->getNameInDocument() << '.';
+        if(vp->getElementPicked(pp,subname))
+            str << subname;
+        subname = str.str();
+    }
     return true;
 }
 
-bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
+bool ViewProviderDocumentObject::getDetailPath(
+        const char *subname, SoFullPath *path, bool append, SoDetail *&det) const
 {
+    if(pcRoot->findChild(pcModeSwitch) < 0) {
+        // this is possible in case of editing, where the switch node
+        // of the linked view object is temporarily removed from its root
+        // if(append)
+        //     pPath->append(pcRoot);
+        return false;
+    }
+
     auto len = path->getLength();
     if(!append && len>=2)
         len -= 2;
-    if(ViewProvider::getDetailPath(subname,path,append,det)) {
-        if(det || !subname || !*subname)
-            return true;
+
+    if(append) {
+        path->append(pcRoot);
+        path->append(pcModeSwitch);
+    }
+    if(queryExtension(&ViewProviderExtension::extensionGetDetailPath,subname,path,det))
+        return true;
+
+    const char *dot = 0;
+    if(Data::ComplexGeoData::isMappedElement(subname) || (dot=strchr(subname,'.')) == 0) {
+        det = getDetail(subname);
+        return true;
     }
 
-    if(det) {
-        delete det;
-        det = 0;
-    }
-
-    const char *dot = strchr(subname,'.');
-    if(!dot) return false;
     auto obj = getObject();
     if(!obj || !obj->getNameInDocument()) return false;
     auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-    if(!sobj) return false;
+    if(!sobj || !sobj->getNameInDocument()) return false;
     auto vp = Application::Instance->getViewProvider(sobj);
     if(!vp) return false;
 
     auto childRoot = getChildRoot();
-    if(!childRoot) 
-        path->truncate(len);
-    else {
-        auto idx = pcModeSwitch->whichChild.getValue();
-        if(idx < 0 || pcModeSwitch->getChild(idx)!=childRoot)
+    if(!childRoot && ViewParams::instance()->getMapChildrenPlacement())
+        childRoot = getChildrenGroup();
+
+    for(;;) {
+        if(!childRoot) {
+            // If no child root, then this view provider does not stack children
+            // view provider under its own root, so we pop till before the root
+            // node of this view provider.
+            path->truncate(len);
+        } else {
+            // Do not account for our own visibility, we maybe called by a Link
+            // that has independent visibility. Just make sure the child root node
+            // is indeed a child of mode switch.
+            if(pcModeSwitch->findChild(childRoot)<0) {
+                childRoot = 0;
+                continue;
+            }
+            path->append(childRoot);
+        }
+        if(path->getLength()) {
+            SoNode * tail = path->getTail();
+            const SoChildList * children = tail->getChildren();
+            if(children && children->find(vp->getRoot())>=0)
+                return vp->getDetailPath(dot+1,path,true,det);
+        }
+        if(childRoot) {
+            // Can't find under child root, try again without it
+            childRoot = 0;
+        } else
             return false;
-        path->append(childRoot);
     }
-    bool ret = false;
-    if(path->getLength()) {
-        SoNode * tail = path->getTail();
-        const SoChildList * children = tail->getChildren();
-        if(children && children->find(vp->getRoot())>=0)
-            ret = vp->getDetailPath(dot+1,path,true,det);
-    }
-    return ret;
 }
 
 void ViewProviderDocumentObject::onPropertyStatusChanged(
@@ -617,3 +667,247 @@ std::string ViewProviderDocumentObject::getFullName(bool python) const {
 App::Document *ViewProviderDocumentObject::getOwnerDocument() const {
     return pcObject?pcObject->getDocument():0;
 }
+
+void ViewProviderDocumentObject::setSelectable(bool selectable)
+{
+    SoSearchAction sa;
+    sa.setInterest(SoSearchAction::ALL);
+    sa.setSearchingAll(true);
+    sa.setType(Gui::SoFCSelection::getClassTypeId());
+    sa.apply(pcRoot);
+
+    SoPathList & pathList = sa.getPaths();
+
+    for (int i=0;i<pathList.getLength();i++) {
+        SoFCSelection *selNode = dynamic_cast<SoFCSelection*>(pathList[i]->getTail());
+        if (selectable) {
+            if (selNode) {
+                selNode->selectionMode = SoFCSelection::SEL_ON;
+                selNode->highlightMode = SoFCSelection::AUTO;
+            }
+        }
+        else {
+            if (selNode) {
+                selNode->selectionMode = SoFCSelection::SEL_OFF;
+                selNode->highlightMode = SoFCSelection::OFF;
+                selNode->selected = SoFCSelection::NOTSELECTED;
+            }
+        }
+    }
+}
+
+Base::BoundBox3d ViewProviderDocumentObject::_getBoundingBox(
+        const char *subname, const Base::Matrix4D *mat, bool transform,
+        const View3DInventorViewer *viewer, int depth) const 
+{
+    if(!viewer) {
+        viewer = getActiveViewer();
+        if(!viewer) {
+            FC_ERR("no view");
+            return Base::BoundBox3d();
+        }
+    }
+
+    App::DocumentObject *obj = getObject();
+    if(!subname || !subname[0] || !obj) {
+        if(obj) {
+            auto subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
+            if(subs.size()) {
+                Base::BoundBox3d box;
+                for(std::string &sub : subs) {
+                    Base::Matrix4D smat;
+                    if(mat)
+                        smat = *mat;
+                    App::DocumentObject *parent = 0;
+                    std::string childName;
+                    auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
+                    if(!sobj) 
+                        continue;
+                    int vis;
+                    if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
+                        vis = sobj->Visibility.getValue()?1:0;
+                    if(!vis)
+                        continue;
+                    auto vp = Application::Instance->getViewProvider(sobj);
+                    if(!vp)
+                        continue;
+                    auto sbox = vp->getBoundingBox(0,&smat,false,viewer,depth+1);
+                    if(sbox.IsValid())
+                        box.Add(sbox);
+                }
+                return box;
+            }
+        }
+
+        return ViewProvider::_getBoundingBox(0,mat,transform,viewer,depth);
+    }
+
+    Base::Matrix4D smat;
+    if(mat)
+        smat = *mat;
+
+    std::string _subname;
+    const char *nextsub;
+    const char *dot=0;
+    if(Data::ComplexGeoData::isMappedElement(subname)
+            || (dot=strchr(subname,'.'))==0)
+    {
+        return ViewProvider::_getBoundingBox(subname,&smat,false,viewer,depth+1);
+    }
+
+    if(ViewParams::instance()->getMapChildrenPlacement()) {
+        _subname = std::string(subname,dot+1-subname);
+        subname = _subname.c_str();
+        nextsub = dot+1;
+    } else
+        nextsub = Data::ComplexGeoData::findElementName(dot+1);
+
+    auto sobj = getObject()->getSubObject(subname,0,&smat,transform,depth);
+    auto vp = Application::Instance->getViewProvider(sobj);
+    if(!vp)
+        return Base::BoundBox3d();
+    return vp->getBoundingBox(nextsub, &smat,false,viewer,depth+1);
+}
+
+const std::vector<App::DocumentObject*> &ViewProviderDocumentObject::getCachedChildren() const {
+    return claimedChildren;
+}
+
+void ViewProviderDocumentObject::beforeDelete() {
+    ViewProvider::beforeDelete();
+
+    for(auto child : childSet) {
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                Application::Instance->getViewProvider(child));
+        if(vpd)
+            vpd->parentSet.erase(getObject());
+    }
+    claimedChildren.clear();
+    childSet.clear();
+    parentSet.clear();
+}
+
+const std::set<App::DocumentObject *>& ViewProviderDocumentObject::claimedBy() const {
+    return parentSet;
+}
+
+void ViewProviderDocumentObject::updateChildren(bool propagate) {
+    auto obj = getObject();
+    if(!obj || !obj->getNameInDocument())
+        return;
+
+    auto newChildren = claimChildren();
+    if(claimedChildren == newChildren)
+        return;
+
+    std::set<App::DocumentObject *> newSet;
+    bool updated = false;
+    for (auto child : newChildren) {
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                Application::Instance->getViewProvider(child));
+        if(!vpd || !newSet.insert(child).second)
+            continue;
+        if(!childSet.erase(child)) {
+            // this means new child detected
+            updated = true;
+            if(vpd->parentSet.insert(obj).second 
+                    && child->getDocument() == obj->getDocument()
+                    && vpd->Visibility.getValue()) 
+            {
+                // Trigger visibility check through
+                // ViewProviderDocumentObject::setModeSwitch(), which will call
+                // ViewProviderDocumentObject::isShowable().
+                vpd->show();
+            }
+        }
+    }
+
+    for (auto child : childSet) {
+        if(newSet.find(child) == newSet.end()) {
+            // this means old child removed
+            updated = true;
+            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(child));
+            if(!vpd)
+                continue;
+            vpd->parentSet.erase(obj);
+            if(vpd->Visibility.getValue()) {
+                // Trigger visibility check through
+                // ViewProviderDocumentObject::setModeSwitch(), which will call
+                // ViewProviderDocumentObject::isShowable().
+                vpd->show();
+            }
+        }
+    }
+
+    if(!updated)
+        return;
+
+    childSet = std::move(newSet);
+    claimedChildren = std::move(newChildren);
+
+    if(propagate) {
+        // This is true if the children update is triggered by a property that
+        // is marked as output. It will not touch its object, and thus, its
+        // property change will not be propagated through recomputation. So we
+        // have to manually check for each links here.
+        for(auto link : App::GetApplication().getLinksTo(obj,App::GetLinkRecursive)) {
+            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(link));
+            if(vpd) 
+                vpd->updateChildren(false);
+        }
+    }
+
+    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
+    //of the geofeaturegroup depends on what the childs claim
+    auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+    if(grp) {
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                Application::Instance->getViewProvider(grp));
+        if(vpd)
+            vpd->updateChildren(true);
+    }
+
+    signalChangedChildren(*this);
+    Application::Instance->signalChangedChildren(*this);
+
+    if(!getChildRoot() && !isDerivedFrom(ViewProviderLink::getClassTypeId())) {
+        if(!pcChildGroup) {
+            pcChildGroup = new SoGroup;
+            pcModeSwitch->addChild(pcChildGroup);
+        } else
+            coinRemoveAllChildren(pcChildGroup);
+        for(auto child : childSet) {
+            auto vp = Application::Instance->getViewProvider(child);
+            if(vp)
+                pcChildGroup->addChild(vp->getRoot());
+        }
+    }
+}
+
+SoGroup *ViewProviderDocumentObject::getChildrenGroup() const {
+    if(pcChildGroup)
+        return pcChildGroup;
+    return 0;
+}
+
+bool ViewProviderDocumentObject::isShowable() const {
+    auto obj = getObject();
+    if(!obj)
+        return true;
+    bool showable = true;
+    for(auto parent : parentSet) {  
+        // Calling getViewProvider() here is a more of a safty measure, to make
+        // sure the object exists.
+        if(!Application::Instance->getViewProvider(parent)
+                || parent->getDocument()!=obj->getDocument())
+            continue;
+        if(!parent->hasChildElement() 
+                && parent->getLinkedObject(false)==parent)
+            return true;
+        showable = false;
+    }
+    return showable;
+}
+

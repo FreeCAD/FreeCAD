@@ -29,6 +29,7 @@
 
 #include <Base/Console.h>
 #include <Base/Placement.h>
+#include <Base/Tools.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -328,7 +329,12 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     // Insert the new feature after the given
     model.insert (insertInto, feature);
 
-    Group.setValues (model);
+    {
+        // User3 is to skip GeoFeatureGroupExtension group check
+        Base::ObjectStatusLocker<App::Property::Status, App::Property>
+            guard(App::Property::User3, &Group);
+        Group.setValues (model);
+    }
 
     if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
         static_cast<PartDesign::Feature*>(feature)->_Body.setValue(this);
@@ -384,6 +390,9 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
     // Erase feature from Group
     if (it != model.end()) {
         model.erase(it);
+        // User3 is to skip GeoFeatureGroupExtension group check
+        Base::ObjectStatusLocker<App::Property::Status, App::Property>
+            guard(App::Property::User3, &Group);
         Group.setValues(model);
     }
     std::vector<App::DocumentObject*> result = {feature};
@@ -497,6 +506,9 @@ void Body::setupObject () {
     auto hGrp = App::GetApplication().GetParameterGroupByPath (
                 "User parameter:BaseApp/Preferences/Mod/PartDesign");
     SingleSolid.setValue(hGrp->GetBool("SingleSolid",false));
+
+    // make sure the origins are created
+    getOrigin()->getX();
 }
 
 void Body::unsetupObject () {

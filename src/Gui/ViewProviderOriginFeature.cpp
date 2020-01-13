@@ -40,6 +40,7 @@
 #include <App/Document.h>
 #include <App/OriginFeature.h>
 
+#include "SoFCUnifiedSelection.h"
 #include "SoFCSelection.h"
 #include "Window.h"
 #include "ViewProviderOrigin.h"
@@ -64,6 +65,7 @@ ViewProviderOriginFeature::ViewProviderOriginFeature () {
     // Create the separator filled by inherited classes
     pOriginFeatureRoot = new SoSeparator();
     pOriginFeatureRoot->ref ();
+    pOriginFeatureRoot->renderCaching = SoSeparator::OFF;
 
     // Create the Label node
     pLabel = new SoAsciiText();
@@ -78,6 +80,29 @@ ViewProviderOriginFeature::~ViewProviderOriginFeature () {
     pLabel->unref ();
 }
 
+// Separator node that alters OpenGL depth function. Coin3d's SoDepthBuffer
+// does not account for user code change of depth function.
+class DepthSeparator : public SoSeparator {
+    typedef SoSeparator inherited;
+
+public:
+    DepthSeparator(int32_t func)
+        :func(func)
+    {}
+
+    virtual void GLRenderBelowPath(SoGLRenderAction * action) {
+        Gui::FCDepthFunc guard(func);
+        inherited::GLRenderBelowPath(action);
+    }
+
+    virtual void GLRenderInPath(SoGLRenderAction * action) {
+        Gui::FCDepthFunc guard(func);
+        inherited::GLRenderInPath(action);
+    }
+
+private:
+    int32_t func;
+};
 
 void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
 {
@@ -87,7 +112,8 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     float sz = Size.getValue () / defaultSz;
 
     // Create an external separator
-    SoSeparator  *sep = new SoSeparator();
+    SoSeparator  *sep = new DepthSeparator(GL_LEQUAL);
+    sep->renderCaching = SoSeparator::OFF;
 
     // Add material from the base class
     sep->addChild(pcShapeMaterial);
@@ -99,12 +125,25 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
 
     // Scale feature to the given size
     pScale->scaleFactor = SbVec3f (sz, sz, sz);
-    sep->addChild (pScale);
+    // sep->addChild (pScale);
+    pOriginFeatureRoot->addChild (pScale);
 
     // Setup font size
     SoFont *font = new SoFont ();
     font->size.setValue ( defaultSz/10.);
-    sep->addChild ( font );
+
+    // Adding font node under SoFCSelection node is crucial for its bounding
+    // box rendering to work. Because SoGetBoundingBoxAction is applied on the
+    // node itself, instead of a path. Without the font, SoAsciiText will
+    // report incorrect bounds.
+    //
+    // sep->addChild ( font );
+    pOriginFeatureRoot->addChild (font);
+
+    SoShapeHints * hints = new SoShapeHints;
+    hints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE ;
+    hints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    sep->addChild(hints);
 
     // Create the selection node
     SoFCSelection *highlight = new SoFCSelection ();
@@ -125,7 +164,7 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     highlight->addChild ( pOriginFeatureRoot );
 
     // Hidden features
-    SoAnnotation *hidden = new SoAnnotation ();
+    auto *hidden = new SoAnnotation;
 
     // Style for hidden lines
     style = new SoDrawStyle ();

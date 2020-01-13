@@ -30,6 +30,7 @@
 # include <gp_Lin.hxx>
 #endif
 
+#include "DatumPlane.h"
 #include "DatumLine.h"
 
 using namespace PartDesign;
@@ -39,6 +40,11 @@ PROPERTY_SOURCE(PartDesign::Line, Part::Datum)
 
 Line::Line()
 {
+    ADD_PROPERTY_TYPE(ResizeMode,(static_cast<long>(0)), "Size", App::Prop_Output, "Automatic or manual resizing");
+    ResizeMode.setEnums(Plane::ResizeModeEnums);
+    ADD_PROPERTY_TYPE(Length,(20), "Size", App::Prop_Output, "Length of the plane");
+    Length.setReadOnly(true);
+
     this->setAttacher(new AttachEngineLine);
     // Create a shape, which will be used by the Sketcher. Them main function is to avoid a dependency of
     // Sketcher on the PartDesign module
@@ -62,4 +68,18 @@ Base::Vector3d Line::getDirection() const
     Base::Vector3d dir;
     rot.multVec(Base::Vector3d(0,0,1), dir);
     return dir;
+}
+
+void Line::onChanged(const App::Property *prop)
+{
+    if (prop == &ResizeMode) {
+        if (ResizeMode.getValue() == 0) {
+            Length.setReadOnly(true);
+        }
+        else {
+            Length.setReadOnly(false);
+        }
+    }
+
+    Datum::onChanged(prop);
 }

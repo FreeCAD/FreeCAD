@@ -87,6 +87,7 @@
 #include <App/DocumentObject.h>
 #include <App/ComplexGeoDataPy.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/DocumentObserver.h>
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -805,6 +806,106 @@ bool StdCmdToggleVisibility::isActive(void)
 }
 
 //===========================================================================
+// Std_ToggleGroupVisibility
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleGroupVisibility)
+
+StdCmdToggleGroupVisibility::StdCmdToggleGroupVisibility()
+  : Command("Std_ToggleGroupVisibility")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Toggle group visibility");
+    sToolTipText  = QT_TR_NOOP("Toggles visibility of a group and all its nested children");
+    sStatusTip    = sToolTipText;
+    sWhatsThis    = "Std_ToggleGroupVisibility";
+    eType         = Alter3DView;
+}
+
+
+void StdCmdToggleGroupVisibility::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+
+    auto sels = Gui::Selection().getSelectionT(0,0);
+    std::set<App::DocumentObject*> groups;
+    for(auto &sel : sels) {
+        auto sobj = sel.getSubObject();
+        if(!sobj)
+            continue;
+        if(App::GeoFeatureGroupExtension::isNonGeoGroup(sobj))
+            groups.insert(sobj);
+    }
+
+    for(auto it=sels.begin();it!=sels.end();) {
+        auto &sel = *it;
+        auto sobj = sel.getSubObject();
+        if(!sobj || groups.count(App::GroupExtension::getGroupOfObject(sobj)))
+            it = sels.erase(it);
+        else
+            ++it;
+    }
+
+    if(sels.empty())
+        return;
+
+    App::GroupExtension::ToggleNestedVisibility guard;
+    Gui::Selection().setVisible(SelectionSingleton::VisToggle,sels);
+}
+
+bool StdCmdToggleGroupVisibility::isActive(void)
+{
+    return (Gui::Selection().size() != 0);
+}
+
+//===========================================================================
+// Std_ToggleVisibility
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleShowOnTop)
+
+StdCmdToggleShowOnTop::StdCmdToggleShowOnTop()
+  : Command("Std_ToggleShowOnTop")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Toggle show on top");
+    sToolTipText  = QT_TR_NOOP("Toggles whether to show the object on top");
+    sStatusTip    = sToolTipText;
+    sWhatsThis    = "Std_ToggleShowOnTop";
+    sAccel        = "Ctrl+Shift+Space";
+    eType         = Alter3DView;
+}
+
+void StdCmdToggleShowOnTop::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+
+    auto gdoc = Application::Instance->activeDocument();
+    if(!gdoc)
+        return;
+    auto view = Base::freecad_dynamic_cast<View3DInventor>(gdoc->getActiveView());
+    if(!view)
+        return;
+    auto viewer = view->getViewer();
+
+    std::set<App::SubObjectT> objs;
+    for(auto sel : Selection().getSelectionT(gdoc->getDocument()->getName(),0)) {
+        sel.setSubName(sel.getSubNameNoElement().c_str());
+        if(!objs.insert(sel).second)
+            continue;
+        bool selected = viewer->isInGroupOnTop(sel.getObjectName().c_str(),sel.getSubName().c_str());
+        viewer->checkGroupOnTop(SelectionChanges(selected?SelectionChanges::RmvSelection:SelectionChanges::AddSelection,
+                    sel.getDocumentName().c_str(), sel.getObjectName().c_str(), sel.getSubName().c_str()),true);
+    }
+    if(objs.empty())
+        viewer->clearGroupOnTop(true);
+}
+
+bool StdCmdToggleShowOnTop::isActive(void)
+{
+    auto gdoc = Application::Instance->activeDocument();
+    return gdoc && Base::freecad_dynamic_cast<View3DInventor>(gdoc->getActiveView());
+}
+
+//===========================================================================
 // Std_ToggleSelectability
 //===========================================================================
 DEF_STD_CMD_A(StdCmdToggleSelectability)
@@ -834,7 +935,7 @@ void StdCmdToggleSelectability::activated(int iMsg)
 
         for (std::vector<App::DocumentObject*>::const_iterator ft=sel.begin();ft!=sel.end();++ft) {
             ViewProvider *pr = pcDoc->getViewProviderByName((*ft)->getNameInDocument());
-            if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
+            if (pr && pr->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
                                  , (*it)->getName(), (*ft)->getNameInDocument());
@@ -2490,7 +2591,7 @@ StdBoxSelection::StdBoxSelection()
 
 typedef enum { CENTER, INTERSECT } SelectionMode;
 
-static std::vector<std::string> getBoxSelection(
+static std::vector<std::string> getBoxSelection(const Base::Vector3d *dir,
         ViewProviderDocumentObject *vp, SelectionMode mode, bool selectElement,
         const Base::ViewProjMethod &proj, const Base::Polygon2d &polygon,
         const Base::Matrix4D &mat, bool transform=true, int depth=0)
@@ -2503,16 +2604,17 @@ static std::vector<std::string> getBoxSelection(
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
 
-    auto bbox3 = vp->getBoundingBox(0,transform);
+    auto bbox3 = vp->getBoundingBox(0,&mat,transform);
     if(!bbox3.IsValid())
         return ret;
 
-    auto bbox = bbox3.Transformed(mat).ProjectBox(&proj);
+    auto bbox = bbox3.ProjectBox(&proj);
 
     // check if both two boundary points are inside polygon, only
     // valid since we know the given polygon is a box.
-    if(polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY)) && 
-       polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
+    if(!selectElement 
+            && polygon.Contains(Base::Vector2d(bbox.MinX,bbox.MinY))
+            && polygon.Contains(Base::Vector2d(bbox.MaxX,bbox.MaxY))) 
     {
         ret.emplace_back("");
         return ret;
@@ -2550,6 +2652,35 @@ static std::vector<std::string> getBoxSelection(
                     continue;
                 std::vector<Base::Vector3d> points;
                 std::vector<Data::ComplexGeoData::Line> lines;
+                Base::Polygon2d loop;
+
+                if(dir) {
+                    std::vector<Base::Vector3d> pointNormals; // not used
+                    std::vector<Data::ComplexGeoData::Facet> faces;
+
+                    // Call getFacesFromSubelement to obtain the triangulation of
+                    // the segment. We use it for back cull filtering.
+                    data->getFacesFromSubelement(segment.get(),points,pointNormals,faces);
+                    if(faces.empty())
+                        continue;
+
+                    bool culled = true;
+                    for(auto &facet : faces) {
+                        Base::Vector3d normal = (points[facet.I2] - points[facet.I1])
+                            % (points[facet.I3] - points[facet.I1]);
+                        normal.Normalize();
+                        if (normal.Dot(*dir) > 0.0f) {
+                            culled = false;
+                            break;
+                        }
+                    }
+                    if(culled)
+                        continue;
+
+                    points.clear();
+                }
+                
+                // Call getLinesFromSubelement to get the outer loop of the entire segment
                 data->getLinesFromSubelement(segment.get(),points,lines);
                 if(lines.empty()) {
                     if(points.empty())
@@ -2559,7 +2690,6 @@ static std::vector<std::string> getBoxSelection(
                         ret.push_back(element);
                     continue;
                 }
-                Base::Polygon2d loop;
                 // TODO: can we assume the line returned above are in proper
                 // order if the element is a face?
                 auto v = proj(points[lines.front().I1]);
@@ -2590,7 +2720,7 @@ static std::vector<std::string> getBoxSelection(
         if(!sobj) 
             continue;
         int vis;
-        if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
+        if(!parent || (vis=parent->isElementVisibleEx(childName.c_str(),App::DocumentObject::GS_SELECT))<0)
             vis = sobj->Visibility.getValue()?1:0;
 
         if(!vis)
@@ -2600,7 +2730,7 @@ static std::vector<std::string> getBoxSelection(
         if(!svp)
             continue;
 
-        const auto &sels = getBoxSelection(svp,mode,selectElement,proj,polygon,smat,false,depth+1);
+        const auto &sels = getBoxSelection(dir,svp,mode,selectElement,proj,polygon,smat,false,depth+1);
         if(sels.size()==1 && sels[0] == "")
             ++count;
         for(auto &sel : sels)
@@ -2615,13 +2745,32 @@ static std::vector<std::string> getBoxSelection(
 
 static void selectionCallback(void * ud, SoEventCallback * cb)
 {
-    bool selectElement = ud?true:false;
+    const SoEvent* ev = cb->getEvent();
+    cb->setHandled();
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
-    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
-    SoNode* root = view->getSceneGraph();
-    static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+    if(ev) {
+        if(ev->isOfType(SoKeyboardEvent::getClassTypeId())) {
+            if(static_cast<const SoKeyboardEvent*>(ev)->getKey() == SoKeyboardEvent::ESCAPE) {
+                view->stopSelection();
+                view->removeEventCallback(SoEvent::getClassTypeId(), selectionCallback, ud);
+                view->setEditing(false);
+                view->setSelectionEnabled(true);
+            }
+            return;
+        } else if (!ev->isOfType(SoMouseButtonEvent::getClassTypeId()))
+            return;
+    }
+
+    bool selectElement = ud?true:false;
+    view->removeEventCallback(SoEvent::getClassTypeId(), selectionCallback, ud);
+    view->setEditing(false);
+    view->setSelectionEnabled(true);
 
     SelectionMode selectionMode = CENTER;
+
+    SbVec3f pnt, dir;
+    view->getNearPlane(pnt, dir);
+    Base::Vector3d vdir(dir[0],dir[1],dir[2]);
 
     std::vector<SbVec2f> picked = view->getGLPolygon();
     SoCamera* cam = view->getSoRenderManager()->getCamera();
@@ -2648,24 +2797,51 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (doc) {
-        cb->setHandled();
+        Base::Vector3d *pdir = &vdir;
 
-        const SoEvent* ev = cb->getEvent();
-        if (ev && !ev->wasCtrlDown()) {
-            Gui::Selection().clearSelection(doc->getName());
+        std::vector<App::SubObjectT> sels; 
+        if(ViewParams::instance()->getShowSelectionOnTop() && selectElement)
+            sels = Gui::Selection().getSelectionT(doc->getName(),0);
+
+        if (ev) {
+            if(!ev->wasCtrlDown())
+                Gui::Selection().clearSelection(doc->getName());
+            if(ev->wasAltDown())
+                pdir = 0;
         }
 
-        for(auto obj : doc->getObjects()) {
-            if(App::GeoFeatureGroupExtension::getGroupOfObject(obj))
-                continue;
+        if(sels.size()) {
+            std::set<std::pair<App::DocumentObject*,std::string> > selSet;
+            for(auto &sel : sels) {
+                auto info = std::make_pair(sel.getObject(),sel.getSubNameNoElement());
+                if(!info.first || !selSet.insert(info).second)
+                    continue;
 
-            auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
-            if (!vp || !vp->isVisible())
-                continue;
+                Base::Matrix4D mat;
+                auto sobj = info.first->getSubObject(info.second.c_str(),0,&mat);
+                auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                        Application::Instance->getViewProvider(sobj));
+                if(!vp)
+                    continue;
+                for(auto &sub : getBoxSelection(pdir,vp,selectionMode,selectElement,proj,polygon,mat,false)) 
+                    Gui::Selection().addSelection(doc->getName(), 
+                            info.first->getNameInDocument(), (info.second+sub).c_str());
+            }
 
-            Base::Matrix4D mat;
-            for(auto &sub : getBoxSelection(vp,selectionMode,selectElement,proj,polygon,mat)) 
-                Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
+        } else {
+            for(auto obj : doc->getObjects()) {
+                if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)
+                        || App::GeoFeatureGroupExtension::getGroupOfObject(obj))
+                    continue;
+
+                auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+                if (!vp || !vp->isVisible())
+                    continue;
+
+                Base::Matrix4D mat;
+                for(auto &sub : getBoxSelection(pdir,vp,selectionMode,selectElement,proj,polygon,mat)) 
+                    Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
+            }
         }
     }
 }
@@ -2684,10 +2860,11 @@ void StdBoxSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
+            viewer->setEditing(true);
+            viewer->setEditingCursor(QCursor(Qt::CrossCursor));
             viewer->startSelection(View3DInventorViewer::Rubberband);
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback);
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+            viewer->addEventCallback(SoEvent::getClassTypeId(), selectionCallback);
+            viewer->setSelectionEnabled(false);
         }
     }
 }
@@ -2708,7 +2885,7 @@ StdBoxElementSelection::StdBoxElementSelection()
 #if QT_VERSION >= 0x040200
     sPixmap       = "edit-element-select-box";
 #endif
-    sAccel        = "Shift+E";
+    sAccel        = "Ctrl+Shift+E";
     eType         = AlterSelection;
 }
 
@@ -2726,10 +2903,11 @@ void StdBoxElementSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
+            viewer->setEditing(true);
+            viewer->setEditingCursor(QCursor(Qt::CrossCursor));
             viewer->startSelection(View3DInventorViewer::Rubberband);
-            viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, this);
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
+            viewer->addEventCallback(SoEvent::getClassTypeId(), selectionCallback, this);
+            viewer->setSelectionEnabled(false);
         }
     }
 }
@@ -2966,6 +3144,7 @@ StdCmdSceneInspector::StdCmdSceneInspector()
     sWhatsThis    = "Std_SceneInspector";
     sStatusTip    = QT_TR_NOOP("Scene inspector");
     eType         = Alter3DView;
+    sAccel        = "T, I";
 }
 
 void StdCmdSceneInspector::activated(int iMsg)
@@ -3122,7 +3301,7 @@ void StdCmdSelBack::activated(int iMsg)
 
 bool StdCmdSelBack::isActive(void)
 {
-  return Selection().selStackBackSize()>1;
+    return Selection().selStackBackSize()>0;
 }
 
 //===========================================================================
@@ -3228,34 +3407,65 @@ StdTreeCollapseDocument::StdTreeCollapseDocument()
 }
 
 //===========================================================================
+// StdCmdCheckableOption
+//===========================================================================
+
+class StdCmdCheckableOption : public Gui::Command
+{
+public:
+    StdCmdCheckableOption(const char *name)
+        :Command(name)
+    {}
+
+protected: 
+    virtual void activated(int iMsg) {
+        auto checked = !!iMsg;
+        setOption(checked);
+        if(_pcAction) _pcAction->setChecked(checked,true);
+    }
+
+    virtual bool isActive(void) {
+        bool checked = getOption();
+        if(_pcAction && _pcAction->isChecked()!=checked)
+            _pcAction->setChecked(checked,true);
+        return true;
+    }
+
+    virtual Gui::Action * createAction(void) {
+        Action *pcAction = Command::createAction();
+        pcAction->setCheckable(true);
+        pcAction->setIcon(QIcon());
+        _pcAction = pcAction;
+        isActive();
+        return pcAction;
+    }
+
+    virtual bool getOption() const = 0;
+    virtual void setOption(bool checked) = 0;
+};
+
+#define TREEVIEW_CMD_DEF(_name) \
+class StdTree##_name : public StdCmdCheckableOption \
+{\
+public:\
+    StdTree##_name();\
+    virtual const char* className() const\
+    { return "StdTree" #_name; }\
+protected: \
+    virtual void setOption(bool checked) {\
+        TreeParams::Instance()->set##_name(checked);\
+    }\
+    virtual bool getOption(void) const {\
+        return TreeParams::Instance()->_name();\
+    }\
+};\
+StdTree##_name::StdTree##_name():StdCmdCheckableOption("Std_Tree" #_name)
+
+//===========================================================================
 // Std_TreeSyncView
 //===========================================================================
-#define TREEVIEW_CMD_DEF(_name) \
-DEF_STD_CMD_AC(StdTree##_name) \
-void StdTree##_name::activated(int){ \
-    auto checked = !TreeParams::Instance()->_name();\
-    TreeParams::Instance()->set##_name(checked);\
-    if(_pcAction) _pcAction->setChecked(checked,true);\
-}\
-Action * StdTree##_name::createAction(void) {\
-    Action *pcAction = Command::createAction();\
-    pcAction->setCheckable(true);\
-    pcAction->setIcon(QIcon());\
-    _pcAction = pcAction;\
-    isActive();\
-    return pcAction;\
-}\
-bool StdTree##_name::isActive() {\
-    bool checked = TreeParams::Instance()->_name();\
-    if(_pcAction && _pcAction->isChecked()!=checked)\
-        _pcAction->setChecked(checked,true);\
-    return true;\
-}
-        
-TREEVIEW_CMD_DEF(SyncView)
 
-StdTreeSyncView::StdTreeSyncView()
-  : Command("Std_TreeSyncView")
+TREEVIEW_CMD_DEF(SyncView)
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Sync view");
@@ -3271,9 +3481,6 @@ StdTreeSyncView::StdTreeSyncView()
 // Std_TreeSyncSelection
 //===========================================================================
 TREEVIEW_CMD_DEF(SyncSelection)
-
-StdTreeSyncSelection::StdTreeSyncSelection()
-  : Command("Std_TreeSyncSelection")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Sync selection");
@@ -3289,9 +3496,6 @@ StdTreeSyncSelection::StdTreeSyncSelection()
 // Std_TreeSyncPlacement
 //===========================================================================
 TREEVIEW_CMD_DEF(SyncPlacement)
-
-StdTreeSyncPlacement::StdTreeSyncPlacement()
-  : Command("Std_TreeSyncPlacement")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Sync placement");
@@ -3307,9 +3511,6 @@ StdTreeSyncPlacement::StdTreeSyncPlacement()
 // Std_TreePreSelection
 //===========================================================================
 TREEVIEW_CMD_DEF(PreSelection)
-
-StdTreePreSelection::StdTreePreSelection()
-  : Command("Std_TreePreSelection")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Pre-selection");
@@ -3325,9 +3526,6 @@ StdTreePreSelection::StdTreePreSelection()
 // Std_TreeRecordSelection
 //===========================================================================
 TREEVIEW_CMD_DEF(RecordSelection)
-
-StdTreeRecordSelection::StdTreeRecordSelection()
-  : Command("Std_TreeRecordSelection")
 {
     sGroup       = QT_TR_NOOP("TreeView");
     sMenuText    = QT_TR_NOOP("Record selection");
@@ -3337,6 +3535,19 @@ StdTreeRecordSelection::StdTreeRecordSelection()
     sPixmap      = "tree-rec-sel";
     sAccel       = "T,5";
     eType        = 0;
+}
+
+//===========================================================================
+// Std_TreeResizableColumn
+//===========================================================================
+TREEVIEW_CMD_DEF(ResizableColumn)
+{
+    sGroup       = QT_TR_NOOP("TreeView");
+    sMenuText    = QT_TR_NOOP("Resizable column");
+    sToolTipText = QT_TR_NOOP("Make treeview column resizable");
+    sStatusTip   = sToolTipText;
+    sWhatsThis   = "Std_TreeResizableColumn";
+    eType        = NoDefaultAction;
 }
 
 //===========================================================================
@@ -3395,6 +3606,10 @@ public:
 
         addCommand();
 
+        addCommand(new StdTreeResizableColumn());
+
+        addCommand();
+
         addCommand(new StdTreeSingleDocument());
         addCommand(new StdTreeMultiDocument());
         addCommand(new StdTreeCollapseDocument());
@@ -3408,49 +3623,149 @@ public:
 };
 
 
+#define VIEW_CMD_DEF(_name,_option) \
+class StdCmd##_name : public StdCmdCheckableOption \
+{\
+public:\
+    StdCmd##_name();\
+    virtual const char* className() const\
+    { return "StdCmd" #_name; }\
+protected: \
+    virtual void setOption(bool checked) {\
+        ViewParams::instance()->set##_option(checked);\
+    }\
+    virtual bool getOption(void) const {\
+        return ViewParams::instance()->get##_option();\
+    }\
+};\
+StdCmd##_name::StdCmd##_name():StdCmdCheckableOption("Std_" #_name)
+
 //======================================================================
 // Std_SelBoundingBox
-//===========================================================================
-DEF_STD_CMD_AC(StdCmdSelBoundingBox)
-
-StdCmdSelBoundingBox::StdCmdSelBoundingBox()
-  :Command("Std_SelBoundingBox")
+//======================================================================
+VIEW_CMD_DEF(SelBoundingBox, ShowSelectionBoundingBox)
 {
   sGroup        = QT_TR_NOOP("View");
   sMenuText     = QT_TR_NOOP("&Bounding box");
   sToolTipText  = QT_TR_NOOP("Show selection bounding box");
-  sWhatsThis    = "Std_SelBack";
+  sWhatsThis    = "Std_SelBoundingBox";
   sStatusTip    = QT_TR_NOOP("Show selection bounding box");
   sPixmap       = "sel-bbox";
   eType         = Alter3DView;
 }
 
-void StdCmdSelBoundingBox::activated(int iMsg)
+//======================================================================
+// Std_TightBoundingBox
+//======================================================================
+VIEW_CMD_DEF(TightBoundingBox, UseTightBoundingBox)
 {
-    bool checked = !!iMsg;
-    if(checked != ViewParams::instance()->getShowSelectionBoundingBox()) {
-        ViewParams::instance()->setShowSelectionBoundingBox(checked);
-        if(_pcAction)
-            _pcAction->setChecked(checked,true);
-    }
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Tighten bounding box");
+  sToolTipText  = QT_TR_NOOP("Show more accurate bounds when using bounding box selection style");
+  sWhatsThis    = "Std_TightBoundingBox";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
 }
 
-bool StdCmdSelBoundingBox::isActive(void)
+//======================================================================
+// Std_ProjectBoundingBox
+//======================================================================
+VIEW_CMD_DEF(ProjectBoundingBox, RenderProjectedBBox)
 {
-    if(_pcAction) {
-        bool checked = _pcAction->isChecked();
-        if(checked != ViewParams::instance()->getShowSelectionBoundingBox())
-            _pcAction->setChecked(!checked,true);
-    }
-    return true;
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Project bounding box");
+  sToolTipText  = QT_TR_NOOP("Show projected bounding box that is aligned to axes of global coordinate space");
+  sWhatsThis    = "Std_ProjectBoundingBox";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
 }
 
-Action * StdCmdSelBoundingBox::createAction(void)
+//======================================================================
+// Std_SelectionFaceWire
+//======================================================================
+VIEW_CMD_DEF(SelectionFaceWire, SelectionFaceWire)
 {
-    Action *pcAction = Command::createAction();
-    pcAction->setCheckable(true);
-    return pcAction;
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Show selected face wires");
+  sToolTipText  = QT_TR_NOOP("Show hidden tirangulation wires for selected face");
+  sWhatsThis    = "Std_SelectionFaceWire";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
 }
+
+//======================================================================
+// Std_SelOnTop
+//======================================================================
+VIEW_CMD_DEF(SelOnTop, ShowSelectionOnTop)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Selection on top");
+  sToolTipText  = QT_TR_NOOP("Show selection always on top");
+  sWhatsThis    = "Std_SelOnTop";
+  sStatusTip    = QT_TR_NOOP("Show selection always on top");
+  sPixmap       = "sel-on-top";
+  eType         = Alter3DView;
+}
+
+//======================================================================
+// Std_PreselEdgeOnly
+//======================================================================
+VIEW_CMD_DEF(PreselEdgeOnly, ShowHighlightEdgeOnly)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("&Highlight edge only");
+  sToolTipText  = QT_TR_NOOP("Show pre-selection highlight edge only");
+  sWhatsThis    = "Std_PreselEdgeOnly";
+  sStatusTip    = sToolTipText;
+  sPixmap       = "presel-edge-only";
+  eType         = Alter3DView;
+}
+
+//======================================================================
+// Std_MapChildrenPlacement
+//======================================================================
+VIEW_CMD_DEF(MapChildrenPlacement, MapChildrenPlacement)
+{
+  sGroup        = QT_TR_NOOP("View");
+  sMenuText     = QT_TR_NOOP("Map children (Experimental!)");
+  sToolTipText  = QT_TR_NOOP("Map child object into parent's coordinate space when showing on top.\n"
+                             "Note that once activated, this option will also activate option ShowOnTop.\n"
+                             "WARNING! This is an experimental option. Please use with caution.\n");
+  sWhatsThis    = "Std_MapChildrenPlacement";
+  sStatusTip    = sToolTipText;
+  eType         = NoDefaultAction;
+}
+
+
+//////////////////////////////////////////////////////////
+
+class StdCmdSelOptions : public GroupCommand
+{
+public:
+    StdCmdSelOptions()
+        :GroupCommand("Std_SelOptions")
+    {
+        sGroup        = QT_TR_NOOP("View");
+        sMenuText     = QT_TR_NOOP("Selection options");
+        sToolTipText  = QT_TR_NOOP("Selection behavior options");
+        sWhatsThis    = "Std_SelOptions";
+        sStatusTip    = sToolTipText;
+        eType         = 0;
+        bCanLog       = false;
+
+        addCommand(new StdCmdSelBoundingBox());
+        addCommand(new StdCmdTightBoundingBox());
+        addCommand(new StdCmdProjectBoundingBox());
+        addCommand();
+        addCommand(new StdCmdSelOnTop());
+        addCommand(new StdCmdSelectionFaceWire());
+        addCommand(new StdCmdPreselEdgeOnly());
+        addCommand(new StdTreePreSelection());
+        addCommand();
+        addCommand(new StdCmdMapChildrenPlacement());
+    };
+    virtual const char* className() const {return "StdCmdSelOptions";}
+};
 
 //===========================================================================
 // Instantiation
@@ -3497,6 +3812,8 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdViewDockUndockFullscreen());
     rcCmdMgr.addCommand(new StdCmdSetAppearance());
     rcCmdMgr.addCommand(new StdCmdToggleVisibility());
+    rcCmdMgr.addCommand(new StdCmdToggleGroupVisibility());
+    rcCmdMgr.addCommand(new StdCmdToggleShowOnTop());
     rcCmdMgr.addCommand(new StdCmdToggleSelectability());
     rcCmdMgr.addCommand(new StdCmdShowSelection());
     rcCmdMgr.addCommand(new StdCmdHideSelection());
@@ -3525,11 +3842,10 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdAxisCross());
     rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
-    rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
+    rcCmdMgr.addCommand(new StdCmdSelOptions());
     rcCmdMgr.addCommand(new StdCmdSelBack());
     rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
-
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     if(hGrp->GetASCII("GestureRollFwdCommand").empty())

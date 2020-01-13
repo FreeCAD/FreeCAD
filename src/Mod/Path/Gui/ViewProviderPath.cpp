@@ -43,6 +43,7 @@
 # include <QFile>
 #endif
 
+#include <Inventor/SbXfBox3d.h>
 #include <boost/algorithm/string/replace.hpp>
 
 #include "ViewProviderPath.h"
@@ -136,7 +137,7 @@ public:
 PROPERTY_SOURCE(PathGui::ViewProviderPath, Gui::ViewProviderGeometryObject)
 
 ViewProviderPath::ViewProviderPath()
-    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1),coordEnd(-1)
+    :pt0Index(-1),blockPropertyChange(false),edgeStart(-1),coordStart(-1),coordEnd(-1),bboxCached(false)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Path");
     unsigned long lcol = hGrp->GetUnsigned("DefaultNormalPathColor",11141375UL); // dark green (0,170,0)
@@ -201,7 +202,7 @@ ViewProviderPath::ViewProviderPath()
     pcArrowSwitch = new SoSwitch();
     pcArrowSwitch->ref();
 
-    auto pArrowGroup = new SoSkipBoundingGroup;
+    auto pArrowGroup = new SoSeparator;
     pcArrowTransform = new SoTransform();
     pArrowGroup->addChild(pcArrowTransform);
 
@@ -225,10 +226,9 @@ ViewProviderPath::ViewProviderPath()
 
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
     
-    static const char *SelectionStyleEnum[] = {"Shape","BoundBox","None",0};
-    SelectionStyle.setEnums(SelectionStyleEnum);
     unsigned long sstyle = hGrp->GetInt("DefaultSelectionStyle",0);
-    SelectionStyle.setValue(sstyle);
+    if(sstyle==0 || sstyle==1)
+        SelectionStyle.setValue(sstyle);
 
     PathSelectionObserver::init();
 }
@@ -277,7 +277,7 @@ void ViewProviderPath::attach(App::DocumentObject *pcObj)
 }
 
 bool ViewProviderPath::useNewSelectionModel(void) const {
-    return SelectionStyle.getValue()!=2;
+    return true;
 }
 
 void ViewProviderPath::setDisplayMode(const char* ModeName)
@@ -387,11 +387,8 @@ void ViewProviderPath::onChanged(const App::Property* prop)
             pcLineCoords->point.set1Value(0,pt.x,pt.y,pt.z);
             pcMarkerCoords->point.set1Value(0,pt.x,pt.y,pt.z);
         }
-    } else {
+    } else 
         inherited::onChanged(prop);
-        if(prop == &SelectionStyle && SelectionStyle.getValue()==2)
-            hideSelection();
-    }
 }
 
 void ViewProviderPath::showBoundingBox(bool show) {
@@ -634,7 +631,8 @@ void ViewProviderPath::updateVisual(bool rebuild) {
             for(unsigned int i=0;i<markers.size();i++)
                 pcMarkerCoords->point.set1Value(i,markers[i].x,markers[i].y,markers[i].z);
 
-            recomputeBoundingBox();
+            bboxCached = false;
+            updateBoundingBox();
         }
     }
 
@@ -680,33 +678,41 @@ void ViewProviderPath::updateVisual(bool rebuild) {
     NormalColor.touch();
 }
 
-void ViewProviderPath::recomputeBoundingBox()
+Base::BoundBox3d ViewProviderPath::_getBoundingBox(
+        const char *, const Base::Matrix4D *_mat, unsigned transform,
+        const Gui::View3DInventorViewer *, int) const 
 {
     // update the boundbox
-    double MinX,MinY,MinZ,MaxX,MaxY,MaxZ;
-    MinX = 999999999.0;
-    MinY = 999999999.0;
-    MinZ = 999999999.0;
-    MaxX = -999999999.0;
-    MaxY = -999999999.0;
-    MaxZ = -999999999.0;
-    Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
-    Base::Placement pl = *(&pcPathObj->Placement.getValue());
-    Base::Vector3d pt;
-    for (int i=1;i<pcLineCoords->point.getNum();i++) {
-        pt.x = pcLineCoords->point[i].getValue()[0];
-        pt.y = pcLineCoords->point[i].getValue()[1];
-        pt.z = pcLineCoords->point[i].getValue()[2];
-        pl.multVec(pt,pt);
-        if (pt.x < MinX)  MinX = pt.x;
-        if (pt.y < MinY)  MinY = pt.y;
-        if (pt.z < MinZ)  MinZ = pt.z;
-        if (pt.x > MaxX)  MaxX = pt.x;
-        if (pt.y > MaxY)  MaxY = pt.y;
-        if (pt.z > MaxZ)  MaxZ = pt.z;
+    Base::Matrix4D mat;
+    if(_mat)
+        mat = *_mat;
+    if(transform & Gui::ViewProvider::Transform) {
+        Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
+        mat *= pcPathObj->Placement.getValue().toMatrix();
     }
-    pcBoundingBox->minBounds.setValue(MinX, MinY, MinZ);
-    pcBoundingBox->maxBounds.setValue(MaxX, MaxY, MaxZ);
+
+    if(!bboxCached) {
+        bboxCached = true;
+        Base::BoundBox3d bbox;
+        Base::Vector3d pt;
+        for (int i=1;i<pcLineCoords->point.getNum();i++) {
+            pt.x = pcLineCoords->point[i].getValue()[0];
+            pt.y = pcLineCoords->point[i].getValue()[1];
+            pt.z = pcLineCoords->point[i].getValue()[2];
+            bbox.Add(pt);
+        }
+        bboxCache = bbox;
+    }
+
+    SbXfBox3d xbox;
+    xbox.setBounds(bboxCache.MinX,bboxCache.MinY,bboxCache.MinZ,
+                   bboxCache.MaxX,bboxCache.MaxY,bboxCache.MaxZ);
+    xbox.setTransform(ViewProvider::convert(mat));
+
+    Base::BoundBox3d bbox;
+    xbox.project().getBounds(bbox.MinX,bbox.MinY,bbox.MinZ,
+                             bbox.MaxX,bbox.MaxY,bbox.MaxZ);
+    return bbox;
 }
 
 QIcon ViewProviderPath::getIcon() const

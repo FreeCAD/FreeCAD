@@ -147,10 +147,11 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Import/hSTEP");
-    merge = hGrp->GetBool("ReadShapeCompoundMode", true);
+    merge = hGrp->GetBool("ReadShapeCompoundMode", false);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Import");
-    useLinkGroup = hGrp->GetBool("UseLinkGroup",true);
+    useLinkGroup = !hGrp->GetBool("UseAppPart",true);
+    useLegacyImporter = hGrp->GetBool("UseLegacyImporter",false);
     useBaseName = hGrp->GetBool("UseBaseName",true);
     importHidden = hGrp->GetBool("ImportHiddenObject",true);
     reduceObjects = hGrp->GetBool("ReduceObjects",true);
@@ -169,11 +170,6 @@ ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std
 
     defaultEdgeColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeLineColor",421075455UL));
     defaultEdgeColor.a = 0;
-
-    if(useLinkGroup) {
-        // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
-        aShapeTool->SetAutoNaming(Standard_False);
-    }
 }
 
 ImportOCAF2::~ImportOCAF2()
@@ -269,8 +265,38 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
     return ret;
 }
 
-App::DocumentObject *ImportOCAF2::expandShape(
-        App::Document *doc, TDF_Label label, const TopoDS_Shape &shape) 
+struct ImportOCAF2::ColorInfo {
+    TopTools_IndexedMapOfShape faceMap,edgeMap;
+    std::vector<App::Color> faceColors;
+    std::vector<App::Color> edgeColors;
+    App::Color faceColor;
+    App::Color edgeColor;
+    bool hasFaceColor = false;
+    bool hasEdgeColor = false;
+};
+
+// Check for uniform color
+static void mergeColor(bool &hasColors, App::Color &color, std::vector<App::Color> &colors) {
+    if(colors.empty())
+        return;
+    if(!hasColors) {
+        colors.clear();
+        return;
+    }
+    hasColors = false;
+    auto &firstColor = colors[0];
+    for(auto &c : colors) {
+        if(c!=firstColor) {
+            hasColors = true;
+            return;
+        }
+    }
+    color = firstColor;
+    colors.clear();
+}
+
+Part::Feature *ImportOCAF2::expandShape(App::Document *doc,
+        TDF_Label label, const TopoDS_Shape &shape, ColorInfo &colors) 
 {
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More())
         return 0;
@@ -294,17 +320,62 @@ App::DocumentObject *ImportOCAF2::expandShape(
     std::vector<App::DocumentObject*> objs;
 
     if(shape.ShapeType() == TopAbs_COMPOUND) {
-        for(TopoDS_Iterator it(shape,0,0);it.More();it.Next()) {
+        for(TopoDS_Iterator it(shape);it.More();it.Next()) {
             TDF_Label childLabel;
-            if(!label.IsNull())
-                aShapeTool->FindSubShape(label,it.Value(),childLabel);
-            auto child = expandShape(doc,childLabel,it.Value());
+            // if(!label.IsNull())
+            //     aShapeTool->FindSubShape(label,it.Value(),childLabel);
+            auto child = expandShape(doc,childLabel,it.Value(),colors);
             if(child) {
                 objs.push_back(child);
-                Info info;
+                Info &info = myShapes[it.Value().Located(TopLoc_Location())];
                 info.free = false;
                 info.obj = child;
-                myShapes.emplace(it.Value().Located(TopLoc_Location()),info);
+
+                std::vector<App::Color> faceColors;
+                if(colors.faceColors.size()) {
+                    const auto &s = child->Shape.getShape();
+                    bool hasColors = false;
+                    faceColors.assign(s.countSubShapes(TopAbs_FACE),colors.faceColor);
+                    int i=0;
+                    for(TopExp_Explorer exp(it.Value(),TopAbs_FACE);exp.More();exp.Next()) {
+                        App::Color &color = faceColors[i++];
+                        int idx = colors.faceMap.FindIndex(exp.Current())-1;
+                        if(idx>=0 && idx<(int)colors.faceColors.size()) {
+                            color = colors.faceColors[idx];
+                            hasColors = true;
+                        }
+                    }
+                    mergeColor(hasColors,colors.faceColor,colors.faceColors);
+                }
+
+                std::vector<App::Color> edgeColors;
+                if(colors.edgeColors.size()) {
+                    const auto &s = child->Shape.getShape();
+                    bool hasColors = false;
+                    edgeColors.assign(s.countSubShapes(TopAbs_EDGE),colors.edgeColor);
+                    int i=0;
+                    for(TopExp_Explorer exp(it.Value(),TopAbs_EDGE);exp.More();exp.Next()) {
+                        App::Color &color = edgeColors[i++];
+                        int idx = colors.edgeMap.FindIndex(exp.Current())-1;
+                        if(idx>=0 && idx<(int)colors.edgeColors.size()) {
+                            color = colors.edgeColors[idx];
+                            hasColors = true;
+                        }
+                    }
+                    mergeColor(hasColors,colors.edgeColor,colors.edgeColors);
+                }
+
+                info.faceColor = colors.faceColor;
+                info.edgeColor = colors.edgeColor;
+                info.hasFaceColor = colors.hasFaceColor;
+                info.hasEdgeColor = colors.hasEdgeColor;
+
+                applyFaceColors(child,{info.faceColor});
+                applyEdgeColors(child,{info.edgeColor});
+                if(faceColors.size())
+                    applyFaceColors(child,faceColors);
+                if(edgeColors.size())
+                    applyEdgeColors(child,edgeColors);
             }
         }
         if(objs.empty())
@@ -318,7 +389,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
     Info info;
     info.obj = 0;
     createObject(doc,label,shape,info,false);
-    return info.obj;
+    return static_cast<Part::Feature*>(info.obj);
 }
 
 bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label, 
@@ -334,13 +405,12 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
     bool hasEdgeColors = false;
 
     Part::TopoShape tshape(shape);
-    std::vector<App::Color> faceColors;
-    std::vector<App::Color> edgeColors;
+    ColorInfo colors;
 
     TDF_LabelSequence seq;
     if(!label.IsNull() && aShapeTool->GetSubShapes(label,seq)) {
-        faceColors.assign(tshape.countSubShapes(TopAbs_FACE),info.faceColor);
-        edgeColors.assign(tshape.countSubShapes(TopAbs_EDGE),info.edgeColor);
+        colors.faceColors.assign(tshape.countSubShapes(TopAbs_FACE),info.faceColor);
+        colors.edgeColors.assign(tshape.countSubShapes(TopAbs_EDGE),info.edgeColor);
         // Two passes to get sub shape colors. First pass, look for solid, and
         // second pass look for face and edges. This allows lower level
         // subshape to override color of higher level ones.
@@ -356,40 +426,42 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
                 }else if(j!=0)
                     continue;
 
-                bool foundFaceColor=false,foundEdgeColor=false;
+                bool foundFaceColor = false;
+                bool checkSubFaceColor = false;
+                bool checkSubEdgeColor = false;
                 App::Color faceColor,edgeColor;
                 Quantity_Color aColor;
                 if(aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor) ||
                    aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))
                 {
-                    faceColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
                     foundFaceColor = true;
+                    faceColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                    checkSubFaceColor = faceColor!=info.faceColor;
                 }
                 if(aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
                     edgeColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
-                    foundEdgeColor = true;
-                    if(j==0 && foundFaceColor && faceColors.size() && edgeColor==faceColor) {
+                    checkSubEdgeColor = edgeColor!=info.edgeColor;
+                    if(j==0 && foundFaceColor && colors.faceColors.size() && edgeColor==faceColor) {
                         // Do not set edge the same color as face
-                        foundEdgeColor = false;
+                        checkSubEdgeColor = false;
                     }
                 }
 
-                if(foundFaceColor) {
+                if(checkSubFaceColor) {
                     for(TopExp_Explorer exp(subShape,TopAbs_FACE);exp.More();exp.Next()) {
                         int idx = tshape.findShape(exp.Current())-1;
-                        if(idx>=0 && idx<(int)faceColors.size()) {
-                            faceColors[idx] = faceColor;
+                        if(idx>=0 && idx<(int)colors.faceColors.size()) {
+                            colors.faceColors[idx] = faceColor;
                             hasFaceColors = true;
                             info.hasFaceColor = true;
-                        }else
-                            assert(0);
+                        }
                     }
                 }
-                if(foundEdgeColor) {
+                if(checkSubEdgeColor) {
                     for(TopExp_Explorer exp(subShape,TopAbs_EDGE);exp.More();exp.Next()) {
                         int idx = tshape.findShape(exp.Current())-1;
-                        if(idx>=0 && idx<(int)edgeColors.size()) {
-                            edgeColors[idx] = edgeColor;
+                        if(idx>=0 && idx<(int)colors.edgeColors.size()) {
+                            colors.edgeColors[idx] = edgeColor;
                             hasEdgeColors = true;
                             info.hasEdgeColor = true;
                         }
@@ -404,12 +476,21 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
     if(newDoc && (mode==ObjectPerDoc || mode==ObjectPerDir))
         doc = getDocument(doc,label);
 
-    if(expandCompound && 
+    mergeColor(hasFaceColors,info.faceColor,colors.faceColors);
+    mergeColor(hasEdgeColors,info.edgeColor,colors.edgeColors);
+
+    colors.faceColor = info.faceColor;
+    colors.edgeColor = info.edgeColor;
+    colors.hasFaceColor = info.hasFaceColor;
+    colors.hasEdgeColor = info.hasEdgeColor;
+
+    if(expandCompound && !merge &&
        (tshape.countSubShapes(TopAbs_SOLID)>1 || 
         (!tshape.countSubShapes(TopAbs_SOLID) && tshape.countSubShapes(TopAbs_SHELL)>1)))
     {
-        feature = dynamic_cast<Part::Feature*>(expandShape(doc,label,shape));
-        assert(feature);
+        feature = expandShape(doc,label,shape,colors);
+        if(!feature)
+            return false;
     } else {
         feature = static_cast<Part::Feature*>(doc->addObject("Part::Feature",tshape.shapeName().c_str()));
         feature->Shape.setValue(shape);
@@ -417,10 +498,10 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
     }
     applyFaceColors(feature,{info.faceColor});
     applyEdgeColors(feature,{info.edgeColor});
-    if(hasFaceColors)
-        applyFaceColors(feature,faceColors);
-    if(hasEdgeColors)
-        applyEdgeColors(feature,edgeColors);
+    if(colors.faceColors.size())
+        applyFaceColors(feature,colors.faceColors);
+    if(colors.edgeColors.size())
+        applyEdgeColors(feature,colors.edgeColors);
 
     info.propPlacement = &feature->Placement;
     info.obj = feature;
@@ -490,7 +571,6 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
         myCollapsedObjects.emplace(info.obj,info.propPlacement);
         return true;
     }
-    auto group = static_cast<App::LinkGroup*>(doc->addObject("App::LinkGroup","LinkGroup"));
     for(auto &child : children)  {
         if(child->getDocument()!=doc) {
             auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
@@ -504,11 +584,23 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
         }
         // child->Visibility.setValue(false);
     }
-    // group->Visibility.setValue(false);
-    group->ElementList.setValues(children);
-    group->VisibilityList.setValue(visibilities);
+    App::DocumentObject *group;
+    if(!useLinkGroup) {
+        auto part = static_cast<App::Part*>(doc->addObject("App::Part","Part"));
+        group = part;
+        int i=0;
+        for(auto child : children)
+            child->Visibility.setValue(visibilities[i++]);
+        part->addObjects(children);
+        info.propPlacement = &part->Placement;
+    } else {
+        auto linkGroup = static_cast<App::LinkGroup*>(doc->addObject("App::LinkGroup","LinkGroup"));
+        group = linkGroup;
+        linkGroup->ElementList.setValues(children);
+        linkGroup->VisibilityList.setValue(visibilities);
+        info.propPlacement = &linkGroup->Placement;
+    }
     info.obj = group;
-    info.propPlacement = &group->Placement;
     if(getColor(shape,info,false,true)) {
         if(info.hasFaceColor)
             applyLinkColor(group,-1,info.faceColor);
@@ -518,12 +610,15 @@ bool ImportOCAF2::createGroup(App::Document *doc, Info &info, const TopoDS_Shape
 
 App::DocumentObject* ImportOCAF2::loadShapes()
 {
-    if(!useLinkGroup) {
+    if(useLegacyImporter) {
         ImportLegacy legacy(*this);
         legacy.setMerge(merge);
         legacy.loadShapes();
         return 0;
     }
+
+    // Interface_Static::SetIVal("read.stepcaf.subshapes.name",1);
+    aShapeTool->SetAutoNaming(Standard_False);
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         dumpLabels(pDoc->Main(),aShapeTool,aColorTool);
@@ -678,8 +773,8 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         return it->second.obj;
 
     std::map<std::string,App::Color> shuoColors;
-    if(!useLinkGroup)
-        getSHUOColors(label,shuoColors,false);
+    // if(!useLinkGroup)
+    //     getSHUOColors(label,shuoColors,false);
 
     auto info = it->second;
     getColor(shape,info,true);
@@ -1246,12 +1341,16 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         }
         int vis = -1;
         if(parent) {
-            if(groupLinks.size() 
-                && parent->getExtensionByType<App::GroupExtension>(true,false))
-            {
-                vis = groupLinks.back()->isElementVisible(childName.c_str());
-            }else
-                vis = parent->isElementVisible(childName.c_str());
+            vis = parent->isElementVisibleEx(childName.c_str());
+            if(groupLinks.size()) {
+                auto group = App::GeoFeatureGroupExtension::getNonGeoGroup(parent);
+                if(group) {
+                    if(group->ExportMode.getValue()==App::GroupExtension::EXPORT_BY_CHILD_QUERY)
+                        vis = 1;
+                    else
+                        vis = groupLinks.back()->isElementVisibleEx(childName.c_str());
+                }
+            }
         }
 
         if(vis < 0)

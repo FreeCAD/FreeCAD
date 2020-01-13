@@ -103,6 +103,10 @@ public:
       "       the link will try to sync any change of the original linked object back to the copy.",\
       ##__VA_ARGS__)
 
+#define LINK_PARAM_GROUP_VISIBILITY(...) \
+    (SyncGroupVisibility, bool, App::PropertyBool, false, \
+      "Set to false to override (nested) child visibility when linked to a plain group", ##__VA_ARGS__)
+
 #define LINK_PARAM_SCALE(...) \
     (Scale, double, App::PropertyFloat, 1.0, "Scale factor", ##__VA_ARGS__)
 
@@ -165,6 +169,7 @@ public:
     LINK_PARAM(MODE)\
     LINK_PARAM(COLORED_ELEMENTS)\
     LINK_PARAM(COPY_ON_CHANGE)\
+    LINK_PARAM(GROUP_VISIBILITY)\
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -268,7 +273,8 @@ public:
     virtual void onExtendedDocumentRestored() override;
 
     virtual int extensionSetElementVisible(const char *, bool) override;
-    virtual int extensionIsElementVisible(const char *) override;
+    virtual int extensionIsElementVisible(const char *) const override;
+    virtual int extensionIsElementVisibleEx(const char *,int) const override;
     virtual bool extensionHasChildElement() const override;
 
     virtual PyObject* getExtensionPyObject(void) override;
@@ -278,6 +284,11 @@ public:
     static int getArrayIndex(const char *subname, const char **psubname=0);
     int getElementIndex(const char *subname, const char **psubname=0) const;
     void elementNameFromIndex(int idx, std::ostream &ss) const;
+
+    static std::vector<std::string> getHiddenSubnames(
+            const App::DocumentObject *obj, const char *prefix=0);
+
+    static bool isSubnameHidden(const App::DocumentObject *obj, const char *subname);
 
     DocumentObject *getContainer();
     const DocumentObject *getContainer() const;
@@ -313,7 +324,7 @@ protected:
     void checkGeoElementMap(const App::DocumentObject *obj, 
         const App::DocumentObject *linked, PyObject **pyObj, const char *postfix) const;
     void updateGroup();
-    void slotChangedPlainGroup(const App::DocumentObject &, const App::Property &);
+    void updateGroupVisibility();
 
 protected:
     std::vector<Property *> props;
@@ -321,8 +332,7 @@ protected:
     mutable std::vector<std::string> mySubElements;
     mutable std::string mySubName;
 
-    std::unordered_map<const App::DocumentObject*, 
-        boost::signals2::scoped_connection> plainGroupConns;
+    std::vector<boost::signals2::scoped_connection> plainGroupConns;
 
     long myOwner;
 
@@ -463,6 +473,7 @@ public:
     LINK_PARAM_EXT(LINK_PLACEMENT)\
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(SHOW_ELEMENT)\
+    LINK_PARAM_EXT(GROUP_VISIBILITY)\
     LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
     LINK_PARAM_EXT(COPY_ON_CHANGE)\

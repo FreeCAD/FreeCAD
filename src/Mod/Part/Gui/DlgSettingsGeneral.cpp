@@ -276,7 +276,8 @@ void DlgImportExportStep::saveSettings()
     ui->checkBoxExportLegacy->onSave();
     ui->checkBoxKeepPlacement->onSave();
     ui->checkBoxImportHiddenObj->onSave();
-    ui->checkBoxUseLinkGroup->onSave();
+    ui->checkBoxLegacyImporter->onSave();
+    ui->checkBoxUseAppPart->onSave();
     ui->checkBoxUseBaseName->onSave();
     ui->checkBoxReduceObjects->onSave();
     ui->checkBoxExpandCompound->onSave();
@@ -320,7 +321,8 @@ void DlgImportExportStep::loadSettings()
     ui->checkBoxExportLegacy->onRestore();
     ui->checkBoxKeepPlacement->onRestore();
     ui->checkBoxImportHiddenObj->onRestore();
-    ui->checkBoxUseLinkGroup->onRestore();
+    ui->checkBoxLegacyImporter->onRestore();
+    ui->checkBoxUseAppPart->onRestore();
     ui->checkBoxUseBaseName->onRestore();
     ui->checkBoxReduceObjects->onRestore();
     ui->checkBoxExpandCompound->onRestore();

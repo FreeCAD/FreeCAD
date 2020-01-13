@@ -57,8 +57,6 @@ public:
 
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel(void) const override { return true; }
-    /// indicates if the ViewProvider can be selected
-    virtual bool isSelectable(void) const override;
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail *) const override;
     virtual SoDetail* getDetail(const char*) const override;
@@ -71,19 +69,11 @@ public:
     bool isPickable();
     void setPickable(bool val);
 
-    /**
-     * Update the visual size to match the given extents
-     * @note should be reimplemented in the offspings
-     * @note use FreeCAD-specific bbox here to simplify the math in derived classes
-     */
-    virtual void setExtents (Base::BoundBox3d /*bbox*/)
-        { }
-
     /// Update the visual sizes. This overloaded version of the previous function to allow pass coin type
     void setExtents (const SbBox3f &bbox);
 
     /// update size to match the guessed bounding box
-    void updateExtents ();
+    virtual void updateExtents ();
 
     /// The datum type (Plane, Line or Point)
     // TODO remove this attribute (2015-09-08, Fat-Zer)
@@ -92,12 +82,10 @@ public:
 
     /**
      * Computes appropriate bounding box for the given list of objects to be passed to setExtents ()
-     * @param bboxAction  a coin action for traverse the given objects views.
      * @param objs        the list of objects to traverse, due to we traverse the scene graph, the geo children
      *                    will likely be traveresed too.
      */
     static SbBox3f getRelevantBoundBox (
-            SoGetBoundingBoxAction &bboxAction,
             const std::vector <App::DocumentObject *> &objs);
 
     /// Default size used to produce the default bbox
@@ -112,6 +100,14 @@ public:
 protected:
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
+
+    /**
+     * Update the visual size to match the given extents
+     * @note should be reimplemented in the offspings
+     * @note use FreeCAD-specific bbox here to simplify the math in derived classes
+     */
+    virtual void setExtents (Base::BoundBox3d /*bbox*/)
+        { }
 
     /**
      * Guesses the context this datum belongs to and returns appropriate bounding box of all

@@ -79,6 +79,8 @@ public:
     TreeWidget(const char *name, QWidget* parent=0);
     ~TreeWidget();
 
+    static void setupResizableColumn(TreeWidget *tree=0);
+
     static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     void selectLinkedObject(App::DocumentObject *linked); 
@@ -113,8 +115,6 @@ public:
     const char *getTreeName() const;
 
     static void updateStatus(bool delay=true);
-
-    static bool isObjectShowable(App::DocumentObject *obj);
 
     // Check if obj can be considered as a top level object
     static void checkTopParent(App::DocumentObject *&obj, std::string &subname);
@@ -192,6 +192,7 @@ private:
     void slotRelabelDocument(const Gui::Document&);
     void slotShowHidden(const Gui::Document &);
     void slotChangedViewObject(const Gui::ViewProvider &, const App::Property &);
+    void slotChangedChildren(const Gui::ViewProviderDocumentObject &);
     void slotStartOpenDocument();
     void slotFinishOpenDocument();
     void _slotDeleteObject(const Gui::ViewProviderDocumentObject&, DocumentItem *deletingDoc);
@@ -201,9 +202,6 @@ private:
 
     void changeEvent(QEvent *e) override;
     void setupText();
-
-    void updateChildren(App::DocumentObject *obj, 
-            const std::set<DocumentObjectDataPtr> &data, bool output, bool force);
 
 private:
     QAction* createGroupAction;
@@ -235,7 +233,6 @@ private:
     std::unordered_map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
 
     enum ChangedObjectStatus {
-        CS_Output,
         CS_Error,
     };
     std::unordered_map<App::DocumentObject*,std::bitset<32> > ChangedObjects;
@@ -258,6 +255,7 @@ private:
     Connection connectRelDocument;
     Connection connectShowHidden;
     Connection connectChangedViewObj;
+    Connection connectChangedChildren;
 };
 
 /** The link between the tree and a document.
@@ -300,8 +298,6 @@ public:
     TreeWidget *getTree() const;
     const char *getTreeName() const;
 
-    bool isObjectShowable(App::DocumentObject *obj);
-
     virtual unsigned int getMemSize (void) const override;
     virtual void Save (Base::Writer &) const override;
     virtual void Restore(Base::XMLReader &) override;
@@ -340,16 +336,15 @@ protected:
 
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
 
-    App::DocumentObject *getTopParent(App::DocumentObject *obj, std::string &subname);
+    App::DocumentObject *getTopParent(
+            App::DocumentObject *obj, std::string &subname, DocumentObjectItem **item=0);
 
-    typedef std::unordered_map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
-    void populateParents(const ViewProvider *vp, ViewParentMap &);
+    void populateParents(const ViewProviderDocumentObject *vp);
 
 private:
     const char *treeName; // for debugging purpose
     Gui::Document* pDocument;
     std::unordered_map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
-    std::unordered_map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
     std::vector<App::DocumentObject*> PopulateObjects;
 
     ExpandInfoPtr _ExpandInfo;
@@ -532,10 +527,13 @@ public:
     FC_TREEPARAM_DEF(SelectionTimeout,int,Int,100) \
     FC_TREEPARAM_DEF(PreSelectionTimeout,int,Int,500) \
     FC_TREEPARAM_DEF(PreSelectionDelay,int,Int,700) \
+    FC_TREEPARAM_DEF(PreSelectionMinDelay,int,Int,200) \
     FC_TREEPARAM_DEF(RecomputeOnDrop,bool,Bool,true) \
     FC_TREEPARAM_DEF(KeepRootOrder,bool,Bool,true) \
     FC_TREEPARAM_DEF(TreeActiveAutoExpand,bool,Bool,true) \
     FC_TREEPARAM_DEF(Indentation,int,Int,0) \
+    FC_TREEPARAM_DEF2(ResizableColumn,bool,Bool,false) \
+    FC_TREEPARAM_DEF(LabelExpression,bool,Bool,false) \
 
 #undef FC_TREEPARAM_DEF
 #define FC_TREEPARAM_DEF(_name,_type,_Type,_default) \

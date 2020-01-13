@@ -27,6 +27,9 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/range.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
@@ -41,8 +44,11 @@
 #include "PropertyExpressionEngine.h"
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
+#include "ComplexGeoData.h"
 #include <App/DocumentObjectPy.h>
 #include <boost/bind.hpp>
+
+typedef boost::iterator_range<const char*> CharRange;
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
@@ -98,10 +104,8 @@ DocumentObject::~DocumentObject(void)
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute
-    if(!GeoFeatureGroupExtension::areLinksValid(this)) {
-#if 1
-        Base::Console().Warning("%s / %s: Links go out of the allowed scope\n", getTypeId().getName(), getNameInDocument());
-#else
+    if(!GeoFeatureGroupExtension::areLinksValid(this,false)) {
+#if 0
         return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
 #endif
     }
@@ -114,14 +118,12 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 DocumentObjectExecReturn *DocumentObject::execute(void)
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector) {
-        auto ret = ext->extensionExecute();
-        if (ret != StdReturn)
-            return ret;
-    }
-
-    return StdReturn;
+    DocumentObjectExecReturn *ret = StdReturn;
+    foreachExtension<DocumentObjectExtension>([&ret](DocumentObjectExtension *ext) {
+        ret = ext->extensionExecute();
+        return ret != StdReturn;
+    });
+    return ret;
 }
 
 bool DocumentObject::recomputeFeature(bool recursive)
@@ -183,16 +185,10 @@ bool DocumentObject::mustRecompute(void) const
 
 short DocumentObject::mustExecute(void) const
 {
-    if (ExpressionEngine.isTouched())
+    if (ExpressionEngine.isTouched()
+            || queryExtension(&DocumentObjectExtension::extensionMustExecute))
         return 1;
-
-    //ask all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector) {
-        if (ext->extensionMustExecute())
-            return 1;
-    }
-
+    
     return 0;
 }
 
@@ -209,8 +205,12 @@ const char* DocumentObject::getStatusString(void) const
 }
 
 std::string DocumentObject::getFullName(bool python) const {
-    if(!getDocument() || !pcNameInDocument) 
-        return std::string(python?"None":"?");
+    if(!getDocument() || !pcNameInDocument) {
+        if(python)
+            return std::string("None");
+        return std::string("?") + Base::Tools::getIdentifier(oldLabel);
+    }
+
     std::ostringstream ss;
     if(python) {
         ss << "FreeCAD.getDocument('" << getDocument()->getName()
@@ -264,6 +264,12 @@ const char* DocumentObject::detachFromDocument()
 {
     const std::string* name = pcNameInDocument;
     pcNameInDocument = 0;
+
+    // Use 'oldLabel' to hold internal name when we are attached, so that
+    // getFullName() can return meaningful result even if detached, because
+    // it maybe used to diagnose problems of accessing a detached object.
+    if(name)
+        oldLabel = *name;
     return name ? name->c_str() : 0;
 }
 
@@ -771,35 +777,41 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
 {
     DocumentObject *ret = 0;
-    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : exts) {
-        if(ext->extensionGetSubObject(ret,subname,pyObj,mat,transform, depth))
-            return ret;
-    }
+    if(queryExtension(&DocumentObjectExtension::extensionGetSubObject, ret, subname, pyObj, mat, transform, depth))
+        return ret;
 
-    std::string name;
     const char *dot=0;
     if(!subname || !(dot=strchr(subname,'.'))) {
         ret = const_cast<DocumentObject*>(this);
     }else if(subname[0]=='$') {
-        name = std::string(subname+1,dot);
+        CharRange name(subname+1,dot);
         for(auto obj : getOutList()) {
-            if(name == obj->Label.getValue()) {
+            if(boost::equals(name, obj->Label.getValue())) {
                 ret = obj;
                 break;
             }
         }
-    }else{
-        name = std::string(subname,dot);
+    } else {
         const auto &outList = getOutList();
-        if(outList.size()!=_outListMap.size()) {
-            _outListMap.clear();
-            for(auto obj : outList)
-                _outListMap[obj->getNameInDocument()] = obj;
+        if(outList.size()<=10) {
+            CharRange name(subname,dot);
+            for(auto obj : outList) {
+                if(obj && obj->getNameInDocument() && boost::equals(name,obj->getNameInDocument())) {
+                    ret = obj;
+                    break;
+                }
+            }
+        } else {
+            if(outList.size()!=_outListMap.size()) {
+                _outListMap.clear();
+                for(auto obj : outList)
+                    _outListMap[obj->getNameInDocument()] = obj;
+            }
+            std::string name(subname,dot);
+            auto it = _outListMap.find(name.c_str());
+            if(it != _outListMap.end())
+                ret = it->second;
         }
-        auto it = _outListMap.find(name.c_str());
-        if(it != _outListMap.end())
-            ret = it->second;
     }
 
     // TODO: By right, normal object's placement does not transform its sub
@@ -821,7 +833,8 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subnam
     res.push_back(const_cast<DocumentObject*>(this));
     if(!subname || !subname[0])
         return res;
-    std::string sub(subname);
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    std::string sub(subname,element-subname);
     for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
         char c = sub[pos+1];
         sub[pos+1] = 0;
@@ -836,11 +849,7 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subnam
 
 std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
     std::vector<std::string> ret;
-    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : exts) {
-        if(ext->extensionGetSubObjects(ret,reason))
-            return ret;
-    }
+    callExtension(&DocumentObjectExtension::extensionGetSubObjects,ret,reason);
     return ret;
 }
 
@@ -876,11 +885,8 @@ DocumentObject *DocumentObject::getLinkedObject(
         bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
 {
     DocumentObject *ret = 0;
-    auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : exts) {
-        if(ext->extensionGetLinkedObject(ret,recursive,mat,transform,depth))
-            return ret;
-    }
+    if(queryExtension(&DocumentObjectExtension::extensionGetLinkedObject, ret, recursive, mat, transform, depth))
+        return ret;
     if(transform && mat) {
         auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
         if(pla)
@@ -936,9 +942,7 @@ void DocumentObject::renameObjectIdentifiers(const std::map<ObjectIdentifier, Ob
 void DocumentObject::onDocumentRestored()
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
-        ext->onExtendedDocumentRestored();
+    callExtension(&DocumentObjectExtension::onExtendedDocumentRestored);
     if(Visibility.testStatus(Property::Output))
         Visibility.setStatus(Property::NoModify,true);
 }
@@ -946,25 +950,19 @@ void DocumentObject::onDocumentRestored()
 void DocumentObject::onSettingDocument()
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
-        ext->onExtendedSettingDocument();
+    callExtension(&DocumentObjectExtension::onExtendedSettingDocument);
 }
 
 void DocumentObject::setupObject()
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
-        ext->onExtendedSetupObject();
+    callExtension(&DocumentObjectExtension::onExtendedSetupObject);
 }
 
 void DocumentObject::unsetupObject()
 {
     //call all extensions
-    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
-        ext->onExtendedUnsetupObject();
+    callExtension(&DocumentObjectExtension::onExtendedUnsetupObject);
 }
 
 void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
@@ -994,29 +992,46 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 }
 
 int DocumentObject::setElementVisible(const char *element, bool visible) {
-    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
-        int ret = ext->extensionSetElementVisible(element,visible);
-        if(ret>=0) return ret;
-    }
-
-    return -1;
+    int res = -1;
+    foreachExtension<DocumentObjectExtension>([&res,element,visible](DocumentObjectExtension *ext) {
+        res = ext->extensionSetElementVisible(element,visible);
+        return res>=0;
+    });
+    return res;
 }
 
 int DocumentObject::isElementVisible(const char *element) const {
-    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
-        int ret = ext->extensionIsElementVisible(element);
-        if(ret>=0) return ret;
-    }
+    int res = -1;
+    foreachExtension<DocumentObjectExtension>([&res,element](DocumentObjectExtension *ext) {
+        res = ext->extensionIsElementVisible(element);
+        return res>=0;
+    });
+    return res;
+}
 
-    return -1;
+int DocumentObject::isElementVisibleEx(const char *subname, int reason) const {
+    int res = -1;
+    foreachExtension<DocumentObjectExtension>([&res,subname,reason](DocumentObjectExtension *ext) {
+        res = ext->extensionIsElementVisibleEx(subname, reason);
+        return res>=0;
+    });
+
+    if(res>=0 || !subname || !subname[0])
+        return res;
+
+    const char *dot = strchr(subname,'.');
+    if(dot==0 || Data::ComplexGeoData::isMappedElement(subname))
+        return res;
+
+    std::string sub(subname,dot+1);
+    auto sobj = getSubObject(sub.c_str());
+    if(!sobj || !sobj->getNameInDocument())
+        return -1;
+    return sobj->isElementVisibleEx(dot+1,reason);
 }
 
 bool DocumentObject::hasChildElement() const {
-    for(auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
-        if(ext->extensionHasChildElement())
-            return true;
-    }
-    return false;
+    return queryExtension(&DocumentObjectExtension::extensionHasChildElement);
 }
 
 DocumentObject *DocumentObject::resolve(const char *subname, 
@@ -1077,14 +1092,14 @@ DocumentObject *DocumentObject::resolve(const char *subname,
                 if(parent) {
                     // Link/LinkGroup has special visiblility handling of plain
                     // group, so keep ascending
-                    if(!sobj->hasExtension(GroupExtension::getExtensionClassTypeId(),false)) {
+                    if(!GeoFeatureGroupExtension::isNonGeoGroup(sobj)) {
                         *parent = sobj;
                         break;
                     }
                     for(auto ddot=dot-1;ddot!=subname;--ddot) {
                         if(*ddot != '.') continue;
                         auto sobj = getSubObject(std::string(subname,ddot-subname+1).c_str());
-                        if(!sobj->hasExtension(GroupExtension::getExtensionClassTypeId(),false)) {
+                        if(!GeoFeatureGroupExtension::isNonGeoGroup(sobj)) {
                             *parent = sobj;
                             break;
                         }
@@ -1222,3 +1237,4 @@ void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long
     if(!Document::isAnyRestoring() && getNameInDocument() && getDocument())
         getDocument()->signalChangePropertyEditor(*getDocument(),prop);
 }
+

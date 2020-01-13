@@ -28,16 +28,20 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <unordered_map>
 
 #include <Base/Type.h>
 #include <Base/Placement.h>
+#include <Base/BoundBox.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbTime.h>
 #include <Gui/Quarter/SoQTQuarterAdaptor.h>
 #include <QCursor>
 #include <QImage>
 
+#include <App/DocumentObserver.h>
 #include <Gui/Selection.h>
 #include <Gui/Namespace.h>
 
@@ -46,6 +50,7 @@ class SoTransform;
 class SoText2;
 
 class SoSeparator;
+class SoDetail;
 class SoShapeHints;
 class SoMaterial;
 class SoRotationXYZ;
@@ -58,6 +63,9 @@ class SoGroup;
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
+class SoTimerSensor;
+class SoSensor;
+class SbBox3f;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -67,10 +75,17 @@ class ViewProvider;
 class SoFCBackgroundGradient;
 class NavigationStyle;
 class SoFCUnifiedSelection;
+class SoFCSelectionRoot;
+class SoFCSwitch;
+class SoFCPathAnnotation;
+class SoSelectionElementAction;
+class SoHighlightElementAction;
+class SoFCPathAnnotation;
 class Document;
 class GLGraphicsItem;
 class SoShapeScale;
 class ViewerEventFilter;
+class LinkView;
 
 /** GUI view into a 3D scene provided by View3DInventor
  *
@@ -136,8 +151,11 @@ public:
 
     /// Observer message from the Selection
     virtual void onSelectionChanged(const SelectionChanges &Reason);
-    void checkGroupOnTop(const SelectionChanges &Reason);
-    void clearGroupOnTop();
+    void checkGroupOnTop(const SelectionChanges &Reason, bool alt=false);
+    void clearGroupOnTop(bool alt=false);
+
+    bool isInGroupOnTop(const char *objname, const char *subname) const;
+    bool isInGroupOnTop(const std::string &key) const;
 
     SoDirectionalLight* getBacklight(void) const;
     void setBacklight(SbBool on);
@@ -191,6 +209,8 @@ public:
     void addViewProvider(ViewProvider*);
     /// remove a ViewProvider
     void removeViewProvider(ViewProvider*);
+    /// Check viewprovider to see if it should be added to or removed from scene graph root
+    void toggleViewProvider(ViewProvider*);
     /// get view provider by path
     ViewProvider* getViewProviderByPath(SoPath*) const;
     ViewProvider* getViewProviderByPathFromTail(SoPath*) const;
@@ -266,9 +286,10 @@ public:
     // calls a PickAction on the scene graph
     bool pickPoint(const SbVec2s& pos,SbVec3f &point,SbVec3f &norm) const;
     SoPickedPoint* pickPoint(const SbVec2s& pos) const;
-    const SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
+    SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
     SbBool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
+    std::vector<App::SubObjectT> getPickedList(const SbVec2s &pos) const;
     //@}
 
     /**
@@ -344,6 +365,7 @@ public:
      */
     void viewAll();
     void viewAll(float factor);
+    void viewBoundBox(const SbBox3f &box);
 
     /// Breaks out a VR window for a Rift
     void viewVR(void);
@@ -353,7 +375,7 @@ public:
      * of the scene. Therefore we search for all SOFCSelection nodes, if
      * none of them is selected nothing happens.
      */
-    void viewSelection();
+    void viewSelection(bool extend = false);
 
     void setGradientBackground(bool b);
     bool hasGradientBackground() const;
@@ -383,12 +405,17 @@ public:
 
     virtual PyObject *getPyObject(void);
 
+    SoPath *getGroupOnTopPath() {return pcGroupOnTopPath;}
+
+    bool getSceneBoundBox(SbBox3f &box) const;
+    bool getSceneBoundBox(Base::BoundBox3d &box) const;
+
 protected:
     GLenum getInternalTextureFormat() const;
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
-    void animatedViewAll(int steps, int ms);
+    void animatedViewAll(const SbBox3f &bbox, int steps, int ms);
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
@@ -400,6 +427,8 @@ protected:
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
+
+    static void onViewFitTimer(void *, SoSensor *);
 
     enum eWinGestureTuneState{
         ewgtsDisabled, //suppress tuning/re-tuning after errors
@@ -430,7 +459,6 @@ private:
 private:
     NaviCube* naviCube;
     std::set<ViewProvider*> _ViewProviderSet;
-    std::map<SoSeparator*,ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
     ViewProvider* editViewProvider;
     SoFCBackgroundGradient *pcBackGround;
@@ -440,11 +468,28 @@ private:
 
     SoSeparator * pcViewProviderRoot;
 
-    SoGroup * pcGroupOnTop;
-    SoGroup * pcGroupOnTopSel;
-    SoGroup * pcGroupOnTopPreSel;
-    std::map<std::string,SoNode*> objectsOnTop;
-    std::map<std::string,SoNode*> objectsOnTopPreSel;
+    SoFCSwitch        * pcGroupOnTopSwitch;
+    SoFCSelectionRoot * pcGroupOnTopSel;
+    SoFCSelectionRoot * pcGroupOnTopPreSel;
+    SoPath            * pcGroupOnTopPath;
+
+    struct OnTopInfo {
+        SoFCPathAnnotation *node;
+        bool alt;
+        std::unordered_map<std::string, SoDetail*> elements;
+
+        OnTopInfo();
+        OnTopInfo(OnTopInfo &&other);
+        ~OnTopInfo();
+
+        void clearElements();
+    };
+
+    std::unordered_map<std::string,OnTopInfo> objectsOnTopSel;
+    std::unordered_map<std::string,OnTopInfo> objectsOnTopPreSel;
+
+    SoSelectionElementAction *selAction;
+    SoHighlightElementAction *preselAction;
 
     SoSeparator * pcEditingRoot;
     SoTransform * pcEditingTransform;
@@ -478,9 +523,13 @@ private:
     SbBool redirected;
     SbBool allowredir;
 
+    bool viewFitting;
+    SbTime viewFitTime;
+    SoTimerSensor *viewFitTimer;
+
     std::string overrideMode;
     Gui::Document* guiDocument = nullptr;
-    
+
     ViewerEventFilter* viewerEventFilter;
     
     PyObject *_viewerPy;

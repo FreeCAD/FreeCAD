@@ -130,6 +130,7 @@ void ViewProviderMeshOrientation::attach(App::DocumentObject* pcFeat)
 
     // Draw faces
     SoSeparator* linesep = new SoSeparator;
+    linesep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.5f, 0.0f );
     linesep->addChild(basecol);
@@ -196,6 +197,7 @@ void ViewProviderMeshNonManifolds::attach(App::DocumentObject* pcFeat)
 
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
+    linesep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.0f, 0.0f );
     linesep->addChild(basecol);
@@ -261,6 +263,7 @@ void ViewProviderMeshNonManifoldPoints::attach(App::DocumentObject* pcFeat)
 
     // Draw points
     SoSeparator* pointsep = new SoSeparator;
+    pointsep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.5f, 0.0f );
     pointsep->addChild(basecol);
@@ -325,6 +328,7 @@ void ViewProviderMeshDuplicatedFaces::attach(App::DocumentObject* pcFeat)
 
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
+    linesep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.0f, 0.0f );
     linesep->addChild(basecol);
@@ -390,6 +394,7 @@ void ViewProviderMeshDuplicatedPoints::attach(App::DocumentObject* pcFeat)
 
     // Draw points
     SoSeparator* pointsep = new SoSeparator;
+    pointsep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.5f, 0.0f );
     pointsep->addChild(basecol);
@@ -447,6 +452,7 @@ void ViewProviderMeshDegenerations::attach(App::DocumentObject* pcFeat)
 
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
+    linesep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.5f, 0.0f );
     linesep->addChild(basecol);
@@ -553,6 +559,7 @@ void ViewProviderMeshIndices::attach(App::DocumentObject* pcFeat)
 
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
+    linesep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.5f, 0.0f );
     linesep->addChild(basecol);
@@ -620,6 +627,7 @@ void ViewProviderMeshSelfIntersections::attach(App::DocumentObject* pcFeat)
 
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
+    linesep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.5f, 0.0f );
     linesep->addChild(basecol);
@@ -700,6 +708,7 @@ void ViewProviderMeshFolds::attach(App::DocumentObject* pcFeat)
 
     // Draw lines
     SoSeparator* linesep = new SoSeparator;
+    linesep->renderCaching = SoSeparator::OFF;
     SoBaseColor * basecol = new SoBaseColor;
     basecol->rgb.setValue( 1.0f, 0.0f, 0.0f );
     linesep->addChild(basecol);

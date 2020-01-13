@@ -30,21 +30,32 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/SbTime.h>
+#include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/SbViewportRegion.h>
+#include "InventorBase.h"
 #include "View3DInventorViewer.h"
 #include "SoFCSelectionContext.h"
 #include <list>
 #include <unordered_set>
 #include <unordered_map>
+#include <functional>
 
 class SoFullPath;
 class SoPickedPoint;
 class SoDetail;
-
+class SoPickedPointList;
+class SoRayPickAction;
+class SbViewportRegion;
+class SbVec2s;
+class SbBox3f;
+class SbMatrix;
 
 namespace Gui {
 
 class Document;
 class ViewProviderDocumentObject;
+class SoFCRayPickAction;
 
 /**  Unified Selection node
  *  This is the new selection node for the 3D Viewer which will 
@@ -88,6 +99,10 @@ public:
 
     static bool hasHighlight();
 
+    static int getPriority(const SoPickedPoint* p);
+
+    static bool getShowSelectionBoundingBox();
+
     friend class View3DInventorViewer;
 
 protected:
@@ -100,35 +115,101 @@ private:
     //void setOverride(SoGLRenderAction * action);
     //SbBool isHighlighted(SoAction *action);
     //SbBool preRender(SoGLRenderAction *act, GLint &oldDepthFunc);
-    static int getPriority(const SoPickedPoint* p);
+    SoPickedPoint* getPickedPoint(SoHandleEventAction*) const;
 
-    struct PickedInfo {
-        const SoPickedPoint *pp;
-        ViewProviderDocumentObject *vpd;
-        std::string element;
-        PickedInfo():pp(0),vpd(0)
-        {}
-    };
-
+    class PickedInfo;
     bool setHighlight(const PickedInfo &);
     bool setHighlight(SoFullPath *path, const SoDetail *det, 
             ViewProviderDocumentObject *vpd, const char *element, float x, float y, float z);
-    bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown=false);
+
+    void removeHighlight();
+
+    bool setSelection(const std::vector<PickedInfo> &, bool ctrlDown, bool shiftDown, bool altDown);
+
+    std::vector<PickedInfo> getPickedList(const SbVec2s &pos,
+            const SbViewportRegion &vp, bool singlePick) const;
 
     std::vector<PickedInfo> getPickedList(SoHandleEventAction* action, bool singlePick) const;
 
-    Gui::Document       *pcDocument;
+    static void postProcessPickedList(std::vector<PickedInfo> &, bool singlePick);
+
+    void getPickedInfo(std::vector<PickedInfo> &, const SoPickedPointList &, bool singlePick, bool copy,
+            std::set<std::pair<ViewProvider*, std::string> > &filter) const;
+
+    void getPickedInfoOnTop(std::vector<PickedInfo> &, bool singlePick,
+            std::set<std::pair<ViewProvider*, std::string> > &filter) const;
+
+    std::vector<App::SubObjectT> getPickedSelections(const SbVec2s &pos,
+            const SbViewportRegion &viewport, bool singlePick) const;
+
+    void onPreselectTimer();
+
+    Gui::Document        *pcDocument;
+    View3DInventorViewer *pcViewer;
 
     static SoFullPath * currenthighlight;
     SoFullPath * detailPath;
 
     SbBool setPreSelection;
 
+    bool selectAll;
+
     // -1 = not handled, 0 = not selected, 1 = selected
     int32_t preSelection;
     SoColorPacker colorpacker;
+
+    SbTime preselTime;
+    SoTimerSensor preselTimer;
+    SbVec2s preselPos;
+    SbViewportRegion preselViewport;
+
+    SoFCRayPickAction *pcRayPick;
 };
 
+
+/** Helper class for change and restore OpenGL depth func
+ *
+ * Although Coin3D has SoDepthBuffer and SoDepthBufferElement for this purpose,
+ * we cannot rely on it, because Coin3D implementation does not account for
+ * user code direct change of OpenGL state. And there are user code change
+ * glDepthFunc directly.
+ */
+struct GuiExport FCDepthFunc {
+    /** Constructor
+     * @param f: the depth function to change to
+     */
+    FCDepthFunc(int32_t f);
+
+    /** Constructure that does nothing
+     *
+     * This allows you to delay depth function setting by calling set()
+     */
+    FCDepthFunc();
+
+    /** Destructor
+     * Restore the depth function if changed
+     */
+    ~FCDepthFunc();
+
+    /** Change depth function
+     * @param f: the depth function to change to
+     */
+    void set(int32_t f);
+
+    /// restore depth function
+    void restore();
+
+    /// Stores the depth function before changing
+    int32_t func;
+
+    /// Indicate whether the depth function is changed and will be restored
+    bool changed;
+
+    /// Whether to restore depth test
+    bool dtest;
+};
+
+/// For rendering a given path on top
 class GuiExport SoFCPathAnnotation : public SoSeparator {
     typedef SoSeparator inherited;
 
@@ -136,28 +217,109 @@ class GuiExport SoFCPathAnnotation : public SoSeparator {
 public:
     static void initClass(void);
     static void finish(void);
-    SoFCPathAnnotation();
+    SoFCPathAnnotation(ViewProvider *vp=0, const char *subname=0, View3DInventorViewer *viewer=0);
 
     void setPath(SoPath *);
     SoPath *getPath() {return path;}
-    void setDetail(SoDetail *d);
-    SoDetail *getDetail() {return det;}
+    void setDetail(bool det);
+    bool hasDetail() {return det;}
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void GLRender(SoGLRenderAction * action);
     virtual void GLRenderInPath(SoGLRenderAction * action);
 
     virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    void doPick(SoPath *path, SoRayPickAction *action);
+
+    virtual void doAction(SoAction *action);
 
 protected:
     virtual ~SoFCPathAnnotation();
 
 protected:
+    ViewProvider *viewProvider;
+    std::string subname;
+    View3DInventorViewer *viewer;
     SoPath *path;
     SoTempPath *tmpPath;
-    SoDetail *det;
+    bool det;
 };
 
+
+/// Switch node that support global visibility override
+class GuiExport SoFCSwitch : public SoSwitch {
+    typedef SoSwitch inherited;
+    SO_NODE_HEADER(Gui::SoFCSwitch);
+
+public:
+    /// Stores the child index used in switching override mode
+    SoSFInt32 defaultChild;
+    /// Stores the child index that will be traversed as long as the whichChild is not -1
+    SoSFInt32 tailChild;
+    /// If greater than zero, then any children change will trigger parent notify
+    SoSFInt32 childNotify;
+
+    enum OverrideSwitch {
+        /// No switch override
+        OverrideNone,
+        /// Override this and following SoFCSwitch node to its \c defaultChild if visible
+        OverrideDefault,
+        /** If OverrideDefault is on by some parent SoFCSwitch node, then
+         * override any (grand)child SoFCSwitch nodes even if it is invisible
+         */
+        OverrideVisible,
+        /// Reset override mode after this node
+        OverrideReset,
+    };
+    SoSFEnum overrideSwitch;
+
+    static void initClass(void);
+    static void finish(void);
+
+    SoFCSwitch();
+
+    virtual void doAction(SoAction *action);
+    virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+    virtual void search(SoSearchAction * action);
+    virtual void callback(SoCallbackAction *action);
+    virtual void pick(SoPickAction *action);
+    virtual void handleEvent(SoHandleEventAction *action);
+    virtual void notify(SoNotList * nl);
+
+    /// Enables switching override for the give action
+    static void switchOverride(SoAction *action, OverrideSwitch o=OverrideDefault);
+
+    enum TraverseStateFlag {
+        /// Normal traverse
+        TraverseNormal          =0,
+        /// One or more parent SoFCSwitch nodes have been overridden
+        TraverseOverride        =1,
+        /// One or more parent SoFCSwitch are supposed to be invisible, but got overridden
+        TraverseInvisible       =2,
+        /// The immediate parent SoFCSwitch node has been switch to its \c defaultChild
+        TraverseAlternative     =4,
+    };
+    typedef std::bitset<32> TraverseState;
+    static bool testTraverseState(TraverseStateFlag flag);
+
+    /** Register a callback when handling GetBoundingBoxAction in switch override mode
+     *
+     * It is useful for some view provider that delays visual update until visible
+     */
+    template<class F>
+    void setBBoxCallback(F f) {
+        cb = f;
+    }
+
+private:
+    void traverseTail(SoAction *action, int idx);
+
+private:
+    std::function<void(void)> cb;
+};
+
+
+/// Separator node that tracks render caching setting
 class GuiExport SoFCSeparator : public SoSeparator {
     typedef SoSeparator inherited;
 
@@ -190,7 +352,10 @@ class GuiExport SoFCSelectionRoot : public SoFCSeparator {
 public:
     static void initClass(void);
     static void finish(void);
-    SoFCSelectionRoot(bool trackCacheMode=false);
+    SoFCSelectionRoot(bool trackCacheMode=false, ViewProvider *vp=0);
+
+    ViewProvider *getViewProvider() const {return viewProvider;}
+    void setViewProvider(ViewProvider *vp);
 
     virtual void GLRenderBelowPath(SoGLRenderAction * action);
     virtual void GLRenderInPath(SoGLRenderAction * action);
@@ -297,7 +462,12 @@ public:
 
     static void moveActionStack(SoAction *from, SoAction *to, bool erase);
 
-    static SoNode *getCurrentRoot(bool front, SoNode *def);
+    static SoFCSelectionRoot *getCurrentRoot(bool front=false, SoFCSelectionRoot *def=0);
+
+    static SoFCSelectionRoot *getCurrentActionRoot(
+            SoAction *action, bool front=false, SoFCSelectionRoot *def=0);
+
+    int getRenderPathCode() const;
 
     void resetContext();
 
@@ -318,23 +488,31 @@ public:
     }
 
     enum SelectStyles {
-        Full, Box, PassThrough
+        Full, Box, PassThrough, Unpickable
     };
     SoSFEnum selectionStyle;
 
-    static bool renderBBox(SoGLRenderAction *action, SoNode *node, SbColor color);
+    static bool renderBBox(SoGLRenderAction *action, SoNode *node,
+            const SbColor &color, const SbMatrix *mat=0, bool force=false);
+
+    static bool renderBBox(SoGLRenderAction *action, SoNode *node,
+        const SbBox3f &bbox, SbColor color, const SbMatrix *mat=0);
+
+    static void setupSelectionLineRendering(SoState *state, SoNode *node, const uint32_t *color);
 
 protected:
     virtual ~SoFCSelectionRoot();
 
     void renderPrivate(SoGLRenderAction *, bool inPath);
-    bool _renderPrivate(SoGLRenderAction *, bool inPath);
+    bool _renderPrivate(SoGLRenderAction *, bool inPath, bool &pushed);
 
     class Stack : public std::vector<SoFCSelectionRoot*> {
     public:
         std::unordered_set<SoFCSelectionRoot*> nodeSet;
         size_t offset = 0;
     };
+
+    bool doActionPrivate(Stack &stack, SoAction *);
 
     static SoFCSelectionContextBasePtr getNodeContext(
             Stack &stack, SoNode *node, SoFCSelectionContextBasePtr def);
@@ -372,7 +550,11 @@ protected:
     float transOverride;
     SoColorPacker shapeColorPacker;
 
-    bool doActionPrivate(Stack &stack, SoAction *);
+    SoFCSelectionCounter selCounter;
+
+    ViewProvider *viewProvider;
+
+    int renderPathCode=0;
 };
 
 /**

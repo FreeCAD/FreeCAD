@@ -38,7 +38,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 
-FC_LOG_LEVEL_INIT("DynamicProperty",true,true)
+FC_LOG_LEVEL_INIT("Property",true,true)
 
 
 using namespace App;
@@ -162,20 +162,43 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
 Property* DynamicProperty::_addDynamicProperty(PropertyContainer &pc, const char* type, 
         const char* name, const char* group, const char* doc, StringIDRef docID, short attr, bool ro, bool hidden)
 {
+    if(!type)
+        type = "<null>";
+
+    std::string _name;
+
+    static ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Document");
+    if(hGrp->GetBool("AutoNameDynamicProperty",false)) {
+        if(!name || !name[0])
+            name = type;
+        _name = getUniquePropertyName(pc,name);
+        if(_name != name) {
+            FC_WARN(pc.getFullName() << " rename dynamic property from '"
+                    << name << "' to '" << _name << "'");
+        }
+        name = _name.c_str();
+    } else if(!name)
+        name = "<null>"; // setting a bad name to trigger exception
+
+    auto prop = pc.getPropertyByName(name);
+    if(prop && prop->getContainer()==&pc)
+        FC_THROWM(Base::NameError, "Property " << pc.getFullName() << '.' << name << " already exists");
+
+    if(Base::Tools::getIdentifier(name) != name) 
+        FC_THROWM(Base::NameError, "Invalid property name '" << name << "'");
+
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(type,true));
-    if (!base)
-        return 0;
+    if (!base) 
+        FC_THROWM(Base::RuntimeError, "Failed to create property " 
+                << pc.getFullName() << '.' << name << " of type " << type);
     if (!base->getTypeId().isDerivedFrom(Property::getClassTypeId())) {
         delete base;
-        std::stringstream str;
-        str << "'" << type << "' is not a property type";
-        throw Base::ValueError(str.str());
+        FC_THROWM(Base::ValueError, "Invalid type " << type << " for property " << pc.getFullName() << '.' << name);
     }
 
     // get unique name
     Property* pcProperty = static_cast<Property*>(base);
-    if (!name || !name[0])
-        name = type;
 
     if(!docID && doc && doc[0]) {
         auto document = pc.getOwnerDocument();

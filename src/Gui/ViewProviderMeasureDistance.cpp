@@ -163,6 +163,7 @@ void ViewProviderMeasureDistance::attach(App::DocumentObject* pcObject)
     ps->style = SoPickStyle::UNPICKABLE;
 
     SoSeparator *lineSep = new SoSeparator();
+    lineSep->renderCaching = SoSeparator::OFF;
     SoDrawStyle* style = new SoDrawStyle();
     style->lineWidth = 2.0f;
     lineSep->addChild(ps);
@@ -177,6 +178,7 @@ void ViewProviderMeasureDistance::attach(App::DocumentObject* pcObject)
     lineSep->addChild(points);
 
     SoSeparator* textsep = new SoSeparator();
+    textsep->renderCaching = SoSeparator::OFF;
     textsep->addChild(pTranslation);
     textsep->addChild(pTextColor);
     textsep->addChild(pFont);

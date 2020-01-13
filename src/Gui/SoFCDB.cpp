@@ -89,6 +89,7 @@ void Gui::SoFCDB::init()
     SoFCBackgroundGradient          ::initClass();
     SoFCBoundingBox                 ::initClass();
     SoFCSelection                   ::initClass();
+    SoFCRayPickAction               ::initClass();
     SoFCUnifiedSelection            ::initClass();
     SoFCHighlightAction             ::initClass();
     SoFCSelectionAction             ::initClass();
@@ -122,6 +123,7 @@ void Gui::SoFCDB::init()
     MarkerBitmaps                   ::initClass();
     SoFCCSysDragger                 ::initClass();
     SmSwitchboard                   ::initClass();
+    SoFCSwitch                      ::initClass();
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();
     SoFCPathAnnotation              ::initClass();

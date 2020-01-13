@@ -74,8 +74,12 @@
 
 using namespace Gui;
 
-SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
+struct SoFCSelection::SelContext: Gui::SoFCSelectionContext {
+    SoColorPacker packer;
+    SoColorPacker packer2;
+};
 
+SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
 
 // *************************************************************************
 
@@ -688,8 +692,13 @@ SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
     }
 
 #ifdef NO_FRONTBUFFER
-    // check if preselection is active
-    if(this->setOverride(action,ctx)) {
+    if(this->style.getValue() == SoFCSelection::BOX 
+            || ViewParams::instance()->getShowSelectionBoundingBox()) 
+    {
+        inherited::GLRenderBelowPath(action);
+        if(this->setOverride(action,ctx))
+            state->pop();
+    } else if(this->setOverride(action,ctx)) {
         inherited::GLRenderBelowPath(action);
         state->pop();
     } else 
@@ -729,8 +738,13 @@ void SoFCSelection::GLRender(SoGLRenderAction * action)
     }
 
 #ifdef NO_FRONTBUFFER
-    // check if preselection is active
-    if(this->setOverride(action,ctx)) {
+    if(this->style.getValue() == SoFCSelection::BOX 
+            || ViewParams::instance()->getShowSelectionBoundingBox()) 
+    {
+        inherited::GLRender(action);
+        if(this->setOverride(action,ctx))
+            state->pop();
+    } else if(this->setOverride(action,ctx)) {
         inherited::GLRender(action);
         state->pop();
     } else
@@ -772,7 +786,13 @@ SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
 #ifdef NO_FRONTBUFFER
     // check if preselection is active
     SoState * state = action->getState();
-    if(this->setOverride(action,ctx)) {
+    if(this->style.getValue() == SoFCSelection::BOX 
+            || ViewParams::instance()->getShowSelectionBoundingBox()) 
+    {
+        inherited::GLRenderInPath(action);
+        if(this->setOverride(action,ctx))
+            state->pop();
+    } else if(this->setOverride(action,ctx)) {
         inherited::GLRenderInPath(action);
         state->pop();
     } else
@@ -971,9 +991,11 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 
     Styles mystyle = (Styles) this->style.getValue();
 
-    if(mystyle == SoFCSelection::BOX) {
-        SoFCSelectionRoot::renderBBox(
-                action,this,preselected?ctx->highlightColor:ctx->selectionColor);
+    if(mystyle == SoFCSelection::BOX || ViewParams::instance()->getShowSelectionBoundingBox()) {
+        if(!ctx->isSelectAll() && !ctx->isHighlightAll()) {
+            SoFCSelectionRoot::renderBBox(action,this,
+                    preselected?ctx->highlightColor:ctx->selectionColor,0,true);
+        }
         this->uniqueId = oldId;
         return false;
     }
@@ -995,9 +1017,9 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
             || mystyle == SoFCSelection::EMISSIVE_DIFFUSE) 
     {
         if(!preselected)
-            SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&colorpacker);
+            SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&ctx->packer);
         else
-            SoLazyElement::setDiffuse(state, this,1, &ctx->highlightColor,&colorpacker);
+            SoLazyElement::setDiffuse(state, this,1, &ctx->highlightColor,&ctx->packer2);
         SoOverrideElement::setDiffuseColorOverride(state, this, true);
     }
 
@@ -1057,34 +1079,16 @@ SoFCSelection::isHighlighted(SoAction *action)
 
 void SoFCSelection::applySettings ()
 {
-    // TODO Some view providers got copy of this code: make them use this (2015-09-03, Fat-Zer)
-    // Note: SoFCUnifiedSelection got the same code, keep in sync or think about a way to share it
-    float transparency;
-    ParameterGrp::handle hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("View");
-    bool enablePre = hGrp->GetBool("EnablePreselection", true);
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    if (!enablePre) {
-        this->highlightMode = Gui::SoFCSelection::OFF;
-    }
-    else {
-        // Search for a user defined value with the current color as default
-        SbColor highlightColor = this->colorHighlight.getValue();
-        unsigned long highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = hGrp->GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
-        this->colorHighlight.setValue(highlightColor);
-    }
-    if (!enableSel) {
-        this->selectionMode = Gui::SoFCSelection::SEL_OFF;
-    }
-    else {
-        // Do the same with the selection color
-        SbColor selectionColor = this->colorSelection.getValue();
-        unsigned long selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = hGrp->GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
-        this->colorSelection.setValue(selectionColor);
-    }
+    this->highlightMode = ViewParams::instance()->getEnablePreselection()?SEL_ON:SEL_OFF;
+    this->selectionMode = ViewParams::instance()->getEnableSelection()?SEL_ON:SEL_OFF;
+
+    float trans;
+    SbColor color;
+    color.setPackedValue(ViewParams::instance()->getHighlightColor(),trans);
+    this->colorHighlight = color;
+
+    color.setPackedValue(ViewParams::instance()->getSelectionColor(),trans);
+    this->colorSelection = color;
 }
 
 //#undef THIS

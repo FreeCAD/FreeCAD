@@ -27,15 +27,16 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <memory>
 #include <bitset>
 #include <QIcon>
 #include <boost/signals2.hpp>
-#include <boost/intrusive_ptr.hpp>
 
 #include <App/TransactionalObject.h>
 #include <App/Material.h>
 #include <Base/Vector3D.h>
 #include <Base/BoundBox.h>
+#include "InventorBase.h"
 
 class SbVec2s;
 class SbVec3f;
@@ -83,32 +84,6 @@ enum ViewStatus {
 };
 
 
-/** Convenience smart pointer to wrap coin node. 
- *
- * It is basically boost::intrusive plus implicit pointer conversion to save the
- * trouble of typing get() all the time.
- */
-template<class T>
-class CoinPtr: public boost::intrusive_ptr<T> {
-public:
-    // Too bad, VC2013 does not support constructor inheritance
-    //using boost::intrusive_ptr<T>::intrusive_ptr;
-    typedef boost::intrusive_ptr<T> inherited;
-    CoinPtr() {}
-    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
-    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
-
-    operator T *() const {
-        return this->get();
-    }
-};
-
-/** Helper function to deal with bug in SoNode::removeAllChildren()
- *
- * @sa https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
- */
-void GuiExport coinRemoveAllChildren(SoGroup *node);
-
 /** General interface for all visual stuff in FreeCAD
   * This class is used to generate and handle all around
   * visualizing and presenting objects from the FreeCAD
@@ -150,6 +125,9 @@ public:
       * position of the object.
       */
     virtual std::vector<App::DocumentObject*> claimChildren3D(void) const;
+
+    /// Called by Gui::Document to update the scene graph of the calimed children 3D
+    virtual bool handleChildren3D(const std::vector<App::DocumentObject*> &children);
 
     /** @name Selection handling
       * This group of methods do the selection handling.
@@ -206,10 +184,22 @@ public:
 
     /** Return the bound box of this view object
      *
+     * @param subname: optional subname path to a sub object
+     * @param mat: optional initial transformation
+     * @param transform: whether to transform using current view object placement
+     * @param view: view of this view object, if null, use the current active view
+     * @param depth: current traversal depth, internal use to prevent infinite recursion.
+     *
      * This method shall work regardless whether the current view object is
      * visible or not.
      */
-    Base::BoundBox3d getBoundingBox(const char *subname=0, bool transform=true, MDIView *view=0) const;
+    Base::BoundBox3d getBoundingBox(const char *subname=0, 
+            const Base::Matrix4D *mat=0, bool transform=true,
+            const View3DInventorViewer *view=0, int depth=0) const;
+
+    /** Convenience function to obtain the current active viewer
+     */
+    static const View3DInventorViewer *getActiveViewer();
 
     /**
      * Get called if the object is about to get deleted.
@@ -501,10 +491,13 @@ public:
     /// Returns a list of added display mask modes
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
-    int getDefaultMode() const;
+    int getDefaultMode(bool noOverride=false) const;
     //@}
     
     virtual void setRenderCacheMode(int);
+
+    /// Internal use to invalidate all bounding box cache
+    static void clearBoundingBoxCache();
 
 protected:
     /** Helper method to check that the node is valid, i.e. it must not cause
@@ -532,6 +525,14 @@ protected:
      */
     virtual QIcon mergeOverlayIcons (const QIcon & orig) const;
 
+    /// Turn on mode switch
+    virtual void setModeSwitch();
+
+    /// Internal use to customize bounding box retrieval
+    virtual Base::BoundBox3d _getBoundingBox(const char *subname=0, 
+            const Base::Matrix4D *mat=0, bool transform=true,
+            const View3DInventorViewer *view=0, int depth=0) const;
+
 protected:
     /// The root Separator of the ViewProvider
     SoSeparator *pcRoot;
@@ -546,13 +547,18 @@ protected:
     std::string overrideMode;
     std::bitset<32> StatusBits;
 
+protected:
+    CoinPtr<SoGroup> pcChildGroup;
+
 private:
-    void setModeSwitch();
     int _iActualMode;
     int _iEditMode;
     int viewOverrideMode;
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
+
+    struct BoundingBoxCache;
+    mutable std::unique_ptr<BoundingBoxCache> bboxCache;
 };
 
 } // namespace Gui

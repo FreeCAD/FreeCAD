@@ -37,6 +37,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GroupExtension.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Expression.h>
 #include <Base/Console.h>
 #include <QMessageBox>
@@ -45,7 +46,7 @@ using namespace Gui;
 
 EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExtension)
 
-ViewProviderGroupExtension::ViewProviderGroupExtension()  : guard(false)
+ViewProviderGroupExtension::ViewProviderGroupExtension()
 {
     initExtensionType(ViewProviderGroupExtension::getExtensionClassTypeId());
 }
@@ -64,6 +65,12 @@ bool ViewProviderGroupExtension::extensionCanDragObject(App::DocumentObject*) co
     return true;
 }
 
+void ViewProviderGroupExtension::extensionAttach(App::DocumentObject* pcObject)
+{
+    if(App::GeoFeatureGroupExtension::isNonGeoGroup(pcObject)) 
+        getExtendedViewProvider()->SelectionStyle.setValue(1);
+}
+
 void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
@@ -77,10 +84,6 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
 }
 
 bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
-
-#ifdef FC_DEBUG
-    Base::Console().Log("Check ViewProviderGroupExtension");
-#endif
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
 
@@ -110,54 +113,11 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
 
-std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
+void ViewProviderGroupExtension::extensionClaimChildren(std::vector<App::DocumentObject*> &children) const {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();    
-    return std::vector<App::DocumentObject*>(group->Group.getValues());
-}
-
-void ViewProviderGroupExtension::extensionShow(void) {
-
-    // avoid possible infinite recursion
-    if (guard)
-        return;
-    Base::StateLocker lock(guard);
-
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    if (!getExtendedViewProvider()->isRestoring() ) {
-        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        for(auto obj : group->Group.getValues()) {
-            if(obj && !obj->Visibility.getValue())
-                obj->Visibility.setValue(true);
-        }
-    }
-
-    ViewProviderExtension::extensionShow();
-}
-
-void ViewProviderGroupExtension::extensionHide(void) {
-
-    // avoid possible infinite recursion
-    if (guard)
-        return;
-    Base::StateLocker lock(guard);
-
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    //
-    // Property::User1 is used by ViewProviderDocumentObject to mark for
-    // temporary visibility changes. Do not propagate the change to children.
-    if (!getExtendedViewProvider()->isRestoring()
-            && !getExtendedViewProvider()->Visibility.testStatus(App::Property::User1)) 
-    {
-        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        for(auto obj : group->Group.getValues()) {
-            if(obj && obj->Visibility.getValue())
-                obj->Visibility.setValue(false);
-        }
-    }
-    ViewProviderExtension::extensionHide();
+    const auto &objs = group->Group.getValues();
+    children.insert(children.end(),objs.begin(),objs.end());
 }
 
 bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& ) {

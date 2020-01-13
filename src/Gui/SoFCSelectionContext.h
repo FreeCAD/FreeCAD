@@ -37,6 +37,8 @@ struct SoFCSelectionContextBase;
 typedef std::shared_ptr<SoFCSelectionContextBase> SoFCSelectionContextBasePtr;
 
 struct GuiExport SoFCSelectionContextBase {
+    std::shared_ptr<int> counter;
+
     virtual ~SoFCSelectionContextBase() {}
     typedef int MergeFunc(int status, SoFCSelectionContextBasePtr &output, 
             SoFCSelectionContextBasePtr input, SoFCSelectionRoot *node);
@@ -51,12 +53,17 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     std::set<int> selectionIndex;
     SbColor selectionColor;
     SbColor highlightColor;
-    std::shared_ptr<int> counter;
 
     virtual ~SoFCSelectionContext();
 
     bool isSelected() const {
         return !selectionIndex.empty();
+    }
+
+    bool hasSelectionColor() const {
+        return selectionColor[0]!=0.0f
+            || selectionColor[1]!=0.0f
+            || selectionColor[2]!=0.0f;
     }
 
     void selectAll() {
@@ -117,13 +124,30 @@ struct GuiExport SoFCSelectionContextEx : SoFCSelectionContext
 class SoHighlightElementAction;
 class SoSelectionElementAction;
 
+/** Helper class to reference count selection in various selection context
+ *
+ * The caching problem appears when the same node appears in different part of
+ * the scene graph, and only some are selected. The caching node may also be
+ * shared in different part of the scene.
+ *
+ * This class is an non-ideal word around of this problem. It keeps record of
+ * the number of selections, and invalidates cache in case there are selections.
+ */
 class GuiExport SoFCSelectionCounter {
 public:
     SoFCSelectionCounter();
     virtual ~SoFCSelectionCounter();
-    bool checkRenderCache(SoState *state);
+
+    /// Invalids cache if there are selections
+    bool checkCache(SoState *state, bool secondary=false);
+
+    /// Count highlight action
     void checkAction(SoHighlightElementAction *hlaction);
-    void checkAction(SoSelectionElementAction *selaction, SoFCSelectionContextPtr ctx);
+
+    /// Count selection action
+    void checkAction(SoSelectionElementAction *selaction,
+            SoFCSelectionContextBasePtr ctx = SoFCSelectionContextBasePtr());
+
 protected:
     std::shared_ptr<int> counter;
     bool hasSelection;

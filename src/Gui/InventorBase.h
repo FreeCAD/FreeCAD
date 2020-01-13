@@ -1,5 +1,5 @@
 /****************************************************************************
- *   Copyright (c) 2018 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
+ *   Copyright (c) 2019 Zheng, Lei (realthunder) <realthunder.dev@gmail.com>*
  *                                                                          *
  *   This file is part of the FreeCAD CAx development system.               *
  *                                                                          *
@@ -20,55 +20,48 @@
  *                                                                          *
  ****************************************************************************/
 
-#include "PreCompiled.h"
-#include <App/Application.h>
-#include "ViewProvider.h"
-#include "ViewParams.h"
-#include "Selection.h"
+#ifndef GUI_INVENTOR_BASE_H
+#define GUI_INVENTOR_BASE_H
 
-using namespace Gui;
+#include <boost/intrusive_ptr.hpp>
 
-ViewParams::ViewParams() {
-    handle = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View");
-    handle->Attach(this);
-#undef FC_VIEW_PARAM
-#define FC_VIEW_PARAM(_name,_ctype,_type,_def) \
-    _name = handle->Get##_type(#_name,_def);\
-    funcs[#_name] = &ViewParams::update##_name;
+class SoGroup;
 
-#undef FC_VIEW_PARAM2
-#define FC_VIEW_PARAM2 FC_VIEW_PARAM
-    FC_VIEW_PARAMS
+// define this only if we actually decide to run coin in multiple thread
+#ifdef FC_COIN_MULTI_THREAD
+#   define FC_COIN_THREAD_LOCAL thread_local
+#else
+#   define FC_COIN_THREAD_LOCAL
+#endif
+
+namespace Gui {
+
+/** Convenience smart pointer to wrap coin node. 
+ *
+ * It is basically boost::intrusive plus implicit pointer conversion to save the
+ * trouble of typing get() all the time.
+ */
+template<class T>
+class CoinPtr: public boost::intrusive_ptr<T> {
+public:
+    // Too bad, VC2013 does not support constructor inheritance
+    //using boost::intrusive_ptr<T>::intrusive_ptr;
+    typedef boost::intrusive_ptr<T> inherited;
+    CoinPtr() {}
+    CoinPtr(T *p, bool add_ref=true):inherited(p,add_ref){}
+    template<class Y> CoinPtr(CoinPtr<Y> const &r):inherited(r){}
+
+    operator T *() const {
+        return this->get();
+    }
+};
+
+/** Helper function to deal with bug in SoNode::removeAllChildren()
+ *
+ * @sa https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
+ */
+void GuiExport coinRemoveAllChildren(SoGroup *node);
+
 }
 
-ViewParams::~ViewParams() {
-}
-
-void ViewParams::OnChange(Base::Subject<const char*> &, const char* sReason) {
-    if(!sReason)
-        return;
-    auto it = funcs.find(sReason);
-    if(it == funcs.end())
-        return;
-    it->second(this);
-}
-
-ViewParams *ViewParams::instance() {
-    static ViewParams *inst;
-    if(!inst)
-        inst = new ViewParams;
-    return inst;
-}
-
-void ViewParams::onShowSelectionOnTopChanged() {
-    Selection().clearCompleteSelection();
-    if(getMapChildrenPlacement())
-        setMapChildrenPlacement(false);
-}
-
-void ViewParams::onMapChildrenPlacementChanged() {
-    ViewProvider::clearBoundingBoxCache();
-    if(!getShowSelectionOnTop())
-        setShowSelectionOnTop(true);
-}
+#endif

@@ -45,6 +45,7 @@ namespace App
 {
   class DocumentObject;
   class Document;
+  class SubObjectT;
 }
 
 namespace Gui
@@ -486,8 +487,9 @@ public:
     /** Set selection object visibility
      *
      * @param visible: see VisibleState
+     * @param objs: optional objects to set visibility. If empty, then use the current selection.
      */
-    void setVisible(VisibleState visible);
+    void setVisible(VisibleState visible, const std::vector<App::SubObjectT> &objs = {});
 
     /// signal on new object
     boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
@@ -513,6 +515,18 @@ public:
      * @return The returned vector reflects the sequence of selection.
      */
     std::vector<SelObj> getSelection(const char* pDocName=0, int resolve=1, bool single=false) const;
+
+    /** Returns a vector of selection objects that are safer to access
+     *
+     * Unlike getSelection() whose returned vector is invalidated when the
+     * selection is changed. The returned objects is not affected by current
+     * selection state, and are even safe to access when the objects are
+     * deleted.
+     *
+     * @sa getSelection()
+     */
+    std::vector<App::SubObjectT> getSelectionT(const char* pDocName=0, int resolve=1, bool single=false) const;
+
     /** Returns a vector of selection objects
      *
      * @param pDocName: document name. If no document name is given the objects
@@ -649,6 +663,9 @@ public:
             const char* pDocName=0, Base::Type typeId=App::DocumentObject::getClassTypeId()) const;
     //@}
 
+    // Check if obj can be considered as a top level object
+    static void checkTopParent(App::DocumentObject *&obj, std::string &subname);
+
     static SelectionSingleton& instance(void);
     static void destruct (void);
     friend class SelectionFilter;
@@ -682,6 +699,7 @@ protected:
     static PyObject *sHasSelection        (PyObject *self,PyObject *args);
     static PyObject *sHasSubSelection     (PyObject *self,PyObject *args);
     static PyObject *sGetSelectionFromStack(PyObject *self,PyObject *args);
+    static PyObject *sCheckTopParent      (PyObject *self,PyObject *args);
 
 protected:
     /// Construction
@@ -783,6 +801,14 @@ public:
     }
 private:
     bool silent;
+};
+
+/// Helper class to disable top parent check when adding selection
+class GuiExport SelectionNoTopParentCheck {
+public:
+    SelectionNoTopParentCheck();
+    ~SelectionNoTopParentCheck();
+    static bool enabled();
 };
 
 } //namespace Gui

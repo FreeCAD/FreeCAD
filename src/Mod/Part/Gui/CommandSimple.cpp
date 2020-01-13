@@ -34,7 +34,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
@@ -272,9 +272,9 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
             Gui::Command::copyVisual(newObj, "ShapeColor", v.second);
             Gui::Command::copyVisual(newObj, "LineColor", v.second);
             Gui::Command::copyVisual(newObj, "PointColor", v.second);
-            FCMD_VOBJ_CMD(newObj,"mapShapeColors(App.getDocument('" 
-                    << obj->getDocument()->getName() << "'))");
-            if(obj->getDocument()!=App::GetApplication().getActiveDocument()) {
+            Gui::cmdGuiObject(newObj,std::ostringstream()
+                    << "mapShapeColors(App.getDocument('" << obj->getDocument()->getName() << "'))");
+            if(obj->getDocument() != App::GetApplication().getActiveDocument()) {
                 // clear element map if copied from external object, or else
                 // weird stuff will happen
                 Gui::Command::doCommand(Gui::Command::Doc,

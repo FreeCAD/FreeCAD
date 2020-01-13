@@ -259,7 +259,7 @@ public:
 
     /// Helper function to return linked objects using an std::inserter
     template<class T>
-    void getLinkedObjects(T &inserter, bool all=false) const {
+    void getLinkedObjects(T inserter, bool all=false) const {
         std::vector<App::DocumentObject*> ret;
         getLinks(ret,all);
         std::copy(ret.begin(),ret.end(),inserter);
@@ -1326,6 +1326,8 @@ protected:
     virtual void onRemoveDep(App::DocumentObject *) {}
     void updateDeps(std::map<DocumentObject*,bool> &&newDeps);
     void clearDeps();
+
+    void _onBreakLink(App::DocumentObject *obj);
 
 protected:
     std::map<App::DocumentObject*,bool> _Deps;

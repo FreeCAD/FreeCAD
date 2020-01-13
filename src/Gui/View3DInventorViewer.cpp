@@ -87,6 +87,7 @@
 # include <QMimeData>
 #endif
 
+#include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SoEventManager.h>
 
 #if !defined(FC_OS_MACOSX)
@@ -108,6 +109,7 @@
 
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
+#include "ViewParams.h"
 #include "SoFCBackgroundGradient.h"
 #include "SoFCColorBar.h"
 #include "SoFCColorLegend.h"
@@ -460,6 +462,7 @@ void View3DInventorViewer::init()
     // must be created. Using an SoSeparator avoids this drawback.
     selectionRoot = new Gui::SoFCUnifiedSelection();
     selectionRoot->applySettings();
+    selectionRoot->pcViewer = this;
 #endif
     // set the ViewProvider root node
     pcViewProviderRoot = selectionRoot;
@@ -489,15 +492,18 @@ void View3DInventorViewer::init()
     pcViewProviderRoot->addChild(cb);
 #endif
 
-    pcGroupOnTop = new SoSeparator;
-    pcGroupOnTop->ref();
-    pcViewProviderRoot->addChild(pcGroupOnTop);
+    selAction = new SoSelectionElementAction;
+    preselAction = new SoHighlightElementAction;
 
-    auto pcGroupOnTopPickStyle = new SoPickStyle;
-    pcGroupOnTopPickStyle->style = SoPickStyle::UNPICKABLE;
-    // pcGroupOnTopPickStyle->style = SoPickStyle::SHAPE_ON_TOP;
-    pcGroupOnTopPickStyle->setOverride(true);
-    pcGroupOnTop->addChild(pcGroupOnTopPickStyle);
+    auto pcGroupOnTop = new SoSeparator;
+    pcGroupOnTop->renderCaching = SoSeparator::OFF;
+    pcGroupOnTop->boundingBoxCaching = SoSeparator::OFF;
+    pcGroupOnTop->setName("GroupOnTop");
+
+    auto pickStyle = new SoPickStyle;
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    pickStyle->setOverride(true);
+    pcGroupOnTop->addChild(pickStyle);
 
     coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
     auto pcOnTopMaterial = new SoMaterial;
@@ -506,18 +512,42 @@ void View3DInventorViewer::init()
     pcOnTopMaterial->setOverride(true);
     pcGroupOnTop->addChild(pcOnTopMaterial);
 
-    auto selRoot = new SoFCSelectionRoot;
-    selRoot->selectionStyle = SoFCSelectionRoot::PassThrough;
-    pcGroupOnTopSel = selRoot;
+    pcGroupOnTopSel = new SoFCSelectionRoot;
+    pcGroupOnTopSel->selectionStyle = SoFCSelectionRoot::PassThrough;
     pcGroupOnTopSel->setName("GroupOnTopSel");
     pcGroupOnTopSel->ref();
-    pcGroupOnTop->addChild(pcGroupOnTopSel);
-    selRoot = new SoFCSelectionRoot;
-    selRoot->selectionStyle = SoFCSelectionRoot::PassThrough;
-    pcGroupOnTopPreSel = selRoot;
+
+    pcGroupOnTopPreSel = new SoFCSelectionRoot;
+    pcGroupOnTopPreSel->selectionStyle = SoFCSelectionRoot::PassThrough;
     pcGroupOnTopPreSel->setName("GroupOnTopPreSel");
     pcGroupOnTopPreSel->ref();
-    pcGroupOnTop->addChild(pcGroupOnTopPreSel);
+
+    pcGroupOnTopSwitch = new SoFCSwitch;
+    pcGroupOnTopSwitch->ref();
+    pcGroupOnTopSwitch->overrideSwitch = SoFCSwitch::OverrideDefault;
+    pcGroupOnTopSwitch->whichChild = SO_SWITCH_ALL;
+    pcGroupOnTopSwitch->defaultChild = SO_SWITCH_ALL;
+    pcGroupOnTop->addChild(pcGroupOnTopSwitch);
+
+    pcGroupOnTopSwitch->addChild(pcGroupOnTopSel);
+    pcGroupOnTopSwitch->addChild(pcGroupOnTopPreSel);
+
+    SoSearchAction sa;
+    sa.setNode(pcViewProviderRoot);
+    sa.apply(getSoRenderManager()->getSceneGraph());
+
+    auto path = sa.getPath();
+    assert(path && path->getLength()>1);
+    auto sceneNode = path->getNodeFromTail(1);
+    assert(sceneNode->isOfType(SoGroup::getClassTypeId()));
+    static_cast<SoGroup*>(sceneNode)->insertChild(pcGroupOnTop,path->getIndexFromTail(0));
+
+    pcGroupOnTopPath = path->copy();
+    pcGroupOnTopPath->ref();
+    pcGroupOnTopPath->truncate(path->getLength()-1);
+    pcGroupOnTopPath->append(pcGroupOnTop);
+    pcGroupOnTopPath->append(pcGroupOnTopSwitch);
+    pcGroupOnTopPath->append(pcGroupOnTopSel);
 
     pcClipPlane = 0;
 
@@ -609,6 +639,13 @@ void View3DInventorViewer::init()
 
 View3DInventorViewer::~View3DInventorViewer()
 {
+    // FIXME: SoUnfifiedSelection class has a static currentHighlight path that
+    // may have a reference to our selection root. Sometimes, we'll get warning
+    // "SoBase()::unref ref count less than zero", when the currentHighlight is
+    // released after this viewer is destroyed. Can't figure out why. Just
+    // clear preselection before destruction for now.
+    selectionRoot->removeHighlight();
+
     // to prevent following OpenGL error message: "Texture is not valid in the current context. Texture has not been destroyed"
     aboutToDestroyGLContext();
 
@@ -641,9 +678,15 @@ View3DInventorViewer::~View3DInventorViewer()
     this->backlight->unref();
     this->backlight = 0;
 
-    this->pcGroupOnTop->unref();
+    this->pcGroupOnTopPath->unref();
+    this->pcGroupOnTopSwitch->unref();
     this->pcGroupOnTopPreSel->unref();
     this->pcGroupOnTopSel->unref();
+
+    delete selAction;
+    selAction = 0;
+    delete preselAction;
+    preselAction = 0;
 
     this->pcEditingRoot->unref();
     this->pcEditingTransform->unref();
@@ -718,34 +761,162 @@ void View3DInventorViewer::initialize()
     this->axiscrossSize = 10;
 }
 
-void View3DInventorViewer::clearGroupOnTop() {
-    if(objectsOnTop.size() || objectsOnTopPreSel.size()) {
-        objectsOnTop.clear();
-        objectsOnTopPreSel.clear();
-        SoSelectionElementAction action(SoSelectionElementAction::None,true);
-        action.apply(pcGroupOnTopPreSel);
-        action.apply(pcGroupOnTopSel);
-        coinRemoveAllChildren(pcGroupOnTopSel);
-        coinRemoveAllChildren(pcGroupOnTopPreSel);
-        FC_LOG("clear annotation");
-    }
+View3DInventorViewer::OnTopInfo::OnTopInfo()
+    :node(0),alt(false)
+{
 }
 
-void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
-    if(Reason.Type == SelectionChanges::SetSelection || Reason.Type == SelectionChanges::ClrSelection) {
-        clearGroupOnTop();
-        if(Reason.Type == SelectionChanges::ClrSelection)
-            return;
-    }
-    if(Reason.Type == SelectionChanges::RmvPreselect ||
-       Reason.Type == SelectionChanges::RmvPreselectSignal) 
-    {
-        SoSelectionElementAction action(SoSelectionElementAction::None,true);
-        action.apply(pcGroupOnTopPreSel);
-        coinRemoveAllChildren(pcGroupOnTopPreSel);
-        objectsOnTopPreSel.clear();
+View3DInventorViewer::OnTopInfo::OnTopInfo(OnTopInfo &&other)
+    :node(other.node),elements(std::move(other.elements))
+{
+    other.node = 0;
+}
+
+View3DInventorViewer::OnTopInfo::~OnTopInfo() {
+    if(node)
+        node->unref();
+    clearElements();
+}
+
+void View3DInventorViewer::OnTopInfo::clearElements() {
+    for(auto &v : elements)
+        delete v.second;
+    elements.clear();
+}
+
+void View3DInventorViewer::clearGroupOnTop(bool alt) {
+    if(objectsOnTopSel.empty() && objectsOnTopPreSel.empty())
         return;
+
+    SoTempPath tmpPath(10);
+    tmpPath.ref();
+
+    if(!alt) {
+        if(objectsOnTopPreSel.size()) {
+            tmpPath.append(pcGroupOnTopSwitch);
+            tmpPath.append(pcGroupOnTopPreSel);
+            for(auto &v : objectsOnTopPreSel) {
+                auto &info = v.second;
+                tmpPath.truncate(2);
+                tmpPath.append(info.node);
+                tmpPath.append(info.node->getPath());
+                selAction->setSecondary(true);
+                selAction->setType(SoSelectionElementAction::None);
+                selAction->apply(&tmpPath);
+            }
+            objectsOnTopPreSel.clear();
+        }
+        pcGroupOnTopPreSel->resetContext();
+        coinRemoveAllChildren(pcGroupOnTopPreSel);
     }
+
+    if(objectsOnTopSel.size()) {
+        tmpPath.truncate(0);
+        tmpPath.append(pcGroupOnTopSwitch);
+        tmpPath.append(pcGroupOnTopSel);
+        if(alt) {
+            for(auto it=objectsOnTopSel.begin();it!=objectsOnTopSel.end();) {
+                auto &info = it->second;
+                if(!info.alt || info.elements.size()) {
+                    info.alt = false;
+                    ++it;
+                    continue;
+                }
+                int idx = pcGroupOnTopSel->findChild(info.node);
+                if(idx >= 0) {
+                    tmpPath.truncate(2);
+                    tmpPath.append(info.node);
+                    tmpPath.append(info.node->getPath());
+                    selAction->setSecondary(false);
+                    selAction->setType(SoSelectionElementAction::None);
+                    selAction->apply(&tmpPath);
+                    pcGroupOnTopSel->removeChild(idx);
+                }
+                it = objectsOnTopSel.erase(it);
+            }
+            tmpPath.unrefNoDelete();
+            return;
+        }
+
+        pcGroupOnTopSel->resetContext();
+        coinRemoveAllChildren(pcGroupOnTopSel);
+
+        selAction->setColor(SbColor(0,0,0));
+        selAction->setSecondary(false);
+        selAction->setType(SoSelectionElementAction::Append);
+        for(auto it=objectsOnTopSel.begin();it!=objectsOnTopSel.end();) {
+            auto &info = it->second;
+            if(!info.alt)
+                it = objectsOnTopSel.erase(it);
+            else {
+                ++it;
+                pcGroupOnTopSel->addChild(info.node);
+                info.clearElements();
+                tmpPath.truncate(2);
+                tmpPath.append(info.node);
+                tmpPath.append(info.node->getPath());
+                selAction->apply(&tmpPath);
+            }
+        }
+    }
+
+    tmpPath.unrefNoDelete();
+}
+
+bool View3DInventorViewer::isInGroupOnTop(const char *objname, const char *subname) const {
+    if(!objname)
+        return false;
+    std::string key(objname);
+    key += '.';
+    auto element = Data::ComplexGeoData::findElementName(subname);
+    if(subname)
+        key.insert(key.end(),subname,element);
+    return isInGroupOnTop(key);
+}
+
+bool View3DInventorViewer::isInGroupOnTop(const std::string &key) const {
+    auto it = objectsOnTopSel.find(key);
+    return it!=objectsOnTopSel.end() && it->second.alt;
+}
+
+void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool alt) {
+
+    bool preselect = false;
+
+    switch(Reason.Type) {
+    case SelectionChanges::SetSelection:
+        clearGroupOnTop();
+        if(!guiDocument)
+            return;
+        else {
+            auto sels = Gui::Selection().getSelection(guiDocument->getDocument()->getName(),0);
+            if(ViewParams::instance()->getMaxOnTopSelections() < (int)sels.size()) {
+                // setSelection() is normally used for selectAll(). Let's not blow up
+                // the whole scene with all those invisible objects
+                selectionRoot->selectAll = true;
+                return;
+            }
+            for(auto &sel : sels ) {
+                checkGroupOnTop(SelectionChanges(SelectionChanges::AddSelection,
+                            sel.DocName,sel.FeatName,sel.SubName));
+            }
+        }
+        return;
+    case SelectionChanges::ClrSelection:
+        clearGroupOnTop(alt);
+        if(!alt)
+            selectionRoot->selectAll = false;
+        return;
+    case SelectionChanges::SetPreselect:
+    case SelectionChanges::SetPreselectSignal:
+    case SelectionChanges::RmvPreselect:
+    case SelectionChanges::RmvPreselectSignal:
+        preselect = true;
+        break;
+    default:
+        break;
+    }
+
     if(!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName)
         return;
     auto obj = getDocument()->getDocument()->getObject(Reason.pObjectName);
@@ -754,44 +925,131 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     std::string key(obj->getNameInDocument());
     key += '.';
     auto subname = Reason.pSubName;
+    auto element = Data::ComplexGeoData::findElementName(subname);
     if(subname)
-        key += subname;
-    if(Reason.Type == SelectionChanges::RmvSelection) {
-        auto &objs = objectsOnTop;
-        auto pcGroup = pcGroupOnTopSel;
+        key.insert(key.end(),subname,element);
+
+    switch(Reason.Type) {
+    case SelectionChanges::SetPreselectSignal:
+    case SelectionChanges::SetPreselect:
+        if(Reason.SubType!=2) {
+            // 2 means it is triggered from tree view. If not from tree view
+            // and not belong to on top object, do not handle it.
+            if(!objectsOnTopSel.count(key))
+                return;
+        }
+        break;
+    case SelectionChanges::HideSelection:
+    case SelectionChanges::RmvPreselect:
+    case SelectionChanges::RmvPreselectSignal:
+    case SelectionChanges::RmvSelection: {
+
+        auto &objs = preselect?objectsOnTopPreSel:objectsOnTopSel;
+        auto pcGroup = preselect?pcGroupOnTopPreSel:pcGroupOnTopSel;
+
         auto it = objs.find(key.c_str());
         if(it == objs.end())
             return;
-        int index = pcGroup->findChild(it->second);
-        if(index >= 0) {
-            auto node = static_cast<SoFCPathAnnotation*>(it->second);
-            SoSelectionElementAction action(node->getDetail()?
-                    SoSelectionElementAction::Remove:SoSelectionElementAction::None,true);
-            auto path = node->getPath();
-            SoTempPath tmpPath(2 + (path ? path->getLength() : 0));
-            tmpPath.ref();
-            tmpPath.append(pcGroup);
-            tmpPath.append(node);
-            tmpPath.append(node->getPath());
-            action.setElement(node->getDetail());
-            action.apply(&tmpPath);
-            tmpPath.unrefNoDelete();
+        auto &info = it->second;
+
+        if(Reason.Type == SelectionChanges::HideSelection) {
+            if(!info.alt) {
+                pcGroup->removeChild(info.node);
+                objs.erase(it);
+            }
+            return;
+        }
+
+        SoDetail *det = 0;
+        auto eit = info.elements.end();
+
+        if(Reason.Type==SelectionChanges::RmvSelection && alt) {
+            // When alt is true, remove this object from the on top group
+            // regardless of whether it is previsouly selected with alt or not.
+            info.alt = false;
+            info.clearElements();
+        } else {
+            eit = info.elements.find(element);
+            if(eit == info.elements.end())
+                return;
+            else
+                det = eit->second;
+        }
+
+        if(preselect) {
+            auto it2 = objectsOnTopSel.find(key);
+            if(it2!=objectsOnTopSel.end() 
+                    && it2->second.elements.empty()
+                    && !it2->second.alt)
+            {
+                pcGroupOnTopSel->removeChild(it2->second.node);
+                objectsOnTopSel.erase(it2);
+            }
+        }
+
+        int index = pcGroup->findChild(info.node);
+        if(index < 0) {
+            objs.erase(it);
+            return;
+        }
+
+        auto path = info.node->getPath();
+        SoTempPath tmpPath(3 + (path ? path->getLength() : 0));
+        tmpPath.ref();
+        tmpPath.append(pcGroupOnTopSwitch);
+        tmpPath.append(pcGroup);
+        tmpPath.append(info.node);
+        tmpPath.append(info.node->getPath());
+
+        if(pcGroup == pcGroupOnTopSel) {
+            selAction->setElement(det);
+            selAction->setSecondary(false);
+            selAction->setType(det?SoSelectionElementAction::Remove:SoSelectionElementAction::None);
+            selAction->apply(&tmpPath);
+            selAction->setElement(0);
+
+            if(info.alt && eit!=info.elements.end() && info.elements.size()==1) {
+                selAction->setColor(SbColor(0,0,0));
+                selAction->setType(SoSelectionElementAction::All);
+                selAction->apply(&tmpPath);
+            }
+        } else {
+            selAction->setElement(det);
+            selAction->setSecondary(true);
+            selAction->setType(det?SoSelectionElementAction::Remove:SoSelectionElementAction::None);
+            selAction->apply(&tmpPath);
+            selAction->setElement(0);
+        }
+
+        tmpPath.unrefNoDelete();
+
+        if(eit != info.elements.end()) {
+            delete eit->second;
+            info.elements.erase(eit);
+        }
+        if(info.elements.empty() && !info.alt) {
             pcGroup->removeChild(index);
-            FC_LOG("remove annotation " << Reason.Type << " " << key);
-        }else
-            FC_LOG("remove annotation object " << Reason.Type << " " << key);
-        objs.erase(it);
+            objs.erase(it);
+
+            if(alt)
+                Gui::Selection().rmvPreselect();
+        }
         return;
     }
+    default:
+        break;
+    }
 
-    auto &objs = Reason.Type==SelectionChanges::SetPreselect?objectsOnTopPreSel:objectsOnTop;
-    auto pcGroup = Reason.Type==SelectionChanges::SetPreselect?pcGroupOnTopPreSel:pcGroupOnTopSel;
-
-    if(objs.find(key.c_str())!=objs.end())
+    if(!preselect && element && element[0]
+            && ViewParams::instance()->getShowSelectionBoundingBox())
         return;
-    auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+
+    auto &objs = preselect?objectsOnTopPreSel:objectsOnTopSel;
+    auto pcGroup = preselect?pcGroupOnTopPreSel:pcGroupOnTopSel;
+
+    auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(obj));
-    if(!vp || !vp->isSelectable() || !vp->isShow())
+    if(!vp)
         return;
     auto svp = vp;
     if(subname && *subname) {
@@ -799,9 +1057,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         if(!sobj || !sobj->getNameInDocument())
             return;
         if(sobj!=obj) {
-            svp = dynamic_cast<ViewProviderDocumentObject*>(
+            svp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                     Application::Instance->getViewProvider(sobj));
-            if(!svp || !svp->isSelectable())
+            if(!svp)
                 return;
         }
     }
@@ -809,25 +1067,26 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
     // onTop==2 means on top only if whole object is selected,
     // onTop==3 means on top only if some sub-element is selected
     // onTop==1 means either
-    if(Gui::Selection().needPickedList())
+    if(Gui::Selection().needPickedList()
+            || (alt && Reason.Type == SelectionChanges::AddSelection)
+            || ViewParams::instance()->getShowSelectionOnTop()
+            || isInGroupOnTop(key))
         onTop = 1;
     else if(vp->OnTopWhenSelected.getValue())
         onTop = vp->OnTopWhenSelected.getValue();
     else
         onTop = svp->OnTopWhenSelected.getValue();
-    if(Reason.Type == SelectionChanges::SetPreselect) {
-        SoHighlightElementAction action;
-        action.setHighlighted(true);
-        action.setColor(selectionRoot->colorHighlight.getValue());
-        action.apply(pcGroupOnTopPreSel);
+
+    if(preselect) {
+        preselAction->setHighlighted(true);
+        preselAction->setColor(selectionRoot->colorHighlight.getValue());
+        preselAction->apply(pcGroupOnTopPreSel);
         if(!onTop)
             onTop = 2;
-    }else {
+    }else if (Reason.Type == SelectionChanges::AddSelection) {
         if(!onTop)
             return;
-        SoSelectionElementAction action(SoSelectionElementAction::All);
-        action.setColor(selectionRoot->colorSelection.getValue());
-        action.apply(pcGroupOnTopSel);
+        selAction->setColor(selectionRoot->colorSelection.getValue());
     }
     if(onTop==2 || onTop==3) {
         if(subname && *subname) {
@@ -842,63 +1101,85 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             return;
     }
 
-    std::vector<ViewProvider*> groups;
-    auto grpVp = vp;
-    for(auto childVp=vp;;childVp=grpVp) {
-        auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(childVp->getObject());
-        if(!grp || !grp->getNameInDocument()) break;
-        grpVp = dynamic_cast<ViewProviderDocumentObject*>(
-                Application::Instance->getViewProvider(grp));
-        if(!grpVp) break;
-        auto childRoot = grpVp->getChildRoot();
-        auto modeSwitch = grpVp->getModeSwitch();
-        auto idx = modeSwitch->whichChild.getValue();
-        if(idx<0 || idx>=modeSwitch->getNumChildren() ||
-           modeSwitch->getChild(idx)!=childRoot)
-        {
-            FC_LOG("skip " << obj->getFullName() << '.' << (subname?subname:"") 
-                    << ", hidden inside geo group");
-            return;
-        }
-        if(childRoot->findChild(childVp->getRoot())<0) {
-            FC_WARN("cannot find '" << childVp->getObject()->getFullName() 
-                    << "' in geo group '" << grp->getNameInDocument() << "'");
-            break;
-        }
-        groups.push_back(grpVp);
-    }
-
     SoTempPath path(10);
     path.ref();
 
-    for(auto it=groups.rbegin();it!=groups.rend();++it) {
-        auto grpVp = *it;
-        path.append(grpVp->getRoot());
-        path.append(grpVp->getModeSwitch());
-        path.append(grpVp->getChildRoot());
-    }
-
     SoDetail *det = 0;
     if(vp->getDetailPath(subname, &path,true,det) && path.getLength()) {
-        auto node = new SoFCPathAnnotation;
-        node->setPath(&path);
-        pcGroup->addChild(node);
-        if(det) {
-            SoSelectionElementAction action(SoSelectionElementAction::Append,true);
-            action.setElement(det);
-            SoTempPath tmpPath(path.getLength()+2);
-            tmpPath.ref();
-            tmpPath.append(pcGroup);
-            tmpPath.append(node);
-            tmpPath.append(&path);
-            action.apply(&tmpPath);
-            tmpPath.unrefNoDelete();
-            node->setDetail(det);
-            det = 0;
+        auto &info = objs[key];
+        if(!info.node) {
+            info.node = new SoFCPathAnnotation(vp,subname,this);
+            info.node->ref();
+            info.node->setPath(&path);
+            pcGroup->addChild(info.node);
         }
-        FC_LOG("add annotation " << Reason.Type << " " << key);
-        objs[key.c_str()] = node;
+        if(alt && Reason.Type == SelectionChanges::AddSelection) {
+            if(!info.alt) {
+                info.alt = true;
+                if(info.elements.empty()) {
+                    SoTempPath tmpPath(path.getLength()+3);
+                    tmpPath.ref();
+                    tmpPath.append(pcGroupOnTopSwitch);
+                    tmpPath.append(pcGroup);
+                    tmpPath.append(info.node);
+                    tmpPath.append(&path);
+                    selAction->setColor(SbColor(0,0,0));
+                    selAction->setSecondary(false);
+                    selAction->setType(SoSelectionElementAction::All);
+                    selAction->apply(&tmpPath);
+                    tmpPath.unrefNoDelete();
+                }
+            }
+        } else if(info.elements.emplace(element,det).second) {
+            SoTempPath tmpPath(path.getLength()+3);
+            tmpPath.ref();
+            tmpPath.append(pcGroupOnTopSwitch);
+            tmpPath.append(pcGroup);
+            tmpPath.append(info.node);
+            tmpPath.append(&path);
+            if(pcGroup == pcGroupOnTopSel) {
+                selAction->setSecondary(false);
+                if(info.elements.size()==1 && info.alt) {
+                    selAction->setType(SoSelectionElementAction::None);
+                    selAction->apply(&tmpPath);
+                }
+                info.node->setDetail(!!det);
+                selAction->setElement(det);
+                selAction->setType(det?SoSelectionElementAction::Append:SoSelectionElementAction::All);
+                selAction->apply(&tmpPath);
+                selAction->setElement(0);
+            } else if (det) {
+                info.node->setDetail(true);
+                selAction->setSecondary(true);
+                selAction->setElement(det);
+                selAction->setType(SoSelectionElementAction::Append);
+                selAction->apply(&tmpPath);
+                selAction->setElement(0);
+
+                auto &selInfo = objectsOnTopSel[key];
+                if(!selInfo.node) {
+                    selInfo.node = new SoFCPathAnnotation(vp,subname,this);
+                    selInfo.node->ref();
+                    selInfo.node->setPath(&path);
+                    selInfo.node->setDetail(true);
+                    pcGroupOnTopSel->addChild(selInfo.node);
+                }
+            } else {
+                // NOTE: assuming preselect is only applicable to one single
+                // object(or sub-element) at a time. If in the future we shall
+                // support multiple preselect element, include the element in
+                // the objectsOnTopPreSel key.
+                info.node->setDetail(false);
+                selAction->setSecondary(true);
+                selAction->setElement(0);
+                selAction->setType(SoSelectionElementAction::None);
+                selAction->apply(&tmpPath);
+            }
+            det = 0;
+            tmpPath.unrefNoDelete();
+        }
     }
+
     delete det;
     path.unrefNoDelete();
 }
@@ -917,16 +1198,10 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
 
     switch(Reason.Type) {
     case SelectionChanges::ShowSelection:
+        Reason.Type = SelectionChanges::AddSelection;
+        // fall through
     case SelectionChanges::HideSelection:
-        if(Reason.Type == SelectionChanges::ShowSelection)
-            Reason.Type = SelectionChanges::AddSelection;
-        else
-            Reason.Type = SelectionChanges::RmvSelection;
-        // fall through
     case SelectionChanges::SetPreselect:
-        if(Reason.SubType!=2) // 2 means it is triggered from tree view
-            break;
-        // fall through
     case SelectionChanges::RmvPreselect:
     case SelectionChanges::RmvPreselectSignal:
     case SelectionChanges::SetSelection:
@@ -935,11 +1210,15 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
     case SelectionChanges::ClrSelection:
         checkGroupOnTop(Reason);
         break;
-    case SelectionChanges::SetPreselectSignal:
-        break;
     default:
         return;
     }
+
+    if(Reason.Type == SelectionChanges::SetPreselectSignal && Reason.SubType != 2)
+        return;
+
+    if(Reason.Type == SelectionChanges::HideSelection)
+        Reason.Type = SelectionChanges::RmvSelection;
 
     if(Reason.Type == SelectionChanges::RmvPreselect || 
        Reason.Type == SelectionChanges::RmvPreselectSignal) 
@@ -980,12 +1259,14 @@ SbBool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
 /// adds an ViewProvider to the view, e.g. from a feature
 void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
 {
+    if(!_ViewProviderSet.insert(pcProvider).second)
+        return;
+
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
-        if(pcProvider->canAddToSceneGraph())
+        if(!guiDocument->isClaimed3D(pcProvider) && pcProvider->canAddToSceneGraph())
             pcViewProviderRoot->addChild(root);
-        _ViewProviderMap[root] = pcProvider;
     }
 
     SoSeparator* fore = pcProvider->getFrontRoot();
@@ -997,7 +1278,6 @@ void View3DInventorViewer::addViewProvider(ViewProvider* pcProvider)
         backgroundroot->addChild(back);
 
     pcProvider->setOverrideMode(this->getOverrideMode());
-    _ViewProviderSet.insert(pcProvider);
 }
 
 void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
@@ -1005,13 +1285,17 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     if (this->editViewProvider == pcProvider)
         resetEditingViewProvider();
 
+    auto it = _ViewProviderSet.find(pcProvider);
+    if(it == _ViewProviderSet.end())
+        return;
+    _ViewProviderSet.erase(it);
+
     SoSeparator* root = pcProvider->getRoot();
 
     if (root) {
         int index = pcViewProviderRoot->findChild(root);
         if(index>=0)
             pcViewProviderRoot->removeChild(index);
-        _ViewProviderMap.erase(root);
     }
 
     SoSeparator* fore = pcProvider->getFrontRoot();
@@ -1021,8 +1305,20 @@ void View3DInventorViewer::removeViewProvider(ViewProvider* pcProvider)
     SoSeparator* back = pcProvider->getBackRoot();
     if (back)
         backgroundroot->removeChild(back);
+}
 
-    _ViewProviderSet.erase(pcProvider);
+void View3DInventorViewer::toggleViewProvider(ViewProvider *vp) {
+    if(!_ViewProviderSet.count(vp))
+        return;
+    SoSeparator* root = vp->getRoot();
+    if(!root || !guiDocument)
+        return;
+    int index = pcViewProviderRoot->findChild(root);
+    if(index>=0) {
+        if(guiDocument->isClaimed3D(vp) || !vp->canAddToSceneGraph())
+            pcViewProviderRoot->removeChild(index);
+    } else if(!guiDocument->isClaimed3D(vp) && vp->canAddToSceneGraph())
+        pcViewProviderRoot->addChild(root);
 }
 
 void View3DInventorViewer::setEditingTransform(const Base::Matrix4D &mat) {
@@ -1461,7 +1757,6 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
     inherited::setSceneGraph(root);
     if (!root) {
         _ViewProviderSet.clear();
-        _ViewProviderMap.clear();
         editViewProvider = 0;
     }
 
@@ -1579,6 +1874,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     SoCallback* gl = new SoCallback;
     gl->setCallback(setGLWidgetCB, this->getGLWidget());
     root->addChild(gl);
+    root->addChild(pcGroupOnTopSwitch);
     root->addChild(pcViewProviderRoot);
 
 #if !defined(HAVE_QT5_OPENGL)
@@ -2702,14 +2998,18 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
     return (pick ? new SoPickedPoint(*pick) : 0);
 }
 
-const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
+SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
 {
-    if (selectionRoot) {
-        auto ret = selectionRoot->getPickedList(n->getAction(), true);
-        if(ret.size()) return ret[0].pp;
-        return nullptr;
-    }
-    return n->getPickedPoint();
+    if (selectionRoot) 
+        return selectionRoot->getPickedPoint(n->getAction());
+    auto pp = n->getPickedPoint();
+    return pp?pp->copy():0;
+}
+
+std::vector<App::SubObjectT>
+View3DInventorViewer::getPickedList(const SbVec2s &pos) const {
+    return selectionRoot->getPickedSelections(pos,
+            getSoRenderManager()->getViewportRegion(), false);
 }
 
 SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
@@ -2795,7 +3095,71 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& po
     cam->position.setValue(pos);
 }
 
-void View3DInventorViewer::animatedViewAll(int steps, int ms)
+bool View3DInventorViewer::getSceneBoundBox(Base::BoundBox3d &box) const {
+    // in the scene graph we may have objects which we want to exclude
+    // when doing a fit all. Such objects must be part of the group
+    // SoSkipBoundingGroup.
+    SoSearchAction sa;
+    sa.setType(SoSkipBoundingGroup::getClassTypeId());
+    sa.setInterest(SoSearchAction::ALL);
+    sa.apply(this->getSoRenderManager()->getSceneGraph());
+    const SoPathList& pathlist = sa.getPaths();
+
+    for (int i = 0; i < pathlist.getLength(); i++) {
+        SoPath* path = pathlist[i];
+        SoSkipBoundingGroup* group = static_cast<SoSkipBoundingGroup*>(path->getTail());
+        group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
+    }
+
+    if(ViewParams::instance()->getUseTightBoundingBox()) {
+        for(int i=0;i<pcViewProviderRoot->getNumChildren();++i) {
+            auto node = pcViewProviderRoot->getChild(i);
+            auto vp = guiDocument->getViewProvider(node);
+            if(!vp || !vp->isVisible())
+                continue;
+            auto sbox = vp->getBoundingBox(0,0,true,this);
+            if(sbox.IsValid())
+                box.Add(sbox);
+        }
+    } else {
+        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
+        action.apply(this->getSoRenderManager()->getSceneGraph());
+        auto bbox = action.getBoundingBox();
+        if(!bbox.isEmpty()) {
+            float minx,miny,minz,maxx,maxy,maxz;
+            bbox.getBounds(minx,miny,minz,maxx,maxy,maxz);
+            box.MinX = minx;
+            box.MinY = miny;
+            box.MinZ = minz;
+            box.MaxX = maxx;
+            box.MaxY = maxy;
+            box.MaxZ = maxz;
+        }
+    }
+
+    for (int i = 0; i < pathlist.getLength(); i++) {
+        SoPath* path = pathlist[i];
+        SoSkipBoundingGroup* group = static_cast<SoSkipBoundingGroup*>(path->getTail());
+        group->mode = SoSkipBoundingGroup::INCLUDE_BBOX;
+    }
+    return box.IsValid();
+}
+
+bool View3DInventorViewer::getSceneBoundBox(SbBox3f &box) const {
+    Base::BoundBox3d fcbox;
+    getSceneBoundBox(fcbox);
+    if(!fcbox.IsValid())
+        return false;
+    box.setBounds(fcbox.MinX,fcbox.MinY,fcbox.MinZ,
+                  fcbox.MaxX,fcbox.MaxY,fcbox.MaxZ);
+    SbSphere sphere;
+    sphere.circumscribe(box); // why do we need this?
+    if (sphere.getRadius() == 0)
+        return false;
+    return true;
+}
+
+void View3DInventorViewer::animatedViewAll(const SbBox3f &box, int steps, int ms)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
     if (!cam)
@@ -2804,16 +3168,10 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     SbVec3f campos = cam->position.getValue();
     SbRotation camrot = cam->orientation.getValue();
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SoGetBoundingBoxAction action(vp);
-    action.apply(this->getSoRenderManager()->getSceneGraph());
-    SbBox3f box = action.getBoundingBox();
 
 #if (COIN_MAJOR_VERSION >= 3)
     float aspectRatio = vp.getViewportAspectRatio();
 #endif
-
-    if (box.isEmpty())
-        return;
 
     SbSphere sphere;
     sphere.circumscribe(box);
@@ -2891,33 +3249,9 @@ void View3DInventorViewer::boxZoom(const SbBox2s& box)
 
 void View3DInventorViewer::viewAll()
 {
-    SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SoGetBoundingBoxAction action(vp);
-    action.apply(this->getSoRenderManager()->getSceneGraph());
-    SbBox3f box = action.getBoundingBox();
-
-    if (box.isEmpty())
+    SbBox3f box;
+    if(!getSceneBoundBox(box))
         return;
-
-    SbSphere sphere;
-    sphere.circumscribe(box);
-    if (sphere.getRadius() == 0)
-        return;
-
-    // in the scene graph we may have objects which we want to exclude
-    // when doing a fit all. Such objects must be part of the group
-    // SoSkipBoundingGroup.
-    SoSearchAction sa;
-    sa.setType(SoSkipBoundingGroup::getClassTypeId());
-    sa.setInterest(SoSearchAction::ALL);
-    sa.apply(this->getSoRenderManager()->getSceneGraph());
-    const SoPathList& pathlist = sa.getPaths();
-
-    for (int i = 0; i < pathlist.getLength(); i++) {
-        SoPath* path = pathlist[i];
-        SoSkipBoundingGroup* group = static_cast<SoSkipBoundingGroup*>(path->getTail());
-        group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
-    }
 
     // Set the height angle to 45 deg
     SoCamera* cam = this->getSoRenderManager()->getCamera();
@@ -2926,17 +3260,9 @@ void View3DInventorViewer::viewAll()
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
 
     if (isAnimationEnabled())
-        animatedViewAll(10, 20);
+        animatedViewAll(box, 10, 20);
 
-    // make sure everything is visible
-    if (cam)
-        cam->viewAll(getSoRenderManager()->getSceneGraph(), this->getSoRenderManager()->getViewportRegion());
-
-    for (int i = 0; i < pathlist.getLength(); i++) {
-        SoPath* path = pathlist[i];
-        SoSkipBoundingGroup* group = static_cast<SoSkipBoundingGroup*>(path->getTail());
-        group->mode = SoSkipBoundingGroup::INCLUDE_BBOX;
-    }
+    viewBoundBox(box);
 }
 
 void View3DInventorViewer::viewAll(float factor)
@@ -2948,98 +3274,146 @@ void View3DInventorViewer::viewAll(float factor)
     if (factor <= 0.0f) return;
 
     if (factor != 1.0f) {
-        SoSearchAction sa;
-        sa.setType(SoSkipBoundingGroup::getClassTypeId());
-        sa.setInterest(SoSearchAction::ALL);
-        sa.apply(this->getSoRenderManager()->getSceneGraph());
-        const SoPathList& pathlist = sa.getPaths();
+        SbBox3f box;
+        if(!getSceneBoundBox(box))
+            return;
 
-        for (int i = 0; i < pathlist.getLength(); i++) {
-            SoPath* path = pathlist[i];
-            SoSkipBoundingGroup* group = static_cast<SoSkipBoundingGroup*>(path->getTail());
-            group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
-        }
+        float dx,dy,dz;
+        box.getSize(dx,dy,dz);
 
-        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
-        action.apply(this->getSoRenderManager()->getSceneGraph());
-        SbBox3f box = action.getBoundingBox();
-        float minx,miny,minz,maxx,maxy,maxz;
-        box.getBounds(minx,miny,minz,maxx,maxy,maxz);
+        float x,y,z;
+        box.getCenter().getValue(x,y,z);
 
-        for (int i = 0; i < pathlist.getLength(); i++) {
-            SoPath* path = pathlist[i];
-            SoSkipBoundingGroup* group = static_cast<SoSkipBoundingGroup*>(path->getTail());
-            group->mode = SoSkipBoundingGroup::INCLUDE_BBOX;
-        }
+        box.setBounds(x-dx*factor,y-dy*factor,z-dz*factor,
+                      x+dx*factor,y+dy*factor,z+dz*factor);
 
-        SoCube* cube = new SoCube();
-        cube->width  = factor*(maxx-minx);
-        cube->height = factor*(maxy-miny);
-        cube->depth  = factor*(maxz-minz);
-
-        // fake a scenegraph with the desired bounding size
-        SoSeparator* graph = new SoSeparator();
-        graph->ref();
-        SoTranslation* tr = new SoTranslation();
-        tr->translation.setValue(box.getCenter());
-
-        graph->addChild(tr);
-        graph->addChild(cube);
-        cam->viewAll(graph, this->getSoRenderManager()->getViewportRegion());
-        graph->unref();
+        viewBoundBox(box);
     }
     else {
         viewAll();
     }
 }
 
-void View3DInventorViewer::viewSelection()
+void View3DInventorViewer::viewSelection(bool extend)
 {
+    if(!guiDocument)
+        return;
+
     Base::BoundBox3d bbox;
-    for(auto &sel : Selection().getSelection(0,0)) {
-        auto vp = Application::Instance->getViewProvider(sel.pObject);
+    for(auto &sel : Selection().getSelection(guiDocument->getDocument()->getName(),0)) {
+        auto vp = guiDocument->getViewProvider(sel.pObject);
         if(!vp)
             continue;
-        bbox.Add(vp->getBoundingBox(sel.SubName,true));
+        bbox.Add(vp->getBoundingBox(sel.SubName));
     }
 
     SoCamera* cam = this->getSoRenderManager()->getCamera();
     if (cam && bbox.IsValid()) {
         SbBox3f box(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ);
-#if (COIN_MAJOR_VERSION >= 4)
-        float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
-        switch (cam->viewportMapping.getValue()) {
-            case SoCamera::CROP_VIEWPORT_FILL_FRAME:
-            case SoCamera::CROP_VIEWPORT_LINE_FRAME:
-            case SoCamera::CROP_VIEWPORT_NO_FRAME:
-                aspectratio = 1.0f;
-                break;
-            default:
-                break;
+        if(extend) { // whether to extend the current view volume to include the selection
+            SbViewportRegion vp = getSoRenderManager()->getViewportRegion();
+            const SbViewVolume &vv = cam->getViewVolume(vp,vp,SbMatrix::identity());
+
+            SbVec3f center = box.getCenter();
+            SbVec3f size = box.getSize() 
+                * 0.5f * ViewParams::instance()->getViewSelectionExtendFactor();
+
+            // scale the box by the configured factor, so that we don't have to
+            // change the camera if the selection is partially in view.
+            SbBox3f sbox(center-size, center+size);
+
+            int cullbits = 7;
+            sbox.outside(vv.getMatrix(),cullbits);
+            if(!cullbits) // test if the scaled box is fully in view
+                return;
+
+            float vx,vy,vz;
+            SbVec3f vcenter = vv.getProjectionPoint()+vv.getProjectionDirection()*(vv.getDepth()*0.5+vv.getNearDist());
+            vcenter.getValue(vx,vy,vz);
+
+            float radius = std::max(vv.getDepth(),std::max(vv.getWidth(),vv.getHeight()))*0.5f;
+
+            // A rough estimation of the view bounding box. Note that
+            // SoCamera::viewBoundingBox() is not accurate as well. It uses a
+            // sphere to surround the bounding box for easy calculation.
+            SbBox3f vbox(vx-radius,vy-radius,vz-radius,vx+radius,vy+radius,vz+radius);
+
+            float minx, miny, minz, maxx, maxy, maxz;
+            vbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
+
+            float minx2, miny2, minz2, maxx2, maxy2, maxz2;
+            box.getBounds(minx2, miny2, minz2, maxx2, maxy2, maxz2);
+
+            // FIXME: Extend to bearly include the selection. We do this instead of
+            // extendBy() because SoCamera tends to over compensate in its
+            // viewBoundingBox(), (or maybe it's because our vbox estimation is
+            // not right?)
+            if(minx > maxx2) minx = maxx2;
+            if(miny > maxy2) miny = maxy2;
+            if(minz > maxz2) minz = maxz2;
+            if(maxx < minx2) maxx = minx2;
+            if(maxy < miny2) maxy = miny2;
+            if(maxz < minz2) maxz = minz2;
+
+            // obtain the entire scene bounding box
+            SbBox3f scenebox;
+            getSceneBoundBox(scenebox);
+
+            // extend to include the selection, just to be sure
+            scenebox.extendBy(box);
+
+            // clip the extended current view box to the scene box
+            scenebox.getBounds(minx2, miny2, minz2, maxx2, maxy2, maxz2);
+            if(minx < minx2) minx = minx2;
+            if(miny < miny2) miny = miny2;
+            if(minz < minz2) minz = minz2;
+            if(maxx > maxx2) maxx = maxx2;
+            if(maxy > maxy2) maxy = maxy2;
+            if(maxz > maxz2) maxz = maxz2;
+            box.setBounds(minx, miny, minz, maxx, maxy, maxz);
         }
-        cam->viewBoundingBox(box,aspectratio,1.0);
-#else
-        SoTempPath path(2);
-        path.ref();
-        auto pcGroup = new SoGroup;
-        pcGroup->ref();
-        auto pcTransform = new SoTransform;
-        pcGroup->addChild(pcTransform);
-        pcTransform->translation = box.getCenter();
-        auto *pcCube = new SoCube;
-        pcGroup->addChild(pcCube);
-        float sizeX,sizeY,sizeZ;
-        box.getSize(sizeX,sizeY,sizeZ);
-        pcCube->width = sizeX;
-        pcCube->height = sizeY;
-        pcCube->depth = sizeZ;
-        path.append(pcGroup);
-        path.append(pcCube);
-        cam->viewAll(&path,getSoRenderManager()->getViewportRegion());
-        path.unrefNoDelete();
-        pcGroup->unref();
-#endif
+        viewBoundBox(box);
     }
+}
+
+void View3DInventorViewer::viewBoundBox(const SbBox3f &box) {
+    SoCamera* cam = getSoRenderManager()->getCamera();
+    if(!cam)
+        return;
+
+#if (COIN_MAJOR_VERSION >= 4)
+    float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+    switch (cam->viewportMapping.getValue()) {
+        case SoCamera::CROP_VIEWPORT_FILL_FRAME:
+        case SoCamera::CROP_VIEWPORT_LINE_FRAME:
+        case SoCamera::CROP_VIEWPORT_NO_FRAME:
+            aspectratio = 1.0f;
+            break;
+        default:
+            break;
+    }
+    cam->viewBoundingBox(box,aspectratio,1.0);
+#else
+    SoTempPath path(2);
+    path.ref();
+    auto pcGroup = new SoGroup;
+    pcGroup->ref();
+    auto pcTransform = new SoTransform;
+    pcGroup->addChild(pcTransform);
+    pcTransform->translation = box.getCenter();
+    auto *pcCube = new SoCube;
+    pcGroup->addChild(pcCube);
+    float sizeX,sizeY,sizeZ;
+    box.getSize(sizeX,sizeY,sizeZ);
+    pcCube->width = sizeX;
+    pcCube->height = sizeY;
+    pcCube->depth = sizeZ;
+    path.append(pcGroup);
+    path.append(pcCube);
+    cam->viewAll(&path,getSoRenderManager()->getViewportRegion());
+    path.unrefNoDelete();
+    pcGroup->unref();
+#endif
 }
 
 /*!
@@ -3517,33 +3891,15 @@ void View3DInventorViewer::removeEventCallback(SoType eventtype, SoEventCallback
 
 ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
 {
-    for (int i = 0; i < path->getLength(); i++) {
-        SoNode* node = path->getNode(i);
-
-        if (node->isOfType(SoSeparator::getClassTypeId())) {
-            auto it = _ViewProviderMap.find(static_cast<SoSeparator*>(node));
-            if (it != _ViewProviderMap.end()) {
-                return it->second;
-            }
-        }
-    }
+    if(guiDocument)
+        return guiDocument->getViewProviderByPathFromHead(path);
     return 0;
 }
 
 ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) const
 {
-    // Make sure I'm the lowest LocHL in the pick path!
-    for (int i = 0; i < path->getLength(); i++) {
-        SoNode* node = path->getNodeFromTail(i);
-
-        if (node->isOfType(SoSeparator::getClassTypeId())) {
-            std::map<SoSeparator*,ViewProvider*>::const_iterator it = _ViewProviderMap.find(static_cast<SoSeparator*>(node));
-            if (it != _ViewProviderMap.end()) {
-                return it->second;
-            }
-        }
-    }
-
+    if(guiDocument)
+        return guiDocument->getViewProviderByPathFromTail(path);
     return 0;
 }
 

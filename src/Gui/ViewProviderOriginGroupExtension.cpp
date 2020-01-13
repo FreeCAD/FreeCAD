@@ -54,83 +54,45 @@ ViewProviderOriginGroupExtension::ViewProviderOriginGroupExtension()
 
 ViewProviderOriginGroupExtension::~ViewProviderOriginGroupExtension()
 {
-    connectChangedObjectApp.disconnect();
-    connectChangedObjectGui.disconnect();
 }
 
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::constructChildren (
-        const std::vector<App::DocumentObject*> &children ) const
+void ViewProviderOriginGroupExtension::constructChildren (
+        std::vector<App::DocumentObject*> &children ) const
 {
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
     if(!group)
-        return children;
+        return;
     
     App::DocumentObject *originObj = group->Origin.getValue();
 
     // Origin must be first
     if (originObj) {
-        std::vector<App::DocumentObject*> rv;
-        rv.push_back (originObj);
-        std::copy (children.begin(), children.end(), std::back_inserter (rv));
-        return rv;
-    } else { // Generally shouldn't happen but must be handled in case origin is lost
-        return children;
+        children.insert(children.begin(),originObj);
     }
 }
 
-
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionClaimChildren () const {
-    return constructChildren ( ViewProviderGeoFeatureGroupExtension::extensionClaimChildren () );
+void ViewProviderOriginGroupExtension::extensionClaimChildren (std::vector<App::DocumentObject *> &children) const {
+    ViewProviderGeoFeatureGroupExtension::extensionClaimChildren (children);
+    constructChildren ( children );
 }
 
-std::vector<App::DocumentObject*> ViewProviderOriginGroupExtension::extensionClaimChildren3D () const {
-    return constructChildren ( ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D () );
+void ViewProviderOriginGroupExtension::extensionClaimChildren3D (std::vector<App::DocumentObject *> &children) const {
+    ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D (children);
+    constructChildren ( children );
 }
 
 void ViewProviderOriginGroupExtension::extensionAttach(App::DocumentObject *pcObject) {
     ViewProviderGeoFeatureGroupExtension::extensionAttach ( pcObject );
-
-    App::Document *adoc  = pcObject->getDocument ();
-    Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
-
-    assert ( adoc );
-    assert ( gdoc );
-
-    connectChangedObjectApp = adoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectApp, this, _1) );
-    
-    connectChangedObjectGui = gdoc->signalChangedObject.connect (
-            boost::bind ( &ViewProviderOriginGroupExtension::slotChangedObjectGui, this, _1) );
 }
 
 void ViewProviderOriginGroupExtension::extensionUpdateData( const App::Property* prop ) {
-    
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-    if ( group && prop == &group->Group ) {
+    auto propName = prop->getName();
+    if(propName && (strcmp(propName,"_GroupTouched")==0
+                || strcmp(propName,"Group")==0
+                || strcmp(propName,"Shape")==0))
         updateOriginSize();
-    }
 
     ViewProviderGeoFeatureGroupExtension::extensionUpdateData ( prop );
-}
-
-void ViewProviderOriginGroupExtension::slotChangedObjectApp ( const App::DocumentObject& obj) {
-    auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-    if ( group && group->hasObject (&obj, /*recursive=*/ true ) ) {
-        updateOriginSize ();
-    }
-}
-
-void ViewProviderOriginGroupExtension::slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& vp) {
-    if ( !vp.isDerivedFrom ( Gui::ViewProviderOriginFeature::getClassTypeId () )) {
-        // Ignore origins to avoid infinite recursion (not likely in a well-formed document, 
-        //          but may happen in documents designed in old versions of assembly branch )
-        auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::OriginGroupExtension>();
-        App::DocumentObject *obj = vp.getObject ();
-
-        if ( group && obj && group->hasObject (obj, /*recursive=*/ true ) ) {
-            updateOriginSize ();
-        }
-    }
 }
 
 void ViewProviderOriginGroupExtension::updateOriginSize () {
@@ -164,43 +126,27 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
         return;
     }
 
-    Gui::Document* gdoc = getExtendedViewProvider()->getDocument();
-    if(!gdoc) 
-        return;
-    
-    Gui::MDIView* view = gdoc->getViewOfViewProvider(getExtendedViewProvider());
-    if(!view)
-        return;
-    
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
-
     // calculate the bounding box for out content
-    SbBox3f bbox(0,0,0, 0,0,0);
+    Base::BoundBox3d bbox(0,0,0,0,0,0);
     for(App::DocumentObject* obj : group->Group.getValues()) {
         ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
-        if (!vp) {
+        if (!vp || !vp->isVisible()) {
             continue;
         }
-
-        bboxAction.apply ( vp->getRoot () );
-        bbox.extendBy ( bboxAction.getBoundingBox () );
+        bbox.Add ( vp->getBoundingBox() );
     };
     
-    // get the bounding box values
-    SbVec3f max = bbox.getMax();
-    SbVec3f min = bbox.getMin();
-
-    Base::Vector3d size;
+    Base::Vector3d size(std::max(std::abs(bbox.MinX),std::abs(bbox.MaxX)),
+                        std::max(std::abs(bbox.MinY),std::abs(bbox.MaxY)),
+                        std::max(std::abs(bbox.MinZ),std::abs(bbox.MaxZ)));
 
     for (uint_fast8_t i=0; i<3; i++) {
-        size[i] = std::max ( fabs ( max[i] ), fabs ( min[i] ) );
         if (size[i] < 1e-7) { // TODO replace the magic values (2015-08-31, Fat-Zer)
             size[i] = ViewProviderOrigin::defaultSize();
         }
     }
 
-    vpOrigin->Size.setValue ( size * 1.3 );
+    vpOrigin->Size.setValue ( size );
 }
 
 namespace Gui {

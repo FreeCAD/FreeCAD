@@ -2096,7 +2096,7 @@ TABBAR widget (3rd party plugin)
 ==================================================================================================*/
 QToolBar:horizontal#Selector,
 QToolBar:vertical#Selector {
-    background-color: rgba(0,0,0,120);
+    /* background-color: rgba(0,0,0,120); */
     margin: 0px;
     padding: 0px;
 }
