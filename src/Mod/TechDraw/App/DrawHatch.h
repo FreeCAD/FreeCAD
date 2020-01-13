@@ -34,7 +34,7 @@ class DrawViewPart;
 
 class TechDrawExport DrawHatch : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawHatch);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawHatch);
 
 public:
     DrawHatch();

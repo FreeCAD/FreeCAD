@@ -46,7 +46,7 @@ class DashSet;
 
 class TechDrawExport DrawGeomHatch : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawGeomHatch);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawGeomHatch);
 
 public:
     DrawGeomHatch();
