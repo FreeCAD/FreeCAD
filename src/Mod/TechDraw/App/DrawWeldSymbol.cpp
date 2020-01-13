@@ -87,14 +87,14 @@ void DrawWeldSymbol::onSettingDocument()
         return;
     }
 
-    std::string tileName1 = doc->getUniqueObjectName("DrawTileWeld");
+    std::string tileName1 = doc->getUniqueObjectName("TileWeld");
     auto tile1Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName1.c_str() ) );
     DrawTileWeld* tile1 = dynamic_cast<DrawTileWeld*>(tile1Obj);
     if (tile1 != nullptr) {
         tile1->TileParent.setValue(this);
     }
 
-    std::string tileName2 = doc->getUniqueObjectName("DrawTileWeld");
+    std::string tileName2 = doc->getUniqueObjectName("TileWeld");
     auto tile2Obj( doc->addObject( "TechDraw::DrawTileWeld", tileName2.c_str() ) );
     DrawTileWeld* tile2 = dynamic_cast<DrawTileWeld*>(tile2Obj);
     if (tile2 != nullptr) {

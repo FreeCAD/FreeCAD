@@ -434,7 +434,7 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol(void)
 {
 //    Base::Console().Message("TWS::createWeldingSymbol()\n");
     
-    std::string symbolName = m_leadFeat->getDocument()->getUniqueObjectName("DrawWeldSymbol");
+    std::string symbolName = m_leadFeat->getDocument()->getUniqueObjectName("WeldSymbol");
     std::string symbolType = "TechDraw::DrawWeldSymbol";
 
     TechDraw::DrawPage* page = m_leadFeat->findParentPage();

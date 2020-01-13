@@ -274,7 +274,7 @@ void TaskRichAnno::onEditorExit(void)
 void TaskRichAnno::createAnnoFeature()
 {
 //    Base::Console().Message("TRA::createAnnoFeature()");
-    std::string annoName = m_basePage->getDocument()->getUniqueObjectName("DrawRichAnno");
+    std::string annoName = m_basePage->getDocument()->getUniqueObjectName("RichTextAnnotation");
     std::string annoType = "TechDraw::DrawRichAnno";
 
     std::string PageName = m_basePage->getNameInDocument();

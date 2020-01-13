@@ -259,7 +259,7 @@ void TaskLeaderLine::setUiEdit()
 void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 {
 //    Base::Console().Message("TTL::createLeaderFeature()\n");
-    m_leaderName = m_basePage->getDocument()->getUniqueObjectName("DrawLeaderLine");
+    m_leaderName = m_basePage->getDocument()->getUniqueObjectName("LeaderLine");
     m_leaderType = "TechDraw::DrawLeaderLine";
 
     std::string PageName = m_basePage->getNameInDocument();
