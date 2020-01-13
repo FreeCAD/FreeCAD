@@ -40,6 +40,7 @@ from .utils import _wrn
 # from .utils import _log
 from .utils import _tr
 from .utils import getParam
+from .utils import get_type
 from pivy import coin
 from PySide import QtGui
 # from PySide import QtSvg  # for load_texture
@@ -95,28 +96,43 @@ def autogroup(obj):
     obj : App::DocumentObject
         Any type of object that will be stored in the group.
     """
-    doc = FreeCAD.ActiveDocument
     if FreeCAD.GuiUp:
-        view = FreeCADGui.ActiveDocument.ActiveView
-        if hasattr(FreeCADGui, "draftToolBar"):
-            if (hasattr(FreeCADGui.draftToolBar, "autogroup")
-                    and not FreeCADGui.draftToolBar.isConstructionMode()):
+        # look for active Part container
+        active_part = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part")
+        # look for active Arch container
+        active_arch_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+        if hasattr(FreeCADGui,"draftToolBar"):
+            if (hasattr(FreeCADGui.draftToolBar,"autogroup") 
+                and not FreeCADGui.draftToolBar.isConstructionMode()
+                ):
                 if FreeCADGui.draftToolBar.autogroup is not None:
-                    g = doc.getObject(FreeCADGui.draftToolBar.autogroup)
-                    if g:
+                    active_group = FreeCAD.ActiveDocument.getObject(FreeCADGui.draftToolBar.autogroup)
+                    if active_group:
                         found = False
-                        for o in g.Group:
+                        for o in active_group.Group:
                             if o.Name == obj.Name:
                                 found = True
                         if not found:
-                            gr = g.Group
+                            gr = active_group.Group
                             gr.append(obj)
-                            g.Group = gr
-                else:
-                    # Arch active container
-                    a = view.getActiveObject("Arch")
-                    if a:
-                        a.addObject(obj)
+                            active_group.Group = gr
+                elif active_arch_obj:
+                    active_arch_obj.addObject(obj)
+                elif active_part:
+                    # add object to active part and change it's placement so accordingly
+                    # so object does not jump to different position
+                    inverse_placement = active_part.getGlobalPlacement().inverse()
+                    if get_type(obj) == 'Point':
+                        # point vector have a kind of placement, so should be
+                        # processed before generic object with placement
+                        point_vector = FreeCAD.Vector(obj.X, obj.Y, obj.Z)
+                        real_point = inverse_placement.multVec(point_vector)
+                        obj.X = real_point.x
+                        obj.Y = real_point.y
+                        obj.Z = real_point.z                    
+                    elif hasattr(obj,"Placement"):
+                        obj.Placement = FreeCAD.Placement(inverse_placement.multiply(obj.Placement))
+                    active_part.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
