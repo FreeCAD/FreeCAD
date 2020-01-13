@@ -71,11 +71,9 @@ using namespace TechDrawGui;
 
 
 //**************************************************************
-QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
-                         TechDraw::DrawLeaderLine* leader) :
-    m_parentItem(myParent),
+QGILeaderLine::QGILeaderLine() :
     m_lineColor(Qt::black),
-//    m_hasHover(false),
+    m_hasHover(false),
     m_blockDraw(false)
 
 {
@@ -90,15 +88,11 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
 
     m_line = new QGIPrimPath();
     addToGroup(m_line);
-    m_line->setNormalColor(getNormalColor());
     m_line->setFlag(QGraphicsItem::ItemIsSelectable, false);
     m_line->setAcceptHoverEvents(false);
-    m_line->setPrettyNormal();
     m_line->setPos(0.0,0.0);
 
     m_editPath = new QGEPath(this);
-    m_editPath->setNormalColor(getNormalColor());
-
     addToGroup(m_editPath);
     m_editPath->setPos(0.0, 0.0);
     m_editPath->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -109,22 +103,12 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
 
     m_arrow1 = new QGIArrow();
     addToGroup(m_arrow1);
-    m_arrow1->setNormalColor(getNormalColor());
-    m_arrow1->setFillColor(getNormalColor());
-    m_arrow1->setPrettyNormal();
     m_arrow1->setPos(0.0,0.0);
     m_arrow1->hide();
     m_arrow2 = new QGIArrow();
     addToGroup(m_arrow2);
-    m_arrow2->setNormalColor(getNormalColor());
-    m_arrow2->setFillColor(getNormalColor());
-    m_arrow2->setPrettyNormal();
     m_arrow2->setPos(0.0, 0.0);
     m_arrow2->hide();
-
-    setParentItem(m_parentItem);
-
-    setViewFeature(leader);
 
     setZValue(ZVALUE::DIMENSION);
 
@@ -132,7 +116,21 @@ QGILeaderLine::QGILeaderLine(QGraphicsItem* myParent,
         m_editPath, SIGNAL(pointsUpdated(QPointF, std::vector<QPointF>)),
         this  , SLOT  (onLineEditFinished(QPointF, std::vector<QPointF>))
             );
+}
 
+void QGILeaderLine::setLeaderFeature(TechDraw::DrawLeaderLine* feat)
+{
+//    Base::Console().Message("QGILL::setLeaderFeature()\n");
+    setViewFeature(static_cast<TechDraw::DrawView *>(feat));
+
+    float x = Rez::guiX(feat->X.getValue());
+    float y = Rez::guiX(-feat->Y.getValue());
+    setPos(x,y);
+
+    setNormalColorAll();
+    setPrettyNormal();
+
+    updateView();
 }
 
 QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -173,6 +171,7 @@ void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 //    Base::Console().Message("QGILL::hoverEnter() - selected; %d\n",isSelected());
+    m_hasHover = true;
     if (!isSelected()) {
         setPrettyPre();
     }
@@ -182,10 +181,10 @@ void QGILeaderLine::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void QGILeaderLine::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 //    Base::Console().Message("QGILL::hoverLeave() - selected; %d\n",isSelected());
+    m_hasHover = false;
     if(!isSelected()) {
         setPrettyNormal();
     }
-    
     QGIView::hoverLeaveEvent(event);
 }
 
@@ -201,6 +200,17 @@ void QGILeaderLine::onSourceChange(TechDraw::DrawView* newParent)
     } else {
         Base::Console().Warning("QGILL::onSourceChange - new parent %s has no QGIView\n",parentName.c_str());
     }
+}
+
+void QGILeaderLine::setNormalColorAll()
+{
+//    Base::Console().Message("QGILL::setNormalColorAll - normal color: %s\n", qPrintable(getNormalColor().name()));
+    m_line->setNormalColor(getNormalColor());
+    m_editPath->setNormalColor(getNormalColor());
+    m_arrow1->setNormalColor(getNormalColor());
+    m_arrow1->setFillColor(getNormalColor());
+    m_arrow2->setNormalColor(getNormalColor());
+    m_arrow2->setFillColor(getNormalColor());
 }
 
 void QGILeaderLine::setPrettyNormal() {
@@ -341,27 +351,22 @@ void QGILeaderLine::draw()
 {
 //    Base::Console().Message("QGILL::draw()- %s\n", getViewObject()->getNameInDocument());
     if (m_blockDraw) {
-//        Base::Console().Message("QGIL::draw - block draw\n");
         return;
     }
     if (!isVisible()) {
-//        Base::Console().Message("QGIL::draw - not visible\n");
         return;
     }
     TechDraw::DrawLeaderLine* featLeader = getFeature();
     if((!featLeader) ) {
-//        Base::Console().Message("QGIL::draw - no feature\n");
         return;
     }
     auto vp = static_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
-//        Base::Console().Message("QGIL::draw - no viewprovider\n");
         return;
     }
     TechDraw::DrawView* parent = featLeader->getBaseView();
 
     if (m_editPath->inEdit()) {
-//        Base::Console().Message("QGIL::draw - m_editPath in edit\n");
         return;
     }
 
@@ -385,7 +390,6 @@ void QGILeaderLine::draw()
     m_line->setStyle(m_lineStyle);
     m_line->setWidth(getLineWidth());
 
-    m_line->setNormalColor(getNormalColor());
     m_line->setPos(0,0);                          //make m_line coords == leader coords
 
     std::vector<QPointF> qPoints = getWayPointsFromFeature();
@@ -394,10 +398,18 @@ void QGILeaderLine::draw()
             p = p * scale;
         }
     }
-    m_line->setPath(makeLeaderPath(qPoints));
-    m_line->show();
 
+    setNormalColorAll();
+    m_line->setPath(makeLeaderPath(qPoints));
     setArrows(qPoints);
+
+    if (isSelected()) {
+        setPrettySel();
+    } else if (m_hasHover) {
+        setPrettyPre();
+    } else {
+        setPrettyNormal();
+    }
 }
 
 QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
@@ -485,6 +497,7 @@ std::vector<QPointF> QGILeaderLine::getWayPointsFromFeature(void)
 
 void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
 {
+//    Base::Console().Message("QGILL::setArrows()\n");
     Base::Vector3d stdX(1.0,0.0,0.0);
     TechDraw::DrawLeaderLine* featLeader = getFeature();
 
@@ -497,8 +510,6 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
         m_arrow1->setSize(QGIArrow::getPrefArrowSize());
         m_arrow1->setDirMode(true);
         m_arrow1->setDirection(stdX);
-        m_arrow1->setNormalColor(getNormalColor());
-        m_arrow1->setFillColor(getNormalColor());
         if (pathPoints.size() > 1) {
             auto it = pathPoints.begin();
             QPointF s = (*it);
@@ -519,8 +530,6 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
         m_arrow2->setWidth(getLineWidth());
         m_arrow2->setDirMode(true);
         m_arrow2->setDirection(-stdX);
-        m_arrow2->setNormalColor(getNormalColor());
-        m_arrow2->setFillColor(getNormalColor());
         if (pathPoints.size() > 1) {
             auto itr = pathPoints.rbegin();
             QPointF s = (*itr);
@@ -580,6 +589,7 @@ double QGILeaderLine::getEdgeFuzz(void) const
 
 QColor QGILeaderLine::getNormalColor()
 {
+//    Base::Console().Message("QGILL::getNormalColor()\n");
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLinens");
     App::Color fcColor;
@@ -587,11 +597,14 @@ QColor QGILeaderLine::getNormalColor()
     m_colNormal = fcColor.asValue<QColor>();
 
     auto lead( dynamic_cast<TechDraw::DrawLeaderLine*>(getViewObject()) );
-    if( lead == nullptr )
+    if( lead == nullptr ) {
+//        Base::Console().Message("QGILL::getNormalColor - no feature\n");
         return m_colNormal;
+    }
 
     auto vp = static_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if ( vp == nullptr ) {
+//        Base::Console().Message("QGILL::getNormalColor - no viewProvider\n");
         return m_colNormal;
     }
 
