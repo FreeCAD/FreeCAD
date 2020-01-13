@@ -608,9 +608,31 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         else:
                             name = "IND" + str(obj)
                         f.write("*SURFACE, NAME =" + name + "\n")
+                        
                         v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
-                        for i in v:
-                            f.write("{},S{}\n".format(i[0], i[1]))
+                        if len(v) > 0:
+                            # volume elements found
+                            FreeCAD.Console.PrintLog(
+                                "{}, surface {}, {} touching volume elements found\n"
+                                .format(contact_obj.Label, name, len(v))
+                            )
+                            for i in v:                        
+                                f.write("{},S{}\n".format(i[0], i[1]))
+                        else:
+                            # try shell elements
+                            v = self.mesh_object.FemMesh.getFacesByFace(ref_shape)
+                            if len(v) > 0:
+                                FreeCAD.Console.PrintLog(
+                                    "{}, surface {}, {} touching shell elements found\n"
+                                    .format(contact_obj.Label, name, len(v))
+                                )
+                                for i in v:
+                                    f.write("{},S2\n".format(i))
+                            else:
+                                FreeCAD.Console.PrintError(
+                                    "{}, surface {}, Error: Neither volume nor shell elements found!\n"
+                                    .format(contact_obj.Label, name)
+                                )
 
     def write_node_sets_constraints_transform(self, f):
         # get nodes
