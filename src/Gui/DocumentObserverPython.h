@@ -65,6 +65,8 @@ private:
     /** Checks if the given object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProvider& Obj);
     /** The property of an observed object has changed */
+    void slotBeforeChangeObject(const Gui::ViewProvider& Obj, const App::Property& Prop);
+    /** The property of an observed object has changed */
     void slotChangedObject(const Gui::ViewProvider& Obj, const App::Property& Prop);
     /** The object was set into edit mode */
     void slotInEdit(const Gui::ViewProviderDocumentObject& Obj);
@@ -90,6 +92,7 @@ private:
     Connection pyActivateDocument;
     Connection pyCreatedObject;
     Connection pyDeletedObject;
+    Connection pyBeforeChangeObject;
     Connection pyChangedObject;
     Connection pyInEdit;
     Connection pyResetEdit;

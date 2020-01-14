@@ -161,8 +161,16 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     App::Document* appDoc = m_vpPage->getDocument()->getDocument();
     auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, _1);
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
+}
 
 
+MDIViewPage::~MDIViewPage()
+{
+    connectDeletedObject.disconnect();
+}
+
+void MDIViewPage::addChildrenToPage(void)
+{
      // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
      // if docobj is a featureviewcollection (ex orthogroup), add its child views. if there are ever children that have children,
      // we'll have to make this recursive. -WF
@@ -190,12 +198,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
         attachTemplate(pageTemplate);
         matchSceneRectToTemplate();
     }
-}
 
-
-MDIViewPage::~MDIViewPage()
-{
-    connectDeletedObject.disconnect();
+    viewAll();
 }
 
 void MDIViewPage::matchSceneRectToTemplate(void)
@@ -246,10 +250,13 @@ void MDIViewPage::setBalloonGroups(void)
 
 void MDIViewPage::setLeaderGroups(void)
 {
+//    Base::Console().Message("MDIVP::setLeaderGroups()\n");
     const std::vector<QGIView *> &allItems = m_view->getViews();
     std::vector<QGIView *>::const_iterator itInspect;
     int leadItemType = QGraphicsItem::UserType + 232;
 
+    //make sure that qgileader belongs to correct parent. 
+    //quite possibly redundant
     for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
         if (((*itInspect)->type() == leadItemType) && (!(*itInspect)->group())) {
             QGIView* parent = m_view->findParent((*itInspect));
@@ -400,7 +407,7 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 }
 
 void MDIViewPage::onTimer() {
-    updateDrawing(true);
+    fixOrphans(true);
 }
 
 void MDIViewPage::updateTemplate(bool forceUpdate)
@@ -430,9 +437,7 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
 }
 
 //this is time consuming. should only be used when there is a problem.
-//should have been called MDIViewPage::fixWidowAndOrphans()
-//void MDIViewPage::updateDrawing(bool forceUpdate)
-void MDIViewPage::updateDrawing(bool force)
+void MDIViewPage::fixOrphans(bool force)
 {
     if(!force) {
         m_timer->start(100);
@@ -479,7 +484,7 @@ void MDIViewPage::updateDrawing(bool force)
     // WF: why do we do this?  views should be keeping themselves up to date.
 //    const std::vector<QGIView *> &upviews = m_view->getViews();
 //    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-//        Base::Console().Message("TRACE - MDIVP::updateDrawing - updating a QGIVxxxx\n");
+//        Base::Console().Message("TRACE - MDIVP::fixOrphans - updating a QGIVxxxx\n");
 //        if((*it)->getViewObject()->isTouched() ||
 //           forceUpdate) {
 //            (*it)->updateView(forceUpdate);
@@ -487,7 +492,7 @@ void MDIViewPage::updateDrawing(bool force)
 //    }
 }
 
-//NOTE: this doesn't add missing views.  see updateDrawing()
+//NOTE: this doesn't add missing views.  see fixOrphans()
 void MDIViewPage::redrawAllViews()
 {
     const std::vector<QGIView *> &upviews = m_view->getViews();
@@ -496,7 +501,7 @@ void MDIViewPage::redrawAllViews()
     }
 }
 
-//NOTE: this doesn't add missing views.   see updateDrawing()
+//NOTE: this doesn't add missing views.   see fixOrphans()
 void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
 {
     std::string dvName = dv->getNameInDocument();

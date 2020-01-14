@@ -59,7 +59,6 @@
 
 #include "../App/PartFeature.h"
 #include <Mod/Part/App/Part2DObject.h>
-#include "DlgPartImportStepImp.h"
 #include "DlgBooleanOperation.h"
 #include "DlgExtrusion.h"
 #include "DlgRevolution.h"

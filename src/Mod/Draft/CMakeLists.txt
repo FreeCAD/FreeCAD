@@ -51,6 +51,7 @@ SET(Draft_utilities
     draftutils/__init__.py
     draftutils/utils.py
     draftutils/gui_utils.py
+    draftutils/todo.py
 )
 
 SET(Draft_objects

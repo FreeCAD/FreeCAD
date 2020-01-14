@@ -82,12 +82,11 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     ui(new Ui_TaskWeldingSymbol),
     m_leadFeat(leader),
     m_weldFeat(nullptr),
-    m_arrowIn(nullptr),
-    m_otherIn(nullptr),
     m_createMode(true),
     m_arrowDirty(false),
     m_otherDirty(false)
 {
+//TODO: why does DWS nedd DLL as parent?
 //    Base::Console().Message("TWS::TWS() - create mode\n");
     if  (m_leadFeat == nullptr)  {
         //should be caught in CMD caller
@@ -129,8 +128,6 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     ui(new Ui_TaskWeldingSymbol),
     m_leadFeat(nullptr),
     m_weldFeat(weld),
-    m_arrowIn(nullptr),
-    m_otherIn(nullptr),
     m_createMode(false),
     m_arrowDirty(false),
     m_otherDirty(false)
@@ -211,8 +208,10 @@ void TaskWeldingSymbol::setUiPrimary()
     ui->pbArrowSymbol->setFocus();
     m_arrowOut.init();
     m_arrowPath = QString();
+    m_arrowSymbol = QString();
     m_otherOut.init();
     m_otherPath = QString();
+    m_otherSymbol = QString();
 }
 
 void TaskWeldingSymbol::setUiEdit()
@@ -228,44 +227,48 @@ void TaskWeldingSymbol::setUiEdit()
     ui->cbAltWeld->setChecked(m_weldFeat->AlternatingWeld.getValue());
     ui->leTailText->setText(QString::fromUtf8(m_weldFeat->TailText.getValue()));
 
-    //save existing tiles done in saveState
-    if (m_arrowIn != nullptr) {
-        QString qTemp = QString::fromUtf8(m_arrowIn->LeftText.getValue());
+    getTileFeats();
+    if (m_arrowFeat != nullptr) {
+        QString qTemp = QString::fromUtf8(m_arrowFeat->LeftText.getValue());
         ui->leArrowTextL->setText(qTemp);
-        qTemp = QString::fromUtf8(m_arrowIn->RightText.getValue());
+        qTemp = QString::fromUtf8(m_arrowFeat->RightText.getValue());
         ui->leArrowTextR->setText(qTemp);
-        qTemp = QString::fromUtf8(m_arrowIn->CenterText.getValue());
+        qTemp = QString::fromUtf8(m_arrowFeat->CenterText.getValue());
         ui->leArrowTextC->setText(qTemp);
 
-        std::string inFile = m_arrowIn->SymbolFile.getValue();
+        std::string inFile = m_arrowFeat->SymbolFile.getValue();
         auto fi = Base::FileInfo(inFile);
         if (fi.isReadable()) {
-            qTemp = QString::fromUtf8(m_arrowIn->SymbolFile.getValue());
+            qTemp = QString::fromUtf8(m_arrowFeat->SymbolFile.getValue());
             QIcon targetIcon(qTemp);
             QSize iconSize(32,32);
             ui->pbArrowSymbol->setIcon(targetIcon);
             ui->pbArrowSymbol->setIconSize(iconSize);
             ui->pbArrowSymbol->setText(QString());
+        } else {
+            ui->pbArrowSymbol->setText(QString::fromUtf8("Symbol"));
         }
     }
 
-    if (m_otherIn != nullptr) {
-        QString qTemp = QString::fromUtf8(m_otherIn->LeftText.getValue());
+    if (m_otherFeat != nullptr) {
+        QString qTemp = QString::fromUtf8(m_otherFeat->LeftText.getValue());
         ui->leOtherTextL->setText(qTemp);
-        qTemp = QString::fromUtf8(m_otherIn->RightText.getValue());
+        qTemp = QString::fromUtf8(m_otherFeat->RightText.getValue());
         ui->leOtherTextR->setText(qTemp);
-        qTemp = QString::fromUtf8(m_otherIn->CenterText.getValue());
+        qTemp = QString::fromUtf8(m_otherFeat->CenterText.getValue());
         ui->leOtherTextC->setText(qTemp);
 
-        std::string inFile = m_otherIn->SymbolFile.getValue();
+        std::string inFile = m_otherFeat->SymbolFile.getValue();
         auto fi = Base::FileInfo(inFile);
         if (fi.isReadable()) {
-            qTemp = QString::fromUtf8(m_otherIn->SymbolFile.getValue());
+            qTemp = QString::fromUtf8(m_otherFeat->SymbolFile.getValue());
             QIcon targetIcon(qTemp);
             QSize iconSize(32,32);
             ui->pbOtherSymbol->setIcon(targetIcon);
             ui->pbOtherSymbol->setIconSize(iconSize);
             ui->pbOtherSymbol->setText(QString());
+        } else {
+            ui->pbOtherSymbol->setText(QString::fromUtf8("Symbol"));
         }
     }
 
@@ -306,6 +309,7 @@ void TaskWeldingSymbol::onOtherEraseClicked(bool b)
 {
 //    Base::Console().Message("TWS::onOtherEraseClicked()\n");
     Q_UNUSED(b);
+    m_otherDirty = true;
     m_otherOut.init();
 
     ui->leOtherTextL->setText(QString());
@@ -313,12 +317,8 @@ void TaskWeldingSymbol::onOtherEraseClicked(bool b)
     ui->leOtherTextR->setText(QString());
     ui->pbOtherSymbol->setIcon(QIcon());
     ui->pbOtherSymbol->setText(QString::fromUtf8("Symbol"));
-
-    if ( (!m_createMode) &&
-         (m_otherIn != nullptr) )  { 
-        m_toRemove.push_back(m_otherIn->getNameInDocument());
-    }
-    m_otherIn = nullptr;
+    m_otherOut.init();
+    m_otherPath = QString();
 }
 
 void TaskWeldingSymbol::onArrowTextChanged(const QString& qs)
@@ -371,18 +371,9 @@ void TaskWeldingSymbol::blockButtons(bool b)
     Q_UNUSED(b);
 }
 
+//obsolete.  tiles are only updated on accept.
 void TaskWeldingSymbol::saveState(void)
 {
-    std::vector<DrawTileWeld*> tiles = m_weldFeat->getTiles();
-    for (auto t: tiles) {
-        if (t->TileRow.getValue() == 0) {
-            m_arrowIn = t;
-        } else if (t->TileRow.getValue() == -1) {
-            m_otherIn = t;
-        } else {
-            Base::Console().Message("TWS::saveState - bad row: %d\n", t->TileRow.getValue());
-        }
-    }
 }
 
 void TaskWeldingSymbol::collectArrowData(void)
@@ -409,8 +400,33 @@ void TaskWeldingSymbol::collectOtherData(void)
     m_otherOut.leftText = Base::Tools::toStdString(ui->leOtherTextL->text());
     m_otherOut.centerText = Base::Tools::toStdString(ui->leOtherTextC->text());
     m_otherOut.rightText = Base::Tools::toStdString(ui->leOtherTextR->text());
-    m_otherOut.symbolPath= Base::Tools::toStdString(m_otherPath);
+    m_otherOut.symbolPath = Base::Tools::toStdString(m_otherPath);
     m_otherOut.tileName = "";
+}
+
+void TaskWeldingSymbol::getTileFeats(void)
+{
+//    Base::Console().Message("TWS::getTileFeats()\n");
+    std::vector<TechDraw::DrawTileWeld*> tiles = m_weldFeat->getTiles();
+    m_arrowFeat = nullptr;
+    m_otherFeat = nullptr;
+    
+    if (!tiles.empty()) {
+        TechDraw::DrawTileWeld* tempTile = tiles.at(0);
+        if (tempTile->TileRow.getValue() == 0) {
+            m_arrowFeat = tempTile;
+        } else { 
+            m_otherFeat = tempTile;
+        }
+    }
+    if (tiles.size() > 1) {
+        TechDraw::DrawTileWeld* tempTile = tiles.at(1);
+        if (tempTile->TileRow.getValue() == 0) {
+            m_arrowFeat = tempTile;
+        } else { 
+            m_otherFeat = tempTile;
+        }
+    }
 }
 
 //******************************************************************************
@@ -487,178 +503,57 @@ void TaskWeldingSymbol::updateWeldingSymbol(void)
                            symbolName.c_str(), tailText.c_str());
 }
 
-std::vector<App::DocumentObject*> TaskWeldingSymbol::createTiles(void)
-{
-//    Base::Console().Message("TWS::createTiles()\n");
-    std::vector<App::DocumentObject*> tileFeats;
-    std::string tileType("TechDraw::DrawTileWeld");
-
-    collectArrowData();
-    if (m_arrowOut.toBeSaved) {
-        std::string tileName = m_leadFeat->getDocument()->getUniqueObjectName("DrawTileWeld");
-        std::string symbolPath = Base::Tools::escapeEncodeString(m_arrowOut.symbolPath);
-        std::string leftText = Base::Tools::escapeEncodeString(m_arrowOut.leftText);
-        std::string rightText = Base::Tools::escapeEncodeString(m_arrowOut.rightText);
-        std::string centerText = Base::Tools::escapeEncodeString(m_arrowOut.centerText);
-        Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                   tileType.c_str(),tileName.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.TileRow = %d",
-                       tileName.c_str(), m_arrowOut.row);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
-                       tileName.c_str(), m_arrowOut.col);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = '%s'",
-                       tileName.c_str(), symbolPath.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
-                       tileName.c_str(), leftText.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
-                       tileName.c_str(), rightText.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
-                       tileName.c_str(), centerText.c_str());
-        App::DocumentObject* newTile = m_leadFeat->getDocument()->getObject(tileName.c_str());
-        if (newTile == nullptr) {
-            throw Base::RuntimeError("TaskWeldingSymbol - new tile object not found");
-        }
-        tileFeats.push_back(newTile);
-    }
-
-    if (m_otherDirty) {
-        collectOtherData();
-        if (m_otherOut.toBeSaved) {
-            std::string tileName = m_leadFeat->getDocument()->getUniqueObjectName("DrawTileWeld");
-            Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       tileType.c_str(),tileName.c_str());
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.TileRow = %d",
-                           tileName.c_str(), m_otherOut.row);
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
-                           tileName.c_str(), m_otherOut.col);
-
-            if (m_otherOut.symbolPath.empty()) {
-                Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = ''",
-                           tileName.c_str());
-            } else {
-                std::string symbolPath = Base::Tools::escapeEncodeString(m_otherOut.symbolPath);
-                Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = '%s'",
-                           tileName.c_str(), symbolPath.c_str());
-            }
-
-            std::string leftText = Base::Tools::escapeEncodeString(m_otherOut.leftText);
-            std::string rightText = Base::Tools::escapeEncodeString(m_otherOut.rightText);
-            std::string centerText = Base::Tools::escapeEncodeString(m_otherOut.centerText);
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
-                           tileName.c_str(), leftText.c_str());
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
-                           tileName.c_str(), rightText.c_str());
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
-                           tileName.c_str(), centerText.c_str());
-            App::DocumentObject* newTile = m_leadFeat->getDocument()->getObject(tileName.c_str());
-            if (newTile == nullptr) {
-                throw Base::RuntimeError("TaskWeldingSymbol - new tile object not found");
-            }
-            tileFeats.push_back(newTile);
-        }
-    }
-
-    return tileFeats;
-}
-
-std::vector<App::DocumentObject*> TaskWeldingSymbol::updateTiles(void)
+void TaskWeldingSymbol::updateTiles(void)
 {
 //    Base::Console().Message("TWS::updateTiles()\n");
-    std::vector<App::DocumentObject*> tileFeats;
-    std::string tileType("TechDraw::DrawTileWeld");
-    std::string tileName;
+    getTileFeats();
 
-    collectArrowData();
-
-    if (m_arrowIn != nullptr) {
-        tileName = m_arrowIn->getNameInDocument();
-    }
-    if (m_arrowIn == nullptr) {
-        tileName = m_leadFeat->getDocument()->getUniqueObjectName("DrawTileWeld");
-        Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                   tileType.c_str(),tileName.c_str());
-        App::DocumentObject* newTile = m_leadFeat->getDocument()->getObject(tileName.c_str());
-        if (newTile == nullptr) {
-            throw Base::RuntimeError("TaskWeldingSymbol - new tile object not found");
-        }
-        tileFeats.push_back(newTile);
-    }
-
-    if (m_arrowOut.toBeSaved) {
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.TileRow = %d",
-                       tileName.c_str(), m_arrowOut.row);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
-                       tileName.c_str(), m_arrowOut.col);
-
-        if (m_arrowOut.symbolPath.empty()) {
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = ''",
-                       tileName.c_str());
-        } else {
-            std::string symbolPath = Base::Tools::escapeEncodeString(m_arrowOut.symbolPath);
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = '%s'",
-                       tileName.c_str(), symbolPath.c_str());
-        }
-
-        std::string leftText = Base::Tools::escapeEncodeString(m_arrowOut.leftText);
-        std::string rightText = Base::Tools::escapeEncodeString(m_arrowOut.rightText);
-        std::string centerText = Base::Tools::escapeEncodeString(m_arrowOut.centerText);
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
-                       tileName.c_str(), leftText.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
-                       tileName.c_str(), rightText.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
-                       tileName.c_str(), centerText.c_str());
-    }
-
-    if (m_otherDirty) {
-        collectOtherData();
-
-        if (m_otherIn != nullptr) {
-            tileName = m_otherIn->getNameInDocument();
-        }
-
-        if ( (m_otherIn == nullptr) &&    //m_otherIn can be nullptr if otherside added in edit session.
-             (m_otherOut.toBeSaved) ) {
-            tileName = m_leadFeat->getDocument()->getUniqueObjectName("DrawTileWeld");
-            Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       tileType.c_str(),tileName.c_str());
-            App::DocumentObject* newTile = m_leadFeat->getDocument()->getObject(tileName.c_str());
-            if (newTile == nullptr) {
-                throw Base::RuntimeError("TaskWeldingSymbol - new tile object not found");
-            }
-            tileFeats.push_back(newTile);
-        }
-
-        if (m_otherOut.toBeSaved) {
-            Command::doCommand(Command::Doc,"App.activeDocument().addObject('%s','%s')",
-                       tileType.c_str(),tileName.c_str());
-            Command::doCommand(Command::Doc,"App.activeDocument().%s.TileRow = %d",
-                           tileName.c_str(), m_otherOut.row);
+    if (m_arrowFeat == nullptr) {
+        Base::Console().Message("TWS::updateTiles - no arrow tile!\n");
+    } else {
+        collectArrowData();
+        if (m_arrowOut.toBeSaved) {
+            std::string tileName = m_arrowFeat->getNameInDocument();
+            std::string leftText = Base::Tools::escapeEncodeString(m_arrowOut.leftText);
+            std::string rightText = Base::Tools::escapeEncodeString(m_arrowOut.rightText);
+            std::string centerText = Base::Tools::escapeEncodeString(m_arrowOut.centerText);
             Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
-                           tileName.c_str(), m_otherOut.col);
-
-            if (m_otherOut.symbolPath.empty()) {
-                Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = ''",
-                           tileName.c_str());
-            } else {
-                std::string symbolPath = Base::Tools::escapeEncodeString(m_otherOut.symbolPath);
-                Command::doCommand(Command::Doc,"App.activeDocument().%s.SymbolFile = '%s'",
-                           tileName.c_str(), symbolPath.c_str());
-            }
-
-            std::string leftText = Base::Tools::escapeEncodeString(m_otherOut.leftText);
-            std::string rightText = Base::Tools::escapeEncodeString(m_otherOut.rightText);
-            std::string centerText = Base::Tools::escapeEncodeString(m_otherOut.centerText);
+                           tileName.c_str(), m_arrowOut.col);
             Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
                            tileName.c_str(), leftText.c_str());
             Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
                            tileName.c_str(), rightText.c_str());
             Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
                            tileName.c_str(), centerText.c_str());
+            if (!m_arrowOut.symbolPath.empty()) {
+                m_arrowFeat->replaceSymbol(m_arrowOut.symbolPath);
+            }
         }
     }
 
-    return tileFeats;
+    if (m_otherFeat == nullptr) {
+//        Base::Console().Message("TWS::updateTiles - no other tile!\n");
+    } else {
+        if (m_otherDirty) {
+            collectOtherData();
+            if (m_otherOut.toBeSaved) {
+                std::string tileName = m_otherFeat->getNameInDocument();
+                std::string leftText = Base::Tools::escapeEncodeString(m_otherOut.leftText);
+                std::string rightText = Base::Tools::escapeEncodeString(m_otherOut.rightText);
+                std::string centerText = Base::Tools::escapeEncodeString(m_otherOut.centerText);
+                Command::doCommand(Command::Doc,"App.activeDocument().%s.TileColumn = %d",
+                               tileName.c_str(), m_otherOut.col);
+                Command::doCommand(Command::Doc,"App.activeDocument().%s.LeftText = '%s'",
+                               tileName.c_str(), leftText.c_str());
+                Command::doCommand(Command::Doc,"App.activeDocument().%s.RightText = '%s'",
+                               tileName.c_str(), rightText.c_str());
+                Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
+                               tileName.c_str(), centerText.c_str());
+                m_otherFeat->replaceSymbol(m_otherOut.symbolPath);
+            }
+        }
+    }
+    return;
 }
 
 void TaskWeldingSymbol::saveButtons(QPushButton* btnOK,
@@ -692,11 +587,7 @@ bool TaskWeldingSymbol::accept()
     if (m_createMode) {
         Gui::Command::openCommand("Create WeldSymbol");
         m_weldFeat = createWeldingSymbol();
-        std::vector<App::DocumentObject*> tileFeats = createTiles();
-        for (auto& obj: tileFeats) {
-            TechDraw::DrawTileWeld* tile = dynamic_cast<TechDraw::DrawTileWeld*>(obj);
-            tile->TileParent.setValue(m_weldFeat);
-        }
+        updateTiles();
         Gui::Command::updateActive();
         Gui::Command::commitCommand();
         m_weldFeat->recomputeFeature();
@@ -705,19 +596,8 @@ bool TaskWeldingSymbol::accept()
         Gui::Command::openCommand("Edit WeldSymbol");
         try {
             updateWeldingSymbol();
-            std::vector<App::DocumentObject*> tileFeats = updateTiles();
-            for (auto& obj: tileFeats) {  //new tiles only
-                TechDraw::DrawTileWeld* tile = dynamic_cast<TechDraw::DrawTileWeld*>(obj);
-                tile->TileParent.setValue(m_weldFeat);
-            }
-
-            for (auto name: m_toRemove) {
-                //QGIV is removed from scene by MDIVP/QGVP on objectDelete
-                Command::doCommand(Command::Doc,
-                     "App.activeDocument().removeObject('%s')", name.c_str());
-            }
+            updateTiles();
         }
-
         catch (...) {
             Base::Console().Error("TWS::accept - failed to update symbol\n");
         }

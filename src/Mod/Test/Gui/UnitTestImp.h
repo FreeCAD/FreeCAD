@@ -24,13 +24,17 @@
 #ifndef TESTGUI_UNITTESTIMP_H
 #define TESTGUI_UNITTESTIMP_H
 
-#include "ui_UnitTest.h"
+#include <QDialog>
+#include <memory>
 
 #include <Base/PyObjectBase.h>
 
-namespace TestGui {
+class QTreeWidgetItem;
 
-class UnitTestDialog : public QDialog, public Ui_UnitTest
+namespace TestGui {
+class Ui_UnitTest;
+
+class UnitTestDialog : public QDialog
 {
     Q_OBJECT
 
@@ -67,6 +71,7 @@ public Q_SLOTS:
     void on_startButton_clicked();
 
 private:
+    std::unique_ptr<Ui_UnitTest> ui;
     static UnitTestDialog* _instance;
 };
 
