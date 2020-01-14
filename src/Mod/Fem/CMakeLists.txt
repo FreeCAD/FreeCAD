@@ -163,6 +163,8 @@ SET(FemTestsFiles_SRCS
 
 SET(FemTestsCcx_SRCS
     femtest/data/ccx/__init__.py
+    femtest/data/ccx/contact_shell_shell.FCStd
+    femtest/data/ccx/contact_shell_shell.inp
     femtest/data/ccx/cube_frequency.inp
     femtest/data/ccx/cube_frequency.dat
     femtest/data/ccx/cube_frequency.frd

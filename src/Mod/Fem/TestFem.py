@@ -128,6 +128,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_3_freq_analysis"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_4_thermomech_analysis"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_5_Flow1D_thermomech_analysis"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_6_contact_shell_shell"
 ./bin/FreeCADCmd --run-test "femtest.app.test_common.TestFemCommon.test_adding_refshaps"
 ./bin/FreeCADCmd --run-test "femtest.app.test_common.TestFemCommon.test_pyimport_all_FEM_modules"
 ./bin/FreeCADCmd --run-test "femtest.app.test_material.TestMaterialUnits.test_known_quantity_units"
@@ -176,6 +177,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.a
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_5_Flow1D_thermomech_analysis"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_6_contact_shell_shell"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_common.TestFemCommon.test_adding_refshaps"))

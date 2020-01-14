@@ -546,6 +546,82 @@ class TestCcxTools(unittest.TestCase):
         fcc_print("--------------- End of FEM ccxtools Flow1D analysis test -------------------")
 
     # ********************************************************************************************
+    def test_6_contact_shell_shell(
+        self
+    ):
+        test_name = "contact shell shell analysis test"
+        base_name = "contact_shell_shell"
+        test_dir = "FEM_ccx_contact_shell_shell"
+
+        fcc_print(
+            "\n--------------- "
+            "Start of FEM ccxtools {}"
+            "---------------"
+            .format(test_name)
+        )
+
+        # set up the example
+        from femexamples import contact_shell_shell as shellcontact
+        shellcontact.setup(self.active_doc, "ccxtools")
+
+        # code from here is independent, TODO put in separate def
+        # adding more inp file tests would be very simple ...
+        # set up analysis
+        analysis = self.active_doc.Analysis
+        solver_object = self.active_doc.CalculiXccxTools
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            test_dir,
+        )
+        fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
+        fea.update_objects()
+
+        fcc_print("Setting up working directory {}".format(analysis_dir))
+        fea.setup_working_dir(analysis_dir)
+        self.assertTrue(
+            True if fea.working_dir == analysis_dir else False,
+            "Setting working directory {} failed".format(analysis_dir)
+        )
+
+        fcc_print("Checking FEM inp file prerequisites for {} ...".format(test_name))
+        error = fea.check_prerequisites()
+        self.assertFalse(
+            error,
+            "ccxtools check_prerequisites returned error message: {}".format(error)
+        )
+
+        inpfile_given = join(self.test_file_dir, (base_name + ".inp"))
+        inpfile_totest = join(analysis_dir, (self.mesh_name + ".inp"))
+        fcc_print("Checking FEM inp file write...")
+        fcc_print("Writing {} for {}".format(inpfile_totest, test_name))
+        error = fea.write_inp_file()
+        self.assertFalse(
+            error,
+            "Writing failed"
+        )
+
+        fcc_print("Comparing {} to {}".format(inpfile_given, inpfile_totest))
+        ret = testtools.compare_inp_files(inpfile_given, inpfile_totest)
+        self.assertFalse(
+            ret,
+            "ccxtools write_inp_file test failed.\n{}".format(ret)
+        )
+
+        static_save_fc_file = analysis_dir + base_name + ".FCStd"
+        fcc_print(
+            "Save FreeCAD file for {} to {}..."
+            .format(test_name, static_save_fc_file)
+        )
+        self.active_doc.saveAs(static_save_fc_file)
+
+        fcc_print(
+            "\n--------------- "
+            "End of FEM ccxtools {}"
+            "---------------"
+            .format(test_name)
+        )
+
+    # ********************************************************************************************
     def tearDown(
         self
     ):
