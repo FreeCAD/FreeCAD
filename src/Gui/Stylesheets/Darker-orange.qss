@@ -1,7 +1,7 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.21
+version 2.22
 Qt theme (stylesheet) specially developed for FreeCAD (https://www.freecadweb.org/).
 It might work with other software that uses Qt styling.
 
@@ -1165,8 +1165,8 @@ QDateEdit,
 QDateTimeEdit {
     color: #bebebe;
     background-color: #2a2a2a;
-    selection-color: #e3d8b9;
-    selection-background-color: #b28416;
+    selection-color: white;
+    selection-background-color: #624b14 ;
     border: 1px solid #2a2a2a;
     border-radius: 3px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
