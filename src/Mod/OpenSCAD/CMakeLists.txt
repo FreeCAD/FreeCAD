@@ -20,7 +20,9 @@ SOURCE_GROUP("" FILES ${OpenSCAD_SRCS})
 
 SET(ply_SRCS
     ply/lex.py
-    ply/README
+    ply/README.md
+    ply/ANNOUNCE
+    ply/CHANGES
     ply/yacc.py
     ply/__init__.py
 )
