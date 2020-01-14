@@ -85,12 +85,13 @@ DrawViewGDTReference::DrawViewGDTReference(void)
     m_linearPoints.second = Base::Vector3d(0,0,0);
 
     //hide the DrawView properties that don't apply to reference
+    References2D.setStatus(App::Property::Hidden,true);
+    X.setStatus(App::Property::Hidden,true);
+    Y.setStatus(App::Property::Hidden,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,false);
-    Rotation.setStatus(App::Property::ReadOnly,true);
-    Rotation.setStatus(App::Property::Hidden,false);
+    Scale.setStatus(App::Property::Hidden,true);
+    Rotation.setStatus(App::Property::Hidden,true);
     Caption.setStatus(App::Property::Hidden,true);
 }
 
@@ -102,7 +103,7 @@ DrawViewGDTReference::~DrawViewGDTReference()
 //are there non-blank references?
 bool DrawViewGDTReference::has2DReferences(void) const
 {
-    Base::Console().Message("DV_GDTReference::has2DReferences() - %s\n",getNameInDocument());
+    //Base::Console().Message("DrawViewGDTReference::has2DReferences() - %s\n",getNameInDocument());
     bool result = false;
 
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
@@ -158,7 +159,7 @@ DrawViewPart* DrawViewGDTReference::getViewPart() const
 
 PointPair DrawViewGDTReference::getPointsOneEdge()
 {
-    Base::Console().Message("DrawViewGDTReference::getPointsOneEdge() - %s\n",getNameInDocument());
+    //Base::Console().Message("DrawViewGDTReference::getPointsOneEdge() - %s\n",getNameInDocument());
     PointPair result;
     const std::vector<std::string> &subElements = References2D.getSubValues();
 
@@ -179,7 +180,7 @@ PointPair DrawViewGDTReference::getPointsOneEdge()
 
 App::DocumentObjectExecReturn *DrawViewGDTReference::execute(void)
 {
-	Base::Console().Message("DrawViewGDTReference::execute() - %s\n", getNameInDocument());
+	//Base::Console().Message("DrawViewGDTReference::execute() - %s\n", getNameInDocument());
 	//any empty Reference2D??
 	if (!has2DReferences()) {                                            //too soon?
 		if (isRestoring() ||
@@ -214,7 +215,7 @@ App::DocumentObjectExecReturn *DrawViewGDTReference::execute(void)
 //! validate 2D references - only checks if the target exists
 bool DrawViewGDTReference::checkReferences2D() const
 {
-    Base::Console().Message("DV_GDTReference::checkReferences2d() - %s\n",getNameInDocument());
+    Base::Console().Message("DrawViewGDTReference::checkReferences2d() - %s\n",getNameInDocument());
     bool result = true;
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
     if (!objects.empty()) {
@@ -235,11 +236,11 @@ bool DrawViewGDTReference::checkReferences2D() const
                 }
             }
         } else {
-            Base::Console().Log("DV_GDTReference::checkReferences2d() - %s - subelements empty!\n",getNameInDocument());
+            Base::Console().Log("DrawViewGDTReference::checkReferences2d() - %s - subelements empty!\n",getNameInDocument());
             result = false;
         }
     } else {
-        Base::Console().Log("DV_GDTReference::checkReferences2d() - %s - objects empty!\n",getNameInDocument());
+        Base::Console().Log("DrawViewGDTReference::checkReferences2d() - %s - objects empty!\n",getNameInDocument());
         result = false;
     }
     return result;
