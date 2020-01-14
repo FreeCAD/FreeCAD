@@ -57,8 +57,7 @@ class TechDrawGuiExport QGILeaderLine : public QGIView
 public:
     enum {Type = QGraphicsItem::UserType + 232};
 
-    explicit QGILeaderLine(QGraphicsItem* myParent = nullptr,
-                           TechDraw::DrawLeaderLine* lead = nullptr);
+    explicit QGILeaderLine();
     ~QGILeaderLine() = default;
 
     int type() const override { return Type;}
@@ -92,6 +91,8 @@ public:
     void setPrettyPre();
     void setPrettySel();
 
+    void setLeaderFeature(TechDraw::DrawLeaderLine* feat);
+
 public Q_SLOTS:
     void onLineEditFinished(QPointF attach, std::vector<QPointF> deltas);    //QGEPath is finished editing points
     virtual void onSourceChange(TechDraw::DrawView* newParent) override;
@@ -114,6 +115,7 @@ protected:
 
 protected:
     QColor getNormalColor() override;
+    void setNormalColorAll();
 
     QGraphicsItem* m_parentItem;
     QGIPrimPath* m_line;               //actual leader line

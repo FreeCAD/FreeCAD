@@ -210,7 +210,7 @@ void TaskLeaderLine::changeEvent(QEvent *e)
 void TaskLeaderLine::setUiPrimary()
 {
 //    Base::Console().Message("TTL::setUiPrimary()\n");
-    enableVPUi(false);
+    enableVPUi(true);
     setWindowTitle(QObject::tr("New Leader Line"));
 
     if (m_baseFeat != nullptr) {
@@ -224,6 +224,8 @@ void TaskLeaderLine::setUiPrimary()
     ui->cboxStartSym->setCurrentIndex(aSize);
 }
 
+//switch widgets related to ViewProvider on/off
+//there is no ViewProvider until some time after feature is created.
 void TaskLeaderLine::enableVPUi(bool b)
 {
     ui->cpLineColor->setEnabled(b);
@@ -287,7 +289,19 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
         }
         commonFeatureUpdate();
     }
-    
+
+    if (m_lineFeat != nullptr) {
+        Gui::ViewProvider* vp = QGIView::getViewProvider(m_lineFeat);
+        auto leadVP = dynamic_cast<ViewProviderLeader*>(vp);
+        if ( leadVP != nullptr ) {
+            App::Color ac;
+            ac.setValue<QColor>(ui->cpLineColor->color());
+            leadVP->Color.setValue(ac);
+            leadVP->LineWidth.setValue(ui->dsbWeight->value());
+            leadVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
+        }
+    }
+
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
     m_lineFeat->requestPaint();
@@ -305,7 +319,12 @@ void TaskLeaderLine::updateLeaderFeature(void)
     m_lineVP->LineWidth.setValue(ui->dsbWeight->value());
     m_lineVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
 
+    Gui::Command::updateActive();
     Gui::Command::commitCommand();
+
+    if (m_baseFeat != nullptr) {
+        m_baseFeat->requestPaint();
+    }
     m_lineFeat->requestPaint();
 }
 

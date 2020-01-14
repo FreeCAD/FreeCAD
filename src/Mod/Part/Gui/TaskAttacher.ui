@@ -121,7 +121,7 @@
       <string/>
      </property>
      <property name="title">
-      <string>Attachment Offset:</string>
+      <string>Attachment Offset (in local coordinates):</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
@@ -133,7 +133,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>X:</string>
+         <string>In x-direction:</string>
         </property>
         <property name="buddy">
          <cstring>labelOffset</cstring>
@@ -149,7 +149,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Y:</string>
+         <string>In y-direction:</string>
         </property>
        </widget>
       </item>
@@ -182,7 +182,7 @@ of object being attached.</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Z:</string>
+         <string>In z-direction:</string>
         </property>
        </widget>
       </item>
@@ -215,7 +215,7 @@ of object being attached.</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Roll:</string>
+         <string>Around x-axis:</string>
         </property>
        </widget>
       </item>
@@ -228,7 +228,7 @@ of object being attached.</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Pitch:</string>
+         <string>Around y-axis:</string>
         </property>
        </widget>
       </item>
@@ -241,7 +241,7 @@ of object being attached.</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Yaw:</string>
+         <string>Around z-axis:</string>
         </property>
        </widget>
       </item>

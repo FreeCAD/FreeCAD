@@ -94,16 +94,16 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xPos"/>
+       <widget class="Gui::QuantitySpinBox" name="xPos" native="true"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yPos"/>
+       <widget class="Gui::QuantitySpinBox" name="yPos" native="true"/>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::QuantitySpinBox" name="zPos"/>
+       <widget class="Gui::QuantitySpinBox" name="zPos" native="true"/>
       </item>
       <item row="4" column="1">
-       <widget class="Gui::QuantitySpinBox" name="axialPos"/>
+       <widget class="Gui::QuantitySpinBox" name="axialPos" native="true"/>
       </item>
       <item row="5" column="1">
        <widget class="QPushButton" name="applyAxial">
@@ -179,13 +179,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="xCnt"/>
+       <widget class="Gui::QuantitySpinBox" name="xCnt" native="true"/>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::QuantitySpinBox" name="yCnt"/>
+       <widget class="Gui::QuantitySpinBox" name="yCnt" native="true"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::QuantitySpinBox" name="zCnt"/>
+       <widget class="Gui::QuantitySpinBox" name="zCnt" native="true"/>
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="centerOfMass">
@@ -228,7 +228,7 @@
       <item row="1" column="0">
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="page">
          <layout class="QGridLayout">
@@ -298,7 +298,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="angle"/>
+             <widget class="Gui::QuantitySpinBox" name="angle" native="true"/>
             </item>
            </layout>
           </item>
@@ -347,7 +347,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Pitch:</string>
+               <string>Around y-axis:</string>
               </property>
              </widget>
             </item>
@@ -360,7 +360,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Yaw:</string>
+               <string>Around z-axis:</string>
               </property>
              </widget>
             </item>
@@ -373,26 +373,26 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Roll:</string>
+               <string>Around x-axis:</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="rollAngle">
+             <widget class="Gui::QuantitySpinBox" name="rollAngle" native="true">
               <property name="toolTip">
                <string>Rotation around the x-axis</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="pitchAngle">
+             <widget class="Gui::QuantitySpinBox" name="pitchAngle" native="true">
               <property name="toolTip">
                <string>Rotation around the y-axis</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="yawAngle">
+             <widget class="Gui::QuantitySpinBox" name="yawAngle" native="true">
               <property name="toolTip">
                <string>Rotation around the z-axis</string>
               </property>
@@ -414,7 +414,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Euler angles (XY'Z'')</string>
+          <string>Euler angles (xy'z'')</string>
          </property>
         </item>
        </widget>

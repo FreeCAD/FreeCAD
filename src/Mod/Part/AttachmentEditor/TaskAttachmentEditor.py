@@ -591,7 +591,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.form.message.setText(_translate('AttachmentEditor',"Error: {err}",None).format(err= str(err)))
 
         if new_plm is not None:
-            self.form.groupBox_AttachmentOffset.setTitle(_translate('AttachmentEditor',"Attachment Offset:",None))
+            self.form.groupBox_AttachmentOffset.setTitle(_translate('AttachmentEditor',"Attachment Offset (in local coordinates):",None))
             self.form.groupBox_AttachmentOffset.setEnabled(True)
         else:
             self.form.groupBox_AttachmentOffset.setTitle(_translate('AttachmentEditor',"Attachment Offset (inactive - not attached):",None))
