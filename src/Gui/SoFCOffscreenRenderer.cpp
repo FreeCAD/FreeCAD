@@ -31,6 +31,7 @@
 # include <QFile>
 # include <QImage>
 # include <QImageWriter>
+# include <QPainter>
 #endif
 
 #if !defined(FC_OS_MACOSX)
@@ -405,7 +406,7 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     else {
         this->renderaction = new SoGLRenderAction(vpr);
         this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
-        this->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
+        this->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
     }
 
     this->didallocation = glrenderaction ? false : true;
@@ -817,9 +818,6 @@ SoQtOffscreenRenderer::writeToImage (QImage& img) const
                 bits++;
             }
         }
-    }
-    else if (PRIVATE(this)->backgroundcolor[3] == 1.0) {
-        img = img.convertToFormat(QImage::Format_RGB32);
     }
 }
 
