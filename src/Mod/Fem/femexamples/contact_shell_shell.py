@@ -60,7 +60,6 @@ def setup(doc=None, solvertype="ccxtools"):
     lower_tube = doc.addObject("Part::Feature", "Lower_tube")
     lower_tube.Shape = sh_lower_tube
 
-
     sh_upper_circle = Part.Wire(Part.makeCircle(tube_radius))
     sh_upper_tube = sh_upper_circle.extrude(FreeCAD.Vector(0, 0, tube_length))
     sh_upper_tube.reverse()
@@ -81,14 +80,12 @@ def setup(doc=None, solvertype="ccxtools"):
         force_point.ViewObject.PointSize = 10.0
         force_point.ViewObject.PointColor = (1.0, 0.0, 0.0)
 
-
-    BooleanFrag = BOPTools.SplitFeatures.makeBooleanFragments(name= 'BooleanFragments')
+    BooleanFrag = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
     BooleanFrag.Objects = [upper_tube, force_point]
-    
+
     compound = doc.addObject("Part::Compound", "Compound")
-    compound.Links = [BooleanFrag, lower_tube,]
-       
-    
+    compound.Links = [BooleanFrag, lower_tube]
+
     # line for load direction
     sh_load_line = Part.makeLine(v_force_pt, FreeCAD.Vector(0, 150, 475))
     load_line = doc.addObject("Part::Feature", "Load_direction_line")

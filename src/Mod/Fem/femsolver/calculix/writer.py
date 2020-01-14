@@ -608,7 +608,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         else:
                             name = "IND" + str(obj)
                         f.write("*SURFACE, NAME =" + name + "\n")
-                        
+
                         v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
                         if len(v) > 0:
                             # volume elements found
@@ -616,7 +616,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                                 "{}, surface {}, {} touching volume elements found\n"
                                 .format(contact_obj.Label, name, len(v))
                             )
-                            for i in v:                        
+                            for i in v:
                                 f.write("{},S{}\n".format(i[0], i[1]))
                         else:
                             # try shell elements
@@ -630,7 +630,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                                     f.write("{},S2\n".format(i))
                             else:
                                 FreeCAD.Console.PrintError(
-                                    "{}, surface {}, Error: Neither volume nor shell elements found!\n"
+                                    "{}, surface {}, Error: "
+                                    "Neither volume nor shell elements found!\n"
                                     .format(contact_obj.Label, name)
                                 )
 
