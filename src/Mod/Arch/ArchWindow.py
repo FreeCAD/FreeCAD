@@ -1709,11 +1709,11 @@ class _ArchWindowTaskPanel:
     def getIcon(self,obj):
 
         if hasattr(obj.ViewObject,"Proxy"):
-            return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        elif obj.isDerivedFrom("Sketcher::SketchObject"):
+            if hasattr(obj.ViewObject.Proxy,"getIcon"):
+                return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
+        if obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
 
