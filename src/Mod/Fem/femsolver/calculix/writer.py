@@ -97,7 +97,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         )
 
     def write_calculix_input_file(self):
-        timestart = time.clock()
+        timestart = time.process_time()
         FreeCAD.Console.PrintMessage("Start writing CalculiX input file\n")
         FreeCAD.Console.PrintMessage("Write ccx input file to: {}\n".format(self.file_name))
         FreeCAD.Console.PrintLog(
@@ -115,7 +115,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.write_calculix_one_input_file()
         writing_time_string = (
             "Writing time CalculiX input file: {} seconds"
-            .format(round((time.clock() - timestart), 2))
+            .format(round((time.process_time() - timestart), 2))
         )
         if self.femelement_count_test is True:
             FreeCAD.Console.PrintMessage(writing_time_string + " \n\n")
