@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2019 Ludovic Mercier, lidiriel <ludovic@scilink.net>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -73,6 +74,7 @@ public:
     short mustExecute() const;
     PointPair getLinearPoints(void) {return m_linearPoints; }
 
+    //TODO add python wrapper
     //virtual PyObject *getPyObject(void);
 
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -91,7 +93,6 @@ protected:
     PointPair getPointsOneEdge();
     bool has2DReferences(void) const;
     bool checkReferences2D(void) const;
-	virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
 private:
     PointPair   m_linearPoints;

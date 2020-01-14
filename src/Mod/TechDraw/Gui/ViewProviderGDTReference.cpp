@@ -2,6 +2,7 @@
  *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2019 Franck Jullien <franck.jullien@gmail.com>          *
+ *   Copyright (c) 2019 Ludovic Mercier, lidiriel <ludovic@scilink.net>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -111,25 +112,6 @@ std::vector<std::string> ViewProviderGDTReference::getDisplayModes(void) const
     std::vector<std::string> StrList = ViewProviderDrawingView::getDisplayModes();
 
     return StrList;
-}
-
-bool ViewProviderGDTReference::setEdit(int ModNum)
-{
-//    if (ModNum == ViewProvider::Default ) {
-//        if (Gui::Control().activeDialog())  {
-//            return false;
-//        }
-//        // clear the selection (convenience)
-//        Gui::Selection().clearSelection();
-//        auto qgivBalloon(dynamic_cast<QGIViewBalloon*>(getQView()));
-//        if (qgivBalloon) {
-//            Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon));
-//        }
-//        return true;
-//    } else {
-//        return ViewProviderDrawingView::setEdit(ModNum);
-//    }
-    return true;
 }
 
 void ViewProviderGDTReference::unsetEdit(int ModNum)

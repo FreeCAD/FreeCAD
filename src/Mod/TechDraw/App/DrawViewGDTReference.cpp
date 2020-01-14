@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2019 Ludovic Leau-Mercier aka Lidiriel                  *
- *   <ludovic@scilink.net>                                                 *
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2019 Ludovic Mercier, lidiriel <ludovic@scilink.net>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -78,20 +78,20 @@ DrawViewGDTReference::DrawViewGDTReference(void)
 	ADD_PROPERTY(Type,((long)0));
 	Type.setStatus(App::Property::ReadOnly,true);
 
-	ADD_PROPERTY_TYPE(Text ,     ("A"),"",App::Prop_None,"The text to be displayed");
-
+	ADD_PROPERTY_TYPE(Text,("A"),"",App::Prop_None,"The text to be displayed");
     ADD_PROPERTY_TYPE(SymbolScale,(1),"",(App::PropertyType)(App::Prop_None),"Reference symbol scale");
 
     m_linearPoints.first  = Base::Vector3d(0,0,0);
     m_linearPoints.second = Base::Vector3d(0,0,0);
 
     //hide the DrawView properties that don't apply to reference
+    References2D.setStatus(App::Property::Hidden,true);
+    X.setStatus(App::Property::Hidden,true);
+    Y.setStatus(App::Property::Hidden,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::Hidden,true);
-    Scale.setStatus(App::Property::ReadOnly,true);
-    Scale.setStatus(App::Property::Hidden,false);
-    Rotation.setStatus(App::Property::ReadOnly,true);
-    Rotation.setStatus(App::Property::Hidden,false);
+    Scale.setStatus(App::Property::Hidden,true);
+    Rotation.setStatus(App::Property::Hidden,true);
     Caption.setStatus(App::Property::Hidden,true);
 }
 
@@ -103,7 +103,7 @@ DrawViewGDTReference::~DrawViewGDTReference()
 //are there non-blank references?
 bool DrawViewGDTReference::has2DReferences(void) const
 {
-    Base::Console().Message("DV_GDTReference::has2DReferences() - %s\n",getNameInDocument());
+    //Base::Console().Message("DrawViewGDTReference::has2DReferences() - %s\n",getNameInDocument());
     bool result = false;
 
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
@@ -132,15 +132,8 @@ void DrawViewGDTReference::onChanged(const App::Property* prop)
 
 void DrawViewGDTReference::onDocumentRestored()
 {
-
+	execute();
 }
-
-void DrawViewGDTReference::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
-{
-    // also check for changed properties of the base class
-    DrawView::handleChangedPropertyType(reader, TypeName, prop);
-}
-
 
 short DrawViewGDTReference::mustExecute() const
 {
@@ -166,7 +159,7 @@ DrawViewPart* DrawViewGDTReference::getViewPart() const
 
 PointPair DrawViewGDTReference::getPointsOneEdge()
 {
-    Base::Console().Message("DrawViewGDTReference::getPointsOneEdge() - %s\n",getNameInDocument());
+    //Base::Console().Message("DrawViewGDTReference::getPointsOneEdge() - %s\n",getNameInDocument());
     PointPair result;
     const std::vector<std::string> &subElements = References2D.getSubValues();
 
@@ -187,7 +180,7 @@ PointPair DrawViewGDTReference::getPointsOneEdge()
 
 App::DocumentObjectExecReturn *DrawViewGDTReference::execute(void)
 {
-	Base::Console().Message("DrawViewGDTReference::execute() - %s\n", getNameInDocument());
+	//Base::Console().Message("DrawViewGDTReference::execute() - %s\n", getNameInDocument());
 	//any empty Reference2D??
 	if (!has2DReferences()) {                                            //too soon?
 		if (isRestoring() ||
@@ -222,7 +215,7 @@ App::DocumentObjectExecReturn *DrawViewGDTReference::execute(void)
 //! validate 2D references - only checks if the target exists
 bool DrawViewGDTReference::checkReferences2D() const
 {
-    Base::Console().Message("DV_GDTReference::checkReferences2d() - %s\n",getNameInDocument());
+    Base::Console().Message("DrawViewGDTReference::checkReferences2d() - %s\n",getNameInDocument());
     bool result = true;
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
     if (!objects.empty()) {
@@ -237,36 +230,29 @@ bool DrawViewGDTReference::checkReferences2D() const
                             result = false;
                             break;
                         }
-//                    } else if (DrawUtil::getGeomTypeFromName(s) == "Vertex") {
-//                        TechDraw::Vertex* v = getViewPart()->getProjVertexByIndex(idx);
-//                        if (v == nullptr) {
-//                            result = false;
-//                            break;
-//                        }
                     }
                 } else {
                     result = false;
                 }
             }
         } else {
-            Base::Console().Log("DV_GDTReference::checkReferences2d() - %s - subelements empty!\n",getNameInDocument());
+            Base::Console().Log("DrawViewGDTReference::checkReferences2d() - %s - subelements empty!\n",getNameInDocument());
             result = false;
         }
     } else {
-        Base::Console().Log("DV_GDTReference::checkReferences2d() - %s - objects empty!\n",getNameInDocument());
+        Base::Console().Log("DrawViewGDTReference::checkReferences2d() - %s - objects empty!\n",getNameInDocument());
         result = false;
     }
     return result;
 }
 
-/*
-PyObject *DrawViewBalloon::getPyObject(void)
-{
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new DrawViewGDTReferencePy(this),true);
-    }
-    return Py::new_reference_to(PythonObject);
-}
-*/
+// TODO add python wrapper
+//PyObject *DrawViewGDTReference::getPyObject(void)
+//{
+//    if (PythonObject.is(Py::_None())) {
+//        // ref counter is set to 1
+//        PythonObject = Py::Object(new DrawViewGDTReferencePy(this),true);
+//    }
+//    return Py::new_reference_to(PythonObject);
+//}
 

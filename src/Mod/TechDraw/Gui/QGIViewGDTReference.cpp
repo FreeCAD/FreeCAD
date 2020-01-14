@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2019 Franck Jullien <franck.jullien@gmail.com>          *
+ *   Copyright (c) 2019 Ludovic Mercier, lidiriel <ludovic@scilink.net>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -142,6 +143,7 @@ void QGIReferenceLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 void QGIReferenceLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
 {
 	// TODO nothing doing : no task managment
+	Q_UNUSED(event);
 }
 
 void QGIReferenceLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -283,8 +285,8 @@ QGIViewGDTReference::QGIViewGDTReference() :
     referenceArrow->setNormalColor(getNormalColor());
     referenceArrow->setFillColor(getNormalColor());
     referenceArrow->setPrettyNormal();
-    // TODO change style to PYRAMID
-    //referenceArrow->setStyle(PYRAMID);
+    referenceArrow->setStyle(PYRAMID);
+    referenceArrow->setSize(3);
 
     referenceLabel->setZValue(ZVALUE::LABEL);
     referenceArrow->setZValue(ZVALUE::DIMENSION);
@@ -423,14 +425,14 @@ void QGIViewGDTReference::updateReference()
     if( reference == nullptr ) {
         return;
     }
-    auto vp = static_cast<ViewProviderGDTReference*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    auto viewProvider = static_cast<ViewProviderGDTReference*>(getViewProvider(getViewObject()));
+    if ( viewProvider == nullptr ) {
         return;
     }
 
     QFont font = referenceLabel->getFont();
-    font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
-    font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+    font.setPixelSize(calculateFontPixelSize(viewProvider->Fontsize.getValue()));
+    font.setFamily(QString::fromUtf8(viewProvider->Font.getValue()));
     referenceLabel->setFont(font);
 
     prepareGeometryChange();
@@ -584,7 +586,7 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
         //TODO: parent redraw still required with new frame/label??
         parentItem()->update();
     } else {
-        Base::Console().Log("INFO - QGIVD::draw - no parent to update\n");
+        Base::Console().Log("INFO - QGIViewGDTReference::draw_modifier - no parent to update\n");
     }
 
 }
