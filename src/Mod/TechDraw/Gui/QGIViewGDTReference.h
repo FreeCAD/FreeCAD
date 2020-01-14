@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *   Copyright (c) 2019 Franck Jullien <franck.jullien@gmail.com>          *
+ *   Copyright (c) 2019 Ludovic Mercier, lidiriel <ludovic@scilink.net>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -176,7 +177,6 @@ protected:
     Base::Vector3d m_linkDir;
     double m_arrowAngle;
     double m_lineAngle;
-    //Base::Vector2d m_edgeDir;
 
 private:
     Base::Vector3d calculateCenter(TechDraw::PointPair & segment);
