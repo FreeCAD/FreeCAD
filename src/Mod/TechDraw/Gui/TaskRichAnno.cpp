@@ -311,6 +311,14 @@ void TaskRichAnno::createAnnoFeature()
 
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
+
+    //trigger collectChildren in tree
+    if (m_baseFeat != nullptr) {
+        m_baseFeat->touch();
+    }
+    if (m_basePage != nullptr) {
+        m_basePage->touch();
+    }
     m_annoFeat->requestPaint();
 }
 
