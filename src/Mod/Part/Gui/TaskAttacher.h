@@ -57,7 +57,7 @@ public:
 
     TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = 0,
                  QString picture = QString(),
-                 QString text = QString::fromLatin1("Attachment"));
+                 QString text = QString::fromLatin1("Attachment"), VisibilityFunction func = 0);
     ~TaskAttacher();
 
     bool   getFlip(void) const;
@@ -68,15 +68,6 @@ public:
      * no modes fit current set of references, mmDeactivated is returned.
      */
     Attacher::eMapMode getActiveMapMode();
-
-    /**
-     * @brief setCustomVisibilityAutomation sets a customized function
-     * in order to allow to handle visibility automation differently than
-     * the default implementation.
-     */
-    void setCustomVisibilityAutomation(VisibilityFunction func) {
-        visibilityFunc = func;
-    }
 
     bool isCompleted() const { return completed; }
 

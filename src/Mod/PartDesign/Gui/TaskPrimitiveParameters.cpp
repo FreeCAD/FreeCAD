@@ -690,8 +690,7 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
         }
     };
 
-    parameter = new PartGui::TaskAttacher(PrimitiveView);
-    parameter->setCustomVisibilityAutomation(customvisfunc);
+    parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"), customvisfunc);
     Content.push_back(parameter);
 }
 

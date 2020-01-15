@@ -109,11 +109,11 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
 }
 
 TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent,
-                           QString picture, QString text)
+                           QString picture, QString text, TaskAttacher::VisibilityFunction visFunc)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent),
       SelectionObserver(ViewProvider),
       ViewProvider(ViewProvider),
-      visibilityFunc(0)
+      visibilityFunc(visFunc)
 {
     //check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
