@@ -100,9 +100,6 @@ protected:
     void enableTextUi(bool b);
     void enableVPUi(bool b);
     
-    int getDefFontSize(void);
-    QString getDefFont(void);
-
 private:
     Ui_TaskRichAnno * ui;
     bool blockUpdate;
