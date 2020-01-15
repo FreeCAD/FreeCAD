@@ -72,6 +72,11 @@ def importFrd(
     from . import importToolsFem
     import ObjectsFem
 
+    if analysis:
+        doc = analysis.Document
+    else:
+        doc = FreeCAD.ActiveDocument
+
     m = read_frd_result(filename)
     result_mesh_object = None
     res_obj = None
@@ -79,7 +84,7 @@ def importFrd(
     if len(m["Nodes"]) > 0:
         mesh = importToolsFem.make_femmesh(m)
         result_mesh_object = ObjectsFem.makeMeshResult(
-            FreeCAD.ActiveDocument,
+            doc,
             "ResultMesh"
         )
         result_mesh_object.FemMesh = mesh
@@ -114,7 +119,7 @@ def importFrd(
                         .format(result_name_prefix)
                     )
 
-                res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+                res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
                 res_obj.Mesh = result_mesh_object
                 res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
                 if analysis:
@@ -186,7 +191,7 @@ def importFrd(
                 results_name = ("{}_Results".format(result_name_prefix))
             else:
                 results_name = ("Results".format(result_name_prefix))
-            res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+            res_obj = ObjectsFem.makeResultMechanical(doc, results_name)
             res_obj.Mesh = result_mesh_object
             # TODO, node numbers in result obj could be set
             if analysis:
@@ -196,7 +201,7 @@ def importFrd(
             if analysis:
                 import FemGui
                 FemGui.setActiveAnalysis(analysis)
-            FreeCAD.ActiveDocument.recompute()
+            doc.recompute()
 
     else:
         Console.PrintError(

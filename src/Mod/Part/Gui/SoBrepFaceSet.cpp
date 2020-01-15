@@ -617,15 +617,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // material override with transparncy won't work.
     mb.sendFirst(); 
 
-    if(SoShapeStyleElement::get(state)->getFlags() 
-            & (SoShapeStyleElement::TRANSP_TEXTURE|SoShapeStyleElement::TRANSP_MATERIAL))
-    {
-        // For some reason, there is an inconsistence in blending state between
-        // OpenGL and Coin, especially when doing offscreen rendering.
-        if(!glIsEnabled(GL_BLEND))
-            glEnable(GL_BLEND);
-    }
-
     // When setting transparency shouldGLRender() handles the rendering and returns false.
     // Therefore generatePrimitives() needs to be re-implemented to handle the materials
     // correctly.

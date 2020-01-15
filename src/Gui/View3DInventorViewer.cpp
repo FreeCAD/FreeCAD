@@ -1608,6 +1608,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
             renderer.setViewportRegion(vp);
             renderer.getGLRenderAction()->setSmoothing(true);
             renderer.getGLRenderAction()->setNumPasses(s);
+            renderer.getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
             if (bgColor.isValid())
                 renderer.setBackgroundColor(SbColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF()));
             if (!renderer.render(root))
@@ -1615,6 +1616,15 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
 
             renderer.writeToImage(img);
             root->unref();
+        }
+
+        if (!bgColor.isValid() || bgColor.alphaF() == 1.0) {
+            QImage image(img.width(), img.height(), QImage::Format_RGB32);
+            QPainter painter(&image);
+            painter.fillRect(image.rect(), Qt::black);
+            painter.drawImage(0, 0, img);
+            painter.end();
+            img = image;
         }
     }
     catch (...) {
@@ -2048,6 +2058,13 @@ QImage View3DInventorViewer::grabFramebuffer()
         renderToFramebuffer(&fbo);
 
         res = fbo.toImage(false);
+
+        QImage image(res.width(), res.height(), QImage::Format_RGB32);
+        QPainter painter(&image);
+        painter.fillRect(image.rect(),Qt::black);
+        painter.drawImage(0, 0, res);
+        painter.end();
+        res = image;
     }
 #endif
 
@@ -2111,8 +2128,14 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
                 bits++;
             }
         }
-    } else if (alpha == 255)
-        img = img.convertToFormat(QImage::Format_RGB32);
+    } else if (alpha == 255) {
+        QImage image(img.width(), img.height(), QImage::Format_RGB32);
+        QPainter painter(&image);
+        painter.fillRect(image.rect(),Qt::black);
+        painter.drawImage(0, 0, img);
+        painter.end();
+        img = image;
+    }
 }
 
 void View3DInventorViewer::renderToFramebuffer(QtGLFramebufferObject* fbo)
