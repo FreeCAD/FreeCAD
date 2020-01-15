@@ -25,7 +25,7 @@
  * includes changes by wandererfan@gmail.com
  * for FreeCAD project https://www.freecadweb.org/
  ********************************/
-
+#include "PreCompiled.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -46,6 +46,13 @@
 #include <QBitmap>
 
 #include <iostream>
+#include <algorithm>
+
+#include <Base/Console.h>
+#include <Base/Parameter.h>
+#include <Base/Tools.h>
+
+#include <App/Application.h>
 
 #include "mrichtextedit.h"
 
@@ -53,8 +60,9 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     setupUi(this);
     m_lastBlockList = 0;
     f_textedit->setTabStopWidth(40);
-    setDefFontSize(12);
-    m_defFont = QString::fromUtf8("Sans");
+    setDefFontSize(getDefFontSizeNum());
+    m_defFont = getDefFont().family();
+    f_textedit->setFont(getDefFont());
 
     connect(f_save, SIGNAL(clicked()),
             this,     SLOT(onSave()));
@@ -75,12 +83,10 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     m_fontsize_h4 = m_defFontSize + 2;
 
 //TODO: should check for existing text and set font to match
-//    fontChanged(f_textedit->font());
     fontChanged(getDefFont());
     bgColorChanged(f_textedit->textColor());
 
     // paragraph formatting
-
     m_paragraphItems    << tr("Standard")
                         << tr("Heading 1")
                         << tr("Heading 2")
@@ -125,8 +131,6 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     connect(f_textedit, SIGNAL(copyAvailable(bool)), f_cut, SLOT(setEnabled(bool)));
     connect(f_textedit, SIGNAL(copyAvailable(bool)), f_copy, SLOT(setEnabled(bool)));
 
-//    f_textedit->setLineWrapMode(QTextEdit::FixedColumnWidth);
-//    f_textedit->setLineWrapColumnOrWidth(????));
 #ifndef QT_NO_CLIPBOARD
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(slotClipboardDataChanged()));
 #endif
@@ -149,7 +153,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     connect(f_strikeout, SIGNAL(clicked()), this, SLOT(textStrikeout()));
 
     QAction *removeFormat = new QAction(tr("Remove character formatting"), this);
-    removeFormat->setShortcut(QKeySequence("CTRL+M"));
+    removeFormat->setShortcut(QKeySequence(QString::fromUtf8("CTRL+M")));
     connect(removeFormat, SIGNAL(triggered()), this, SLOT(textRemoveFormat()));
     f_textedit->addAction(removeFormat);
 
@@ -158,7 +162,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     f_textedit->addAction(removeAllFormat);
 
     QAction *textsource = new QAction(tr("Edit document source"), this);
-    textsource->setShortcut(QKeySequence("CTRL+O"));
+    textsource->setShortcut(QKeySequence(QString::fromUtf8("CTRL+O")));
     connect(textsource, SIGNAL(triggered()), this, SLOT(textSource()));
     f_textedit->addAction(textsource);
 
@@ -188,28 +192,18 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
     // font size
 
     QFontDatabase db;
-    foreach(int size, db.standardSizes())
+    for(int size: db.standardSizes()) {
         f_fontsize->addItem(QString::number(size));
+    }
     //TODO: void QComboBox::setEditText(const QString &text) to " " when multiple select
-
-//    connect(f_fontsize, SIGNAL(activated(QString)),
-//            this, SLOT(textSize(QString)));
     connect(f_fontsize, SIGNAL(currentIndexChanged(QString)),
             this, SLOT(textSize(QString)));
-//    f_fontsize->setCurrentIndex(f_fontsize->findText(QString::number(QApplication::font()
-//                                                                   .pointSize())));
-    // text foreground color
 
-//    QPixmap pix(16, 16);
-//    pix.fill(QApplication::palette().foreground().color());
-//    f_fgcolor->setIcon(pix);
+    // text foreground color
 
     connect(f_fgcolor, SIGNAL(clicked()), this, SLOT(textFgColor()));
 
     // text background color
-
-//    pix.fill(QApplication::palette().background().color());
-//    f_bgcolor->setIcon(pix);
 
     connect(f_bgcolor, SIGNAL(clicked()), this, SLOT(textBgColor()));
 
@@ -231,6 +225,15 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
         int fSize = f_fontsize->findText(QString::number(currSize));
         f_fontsize  ->setCurrentIndex(fSize);
     } else {
+        QTextCursor cursor = f_textedit->textCursor();
+        cursor.movePosition(QTextCursor::Start);
+        f_textedit->setTextCursor(cursor);
+
+        QTextCharFormat fmt = cursor.charFormat();
+        fmt.setFontPointSize(getDefFontSizeNum());
+
+        addFontSize(getDefFontSize());
+
         f_fontsize->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
     }
 }
@@ -396,7 +399,7 @@ void MRichTextEdit::textStyle(int index) {
         }
     if (index == ParagraphMonospace) {
         fmt = cursor.charFormat();
-        fmt.setFontFamily("Monospace");
+        fmt.setFontFamily(QString::fromUtf8("Monospace"));
         fmt.setFontStyleHint(QFont::Monospace);
         fmt.setFontFixedPitch(true);
         }
@@ -539,7 +542,7 @@ void MRichTextEdit::fontChanged(const QFont &f) {
       } else if (f.pointSize() == m_fontsize_h4) {
         f_paragraph->setCurrentIndex(ParagraphHeading4);
       } else {
-        if (f.fixedPitch() && f.family() == "Monospace") {
+        if (f.fixedPitch() && f.family() == QString::fromUtf8("Monospace")) {
             f_paragraph->setCurrentIndex(ParagraphMonospace);
           } else {
             f_paragraph->setCurrentIndex(ParagraphStandard);
@@ -608,9 +611,13 @@ void MRichTextEdit::slotClipboardDataChanged() {
 QString MRichTextEdit::toHtml() const {
     QString s = f_textedit->toHtml();
     // convert emails to links
-    s = s.replace(QRegExp("(<[^a][^>]+>(?:<span[^>]+>)?|\\s)([a-zA-Z\\d]+@[a-zA-Z\\d]+\\.[a-zA-Z]+)"), "\\1<a href=\"mailto:\\2\">\\2</a>");
+    s = s.replace(QRegExp(
+                QString::fromUtf8("(<[^a][^>]+>(?:<span[^>]+>)?|\\s)([a-zA-Z\\d]+@[a-zA-Z\\d]+\\.[a-zA-Z]+)")),
+                QString::fromUtf8("\\1<a href=\"mailto:\\2\">\\2</a>"));
     // convert links
-    s = s.replace(QRegExp("(<[^a][^>]+>(?:<span[^>]+>)?|\\s)((?:https?|ftp|file)://[^\\s'\"<>]+)"), "\\1<a href=\"\\2\">\\2</a>");
+    s = s.replace(QRegExp(
+                QString::fromUtf8("(<[^a][^>]+>(?:<span[^>]+>)?|\\s)((?:https?|ftp|file)://[^\\s'\"<>]+)")),
+                QString::fromUtf8( "\\1<a href=\"\\2\">\\2</a>"));
     // see also: Utils::linkify()
     return s;
 }
@@ -640,7 +647,7 @@ void MRichTextEdit::setText(const QString& text) {
         setPlainText(text);
         return;
         }
-    if (text[0] == '<') {
+    if (text[0] == QChar::fromLatin1('<')) {
         setHtml(text);
       } else {
         setPlainText(text);
@@ -649,15 +656,15 @@ void MRichTextEdit::setText(const QString& text) {
 
 void MRichTextEdit::insertImage() {
     QSettings s;
-    QString attdir = s.value("general/filedialog-path").toString();
+    QString attdir = s.value(QString::fromUtf8("general/filedialog-path")).toString();
     QString file = QFileDialog::getOpenFileName(this,
                                     tr("Select an image"),
                                     attdir,
                                     tr("JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)"));
     QImage image = QImageReader(file).read();
 
-    f_textedit->dropImage(image, QFileInfo(file).suffix().toUpper().toLocal8Bit().data() );
-
+    f_textedit->dropImage(image, 
+                QFileInfo(file).suffix().toUpper());
 }
 
 void MRichTextEdit::onSave(void)
@@ -716,26 +723,49 @@ bool MRichTextEdit::hasMultipleSizes(void)
     return result;  
 } 
 
-
 void MRichTextEdit::setDefFontSize(int fs)
 {
+//    Base::Console().Message("MRTE::setDefFontSize(%d)\n", fs);
     m_defFontSize = fs;
-    f_fontsize->findText(getDefFontSize());
     m_fontsize_h1 = fs + 8;
     m_fontsize_h2 = fs + 6;
     m_fontsize_h3 = fs + 4;
     m_fontsize_h4 = fs + 2;
+
     QString newSize = QString::number(fs);
-    f_fontsize->setCurrentIndex(f_fontsize->findText(newSize));
+    f_fontsize->findText(newSize);
+    int idx = f_fontsize->findText(newSize);
+    if (idx > -1) {
+        f_fontsize->setCurrentIndex(idx);
+    } else {
+        f_fontsize->setCurrentIndex(0);
+    }
     textSize(newSize);
+}
+
+int MRichTextEdit::getDefFontSizeNum(void)
+{
+//    Base::Console().Message("MRTE::getDefFontSizeNum()\n");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", 5.0);   // this is mm, not pts!
+
+    //this conversion is only approximate. the factor changes for different fonts.
+//    double mmToPts = 2.83;  //theoretical value
+    double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
+    
+    int ptsSize = round(fontSize * mmToPts);
+    return ptsSize;
 }
 
 QString MRichTextEdit::getDefFontSize(void)
 {
-    QString result = QString::number(m_defFontSize);
+//    Base::Console().Message("MRTE::getDefFontSize()\n");
+    QString result = QString::number(getDefFontSizeNum());
     return result;
 }
 
+//not used.
 void MRichTextEdit::setDefFont(QString f)
 {
     m_defFont = f;
@@ -743,9 +773,50 @@ void MRichTextEdit::setDefFont(QString f)
 
 QFont MRichTextEdit::getDefFont(void)
 {
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    QString family = Base::Tools::fromStdString(fontName);
+    m_defFont = family;
     QFont result;
-    result.setFamily(m_defFont);
+    result.setFamily(family);
     return result;
+}
+
+// add a new fontSize to the list
+// this seems like massive overkill for integer point<->mm conversion factor
+// if the conversion factor is float, will generate non-standard sizes 
+void MRichTextEdit::addFontSize(QString fs)
+{
+//    Base::Console().Message("MRTE::addFontSize(%s)\n", qPrintable(fs));
+    QStringList newList;
+    int fsVal = fs.toInt();
+    int size = f_fontsize->count();
+    bool added = false;
+    for (int i = 0; i < size; i++) {
+        QString item = f_fontsize->itemText(i);
+        int itemVal = item.toInt();
+        if (added) {
+            newList << item;
+            continue;
+        }
+        if (itemVal < fsVal) {
+            newList << item;
+        } else if (itemVal == fsVal) {  // already in list
+            newList << item;
+            added = true;
+        } else {             //item > fs, add both
+            newList << fs;
+            newList << item; 
+            added = true;
+        }
+    }
+    if (!added) {   //bigger than all choices, add to end of list
+        newList << fs;
+    }
+    f_fontsize->clear();
+    f_fontsize->addItems(newList);
+    size = newList.size();
 }
 
 #include <Mod/TechDraw/Gui/moc_mrichtextedit.cpp>
