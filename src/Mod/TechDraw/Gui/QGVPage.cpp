@@ -40,6 +40,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QLabel>
+#include <QTextCodec>
 #include <cmath>
 #endif
 
@@ -496,33 +497,30 @@ void QGVPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 QGIView * QGVPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
 {
 //    Base::Console().Message("QGVP::addViewLeader(%s)\n",leader->getNameInDocument());
-    QGILeaderLine* leaderGroup = nullptr;
+    QGILeaderLine* leaderGroup = new QGILeaderLine();
 
-    App::DocumentObject* parentObj = leader->LeaderParent.getValue();
-    TechDraw::DrawView*  parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
+    auto ourScene( scene() );
+    ourScene->addItem(leaderGroup);
 
-    //NOTE: if Leaders are ever allowed to not be attached to a View, this next bit will have to change
-    if (parentDV != nullptr) {
-        QGIView* parentQV = findQViewForDocObj(parentObj);
-        if (parentQV != nullptr) {
-            leaderGroup = new QGILeaderLine(parentQV, leader);
-            leaderGroup->updateView(true);            //this is different from everybody else,
-                                                      //but it works. 
-            return leaderGroup;
-        }
-    } else {
-        throw Base::TypeError("QGVP::addViewLeader - parent DV has no QGIV");
+    leaderGroup->setLeaderFeature(leader);
+
+    QGIView *parent = 0;
+    parent = findParent(leaderGroup);
+
+    if(parent) {
+        addLeaderToParent(leaderGroup,parent);
     }
-    return nullptr;
+
+    leaderGroup->updateView(true);
+
+    return leaderGroup;
 }
 
-//assign leader to correct parent if not already so
 void QGVPage::addLeaderToParent(QGILeaderLine* lead, QGIView* parent)
 {
-    QGraphicsItem* qgiParent = lead->parentItem();
-    if (qgiParent != parent) {
-        parent->addToGroup(lead);
-    }
+//    Base::Console().Message("QGVP::addLeaderToParent()\n");
+    parent->addToGroup(lead);
+    lead->setZValue(ZVALUE::DIMENSION);
 }
 
 QGIView * QGVPage::addRichAnno(TechDraw::DrawRichAnno* anno)
@@ -947,8 +945,9 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
 
     QTextStream stream( &outFile );
     stream.setGenerateByteOrderMark(true);
+    stream.setCodec("UTF-8");
 
-    stream << exportDoc.toString();
+    stream << exportDoc.toByteArray();
     outFile.close();
 }
 

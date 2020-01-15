@@ -1,3 +1,317 @@
+Version 3.11
+---------------------
+02/15/18  beazley
+          Fixed some minor bugs related to re flags and token order.  
+          Github pull requests #151 and #153.
+
+02/15/18  beazley
+          Added a set_lexpos() method to grammar symbols.  Github issue #148.
+
+
+04/13/17  beazley
+          Mostly minor bug fixes and small code cleanups.
+
+Version 3.10
+---------------------
+01/31/17: beazley
+          Changed grammar signature computation to not involve hashing
+          functions. Parts are just combined into a big string.
+
+10/07/16: beazley
+          Fixed Issue #101: Incorrect shift-reduce conflict resolution with
+          precedence specifier.
+
+          PLY was incorrectly resolving shift-reduce conflicts in certain
+          cases.  For example, in the example/calc/calc.py example, you 
+          could trigger it doing this:
+
+          calc > -3 - 4            
+          1                         (correct answer should be -7)
+          calc >
+
+          Issue and suggested patch contributed by https://github.com/RomaVis
+           
+Version 3.9
+---------------------
+08/30/16: beazley
+          Exposed the parser state number as the parser.state attribute
+          in productions and error functions. For example:
+
+          def p_somerule(p):
+              '''
+              rule : A B C
+              '''
+              print('State:', p.parser.state)
+
+          May address issue #65 (publish current state in error callback).
+
+08/30/16: beazley 
+          Fixed Issue #88. Python3 compatibility with ply/cpp.
+
+08/30/16: beazley
+          Fixed Issue #93. Ply can crash if SyntaxError is raised inside
+          a production.   Not actually sure if the original implementation
+          worked as documented at all.  Yacc has been modified to follow
+          the spec as outlined in the CHANGES noted for 11/27/07 below.
+
+08/30/16: beazley
+          Fixed Issue #97. Failure with code validation when the original
+          source files aren't present.   Validation step now ignores
+          the missing file.
+
+08/30/16: beazley
+          Minor fixes to version numbers.
+
+Version 3.8
+---------------------
+10/02/15: beazley
+          Fixed issues related to Python 3.5. Patch contributed by Barry Warsaw.
+
+Version 3.7
+---------------------
+08/25/15: beazley
+          Fixed problems when reading table files from pickled data.
+
+05/07/15: beazley
+          Fixed regression in handling of table modules if specified as module
+          objects.   See https://github.com/dabeaz/ply/issues/63
+
+Version 3.6
+---------------------
+04/25/15: beazley
+          If PLY is unable to create the 'parser.out' or 'parsetab.py' files due
+          to permission issues, it now just issues a warning message and
+          continues to operate. This could happen if a module using PLY
+	  is installed in a funny way where tables have to be regenerated, but
+          for whatever reason, the user doesn't have write permission on
+          the directory where PLY wants to put them.  
+
+04/24/15: beazley
+          Fixed some issues related to use of packages and table file
+          modules.  Just to emphasize, PLY now generates its special
+          files such as 'parsetab.py' and 'lextab.py' in the *SAME*
+          directory as the source file that uses lex() and yacc().
+
+	  If for some reason, you want to change the name of the table
+          module, use the tabmodule and lextab options:
+
+             lexer = lex.lex(lextab='spamlextab')
+             parser = yacc.yacc(tabmodule='spamparsetab')
+
+          If you specify a simple name as shown, the module will still be
+          created in the same directory as the file invoking lex() or yacc().
+          If you want the table files to be placed into a different package,
+          then give a fully qualified package name.  For example:
+
+             lexer = lex.lex(lextab='pkgname.files.lextab')
+             parser = yacc.yacc(tabmodule='pkgname.files.parsetab')
+
+          For this to work, 'pkgname.files' must already exist as a valid 
+          Python package (i.e., the directories must already exist and be
+          set up with the proper __init__.py files, etc.).
+
+Version 3.5
+---------------------
+04/21/15: beazley
+          Added support for defaulted_states in the parser.  A
+          defaulted_state is a state where the only legal action is a
+          reduction of a single grammar rule across all valid input
+          tokens.  For such states, the rule is reduced and the
+          reading of the next lookahead token is delayed until it is
+          actually needed at a later point in time.
+
+	  This delay in consuming the next lookahead token is a
+	  potentially important feature in advanced parsing
+	  applications that require tight interaction between the
+	  lexer and the parser.  For example, a grammar rule change
+	  modify the lexer state upon reduction and have such changes
+	  take effect before the next input token is read.
+
+	  *** POTENTIAL INCOMPATIBILITY ***
+	  One potential danger of defaulted_states is that syntax
+	  errors might be deferred to a a later point of processing
+	  than where they were detected in past versions of PLY.
+	  Thus, it's possible that your error handling could change
+	  slightly on the same inputs.  defaulted_states do not change
+	  the overall parsing of the input (i.e., the same grammar is
+	  accepted).
+
+	  If for some reason, you need to disable defaulted states,
+	  you can do this:
+
+              parser = yacc.yacc()
+              parser.defaulted_states = {}
+
+04/21/15: beazley
+          Fixed debug logging in the parser.  It wasn't properly reporting goto states
+          on grammar rule reductions.
+
+04/20/15: beazley
+          Added actions to be defined to character literals (Issue #32).  For example:
+
+              literals = [ '{', '}' ]
+
+              def t_lbrace(t):
+                  r'\{'
+                  # Some action
+                  t.type = '{'
+                  return t
+
+              def t_rbrace(t):
+                  r'\}'
+                  # Some action
+                  t.type = '}'
+                  return t
+
+04/19/15: beazley
+          Import of the 'parsetab.py' file is now constrained to only consider the
+          directory specified by the outputdir argument to yacc().  If not supplied,
+          the import will only consider the directory in which the grammar is defined.
+          This should greatly reduce problems with the wrong parsetab.py file being
+          imported by mistake. For example, if it's found somewhere else on the path
+          by accident.
+
+	  *** POTENTIAL INCOMPATIBILITY ***  It's possible that this might break some
+          packaging/deployment setup if PLY was instructed to place its parsetab.py
+          in a different location.  You'll have to specify a proper outputdir= argument
+          to yacc() to fix this if needed.
+
+04/19/15: beazley
+          Changed default output directory to be the same as that in which the
+          yacc grammar is defined.  If your grammar is in a file 'calc.py',
+          then the parsetab.py and parser.out files should be generated in the
+          same directory as that file.  The destination directory can be changed
+          using the outputdir= argument to yacc().
+
+04/19/15: beazley
+          Changed the parsetab.py file signature slightly so that the parsetab won't
+          regenerate if created on a different major version of Python (ie., a 
+          parsetab created on Python 2 will work with Python 3).
+
+04/16/15: beazley
+          Fixed Issue #44 call_errorfunc() should return the result of errorfunc()
+
+04/16/15: beazley
+          Support for versions of Python <2.7 is officially dropped.  PLY may work, but
+          the unit tests requires Python 2.7 or newer.
+
+04/16/15: beazley
+          Fixed bug related to calling yacc(start=...).   PLY wasn't regenerating the
+          table file correctly for this case.
+
+04/16/15: beazley
+          Added skipped tests for PyPy and Java.  Related to use of Python's -O option.
+
+05/29/13: beazley
+          Added filter to make unit tests pass under 'python -3'.
+          Reported by Neil Muller.
+       
+05/29/13: beazley
+          Fixed CPP_INTEGER regex in ply/cpp.py (Issue 21).
+	  Reported by @vbraun.
+ 
+05/29/13: beazley
+          Fixed yacc validation bugs when from __future__ import unicode_literals
+          is being used.  Reported by Kenn Knowles.
+
+05/29/13: beazley
+          Added support for Travis-CI.  Contributed by Kenn Knowles.
+
+05/29/13: beazley
+          Added a .gitignore file.  Suggested by Kenn Knowles.
+
+05/29/13: beazley
+	  Fixed validation problems for source files that include a 
+          different source code encoding specifier.  Fix relies on
+          the inspect module.  Should work on Python 2.6 and newer.
+          Not sure about older versions of Python.
+          Contributed by Michael Droettboom
+
+05/21/13: beazley
+          Fixed unit tests for yacc to eliminate random failures due to dict hash value
+	  randomization in Python 3.3
+	  Reported by Arfrever
+
+10/15/12: beazley
+          Fixed comment whitespace processing bugs in ply/cpp.py.
+          Reported by Alexei Pososin.
+
+10/15/12: beazley
+          Fixed token names in ply/ctokens.py to match rule names.
+          Reported by Alexei Pososin.
+
+04/26/12: beazley
+          Changes to functions available in panic mode error recover.  In previous versions
+          of PLY, the following global functions were available for use in the p_error() rule:
+
+                 yacc.errok()       # Reset error state
+                 yacc.token()       # Get the next token
+                 yacc.restart()     # Reset the parsing stack
+
+          The use of global variables was problematic for code involving multiple parsers
+          and frankly was a poor design overall.   These functions have been moved to methods
+          of the parser instance created by the yacc() function.   You should write code like
+          this:
+
+                def p_error(p):
+                    ...
+                    parser.errok()
+
+                parser = yacc.yacc()
+
+          *** POTENTIAL INCOMPATIBILITY ***  The original global functions now issue a
+          DeprecationWarning.
+         
+04/19/12: beazley
+          Fixed some problems with line and position tracking and the use of error
+          symbols.   If you have a grammar rule involving an error rule like this:
+
+               def p_assignment_bad(p):
+                   '''assignment : location EQUALS error SEMI'''
+                   ...
+
+          You can now do line and position tracking on the error token.  For example:
+
+               def p_assignment_bad(p):
+                   '''assignment : location EQUALS error SEMI'''
+                   start_line = p.lineno(3)
+                   start_pos  = p.lexpos(3)
+
+          If the trackng=True option is supplied to parse(), you can additionally get
+          spans:
+
+               def p_assignment_bad(p):
+                   '''assignment : location EQUALS error SEMI'''
+                   start_line, end_line = p.linespan(3)
+                   start_pos, end_pos = p.lexspan(3)
+
+          Note that error handling is still a hairy thing in PLY. This won't work
+          unless your lexer is providing accurate information.   Please report bugs.
+          Suggested by a bug reported by Davis Herring.
+              
+04/18/12: beazley
+          Change to doc string handling in lex module.  Regex patterns are now first
+          pulled from a function's .regex attribute.  If that doesn't exist, then
+	  .doc is checked as a fallback.   The @TOKEN decorator now sets the .regex
+	  attribute of a function instead of its doc string.
+	  Changed suggested by Kristoffer Ellersgaard Koch.
+
+04/18/12: beazley
+          Fixed issue #1: Fixed _tabversion. It should use __tabversion__ instead of __version__
+          Reported by Daniele Tricoli
+
+04/18/12: beazley
+          Fixed issue #8: Literals empty list causes IndexError
+          Reported by Walter Nissen.
+
+04/18/12: beazley
+          Fixed issue #12: Typo in code snippet in documentation
+          Reported by florianschanda.
+
+04/18/12: beazley
+          Fixed issue #10: Correctly escape t_XOREQUAL pattern.
+          Reported by Andy Kittner.
+
 Version 3.4
 ---------------------
 02/17/11: beazley
@@ -134,7 +448,7 @@ Version 3.0
           to specify a logging object for the 'parser.out' output.
 
 01/09/09: beazley
-          *HUGE* refactoring of the ply.yacc() implementation.   The high-level
+          *HUGE* refactoring of the the ply.yacc() implementation.   The high-level
 	  user interface is backwards compatible, but the internals are completely
           reorganized into classes.  No more global variables.    The internals
           are also more extensible.  For example, you can use the classes to 
@@ -174,7 +488,7 @@ Version 3.0
           directly.  Preparation for Python 3.0 support.
 
 11/04/08: beazley
-          Fixed a bug with referring to symbols on the parsing stack using negative
+          Fixed a bug with referring to symbols on the the parsing stack using negative
           indices.
 
 05/29/08: beazley
