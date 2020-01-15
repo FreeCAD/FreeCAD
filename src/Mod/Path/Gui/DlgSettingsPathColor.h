@@ -24,12 +24,13 @@
 #ifndef PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
 #define PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
 
-#include "ui_DlgSettingsPathColor.h"
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace PathGui {
+class Ui_DlgSettingsPathColor;
 
-class DlgSettingsPathColor : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsPathColor
+class DlgSettingsPathColor : public Gui::Dialog::PreferencePage
 { 
   Q_OBJECT
 
@@ -42,6 +43,9 @@ public:
 
 protected:
   void changeEvent(QEvent *e);
+
+private:
+  std::unique_ptr<Ui_DlgSettingsPathColor> ui;
 };
 
 } // namespace PathGui

@@ -511,10 +511,9 @@ protected:
                 ViewProviderT::updateView();
             }
         }
-        else {
-            imp->onChanged(prop);
-            ViewProviderT::onChanged(prop);
-        }
+
+        imp->onChanged(prop);
+        ViewProviderT::onChanged(prop);
     }
     /// is called by the document when the provider goes in edit mode
     virtual bool setEdit(int ModNum) override

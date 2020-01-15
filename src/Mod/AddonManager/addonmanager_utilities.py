@@ -40,12 +40,12 @@ except ImportError:
     pass
 else:
     try:
-        ssl_ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        ssl_ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
     except AttributeError:
         pass
+        
 
-
-
+        
 def translate(context, text, disambig=None):
     
     "Main translation function"
@@ -93,17 +93,34 @@ def urlopen(url):
         import urllib2
     else:
         import urllib.request as urllib2
+        
+    # Proxy an ssl configuration
+    pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
+    if pref.GetBool("NoProxyCheck",True):
+        proxies = {}  
+    else:
+        if pref.GetBool("SystemProxyCheck",False):
+            proxy = urllib2.getproxies()  
+            proxies = {"http": proxy.get('http'),"https": proxy.get('http')}
+        elif pref.GetBool("UserProxyCheck",False):
+            proxy = pref.GetString("ProxyUrl","")   
+            proxies = {"http": proxy, "https": proxy}                         
 
+    if ssl_ctx:
+        handler = urllib2.HTTPSHandler(context=ssl_ctx)
+    else:
+        handler = {}
+    proxy_support = urllib2.ProxyHandler(proxies)    
+    opener = urllib2.build_opener(proxy_support, handler)
+    urllib2.install_opener(opener) 
+    
+    # Url opening
     try:
-        if ssl_ctx:
-            u = urllib2.urlopen(url, context=ssl_ctx, timeout=timeout)
-        else:
-            u = urllib2.urlopen(url, timeout=timeout)
+        u = urllib2.urlopen(url, timeout=timeout)
     except:
         return None
     else:
         return u
-
 
 def getserver(url):
 

@@ -80,6 +80,8 @@ makeLayer = DraftLayer.makeLayer
 # General functions
 #---------------------------------------------------------------------------
 import draftutils.utils
+import draftutils.gui_utils
+
 arrowtypes = draftutils.utils.ARROW_TYPES
 
 stringencodecoin = draftutils.utils.string_encode_coin
@@ -110,20 +112,8 @@ get_type = draftutils.utils.get_type
 getObjectsOfType = draftutils.utils.get_objects_of_type
 get_objects_of_type = draftutils.utils.get_objects_of_type
 
-
-def get3DView():
-    """get3DView(): returns the current view if it is 3D, or the first 3D view found, or None"""
-    if FreeCAD.GuiUp:
-        import FreeCADGui
-        v = FreeCADGui.ActiveDocument.ActiveView
-        if "View3DInventor" in str(type(v)):
-            return v
-        #print("Debug: Draft: Warning, not working in active view")
-        v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
-        if v:
-            return v[0]
-    return None
-
+get3DView = draftutils.gui_utils.get_3d_view
+get_3d_view = draftutils.gui_utils.get_3d_view
 
 isClone = draftutils.utils.is_clone
 is_clone = draftutils.utils.is_clone
@@ -133,98 +123,21 @@ get_group_names = draftutils.utils.get_group_names
 
 ungroup = draftutils.utils.ungroup
 
+autogroup = draftutils.gui_utils.autogroup
 
-def autogroup(obj):
-    """adds a given object to the autogroup, if applicable"""
-    if FreeCAD.GuiUp:
-        if hasattr(FreeCADGui,"draftToolBar"):
-            if hasattr(FreeCADGui.draftToolBar,"autogroup") and (not FreeCADGui.draftToolBar.isConstructionMode()):
-                if FreeCADGui.draftToolBar.autogroup != None:
-                    g = FreeCAD.ActiveDocument.getObject(FreeCADGui.draftToolBar.autogroup)
-                    if g:
-                        found = False
-                        for o in g.Group:
-                            if o.Name == obj.Name:
-                                found = True
-                        if not found:
-                            gr = g.Group
-                            gr.append(obj)
-                            g.Group = gr
-                else:
-                    # Arch active container
-                    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-                    if a:
-                        a.addObject(obj)
+dimSymbol = draftutils.gui_utils.dim_symbol
+dim_symbol = draftutils.gui_utils.dim_symbol
 
-def dimSymbol(symbol=None,invert=False):
-    """returns the current dim symbol from the preferences as a pivy SoMarkerSet"""
-    if symbol is None:
-        symbol = getParam("dimsymbol",0)
-    from pivy import coin
-    if symbol == 0:
-        return coin.SoSphere()
-    elif symbol == 1:
-        marker = coin.SoMarkerSet()
-        marker.markerIndex = FreeCADGui.getMarkerIndex("circle", 9)
-        return marker
-    elif symbol == 2:
-        marker = coin.SoSeparator()
-        t = coin.SoTransform()
-        t.translation.setValue((0,-2,0))
-        t.center.setValue((0,2,0))
-        if invert:
-            t.rotation.setValue(coin.SbVec3f((0,0,1)),-math.pi/2)
-        else:
-            t.rotation.setValue(coin.SbVec3f((0,0,1)),math.pi/2)
-        c = coin.SoCone()
-        c.height.setValue(4)
-        marker.addChild(t)
-        marker.addChild(c)
-        return marker
-    elif symbol == 3:
-        marker = coin.SoSeparator()
-        c = coin.SoCoordinate3()
-        c.point.setValues([(-1,-2,0),(0,2,0),(1,2,0),(0,-2,0)])
-        f = coin.SoFaceSet()
-        marker.addChild(c)
-        marker.addChild(f)
-        return marker
-    elif symbol == 4:
-        return dimDash((-1.5,-1.5,0),(1.5,1.5,0))
-    else:
-        print("Draft.dimsymbol: Not implemented")
-        return coin.SoSphere()
-
-def dimDash(p1, p2):
-    """dimDash(p1, p2): returns pivy SoSeparator.
-    Used for making Tick-2, DimOvershoot, ExtOvershoot dashes.
-    """
-    from pivy import coin
-    dash = coin.SoSeparator()
-    v = coin.SoVertexProperty()
-    v.vertex.set1Value(0, p1)
-    v.vertex.set1Value(1, p2)
-    l = coin.SoLineSet()
-    l.vertexProperty = v
-    dash.addChild(l)
-    return dash
-
+dimDash = draftutils.gui_utils.dim_dash
+dim_dash = draftutils.gui_utils.dim_dash
 
 shapify = draftutils.utils.shapify
 
 getGroupContents = draftutils.utils.get_group_contents
 get_group_contents = draftutils.utils.get_group_contents
 
-
-def removeHidden(objectslist):
-    """removeHidden(objectslist): removes hidden objects from the list"""
-    newlist = objectslist[:]
-    for o in objectslist:
-        if o.ViewObject:
-            if not o.ViewObject.isVisible():
-                newlist.remove(o)
-    return newlist
-
+removeHidden = draftutils.gui_utils.remove_hidden
+remove_hidden = draftutils.gui_utils.remove_hidden
 
 printShape = draftutils.utils.print_shape
 print_shape = draftutils.utils.print_shape
@@ -232,93 +145,16 @@ print_shape = draftutils.utils.print_shape
 compareObjects = draftutils.utils.compare_objects
 compare_objects = draftutils.utils.compare_objects
 
+formatObject = draftutils.gui_utils.format_object
+format_object = draftutils.gui_utils.format_object
 
-def formatObject(target,origin=None):
-    """
-    formatObject(targetObject,[originObject]): This function applies
-    to the given target object the current properties
-    set on the toolbar (line color and line width),
-    or copies the properties of another object if given as origin.
-    It also places the object in construction group if needed.
-    """
-    if not target:
-        return
-    obrep = target.ViewObject
-    if not obrep:
-        return
-    ui = None
-    if gui:
-        if hasattr(FreeCADGui,"draftToolBar"):
-            ui = FreeCADGui.draftToolBar
-    if ui:
-        doc = FreeCAD.ActiveDocument
-        if ui.isConstructionMode():
-            col = fcol = ui.getDefaultColor("constr")
-            gname = getParam("constructiongroupname","Construction")
-            grp = doc.getObject(gname)
-            if not grp:
-                grp = doc.addObject("App::DocumentObjectGroup",gname)
-            grp.addObject(target)
-            if hasattr(obrep,"Transparency"):
-                obrep.Transparency = 80
-        else:
-            col = ui.getDefaultColor("ui")
-            fcol = ui.getDefaultColor("face")
-        col = (float(col[0]),float(col[1]),float(col[2]),0.0)
-        fcol = (float(fcol[0]),float(fcol[1]),float(fcol[2]),0.0)
-        lw = ui.linewidth
-        fs = ui.fontsize
-        if not origin or not hasattr(origin,'ViewObject'):
-            if "FontSize" in obrep.PropertiesList: obrep.FontSize = fs
-            if "TextColor" in obrep.PropertiesList: obrep.TextColor = col
-            if "LineWidth" in obrep.PropertiesList: obrep.LineWidth = lw
-            if "PointColor" in obrep.PropertiesList: obrep.PointColor = col
-            if "LineColor" in obrep.PropertiesList: obrep.LineColor = col
-            if "ShapeColor" in obrep.PropertiesList: obrep.ShapeColor = fcol
-        else:
-            matchrep = origin.ViewObject
-            for p in matchrep.PropertiesList:
-                if not p in ["DisplayMode","BoundingBox","Proxy","RootNode","Visibility"]:
-                    if p in obrep.PropertiesList:
-                        if not obrep.getEditorMode(p):
-                            if hasattr(getattr(matchrep,p),"Value"):
-                                val = getattr(matchrep,p).Value
-                            else:
-                                val = getattr(matchrep,p)
-                            try:
-                                setattr(obrep,p,val)
-                            except Exception:
-                                pass
-            if matchrep.DisplayMode in obrep.listDisplayModes():
-                obrep.DisplayMode = matchrep.DisplayMode
-            if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
-                obrep.DiffuseColor = matchrep.DiffuseColor
-            else:
-                obrep.mapShapeColors()
+getSelection = draftutils.gui_utils.get_selection
+get_selection = draftutils.gui_utils.get_selection
 
-def getSelection():
-    """getSelection(): returns the current FreeCAD selection"""
-    if gui:
-        return FreeCADGui.Selection.getSelection()
-    return None
+getSelectionEx = draftutils.gui_utils.get_selection_ex
+get_selection_ex = draftutils.gui_utils.get_selection_ex
 
-def getSelectionEx():
-    """getSelectionEx(): returns the current FreeCAD selection (with subobjects)"""
-    if gui:
-        return FreeCADGui.Selection.getSelectionEx()
-    return None
-
-def select(objs=None):
-    """select(object): deselects everything and selects only the passed object or list"""
-    if gui:
-        FreeCADGui.Selection.clearSelection()
-        if objs:
-            if not isinstance(objs,list):
-                objs = [objs]
-            for obj in objs:
-                if obj:
-                    FreeCADGui.Selection.addSelection(obj)
-
+select = draftutils.gui_utils.select
 
 loadSvgPatterns = draftutils.utils.load_svg_patterns
 load_svg_patterns = draftutils.utils.load_svg_patterns
@@ -326,86 +162,8 @@ load_svg_patterns = draftutils.utils.load_svg_patterns
 svgpatterns = draftutils.utils.svg_patterns
 svg_patterns = draftutils.utils.svg_patterns
 
-
-def loadTexture(filename,size=None):
-    """loadTexture(filename,[size]): returns a SoSFImage from a file. If size
-    is defined (an int or a tuple), and provided the input image is a png file,
-    it will be scaled to match the given size."""
-    if gui:
-        from pivy import coin
-        from PySide import QtGui,QtSvg
-        try:
-            p = QtGui.QImage(filename)
-            # buggy - TODO: allow to use resolutions
-            #if size and (".svg" in filename.lower()):
-            #    # this is a pattern, not a texture
-            #    if isinstance(size,int):
-            #        size = (size,size)
-            #    svgr = QtSvg.QSvgRenderer(filename)
-            #    p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32)
-            #    pa = QtGui.QPainter()
-            #    pa.begin(p)
-            #    svgr.render(pa)
-            #    pa.end()
-            #else:
-            #    p = QtGui.QImage(filename)
-            size = coin.SbVec2s(p.width(), p.height())
-            buffersize = p.byteCount()
-            numcomponents = int (float(buffersize) / ( size[0] * size[1] ))
-
-            img = coin.SoSFImage()
-            width = size[0]
-            height = size[1]
-            byteList = []
-            isPy2 = sys.version_info.major < 3
-
-            for y in range(height):
-                #line = width*numcomponents*(height-(y));
-                for x in range(width):
-                    rgb = p.pixel(x,y)
-                    if numcomponents == 1:
-                        if isPy2:
-                            byteList.append(chr(QtGui.qGray( rgb )))
-                        else:
-                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
-                    elif numcomponents == 2:
-                        if isPy2:
-                            byteList.append(chr(QtGui.qGray( rgb )))
-                            byteList.append(chr(QtGui.qAlpha( rgb )))
-                        else:
-                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
-                    elif numcomponents == 3:
-                        if isPy2:
-                            byteList.append(chr(QtGui.qRed( rgb )))
-                            byteList.append(chr(QtGui.qGreen( rgb )))
-                            byteList.append(chr(QtGui.qBlue( rgb )))
-                        else:
-                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
-                    elif numcomponents == 4:
-                        if isPy2:
-                            byteList.append(chr(QtGui.qRed( rgb )))
-                            byteList.append(chr(QtGui.qGreen( rgb )))
-                            byteList.append(chr(QtGui.qBlue( rgb )))
-                            byteList.append(chr(QtGui.qAlpha( rgb )))
-                        else:
-                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
-                    #line += numcomponents
-
-            bytes = b"".join(byteList)
-            img.setValue(size, numcomponents, bytes)
-        except:
-            print("Draft: unable to load texture")
-            return None
-        else:
-            return img
-    return None
-
+loadTexture = draftutils.gui_utils.load_texture
+load_texture = draftutils.gui_utils.load_texture
 
 getMovableChildren = draftutils.utils.get_movable_children
 get_movable_children = draftutils.utils.get_movable_children

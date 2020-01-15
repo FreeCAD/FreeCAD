@@ -24,17 +24,18 @@
 #ifndef RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
 #define RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
 
-#include "ui_DlgSettingsRay.h"
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace RaytracingGui {
+class Ui_DlgSettingsRay;
 
 /**
  * The DlgSettings3DViewImp class implements a preference page to change settings
  * for the Inventor viewer.
  * \author Jürgen Riegel
  */
-class DlgSettingsRayImp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsRay
+class DlgSettingsRayImp : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -46,6 +47,9 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+
+private:
+    std::unique_ptr<Ui_DlgSettingsRay> ui;
 };
 
 } // namespace RaytracingGui

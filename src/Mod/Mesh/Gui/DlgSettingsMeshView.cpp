@@ -24,7 +24,9 @@
 #include "PreCompiled.h"
 
 #include "DlgSettingsMeshView.h"
+#include "ui_DlgSettingsMeshView.h"
 #include <Gui/PrefWidgets.h>
+#include <Gui/Window.h>
 
 using namespace MeshGui;
 
@@ -33,10 +35,11 @@ using namespace MeshGui;
  */
 DlgSettingsMeshView::DlgSettingsMeshView(QWidget* parent)
   : PreferencePage(parent)
+  , ui(new Ui_DlgSettingsMeshView)
 {
-    this->setupUi(this);
-    labelBackfaceColor->hide();
-    buttonBackfaceColor->hide();
+    ui->setupUi(this);
+    ui->labelBackfaceColor->hide();
+    ui->buttonBackfaceColor->hide();
 }
 
 /** 
@@ -49,15 +52,15 @@ DlgSettingsMeshView::~DlgSettingsMeshView()
 
 void DlgSettingsMeshView::saveSettings()
 {
-    checkboxRendering->onSave();
-    checkboxBoundbox->onSave();
-    buttonMeshColor->onSave();
-    buttonLineColor->onSave();
-    buttonBackfaceColor->onSave();
-    spinMeshTransparency->onSave();
-    spinLineTransparency->onSave();
-    checkboxNormal->onSave();
-    spinboxAngle->onSave();
+    ui->checkboxRendering->onSave();
+    ui->checkboxBoundbox->onSave();
+    ui->buttonMeshColor->onSave();
+    ui->buttonLineColor->onSave();
+    ui->buttonBackfaceColor->onSave();
+    ui->spinMeshTransparency->onSave();
+    ui->spinLineTransparency->onSave();
+    ui->checkboxNormal->onSave();
+    ui->spinboxAngle->onSave();
 }
 
 void DlgSettingsMeshView::loadSettings()
@@ -66,16 +69,16 @@ void DlgSettingsMeshView::loadSettings()
     hGrp = hGrp->GetGroup("View");
     if (!hGrp->GetBool("EnablePreselection",true) &&
         !hGrp->GetBool("EnableSelection",true))
-        checkboxBoundbox->setDisabled(true);
-    checkboxRendering->onRestore();
-    checkboxBoundbox->onRestore();
-    buttonMeshColor->onRestore();
-    buttonLineColor->onRestore();
-    buttonBackfaceColor->onRestore();
-    spinMeshTransparency->onRestore();
-    spinLineTransparency->onRestore();
-    checkboxNormal->onRestore();
-    spinboxAngle->onRestore();
+        ui->checkboxBoundbox->setDisabled(true);
+    ui->checkboxRendering->onRestore();
+    ui->checkboxBoundbox->onRestore();
+    ui->buttonMeshColor->onRestore();
+    ui->buttonLineColor->onRestore();
+    ui->buttonBackfaceColor->onRestore();
+    ui->spinMeshTransparency->onRestore();
+    ui->spinLineTransparency->onRestore();
+    ui->checkboxNormal->onRestore();
+    ui->spinboxAngle->onRestore();
 }
 
 /**
@@ -84,7 +87,7 @@ void DlgSettingsMeshView::loadSettings()
 void DlgSettingsMeshView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

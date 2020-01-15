@@ -21,6 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
+#ifdef FC_OS_WIN32
+#define _USE_MATH_DEFINES            //re Windows & M_PI issues
+#endif
+#include <cmath>
+
 #ifndef _PreComp_
   #include <BRep_Builder.hxx>
   #include <TopoDS_Compound.hxx>
@@ -36,7 +42,6 @@
   # include <QPaintDevice>
   # include <QSvgGenerator>
 
-  # include <cmath>
 #endif
 
 #include <App/Application.h>
@@ -2270,5 +2275,21 @@ void QGIViewDimension::setPens(void)
     aHead1->setWidth(m_lineWidth);
     aHead2->setWidth(m_lineWidth);
 }
+
+double QGIViewDimension::toDeg(double a) 
+{
+    return a*180/M_PI;
+}
+
+double QGIViewDimension::toQtRad(double a) 
+{
+    return -a; 
+}
+
+double QGIViewDimension::toQtDeg(double a) 
+{
+    return -a*180.0/M_PI; 
+}
+
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

@@ -512,6 +512,13 @@ int ViewProvider::getDefaultMode(bool noOverride) const {
     return (!noOverride && viewOverrideMode>=0)?viewOverrideMode:_iActualMode;
 }
 
+void ViewProvider::onBeforeChange(const App::Property* prop)
+{
+    Application::Instance->signalBeforeChangeObject(*this, *prop);
+
+    App::TransactionalObject::onBeforeChange(prop);
+}
+
 void ViewProvider::onChanged(const App::Property* prop)
 {
     Application::Instance->signalChangedObject(*this, *prop);

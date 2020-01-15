@@ -140,16 +140,12 @@ void Placement::showDefaultButtons(bool ok)
     ui->closeButton->setVisible(ok);
     ui->applyButton->setVisible(ok);
     ui->buttonBoxLayout->invalidate();
-#if QT_VERSION >= 0x050000
     if (ok) {
-        //ui->buttonBoxSpacer->changeSize(88, 24, QSizePolicy::Expanding, QSizePolicy::Minimum);
         ui->buttonBoxLayout->insertSpacerItem(0, ui->buttonBoxSpacer);
     }
     else {
-        //ui->buttonBoxSpacer->changeSize(0, 0, QSizePolicy::Ignored, QSizePolicy::Ignored);
         ui->buttonBoxLayout->removeItem(ui->buttonBoxSpacer);
     }
-#endif
 }
 
 void Placement::open()

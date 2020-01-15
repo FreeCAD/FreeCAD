@@ -25,16 +25,18 @@
 
 #include "PreCompiled.h"
 
-#include "Gui/Application.h"
 #include "DlgSettingsFemMaterialImp.h"
+#include "ui_DlgSettingsFemMaterial.h"
+#include <Gui/Application.h>
 #include <Gui/PrefWidgets.h>
 
 using namespace FemGui;
 
 DlgSettingsFemMaterialImp::DlgSettingsFemMaterialImp( QWidget* parent )
   : PreferencePage( parent )
+  , ui(new Ui_DlgSettingsFemMaterialImp)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 DlgSettingsFemMaterialImp::~DlgSettingsFemMaterialImp()
@@ -44,22 +46,22 @@ DlgSettingsFemMaterialImp::~DlgSettingsFemMaterialImp()
 
 void DlgSettingsFemMaterialImp::saveSettings()
 {
-    cb_use_built_in_materials->onSave();
-    cb_use_mat_from_config_dir->onSave();
-    cb_use_mat_from_custom_dir->onSave();
-    fc_custom_mat_dir->onSave();
-    cb_delete_duplicates->onSave();
-    cb_sort_by_resources->onSave();
+    ui->cb_use_built_in_materials->onSave();
+    ui->cb_use_mat_from_config_dir->onSave();
+    ui->cb_use_mat_from_custom_dir->onSave();
+    ui->fc_custom_mat_dir->onSave();
+    ui->cb_delete_duplicates->onSave();
+    ui->cb_sort_by_resources->onSave();
 }
 
 void DlgSettingsFemMaterialImp::loadSettings()
 {
-    cb_use_built_in_materials->onRestore();
-    cb_use_mat_from_config_dir->onRestore();
-    cb_use_mat_from_custom_dir->onRestore();
-    fc_custom_mat_dir->onRestore();
-    cb_delete_duplicates->onRestore();
-    cb_sort_by_resources->onRestore();
+    ui->cb_use_built_in_materials->onRestore();
+    ui->cb_use_mat_from_config_dir->onRestore();
+    ui->cb_use_mat_from_custom_dir->onRestore();
+    ui->fc_custom_mat_dir->onRestore();
+    ui->cb_delete_duplicates->onRestore();
+    ui->cb_sort_by_resources->onRestore();
 }
 
 /**
@@ -68,6 +70,7 @@ void DlgSettingsFemMaterialImp::loadSettings()
 void DlgSettingsFemMaterialImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);

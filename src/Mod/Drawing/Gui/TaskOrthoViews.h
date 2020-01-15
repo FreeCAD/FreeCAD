@@ -25,7 +25,6 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include "ui_TaskOrthoViews.h"
 #include <Base/BoundBox.h>
 
 #include <gp_Ax2.hxx>
@@ -36,9 +35,9 @@
 
 
 
-class Ui_TaskOrthoViews;
 
 namespace DrawingGui {
+class Ui_TaskOrthoViews;
 
 
 class orthoview

@@ -109,6 +109,8 @@ public:
     boost::signals2::signal<void (const Gui::ViewProvider&)> signalNewObject;
     /// signal on deleted Object
     boost::signals2::signal<void (const Gui::ViewProvider&)> signalDeletedObject;
+    /// signal on changed Object
+    boost::signals2::signal<void (const Gui::ViewProvider&, const App::Property&)> signalBeforeChangeObject;
     /// signal on changed object property
     boost::signals2::signal<void (const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
     /// signal on renamed Object

@@ -76,6 +76,7 @@ public:
     std::string centerText;
     std::string rightText;
     std::string symbolPath;
+    std::string symbolString;
     std::string tileName;
     void init(void) {
         toBeSaved = false;
@@ -86,6 +87,7 @@ public:
         centerText = "";
         rightText = "";
         symbolPath= "";
+        symbolString = "";
         tileName = "";
     }
 
@@ -132,8 +134,9 @@ protected:
     TechDraw::DrawWeldSymbol* createWeldingSymbol(void);
     void updateWeldingSymbol(void);
 
-    std::vector<App::DocumentObject*> createTiles(void);
-    std::vector<App::DocumentObject*> updateTiles(void);
+/*    std::vector<App::DocumentObject*> createTiles(void);*/
+    void getTileFeats(void);
+    void updateTiles(void);
 
     void collectArrowData(void);
     void collectOtherData(void);
@@ -148,16 +151,20 @@ private:
 
     TechDraw::DrawLeaderLine* m_leadFeat;
     TechDraw::DrawWeldSymbol* m_weldFeat;
-    TechDraw::DrawTileWeld*   m_arrowIn;
-    TechDraw::DrawTileWeld*   m_otherIn;
+/*    TechDraw::DrawTileWeld*   m_arrowIn;    //save starting values*/
+/*    TechDraw::DrawTileWeld*   m_otherIn;*/
+    TechDraw::DrawTileWeld*   m_arrowFeat;
+    TechDraw::DrawTileWeld*   m_otherFeat;
 
     TileImage m_arrowOut;
     TileImage m_otherOut;
 
     QString m_arrowPath;
     QString m_otherPath;
+    QString m_arrowSymbol;
+    QString m_otherSymbol;
 
-    std::vector<std::string> m_toRemove;
+/*    std::vector<std::string> m_toRemove;*/
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;

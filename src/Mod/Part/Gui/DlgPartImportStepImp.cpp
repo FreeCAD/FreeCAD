@@ -29,6 +29,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include "DlgPartImportStepImp.h"
+#include "ui_DlgPartImportStep.h"
 
 using namespace PartGui;
 
@@ -43,8 +44,9 @@ using namespace PartGui;
  */
 DlgPartImportStepImp::DlgPartImportStepImp( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
+    , ui(new Ui_DlgPartImportStep)
 {
-    this->setupUi(this);
+    ui->setupUi(this);
 }
 
 /*  
@@ -70,7 +72,7 @@ void DlgPartImportStepImp::onChooseFileName()
         .arg(tr("STEP"),
              tr("All Files"));
     if (!fn.isEmpty()) {
-        FileName->setText(fn);
+        ui->FileName->setText(fn);
     }
 }
 

@@ -26,12 +26,12 @@
 #ifndef FEMGUI_DLGSETTINGSFEMELMERIMP_H
 #define FEMGUI_DLGSETTINGSFEMELMERIMP_H
 
-#include "ui_DlgSettingsFemElmer.h"
 #include <Gui/PropertyPage.h>
+#include <memory>
 
 namespace FemGui {
-
-class DlgSettingsFemElmerImp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsFemElmerImp
+class Ui_DlgSettingsFemElmerImp;
+class DlgSettingsFemElmerImp : public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -43,6 +43,9 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+
+private:
+    std::unique_ptr<Ui_DlgSettingsFemElmerImp> ui;
 };
 
 } // namespace FemGui

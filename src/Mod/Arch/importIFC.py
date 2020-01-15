@@ -836,9 +836,15 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
                         obj.PostalCode = product.SiteAddress.PostalCode
                 project = product.Decomposes[0].RelatingObject
                 modelRC = next((rc for rc in project.RepresentationContexts if rc.ContextType == "Model"), None)
-                if modelRC and modelRC.TrueNorth and modelRC.TrueNorth.DirectionRatios[1] > 0:
-                    obj.Declination = -math.degrees(math.atan(modelRC.TrueNorth.DirectionRatios[0] / modelRC.TrueNorth.DirectionRatios[1]))
-                    if(FreeCAD.GuiUp):
+                if modelRC and modelRC.TrueNorth:
+                    # If the y-part of TrueNorth is 0, then the x-part should be checked.
+                    # Declination would be -90° if x  >0 and +90° if x < 0
+                    # Only if x==0 then we can not determine TrueNorth.
+                    # But that would actually be an invalid IFC file, because the magnitude 
+                    # of the (twodimensional) direction vector for TrueNorth shall be greater than zero.
+                    (x, y) = modelRC.TrueNorth.DirectionRatios[:2]
+                    obj.Declination = ((math.degrees(math.atan2(y,x))-90+180)%360)-180
+                    if (FreeCAD.GuiUp):
                         obj.ViewObject.CompassRotation.Value = obj.Declination
 
         try:
