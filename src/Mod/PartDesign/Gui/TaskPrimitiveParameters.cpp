@@ -661,7 +661,36 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
 
-    parameter  = new PartGui::TaskAttacher(PrimitiveView);
+    // handle visibility automation differently to the default method
+    auto customvisfunc = [] (bool opening_not_closing,
+                             Gui::ViewProviderDocumentObject* vp,
+                             App::DocumentObject *editObj,
+                             const std::string& editSubName) {
+        if (opening_not_closing) {
+            QString code = QString::fromLatin1(
+                "import Show\n"
+                "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
+                "tvObj = %1\n"
+                "dep_features = tv.get_all_dependent(%2, '%3')\n"
+                "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
+                "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
+                "\tdel(visible_features)\n"
+                "tv.hide(dep_features)\n"
+                "del(dep_features)\n"
+                "del(tvObj)"
+                ).arg(
+                    QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
+                    QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
+                    QString::fromLatin1(editSubName.c_str()));
+            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
+        }
+        else {
+            Base::Interpreter().runString("del(tv)");
+        }
+    };
+
+    parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"), customvisfunc);
     Content.push_back(parameter);
 }
 
