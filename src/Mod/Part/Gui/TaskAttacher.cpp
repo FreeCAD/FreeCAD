@@ -108,10 +108,12 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     }
 }
 
-TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget *parent, QString picture, QString text)
+TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent,
+                           QString picture, QString text)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent),
       SelectionObserver(ViewProvider),
-      ViewProvider(ViewProvider)
+      ViewProvider(ViewProvider),
+      visibilityFunc(0)
 {
     //check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
@@ -935,25 +937,11 @@ void TaskAttacher::changeEvent(QEvent *e)
 
 void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 {
-    if (opening_not_closing) {
-        //crash guards
-        if (!ViewProvider)
-            return;
-        if (!ViewProvider->getObject())
-            return;
-        if (!ViewProvider->getObject()->getNameInDocument())
-            return;
-
-        auto editDoc = Gui::Application::Instance->editDocument();
-        App::DocumentObject *editObj = ViewProvider->getObject();
-        std::string editSubName;
-        ViewProviderDocumentObject *editVp = 0;
-        if(editDoc) {
-            editDoc->getInEdit(&editVp,&editSubName);
-            if(editVp)
-                editObj = editVp->getObject();
-        }
-        try{
+    auto defvisfunc = [] (bool opening_not_closing,
+                          Gui::ViewProviderDocumentObject* vp,
+                          App::DocumentObject *editObj,
+                          const std::string& editSubName) {
+        if (opening_not_closing) {
             QString code = QString::fromLatin1(
                 "import Show\n"
                 "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
@@ -970,10 +958,38 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                 "\t\t\ttv.show([lnk[0] for lnk in tvObj.Support])\n"
                 "del(tvObj)"
                 ).arg(
-                    QString::fromLatin1(Gui::Command::getObjectCmd(ViewProvider->getObject()).c_str()),
+                    QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
                     QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
                     QString::fromLatin1(editSubName.c_str()));
             Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
+        }
+        else {
+            Base::Interpreter().runString("del(tv)");
+        }
+    };
+
+    auto visAutoFunc = visibilityFunc ? visibilityFunc : defvisfunc;
+
+    if (opening_not_closing) {
+        //crash guards
+        if (!ViewProvider)
+            return;
+        if (!ViewProvider->getObject())
+            return;
+        if (!ViewProvider->getObject()->getNameInDocument())
+            return;
+
+        auto editDoc = Gui::Application::Instance->editDocument();
+        App::DocumentObject *editObj = ViewProvider->getObject();
+        std::string editSubName;
+        ViewProviderDocumentObject *editVp = 0;
+        if (editDoc) {
+            editDoc->getInEdit(&editVp,&editSubName);
+            if (editVp)
+                editObj = editVp->getObject();
+        }
+        try {
+            visAutoFunc(opening_not_closing, ViewProvider, editObj, editSubName);
         }
         catch (const Base::Exception &e){
             e.ReportException();
@@ -985,7 +1001,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
     }
     else {
         try {
-            Base::Interpreter().runString("del(tv)");
+            visAutoFunc(opening_not_closing, nullptr, nullptr, std::string());
         }
         catch (Base::Exception &e) {
             e.ReportException();

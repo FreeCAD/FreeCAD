@@ -30,6 +30,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/App/Attacher.h>
+#include <boost/function.hpp>
 
 
 class Ui_TaskAttacher;
@@ -52,8 +53,11 @@ class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::Se
     Q_OBJECT
 
 public:
-    TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget *parent = 0, 
-        QString picture = QString::fromLatin1(""), QString text = QString::fromLatin1("Attachment"));
+    typedef boost::function<void (bool, Gui::ViewProviderDocumentObject*, App::DocumentObject *, const std::string&)>  VisibilityFunction;
+
+    TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = 0,
+                 QString picture = QString(),
+                 QString text = QString::fromLatin1("Attachment"));
     ~TaskAttacher();
 
     bool   getFlip(void) const;
@@ -64,6 +68,15 @@ public:
      * no modes fit current set of references, mmDeactivated is returned.
      */
     Attacher::eMapMode getActiveMapMode();
+
+    /**
+     * @brief setCustomVisibilityAutomation sets a customized function
+     * in order to allow to handle visibility automation differently than
+     * the default implementation.
+     */
+    void setCustomVisibilityAutomation(VisibilityFunction func) {
+        visibilityFunc = func;
+    }
 
     bool isCompleted() const { return completed; }
 
@@ -125,6 +138,7 @@ protected:
 private:
     QWidget* proxy;
     Ui_TaskAttacher* ui;
+    VisibilityFunction visibilityFunc;
 
     // TODO fix documentation here (2015-11-10, Fat-Zer)
     int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-3 means a reference is being picked.
