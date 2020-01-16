@@ -105,6 +105,7 @@ def setup_static(doc=None, solvertype="ccxtools"):
     elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
     if solvertype == "calculix" or solvertype == "ccxtools":
+        solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False

@@ -70,6 +70,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # elif solvertype == "elmer":
     #     analysis.addObject(ObjectsFem.makeSolverElmer(doc, "SolverElmer"))
     if solvertype == "calculix" or solvertype == "ccxtools":
+        solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "thermomech"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = True
