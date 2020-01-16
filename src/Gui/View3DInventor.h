@@ -113,7 +113,7 @@ public Q_SLOTS:
     void setOverrideCursor(const QCursor&);
     void restoreOverrideCursor();
 
-    void dump(const char* filename);
+    void dump(const char* filename, bool onlyVisible=false);
 
 protected Q_SLOTS:
     void stopAnimating();
