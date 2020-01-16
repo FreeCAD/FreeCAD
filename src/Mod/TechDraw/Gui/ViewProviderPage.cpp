@@ -283,7 +283,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
     // for Page, valid children are any View except: DrawProjGroupItem
     //                                               DrawViewDimension
     //                                               DrawViewBalloon
-    //												 DrawViewGDTReference
+    //                                               DrawViewGDTReference
     //                                               DrawLeaderLine
     //                                               DrawRichAnno 
     //                                               any FeatuerView in a DrawViewClip
@@ -315,7 +315,7 @@ std::vector<App::DocumentObject*> ViewProviderPage::claimChildren(void) const
              docObj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())         ||
              docObj->isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())       ||
              docObj->isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())       ||
-			 docObj->isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId()) ||
+             docObj->isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId()) ||
              (featView && featView->isInClip()) )
               continue;
           else

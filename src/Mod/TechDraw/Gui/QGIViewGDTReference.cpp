@@ -24,22 +24,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
+#include <BRep_Builder.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <Precision.hxx>
 
-  # include <QGraphicsScene>
-  # include <QGraphicsSceneMouseEvent>
-  # include <QPainter>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
-//  # include <QApplication>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QPaintDevice>
+#include <QSvgGenerator>
 
-  # include <cmath>
+# include <cmath>
 #endif
 
 #include <App/Application.h>
@@ -64,17 +63,15 @@
 #include "ViewProviderGDTReference.h"
 #include "ZVALUE.h"
 
-
 //TODO: hide the Qt coord system (+y down).  
 
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-QGIReferenceLabel::QGIReferenceLabel(QGIViewGDTReference * parent)
-{
-	this->parent = parent;
+QGIReferenceLabel::QGIReferenceLabel(QGIViewGDTReference *parent) {
+    this->parent = parent;
 
-	posX = 0;
+    posX = 0;
     posY = 0;
     m_angle = 0.;
 
@@ -94,10 +91,10 @@ QGIReferenceLabel::QGIReferenceLabel(QGIViewGDTReference * parent)
     hasHover = false;
 }
 
-QVariant QGIReferenceLabel::itemChange(GraphicsItemChange change, const QVariant &value)
-{
+QVariant QGIReferenceLabel::itemChange(GraphicsItemChange change,
+        const QVariant &value) {
     if (change == ItemSelectedHasChanged && scene()) {
-        if(isSelected()) {
+        if (isSelected()) {
             Q_EMIT selected(true);
             setPrettySel();
         } else {
@@ -105,7 +102,7 @@ QVariant QGIReferenceLabel::itemChange(GraphicsItemChange change, const QVariant
             setPrettyNormal();
         }
         update();
-    } else if(change == ItemPositionHasChanged && scene()) {
+    } else if (change == ItemPositionHasChanged && scene()) {
         setLabelCenter();
         Q_EMIT dragging(m_ctrl);
     }
@@ -113,41 +110,36 @@ QVariant QGIReferenceLabel::itemChange(GraphicsItemChange change, const QVariant
     return QGraphicsItem::itemChange(change, value);
 }
 
-void QGIReferenceLabel::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-    if(event->modifiers() & Qt::ControlModifier) {
+void QGIReferenceLabel::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+    if (event->modifiers() & Qt::ControlModifier) {
         m_ctrl = true;
     }
 
-    if(scene() && this == scene()->mouseGrabberItem()) {
+    if (scene() && this == scene()->mouseGrabberItem()) {
         Q_EMIT dragFinished();
     }
-      QGraphicsItem::mousePressEvent(event);
+    QGraphicsItem::mousePressEvent(event);
 }
 
-void QGIReferenceLabel::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
+void QGIReferenceLabel::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsItem::mouseMoveEvent(event);
 }
 
-void QGIReferenceLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
-{
+void QGIReferenceLabel::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     m_ctrl = false;
-    if(scene() && this == scene()->mouseGrabberItem()) {
+    if (scene() && this == scene()->mouseGrabberItem()) {
         Q_EMIT dragFinished();
     }
 
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-void QGIReferenceLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent * event)
-{
-	// TODO nothing doing : no task managment
-	Q_UNUSED(event);
+void QGIReferenceLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) {
+    // TODO nothing doing : no task managment
+    Q_UNUSED(event);
 }
 
-void QGIReferenceLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
+void QGIReferenceLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
     Q_EMIT hover(true);
     hasHover = true;
     if (!isSelected()) {
@@ -158,9 +150,8 @@ void QGIReferenceLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     QGraphicsItem::hoverEnterEvent(event);
 }
 
-void QGIReferenceLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    QGIView *view = dynamic_cast<QGIView *> (parentItem());
+void QGIReferenceLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
+    QGIView *view = dynamic_cast<QGIView*>(parentItem());
     assert(view != 0);
     Q_UNUSED(view);
 
@@ -174,13 +165,12 @@ void QGIReferenceLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
-QRectF QGIReferenceLabel::boundingRect() const
-{
+QRectF QGIReferenceLabel::boundingRect() const {
     return childrenBoundingRect();
 }
 
-void QGIReferenceLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
+void QGIReferenceLabel::paint(QPainter *painter,
+        const QStyleOptionGraphicsItem *option, QWidget *widget) {
     Q_UNUSED(widget);
     Q_UNUSED(painter);
     QStyleOptionGraphicsItem myOption(*option);
@@ -189,77 +179,66 @@ void QGIReferenceLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     //QGraphicsObject/QGraphicsItem::paint gives link error.
 }
 
-void QGIReferenceLabel::setPosFromCenter(const double &xCenter, const double &yCenter)
-{
+void QGIReferenceLabel::setPosFromCenter(const double &xCenter,
+        const double &yCenter) {
     //set label's Qt position(top,left) given boundingRect center point
-    setPos(xCenter - m_labelText->boundingRect().width() / 2., yCenter - m_labelText->boundingRect().height() / 2.);
+    setPos(xCenter - m_labelText->boundingRect().width() / 2.,
+            yCenter - m_labelText->boundingRect().height() / 2.);
 }
 
-void QGIReferenceLabel::setLabelCenter()
-{
+void QGIReferenceLabel::setLabelCenter() {
     //set label center (posX,posY) frome the given Qt position (top,left) == (x(),y())
     posX = x() + m_labelText->boundingRect().width() / 2.;
     posY = y() + m_labelText->boundingRect().height() / 2.;
 }
 
-void QGIReferenceLabel::setRotateAngle(double angle)
-{
-	m_angle = angle;
+void QGIReferenceLabel::setRotateAngle(double angle) {
+    m_angle = angle;
 }
 
-void QGIReferenceLabel::setFont(QFont f)
-{
+void QGIReferenceLabel::setFont(QFont f) {
     m_labelText->setFont(f);
 }
 
-void QGIReferenceLabel::setLabelString(QString t)
-{
+void QGIReferenceLabel::setLabelString(QString t) {
     prepareGeometryChange();
     m_labelText->setPlainText(t);
-} 
+}
 
-void QGIReferenceLabel::setLabelString(QString t, qreal maxWidth)
-{
+void QGIReferenceLabel::setLabelString(QString t, qreal maxWidth) {
     prepareGeometryChange();
     m_labelText->setPlainText(t);
     m_labelText->setTextWidth(maxWidth);
 }
 
-void QGIReferenceLabel::setPrettySel(void)
-{
+void QGIReferenceLabel::setPrettySel(void) {
     m_labelText->setPrettySel();
 }
 
-void QGIReferenceLabel::setPrettyPre(void)
-{
+void QGIReferenceLabel::setPrettyPre(void) {
     m_labelText->setPrettyPre();
 }
 
-void QGIReferenceLabel::setPrettyNormal(void)
-{
+void QGIReferenceLabel::setPrettyNormal(void) {
     m_labelText->setPrettyNormal();
 }
 
-void QGIReferenceLabel::setColor(QColor c)
-{
+void QGIReferenceLabel::setColor(QColor c) {
     m_colNormal = c;
     m_labelText->setColor(m_colNormal);
 }
 
-void QGIReferenceLabel::rotate(void)
-{
-	QPointF centerPt = boundingRect().center();
-	setTransformOriginPoint(centerPt);
-	setRotation(m_angle);
+void QGIReferenceLabel::rotate(void) {
+    QPointF centerPt = boundingRect().center();
+    setTransformOriginPoint(centerPt);
+    setRotation(m_angle);
 }
 
 //**************************************************************
 // QGI VIEW REFERENCE
 //**************************************************************
 QGIViewGDTReference::QGIViewGDTReference() :
-    hasHover(false),
-    m_lineWidth(0.0)
-{
+        hasHover(false), m_lineWidth(0.0) {
     setHandlesChildEvents(false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setCacheMode(QGraphicsItem::NoCache);
@@ -279,7 +258,7 @@ QGIViewGDTReference::QGIViewGDTReference() :
     addToGroup(referenceShape);
     referenceShape->setNormalColor(getNormalColor());
     referenceShape->setPrettyNormal();
-    
+
     referenceArrow = new QGIArrow();
     addToGroup(referenceArrow);
     referenceArrow->setNormalColor(getNormalColor());
@@ -300,74 +279,73 @@ QGIViewGDTReference::QGIViewGDTReference() :
     referenceLabel->setRotation(0.);
 
     // connecting the needed slots and signals
-    QObject::connect(
-    		referenceLabel, SIGNAL(dragging(bool)),
-        this  , SLOT  (referenceLabelDragged(bool)));
+    QObject::connect(referenceLabel, SIGNAL(dragging(bool)), this,
+            SLOT(referenceLabelDragged(bool)));
 
-    QObject::connect(
-    		referenceLabel, SIGNAL(dragFinished()),
-        this  , SLOT  (referenceLabelDragFinished()));
+    QObject::connect(referenceLabel, SIGNAL(dragFinished()), this,
+            SLOT(referenceLabelDragFinished()));
 
-    QObject::connect(
-    		referenceLabel, SIGNAL(selected(bool)),
-        this  , SLOT  (select(bool)));
+    QObject::connect(referenceLabel, SIGNAL(selected(bool)), this,
+            SLOT(select(bool)));
 
-    QObject::connect(
-    		referenceLabel, SIGNAL(hover(bool)),
-        this  , SLOT  (hover(bool)));
+    QObject::connect(referenceLabel, SIGNAL(hover(bool)), this,
+            SLOT(hover(bool)));
 
-    setZValue(ZVALUE::DIMENSION);                    //note: this won't paint dimensions over another View if it stacks
-                                                     //above this Dimension's parent view.   need Layers?
+    setZValue(ZVALUE::DIMENSION); //note: this won't paint dimensions over another View if it stacks
+                                  //above this Dimension's parent view.   need Layers?
 
 }
 
-Base::Vector3d QGIViewGDTReference::calculateCenter(TechDraw::PointPair & segment){
-	Base::Vector3d first = segment.first;
-	Base::Vector3d second = segment.second;
-	return (first+second)/2.0;
+Base::Vector3d QGIViewGDTReference::calculateCenter(
+        TechDraw::PointPair &segment) {
+    Base::Vector3d first = segment.first;
+    Base::Vector3d second = segment.second;
+    return (first + second) / 2.0;
 }
 
-double QGIViewGDTReference::getIsoStandardLinePlacement(double labelAngle)
-{
+double QGIViewGDTReference::getIsoStandardLinePlacement(double labelAngle) {
     // According to ISO 129-1 Standard Figure 23, the bordering angle is 2/3 PI, resp. -1/3 PI
-    return labelAngle < -M_PI/3.0 || labelAngle > +2.0*M_PI/3.0
-           ? +1.0 : -1.0;
+    return labelAngle < -M_PI / 3.0 || labelAngle > +2.0 * M_PI / 3.0 ?
+            +1.0 : -1.0;
 }
 
-Base::Vector2d QGIViewGDTReference::labelPlacementAndRotation(TechDraw::PointPair & segment, double distance)
-{
-	Base::Vector3d origin = (segment.first + segment.second)/2.0;
-	Base::Vector3d dir = segment.second - segment.first;
-	Base::Vector3d perp = origin.Perpendicular(segment.second, dir);
-	perp = perp.Normalize();
-	// check orientation
-	if(origin.Dot(perp) < 0)
-		perp = -perp;
-	Base::Vector3d labelCenter = origin + perp * distance;
+Base::Vector2d QGIViewGDTReference::labelPlacementAndRotation(
+        TechDraw::PointPair &segment, double distance) {
+    Base::Vector3d origin = (segment.first + segment.second) / 2.0;
+    Base::Vector3d dir = segment.second - segment.first;
+    Base::Vector3d perp = origin.Perpendicular(segment.second, dir);
+    perp = perp.Normalize();
+    // check orientation
+    if (origin.Dot(perp) < 0)
+        perp = -perp;
+    Base::Vector3d labelCenter = origin + perp * distance;
 
-	double lineAngle = (fromQtApp(segment.second) - fromQtApp(segment.first)).Angle();
-	double placementFactor = getIsoStandardLinePlacement(lineAngle);
-	double labelAngle = placementFactor > 0.0 ? DrawUtil::angleComposition(lineAngle, M_PI) : lineAngle;
-	m_lineAngle = lineAngle;
-	referenceLabel->setRotateAngle(toQtDeg(labelAngle));
+    double lineAngle =
+            (fromQtApp(segment.second) - fromQtApp(segment.first)).Angle();
+    double placementFactor = getIsoStandardLinePlacement(lineAngle);
+    double labelAngle =
+            placementFactor > 0.0 ?
+                    DrawUtil::angleComposition(lineAngle, M_PI) : lineAngle;
+    m_lineAngle = lineAngle;
+    referenceLabel->setRotateAngle(toQtDeg(labelAngle));
 
-	m_arrowAngle = atan2(-perp.y, -perp.x) * 180 / M_PI;
-	m_linkDir = perp;
+    m_arrowAngle = atan2(-perp.y, -perp.x) * 180 / M_PI;
+    m_linkDir = perp;
 
-	float x = Rez::guiX(labelCenter.x);
-	float y = Rez::guiX(labelCenter.y);
-	referenceLabel->setPosFromCenter(x, y);
-	Base::Vector2d result = fromQtApp(origin);
+    float x = Rez::guiX(labelCenter.x);
+    float y = Rez::guiX(labelCenter.y);
+    referenceLabel->setPosFromCenter(x, y);
+    Base::Vector2d result = fromQtApp(origin);
 
-	return result;
+    return result;
 }
 
-void QGIViewGDTReference::setViewPartFeature(TechDraw::DrawViewGDTReference *reference)
-{
-    if(reference == 0)
+void QGIViewGDTReference::setViewPartFeature(
+        TechDraw::DrawViewGDTReference *reference) {
+    if (reference == 0)
         return;
 
-    setViewFeature(static_cast<TechDraw::DrawView *>(reference));
+    setViewFeature(static_cast<TechDraw::DrawView*>(reference));
 
     double textWidth = referenceLabel->getLabelText()->boundingRect().width();
     double symbWidth = Rez::guiX(referenceLabel->marginWidth()) * 2 + textWidth;
@@ -383,92 +361,91 @@ void QGIViewGDTReference::setViewPartFeature(TechDraw::DrawViewGDTReference *ref
     draw();
 }
 
-void QGIViewGDTReference::select(bool state)
-{
+void QGIViewGDTReference::select(bool state) {
     setSelected(state);
     draw();
 }
 
-void QGIViewGDTReference::hover(bool state)
-{
+void QGIViewGDTReference::hover(bool state) {
     hasHover = state;
     draw();
 }
 
-void QGIViewGDTReference::updateView(bool update)
-{
-    auto reference( dynamic_cast<TechDraw::DrawViewGDTReference*>(getViewObject()) );
-    if( reference == nullptr )
+void QGIViewGDTReference::updateView(bool update) {
+    auto reference(
+            dynamic_cast<TechDraw::DrawViewGDTReference*>(getViewObject()));
+    if (reference == nullptr)
         return;
 
-    auto viewProvider = static_cast<ViewProviderGDTReference*>(getViewProvider(getViewObject()));
-    if ( viewProvider == nullptr ) {
+    auto viewProvider = static_cast<ViewProviderGDTReference*>(getViewProvider(
+            getViewObject()));
+    if (viewProvider == nullptr) {
         return;
     }
 
-    if(	update ||
-    	reference->X.isTouched() || reference->Y.isTouched() ||
-		reference->Text.isTouched() ||
-		viewProvider->Font.isTouched() ||
-		viewProvider->LineWidth.isTouched()){
-			//float x = Rez::guiX(reference->X.getValue());
-			//float y = Rez::guiX(reference->Y.getValue());
-			//referenceLabel->setPosFromCenter(x,-y);
-			updateReference();
+    if (update || reference->X.isTouched() || reference->Y.isTouched()
+            || reference->Text.isTouched() || viewProvider->Font.isTouched()
+            || viewProvider->LineWidth.isTouched()) {
+        //float x = Rez::guiX(reference->X.getValue());
+        //float y = Rez::guiX(reference->Y.getValue());
+        //referenceLabel->setPosFromCenter(x,-y);
+        updateReference();
     }
     draw();
 }
 
-void QGIViewGDTReference::updateReference()
-{
-    const auto reference( dynamic_cast<TechDraw::DrawViewGDTReference *>(getViewObject()) );
-    if( reference == nullptr ) {
+void QGIViewGDTReference::updateReference() {
+    const auto reference(
+            dynamic_cast<TechDraw::DrawViewGDTReference*>(getViewObject()));
+    if (reference == nullptr) {
         return;
     }
-    auto viewProvider = static_cast<ViewProviderGDTReference*>(getViewProvider(getViewObject()));
-    if ( viewProvider == nullptr ) {
+    auto viewProvider = static_cast<ViewProviderGDTReference*>(getViewProvider(
+            getViewObject()));
+    if (viewProvider == nullptr) {
         return;
     }
 
     QFont font = referenceLabel->getFont();
-    font.setPixelSize(calculateFontPixelSize(viewProvider->Fontsize.getValue()));
+    font.setPixelSize(
+            calculateFontPixelSize(viewProvider->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(viewProvider->Font.getValue()));
     referenceLabel->setFont(font);
 
     prepareGeometryChange();
     QString labelText = QString::fromUtf8(reference->Text.getStrValue().data());
     referenceLabel->setLabelString(labelText, -1);
-    referenceLabel->setPosFromCenter(referenceLabel->X(),referenceLabel->Y());
+    referenceLabel->setPosFromCenter(referenceLabel->X(), referenceLabel->Y());
 }
 
-void QGIViewGDTReference::referenceLabelDragged(bool ctrl)
-{
-	// update reference origin
-	const auto reference( dynamic_cast<TechDraw::DrawViewGDTReference *>(getViewObject()) );
-	if( reference == nullptr ) {
-		return;
-	}
-	Base::Vector2d labelCenter, intersectionPt;
-	labelCenter.x = Rez::appX(referenceLabel->X());
-	labelCenter.y = - Rez::appX(referenceLabel->Y());
-	PointPair edge = reference->getLinearPoints();
-	Base::Vector2d startPt = fromQtApp(edge.first);
-	intersectionPt = computePerpendicularIntersection(startPt, labelCenter, m_lineAngle);
+void QGIViewGDTReference::referenceLabelDragged(bool ctrl) {
+    // update reference origin
+    const auto reference(
+            dynamic_cast<TechDraw::DrawViewGDTReference*>(getViewObject()));
+    if (reference == nullptr) {
+        return;
+    }
+    Base::Vector2d labelCenter, intersectionPt;
+    labelCenter.x = Rez::appX(referenceLabel->X());
+    labelCenter.y = -Rez::appX(referenceLabel->Y());
+    PointPair edge = reference->getLinearPoints();
+    Base::Vector2d startPt = fromQtApp(edge.first);
+    intersectionPt = computePerpendicularIntersection(startPt, labelCenter,
+            m_lineAngle);
 
-	Base::Vector2d perp = (labelCenter-intersectionPt);
-	perp.Normalize();
-	m_linkDir = Base::Vector3d(perp.x, -perp.y);
-	m_arrowAngle = atan2(perp.y, -perp.x) * 180 / M_PI;
+    Base::Vector2d perp = (labelCenter - intersectionPt);
+    perp.Normalize();
+    m_linkDir = Base::Vector3d(perp.x, -perp.y);
+    m_arrowAngle = atan2(perp.y, -perp.x) * 180 / M_PI;
 
-	reference->X.setValue(intersectionPt.x);
-	reference->Y.setValue(intersectionPt.y);
+    reference->X.setValue(intersectionPt.x);
+    reference->Y.setValue(intersectionPt.y);
     draw_modifier(ctrl);
 }
 
-void QGIViewGDTReference::referenceLabelDragFinished()
-{
-    auto ref( dynamic_cast<TechDraw::DrawViewGDTReference *>(getViewObject()) );
-    if( ref == nullptr ) {
+void QGIViewGDTReference::referenceLabelDragFinished() {
+    auto ref(dynamic_cast<TechDraw::DrawViewGDTReference*>(getViewObject()));
+    if (ref == nullptr) {
         return;
     }
 
@@ -480,22 +457,22 @@ void QGIViewGDTReference::referenceLabelDragFinished()
     //Gui::Command::commitvoid rotate(void);Command();
 }
 
-void QGIViewGDTReference::draw()
-{
+void QGIViewGDTReference::draw() {
     draw_modifier(false);
 }
 
-void QGIViewGDTReference::draw_modifier(bool modifier)
-{
-	Q_UNUSED(modifier);
+void QGIViewGDTReference::draw_modifier(bool modifier) {
+    Q_UNUSED(modifier);
 
     if (!isVisible()) {		//should this be controlled by parent ViewPart?
         return;
     }
 
-    TechDraw::DrawViewGDTReference *reference = dynamic_cast<TechDraw::DrawViewGDTReference *>(getViewObject());
-    if((!reference) ||                                                       //nothing to draw, don't try
-       (!reference->isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId()))) {
+    TechDraw::DrawViewGDTReference *reference =
+            dynamic_cast<TechDraw::DrawViewGDTReference*>(getViewObject());
+    if ((!reference) ||                            //nothing to draw, don't try
+            (!reference->isDerivedFrom(
+                    TechDraw::DrawViewGDTReference::getClassTypeId()))) {
         referenceLabel->hide();
         hide();
         return;
@@ -505,14 +482,15 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
     show();
 
     const TechDraw::DrawViewPart *refObj = reference->getViewPart();
-    if(!refObj->hasGeometry()) {	//nothing to draw yet (restoring)
-    	referenceLabel->hide();
+    if (!refObj->hasGeometry()) {	//nothing to draw yet (restoring)
+        referenceLabel->hide();
         hide();
         return;
     }
 
-    auto vp = static_cast<ViewProviderGDTReference*>(getViewProvider(getViewObject()));
-    if ( vp == nullptr ) {
+    auto vp = static_cast<ViewProviderGDTReference*>(getViewProvider(
+            getViewObject()));
+    if (vp == nullptr) {
         return;
     }
 
@@ -537,9 +515,11 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
 
     // Square symbol
     textWidth = (textWidth * scale) + Rez::guiX(referenceLabel->marginWidth());
-    textHeight = (textHeight * scale) + Rez::guiX(referenceLabel->marginHeight());
+    textHeight = (textHeight * scale)
+            + Rez::guiX(referenceLabel->marginHeight());
     double max = std::max(textWidth, textHeight);
-    referencePath.addRect(referenceLabel->X() -(max / 2.0), referenceLabel->Y() - (max / 2.0), max, max);
+    referencePath.addRect(referenceLabel->X() - (max / 2.0),
+            referenceLabel->Y() - (max / 2.0), max, max);
     double offset = (max / 2.0);
 
     Base::Vector2d origin, centerLabel;
@@ -558,7 +538,8 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
 
     referenceLines->setPath(dLinePath);
     referenceShape->setPath(referencePath);
-    referenceShape->setTransformOriginPoint(referenceShape->boundingRect().center());
+    referenceShape->setTransformOriginPoint(
+            referenceShape->boundingRect().center());
     referenceShape->setRotation(referenceLabel->rotation());
     referenceArrow->draw();
 
@@ -586,20 +567,20 @@ void QGIViewGDTReference::draw_modifier(bool modifier)
         //TODO: parent redraw still required with new frame/label??
         parentItem()->update();
     } else {
-        Base::Console().Log("INFO - QGIViewGDTReference::draw_modifier - no parent to update\n");
+        Base::Console().Log(
+                "INFO - QGIViewGDTReference::draw_modifier - no parent to update\n");
     }
 
 }
 
-void QGIViewGDTReference::drawBorder(void)
-{
-	// Nothing doing !
+void QGIViewGDTReference::drawBorder(void) {
+    // Nothing doing !
 }
 
-QVariant QGIViewGDTReference::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-   if (change == ItemSelectedHasChanged && scene()) {
-        if(isSelected()) {
+QVariant QGIViewGDTReference::itemChange(GraphicsItemChange change,
+        const QVariant &value) {
+    if (change == ItemSelectedHasChanged && scene()) {
+        if (isSelected()) {
             referenceLabel->setSelected(true);
         } else {
             referenceLabel->setSelected(false);
@@ -609,51 +590,52 @@ QVariant QGIViewGDTReference::itemChange(GraphicsItemChange change, const QVaria
     return QGIView::itemChange(change, value);
 }
 
-void QGIViewGDTReference::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+void QGIViewGDTReference::paint(QPainter *painter,
+        const QStyleOptionGraphicsItem *option, QWidget *widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    QPaintDevice* hw = painter->device();
-    QSvgGenerator* svg = dynamic_cast<QSvgGenerator*>(hw);
+    QPaintDevice *hw = painter->device();
+    QSvgGenerator *svg = dynamic_cast<QSvgGenerator*>(hw);
     setPens();
     if (svg) {
         setSvgPens();
     } else {
         setPens();
     }
-    QGIView::paint (painter, &myOption, widget);
+    QGIView::paint(painter, &myOption, widget);
     setPens();
 }
 
-void QGIViewGDTReference::setSvgPens(void)
-{
-    double svgLineFactor = 3.0;                     //magic number.  should be a setting somewhere.
-    referenceLines->setWidth(m_lineWidth/svgLineFactor);
-    referenceShape->setWidth(m_lineWidth/svgLineFactor);
-    referenceArrow->setWidth(referenceArrow->getWidth()/svgLineFactor);
+void QGIViewGDTReference::setSvgPens(void) {
+    double svgLineFactor = 3.0;  //magic number.  should be a setting somewhere.
+    referenceLines->setWidth(m_lineWidth / svgLineFactor);
+    referenceShape->setWidth(m_lineWidth / svgLineFactor);
+    referenceArrow->setWidth(referenceArrow->getWidth() / svgLineFactor);
 }
 
-void QGIViewGDTReference::setPens(void)
-{
-	referenceLines->setWidth(m_lineWidth);
-	referenceShape->setWidth(m_lineWidth);
+void QGIViewGDTReference::setPens(void) {
+    referenceLines->setWidth(m_lineWidth);
+    referenceShape->setWidth(m_lineWidth);
     referenceArrow->setWidth(m_lineWidth);
 }
 
-QColor QGIViewGDTReference::getNormalColor()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+QColor QGIViewGDTReference::getNormalColor() {
+    Base::Reference<ParameterGrp> hGrp =
+            App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup(
+                    "Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
     m_colNormal = fcColor.asValue<QColor>();
 
-    auto reference( dynamic_cast<TechDraw::DrawViewGDTReference*>(getViewObject()) );
-    if( reference == nullptr )
+    auto reference(
+            dynamic_cast<TechDraw::DrawViewGDTReference*>(getViewObject()));
+    if (reference == nullptr)
         return m_colNormal;
 
-    auto viewProvider = static_cast<ViewProviderGDTReference*>(getViewProvider(getViewObject()));
-    if ( viewProvider == nullptr ) {
+    auto viewProvider = static_cast<ViewProviderGDTReference*>(getViewProvider(
+            getViewObject()));
+    if (viewProvider == nullptr) {
         return m_colNormal;
     }
 
@@ -661,12 +643,14 @@ QColor QGIViewGDTReference::getNormalColor()
     return m_colNormal;
 }
 
-Base::Vector2d QGIViewGDTReference::computePerpendicularIntersection(const Base::Vector2d &linePoint,
-                                     const Base::Vector2d &perpendicularPoint, double lineAngle)
-{
+Base::Vector2d QGIViewGDTReference::computePerpendicularIntersection(
+        const Base::Vector2d &linePoint,
+        const Base::Vector2d &perpendicularPoint, double lineAngle) {
     return linePoint
-           + Base::Vector2d::FromPolar((perpendicularPoint - linePoint)*Base::Vector2d::FromPolar(1.0, lineAngle),
-                                       lineAngle);
+            + Base::Vector2d::FromPolar(
+                    (perpendicularPoint - linePoint)
+                            * Base::Vector2d::FromPolar(1.0, lineAngle),
+                    lineAngle);
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIViewGDTReference.cpp>

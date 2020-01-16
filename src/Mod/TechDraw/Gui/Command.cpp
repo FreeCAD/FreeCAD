@@ -83,20 +83,6 @@
 using namespace TechDrawGui;
 using namespace std;
 
-////TODO merge with CommandCreateDims
-//enum EdgeTypeUtil{
-//        isInvalid = 0,
-//        isHorizontal,
-//        isVertical,
-//        isDiagonal,
-//        isCircle,
-//        isEllipse,
-//        isBSplineCircle,
-//        isBSpline,
-//        isAngle,
-//        isAngle3Pt
-//    };
-
 
 //===========================================================================
 // TechDraw_PageDefault
@@ -750,99 +736,108 @@ bool CmdTechDrawProjectionGroup::isActive(void)
 
 //! common checks of Selection for Dimension commands
 //non-empty selection, no more than maxObjs selected and at least 1 DrawingPage exists
-bool _checkSelectionGDTReference(Gui::Command* cmd, unsigned maxObjs) {
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+bool _checkSelectionGDTReference(Gui::Command *cmd, unsigned maxObjs) {
+    std::vector<Gui::SelectionObject> selection =
+            cmd->getSelection().getSelectionEx();
     if (selection.size() == 0) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("Select an object first"));
+        QMessageBox::warning(Gui::getMainWindow(),
+                QObject::tr("Incorrect selection"),
+                QObject::tr("Select an object first"));
         return false;
     }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if (SubNames.size() > maxObjs){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-            QObject::tr("Too many objects selected"));
+    if (SubNames.size() > maxObjs) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                QObject::tr("Incorrect selection"),
+                QObject::tr("Too many objects selected"));
         return false;
     }
 
-    std::vector<App::DocumentObject*> pages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    if (pages.empty()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-            QObject::tr("Create a page first."));
-        return false;
-    }
-    return true;
-}
-
-bool _checkDrawViewPartGDTReference(Gui::Command* cmd) {
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( !objFeat ) {
-        QMessageBox::warning( Gui::getMainWindow(),
-                              QObject::tr("Incorrect selection"),
-                              QObject::tr("No View of a Part in selection.") );
+    std::vector<App::DocumentObject*> pages =
+            cmd->getDocument()->getObjectsOfType(
+                    TechDraw::DrawPage::getClassTypeId());
+    if (pages.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                QObject::tr("Incorrect selection"),
+                QObject::tr("Create a page first."));
         return false;
     }
     return true;
 }
 
+bool _checkDrawViewPartGDTReference(Gui::Command *cmd) {
+    std::vector<Gui::SelectionObject> selection =
+            cmd->getSelection().getSelectionEx();
+    auto objFeat(
+            dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
+    if (!objFeat) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                QObject::tr("Incorrect selection"),
+                QObject::tr("No View of a Part in selection."));
+        return false;
+    }
+    return true;
+}
 
 DEF_STD_CMD_A(CmdTechDrawGDTReference)
 
-CmdTechDrawGDTReference::CmdTechDrawGDTReference()
-  : Command("TechDraw_GDT_Reference")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert GDT Reference");
-    sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_GDT_Reference";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_GDT_Reference";
+CmdTechDrawGDTReference::CmdTechDrawGDTReference() :
+        Command("TechDraw_GDT_Reference") {
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Insert GDT Reference");
+    sToolTipText = sMenuText;
+    sWhatsThis = "TechDraw_GDT_Reference";
+    sStatusTip = sToolTipText;
+    sPixmap = "TechDraw_GDT_Reference";
 }
 
 //! verify that Selection contains a valid Geometry for a single Edge Dimension
-TechDraw::EdgeTypeUtil _isValidSingleEdgeUtil(Gui::Command* cmd) {
-    TechDraw::EdgeTypeUtil edgeType = TechDraw::EdgeTypeUtil::isInvalid ;
+TechDraw::EdgeTypeUtil _isValidSingleEdgeUtil(Gui::Command *cmd) {
+    TechDraw::EdgeTypeUtil edgeType = TechDraw::EdgeTypeUtil::isInvalid;
 
-    auto selection( cmd->getSelection().getSelectionEx() );
+    auto selection(cmd->getSelection().getSelectionEx());
 
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( objFeat == nullptr ) {
+    auto objFeat(
+            dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
+    if (objFeat == nullptr) {
         return TechDraw::EdgeTypeUtil::isInvalid;
     }
 
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    if (SubNames.size() == 1) {                                                 //only 1 subshape selected
-        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
-            int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-            TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
+    if (SubNames.size() == 1) {                       //only 1 subshape selected
+        if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") { //the Name starts with "Edge"
+            int GeoId(TechDraw::DrawUtil::getIndexFromName(SubNames[0]));
+            TechDraw::BaseGeom *geom = objFeat->getGeomByIndex(GeoId);
             if (!geom) {
-                Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
+                Base::Console().Error(
+                        "Logic Error: no geometry for GeoId: %d\n", GeoId);
                 return TechDraw::EdgeTypeUtil::isInvalid;
             }
 
-            if(geom->geomType == TechDraw::GENERIC) {
-                TechDraw::Generic* gen1 = static_cast<TechDraw::Generic *>(geom);
-                if(gen1->points.size() > 2) {                                   //the edge is a polyline
+            if (geom->geomType == TechDraw::GENERIC) {
+                TechDraw::Generic *gen1 = static_cast<TechDraw::Generic*>(geom);
+                if (gen1->points.size() > 2) {          //the edge is a polyline
                     return TechDraw::EdgeTypeUtil::isInvalid;
                 }
                 Base::Vector3d line = gen1->points.at(1) - gen1->points.at(0);
-                if(fabs(line.y) < FLT_EPSILON ) {
+                if (fabs(line.y) < FLT_EPSILON) {
                     edgeType = TechDraw::EdgeTypeUtil::isHorizontal;
-                } else if(fabs(line.x) < FLT_EPSILON) {
+                } else if (fabs(line.x) < FLT_EPSILON) {
                     edgeType = TechDraw::EdgeTypeUtil::isVertical;
                 } else {
                     edgeType = TechDraw::EdgeTypeUtil::isDiagonal;
                 }
-            } else if (geom->geomType == TechDraw::CIRCLE ||
-                       geom->geomType == TechDraw::ARCOFCIRCLE ) {
+            } else if (geom->geomType == TechDraw::CIRCLE
+                    || geom->geomType == TechDraw::ARCOFCIRCLE) {
                 edgeType = TechDraw::EdgeTypeUtil::isCircle;
-            } else if (geom->geomType == TechDraw::ELLIPSE ||
-                       geom->geomType == TechDraw::ARCOFELLIPSE) {
+            } else if (geom->geomType == TechDraw::ELLIPSE
+                    || geom->geomType == TechDraw::ARCOFELLIPSE) {
                 edgeType = TechDraw::EdgeTypeUtil::isEllipse;
             } else if (geom->geomType == TechDraw::BSPLINE) {
-                TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*>(geom);
+                TechDraw::BSpline *spline =
+                        static_cast<TechDraw::BSpline*>(geom);
                 if (spline->isCircle()) {
                     edgeType = TechDraw::EdgeTypeUtil::isBSplineCircle;
                 } else {
@@ -856,58 +851,66 @@ TechDraw::EdgeTypeUtil _isValidSingleEdgeUtil(Gui::Command* cmd) {
     return edgeType;
 }
 
-
-void CmdTechDrawGDTReference::activated(int iMsg)
-{
+void CmdTechDrawGDTReference::activated(int iMsg) {
     Q_UNUSED(iMsg);
-    bool result = _checkSelectionGDTReference(this,1);
+    bool result = _checkSelectionGDTReference(this, 1);
     if (!result)
         return;
     result = _checkDrawViewPartGDTReference(this);
     if (!result)
         return;
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if( objFeat == nullptr ) {
+    std::vector<Gui::SelectionObject> selection =
+            getSelection().getSelectionEx();
+    auto objFeat(
+            dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject()));
+    if (objFeat == nullptr) {
         return;
     }
     std::vector<std::string> subNames = selection[0].getSubNames();
 
-    std::vector<App::DocumentObject *> objs;
+    std::vector<App::DocumentObject*> objs;
     std::vector<std::string> subs;
 
     std::string referenceType;
     TechDraw::EdgeTypeUtil edgeType = _isValidSingleEdgeUtil(this);
-    if(	edgeType == TechDraw::EdgeTypeUtil::isHorizontal ||
-    	edgeType == TechDraw::EdgeTypeUtil::isVertical ||
-		edgeType == TechDraw::EdgeTypeUtil::isDiagonal){
-			referenceType = "Edge";
-			objs.push_back(objFeat);
-			subs.push_back(subNames[0]);
-    }else{
-    	QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-    			QObject::tr("Only horizontal, vertical and diagonal edge allowed."));
-    	return;
+    if (edgeType == TechDraw::EdgeTypeUtil::isHorizontal
+            || edgeType == TechDraw::EdgeTypeUtil::isVertical
+            || edgeType == TechDraw::EdgeTypeUtil::isDiagonal) {
+        referenceType = "Edge";
+        objs.push_back(objFeat);
+        subs.push_back(subNames[0]);
+    } else {
+        QMessageBox::warning(Gui::getMainWindow(),
+                QObject::tr("Incorrect Selection"),
+                QObject::tr(
+                        "Only horizontal, vertical and diagonal edge allowed."));
+        return;
     }
 
     std::string FeatName = getUniqueObjectName("GDTReference");
-    TechDraw::DrawPage* page = objFeat->findParentPage();
+    TechDraw::DrawPage *page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
     TechDraw::DrawViewGDTReference *ref = 0;
 
     openCommand("Create GDT Reference");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewGDTReference','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(),referenceType.c_str());
+    doCommand(Doc,
+            "App.activeDocument().addObject('TechDraw::DrawViewGDTReference','%s')",
+            FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.Type = '%s'", FeatName.c_str(),
+            referenceType.c_str());
 
-    ref = dynamic_cast<TechDraw::DrawViewGDTReference *>(getDocument()->getObject(FeatName.c_str()));
+    ref =
+            dynamic_cast<TechDraw::DrawViewGDTReference*>(getDocument()->getObject(
+                    FeatName.c_str()));
     if (!ref) {
-    	throw Base::TypeError("CmdTechDrawGDTReference - ref not found\n");
+        throw Base::TypeError("CmdTechDrawGDTReference - ref not found\n");
     }
     ref->References2D.setValues(objs, subs);
 
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
+            PageName.c_str(), FeatName.c_str());
     updateActive();
     commitCommand();
 
@@ -918,8 +921,7 @@ void CmdTechDrawGDTReference::activated(int iMsg)
     objFeat->X.setValue(x);
 }
 
-bool CmdTechDrawGDTReference::isActive(void)
-{
+bool CmdTechDrawGDTReference::isActive(void) {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
     return (havePage && haveView);

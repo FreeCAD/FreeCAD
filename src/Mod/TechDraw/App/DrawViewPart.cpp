@@ -938,16 +938,17 @@ void DrawViewPart::unsetupObject()
     // must use page->removeObject first
     page = findParentPage();
     if (page != nullptr) {
-    	std::vector<TechDraw::DrawViewGDTReference*> refs = getGDTReferences();
-    	std::vector<TechDraw::DrawViewGDTReference*>::iterator it3 = refs.begin();
-    	for (; it3 != refs.end(); it3++) {
-    		page->removeView(*it3);
-    		const char* name = (*it3)->getNameInDocument();
-    		if (name) {
-    			Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-    				docName.c_str(), name);
-           }
-    	}
+        std::vector<TechDraw::DrawViewGDTReference*> refs = getGDTReferences();
+        std::vector<TechDraw::DrawViewGDTReference*>::iterator it3 = refs.begin();
+        for (; it3 != refs.end(); it3++) {
+            page->removeView(*it3);
+            const char *name = (*it3)->getNameInDocument();
+            if (name) {
+                Base::Interpreter().runStringArg(
+                        "App.getDocument(\"%s\").removeObject(\"%s\")",
+                        docName.c_str(), name);
+            }
+        }
     }
 }
 

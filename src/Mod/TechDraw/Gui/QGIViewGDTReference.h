@@ -47,40 +47,54 @@ class BaseGeom;
 class AOC;
 }
 
-namespace TechDrawGui
-{
+namespace TechDrawGui {
 class QGIArrow;
 class QGIDimLines;
 class QGIViewGDTReference;
 
-class QGIReferenceLabel : public QGraphicsObject
-{
+class QGIReferenceLabel: public QGraphicsObject {
 Q_OBJECT
 
 public:
-	QGIReferenceLabel(QGIViewGDTReference* parent);
+    QGIReferenceLabel(QGIViewGDTReference *parent);
     virtual ~QGIReferenceLabel() = default;
 
-    enum {Type = QGraphicsItem::UserType + 146};
-    int type() const override { return Type;}
+    enum {
+        Type = QGraphicsItem::UserType + 146
+    };
+    int type() const override {
+        return Type;
+    }
 
     virtual QRectF boundingRect() const override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void paint( QPainter *painter,
-                        const QStyleOptionGraphicsItem *option,
-                        QWidget *widget = nullptr ) override;
+    virtual void paint(QPainter *painter,
+            const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr)
+                    override;
     void setLabelCenter();
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     void setRotateAngle(double angle);
-    double X() const { return posX; }
-    double Y() const { return posY; }
-    
-    double rotationAngle() const { return m_angle; }
-    double marginHeight() const { return m_marginHeight; }
-    double marginWidth() const { return m_marginWidth; }
+    double X() const {
+        return posX;
+    }
+    double Y() const {
+        return posY;
+    }
+
+    double rotationAngle() const {
+        return m_angle;
+    }
+    double marginHeight() const {
+        return m_marginHeight;
+    }
+    double marginWidth() const {
+        return m_marginWidth;
+    }
 
     void setFont(QFont f);
-    QFont getFont(void) { return m_labelText->font(); }
+    QFont getFont(void) {
+        return m_labelText->font();
+    }
     void setPrettySel(void);
     void setPrettyPre(void);
     void setPrettyNormal(void);
@@ -88,8 +102,12 @@ public:
 
     void setLabelString(QString t);
     void setLabelString(QString t, qreal maxWidth);
-    QGCustomText* getLabelText(void) { return m_labelText; }
-    void setLabelText(QGCustomText* newText) { m_labelText = newText; }
+    QGCustomText* getLabelText(void) {
+        return m_labelText;
+    }
+    void setLabelText(QGCustomText *newText) {
+        m_labelText = newText;
+    }
     void rotate(void);
 
     bool hasHover;
@@ -103,15 +121,17 @@ Q_SIGNALS:
     void dragFinished();
 
 protected:
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual QVariant itemChange(GraphicsItemChange change,
+            const QVariant &value) override;
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
-    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+            override;
 // TODO    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
 
-    QGCustomText* m_labelText;
+    QGCustomText *m_labelText;
     QColor m_colNormal;
     bool m_ctrl;
 
@@ -138,13 +158,13 @@ public:
     virtual ~QGIViewGDTReference() = default;
 
     void setViewPartFeature(TechDraw::DrawViewGDTReference *obj);
-    int type() const override { return Type;}
+    int type() const override {return Type;}
 
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
     virtual void paint( QPainter * painter,
-                        const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+            const QStyleOptionGraphicsItem * option,
+            QWidget * widget = 0 ) override;
     virtual QColor getNormalColor(void) override;
     QString getLabelText(void);
     void draw_modifier(bool modifier);
@@ -160,7 +180,7 @@ public Q_SLOTS:
 protected:
     void draw() override;
     virtual QVariant itemChange( GraphicsItemChange change,
-                                 const QVariant &value ) override;
+            const QVariant &value ) override;
     virtual void setSvgPens(void);
     virtual void setPens(void);
     QString getPrecision(void);
@@ -183,14 +203,14 @@ private:
     Base::Vector2d labelPlacementAndRotation(TechDraw::PointPair & segment, double distance);
     // TODO move to utils (using in QGIViewDimension)
     double getIsoStandardLinePlacement(double labelAngle);
-    static inline double toDeg(double a) { return a*180/M_PI; }
-    static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
-    static inline double toQtDeg(double a) { return -a*180.0/M_PI; }
-    static inline double toQtRad(double a) { return -a*M_PI/180.0; }
+    static inline double toDeg(double a) {return a*180/M_PI;}
+    static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) {return Base::Vector2d(v.x, -v.y);}
+    static inline double toQtDeg(double a) {return -a*180.0/M_PI;}
+    static inline double toQtRad(double a) {return -a*M_PI/180.0;}
     Base::Vector2d computePerpendicularIntersection(const Base::Vector2d &linePoint,
-    		const Base::Vector2d &perpendicularPoint, double lineAngle);
+            const Base::Vector2d &perpendicularPoint, double lineAngle);
 };
 
-} // namespace
+} // namespace TechDrawGui
 
 #endif // TECHDRAWGUI_QGIVIEWGDTREFERENCE_H

@@ -654,7 +654,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
         std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
 
         if(objs.size() > 0) {
-        	// TODO correct this line ?
+            // TODO correct this line ?
             std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
             // Attach the dimension to the first object's group
             for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
@@ -670,14 +670,14 @@ QGIView * QGVPage::findParent(QGIView *view) const
     ref = dynamic_cast<TechDraw::DrawViewGDTReference *>(myFeat);
 
     if(ref) {
-    	std::vector<App::DocumentObject *> objs = ref->References2D.getValues();
+        std::vector<App::DocumentObject *> objs = ref->References2D.getValues();
         if(objs.size() > 0) {
-        	// Attach the GDTReference to the first object's group
-        	for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-        		if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
-        			return *it;
-        		}
-        	}
+            // Attach the GDTReference to the first object's group
+            for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
+                if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
+                    return *it;
+                }
+            }
         }
     }
 
@@ -709,7 +709,6 @@ QGIView * QGVPage::findParent(QGIView *view) const
                 std::vector<App::DocumentObject *> objs = collection->Views.getValues();
                 for( std::vector<App::DocumentObject *>::iterator it = objs.begin(); it != objs.end(); ++it) {
                     if(strcmp(myFeat->getNameInDocument(), (*it)->getNameInDocument()) == 0)
-
                         return grp;
                 }
             }

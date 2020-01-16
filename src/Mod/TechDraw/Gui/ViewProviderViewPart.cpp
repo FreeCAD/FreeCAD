@@ -170,7 +170,7 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
     //    - Hatches
     //    - GeomHatches
     //    - Leaders
-	//    - GDTReference
+    //    - GDTReference
     std::vector<App::DocumentObject*> temp;
     const std::vector<App::DocumentObject *> &views = getViewPart()->getInList();
     try {
@@ -199,8 +199,8 @@ std::vector<App::DocumentObject*> ViewProviderViewPart::claimChildren(void) cons
               temp.push_back((*it));
           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
               temp.push_back((*it));
-      	  } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId())) {
-      		  temp.push_back((*it));
+          } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId())) {
+              temp.push_back((*it));
           }
       }
       return temp;

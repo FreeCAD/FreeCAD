@@ -42,20 +42,20 @@ namespace TechDraw {
 class DrawViewPart;
 
 //TODO merge with CommandCreateDims
-typedef enum EdgeTypeUtil{
-        isInvalid = 0,
-        isHorizontal,
-        isVertical,
-        isDiagonal,
-        isCircle,
-        isEllipse,
-        isBSplineCircle,
-        isBSpline,
-        isAngle,
-        isAngle3Pt
-    } EdgeTypeUtil;
+typedef enum EdgeTypeUtil {
+    isInvalid = 0,
+    isHorizontal,
+    isVertical,
+    isDiagonal,
+    isCircle,
+    isEllipse,
+    isBSplineCircle,
+    isBSpline,
+    isAngle,
+    isAngle3Pt
+} EdgeTypeUtil;
 
-typedef std::pair<Base::Vector3d,Base::Vector3d> PointPair;
+typedef std::pair<Base::Vector3d, Base::Vector3d> PointPair;
 
 class TechDrawExport DrawViewGDTReference : public TechDraw::DrawView
 {
@@ -66,13 +66,13 @@ public:
     DrawViewGDTReference();
     virtual ~DrawViewGDTReference();
 
-    App::PropertyLinkSubList	References2D;
-    App::PropertyEnumeration	Type;  // Edge, Cosmetic, Feature frame
-    App::PropertyString			Text;
-    App::PropertyFloat			SymbolScale;
+    App::PropertyLinkSubList References2D;
+    App::PropertyEnumeration Type;// Edge, Cosmetic, Feature frame
+    App::PropertyString Text;
+    App::PropertyFloat SymbolScale;
 
     short mustExecute() const;
-    PointPair getLinearPoints(void) {return m_linearPoints; }
+    PointPair getLinearPoints(void) {return m_linearPoints;}
 
     //TODO add python wrapper
     //virtual PyObject *getPyObject(void);
@@ -95,8 +95,9 @@ protected:
     bool checkReferences2D(void) const;
 
 private:
-    PointPair   m_linearPoints;
+    PointPair m_linearPoints;
 };
 
-} //namespace TechDraw
+}
+ //namespace TechDraw
 #endif

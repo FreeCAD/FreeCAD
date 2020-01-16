@@ -269,7 +269,7 @@ int DrawPage::addView(App::DocumentObject *docObj)
       //position all new views in center of Page (except DVDimension, DVBalloon, DVGDTReference)
     if (!docObj->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) &&
         !docObj->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()) &&
-		!docObj->isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId())) {
+        !docObj->isDerivedFrom(TechDraw::DrawViewGDTReference::getClassTypeId())) {
         view->X.setValue(getPageWidth()/2.0);
         view->Y.setValue(getPageHeight()/2.0);
     }
