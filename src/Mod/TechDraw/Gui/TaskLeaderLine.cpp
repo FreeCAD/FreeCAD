@@ -304,6 +304,14 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
 
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
+
+    //trigger claimChildren in tree
+    if (m_baseFeat != nullptr) {
+        m_baseFeat->touch();
+    }
+    if (m_basePage != nullptr) {
+        m_basePage->touch();
+    }
     m_lineFeat->requestPaint();
 }
 

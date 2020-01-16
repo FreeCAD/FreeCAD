@@ -238,7 +238,14 @@ void TaskRichAnno::onEditorClicked(bool b)
     Q_UNUSED(b);
     m_textDialog = new QDialog(0);
     QString leadText = ui->teAnnoText->toHtml();
-    m_rte = new MRichTextEdit(m_textDialog, leadText);
+    QString plainText = ui->teAnnoText->toPlainText();
+//    Base::Console().Message("TRA::onEditorClicked - leadText: %s**  plainText: %s**\n",
+//                            qPrintable(leadText), qPrintable(plainText));
+    if (plainText.isEmpty()) {
+        m_rte = new MRichTextEdit(m_textDialog);
+    } else {
+        m_rte = new MRichTextEdit(m_textDialog, leadText);
+    }
     //m_rte->setTextWidth(m_annoVP->MaxWidth);
     QGridLayout* gl = new QGridLayout(m_textDialog);
     gl->addWidget(m_rte,0,0,1,1);
@@ -304,6 +311,14 @@ void TaskRichAnno::createAnnoFeature()
 
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
+
+    //trigger collectChildren in tree
+    if (m_baseFeat != nullptr) {
+        m_baseFeat->touch();
+    }
+    if (m_basePage != nullptr) {
+        m_basePage->touch();
+    }
     m_annoFeat->requestPaint();
 }
 
@@ -424,24 +439,6 @@ void TaskRichAnno::enableTaskButtons(bool b)
     m_btnCancel->setEnabled(b);
 }
 
-QString TaskRichAnno::getDefFont(void)
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
-    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
-    QString result = Base::Tools::fromStdString(fontName);
-    return result;
-}
-
-int TaskRichAnno::getDefFontSize()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    double fontSize = hGrp->GetFloat("FontSize", 5.0);   // this is mm, not pts!
-    double mmToPts = 2.83;
-    int ptsSize = round(fontSize * mmToPts);
-    return ptsSize;
-}
 //******************************************************************************
 
 bool TaskRichAnno::accept()

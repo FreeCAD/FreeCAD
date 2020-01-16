@@ -10,6 +10,7 @@ macro(PrintFinalReport)
 
     message(STATUS "Compiler:            ${CMAKE_CXX_COMPILER} (${CMAKE_CXX_COMPILER_VERSION})")
     message(STATUS "Flags:               ${CMAKE_CXX_FLAGS}")
+    message(STATUS "Standard:            Requires C++${CMAKE_CXX_STANDARD}")
 
     # Qt5 needs/sets PYTHON_CONFIG_SUFFIX regarding Shiboken
     message(STATUS "Python:              [${PYTHON_EXECUTABLE}] [${PYTHON_CONFIG_SUFFIX}]")

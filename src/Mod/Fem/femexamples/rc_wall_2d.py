@@ -85,6 +85,7 @@ def setup(doc=None, solvertype="ccxtools"):
         )[0]
         solver.WorkingDir = u""
     if solvertype == "calculix" or solvertype == "ccxtools":
+        solver.SplitInputWriter = False
         solver.AnalysisType = "static"
         solver.GeometricalNonlinearity = "linear"
         solver.ThermoMechSteadyState = False

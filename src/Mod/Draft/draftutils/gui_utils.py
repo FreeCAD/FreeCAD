@@ -34,19 +34,21 @@ the graphical user interface (GUI).
 
 
 import FreeCAD
-import FreeCADGui
 from .utils import _msg
 from .utils import _wrn
 # from .utils import _log
 from .utils import _tr
 from .utils import getParam
 from .utils import get_type
-from pivy import coin
-from PySide import QtGui
-# from PySide import QtSvg  # for load_texture
 import os
 import math
 import six
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from pivy import coin
+    from PySide import QtGui
+#   from PySide import QtSvg  # for load_texture
 
 
 def get_3d_view():
