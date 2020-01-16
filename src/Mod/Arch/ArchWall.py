@@ -835,10 +835,13 @@ class _Wall(ArchComponent.Component):
                     widths = obj.Base.Proxy.getWidths(obj.Base)  # return a list of Width corresponds to indexes of sorted edges of Sketch
 
         # Get width of each edge/wall segment from ArchWall.OverrideWidth if Base Object does not provide it
+
         if not widths:
+
             if obj.OverrideWidth:
-                if Draft.getType(obj.Base) == 'Sketch':
-                    # If Base Object is ordinary Sketch, sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
+                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                    # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implementted yet):-
+                    # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
                     except:
@@ -872,8 +875,9 @@ class _Wall(ArchComponent.Component):
         # Get align of each edge/wall segment from ArchWall.OverrideAlign if Base Object does not provide it
         if not aligns:
             if obj.OverrideAlign:
-                if Draft.getType(obj.Base) == 'Sketch':
-                    # If Base Object is ordinary Sketch, sort the align list in OverrideAlign to correspond to indexes of sorted edges of Sketch
+                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                    # If Base Object is ordinary Sketch (or when ArchSketch.getAligns() not implementted yet):-
+                    # sort the align list in OverrideAlign to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
                     except:
