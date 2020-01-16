@@ -840,7 +840,7 @@ class _Wall(ArchComponent.Component):
 
             if obj.OverrideWidth:
                 if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implementted yet):-
+                    # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implemented yet):-
                     # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
@@ -876,7 +876,7 @@ class _Wall(ArchComponent.Component):
         if not aligns:
             if obj.OverrideAlign:
                 if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when ArchSketch.getAligns() not implementted yet):-
+                    # If Base Object is ordinary Sketch (or when ArchSketch.getAligns() not implemented yet):-
                     # sort the align list in OverrideAlign to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
