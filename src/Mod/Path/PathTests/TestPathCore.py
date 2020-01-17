@@ -155,3 +155,12 @@ G0 Z0.500000
 
         self.assertEqual(len(table.Tools), 2)
         self.assertEqual(str(table.Tools), '{1: Tool 12.7mm Drill Bit, 2: Tool my other tool}' )
+
+    def test50(self):
+        """Test Path.Length calculation"""
+        commands = []
+        commands.append(Path.Command("G1",{"X":1}))
+        commands.append(Path.Command("G1",{"Y":1}))
+        path = Path.Path(commands)
+
+        self.assertEqual(path.Length, 2)
