@@ -351,7 +351,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
     Gui::Command::openCommand("Create SectionView");
     TechDraw::DrawViewSection* newSection = nullptr;
     if (m_section == nullptr) {
-        sectionName = m_base->getDocument()->getUniqueObjectName("DrawViewSection");
+        sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";
 
         TechDraw::DrawPage* page = m_base->findParentPage();
