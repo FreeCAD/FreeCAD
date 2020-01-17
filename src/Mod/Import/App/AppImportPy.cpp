@@ -163,7 +163,6 @@ private:
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-            ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -230,14 +229,18 @@ private:
             }
 
 #if 1
-            if(merge!=Py_None)
+            ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
+            if (merge != Py_None)
                 ocaf.setMerge(PyObject_IsTrue(merge));
-            if(importHidden!=Py_None)
+            if (importHidden != Py_None)
                 ocaf.setImportHiddenObject(PyObject_IsTrue(importHidden));
-            if(useLinkGroup!=Py_None)
+            if (useLinkGroup != Py_None)
                 ocaf.setUseLinkGroup(PyObject_IsTrue(useLinkGroup));
-            if(mode>=0) 
+            if (mode >= 0)
                 ocaf.setMode(mode);
+            ocaf.loadShapes();
+#elif 1
+            Import::ImportOCAFCmd ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.loadShapes();
 #else
             Import::ImportXCAF xcaf(hDoc, pcDoc, file.fileNamePure());
@@ -246,7 +249,7 @@ private:
 #endif
             hApp->Close(hDoc);
 
-            if (!ocaf.partColors.size()) {
+            if (!ocaf.partColors.empty()) {
                 Py::List list;
                 for (auto &it : ocaf.partColors) {
                     Py::Tuple tuple(2);
