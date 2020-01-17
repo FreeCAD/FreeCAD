@@ -223,6 +223,7 @@ void DlgGeneralImp::loadSettings()
 
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
+    ui->Languages->clear();
     ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
     for (TStringMap::iterator it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
