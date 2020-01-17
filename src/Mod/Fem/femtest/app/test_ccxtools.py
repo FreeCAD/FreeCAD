@@ -549,10 +549,24 @@ class TestCcxTools(unittest.TestCase):
     def test_6_contact_shell_shell(
         self
     ):
-        test_name = "contact shell shell analysis test"
-        base_name = "contact_shell_shell"
-        test_dir = "FEM_ccx_contact_shell_shell"
+        # set up the example
+        from femexamples import contact_shell_shell as shellcontact
+        shellcontact.setup(self.active_doc, "ccxtools")
 
+        # test input file writing
+        self.input_file_writing_test(
+            test_name="contact shell shell analysis test",
+            base_name="contact_shell_shell",
+            test_dir="FEM_ccx_contact_shell_shell",
+        )
+
+    # ********************************************************************************************
+    def input_file_writing_test(
+        self,
+        test_name,
+        base_name,
+        test_dir
+    ):
         fcc_print(
             "\n--------------- "
             "Start of FEM ccxtools {}"
@@ -560,13 +574,6 @@ class TestCcxTools(unittest.TestCase):
             .format(test_name)
         )
 
-        # set up the example
-        from femexamples import contact_shell_shell as shellcontact
-        shellcontact.setup(self.active_doc, "ccxtools")
-
-        # code from here is independent, TODO put in separate def
-        # adding more inp file tests would be very simple ...
-        # set up analysis
         analysis = self.active_doc.Analysis
         solver_object = self.active_doc.CalculiXccxTools
         analysis_dir = testtools.get_unit_test_tmp_dir(
