@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg2816"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="CfdWorkbench.svg">
+  <defs
+     id="defs2818" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="10.825726"
+     inkscape:cx="17.444437"
+     inkscape:cy="34.708196"
+     inkscape:current-layer="layer8"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="1379"
+     inkscape:window-height="923"
+     inkscape:window-x="290"
+     inkscape:window-y="129"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata2821">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer8"
+     inkscape:label="Layer 2">
+    <path
+       style="fill:#0000ff;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 61.554066,25.203526 C 39.699898,24.715033 38.487108,23.877037 18.600826,23.171329 -9.0492627,22.190107 11.798027,11.426725 10.010178,12.73323 c 0,0 3.325413,-1.385588 7.57455,-1.47796 6.353437,-0.138117 44.154084,13.855883 44.154084,13.855883"
+       id="path3657"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cscsc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:22.61990929px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="14.050274"
+       y="52.024002"
+       id="text3659"
+       sodipodi:linespacing="125%"
+       transform="scale(0.8882201,1.1258471)"><tspan
+         sodipodi:role="line"
+         id="tspan3661"
+         x="14.050274"
+         y="52.024002">CFD</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 3.4177846,24.926408 C 28.635493,28.436565 34.177847,26.404369 52.37524,29.545036"
+       id="path3667"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 49.696436,26.404369 2.586432,3.048294 0,0 -2.771177,2.678805"
+       id="path3671"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 3.143196,8.8290761 C 12.2172,3.7126326 28.167143,7.6529746 52.008278,13.909567"
+       id="path3667-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 50.715062,11.13839 2.586432,3.048294 0,0 -2.771177,2.678805"
+       id="path3671-6"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
