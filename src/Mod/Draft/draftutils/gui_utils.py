@@ -99,8 +99,6 @@ def autogroup(obj):
         Any type of object that will be stored in the group.
     """
     if FreeCAD.GuiUp:
-        # look for active Part container
-        active_part = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part")
         # look for active Arch container
         active_arch_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
         if hasattr(FreeCADGui,"draftToolBar"):
@@ -120,21 +118,30 @@ def autogroup(obj):
                             active_group.Group = gr
                 elif active_arch_obj:
                     active_arch_obj.addObject(obj)
-                elif active_part:
-                    # add object to active part and change it's placement so accordingly
-                    # so object does not jump to different position
-                    inverse_placement = active_part.getGlobalPlacement().inverse()
-                    if get_type(obj) == 'Point':
+                elif FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
+                    # add object to active part and change it's placement accordingly
+                    # so object does not jump to different position, works with App::Link
+                    # if not scaled. Modified accordingly to realthunder suggestions
+                    p, parent, sub = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part", False)
+                    matrix = parent.getSubObject(sub, retType=4)
+                    if matrix.hasScale() == 1:
+                        FreeCAD.Console.PrintMessage(translate("Draft",
+                                                               "Unable to insert new object into "
+                                                               "a scaled part")
+                                                    )
+                        return
+                    inverse_placement = FreeCAD.Placement(matrix.inverse())
+                    if getType(obj) == 'Point':
                         # point vector have a kind of placement, so should be
                         # processed before generic object with placement
                         point_vector = FreeCAD.Vector(obj.X, obj.Y, obj.Z)
                         real_point = inverse_placement.multVec(point_vector)
                         obj.X = real_point.x
                         obj.Y = real_point.y
-                        obj.Z = real_point.z                    
+                        obj.Z = real_point.z
                     elif hasattr(obj,"Placement"):
                         obj.Placement = FreeCAD.Placement(inverse_placement.multiply(obj.Placement))
-                    active_part.addObject(obj)
+                    p.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
