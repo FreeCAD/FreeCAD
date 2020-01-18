@@ -460,72 +460,13 @@ class TestCcxTools(unittest.TestCase):
             test_end=True,
         )
 
-        # continue tests ...
-        inpfile_given = join(self.test_file_dir, (base_name + ".inp"))
-
-        fcc_print(
-            "Setting up working directory to {} in order to read simulated calculations"
-            .format(self.test_file_dir)
+        # test result reading
+        self.result_reading_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+            fea=fea,
         )
-        fea.setup_working_dir(self.test_file_dir)
-        self.assertTrue(
-            True if fea.working_dir == self.test_file_dir else False,
-            "Setting working directory {} failed".format(self.test_file_dir)
-        )
-
-        fcc_print(
-            "Setting base name to read test {}.frd file..."
-            .format(base_name)
-        )
-        fea.set_base_name(base_name)
-        self.assertTrue(
-            True if fea.base_name == base_name else False,
-            "Setting base name to {} failed".format(base_name)
-        )
-
-        fcc_print(
-            "Setting inp file name to read test {}.frd file..."
-            .format(base_name)
-        )
-        fea.set_inp_file_name()
-        self.assertTrue(
-            True if fea.inp_file_name == inpfile_given else False,
-            "Setting inp file name to {} failed".format(inpfile_given)
-        )
-
-        fcc_print("Checking FEM frd file read from {}...".format(test_name))
-        fea.load_results()
-        self.assertTrue(
-            fea.results_present,
-            "Cannot read results from {}.frd frd file".format(fea.base_name)
-        )
-
-        fcc_print("Reading stats from result object for {}...".format(test_name))
-        expected_values = join(
-            self.test_file_dir,
-            base_name + "_expected_values"
-        )
-        ret = testtools.compare_stats(
-            fea,
-            expected_values,
-            "CCX_Time1_0_Results"
-        )
-        self.assertFalse(
-            ret,
-            "Invalid results read from .frd file"
-        )
-
-        save_fc_file = join(
-            analysis_dir,
-            (base_name + ".FCStd")
-        )
-        fcc_print(
-            "Save FreeCAD file for {} to {}..."
-            .format(test_name, save_fc_file)
-        )
-        self.active_doc.saveAs(save_fc_file)
-
-        fcc_print("--------------- End of {} -------------------".format(test_name))
 
     # ********************************************************************************************
     def test_6_contact_shell_shell(
@@ -614,6 +555,80 @@ class TestCcxTools(unittest.TestCase):
             "---------------"
             .format(test_name)
         )
+
+    # ********************************************************************************************
+    def result_reading_test(
+        self,
+        test_name,
+        base_name,
+        analysis_dir,
+        fea,
+    ):
+        inpfile_given = join(self.test_file_dir, (base_name + ".inp"))
+
+        fcc_print(
+            "Setting up working directory to {} in order to read simulated calculations"
+            .format(self.test_file_dir)
+        )
+        fea.setup_working_dir(self.test_file_dir)
+        self.assertTrue(
+            True if fea.working_dir == self.test_file_dir else False,
+            "Setting working directory {} failed".format(self.test_file_dir)
+        )
+
+        fcc_print(
+            "Setting base name to read test {}.frd file..."
+            .format(base_name)
+        )
+        fea.set_base_name(base_name)
+        self.assertTrue(
+            True if fea.base_name == base_name else False,
+            "Setting base name to {} failed".format(base_name)
+        )
+
+        fcc_print(
+            "Setting inp file name to read test {}.frd file..."
+            .format(base_name)
+        )
+        fea.set_inp_file_name()
+        self.assertTrue(
+            True if fea.inp_file_name == inpfile_given else False,
+            "Setting inp file name to {} failed".format(inpfile_given)
+        )
+
+        fcc_print("Checking FEM frd file read from {}...".format(test_name))
+        fea.load_results()
+        self.assertTrue(
+            fea.results_present,
+            "Cannot read results from {}.frd frd file".format(fea.base_name)
+        )
+
+        fcc_print("Reading stats from result object for {}...".format(test_name))
+        expected_values = join(
+            self.test_file_dir,
+            base_name + "_expected_values"
+        )
+        ret = testtools.compare_stats(
+            fea,
+            expected_values,
+            "CCX_Time1_0_Results"
+        )
+        self.assertFalse(
+            ret,
+            "Invalid results read from .frd file"
+        )
+
+        save_fc_file = join(
+            analysis_dir,
+            (base_name + ".FCStd")
+        )
+        fcc_print(
+            "Save FreeCAD file for {} to {}..."
+            .format(test_name, save_fc_file)
+        )
+        self.active_doc.saveAs(save_fc_file)
+
+        fcc_print("--------------- End of {} -------------------".format(test_name))
 
     # ********************************************************************************************
     def tearDown(
