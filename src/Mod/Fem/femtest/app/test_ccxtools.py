@@ -542,12 +542,12 @@ class TestCcxTools(unittest.TestCase):
             # do not save and print End of tests
             return fea
 
-        static_save_fc_file = analysis_dir + base_name + ".FCStd"
+        save_fc_file = analysis_dir + base_name + ".FCStd"
         fcc_print(
             "Save FreeCAD file for {} to {}..."
-            .format(test_name, static_save_fc_file)
+            .format(test_name, save_fc_file)
         )
-        self.active_doc.saveAs(static_save_fc_file)
+        self.active_doc.saveAs(save_fc_file)
 
         fcc_print(
             "\n--------------- "
