@@ -1082,6 +1082,16 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     }
 }
 
+void Application::changeImportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
+{
+    for (auto& it : _mImportTypes) {
+        if (it.filter == Type && it.module == OldModuleName) {
+            it.module = NewModuleName;
+            break;
+        }
+    }
+}
+
 std::vector<std::string> Application::getImportModules(const char* Type) const
 {
     std::vector<std::string> modules;
@@ -1192,6 +1202,16 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     }
     else {
         _mExportTypes.push_back(item);
+    }
+}
+
+void Application::changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
+{
+    for (auto& it : _mExportTypes) {
+        if (it.filter == Type && it.module == OldModuleName) {
+            it.module = NewModuleName;
+            break;
+        }
     }
 }
 
