@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/TechDraw_Tree_Annotation.svg</file>
         <file>icons/TechDraw_Tree_Hatch.svg</file>
         <file>icons/TechDraw_Tree_Page.svg</file>
         <file>icons/TechDraw_Tree_Page_Unsync.svg</file>
