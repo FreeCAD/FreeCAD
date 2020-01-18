@@ -1349,10 +1349,18 @@ class _Window(ArchComponent.Component):
         # finding which wire to use to drill the hole
 
         f = None
-        if hasattr(obj,"HoleWire"):
+        if hasattr(obj,"HoleWire"):  # the code have not checked whether this is a clone and use the original's HoleWire; if HoleWire is set in this object, even it is a clone, the original's BoundBox/HoleWire is overridden
             if obj.HoleWire > 0:
                 if obj.HoleWire <= len(base.Shape.Wires):
                     f = base.Shape.Wires[obj.HoleWire-1]
+
+        if not f:
+            if Draft.isClone(obj,"Window"):  
+                # check original HoleWire then
+                if orig.HoleWire > 0:
+                    if orig.HoleWire <= len(base.Shape.Wires):
+                        f = base.Shape.Wires[obj.HoleWire-1]
+
         if not f:
             # finding biggest wire in the base shape
             max_length = 0
