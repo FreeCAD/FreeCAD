@@ -149,9 +149,11 @@ before_install:
                                python-dev                       \
                                python-pyside                    \
                                python-matplotlib                \
+                               python-ply                       \
                                python3-dev                      \
                                python3-pyside                   \
                                python3-matplotlib               \
+                               python3-ply                      \
                                libboost1.65-dev                 \
                                libboost-filesystem1.65-dev      \
                                libboost-program-options1.65-dev \
@@ -258,7 +260,7 @@ before_install:
        # clcache stats before compilation
        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
 
-       curl -L https://github.com/apeltauer/FreeCAD/releases/download/LibPack_12.1/FreeCADLibs_12.1.2_x64_VC15.7z --output FreeCADLibs.7z
+       curl -L https://github.com/FreeCAD/FreeCAD/releases/download/0.19_pre/FreeCADLibs_12.1.4_x64_VC15.7z --output FreeCADLibs.7z
        7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
        rm -f FreeCADLibs.7z
        export LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs"
