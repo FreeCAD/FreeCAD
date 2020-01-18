@@ -72,6 +72,8 @@ PyMethodDef Application::Methods[] = {
      "Dump the configuration to the output."},
     {"addImportType",  (PyCFunction) Application::sAddImportType, METH_VARARGS,
      "Register filetype for import"},
+    {"changeImportModule",  (PyCFunction) Application::sChangeImportModule, METH_VARARGS,
+     "Change the import module name of a registered filetype"},
     {"getImportType",  (PyCFunction) Application::sGetImportType, METH_VARARGS,
      "Get the name of the module that can import the filetype"},
     {"EndingAdd",      (PyCFunction) Application::sAddImportType, METH_VARARGS, // deprecated
@@ -80,6 +82,8 @@ PyMethodDef Application::Methods[] = {
      "deprecated -- use getImportType"},
     {"addExportType",  (PyCFunction) Application::sAddExportType, METH_VARARGS,
      "Register filetype for export"},
+    {"changeExportModule",  (PyCFunction) Application::sChangeExportModule, METH_VARARGS,
+     "Change the export module name of a registered filetype"},
     {"getExportType",  (PyCFunction) Application::sGetExportType, METH_VARARGS,
      "Get the name of the module that can export the filetype"},
     {"getResourceDir", (PyCFunction) Application::sGetResourceDir, METH_VARARGS,
@@ -526,6 +530,18 @@ PyObject* Application::sAddImportType(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
+PyObject* Application::sChangeImportModule(PyObject * /*self*/, PyObject *args)
+{
+    char *key,*oldMod,*newMod;
+
+    if (!PyArg_ParseTuple(args, "sss", &key,&oldMod,&newMod))
+        return nullptr;
+
+    GetApplication().changeImportModule(key,oldMod,newMod);
+
+    Py_Return;
+}
+
 PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
 {
     char*       psKey=0;
@@ -574,6 +590,18 @@ PyObject* Application::sAddExportType(PyObject * /*self*/, PyObject *args)
         return NULL;
 
     GetApplication().addExportType(psKey,psMod);
+
+    Py_Return;
+}
+
+PyObject* Application::sChangeExportModule(PyObject * /*self*/, PyObject *args)
+{
+    char *key,*oldMod,*newMod;
+
+    if (!PyArg_ParseTuple(args, "sss", &key,&oldMod,&newMod))
+        return nullptr;
+
+    GetApplication().changeExportModule(key,oldMod,newMod);
 
     Py_Return;
 }

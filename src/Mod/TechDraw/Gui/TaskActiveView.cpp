@@ -116,7 +116,7 @@ TechDraw::DrawViewSymbol* TaskActiveView::createActiveView(void)
 {
 //    Base::Console().Message("TAV::createActiveView()\n");
 
-    std::string symbolName = m_pageFeat->getDocument()->getUniqueObjectName("DrawActiveView");
+    std::string symbolName = m_pageFeat->getDocument()->getUniqueObjectName("ActiveView");
     std::string symbolType = "TechDraw::DrawViewSymbol";
 
     std::string pageName = m_pageFeat->getNameInDocument();

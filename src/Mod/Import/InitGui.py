@@ -29,6 +29,10 @@
 #***************************************************************************/
 
 
+# Registered in Part's Init.py file
+FreeCAD.changeImportModule("STEP with colors (*.step *.stp)","Import","ImportGui")
+FreeCAD.changeExportModule("STEP with colors (*.step *.stp)","Import","ImportGui")
+
 """
 class ImportWorkbench ( Workbench ):
 	"Import workbench object"
