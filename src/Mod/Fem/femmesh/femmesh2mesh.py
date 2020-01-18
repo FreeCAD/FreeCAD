@@ -92,7 +92,10 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
     # This code generates a dict and a faceCode for each face of all elements
     # All faceCodes are than sorted.
 
-    start_time = time.process_time()
+    try:
+        start_time = time.process_time()
+    except AttributeError:
+        start_time = time.clock()
     faceCodeList = []
     faceCodeDict = {}
 
@@ -196,7 +199,11 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
                 output_mesh.extend(triangle)
                 # print("my 2. triangle: ", triangle)
 
-    end_time = time.process_time()
+    try:
+        end_time = time.process_time()
+    except AttributeError:
+        end_time = time.clock()
+
     FreeCAD.Console.PrintMessage(
         "Mesh by surface search method: {}\n".format(end_time - start_time)
     )

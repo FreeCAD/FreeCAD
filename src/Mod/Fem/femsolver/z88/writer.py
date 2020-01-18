@@ -92,7 +92,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         )
 
     def write_z88_input(self):
-        timestart = time.process_time()
+        time_start = time.process_time()
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
@@ -107,9 +107,13 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         self.write_z88_integration_properties()
         self.write_z88_memory_parameter()
         self.write_z88_solver_parameter()
+        try:
+            time_end = time.process_time()
+        except AttributeError:
+            time_end = time.clock()
         writing_time_string = (
             "Writing time input file: {} seconds"
-            .format(round((time.process_time() - timestart), 2))
+            .format(round((time_end - time_start), 2))
         )
         FreeCAD.Console.PrintMessage(writing_time_string + " \n\n")
         return self.dir_name
