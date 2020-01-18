@@ -60,7 +60,7 @@ Command::~Command()
 
 // New methods
 
-Placement Command::getPlacement (void) const
+Placement Command::getPlacement (const Base::Vector3d pos) const
 {
     static const std::string x = "X";
     static const std::string y = "Y";
@@ -68,7 +68,7 @@ Placement Command::getPlacement (void) const
     static const std::string a = "A";
     static const std::string b = "B";
     static const std::string c = "C";
-    Vector3d vec(getParam(x),getParam(y),getParam(z));
+    Vector3d vec(getParam(x, pos.x),getParam(y, pos.y),getParam(z, pos.z));
     Rotation rot;
     rot.setYawPitchRoll(getParam(a),getParam(b),getParam(c));
     Placement plac(vec,rot);
