@@ -334,108 +334,34 @@ class TestCcxTools(unittest.TestCase):
     def test_4_thermomech_analysis(
         self
     ):
-
-        fcc_print("\n--------------- Start of FEM ccxtools thermomechanical analysis test -----")
-
-        # set up the thermomech example
+        # set up
         from femexamples.thermomech_spine import setup as thermomech
         thermomech(self.active_doc, "ccxtools")
 
-        analysis = self.active_doc.Analysis
-
-        thermomech_analysis_dir = testtools.get_unit_test_tmp_dir(
+        test_name = "thermomechanical analysis test"
+        base_name = "spine_thermomech"
+        res_obj_name = "CCX_Results"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
             "FEM_ccx_thermomech"
         )
-        fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
-        fea.update_objects()
 
-        fcc_print("Setting up working directory {}".format(thermomech_analysis_dir))
-        fea.setup_working_dir(thermomech_analysis_dir)
-        self.assertTrue(
-            True if fea.working_dir == thermomech_analysis_dir else False,
-            "Setting working directory {} failed".format(thermomech_analysis_dir)
-        )
-
-        fcc_print("Checking FEM inp file prerequisites for thermo-mechanical analysis...")
-        error = fea.check_prerequisites()
-        self.assertFalse(
-            error,
-            "ccxtools check_prerequisites returned error message: {}".format(error)
+        # test input file writing
+        fea = self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+            test_end=True,
         )
 
-        thermomech_base_name = "spine_thermomech"
-        inpfile_given = join(self.test_file_dir, (thermomech_base_name + ".inp"))
-        inpfile_totest = join(thermomech_analysis_dir, (self.mesh_name + ".inp"))
-        fcc_print("Checking FEM inp file write...")
-        fcc_print("Writing {} for thermomech analysis".format(inpfile_totest))
-        error = fea.write_inp_file()
-        self.assertFalse(
-            error,
-            "Writing failed"
+        # test result reading
+        self.result_reading_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+            fea=fea,
+            res_obj_name=res_obj_name,
         )
-
-        fcc_print("Comparing {} to {}".format(inpfile_given, inpfile_totest))
-        ret = testtools.compare_inp_files(inpfile_given, inpfile_totest)
-        self.assertFalse(
-            ret,
-            "ccxtools write_inp_file test failed.\n{}".format(ret)
-        )
-
-        fcc_print(
-            "Setting up working directory to {} in order to read simulated calculations"
-            .format(self.test_file_dir)
-        )
-        fea.setup_working_dir(self.test_file_dir)
-        self.assertTrue(
-            True if fea.working_dir == self.test_file_dir else False,
-            "Setting working directory {} failed".format(self.test_file_dir)
-        )
-
-        fcc_print("Setting base name to read test {}.frd file...".format("spine_thermomech"))
-        fea.set_base_name(thermomech_base_name)
-        self.assertTrue(
-            True if fea.base_name == thermomech_base_name else False,
-            "Setting base name to {} failed".format(thermomech_base_name)
-        )
-
-        fcc_print("Setting inp file name to read test {}.frd file...".format("spine_thermomech"))
-        fea.set_inp_file_name()
-        self.assertTrue(
-            True if fea.inp_file_name == inpfile_given else False,
-            "Setting inp file name to {} failed".format(inpfile_given)
-        )
-
-        fcc_print("Checking FEM frd file read from thermomech analysis...")
-        fea.load_results()
-        self.assertTrue(
-            fea.results_present,
-            "Cannot read results from {}.frd frd file".format(fea.base_name)
-        )
-
-        fcc_print("Reading stats from result object for thermomech analysis...")
-        thermomech_expected_values = join(
-            self.test_file_dir,
-            "spine_thermomech_expected_values"
-        )
-        ret = testtools.compare_stats(
-            fea,
-            thermomech_expected_values,
-            "CCX_Results"
-        )
-        self.assertFalse(
-            ret,
-            "Invalid results read from .frd file"
-        )
-
-        thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + ".FCStd"
-        fcc_print(
-            "Save FreeCAD file for thermomech analysis to {}..."
-            .format(thermomech_save_fc_file)
-        )
-        self.active_doc.saveAs(thermomech_save_fc_file)
-
-        fcc_print("--------------- End of FEM ccxtools thermomechanical analysis test ---------")
 
     # ********************************************************************************************
     def test_5_Flow1D_thermomech_analysis(
@@ -447,6 +373,7 @@ class TestCcxTools(unittest.TestCase):
 
         test_name = "Flow1D analysis test"
         base_name = "Flow1D_thermomech"
+        res_obj_name = "CCX_Time1_0_Results"
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
             "FEM_ccx_Flow1D_thermomech"
@@ -466,6 +393,7 @@ class TestCcxTools(unittest.TestCase):
             base_name=base_name,
             analysis_dir=analysis_dir,
             fea=fea,
+            res_obj_name=res_obj_name,
         )
 
     # ********************************************************************************************
@@ -563,6 +491,7 @@ class TestCcxTools(unittest.TestCase):
         base_name,
         analysis_dir,
         fea,
+        res_obj_name,
     ):
         inpfile_given = join(self.test_file_dir, (base_name + ".inp"))
 
@@ -611,7 +540,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_stats(
             fea,
             expected_values,
-            "CCX_Time1_0_Results"
+            res_obj_name
         )
         self.assertFalse(
             ret,
