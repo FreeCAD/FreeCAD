@@ -100,14 +100,14 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_2_static_multiple_material(
+    def test_2_static_material_multiple(
         self
     ):
         # set up
         from femexamples.material_multiple_twoboxes import setup
         setup(self.active_doc, "ccxtools")
         test_name = "multiple material"
-        base_name = "multimat"
+        base_name = "mat_multiple"
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
             "FEM_ccx_multimat"

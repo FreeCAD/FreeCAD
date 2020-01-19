@@ -176,8 +176,8 @@ SET(FemTestsCcx_SRCS
     femtest/data/ccx/cube_static_expected_values
     femtest/data/ccx/cube_static.FCStd
     femtest/data/ccx/cube.FCStd
+    femtest/data/ccx/mat_multiple.inp
     femtest/data/ccx/mat_nonlinear.inp
-    femtest/data/ccx/multimat.inp
     femtest/data/ccx/spine_thermomech.inp
     femtest/data/ccx/spine_thermomech.dat
     femtest/data/ccx/spine_thermomech.frd
