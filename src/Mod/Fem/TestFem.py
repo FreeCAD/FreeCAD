@@ -123,13 +123,13 @@ from femtest.utilstest import get_fem_test_defs as gf
 gf()
 
 ./bin/FreeCADCmd --run-test "femtest.app.test_femimport.TestObjectExistance.test_objects_existance"
-./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_1_static_analysis"
-./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_2_static_material_multiple"
-./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_3_static_material_nonlinar"
-./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_4_freq_analysis"
-./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_5_thermomech_analysis"
-./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_6_Flow1D_thermomech_analysis"
-./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_7_contact_shell_shell"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_analysis"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_material_multiple"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_material_nonlinar"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_freq_analysis"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_thermomech_spine_analysis"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_thermomech_flow1D_analysis"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_contact_shell_shell"
 ./bin/FreeCADCmd --run-test "femtest.app.test_common.TestFemCommon.test_adding_refshaps"
 ./bin/FreeCADCmd --run-test "femtest.app.test_common.TestFemCommon.test_pyimport_all_FEM_modules"
 ./bin/FreeCADCmd --run-test "femtest.app.test_material.TestMaterialUnits.test_known_quantity_units"
@@ -165,25 +165,25 @@ from femtest.utilstest import get_fem_test_defs as gf
 gf("in")
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_1_static_analysis"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_analysis"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_2_static_material_multiple"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_material_multiple"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_3_static_material_nonlinar"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_material_nonlinar"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_4_freq_analysis"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_freq_analysis"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_5_thermomech_analysis"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_thermomech_spine_analysis"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_6_Flow1D_thermomech_analysis"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_thermomech_flow1D_analysis"))
 
 import unittest
-unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_7_contact_shell_shell"))
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_contact_shell_shell"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_common.TestFemCommon.test_adding_refshaps"))

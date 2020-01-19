@@ -68,7 +68,7 @@ class TestCcxTools(unittest.TestCase):
         ))
 
     # ********************************************************************************************
-    def test_1_static_analysis(
+    def test_static_analysis(
         self
     ):
         # set up
@@ -100,7 +100,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_2_static_material_multiple(
+    def test_static_material_multiple(
         self
     ):
         # set up
@@ -121,7 +121,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_3_static_material_nonlinar(
+    def test_static_material_nonlinar(
         self
     ):
         # set up
@@ -142,7 +142,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_4_freq_analysis(
+    def test_freq_analysis(
         self
     ):
         # set up
@@ -174,7 +174,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_5_thermomech_analysis(
+    def test_thermomech_spine_analysis(
         self
     ):
         # set up
@@ -206,7 +206,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_6_Flow1D_thermomech_analysis(
+    def test_thermomech_flow1D_analysis(
         self
     ):
         # set up
@@ -238,7 +238,7 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_7_contact_shell_shell(
+    def test_static_contact_shell_shell(
         self
     ):
         # set up
