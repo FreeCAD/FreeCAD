@@ -72,10 +72,9 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples import boxanalysis as box
-        box.setup_static(self.active_doc, "ccxtools")
-
-        test_name = "ccxtools static analysis test"
+        from femexamples.boxanalysis import setup_static as setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "ccxtools static"
         base_name = "cube_static"
         res_obj_name = "CCX_Results"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -105,10 +104,9 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples import material_multiple_twoboxes
-        material_multiple_twoboxes.setup(self.active_doc, "ccxtools")
-
-        test_name = "multiple material test"
+        from femexamples.material_multiple_twoboxes import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "multiple material"
         base_name = "multimat"
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
@@ -129,7 +127,7 @@ class TestCcxTools(unittest.TestCase):
         # set up
         from femexamples.material_nl_platewithhole import setup
         setup(self.active_doc, "ccxtools")
-        test_name = "nonlinear material test"
+        test_name = "nonlinear material"
         base_name = "mat_nonlinear"
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
@@ -148,10 +146,9 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples import boxanalysis as box
-        box.setup_frequency(self.active_doc, "ccxtools")
-
-        test_name = "frequency analysis test"
+        from femexamples.boxanalysis import setup_frequency as setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "frequency"
         base_name = "cube_frequency"
         res_obj_name = "CCX_Mode1_Results"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -181,10 +178,9 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples.thermomech_spine import setup as thermomech
-        thermomech(self.active_doc, "ccxtools")
-
-        test_name = "thermomechanical analysis test"
+        from femexamples.thermomech_spine import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "thermomechanical"
         base_name = "spine_thermomech"
         res_obj_name = "CCX_Results"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -214,10 +210,9 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples.thermomech_flow1d import setup as flow1d
-        flow1d(self.active_doc, "ccxtools")
-
-        test_name = "Flow1D analysis test"
+        from femexamples.thermomech_flow1d import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "Flow1D"
         base_name = "Flow1D_thermomech"
         res_obj_name = "CCX_Time1_0_Results"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -247,8 +242,10 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # set up
-        from femexamples import contact_shell_shell as shellcontact
-        shellcontact.setup(self.active_doc, "ccxtools")
+        from femexamples.contact_shell_shell import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "contact shell shell"
+        base_name = "contact_shell_shell"
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
             "FEM_ccx_contact_shell_shell",
@@ -256,8 +253,8 @@ class TestCcxTools(unittest.TestCase):
 
         # test input file writing
         self.input_file_writing_test(
-            test_name="contact shell shell analysis test",
-            base_name="contact_shell_shell",
+            test_name=test_name,
+            base_name=base_name,
             analysis_dir=analysis_dir,
         )
 
@@ -271,7 +268,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         fcc_print(
             "\n--------------- "
-            "Start of FEM ccxtools {}"
+            "Start of FEM ccxtools {} test"
             "---------------"
             .format(test_name)
         )
