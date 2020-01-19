@@ -68,6 +68,38 @@ class TestCcxTools(unittest.TestCase):
         ))
 
     # ********************************************************************************************
+    def test_freq_analysis(
+        self
+    ):
+        # set up
+        from femexamples.boxanalysis import setup_frequency as setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "frequency"
+        base_name = "cube_frequency"
+        res_obj_name = "CCX_Mode1_Results"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            "FEM_ccx_frequency"
+        )
+
+        # test input file writing
+        fea = self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+            test_end=True,
+        )
+
+        # test result reading
+        self.result_reading_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+            fea=fea,
+            res_obj_name=res_obj_name,
+        )
+
+    # ********************************************************************************************
     def test_static_analysis(
         self
     ):
@@ -97,6 +129,27 @@ class TestCcxTools(unittest.TestCase):
             analysis_dir=analysis_dir,
             fea=fea,
             res_obj_name=res_obj_name,
+        )
+
+    # ********************************************************************************************
+    def test_static_contact_shell_shell(
+        self
+    ):
+        # set up
+        from femexamples.contact_shell_shell import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "contact shell shell"
+        base_name = "contact_shell_shell"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            "FEM_ccx_contact_shell_shell",
+        )
+
+        # test input file writing
+        self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
@@ -142,18 +195,18 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_freq_analysis(
+    def test_thermomech_flow1D_analysis(
         self
     ):
         # set up
-        from femexamples.boxanalysis import setup_frequency as setup
+        from femexamples.thermomech_flow1d import setup
         setup(self.active_doc, "ccxtools")
-        test_name = "frequency"
-        base_name = "cube_frequency"
-        res_obj_name = "CCX_Mode1_Results"
+        test_name = "Flow1D"
+        base_name = "Flow1D_thermomech"
+        res_obj_name = "CCX_Time1_0_Results"
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
-            "FEM_ccx_frequency"
+            "FEM_ccx_Flow1D_thermomech"
         )
 
         # test input file writing
@@ -203,59 +256,6 @@ class TestCcxTools(unittest.TestCase):
             analysis_dir=analysis_dir,
             fea=fea,
             res_obj_name=res_obj_name,
-        )
-
-    # ********************************************************************************************
-    def test_thermomech_flow1D_analysis(
-        self
-    ):
-        # set up
-        from femexamples.thermomech_flow1d import setup
-        setup(self.active_doc, "ccxtools")
-        test_name = "Flow1D"
-        base_name = "Flow1D_thermomech"
-        res_obj_name = "CCX_Time1_0_Results"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_Flow1D_thermomech"
-        )
-
-        # test input file writing
-        fea = self.input_file_writing_test(
-            test_name=test_name,
-            base_name=base_name,
-            analysis_dir=analysis_dir,
-            test_end=True,
-        )
-
-        # test result reading
-        self.result_reading_test(
-            test_name=test_name,
-            base_name=base_name,
-            analysis_dir=analysis_dir,
-            fea=fea,
-            res_obj_name=res_obj_name,
-        )
-
-    # ********************************************************************************************
-    def test_static_contact_shell_shell(
-        self
-    ):
-        # set up
-        from femexamples.contact_shell_shell import setup
-        setup(self.active_doc, "ccxtools")
-        test_name = "contact shell shell"
-        base_name = "contact_shell_shell"
-        analysis_dir = testtools.get_unit_test_tmp_dir(
-            self.temp_dir,
-            "FEM_ccx_contact_shell_shell",
-        )
-
-        # test input file writing
-        self.input_file_writing_test(
-            test_name=test_name,
-            base_name=base_name,
-            analysis_dir=analysis_dir,
         )
 
     # ********************************************************************************************
