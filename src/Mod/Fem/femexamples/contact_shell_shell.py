@@ -188,7 +188,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
 
 """
-from femexamples import contact_shell_shell as shellcontact
-shellcontact.setup()
+from femexamples.contact_shell_shell import setup
+setup()
 
 """

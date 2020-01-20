@@ -195,7 +195,7 @@ def run_material_nl_platewithhole(solver=None, base_name=None):
 
 def run_rcwall2d(solver=None, base_name=None):
 
-    from .rc_wall_2d import setup as setup
+    from .rc_wall_2d import setup
     doc = setup()
 
     if base_name is None:

@@ -143,7 +143,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
 
 """
-from femexamples import thermomech_spine as spine
-spine.setup()
+from femexamples.thermomech_spine import setup
+setup()
 
 """

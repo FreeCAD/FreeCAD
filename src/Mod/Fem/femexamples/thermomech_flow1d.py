@@ -250,7 +250,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
 
 """
-from femexamples import thermomech_flow1d as flow
-flow.setup()
+from femexamples.thermomech_flow1d import setup
+setup()
 
 """
