@@ -883,7 +883,9 @@ class Edit():
         newPoints = []
         hasAddedPoint = False
         if hasattr(obj, "ChamferSize") and hasattr(obj, "FilletRadius"):
-            if obj.ChamferSize > 0 or obj.FilletRadius > 0:
+            if obj.ChamferSize > 0 and obj.FilletRadius > 0:
+                edgeIndex = (edgeIndex +3) / 4
+            elif obj.ChamferSize > 0 or obj.FilletRadius > 0:
                 edgeIndex = (edgeIndex +1) / 2
 
         for index, point in enumerate(self.obj.Points):
