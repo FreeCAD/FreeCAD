@@ -2308,6 +2308,8 @@ class ScaleTaskPanel:
 
 class ShapeStringTaskPanel:
     '''A TaskPanel for ShapeString'''
+    oldValueBuffer = False
+
     def __init__(self):
         self.form = QtGui.QWidget()
         self.form.setObjectName("ShapeStringTaskPanel")
@@ -2330,7 +2332,7 @@ class ShapeStringTaskPanel:
 
         self.stringText = translate("draft","Default")
         self.task.leString.setText(self.stringText)
-        self.platWinDialog(True)
+        self.platWinDialog("Overwrite")
         self.task.fcFontFile.setFileName(Draft.getParam("FontFile",""))
         self.fileSpec = Draft.getParam("FontFile","")
         self.point = FreeCAD.Vector(0.0,0.0,0.0)
@@ -2402,13 +2404,26 @@ class ShapeStringTaskPanel:
         except Exception as e:
             FreeCAD.Console.PrintError("Draft_ShapeString: error delaying commit\n")
 
-    def platWinDialog(self, OnOff):
-        tDialog = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Dialog")
-        if platform.system() == 'Windows':
-            if OnOff:
-                return tDialog.SetBool("DontUseNativeDialog", True)
-            else:
-                return tDialog.SetBool("DontUseNativeDialog", False)
+    def platWinDialog(self, Flag):
+        ParamGroup = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Dialog")
+        if Flag == "Overwrite":
+            GroupContent = ParamGroup.GetContents()
+
+            Found = False
+            for ParamSet in GroupContent:
+              if ParamSet[1] == "DontUseNativeFontDialog":
+                Found = True
+                break
+
+            if Found == False:
+                ParamGroup.SetBool("DontUseNativeFontDialog", True)     #initialize nonexisting one
+
+            param = ParamGroup.GetBool("DontUseNativeFontDialog")
+            ShapeStringTaskPanel.oldValueBuffer = ParamGroup.GetBool("DontUseNativeDialog")
+            ParamGroup.SetBool("DontUseNativeDialog", param)
+
+        elif Flag == "Restore":
+            ParamGroup.SetBool("DontUseNativeDialog", ShapeStringTaskPanel.oldValueBuffer)
 
     def accept(self):
         self.createObject();
@@ -2416,7 +2431,7 @@ class ShapeStringTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Snapper.off()
         self.sourceCmd.creator.finish(self.sourceCmd)
-        self.platWinDialog(False)
+        self.platWinDialog("Restore")
         return True
 
     def reject(self):
@@ -2424,7 +2439,7 @@ class ShapeStringTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Snapper.off()
         self.sourceCmd.creator.finish(self.sourceCmd)
-        self.platWinDialog(False)
+        self.platWinDialog("Restore")
         return True
 
 if not hasattr(FreeCADGui,"draftToolBar"):
