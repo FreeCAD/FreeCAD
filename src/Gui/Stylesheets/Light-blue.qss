@@ -2150,7 +2150,7 @@ QToolButton[toolbar_orientation="horizontal"] {
 }
 
 QToolButton[toolbar_orientation="vertical"] {
-    width: 100%;
+    /* nothing, when Horizontal there's no need to add special parameters */
 }
 
 QToolBar#Selector QToolButton {
