@@ -244,6 +244,21 @@ int AlignmentGroup::count() const
     return this->_views.size();
 }
 
+Base::BoundBox3d AlignmentGroup::getBoundingBox() const
+{
+    Base::BoundBox3d box;
+    std::vector<Gui::ViewProviderDocumentObject*>::const_iterator it;
+    for (it = this->_views.begin(); it != this->_views.end(); ++it) {
+        if ((*it)->isDerivedFrom(Gui::ViewProviderGeometryObject::getClassTypeId())) {
+            App::GeoFeature* geo = static_cast<App::GeoFeature*>((*it)->getObject());
+            const App::PropertyComplexGeoData* prop = geo->getPropertyOfGeometry();
+            if (prop)
+                box.Add(prop->getBoundingBox());
+        }
+    }
+    return box;
+}
+
 // ------------------------------------------------------------------
 
 MovableGroup::MovableGroup()
@@ -332,6 +347,16 @@ const MovableGroup& MovableGroupModel::getGroup(int i) const
     if (i >= count())
         throw Base::IndexError("Index out of range");
     return this->_groups[i];
+}
+
+Base::BoundBox3d MovableGroupModel::getBoundingBox() const
+{
+    Base::BoundBox3d box;
+    std::vector<MovableGroup>::const_iterator it;
+    for (it = this->_groups.begin(); it != this->_groups.end(); ++it) {
+        box.Add(it->getBoundingBox());
+    }
+    return box;
 }
 
 // ------------------------------------------------------------------

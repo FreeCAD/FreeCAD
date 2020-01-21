@@ -157,7 +157,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
 
 """
-from femexamples import material_nl_platewithhole as nlmat
-nlmat.setup()
+from femexamples.material_nl_platewithhole import setup
+setup()
 
 """

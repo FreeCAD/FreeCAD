@@ -157,7 +157,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
 
 """
-from femexamples import material_multiple_twoboxes as twoboxes
-twoboxes.setup()
+from femexamples.material_multiple_twoboxes import setup
+setup()
 
 """

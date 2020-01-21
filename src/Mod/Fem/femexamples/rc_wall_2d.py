@@ -159,7 +159,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
 
 """
-from femexamples import rc_wall_2d as rc
-rc.setup()
+from femexamples.rc_wall_2d import setup
+setup()
 
 """

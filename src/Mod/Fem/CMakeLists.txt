@@ -37,6 +37,7 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/boxanalysis.py
     femexamples/ccx_cantilever_std.py
+    femexamples/contact_shell_shell.py
     femexamples/manager.py
     femexamples/material_multiple_twoboxes.py
     femexamples/material_nl_platewithhole.py
@@ -50,6 +51,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_boxanalysis_tetra10.py
     femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
     femexamples/meshes/mesh_canticcx_tetra10.py
+    femexamples/meshes/mesh_contact_tube_tube_tria3.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
     femexamples/meshes/mesh_thermomech_flow1d_seg3.py
@@ -161,6 +163,8 @@ SET(FemTestsFiles_SRCS
 
 SET(FemTestsCcx_SRCS
     femtest/data/ccx/__init__.py
+    femtest/data/ccx/contact_shell_shell.FCStd
+    femtest/data/ccx/contact_shell_shell.inp
     femtest/data/ccx/cube_frequency.inp
     femtest/data/ccx/cube_frequency.dat
     femtest/data/ccx/cube_frequency.frd
@@ -172,7 +176,8 @@ SET(FemTestsCcx_SRCS
     femtest/data/ccx/cube_static_expected_values
     femtest/data/ccx/cube_static.FCStd
     femtest/data/ccx/cube.FCStd
-    femtest/data/ccx/multimat.inp
+    femtest/data/ccx/mat_multiple.inp
+    femtest/data/ccx/mat_nonlinear.inp
     femtest/data/ccx/spine_thermomech.inp
     femtest/data/ccx/spine_thermomech.dat
     femtest/data/ccx/spine_thermomech.frd

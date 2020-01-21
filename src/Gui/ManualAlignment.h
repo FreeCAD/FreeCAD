@@ -25,6 +25,7 @@
 #define GUI_MANUALALIGNMENT_H
 
 #include <QPointer>
+#include <Base/BoundBox.h>
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
@@ -123,6 +124,10 @@ public:
      * Return the number of added views.
      */
     int count() const;
+    /**
+     * Get the overall bounding box of all views.
+     */
+    Base::BoundBox3d getBoundingBox() const;
 
 protected:
     std::vector<PickedPoint> _pickedPoints;
@@ -170,6 +175,7 @@ public:
     bool isEmpty() const;
     int count() const;
     const MovableGroup& getGroup(int i) const;
+    Base::BoundBox3d getBoundingBox() const;
 
 protected:
     void removeActiveGroup();

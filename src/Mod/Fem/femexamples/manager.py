@@ -148,6 +148,21 @@ def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
     return doc
 
 
+def run_contact_shell_shell(solver=None, base_name=None):
+
+    from .contact_shell_shell import setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Contact_Shell_Shell"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+    doc.recompute()
+
+    return doc
+
+
 def run_material_multiple_twoboxes(solver=None, base_name=None):
 
     from .material_multiple_twoboxes import setup
@@ -180,7 +195,7 @@ def run_material_nl_platewithhole(solver=None, base_name=None):
 
 def run_rcwall2d(solver=None, base_name=None):
 
-    from .rc_wall_2d import setup as setup
+    from .rc_wall_2d import setup
     doc = setup()
 
     if base_name is None:
@@ -246,6 +261,7 @@ doc = run_boxanalysisfrequency()
 doc = run_ccx_cantileverfaceload()
 doc = run_ccx_cantilevernodeload()
 doc = run_ccx_cantileverprescribeddisplacement()
+doc = run_contact_shell_shell()
 doc = run_material_nl_platewithhole()
 doc = run_material_multiple_twoboxes()
 doc = run_rcwall2d()
