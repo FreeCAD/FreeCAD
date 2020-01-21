@@ -1155,6 +1155,10 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		float rot = 45 ; //30;
 		float tilt = 90-54.7356f ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
 		int pick = pickFace(x, y);
+
+		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+		float rotStepAngle = 360/hGrp->GetInt("NaviStepByTurn",8);
+
 		switch (pick) {
 		default:
 			return false;
@@ -1202,22 +1206,22 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			setView(rot - 270, 90 - tilt);
 			break;
 		case TEX_ARROW_LEFT :
-			rotateView(DIR_OUT,45);
+			rotateView(DIR_OUT,rotStepAngle);
 			break;
 		case TEX_ARROW_RIGHT :
-			rotateView(DIR_OUT,-45);
+			rotateView(DIR_OUT,-rotStepAngle);
 			break;
 		case TEX_ARROW_WEST :
-			rotateView(DIR_UP,-45);
+			rotateView(DIR_UP,-rotStepAngle);
 			break;
 		case TEX_ARROW_EAST :
-			rotateView(DIR_UP,45);
+			rotateView(DIR_UP,rotStepAngle);
 			break;
 		case TEX_ARROW_NORTH :
-			rotateView(DIR_RIGHT,-45);
+			rotateView(DIR_RIGHT,-rotStepAngle);
 			break;
 		case TEX_ARROW_SOUTH :
-			rotateView(DIR_RIGHT,45);
+			rotateView(DIR_RIGHT,rotStepAngle);
 			break;
 		case TEX_VIEW_MENU_FACE :
 			handleMenu();
