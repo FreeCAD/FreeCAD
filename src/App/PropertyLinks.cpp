@@ -2521,6 +2521,14 @@ public:
             auto ret = _DocInfoMap.insert(std::make_pair(path,info));
             info->init(ret.first,objName,l);
         }
+
+        if(info->pcDoc) {
+            // make sure to attach only external object
+            auto owner = Base::freecad_dynamic_cast<DocumentObject>(l->getContainer());
+            if(owner && owner->getDocument() == info->pcDoc)
+                return info;
+        }
+
         info->links.insert(l);
         return info;
     }
@@ -3340,6 +3348,8 @@ void PropertyXLink::copyTo(PropertyXLink &other,
     if(linked && linked->getNameInDocument()) {
         other.docName = linked->getDocument()->getName();
         other.objectName = linked->getNameInDocument();
+        other.docInfo.reset();
+        other.filePath.clear();
     }else{
         other.objectName = objectName;
         other.docName.clear();
