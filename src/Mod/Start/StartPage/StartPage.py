@@ -303,6 +303,11 @@ def handle():
                 ALTCSS = encode(f.read())
             HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
+    # turn tips off if needed
+
+    if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowTips",True):
+        HTML = HTML.replace("display: block; /* footnote tips display */","display: none; /* footnote tips display */")
+
     # get FreeCAD version
 
     v = FreeCAD.Version()
@@ -394,6 +399,7 @@ def handle():
     HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
     HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))
     HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png'))
+    HTML = HTML.replace("IMAGE_SRC_SETTINGS",'file:///'+os.path.join(resources_dir, 'images/settings.png'))
     imagepath= 'file:///'+os.path.join(resources_dir, 'images/installed.png')
     imagepath = imagepath.replace('\\','/')  # replace Windows backslash with slash to make the path javascript compatible
     HTML = HTML.replace("IMAGE_SRC_INSTALLED",imagepath)
