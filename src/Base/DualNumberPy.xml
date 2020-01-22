@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="PyObjectBase" 
+		Name="DualNumberPy" 
+		Twin="DualNumber" 
+		TwinPointer="DualNumber" 
+		Include="Base/DualNumber.h" 
+		FatherInclude="Base/PyObjectBase.h" 
+		Namespace="Base" 
+		Constructor="true"
+		Initialization="true"
+		Delete="false"
+		NumberProtocol="true"
+		RichCompare="true"
+		FatherNamespace="Base">
+	<Documentation>
+		<Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+		<DeveloperDocu>This is the DualNumber export class</DeveloperDocu>
+		<UserDocu>Dual Numbers are 2-part numbers like complex numbers, but different
+algebra. They are denoted as a + b*eps, where eps^2 = 0. eps, the nilpotent,
+is like imaginary unit of complex numbers. The neat utility of dual numbers
+is that if you use them instead of normal numbers in a function like sin(),
+derivative is implicitly calculated as a multiplier to the dual part.
+</UserDocu>
+	</Documentation>
+		<Attribute Name="re" ReadOnly="true">
+			<Documentation>
+				<UserDocu>the real part</UserDocu>
+			</Documentation>
+			<Parameter Name="re" Type="Float" />
+		</Attribute>
+		<Attribute Name="du" ReadOnly="true">
+			<Documentation>
+				<UserDocu>the dual part</UserDocu>
+			</Documentation>
+			<Parameter Name="du" Type="Float" />
+		</Attribute>
+		<ClassDeclarations>public:
+    DualNumber value; //store value as data member to avoid unnecessary heap allocations
+		</ClassDeclarations>
+	</PythonExport>
+</GenerateModel>

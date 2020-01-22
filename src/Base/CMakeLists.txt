@@ -89,6 +89,7 @@ generate_from_xml(PlacementPy)
 generate_from_xml(AxisPy)
 generate_from_xml(UnitPy)
 generate_from_xml(QuantityPy)
+generate_from_xml(DualNumberPy)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
@@ -175,6 +176,7 @@ SET(FreeCADBase_XML_SRCS
     QuantityPy.xml
     TypePy.xml
     UnitPy.xml
+    DualNumberPy.xml
 )
 SOURCE_GROUP("XML" FILES ${FreeCADBase_XML_SRCS})
 
@@ -240,6 +242,8 @@ SET(FreeCADBase_CPP_SRCS
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     Debugger.cpp
+    DualNumber.cpp
+    DualNumberPyImp.cpp
     DualQuaternion.cpp
     Exception.cpp
     ExceptionFactory.cpp

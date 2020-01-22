@@ -81,6 +81,7 @@
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
 #include <Base/TypePy.h>
+#include <Base/DualNumberPy.h>
 
 #include "GeoFeature.h"
 #include "FeatureTest.h"
@@ -304,6 +305,7 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::Interpreter().addType(&Base::AxisPy            ::Type,pBaseModule,"Axis");
     Base::Interpreter().addType(&Base::CoordinateSystemPy::Type,pBaseModule,"CoordinateSystem");
     Base::Interpreter().addType(&Base::TypePy            ::Type,pBaseModule,"TypeId");
+    Base::Interpreter().addType(&Base::DualNumberPy      ::Type,pBaseModule,"DualNumber");
 
     Base::Interpreter().addType(&App::MaterialPy::Type, pAppModule, "Material");
 

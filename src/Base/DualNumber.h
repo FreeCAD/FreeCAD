@@ -24,18 +24,22 @@
 #define FREECAD_BASE_DUAL_NUMBER_H
 
 #include <cmath>
+#include <string>
+
+//forward declare PyObject, to avoid include python
+struct _object;
+typedef _object PyObject;
 
 namespace Base {
 
-
 /**
- * @brief Dual Numbers aer 2-part numbers like complex numbers, but different
+ * @brief Dual Numbers are 2-part numbers like complex numbers, but different
  * algebra. They are denoted as a + b*eps, where eps^2 = 0. eps, the nilpotent,
  * is like imaginary unit of complex numbers. The neat utility of dual numbers
  * is that if you use them instead of normal numbers in a function like sin(),
  * derivative is implicitly calculated as a multiplier to the dual part.
  */
-class DualNumber
+class BaseExport DualNumber
 {
 public:
     double re = 0.0;
@@ -46,6 +50,9 @@ public:
         : re(re), du(du)
     {}
     DualNumber operator-() const {return DualNumber(-re,-du);}
+
+    PyObject* getPyObject() const;
+    std::string repr() const;
 };
 
 inline DualNumber operator+(DualNumber a, DualNumber b){
