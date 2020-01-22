@@ -5,9 +5,11 @@
 | G2, G02 | Clockwise arc | X,Y,Z,A,B,C,I,J,K |
 | G3, G03 | Counterclockwise arc | X,Y,Z,A,B,C,I,J,K |
 | G21 |  |  |
-| G40 | ??? | ??? |
-| G41 | ??? | ??? |
-| G42 | ??? | ??? |
+| G40 | Not available | Radius compensation is done in FreeCAD |
+| G41 | Not available | Radius compensation is done in FreeCAD |
+| G42 | Not available | Radius compensation is done in FreeCAD |
+| G43 | Not available | Radius compensation is done in FreeCAD |
+| G44 | Not available | Radius compensation is done in FreeCAD |
 | G53 | ??? | ??? |
 | G54 | ??? | ??? |
 | G55 | ??? | ??? |
@@ -15,7 +17,9 @@
 | G57 | ??? | ??? |
 | G58 | ??? | ??? |
 | G59 | ??? | ??? |
-| G81, G82, G83 | Custom drill operation | X,Y,Z,R,Q |
+| G81 | Custom drill operation | X,Y,Z,R,Q |
+| G82 | Custom drill operation | X,Y,Z,R,Q |
+| G83 | Custom drill operation | X,Y,Z,R,Q |
 | G90 | Absolute coordinates | |
 | G91 | Relative coordinates | |
 | G98 | ??? | ??? |
