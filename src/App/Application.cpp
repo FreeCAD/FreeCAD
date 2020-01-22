@@ -1702,6 +1702,7 @@ void Application::initTypes(void)
     App ::PropertyXLink             ::init();
     App ::PropertyXLinkSub          ::init();
     App ::PropertyXLinkSubList      ::init();
+    App ::PropertyXLinkList         ::init();
     App ::PropertyXLinkContainer    ::init();
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();
