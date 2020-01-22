@@ -512,15 +512,26 @@ void QGIViewGDTReference::draw_modifier(bool modifier) {
     Base::Vector3d dLineStart;
     float scale = reference->SymbolScale.getValue();
     QPainterPath referencePath;
-
-    // Square symbol
-    textWidth = (textWidth * scale) + Rez::guiX(referenceLabel->marginWidth());
-    textHeight = (textHeight * scale)
-            + Rez::guiX(referenceLabel->marginHeight());
-    double max = std::max(textWidth, textHeight);
-    referencePath.addRect(referenceLabel->X() - (max / 2.0),
-            referenceLabel->Y() - (max / 2.0), max, max);
-    double offset = (max / 2.0);
+    double offset;
+    if(textHeight < textWidth){
+        // Rectangle symbol
+        textHeight = (textHeight * scale) + Rez::guiX(referenceLabel->marginWidth());
+        textWidth = (textWidth * scale) + Rez::guiX(referenceLabel->marginWidth());
+        referencePath.addRect(
+                referenceLabel->X() -(textWidth / 2.0), referenceLabel->Y() - (textHeight / 2.0),
+                textWidth, textHeight);
+        offset = (textHeight / 2.0);
+    }else{
+        // Square symbol
+        double max = std::max(textWidth, textHeight);
+        textWidth = (textWidth * scale) + Rez::guiX(referenceLabel->marginWidth());
+        textHeight = (textHeight * scale)
+                + Rez::guiX(referenceLabel->marginHeight());
+        referencePath.addRect(
+                referenceLabel->X() - (max / 2.0), referenceLabel->Y() - (max / 2.0),
+                max, max);
+        offset = (max / 2.0);
+    }
 
     Base::Vector2d origin, centerLabel;
     origin.x = Rez::guiX(reference->X.getValue());
