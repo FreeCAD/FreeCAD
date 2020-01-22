@@ -6018,6 +6018,8 @@ class ViewProviderWorkingPlaneProxy:
         c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetUnsigned("ColorHelpers",674321151)
         vobj.LineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
         vobj.Proxy = self
+        vobj.RestoreView = True
+        vobj.RestoreState = True
 
     def getIcon(self):
         import Draft_rc
