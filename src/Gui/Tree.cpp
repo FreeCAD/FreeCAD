@@ -703,18 +703,7 @@ void TreeWidget::itemSearch(const QString& text, bool select) {
     try {
         if (txt.empty())
             return;
-        if (txt.find("<<") == std::string::npos) {
-            auto pos = txt.find('.');
-            if (pos == std::string::npos)
-                txt += '.';
-            else if (pos != txt.size() - 1) {
-                txt.insert(pos + 1, "<<");
-                if (txt.back() != '.')
-                    txt += '.';
-                txt += ">>.";
-            }
-        }
-        else if (txt.back() != '.')
+        if(txt.back() != '.')
             txt += '.';
         txt += "_self";
         auto path = App::ObjectIdentifier::parse(objs.front(), txt);
