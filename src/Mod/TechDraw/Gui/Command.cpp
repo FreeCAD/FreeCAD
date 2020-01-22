@@ -888,7 +888,7 @@ void CmdTechDrawGDTReference::activated(int iMsg) {
         return;
     }
 
-    std::string FeatName = getUniqueObjectName("GDTReference");
+    std::string FeatName = getUniqueObjectName("Reference");
     TechDraw::DrawPage *page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
