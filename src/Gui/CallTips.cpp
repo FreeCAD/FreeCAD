@@ -249,6 +249,19 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         Py::Object obj(eval, true);
 #endif
 
+        tips = extractTips(obj, &validObject);
+    }
+    catch (Py::Exception& e) {
+        // Just clear the Python exception
+        e.clear();
+    }
+
+    return tips;
+}
+
+QMap<QString, CallTip> CallTipsList::extractTips(Py::Object obj, bool *isValid) {
+    QMap<QString, CallTip> tips;
+    try {
         // Checks whether the type is a subclass of PyObjectBase because to get the doc string
         // of a member we must get it by its type instead of its instance otherwise we get the
         // wrong string, namely that of the type of the member.
@@ -299,7 +312,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // If we have an instance of PyObjectBase then determine whether it's valid or not
         if (PyObject_IsInstance(inst.ptr(), typeobj.o) == 1) {
             Base::PyObjectBase* baseobj = static_cast<Base::PyObjectBase*>(inst.ptr());
-            const_cast<CallTipsList*>(this)->validObject = baseobj->isValid();
+            if(isValid)
+                *isValid = baseobj->isValid();
         }
         else {
             // PyObject_IsInstance might set an exception
@@ -362,7 +376,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
     return tips;
 }
 
-void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<QString, CallTip>& tips) const
+void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<QString, CallTip>& tips)
 {
     for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
         try {
@@ -445,7 +459,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
     }
 }
 
-void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, CallTip>& tips) const
+void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, CallTip>& tips)
 {
     App::PropertyContainerPy* cont = (App::PropertyContainerPy*)(obj.ptr());
     App::PropertyContainer* container = cont->getPropertyContainerPtr();
@@ -460,9 +474,10 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
         tip.name = str;
         tip.type = CallTip::Property;
         QString longdoc = QString::fromUtf8(container->getPropertyDocumentation(It->second));
+        Py::Object data;
         // a point, mesh or shape property
         if (It->second->isDerivedFrom(Base::Type::fromName("App::PropertyComplexGeoData"))) {
-            Py::Object data(It->second->getPyObject(), true);
+            data = Py::Object(It->second->getPyObject(), true);
             if (data.hasAttr("__doc__")) {
                 Py::Object help = data.getAttr("__doc__");
                 if (help.isString()) {
@@ -483,7 +498,7 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
     }
 }
 
-void CallTipsList::showTips(const QString& line)
+QIcon CallTipsList::iconOfType(CallTip::Type type, bool isValid)
 {
     // search only once
     static QPixmap type_module_icon = BitmapFactory().pixmap("ClassBrowser/type_module.svg");
@@ -513,6 +528,35 @@ void CallTipsList::showTips(const QString& line)
     static QPixmap forbidden_member_icon = BitmapFactory().merge(member_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
     static QPixmap forbidden_property_icon = BitmapFactory().merge(property_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
 
+    switch (type)
+    {
+    case CallTip::Module:
+        {
+            return QIcon(isValid ? type_module_icon : forbidden_type_module_icon);
+        }   break;
+    case CallTip::Class:
+        {
+            return QIcon(isValid ? type_class_icon : forbidden_type_class_icon);
+        }   break;
+    case CallTip::Method:
+        {
+            return QIcon(isValid ? method_icon : forbidden_method_icon);
+        }   break;
+    case CallTip::Member:
+        {
+            return QIcon(isValid ? member_icon : forbidden_member_icon);
+        }   break;
+    case CallTip::Property:
+        {
+            return QIcon(isValid ? property_icon : forbidden_property_icon);
+        }   break;
+    default:
+        return QIcon();
+    }
+}
+
+void CallTipsList::showTips(const QString& line)
+{
     this->validObject = true;
     QString context = extractContext(line);
     context = context.simplified();
@@ -523,31 +567,9 @@ void CallTipsList::showTips(const QString& line)
         QListWidgetItem *item = this->item(this->count()-1);
         item->setData(Qt::ToolTipRole, QVariant(it.value().description));
         item->setData(Qt::UserRole, qVariantFromValue( it.value() )); //< store full CallTip data
-        switch (it.value().type)
-        {
-        case CallTip::Module:
-            {
-                item->setIcon((this->validObject ? type_module_icon : forbidden_type_module_icon));
-            }   break;
-        case CallTip::Class:
-            {
-                item->setIcon((this->validObject ? type_class_icon : forbidden_type_class_icon));
-            }   break;
-        case CallTip::Method:
-            {
-                item->setIcon((this->validObject ? method_icon : forbidden_method_icon));
-            }   break;
-        case CallTip::Member:
-            {
-                item->setIcon((this->validObject ? member_icon : forbidden_member_icon));
-            }   break;
-        case CallTip::Property:
-            {
-                item->setIcon((this->validObject ? property_icon : forbidden_property_icon));
-            }   break;
-        default:
-            break;
-        }
+        QIcon icon = iconOfType(it.value().type);
+        if(!icon.isNull())
+            item->setIcon(icon);
     }
 
     if (count()==0)
@@ -745,7 +767,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     QToolTip::showText( p, callTip.parameter );
 }
 
-QString CallTipsList::stripWhiteSpace(const QString& str) const
+QString CallTipsList::stripWhiteSpace(const QString& str)
 {
     QString stripped = str;
     QStringList lines = str.split(QLatin1String("\n"));

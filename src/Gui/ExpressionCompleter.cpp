@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QAbstractItemView>
 #include <QTextBlock>
+#include <QApplication>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -17,83 +18,142 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/ObjectIdentifier.h>
+#include <App/GeoFeature.h>
+#include <App/ComplexGeoData.h>
 #include "ExpressionCompleter.h"
 #include <App/ExpressionParser.h>
 #include <App/PropertyLinks.h>
+#include "Application.h"
+#include "ViewProvider.h"
+#include "BitmapFactory.h"
+#include "CallTips.h"
 
-FC_LOG_LEVEL_INIT("Completer",true,true)
-
-Q_DECLARE_METATYPE(App::ObjectIdentifier)
+FC_LOG_LEVEL_INIT("Completer",true,true,true)
 
 using namespace App;
 using namespace Gui;
 
 class ExpressionCompleterModel: public QAbstractItemModel {
 public:
-    ExpressionCompleterModel(QObject *parent, const App::DocumentObject *obj, bool noProperty)
-        :QAbstractItemModel(parent), noProperty(noProperty)
-    {
-        setDocumentObject(obj);
-    }
+    // This ExpressionCompleter model uses QModelIndex to index a tree node.
+    // QModelIndex::internalPointer() does not directly points to any memory
+    // location, but rather contains indices for locating the parent node.
+    // QModelIndex::row() is the child index of this node. column() is not used.
+    // 
+    // Abstract struct ModelData below is for extracting data from each node.
+    // For memory efficiency, the model is designed to be incrementally built
+    // on demand while the user is typing. Not all type of node data needs a
+    // pysical ModelData, some can be extracted from the current document
+    // object model on demand without saving. Some, on the other hand, are
+    // saved inside array ExpressionCompleterModel::modelData, and indexed
+    // using map ExpressionCompleterModel::dataMap.
+    //
+    // The pointer field in QModelIndex (i.e. internalPointer()) is split into
+    // two fields using struct Info, idx1 and idx2. For root node model index,
+    // the Info inside has both idx1 and idx2 as -1, and row() as the index to
+    // the data.  struct RootData is used to access the data dynamically
+    // without saving.  The content of the root data is arranged in the
+    // following order,
+    //
+    //      document 1 internal name 
+    //      document 1 label (label string are quoted using <<...>>)
+    //      document 2 internal name
+    //      document 2 label
+    //      ...
+    //      internal name of object 1 in owner document
+    //      label of object 1 in owner document
+    //      internal name of object 2 in owner document
+    //      label of object 2 in owner document
+    //      ...
+    //      property 1 of owner object with leading '.'
+    //      property 1 of owner object without leading '.'
+    //      property 2 of owner object with leading '.'
+    //      property 2 of owner object without leading '.'
+    //      ...
+    //      internal name of sub-object 1 of owner object with leading '.'
+    //      label of sub-object 1 of owner object with leading '.'
+    //      ...
+    //      pseudo property 1 of owner object with leading '.'
+    //      pseudo property 2 of owner object with leading '.'
+    //      ...
+    //
+    // The owner document/object is the one used to initialize ObjectIdentifier
+    // The sub-object/pseudo property/property of the owner object is obtained
+    // through struct ObjInfo, and cached inside map ExpressionCompleterModel::objMap.
+    // Note that at root level, there are two way to reference the own object's
+    // property. The recommanded way is to use a leading '.' for explicit local
+    // proeprty referecing. If use without leading '.', then it may clash with
+    // object name.
+    //
+    // struct Level1Data is used to access children of the root data. The QModelIndex
+    // of Level1Data has the Info::idx1 set as the QModelIndex::row() value of
+    // its parent index, Info::idx1 as -1, and its own QModelIndex::row() for indexing
+    // its own content, which depends on the type of the parent root data,
+    //
+    //      Parent              Child
+    //
+    //      Document            internal name of object 1 of the document
+    //                          label of object 1 of the document
+    //                          ...
+    //
+    //     (Pseudo)Property     ObjectIdentifier path 1 (obtained by Property::getPaths())
+    //                          ...
+    //                          Python attribute 1 (obtained by CallTipList::extratTips())
+    //                          ...
+    //
+    //     (Sub)Object          internal name sub-object 1 of the object
+    //                          label of sub-object 1 of the object
+    //                          ...
+    //                          pseudo property 1 of the object
+    //                          ...
+    //                          property 1 of the object
+    //                          ...
+    //
+    //
+    //
+    // For poperty data, Level1Data will generate and save the model data using
+    // struct PropertyData. Note that, once PropertyData is generated, the next
+    // time it (or its children) is accessed, it will be through the cached 
+    // PropertyData (through ModelIndex lookup of dataMap), instead of Level1Data.
+    //
+    // The subsequent hierarchy is handled by Level2Data, whose Info::idx1 having
+    // the same value as its parent Info, and Info::idx2 having the value
+    // of its parent QModelIndex::row(). Its own QModelIndex::row() is again used
+    // to index its content, which is also determined by its parent data,
+    //
+    //      Parent                  Child
+    //
+    //      (Sub)Object             same as Level1Data
+    //
+    //      ObjectIdentifer Path    Python attribute 1
+    //                              ...
+    //
+    //      Python attribute        Python attribute 1
+    //                              ...
+    //
+    // The Python value of ObjectIdentifier path is obtained through
+    // ObjectIdentifier::getPyValue(), and handled the same way as other python
+    // attribute values, using struct PythonData.
+    //
+    // The subsequent hierarhcy is handled by Level2Data, which is the last
+    // non-physical data, because all both idx fields and the row member are
+    // used up. Further hierarhcies are representd by various concrete model
+    // data such as ObjectData, PropertyData, and PythonData.
 
-    void setNoProperty(bool enabled) {
-        noProperty = enabled;
-    }
 
-    void setDocumentObject(const App::DocumentObject *obj) {
-        beginResetModel();
-        if(obj) {
-            currentDoc = obj->getDocument()->getName();
-            currentObj = obj->getNameInDocument();
-            if(!noProperty)
-                inList = obj->getInListEx(true);
-        } else {
-            currentDoc.clear();
-            currentObj.clear();
-            inList.clear();
-        }
-        endResetModel();
-
-    }
-
-    // This ExpressionCompleter model works without any pysical items.
-    // Everything item related is stored inside QModelIndex.InternalPointer/InternalId(), 
-    // using the following Info structure.
-    //
-    // The Info contains two indices, one for document and the other for object.
-    // For 32-bit system, the index is 16bit which limits the size to 64K. For
-    // 64-bit system, the index is 32bit. 
-    //
-    // The "virtual" items are organized as a tree. The root items are special,
-    // which consists of three types in the following order,
-    //
-    // * Document, even index contains item using document's name, while
-    //   odd index with quoted document label.
-    // * Objects of the current document, even index with object's internal
-    //   name, and odd index with quoted object label.
-    // * Properties of the current object.
-    //
-    // Document item contains object item as child, and object item contains
-    // property item.
-    //
-    // The QModelIndex of a root item has both the doc field and obj field set
-    // to -1, and uses the row as the item index. We can figure out the type of
-    // the item solely based on this row index.
-    //
-    // QModelIndex of a non-root object item has doc field as the document
-    // index, and obj field set to -1.
-    //
-    // QModelIndex of a non-root property item has doc field as the document
-    // index, and obj field as the object index.
     union Info {
         struct {
-            qint32 doc;
-            qint32 obj;
+            qint32 idx1;
+            qint32 idx2;
         }d;
         struct {
-            qint16 doc;
-            qint16 obj;
+            qint16 idx1;
+            qint16 idx2;
         }d32;
+        struct {
+            qint16 idx1;
+            quint16 idx2;
+        }u32;
         void *ptr;
     };
 
@@ -102,8 +162,19 @@ public:
             return info.ptr;
 
         Info info32;
-        info32.d32.doc = (qint16)info.d.doc;
-        info32.d32.obj = (qint16)info.d.obj;
+        if(info.d.idx1 == -2 && info.d.idx2 > 0xffff) {
+            // For 32 bit machine, and the second index is longer can 16 bits,
+            // we'll store the extra bits of idx2 in idx1
+            qint32 extra = (info.d.idx2 >> 16);
+            assert(extra < 0x7ff0);
+            info32.u32.idx1 = -(qint16)extra - 2;
+            info32.u32.idx2 = (quint16)(info.d.idx2 >> 16);
+        } else {
+            assert(info.d.idx1 <= 0x7fff);
+            assert(info.d.idx2 <= 0x7fff);
+            info32.d32.idx1 = (qint16)info.d.idx1;
+            info32.d32.idx2 = (qint16)info.d.idx2;
+        }
         return info32.ptr;
     };
 
@@ -113,221 +184,1655 @@ public:
         if(sizeof(void*) >= sizeof(Info))
             return info;
         Info res;
-        res.d.doc = info.d32.doc;
-        res.d.obj = info.d32.obj;
+        if(res.d32.idx1 <= -2) {
+            res.d.idx1 = -2;
+            quint32 extra = ((qint32)(-info.u32.idx1) - 2) << 16;
+            assert(extra < 0x7fff0000);
+            res.d.idx2 = (qint32)extra + info.u32.idx2;
+        } else {
+            res.d.idx1 = info.d32.idx1;
+            res.d.idx2 = info.d32.idx2;
+        }
         return res;
     }
 
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const {
-        if(role!=Qt::EditRole && role!=Qt::DisplayRole && role!=Qt::UserRole)
-            return QVariant();
-        QVariant v;
-        Info info = getInfo(index);
-        _data(info,index.row(),&v,0,role==Qt::UserRole);
-        FC_TRACE(info.d.doc << "," << info.d.obj << "," << index.row()
-                << ": " << v.toString().toUtf8().constData());
-        return v;
-    }
+    struct ObjInfo {
+        QString name;
+        QString label;
+        QIcon icon;
+        App::Document *doc;
+        long objID;
+        std::vector<std::string> outList;
+        std::vector<std::string> propList;
+        QStringList propNameList;
+        std::vector<const char *> elementTypes;
+        std::vector<int> elementCounts;
+        int elementCount;
 
-    void _data(const Info &info, int row, QVariant *v, int *count, bool sep=false) const {
-        int idx;
-        idx = info.d.doc<0?row:info.d.doc;
-        const auto &docs = App::GetApplication().getDocuments();
-        int docSize = (int)docs.size()*2;
-        int objSize = 0;
-        int propSize = 0;
-        std::vector<std::pair<const char*, App::Property*> > props;
-        App::Document *doc = 0;
-        App::DocumentObject *obj = 0;
-        const char *propName = 0;
-        if(idx>=0 && idx<docSize) 
-            doc = docs[idx/2];
-        else {
-            doc = App::GetApplication().getDocument(currentDoc.c_str());
-            if(!doc)
-                return;
-            idx -= docSize;
-            if(info.d.doc<0)
-                row = idx;
-            const auto &objs = doc->getObjects();
-            objSize = (int)objs.size()*2;
-            if(idx>=0 && idx<objSize) {
-                obj = objs[idx/2];
-                if(inList.count(obj))
-                    return;
-            } else if (!noProperty) {
-                auto cobj = doc->getObject(currentObj.c_str());
-                if(cobj) {
-                    idx -= objSize;
-                    if(info.d.doc<0)
-                        row = idx;
-                    cobj->getPropertyNamedList(props);
-                    propSize = (int)props.size();
-                    if(idx >= propSize)
-                        return;
-                    if(idx>=0) {
-                        obj = cobj;
-                        propName = props[idx].first;
+        ObjInfo()
+            :doc(nullptr), objID(0), elementCount(0)
+        {}
+
+        ObjInfo &init(App::DocumentObject *obj, bool noProp) {
+
+            if(doc)
+                return *this;
+
+            assert(obj && obj->getNameInDocument());
+
+            objID = obj->getID();
+            doc = obj->getDocument();
+
+            name = QString::fromLatin1(obj->getNameInDocument());
+            label = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
+
+            auto vp = Gui::Application::Instance->getViewProvider(obj);
+            if(vp)
+                icon = vp->getIcon();
+
+            std::set<App::DocumentObject*> outSet;
+            for(auto o : obj->getLinkedObject(true)->getOutList()) {
+                if(o && o->getNameInDocument() && outSet.insert(o).second) {
+                    std::string sub(o->getNameInDocument());
+                    sub += ".";
+                    if(obj->getSubObject(sub.c_str()) == o)
+                        outList.push_back(std::move(sub));
+                }
+            }
+
+            if(!noProp) {
+                std::vector<std::pair<const char *,Property*> > props;
+                obj->getPropertyNamedList(props);
+                propList.reserve(props.size());
+                propNameList.reserve(props.size());
+                for(auto &v : props) {
+                    propList.emplace_back(v.first);
+                    propNameList.push_back(QString::fromLatin1(v.first));
+                }
+
+                if(obj->isDerivedFrom(GeoFeature::getClassTypeId())) {
+                    auto propGeo = static_cast<GeoFeature*>(obj)->getPropertyOfGeometry();
+                    if(propGeo && propGeo->getComplexData()) {
+                        auto geoData = propGeo->getComplexData();
+                        elementTypes = geoData->getElementTypes();
+                        elementCounts.reserve(elementTypes.size());
+                        for(auto it=elementTypes.begin(); it!=elementTypes.end();) {
+                            int c = (int)geoData->countSubElements(*it);
+                            if(!c) {
+                                it = elementTypes.erase(it);
+                                continue;
+                            }
+                            elementCount += c;
+                            elementCounts.push_back(c);
+                            ++it;
+                        }
                     }
                 }
             }
-        }
-        if(info.d.doc<0) {
-            if(count) 
-                *count = docSize + objSize + propSize;
-            if(idx>=0 && v) {
-                QString res;
-                if(propName)
-                    res = QString::fromLatin1(propName);
-                else if(obj) {
-                    if(idx & 1)
-                        res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
-                    else
-                        res = QString::fromLatin1(obj->getNameInDocument());
-                    if(sep && !noProperty)
-                        res += QLatin1Char('.');
-                } else {
-                    if(idx & 1) 
-                        res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
-                    else
-                        res = QString::fromLatin1(doc->getName());
-                    if(sep)
-                        res += QLatin1Char('#');
-                }
-                v->setValue(res);
-            }
-            return;
+
+            return *this;
         }
 
-        if(!obj) {
-            idx = info.d.obj<0?row:info.d.obj;
+        App::DocumentObject *getObject() const {
+            // make sure the document is still there
+            if(!Gui::Application::Instance->getDocument(doc))
+                return nullptr;
+            return doc->getObjectByID(objID);
+        }
+
+        App::DocumentObject *getSubObject(int row, App::DocumentObject **pobj=nullptr) const {
+            int propSize = (int)propList.size()*2;
+            if(row < propSize)
+                return nullptr;
+
+            row -= propSize;
+            if(row < 0 || row >= (int)outList.size()*2)
+                return nullptr;
+            auto obj = getObject();
+            if(!obj)
+                return nullptr;
+            if(pobj)
+                *pobj = obj;
+            return obj->getSubObject(outList[row/2].c_str());
+        }
+
+        std::pair<const char *, App::Property*> getProperty(int row, QString *name=nullptr) const {
+            std::pair<const char*, App::Property*> res;
+            res.first = nullptr;
+            res.second = nullptr;
+
+            if(propList.empty())
+                return res;
+
+            auto obj = getObject();
+            if(!obj)
+                return res;
+
+            if(row < (int)propList.size()*2) {
+                res.first = propList[row/2].c_str();
+                if(name) {
+                    if(row & 1)
+                        *name = QLatin1String(".") + propNameList[row/2];
+                    else
+                        *name = propNameList[row/2];
+                }
+                res.second = obj->getPropertyByName(res.first);
+                return res;
+            }
+            row -= (int)propList.size()*2;
+
+            if(row < (int)outList.size())
+                return res;
+            row -= (int)outList.size();
+
+            const auto &pseudoProps = ObjectIdentifier::getPseudoProperties();
+            int pseudoSize = (int)pseudoProps.size();
+            if(row < pseudoSize) {
+                res = pseudoProps[row];
+                if(name)
+                    *name = QLatin1String(".") + QString::fromLatin1(res.first);
+                return res;
+            }
+
+            return res;
+        }
+
+        bool getProperty(int row, App::Property *&prop, QString &propName) const {
+            prop = getProperty(row,&propName).second;
+            return prop!=nullptr;
+        }
+
+        const char *getElement(int row, int &eindex) const {
+            if(!elementCount || row < 0)
+                return nullptr;
+
+            int offset = (int)outList.size()*2 + (int)propList.size()*2
+                + ObjectIdentifier::getPseudoProperties().size();
+            if(row < offset)
+                return nullptr;
+
+            row -= offset;
+            if(row >= elementCount)
+                return nullptr;
+
+            int i=-1;
+            for(int c : elementCounts) {
+                ++i;
+                if(row < c) {
+                    eindex = row;
+                    return elementTypes[i];
+                }
+                row -= c;
+            }
+            return nullptr;
+        }
+
+        int childCount(bool root=false) const {
+            if(propList.empty())
+                return outList.size()*2;
+
+            return (int)outList.size()*2 + (int)propList.size()*2
+                + ObjectIdentifier::getPseudoProperties().size()
+                + (root?0:elementCount);
+        }
+    };
+
+    struct ModelData {
+
+        // We could have just used a constant reference to the key in dataMap.
+        // But that also means we can't create stand alone ModelData, and it
+        // will lead to hard to trace problems if someone tries this. So we
+        // just waste some memory and copy the index here.
+        //
+        // const QModelIndex &mindex;
+        QModelIndex mindex;
+
+        ModelData(const QModelIndex &midx)
+            :mindex(midx)
+        {
+            assert(getModel());
+        }
+
+        const ExpressionCompleterModel *getModel() const {
+            return static_cast<const ExpressionCompleterModel*>(mindex.model());
+        }
+
+        static QString docName(App::Document *doc, int row, bool sep) {
+            QString res;
+            if(row & 1)
+                res = QString::fromUtf8(quote(doc->Label.getStrValue()).c_str());
+            else
+                res = QString::fromLatin1(doc->getName());
+            if(sep)
+                res += QLatin1String("#");
+            return res;
+        }
+
+        static QString objName(App::DocumentObject *obj, int row, bool sep=true) {
+            QString res;
+            if(!obj || !obj->getNameInDocument())
+                return res;
+            if(sep)
+                res = QLatin1String(".");
+            if(row & 1)
+                res += QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
+            else
+                res += QString::fromLatin1(obj->getNameInDocument());
+            return res;
+        }
+
+        static QVariant docData(App::Document *doc, int row, int role) {
+            static QIcon icon(Gui::BitmapFactory().pixmap("Document"));
+            switch(role) {
+            case Qt::UserRole:
+            case Qt::EditRole:
+                return docName(doc, row, true);
+            case Qt::DisplayRole:
+                return docName(doc, row, false);
+            case Qt::DecorationRole:
+                return icon;
+            default:
+                return QVariant();
+            }
+        }
+
+        QVariant objData(App::DocumentObject *obj,
+                int row, int role, bool local=false, bool sep=true) const
+        {
+            switch(role) {
+            case Qt::UserRole:
+            case Qt::EditRole:
+                return objName(obj, row, sep);
+            case Qt::DisplayRole:
+                return objName(obj, row, local);
+            case Qt::DecorationRole: {
+                auto vp = Gui::Application::Instance->getViewProvider(obj);
+                if(vp)
+                    return vp->getIcon();
+                return QIcon();
+            }
+            case Qt::ToolTipRole:
+                if(getModel()->inList.count(obj))
+                    return QObject::tr("Warning: cyclic reference");
+                break;
+            case Qt::TextColorRole:
+                if(getModel()->inList.count(obj))
+                    return QColor(255.0, 0, 0);
+                break;
+            default:
+                break;
+            }
+            return QVariant();
+        }
+
+        QVariant sobjData(App::DocumentObject *obj, App::DocumentObject *sobj,
+                int row, int role, bool local=false) const
+        {
+            if(obj && obj->getNameInDocument()
+                    && sobj && sobj->getNameInDocument()
+                    && !(row & 1))
+            {
+                if(role == Qt::EditRole)
+                    return QString::fromLatin1(".%1.").arg(
+                        QString::fromLatin1(sobj->getNameInDocument()));
+                else if(role == Qt::UserRole && obj->getPropertyByName(sobj->getNameInDocument())) {
+                    // sub object name clash with property, use special syntax for disambiguation
+                    return QString::fromLatin1(".<<%1.>>").arg(
+                            QString::fromLatin1(sobj->getNameInDocument()));
+                }
+            }
+            return objData(sobj, row, role, local);
+        }
+
+        QVariant propData(App::Property *prop, const QString &propName,
+                                 int row, int role, bool local=false) const
+        {
+            (void)row;
+            if(!prop)
+                return QVariant();
+            switch(role) {
+            case Qt::UserRole:
+                if(local && !propName.startsWith(QLatin1Char('.'))) {
+                    auto obj = getModel()->currentObj.getObject();
+                    if(obj && obj->getDocument()
+                           && obj->getDocument()->getObject(propName.toLatin1().constData()))
+                    {
+                        // property name clash with object name, use leading '.' to disambiguate
+                        return QLatin1String(".") + propName;
+                    }
+                }
+                return propName;
+            case Qt::EditRole:
+                return propName;
+            case Qt::DisplayRole:
+                if(!local && propName.startsWith(QLatin1Char('.')))
+                    return propName.mid(1);
+                return propName;
+            case Qt::DecorationRole: 
+                return CallTipsList::iconOfType(CallTip::Property);
+            case Qt::ToolTipRole: {
+                const char *docu = prop->getDocumentation();
+                return QString::fromUtf8(docu?docu:"");
+            }
+            default:
+                return QVariant();
+            }
+        }
+
+        QVariant elementData(int role, const char *element, int eindex) const {
+            switch(role) {
+            case Qt::UserRole+1: {
+                auto completer = qobject_cast<ExpressionCompleter*>(
+                        static_cast<const QObject*>(getModel())->parent());
+                if(completer && !completer->isInsideString() && getModel()->currentPath.size()) {
+                    try {
+                        std::ostringstream os;
+                        os << getModel()->currentPath;
+                        if(getModel()->currentPath.back()!='.')
+                            os << '.';
+                        os << "<<." << element << eindex+1 << ">>._shape";
+                        auto path = ObjectIdentifier::parse(getModel()->currentObj.getObject(),os.str());
+                        return QString::fromUtf8(path.toString().c_str());
+                    } catch (...)
+                    {}
+                }
+                return QVariant();
+            }
+            case Qt::UserRole:
+                return QString::fromLatin1(".<<.%1%2>>").arg(QLatin1String(element)).arg(eindex+1);
+            case Qt::EditRole:
+                return QString::fromLatin1(".%1%2").arg(QLatin1String(element)).arg(eindex+1);
+            case Qt::DisplayRole:
+                return QString::fromLatin1("%1%2").arg(QLatin1String(element)).arg(eindex+1);
+            default:
+                return QVariant();
+            }
+        }
+
+        virtual QVariant childData(int row, int role) const = 0;
+        virtual QModelIndex childIndex(int row) = 0;
+        virtual int childCount() = 0;
+        virtual const char *typeName() const = 0;
+    };
+
+    struct RootData : ModelData {
+        RootData(const ExpressionCompleterModel *m)
+            :ModelData(m->rootIndex)
+        {}
+
+        RootData(const QModelIndex &mindex)
+            :ModelData(mindex)
+        {}
+
+        bool _childData(int row, App::Document *&doc,
+                                 App::DocumentObject *&obj,
+                                 App::DocumentObject *&sobj,
+                                 App::Property *&prop,
+                                 QString &propName) const
+        {
+            if(row<0)
+                return false;
+
+            auto currentObj = getModel()->currentObj.getObject();
+            if(!currentObj)
+                return false;
+
+            const auto &docs = App::GetApplication().getDocuments();
+            int docSize = (int)docs.size()*2;
+            if(row < docSize) {
+                doc = docs[row/2];
+                return true;
+            }
+
+            doc = currentObj->getDocument();
+            row -= docSize;
+
             const auto &objs = doc->getObjects();
-            objSize = (int)objs.size()*2;
-            if(idx<0 || idx>=objSize || inList.count(obj))
-                return;
-            obj = objs[idx/2];
-            if(info.d.obj<0) {
-                if(count)
-                    *count = objSize;
-                if(v) {
-                    QString res;
-                    if(idx&1)
-                        res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
-                    else
-                        res = QString::fromLatin1(obj->getNameInDocument());
-                    if(sep && !noProperty)
-                        res += QLatin1Char('.');
-                    v->setValue(res);
+            int objSize = (int)objs.size()*2;
+            if(row < objSize) {
+                obj = objs[row/2];
+                return true;
+            }
+            obj = currentObj;
+            row -= objSize;
+
+            auto &objInfo = getModel()->getObjectInfo(currentObj);
+            sobj = objInfo.getSubObject(row);
+            if(sobj)
+                return true;
+
+            return objInfo.getProperty(row,prop,propName);
+        }
+
+        virtual QVariant childData(int row, int role) const {
+            auto pdata = getModel()->getPathData();
+            if(pdata) {
+                switch(role) {
+                case Qt::UserRole:
+                case Qt::EditRole:
+                case Qt::DisplayRole:
+                    return pdata->name;
+                default:
+                    break;
                 }
+                return QVariant();
+            }
+
+            App::Document *doc = nullptr;
+            App::DocumentObject *obj = nullptr;
+            App::DocumentObject *sobj = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            if(!_childData(row, doc, obj, sobj, prop, propName))
+                return QVariant();
+
+            if(prop)
+                return propData(prop, propName, row, role, true);
+
+            if(sobj)
+                return sobjData(obj, sobj, row, role, true);
+
+            if(obj)
+                return objData(obj, row, role, false, false);
+
+            return docData(doc, row, role);
+        }
+
+        virtual QModelIndex childIndex(int row) {
+            Info info;
+            info.d.idx1 = -1;
+            info.d.idx2 = -1;
+            return getModel()->createIndex(row,0,infoId(info));
+        }
+
+        virtual int childCount() {
+            if(getModel()->getPathData())
+                return 1;
+
+            const auto &docs = App::GetApplication().getDocuments();
+            int docSize = (int)docs.size()*2;
+
+            auto currentObj = getModel()->currentObj.getObject();
+            if(!currentObj)
+                return docSize;
+
+            const auto &objs = currentObj->getDocument()->getObjects();
+            int objSize = (int)objs.size()*2;
+
+            return docSize + objSize
+                + getModel()->getObjectInfo(currentObj).childCount(true);
+        }
+
+        virtual const char *typeName() const {
+            return "RootData";
+        }
+    };
+
+    struct Level1Data : RootData {
+        Level1Data(const QModelIndex &mindex)
+            :RootData(mindex)
+        {}
+
+        int _childObjData(int row, App::DocumentObject *&obj,
+                                   App::DocumentObject *&sobj,
+                                   App::Property *&prop,
+                                   QString &propName,
+                                   const char *&element,
+                                   int &eindex) const
+        {
+            if(row < 0)
+                return -1;
+
+            if(sobj) {
+                obj = sobj;
+                sobj = nullptr;
+            }
+
+            auto objInfo = getModel()->getObjectInfo(obj);
+            sobj = objInfo.getSubObject(row);
+            if(!sobj && !objInfo.getProperty(row, prop, propName)) {
+                element = objInfo.getElement(row, eindex);
+                if(!element)
+                    return -1;
+            }
+
+            return objInfo.childCount();
+        }
+
+        bool _childData(int row,
+                      App::Document *doc,
+                      App::DocumentObject *&obj,
+                      App::DocumentObject *&sobj,
+                      App::Property *&prop,
+                      QString &propName,
+                      const char *&element,
+                      int &eindex) const
+        {
+            if(row < 0)
+                return false;
+
+            if(sobj) {
+                obj = sobj;
+                sobj = nullptr;
+            }
+
+            if(obj)
+                return _childObjData(row, obj, sobj, prop, propName, element, eindex)>=0;
+
+            const auto &objs = doc->getObjects();
+            if(row >= (int)objs.size()*2)
+                return false;
+            obj = objs[row/2];
+            return true;
+        }
+
+        ModelData *getPropertyData(App::DocumentObject *obj, const QString &propName) const {
+            int offset = (int)GetApplication().getDocuments().size()*2
+                + obj->getDocument()->getObjects().size()*2;
+            return getModel()->getPropertyData(getInfo(mindex),mindex.row(),obj,propName,offset);
+        }
+
+        virtual QVariant childData(int row, int role) const {
+            App::Document *doc = nullptr;
+            App::DocumentObject *obj = nullptr;
+            App::DocumentObject *sobj = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            const char *element = nullptr;
+            int eindex = 0;
+            if(!RootData::_childData(mindex.row(), doc, obj, sobj, prop, propName))
+                return QVariant();
+            if(prop) {
+                auto mdata = getPropertyData(obj, propName);
+                if(mdata)
+                    return mdata->childData(row, role);
+                return QVariant();
+            }
+
+            if(!_childData(row, doc, obj, sobj, prop, propName, element, eindex))
+                return QVariant();
+
+            if(element)
+                return elementData(role, element, eindex);
+
+            if(prop)
+                return propData(prop, propName, row, role);
+
+            if(sobj) 
+                return sobjData(obj, sobj, row, role);
+
+            return objData(obj, row, role, false, false);
+        }
+
+        virtual QModelIndex childIndex(int row) {
+            App::Document *doc = nullptr;
+            App::DocumentObject *obj = nullptr;
+            App::DocumentObject *sobj = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            if(!RootData::_childData(mindex.row(), doc, obj, sobj, prop, propName))
+                return QModelIndex();
+            if(prop) {
+                auto mdata = getPropertyData(obj, propName);
+                if(mdata)
+                    return mdata->childIndex(row);
+                return QModelIndex();
+            }
+
+            Info info;
+            info.d.idx1 = mindex.row();
+            info.d.idx2 = -1;
+            return getModel()->createIndex(row,0,infoId(info));
+        }
+
+        virtual int childCount() {
+            App::Document *doc = nullptr;
+            App::DocumentObject *obj = nullptr;
+            App::DocumentObject *sobj = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            const char *element = nullptr;
+            int eindex = 0;
+            if(!RootData::_childData(mindex.row(), doc, obj, sobj, prop, propName))
+                return 0;
+            if(prop) {
+                auto mdata = getPropertyData(obj, propName);
+                if(mdata)
+                    return mdata->childCount();
+                return 0;
+            }
+
+            if(obj)
+                return _childObjData(0, obj, sobj, prop, propName, element, eindex);
+
+            return (int)doc->getObjects().size()*2;
+        }
+
+        virtual const char *typeName() const {
+            return "Level1Data";
+        }
+    };
+
+    struct Level2Data: Level1Data {
+        Level2Data(const QModelIndex &mindex)
+            :Level1Data(mindex)
+        {}
+
+        virtual QVariant childData(int row, int role) const {
+            Info info = getInfo(mindex);
+
+            App::Document *doc = nullptr;
+            App::DocumentObject *obj = nullptr;
+            App::DocumentObject *sobj = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            const char *element = nullptr;
+            int eindex = 0;
+            if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
+                return QVariant();
+
+            if(prop) 
+                return QVariant();
+
+            if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
+                return QVariant();
+
+            if(element)
+                return QVariant();
+
+            if(prop) {
+                if(sobj)
+                    obj = sobj;
+                auto mdata = getModel()->getPropertyData(info,mindex.row(),obj,propName);
+                if(mdata)
+                    return mdata->childData(row, role);
+                return QVariant();
+            }
+
+            if(_childObjData(row, obj, sobj, prop, propName, element, eindex) < 0)
+                return QVariant();
+            
+            if(element)
+                return elementData(role, element, eindex);
+
+            if(sobj) 
+                return sobjData(obj, sobj, row, role);
+
+            return propData(prop, propName, row, role);
+        }
+
+        virtual QModelIndex childIndex(int row) {
+            Info info = getInfo(mindex);
+
+            App::Document *doc = nullptr;
+            App::DocumentObject *obj = nullptr;
+            App::DocumentObject *sobj = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            const char *element = nullptr;
+            int eindex = 0;
+            if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
+                return QModelIndex();
+
+            if(prop) 
+                return QModelIndex();
+
+            if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
+                return QModelIndex();
+
+            if(element)
+                return QModelIndex();
+
+            if(prop) {
+                if(sobj)
+                    obj = sobj;
+                auto mdata = getModel()->getPropertyData(info, mindex.row(), obj, propName);
+                if(mdata)
+                    return mdata->childIndex(row);
+                return QModelIndex();
+            }
+
+            info.d.idx2 = mindex.row();
+            return getModel()->createIndex(row, 0, infoId(info));
+        }
+
+        virtual int childCount() {
+            Info info = getInfo(mindex);
+
+            App::Document *doc = nullptr;
+            App::DocumentObject *obj = nullptr;
+            App::DocumentObject *sobj = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            const char *element = nullptr;
+            int eindex = 0;
+            if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
+                return 0;
+
+            if(prop) 
+                return 0;
+
+            if(!Level1Data::_childData(mindex.row(), doc, obj, sobj, prop, propName, element, eindex))
+                return 0;
+
+            if(element)
+                return 0;
+
+            if(prop) {
+                if(sobj)
+                    obj = sobj;
+                auto mdata = getModel()->getPropertyData(info, mindex.row(), obj, propName);
+                if(mdata)
+                    return mdata->childCount();
+                return 0;
+            }
+
+            return _childObjData(0, obj, sobj, prop, propName, element, eindex);
+        }
+
+        virtual const char *typeName() const {
+            return "Level2Data";
+        }
+    };
+
+    struct Level3Data: Level2Data {
+        Level3Data(const QModelIndex &mindex)
+            :Level2Data(mindex)
+        {}
+
+        ModelData *_childData() const {
+            Info info = getInfo(mindex);
+
+            App::Document *doc = nullptr;
+            App::DocumentObject *obj = nullptr;
+            App::DocumentObject *sobj = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            const char *element = nullptr;
+            int eindex = 0;
+            if(!RootData::_childData(info.d.idx1, doc, obj, sobj, prop, propName))
+                return nullptr;
+
+            if(prop) 
+                return nullptr;
+
+            if(!Level1Data::_childData(info.d.idx2, doc, obj, sobj, prop, propName, element, eindex))
+                return nullptr;
+
+            if(prop || element) 
+                return nullptr;
+
+            if(_childObjData(mindex.row(), obj, sobj, prop, propName, element, eindex) < 0)
+                return nullptr;
+
+            if(element)
+                return getModel()->getElementData(info, mindex.row(), obj);
+
+            if(prop) {
+                if(sobj)
+                    obj = sobj;
+                return getModel()->getPropertyData(info, mindex.row(), obj, propName);
+            }
+            return getModel()->getObjectData(info, mindex.row(), sobj);
+        }
+
+        virtual QVariant childData(int row, int role) const {
+            ModelData *mdata = _childData();
+            if(mdata)
+                return mdata->childData(row, role);
+            return QVariant();
+        }
+
+        virtual QModelIndex childIndex(int row) {
+            ModelData *mdata = _childData();
+            if(mdata)
+                return mdata->childIndex(row);
+            return QModelIndex();
+        }
+
+        virtual int childCount() {
+            ModelData *mdata = _childData();
+            if(mdata)
+                return mdata->childCount();
+            return 0;
+        }
+
+        virtual const char *typeName() const {
+            return "Level3Data";
+        }
+    };
+
+    struct ObjectData: ModelData {
+        const ObjInfo &objInfo;
+
+        ObjectData(const QModelIndex &mindex, const ObjInfo &info)
+            :ModelData(mindex), objInfo(info)
+        {}
+
+        virtual QVariant childData(int row, int role) const
+        {
+            App::DocumentObject *obj = nullptr;
+            auto sobj = objInfo.getSubObject(row, &obj);
+            if(sobj) 
+                return sobjData(obj, sobj, row, role);
+            int eindex = 0;
+            const char *element = objInfo.getElement(row, eindex);
+            if(element)
+                return elementData(role, element, eindex);
+            QString propName;
+            auto prop = objInfo.getProperty(row, &propName).second;
+            return propData(prop, propName, row, role);
+        }
+
+        virtual QModelIndex childIndex(int row) {
+            ModelData *mdata = nullptr;
+            App::Property *prop = nullptr;
+            QString propName;
+            const char *element = nullptr;
+            int eindex = 0;
+
+            auto sobj = objInfo.getSubObject(row);
+            if(sobj)
+                mdata = getModel()->getObjectData(mindex,row,sobj);
+            else if(objInfo.getProperty(row, prop, propName))
+                mdata = getModel()->getPropertyData(mindex, row, objInfo.getObject(), propName);
+            else if((element = objInfo.getElement(row, eindex)))
+                mdata = getModel()->getElementData(mindex, row, objInfo.getObject());
+
+            if(mdata)
+                return mdata->mindex;
+            return QModelIndex();
+        }
+
+        virtual int childCount() {
+            return objInfo.childCount();
+        }
+
+        virtual const char *typeName() const {
+            return "ObjectData";
+        }
+    };
+
+    struct ElementData: ObjectData {
+
+        ElementData(const QModelIndex &mindex, const ObjInfo &info)
+            :ObjectData(mindex, info)
+        {}
+
+        virtual QModelIndex childIndex(int) {
+            return QModelIndex();
+        }
+
+        virtual int childCount() {
+            return 0;
+        }
+
+        virtual const char *typeName() const {
+            return "ElementData";
+        }
+    };
+
+    struct PythonData: ModelData {
+        QString name;
+        PyObject *pyObj;
+
+        struct TipInfo{
+            QString name;
+            QString description;
+            CallTip::Type type;
+
+            TipInfo(CallTip &tip)
+                :name(tip.name)
+                ,description(tip.description)
+                ,type(tip.type)
+            {}
+        };
+
+        std::vector<TipInfo> tipArray;
+
+        PythonData(const QModelIndex &mindex, const QString &n = QString())
+            :ModelData(mindex), name(n), pyObj(nullptr)
+        {}
+
+        ~PythonData() {
+            // No need to hold GIL assuming our parent model will hold the lock
+            // before clearing model data
+            Py_XDECREF(pyObj);
+        }
+
+        virtual bool initChild(PythonData &child) const {
+            assert(!child.pyObj);
+
+            // Assumes caller already holds Python GIL
+
+            if(!pyObj) {
+                FC_TRACE("No parent for " << name.toLatin1().constData());
+                return false;
+            }
+            FC_TRACE("Evaluate attribute " << name.toLatin1().constData() << '.'
+                    << child.name.toLatin1().constData());
+
+            try {
+                Py::Object attr = Py::Object(pyObj).getAttr(child.name.toLatin1().constData());
+                if(!attr.ptr()) {
+                    FC_TRACE("Invalid attribute name: " << name.toLatin1().constData()
+                            << child.name.toLatin1().constData());
+                    return false;
+                }
+                child.pyObj = Py::new_reference_to(attr);
+                return true;
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                    e.ReportException();
+                    FC_ERR("Failed to obtain attribute " << name.toLatin1().constData()
+                            << child.name.toLatin1().constData());
+                }
+            } catch (Base::Exception &e) {
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                    e.ReportException();
+                    FC_ERR("Failed to list attribute " << name.toLatin1().constData()
+                            << child.name.toLatin1().constData());
+                }
+            } catch (...) {
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                    FC_ERR("Failed to list attribute " << name.toLatin1().constData()
+                            << child.name.toLatin1().constData());
+            }
+            return false;
+        }
+
+        virtual void init() {
+            if(tipArray.size() || pyObj == Py_None)
                 return;
+
+            Base::PyGILStateLocker lock;
+            if(!pyObj) {
+                auto pdata = dynamic_cast<PythonData*>(getModel()->parentData(mindex));
+                if(!pdata) {
+                    FC_TRACE("No parent for " << name.toLatin1().constData());
+                    return;
+                }
+                if(!pdata->initChild(*this))
+                    return;
+            }
+            try {
+                auto tips = CallTipsList::extractTips(Py::Object(pyObj));
+                FC_TRACE("Extracted " << tips.size() << " tips from "
+                        << getModel()->indexToString(mindex));
+                tipArray.reserve(tips.size());
+                for(auto &tip : tips) {
+                    if(tip.name.isEmpty())
+                        continue;
+                    if(FC_LOG_INSTANCE.level() > FC_LOGLEVEL_TRACE)
+                        FC_TRACE(tip.name.toLatin1().constData());
+                    tipArray.emplace_back(tip);
+                }
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                    e.ReportException();
+                    FC_ERR("Failed to list attribute of " << name.toLatin1().constData());
+                }
+            } catch (Base::Exception &e) {
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                    e.ReportException();
+                    FC_ERR("Failed to list attribute of " << name.toLatin1().constData());
+                }
+            } catch (...) {
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                    FC_ERR("Failed to list attribute of " << name.toLatin1().constData());
             }
         }
 
-        if(noProperty)
-            return;
-        if(!propName) {
-            idx = row;
-            obj->getPropertyNamedList(props);
-            propSize = (int)props.size();
-            if(idx<0 || idx>=propSize)
-                return;
-            propName = props[idx].first;
-            if(count)
-                *count = propSize;
+        virtual int childCount() {
+            init();
+            return (int)tipArray.size();
         }
-        if(v) 
-            *v = QString::fromLatin1(propName);
-        return;
+
+        virtual QVariant childData(int row, int role) const
+        {
+            if(row<0 || row>=(int)tipArray.size())
+                return QVariant();
+
+            QString res;
+            switch(role) {
+            case Qt::UserRole:
+            case Qt::EditRole:
+                return QLatin1String(".") + tipArray[row].name;
+            case Qt::DisplayRole:
+                return tipArray[row].name;
+            case Qt::ToolTipRole:
+                return tipArray[row].description;
+            case Qt::DecorationRole:
+                return CallTipsList::iconOfType(tipArray[row].type);
+            default:
+                return QVariant();
+            }
+        }
+
+        virtual QModelIndex childIndex(int row) {
+            return _childIndex(row);
+        }
+
+        QModelIndex _childIndex(int row, int offset=0) {
+            if(row<0 || row>=(int)tipArray.size())
+                return QModelIndex();
+
+            PythonData *mdata = getModel()->getPythonData(mindex, row+offset);
+            if(!mdata)
+                return QModelIndex();
+
+            if(mdata->name.isEmpty()) 
+                mdata->name = tipArray[row].name;
+            return mdata->mindex;
+        }
+
+        virtual const char *typeName() const {
+            return "PythonData";
+        }
+    };
+
+    struct PropertyData: PythonData {
+        std::vector<std::pair<App::ObjectIdentifier,QString> > paths;
+        const ObjInfo &objInfo;
+        int propIndex;
+
+        PropertyData(const QModelIndex &mindex, App::DocumentObject *owner,
+                     const QString &propName, int offset)
+            : PythonData(mindex, propName)
+            , objInfo(getModel()->getObjectInfo(owner))
+            , propIndex(mindex.row()-offset)
+        {
+        }
+
+        ~PropertyData() {
+        }
+
+        virtual void init() {
+            if(pyObj) {
+                PythonData::init();
+                return;
+            }
+
+            App::DocumentObject *owner = objInfo.getObject();
+            if(!owner)
+                return;
+
+            auto propInfo = objInfo.getProperty(propIndex);
+            App::Property *prop = propInfo.second;
+            if(!prop)
+                return;
+
+            const char *propName = propInfo.first;
+            Base::PyGILStateLocker lock;
+            if(ObjectIdentifier::isPseudoProperty(prop)) {
+                App::ObjectIdentifier path(owner, propName);
+                try {
+                    this->pyObj = Py::new_reference_to(path.getPyValue());
+                    PythonData::init();
+                } catch (Base::Exception &e) {
+                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                        e.ReportException();
+                        FC_ERR("Failed to evaluate pesudo property " << path.toString());
+                    }
+                } catch (...) {
+                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                        FC_ERR("Failed to evaluate pesudo property " << path.toString());
+                }
+            } else {
+                try {
+                    initPaths(prop);
+                    this->pyObj = prop->getPyObject();
+                    PythonData::init();
+                } catch (Base::Exception &e) {
+                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                        e.ReportException();
+                        FC_ERR("Failed to init property " << prop->getFullName());
+                    }
+                } catch (...) {
+                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                        FC_ERR("Failed to init property " << prop->getFullName());
+                }
+            }
+        }
+
+        void initPaths(App::Property *prop) {
+            std::vector<App::ObjectIdentifier> _paths;
+            prop->getPaths(_paths);
+            FC_TRACE("Extracted " << _paths.size() << " paths from "
+                    << prop->getFullName() << ", "
+                    << getModel()->indexToString(mindex));
+            paths.reserve(_paths.size());
+            for(auto &p : _paths) {
+                std::string pathName = p.getSubPathStr(false,false);
+                if(pathName.size())
+                    paths.emplace_back(std::move(p), QString::fromLatin1(pathName.c_str()));
+            }
+        }
+
+        virtual bool initChild(PythonData &child) {
+            assert(!child.pyObj);
+
+            // Assume caller holds Python GIL
+
+            int row = child.mindex.row();
+            if(row < 0)
+                return false;
+
+            int offset = (int)paths.size();
+            if(row >= offset) 
+                return PythonData::initChild(child);
+
+            const auto &path = paths[row].first;
+            try {
+                child.pyObj = Py::new_reference_to(path.getPyValue(true));
+                return true;
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                    e.ReportException();
+                    FC_ERR("Failed to obtain path " << path.toString());
+                }
+            } catch (Base::Exception &e) {
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                    e.ReportException();
+                    FC_ERR("Failed to obtain path " << path.toString());
+                }
+            } catch (...) {
+                if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                    FC_ERR("Failed to obtain path " << path.toString());
+            }
+            return false;
+        }
+
+        virtual int childCount() {
+            init();
+            return (int)paths.size() + tipArray.size();
+        }
+
+        virtual QVariant childData(int row, int role) const
+        {
+            if(row < 0)
+                return QVariant();
+
+            if(row >= (int)paths.size()) 
+                return PythonData::childData(row-(int)paths.size(), role);
+
+            const QString &pathName = paths[row].second;
+            switch(role) {
+            case Qt::UserRole:
+            case Qt::EditRole:
+                return QLatin1String(".") + pathName;
+            case Qt::DisplayRole:
+                return pathName;
+            default:
+                return QVariant();
+            }
+        }
+
+        virtual QModelIndex childIndex(int row)
+        {
+            if(row < 0)
+                return QModelIndex();
+
+            int offset = (int)paths.size();
+            if(row >= offset) 
+                return _childIndex(row-offset, offset);
+
+            PythonData *mdata = getModel()->getPythonData(mindex, row);
+            if(!mdata)
+                return QModelIndex();
+
+            if(mdata->name.isEmpty())
+                mdata->name = paths[row].second;
+            return mdata->mindex;
+        }
+
+        virtual const char *typeName() const {
+            return "PropertyData";
+        }
+    };
+
+    ExpressionCompleterModel(QObject *parent, bool noProperty)
+        :QAbstractItemModel(parent), noProperty(noProperty)
+    {
+        Info info;
+        info.d.idx1 = -1;
+        info.d.idx2 = -1;
+        rootIndex = createIndex(-1,0,infoId(info));
+    }
+
+    ~ExpressionCompleterModel() {
+        Base::PyGILStateLocker lock;
+        modelData.clear();
+    }
+
+    PythonData *getPathData() const {
+        if(!pathIndex.isValid())
+            return nullptr;
+        auto it = dataMap.find(pathIndex);
+        if(it == dataMap.end() 
+                || it->second<0 
+                || it->second>=(int)modelData.size())
+            return nullptr;
+        return dynamic_cast<PythonData*>(modelData[it->second].get());
+    }
+
+    bool setPath(QStringList &l, VariableExpression *vexpr) {
+        // Some Python attributes are not discoverable through extractTips(),
+        // e.g. Shape.Face1, or list/map indexing, etc. setPath() here tries to
+        // provide completion after those attributes by setting a shortcut
+        // pathIndex to provide root data using the evaluated python attribute.
+        //
+        // We'll need at least one complete components in the given variable
+        // expression, which is the property reference
+
+        auto obj = currentObj.getObject();
+        if(noProperty || !obj || l.isEmpty()) {
+            auto pathSize = currentPath.size();
+            currentPath.clear();
+            if(pathSize || pathIndex.isValid())
+                reset();
+            return false;
+        }
+
+        try {
+            std::string pathString = vexpr->toString();
+            if(pathString == currentPath) {
+                FC_TRACE("same path " << currentPath);
+                if(pathIndex.isValid()) {
+                    QStringList newl;
+                    newl << QString::fromUtf8(currentPath.c_str());
+                    newl << l.last();
+                    l = newl;
+                    return true;
+                }
+                return false;
+            }
+
+            FC_TRACE("change path " << currentPath << " -> " << pathString);
+            currentPath = std::move(pathString);
+
+            // If the last component does not start with '.', it maybe a
+            // list/map index accesor, which cannot be completed.
+            if(l.last().startsWith(QLatin1Char('.'))) {
+                Base::PyGILStateLocker lock;
+                Py::Object value = vexpr->getPyValue();
+                if(!value.isNone()) {
+                    if(!vexpr->hasComponent()) {
+                        int pindex = 0;
+                        vexpr->getPath().getPropertyComponent(0,&pindex);
+                        if(pindex+1 == (int)vexpr->getPath().getComponents().size()) {
+                            int pseudoType = 0;
+                            App::Property *prop = vexpr->getPath().getProperty(&pseudoType);
+                            if(prop) {
+                                Info info;
+                                info.d.idx1 = -1;
+                                info.d.idx2 = -1;
+                                reset(false);
+                                auto pdata = getPropertyData(info, 0, obj, QString::fromUtf8(currentPath.c_str()));
+                                pdata->pyObj = Py::new_reference_to(value);
+                                if(!pseudoType)
+                                    pdata->initPaths(prop);
+                                pathIndex = pdata->mindex;
+                                endResetModel();
+                                QStringList newl;
+                                newl << pdata->name;
+                                newl << l.last();
+                                l = newl;
+                                return true;
+                            }
+                        }
+                    }
+
+                    Info info;
+                    info.d.idx1 = -1;
+                    info.d.idx2 = -1;
+                    reset(false);
+                    auto pdata = getPythonData(info,0);
+                    pathIndex = pdata->mindex;
+                    pdata->pyObj = Py::new_reference_to(value);
+                    pdata->name = QString::fromUtf8(currentPath.c_str());
+                    endResetModel();
+                    QStringList newl;
+                    newl << pdata->name;
+                    newl << l.last();
+                    l = newl;
+                    return true;
+                }
+            }
+            FC_TRACE("ignore path " << currentPath);
+        } catch (Py::Exception &) {
+            Base::PyException e;
+            FC_TRACE("reset path " << currentPath << " on error: " << e.what());
+        } catch (Base::Exception &e) {
+            FC_TRACE("reset path " << currentPath << " on error: " << e.what());
+        } catch (...) {
+            FC_TRACE("reset path " << currentPath << " on unknown error");
+        }
+        if(pathIndex.isValid())
+            reset();
+        return false;
+    }
+
+    void setNoProperty(bool enabled) {
+        noProperty = enabled;
+    }
+
+    void setDocumentObject(const App::DocumentObject *obj) {
+        if(obj && obj->getNameInDocument()) {
+            currentObj = obj;
+            if(!noProperty)
+                inList = obj->getInListEx(true);
+        } else {
+            currentObj = App::DocumentObjectT();
+            inList.clear();
+        }
+
+        reset();
+    }
+
+    void reset(bool end=true) {
+        beginResetModel();
+        dataMap.clear();
+        objMap.clear();
+        pathIndex = QModelIndex();
+        {
+            Base::PyGILStateLocker lock;
+            modelData.clear();
+        }
+        if(end)
+            endResetModel();
+    }
+
+    bool getDataInfo(const QModelIndex &index, Info &info) const {
+        auto it = dataMap.find(index);
+        if(it == dataMap.end() || it->second<0 || it->second>=(int)modelData.size())
+            return false;
+        info.d.idx1 = -2;
+        info.d.idx2 = it->second;
+        return true;
+    }
+
+    PropertyData *getPropertyData(const QModelIndex &index, int row, App::DocumentObject *owner,
+                               const QString &propName, int offset=0) const
+    {
+        Info info;
+        if(getDataInfo(index,info))
+            return getPropertyData(info, row, owner, propName, offset);
+        return nullptr;
+    }
+
+    PropertyData *getPropertyData(const Info &info, int row, App::DocumentObject *owner,
+                               const QString &propName, int offset=0) const
+    {
+        if(!owner)
+            return nullptr;
+        auto r = dataMap.insert(std::make_pair(createIndex(row,0,infoId(info)),-1));
+        if(r.first->second<0) {
+            r.first->second = (int)modelData.size();
+            modelData.emplace_back(new PropertyData(r.first->first, owner, propName, offset));
+        }
+        if(r.first->second>=0 && r.first->second<(int)modelData.size())
+            return dynamic_cast<PropertyData*>(modelData[r.first->second].get());
+        return nullptr;
+    }
+
+    PythonData *getPythonData(const QModelIndex &index, int row) const {
+        Info info;
+        if(getDataInfo(index,info))
+            return getPythonData(info, row);
+        return nullptr;
+    }
+
+    PythonData *getPythonData(const Info &info, int row) const {
+        auto r = dataMap.insert(std::make_pair(createIndex(row,0,infoId(info)),-1));
+        if(r.first->second<0) {
+            r.first->second = (int)modelData.size();
+            modelData.emplace_back(new PythonData(r.first->first));
+        }
+        if(r.first->second>=0 && r.first->second<(int)modelData.size())
+            return dynamic_cast<PythonData*>(modelData[r.first->second].get());
+        return nullptr;
+    }
+
+    ObjectData *getObjectData(const QModelIndex &index, int row, App::DocumentObject *obj) const {
+        Info info;
+        if(getDataInfo(index,info))
+            return getObjectData(info, row, obj);
+        return nullptr;
+    }
+
+    const ObjInfo &getObjectInfo(App::DocumentObject *obj) const {
+        return objMap[obj].init(obj, noProperty);
+    }
+
+    ObjectData *getObjectData(const Info &info, int row, App::DocumentObject *obj) const {
+        if(!obj || !obj->getNameInDocument())
+            return nullptr;
+        auto r = dataMap.insert(std::make_pair(createIndex(row,0,infoId(info)),-1));
+        if(r.first->second<0) {
+            r.first->second = (int)modelData.size();
+            modelData.emplace_back(new ObjectData(r.first->first, getObjectInfo(obj)));
+        }
+        if(r.first->second>=0 && r.first->second<(int)modelData.size())
+            return dynamic_cast<ObjectData*>(modelData[r.first->second].get());
+        return nullptr;
+    }
+
+    ElementData *getElementData(const QModelIndex &index, int row, App::DocumentObject *obj) const {
+        Info info;
+        if(getDataInfo(index,info))
+            return getElementData(info, row, obj);
+        return nullptr;
+    }
+
+    ElementData *getElementData(const Info &info, int row, App::DocumentObject *obj) const {
+        if(!obj || !obj->getNameInDocument())
+            return nullptr;
+        auto r = dataMap.insert(std::make_pair(createIndex(row,0,infoId(info)),-1));
+        if(r.first->second<0) {
+            r.first->second = (int)modelData.size();
+            modelData.emplace_back(new ElementData(r.first->first, getObjectInfo(obj)));
+        }
+        if(r.first->second>=0 && r.first->second<(int)modelData.size())
+            return dynamic_cast<ElementData*>(modelData[r.first->second].get());
+        return nullptr;
+    }
+
+    ModelData *parentData(const QModelIndex &index) const {
+        Info info;
+        info = getInfo(index);
+        if(info.d.idx1 == -2) {
+            if(info.d.idx2 < 0 || info.d.idx2 >= (int)modelData.size())
+                return nullptr;
+            return modelData[info.d.idx2].get();
+        }
+        return nullptr;
     }
 
     QModelIndex parent(const QModelIndex & index) const {
         if(!index.isValid())
             return QModelIndex();
         Info info;
-        Info parentInfo;
-        info = parentInfo = getInfo(index);
-        if(info.d.obj>=0) {
-            parentInfo.d.obj = -1;
-            return createIndex(info.d.obj,0,infoId(parentInfo));
+        info = getInfo(index);
+        if(info.d.idx1 == -2) {
+            if(info.d.idx2 < 0 || info.d.idx2 >= (int)modelData.size())
+                return QModelIndex();
+            return modelData[info.d.idx2]->mindex;
         }
-        if(info.d.doc>=0) {
-            parentInfo.d.doc = -1;
-            return createIndex(info.d.doc,0,infoId(parentInfo));
+        if(info.d.idx2>=0) {
+            Info parentInfo = info;
+            parentInfo.d.idx2 = -1;
+            return createIndex(info.d.idx2,0,infoId(parentInfo));
         }
-        return QModelIndex();
+        if(info.d.idx1>=0) {
+            Info parentInfo = info;
+            parentInfo.d.idx1 = -1;
+            return createIndex(info.d.idx1,0,infoId(parentInfo));
+        }
+        return rootIndex;
     }
 
-    QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const {
+    std::string indexToString(const QModelIndex &index) const {
+        std::ostringstream os;
+
+        int row = index.row();
+        Info info = getInfo(index);
+        os << '(' << info.d.idx1 << ',' << info.d.idx2 << ',';
+
+        QString name;
+        if(info.d.idx1 == -2) {
+            if(info.d.idx2 < 0 || info.d.idx2 >= (int)modelData.size()) {
+                os << "Out of bound)";
+                return os.str();
+            }
+            auto &mdata = modelData[info.d.idx2];
+            if(mdata->mindex == pathIndex)
+                os << "Path";
+            os << mdata->typeName();
+            name = mdata->childData(row, Qt::UserRole).toString();
+        } else if(info.d.idx1 < 0) {
+            os << "RootData";
+            name = RootData(this).childData(row, Qt::UserRole).toString();
+        } else if(info.d.idx2 < 0) {
+            os << "Level1Data";
+            name = Level1Data(parent(index)).childData(row, Qt::UserRole).toString();
+        } else {
+            os << "Level2Data";
+            name = Level2Data(parent(index)).childData(row, Qt::UserRole).toString();
+        }
+        os << ',' << row << ", " << name.toUtf8().constData() << ')';
+        return os.str();
+    }
+
+    virtual QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const {
+        if(!index.isValid())
+            return QVariant();
+
+        switch(role) {
+        case Qt::UserRole+1:
+        case Qt::UserRole:
+        case Qt::EditRole:
+        case Qt::DisplayRole:
+        case Qt::ToolTipRole:
+        case Qt::DecorationRole:
+            break;
+        default:
+            return QVariant();
+        }
+
+        int row = index.row();
+
+        Info info = getInfo(index);
+        if(info.d.idx1 == -2) {
+            if(info.d.idx2 < 0 || info.d.idx2 >= (int)modelData.size())
+                return QVariant();
+            return modelData[info.d.idx2]->childData(row, role);
+        }
+
+        if(info.d.idx1 < 0)
+            return RootData(this).childData(row, role);
+
+        if(info.d.idx2 < 0)
+            return Level1Data(parent(index)).childData(row, role);
+
+        return Level2Data(parent(index)).childData(row, role);
+    }
+
+    virtual QModelIndex index(int row, int, const QModelIndex &parent = QModelIndex()) const {
         if(row<0)
             return QModelIndex();
-        Info info;
-        if(!parent.isValid()) {
-            info.d.doc = -1;
-            info.d.obj = -1;
-        }else{
-            info = getInfo(parent);
-            if(info.d.doc<=0)
-                info.d.doc = parent.row();
-            else if(info.d.obj<=0)
-                info.d.obj = parent.row();
-            else
+
+        if(!parent.isValid())
+            return RootData(this).childIndex(row);
+
+        auto it = dataMap.find(parent);
+        if(it != dataMap.end()) {
+            if(it->second < 0 || it->second >= (int)modelData.size())
                 return QModelIndex();
+            return modelData[it->second]->childIndex(row);
         }
-        return createIndex(row,column,infoId(info));
+
+        Info info = getInfo(parent);
+        if(info.d.idx1==-2)
+            return QModelIndex();
+
+        if(info.d.idx1<0)
+            return Level1Data(parent).childIndex(row);
+        else if(info.d.idx2<0)
+            return Level2Data(parent).childIndex(row);
+        else
+            return Level3Data(parent).childIndex(row);
     }
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const {
-        Info info;
-        int row = 0;
-        if(!parent.isValid()) {
-            info.d.doc = -1;
-            info.d.obj = -1;
-            row = -1;
-        }else{
-            info = getInfo(parent);
-            if(info.d.doc<0) 
-                info.d.doc = parent.row();
-            else if(info.d.obj<0)
-                info.d.obj = parent.row();
-            else
+    virtual int rowCount(const QModelIndex & parent = QModelIndex()) const {
+        if(!parent.isValid())
+            return RootData(this).childCount();
+
+        auto it = dataMap.find(parent);
+        if(it != dataMap.end()) {
+            if(it->second < 0 || it->second >= (int)dataMap.size())
                 return 0;
+            return modelData[it->second]->childCount();
         }
-        int count = 0;
-        _data(info,row,0,&count);
-        FC_TRACE(info.d.doc << "," << info.d.obj << "," << row << " row count " << count);
-        return count;
+
+        Info info = getInfo(parent);
+        if(info.d.idx1 == -2)
+            return 0;
+
+        if(info.d.idx1 < 0)
+            return Level1Data(parent).childCount();
+        else if(info.d.idx2 < 0)
+            return Level2Data(parent).childCount();
+        else
+            return Level3Data(parent).childCount();
     }
 
-    int columnCount(const QModelIndex &) const {
+    virtual int columnCount(const QModelIndex &) const {
         return 1;
     }
 
-private:
+public:
+    // Storage for model data that can't be efficiently calculated on demand
+    mutable std::vector<std::unique_ptr<ModelData> > modelData;
+
+    // Map from QModelIndex of the node to the array index to modelData
+    mutable std::map<QModelIndex,int> dataMap;
+
+    // For caching sub-object and property of a document object.
+    mutable std::unordered_map<App::DocumentObject*, ObjInfo> objMap;
+
+    QModelIndex rootIndex;
+    QModelIndex pathIndex;
+    std::string currentPath;
+
     std::set<App::DocumentObject*> inList;
-    std::string currentDoc;
-    std::string currentObj;
+    App::DocumentObjectT currentObj;
     bool noProperty;
 };
 
 /**
  * @brief Construct an ExpressionCompleter object.
- * @param currentDoc Current document to generate the model from.
  * @param currentDocObj Current document object to generate model from.
  * @param parent Parent object owning the completer.
  */
-
 ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, 
         QObject *parent, bool noProperty)
     : QCompleter(parent), currentObj(currentDocObj), noProperty(noProperty)
 {
     setCaseSensitivity(Qt::CaseInsensitive);
+    // setCompletionMode(UnfilteredPopupCompletion);
 }
 
 void ExpressionCompleter::init() {
     if(model())
         return;
 
-    setModel(new ExpressionCompleterModel(this,currentObj.getObject(),noProperty));
+    auto m = new ExpressionCompleterModel(this,noProperty);
+    m->setDocumentObject(currentObj.getObject());
+    setModel(m);
 }
 
 void ExpressionCompleter::setDocumentObject(const App::DocumentObject *obj) {
@@ -354,69 +1859,147 @@ QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
     if(!m || !index.isValid())
         return QString();
 
-    QString res;
+    QString res = m->data(index, Qt::UserRole+1).toString();
+    if(res.size())
+        return res;
+
     auto parent = index;
     do {
         res = m->data(parent, Qt::UserRole).toString() + res;
         parent = parent.parent();
     }while(parent.isValid());
 
-    auto info = ExpressionCompleterModel::getInfo(index);
-    FC_TRACE("join path " << info.d.doc << "," << info.d.obj << "," << index.row()
-            << ": " << res.toUtf8().constData());
+    if(closeString) {
+        if(!res.endsWith(QLatin1Char('.')))
+            res += QLatin1String(".<<");
+        else
+            res += QLatin1String("<<");
+    }
+
+    FC_TRACE("join path " << static_cast<ExpressionCompleterModel*>(m)->indexToString(index)
+            << " -> " << res.toUtf8().constData());
     return res;
 }
 
 QStringList ExpressionCompleter::splitPath ( const QString & input ) const
 {
-    QStringList l;
     std::string path = input.toUtf8().constData();
-    if(path.empty())
+    if(path.empty()) {
+        FC_TRACE("split path empty");
+        return QStringList();
+    }
+
+    QStringList l;
+
+    QString ending;
+    if(path.back() == '.') {
+        ending = QLatin1String(".");
+        path.pop_back();
+    } else if (boost::ends_with(path, ".<<")) {
+        ending = QLatin1String(".<<");
+        path.resize(path.size()-3);
+    } else if(path.back() == '#') {
+        l << input;
+        FC_TRACE("split path, " << path);
         return l;
+    } else if (boost::ends_with(path, "#<<")) {
+        l << input.mid(0,input.size()-2);
+        l << QLatin1String("<<");
+        FC_TRACE("split path " << path 
+                << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
+        return l;
+    }
 
     int retry = 0;
-    std::string trim;
+    const char *trim = nullptr;
+
+    if(closeString) {
+        retry = 2;
+        path += ">>._self";
+        if(ending.isEmpty())
+            trim = ">>";
+    }
+
     while(1) {
         try {
-            App::ObjectIdentifier p = ObjectIdentifier::parse(
-                    currentObj.getObject(), path);
-
-            std::vector<std::string> sl = p.getStringList();
-            std::vector<std::string>::const_iterator sli = sl.begin();
-            if(retry && sl.size())
-                sl.pop_back();
-            if(trim.size() && boost::ends_with(sl.back(),trim))
-                sl.back().resize(sl.back().size()-trim.size());
-            while (sli != sl.end()) {
-                l << Base::Tools::fromStdString(*sli);
-                ++sli;
+            l.clear();
+            App::DocumentObject *owner = currentObj.getObject();
+            FC_TRACE("parse " << path);
+            std::unique_ptr<Expression> expr(Expression::parse(owner,path));
+            auto vexpr = Base::freecad_dynamic_cast<VariableExpression>(expr.get());
+            if(!vexpr) {
+                FC_TRACE("invalid expression type " << (expr?expr->getTypeId().getName():"?"));
+                break;
             }
+
+            std::vector<std::string> sl = vexpr->getStringList();
+            if(retry && sl.size()) {
+                sl.pop_back();
+                vexpr->popComponents();
+            } 
+            
+            if (ending.isEmpty())
+                vexpr->popComponents();
+
+            if(sl.size() && trim && boost::ends_with(sl.back(),trim))
+                sl.back().resize(sl.back().size()-strlen(trim));
+
+            for(auto &s : sl) {
+                if(s.size())
+                    l << Base::Tools::fromStdString(s);
+            }
+
+            if(ending.size())
+                l.push_back(ending);
+            else if (l.size() && l.last().endsWith(QLatin1Char('.')))
+                l.last().truncate(l.last().size()-1);
+
+            auto m = dynamic_cast<ExpressionCompleterModel*>(model());
+            if(m && m->setPath(l, vexpr)) {
+                FC_TRACE("adjust path " << path 
+                        << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
+            }
+
             FC_TRACE("split path " << path 
                     << " -> " << l.join(QLatin1String("/")).toUtf8().constData());
             return l;
         }
         catch (const Base::Exception &e) {
-            FC_TRACE("split path " << path << " error: " << e.what());
+            FC_TRACE("split path error: " << e.what());
             if(!retry) {
-                char last = path[path.size()-1];
-                if(last!='#' && last!='.' && path.find('#')!=std::string::npos) {
-                    path += "._self";
-                    ++retry;
-                    continue;
-                }
+                path += "._self";
+                ++retry;
+                continue;
             }else if(retry==1) {
                 path.resize(path.size()-6);
-                char last = path[path.size()-1];
-                if(last!='.' && last!='<' && path.find("#<<")!=std::string::npos) {
-                    path += ">>._self";
-                    ++retry;
+                path += ">>._self";
+                ++retry;
+                if(ending.isEmpty())
                     trim = ">>";
-                    continue;
-                }
+                continue;
             }
-            return QStringList() << input;
+            break;
+        }
+        catch(Py::Exception &) {// shouldn't happend, just to be safe
+            Base::PyException e;
+            FC_TRACE("split path error " << e.what());
+            break;
+        }
+        catch(...) {
+            FC_TRACE("split path unknown error");
+            break;
         }
     }
+
+    l.clear();
+    if(ending.size()) {
+        l << input.mid(0,input.size()-ending.size());
+        l << ending;
+    } else
+        l << input;
+    FC_TRACE("split path bail out -> " 
+            << l.join(QLatin1String("/")).toUtf8().constData());
+    return l;
 }
 
 // Code below inspired by blog entry:
@@ -445,19 +2028,41 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 
     prefixEnd = prefix.size();
+    closeString = false;
+    insideString = false;
 
     // Pop those trailing tokens depending on the given position, which may be
     // in the middle of a token, and we shall include that token.
     for(auto it=tokens.begin();it!=tokens.end();++it) {
-        if(get<1>(*it) >= pos) {
-            // Include the immediately followed '.' or '#', because we'll be
-            // inserting these separators too, in ExpressionCompleteModel::pathFromIndex()
-            if(it!=tokens.begin() && get<0>(*it)!='.' && get<0>(*it)!='#')
-                it = it-1;
-            tokens.resize(it-tokens.begin()+1);
-            prefixEnd = start + get<1>(*it) + (int)get<2>(*it).size();
-            break;
+
+        auto &tok = *it;
+        if(get<1>(tok) + (int)get<2>(tok).size() < pos-start)
+            continue;
+
+        // In case we are in the middle of a string, search for the closest
+        // trailing '.' inside the string
+        if(it != tokens.begin()
+                && get<0>(tok) == ExpressionParser::STRING
+                && get<0>(*(it-1)) == '.')
+        {
+            insideString = true;
+            int index = prefix.indexOf(QLatin1Char('.'),pos-1);
+            int end = start + get<1>(tok) + (int)get<2>(tok).size();
+            if(index+1 >= pos && index+1 < end) {
+                tokens.resize(it-tokens.begin()+1);
+                prefixEnd = index+1;
+                closeString = true;
+                break;
+            }
         }
+
+        // Include the immediately followed '#', because we
+        // consider it as part of the document name
+        if(it+1!=tokens.end() && get<0>(*(it+1))=='#')
+            ++it;
+        prefixEnd = start + get<1>(*it) + (int)get<2>(*it).size();
+        tokens.resize(it-tokens.begin()+1);
+        break;
     }
 
     int trim = 0;
@@ -471,39 +2076,52 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     bool stringing = false;
     for(; i>=0; --i) {
         int token = get<0>(tokens[i]);
-        if(token == ExpressionParser::STRING) {
-            stringing = false;
+        if(token == ExpressionParser::STRING)
             break;
-        }
         if(token==ExpressionParser::LT 
             && i && get<0>(tokens[i-1])==ExpressionParser::LT)
         {
-            --i;
+            i-=2;
             stringing = true;
             break;
         }
     }
 
-    // Not an unclosed string and the last character is a space
-    if(!stringing && prefix.size() && prefix[prefixEnd-1] == QChar(32)) {
-        if (popup())
-            popup()->setVisible(false);
-        return;
-    }
-
     if(!stringing) {
+        // no string found, rewind
         i = static_cast<ssize_t>(tokens.size()) - 1;
-        for(;i>=0;--i) {
-            int token = get<0>(tokens[i]);
-            if (token != '.' && token != '#' && 
-                token != ExpressionParser::IDENTIFIER &&
-                token != ExpressionParser::STRING &&
-                token != ExpressionParser::UNIT)
-                break;
-        }
-        ++i;
 
+        // Not an unclosed string and the last character is a space
+        if(prefix.size() && prefix[prefixEnd-1] == QLatin1Char(' ')) {
+            if (popup())
+                popup()->setVisible(false);
+            return;
+        }
     }
+
+    // Now searching forward for the prefix start
+
+    int brackets = 0;
+    for(;i>=0;--i) {
+        int token = get<0>(tokens[i]);
+        if(token == ']') {
+            ++brackets;
+            continue;
+        } else if (token == '[') {
+            if(!brackets)
+                break;
+            --brackets;
+            continue;
+        } else if(brackets)
+            continue;
+
+        if (token != '.' && token != '#' && 
+            token != ExpressionParser::IDENTIFIER &&
+            token != ExpressionParser::STRING &&
+            token != ExpressionParser::UNIT)
+            break;
+    }
+    ++i;
 
     // Set prefix start for use when replacing later
     if (i == static_cast<ssize_t>(tokens.size()))
@@ -517,19 +2135,87 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         ++i;
     }
 
-    if(trim && trim<(int)completionPrefix.size() )
+    if(prefixEnd-start < (int)completionPrefix.size())
+        completionPrefix.resize(prefixEnd-start);
+
+    savedPrefix = Base::Tools::fromStdString(completionPrefix);
+
+    if(trim && trim<(int)completionPrefix.size() ) {
         completionPrefix.resize(completionPrefix.size()-trim);
+        currentPrefix = Base::Tools::fromStdString(completionPrefix);
+    } else
+        currentPrefix = savedPrefix;
+
+    FC_TRACE("completion prefix " << completionPrefix);
 
     // Set completion prefix
-    setCompletionPrefix(Base::Tools::fromStdString(completionPrefix));
+    setCompletionPrefix(currentPrefix);
 
-    if (!completionPrefix.empty() && widget()->hasFocus())
-        complete();
-    else {
-        if (popup())
-            popup()->setVisible(false);
+    if (!completionPrefix.empty() && widget()->hasFocus()) {
+        QRect rect;
+        ExpressionTextEdit *editor = qobject_cast<ExpressionTextEdit*>(widget());
+        if(editor) {
+            QTextCursor cursor = editor->textCursor();
+            rect = editor->cursorRect(cursor);
+            rect = QRect(editor->viewport()->mapToGlobal(rect.topLeft()), rect.size());
+            int w = editor->width() - rect.left();
+            if(w < 200)
+                w = 200;
+            rect.setWidth(w);
+            rect = QRect(editor->mapFromGlobal(rect.topLeft()), rect.size());
+        }
+        complete(rect);
+    } else {
+        popup()->hide();
     }
 }
+
+void ExpressionCompleter::getPrefixRange(QString &prefix, int &start, int &end, int &offset) const
+{
+    start = prefixStart;
+    end = prefixEnd;
+    offset = 0;
+    if(prefix == currentPrefix) {
+        prefix = savedPrefix;
+        offset = (int)currentPrefix.size() - savedPrefix.size();
+    }
+}
+
+bool ExpressionCompleter::eventFilter(QObject *o, QEvent *e) {
+    if (e->type() == QEvent::KeyPress && (o == widget() || o == popup())) {
+        QKeyEvent * ke = static_cast<QKeyEvent*>(e);
+        switch(ke->key()) {
+        case Qt::Key_Left:
+        case Qt::Key_Right:
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+            popup()->hide();
+            return false;
+        case Qt::Key_Tab: {
+            if(ke->modifiers()) {
+                popup()->hide();
+                return false;
+            }
+            FC_TRACE("Tab");
+            QKeyEvent kevent(ke->type(),Qt::Key_Down,0);
+            if(!QCompleter::eventFilter(popup(), &kevent))
+                static_cast<QObject *>(popup())->event(&kevent);
+            return true;
+        }
+        case Qt::Key_Backtab: {
+            FC_TRACE("Backtab");
+            QKeyEvent kevent(ke->type(),Qt::Key_Up,0);
+            if(!QCompleter::eventFilter(popup(), &kevent))
+                static_cast<QObject *>(popup())->event(&kevent);
+            return true;
+        }
+        default:
+            break;
+        }
+    }
+    return QCompleter::eventFilter(o, e);
+}
+
 
 ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
     : QLineEdit(parent)
@@ -537,7 +2223,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
     , block(true)
     , noProperty(noProperty)
 {
-    connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(slotTextChanged(const QString&)));
+    connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
 
 void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
@@ -575,30 +2261,22 @@ void ExpressionLineEdit::hideCompleter()
 
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
-    if (!block) {
-        Q_EMIT textChanged2(text,cursorPosition());
-    }
+    Q_EMIT textChanged2(text,cursorPosition());
 }
 
-void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix)
+void ExpressionLineEdit::slotCompleteText(QString completionPrefix)
 {
-    int start,end;
-    completer->getPrefixRange(start,end);
+    int start,end,offset;
+    completer->getPrefixRange(completionPrefix,start,end,offset);
     QString before(text().left(start));
     QString after(text().mid(end));
 
     Base::FlagToggler<bool> flag(block,false);
     before += completionPrefix;
     setText(before + after);
-    setCursorPosition(before.length());
+    setCursorPosition(before.length()+offset);
     completer->updatePrefixEnd(before.length());
 }
-
-void ExpressionLineEdit::keyPressEvent(QKeyEvent *e) {
-    Base::FlagToggler<bool> flag(block,true);
-    QLineEdit::keyPressEvent(e);
-}
-
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -640,17 +2318,17 @@ void ExpressionTextEdit::hideCompleter()
 
 void ExpressionTextEdit::slotTextChanged()
 {
-    if (!block) {
-        QTextCursor cursor = textCursor();
-        Q_EMIT textChanged2(cursor.block().text(),cursor.positionInBlock());
-    }
+    if (block)
+        return;
+    QTextCursor cursor = textCursor();
+    Q_EMIT textChanged2(cursor.block().text(),cursor.positionInBlock());
 }
 
-void ExpressionTextEdit::slotCompleteText(const QString & completionPrefix)
+void ExpressionTextEdit::slotCompleteText(QString completionPrefix)
 {
     QTextCursor cursor = textCursor();
-    int start,end;
-    completer->getPrefixRange(start,end);
+    int start,end,offset;
+    completer->getPrefixRange(completionPrefix, start, end, offset);
     int pos = cursor.positionInBlock();
     if(pos<end)
         cursor.movePosition(QTextCursor::NextCharacter,QTextCursor::MoveAnchor,end-pos);
@@ -658,11 +2336,10 @@ void ExpressionTextEdit::slotCompleteText(const QString & completionPrefix)
     Base::FlagToggler<bool> flag(block,false);
     cursor.insertText(completionPrefix);
     completer->updatePrefixEnd(cursor.positionInBlock());
-}
-
-void ExpressionTextEdit::keyPressEvent(QKeyEvent *e) {
-    Base::FlagToggler<bool> flag(block,true);
-    QPlainTextEdit::keyPressEvent(e);
+    if(offset) {
+        cursor.movePosition(QTextCursor::PreviousCharacter,QTextCursor::MoveAnchor,-offset);
+        setTextCursor(cursor);
+    }
 }
 
 #include "moc_ExpressionCompleter.cpp"
