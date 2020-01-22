@@ -104,12 +104,11 @@ class CommandManager(object):
                 and self.active_analysis_in_active_doc()
                 and self.material_selected()
             )
-        elif self.is_active == "with_material_solid_which_has_no_nonlinear_material":
+        elif self.is_active == "with_material_solid":
             active = (
                 FemGui.getActiveAnalysis() is not None
                 and self.active_analysis_in_active_doc()
                 and self.material_solid_selected()
-                and self.has_no_nonlinear_material()
             )
         elif self.is_active == "with_solver":
             active = (
@@ -203,23 +202,6 @@ class CommandManager(object):
             return True
         else:
             return False
-
-    def has_no_nonlinear_material(self):
-        "check if an nonlinear material exists which is already based on the selected material"
-        for o in FreeCAD.ActiveDocument.Objects:
-            if (
-                hasattr(o, "Proxy")
-                and o.Proxy is not None
-                and o.Proxy.Type == "Fem::MaterialMechanicalNonlinear"
-                and o.LinearBaseMaterial == self.selobj
-            ):
-                FreeCAD.Console.PrintError(
-                    "{} is based on the selected material: {}. "
-                    "Only one nonlinear object for each material allowed.\n"
-                    .format(o.Name, self.selobj)
-                )
-                return False
-        return True
 
     def with_femmesh_andor_res_selected(self):
         sel = FreeCADGui.Selection.getSelection()

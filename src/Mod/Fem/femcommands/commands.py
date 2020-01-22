@@ -510,9 +510,26 @@ class _MaterialMechanicalNonlinear(CommandManager):
                 "Creates a nonlinear mechanical material"
             )
         }
-        self.is_active = "with_material_solid_which_has_no_nonlinear_material"
+        self.is_active = "with_material_solid"
 
     def Activated(self):
+        # test if there is a nonlinear material which has the selected material as base material
+        for o in self.selobj.Document.Objects:
+            if (
+                hasattr(o, "Proxy")
+                and o.Proxy is not None
+                and hasattr(o.Proxy, "Type")
+                and o.Proxy.Type == "Fem::MaterialMechanicalNonlinear"
+                and o.LinearBaseMaterial == self.selobj
+            ):
+                FreeCAD.Console.PrintError(
+                    "Nonlinear material {} is based on the selected material {}. "
+                    "Only one nonlinear object allowed for each material.\n"
+                    .format(o.Name, self.selobj.Name)
+                )
+                return
+
+        # add a nonlinear material
         string_lin_mat_obj = "FreeCAD.ActiveDocument.getObject('" + self.selobj.Name + "')"
         command_to_run = (
             "FemGui.getActiveAnalysis().addObject(ObjectsFem."
