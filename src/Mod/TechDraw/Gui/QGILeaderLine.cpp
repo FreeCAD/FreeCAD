@@ -280,14 +280,8 @@ void QGILeaderLine::onLineEditFinished(QPointF tipDisplace, std::vector<QPointF>
         featLeader->adjustLastSegment();
     }
 
-    if (m_parentItem == nullptr) {
-        Base::Console().Warning("QGILL::onLineEditFinished - m_parentItem is NULL\n");
-    } else {
-        QGIView* qgiv = dynamic_cast<QGIView*>(m_parentItem);
-        if (qgiv != nullptr) {
-            Q_EMIT editComplete();           //to task
-        }
-    }
+    Q_EMIT editComplete();           //tell task editing is complete
+
     m_blockDraw = false;
     m_editPath->hide();
     draw();
