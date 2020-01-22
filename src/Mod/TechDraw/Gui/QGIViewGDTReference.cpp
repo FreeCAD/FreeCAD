@@ -567,8 +567,8 @@ void QGIViewGDTReference::draw_modifier(bool modifier) {
         //TODO: parent redraw still required with new frame/label??
         parentItem()->update();
     } else {
-        Base::Console().Log(
-                "INFO - QGIViewGDTReference::draw_modifier - no parent to update\n");
+//        Base::Console().Log(
+//                "INFO - QGIViewGDTReference::draw_modifier - no parent to update\n");
     }
 
 }

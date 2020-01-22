@@ -212,8 +212,7 @@ App::DocumentObjectExecReturn* DrawViewGDTReference::execute(void) {
 
 //! validate 2D references - only checks if the target exists
 bool DrawViewGDTReference::checkReferences2D() const {
-    Base::Console().Message("DrawViewGDTReference::checkReferences2d() - %s\n",
-            getNameInDocument());
+    //Base::Console().Message("DrawViewGDTReference::checkReferences2d() - %s\n", getNameInDocument());
     bool result = true;
     const std::vector<App::DocumentObject*> &objects = References2D.getValues();
     if (!objects.empty()) {
