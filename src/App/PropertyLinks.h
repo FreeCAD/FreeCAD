@@ -832,6 +832,9 @@ public:
     virtual Property *Copy(void) const override;
     virtual void Paste(const Property &from) override;
 
+    virtual const char* getEditorName(void) const override
+    { return "Gui::PropertyEditor::PropertyLinkItem"; }
+
     /// Return a copy of the property if any changes caused by importing external object 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
 
@@ -973,6 +976,9 @@ public:
 
     virtual Property *Copy(void) const override;
     virtual void Paste(const Property &from) override;
+
+    virtual const char* getEditorName(void) const override
+    { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
     /// Return a copy of the property if any changes caused by importing external object 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
@@ -1247,6 +1253,9 @@ public:
 
     virtual Property *Copy(void) const override;
     virtual void Paste(const Property &from) override;
+
+    virtual const char* getEditorName(void) const override
+    { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
 
