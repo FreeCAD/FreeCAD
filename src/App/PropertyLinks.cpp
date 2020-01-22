@@ -1035,22 +1035,28 @@ void PropertyLinkSub::setPyObject(PyObject *value)
             throw Base::ValueError("Expect input sequence of size 2");
         else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
             DocumentObjectPy  *pcObj = (DocumentObjectPy*)seq[0].ptr();
+            static const char *errMsg = "type of second element in tuple must be str or sequence of str";
+            PropertyString propString;
             if (seq[1].isString()) {
                 std::vector<std::string> vals;
-                vals.push_back((std::string)Py::String(seq[1]));
+                propString.setPyObject(seq[1].ptr());
+                vals.emplace_back(propString.getValue());
                 setValue(pcObj->getDocumentObjectPtr(),std::move(vals));
             }
             else if (seq[1].isSequence()) {
                 Py::Sequence list(seq[1]);
                 std::vector<std::string> vals(list.size());
                 unsigned int i=0;
-                for (Py::Sequence::iterator it = list.begin();it!=list.end();++it,++i)
-                    vals[i] = Py::String(*it);
+                for (Py::Sequence::iterator it = list.begin();it!=list.end();++it,++i) {
+                    if(!(*it).isString())
+                        throw Base::TypeError(errMsg);
+                    propString.setPyObject((*it).ptr());
+                    vals[i] = propString.getValue();
+                }
                 setValue(pcObj->getDocumentObjectPtr(),std::move(vals));
             }
             else {
-                std::string error = std::string("type of second element in tuple must be str or sequence of str");
-                throw Base::TypeError(error);
+                throw Base::TypeError(errMsg);
             }
         }
         else {
@@ -1964,12 +1970,11 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
         return;
     }catch(...) {}
 
-#define SUBLIST_THROW \
-    throw Base::TypeError(\
-        "Expects sequence of items of type DocObj, (DocObj,SubName), or (DocObj, (SubName,...))")
+    static const char *errMsg = 
+        "Expects sequence of items of type DocObj, (DocObj,SubName), or (DocObj, (SubName,...))";
 
     if (!PyTuple_Check(value) && !PyList_Check(value))
-        SUBLIST_THROW;
+        throw Base::TypeError(errMsg);
 
     Py::Sequence list(value);
     Py::Sequence::size_type size = list.size();
@@ -1984,17 +1989,22 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
             Py::Sequence seq(item);
             if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))){
                 auto obj = static_cast<DocumentObjectPy*>(seq[0].ptr())->getDocumentObjectPtr();
+                PropertyString propString;
                 if (seq[1].isString()) {
                     values.push_back(obj);
-                    SubNames.push_back(Py::String(seq[1]));
+                    propString.setPyObject(seq[1].ptr());
+                    SubNames.emplace_back(propString.getValue());
                 } else if (seq[1].isSequence()) {
                     Py::Sequence list(seq[1]);
                     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                        if(!(*it).isString())
+                            throw Base::TypeError(errMsg);
                         values.push_back(obj);
-                        SubNames.push_back(Py::String(*it));
+                        propString.setPyObject((*it).ptr());
+                        SubNames.emplace_back(propString.getValue());
                     }
                 } else
-                    SUBLIST_THROW;
+                    throw Base::TypeError(errMsg);
             }
         } else if (PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
             DocumentObjectPy *pcObj;
@@ -2002,7 +2012,7 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
             values.push_back(pcObj->getDocumentObjectPtr());
             SubNames.emplace_back();
         } else
-            SUBLIST_THROW;
+            throw Base::TypeError(errMsg);
     }
     setValues(values,SubNames);
 }
