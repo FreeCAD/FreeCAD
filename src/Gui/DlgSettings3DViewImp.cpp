@@ -113,6 +113,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->radioPerspective->onSave();
     ui->radioOrthographic->onSave();
     ui->qspinNewDocScale->onSave();
+    ui->prefStepByTurn->onSave();
 
     QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(), Qt::UserRole);
     hGrp->SetASCII("NewDocumentCameraOrientation", (const char*)camera.toByteArray());
@@ -144,6 +145,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->radioPerspective->onRestore();
     ui->radioOrthographic->onRestore();
     ui->qspinNewDocScale->onRestore();
+    ui->prefStepByTurn->onRestore();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/View");
