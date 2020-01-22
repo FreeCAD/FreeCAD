@@ -1157,7 +1157,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		int pick = pickFace(x, y);
 
 		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-		float rotStepAngle = 360/hGrp->GetInt("NaviStepByTurn",8);
+		float rotStepAngle = 360.0f/hGrp->GetInt("NaviStepByTurn",8);
 
 		switch (pick) {
 		default:
