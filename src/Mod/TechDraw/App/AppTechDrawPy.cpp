@@ -644,6 +644,7 @@ private:
                         float gap = 5.0;                                //hack. don't know font size here.
                         layerName = dvd->getNameInDocument();
                         writer.setLayerName(layerName);
+                        int type = 0;                                   //Aligned/Distance
                         if ( dvd->Type.isValue("Distance")  ||
                              dvd->Type.isValue("DistanceX") ||
                              dvd->Type.isValue("DistanceY") )  {
@@ -658,7 +659,12 @@ private:
                                                            Base::Vector3d(parentX,parentY,0.0);
                             Base::Vector3d extLine2Start = Base::Vector3d(pts.second.x, -pts.second.y, 0.0) +
                                                            Base::Vector3d(parentX,parentY,0.0);
-                            writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText);
+                            if (dvd->Type.isValue("DistanceX") ) {
+                                type = 1;
+                            } else if (dvd->Type.isValue("DistanceY") ) {
+                                type = 2;
+                            }
+                            writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText, type);
                         } else if (dvd->Type.isValue("Angle")) {
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY,0.0);
