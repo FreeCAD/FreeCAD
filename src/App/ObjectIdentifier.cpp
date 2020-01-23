@@ -28,6 +28,7 @@
 
 #include <limits>
 #include <iomanip>
+#include <unordered_map>
 
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -127,6 +128,30 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
         }
     }
     if (property.size() > 0) {
+        addComponent(SimpleComponent(property));
+        if(index!=INT_MAX)
+            addComponent(ArrayComponent(index));
+    }
+}
+
+ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, 
+                                   const char *property, int index)
+    : owner(0)
+    , documentNameSet(false)
+    , documentObjectNameSet(false)
+    , localProperty(false)
+{
+    if (_owner) {
+        const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
+        if (!docObj)
+            FC_THROWM(Base::RuntimeError,"Property must be owned by a document object.");
+        owner = const_cast<DocumentObject*>(docObj);
+
+        if (property && property[0]) {
+            setDocumentObjectName(docObj);
+        }
+    }
+    if (property && property[0]) {
         addComponent(SimpleComponent(property));
         if(index!=INT_MAX)
             addComponent(ArrayComponent(index));
@@ -549,20 +574,25 @@ bool ObjectIdentifier::relabeledDocument(ExpressionVisitor &v,
  * @return String representation of path.
  */
 
-void ObjectIdentifier::getSubPathStr(std::ostream &s, const ResolveResults &result, bool toPython) const
+void ObjectIdentifier::getSubPathStr(std::ostream &s, const ResolveResults &result, bool toPython, bool prefix) const
 {
     std::vector<Component>::const_iterator i = components.begin() + result.propertyIndex + 1;
+    bool first = !prefix;
     while (i != components.end()) {
-        if(i->isSimple())
-            s << '.';
+        if(i->isSimple()) {
+            if(first)
+                first = false;
+            else
+                s << '.';
+        }
         i->toString(s,toPython);
         ++i;
     }
 }
 
-std::string ObjectIdentifier::getSubPathStr(bool toPython) const {
+std::string ObjectIdentifier::getSubPathStr(bool toPython, bool prefix) const {
     std::ostringstream ss;
-    getSubPathStr(ss,ResolveResults(*this),toPython);
+    getSubPathStr(ss,ResolveResults(*this),toPython, prefix);
     return ss.str();
 }
 
@@ -1080,7 +1110,33 @@ enum PseudoPropertyType {
     PseudoCadquery,
 };
 
-std::pair<DocumentObject*,std::string> ObjectIdentifier::getDep(std::vector<std::string> *labels) const {
+void ObjectIdentifier::getDepLabels(std::vector<std::string> &labels) const {
+    getDepLabels(ResolveResults(*this),labels);
+}
+
+void ObjectIdentifier::getDepLabels(
+        const ResolveResults &result, std::vector<std::string> &labels) const
+{
+    if(documentObjectName.getString().size()) {
+        if(documentObjectName.isRealString())
+            labels.push_back(documentObjectName.getString());
+    } else if(result.propertyIndex == 1)
+        labels.push_back(components[0].name.getString());
+    if(subObjectName.getString().size()) 
+        PropertyLinkBase::getLabelReferences(labels,subObjectName.getString().c_str());
+}
+
+ObjectIdentifier::Dependencies
+ObjectIdentifier::getDep(bool needProps, std::vector<std::string> *labels) const 
+{
+    Dependencies deps;
+    getDep(deps,needProps,labels);
+    return deps;
+}
+
+void ObjectIdentifier::getDep(
+        Dependencies &deps, bool needProps, std::vector<std::string> *labels) const 
+{
     ResolveResults result(*this);
     if(labels) {
         if(documentObjectName.getString().size()) {
@@ -1225,6 +1281,59 @@ Property *ObjectIdentifier::getProperty(int *ptype) const
     return result.resolvedProperty;
 }
 
+const std::vector<std::pair<const char *, App::Property*> > &ObjectIdentifier::getPseudoProperties()
+{
+    static PropertyContainer dummy;
+    static std::vector<std::pair<const char *, App::Property*> > pseudoProps;
+    if(pseudoProps.empty()) {
+        auto addProp = [](PropertyContainer &pc, std::vector<std::pair<const char *, App::Property *> > &props,
+                          const char *name, const char *doc, int type)
+        {
+            auto prop = static_cast<PropertyInteger*>(pc.addDynamicProperty("App::PropertyInteger", name, 0, doc));
+            prop->setValue(type);
+            props.emplace_back(name, prop);
+        };
+        addProp(dummy, pseudoProps,
+                "_shape",  "Return a geometry shape of the (sub)object using Part.getShape()", PseudoShape); 
+        addProp(dummy, pseudoProps,
+                "_pla",    "Return the accumulated placement of the (sub)object", PseudoPlacement);
+        addProp(dummy, pseudoProps,
+                "_matrix", "Return the accumulated transformation matrix of the (sub)object", PseudoMatrix);
+        addProp(dummy, pseudoProps,
+                "__pla",   "Return the accumulated placement of the (sub)object including any App::Link", PseudoLinkPlacement);
+        addProp(dummy, pseudoProps,
+                "__matrix","Return the accumulated transformation matrix of the (sub)object including any App::Link", PseudoLinkMatrix);
+        addProp(dummy, pseudoProps,
+                "_self",   "Return the object itself in order to access its Python attributes", PseudoSelf);
+        addProp(dummy, pseudoProps,
+                "_app",    "Return the FreeCAD Python module", PseudoApp);
+        addProp(dummy, pseudoProps,
+                "_part",   "Return the Part Python module", PseudoPart);
+        addProp(dummy, pseudoProps,
+                "_re",     "Return the Python regex module", PseudoRegex);
+        addProp(dummy, pseudoProps,
+                "_py",     "Return the Python builtin module", PseudoBuiltins);
+        addProp(dummy, pseudoProps,
+                "_math",   "Return the Python math module", PseudoMath);
+        addProp(dummy, pseudoProps,
+                "_coll",   "Return the Python collections module", PseudoCollections);
+        addProp(dummy, pseudoProps,
+                "_gui",    "Return the FreeCADGui Python module", PseudoGui);
+        // addProp(dummy, pseudoProps,
+        //        "_cq",     "Return the CadQuery Python module", PseudoCadquery);
+    };
+    return pseudoProps;
+}
+
+bool ObjectIdentifier::isPseudoProperty(const App::Property *prop) {
+    static std::unordered_set<const App::Property*> propSet;
+    if(propSet.empty()) {
+        for(auto &v : getPseudoProperties())
+            propSet.insert(v.second);
+    }
+    return propSet.count(prop)!=0;
+}
+
 Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj, 
         const char *propertyName, App::DocumentObject *&sobj, int &ptype) const 
 {
@@ -1235,22 +1344,11 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
     if(!obj)
         return 0;
 
-    static std::map<std::string,int> _props = {
-        {"_shape",PseudoShape}, 
-        {"_pla",PseudoPlacement},
-        {"_matrix",PseudoMatrix},
-        {"__pla",PseudoLinkPlacement},
-        {"__matrix",PseudoLinkMatrix},
-        {"_self",PseudoSelf},
-        {"_app",PseudoApp},
-        {"_part",PseudoPart},
-        {"_re",PseudoRegex},
-        {"_py", PseudoBuiltins},
-        {"_math", PseudoMath},
-        {"_coll", PseudoCollections},
-        {"_gui",PseudoGui},
-        {"_cq",PseudoCadquery},
-    };
+    static std::unordered_map<const char*,int, CStringHasher, CStringHasher> _props;
+    if(_props.empty()) {
+        for(auto &info : getPseudoProperties())
+            _props[info.first] = static_cast<PropertyInteger*>(info.second)->getValue();
+    }
     auto it = _props.find(propertyName);
     if(it == _props.end())
         ptype = PseudoNone;
