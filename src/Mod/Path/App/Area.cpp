@@ -65,6 +65,7 @@
 # include <gp_GTrsf.hxx>
 # include <Standard_Version.hxx>
 # include <GCPnts_QuasiUniformDeflection.hxx>
+# include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepLib_MakeFace.hxx>
@@ -342,7 +343,12 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
     // same for any other discetization algorithm, althgouth it seems only
     // QuasiUniformDeflection has this bug.
 
-    GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
+    // NOTE: QuasiUniformDeflection has trouble with some B-Spline, see
+    // https://forum.freecadweb.org/viewtopic.php?f=15&t=42628
+    //
+    // GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
+    //
+    GCPnts_UniformDeflection discretizer(curve, deflection, first, last);
     if (!discretizer.IsDone ())
         Standard_Failure::Raise("Curve discretization failed");
     if(discretizer.NbPoints () > 1) {
