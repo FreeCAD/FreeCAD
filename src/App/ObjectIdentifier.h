@@ -66,6 +66,7 @@ AppExport std::string quote(const std::string &input, bool toPython=false);
     _t(_t &&other) { *this = std::move(other); }\
     _t &operator=(_t &&other)
 
+
 class AppExport ObjectIdentifier {
 
 public:
@@ -249,6 +250,8 @@ public:
     ObjectIdentifier(const App::PropertyContainer * _owner = 0,
             const std::string & property = std::string(), int index=INT_MAX);
 
+    ObjectIdentifier(const App::PropertyContainer * _owner, const char *property, int index=INT_MAX);
+
     ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty);
 
     ObjectIdentifier(const App::Property & prop, int index=INT_MAX);
@@ -286,6 +289,9 @@ public:
 
     std::string getPropertyName() const;
 
+    static const std::vector<std::pair<const char *, App::Property*> > &getPseudoProperties();
+    static bool isPseudoProperty(const App::Property *prop);
+
     template<typename C>
     void addComponents(const C &cs) { components.insert(components.end(), cs.begin(), cs.end()); }
 
@@ -297,7 +303,7 @@ public:
     std::vector<Component> getPropertyComponents() const;
     const std::vector<Component> &getComponents() const { return components; }
 
-    std::string getSubPathStr(bool toPython=false) const;
+    std::string getSubPathStr(bool toPython=false, bool prefix=true) const;
 
     int numComponents() const;
 
@@ -459,7 +465,7 @@ protected:
     App::Property *resolveProperty(const App::DocumentObject *obj,
         const char *propertyName, App::DocumentObject *&sobj,int &ptype) const;
 
-    void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
+    void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false, bool prefix=true) const;
 
     Py::Object access(const ResolveResults &rs,
             Py::Object *value=0, Dependencies *deps=0) const;
