@@ -58,6 +58,7 @@
 #include "BFGS.h"
 #include "SQP.h"
 
+#include "G2D/VectorPy.h"
 #include "G2D/ParaGeometry2D.h"
 #include "G2D/ParaGeometry2DPy.h"
 #include "G2D/ParaPoint.h"
@@ -175,6 +176,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Py::Module submodG2D =  makeSubmodule(mod, "__FreeCAD_FCS_G2D__", "G2D", init_freecad_FCS_G2D_module);
 
 
+    FCS::G2D::VectorPy                   ::Type.tp_name = "ConstraintSolver.G2D.Vector"                   ;
     FCS::G2D::ParaGeometry2DPy           ::Type.tp_name = "ConstraintSolver.G2D.ParaGeometry2D"           ;
     FCS::G2D::ParaPointPy                ::Type.tp_name = "ConstraintSolver.G2D.ParaPoint"                ;
     FCS::G2D::ParaVectorPy               ::Type.tp_name = "ConstraintSolver.G2D.ParaVector"               ;
@@ -184,6 +186,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintDistancePy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistance"       ;
     FCS::G2D::ConstraintPlacementRulesPy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintPlacementRules" ;
 
+    Base::Interpreter().addType(&FCS::G2D::VectorPy                   ::Type, submodG2D.ptr(), "Vector"                   );
     Base::Interpreter().addType(&FCS::G2D::ParaGeometry2DPy           ::Type, submodG2D.ptr(), "ParaGeometry2D"           );
     Base::Interpreter().addType(&FCS::G2D::ParaPointPy                ::Type, submodG2D.ptr(), "ParaPoint"                );
     Base::Interpreter().addType(&FCS::G2D::ParaVectorPy               ::Type, submodG2D.ptr(), "ParaVector"               );

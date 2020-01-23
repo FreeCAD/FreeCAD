@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport 
+		Father="PyObjectBase" 
+		Name="VectorPy" 
+		Twin="Vector" 
+		TwinPointer="Vector" 
+		Include="Mod/ConstraintSolver/App/G2D/Vector.h" 
+		FatherInclude="Base/PyObjectBase.h" 
+		Namespace="FCS::G2D" 
+		Constructor="true"
+		Initialization="true"
+		Delete="false"
+		NumberProtocol="true"
+		RichCompare="true"
+		FatherNamespace="Base">
+	<Documentation>
+		<Author Licence="LGPL" Name="DeepSOIC"/>
+		<UserDocu>2D vector of dual numbers</UserDocu>
+	</Documentation>
+		<Methode Name="dot" Const="true">
+			<Documentation>
+				<UserDocu>dot(Vector)
+						  returns the dot product of the this vector with another one
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="cross" Const="true">
+			<Documentation>
+				<UserDocu>cross(Vector)
+					      returns the cross product between this and another vector
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="normalized">
+			<Documentation>
+				<UserDocu>normalized()
+						  normalizes this vector scaled to length of 1.0
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Attribute Name="Length" ReadOnly="true">
+			<Documentation>
+				<UserDocu>length of this vector
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="Type" Type="Tuple" />
+		</Attribute>
+		<Attribute Name="x" ReadOnly="false">
+			<Documentation>
+				<UserDocu>X component of this vector
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="x" Type="Object"/>
+		</Attribute>
+		<Attribute Name="y" ReadOnly="false">
+			<Documentation>
+				<UserDocu>X component of this vector
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="y" Type="Object"/>
+		</Attribute>
+		<Sequence
+			sq_length="true"
+			sq_concat="false"
+			sq_repeat="false"
+			sq_item="true"
+			mp_subscript="true"
+			sq_ass_item="true"
+			mp_ass_subscript="false"
+			sq_contains="false"
+			sq_inplace_concat="false"
+			sq_inplace_repeat="false">
+		</Sequence>
+		<ClassDeclarations>
+public:
+    Vector value;
+    VectorPy(Vector vec)
+        : PyObjectBase(static_cast&lt;PyObjectBase::PointerType&gt;(&amp;value), &amp;Type)
+    {
+        value = vec;
+    }
+		</ClassDeclarations>
+	</PythonExport>
+</GenerateModel>

@@ -23,6 +23,7 @@
 #ifndef FREECAD_CONSTRAINTSOLVER_G2D_VECTOR_H
 #define FREECAD_CONSTRAINTSOLVER_G2D_VECTOR_H
 
+#include "Utils.h" //temporary
 #include <Base/DualNumber.h>
 
 namespace FCS {
@@ -52,6 +53,9 @@ public: //methods
     static Base::DualNumber cross(Vector a, Vector b) {return dot(a, b.rotate90cw());}
     Vector operator-() const {return Vector(-x, -y);}
     Base::DualNumber operator[](int index) const;
+
+    PyObject* getPyObject() const;
+    std::string repr() const;
 };
 
 inline Vector operator-(Vector a, Vector b){

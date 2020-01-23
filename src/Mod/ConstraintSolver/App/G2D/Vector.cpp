@@ -1,6 +1,7 @@
 #include "PreCompiled.h"
 
 #include "Vector.h"
+#include <G2D/VectorPy.h>
 #include "DualMath.h"
 #include "ParameterRef.h"
 #include "ValueSet.h"
@@ -31,4 +32,19 @@ Base::DualNumber Vector::operator[](int index) const
 {
     assert(index >= 0 && index < 2);
     return index == 0 ? x : y;
+}
+
+PyObject* Vector::getPyObject() const
+{
+    return new VectorPy(*this);
+}
+
+std::string Vector::repr() const
+{
+    std::stringstream ss;
+    ss << "<2D dual vector ("
+       << x.repr() << ", "
+       << y.repr() << ")>";
+
+    return ss.str();
 }
