@@ -73,13 +73,16 @@ class DraftWorkbench(Workbench):
             print(inst)
             FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
 
-        # setup menus
-        self.cmdList = ["Draft_Line", "Draft_Wire", "Draft_Fillet", "Draft_Circle",
-                        "Draft_ArcTools", "Draft_Ellipse",
-                        "Draft_Polygon", "Draft_Rectangle", "Draft_Text",
-                        "Draft_Dimension", "Draft_BSpline", "Draft_Point",
-                        "Draft_ShapeString", "Draft_Facebinder",
-                        "Draft_BezierTools", "Draft_Label"]
+        # setup command lists
+
+        self.cmdList = ["Draft_Line", "Draft_Wire", "Draft_Fillet", "Draft_ArcTools",
+                        "Draft_Circle", "Draft_Ellipse", "Draft_Rectangle", "Draft_Polygon",  
+                        "Draft_BSpline", "Draft_BezierTools", "Draft_Point", 
+                        "Draft_Facebinder"]
+
+        self.annotation_tools = ["Draft_Text", "Draft_ShapeString", "Draft_Dimension",
+                                 "Draft_Label"]
+
         self.modList = ["Draft_Move", "Draft_Rotate", "Draft_Offset",
                         "Draft_Trimex", "Draft_Join", "Draft_Split",
                         "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
@@ -90,17 +93,21 @@ class DraftWorkbench(Workbench):
                         "Draft_PolarArray", "Draft_CircularArray",
                         "Draft_PathArray", "Draft_PathLinkArray", "Draft_PointArray", "Draft_Clone",
                         "Draft_Drawing", "Draft_Mirror", "Draft_Stretch"]
+
         self.treecmdList = ["Draft_ApplyStyle", "Draft_ToggleDisplayMode",
                             "Draft_AddToGroup", "Draft_SelectGroup",
                             "Draft_SelectPlane", "Draft_ShowSnapBar",
                             "Draft_ToggleGrid", "Draft_AutoGroup"]
+
         self.lineList = ["Draft_UndoLine", "Draft_FinishLine",
                          "Draft_CloseLine"]
+
         self.utils = ["Draft_Layer", "Draft_Heal", "Draft_FlipDimension",
                       "Draft_ToggleConstructionMode",
                       "Draft_ToggleContinueMode", "Draft_Edit",
                       "Draft_Slope", "Draft_SetWorkingPlaneProxy",
                       "Draft_AddConstruction"]
+
         self.snapList = ['Draft_Snap_Lock', 'Draft_Snap_Midpoint',
                          'Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid', 'Draft_Snap_Intersection',
@@ -110,19 +117,20 @@ class DraftWorkbench(Workbench):
                          'Draft_Snap_Extension', 'Draft_Snap_Near',
                          'Draft_Snap_Ortho', 'Draft_Snap_Special',
                          'Draft_Snap_Dimensions', 'Draft_Snap_WorkingPlane']
+        
+        # setup toolbars
+        
         self.appendToolbar("Draft creation tools", self.cmdList)
+        self.appendToolbar("Draft annotation tools", self.annotation_tools)
         self.appendToolbar("Draft modification tools", self.modList)
-        self.appendMenu(QT_TRANSLATE_NOOP("draft", "&Draft"),
-                        self.cmdList + self.modList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft", "&Draft"),
-                         QT_TRANSLATE_NOOP("draft", "Utilities")],
-                        self.utils + self.treecmdList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft", "&Draft"),
-                         QT_TRANSLATE_NOOP("draft", "Wire tools")],
-                        self.lineList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft", "&Draft"),
-                         QT_TRANSLATE_NOOP("draft", "Snapping")],
-                        self.snapList)
+
+        # setup menu
+
+        self.appendMenu(QT_TRANSLATE_NOOP("draft","&2D Drafting"),self.cmdList)
+        self.appendMenu(QT_TRANSLATE_NOOP("draft","&Modify"),self.modList)
+        self.appendMenu(QT_TRANSLATE_NOOP("draft","&Annotation"),self.annotation_tools)
+        self.appendMenu(QT_TRANSLATE_NOOP("draft", "&Utilities"), self.utils + self.treecmdList)
+        
         if hasattr(FreeCADGui, "draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("draft", "Draft"))
