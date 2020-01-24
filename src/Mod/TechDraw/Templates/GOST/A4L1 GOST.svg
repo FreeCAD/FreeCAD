@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--    Автор:-=SpV=- 
+        Верстак: TechDraw
+        Версия: 2.2 
+        Шрифт: GOSTRUS https://fontlibrary.org/ru/font/gostrus-type-a -->
+
+<svg
+	xmlns="http://www.w3.org/2000/svg" version="1.1"
+	xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+	width="210mm"
+	height="297mm"
+	viewBox="0 0 210 297">
+	<!-- Working space 20 5 205 292 -->
+	<!-- Title block 0 232 205 292 -->
+	<g>
+		<rect
+			id="drawing-border"
+			style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:miter;stroke-miterlimit:4"
+			width="185"
+			height="287"
+			x="20"
+			y="5" />
+			<!-- width-30, height-20 -->
+		<!-- Основная рамка с нередактируемым текстом -->
+		<g
+			transform="translate(0,0)">
+			<!-- A4 Portrait based for other formats width-210, height-297 -->
+			<!--        page       rect   translation
+			               w    h    rw   rh   tx   ty
+			        A4-P  210  297  185  287    0    0
+			        A3-L  420  297  395  287  210    0
+			        A2-L  594  420  569  410  384  123
+			        A1-L  841  594  816  584  631  297
+			        A0-L 1189  841 1164  831  979  544
+			-->
+			<g
+				id="thick-titleblock-structure"
+				style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:miter;stroke-miterlimit:4">
+				<rect width="185" height="55" x="20" y="237" />
+				<path d="m 85,252 h 120" />
+				<path d="m 20,257 h 65" />
+				<path d="m 155,257 h 50" />
+				<path d="m 20,262 h 65" />
+				<path d="m 155,272 h 50" />
+				<path d="m 85,277 h 120" />
+				    <!-- Вертикальные -->
+				<path d="m 27,237 v 25" />
+				<path d="m 37,237 v 55" />
+				<path d="m 60,237 v 55" />
+				<path d="m 75,237 v 55" />
+				<path d="m 85,237 v 55" />
+				<path d="m 155,252 v 40" />
+				<path d="m 170,252 v 20" />
+				<path d="m 175,272 v 5" />
+				<path d="m 187,252 v 20" />
+			</g>
+			<g
+				id="thin-titleblock-structure"
+				style="fill:none;stroke:#000000;stroke-width:0.3;stroke-linecap:miter;stroke-miterlimit:4">
+				<path d="m 85,229 h 120" />
+				<path d="m 20,242 h 65" />
+				<path d="m 20,247 h 65" />
+				<path d="m 20,252 h 65" />
+				<path d="m 20,267 h 65" />
+				<path d="m 20,272 h 65" />
+				<path d="m 20,277 h 65" />
+				<path d="m 20,282 h 65" />
+				<path d="m 20,287 h 65" />
+				    <!-- Вертикальные -->
+				<path d="m 85,229 v 8" />
+				<path d="m 160,257 v 15" />
+				<path d="m 165,257 v 15" />
+			</g>
+			<g
+				id="titleblock-text-non-editable"
+				style="font-style:italic;font-size:4px;text-anchor:start;fill:#000000;font-family:'GOSTRUS'"
+				xml:space="preserve">
+				<text x="20.6" y="260.5">Изм.</text>
+				<text x="28" y="260.5">Лист</text>
+				<text x="42.3" y="260.5">№ докум.</text>
+				<text x="64" y="260.5">Подп.</text>
+				<text x="76.5" y="260.5">Дата</text>
+				<text x="20.6" y="265.5">Разраб.</text>
+				<text x="20.6" y="270.5">Пров.</text>
+				<text x="20.6" y="275.5">Т.Контр.</text>
+				<text x="20.6" y="285.5">Н.Контр.</text>
+				<text x="20.6" y="290.5">Утв.</text>
+				<text x="159" y="255.5">Лит.</text>
+				<text x="174" y="255.5">Масса</text>
+				<text x="189.5" y="255.5">Масштаб</text>
+				<text x="158" y="275.5">Лист</text>
+				<text x="178" y="275.5">Листов</text>
+				<text x="90" y="295.5">Копировал</text>
+				<text x="165" y="295.5">Формат А4</text>
+			</g>
+		</g>
+		<!-- Редактируемый текст основная рамка -->
+		<g
+			id="titleblock-text-editable"
+			style="font-style:italic;font-size:12px;text-anchor:middle;fill:#000000;font-family:'GOSTRUS'"
+			xml:space="preserve">
+			<text freecad:editable="Обозначение" x="144.5" y="248"><tspan>Обозначение</tspan></text>
+			<text freecad:editable="Наименование одной строкой" x="120" y="265"><tspan>Наименование</tspan></text>
+            <text freecad:editable="Организация" x="180" y="288.5"><tspan></tspan></text>
+			</g>
+		<g
+			id="titleblock-text-editable"
+			style="font-style:italic;font-size:9px;text-anchor:middle;fill:#000000;font-family:'GOSTRUS'"
+			xml:space="preserve">
+			<text freecad:editable="Наименование строка 1" x="120" y="261"><tspan></tspan></text>
+			<text freecad:editable="Наименование строка 2" x="120" y="269"><tspan></tspan></text>
+		</g>
+		<g
+			id="titleblock-text-editable"
+			style="font-style:italic;font-size:7px;text-anchor:middle;fill:#000000;font-family:'GOSTRUS'"
+			xml:space="preserve">
+			<text freecad:editable="Идентификатор сборочного чертежа" x="120" y="275.5"><tspan>Сборочный чертеж</tspan></text>
+			<text freecad:editable="Оборудование / Материал" x="120" y="285.5"><tspan></tspan></text>
+		</g>
+		<g
+			id="titleblock-text-editable"
+			style="font-style:italic;font-size:4px;text-anchor:left;fill:#000000;font-family:'GOSTRUS'"
+			xml:space="preserve">
+			<text freecad:editable="Разработал" x="37.5" y="265.5"><tspan></tspan></text>
+			<text freecad:editable="Проверил" x="37.5" y="270.5"><tspan></tspan></text>
+			<text freecad:editable="Т.Контр." x="37.5" y="275.5"><tspan></tspan></text>
+			<text freecad:editable="Н.Контр." x="37.5" y="285.5"><tspan></tspan></text>
+			<text freecad:editable="Утвердил" x="37.5" y="290.5"><tspan></tspan></text>
+		</g>
+		<g
+			id="titleblock-text-editable"
+			style="font-style:italic;font-size:4px;text-anchor:middle;fill:#000000;font-family:'GOSTRUS'"
+			xml:space="preserve">
+			<text freecad:editable="Масса" x="178" y="265.5"><tspan>г.</tspan></text>
+			<text freecad:editable="Масштаб" x="196" y="265.5"><tspan>1:1</tspan></text>
+		</g>
+		<g
+			id="titleblock-text-editable"
+			style="font-style:italic;font-size:4px;text-anchor:end;fill:#000000;font-family:'GOSTRUS'"
+			xml:space="preserve">
+			<text freecad:editable="Номер листа" x="173" y="275.5"><tspan>1</tspan></text>
+			<text freecad:editable="Общее количество листов" x="202" y="275.5"><tspan>1</tspan></text>
+		</g>
+		<!-- Редактируемый текст верхняя и боковая рамки -->
+		<g
+			id="lefttopblock-text-editable"
+			style="font-style:italic;font-size:12px;text-anchor:middle;fill:#000000;font-family:'GOSTRUS'"
+			xml:space="preserve"
+			transform="rotate(-180,55,12.5)">
+			<text freecad:editable="Обозначение верхнее" x="55" y="15.5"><tspan>Обозначение</tspan></text>
+		</g>
+		<g
+		    id="leftblock-text-editable"
+			style="font-style:italic;font-size:4px;text-anchor:middle;fill:#000000;font-family:'GOSTRUS'"
+			xml:space="preserve"
+			transform="rotate(-90,16.5,34)">
+		    <text freecad:editable="Первичная применяемость" x="15" y="35"><tspan></tspan></text>
+	    </g>
+		<!-- Верхняя рамка -->
+		<g
+			transform="translate(0,-232)">
+			<g
+				id="thick-lefttopblock-structure"
+				style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:miter;stroke-miterlimit:4">
+				<rect width="70" height="14" x="20" y="237" />
+			</g>
+			<g
+				id="thin-lefttopblock-structure"
+				style="fill:none;stroke:#000000;stroke-width:0.3;stroke-linecap:miter;stroke-miterlimit:4">
+				<rect width="67" height="14" x="90" y="237" />
+				<path d="m 104,244 h 53" />
+				<path d="m 104,237 v 14" />
+			</g>
+		</g>
+		<g
+			transform="translate(0,0)">
+			<g
+				id="thick-leftblock-structure"
+				style="fill:none;stroke:#000000;stroke-width:0.6;stroke-linecap:miter;stroke-miterlimit:4">
+				<rect width="12" height="120" x="8" y="5" />
+				<path d="m 13,5 v 120" />
+				<path d="m 8,65 h 12" />
+				<rect width="12" height="145" x="8" y="147" />
+				<path d="m 13,147 v 145" />
+				<path d="m 8,182 h 12" />
+				<path d="m 8,207 h 12" />
+				<path d="m 8,232 h 12" />
+				<path d="m 8,267 h 12" />
+				
+			</g>
+			<g
+				id="leftblock-text-non-editable"
+				style="font-style:italic;font-size:4px;text-anchor:middle;fill:#000000;font-family:'GOSTRUS'"
+				xml:space="preserve"
+				transform="matrix(0,-1,1,0,0,0)">
+				<text x="-35" y="11.5">Перв. примен.</text>
+				<text x="-96" y="11.5">Справ. №</text>
+				<text x="-165" y="11.5">Подп. и дата</text>
+				<text x="-195" y="11.5">Инв. № дубл.</text>
+				<text x="-220" y="11.5">Взам. инв. №</text>
+				<text x="-250" y="11.5">Подп. и дата</text>
+				<text x="-280" y="11.5">Инв. № подл</text>
+			</g>
+		</g>
+	</g>
+<!-- DrawingContent -->
+</svg>

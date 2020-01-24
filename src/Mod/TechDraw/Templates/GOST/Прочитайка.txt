@@ -1,0 +1,3 @@
+В шаблонах (форматках) используется шрифт GOSTRUS.
+Шрифт приложен в архиве gostrus-type-a.zip, так же его можно скачать с сайта https://fontlibrary.org/ru/font/gostrus-type-a.
+По всем вопросам и доработкам можно писать на "тытрубу" под видео с шаблонами https://youtu.be/staTJjwDF6Y
