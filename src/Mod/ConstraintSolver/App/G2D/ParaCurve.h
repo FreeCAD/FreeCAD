@@ -33,7 +33,7 @@ namespace G2D {
 
 class ParaCurve;
 typedef Base::UnsafePyHandle<ParaCurve> HParaCurve;
-typedef Base::UnsafePyHandle<ParaShape<ParaCurve>> HShape_Point;
+typedef Base::UnsafePyHandle<ParaShape<ParaCurve>> HShape_Curve;
 
 class FCSExport ParaCurve : public FCS::G2D::ParaGeometry2D
 {
