@@ -2,10 +2,10 @@
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport 
 	  Father="ParaGeometry2DPy" 
-	  Name="ParaEdgePy" 
-	  Twin="ParaEdge" 
-	  TwinPointer="ParaEdge" 
-	  Include="Mod/ConstraintSolver/App/G2D/ParaEdge.h" 
+	  Name="ParaCurvePy" 
+	  Twin="ParaCurve" 
+	  TwinPointer="ParaCurve" 
+	  Include="Mod/ConstraintSolver/App/G2D/ParaCurve.h" 
 	  FatherInclude="Mod/ConstraintSolver/App/G2D/ParaGeometry2DPy.h" 
 	  Namespace="FCS::G2D" 
 	  Constructor="false"

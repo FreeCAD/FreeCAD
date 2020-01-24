@@ -1,15 +1,15 @@
 #include "PreCompiled.h"
 
-#include "ParaEdge.h"
-#include "G2D/ParaEdgePy.h"
+#include "ParaCurve.h"
+#include "G2D/ParaCurvePy.h"
 
 using namespace FCS;
 using namespace FCS::G2D;
 
-TYPESYSTEM_SOURCE_ABSTRACT(FCS::G2D::ParaEdge, FCS::G2D::ParaGeometry2D);
+TYPESYSTEM_SOURCE_ABSTRACT(FCS::G2D::ParaCurve, FCS::G2D::ParaGeometry2D);
 
 
-void FCS::G2D::ParaEdge::initAttrs()
+void FCS::G2D::ParaCurve::initAttrs()
 {
     _attrs = {
         {&u0, "u0", true, 0.0},
@@ -17,17 +17,17 @@ void FCS::G2D::ParaEdge::initAttrs()
     };
 }
 
-PyObject* ParaEdge::getPyObject()
+PyObject* ParaCurve::getPyObject()
 {
     if (!_twin){
-        _twin = new ParaEdgePy(this);
+        _twin = new ParaCurvePy(this);
         return _twin;
     } else  {
         return Py::new_reference_to(_twin);
     }
 }
 
-Vector ParaEdge::tangentAtXY(const ValueSet& /*vals*/, Point /*p*/)
+Vector ParaCurve::tangentAtXY(const ValueSet& /*vals*/, Point /*p*/)
 {
     throw Base::NotImplementedError("tangentAtXY is not implemented for this edge type");
 }

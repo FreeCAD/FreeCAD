@@ -31,11 +31,11 @@
 namespace FCS {
 namespace G2D {
 
-class ParaEdge;
-typedef Base::UnsafePyHandle<ParaEdge> HParaEdge;
-typedef Base::UnsafePyHandle<ParaShape<ParaEdge>> HShape_Point;
+class ParaCurve;
+typedef Base::UnsafePyHandle<ParaCurve> HParaCurve;
+typedef Base::UnsafePyHandle<ParaShape<ParaCurve>> HShape_Point;
 
-class FCSExport ParaEdge : public FCS::G2D::ParaGeometry2D
+class FCSExport ParaCurve : public FCS::G2D::ParaGeometry2D
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public://data
@@ -60,7 +60,7 @@ public://methods
     virtual bool supports_D(){return false;}
 
 public: //friends
-    friend class ParaEdgePy;
+    friend class ParaCurvePy;
 
 };
 
