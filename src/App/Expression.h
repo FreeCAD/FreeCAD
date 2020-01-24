@@ -122,6 +122,9 @@ public:
 
     virtual ~Expression();
 
+    Expression(const Expression&) = delete;
+    void operator=(const Expression &)=delete;
+
     virtual bool isTouched() const { return false; }
 
     Expression * eval() const;

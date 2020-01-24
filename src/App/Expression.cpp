@@ -684,24 +684,32 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
 }
 
 Expression* expressionFromPy(const DocumentObject *owner, const Py::Object &value) {
-    if (value.isNone())
-        return new PyObjectExpression(owner);
-    if(value.isString()) {
-        return new StringExpression(owner,value.as_string());
-    } else if (PyObject_TypeCheck(value.ptr(),&QuantityPy::Type)) {
-        return new NumberExpression(owner,
-                *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr());
-    } else if (value.isBoolean()) {
-        if(value.isTrue())
-            return new ConstantExpression(owner,"True",Quantity(1.0));
-        else
-            return new ConstantExpression(owner,"False",Quantity(0.0));
-    } else {
-        Quantity q;
-        if(pyToQuantity(q,value))
-            return new NumberExpression(owner,q);
+    try {
+        if (value.isNone())
+            return new PyObjectExpression(owner);
+        if(value.isString()) {
+            PropertyString s;
+            s.setPyObject(value.ptr());
+            return new StringExpression(owner,s.getStrValue());
+        } else if (PyObject_TypeCheck(value.ptr(),&QuantityPy::Type)) {
+            return new NumberExpression(owner,
+                    *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr());
+        } else if (value.isBoolean()) {
+            if(value.isTrue())
+                return new ConstantExpression(owner,"True",Quantity(1.0));
+            else
+                return new ConstantExpression(owner,"False",Quantity(0.0));
+        } else {
+            Quantity q;
+            if(pyToQuantity(q,value))
+                return new NumberExpression(owner,q);
+        }
+        return new PyObjectExpression(owner,value.ptr());
+    } catch (Py::Exception &) {
+        Base::PyException::ThrowException();
     }
-    return new PyObjectExpression(owner,value.ptr());
+    // shouldn't be reachable
+    return nullptr;
 }
 
 } // namespace App
@@ -2507,9 +2515,9 @@ void FunctionExpression::_visit(ExpressionVisitor &v)
 
 TYPESYSTEM_SOURCE(App::VariableExpression, App::UnitExpression)
 
-VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdentifier _var)
+VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdentifier &&_var)
     : UnitExpression(_owner)
-    , var(_var)
+    , var(std::move(_var))
 {
 }
 
@@ -2552,11 +2560,12 @@ const Property * VariableExpression::getProperty() const
 }
 
 void VariableExpression::addComponent(Component *c) {
+    std::unique_ptr<Component> guard(c);
     do {
         if(components.size())
             break;
         if(!c->e1 && !c->e2) {
-            var << c->comp;
+            var << std::move(c->comp);
             return;
         }
         long l1=0,l2=0,l3=1;
@@ -2594,7 +2603,7 @@ void VariableExpression::addComponent(Component *c) {
         }
     }while(0);
 
-    Expression::addComponent(c);
+    Expression::addComponent(guard.release());
 }
 
 bool VariableExpression::_isIndexable() const {
@@ -2630,7 +2639,7 @@ Expression *VariableExpression::simplify() const
 
 Expression *VariableExpression::_copy() const
 {
-    return new VariableExpression(owner, var);
+    return new VariableExpression(owner, ObjectIdentifier(var));
 }
 
 void VariableExpression::_getDeps(ExpressionDeps &deps) const
@@ -2755,6 +2764,28 @@ void VariableExpression::setPath(const ObjectIdentifier &path)
      var = path;
 }
 
+std::vector<std::string> VariableExpression::getStringList() const {
+    auto res = var.getStringList();
+    res.reserve(res.size() + components.size());
+    std::ostringstream ss;
+    for(auto &comp : components) {
+        ss.str("");
+        comp->toString(ss,false);
+        res.push_back(ss.str());
+    }
+    return res;
+}
+
+void VariableExpression::popComponents(int count) {
+    if(count <= 0)
+        return;
+    for(;count && components.size(); --count) {
+        delete components.back();
+        components.pop_back();
+    }
+    var.popComponents(count);
+}
+
 //
 // PyObjectExpression class
 //
@@ -2795,7 +2826,9 @@ void PyObjectExpression::_toString(std::ostream &ss, bool,int) const
         ss << "None";
     else {
         Base::PyGILStateLocker lock;
-        ss << Py::Object(pyObj).as_string();
+        PropertyString s;
+        s.setPyObject(pyObj);
+        ss << s.getStrValue();
     }
 }
 
@@ -3048,7 +3081,9 @@ Range RangeExpression::getRange() const
         try {
             Py::Tuple arg(1);
             arg.setItem(0,Py::String(begin));
-            c1 = CellAddress(callable.apply(arg).as_string().c_str());
+            PropertyString s;
+            s.setPyObject(callable.apply(arg).ptr());
+            c1 = CellAddress(s.getValue());
         } catch(Py::Exception &) {
             _EXPR_PY_THROW("Invalid cell address '" << begin << "': ",this);
         } catch(Base::Exception &e) {
@@ -3059,7 +3094,9 @@ Range RangeExpression::getRange() const
         try {
             Py::Tuple arg(1);
             arg.setItem(0,Py::String(end));
-            c2 = CellAddress(callable.apply(arg).as_string().c_str());
+            PropertyString s;
+            s.setPyObject(callable.apply(arg).ptr());
+            c2 = CellAddress(s.getValue());
         } catch(Py::Exception &) {
             _EXPR_PY_THROW("Invalid cell address '" << end << "': ", this);
         } catch(Base::Exception &e) {

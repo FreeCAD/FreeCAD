@@ -319,7 +319,8 @@ protected:
 class AppExport VariableExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    VariableExpression(const App::DocumentObject *_owner = 0, ObjectIdentifier _var = ObjectIdentifier());
+    VariableExpression(const App::DocumentObject *_owner = 0,
+            ObjectIdentifier &&_var = ObjectIdentifier());
 
     ~VariableExpression();
 
@@ -334,6 +335,11 @@ public:
     void setPath(const ObjectIdentifier & path);
 
     const App::Property *getProperty() const;
+
+    std::vector<std::string> getStringList() const;
+
+    // strip out given number of component
+    void popComponents(int count=1);
 
     virtual void addComponent(Component* component) override;
 
