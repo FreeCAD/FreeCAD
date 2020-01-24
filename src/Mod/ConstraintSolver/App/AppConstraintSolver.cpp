@@ -71,6 +71,8 @@
 #include "G2D/ParaTransformPy.h"
 #include "G2D/ParaShape.h"
 #include "G2D/ParaShapePy.h"
+#include "G2D/ParaCurve.h"
+#include "G2D/ParaCurvePy.h"
 #include "G2D/ConstraintDistance.h"
 #include "G2D/ConstraintDistancePy.h"
 #include "G2D/ConstraintPlacementRules.h"
@@ -183,6 +185,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ParaPlacementPy            ::Type.tp_name = "ConstraintSolver.G2D.ParaPlacement"            ;
     FCS::G2D::ParaTransformPy            ::Type.tp_name = "ConstraintSolver.G2D.ParaTransform"            ;
     FCS::G2D::ParaShapePy                ::Type.tp_name = "ConstraintSolver.G2D.ParaShape"                ;
+    FCS::G2D::ParaCurvePy                ::Type.tp_name = "ConstraintSolver.G2D.ParaCurve"                ;
     FCS::G2D::ConstraintDistancePy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistance"       ;
     FCS::G2D::ConstraintPlacementRulesPy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintPlacementRules" ;
 
@@ -193,6 +196,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::G2D::ParaPlacementPy            ::Type, submodG2D.ptr(), "ParaPlacement"            );
     Base::Interpreter().addType(&FCS::G2D::ParaTransformPy            ::Type, submodG2D.ptr(), "ParaTransform"            );
     Base::Interpreter().addType(&FCS::G2D::ParaShapePy                ::Type, submodG2D.ptr(), "ParaShape"                );
+    Base::Interpreter().addType(&FCS::G2D::ParaCurvePy                ::Type, submodG2D.ptr(), "ParaCurve"                );
     Base::Interpreter().addType(&FCS::G2D::ConstraintDistancePy       ::Type, submodG2D.ptr(), "ConstraintDistance"       );
     Base::Interpreter().addType(&FCS::G2D::ConstraintPlacementRulesPy ::Type, submodG2D.ptr(), "ConstraintPlacementRules" );
   //Base::Interpreter().addType(&FCS::G2D::                           ::Type, submodG2D.ptr(), ""                         );
@@ -217,6 +221,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ParaPlacement            ::init();
     FCS::G2D::ParaTransform            ::init();
     FCS::G2D::ParaShapeBase            ::init();
+    FCS::G2D::ParaCurve                ::init();
     FCS::G2D::ConstraintDistance       ::init();
     FCS::G2D::ConstraintPlacementRules ::init();
 
