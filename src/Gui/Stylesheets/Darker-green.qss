@@ -2131,7 +2131,7 @@ QTableView > QWidget > QDateTimeEdit:read-only {
 
 
 /*==================================================================================================
-TABBAR widget (3rd party plugin)
+SELECTORTOOLBAR widget (3rd party plugin)
 ==================================================================================================*/
 QToolBar:horizontal#Selector,
 QToolBar:vertical#Selector {
@@ -2202,6 +2202,24 @@ QToolBar#Selector QToolButton:!checked:hover {
 /* Unactive tabs (pressed) */
 QToolBar#Selector QToolButton:!checked:pressed {
     background-color: rgba(255,255,255,40);
+}
+
+
+/*==================================================================================================
+TABBAR widget (3rd party plugin)
+==================================================================================================*/
+QTabWidget#TabBar > QTabBar {
+    border-top: 0;
+}
+
+QTabWidget#TabBar > QTabBar::tab:top,
+QTabWidget#TabBar > QTabBar::tab:bottom {
+    min-width: -1;
+}
+
+QTabWidget#TabBar > QTabBar::tab:left,
+QTabWidget#TabBar > QTabBar::tab:right {
+    min-height: -1;
 }
 
 
