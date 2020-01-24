@@ -47,6 +47,7 @@ std::string ParaObject::repr() const
 
 void ParaObject::update()
 {
+    throwIfIncomplete();
     _parameters.clear();
     std::unordered_set<int> added;
 
@@ -69,6 +70,14 @@ void ParaObject::update()
             add(r);
         };
     };
+    forEachShape([&](const ShapeRef& v){
+        ParaObject& sh = *HParaObject(*(v.value));
+        if (sh._touched)
+            sh.update();
+        for(const ParameterRef& r : sh.parameters()){
+            add(r);
+        };
+    });
 
     _touched = false;
 }
@@ -156,7 +165,7 @@ void ParaObject::throwIfIncomplete() const
         if (v.value->isNone()){
             throw Py::Exception(PyExc_LookupError,"Child reference '" + v.name + "' of " + repr() + " is None");
         }
-        HParaObject(*v.value)->throwIfIncomplete();
+        //HParaObject(*v.value)->throwIfIncomplete();
     };
     throwIfIncomplete_Shapes();
 }
@@ -167,7 +176,7 @@ void ParaObject::throwIfIncomplete_Shapes() const
         if (it.value->isNone()){
             throw Py::Exception(PyExc_LookupError,"Shape reference '" + it.name + "' of " + repr() + " is None");
         }
-        HParaObject(*it.value)->throwIfIncomplete();
+        //HParaObject(*it.value)->throwIfIncomplete();
     });
 
 }
