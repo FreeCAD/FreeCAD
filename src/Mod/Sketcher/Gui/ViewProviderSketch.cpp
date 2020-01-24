@@ -5847,14 +5847,14 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (dofs < 0) { // over-constrained sketch
         std::string msg;
         SketchObject::appendConflictMsg(getSketchObject()->getLastConflicting(), msg);
-        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff;\">%2</span></a><br/>%3</font><br/>")
+        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
                     .arg(tr("Over-constrained sketch "))
                     .arg(tr("(click to select)"))
                     .arg(QString::fromStdString(msg)));
         signalSolved(QString());
     }
     else if (hasConflicts) { // conflicting constraints
-        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff;\">%2</span></a><br/>%3</font><br/>")
+        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
                     .arg(tr("Sketch contains conflicting constraints "))
                     .arg(tr("(click to select)"))
                     .arg(appendConflictMsg(getSketchObject()->getLastConflicting())));
@@ -5862,7 +5862,7 @@ void ViewProviderSketch::UpdateSolverInformation()
     }
     else {
         if (hasRedundancies) { // redundant constraints
-            signalSetUp(QString::fromLatin1("<font color='orangered'>%1<a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff;\">%2</span></a><br/>%3</font><br/>")
+            signalSetUp(QString::fromLatin1("<font color='orangered'>%1<a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%2</span></a><br/>%3</font><br/>")
                         .arg(tr("Sketch contains redundant constraints "))
                         .arg(tr("(click to select)"))
                         .arg(appendRedundantMsg(getSketchObject()->getLastRedundant())));
@@ -5879,9 +5879,9 @@ void ViewProviderSketch::UpdateSolverInformation()
             }
             else if (!hasRedundancies) {
                 if (dofs == 1)
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff;\">1 degree</span></a> of freedom"));
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">1 degree</span></a> of freedom"));
                 else
-                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff;\">%1 degrees</span></a> of freedom").arg(dofs));
+                    signalSetUp(tr("Under-constrained sketch with <a href=\"#dofs\"><span style=\" text-decoration: underline; color:#0000ff; background-color: #F8F8FF;\">%1 degrees</span></a> of freedom").arg(dofs));
             }
 
             signalSolved(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Solved in %1 sec").arg(getSketchObject()->getLastSolveTime())));
