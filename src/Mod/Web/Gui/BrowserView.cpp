@@ -683,7 +683,7 @@ QUrl BrowserView::url() const
 
 void BrowserView::onLoadStarted()
 {
-    QProgressBar* bar = Gui::Sequencer::instance()->getProgressBar();
+    QProgressBar* bar = Gui::SequencerBar::instance()->getProgressBar();
     bar->setRange(0, 100);
     bar->show();
     Gui::getMainWindow()->showMessage(tr("Loading %1...").arg(view->url().toString()));
@@ -692,14 +692,14 @@ void BrowserView::onLoadStarted()
 
 void BrowserView::onLoadProgress(int step)
 {
-    QProgressBar* bar = Gui::Sequencer::instance()->getProgressBar();
+    QProgressBar* bar = Gui::SequencerBar::instance()->getProgressBar();
     bar->setValue(step);
 }
 
 void BrowserView::onLoadFinished(bool ok)
 {
     if (ok) {
-        QProgressBar* bar = Sequencer::instance()->getProgressBar();
+        QProgressBar* bar = SequencerBar::instance()->getProgressBar();
         bar->setValue(100);
         bar->hide();
         getMainWindow()->showMessage(QString());
