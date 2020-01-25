@@ -51,7 +51,7 @@ std::vector<ParameterRef> ParaLine::makeParameters(HParameterStore into)
     return ret;
 }
 
-Point ParaLine::value(const ValueSet& vals, DualNumber u)
+Position ParaLine::value(const ValueSet& vals, DualNumber u)
 {
     return p0->value(vals) * (1.0 - u) + p1->value(vals) * u;
 }
@@ -61,7 +61,7 @@ Vector ParaLine::tangent(const ValueSet& vals, DualNumber u)
     return p1->value(vals) - p0->value(vals);
 }
 
-Vector ParaLine::tangentAtXY(const ValueSet& vals, Point p)
+Vector ParaLine::tangentAtXY(const ValueSet& vals, Position p)
 {
     return tangent(vals, 0.0);
 }

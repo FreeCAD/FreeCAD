@@ -48,9 +48,9 @@ public://methods
     virtual std::vector<ParameterRef> makeParameters(HParameterStore into) override;
     virtual PyObject* getPyObject() override;
 
-    virtual Point value(const ValueSet& vals, DualNumber u) override;
+    virtual Position value(const ValueSet& vals, DualNumber u) override;
     virtual Vector tangent(const ValueSet& vals, DualNumber u) override;
-    virtual Vector tangentAtXY(const ValueSet& vals, Point p) override;
+    virtual Vector tangentAtXY(const ValueSet& vals, Position p) override;
     virtual bool supports_tangentAtXY() override {return true;}
 
     virtual DualNumber length(const ValueSet& vals, DualNumber u0, DualNumber u1) override;

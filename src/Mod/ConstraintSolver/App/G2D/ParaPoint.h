@@ -25,7 +25,7 @@
 #define FREECAD_CONSTRAINTSOLVER_G2D_PARAPOINT_H
 
 #include "ParaGeometry2D.h"
-#include "Point.h"
+#include "Position.h"
 #include "ParaShape.h"
 
 namespace FCS {
@@ -48,8 +48,8 @@ public://methods
     void initAttrs() override;
     virtual PyObject* getPyObject() override;
 
-    Point value(const ValueSet& vals) const;
-    Point operator()(const ValueSet& vals) const{return value(vals);}
+    Position value(const ValueSet& vals) const;
+    Position operator()(const ValueSet& vals) const{return value(vals);}
 
 public: //friends
     friend class ParaPointPy;

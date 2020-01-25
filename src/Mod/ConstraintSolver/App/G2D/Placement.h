@@ -24,7 +24,7 @@
 #define FREECAD_CONSTRAINTSOLVER_G2D_PLACEMENT_H
 
 #include "Vector.h"
-#include "Point.h"
+#include "Position.h"
 #include "DualMath.h"
 
 namespace FCS{ namespace G2D {
@@ -35,7 +35,7 @@ namespace FCS{ namespace G2D {
  *
  * Order of operation: placed_point = translated(rotated(local_point))
  *
- * Translation is represented by a Point, - the origin of local coordinate
+ * Translation is represented by a Position, - the origin of local coordinate
  * system.
  *
  * Rotation is represenced by a (cos, sin) vector (unit-length). Scaling is not
@@ -47,14 +47,14 @@ namespace FCS{ namespace G2D {
 class /*FCSExport*/ Placement
 {
 public: //data
-    Point translation;
+    Position translation;
     ///rotation encoded as unit-length vector, similarly to 3d rotation quaternion representation
     Vector rotation = Vector(1.0, 0.0);
 
 public: //methods
     Placement() = default;
-    Placement(Point translation, Vector rotation) : translation(translation), rotation(rotation) {}
-    Placement(Point translation, DualNumber rotationAngle) : translation(translation), rotation(cos(rotationAngle), sin(rotationAngle)) {}
+    Placement(Position translation, Vector rotation) : translation(translation), rotation(rotation) {}
+    Placement(Position translation, DualNumber rotationAngle) : translation(translation), rotation(cos(rotationAngle), sin(rotationAngle)) {}
     Placement(const ValueSet& vals, ParameterRef x, ParameterRef y);
 
     inline Placement inverse() const;
@@ -64,7 +64,7 @@ public: //methods
     ///returns angle in -pi..pi range
     Base::DualNumber signedAngle() {return atan2n(rotation.y, rotation.x);}
 
-    Point operator*(Point p) const {return Point(Vector(translation) + *this * Vector(p));}
+    Position operator*(Position p) const {return Position(Vector(translation) + *this * Vector(p));}
     Vector operator*(Vector v) const {return Vector(v.x * rotation.x - v.y * rotation.y, v.x * rotation.y + v.y*rotation.x);}
     Placement operator-() const {return inverse();}
 };

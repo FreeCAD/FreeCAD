@@ -25,7 +25,7 @@
 #define FREECAD_CONSTRAINTSOLVER_G2D_PARAEDGE_H
 
 #include "ParaGeometry2D.h"
-#include "Point.h"
+#include "Position.h"
 #include "ParaShape.h"
 
 namespace FCS {
@@ -49,11 +49,11 @@ public://methods
     virtual PyObject* getPyObject() override;
 
     ///returns curve point at parameter u
-    virtual Point value(const ValueSet& vals, DualNumber u) = 0;
+    virtual Position value(const ValueSet& vals, DualNumber u) = 0;
     ///returns tangent at parameter u
     virtual Vector tangent(const ValueSet& vals, DualNumber u) = 0;
     ///returns tangent given a point on or near the edge
-    virtual Vector tangentAtXY(const ValueSet& vals, Point p);
+    virtual Vector tangentAtXY(const ValueSet& vals, Position p);
     virtual bool supports_tangentAtXY(){return false;}
     ///returns n'th derivative by u
     virtual Vector D(const ValueSet& vals, DualNumber u, int n);

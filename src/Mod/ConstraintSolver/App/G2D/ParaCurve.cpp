@@ -27,7 +27,7 @@ PyObject* ParaCurve::getPyObject()
     }
 }
 
-Vector ParaCurve::tangentAtXY(const ValueSet& /*vals*/, Point /*p*/)
+Vector ParaCurve::tangentAtXY(const ValueSet& /*vals*/, Position /*p*/)
 {
     throw Base::NotImplementedError("tangentAtXY is not implemented for this edge type");
 }

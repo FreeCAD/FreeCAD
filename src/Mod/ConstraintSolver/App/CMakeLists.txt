@@ -53,8 +53,8 @@ SET(ConstraintSolver_G2D
     G2D/Vector.cpp
     G2D/VectorPy.xml
     G2D/VectorPyImp.cpp
-    G2D/Point.h
-    G2D/Point.cpp
+    G2D/Position.h
+    G2D/Position.cpp
     G2D/Placement.h
     G2D/Placement.cpp
     G2D/ParaGeometry2D.h

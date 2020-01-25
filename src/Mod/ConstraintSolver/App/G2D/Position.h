@@ -20,54 +20,54 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREECAD_CONSTRAINTSOLVER_G2D_POINT_H
-#define FREECAD_CONSTRAINTSOLVER_G2D_POINT_H
+#ifndef FREECAD_CONSTRAINTSOLVER_G2D_POSITION_H
+#define FREECAD_CONSTRAINTSOLVER_G2D_POSITION_H
 
 #include "Vector.h"
 
 namespace FCS{ namespace G2D {
 
 /**
- * @brief The Point class is similar to Vector, with the difference being how it is treated by transforms.
+ * @brief The Position class is similar to Vector, with the difference being how it is treated by transforms.
  *
- * Points are transformed by both translations and rotations. Vectors are only transformed by rotations.
+ * Positions are transformed by both translations and rotations. Vectors are only transformed by rotations.
  */
 
-class /*FCSExport*/ Point
+class /*FCSExport*/ Position
 {
 public: //data
     Base::DualNumber x;
     Base::DualNumber y;
 
 public: //methods
-    Point() = default;
-    Point(Base::DualNumber x, Base::DualNumber y) : x(x), y(y) {}
-    Point(const ValueSet& vals, ParameterRef x, ParameterRef y);
-    explicit Point(Vector vec){x = vec.x; y = vec.y;}
+    Position() = default;
+    Position(Base::DualNumber x, Base::DualNumber y) : x(x), y(y) {}
+    Position(const ValueSet& vals, ParameterRef x, ParameterRef y);
+    explicit Position(Vector vec){x = vec.x; y = vec.y;}
 
-    Point operator-() const {return Point(-x, -y);}
+    Position operator-() const {return Position(-x, -y);}
     Base::DualNumber operator[](int index) const;
     operator Vector() const{return Vector(x,y);}
 
     PyObject* getPyObject() const;
 };
 
-inline Vector operator-(Point a, Point b){
+inline Vector operator-(Position a, Position b){
     return Vector(a.x - b.x, a.y - b.y);
 }
-inline Point operator-(Point a, Vector b){
-    return Point(a.x - b.x, a.y - b.y);
+inline Position operator-(Position a, Vector b){
+    return Position(a.x - b.x, a.y - b.y);
 }
-inline Point operator+(Point a, Point b){
-    return Point(a.x + b.x, a.y + b.y);
+inline Position operator+(Position a, Position b){
+    return Position(a.x + b.x, a.y + b.y);
 }
-inline Point operator+(Point a, Vector b){
-    return Point(a.x + b.x, a.y + b.y);
+inline Position operator+(Position a, Vector b){
+    return Position(a.x + b.x, a.y + b.y);
 }
-inline Point operator*(Point a, Base::DualNumber b){
-    return Point(a.x * b, a.y * b);
+inline Position operator*(Position a, Base::DualNumber b){
+    return Position(a.x * b, a.y * b);
 }
-inline Point operator*(Base::DualNumber a, Point b){
+inline Position operator*(Base::DualNumber a, Position b){
     return b * a;
 }
 

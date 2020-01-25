@@ -52,8 +52,8 @@ void ConstraintDistance::setWeight(double weight)
 
 Base::DualNumber ConstraintDistance::error1(const ValueSet& vals) const
 {
-    Point pp1 = p1->placement->value(vals) * p1->tshape()(vals);
-    Point pp2 = p2->placement->value(vals) * p2->tshape()(vals);
+    Position pp1 = p1->placement->value(vals) * p1->tshape()(vals);
+    Position pp2 = p2->placement->value(vals) * p2->tshape()(vals);
     return vals[dist] - (pp1 - pp2).length();
 }
 
