@@ -42,7 +42,7 @@ using namespace Gui;
 
 
 namespace Gui {
-struct SequencerPrivate
+struct SequencerBarPrivate
 {
     ProgressBar* bar;
     WaitCursor* waitCursor;
@@ -74,33 +74,33 @@ struct ProgressBarPrivate
 };
 }
 
-Sequencer* Sequencer::_pclSingleton = 0;
+SequencerBar* SequencerBar::_pclSingleton = 0;
 
-Sequencer* Sequencer::instance()
+SequencerBar* SequencerBar::instance()
 {
     // not initialized?
     if (!_pclSingleton)
     {
-        _pclSingleton = new Sequencer();
+        _pclSingleton = new SequencerBar();
     }
 
     return _pclSingleton;
 }
 
-Sequencer::Sequencer ()
+SequencerBar::SequencerBar()
 {
-    d = new SequencerPrivate;
+    d = new SequencerBarPrivate;
     d->bar = 0;
     d->waitCursor = 0;
     d->guiThread = true;
 }
 
-Sequencer::~Sequencer ()
+SequencerBar::~SequencerBar()
 {
     delete d;
 }
 
-void Sequencer::pause()
+void SequencerBar::pause()
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
@@ -113,7 +113,7 @@ void Sequencer::pause()
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 }
 
-void Sequencer::resume()
+void SequencerBar::resume()
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
@@ -126,7 +126,7 @@ void Sequencer::resume()
     d->bar->enterControlEvents(); // grab again
 }
 
-void Sequencer::startStep()
+void SequencerBar::startStep()
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
@@ -150,8 +150,9 @@ void Sequencer::startStep()
     }
 }
 
-void Sequencer::checkAbort() {
-    if(d->bar->thread() != QThread::currentThread())
+void SequencerBar::checkAbort()
+{
+    if (d->bar->thread() != QThread::currentThread())
         return;
     if (!wasCanceled()) {
         if(d->checkAbortTime.elapsed() < 500)
@@ -174,7 +175,7 @@ void Sequencer::checkAbort() {
     }
 }
 
-void Sequencer::nextStep(bool canAbort)
+void SequencerBar::nextStep(bool canAbort)
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
@@ -203,13 +204,13 @@ void Sequencer::nextStep(bool canAbort)
     }
 }
 
-void Sequencer::setProgress(size_t step)
+void SequencerBar::setProgress(size_t step)
 {
     d->bar->show();
     setValue((int)step);
 }
 
-void Sequencer::setValue(int step)
+void SequencerBar::setValue(int step)
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
@@ -251,7 +252,7 @@ void Sequencer::setValue(int step)
     }
 }
 
-void Sequencer::showRemainingTime()
+void SequencerBar::showRemainingTime()
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
@@ -285,7 +286,7 @@ void Sequencer::showRemainingTime()
     }
 }
 
-void Sequencer::resetData()
+void SequencerBar::resetData()
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
@@ -318,7 +319,7 @@ void Sequencer::resetData()
     SequencerBase::resetData();
 }
 
-void Sequencer::abort()
+void SequencerBar::abort()
 {
     //resets
     resetData();
@@ -326,7 +327,7 @@ void Sequencer::abort()
     throw exc;
 }
 
-void Sequencer::setText (const char* pszTxt)
+void SequencerBar::setText (const char* pszTxt)
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
@@ -344,12 +345,12 @@ void Sequencer::setText (const char* pszTxt)
     }
 }
 
-bool Sequencer::isBlocking() const
+bool SequencerBar::isBlocking() const
 {
     return d->guiThread;
 }
 
-QProgressBar* Sequencer::getProgressBar(QWidget* parent)
+QProgressBar* SequencerBar::getProgressBar(QWidget* parent)
 {
     if (!d->bar)
         d->bar = new ProgressBar(this, parent);
@@ -360,7 +361,7 @@ QProgressBar* Sequencer::getProgressBar(QWidget* parent)
 
 /* TRANSLATOR Gui::ProgressBar */
 
-ProgressBar::ProgressBar (Sequencer* s, QWidget * parent)
+ProgressBar::ProgressBar (SequencerBar* s, QWidget * parent)
     : QProgressBar(parent), sequencer(s)
 {
 #ifdef QT_WINEXTRAS_LIB

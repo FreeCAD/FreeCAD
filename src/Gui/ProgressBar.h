@@ -35,7 +35,7 @@
 
 namespace Gui {
 
-struct SequencerPrivate;
+struct SequencerBarPrivate;
 struct ProgressBarPrivate;
 class ProgressBar;
 
@@ -90,11 +90,11 @@ class ProgressBar;
  * just a busy indicator instead of percentage steps.
  * @author Werner Mayer
  */
-class GuiExport Sequencer : public Base::SequencerBase
+class GuiExport SequencerBar : public Base::SequencerBase
 {
 public:
     /** Returns the sequencer object. */
-    static Sequencer* instance();
+    static SequencerBar* instance();
     /** This restores the last overridden cursor and release the keyboard while the progress bar 
     * is running. This is useful e.g. if a modal dialog appears while a long operation is performed
     * to indicate that the user can click on the dialog. Every pause() must eventually be followed 
@@ -111,9 +111,9 @@ public:
 
 protected:
     /** Construction */
-    Sequencer ();
+    SequencerBar();
     /** Destruction */
-    ~Sequencer ();
+    ~SequencerBar();
 
     /** Puts text to the status bar */
     void setText (const char* pszTxt) override;
@@ -134,8 +134,8 @@ private:
     /** Throws an exception to stop the pending operation. */
     void abort();
     //@}
-    SequencerPrivate* d;
-    static Sequencer* _pclSingleton;
+    SequencerBarPrivate* d;
+    static SequencerBar* _pclSingleton;
 
     friend class ProgressBar;
 };
@@ -146,7 +146,7 @@ class ProgressBar : public QProgressBar
 
 public:
     /** Construction */
-    ProgressBar (Sequencer* s, QWidget * parent=0);
+    ProgressBar (SequencerBar* s, QWidget * parent=0);
     /** Destruction */
     ~ProgressBar ();
 
@@ -196,15 +196,15 @@ private:
 
     //@}
     ProgressBarPrivate* d;
-    Sequencer* sequencer;
-    
+    SequencerBar* sequencer;
+
 #ifdef QT_WINEXTRAS_LIB
     /* Set up the taskbar progress in windows */
     void setupTaskBarProgress(void);
     QWinTaskbarProgress* m_taskbarProgress;
     QWinTaskbarButton* m_taskbarButton;
 #endif
-    friend class Sequencer;
+    friend class SequencerBar;
 };
 
 } // namespace Gui
