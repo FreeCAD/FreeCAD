@@ -48,11 +48,29 @@ public: //methods
     Point operator-() const {return Point(-x, -y);}
     Base::DualNumber operator[](int index) const;
     operator Vector() const{return Vector(x,y);}
+
+    PyObject* getPyObject() const;
 };
 
 inline Vector operator-(Point a, Point b){
     return Vector(a.x - b.x, a.y - b.y);
 }
+inline Point operator-(Point a, Vector b){
+    return Point(a.x - b.x, a.y - b.y);
+}
+inline Point operator+(Point a, Point b){
+    return Point(a.x + b.x, a.y + b.y);
+}
+inline Point operator+(Point a, Vector b){
+    return Point(a.x + b.x, a.y + b.y);
+}
+inline Point operator*(Point a, Base::DualNumber b){
+    return Point(a.x * b, a.y * b);
+}
+inline Point operator*(Base::DualNumber a, Point b){
+    return b * a;
+}
+
 
 }} //namespace
 

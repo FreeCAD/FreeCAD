@@ -19,3 +19,10 @@ Base::DualNumber Point::operator[](int index) const
     assert(index >= 0 && index < 2);
     return index == 0 ? x : y;
 }
+
+PyObject* Point::getPyObject() const
+{
+    //for now, returning a vector would suffice.
+    //#fixme: make py binding
+    return Vector(*this).getPyObject();
+}
