@@ -131,7 +131,7 @@ def autogroup(obj):
                                                     )
                         return
                     inverse_placement = FreeCAD.Placement(matrix.inverse())
-                    if getType(obj) == 'Point':
+                    if get_type(obj) == 'Point':
                         # point vector have a kind of placement, so should be
                         # processed before generic object with placement
                         point_vector = FreeCAD.Vector(obj.X, obj.Y, obj.Z)
