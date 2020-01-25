@@ -65,6 +65,7 @@
 # include <gp_GTrsf.hxx>
 # include <Standard_Version.hxx>
 # include <GCPnts_QuasiUniformDeflection.hxx>
+# include <GCPnts_UniformDeflection.hxx>
 # include <GCPnts_UniformAbscissa.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepLib_MakeFace.hxx>
@@ -133,6 +134,20 @@ CAreaParams::CAreaParams()
 AreaParams::AreaParams()
     :PARAM_INIT(PARAM_FNAME,AREA_PARAMS_AREA)
 {}
+
+void AreaParams::dump(const char *msg) const {
+
+#define AREA_PARAM_PRINT(_param) \
+    ss << PARAM_FNAME_STR(_param) << " = " << PARAM_FNAME(_param) << '\n';
+
+    if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
+        std::ostringstream ss;
+        ss << msg << '\n';
+        PARAM_FOREACH(AREA_PARAM_PRINT, AREA_PARAMS_AREA)
+
+        FC_MSG(ss.str());
+    }
+}
 
 CAreaConfig::CAreaConfig(const CAreaParams &p, bool noFitArcs)
 {
@@ -342,7 +357,12 @@ static std::vector<gp_Pnt> discretize(const TopoDS_Edge &edge, double deflection
     // same for any other discetization algorithm, althgouth it seems only
     // QuasiUniformDeflection has this bug.
 
-    GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
+    // NOTE: QuasiUniformDeflection has trouble with some B-Spline, see
+    // https://forum.freecadweb.org/viewtopic.php?f=15&t=42628
+    //
+    // GCPnts_QuasiUniformDeflection discretizer(curve, deflection, first, last);
+    //
+    GCPnts_UniformDeflection discretizer(curve, deflection, first, last);
     if (!discretizer.IsDone ())
         Standard_Failure::Raise("Curve discretization failed");
     if(discretizer.NbPoints () > 1) {
@@ -871,7 +891,9 @@ struct WireJoiner {
             if(info.p1.SquareDistance(info.p2)<tol)
 #endif
             {
-                builder.Add(comp,BRepBuilderAPI_MakeWire(info.edge).Wire());
+                auto wire = BRepBuilderAPI_MakeWire(info.edge).Wire();
+                Area::showShape(wire,"closed");
+                builder.Add(comp,wire);
                 ++count;
                 continue;
             }
@@ -996,6 +1018,7 @@ struct WireJoiner {
                 TopoDS_Wire wire = makeCleanWire(wireData,0.01);
                 if(!BRep_Tool::IsClosed(wire)) {
                     FC_WARN("failed to close some projection wire");
+                    Area::showShape(wire,"failed");
                     ++skips;
                 }else{
                     for(auto &r : stack) {
@@ -1265,6 +1288,8 @@ int Area::project(TopoDS_Shape &shape_out,
     int skips = joiner.findClosedWires();
     FC_TIME_LOG(t1,"WireJoiner findClosedWires");
 
+    showShape(joiner.comp,"pre_project");
+
     Area area(params);
     area.myParams.SectionCount = 0;
     area.myParams.Offset = 0.0;
@@ -1278,6 +1303,9 @@ int Area::project(TopoDS_Shape &shape_out,
     area.myProjecting = true;
     area.add(joiner.comp, OperationUnion);
     const TopoDS_Shape &shape = area.getShape();
+
+    area.myParams.dump("project");
+
     showShape(shape,"projected");
 
     FC_TIME_LOG(t1,"Clipper wire union");
