@@ -115,10 +115,10 @@ DrawViewBalloon::DrawViewBalloon(void)
     ADD_PROPERTY_TYPE(OriginIsSet, (false), "",(App::PropertyType)(App::Prop_None),"Balloon origin is set");
 
     EndType.setEnums(endTypeEnums);
-    ADD_PROPERTY(EndType,((long)0));
+    ADD_PROPERTY(EndType,(prefEnd()));
 
     Symbol.setEnums(balloonTypeEnums);
-    ADD_PROPERTY(Symbol,((long)0));
+    ADD_PROPERTY(Symbol,(prefShape()));
 
     ADD_PROPERTY_TYPE(SymbolScale,(1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
 
@@ -267,6 +267,23 @@ double DrawViewBalloon::prefKinkLength(void) const
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Dimensions");
     double length = hGrp->GetFloat("BalloonKink", 5.0);
+    return length;
+}
+
+int DrawViewBalloon::prefShape(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    int result = hGrp->GetInt("BalloonShape", 0); 
+    return result;
+}
+
+int DrawViewBalloon::prefEnd(void) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Decorations");
+    int length = hGrp->GetFloat("BalloonArrow", 5.0);
     return length;
 }
 

@@ -103,6 +103,11 @@ protected:
     bool autoPos;
     bool mouseMove;
 
+    int prefScaleType(void);
+    double prefScale(void);
+
+
+
 private:
     static const char* ScaleTypeEnums[];
     static App::PropertyFloatConstraint::Constraints scaleRange;
