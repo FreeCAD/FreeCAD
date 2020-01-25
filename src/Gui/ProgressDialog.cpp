@@ -22,7 +22,10 @@
 
 
 #include "PreCompiled.h"
-
+#include <QApplication>
+#include <QMessageBox>
+#include <QTime>
+#include <QThread>
 #include "ProgressDialog.h"
 #include "MainWindow.h"
 
