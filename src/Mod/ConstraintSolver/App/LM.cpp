@@ -4,6 +4,7 @@
 #include "DualMath.h"
 
 #include "Eigen/Dense"
+#include <cfloat> //for DBL_EPSILON
 
 TYPESYSTEM_SOURCE(FCS::LM, FCS::SolverBackend);
 
