@@ -123,7 +123,7 @@ void SequencerBar::resume()
     }
 
     // must be called as last to get control before WaitCursor
-    d->bar->enterControlEvents(); // grab again
+    d->bar->enterControlEvents(d->guiThread); // grab again
 }
 
 void SequencerBar::startStep()
