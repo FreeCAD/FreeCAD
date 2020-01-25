@@ -36,8 +36,12 @@ namespace FCS {
 
 struct Subconstraint
 {
+public: //data
     HConstraint constraint;
     int index = -1;//index of error function
+public: //constructor
+    Subconstraint(HConstraint c, int index)
+        : constraint(c), index(index) {}
 };
 
 class SubSystem;
