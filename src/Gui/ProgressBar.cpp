@@ -104,11 +104,11 @@ void SequencerBar::pause()
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
+    d->bar->leaveControlEvents(d->guiThread);
     if (thr != currentThread)
         return;
 
     // allow key handling of dialog and restore cursor
-    d->bar->leaveControlEvents();
     d->waitCursor->restoreCursor();
     QApplication::setOverrideCursor(Qt::ArrowCursor);
 }
@@ -117,11 +117,11 @@ void SequencerBar::resume()
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
-    if (thr != currentThread)
-        return;
+    if (thr == currentThread) {
+        QApplication::restoreOverrideCursor();
+        d->waitCursor->setWaitCursor();
+    }
 
-    QApplication::restoreOverrideCursor();
-    d->waitCursor->setWaitCursor();
     // must be called as last to get control before WaitCursor
     d->bar->enterControlEvents(); // grab again
 }
@@ -132,20 +132,22 @@ void SequencerBar::startStep()
     QThread *thr = d->bar->thread(); // this is the main thread
     if (thr != currentThread) {
         d->guiThread = false;
-        d->bar->setRange(0, (int)nTotalSteps);
+        QMetaObject::invokeMethod(d->bar, "setRangeEx", Qt::QueuedConnection,
+            QGenericReturnArgument(), Q_ARG(int, 0), Q_ARG(int, (int)nTotalSteps));
         d->progressTime.start();
         d->checkAbortTime.start();
         d->measureTime.start();
         QMetaObject::invokeMethod(d->bar, "aboutToShow", Qt::QueuedConnection);
+        d->bar->enterControlEvents(d->guiThread);
     }
     else {
         d->guiThread = true;
-        d->bar->setRange(0, (int)nTotalSteps);
+        d->bar->setRangeEx(0, (int)nTotalSteps);
         d->progressTime.start();
         d->checkAbortTime.start();
         d->measureTime.start();
         d->waitCursor = new Gui::WaitCursor;
-        d->bar->enterControlEvents();
+        d->bar->enterControlEvents(d->guiThread);
         d->bar->aboutToShow();
     }
 }
@@ -180,7 +182,12 @@ void SequencerBar::nextStep(bool canAbort)
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
     if (thr != currentThread) {
-        setValue((int)nProgress+1);
+        if (wasCanceled() && canAbort) {
+            abort();
+        }
+        else {
+            setValue((int)nProgress + 1);
+        }
     }
     else {
         if (wasCanceled() && canAbort) {
@@ -221,11 +228,11 @@ void SequencerBar::setValue(int step)
         if (elapsed > 100) {
             d->progressTime.restart();
             if (thr != currentThread) {
-                QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
+                QMetaObject::invokeMethod(d->bar, "setValueEx", Qt::/*Blocking*/QueuedConnection,
                     QGenericReturnArgument(), Q_ARG(int,d->bar->value()+1));
             }
             else {
-                d->bar->setValue(d->bar->value()+1);
+                d->bar->setValueEx(d->bar->value()+1);
                 qApp->processEvents();
             }
         }
@@ -236,13 +243,13 @@ void SequencerBar::setValue(int step)
         if (elapsed > 100) {
             d->progressTime.restart();
             if (thr != currentThread) {
-                QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
+                QMetaObject::invokeMethod(d->bar, "setValueEx", Qt::/*Blocking*/QueuedConnection,
                 QGenericReturnArgument(), Q_ARG(int,step));
                 if (d->bar->isVisible())
                     showRemainingTime();
             }
             else {
-                d->bar->setValue(step);
+                d->bar->setValueEx(step);
                 if (d->bar->isVisible())
                     showRemainingTime();
                 d->bar->resetObserveEventFilter();
@@ -291,7 +298,7 @@ void SequencerBar::resetData()
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->bar->thread(); // this is the main thread
     if (thr != currentThread) {
-        QMetaObject::invokeMethod(d->bar, "reset", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(d->bar, "resetEx", Qt::QueuedConnection);
         QMetaObject::invokeMethod(d->bar, "aboutToHide", Qt::QueuedConnection);
         QMetaObject::invokeMethod(getMainWindow(), "showMessage",
             Qt::/*Blocking*/QueuedConnection,
@@ -302,16 +309,17 @@ void SequencerBar::resetData()
             QGenericReturnArgument(),
             Q_ARG(int,1),
             Q_ARG(QString,QString()));
+        d->bar->leaveControlEvents(d->guiThread);
     }
     else {
-        d->bar->reset();
+        d->bar->resetEx();
         // Note: Under Qt 4.1.4 this forces to run QWindowsStyle::eventFilter() twice
         // handling the same event thus a warning is printed. Possibly, this is a bug
         // in Qt. The message is QEventDispatcherUNIX::unregisterTimer: invalid argument.
         d->bar->aboutToHide();
         delete d->waitCursor;
         d->waitCursor = 0;
-        d->bar->leaveControlEvents();
+        d->bar->leaveControlEvents(d->guiThread);
         getMainWindow()->setPaneText(1, QString());
         getMainWindow()->showMessage(QString());
     }
@@ -394,7 +402,7 @@ int ProgressBar::minimumDuration() const
     return d->minimumDuration;
 }
 
-void Gui::ProgressBar::reset()
+void ProgressBar::resetEx()
 {
   QProgressBar::reset();
 #ifdef QT_WINEXTRAS_LIB
@@ -403,7 +411,7 @@ void Gui::ProgressBar::reset()
 #endif
 }
 
-void Gui::ProgressBar::setRange(int minimum, int maximum)
+void ProgressBar::setRangeEx(int minimum, int maximum)
 {
   QProgressBar::setRange(minimum, maximum);
 #ifdef QT_WINEXTRAS_LIB
@@ -412,25 +420,7 @@ void Gui::ProgressBar::setRange(int minimum, int maximum)
 #endif
 }
 
-void Gui::ProgressBar::setMinimum(int minimum)
-{
-  QProgressBar::setMinimum(minimum);
-#ifdef QT_WINEXTRAS_LIB
-  setupTaskBarProgress();
-  m_taskbarProgress->setMinimum(minimum);
-#endif
-}
-
-void Gui::ProgressBar::setMaximum(int maximum)
-{
-  QProgressBar::setMaximum(maximum);
-#ifdef QT_WINEXTRAS_LIB
-  setupTaskBarProgress();
-  m_taskbarProgress->setMaximum(maximum);
-#endif
-}
-
-void Gui::ProgressBar::setValue(int value)
+void ProgressBar::setValueEx(int value)
 {
   QProgressBar::setValue(value);
 #ifdef QT_WINEXTRAS_LIB
@@ -502,21 +492,23 @@ void ProgressBar::resetObserveEventFilter()
     d->observeEventFilter = 0;
 }
 
-void ProgressBar::enterControlEvents()
+void ProgressBar::enterControlEvents(bool grab)
 {
     qApp->installEventFilter(this);
 
     // Make sure that we get the key events, otherwise the Inventor viewer usurps the key events
     // This also disables accelerators.
-    grabKeyboard();
+    if (grab)
+        grabKeyboard();
 }
 
-void ProgressBar::leaveControlEvents()
+void ProgressBar::leaveControlEvents(bool release)
 {
     qApp->removeEventFilter(this);
 
     // release the keyboard again
-    releaseKeyboard();
+    if (release)
+        releaseKeyboard();
 }
 
 #ifdef QT_WINEXTRAS_LIB
@@ -536,12 +528,27 @@ void ProgressBar::setupTaskBarProgress()
 bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 {
     if (sequencer->isRunning() && e != 0) {
+        QThread* currentThread = QThread::currentThread();
+        QThread* thr = this->thread(); // this is the main thread
+        if (thr != currentThread) {
+            if (e->type() == QEvent::KeyPress) {
+                QKeyEvent* ke = static_cast<QKeyEvent*>(e);
+                if (ke->key() == Qt::Key_Escape) {
+                    // cancel the operation
+                    sequencer->tryToCancel();
+                    return true;
+                }
+            }
+            return QProgressBar::eventFilter(o, e);
+        }
+
+        // main thread
         switch ( e->type() )
         {
         // check for ESC
         case QEvent::KeyPress:
             {
-                QKeyEvent* ke = (QKeyEvent*)e;
+                QKeyEvent* ke = static_cast<QKeyEvent*>(e);
                 if (ke->key() == Qt::Key_Escape) {
                     // eventFilter() was called from the application 50 times without performing a new step (app could hang)
                     if (d->observeEventFilter > 50) {

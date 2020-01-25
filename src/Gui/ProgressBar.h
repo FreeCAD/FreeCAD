@@ -158,11 +158,10 @@ public:
     */
     int minimumDuration() const;
 
-    void reset();
-    void setRange(int minimum, int maximum);
-    void setMinimum(int minimum);
-    void setMaximum(int maximum);
-    void setValue(int value);
+private Q_SLOTS:
+    void resetEx();
+    void setRangeEx(int minimum, int maximum);
+    void setValueEx(int value);
 
 
 public Q_SLOTS:
@@ -189,9 +188,9 @@ private:
     //@{
     void resetObserveEventFilter();
     /** Gets the events under control */
-    void enterControlEvents();
+    void enterControlEvents(bool);
     /** Loses the control over incoming events*/
-    void leaveControlEvents();
+    void leaveControlEvents(bool);
 
 
     //@}
