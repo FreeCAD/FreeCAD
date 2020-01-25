@@ -256,13 +256,32 @@ Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
     return hGrp;
 }
 
+//EdgeCapStyle param changed from UInt (Qt::PenCapStyle) to Int (QComboBox index)
 Qt::PenCapStyle QGIPrimPath::prefCapStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     Qt::PenCapStyle result;
-    unsigned int cap = hGrp->GetUnsigned("EdgeCapStyle", 0x20);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
-    result = (Qt::PenCapStyle) cap;
+    //old parameter format UINT
+    unsigned int oldStyle = hGrp->GetUnsigned("EdgeCapStyle", 0xFF);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    result = (Qt::PenCapStyle) oldStyle;
+    int newStyle;
+    if (oldStyle == 0xFF) {              //no old style parm found
+        newStyle = hGrp->GetUnsigned("EdgeCapStyle", 2);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+        switch (newStyle) {
+            case 0:
+                result = (Qt::PenCapStyle) 0x20;   //round;
+                break;
+            case 1:
+                result = (Qt::PenCapStyle) 0x10;   //square;
+                break;
+            case 2:
+                result = (Qt::PenCapStyle) 0x00;   //flat
+                break;
+            default:
+                result = (Qt::PenCapStyle) 0x20;
+        }
+    }
     return result;
 }
 

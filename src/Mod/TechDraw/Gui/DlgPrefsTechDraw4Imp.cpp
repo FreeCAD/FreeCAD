@@ -25,64 +25,48 @@
 
 #include "PreCompiled.h"
 
-#include "DlgPrefsTechDraw2Imp.h"
+#include "DlgPrefsTechDraw4Imp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
-DlgPrefsTechDraw2Imp::DlgPrefsTechDraw2Imp( QWidget* parent )
+DlgPrefsTechDraw4Imp::DlgPrefsTechDraw4Imp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
-//    pdsbTemplateMark->setUnit(Base::Unit::Length);
-
 }
 
-DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
+DlgPrefsTechDraw4Imp::~DlgPrefsTechDraw4Imp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgPrefsTechDraw2Imp::saveSettings()
+void DlgPrefsTechDraw4Imp::saveSettings()
 {
-    pdsbToleranceScale->onSave();
-    pdsbTemplateMark->onSave();
-
-    pdsbVertexScale->onSave();
-    pdsbCenterScale->onSave();
-
-    pdsbPageScale->onSave();
-    cbViewScaleType->onSave();
-    pdsbViewScale->onSave();
-    pdsbEdgeFuzz->onSave();
-    pdsbMarkFuzz->onSave();
-    pdsbOverlapRadius->onSave();
-    pdsbTemplateMark->onSave();
+    cbEndCap->onSave();
+    cbCrazyEdges->onSave();
+    cbDebugSection->onSave();
+    cbDetectFaces->onSave();
+    cbDebugDetail->onSave();
+    cbShowSectionEdges->onSave();
+    cbFuseBeforeSection->onSave();
 }
 
-void DlgPrefsTechDraw2Imp::loadSettings()
+void DlgPrefsTechDraw4Imp::loadSettings()
 {
-
-    pdsbToleranceScale->onRestore();
-
-    pdsbTemplateMark->onRestore();
-
-    pdsbVertexScale->onRestore();
-    pdsbCenterScale->onRestore();
-
-    pdsbPageScale->onRestore();
-    cbViewScaleType->onRestore();
-    pdsbViewScale->onRestore();
-    pdsbEdgeFuzz->onRestore();
-    pdsbMarkFuzz->onRestore();
-    pdsbOverlapRadius->onRestore();
-    pdsbTemplateMark->onRestore();
+    cbEndCap->onRestore();
+    cbCrazyEdges->onRestore();
+    cbDebugSection->onRestore();
+    cbDetectFaces->onRestore();
+    cbDebugDetail->onRestore();
+    cbShowSectionEdges->onRestore();
+    cbFuseBeforeSection->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsTechDraw2Imp::changeEvent(QEvent *e)
+void DlgPrefsTechDraw4Imp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
@@ -94,4 +78,4 @@ void DlgPrefsTechDraw2Imp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw2Imp.cpp>
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw4Imp.cpp>

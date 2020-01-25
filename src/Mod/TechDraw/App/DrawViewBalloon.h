@@ -81,7 +81,8 @@ public:
     void handleXYLock(void) override;
 
     double prefKinkLength(void) const;
-
+    int prefShape(void) const;
+    int prefEnd(void) const;
 
 protected:
     void onChanged(const App::Property* prop) override;

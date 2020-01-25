@@ -25,64 +25,78 @@
 
 #include "PreCompiled.h"
 
-#include "DlgPrefsTechDraw2Imp.h"
+#include "DlgPrefsTechDraw3Imp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
-DlgPrefsTechDraw2Imp::DlgPrefsTechDraw2Imp( QWidget* parent )
+DlgPrefsTechDraw3Imp::DlgPrefsTechDraw3Imp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
-//    pdsbTemplateMark->setUnit(Base::Unit::Length);
-
+    plsb_FontSize->setUnit(Base::Unit::Length);
+    plsb_ArrowSize->setUnit(Base::Unit::Length);
 }
 
-DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
+DlgPrefsTechDraw3Imp::~DlgPrefsTechDraw3Imp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgPrefsTechDraw2Imp::saveSettings()
+void DlgPrefsTechDraw3Imp::saveSettings()
 {
-    pdsbToleranceScale->onSave();
-    pdsbTemplateMark->onSave();
-
-    pdsbVertexScale->onSave();
-    pdsbCenterScale->onSave();
-
-    pdsbPageScale->onSave();
-    cbViewScaleType->onSave();
-    pdsbViewScale->onSave();
-    pdsbEdgeFuzz->onSave();
-    pdsbMarkFuzz->onSave();
-    pdsbOverlapRadius->onSave();
-    pdsbTemplateMark->onSave();
+    pcbMatting->onSave();
+    pcbBalloonShape->onSave();
+    cbSectionLineStd->onSave();
+    cbPyramidOrtho->onSave();
+    pcbCenterStyle->onSave();
+    pcbSectionStyle->onSave();
+    leLineGroup->onSave();
+    pcbBalloonArrow->onSave();
+    cbAutoHoriz->onSave();
+    leDiameter->onSave();
+    pcbArrow->onSave();
+    sbAltDecimals->onSave();
+    plsb_FontSize->onSave();
+    plsb_ArrowSize->onSave();
+    leformatSpec->onSave();
+    cbGlobalDecimals->onSave();
+    cbShowUnits->onSave();
+    pcbStandardAndStyle->onSave();
+    cbProjAngle->onSave();
+    cbHiddenLineStyle->onSave();
+    pdsbBalloonKink->onSave();
 }
 
-void DlgPrefsTechDraw2Imp::loadSettings()
+void DlgPrefsTechDraw3Imp::loadSettings()
 {
-
-    pdsbToleranceScale->onRestore();
-
-    pdsbTemplateMark->onRestore();
-
-    pdsbVertexScale->onRestore();
-    pdsbCenterScale->onRestore();
-
-    pdsbPageScale->onRestore();
-    cbViewScaleType->onRestore();
-    pdsbViewScale->onRestore();
-    pdsbEdgeFuzz->onRestore();
-    pdsbMarkFuzz->onRestore();
-    pdsbOverlapRadius->onRestore();
-    pdsbTemplateMark->onRestore();
+    pcbMatting->onRestore();
+    pcbBalloonShape->onRestore();
+    cbSectionLineStd->onRestore();
+    cbPyramidOrtho->onRestore();
+    pcbCenterStyle->onRestore();
+    pcbSectionStyle->onRestore();
+    leLineGroup->onRestore();
+    pcbBalloonArrow->onRestore();
+    cbAutoHoriz->onRestore();
+    leDiameter->onRestore();
+    pcbArrow->onRestore();
+    sbAltDecimals->onRestore();
+    plsb_FontSize->onRestore();
+    plsb_ArrowSize->onRestore();
+    leformatSpec->onRestore();
+    cbGlobalDecimals->onRestore();
+    cbShowUnits->onRestore();
+    pcbStandardAndStyle->onRestore();
+    cbProjAngle->onRestore();
+    cbHiddenLineStyle->onRestore();
+    pdsbBalloonKink->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsTechDraw2Imp::changeEvent(QEvent *e)
+void DlgPrefsTechDraw3Imp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
@@ -94,4 +108,4 @@ void DlgPrefsTechDraw2Imp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw2Imp.cpp>
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw3Imp.cpp>
