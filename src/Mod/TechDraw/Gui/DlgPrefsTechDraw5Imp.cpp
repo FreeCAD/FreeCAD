@@ -25,98 +25,54 @@
 
 #include "PreCompiled.h"
 
-#include "DlgPrefsTechDrawImp.h"
+#include "DlgPrefsTechDraw5Imp.h"
 #include <Gui/PrefWidgets.h>
 
 using namespace TechDrawGui;
 
-DlgPrefsTechDrawImp::DlgPrefsTechDrawImp( QWidget* parent )
+DlgPrefsTechDraw5Imp::DlgPrefsTechDraw5Imp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
-    plsb_LabelSize->setUnit(Base::Unit::Length);
-    plsb_TemplateDot->setUnit(Base::Unit::Length);
 }
 
-DlgPrefsTechDrawImp::~DlgPrefsTechDrawImp()
+DlgPrefsTechDraw5Imp::~DlgPrefsTechDraw5Imp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void DlgPrefsTechDrawImp::saveSettings()
+void DlgPrefsTechDraw5Imp::saveSettings()
 {
-    cb_HidLine->onSave();
-    cb_Angle->onSave();
-    cb_Faces->onSave();
-    cb_SectionEdges->onSave();
-    cb_PageUpdate->onSave();
-    cb_Global->onSave();
-    cb_Override->onSave();
-    cb_AutoDist->onSave();
-
-    pcb_Normal->onSave();
-    pcb_Select->onSave();
-    pcb_PreSelect->onSave();
-    pcb_Hidden->onSave();
-    pcb_Surface->onSave();
-    pcb_Background->onSave();
-    pcb_Hatch->onSave();
-    pcb_Face->onSave();
-    pcb_PaintFaces->onSave();  //check box!
-
-    pfb_LabelFont->onSave();
-    plsb_LabelSize->onSave();
-    plsb_TemplateDot->onSave();
-
-    pfc_DefTemp->onSave();
-    pfc_DefDir->onSave();
-    pfc_HatchFile->onSave();
-    pfc_LineGroup->onSave();
-    pfc_Welding->onSave();
-
-    pfc_FilePattern->onSave();
-    le_NamePattern->onSave();
+    pcbSeamViz->onSave();
+    pcbSmoothViz->onSave();
+    pcbHardViz->onSave();
+    pcbPolygon->onSave();
+    pcbIsoViz->onSave();
+    pcbSmoothHid->onSave();
+    pcbSeamHid->onSave();
+    pcbIsoHid->onSave();
+    psbIsoCount->onSave();
+    pcbHardHid->onSave();
 }
 
-void DlgPrefsTechDrawImp::loadSettings()
+void DlgPrefsTechDraw5Imp::loadSettings()
 {
-    cb_HidLine->onRestore();
-    cb_Angle->onRestore();
-    cb_Faces->onRestore();
-    cb_SectionEdges->onRestore();
-    cb_PageUpdate->onRestore();
-    cb_Global->onRestore();
-    cb_Override->onRestore();
-    cb_AutoDist->onRestore();
-
-    pcb_Normal->onRestore();
-    pcb_Select->onRestore();
-    pcb_PreSelect->onRestore();
-    pcb_Hidden->onRestore();
-    pcb_Surface->onRestore();
-    pcb_Background->onRestore();
-    pcb_Hatch->onRestore();
-    pcb_Face->onRestore();
-    pcb_PaintFaces->onRestore();  //check box!
-
-    pfb_LabelFont->onRestore();
-    plsb_LabelSize->onRestore();
-    plsb_TemplateDot->onRestore();
-
-    pfc_DefTemp->onRestore();
-    pfc_DefDir->onRestore();
-    pfc_HatchFile->onRestore();
-    pfc_LineGroup->onRestore();
-    pfc_Welding->onRestore();
-
-    pfc_FilePattern->onRestore();
-    le_NamePattern->onRestore();
+    pcbSeamViz->onRestore();
+    pcbSmoothViz->onRestore();
+    pcbHardViz->onRestore();
+    pcbPolygon->onRestore();
+    pcbIsoViz->onRestore();
+    pcbSmoothHid->onRestore();
+    pcbSeamHid->onRestore();
+    pcbIsoHid->onRestore();
+    psbIsoCount->onRestore();
+    pcbHardHid->onRestore();
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgPrefsTechDrawImp::changeEvent(QEvent *e)
+void DlgPrefsTechDraw5Imp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         saveSettings();
@@ -128,4 +84,4 @@ void DlgPrefsTechDrawImp::changeEvent(QEvent *e)
     }
 }
 
-#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDrawImp.cpp>
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw5Imp.cpp>
