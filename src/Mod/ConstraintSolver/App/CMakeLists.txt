@@ -43,6 +43,7 @@ generate_from_xml(G2D/ParaTransformPy)
 generate_from_xml(G2D/ParaPlacementPy)
 generate_from_xml(G2D/ParaShapePy)
 generate_from_xml(G2D/ParaCurvePy)
+generate_from_xml(G2D/ParaLinePy)
 
 generate_from_xml(G2D/ConstraintDistancePy)
 generate_from_xml(G2D/ConstraintPlacementRulesPy)
@@ -84,6 +85,10 @@ SET(ConstraintSolver_G2D
     G2D/ParaCurve.cpp
     G2D/ParaCurvePy.xml
     G2D/ParaCurvePyImp.cpp
+    G2D/ParaLine.h
+    G2D/ParaLine.cpp
+    G2D/ParaLinePy.xml
+    G2D/ParaLinePyImp.cpp
     G2D/ConstraintDistance.h
     G2D/ConstraintDistance.cpp
     G2D/ConstraintDistancePy.xml
