@@ -59,6 +59,15 @@ public://methods
     virtual Vector D(const ValueSet& vals, DualNumber u, int n);
     virtual bool supports_D(){return false;}
 
+    ///length of curve between specified parameters
+    virtual DualNumber length(const ValueSet& vals, DualNumber u0, DualNumber u1);
+    virtual DualNumber length(const ValueSet& vals);
+    virtual bool supports_length() {return false;}
+
+    ///length of untrimmed curve
+    virtual DualNumber fullLength(const ValueSet& vals);
+    virtual bool supports_fullLength() {return false;}
+
 public: //friends
     friend class ParaCurvePy;
 

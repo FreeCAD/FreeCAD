@@ -31,3 +31,26 @@ Vector ParaCurve::tangentAtXY(const ValueSet& /*vals*/, Point /*p*/)
 {
     throw Base::NotImplementedError("tangentAtXY is not implemented for this edge type");
 }
+
+Vector ParaCurve::D(const ValueSet& /*vals*/, DualNumber /*u*/, int /*n*/)
+{
+    throw Base::NotImplementedError("D is not implemented for this edge type");
+}
+
+DualNumber ParaCurve::length(const ValueSet& vals, DualNumber u0, DualNumber u1)
+{
+    throw Base::NotImplementedError("length is not implemented for this edge type");
+}
+
+DualNumber ParaCurve::length(const ValueSet& vals)
+{
+    if (! u0.isNull() && ! u1.isNull())
+        return length(vals, vals[u0], vals[u1]);
+    else
+        return fullLength(vals);
+}
+
+DualNumber ParaCurve::fullLength(const ValueSet& vals)
+{
+    throw Base::NotImplementedError("fullLength is not implemented for this edge type");
+}
