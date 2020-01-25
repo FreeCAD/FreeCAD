@@ -347,6 +347,7 @@ set(Gui_MOC_HDRS
     InputField.h
     PrefWidgets.h
     ProgressBar.h
+    ProgressDialog.h
     PropertyPage.h
     PropertyView.h
     PythonConsole.h
@@ -1118,6 +1119,7 @@ SET(Widget_CPP_SRCS
     PrefWidgets.cpp
     InputField.cpp
     ProgressBar.cpp
+    ProgressDialog.cpp
     QuantitySpinBox.cpp
     SpinBox.cpp
     Splashscreen.cpp
@@ -1132,6 +1134,7 @@ SET(Widget_HPP_SRCS
     PrefWidgets.h
     InputField.h
     ProgressBar.h
+    ProgressDialog.h
     QuantitySpinBox.h
     QuantitySpinBox_p.h
     SpinBox.h
