@@ -26,6 +26,11 @@
 #include "ProgressDialog.h"
 #include "MainWindow.h"
 
+#include <QApplication>
+#inlcude <QMessageBox>
+#include <QThread>
+#include <QTime>
+
 
 using namespace Gui;
 
