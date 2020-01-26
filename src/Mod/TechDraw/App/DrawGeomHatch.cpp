@@ -82,7 +82,7 @@ using namespace std;
 
 App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {Precision::Confusion(),
                                                                        std::numeric_limits<double>::max(),
-                                                                       pow(10,- Base::UnitsApi::getDecimals())};
+                                                                       (0.1)}; // increment by 0.1
 
 PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
 
