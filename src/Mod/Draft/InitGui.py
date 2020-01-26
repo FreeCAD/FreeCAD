@@ -155,6 +155,7 @@ class DraftWorkbench(Workbench):
         Log("Draft workbench deactivated\n")
 
     def ContextMenu(self, recipient):
+        from DraftGui import translate
         if recipient == "View":
             if FreeCAD.activeDraftCommand is None:
                 if FreeCADGui.Selection.getSelection():
@@ -163,7 +164,8 @@ class DraftWorkbench(Workbench):
                 else:
                     self.appendContextMenu("Draft", self.cmdList)
             else:
-                if FreeCAD.activeDraftCommand.featureName == "Line":
+                if FreeCAD.activeDraftCommand.featureName == translate("draft","Line"):
+                    # BUG: line subcommands are not usable while another command is active
                     self.appendContextMenu("", self.lineList)
         else:
             if FreeCADGui.Selection.getSelection():
