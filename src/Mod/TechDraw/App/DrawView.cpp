@@ -65,7 +65,7 @@ const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          NULL};
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
-                                                                  pow(10,- Base::UnitsApi::getDecimals())};
+                                                                  (0.1)}; // increment by 0.1
 
 
 PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
