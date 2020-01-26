@@ -107,6 +107,7 @@
 #include <gp_GTrsf.hxx>
 #include <Standard_Version.hxx>
 #include <GCPnts_QuasiUniformDeflection.hxx>
+#include <GCPnts_UniformDeflection.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepLib_MakeFace.hxx>
