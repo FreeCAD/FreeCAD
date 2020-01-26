@@ -48,9 +48,9 @@ public:
     /// destructor
     virtual ~ViewProviderLeader();
 
-    App::PropertyFloat    LineWidth;
-    App::PropertyInteger  LineStyle;
-    App::PropertyColor    Color;
+    App::PropertyLength  LineWidth;
+    App::PropertyInteger LineStyle;
+    App::PropertyColor   Color;
 
     virtual void attach(App::DocumentObject *);
 /*    virtual void setDisplayMode(const char* ModeName);*/
@@ -70,6 +70,8 @@ public:
 protected:
     double getDefLineWeight(void);
     App::Color getDefLineColor(void);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+
 };
 
 } // namespace TechDrawGui

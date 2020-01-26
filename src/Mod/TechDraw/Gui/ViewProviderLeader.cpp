@@ -70,8 +70,8 @@ ViewProviderLeader::ViewProviderLeader()
 
     static const char *group = "Line Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight())    ,group,(App::PropertyType)(App::Prop_None),"Line weight");
-    ADD_PROPERTY_TYPE(LineStyle,(1)    ,group,(App::PropertyType)(App::Prop_None),"Line style");
+    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
+    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
     ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"The color of the Markup");
 }
 
@@ -202,6 +202,18 @@ App::Color ViewProviderLeader::getDefLineColor(void)
     App::Color result;
     result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
     return result;
+}
+
+void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+// transforms properties that had been changed
+{
+    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyInteger LineWidthProperty;
+        // restore the PropertyFloat to be able to set its value
+        LineWidthProperty.Restore(reader);
+        LineWidth.setValue(LineWidthProperty.getValue());
+    }
 }
 
 
