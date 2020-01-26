@@ -138,14 +138,7 @@ void ViewProviderLeader::updateData(const App::Property* p)
 
 void ViewProviderLeader::onChanged(const App::Property* p)
 {
-    if ((p == &Color) ||
-        (p == &LineWidth) ||
-        (p == &LineStyle)) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-    }
+    updateGraphic();
     ViewProviderDrawingView::onChanged(p);
 }
 
@@ -170,6 +163,15 @@ std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren(void) const
     catch (...) {
         std::vector<App::DocumentObject*> tmp;
         return tmp;
+    }
+}
+
+void ViewProviderLeader::updateGraphic(void)
+{
+    // redraw QGIVP
+    QGIView* qgiv = getQView();
+    if (qgiv) {
+        qgiv->updateView(true);
     }
 }
 
