@@ -1895,12 +1895,22 @@ void Application::runApplication(void)
         Base::Console().Log("No OpenGL is present or no OpenGL context is current\n");
 #endif
 
+    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps/Theme");
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+#else
+    // Option to opt-out from using a Linux desktop icon theme.
+    // https://forum.freecadweb.org/viewtopic.php?f=4&t=35624
+    bool themePaths = hTheme->GetBool("ThemeSearchPaths",true);
+    if (!themePaths) {
+        QStringList searchPaths;
+        searchPaths.prepend(QString::fromUtf8(":/icons"));
+        QIcon::setThemeSearchPaths(searchPaths);
+        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+    }
 #endif
 
-    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps/Theme");
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
         QStringList searchPaths = QIcon::themeSearchPaths();
