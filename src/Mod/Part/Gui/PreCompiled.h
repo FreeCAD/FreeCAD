@@ -79,7 +79,9 @@
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
 
+#if OCC_VERSION_HEX < 0x070400
 #include <BRepMesh.hxx>
+#endif
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <Poly_Connect.hxx>
 #include <Poly_Polygon3D.hxx>

@@ -77,6 +77,7 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <BRepAdaptor_Surface.hxx>
 
 // STL
 #include <vector>
