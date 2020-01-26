@@ -59,6 +59,9 @@
 
 using namespace TechDrawGui;
 
+// there are only 5 line styles
+App::PropertyIntegerConstraint::Constraints ViewProviderLeader::LineStyleRange = { 0, 5, 1 };
+
 PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
@@ -73,6 +76,8 @@ ViewProviderLeader::ViewProviderLeader()
     ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
     ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
     ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"The color of the Markup");
+
+    LineStyle.setConstraints(&LineStyleRange);
 }
 
 ViewProviderLeader::~ViewProviderLeader()
@@ -209,11 +214,18 @@ void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, cons
 {
     // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
     if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyInteger LineWidthProperty;
+        App::PropertyFloat LineWidthProperty;
         // restore the PropertyFloat to be able to set its value
         LineWidthProperty.Restore(reader);
         LineWidth.setValue(LineWidthProperty.getValue());
     }
-}
 
+    // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger LineStyleProperty;
+        // restore the PropertyFloat to be able to set its value
+        LineStyleProperty.Restore(reader);
+        LineStyle.setValue(LineStyleProperty.getValue());
+    }
+}
 

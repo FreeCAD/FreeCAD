@@ -174,7 +174,7 @@ void ViewProviderBalloon::handleChangedPropertyType(Base::XMLReader &reader, con
 {
     // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
     if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
-        App::PropertyInteger LineWidthProperty;
+        App::PropertyFloat LineWidthProperty;
         // restore the PropertyFloat to be able to set its value
         LineWidthProperty.Restore(reader);
         LineWidth.setValue(LineWidthProperty.getValue());
