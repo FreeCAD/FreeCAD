@@ -59,6 +59,9 @@
 
 using namespace TechDrawGui;
 
+// there are only 5 line styles
+App::PropertyIntegerConstraint::Constraints ViewProviderLeader::LineStyleRange = { 0, 5, 1 };
+
 PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
@@ -70,9 +73,11 @@ ViewProviderLeader::ViewProviderLeader()
 
     static const char *group = "Line Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight())    ,group,(App::PropertyType)(App::Prop_None),"Line weight");
-    ADD_PROPERTY_TYPE(LineStyle,(1)    ,group,(App::PropertyType)(App::Prop_None),"Line style");
+    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
+    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style");
     ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"The color of the Markup");
+
+    LineStyle.setConstraints(&LineStyleRange);
 }
 
 ViewProviderLeader::~ViewProviderLeader()
@@ -204,4 +209,23 @@ App::Color ViewProviderLeader::getDefLineColor(void)
     return result;
 }
 
+void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+// transforms properties that had been changed
+{
+    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat LineWidthProperty;
+        // restore the PropertyFloat to be able to set its value
+        LineWidthProperty.Restore(reader);
+        LineWidth.setValue(LineWidthProperty.getValue());
+    }
+
+    // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger LineStyleProperty;
+        // restore the PropertyInteger to be able to set its value
+        LineStyleProperty.Restore(reader);
+        LineStyle.setValue(LineStyleProperty.getValue());
+    }
+}
 

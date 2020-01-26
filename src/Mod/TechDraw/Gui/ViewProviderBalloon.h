@@ -45,11 +45,10 @@ public:
     /// destructor
     virtual ~ViewProviderBalloon();
 
-    App::PropertyFont     Font;
-    App::PropertyLength   Fontsize;
-    App::PropertyFloat    LineWidth;
-    App::PropertyColor    Color;
-
+    App::PropertyFont   Font;
+    App::PropertyLength Fontsize;
+    App::PropertyLength LineWidth;
+    App::PropertyColor  Color;
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
@@ -63,6 +62,10 @@ public:
     virtual bool doubleClicked(void);
 
     virtual TechDraw::DrawViewBalloon* getViewObject() const;
+
+protected:
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+
 };
 
 } // namespace TechDrawGui
