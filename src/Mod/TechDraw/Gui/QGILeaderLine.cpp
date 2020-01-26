@@ -404,6 +404,8 @@ void QGILeaderLine::draw()
     } else {
         setPrettyNormal();
     }
+    // finally update the drawing
+    update(boundingRect());
 }
 
 QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
@@ -584,8 +586,8 @@ double QGILeaderLine::getEdgeFuzz(void) const
 QColor QGILeaderLine::getNormalColor()
 {
 //    Base::Console().Message("QGILL::getNormalColor()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLinens");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/LeaderLines");
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
     m_colNormal = fcColor.asValue<QColor>();
