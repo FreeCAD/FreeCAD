@@ -64,6 +64,8 @@ public:
 
     std::vector<App::DocumentObject*> claimChildren(void) const;
 
+    void updateGraphic(void);
+
     virtual TechDraw::DrawLeaderLine* getViewObject() const;
     TechDraw::DrawLeaderLine* getFeature()  const;
 
