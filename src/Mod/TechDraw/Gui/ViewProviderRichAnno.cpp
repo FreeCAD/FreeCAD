@@ -194,7 +194,7 @@ void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, co
     // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
     if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
         App::PropertyInteger LineStyleProperty;
-        // restore the PropertyFloat to be able to set its value
+        // restore the PropertyInteger to be able to set its value
         LineStyleProperty.Restore(reader);
         LineStyle.setValue(LineStyleProperty.getValue());
     }
