@@ -144,7 +144,7 @@ Py::Boolean ParameterRefPy::getOwnFixed(void) const
 void  ParameterRefPy::setOwnFixed(Py::Boolean arg)
 {
     getParameterRefPtr()->throwNull();
-    this->getParameterRefPtr()->param().fixed = arg.as_bool();
+    this->getParameterRefPtr()->param().fixed = bool(arg);
 }
 
 Py::Long ParameterRefPy::getTag(void) const
