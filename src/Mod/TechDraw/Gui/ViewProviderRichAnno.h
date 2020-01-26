@@ -59,8 +59,6 @@ public:
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
 
-    void updateGraphic(void);
-
     virtual TechDraw::DrawRichAnno* getViewObject() const;
     TechDraw::DrawRichAnno* getFeature()  const;
 

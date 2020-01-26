@@ -82,15 +82,6 @@ void ViewProviderRichAnno::attach(App::DocumentObject *pcFeat)
     ViewProviderDrawingView::attach(pcFeat);
 }
 
-void ViewProviderRichAnno::updateGraphic(void)
-{
-    // redraw QGIVP
-    QGIView* qgiv = getQView();
-    if (qgiv) {
-        qgiv->updateView(true);
-    }
-}
-
 bool ViewProviderRichAnno::setEdit(int ModNum)
 {
 //    Base::Console().Message("VPRA::setEdit(%d)\n",ModNum);
@@ -133,7 +124,6 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
 
 void ViewProviderRichAnno::onChanged(const App::Property* p)
 {
-    updateGraphic();
     ViewProviderDrawingView::onChanged(p);
 }
 
