@@ -68,17 +68,17 @@ def write_fenics_mesh_xml(fem_mesh_obj, outputfile):
         "hexahedron": 8
     }
 
-    Console.Message("Converting " + fem_mesh_obj.Label + " to fenics XML File\n")
-    Console.Message("Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
+    Console.PrintMessage(u"Converting " + fem_mesh_obj.Label + u" to fenics XML File\n")
+    Console.PrintMessage(u"Dimension of mesh: %d\n" % (get_FemMeshObjectDimension(fem_mesh_obj),))
 
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
-    Console.Message("Elements appearing in mesh: %s" % (str(elements_in_mesh),))
+    Console.PrintMessage(u"Elements appearing in mesh: %s" % (str(elements_in_mesh),))
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
     (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
     cellname_fenics = FreeCAD_to_Fenics_dict[cellname_fc]
     num_verts_cell = XML_Number_of_Nodes_dict[cellname_fenics]
-    Console.Message(
-        "Celltype in mesh -> %s and its Fenics name: %s\n"
+    Console.PrintMessage(
+        u"Celltype in mesh -> %s and its Fenics name: %s\n"
         % (str(celltype_in_mesh), cellname_fenics)
     )
 
