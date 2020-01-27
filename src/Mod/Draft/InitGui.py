@@ -91,68 +91,35 @@ class DraftWorkbench(FreeCADGui.Workbench):
                                        "Draft will not work as expected.\n")
 
         # Set up command lists
-        self.cmdList = ["Draft_Line", "Draft_Wire", "Draft_Fillet", "Draft_ArcTools",
-                        "Draft_Circle", "Draft_Ellipse", "Draft_Rectangle", "Draft_Polygon",  
-                        "Draft_BSpline", "Draft_BezierTools", "Draft_Point", 
-                        "Draft_Facebinder"]
-
-        self.annotation_tools = ["Draft_Text", "Draft_ShapeString", "Draft_Dimension",
-                                 "Draft_Label"]
-
-        self.modList = ["Draft_Move", "Draft_Rotate", "Draft_Offset",
-                        "Draft_Trimex", "Draft_Join", "Draft_Split",
-                        "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Edit", "Draft_SubelementHighlight",
-                        "Draft_WireToBSpline", "Draft_AddPoint",
-                        "Draft_DelPoint", "Draft_Shape2DView",
-                        "Draft_Draft2Sketch", "Draft_Array", "Draft_LinkArray",
-                        "Draft_PolarArray", "Draft_CircularArray",
-                        "Draft_PathArray", "Draft_PathLinkArray", "Draft_PointArray", "Draft_Clone",
-                        "Draft_Drawing", "Draft_Mirror", "Draft_Stretch"]
-
-        self.treecmdList = ["Draft_ApplyStyle", "Draft_ToggleDisplayMode",
-                            "Draft_AddToGroup", "Draft_SelectGroup",
-                            "Draft_SelectPlane", "Draft_ShowSnapBar",
-                            "Draft_ToggleGrid", "Draft_AutoGroup"]
-
-        self.lineList = ["Draft_UndoLine", "Draft_FinishLine",
-                         "Draft_CloseLine"]
-
-        self.utils = ["Draft_Layer", "Draft_Heal", "Draft_FlipDimension",
-                      "Draft_ToggleConstructionMode",
-                      "Draft_ToggleContinueMode", "Draft_Edit",
-                      "Draft_Slope", "Draft_SetWorkingPlaneProxy",
-                      "Draft_AddConstruction"]
-
-        self.snapList = ['Draft_Snap_Lock', 'Draft_Snap_Midpoint',
-                         'Draft_Snap_Perpendicular',
-                         'Draft_Snap_Grid', 'Draft_Snap_Intersection',
-                         'Draft_Snap_Parallel',
-                         'Draft_Snap_Endpoint', 'Draft_Snap_Angle',
-                         'Draft_Snap_Center',
-                         'Draft_Snap_Extension', 'Draft_Snap_Near',
-                         'Draft_Snap_Ortho', 'Draft_Snap_Special',
-                         'Draft_Snap_Dimensions', 'Draft_Snap_WorkingPlane']
+        import draftutils.init_tools as it
+        self.drawing_commands = it.get_draft_drawing_commands()
+        self.annotation_commands = it.get_draft_annotation_commands()
+        self.modification_commands = it.get_draft_modification_commands()
+        self.context_commands = it.get_draft_context_commands()
+        self.line_commands = it.get_draft_line_commands()
+        self.utility_commands = it.get_draft_utility_commands()
 
         # Set up toolbars
-        self.appendToolbar("Draft creation tools", self.cmdList)
-        self.appendToolbar("Draft annotation tools", self.annotation_tools)
-        self.appendToolbar("Draft modification tools", self.modList)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft creation tools"), self.drawing_commands)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"), self.annotation_commands)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft modification tools"), self.modification_commands)
 
-        # Set up menu
-        self.appendMenu(QT_TRANSLATE_NOOP("draft","&2D Drafting"),self.cmdList)
-        self.appendMenu(QT_TRANSLATE_NOOP("draft","&Modify"),self.modList)
-        self.appendMenu(QT_TRANSLATE_NOOP("draft","&Annotation"),self.annotation_tools)
-        self.appendMenu(QT_TRANSLATE_NOOP("draft", "&Utilities"), self.utils + self.treecmdList)
+        # Set up menus
+        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Drafting"), self.drawing_commands)
+        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Annotation"), self.annotation_commands)
+        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Modification"), self.modification_commands)
+        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Utilities"), self.utility_commands + self.context_commands)
 
+        # Set up preferences pages
         if hasattr(FreeCADGui, "draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
-                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("draft", "Draft"))
-                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
                 FreeCADGui.draftToolBar.loadedPreferences = True
-        FreeCAD.Console.PrintLog('Loading Draft module, done.\n')
+
+        FreeCAD.Console.PrintLog('Loading Draft workbench, done.\n')
 
     def Activated(self):
         """When entering the workbench."""
@@ -176,17 +143,17 @@ class DraftWorkbench(FreeCADGui.Workbench):
         if recipient == "View":
             if FreeCAD.activeDraftCommand is None:
                 if FreeCADGui.Selection.getSelection():
-                    self.appendContextMenu("Draft", self.cmdList + self.modList)
-                    self.appendContextMenu("Utilities", self.treecmdList)
+                    self.appendContextMenu("Draft", self.drawing_commands + self.modification_commands)
+                    self.appendContextMenu("Utilities", self.context_commands)
                 else:
-                    self.appendContextMenu("Draft", self.cmdList)
+                    self.appendContextMenu("Draft", self.drawing_commands)
             else:
                 if FreeCAD.activeDraftCommand.featureName == translate("draft","Line"):
                     # BUG: line subcommands are not usable while another command is active
-                    self.appendContextMenu("", self.lineList)
+                    self.appendContextMenu("", self.line_commands)
         else:
             if FreeCADGui.Selection.getSelection():
-                self.appendContextMenu("Utilities", self.treecmdList)
+                self.appendContextMenu("Utilities", self.context_commands)
 
     def GetClassName(self):
         """Type of workbench."""
@@ -198,9 +165,10 @@ FreeCADGui.addWorkbench(DraftWorkbench)
 # Preference pages for importing and exporting various file formats
 # are independent of the loading of the workbench and can be loaded at startup
 import Draft_rc
-FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui", "Import-Export")
-FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui", "Import-Export")
-FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui", "Import-Export")
-FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui", "Import-Export")
+from PySide.QtCore import QT_TRANSLATE_NOOP
+FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
+FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui", QT_TRANSLATE_NOOP("Draft", "Import-Export"))
 
 FreeCAD.__unit_test__ += ["TestDraft"]
