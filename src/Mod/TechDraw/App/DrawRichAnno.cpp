@@ -65,7 +65,11 @@ DrawRichAnno::~DrawRichAnno()
 void DrawRichAnno::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        //nothing in particular
+        if ((prop == &AnnoText) ||
+            (prop == &ShowFrame) ||
+            (prop == &MaxWidth) ) {
+            requestPaint();
+        }
     }
     DrawView::onChanged(prop);
 
