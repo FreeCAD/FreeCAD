@@ -90,7 +90,7 @@
            <cstring>Color</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Dimension</cstring>
+           <cstring>Mod/TechDraw/Dimensions</cstring>
           </property>
          </widget>
         </item>
