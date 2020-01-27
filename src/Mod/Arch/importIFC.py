@@ -799,9 +799,12 @@ def insert(filename,docname,skip=[],only=[],root=None,preferences=None):
 
             # color
 
-            if FreeCAD.GuiUp and (pid in colors) and hasattr(obj.ViewObject,"ShapeColor"):
+            if FreeCAD.GuiUp and (pid in colors) and colors[pid]:
                 # if preferences['DEBUG']: print("    setting color: ",int(colors[pid][0]*255),"/",int(colors[pid][1]*255),"/",int(colors[pid][2]*255))
-                obj.ViewObject.ShapeColor = colors[pid]
+                if hasattr(obj.ViewObject,"ShapeColor"):
+                    obj.ViewObject.ShapeColor = tuple(colors[pid][0:3])
+                if hasattr(obj.ViewObject,"Transparency"):
+                    obj.ViewObject.Transparency = colors[pid][3]
 
             # if preferences['DEBUG'] is on, recompute after each shape
             if preferences['DEBUG']: FreeCAD.ActiveDocument.recompute()
