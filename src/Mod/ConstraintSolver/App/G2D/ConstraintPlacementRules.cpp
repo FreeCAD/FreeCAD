@@ -4,6 +4,7 @@
 #include "src/Mod/ConstraintSolver/App/G2D/ConstraintPlacementRulesPy.h"
 
 #include <src/Mod/ConstraintSolver/App/G2D/ParaPointPy.h>
+#include <src/Mod/ConstraintSolver/App/G2D/ParaPlacementPy.h>
 
 using namespace FCS;
 using namespace FCS::G2D;
@@ -25,9 +26,9 @@ ConstraintPlacementRules::ConstraintPlacementRules(HParaPlacement plm)
 
 void ConstraintPlacementRules::initAttrs()
 {
-    _shapes = {
-        {&placement, "placement", ParaPlacement::getClassTypeId()},
-    };
+    SimpleConstraint::initAttrs();
+
+    tieAttr_Child(placement, "placement", &ParaPlacementPy::Type);
 }
 
 Base::DualNumber ConstraintPlacementRules::error1(const ValueSet& vals) const

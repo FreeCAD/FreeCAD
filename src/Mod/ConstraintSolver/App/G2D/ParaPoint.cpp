@@ -27,10 +27,10 @@ ParaPoint::ParaPoint(ParameterRef x, ParameterRef y)
 
 void FCS::G2D::ParaPoint::initAttrs()
 {
-    _attrs = {
-        {&x, "x", true, 0.0},
-        {&y, "y", true, 0.0},
-    };
+    ParaGeometry2D::initAttrs();
+
+    tieAttr_Parameter(x, "x", true, 0.0);
+    tieAttr_Parameter(y, "y", true, 0.0);
 }
 
 PyObject* ParaPoint::getPyObject()

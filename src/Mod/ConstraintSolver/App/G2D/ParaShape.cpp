@@ -29,11 +29,10 @@ G2D::ParaShapeBase::ParaShapeBase(HParaGeometry tshape, HParaTransform placement
 
 void FCS::G2D::ParaShapeBase::initAttrs()
 {
-    _children = {
-        //valueref , name       , PyType                , make , writeOnce
-        {&placement, "placement", &ParaTransformPy::Type, false, true     },
-        {&_tshape  , "tshape"   , &ParaTransformPy::Type, false, true     }
-    };
+    ParaObject::initAttrs();
+
+    tieAttr_Child(placement, "placement", &ParaTransformPy::Type, false, true     );
+    tieAttr_Child(_tshape  , "tshape"   , &ParaTransformPy::Type, false, true     );
 }
 
 std::string G2D::ParaShapeBase::repr() const

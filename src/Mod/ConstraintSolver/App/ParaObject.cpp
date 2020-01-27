@@ -314,3 +314,34 @@ void ParaObject::initFromDict(Py::Dict dict)
         makeParameters(store);
     }
 }
+
+
+void ParaObject::tieAttr_Parameter(ParameterRef& ref, std::string name, bool make, double defvalue)
+{
+    ParameterAttribute tmp;
+    tmp.value = &ref;
+    tmp.name = name;
+    tmp.make = make;
+    tmp.defvalue = defvalue;
+    _attrs.push_back(tmp);
+}
+
+void ParaObject::tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyTypeObject* type, bool make, bool writeOnce)
+{
+    ChildAttribute tmp;
+    tmp.value = &ref;
+    tmp.name = name;
+    tmp.type = type;
+    tmp.make = make;
+    tmp.writeOnce = writeOnce;
+    _children.push_back(tmp);
+}
+
+void ParaObject::tieAttr_Shape(Base::PyHandleBase& ref, std::string name, Base::Type type)
+{
+    ShapeRef tmp;
+    tmp.value = &ref;
+    tmp.name = name;
+    tmp.type = type;
+    _shapes.push_back(tmp);
+}

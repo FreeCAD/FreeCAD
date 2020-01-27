@@ -17,16 +17,16 @@ TYPESYSTEM_SOURCE(FCS::G2D::ParaTransform, FCS::ParaObject);
 
 void FCS::G2D::ParaTransform::initAttrs()
 {
-    _attrs = {
-    };
+    ParaObject::initAttrs();
 }
 
 ParaTransform::ParaTransform()
 {
-
+    initAttrs();
 }
 
 ParaTransform::ParaTransform(std::vector<HParaPlacement>& fwchain, std::vector<HParaPlacement> revchain)
+    : ParaTransform()
 {
     _fwchain = fwchain;
     _revchain = revchain;

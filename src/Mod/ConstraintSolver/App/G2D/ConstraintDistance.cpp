@@ -35,13 +35,12 @@ ConstraintDistance::ConstraintDistance(HParaPoint p1, HParaPoint p2, FCS::HParam
 
 void ConstraintDistance::initAttrs()
 {
-    _attrs = {
-        {&dist, "dist", true, 1.0},
-    };
-    _shapes = {
-        {&p1, "p1", ParaPoint::getClassTypeId()},
-        {&p2, "p2", ParaPoint::getClassTypeId()},
-    };
+    SimpleConstraint::initAttrs();
+
+    tieAttr_Parameter(dist, "dist", true, 1.0);
+
+    tieAttr_Shape(p1, "p1", ParaPoint::getClassTypeId());
+    tieAttr_Shape(p2, "p2", ParaPoint::getClassTypeId());
 }
 
 void ConstraintDistance::setWeight(double weight)

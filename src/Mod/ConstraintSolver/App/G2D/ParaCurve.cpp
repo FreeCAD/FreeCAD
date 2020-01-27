@@ -11,10 +11,10 @@ TYPESYSTEM_SOURCE_ABSTRACT(FCS::G2D::ParaCurve, FCS::G2D::ParaGeometry2D);
 
 void FCS::G2D::ParaCurve::initAttrs()
 {
-    _attrs = {
-        {&u0, "u0", true, 0.0},
-        {&u1, "u1", true, 0.0},
-    };
+    ParaGeometry2D::initAttrs();
+
+    tieAttr_Parameter(u0, "u0", true, 0.0);
+    tieAttr_Parameter(u1, "u1", true, 0.0);
 }
 
 PyObject* ParaCurve::getPyObject()

@@ -62,7 +62,7 @@ public://helper structs
         std::string name;
         PyTypeObject* type;
         bool make = false; //true if it's an actual child, like an endpoint of an arc. False if it is a reference, like a constraint referring a point. If make, the object is auto-constructed upon call to makeParameters
-        bool writeOnce = false;
+        bool writeOnce = false; //if true, the child can only be assigned once (i.e., overwrite is forbidden).
     };
     struct ShapeRef
     {
@@ -129,7 +129,10 @@ public: //methods
     virtual void initFromDict(Py::Dict dict);
 
 protected: //methods
-    virtual void initAttrs() = 0;
+    virtual void initAttrs() = 0 {}
+    void tieAttr_Parameter(ParameterRef& ref, std::string name, bool make = true, double defvalue = 0.0);
+    void tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyTypeObject* type, bool make = false, bool writeOnce = false);
+    void tieAttr_Shape(Base::PyHandleBase& ref, std::string name, Base::Type type);
     ///we need this to support type-checked shape attributes
     virtual Base::Type shapeType() const {return Base::Type::badType();}
     virtual ~ParaObject() = default; //protect destructor to enforce handle-only

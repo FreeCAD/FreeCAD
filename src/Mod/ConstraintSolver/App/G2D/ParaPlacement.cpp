@@ -33,10 +33,10 @@ ParaPlacement::ParaPlacement(ParameterRef x, ParameterRef y, ParameterRef rx, Pa
 
 void FCS::G2D::ParaPlacement::initAttrs()
 {
-    _children ={
-        {&translation, "translation", &ParaPointPy::Type, true},
-        {&rotation, "rotation", &ParaVectorPy::Type, true},
-    };
+    ParaObject::initAttrs();
+
+    tieAttr_Child(translation, "translation", &ParaPointPy::Type , true);
+    tieAttr_Child(rotation,    "rotation",    &ParaVectorPy::Type, true);
 }
 
 PyObject* ParaPlacement::getPyObject()
