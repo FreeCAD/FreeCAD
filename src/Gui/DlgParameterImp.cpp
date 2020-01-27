@@ -76,6 +76,8 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     paramValue->setRootIsDecorated(false);
 #if QT_VERSION >= 0x050000
     paramValue->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    paramValue->setSortingEnabled(true);
+    paramValue->header()->setProperty("showSortIndicator", QVariant(true));
 #else
     paramValue->header()->setResizeMode(0, QHeaderView::Stretch);
 #endif
@@ -207,6 +209,7 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
 {
     if ( item && item->type() == QTreeWidgetItem::UserType + 1 )
     {
+        bool sortingEnabled = paramValue->isSortingEnabled();
         paramValue->clear();
         Base::Reference<ParameterGrp> _hcGrp = static_cast<ParameterGroupItem*>(item)->_hcGrp;
         static_cast<ParameterValue*>(paramValue)->setCurrentGroup( _hcGrp );
@@ -246,6 +249,7 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
         {
             (void)new ParameterUInt(paramValue,QString::fromUtf8(It6->first.c_str()),It6->second, _hcGrp);
         }
+        paramValue->setSortingEnabled(sortingEnabled);
     }
 }
 

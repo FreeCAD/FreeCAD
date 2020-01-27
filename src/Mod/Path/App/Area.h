@@ -68,6 +68,8 @@ struct PathExport AreaParams: CAreaParams {
         return !(*this == other);
     }
 
+    void dump(const char *) const;
+
     AreaParams();
 };
 
