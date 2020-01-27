@@ -23072,7 +23072,7 @@ Efaces
 ** Surfaces for contact constraint
 ** written by write_surfaces_contraints_contact function
 ** ConstraintContact
-*SURFACE, NAME =DEP1
+*SURFACE, NAME=DEP1
 329,S2
 330,S2
 331,S2
@@ -30571,7 +30571,7 @@ Efaces
 7824,S2
 7825,S2
 7826,S2
-*SURFACE, NAME =IND1
+*SURFACE, NAME=IND1
 7827,S2
 7828,S2
 7829,S2
