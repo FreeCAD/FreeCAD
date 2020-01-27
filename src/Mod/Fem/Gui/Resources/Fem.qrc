@@ -1,20 +1,17 @@
 <RCC>
     <qresource>
         <file>icons/Arch_Material_Group.svg</file>
-
         <file>icons/FemWorkbench.svg</file>
-        <file>icons/preferences-fem.svg</file>
-
         <file>icons/fem-add-fem-mesh.svg</file>
         <file>icons/fem-add-material.svg</file>
         <file>icons/fem-add-part.svg</file>
-
         <file>icons/fem-analysis.svg</file>
         <file>icons/fem-clipping-plane-add.svg</file>
         <file>icons/fem-clipping-plane-remove-all.svg</file>
         <file>icons/fem-constraint-bearing.svg</file>
         <file>icons/fem-constraint-contact.svg</file>
         <file>icons/fem-constraint-displacement.svg</file>
+        <file>icons/fem-constraint-electrostatic-potential.svg</file>
         <file>icons/fem-constraint-fixed.svg</file>
         <file>icons/fem-constraint-flow-velocity.svg</file>
         <file>icons/fem-constraint-fluid-boundary.svg</file>
@@ -22,8 +19,7 @@
         <file>icons/fem-constraint-gear.svg</file>
         <file>icons/fem-constraint-heatflux.svg</file>
         <file>icons/fem-constraint-initial-flow-velocity.svg</file>
-        <file>icons/fem-constraint-electrostatic-potential.svg</file>
-        <file>icons/fem-constraint-InitialTemperature.svg</file>
+        <file>icons/fem-constraint-initial-temperature.svg</file>
         <file>icons/fem-constraint-planerotation.svg</file>
         <file>icons/fem-constraint-pressure.svg</file>
         <file>icons/fem-constraint-pulley.svg</file>
@@ -34,10 +30,10 @@
         <file>icons/fem-element-geometry-1d.svg</file>
         <file>icons/fem-element-geometry-2d.svg</file>
         <file>icons/fem-element-rotation-1d.svg</file>
-        <file>icons/fem-equation-electrostatic.svg</file>
-        <file>icons/fem-equation-fluxsolver.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
+        <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-flow.svg</file>
+        <file>icons/fem-equation-fluxsolver.svg</file>
         <file>icons/fem-equation-heat.svg</file>
         <file>icons/fem-femmesh-boundary-layer.svg</file>
         <file>icons/fem-femmesh-clear-mesh.svg</file>
@@ -49,10 +45,10 @@
         <file>icons/fem-femmesh-region.svg</file>
         <file>icons/fem-femmesh-result.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
-        <file>icons/fem-material.svg</file>
         <file>icons/fem-material-fluid.svg</file>
         <file>icons/fem-material-nonlinear.svg</file>
         <file>icons/fem-material-reinforced.svg</file>
+        <file>icons/fem-material.svg</file>
         <file>icons/fem-post-data-pipline.svg</file>
         <file>icons/fem-post-filter-clip-region.svg</file>
         <file>icons/fem-post-filter-clip-scalar.svg</file>
@@ -77,43 +73,59 @@
         <file>icons/fem-solver-inp-editor.svg</file>
         <file>icons/fem-solver-run.svg</file>
         <file>icons/fem-solver-standard.svg</file>
-
+        <file>icons/preferences-fem.svg</file>
         <file>translations/Fem_af.qm</file>
+        <file>translations/Fem_ar.qm</file>
+        <file>translations/Fem_ca.qm</file>
+        <file>translations/Fem_cs.qm</file>
         <file>translations/Fem_de.qm</file>
+        <file>translations/Fem_el.qm</file>
+        <file>translations/Fem_es-ES.qm</file>
+        <file>translations/Fem_eu.qm</file>
         <file>translations/Fem_fi.qm</file>
+        <file>translations/Fem_fil.qm</file>
         <file>translations/Fem_fr.qm</file>
+        <file>translations/Fem_gl.qm</file>
         <file>translations/Fem_hr.qm</file>
+        <file>translations/Fem_hu.qm</file>
+        <file>translations/Fem_id.qm</file>
         <file>translations/Fem_it.qm</file>
+        <file>translations/Fem_ja.qm</file>
+        <file>translations/Fem_kab.qm</file>
+        <file>translations/Fem_ko.qm</file>
+        <file>translations/Fem_lt.qm</file>
         <file>translations/Fem_nl.qm</file>
         <file>translations/Fem_no.qm</file>
         <file>translations/Fem_pl.qm</file>
-        <file>translations/Fem_ru.qm</file>
-        <file>translations/Fem_uk.qm</file>
-        <file>translations/Fem_tr.qm</file>
-        <file>translations/Fem_sv-SE.qm</file>
-        <file>translations/Fem_zh-TW.qm</file>
         <file>translations/Fem_pt-BR.qm</file>
-        <file>translations/Fem_cs.qm</file>
-        <file>translations/Fem_sk.qm</file>
-        <file>translations/Fem_es-ES.qm</file>
-        <file>translations/Fem_zh-CN.qm</file>
-        <file>translations/Fem_ja.qm</file>
-        <file>translations/Fem_ro.qm</file>
-        <file>translations/Fem_hu.qm</file>
         <file>translations/Fem_pt-PT.qm</file>
-        <file>translations/Fem_sr.qm</file>
-        <file>translations/Fem_el.qm</file>
+        <file>translations/Fem_ro.qm</file>
+        <file>translations/Fem_ru.qm</file>
+        <file>translations/Fem_sk.qm</file>
         <file>translations/Fem_sl.qm</file>
-        <file>translations/Fem_eu.qm</file>
-        <file>translations/Fem_ca.qm</file>
-        <file>translations/Fem_gl.qm</file>
-        <file>translations/Fem_kab.qm</file>
-        <file>translations/Fem_ko.qm</file>
-        <file>translations/Fem_fil.qm</file>
-        <file>translations/Fem_id.qm</file>
-        <file>translations/Fem_lt.qm</file>
+        <file>translations/Fem_sr.qm</file>
+        <file>translations/Fem_sv-SE.qm</file>
+        <file>translations/Fem_tr.qm</file>
+        <file>translations/Fem_uk.qm</file>
         <file>translations/Fem_val-ES.qm</file>
-        <file>translations/Fem_ar.qm</file>
         <file>translations/Fem_vi.qm</file>
+        <file>translations/Fem_zh-CN.qm</file>
+        <file>translations/Fem_zh-TW.qm</file>
+        <file>ui/ElectrostaticPotential.ui</file>
+        <file>ui/ElementFluid1D.ui</file>
+        <file>ui/ElementGeometry1D.ui</file>
+        <file>ui/ElementGeometry2D.ui</file>
+        <file>ui/ElementRotation1D.ui</file>
+        <file>ui/FlowVelocity.ui</file>
+        <file>ui/InitialFlowVelocity.ui</file>
+        <file>ui/Material.ui</file>
+        <file>ui/MaterialReinforcement.ui</file>
+        <file>ui/MeshBoundaryLayer.ui</file>
+        <file>ui/MeshGmsh.ui</file>
+        <file>ui/MeshGroup.ui</file>
+        <file>ui/MeshGroupXDMFExport.ui</file>
+        <file>ui/MeshRegion.ui</file>
+        <file>ui/ResultShow.ui</file>
+        <file>ui/SolverCalculix.ui</file>
     </qresource>
-</RCC>
+</RCC> 
