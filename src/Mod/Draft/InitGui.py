@@ -1,3 +1,4 @@
+"""Initialization of the Draft workbench (graphical interface)."""
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -18,63 +19,78 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+import os
+import FreeCAD
+import FreeCADGui
 
 __title__ = "FreeCAD Draft Workbench - Init file"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "https://www.freecadweb.org"
 
 
-class DraftWorkbench(Workbench):
-    '''The Draft Workbench definition'''
-    def __init__(self):
+class DraftWorkbench(FreeCADGui.Workbench):
+    """The Draft Workbench definition."""
 
-        def QT_TRANSLATE_NOOP(scope, text):
+    def __init__(self):
+        def QT_TRANSLATE_NOOP(context, text):
             return text
 
-        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Draft/Resources/icons/DraftWorkbench.svg"
+        __dirname__ = os.path.join(FreeCAD.getResourceDir(), "Mod", "Draft")
+        _tooltip = "The Draft workbench is used for 2D drafting on a grid"
+        self.__class__.Icon = os.path.join(__dirname__,
+                                           "Resources", "icons",
+                                           "DraftWorkbench.svg")
         self.__class__.MenuText = QT_TRANSLATE_NOOP("draft", "Draft")
-        self.__class__.ToolTip = QT_TRANSLATE_NOOP("draft", "The Draft module is used for basic 2D CAD Drafting")
+        self.__class__.ToolTip = QT_TRANSLATE_NOOP("draft", _tooltip)
 
     def Initialize(self):
-        def QT_TRANSLATE_NOOP(scope, text):
+        """When the workbench is first loaded."""
+
+        def QT_TRANSLATE_NOOP(context, text):
             return text
 
-        # run self-tests
-        depsOK = False
+        # Run self-tests
+        dependencies_OK = False
         try:
             from pivy import coin
             if FreeCADGui.getSoDBVersion() != coin.SoDB.getVersion():
-                raise AssertionError("FreeCAD and Pivy use different versions of Coin. This will lead to unexpected behaviour.")
+                raise AssertionError("FreeCAD and Pivy use different versions "
+                                     "of Coin. "
+                                     "This will lead to unexpected behaviour.")
         except AssertionError:
-            FreeCAD.Console.PrintWarning("Error: FreeCAD and Pivy use different versions of Coin. This will lead to unexpected behaviour.\n")
+            FreeCAD.Console.PrintWarning("Error: FreeCAD and Pivy "
+                                         "use different versions of Coin. "
+                                         "This will lead to unexpected "
+                                         "behaviour.\n")
         except ImportError:
-            FreeCAD.Console.PrintWarning("Error: Pivy not found, Draft Workbench will be disabled.\n")
-        except:
-            FreeCAD.Console.PrintWarning("Error: Unknown error while trying to load Pivy\n")
+            FreeCAD.Console.PrintWarning("Error: Pivy not found, "
+                                         "Draft Workbench will be disabled.\n")
+        except Exception:
+            FreeCAD.Console.PrintWarning("Error: Unknown error "
+                                         "while trying to load Pivy.\n")
         else:
-            try:
-                import PySide
-            except ImportError:
-                FreeCAD.Console.PrintWarning("Error: PySide not found, Draft Workbench will be disabled.\n")
-            else:
-                depsOK = True
-        if not depsOK:
+            dependencies_OK = True
+
+        if not dependencies_OK:
             return
 
         # Import Draft tools, icons
         try:
-            import os, Draft_rc, DraftTools, DraftGui, DraftFillet
-            from DraftTools import translate
+            import Draft_rc
+            import DraftTools
+            import DraftGui
+            import DraftFillet
             from draftguitools import gui_circulararray
             from draftguitools import gui_polararray
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
-        except Exception as inst:
-            print(inst)
-            FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
+        except Exception as exc:
+            FreeCAD.Console.PrintError(exc)
+            FreeCAD.Console.PrintError("Error: Initializing one or more "
+                                       "of the Draft modules failed, "
+                                       "Draft will not work as expected.\n")
 
-        # setup command lists
-
+        # Set up command lists
         self.cmdList = ["Draft_Line", "Draft_Wire", "Draft_Fillet", "Draft_ArcTools",
                         "Draft_Circle", "Draft_Ellipse", "Draft_Rectangle", "Draft_Polygon",  
                         "Draft_BSpline", "Draft_BezierTools", "Draft_Point", 
@@ -117,20 +133,18 @@ class DraftWorkbench(Workbench):
                          'Draft_Snap_Extension', 'Draft_Snap_Near',
                          'Draft_Snap_Ortho', 'Draft_Snap_Special',
                          'Draft_Snap_Dimensions', 'Draft_Snap_WorkingPlane']
-        
-        # setup toolbars
-        
+
+        # Set up toolbars
         self.appendToolbar("Draft creation tools", self.cmdList)
         self.appendToolbar("Draft annotation tools", self.annotation_tools)
         self.appendToolbar("Draft modification tools", self.modList)
 
-        # setup menu
-
+        # Set up menu
         self.appendMenu(QT_TRANSLATE_NOOP("draft","&2D Drafting"),self.cmdList)
         self.appendMenu(QT_TRANSLATE_NOOP("draft","&Modify"),self.modList)
         self.appendMenu(QT_TRANSLATE_NOOP("draft","&Annotation"),self.annotation_tools)
         self.appendMenu(QT_TRANSLATE_NOOP("draft", "&Utilities"), self.utils + self.treecmdList)
-        
+
         if hasattr(FreeCADGui, "draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("draft", "Draft"))
@@ -138,23 +152,26 @@ class DraftWorkbench(Workbench):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("draft", "Draft"))
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("draft", "Draft"))
                 FreeCADGui.draftToolBar.loadedPreferences = True
-        Log('Loading Draft module...done\n')
+        FreeCAD.Console.PrintLog('Loading Draft module, done.\n')
 
     def Activated(self):
+        """When entering the workbench."""
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
-        Log("Draft workbench activated\n")
+        FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
+        """When quitting the workbench."""
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-        Log("Draft workbench deactivated\n")
+        FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
 
     def ContextMenu(self, recipient):
+        """Define an optional custom context menu."""
         from DraftGui import translate
         if recipient == "View":
             if FreeCAD.activeDraftCommand is None:
@@ -172,12 +189,14 @@ class DraftWorkbench(Workbench):
                 self.appendContextMenu("Utilities", self.treecmdList)
 
     def GetClassName(self):
+        """Type of workbench."""
         return "Gui::PythonWorkbench"
 
 
 FreeCADGui.addWorkbench(DraftWorkbench)
 
-# File format pref pages are independent and can be loaded at startup
+# Preference pages for importing and exporting various file formats
+# are independent of the loading of the workbench and can be loaded at startup
 import Draft_rc
 FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui", "Import-Export")
 FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui", "Import-Export")
