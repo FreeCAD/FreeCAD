@@ -129,6 +129,15 @@ void ViewProviderRichAnno::updateData(const App::Property* p)
 
 void ViewProviderRichAnno::onChanged(const App::Property* p)
 {
+    if ((p == &LineColor) ||
+        (p == &LineWidth) ||
+        (p == &LineStyle)) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
+
     ViewProviderDrawingView::onChanged(p);
 }
 
