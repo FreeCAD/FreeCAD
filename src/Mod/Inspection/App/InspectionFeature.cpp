@@ -59,10 +59,11 @@
 
 using namespace Inspection;
 
-InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _iter(rMesh.getKernel())
+InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMesh.getKernel())
 {
-    this->_count = rMesh.countPoints();
-    this->_iter.Transform(rMesh.getTransform());
+    Base::Matrix4D tmp;
+    _clTrf = rMesh.getTransform();
+    _bApply = _clTrf != tmp;
 }
 
 InspectActualMesh::~InspectActualMesh()
@@ -71,13 +72,15 @@ InspectActualMesh::~InspectActualMesh()
 
 unsigned long InspectActualMesh::countPoints() const
 {
-    return this->_count;
+    return _mesh.CountPoints();
 }
 
-Base::Vector3f InspectActualMesh::getPoint(unsigned long index)
+Base::Vector3f InspectActualMesh::getPoint(unsigned long index) const
 {
-    _iter.Set(index);
-    return *_iter;
+    Base::Vector3f point = _mesh.GetPoint(index);
+    if (_bApply)
+        _clTrf.multVec(point, point);
+    return point;
 }
 
 // ----------------------------------------------------------------
@@ -91,10 +94,10 @@ unsigned long InspectActualPoints::countPoints() const
     return _rKernel.size();
 }
 
-Base::Vector3f InspectActualPoints::getPoint(unsigned long index)
+Base::Vector3f InspectActualPoints::getPoint(unsigned long index) const
 {
     Base::Vector3d p = _rKernel.getPoint(index);
-    return Base::Vector3f((float)p.x,(float)p.y,(float)p.z);
+    return Base::Vector3f(float(p.x), float(p.y), float(p.z));
 }
 
 // ----------------------------------------------------------------
@@ -117,7 +120,7 @@ unsigned long InspectActualShape::countPoints() const
     return points.size();
 }
 
-Base::Vector3f InspectActualShape::getPoint(unsigned long index)
+Base::Vector3f InspectActualShape::getPoint(unsigned long index) const
 {
     return Base::toVector<float>(points[index]);
 }
@@ -252,18 +255,19 @@ namespace Inspection {
     };
 }
 
-InspectNominalMesh::InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset) : _iter(rMesh.getKernel())
+InspectNominalMesh::InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset) : _mesh(rMesh.getKernel())
 {
-    const MeshCore::MeshKernel& kernel = rMesh.getKernel();
-    _iter.Transform(rMesh.getTransform());
+    Base::Matrix4D tmp;
+    _clTrf = rMesh.getTransform();
+    _bApply = _clTrf != tmp;
 
     // Max. limit of grid elements
     float fMaxGridElements=8000000.0f;
-    Base::BoundBox3f box = kernel.GetBoundBox().Transformed(rMesh.getTransform());
+    Base::BoundBox3f box = _mesh.GetBoundBox().Transformed(rMesh.getTransform());
 
     // estimate the minimum allowed grid length
     float fMinGridLen = (float)pow((box.LengthX()*box.LengthY()*box.LengthZ()/fMaxGridElements), 0.3333f);
-    float fGridLen = 5.0f * MeshCore::MeshAlgorithm(kernel).GetAverageEdgeLength();
+    float fGridLen = 5.0f * MeshCore::MeshAlgorithm(_mesh).GetAverageEdgeLength();
 
     // We want to avoid to get too small grid elements otherwise building up the grid structure would take
     // too much time and memory. 
@@ -272,7 +276,7 @@ InspectNominalMesh::InspectNominalMesh(const Mesh::MeshObject& rMesh, float offs
     fGridLen = std::max<float>(fMinGridLen, fGridLen);
 
     // build up grid structure to speed up algorithms
-    _pGrid = new MeshInspectGrid(kernel, fGridLen, rMesh.getTransform());
+    _pGrid = new MeshInspectGrid(_mesh, fGridLen, rMesh.getTransform());
     _box = box;
     _box.Enlarge(offset);
 }
@@ -282,7 +286,7 @@ InspectNominalMesh::~InspectNominalMesh()
     delete this->_pGrid;
 }
 
-float InspectNominalMesh::getDistance(const Base::Vector3f& point)
+float InspectNominalMesh::getDistance(const Base::Vector3f& point) const
 {
     if (!_box.IsInBox(point))
         return FLT_MAX; // must be inside bbox
@@ -298,11 +302,15 @@ float InspectNominalMesh::getDistance(const Base::Vector3f& point)
     float fMinDist=FLT_MAX;
     bool positive = true;
     for (std::vector<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        _iter.Set(*it);
-        float fDist = _iter->DistanceToPoint(point);
+        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(*it);
+        if (_bApply) {
+            geomFace.Transform(_clTrf);
+        }
+
+        float fDist = geomFace.DistanceToPoint(point);
         if (fabs(fDist) < fabs(fMinDist)) {
             fMinDist = fDist;
-            positive = point.DistanceToPlane(_iter->_aclPoints[0], _iter->GetNormal()) > 0;
+            positive = point.DistanceToPlane(geomFace._aclPoints[0], geomFace.GetNormal()) > 0;
         }
     }
 
@@ -313,10 +321,13 @@ float InspectNominalMesh::getDistance(const Base::Vector3f& point)
 
 // ----------------------------------------------------------------
 
-InspectNominalFastMesh::InspectNominalFastMesh(const Mesh::MeshObject& rMesh, float offset) : _iter(rMesh.getKernel())
+InspectNominalFastMesh::InspectNominalFastMesh(const Mesh::MeshObject& rMesh, float offset) : _mesh(rMesh.getKernel())
 {
     const MeshCore::MeshKernel& kernel = rMesh.getKernel();
-    _iter.Transform(rMesh.getTransform());
+
+    Base::Matrix4D tmp;
+    _clTrf = rMesh.getTransform();
+    _bApply = _clTrf != tmp;
 
     // Max. limit of grid elements
     float fMaxGridElements=8000000.0f;
@@ -348,7 +359,7 @@ InspectNominalFastMesh::~InspectNominalFastMesh()
  * This algorithm is not that exact as that from InspectNominalMesh but is by
  * factors faster and sufficient for many cases.
  */
-float InspectNominalFastMesh::getDistance(const Base::Vector3f& point)
+float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
 {
     if (!_box.IsInBox(point))
         return FLT_MAX; // must be inside bbox
@@ -371,11 +382,15 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point)
     float fMinDist=FLT_MAX;
     bool positive = true;
     for (std::set<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        _iter.Set(*it);
-        float fDist = _iter->DistanceToPoint(point);
+        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(*it);
+        if (_bApply) {
+            geomFace.Transform(_clTrf);
+        }
+
+        float fDist = geomFace.DistanceToPoint(point);
         if (fabs(fDist) < fabs(fMinDist)) {
             fMinDist = fDist;
-            positive = point.DistanceToPlane(_iter->_aclPoints[0], _iter->GetNormal()) > 0;
+            positive = point.DistanceToPlane(geomFace._aclPoints[0], geomFace.GetNormal()) > 0;
         }
     }
 
@@ -398,7 +413,7 @@ InspectNominalPoints::~InspectNominalPoints()
     delete this->_pGrid;
 }
 
-float InspectNominalPoints::getDistance(const Base::Vector3f& point)
+float InspectNominalPoints::getDistance(const Base::Vector3f& point) const
 {
     //TODO: Make faster
     std::set<unsigned long> indices;
@@ -447,7 +462,7 @@ InspectNominalShape::~InspectNominalShape()
     delete distss;
 }
 
-float InspectNominalShape::getDistance(const Base::Vector3f& point)
+float InspectNominalShape::getDistance(const Base::Vector3f& point) const
 {
     gp_Pnt pnt3d(point.x,point.y,point.z);
     BRepBuilderAPI_MakeVertex mkVert(pnt3d);
@@ -647,12 +662,12 @@ struct DistanceInspection
                     : radius(radius), actual(a), nominal(n)
     {
     }
-    float mapped(unsigned long index)
+    float mapped(unsigned long index) const
     {
         Base::Vector3f pnt = actual->getPoint(index);
 
         float fMinDist=FLT_MAX;
-        for (std::vector<InspectNominalGeometry*>::iterator it = nominal.begin(); it != nominal.end(); ++it) {
+        for (std::vector<InspectNominalGeometry*>::const_iterator it = nominal.begin(); it != nominal.end(); ++it) {
             float fDist = (*it)->getDistance(pnt);
             if (fabs(fDist) < fabs(fMinDist))
                 fMinDist = fDist;
