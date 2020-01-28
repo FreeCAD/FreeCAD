@@ -120,10 +120,6 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
             this, SLOT(onCancelEditClicked(bool)));
     ui->pbCancelEdit->setEnabled(false);
 
-    ui->dsbWeight->setUnit(Base::Unit::Length);
-    ui->dsbWeight->setMinimum(0);
-    ui->dsbWeight->setValue(0.5);
-
     saveState();
 
     m_trackerMode = QGTracker::TrackerMode::Line;
@@ -168,10 +164,6 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     connect(ui->pbCancelEdit, SIGNAL(clicked(bool)),
             this, SLOT(onCancelEditClicked(bool)));
     ui->pbCancelEdit->setEnabled(false);
-
-    ui->dsbWeight->setUnit(Base::Unit::Length); 
-    ui->dsbWeight->setMinimum(0);
-    ui->dsbWeight->setValue(0.5);
 
     m_trackerMode = QGTracker::TrackerMode::Line;
     m_saveContextPolicy = m_mdi->contextMenuPolicy();
@@ -228,8 +220,12 @@ void TaskLeaderLine::setUiPrimary()
     ui->pbTracker->setText(QString::fromUtf8("Pick points"));
     ui->pbTracker->setEnabled(true);
     ui->pbCancelEdit->setEnabled(true);
-   int aSize = getPrefArrowStyle() + 1;
+    int aSize = getPrefArrowStyle() + 1;
     ui->cboxStartSym->setCurrentIndex(aSize);
+
+    ui->dsbWeight->setUnit(Base::Unit::Length);
+    ui->dsbWeight->setMinimum(0);
+    ui->dsbWeight->setValue(0.5);
 }
 
 //switch widgets related to ViewProvider on/off
