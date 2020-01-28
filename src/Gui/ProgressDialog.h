@@ -43,6 +43,7 @@ public:
     void pause();
     void resume();
     bool isBlocking() const;
+    bool canAbort() const;
 
 protected:
     /** Construction */
@@ -56,6 +57,8 @@ protected:
     void startStep();
     /** Increase the step indicator of the progress dialog. */
     void nextStep(bool canAbort);
+    /** Sets the progress indicator to a certain position. */
+    void setProgress(size_t);
     /** Resets the sequencer */
     void resetData();
     void showRemainingTime();
@@ -63,7 +66,7 @@ protected:
 private:
     /** @name for internal use only */
     //@{
-    void setProgress(int step);
+    void setValue(int step);
     /** Throws an exception to stop the pending operation. */
     void abort();
     //@}
