@@ -18,17 +18,7 @@ SET(OpenSCAD_SRCS
 )
 SOURCE_GROUP("" FILES ${OpenSCAD_SRCS})
 
-SET(ply_SRCS
-    ply/lex.py
-    ply/README.md
-    ply/ANNOUNCE
-    ply/CHANGES
-    ply/yacc.py
-    ply/__init__.py
-)
-SOURCE_GROUP("ply" FILES ${ply_SRCS})
-
-set(all_files ${OpenSCAD_SRCS} ${ply_SRCS})
+set(all_files ${OpenSCAD_SRCS})
 
 SET(OpenSCADGuiIcon_SVG
     Resources/icons/OpenSCADWorkbench.svg
