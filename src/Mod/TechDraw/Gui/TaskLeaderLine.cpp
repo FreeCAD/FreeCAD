@@ -120,6 +120,10 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
             this, SLOT(onCancelEditClicked(bool)));
     ui->pbCancelEdit->setEnabled(false);
 
+    ui->dsbWeight->setUnit(Base::Unit::Length);
+    ui->dsbWeight->setMinimum(0);
+    ui->dsbWeight->setValue(0.5);
+
     saveState();
 
     m_trackerMode = QGTracker::TrackerMode::Line;
@@ -164,6 +168,10 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     connect(ui->pbCancelEdit, SIGNAL(clicked(bool)),
             this, SLOT(onCancelEditClicked(bool)));
     ui->pbCancelEdit->setEnabled(false);
+
+    ui->dsbWeight->setUnit(Base::Unit::Length); 
+    ui->dsbWeight->setMinimum(0);
+    ui->dsbWeight->setValue(0.5);
 
     m_trackerMode = QGTracker::TrackerMode::Line;
     m_saveContextPolicy = m_mdi->contextMenuPolicy();
@@ -297,7 +305,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> converted)
             App::Color ac;
             ac.setValue<QColor>(ui->cpLineColor->color());
             leadVP->Color.setValue(ac);
-            leadVP->LineWidth.setValue(ui->dsbWeight->value());
+            leadVP->LineWidth.setValue(ui->dsbWeight->rawValue());
             leadVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
         }
     }
@@ -324,7 +332,7 @@ void TaskLeaderLine::updateLeaderFeature(void)
     App::Color ac;
     ac.setValue<QColor>(ui->cpLineColor->color());
     m_lineVP->Color.setValue(ac);
-    m_lineVP->LineWidth.setValue(ui->dsbWeight->value());
+    m_lineVP->LineWidth.setValue(ui->dsbWeight->rawValue());
     m_lineVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
 
     Gui::Command::updateActive();
