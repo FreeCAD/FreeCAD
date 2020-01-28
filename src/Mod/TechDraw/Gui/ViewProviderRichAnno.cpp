@@ -72,7 +72,7 @@ ViewProviderRichAnno::ViewProviderRichAnno()
     static const char *group = "Frame Format";
 
     ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()), group,(App::PropertyType)(App::Prop_None),"Frame line width");
-    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Frame line style");
+    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Frame line style index");
     ADD_PROPERTY_TYPE(LineColor,(getDefLineColor()),group,App::Prop_None,"The color of the frame");
 
     LineStyle.setConstraints(&LineStyleRange);
@@ -124,6 +124,19 @@ bool ViewProviderRichAnno::doubleClicked(void)
 
 void ViewProviderRichAnno::updateData(const App::Property* p)
 {
+    // only if there is a frame we can enable the frame line parameters
+    if (getViewObject() != nullptr) {
+        if (getViewObject()->ShowFrame.getValue()) {
+            LineWidth.setStatus(App::Property::ReadOnly, false);
+            LineStyle.setStatus(App::Property::ReadOnly, false);
+            LineColor.setStatus(App::Property::ReadOnly, false);
+        }
+        else {
+            LineWidth.setStatus(App::Property::ReadOnly, true);
+            LineStyle.setStatus(App::Property::ReadOnly, true);
+            LineColor.setStatus(App::Property::ReadOnly, true);
+        }
+    }
     ViewProviderDrawingView::updateData(p);
 }
 
