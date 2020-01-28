@@ -22,10 +22,13 @@
 
 
 #include "PreCompiled.h"
-#include <QApplication>
-#include <QMessageBox>
-#include <QTime>
-#include <QThread>
+#ifndef _PreComp_
+# include <QApplication>
+# include <QMessageBox>
+# include <QPushButton>
+# include <QTime>
+# include <QThread>
+#endif
 #include "ProgressDialog.h"
 #include "MainWindow.h"
 
@@ -41,6 +44,7 @@ struct SequencerDialogPrivate
     QTime progressTime;
     QString text;
     bool guiThread;
+    bool canabort;
 };
 }
 
@@ -62,6 +66,7 @@ SequencerDialog::SequencerDialog ()
     d->dlg->reset(); // stops the timer to force showing the dialog
     d->dlg->hide();
     d->guiThread = true;
+    d->canabort = false;
 }
 
 SequencerDialog::~SequencerDialog()
@@ -111,6 +116,7 @@ void SequencerDialog::startStep()
 
 void SequencerDialog::nextStep(bool canAbort)
 {
+    d->canabort = canAbort;
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->dlg->thread(); // this is the main thread
     if (thr != currentThread) {
@@ -118,7 +124,7 @@ void SequencerDialog::nextStep(bool canAbort)
             abort();
         }
         else {
-            setProgress((int)nProgress + 1);
+            setValue((int)nProgress + 1);
         }
     }
     else {
@@ -134,16 +140,22 @@ void SequencerDialog::nextStep(bool canAbort)
                 abort();
             } else {
                 rejectCancel();
-                setProgress((int)nProgress+1);
+                setValue((int)nProgress+1);
             }
         }
         else {
-            setProgress((int)nProgress+1);
+            setValue((int)nProgress+1);
         }
     }
 }
 
-void SequencerDialog::setProgress(int step)
+void SequencerDialog::setProgress(size_t step)
+{
+    d->dlg->show();
+    setValue((int)step);
+}
+
+void SequencerDialog::setValue(int step)
 {
     QThread *currentThread = QThread::currentThread();
     QThread *thr = d->dlg->thread(); // this is the main thread
@@ -237,6 +249,11 @@ void SequencerDialog::resetData()
     SequencerBase::resetData();
 }
 
+bool SequencerDialog::canAbort() const
+{
+    return d->canabort;
+}
+
 void SequencerDialog::abort()
 {
     //resets
@@ -302,6 +319,9 @@ bool ProgressDialog::canAbort() const
 
 void ProgressDialog::showEvent(QShowEvent* ev)
 {
+    QPushButton* btn = findChild<QPushButton*>();
+    if (btn)
+        btn->setEnabled(sequencer->canAbort());
     QProgressDialog::showEvent(ev);
 }
 
