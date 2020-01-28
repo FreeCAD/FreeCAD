@@ -136,8 +136,11 @@ std::vector<ParameterRef> ParaObject::makeParameters(HParameterStore into)
             continue;
         if (!v.make)
             continue;
-        HParaObject child (_PyObject_New(v.type), true);
+        //create object (by calling the type object)
+        HParaObject child =
+            Py::Callable(reinterpret_cast<PyObject*>(v.type)).apply(Py::Tuple());
         *v.value = child;
+
         child->label = this->label + "." + v.name;
         extend(ret, child->makeParameters(into));
     }
