@@ -41,9 +41,11 @@ else:
     if printverbose: print("FreeCAD Gui not present.")
     gui = False
 
-
-import ply.lex as lex
-import ply.yacc as yacc
+try:
+    import ply.lex as lex
+    import ply.yacc as yacc
+except:
+    FreeCAD.Console.PrintError("PLY module was not found. Please refer to the OpenSCAD documentation on the FreeCAD wiki\n")
 import Part
 
 from OpenSCADFeatures import *
