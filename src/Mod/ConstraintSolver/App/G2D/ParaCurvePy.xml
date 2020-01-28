@@ -14,10 +14,69 @@
 	  DisableNotify="true">
 	<Documentation>
 	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
-	  <DeveloperDocu>2D edge</DeveloperDocu>
-	  <UserDocu>2D edge</UserDocu>
+	  <DeveloperDocu>2D curve</DeveloperDocu>
+	  <UserDocu>2D curve (base class for objects like line, circle, ellipse, etc.)</UserDocu>
 	</Documentation>
     
-    
+    <Methode Name="value" Const="true">
+      <Documentation>
+        <UserDocu>Returns point of the curve for given parameter value.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="tangent" Const="true">
+      <Documentation>
+        <UserDocu>Returns tangent vector of the curve for given parameter value.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="tangentAtXY" Const="true">
+      <Documentation>
+        <UserDocu>Returns tangent vector of the curve given a point near the curve. Not all curves support this, check supports_tangentAtXY.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="supports_tangentAtXY" ReadOnly="true">
+        <Documentation>
+            <UserDocu>as the name suggests
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="supports_tangentAtXY" Type="Boolean"/>
+    </Attribute>
+
+    <Methode Name="D" Const="true">
+      <Documentation>
+        <UserDocu>D(valueset, u, n): computes n'th derivative by u (a vector). n is from 1 to 25</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="supports_D" ReadOnly="true">
+        <Documentation>
+            <UserDocu>as the name suggests
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="supports_D" Type="Boolean"/>
+    </Attribute>
+    <Methode Name="length" Const="true">
+      <Documentation>
+        <UserDocu>length(valueset, u0,u1): computes length of curve segment bounded by parameter values (parameters are optional. 
+        Curve's u0,u1 are used if values are not provided).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="supports_length" ReadOnly="true">
+        <Documentation>
+            <UserDocu>as the name suggests
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="supports_length" Type="Boolean"/>
+    </Attribute>
+    <Methode Name="fullLength" Const="true">
+      <Documentation>
+        <UserDocu>fullLength(valueset): computes the length of the whole loop (only finite curves, such as cirlce, but not line, bspline, parabola).</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="supports_fullLength" ReadOnly="true">
+        <Documentation>
+            <UserDocu>as the name suggests
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="supports_fullLength" Type="Boolean"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
