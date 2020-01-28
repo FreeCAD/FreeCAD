@@ -29,17 +29,17 @@ PyObject* ParaCurve::getPyObject()
 
 Vector ParaCurve::tangentAtXY(const ValueSet& /*vals*/, Position /*p*/)
 {
-    throw Base::NotImplementedError("tangentAtXY is not implemented for this edge type");
+    throwFunctionNotSupported("tangentAtXY");
 }
 
 Vector ParaCurve::D(const ValueSet& /*vals*/, DualNumber /*u*/, int /*n*/)
 {
-    throw Base::NotImplementedError("D is not implemented for this edge type");
+    throwFunctionNotSupported("D");
 }
 
-DualNumber ParaCurve::length(const ValueSet& vals, DualNumber u0, DualNumber u1)
+DualNumber ParaCurve::length(const ValueSet& /*vals*/, DualNumber /*u0*/, DualNumber /*u1*/)
 {
-    throw Base::NotImplementedError("length is not implemented for this edge type");
+    throwFunctionNotSupported("length");
 }
 
 DualNumber ParaCurve::length(const ValueSet& vals)
@@ -50,7 +50,17 @@ DualNumber ParaCurve::length(const ValueSet& vals)
         return fullLength(vals);
 }
 
-DualNumber ParaCurve::fullLength(const ValueSet& vals)
+DualNumber ParaCurve::fullLength(const ValueSet& /*vals*/)
 {
-    throw Base::NotImplementedError("fullLength is not implemented for this edge type");
+    throwFunctionNotSupported("fullLength");
+}
+
+DualNumber ParaCurve::pointOnCurveErrFunc(const ValueSet& /*vals*/, Position /*p*/)
+{
+    throwFunctionNotSupported("pointOnCurveErrFunc");
+}
+
+void ParaCurve::throwFunctionNotSupported(std::string funcname) const
+{
+    throw Base::NotImplementedError(funcname + " is not implemented for curve type " + getTypeId().getName());
 }

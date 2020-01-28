@@ -68,6 +68,13 @@ public://methods
     virtual DualNumber fullLength(const ValueSet& vals);
     virtual bool supports_fullLength() {return false;}
 
+    ///error function for point-on-curve constraint
+    virtual DualNumber pointOnCurveErrFunc(const ValueSet& vals, Position p);
+    virtual bool supports_pointOnCurveErrFunc() {return false;}
+
+private: //methods
+    [[noreturn]] void throwFunctionNotSupported(std::string funcname) const;
+
 public: //friends
     friend class ParaCurvePy;
 

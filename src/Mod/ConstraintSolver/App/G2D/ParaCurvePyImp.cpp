@@ -94,6 +94,17 @@ PyObject* ParaCurvePy::fullLength(PyObject *args)
     return ret.getPyObject();
 }
 
+PyObject* ParaCurvePy::pointOnCurveErrFunc(PyObject *args)
+{
+    PyObject* pcvals = nullptr;
+    PyObject* pcpos = nullptr;
+    if (! PyArg_ParseTuple(args, "O!O!", &ValueSetPy::Type, &pcvals, &VectorPy::Type, &pcpos))
+        return nullptr;
+    DualNumber ret = getParaCurvePtr()->pointOnCurveErrFunc(*HValueSet(pcvals, false), Position(static_cast<VectorPy*>(pcpos)->value));
+    return ret.getPyObject();
+}
+
+
 
 
 Py::Boolean ParaCurvePy::getsupports_tangentAtXY(void) const
@@ -114,6 +125,11 @@ Py::Boolean ParaCurvePy::getsupports_length(void) const
 Py::Boolean ParaCurvePy::getsupports_fullLength(void) const
 {
     return Py::Boolean(getParaCurvePtr()->supports_fullLength());
+}
+
+Py::Boolean ParaCurvePy::getsupports_pointOnCurveErrFunc(void) const
+{
+    return Py::Boolean(getParaCurvePtr()->supports_pointOnCurveErrFunc());
 }
 
 

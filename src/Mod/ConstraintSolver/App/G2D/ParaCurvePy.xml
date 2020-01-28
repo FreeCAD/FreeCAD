@@ -78,5 +78,17 @@
         </Documentation>
         <Parameter Name="supports_fullLength" Type="Boolean"/>
     </Attribute>
+    <Methode Name="pointOnCurveErrFunc" Const="true">
+      <Documentation>
+        <UserDocu>pointOnCurveErrFunc(valueset): error function for point-on-curve constraint.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="supports_pointOnCurveErrFunc" ReadOnly="true">
+        <Documentation>
+            <UserDocu>as the name suggests
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="supports_pointOnCurveErrFunc" Type="Boolean"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
