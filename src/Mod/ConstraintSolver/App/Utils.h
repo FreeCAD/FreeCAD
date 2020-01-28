@@ -35,7 +35,7 @@ using Base::UnsafePyHandle;
 ///an expressive way to append one std::vector to another
 template<typename Vec>
 inline void extend(Vec& to, const Vec& what){
-    to.insert(to.begin(), what.begin(), what.end());
+    to.insert(to.end(), what.begin(), what.end());
 }
 
 /**
