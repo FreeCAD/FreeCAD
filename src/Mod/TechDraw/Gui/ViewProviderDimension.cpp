@@ -67,7 +67,7 @@ ViewProviderDimension::ViewProviderDimension()
     ADD_PROPERTY_TYPE(Fontsize, (prefFontSize()), group, (App::PropertyType)(App::Prop_None),
                                                                      "Dimension text size in units");
     ADD_PROPERTY_TYPE(LineWidth, (prefWeight()), group, (App::PropertyType)(App::Prop_None), 
-                                                        "Dimension line weight");
+                                                        "Dimension line width");
     ADD_PROPERTY_TYPE(Color,(prefColor()),group,App::Prop_None,"The color of the Dimension");
     ADD_PROPERTY_TYPE(StandardAndStyle, (prefStandardAndStyle()), group, App::Prop_None, 
                                         "Specifies the standard according to which this dimension is drawn");
@@ -202,4 +202,16 @@ int ViewProviderDimension::prefStandardAndStyle() const
                                          GetGroup("Mod/TechDraw/Dimensions");
     int standardStyle = hGrp->GetInt("StandardAndStyle", STD_STYLE_ISO_ORIENTED);
     return standardStyle;
+}
+
+void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+// transforms properties that had been changed
+{
+    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat LineWidthProperty;
+        // restore the PropertyFloat to be able to set its value
+        LineWidthProperty.Restore(reader);
+        LineWidth.setValue(LineWidthProperty.getValue());
+    }
 }

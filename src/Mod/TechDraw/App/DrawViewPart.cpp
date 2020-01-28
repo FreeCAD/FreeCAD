@@ -151,18 +151,18 @@ DrawViewPart::DrawViewPart(void) :
     bool coarseView = hGrp->GetBool("CoarseView", false);
     ADD_PROPERTY_TYPE(CoarseView, (coarseView), sgroup, App::Prop_None, "Coarse View on/off");
     //add property for visible outline?
-    ADD_PROPERTY_TYPE(SmoothVisible ,(false),sgroup,App::Prop_None,"Visible Smooth lines on/off");
-    ADD_PROPERTY_TYPE(SeamVisible ,(false),sgroup,App::Prop_None,"Visible Seam lines on/off");
-    ADD_PROPERTY_TYPE(IsoVisible ,(false),sgroup,App::Prop_None,"Visible Iso u,v lines on/off");
-    ADD_PROPERTY_TYPE(HardHidden ,(false),sgroup,App::Prop_None,"Hidden Hard lines on/off");
-    ADD_PROPERTY_TYPE(SmoothHidden ,(false),sgroup,App::Prop_None,"Hidden Smooth lines on/off");
-    ADD_PROPERTY_TYPE(SeamHidden ,(false),sgroup,App::Prop_None,"Hidden Seam lines on/off");
-    ADD_PROPERTY_TYPE(IsoHidden ,(false),sgroup,App::Prop_None,"Hidden Iso u,v lines on/off");
-    ADD_PROPERTY_TYPE(IsoCount ,(0),sgroup,App::Prop_None,"Number of isoparameters");
+    ADD_PROPERTY_TYPE(SmoothVisible ,(prefSmoothViz()),sgroup,App::Prop_None,"Show Visible Smooth lines");
+    ADD_PROPERTY_TYPE(SeamVisible ,(prefSeamViz()),sgroup,App::Prop_None,"Show Visible Seam lines");
+    ADD_PROPERTY_TYPE(IsoVisible ,(prefIsoViz()),sgroup,App::Prop_None,"Show Visible Iso u,v lines");
+    ADD_PROPERTY_TYPE(HardHidden ,(prefHardHid()),sgroup,App::Prop_None,"Show Hidden Hard lines");
+    ADD_PROPERTY_TYPE(SmoothHidden ,(prefSmoothHid()),sgroup,App::Prop_None,"Show Hidden Smooth lines");
+    ADD_PROPERTY_TYPE(SeamHidden ,(prefSeamHid()),sgroup,App::Prop_None,"Show Hidden Seam lines");
+    ADD_PROPERTY_TYPE(IsoHidden ,(prefIsoHid()),sgroup,App::Prop_None,"Show Hidden Iso u,v lines");
+    ADD_PROPERTY_TYPE(IsoCount ,(prefIsoCount()),sgroup,App::Prop_None,"Number of iso parameters lines");
 
 //    ADD_PROPERTY_TYPE(CosmeticVertexes ,(0),sgroup,App::Prop_Output,"CosmeticVertex Save/Restore");
 //    ADD_PROPERTY_TYPE(CosmeticEdges ,(0),sgroup,App::Prop_Output,"CosmeticEdge Save/Restore");
-    ADD_PROPERTY_TYPE(CenterLines ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
+//    ADD_PROPERTY_TYPE(CenterLines ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
 //    ADD_PROPERTY_TYPE(GeomFormats ,(0),sgroup,App::Prop_Output,"Geometry format Save/Restore");
 
     geometryObject = nullptr;
@@ -1220,7 +1220,77 @@ void DrawViewPart::handleChangedPropertyName(Base::XMLReader &reader, const char
     DrawView::handleChangedPropertyName(reader, TypeName, PropName);
 }
 
+bool DrawViewPart::prefHardViz(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    bool result = hGrp->GetBool("HardViz", true); 
+    return result;
+}
 
+bool DrawViewPart::prefSeamViz(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    bool result = hGrp->GetBool("SeamViz", true); 
+    return result;
+}
+
+bool DrawViewPart::prefSmoothViz(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    bool result = hGrp->GetBool("SmoothViz", true); 
+    return result;
+}
+
+bool DrawViewPart::prefIsoViz(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    bool result = hGrp->GetBool("IsoViz", true); 
+    return result;
+}
+
+bool DrawViewPart::prefHardHid(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    bool result = hGrp->GetBool("HardHid", true); 
+    return result;
+}
+
+bool DrawViewPart::prefSeamHid(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    bool result = hGrp->GetBool("SeamHid", true); 
+    return result;
+}
+
+bool DrawViewPart::prefSmoothHid(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    bool result = hGrp->GetBool("SmoothHid", true); 
+    return result;
+}
+
+bool DrawViewPart::prefIsoHid(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    bool result = hGrp->GetBool("IsoHid", true); 
+    return result;
+}
+
+int DrawViewPart::prefIsoCount(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
+    int result = hGrp->GetBool("IsoCount", 0); 
+    return result;
+}
 
 
 // Python Drawing feature ---------------------------------------------------------

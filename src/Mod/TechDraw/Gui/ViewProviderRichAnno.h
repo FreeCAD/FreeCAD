@@ -47,9 +47,9 @@ public:
     /// destructor
     virtual ~ViewProviderRichAnno();
 
-    App::PropertyFloat    LineWidth;
-    App::PropertyInteger  LineStyle;
-    App::PropertyColor    LineColor;
+    App::PropertyLength             LineWidth;
+    App::PropertyIntegerConstraint  LineStyle;
+    App::PropertyColor              LineColor;
 
     virtual void attach(App::DocumentObject *);
     virtual bool useNewSelectionModel(void) const {return false;}
@@ -67,6 +67,10 @@ protected:
     std::string getDefFont(void);
     double getDefFontSize(void);
     double getDefLineWeight(void);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
+
+private:
+    static App::PropertyIntegerConstraint::Constraints LineStyleRange;
 
 
 };

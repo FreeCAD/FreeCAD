@@ -97,7 +97,7 @@ CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Line to View");
+    sMenuText       = QT_TR_NOOP("Add Leader Line to View");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_LeaderLine";
     sStatusTip      = sToolTipText;

@@ -1,7 +1,7 @@
  /**************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw2Imp.cpp                     *
+ *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw1Imp.cpp                      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,21 +23,21 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H
+#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP1_H
+#define DRAWINGGUI_DLGPREFSTECHDRAWIMP1_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw2.h>
+#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw1.h>
 #include <Gui/PropertyPage.h>
 
 namespace TechDrawGui {
 
-class DlgPrefsTechDraw2Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw2Imp
+class DlgPrefsTechDraw1Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw1Imp
 {
     Q_OBJECT
 
 public:
-    DlgPrefsTechDraw2Imp( QWidget* parent = 0 );
-    ~DlgPrefsTechDraw2Imp();
+    DlgPrefsTechDraw1Imp( QWidget* parent = 0 );
+    ~DlgPrefsTechDraw1Imp();
 
 protected:
     void saveSettings();
@@ -47,4 +47,4 @@ protected:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H
+#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP1_H

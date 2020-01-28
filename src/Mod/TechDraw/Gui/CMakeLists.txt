@@ -44,8 +44,11 @@ set(TechDrawGui_MOC_HDRS
     QGIViewDimension.h
     QGIViewBalloon.h
     TaskProjGroup.h
-    DlgPrefsTechDrawImp.h
+    DlgPrefsTechDraw1Imp.h
     DlgPrefsTechDraw2Imp.h
+    DlgPrefsTechDraw3Imp.h
+    DlgPrefsTechDraw4Imp.h
+    DlgPrefsTechDraw5Imp.h
     TaskLinkDim.h
     DlgTemplateField.h
     TaskSectionView.h
@@ -79,8 +82,11 @@ else()
 endif()
 
 set(TechDrawGui_UIC_SRCS
-    DlgPrefsTechDraw.ui
+    DlgPrefsTechDraw1.ui
     DlgPrefsTechDraw2.ui
+    DlgPrefsTechDraw3.ui
+    DlgPrefsTechDraw4.ui
+    DlgPrefsTechDraw5.ui
     TaskProjGroup.ui
     TaskLinkDim.ui
     DlgTemplateField.ui
@@ -137,12 +143,21 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
-    DlgPrefsTechDraw.ui
-    DlgPrefsTechDrawImp.cpp
-    DlgPrefsTechDrawImp.h
+    DlgPrefsTechDraw1.ui
+    DlgPrefsTechDraw1Imp.cpp
+    DlgPrefsTechDraw1Imp.h
     DlgPrefsTechDraw2.ui
     DlgPrefsTechDraw2Imp.cpp
     DlgPrefsTechDraw2Imp.h
+    DlgPrefsTechDraw3.ui
+    DlgPrefsTechDraw3Imp.cpp
+    DlgPrefsTechDraw3Imp.h
+    DlgPrefsTechDraw4.ui
+    DlgPrefsTechDraw4Imp.cpp
+    DlgPrefsTechDraw4Imp.h
+    DlgPrefsTechDraw5.ui
+    DlgPrefsTechDraw5Imp.cpp
+    DlgPrefsTechDraw5Imp.h
     TaskLinkDim.ui
     TaskLinkDim.cpp
     TaskLinkDim.h

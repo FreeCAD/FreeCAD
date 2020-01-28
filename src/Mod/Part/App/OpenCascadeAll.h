@@ -263,7 +263,9 @@
 #include <BRepPrimAPI_MakeRevolution.hxx>
 #include <BRepPrimAPI_MakeSphere.hxx>
 #include <BRepPrimAPI_MakeTorus.hxx>
+#if OCC_VERSION_HEX < 0x070400
 #include <BRepMesh.hxx>
+#endif
 #include <BRepMesh_Edge.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepMesh_Triangle.hxx>

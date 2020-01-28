@@ -607,7 +607,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                             name = "DEP" + str(obj)
                         else:
                             name = "IND" + str(obj)
-                        f.write("*SURFACE, NAME =" + name + "\n")
+                        f.write("*SURFACE, NAME=" + name + "\n")
 
                         v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
                         if len(v) > 0:

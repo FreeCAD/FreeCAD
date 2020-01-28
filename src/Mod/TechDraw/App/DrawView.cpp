@@ -65,7 +65,7 @@ const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          NULL};
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
-                                                                  pow(10,- Base::UnitsApi::getDecimals())};
+                                                                  (0.1)}; // increment by 0.1
 
 
 PROPERTY_SOURCE(TechDraw::DrawView, App::DocumentObject)
@@ -81,8 +81,8 @@ DrawView::DrawView(void):
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_None, "Rotation in degrees counterclockwise");
 
     ScaleType.setEnums(ScaleTypeEnums);
-    ADD_PROPERTY_TYPE(ScaleType, ((long)0), group, App::Prop_None, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor of the view");
+    ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_None, "Scale Type");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view");
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_None, "Short text about the view");
@@ -428,6 +428,23 @@ bool DrawView::keepUpdated(void)
 
     return result;
 }
+
+int DrawView::prefScaleType(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    int result = hGrp->GetInt("DefaultScaleType", 0); 
+    return result;
+}
+
+double DrawView::prefScale(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    double result = hGrp->GetInt("DefaultViewScale", 1.0); 
+    return result;
+}
+
 
 void DrawView::requestPaint(void)
 {

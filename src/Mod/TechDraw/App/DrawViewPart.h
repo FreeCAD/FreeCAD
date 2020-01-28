@@ -215,6 +215,16 @@ protected:
 
     void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
 
+    bool prefHardViz(void);
+    bool prefSeamViz(void);
+    bool prefSmoothViz(void);
+    bool prefIsoViz(void);
+    bool prefHardHid(void);
+    bool prefSeamHid(void);
+    bool prefSmoothHid(void);
+    bool prefIsoHid(void);
+    int  prefIsoCount(void);
+
 
 private:
     bool nowUnsetting;

@@ -59,7 +59,7 @@ QIcon ViewProviderAttachExtension::extensionMergeOverlayIcons(const QIcon & orig
                 QPixmap px;
 
                 static const char * const feature_detached_xpm[]={
-                    "9 9 3 1",
+                    "9 10 3 1",
                     ". c None",
                     "# c #cc00cc",
                     "a c #ffffff",
