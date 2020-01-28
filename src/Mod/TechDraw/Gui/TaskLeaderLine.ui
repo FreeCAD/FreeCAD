@@ -313,6 +313,9 @@
           </item>
           <item row="3" column="1">
            <widget class="Gui::ColorButton" name="cpLineColor">
+            <property name="toolTip">
+             <string>Line color</string>
+            </property>
             <property name="color" stdset="0">
              <color>
               <red>0</red>
@@ -325,16 +328,22 @@
           <item row="4" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Weight</string>
+             <string>Width</string>
             </property>
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QDoubleSpinBox" name="dsbWeight">
-            <property name="singleStep">
+           <widget class="Gui::QuantitySpinBox" name="dsbWeight" native="true">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string>Line width</string>
+            </property>
+            <property name="singleStep" stdset="0">
              <double>0.100000000000000</double>
             </property>
-            <property name="value">
+            <property name="value" stdset="0">
              <double>0.500000000000000</double>
             </property>
            </widget>
@@ -348,6 +357,9 @@
           </item>
           <item row="5" column="1">
            <widget class="QComboBox" name="cboxStyle">
+            <property name="toolTip">
+             <string>Line style</string>
+            </property>
             <property name="currentIndex">
              <number>1</number>
             </property>
@@ -413,6 +425,11 @@
    <class>Gui::ColorButton</class>
    <extends>QPushButton</extends>
    <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources>

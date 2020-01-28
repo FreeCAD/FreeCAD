@@ -123,6 +123,9 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     connect(ui->pbEditor, SIGNAL(clicked(bool)),
                 this, SLOT(onEditorClicked(bool)));
+    ui->dsbWidth->setUnit(Base::Unit::Length);
+    ui->dsbWidth->setMinimum(0);
+    ui->dsbWidth->setValue(0.5);
 }
 
 //ctor for creation
@@ -165,6 +168,9 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
 
     connect(ui->pbEditor, SIGNAL(clicked(bool)),
                 this, SLOT(onEditorClicked(bool)));
+    ui->dsbWidth->setUnit(Base::Unit::Length);
+    ui->dsbWidth->setMinimum(0);
+    ui->dsbWidth->setValue(0.5);
 }
 
 TaskRichAnno::~TaskRichAnno()
@@ -204,6 +210,8 @@ void TaskRichAnno::enableTextUi(bool b)
     ui->teAnnoText->setEnabled(b);
 }
 
+//switch widgets related to ViewProvider on/off
+//there is no ViewProvider until some time after feature is created.
 void TaskRichAnno::enableVPUi(bool b)
 {
     Q_UNUSED(b);
@@ -229,6 +237,12 @@ void TaskRichAnno::setUiEdit()
         ui->teAnnoText->setHtml(QString::fromUtf8(m_annoFeat->AnnoText.getValue()));
         ui->dsbMaxWidth->setValue(m_annoFeat->MaxWidth.getValue());
         ui->cbShowFrame->setChecked(m_annoFeat->ShowFrame.getValue());
+    }
+
+    if (m_annoVP != nullptr) {
+        ui->cpFrameColor->setColor(m_annoVP->LineColor.getValue().asValue<QColor>());
+        ui->dsbWidth->setValue(m_annoVP->LineWidth.getValue());
+        ui->cFrameStyle->setCurrentIndex(m_annoVP->LineStyle.getValue());
     }
 }
 
@@ -309,6 +323,18 @@ void TaskRichAnno::createAnnoFeature()
         m_annoFeat->Y.setValue(Rez::appX(vTemp.y));
     }
 
+    if (m_annoFeat != nullptr) {
+        Gui::ViewProvider* vp = QGIView::getViewProvider(m_annoFeat);
+        auto annoVP = dynamic_cast<ViewProviderRichAnno*>(vp);
+        if (annoVP != nullptr) {
+            App::Color ac;
+            ac.setValue<QColor>(ui->cpFrameColor->color());
+            annoVP->LineColor.setValue(ac);
+            annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
+            annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
+        }
+    }
+
     Gui::Command::updateActive();
     Gui::Command::commitCommand();
 
@@ -327,6 +353,11 @@ void TaskRichAnno::updateAnnoFeature()
 //    Base::Console().Message("TRA::updateAnnoFeature()\n");
     Gui::Command::openCommand("Edit Anno");
     commonFeatureUpdate();
+    App::Color ac;
+    ac.setValue<QColor>(ui->cpFrameColor->color());
+    m_annoVP->LineColor.setValue(ac);
+    m_annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
+    m_annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
 
     Gui::Command::commitCommand();
     m_annoFeat->requestPaint();
