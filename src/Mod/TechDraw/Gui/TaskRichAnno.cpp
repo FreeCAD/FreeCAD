@@ -123,9 +123,6 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     connect(ui->pbEditor, SIGNAL(clicked(bool)),
                 this, SLOT(onEditorClicked(bool)));
-    ui->dsbWidth->setUnit(Base::Unit::Length);
-    ui->dsbWidth->setMinimum(0);
-    ui->dsbWidth->setValue(0.5);
 }
 
 //ctor for creation
@@ -168,9 +165,6 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
 
     connect(ui->pbEditor, SIGNAL(clicked(bool)),
                 this, SLOT(onEditorClicked(bool)));
-    ui->dsbWidth->setUnit(Base::Unit::Length);
-    ui->dsbWidth->setMinimum(0);
-    ui->dsbWidth->setValue(0.5);
 }
 
 TaskRichAnno::~TaskRichAnno()
@@ -202,6 +196,9 @@ void TaskRichAnno::setUiPrimary()
         std::string baseName = m_baseFeat->getNameInDocument();
         ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
     }
+    ui->dsbWidth->setUnit(Base::Unit::Length);
+    ui->dsbWidth->setMinimum(0);
+    ui->dsbWidth->setValue(0.5);
 }
 
 void TaskRichAnno::enableTextUi(bool b) 
