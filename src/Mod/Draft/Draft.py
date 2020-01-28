@@ -5349,7 +5349,7 @@ class _Array(_DraftLink):
             n = math.floor(c/tdist)
             n = int(math.floor(n/sym)*sym)
             if n == 0: continue
-            angle = 360/n
+            angle = 360.0/n
             for ycount in range(0, n):
                 npl = pl.copy()
                 trans = FreeCAD.Vector(direction).multiply(rc)
