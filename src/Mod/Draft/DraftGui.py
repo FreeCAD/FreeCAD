@@ -427,7 +427,14 @@ class DraftToolBar:
 
         # text
 
-        self.textValue = self._lineedit("textValue", self.layout)
+        self.textValue = QtGui.QTextEdit(self.baseWidget)
+        self.textValue.setObjectName("textValue")
+        self.textValue.setTabChangesFocus(True)
+        self.layout.addWidget(self.textValue)
+        self.textValue.hide()
+        tl = QtGui.QHBoxLayout()
+        self.layout.addLayout(tl)
+        self.textOkButton = self._pushbutton("textButton", tl, icon="button_valid")
 
         # additional line controls
 
@@ -528,11 +535,8 @@ class DraftToolBar:
         QtCore.QObject.connect(self.pointButton,QtCore.SIGNAL("clicked()"),self.validatePoint)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
-        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged(QString)"),self.storeCurrentText)
-        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("returnPressed()"),self.sendText)
-        #QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("escaped()"),self.escape)
-        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("down()"),self.sendText)
-        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("up()"),self.lineUp)
+        QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged()"),self.checkEnterText)
+        QtCore.QObject.connect(self.textOkButton,QtCore.SIGNAL("clicked()"),self.sendText)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
         QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
         QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
@@ -697,6 +701,8 @@ class DraftToolBar:
         self.labelSTrack.setText(translate("draft", "Tracking"))
         self.labelFFile.setText(translate("draft", "Full path to font file:"))
         self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
+        self.textOkButton.setText(translate("draft", "Create text"))
+        self.textOkButton.setToolTip(translate("draft", "Press this button to create the text object, or finish your text with two blank lines"))
         self.retranslateTray(widget)
 
         # Update the maximum width of the push buttons
@@ -963,6 +969,7 @@ class DraftToolBar:
             self.radiusValue.hide()
             self.isCopy.hide()
             self.textValue.hide()
+            self.textOkButton.hide()
             self.continueCmd.hide()
             self.occOffset.hide()
             self.labelSString.hide()
@@ -998,6 +1005,7 @@ class DraftToolBar:
     def textUi(self):
         self.hideXYZ()
         self.textValue.show()
+        self.textOkButton.show()
         self.textValue.setText('')
         todo.delay(self.textValue.setFocus,None)
         self.textbuffer=[]
@@ -1582,45 +1590,18 @@ class DraftToolBar:
                     delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(FreeCAD.Vector(self.x,self.y,self.z))
                     FreeCADGui.Snapper.trackLine.p2(last.add(delta))
 
-    def storeCurrentText(self,qstr):
-        self.currEditText = self.textValue.text()
-
-    def setCurrentText(self,tstr):
-        if (not self.taskmode) or (self.taskmode and self.isTaskOn):
-            self.textValue.setText(tstr)
+    def checkEnterText(self):
+        """this function checks if the entered text ends with two blank lines"""
+        t = self.textValue.toPlainText()
+        if t.endswith("\n\n"):
+            self.sendText()
 
     def sendText(self):
         """this function sends the entered text to the active draft command
         if enter has been pressed twice. Otherwise it blanks the line.
         """
-        if self.textline == len(self.textbuffer):
-            if self.textline:
-                if not self.currEditText:
-                    self.sourceCmd.text=self.textbuffer
-                    self.sourceCmd.createObject()
-            self.textbuffer.append(self.currEditText)
-            self.textline += 1
-            self.setCurrentText('')
-        elif self.textline < len(self.textbuffer):
-            self.textbuffer[self.textline] = self.currEditText
-            self.textline += 1
-            if self.textline < len(self.textbuffer):
-                self.setCurrentText(self.textbuffer[self.textline])
-            else:
-                self.setCurrentText('')
-
-    def lineUp(self):
-        """displays previous line in text editor"""
-        if self.textline:
-            if self.textline == len(self.textbuffer):
-                self.textbuffer.append(self.textValue.text())
-                self.textline -= 1
-                if self.textValue.text():
-                    self.textValue.setText(self.textbuffer[self.textline])
-            elif self.textline < len(self.textbuffer):
-                self.textbuffer[self.textline] = self.textValue.text()
-                self.textline -= 1
-                self.textValue.setText(self.textbuffer[self.textline])
+        self.sourceCmd.text = self.textValue.toPlainText().split()
+        self.sourceCmd.createObject()
 
     def displayPoint(self, point=None, last=None, plane=None, mask=None):
         """this function displays the passed coords in the x, y, and z widgets"""
