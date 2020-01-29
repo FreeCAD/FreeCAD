@@ -148,7 +148,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.planerotation_objects:
             self.write_node_sets_constraints_planerotation(inpfile)
         if self.contact_objects:
-            self.write_surfaces_contraints_contact(inpfile)
+            self.write_surfaces_constraints_contact(inpfile)
         if self.transform_objects:
             self.write_node_sets_constraints_transform(inpfile)
         if self.analysis_type == "thermomech" and self.temperature_objects:
@@ -273,7 +273,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.planerotation_objects:
             self.write_node_sets_constraints_planerotation(inpfileNodes)
         if self.contact_objects:
-            self.write_surfaces_contraints_contact(inpfileContact)
+            self.write_surfaces_constraints_contact(inpfileContact)
         if self.transform_objects:
             self.write_node_sets_constraints_transform(inpfileTransform)
 
@@ -288,7 +288,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
 
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("** Surfaces for contact constraint\n")
-        inpfileMain.write("** written by write_surfaces_contraints_contact\n")
+        inpfileMain.write("** written by write_surfaces_constraints_contact\n")
         if self.contact_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Surface_Contact.inp \n")
 
@@ -586,7 +586,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             for i in range(len(MPC_nodes)):
                 f.write(str(MPC_nodes[i]) + ",\n")
 
-    def write_surfaces_contraints_contact(self, f):
+    def write_surfaces_constraints_contact(self, f):
         # get surface nodes and write them to file
         f.write("\n***********************************************************\n")
         f.write("** Surfaces for contact constraint\n")

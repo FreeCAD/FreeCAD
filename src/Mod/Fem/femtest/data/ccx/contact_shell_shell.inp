@@ -23070,7 +23070,7 @@ Efaces
 
 ***********************************************************
 ** Surfaces for contact constraint
-** written by write_surfaces_contraints_contact function
+** written by write_surfaces_constraints_contact function
 ** ConstraintContact
 *SURFACE, NAME=DEP1
 329,S2
