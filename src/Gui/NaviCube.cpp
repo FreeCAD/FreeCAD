@@ -312,7 +312,9 @@ NaviCubeImplementation::NaviCubeImplementation(
 	m_HiliteColor = QColor(170,226,247);
 	m_ButtonColor = QColor(226,233,239,128);
 	m_PickingFramebuffer = NULL;
-	m_CubeWidgetSize = 132;
+
+    m_CubeWidgetSize = (App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View")->GetInt("NaviWidgetSize", 132));
 
 	m_Menu = createNaviCubeMenu();
 }
