@@ -46,12 +46,13 @@ def dd2dms(dd):
 
     "converts decimal degrees to degrees,minutes,seconds"
 
+    sign = 1 if dd >= 0 else -1
     dd = abs(dd)
     minutes,seconds = divmod(dd*3600,60)
     degrees,minutes = divmod(minutes,60)
     if dd < 0:
         degrees = -degrees
-    return (int(degrees),int(minutes),int(seconds))
+    return (int(degrees)*sign,int(minutes)*sign,int(seconds)*sign)
 
 
 # used in import
