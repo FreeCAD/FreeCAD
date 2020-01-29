@@ -113,8 +113,10 @@ protected:
     void enableVPUi(bool b);
     void setEditCursor(QCursor c);
 
-   QGIView* findParentQGIV();
-   int getPrefArrowStyle();
+    QGIView* findParentQGIV();
+    int getPrefArrowStyle();
+    double prefWeight() const;
+    App::Color prefLineColor(void);
 
    void saveState(void);
    void restoreState(void);

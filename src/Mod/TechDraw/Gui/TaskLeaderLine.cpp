@@ -225,7 +225,9 @@ void TaskLeaderLine::setUiPrimary()
 
     ui->dsbWeight->setUnit(Base::Unit::Length);
     ui->dsbWeight->setMinimum(0);
-    ui->dsbWeight->setValue(0.5);
+    ui->dsbWeight->setValue(prefWeight());
+
+    ui->cpLineColor->setColor(prefLineColor().asValue<QColor>());
 }
 
 //switch widgets related to ViewProvider on/off
@@ -659,6 +661,28 @@ int TaskLeaderLine::getPrefArrowStyle()
     int style = hGrp->GetInt("ArrowStyle", 0);
     return style;
 }
+
+double TaskLeaderLine::prefWeight() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                        GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    double weight = lg->getWeight("Thin");
+    delete lg;                                   //Coverity CID 174670
+    return weight;
+}
+
+App::Color TaskLeaderLine::prefLineColor(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
+    App::Color result;
+    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
+    return result;
+}
+
 
 //******************************************************************************
 
