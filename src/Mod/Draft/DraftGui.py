@@ -2403,12 +2403,12 @@ class ShapeStringTaskPanel:
         ParamGroup = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Dialog")
         if Flag == "Overwrite":
             GroupContent = ParamGroup.GetContents()
-
             Found = False
-            for ParamSet in GroupContent:
-              if ParamSet[1] == "DontUseNativeFontDialog":
-                Found = True
-                break
+            if GroupContent:
+                for ParamSet in GroupContent:
+                    if ParamSet[1] == "DontUseNativeFontDialog":
+                        Found = True
+                        break
 
             if Found == False:
                 ParamGroup.SetBool("DontUseNativeFontDialog", True)     #initialize nonexisting one
