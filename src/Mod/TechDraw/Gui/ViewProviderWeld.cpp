@@ -94,6 +94,16 @@ void ViewProviderWeld::updateData(const App::Property* prop)
     ViewProviderDrawingView::updateData(prop);
 }
 
+void ViewProviderWeld::onChanged(const App::Property* p)
+{
+    QGIView* qgiv = getQView();
+    if (qgiv) {
+        qgiv->updateView(true);
+    }
+
+    ViewProviderDrawingView::onChanged(p);
+}
+
 std::vector<App::DocumentObject*> ViewProviderWeld::claimChildren(void) const
 {
     // Collect any child Document Objects and put them in the right place in the Feature tree
