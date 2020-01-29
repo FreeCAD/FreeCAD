@@ -198,7 +198,10 @@ void TaskRichAnno::setUiPrimary()
     }
     ui->dsbWidth->setUnit(Base::Unit::Length);
     ui->dsbWidth->setMinimum(0);
-    ui->dsbWidth->setValue(0.5);
+    ui->dsbWidth->setValue(prefWeight());
+
+    ui->cpFrameColor->setColor(prefLineColor().asValue<QColor>());
+
 }
 
 void TaskRichAnno::enableTextUi(bool b) 
@@ -287,6 +290,28 @@ void TaskRichAnno::onEditorExit(void)
     m_textDialog = nullptr;
     m_rte = nullptr;
 }
+
+double TaskRichAnno::prefWeight() const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                        GetGroup("Mod/TechDraw/Decorations");
+    std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
+    auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
+    double weight = lg->getWeight("Graphic");
+    delete lg;                                   //Coverity CID 174670
+    return weight;
+}
+
+App::Color TaskRichAnno::prefLineColor(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Markups");
+    App::Color result;
+    result.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
+    return result;
+}
+
 
 //******************************************************************************
 void TaskRichAnno::createAnnoFeature()

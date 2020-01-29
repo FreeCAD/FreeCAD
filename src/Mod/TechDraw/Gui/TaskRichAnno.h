@@ -99,7 +99,9 @@ protected:
     void setUiEdit(void);
     void enableTextUi(bool b);
     void enableVPUi(bool b);
-    
+    double prefWeight() const;
+    App::Color prefLineColor(void);
+
 private:
     Ui_TaskRichAnno * ui;
     bool blockUpdate;

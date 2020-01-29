@@ -45,52 +45,56 @@ DlgPrefsTechDraw3Imp::~DlgPrefsTechDraw3Imp()
 
 void DlgPrefsTechDraw3Imp::saveSettings()
 {
-    pcbMatting->onSave();
-    pcbBalloonShape->onSave();
-    cbSectionLineStd->onSave();
-    cbPyramidOrtho->onSave();
-    pcbCenterStyle->onSave();
-    pcbSectionStyle->onSave();
-    leLineGroup->onSave();
-    pcbBalloonArrow->onSave();
     cbAutoHoriz->onSave();
-    leDiameter->onSave();
-    pcbArrow->onSave();
-    sbAltDecimals->onSave();
-    plsb_FontSize->onSave();
-    plsb_ArrowSize->onSave();
-    leformatSpec->onSave();
     cbGlobalDecimals->onSave();
-    cbShowUnits->onSave();
-    pcbStandardAndStyle->onSave();
-    cbProjAngle->onSave();
     cbHiddenLineStyle->onSave();
+    cbPrintCenterMarks->onSave();
+    cbProjAngle->onSave();
+    cbPyramidOrtho->onSave();
+    cbSectionLineStd->onSave();
+    cbShowCenterMarks->onSave();
+    cbShowUnits->onSave();
+    leDiameter->onSave();
+    leformatSpec->onSave();
+    leLineGroup->onSave();
+    pcbArrow->onSave();
+    pcbBalloonArrow->onSave();
+    pcbBalloonShape->onSave();
+    pcbCenterStyle->onSave();
+    pcbMatting->onSave();
+    pcbSectionStyle->onSave();
+    pcbStandardAndStyle->onSave();
     pdsbBalloonKink->onSave();
+    plsb_ArrowSize->onSave();
+    plsb_FontSize->onSave();
+    sbAltDecimals->onSave();
 }
 
 void DlgPrefsTechDraw3Imp::loadSettings()
 {
-    pcbMatting->onRestore();
-    pcbBalloonShape->onRestore();
-    cbSectionLineStd->onRestore();
-    cbPyramidOrtho->onRestore();
-    pcbCenterStyle->onRestore();
-    pcbSectionStyle->onRestore();
-    leLineGroup->onRestore();
-    pcbBalloonArrow->onRestore();
     cbAutoHoriz->onRestore();
-    leDiameter->onRestore();
-    pcbArrow->onRestore();
-    sbAltDecimals->onRestore();
-    plsb_FontSize->onRestore();
-    plsb_ArrowSize->onRestore();
-    leformatSpec->onRestore();
     cbGlobalDecimals->onRestore();
-    cbShowUnits->onRestore();
-    pcbStandardAndStyle->onRestore();
-    cbProjAngle->onRestore();
     cbHiddenLineStyle->onRestore();
+    cbPrintCenterMarks->onRestore();
+    cbProjAngle->onRestore();
+    cbPyramidOrtho->onRestore();
+    cbSectionLineStd->onRestore();
+    cbShowCenterMarks->onRestore();
+    cbShowUnits->onRestore();
+    leDiameter->onRestore();
+    leformatSpec->onRestore();
+    leLineGroup->onRestore();
+    pcbArrow->onRestore();
+    pcbBalloonArrow->onRestore();
+    pcbBalloonShape->onRestore();
+    pcbCenterStyle->onRestore();
+    pcbMatting->onRestore();
+    pcbSectionStyle->onRestore();
+    pcbStandardAndStyle->onRestore();
     pdsbBalloonKink->onRestore();
+    plsb_ArrowSize->onRestore();
+    plsb_FontSize->onRestore();
+    sbAltDecimals->onRestore();
 }
 
 /**

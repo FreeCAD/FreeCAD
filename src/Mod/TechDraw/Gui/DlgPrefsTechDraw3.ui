@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>1055</height>
+    <height>1110</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -671,7 +671,7 @@
          </widget>
         </item>
         <item row="11" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBox">
+         <widget class="Gui::PrefCheckBox" name="cbPrintCenterMarks">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
