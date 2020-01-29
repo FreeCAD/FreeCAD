@@ -11,7 +11,6 @@ using namespace FCS::G2D;
 TYPESYSTEM_SOURCE(FCS::G2D::ParaLine, FCS::G2D::ParaCurve);
 
 ParaLine::ParaLine()
-    :p0(Py::None()), p1(Py::None())
 {
     initAttrs();
 }

@@ -9,6 +9,12 @@ using namespace FCS::G2D;
 TYPESYSTEM_SOURCE_ABSTRACT(FCS::G2D::ParaCurve, FCS::G2D::ParaGeometry2D);
 
 
+ParaCurve::ParaCurve()
+    : p0(Py::None()), p1(Py::None())
+{
+
+}
+
 void FCS::G2D::ParaCurve::initAttrs()
 {
     ParaGeometry2D::initAttrs();

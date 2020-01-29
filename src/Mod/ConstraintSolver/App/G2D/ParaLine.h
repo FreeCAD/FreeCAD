@@ -38,8 +38,6 @@ class FCSExport ParaLine : public FCS::G2D::ParaCurve
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public://data
-    HParaPoint p0;
-    HParaPoint p1;
 
 public://methods
     ParaLine();

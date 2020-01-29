@@ -27,6 +27,7 @@
 #include "ParaGeometry2D.h"
 #include "Position.h"
 #include "ParaShape.h"
+#include "ParaPoint.h"
 
 namespace FCS {
 namespace G2D {
@@ -43,8 +44,13 @@ public://data
     ParameterRef u0;
     ///ending point parameter
     ParameterRef u1;
+    ///starting point, may be None
+    HParaPoint p0;
+    ///ending point, may be None
+    HParaPoint p1;
 
 public://methods
+    ParaCurve();
     void initAttrs() override;
     virtual PyObject* getPyObject() override;
 
