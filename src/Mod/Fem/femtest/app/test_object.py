@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
+import sys
 
 import FreeCAD
 import ObjectsFem
@@ -119,10 +120,6 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeEquationFlow(doc, sol))
         analysis.addObject(ObjectsFem.makeEquationFluxsolver(doc, sol))
         analysis.addObject(ObjectsFem.makeEquationHeat(doc, sol))
-        # is = 48 (just copy in empty file to test, or run unit test case, it is printed)
-        # TODO if the equations and gmsh mesh childs are added to the analysis,
-        # they show up twice on Tree (on solver resp. gemsh mesh obj and on analysis)
-        # https://forum.freecadweb.org/viewtopic.php?t=25283
 
         doc.recompute()
 
@@ -131,11 +128,18 @@ class TestObjectCreate(unittest.TestCase):
             fem_vtk_post = True
         else:
             fem_vtk_post = False
+        count_defmake = testtools.get_defmake_count(fem_vtk_post)
         # because of the analysis itself count -1
-        self.assertEqual(
-            len(analysis.Group),
-            testtools.get_defmake_count(fem_vtk_post) - 1
+        self.assertEqual(len(analysis.Group), count_defmake - 1)
+        self.assertEqual(len(doc.Objects), count_defmake)
+
+        fcc_print("doc objects count: {}, method: {}".format(
+            len(doc.Objects),
+            sys._getframe().f_code.co_name)
         )
+        # TODO if the equations and gmsh mesh children are added to the analysis,
+        # they show up twice on Tree (on solver resp. gmsh mesh obj and on analysis)
+        # https://forum.freecadweb.org/viewtopic.php?t=25283
 
     # ********************************************************************************************
     def tearDown(
@@ -163,6 +167,15 @@ class TestObjectType(unittest.TestCase):
             FreeCAD.newDocument(self.doc_name)
         FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
+
+    def test_00print(
+        self
+    ):
+        fcc_print("\n{0}\n{1} run FEM TestObjectType tests {2}\n{0}".format(
+            100 * "*",
+            10 * "*",
+            60 * "*"
+        ))
 
     # ********************************************************************************************
     def test_femobjects_type(
@@ -348,9 +361,14 @@ class TestObjectType(unittest.TestCase):
             "Fem::FemEquationElmerHeat",
             type_of_obj(ObjectsFem.makeEquationHeat(doc, solverelmer))
         )
-        # is = 44 tests (just copy in empty file to test)
-        # TODO: vtk post objs
-        # TODO: use different type for fluid and solid material
+
+        fcc_print("doc objects count: {}, method: {}".format(
+            len(doc.Objects),
+            sys._getframe().f_code.co_name)
+        )
+        # TODO: vtk post objs, thus 5 obj less than test_femobjects_make
+        self.assertEqual(len(doc.Objects), testtools.get_defmake_count(False))
+        # TODO: use different type for material fluid and material solid
 
     # ********************************************************************************************
     def test_femobjects_isoftype(
@@ -538,7 +556,13 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeEquationHeat(doc, solverelmer),
             "Fem::FemEquationElmerHeat"
         ))
-        # is = 44 tests (just copy in empty file to test)
+
+        fcc_print("doc objects count: {}, method: {}".format(
+            len(doc.Objects),
+            sys._getframe().f_code.co_name)
+        )
+        # TODO: vtk post objs, thus 5 obj less than test_femobjects_make
+        self.assertEqual(len(doc.Objects), testtools.get_defmake_count(False))
 
     # ********************************************************************************************
     def test_femobjects_derivedfromfem(
@@ -1214,6 +1238,12 @@ class TestObjectType(unittest.TestCase):
             "Fem::FemEquationElmerHeat"
         ))
 
+        fcc_print("doc objects count: {}, method: {}".format(
+            len(doc.Objects),
+            sys._getframe().f_code.co_name)
+        )
+        # TODO: vtk post objs, thus 5 obj less than test_femobjects_make
+        self.assertEqual(len(doc.Objects), testtools.get_defmake_count(False))
         # TODO constraint transform is not derived from "Fem::Constraint" ?!?
 
     # ********************************************************************************************
@@ -1445,7 +1475,13 @@ class TestObjectType(unittest.TestCase):
                 solverelmer
             ).isDerivedFrom("App::FeaturePython")
         )
-        # is = 44 tests (just copy in empty file to test)
+
+        fcc_print("doc objects count: {}, method: {}".format(
+            len(doc.Objects),
+            sys._getframe().f_code.co_name)
+        )
+        # TODO: vtk post objs, thus 5 obj less than test_femobjects_make
+        self.assertEqual(len(doc.Objects), testtools.get_defmake_count(False))
 
     # ********************************************************************************************
     def tearDown(
