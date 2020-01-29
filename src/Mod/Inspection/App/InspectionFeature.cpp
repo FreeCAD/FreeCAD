@@ -653,6 +653,7 @@ unsigned int PropertyDistanceList::getMemSize (void) const
 
 // ----------------------------------------------------------------
 
+namespace Inspection {
 // helper class to use Qt's concurrent framework
 struct DistanceInspection
 {
@@ -685,6 +686,25 @@ struct DistanceInspection
     InspectActualGeometry*  actual;
     std::vector<InspectNominalGeometry*> nominal;
 };
+
+// Helper internal class for QtConcurrent map operation. Holds sums-of-squares and counts for RMS calculation
+class DistanceInspectionRMS {
+public:
+    DistanceInspectionRMS() : m_numv(0), m_sumsq(0.0) {};
+    DistanceInspectionRMS& operator += (const DistanceInspectionRMS& rhs)
+    {
+        this->m_numv += rhs.m_numv;
+        this->m_sumsq += rhs.m_sumsq;
+        return *this;
+    }
+    double getRMS()
+    {
+        return sqrt(this->m_sumsq / (double)this->m_numv);
+    }
+    int m_numv;
+    double m_sumsq;
+};
+}
 
 PROPERTY_SOURCE(Inspection::Feature, App::DocumentObject)
 
@@ -759,8 +779,8 @@ App::DocumentObjectExecReturn* Feature::execute(void)
             inspectNominal.push_back(nominal);
     }
 
-#if 0 // test with some huge data sets
-    Standard::SetReentrant(Standard_True);
+#if 0
+#if 1 // test with some huge data sets
     std::vector<unsigned long> index(actual->countPoints());
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
@@ -771,16 +791,17 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     QFutureWatcher<float> watcher;
     QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
                      &progress, SLOT(progressValueChanged(int)));
-    watcher.setFuture(future);
 
     // keep it responsive during computation
     QEventLoop loop;
     QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+    watcher.setFuture(future);
     loop.exec();
 
     std::vector<float> vals;
     vals.insert(vals.end(), future.begin(), future.end());
 #else
+    DistanceInspection insp(this->SearchRadius.getValue(), actual, inspectNominal);
     unsigned long count = actual->countPoints();
     std::stringstream str;
     str << "Inspecting " << this->Label.getValue() << "...";
@@ -788,19 +809,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
 
     std::vector<float> vals(count);
     for (unsigned long index = 0; index < count; index++) {
-        Base::Vector3f pnt = actual->getPoint(index);
-
-        float fMinDist=FLT_MAX;
-        for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it) {
-            float fDist = (*it)->getDistance(pnt);
-            if (fabs(fDist) < fabs(fMinDist))
-                fMinDist = fDist;
-        }
-
-        if (fMinDist > this->SearchRadius.getValue())
-            fMinDist = FLT_MAX;
-        else if (-fMinDist > this->SearchRadius.getValue())
-            fMinDist = -FLT_MAX;
+        float fMinDist = insp.mapped(index);
         vals[index] = fMinDist;
         seq.next();
     }
@@ -822,8 +831,72 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         fRMS = sqrt(fRMS);
     }
 
-    Base::Console().Message("RMS value for '%s' with search radius=%.4f is: %.4f\n",
-        this->Label.getValue(), this->SearchRadius.getValue(), fRMS);
+    Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+        this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), fRMS);
+#else
+    bool useMultithreading = true;
+    unsigned long count = actual->countPoints();
+    std::vector<float> vals(count);
+    std::function<DistanceInspectionRMS(int)> fMap = [&](unsigned int index)
+    {
+        DistanceInspectionRMS res;
+        Base::Vector3f pnt = actual->getPoint(index);
+
+        float fMinDist = FLT_MAX;
+        for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it) {
+            float fDist = (*it)->getDistance(pnt);
+            if (fabs(fDist) < fabs(fMinDist))
+                fMinDist = fDist;
+        }
+
+        if (fMinDist > this->SearchRadius.getValue())
+            fMinDist = FLT_MAX;
+        else if (-fMinDist > this->SearchRadius.getValue())
+            fMinDist = -FLT_MAX;
+        else {
+            res.m_sumsq += fMinDist * fMinDist;
+            res.m_numv++;
+        }
+
+        vals[index] = fMinDist;
+        return res;
+    };
+
+    DistanceInspectionRMS res;
+
+    if (useMultithreading) {
+        // Build vector of increasing indices
+        std::vector<unsigned long> index(count);
+        std::iota(index.begin(), index.end(), 0);
+        // Perform map-reduce operation : compute distances and update sum of squares for RMS computation
+        QFuture<DistanceInspectionRMS> future = QtConcurrent::mappedReduced(
+            index, fMap, &DistanceInspectionRMS::operator+=);
+        // Setup progress bar
+        Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
+        QFutureWatcher<DistanceInspectionRMS> watcher;
+        QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
+            &progress, SLOT(progressValueChanged(int)));
+        // Keep UI responsive during computation
+        QEventLoop loop;
+        QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+        watcher.setFuture(future);
+        loop.exec();
+        res = future.result();
+    }
+    else {
+        // Single-threaded operation
+        std::stringstream str;
+        str << "Inspecting " << this->Label.getValue() << "...";
+        Base::SequencerLauncher seq(str.str().c_str(), count);
+
+        for (unsigned int i = 0; i < count; i++)
+            res += fMap(i);
+    }
+
+    Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+        this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), res.getRMS());
+    Distances.setValues(vals);
+#endif
 
     delete actual;
     for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it)
