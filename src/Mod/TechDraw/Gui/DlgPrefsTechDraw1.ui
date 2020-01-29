@@ -481,6 +481,38 @@
           </property>
          </widget>
         </item>
+        <item row="6" column="4">
+         <widget class="QLabel" name="label_17">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Markups</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="6">
+         <widget class="Gui::PrefColorButton" name="pcbMarkup">
+          <property name="toolTip">
+           <string>Default color for annotations </string>
+          </property>
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Color</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Markups</cstring>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
