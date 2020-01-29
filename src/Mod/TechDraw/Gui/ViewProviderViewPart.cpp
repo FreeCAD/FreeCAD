@@ -85,9 +85,10 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    double defScale = hGrp->GetFloat("CenterMarkScale",2.0);
-    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", true);
 
+    double defScale = hGrp->GetFloat("CenterMarkScale",2.0);
+    bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
+    
     //decorations
     ADD_PROPERTY_TYPE(HorizCenterLine ,(false),dgroup,App::Prop_None,"Show a horizontal centerline through view");
     ADD_PROPERTY_TYPE(VertCenterLine ,(false),dgroup,App::Prop_None,"Show a vertical centerline through view");
