@@ -349,6 +349,7 @@ class DraftToolBar:
         if not width:
             sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
             inputfield.setSizePolicy(sizePolicy)
+            inputfield.setMinimumWidth(110)
         else:
             inputfield.setMaximumWidth(width)
         layout.addWidget(inputfield)
