@@ -95,47 +95,43 @@ class ArchWorkbench(FreeCADGui.Workbench):
             self.archtools[2] = "Arch_RebarTools"
 
         # Set up Draft command lists
-        self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
-                        "Draft_Polygon","Draft_Rectangle", "Draft_Text",
-                        "Draft_Dimension", "Draft_BSpline","Draft_Point",
-                        "Draft_Facebinder","Draft_BezCurve","Draft_Label"]
-        self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
-                        "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_Clone","Draft_Edit"]
-        self.draftextratools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint","Draft_ShapeString",
-                                "Draft_PathArray","Draft_Mirror","Draft_Stretch"]
-        self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup","Draft_AutoGroup",
-                            "Draft_SelectGroup","Draft_SelectPlane",
-                            "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
-                            "Draft_FinishLine","Draft_CloseLine"]
-        self.draftutils = ["Draft_Layer","Draft_Heal","Draft_FlipDimension",
-                           "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
-                           "Draft_Slope","Draft_SetWorkingPlaneProxy","Draft_AddConstruction"]
-        self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
-                         'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
-                         'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
-                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho','Draft_Snap_Special',
-                         'Draft_Snap_Dimensions','Draft_Snap_WorkingPlane']
+        import draftutils.init_tools as it
+        self.draft_drawing_commands = it.get_draft_drawing_commands()
+        self.draft_annotation_commands = it.get_draft_annotation_commands()
+        self.draft_modification_commands = it.get_draft_modification_commands()
+        self.draft_context_commands = it.get_draft_context_commands()
+        self.draft_line_commands = it.get_draft_line_commands()
+        self.draft_utility_commands = it.get_draft_utility_commands()
 
+        # Set up toolbars
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Arch tools"), self.archtools)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Draft tools"), self.drafttools)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Draft mod tools"), self.draftmodtools)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft creation tools"), self.draft_drawing_commands)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"), self.draft_annotation_commands)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft modification tools"), self.draft_modification_commands)
 
+        # Set up menus
         self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Arch"),
                          QT_TRANSLATE_NOOP("arch", "Utilities")],
                         self.utilities)
         self.appendMenu(QT_TRANSLATE_NOOP("arch", "&Arch"), self.archtools)
-        self.appendMenu(QT_TRANSLATE_NOOP("arch", "&Draft"),
-                        self.drafttools + self.draftmodtools + self.draftextratools)
+
+        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
+                         QT_TRANSLATE_NOOP("arch", "Creation")],
+                        self.draft_drawing_commands)
+        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
+                         QT_TRANSLATE_NOOP("arch", "Annotation")],
+                        self.draft_annotation_commands)
+        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
+                         QT_TRANSLATE_NOOP("arch", "Modification")],
+                        self.draft_modification_commands)
         self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
                          QT_TRANSLATE_NOOP("arch", "Utilities")],
-                        self.draftutils + self.draftcontexttools)
-        self.appendMenu([QT_TRANSLATE_NOOP("arch", "&Draft"),
-                         QT_TRANSLATE_NOOP("arch", "Snapping")], self.snapList)
+                        self.draft_utility_commands
+                        + self.draft_context_commands)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
 
+        # Set up preferences pages
         if hasattr(FreeCADGui, "draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar, "loadedArchPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui", QT_TRANSLATE_NOOP("Arch", "Arch"))
@@ -147,7 +143,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
                 FreeCADGui.draftToolBar.loadedPreferences = True
-        FreeCAD.Console.PrintLog('Loading Arch module, done\n')
+
+        FreeCAD.Console.PrintLog('Loading Arch workbench, done.\n')
 
     def Activated(self):
         """When entering the workbench."""
@@ -167,7 +164,7 @@ class ArchWorkbench(FreeCADGui.Workbench):
 
     def ContextMenu(self, recipient):
         """Define an optional custom context menu."""
-        self.appendContextMenu("Utilities", self.draftcontexttools)
+        self.appendContextMenu("Utilities", self.draft_context_commands)
 
     def GetClassName(self):
         """Type of workbench."""
