@@ -694,3 +694,29 @@ App::DocumentObjectExecReturn *Refine::execute(void)
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(Part::Reverse, Part::Feature)
+
+Reverse::Reverse()
+{
+    ADD_PROPERTY_TYPE(Source, (0), "Reverse", App::Prop_None, "Source shape");
+}
+
+App::DocumentObjectExecReturn* Reverse::execute(void)
+{
+    Part::Feature* source = Source.getValue<Part::Feature*>();
+    if (!source)
+        return new App::DocumentObjectExecReturn("No part object linked.");
+
+    try {
+        TopoDS_Shape myShape = source->Shape.getValue();
+        if (!myShape.IsNull())
+            this->Shape.setValue(myShape.Reversed());
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure & e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+}

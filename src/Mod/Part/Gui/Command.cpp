@@ -1235,17 +1235,15 @@ void CmdPartReverseShape::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (Part::Feature::getClassTypeId());
-    runCommand(Doc, "import Part");
+    openCommand("Reverse");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
         if (!shape.IsNull()) {
             QString str = QString::fromLatin1(
-                "__s__=App.ActiveDocument.%1.Shape.copy()\n"
-                "__s__.reverse()\n"
-                "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_rev\")\n"
+                "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1_rev\")\n"
+                "__o__.Source=App.ActiveDocument.%1\n"
                 "__o__.Label=\"%2 (Rev)\"\n"
-                "__o__.Shape=__s__\n"
-                "del __s__, __o__"
+                "del __o__"
                 )
                 .arg(QLatin1String((*it)->getNameInDocument()))
                 .arg(QLatin1String((*it)->Label.getValue()));
@@ -1260,6 +1258,9 @@ void CmdPartReverseShape::activated(int iMsg)
             }
         }
     }
+
+    commitCommand();
+    updateActive();
 }
 
 bool CmdPartReverseShape::isActive(void)
