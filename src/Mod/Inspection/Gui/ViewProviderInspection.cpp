@@ -43,6 +43,7 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/actions/SoSearchAction.h>
 
 #include <Base/Exception.h>
 #include <App/PropertyLinks.h>
@@ -585,15 +586,24 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
                     info = QObject::tr("Distance: < %1").arg(-fSearchRadius);
                 }
                 else {
-                    const SbVec3f& v1 = this->pcCoords->point[index1];
-                    const SbVec3f& v2 = this->pcCoords->point[index2];
-                    const SbVec3f& v3 = this->pcCoords->point[index3];
-                    const SbVec3f& p = pp->getObjectPoint();
-                    // get the weights
-                    float w1, w2, w3;
-                    calcWeights(v1,v2,v3,p,w1,w2,w3);
-                    float fVal = w1*fVal1+w2*fVal2+w3*fVal3;
-                    info = QObject::tr("Distance: %1").arg(fVal);
+                    SoSearchAction searchAction;
+                    searchAction.setType(SoCoordinate3::getClassTypeId());
+                    searchAction.setInterest(SoSearchAction::FIRST);
+                    searchAction.apply(pp->getPath()->getNodeFromTail(1));
+                    SoPath* selectionPath = searchAction.getPath();
+
+                    if (selectionPath) {
+                        SoCoordinate3* coords = static_cast<SoCoordinate3*>(selectionPath->getTail());
+                        const SbVec3f& v1 = coords->point[index1];
+                        const SbVec3f& v2 = coords->point[index2];
+                        const SbVec3f& v3 = coords->point[index3];
+                        const SbVec3f& p = pp->getObjectPoint();
+                        // get the weights
+                        float w1, w2, w3;
+                        calcWeights(v1, v2, v3, p, w1, w2, w3);
+                        float fVal = w1 * fVal1 + w2 * fVal2 + w3 * fVal3;
+                        info = QObject::tr("Distance: %1").arg(fVal);
+                    }
                 }
             }
         }
