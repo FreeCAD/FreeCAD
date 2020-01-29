@@ -267,7 +267,7 @@ Qt::PenCapStyle QGIPrimPath::prefCapStyle()
     result = (Qt::PenCapStyle) oldStyle;
     int newStyle;
     if (oldStyle == 0xFF) {              //no old style parm found
-        newStyle = hGrp->GetUnsigned("EdgeCapStyle", 2);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+        newStyle = hGrp->GetInt("EdgeCapStyle", 32);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
         switch (newStyle) {
             case 0:
                 result = (Qt::PenCapStyle) 0x20;   //round;
