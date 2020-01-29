@@ -72,6 +72,11 @@ DualNumber ParaLine::length(const ValueSet& vals)
     return (p1->value(vals) - p0->value(vals)).length();
 }
 
+DualNumber ParaLine::pointOnCurveErrFunc(const ValueSet& vals, Position p)
+{
+    return Vector::cross(tangent(vals, 0.0).normalized(), p - p0->value(vals));
+}
+
 PyObject* ParaLine::getPyObject()
 {
     if (!_twin){

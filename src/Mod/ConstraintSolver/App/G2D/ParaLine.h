@@ -57,6 +57,9 @@ public://methods
     virtual DualNumber length(const ValueSet& vals) override;
     virtual bool supports_length() override {return true;}
 
+    virtual DualNumber pointOnCurveErrFunc(const ValueSet& vals, Position p) override;
+    virtual bool supports_pointOnCurveErrFunc() override {return true;}
+
 public: //friends
     friend class ParaLinePy;
 
