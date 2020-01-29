@@ -108,6 +108,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;&quot;;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Input the annotation text directly or start the rich text editor</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="0">
