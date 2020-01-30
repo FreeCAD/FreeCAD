@@ -74,6 +74,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_base.py
     draftguitools/gui_circulararray.py
     draftguitools/gui_polararray.py
+    draftguitools/gui_arrays.py
 )
 
 SET(Draft_task_panels
