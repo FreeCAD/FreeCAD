@@ -22,6 +22,14 @@
 # ***************************************************************************
 
 
+# to run the example use:
+"""
+from femexamples.material_nl_platewithhole import setup
+setup()
+
+"""
+
+
 import FreeCAD
 import ObjectsFem
 import Fem
@@ -154,10 +162,3 @@ def setup(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples.material_nl_platewithhole import setup
-setup()
-
-"""
