@@ -581,23 +581,23 @@ std::string ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, in
         std::string mode = getActiveDisplayMode();
         if (mode == "Minimum curvature") {
             fVal1 = cVal1.fMinCurvature;
-            fVal2 = cVal1.fMinCurvature;
-            fVal3 = cVal1.fMinCurvature;
+            fVal2 = cVal2.fMinCurvature;
+            fVal3 = cVal3.fMinCurvature;
         }
         else if (mode == "Maximum curvature") {
             fVal1 = cVal1.fMaxCurvature;
-            fVal2 = cVal1.fMaxCurvature;
-            fVal3 = cVal1.fMaxCurvature;
+            fVal2 = cVal2.fMaxCurvature;
+            fVal3 = cVal3.fMaxCurvature;
         }
         else if (mode == "Gaussian curvature") {
             fVal1 = cVal1.fMaxCurvature*cVal1.fMinCurvature;
-            fVal2 = cVal1.fMaxCurvature*cVal2.fMinCurvature;
-            fVal3 = cVal1.fMaxCurvature*cVal3.fMinCurvature;
+            fVal2 = cVal2.fMaxCurvature*cVal2.fMinCurvature;
+            fVal3 = cVal3.fMaxCurvature*cVal3.fMinCurvature;
         }
         else if (mode == "Mean curvature") {
             fVal1 = 0.5f*(cVal1.fMaxCurvature+cVal1.fMinCurvature);
-            fVal2 = 0.5f*(cVal1.fMaxCurvature+cVal2.fMinCurvature);
-            fVal3 = 0.5f*(cVal1.fMaxCurvature+cVal3.fMinCurvature);
+            fVal2 = 0.5f*(cVal2.fMaxCurvature+cVal2.fMinCurvature);
+            fVal3 = 0.5f*(cVal3.fMaxCurvature+cVal3.fMinCurvature);
         }
         else if (mode == "Absolute curvature") {
             fVal1 = fabs(cVal1.fMaxCurvature) > fabs(cVal1.fMinCurvature) ? cVal1.fMaxCurvature : cVal1.fMinCurvature;
