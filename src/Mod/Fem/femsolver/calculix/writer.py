@@ -1050,11 +1050,11 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             obj = obj + 1
             contact_obj = femobj["Object"]
             f.write("** " + contact_obj.Label + "\n")
-            f.write("*CONTACT PAIR, INTERACTION=INT" + str(obj) + ",TYPE=SURFACE TO SURFACE\n")
+            f.write("*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n".format(obj))
             ind_surf = "IND" + str(obj)
             dep_surf = "DEP" + str(obj)
             f.write(dep_surf + "," + ind_surf + "\n")
-            f.write("*SURFACE INTERACTION, NAME=INT" + str(obj) + "\n")
+            f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(obj))
             f.write("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
             slope = contact_obj.Slope
             f.write(str(slope) + " \n")
