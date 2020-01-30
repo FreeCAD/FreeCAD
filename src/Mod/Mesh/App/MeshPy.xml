@@ -491,7 +491,15 @@ mesh.getSegmentsByCurvature([c,p])
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Points" ReadOnly="true">
+    <Methode Name="getCurvaturePerVertex" Const="true">
+      <Documentation>
+        <UserDocu>
+getCurvaturePerVertex() -> list
+The items in the list contains minimum and maximum curvature with their directions
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="Points" ReadOnly="true">
 			<Documentation>
 				<UserDocu>A collection of the mesh points
 With this attribute it is possible to get access to the points of the mesh
