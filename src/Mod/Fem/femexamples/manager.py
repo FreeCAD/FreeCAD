@@ -22,6 +22,32 @@
 # ***************************************************************************
 
 
+# to run the examples copy the code:
+"""
+from femexamples.manager import *
+run_all()
+
+from femexamples.manager import *
+doc = run_boxanalysisstatic()
+doc = run_boxanalysisfrequency()
+doc = run_ccx_cantileverfaceload()
+doc = run_ccx_cantilevernodeload()
+doc = run_ccx_cantileverprescribeddisplacement()
+doc = run_contact_shell_shell()
+doc = run_material_nl_platewithhole()
+doc = run_material_multiple_twoboxes()
+doc = run_rcwall2d()
+doc = run_thermomech_flow1d()
+doc = run_thermomech_spine()
+
+
+doc = run_ccx_cantilevernodeload("calculix")
+doc = run_ccx_cantilevernodeload("ccxtools")
+doc = run_ccx_cantilevernodeload("z88")
+
+"""
+
+
 import FreeCAD
 
 
@@ -249,29 +275,3 @@ def run_all():
     run_rcwall2d()
     run_thermomech_flow1d()
     run_thermomech_spine()
-
-
-"""
-from femexamples.manager import *
-run_all()
-
-from femexamples.manager import *
-doc = run_boxanalysisstatic()
-doc = run_boxanalysisfrequency()
-doc = run_ccx_cantileverfaceload()
-doc = run_ccx_cantilevernodeload()
-doc = run_ccx_cantileverprescribeddisplacement()
-doc = run_contact_shell_shell()
-doc = run_material_nl_platewithhole()
-doc = run_material_multiple_twoboxes()
-doc = run_rcwall2d()
-doc = run_thermomech_flow1d()
-doc = run_thermomech_spine()
-
-
-doc = run_ccx_cantilevernodeload("calculix")
-doc = run_ccx_cantilevernodeload("ccxtools")
-doc = run_ccx_cantilevernodeload("z88")
-
-
-"""

@@ -22,6 +22,14 @@
 # ***************************************************************************
 
 
+# to run the example use:
+"""
+from femexamples.material_multiple_twoboxes import setup
+setup()
+
+"""
+
+
 import FreeCAD
 import ObjectsFem
 import Fem
@@ -154,10 +162,3 @@ def setup(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples.material_multiple_twoboxes import setup
-setup()
-
-"""
