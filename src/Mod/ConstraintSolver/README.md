@@ -159,6 +159,8 @@ There are two kinds of classes regarding geometry: value versions, and `Para`-ve
 
 Not all geometries have two versions, only those that need to be (temporarily) created for intermediate computations of constraint math honour the existence of non-para version.
 
+Geometries and constraints are divided into two groups: 2D geometry (on plane), found in `G2D` submodule, and 3d geometry (none implemented yet), to be found in `G3D` submodule.
+
 \#UNDER CONSTRUCTION
 
 ## Placements and Shapes
@@ -166,6 +168,22 @@ Not all geometries have two versions, only those that need to be (temporarily) c
 \#UNDER CONSTRUCTION
 
 ## Constraints
+
+The main job of a constraint is to provide an error function. 
+
+There are two base types of constraint objects:
+
+* SimpleConstraint
+* Constraint
+
+The only difference between them is in how many degrees of freedom they take out. 
+SimpleConstraint provides just one error function (returns a DualNumber), while Constraint can provide many.
+
+The number of DOFs removed, which is also the number of error functions the constraint provides, is called "rank" (well, DeepSOIC called it that way, as he failed to find/invent a better name). 
+That is, SimpleConstraint has a rank of 1, and Constraint can have arbitrary rank.
+
+Rank of a constraint must never be changed in the process of solving. But the changing rank can potentially be emulated by returning plan zeros in some of the error functions; this is unexplored territory.
+
 
 \#UNDER CONSTRUCTION
 
