@@ -23,13 +23,15 @@
 # *                                                                         *
 # ***************************************************************************/
 
-from femtools import ccxtools
-import FreeCAD
 import unittest
+import sys
+from os.path import join
+
+
+import FreeCAD
+from femtools import ccxtools
 from . import support_utils as testtools
 from .support_utils import fcc_print
-
-from os.path import join
 
 
 class TestCcxTools(unittest.TestCase):
@@ -187,14 +189,14 @@ class TestCcxTools(unittest.TestCase):
             "FEM_ccx_matnonlinear"
         )
 
-        """ # https://forum.freecadweb.org/viewtopic.php?f=18&t=42821
         # test input file writing
-        self.input_file_writing_test(
-            test_name=test_name,
-            base_name=base_name,
-            analysis_dir=analysis_dir,
-        )
-        """
+        if sys.version_info.major >= 3:
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=42821
+            self.input_file_writing_test(
+                test_name=test_name,
+                base_name=base_name,
+                analysis_dir=analysis_dir,
+            )
 
     # ********************************************************************************************
     def test_thermomech_flow1D_analysis(
