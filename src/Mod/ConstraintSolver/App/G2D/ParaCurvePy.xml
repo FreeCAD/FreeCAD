@@ -17,6 +17,14 @@
 	  <DeveloperDocu>2D curve</DeveloperDocu>
 	  <UserDocu>2D curve (base class for objects like line, circle, ellipse, etc.)</UserDocu>
 	</Documentation>
+
+    <Attribute Name="IsFull" ReadOnly="true">
+        <Documentation>
+            <UserDocu>True if the curve is not trimmed. E.g. if Circle IsFull, it is a full circle, otherwise it's an arc. Only periodic curves support it.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="IsFull" Type="Boolean"/>
+    </Attribute>
     
     <Methode Name="value" Const="true">
       <Documentation>

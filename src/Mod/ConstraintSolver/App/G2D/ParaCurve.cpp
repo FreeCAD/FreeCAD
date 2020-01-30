@@ -3,6 +3,8 @@
 #include "ParaCurve.h"
 #include "G2D/ParaCurvePy.h"
 
+#include "G2D/ParaPointPy.h"
+
 using namespace FCS;
 using namespace FCS::G2D;
 
@@ -19,8 +21,10 @@ void FCS::G2D::ParaCurve::initAttrs()
 {
     ParaGeometry2D::initAttrs();
 
-    tieAttr_Parameter(u0, "u0", true, 0.0);
-    tieAttr_Parameter(u1, "u1", true, 0.0);
+    tieAttr_Parameter(u0, "u0", isFull(), 0.0);
+    tieAttr_Parameter(u1, "u1", isFull(), 0.0);
+    tieAttr_Child(p0, "p0", &ParaPointPy::Type, isFull());
+    tieAttr_Child(p1, "p1", &ParaPointPy::Type, isFull());
 }
 
 PyObject* ParaCurve::getPyObject()

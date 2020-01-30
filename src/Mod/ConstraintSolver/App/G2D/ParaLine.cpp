@@ -25,9 +25,6 @@ ParaLine::ParaLine(HParaPoint p0, HParaPoint p1)
 void FCS::G2D::ParaLine::initAttrs()
 {
     ParaCurve::initAttrs();
-
-    tieAttr_Child(p0, "p0", &ParaPointPy::Type, true);
-    tieAttr_Child(p1, "p1", &ParaPointPy::Type, true);
 }
 
 std::vector<ParameterRef> ParaLine::makeParameters(HParameterStore into)

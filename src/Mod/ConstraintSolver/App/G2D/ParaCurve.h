@@ -39,6 +39,10 @@ typedef Base::UnsafePyHandle<ParaShape<ParaCurve>> HShape_Curve;
 class FCSExport ParaCurve : public FCS::G2D::ParaGeometry2D
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+protected://data
+    ///true if it's a full circle, not arc of circle. Not all curves support it.
+    bool _isFull = false;
+
 public://data
     ///starting point parameter
     ParameterRef u0;
@@ -53,6 +57,8 @@ public://methods
     ParaCurve();
     void initAttrs() override;
     virtual PyObject* getPyObject() override;
+
+    bool isFull() const {return _isFull;}
 
     ///returns curve point at parameter u
     virtual Position value(const ValueSet& vals, DualNumber u) = 0;

@@ -106,6 +106,10 @@ PyObject* ParaCurvePy::pointOnCurveErrFunc(PyObject *args)
 
 
 
+Py::Boolean ParaCurvePy::getIsFull(void) const
+{
+    return Py::Boolean(getParaCurvePtr()->isFull());
+}
 
 Py::Boolean ParaCurvePy::getsupports_tangentAtXY(void) const
 {
