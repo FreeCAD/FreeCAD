@@ -25,6 +25,13 @@
 # contact example shell to shell elements
 # https://forum.freecadweb.org/viewtopic.php?f=18&t=42228
 # based on https://forum.freecadweb.org/viewtopic.php?f=18&t=42228#p359488
+# to run the example use:
+"""
+from femexamples.contact_shell_shell import setup
+setup()
+
+"""
+
 
 import FreeCAD
 import ObjectsFem
@@ -185,10 +192,3 @@ def setup(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples.contact_shell_shell import setup
-setup()
-
-"""

@@ -22,6 +22,18 @@
 # ***************************************************************************
 
 
+# to run the example use:
+"""
+from femexamples import ccx_cantilever_std as canti
+
+canti.setup_cantileverbase()
+canti.setup_cantileverfaceload()
+canti.setup_cantilevernodeload()
+canti.setup_cantileverprescribeddisplacement()
+
+"""
+
+
 import FreeCAD
 import ObjectsFem
 import Fem
@@ -172,14 +184,3 @@ def setup_cantileverprescribeddisplacement(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples import ccx_cantilever_std as canti
-
-canti.setup_cantileverbase()
-canti.setup_cantileverfaceload()
-canti.setup_cantilevernodeload()
-canti.setup_cantileverprescribeddisplacement()
-
-"""

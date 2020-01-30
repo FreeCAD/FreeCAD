@@ -22,6 +22,17 @@
 # ***************************************************************************
 
 
+# to run the example use:
+"""
+from femexamples import boxanalysis as box
+
+box.setup_base()
+box.setup_static()
+box.setup_frequency()
+
+"""
+
+
 import FreeCAD
 import ObjectsFem
 import Fem
@@ -167,13 +178,3 @@ def setup_frequency(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples import boxanalysis as box
-
-box.setup_base()
-box.setup_static()
-box.setup_frequency()
-
-"""

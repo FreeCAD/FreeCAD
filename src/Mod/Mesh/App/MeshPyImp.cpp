@@ -1924,6 +1924,38 @@ PyObject*  MeshPy::getSegmentsByCurvature(PyObject *args)
     return Py::new_reference_to(list);
 }
 
+PyObject* MeshPy::getCurvaturePerVertex(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    const MeshCore::MeshKernel& kernel = getMeshObjectPtr()->getKernel();
+    MeshCore::MeshSegmentAlgorithm finder(kernel);
+    MeshCore::MeshCurvature meshCurv(kernel);
+    meshCurv.ComputePerVertex();
+
+    const std::vector<MeshCore::CurvatureInfo>& curv = meshCurv.GetCurvature();
+    Py::List list;
+    for (const auto& it : curv) {
+        Py::Tuple tuple(4);
+        tuple.setItem(0, Py::Float(it.fMaxCurvature));
+        tuple.setItem(1, Py::Float(it.fMinCurvature));
+        Py::Tuple maxDir(3);
+        maxDir.setItem(0, Py::Float(it.cMaxCurvDir.x));
+        maxDir.setItem(1, Py::Float(it.cMaxCurvDir.y));
+        maxDir.setItem(2, Py::Float(it.cMaxCurvDir.z));
+        tuple.setItem(2, maxDir);
+        Py::Tuple minDir(3);
+        minDir.setItem(0, Py::Float(it.cMinCurvDir.x));
+        minDir.setItem(1, Py::Float(it.cMinCurvDir.y));
+        minDir.setItem(2, Py::Float(it.cMinCurvDir.z));
+        tuple.setItem(3, minDir);
+        list.append(tuple);
+    }
+
+    return Py::new_reference_to(list);
+}
+
 Py::Long MeshPy::getCountPoints(void) const
 {
     return Py::Long((long)getMeshObjectPtr()->countPoints());
