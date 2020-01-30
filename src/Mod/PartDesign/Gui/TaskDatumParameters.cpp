@@ -138,7 +138,7 @@ bool TaskDlgDatumParameters::accept() {
     //the user has to decide which option we should take if external references are used
     bool extReference = false;
     for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
-        if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
+        if (pcActiveBody && !pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
             extReference = true;
     }
 
@@ -157,7 +157,7 @@ bool TaskDlgDatumParameters::accept() {
             std::vector<std::string> subs = pcDatum->Support.getSubValues();
             int index = 0;
             for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
-                if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
+                if (pcActiveBody && !pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                     auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked());
                     if (copy) {
                         copyObjects.push_back(copy);
