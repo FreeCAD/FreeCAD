@@ -417,9 +417,12 @@ class TestCcxTools(unittest.TestCase):
 # ************************************************************************************************
 def create_test_results():
 
-    import shutil
     import os
+    import shutil
+    import sys
+
     import FemGui
+    import Test
     import femresult.resulttools as resulttools
     from femtools import ccxtools
 
@@ -436,8 +439,6 @@ def create_test_results():
     Flow1D_thermomech_analysis_dir = temp_dir + "FEM_ccx_Flow1D_thermomech/"
 
     # run all unit tests from this module
-    import Test
-    import sys
     current_module = sys.modules[__name__]
     Test.runTestsFromModule(current_module)
 
