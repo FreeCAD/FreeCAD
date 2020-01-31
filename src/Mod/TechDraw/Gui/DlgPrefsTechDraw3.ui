@@ -963,7 +963,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dimension font size in units</string>
+           <string>Dimension font size</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -988,7 +988,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dimension arrowhead size in units</string>
+           <string>Dimension arrowhead size</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
