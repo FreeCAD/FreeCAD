@@ -42,7 +42,7 @@ def make_ortho_array(obj,
     obj = Draft.makeArray(obj,
                           arg1=v_x, arg2=v_y, arg3=v_z,
                           arg4=n_x, arg5=n_y, arg6=n_z,
-                          useLink=use_link)
+                          use_link=use_link)
     return obj
 
 
@@ -56,5 +56,5 @@ def make_ortho_array2(obj,
     obj = Draft.makeArray(obj,
                           arg1=v_x, arg2=v_y,
                           arg3=n_x, arg4=n_y,
-                          useLink=use_link)
+                          use_link=use_link)
     return obj

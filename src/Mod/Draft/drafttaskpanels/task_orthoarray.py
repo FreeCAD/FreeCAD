@@ -209,7 +209,7 @@ class TaskPanelOrthoArray:
         _cmd += "arg4=" + str(self.n_X) + ", "
         _cmd += "arg5=" + str(self.n_Y) + ", "
         _cmd += "arg6=" + str(self.n_Z) + ", "
-        _cmd += "useLink=" + str(self.use_link)
+        _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 
         _cmd_list = ["FreeCADGui.addModule('Draft')",
