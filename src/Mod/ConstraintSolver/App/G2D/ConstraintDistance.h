@@ -50,6 +50,7 @@ public: //methods
     void initAttrs() override;
     void setWeight(double weight) override;
     Base::DualNumber error1(const ValueSet& vals) const override;
+    virtual std::vector<ParameterRef> datumParameters() const override;
     virtual PyObject* getPyObject() override;
 
 public: //friends

@@ -56,6 +56,11 @@ Base::DualNumber ConstraintDistance::error1(const ValueSet& vals) const
     return vals[dist] - (pp1 - pp2).length();
 }
 
+std::vector<ParameterRef> ConstraintDistance::datumParameters() const
+{
+    return {dist};
+}
+
 PyObject* ConstraintDistance::getPyObject()
 {
     if (!_twin){
