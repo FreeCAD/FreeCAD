@@ -195,7 +195,8 @@ class TaskPanelPolarArray:
         _cmd += "arg1=" + DraftVecUtils.toString(self.center) + ", "
         _cmd += "arg2=" + str(self.angle) + ", "
         _cmd += "arg3=" + str(self.number) + ", "
-        _cmd += "useLink=" + str(self.use_link) + ")"
+        _cmd += "use_link=" + str(self.use_link)
+        _cmd += ")"
 
         _cmd_list = ["FreeCADGui.addModule('Draft')",
                      _cmd,

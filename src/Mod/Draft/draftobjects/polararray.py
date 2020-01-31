@@ -38,5 +38,5 @@ def make_polar_array(obj,
     """
     obj = Draft.makeArray(obj,
                           arg1=center, arg2=angle, arg3=number,
-                          useLink=use_link)
+                          use_link=use_link)
     return obj

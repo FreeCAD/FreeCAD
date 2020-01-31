@@ -218,7 +218,8 @@ class TaskPanelCircularArray:
         _cmd += "arg4=" + DraftVecUtils.toString(self.center) + ", "
         _cmd += "arg5=" + str(self.number) + ", "
         _cmd += "arg6=" + str(self.symmetry) + ", "
-        _cmd += "useLink=" + str(self.use_link) + ")"
+        _cmd += "use_link=" + str(self.use_link)
+        _cmd += ")"
 
         _cmd_list = ["FreeCADGui.addModule('Draft')",
                      _cmd,
