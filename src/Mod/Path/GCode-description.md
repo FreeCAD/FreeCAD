@@ -15,7 +15,7 @@ This is a documentation of all GCodes used by the FreeCAD Path Workbench
 | G44 | Tool length offset | |
 | G53 | Machine coordinate system fixture | ??? |
 | G54 | Scratchpad coordinate system fixture | ??? |
-| G55 - G59.9 | Machine specific work offset fixtures relative to homing switches | |
+| G55 - G59.9 | Machine specific work offset fixtures relative to homing switches | ??? |
 | G81 | Machine specific drill operation | X,Y,Z,R,Q |
 | G82 | Machine specific drill operation | X,Y,Z,R,Q |
 | G83 | Machine specific drill operation | X,Y,Z,R,Q |
