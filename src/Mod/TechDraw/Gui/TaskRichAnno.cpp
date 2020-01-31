@@ -201,6 +201,9 @@ void TaskRichAnno::setUiPrimary()
     ui->dsbWidth->setValue(prefWeight());
 
     ui->cpFrameColor->setColor(prefLineColor().asValue<QColor>());
+    // set a default font size, use for this the preferences setting
+    MRichTextEdit mre;
+    ui->teAnnoText->setFontPointSize(mre.getDefFontSizeNum());
 
 }
 
