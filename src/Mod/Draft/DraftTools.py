@@ -4634,9 +4634,9 @@ class Draft2Sketch(Modifier):
 class Array(Modifier):
     """The Shape2DView FreeCAD command definition"""
 
-    def __init__(self,useLink=False):
+    def __init__(self,use_link=False):
         Modifier.__init__(self)
-        self.useLink = useLink
+        self.use_link = use_link
 
     def __init__(self,useLink=False):
         Modifier.__init__(self)
@@ -4664,7 +4664,7 @@ class Array(Modifier):
             obj = FreeCADGui.Selection.getSelection()[0]
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Array"),
-                        ['obj = Draft.makeArray(FreeCAD.ActiveDocument.{},FreeCAD.Vector(1,0,0),FreeCAD.Vector(0,1,0),2,2,useLink={})'.format(obj.Name,self.useLink),
+                        ['obj = Draft.makeArray(FreeCAD.ActiveDocument.{},FreeCAD.Vector(1,0,0),FreeCAD.Vector(0,1,0),2,2,use_link={})'.format(obj.Name,self.use_link),
                          'Draft.autogroup(obj)',
                          'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
@@ -4683,9 +4683,9 @@ class LinkArray(Array):
 class PathArray(Modifier):
     """The PathArray FreeCAD command definition"""
 
-    def __init__(self,useLink=False):
+    def __init__(self,use_link=False):
         Modifier.__init__(self)
-        self.useLink = useLink
+        self.use_link = use_link
 
     def __init__(self,useLink=False):
         Modifier.__init__(self)
@@ -4719,7 +4719,7 @@ class PathArray(Modifier):
             defCount = 4
             defAlign = False
             FreeCAD.ActiveDocument.openTransaction("PathArray")
-            Draft.makePathArray(base,path,defCount,defXlate,defAlign,pathsubs,useLink=self.useLink)
+            Draft.makePathArray(base,path,defCount,defXlate,defAlign,pathsubs,use_link=self.use_link)
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()                                  # feature won't appear until recompute.
         self.finish()
