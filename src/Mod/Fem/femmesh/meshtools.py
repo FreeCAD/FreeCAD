@@ -52,7 +52,10 @@ def get_femnodes_by_femobj_with_references(
         node_set = get_femnodes_by_references(femmesh, femobj["Object"].References)
         # FreeCAD.Console.PrintMessage("node_set_nogroup: {}\n".format(node_set))
 
-    return node_set
+    # use set for node sets to be sure all nodes are unique
+    # use sorted to be sure the order is the same on different runs
+    # be aware a sorted set returns a list, because set are not sorted by default
+    return sorted(set(node_set))
 
 
 # ************************************************************************************************
