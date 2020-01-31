@@ -8,9 +8,11 @@ This is a documentation of all GCodes used by the FreeCAD Path Workbench
 | G1, G01 | Normal interpolated move | X,Y,Z,A,B,C |
 | G2, G02 | Clockwise arc | X,Y,Z,A,B,C,I,J,K |
 | G3, G03 | Counterclockwise arc | X,Y,Z,A,B,C,I,J,K |
-| G40 | Not available | Radius compensation is done in FreeCAD |
-| G41 | Not available | Radius compensation is done in FreeCAD |
-| G42 | Not available | Radius compensation is done in FreeCAD |
+| G40 | Turn off tool radius compensation | Radius compensation is done in FreeCAD |
+| G41 | Tool radius compensation value | Radius compensation is done in FreeCAD |
+| G42 | Tool radius compensation value | Radius compensation is done in FreeCAD |
+| G43 | Tool length offset | |
+| G44 | Tool length offset | |
 | G53 | Machine coordinate system fixture | ??? |
 | G54 | Scratchpad coordinate system fixture | ??? |
 | G55 - G59.9 | Machine specific work offset fixtures relative to homing switches | |
