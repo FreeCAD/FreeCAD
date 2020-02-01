@@ -211,14 +211,22 @@ class DraftTaskPanel:
         return False
 
 class DraftToolBar:
-    """main draft Toolbar"""
+    """The Draft Task panel UI
+    Draft Toolbar is the main ui of the Draft Module. Once displayed as a 
+    toolbar, now it define the ui of the Task Panel.
+    Toolbar become obsolete due to lack of manteinence and was disabled
+    by default in February 2020.
+    Draft Ui Commands call and get information such as point coordinates,
+    subcommands activation, continue mode, etc. from Task Panel Ui
+    """
     def __init__(self):
         self.tray = None
         self.sourceCmd = None
         self.cancel = None
         self.pointcallback = None
         self.taskmode = 1  # Draft.getParam("UiMode",1)
-        #print("taskmode: ",str(self.taskmode))
+        # taskmode = 0 was used by draft toolbar that is now obsolete.
+        # print("taskmode: ",str(self.taskmode))
         self.paramcolor = Draft.getParam("color",255)>>8
         self.color = QtGui.QColor(self.paramcolor)
         self.facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)>>8
@@ -262,7 +270,7 @@ class DraftToolBar:
             self.tray.setParent(mw)
             self.tray.hide()
 
-        else:
+        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             # create the draft Toolbar
             self.draftWidget = QtGui.QDockWidget()
             self.baseWidget = DraftDockWidget()
@@ -509,6 +517,7 @@ class DraftToolBar:
 
         # spacer
         if not self.taskmode:
+            # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding,
                                            QtGui.QSizePolicy.Minimum)
         else:
@@ -753,7 +762,7 @@ class DraftToolBar:
             self.retranslateUi(self.baseWidget)
             self.panel = DraftTaskPanel(self.baseWidget,extra)
             todo.delay(FreeCADGui.Control.showDialog,self.panel)
-        else:
+        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             # create a dummy task to block the UI during the works
             class dummy:
                 """an empty dialog"""
@@ -945,7 +954,7 @@ class DraftToolBar:
         if self.taskmode:
             self.isTaskOn = False
             self.baseWidget = QtGui.QWidget()
-        else:
+        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.setTitle(translate("draft", "None"))
             self.labelx.setText(translate("draft", "X"))
             self.hideXYZ()
@@ -1075,11 +1084,12 @@ class DraftToolBar:
         if self.taskmode:
             self.baseWidget.setWindowTitle(title)
             self.baseWidget.setWindowIcon(QtGui.QIcon(":/icons/"+icon+".svg"))
-        else:
+        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.cmdlabel.setText(title)
 
     def selectUi(self,extra=None,callback=None):
         if not self.taskmode:
+             # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.labelx.setText(translate("draft", "Pick Object"))
             self.labelx.show()
         self.makeDumbTask(extra,callback)
@@ -1437,6 +1447,7 @@ class DraftToolBar:
         """escapes the current command"""
         self.continueMode = False
         if not self.taskmode:
+            # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.continueCmd.setChecked(False)
         self.finish()
 
@@ -1850,10 +1861,12 @@ class DraftToolBar:
 
     def show(self):
         if not self.taskmode:
+            # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.draftWidget.setVisible(True)
 
     def hide(self):
         if not self.taskmode:
+            # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.draftWidget.setVisible(False)
 
     def getXPM(self,iconname,size=16):
@@ -2008,7 +2021,7 @@ class DraftToolBar:
             self.setWatchers()
             if hasattr(self,"tray"):
                 self.tray.show()
-        else:
+        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)            
             self.draftWidget.setVisible(True)
             self.draftWidget.toggleViewAction().setVisible(True)
 
@@ -2021,7 +2034,7 @@ class DraftToolBar:
             #self.tray = None
             if hasattr(self,"tray"):
                 self.tray.hide()
-        else:
+        else: # self.taskmode == 0  Draft toolbar is obsolete and has been disabled (February 2020)
             self.draftWidget.setVisible(False)
             self.draftWidget.toggleViewAction().setVisible(False)
 
