@@ -1241,7 +1241,7 @@ CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG()
   : Command("TechDraw_ExportPageSVG")
 {
     sGroup        = QT_TR_NOOP("File");
-    sMenuText     = QT_TR_NOOP("Export page as SVG");
+    sMenuText     = QT_TR_NOOP("Export Page as SVG");
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageSVG";
     sStatusTip    = sToolTipText;
@@ -1285,7 +1285,7 @@ CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF()
   : Command("TechDraw_ExportPageDXF")
 {
     sGroup        = QT_TR_NOOP("File");
-    sMenuText     = QT_TR_NOOP("Export page as DXF");
+    sMenuText     = QT_TR_NOOP("Export Page as DXF");
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageDXF";
     sStatusTip    = sToolTipText;
