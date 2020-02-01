@@ -29,8 +29,9 @@ void FCS::G2D::ParaPoint::initAttrs()
 {
     ParaGeometry2D::initAttrs();
 
-    tieAttr_Parameter(x, "x", true, 0.0);
-    tieAttr_Parameter(y, "y", true, 0.0);
+    //                        make, req., defv
+    tieAttr_Parameter(x, "x", true, true, 0.0);
+    tieAttr_Parameter(y, "y", true, true, 0.0);
 }
 
 PyObject* ParaPoint::getPyObject()

@@ -21,10 +21,13 @@ void FCS::G2D::ParaCurve::initAttrs()
 {
     ParaGeometry2D::initAttrs();
 
-    tieAttr_Parameter(u0, "u0", !isFull(), 0.0);
-    tieAttr_Parameter(u1, "u1", !isFull(), 0.0);
-    tieAttr_Child(p0, "p0", &ParaPointPy::Type, !isFull());
-    tieAttr_Child(p1, "p1", &ParaPointPy::Type, !isFull());
+    //                          make     , require  , defv
+    tieAttr_Parameter(u0, "u0", !isFull(), !isFull(), 0.0);
+    tieAttr_Parameter(u1, "u1", !isFull(), !isFull(), 0.0);
+
+    //                                          make     , require
+    tieAttr_Child(p0, "p0", &ParaPointPy::Type, !isFull(), !isFull());
+    tieAttr_Child(p1, "p1", &ParaPointPy::Type, !isFull(), !isFull());
 }
 
 PyObject* ParaCurve::getPyObject()

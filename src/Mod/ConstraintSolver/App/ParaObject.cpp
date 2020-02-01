@@ -160,15 +160,16 @@ bool ParaObject::isComplete() const
 void ParaObject::throwIfIncomplete() const
 {
     for(auto& v : this->_attrs){
-        if (v.value->isNull()){
+        if (v.required && v.value->isNull()){
             throw Py::Exception(PyExc_LookupError,"Parameter '" + v.name + "' of " + repr() + " is null");
         }
     };
     for(auto& v : this->_children){
-        if (v.value->isNone()){
+        if (v.required && v.value->isNone()){
             throw Py::Exception(PyExc_LookupError,"Child reference '" + v.name + "' of " + repr() + " is None");
         }
-        //HParaObject(*v.value)->throwIfIncomplete();
+        if (!v.value->isNone())
+            HParaObject(*v.value)->throwIfIncomplete(); //#FIXME: can it be a performance problem?
     };
     throwIfIncomplete_Shapes();
 }
@@ -179,7 +180,7 @@ void ParaObject::throwIfIncomplete_Shapes() const
         if (it.value->isNone()){
             throw Py::Exception(PyExc_LookupError,"Shape reference '" + it.name + "' of " + repr() + " is None");
         }
-        //HParaObject(*it.value)->throwIfIncomplete();
+        HParaObject(*it.value)->throwIfIncomplete(); //#FIXME: can it be a performance problem?
     });
 
 }
@@ -319,23 +320,25 @@ void ParaObject::initFromDict(Py::Dict dict)
 }
 
 
-void ParaObject::tieAttr_Parameter(ParameterRef& ref, std::string name, bool make, double defvalue)
+void ParaObject::tieAttr_Parameter(ParameterRef& ref, std::string name, bool make, bool required, double defvalue)
 {
     ParameterAttribute tmp;
     tmp.value = &ref;
     tmp.name = name;
     tmp.make = make;
+    tmp.required = required;
     tmp.defvalue = defvalue;
     _attrs.push_back(tmp);
 }
 
-void ParaObject::tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyTypeObject* type, bool make, bool writeOnce)
+void ParaObject::tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyTypeObject* type, bool make, bool required, bool writeOnce)
 {
     ChildAttribute tmp;
     tmp.value = &ref;
     tmp.name = name;
     tmp.type = type;
     tmp.make = make;
+    tmp.required = required;
     tmp.writeOnce = writeOnce;
     _children.push_back(tmp);
 }

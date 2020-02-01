@@ -53,6 +53,7 @@ public://helper structs
         ParameterRef* value = nullptr;
         std::string name;
         bool make = true; //if true, makeParameters makes it. False <-> doesn't make.
+        bool required = true;
         double defvalue = 0.0;
     };
 
@@ -62,6 +63,7 @@ public://helper structs
         std::string name;
         PyTypeObject* type;
         bool make = false; //true if it's an actual child, like an endpoint of an arc. False if it is a reference, like a constraint referring a point. If make, the object is auto-constructed upon call to makeParameters
+        bool required = true; //if true, isComplete will check the attribute is filled. Otherwise it won't.
         bool writeOnce = false; //if true, the child can only be assigned once (i.e., overwrite is forbidden).
     };
     struct ShapeRef
@@ -130,8 +132,8 @@ public: //methods
 
 protected: //methods
     virtual void initAttrs() = 0 {}
-    void tieAttr_Parameter(ParameterRef& ref, std::string name, bool make = true, double defvalue = 0.0);
-    void tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyTypeObject* type, bool make = false, bool writeOnce = false);
+    void tieAttr_Parameter(ParameterRef& ref, std::string name, bool make = true, bool required = true, double defvalue = 0.0);
+    void tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyTypeObject* type, bool make = false, bool required = true, bool writeOnce = false);
     void tieAttr_Shape(Base::PyHandleBase& ref, std::string name, Base::Type type);
     ///we need this to support type-checked shape attributes
     virtual Base::Type shapeType() const {return Base::Type::badType();}
