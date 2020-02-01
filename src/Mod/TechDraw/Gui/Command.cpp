@@ -1132,7 +1132,7 @@ CmdTechDrawArchView::CmdTechDrawArchView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert Section Plane");
+    sMenuText     = QT_TR_NOOP("Insert Arch Workbench Object");
     sToolTipText  = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
     sWhatsThis    = "TechDraw_NewArch";
     sStatusTip    = sToolTipText;
