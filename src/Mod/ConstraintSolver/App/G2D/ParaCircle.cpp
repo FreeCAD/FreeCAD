@@ -10,70 +10,77 @@ using namespace FCS::G2D;
 
 TYPESYSTEM_SOURCE(FCS::G2D::ParaCircle, FCS::G2D::ParaCurve);
 
-ParaCircle::ParaCircle()
+ParaCircle::ParaCircle(bool full)
+    : center(Py::None())
 {
+    _isFull = full;
     initAttrs();
-}
-
-ParaCircle::ParaCircle(HParaPoint p0, HParaPoint p1)
-    : ParaCircle()
-{
-    this->p0 = p0;
-    this->p1 = p1;
 }
 
 void FCS::G2D::ParaCircle::initAttrs()
 {
     ParaCurve::initAttrs();
 
-    tieAttr_Child(p0, "p0", &ParaPointPy::Type, true);
-    tieAttr_Child(p1, "p1", &ParaPointPy::Type, true);
+    tieAttr_Child(center, "center", &ParaPointPy::Type, true);
+    //                                , make, req., defv
+    tieAttr_Parameter(radius, "radius", true, true, 5.0);
 }
 
 std::vector<ParameterRef> ParaCircle::makeParameters(HParameterStore into)
 {
-    bool init_u0 = u0.isNull();
-    bool init_u1 = u1.isNull();
+    bool init_u0 = !isFull() && u0.isNull();
+    bool init_u1 = !isFull() && u1.isNull();
+    bool init_p0 = !isFull() && p0.isNone();
+    bool init_p1 = !isFull() && p1.isNone();
     std::vector<ParameterRef> ret = ParaCurve::makeParameters(into);
     if (init_u0){
         u0.savedValue() = 0.0;
-        u0.fix();
     }
     if (init_u1){
-        u1.savedValue() = 1.0;
-        u1.fix();
+        u1.savedValue() = 0.25*TURN;
+    }
+    if (init_p0 && p0->isComplete()){
+        p0->x.savedValue() = 5;
+        p0->y.savedValue() = 0;
+    }
+    if (init_p1 && p1->isComplete()){
+        p1->x.savedValue() = 0;
+        p1->y.savedValue() = 5;
     }
     return ret;
 }
 
 Position ParaCircle::value(const ValueSet& vals, DualNumber u)
 {
-    return p0->value(vals) * (1.0 - u) + p1->value(vals) * u;
+    return center->value(vals) + vals[radius] * Vector(cos(u), sin(u)) ;
 }
 
 Vector ParaCircle::tangent(const ValueSet& vals, DualNumber u)
 {
-    return p1->value(vals) - p0->value(vals);
+    return vals[radius] * Vector(-sin(u), cos(u));
 }
 
 Vector ParaCircle::tangentAtXY(const ValueSet& vals, Position p)
 {
-    return tangent(vals, 0.0);
+    return (p - center->value(vals)).rotate90ccw();
 }
 
 DualNumber ParaCircle::length(const ValueSet& vals, DualNumber u0, DualNumber u1)
 {
-    return length(vals) * (u1-u0);
+    return vals[radius] * (u1-u0);
 }
 
 DualNumber ParaCircle::length(const ValueSet& vals)
 {
-    return (p1->value(vals) - p0->value(vals)).length();
+    if (isFull())
+        return TURN * vals[radius];
+    else
+        return vals[radius] * (vals[u1] - vals[u0]);
 }
 
 DualNumber ParaCircle::pointOnCurveErrFunc(const ValueSet& vals, Position p)
 {
-    return Vector::cross(tangent(vals, 0.0).normalized(), p - p0->value(vals));
+    return (p - center->value(vals)).length() - vals[radius];
 }
 
 PyObject* ParaCircle::getPyObject()

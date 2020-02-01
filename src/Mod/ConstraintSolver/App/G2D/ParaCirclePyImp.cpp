@@ -21,6 +21,16 @@ PyObject *ParaCirclePy::PyMake(struct _typeobject *, PyObject* args, PyObject* k
             }
             PyErr_Clear();
         }
+        {
+            int isFull = false;
+            if (PyArg_ParseTuple(args, "p", &isFull)){
+                HParaCircle p = new ParaCircle(bool(isFull));
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
+                return p;
+            }
+            PyErr_Clear();
+        }
         throw Py::TypeError(
             "Wrong argument count or type."
             "\n\nsupported signatures:"

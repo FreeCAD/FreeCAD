@@ -38,10 +38,12 @@ class FCSExport ParaCircle : public FCS::G2D::ParaCurve
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public://data
+    HParaPoint center;
+    ParameterRef radius;
 
 public://methods
-    ParaCircle();
-    ParaCircle(HParaPoint p1, HParaPoint p2);
+    ParaCircle(bool full = true);
+    HParaCircle makeArc(){return new ParaCircle(false);}
     void initAttrs() override;
     virtual std::vector<ParameterRef> makeParameters(HParameterStore into) override;
     virtual PyObject* getPyObject() override;
