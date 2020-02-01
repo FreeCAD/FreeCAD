@@ -201,7 +201,7 @@ CmdTechDrawHatch::CmdTechDrawHatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Hatch Face using Image File");
+    sMenuText       = QT_TR_NOOP("Hatch a Face using Image File");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
