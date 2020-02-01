@@ -49,6 +49,7 @@ generate_from_xml(G2D/ParaConicPy)
 generate_from_xml(G2D/ParaParabolaPy)
 generate_from_xml(G2D/ParaBSplineBasePy)
 
+generate_from_xml(G2D/ConstraintCurvePosPy)
 generate_from_xml(G2D/ConstraintDistancePy)
 generate_from_xml(G2D/ConstraintPlacementRulesPy)
 
@@ -109,6 +110,10 @@ SET(ConstraintSolver_G2D
     G2D/ParaBSplineBase.cpp
     G2D/ParaBSplineBasePy.xml
     G2D/ParaBSplineBasePyImp.cpp
+    G2D/ConstraintCurvePos.h
+    G2D/ConstraintCurvePos.cpp
+    G2D/ConstraintCurvePosPy.xml
+    G2D/ConstraintCurvePosPyImp.cpp
     G2D/ConstraintDistance.h
     G2D/ConstraintDistance.cpp
     G2D/ConstraintDistancePy.xml

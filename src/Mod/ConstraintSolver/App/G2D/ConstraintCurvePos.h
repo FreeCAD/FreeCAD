@@ -21,49 +21,42 @@
  ***************************************************************************/
 #pragma once //to make qt creator happy, see QTCREATORBUG-20883
 
-#ifndef FREECAD_CONSTRAINTSOLVER_G2D_PARALINE_H
-#define FREECAD_CONSTRAINTSOLVER_G2D_PARALINE_H
+#ifndef FREECAD_CONSTRAINTSOLVER_G2D_CONSTRAINTCURVEPOINT_H
+#define FREECAD_CONSTRAINTSOLVER_G2D_CONSTRAINTCURVEPOINT_H
 
-#include "ParaCurve.h"
+#include "ParaGeometry.h"
 #include "ParaPoint.h"
+#include "ParaCurve.h"
+#include "Constraint.h"
 
 namespace FCS {
 namespace G2D {
 
-class ParaLine;
-typedef Base::UnsafePyHandle<ParaLine> HParaLine;
-typedef Base::UnsafePyHandle<ParaShape<ParaLine>> HShape_Line;
+class ConstraintCurvePos;
+typedef Base::UnsafePyHandle<ConstraintCurvePos> HConstraintCurvePos;
 
-class FCSExport ParaLine : public FCS::G2D::ParaCurve
+class FCSExport ConstraintCurvePos : public FCS::Constraint
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
-public://data
+public: //data
+    ParameterRef u;
+    HShape_Point point;
+    HShape_Curve curve;
 
-public://methods
-    ParaLine();
-    ParaLine(HParaPoint p1, HParaPoint p2);
+public: //methods
+    ConstraintCurvePos();
+    ConstraintCurvePos(HParaCurve curve, ParameterRef u, HParaPoint p, std::string label = "");
+    ConstraintCurvePos(HParaCurve curve, HParaPoint p, HParameterStore store, std::string label = "");
+
     void initAttrs() override;
-    virtual std::vector<ParameterRef> makeParameters(HParameterStore into) override;
+    virtual int rank() const override {return 2;}
+    virtual void error(const ValueSet& vals, Base::DualNumber* returnbuf) const override;
+    void setWeight(double weight) override;
+    virtual std::vector<ParameterRef> datumParameters() const override;
     virtual PyObject* getPyObject() override;
 
-    virtual Position value(const ValueSet& vals, DualNumber u) override;
-    virtual Vector tangent(const ValueSet& vals, DualNumber u) override;
-    virtual Vector tangentAtXY(const ValueSet& vals, Position p) override;
-    virtual bool supports_tangentAtXY() override {return true;}
-
-    virtual DualNumber length(const ValueSet& vals, DualNumber u0, DualNumber u1) override;
-    virtual DualNumber length(const ValueSet& vals) override;
-    virtual bool supports_length() override {return true;}
-
-    virtual DualNumber pointOnCurveErrFunc(const ValueSet& vals, Position p) override;
-    virtual bool supports_pointOnCurveErrFunc() override {return true;}
-
-    //ParaLine does not need rule constraints for endpoints, since it uses its very endpoints to define itself.
-    virtual std::vector<HConstraint> makeRuleConstraints() override {return {};}
-
 public: //friends
-    friend class ParaLinePy;
-
+    friend class ConstraintCurvePosPy;
 };
 
 }} //namespace

@@ -84,6 +84,8 @@ public://methods
     virtual DualNumber pointOnCurveErrFunc(const ValueSet& vals, Position p);
     virtual bool supports_pointOnCurveErrFunc() {return false;}
 
+    virtual std::vector<HConstraint> makeRuleConstraints() override;
+
 private: //methods
     [[noreturn]] void throwFunctionNotSupported(std::string funcname) const;
 

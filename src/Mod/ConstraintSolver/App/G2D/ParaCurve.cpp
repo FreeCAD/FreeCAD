@@ -4,6 +4,7 @@
 #include "G2D/ParaCurvePy.h"
 
 #include "G2D/ParaPointPy.h"
+#include "ConstraintCurvePos.h"
 
 using namespace FCS;
 using namespace FCS::G2D;
@@ -71,6 +72,16 @@ DualNumber ParaCurve::fullLength(const ValueSet& /*vals*/)
 DualNumber ParaCurve::pointOnCurveErrFunc(const ValueSet& /*vals*/, Position /*p*/)
 {
     throwFunctionNotSupported("pointOnCurveErrFunc");
+}
+
+std::vector<HConstraint> ParaCurve::makeRuleConstraints()
+{
+    std::vector<HConstraint> ret;
+    if (!isFull()){
+        ret.push_back(new ConstraintCurvePos(this, u0, p0, "rule0:"+this->label));
+        ret.push_back(new ConstraintCurvePos(this, u1, p1, "rule1:"+this->label));
+    }
+    return ret;
 }
 
 void ParaCurve::throwFunctionNotSupported(std::string funcname) const
