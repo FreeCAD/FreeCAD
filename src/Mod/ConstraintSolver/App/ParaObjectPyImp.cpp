@@ -57,6 +57,14 @@ PyObject* ParaObjectPy::makeParameters(PyObject* args)
     return Py::new_reference_to(asPyList(refs));
 }
 
+PyObject* ParaObjectPy::makeRuleConstraints(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+    auto ret = getParaObjectPtr()->makeRuleConstraints();
+    return Py::new_reference_to(asPyObjectList(ret));
+}
+
 PyObject* ParaObjectPy::isComplete(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))

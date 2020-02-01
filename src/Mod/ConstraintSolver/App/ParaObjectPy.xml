@@ -90,6 +90,13 @@
         store argument must be a ParameterStore object where to create the parameters.</UserDocu>
 	  </Documentation>
 	</Methode>
+    <Methode Name="makeRuleConstraints">
+	  <Documentation>
+		<UserDocu>makeRuleConstraints(): Creates constraints required for this object to not fall apart. Returns a list of constraints.
+        
+        The method does not track if constraints have already been created, it just makes new ones each time.</UserDocu>
+	  </Documentation>
+	</Methode>
 	<Methode Name="isComplete">
 	  <Documentation>
 		<UserDocu>Returns True if all vital parameters and object references are set up.</UserDocu>
