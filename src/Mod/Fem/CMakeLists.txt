@@ -37,6 +37,7 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/boxanalysis.py
     femexamples/ccx_cantilever_std.py
+    femexamples/constraint_contact_solid_solid.py
     femexamples/contact_shell_shell.py
     femexamples/manager.py
     femexamples/material_multiple_twoboxes.py
@@ -51,6 +52,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_boxanalysis_tetra10.py
     femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
     femexamples/meshes/mesh_canticcx_tetra10.py
+    femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
