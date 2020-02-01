@@ -37,7 +37,8 @@ SET(FemExamples_SRCS
     femexamples/__init__.py
     femexamples/boxanalysis.py
     femexamples/ccx_cantilever_std.py
-    femexamples/contact_shell_shell.py
+    femexamples/constraint_contact_shell_shell.py
+    femexamples/constraint_contact_solid_solid.py
     femexamples/manager.py
     femexamples/material_multiple_twoboxes.py
     femexamples/material_nl_platewithhole.py
@@ -51,6 +52,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_boxanalysis_tetra10.py
     femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
     femexamples/meshes/mesh_canticcx_tetra10.py
+    femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
     femexamples/meshes/mesh_platewithhole_tetra10.py
@@ -163,8 +165,10 @@ SET(FemTestsFiles_SRCS
 
 SET(FemTestsCcx_SRCS
     femtest/data/ccx/__init__.py
-    femtest/data/ccx/contact_shell_shell.FCStd
-    femtest/data/ccx/contact_shell_shell.inp
+    femtest/data/ccx/constraint_contact_shell_shell.FCStd
+    femtest/data/ccx/constraint_contact_shell_shell.inp
+    femtest/data/ccx/constraint_contact_solid_solid.FCStd
+    femtest/data/ccx/constraint_contact_solid_solid.inp
     femtest/data/ccx/cube_frequency.inp
     femtest/data/ccx/cube_frequency.dat
     femtest/data/ccx/cube_frequency.frd

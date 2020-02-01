@@ -39,6 +39,9 @@
 #include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Plane3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4ApprSphereFit3.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4ApprCylinderFit3.h>
 
 //#define FC_USE_EIGEN
 #include <Eigen/QR>
@@ -801,9 +804,20 @@ float CylinderFit::Fit()
         return FLOAT_MAX;
     _bIsFitted = true;
 
+    std::vector<Wm4::Vector3d> input;
+    std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
+                   [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });
+
+    Wm4::Vector3d cnt, axis;
+    double radius, height;
+    Wm4::CylinderFit3<double> fit(input.size(), input.data(), cnt, axis, radius, height, false);
+    _vBase = Base::convertTo<Base::Vector3f>(cnt);
+    _vAxis = Base::convertTo<Base::Vector3f>(axis);
+    _fRadius = float(radius);
+
     // TODO
 
-    _fLastResult = 0;
+    _fLastResult = double(fit);
     return _fLastResult;
 }
 
@@ -927,7 +941,23 @@ Base::Vector3f SphereFit::GetCenter() const
 
 float SphereFit::Fit()
 {
-    return FLOAT_MAX;
+    _bIsFitted = true;
+    if (CountPoints() < 4)
+        return FLOAT_MAX;
+
+    std::vector<Wm4::Vector3d> input;
+    std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
+                   [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });
+
+    Wm4::Sphere3d sphere;
+    Wm4::SphereFit3<double>(input.size(), input.data(), 10, sphere, false);
+    _vCenter = Base::convertTo<Base::Vector3f>(sphere.Center);
+    _fRadius = float(sphere.Radius);
+
+    // TODO
+
+    _fLastResult = 0;
+    return _fLastResult;
 }
 
 float SphereFit::GetDistanceToSphere(const Base::Vector3f &) const

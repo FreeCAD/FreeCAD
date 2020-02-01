@@ -22,12 +22,11 @@
 # ***************************************************************************
 
 
-# contact example shell to shell elements
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=42228
-# based on https://forum.freecadweb.org/viewtopic.php?f=18&t=42228#p359488
+# connstraint contact for solid to solid mesh
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
 # to run the example use:
 """
-from femexamples.contact_shell_shell import setup
+from femexamples.constraint_contact_solid_solid import setup
 setup()
 
 """
@@ -36,8 +35,8 @@ setup()
 import FreeCAD
 import ObjectsFem
 import Fem
-import Part
-import BOPTools.SplitFeatures
+from FreeCAD import Vector, Rotation
+
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -55,51 +54,49 @@ def setup(doc=None, solvertype="ccxtools"):
         doc = init_doc()
 
     # parts
-    # TODO turn circle of upper tube to have the line on the other side
-    # make a boolean fragment of them to be sure there is a mesh point on remesh
-    # but as long as we do not remesh it works without the boolean fragment too
-    # tubes
-    tube_radius = 25
-    tube_length = 500
-    sh_lower_circle = Part.Wire(Part.makeCircle(tube_radius))
-    sh_lower_tube = sh_lower_circle.extrude(FreeCAD.Vector(0, 0, tube_length))
-    sh_lower_tube.reverse()
-    lower_tube = doc.addObject("Part::Feature", "Lower_tube")
-    lower_tube.Shape = sh_lower_tube
-
-    sh_upper_circle = Part.Wire(Part.makeCircle(tube_radius))
-    sh_upper_tube = sh_upper_circle.extrude(FreeCAD.Vector(0, 0, tube_length))
-    sh_upper_tube.reverse()
-    upper_tube = doc.addObject("Part::Feature", "Upper_tube")
-    upper_tube.Shape = sh_upper_tube
-    upper_tube.Placement = FreeCAD.Placement(
-        FreeCAD.Vector(-25, 51, 475),
-        FreeCAD.Rotation(90, 0, 90),
-        FreeCAD.Vector(0, 0, 0),
+    # bottom box
+    bottom_box_obj = doc.addObject("Part::Box", "TopBox")
+    bottom_box_obj.Length = 100
+    bottom_box_obj.Width = 25
+    bottom_box_obj.Height = 500
+    bottom_box_obj.Placement = FreeCAD.Placement(
+        Vector(186, 0, -247),
+        Rotation(0, 0, 0),
+        Vector(0, 0, 0),
     )
 
-    # point for load
-    v_force_pt = FreeCAD.Vector(0, 76, 475)
-    sh_force_point = Part.Vertex(v_force_pt)
-    force_point = doc.addObject("Part::Feature", "Load_place_point")
-    force_point.Shape = sh_force_point
+    # top half cylinder
+    top_cylinder_obj = doc.addObject("Part::Cylinder", "BottomCylinder")
+    top_cylinder_obj.Radius = 30
+    top_cylinder_obj.Height = 500
+    top_cylinder_obj.Placement = FreeCAD.Placement(
+        Vector(0, -42, 0),
+        Rotation(0, 90, 0),
+        Vector(0, 0, 0),
+    )
+    top_box_obj = doc.addObject("Part::Box", "BottomBox")
+    top_box_obj.Length = 600
+    top_box_obj.Width = 100
+    top_box_obj.Height = 100
+    top_box_obj.Placement = FreeCAD.Placement(
+        Vector(-10, -142, -52),
+        Rotation(0, 0, 0),
+        Vector(0, 0, 0),
+    )
+    top_halfcyl_obj = doc.addObject("Part::Cut", "BottomHalfCylinder")
+    top_halfcyl_obj.Base = top_cylinder_obj
+    top_halfcyl_obj.Tool = top_box_obj
     if FreeCAD.GuiUp:
-        force_point.ViewObject.PointSize = 10.0
-        force_point.ViewObject.PointColor = (1.0, 0.0, 0.0)
+        top_cylinder_obj.ViewObject.hide()
+        top_box_obj.ViewObject.hide()
+    doc.recompute()
 
-    BooleanFrag = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
-    BooleanFrag.Objects = [upper_tube, force_point]
-
-    compound = doc.addObject("Part::Compound", "Compound")
-    compound.Links = [BooleanFrag, lower_tube]
-
-    # line for load direction
-    sh_load_line = Part.makeLine(v_force_pt, FreeCAD.Vector(0, 150, 475))
-    load_line = doc.addObject("Part::Feature", "Load_direction_line")
-    load_line.Shape = sh_load_line
+    # all geom fusion
+    all_geom_fusion_obj = doc.addObject("Part::MultiFuse", "AllGeomFusion")
+    all_geom_fusion_obj.Shapes = [bottom_box_obj, top_halfcyl_obj]
     if FreeCAD.GuiUp:
-        load_line.ViewObject.LineWidth = 5.0
-        load_line.ViewObject.LineColor = (1.0, 0.0, 0.0)
+        bottom_box_obj.ViewObject.hide()
+        top_halfcyl_obj.ViewObject.hide()
 
     doc.recompute()
 
@@ -123,61 +120,66 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_object.WorkingDir = u""
     if solvertype == "calculix" or solvertype == "ccxtools":
         solver_object.AnalysisType = "static"
-        solver_object.BeamShellResultOutput3D = True
-        solver_object.GeometricalNonlinearity = "linear"  # really?
-        # TODO iterations parameter !!!
+        solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
         solver_object.MatrixSolverType = "default"
         solver_object.IterationsControlParameterTimeUse = False
         solver_object.SplitInputWriter = False
 
-    # shell thickness
-    analysis.addObject(ObjectsFem.makeElementGeometry2D(doc, 0.5, 'ShellThickness'))
+        """
+        # solver parameter from fandaL, but they are not needed (see forum topic)
+        solver_object.IterationsControlParameterTimeUse = True
+        solver_object.IterationsControlParameterCutb = '0.25,0.5,0.75,0.85,,,1.5,'
+        solver_object.IterationsControlParameterIter = '4,8,9,200,10,400,,200,,'
+        solver_object.IterationsUserDefinedTimeStepLength = True
+        solver_object.TimeInitialStep = 0.1
+        solver_object.TimeEnd = 1.0
+        solver_object.IterationsUserDefinedIncrementations = True  # parameter DIRECT
+        """
 
     # material
     material_obj = analysis.addObject(
         ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
     )[0]
     mat = material_obj.Material
-    mat["Name"] = "AlCuMgPb"
-    mat["YoungsModulus"] = "72000 MPa"
+    mat["Name"] = "Steel-Generic"
+    mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
-    # fixed_constraint
-    fixed_constraint = analysis.addObject(
+    # constraint fixed
+    con_fixed = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
-    fixed_constraint.References = [
-        (lower_tube, "Edge2"),
-        (upper_tube, "Edge3"),
+    con_fixed.References = [
+        (all_geom_fusion_obj, "Face5"),
+        (all_geom_fusion_obj, "Face6"),
+        (all_geom_fusion_obj, "Face8"),
+        (all_geom_fusion_obj, "Face10"),
     ]
 
-    # force_constraint
-    force_constraint = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
+    # constraint pressure
+    con_pressure = analysis.addObject(
+        ObjectsFem.makeConstraintPressure(doc, name="ConstraintPressure")
     )[0]
-    # TODO use point of tube boolean fragment
-    force_constraint.References = [(force_point, "Vertex1")]
-    force_constraint.Force = 5000.0
-    force_constraint.Direction = (load_line, ["Edge1"])
-    force_constraint.Reversed = True
+    con_pressure.References = [(all_geom_fusion_obj, "Face9")]
+    con_pressure.Pressure = 100.0  # Pa ? = 100 Mpa ?
+    con_pressure.Reversed = False
 
-    # contact constraint
-    contact_constraint = doc.Analysis.addObject(
+    # constraint contact
+    con_contact = doc.Analysis.addObject(
         ObjectsFem.makeConstraintContact(doc, name="ConstraintContact")
     )[0]
-    contact_constraint.References = [
-        (lower_tube, "Face1"),
-        (upper_tube, "Face1"),
+    con_contact.References = [
+        (all_geom_fusion_obj, "Face7"),  # first seams slave face, TODO proof in writer code!
+        (all_geom_fusion_obj, "Face3"),  # second seams master face, TODO proof in writer code!
     ]
-    contact_constraint.Friction = 0.0
-    # contact_constrsh_aint.Slope = "1000000.0 kg/(mm*s^2)"  # contact stiffness
-    contact_constraint.Slope = 1000000.0  # should be 1000000.0 kg/(mm*s^2)
+    con_contact.Friction = 0.0
+    con_contact.Slope = 1000000.0  # contact stiffness 1000000.0 kg/(mm*s^2)
 
     # mesh
-    from .meshes.mesh_contact_tube_tube_tria3 import create_nodes, create_elements
+    from .meshes.mesh_contact_box_halfcylinder_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:

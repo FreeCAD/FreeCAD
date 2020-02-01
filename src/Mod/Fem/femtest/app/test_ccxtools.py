@@ -134,17 +134,38 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
-    def test_static_contact_shell_shell(
+    def test_static_constraint_contact_shell_shell(
         self
     ):
         # set up
-        from femexamples.contact_shell_shell import setup
+        from femexamples.constraint_contact_shell_shell import setup
         setup(self.active_doc, "ccxtools")
-        test_name = "contact shell shell"
-        base_name = "contact_shell_shell"
+        test_name = "constraint contact shell shell"
+        base_name = "constraint_contact_shell_shell"
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
-            "FEM_ccx_contact_shell_shell",
+            "FEM_ccx_constraint_contact_shell_shell",
+        )
+
+        # test input file writing
+        self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+        )
+
+    # ********************************************************************************************
+    def test_static_constraint_contact_solid_solid(
+        self
+    ):
+        # set up
+        from femexamples.constraint_contact_solid_solid import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "constraint contact solid solid"
+        base_name = "constraint_contact_solid_solid"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            "FEM_ccx_constraint_contact_solid_solid",
         )
 
         # test input file writing
