@@ -37,7 +37,7 @@ void ConstraintDistance::initAttrs()
 {
     SimpleConstraint::initAttrs();
 
-    tieAttr_Parameter(dist, "dist", true, 1.0);
+    tieAttr_Parameter(dist, "dist", true, true, 1.0);
 
     tieAttr_Shape(p1, "p1", ParaPoint::getClassTypeId());
     tieAttr_Shape(p2, "p2", ParaPoint::getClassTypeId());
