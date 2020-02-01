@@ -151,8 +151,13 @@ bool ParaObject::isComplete() const
 {
     try {
         throwIfIncomplete();
-    } catch (Py::LookupError &) {
-        return false;
+    } catch (Py::Exception &e) {
+        if (PyErr_ExceptionMatches(PyExc_LookupError)){
+            e.clear();
+            return false;
+        } else {
+            throw;
+        }
     }
     return true;
 }
