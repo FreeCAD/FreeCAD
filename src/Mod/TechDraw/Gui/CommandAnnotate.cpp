@@ -1093,7 +1093,7 @@ CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Change Appearance of Line");
+    sMenuText       = QT_TR_NOOP("Change Appearance of Line(s)");
     sToolTipText    = "Change Appearance of selected Line(s)";
     sWhatsThis      = "TechDraw_DecorateLine";
     sStatusTip      = sToolTipText;
