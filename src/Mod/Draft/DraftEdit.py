@@ -304,7 +304,7 @@ class Edit():
         self.ui.editUi()
 
         for obj in self.edited_objects:
-            self.setEditPoints(obj)
+            self.setTrackers(obj)
 
         self.register_editing_callbacks()
 
@@ -618,6 +618,12 @@ class Edit():
             self.pl = obj.getGlobalPlacement()
             self.invpl = self.pl.inverse()
 
+    def get_transform_matrix(self,obj):
+        "set self.pl and self.invpl to self.obj placement and inverse placement"
+        if not obj:
+            return
+        return obj.getGlobalPlacement().toMatrix()
+
     def alignWorkingPlane(self):
         "align working plane to self.obj"
         if "Shape" in self.obj.PropertiesList:
@@ -661,82 +667,6 @@ class Edit():
         else:
             return None
 
-
-    #---------------------------------------------------------------------------
-    # EDIT TRACKERS functions
-    #---------------------------------------------------------------------------
-
-    def setTrackers(self, obj, points=None):
-        "set Edit Trackers for editpoints collected from self.obj"
-        if points is None or len(points) == 0:
-            App.Console.PrintWarning(translate("draft", 
-                                                   "No edit point found for selected object")
-                                                   + "\n")
-            # do not finish if some trackers are still present
-            if self.trackers == {'object':[]}:
-                self.finish()
-            return
-        self.trackers[obj.Name] = []
-        if Draft.getType(obj) == "BezCurve":
-            self.resetTrackersBezier(obj)
-        else:
-            if obj.Name in self.trackers:
-                self.removeTrackers(obj)
-            for ep in range(len(points)):
-                self.trackers[obj.Name].append(editTracker(pos=points[ep],name=obj.Name,idx=ep))
-
-    def resetTrackers(self, obj):
-        "reset Edit Trackers and set them again"
-        self.removeTrackers(obj)
-        self.setTrackers(obj, self.getEditPoints(obj))
-
-    def removeTrackers(self, obj = None):
-        "reset Edit Trackers and set them again"
-        if obj:
-            if obj.Name in self.trackers:
-                for t in self.trackers[obj.Name]:
-                    t.finalize()
-            self.trackers[obj.Name] = []
-        else:
-            for key in self.trackers.keys():
-                for t in self.trackers[key]:
-                    t.finalize()
-            self.trackers = {'object':[]}
-
-
-    def hideTrackers(self, obj=None):
-        """hide Edit Trackers
-
-        Attributes
-        ----------
-        obj : FreeCAD object
-            hides trackers only for given object, 
-            if obj is None, hides all trackers
-        """
-        if obj is None:
-            for key in self.trackers:
-                for t in self.trackers[key]:
-                    t.off()
-        else:
-            for t in self.trackers[obj.Name]:
-                t.off()
-
-    def showTrackers(self, obj=None):
-        """show Edit Trackers
-
-        Attributes
-        ----------
-        obj : FreeCAD object
-            shows trackers only for given object, 
-            if obj is None, shows all trackers
-        """
-        if obj is None:
-            for key in self.trackers:
-                for t in self.trackers[key]:
-                    t.on()
-        else:
-            for t in self.trackers[obj.Name]:
-                t.on()
 
     #---------------------------------------------------------------------------
     # PREVIEW
@@ -874,7 +804,7 @@ class Edit():
                 self.addPointToCurve(pt,info)
         self.obj.recompute()
         self.removeTrackers(self.obj)
-        self.setEditPoints(self.obj)
+        self.setTrackers(self.obj)
         #self.setSelectState(self.obj, False)
         return
 
@@ -981,20 +911,95 @@ class Edit():
         
         # don't do tan/sym on DWire/BSpline!
         self.removeTrackers(self.obj)
-        self.setEditPoints(self.obj)
+        self.setTrackers(self.obj)
+
 
     #---------------------------------------------------------------------------
-    # EDIT OBJECT TOOLS : GENERAL
+    # EDIT TRACKERS functions
     #---------------------------------------------------------------------------
 
-    def setEditPoints(self,obj):
-        "append given object's editpoints to self.edipoints and set EditTrackers"
-        
-        self.setPlacement(obj)
-        self.editpoints = self.getEditPoints(obj)
-        if self.editpoints: # set trackers and align plane
-            self.setTrackers(obj, self.editpoints)
-            self.editpoints = []
+    def setTrackers(self, obj):
+        "set Edit Trackers for editpoints collected from self.obj"
+
+        editpoints = self.getEditPoints(obj)
+
+        if editpoints is None:
+            App.Console.PrintWarning(translate("draft", 
+                                                   "No edit point found for selected object")
+                                                   + "\n")
+            # do not finish if some trackers are still present
+            if self.trackers == {'object':[]}:
+                self.finish()
+            return
+
+        # transform editpoints to world coordinates
+        matrix = self.get_transform_matrix(obj)
+        points = []
+        for ep in editpoints:
+            points.append(matrix.multVec(ep))
+
+        self.trackers[obj.Name] = []
+        if Draft.getType(obj) == "BezCurve":
+            self.resetTrackersBezier(obj)
+        else:
+            if obj.Name in self.trackers:
+                self.removeTrackers(obj)
+            for ep in range(len(points)):
+                self.trackers[obj.Name].append(editTracker(pos=points[ep],name=obj.Name,idx=ep))
+
+    def resetTrackers(self, obj):
+        "reset Edit Trackers and set them again"
+        self.removeTrackers(obj)
+        self.setTrackers(obj)
+
+    def removeTrackers(self, obj = None):
+        "reset Edit Trackers and set them again"
+        if obj:
+            if obj.Name in self.trackers:
+                for t in self.trackers[obj.Name]:
+                    t.finalize()
+            self.trackers[obj.Name] = []
+        else:
+            for key in self.trackers.keys():
+                for t in self.trackers[key]:
+                    t.finalize()
+            self.trackers = {'object':[]}
+
+
+    def hideTrackers(self, obj=None):
+        """hide Edit Trackers
+
+        Attributes
+        ----------
+        obj : FreeCAD object
+            hides trackers only for given object, 
+            if obj is None, hides all trackers
+        """
+        if obj is None:
+            for key in self.trackers:
+                for t in self.trackers[key]:
+                    t.off()
+        else:
+            for t in self.trackers[obj.Name]:
+                t.off()
+
+    def showTrackers(self, obj=None):
+        """show Edit Trackers
+
+        Attributes
+        ----------
+        obj : FreeCAD object
+            shows trackers only for given object, 
+            if obj is None, shows all trackers
+        """
+        if obj is None:
+            for key in self.trackers:
+                for t in self.trackers[key]:
+                    t.on()
+        else:
+            for t in self.trackers[obj.Name]:
+                t.on()
+
 
     def getEditPoints(self, obj):
         """
@@ -1043,6 +1048,11 @@ class Edit():
         "apply the App.Vector to the modified point and update self.obj"
 
         objectType = Draft.getType(obj)
+
+        # return vector to object local coordinate
+        matrix = self.get_transform_matrix(obj)
+        v = matrix.inverse().multVec(v)
+
         App.ActiveDocument.openTransaction("Edit")
 
         if objectType in ["Wire","BSpline"]:
@@ -1090,15 +1100,11 @@ class Edit():
     #---------------------------------------------------------------------------
 
     def getWirePts(self,obj):
-        editpoints = []
-        for p in obj.Points:
-            p = obj.getGlobalPlacement().multVec(p)
-            editpoints.append(p)
-        return editpoints
+        return obj.Points
 
     def updateWire(self, obj, nodeIndex, v):
         pts = obj.Points
-        editPnt = obj.getGlobalPlacement().inverse().multVec(v)
+        editPnt = v
         # DNC: allows to close the curve by placing ends close to each other
         tol = 0.001
         if ( ( nodeIndex == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or ( 
@@ -1316,27 +1322,27 @@ class Edit():
         2 : Height
         """
         editpoints = []
-        editpoints.append(obj.getGlobalPlacement().Base)
-        editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(obj.Length,0,0)))
-        editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(0,obj.Height,0)))
+        editpoints.append(App.Vector(0,0,0))
+        editpoints.append(App.Vector(obj.Length,0,0))
+        editpoints.append(App.Vector(0,obj.Height,0))
         return editpoints
 
     def updateRectangleTrackers(self, obj):
-        self.trackers[obj.Name][0].set(obj.getGlobalPlacement().Base)
-        self.trackers[obj.Name][1].set(obj.getGlobalPlacement().multVec(App.Vector(obj.Length,0,0)))
-        self.trackers[obj.Name][2].set(obj.getGlobalPlacement().multVec(App.Vector(0,obj.Height,0)))
+        self.trackers[obj.Name][0].set(self.get_transform_matrix(obj).multVec(App.Vector(0,0,0)))
+        self.trackers[obj.Name][1].set(self.get_transform_matrix(obj).multVec(App.Vector(obj.Length,0,0)))
+        self.trackers[obj.Name][2].set(self.get_transform_matrix(obj).multVec(App.Vector(0,obj.Height,0)))
 
     def updateRectangle(self, obj, nodeIndex, v):
         import DraftVecUtils
-        delta = obj.getGlobalPlacement().inverse().multVec(v)
+
         if nodeIndex == 0:
             #p = obj.getGlobalPlacement()
             #p.move(delta)
-            obj.Placement.move(delta)
+            obj.Placement.move(v)
         elif self.editing == 1:
-            obj.Length = DraftVecUtils.project(delta,App.Vector(1,0,0)).Length
+            obj.Length = DraftVecUtils.project(v,App.Vector(1,0,0)).Length
         elif self.editing == 2:
-            obj.Height = DraftVecUtils.project(delta,App.Vector(0,1,0)).Length
+            obj.Height = DraftVecUtils.project(v,App.Vector(0,1,0)).Length
         self.updateRectangleTrackers(obj)
 
     #---------------------------------------------------------------------------
@@ -1366,7 +1372,7 @@ class Edit():
         3 : midpoint
         """        
         editpoints = []
-        editpoints.append(obj.getGlobalPlacement().Base)
+        editpoints.append(App.Vector(0,0,0))
         if obj.FirstAngle == obj.LastAngle:
             # obj is a circle
             self.ui.editUi("Circle")
