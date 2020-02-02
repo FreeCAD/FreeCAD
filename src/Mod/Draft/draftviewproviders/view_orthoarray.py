@@ -1,7 +1,7 @@
-"""Provide the Draft ArrayTools command to group the other array tools."""
-## @package gui_arrays
+"""Provide the view provider code for Draft Array."""
+## @package view_orthoarray
 # \ingroup DRAFT
-# \brief Provide the Draft ArrayTools command to group the other array tools.
+# \brief Provide the view provider code for Draft Array.
 
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -25,32 +25,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import FreeCAD as App
-import FreeCADGui as Gui
-from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import Draft
+import Draft_rc
+ViewProviderDraftArray = Draft._ViewProviderDraftArray
+
+# So the resource file doesn't trigger errors from code checkers (flake8)
+True if Draft_rc else False
 
 
-class ArrayGroupCommand:
-    """Gui command for the group of array tools."""
+class ViewProviderOrthoArray(ViewProviderDraftArray):
 
-    def GetCommands(self):
-        """Tuple of array commands."""
-        return tuple(["Draft_OrthoArray",
-                      "Draft_PolarArray", "Draft_CircularArray",
-                      "Draft_PathArray", "Draft_PathLinkArray",
-                      "Draft_PointArray"])
+    def __init__(self, vobj):
+        super().__init__(self, vobj)
 
-    def GetResources(self):
-        """Add menu and tooltip."""
-        _tooltip = ("Create various types of arrays, "
-                    "including rectangular, polar, circular, "
-                    "path, and point")
-        return {'MenuText': QT_TRANSLATE_NOOP("Draft", "Array tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch", _tooltip)}
-
-    def IsActive(self):
-        """Be active only when a document is active."""
-        return App.ActiveDocument is not None
-
-
-Gui.addCommand('Draft_ArrayTools', ArrayGroupCommand())
+    def getIcon(self):
+        return ":/icons/Draft_Array"
