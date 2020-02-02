@@ -72,7 +72,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 	Gui::MenuItem* vertices = new Gui::MenuItem;
 	vertices->setCommand("Add Vertices");
 	*vertices << "TechDraw_CosmeticVertex" << "TechDraw_Midpoints"
-		<< "TechDraw_Quadrant";
+		<< "TechDraw_Quadrants";
 
 	// main menu
 	draw->setCommand("TechDraw");
