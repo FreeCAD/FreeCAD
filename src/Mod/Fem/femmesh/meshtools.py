@@ -283,6 +283,11 @@ def get_ccxelement_faces_from_binary_search(
 ):
     """get the CalculiX element face numbers
     """
+    # the forum topic discussion with ulrich1a and others ... Better mesh last instead of mesh first
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=17318#p137171
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=17318&start=60#p141484
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=17318&start=50#p141108
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=17318&start=40#p140371
     tet10_mask = {
         119: 1,
         411: 2,
@@ -1573,6 +1578,7 @@ def get_pressure_obj_faces(
     femnodes_ele_table,
     femobj
 ):
+    # see get_ccxelement_faces_from_binary_search for more information
     if is_solid_femmesh(femmesh):
         # get the nodes
         # sorted and duplicates removed
@@ -1613,9 +1619,9 @@ def get_pressure_obj_faces(
 
 # ************************************************************************************************
 # depreciated method for pressure faces for constraint pressure and finite solid element mesh
-# why did we switch to the get_ccxelement_faces_from_binary_search?
-# just performance?
-# TODO: Find the forum topic discussion with ulrich1a and post a link
+# we switched to the get_ccxelement_faces_from_binary_search
+# because of performance and the support of all solid elements
+# see get_ccxelement_faces_from_binary_search for more information
 def get_pressure_obj_faces_depreciated(
     femmesh,
     femobj
