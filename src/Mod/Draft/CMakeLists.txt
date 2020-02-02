@@ -45,6 +45,7 @@ SET(Draft_tests
     drafttests/test_dwg.py
     drafttests/test_oca.py
     drafttests/test_airfoildat.py
+    drafttests/draft_test_objects.py
 )
 
 SET(Draft_utilities
