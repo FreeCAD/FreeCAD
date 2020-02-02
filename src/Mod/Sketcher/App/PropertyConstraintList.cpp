@@ -248,11 +248,12 @@ PyObject *PropertyConstraintList::getPyObject(void)
 }
 
 bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, Py::Object &res) const {
-    if(path.numSubComponents()!=2 || path.getPropertyComponent(0).getName()!=getName())
+
+    auto components = path.getPropertyComponents(1);
+    if(components.size() < 1)
         return false;
 
-    const ObjectIdentifier::Component & c1 = path.getPropertyComponent(1);
-
+    const ObjectIdentifier::Component & c1 = components[0];
     const Constraint *cstr = 0;
 
     if (c1.isArray()) 
@@ -269,7 +270,9 @@ bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, P
     if(!cstr)
         return false;
     Quantity q = cstr->getPresentationValue();
-    res = new Base::QuantityPy(new Base::Quantity(q));
+    res = Py::asObject(new Base::QuantityPy(new Base::Quantity(q)));
+    for(size_t i=1; i< components.size(); ++i)
+        res = components[i].get(res);
     return true;
 }
 

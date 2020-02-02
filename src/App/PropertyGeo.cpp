@@ -223,15 +223,23 @@ bool PropertyVector::getPyPathValue(const ObjectIdentifier &path, Py::Object &re
     if(unit.isEmpty())
         return false;
 
-    std::string p = path.getSubPathStr();
-    if (p == ".x") {
-        res = new QuantityPy(new Quantity(getValue().x,unit));
-    } else if(p == ".y") {
-        res = new QuantityPy(new Quantity(getValue().y,unit));
-    } else if(p == ".z") {
-        res = new QuantityPy(new Quantity(getValue().z,unit));
-    } else
-        return false;
+    int i=0;
+    for(auto &c : path.getPropertyComponents(1)) {
+        if(i == 0) {
+            if(!c.isSimple())
+                return false;
+            if(c.getName() == "x") {
+                res = Py::asObject(new QuantityPy(new Quantity(getValue().x,unit)));
+            } else if(c.getName() == "y") {
+                res = Py::asObject(new QuantityPy(new Quantity(getValue().y,unit)));
+            } else if(c.getName() == "z") {
+                res = Py::asObject(new QuantityPy(new Quantity(getValue().z,unit)));
+            } else
+                return false;
+            continue;
+        }
+        res = c.get(res);
+    }
     return true;
 }
 
@@ -612,18 +620,24 @@ void PropertyPlacement::getPaths(std::vector<ObjectIdentifier> &paths) const
     paths.push_back(ObjectIdentifier(*this)
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Angle")));
-    paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
-    paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
-    paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
+
+    // Unlike the above path (which provides units that are not available
+    // through python, the following paths provides the same value. They are no
+    // longer needed, because the expression completer will now dig into all
+    // python attributes.
+
+    // paths.push_back(ObjectIdentifier(*this)
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
+    // paths.push_back(ObjectIdentifier(*this)
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
+    // paths.push_back(ObjectIdentifier(*this)
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+    //                 << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
 void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
@@ -670,19 +684,31 @@ const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) c
 
 bool PropertyPlacement::getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const
 {
-    std::string p = path.getSubPathStr();
-    if (p == ".Rotation.Angle") {
+    auto components = path.getPropertyComponents(1);
+    if(components.size() < 2)
+        return false;
+    if(components[0].isSimple() && components[0].getName() == "Rotation") {
+        if(components[1].isSimple() && components[1].getName() != "Angle")
+            return false;
         Base::Vector3d axis; double angle;
         _cPos.getRotation().getValue(axis,angle);
-        res = new QuantityPy(new Quantity(Base::toDegrees(angle),Unit::Angle));
-    } else if (p == ".Base.x") {
-        res = new QuantityPy(new Quantity(_cPos.getPosition().x,Unit::Length));
-    } else if (p == ".Base.y") {
-        res = new QuantityPy(new Quantity(_cPos.getPosition().y,Unit::Length));
-    } else if (p == ".Base.z") {
-        res = new QuantityPy(new Quantity(_cPos.getPosition().z,Unit::Length));
-    } else
-        return false;
+        res = Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(angle),Unit::Angle)));
+    }
+    else if(components[0].isSimple() && components[0].getName() == "Base") {
+        if(!components[1].isSimple())
+            return false;
+        if(components[1].getName() == "x") {
+            res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().x,Unit::Length)));
+        } else if(components[1].getName() == "y") {
+            res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().y,Unit::Length)));
+        } else if(components[1].getName() == "z") {
+            res = Py::asObject(new QuantityPy(new Quantity(_cPos.getPosition().z,Unit::Length)));
+        } else
+            return false;
+    }
+
+    for(size_t i=2;i<components.size();++i)
+        res = components[i].get(res);
     return true;
 }
 
