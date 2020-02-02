@@ -96,8 +96,14 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         return true;
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify.\n"
-                              "The error message is: %s\n", e.what());
+        e.ReportException();
+        Base::Console().Error("Unhandled Base::Exception caught in GUIApplication::notify\n");
+    }
+    catch (Py::Exception &) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        e.ReportException();
+        Base::Console().Error("Unhandled Python exception caught in GUIApplication::notify\n");
     }
     catch (const std::exception& e) {
         Base::Console().Error("Unhandled std::exception caught in GUIApplication::notify.\n"
