@@ -457,11 +457,14 @@ class Edit():
                     if self.obj is None:
                         return
                     if self.ui.sharpButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Sharp')
+                        return self.obj.Proxy.smoothBezPoint(self.obj, ep, 'Sharp')
+                        self.resetTrackers(obj)
                     elif self.ui.tangentButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Tangent')
+                        return self.obj.Proxy.smoothBezPoint(self.obj, ep, 'Tangent')
+                        self.resetTrackers(obj)
                     elif self.ui.symmetricButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Symmetric')
+                        return self.obj.Proxy.smoothBezPoint(self.obj, ep, 'Symmetric')
+                        self.resetTrackers(obj)
                 if self.editing is None:
                     self.startEditing(event)
                 else:
@@ -701,7 +704,7 @@ class Edit():
         elif Draft.getType(obj) == "BezCurve":
             self.ghost.on()
             plist = self.applyPlacement(obj.Points)
-            pointList = self.recomputePointsBezier(obj,plist,idx,pt,obj.Degree,moveTrackers=True)
+            pointList = obj.Proxy.recomputePointsBezier(obj,plist,idx,pt,obj.Degree)
             self.ghost.update(pointList,obj.Degree)
         elif Draft.getType(obj) == "Circle":
             self.ghost.on()
@@ -1123,7 +1126,11 @@ class Edit():
                     multVec(obj.Points[nodeIndex]))
             return
         if Draft.getType(obj) in ["BezCurve"]:
-            pts = self.recomputePointsBezier(obj,pts,nodeIndex,v,obj.Degree,moveTrackers=False)
+            pts = obj.Proxy.recomputePointsBezier(obj,pts,nodeIndex,v,obj.Degree)
+            obj.Points = pts
+            self.removeTrackers(obj)
+            self.resetTrackersBezier(obj)
+            return
         # check that the new point lies on the plane of the wire
         import DraftGeomUtils, DraftVecUtils
         if obj.Closed:
@@ -1135,67 +1142,6 @@ class Edit():
         pts[nodeIndex] = editPnt
         obj.Points = pts
         #self.trackers[obj.Name][nodeIndex].set(v)
-
-
-    def recomputePointsBezier(self,obj,pts,idx,v,degree,moveTrackers=True):
-        """
-        (object, Points as list, nodeIndex as Int, App.Vector of new point, moveTrackers as Bool)
-        return the new point list, applying the App.Vector to the given index point
-        """
-        editPnt = v
-        # DNC: allows to close the curve by placing ends close to each other
-        tol = 0.001
-        if ( ( idx == 0 ) and ( (editPnt - pts[-1]).Length < tol) ) or (
-                idx == len(pts) - 1 ) and ( (editPnt - pts[0]).Length < tol):
-            obj.Closed = True
-        # DNC: fix error message if edited point coincides with one of the existing points
-        #if ( editPnt in pts ) == False:
-        knot = None
-        ispole = idx % degree
-
-        if ispole == 0: #knot
-            if degree >= 3:
-                if idx >= 1: #move left pole
-                    knotidx = idx if idx < len(pts) else 0
-                    pts[idx-1] = pts[idx-1] + editPnt - pts[knotidx]
-                    if moveTrackers:
-                        self.trackers[obj.Name][idx-1].set(pts[idx-1])
-                if idx < len(pts)-1: #move right pole
-                    pts[idx+1] = pts[idx+1] + editPnt - pts[idx]
-                    if moveTrackers:
-                        self.trackers[obj.Name][idx+1].set(pts[idx+1])
-                if idx == 0 and obj.Closed: # move last pole
-                    pts[-1] = pts [-1] + editPnt -pts[idx]
-                    if moveTrackers:
-                        self.trackers[obj.Name][-1].set(pts[-1])
-
-        elif ispole == 1 and (idx >=2 or obj.Closed): #right pole
-            knot = idx -1
-            changep = idx -2 # -1 in case of closed curve
-
-        elif ispole == degree-1 and idx <= len(pts)-3: #left pole
-            knot = idx +1
-            changep = idx +2
-
-        elif ispole == degree-1 and obj.Closed and idx == len(pts)-1: #last pole
-            knot = 0
-            changep = 1
-
-        if knot is not None: # we need to modify the opposite pole
-            segment = int(knot / degree) -1
-            cont = obj.Continuity[segment] if len(obj.Continuity) > segment else 0
-            if cont == 1: #tangent
-                pts[changep] = obj.Proxy.modifytangentpole(pts[knot],
-                    editPnt,pts[changep])
-                if moveTrackers:
-                    self.trackers[obj.Name][changep].set(pts[changep])
-            elif cont == 2: #symmetric
-                pts[changep] = obj.Proxy.modifysymmetricpole(pts[knot],editPnt)
-                if moveTrackers:
-                    self.trackers[obj.Name][changep].set(pts[changep])
-        pts[idx]=v
-
-        return pts #returns the list of new points, taking into account knot continuity
 
     def resetTrackersBezier(self, obj):
         #in future move tracker definition to DraftTrackers
@@ -1221,94 +1167,7 @@ class Edit():
             self.trackers[obj.Name].append(editTracker(p,obj.Name,
                 index,obj.ViewObject.LineColor,marker=marker))
 
-    def smoothBezPoint(self, obj, point, style='Symmetric'):
-        "called when changing the continuity of a knot"
-        style2cont = {'Sharp':0,'Tangent':1,'Symmetric':2}
-        if point is None:
-            return
-        if not (Draft.getType(obj) == "BezCurve"):
-            return
-        pts = obj.Points
-        deg = obj.Degree
-        if deg < 2:
-            return
-        if point % deg != 0: #point is a pole
-            if deg >=3: #allow to select poles
-                if (point % deg == 1) and (point > 2 or obj.Closed): #right pole
-                    knot = point -1
-                    keepp = point
-                    changep = point -2
-                elif point < len(pts) -3 and point % deg == deg -1: #left pole
-                    knot = point +1
-                    keepp = point
-                    changep = point +2
-                elif point == len(pts)-1 and obj.Closed: #last pole
-                    # if the curve is closed the last pole has the last
-                    # index in the points lists
-                    knot = 0
-                    keepp = point
-                    changep = 1
-                else:
-                    App.Console.PrintWarning(translate("draft", 
-                                                           "Can't change Knot belonging to pole %d"%point)
-                                                           + "\n")
-                    return
-                if knot:
-                    if style == 'Tangent':
-                        pts[changep] = obj.Proxy.modifytangentpole(pts[knot],
-                            pts[keepp],pts[changep])
-                    elif style == 'Symmetric':
-                        pts[changep] = obj.Proxy.modifysymmetricpole(pts[knot],
-                            pts[keepp])
-                    else: #sharp
-                        pass #
-            else:
-                App.Console.PrintWarning(translate("draft", 
-                                                       "Selection is not a Knot")
-                                                       + "\n")
-                return
-        else: #point is a knot
-            if style == 'Sharp':
-                if obj.Closed and point == len(pts)-1:
-                    knot = 0
-                else:
-                    knot = point
-            elif style == 'Tangent' and point > 0 and point < len(pts)-1:
-                prev, next = obj.Proxy.tangentpoles(pts[point], pts[point-1], pts[point+1])
-                pts[point-1] = prev
-                pts[point+1] = next
-                knot = point #index for continuity
-            elif style == 'Symmetric' and point > 0 and point < len(pts)-1:
-                prev, next = obj.Proxy.symmetricpoles(pts[point], pts[point-1], pts[point+1])
-                pts[point-1] = prev
-                pts[point+1] = next
-                knot = point #index for continuity
-            elif obj.Closed and (style == 'Symmetric' or style == 'Tangent'):
-                if style == 'Tangent':
-                    pts[1], pts[-1] = obj.Proxy.tangentpoles(pts[0], pts[1], pts[-1])
-                elif style == 'Symmetric':
-                    pts[1], pts[-1] = obj.Proxy.symmetricpoles(pts[0], pts[1], pts[-1])
-                knot = 0
-            else:
-                App.Console.PrintWarning(translate("draft",
-                                                       "Endpoint of BezCurve can't be smoothed")
-                                                       + "\n")
-                return
-        segment = knot // deg #segment index
-        newcont = obj.Continuity[:] #don't edit a property inplace !!!
-        if not obj.Closed and (len(obj.Continuity) == segment -1 or
-            segment == 0) :
-            pass # open curve
-        elif (len(obj.Continuity) >= segment or obj.Closed and segment == 0 and
-                len(obj.Continuity) >1):
-            newcont[segment-1] = style2cont.get(style)
-        else: #should not happen
-            App.Console.PrintWarning('Continuity indexing error:'
-                                         + 'point:%d deg:%d len(cont):%d' % (knot,deg,
-                                         len(obj.Continuity)))
-        obj.Points = pts
-        obj.Continuity = newcont
-        self.resetTrackers(obj)
+        
 
     #---------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Rectangle
@@ -1783,12 +1642,12 @@ class Edit():
         if self.overNode:
             # if user is over a node
             doc = self.overNode.get_doc_name()
-            obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
+            self.obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
             ep = self.overNode.get_subelement_index()
-            if Draft.getType(obj) in ["Line", "Wire"]:
+            if Draft.getType(self.obj) in ["Line", "Wire"]:
                 actions = ["delete point"]
-            elif Draft.getType(obj) in ["Circle"]:
-                if obj.FirstAngle != obj.LastAngle:
+            elif Draft.getType(self.obj) in ["Circle"]:
+                if self.obj.FirstAngle != self.obj.LastAngle:
                     if ep == 0: # user is over arc start point
                         actions = ["move arc"]
                     elif ep == 1: # user is over arc start point
@@ -1797,7 +1656,7 @@ class Edit():
                         actions = ["set last angle"]
                     elif ep == 3: # user is over arc mid point
                         actions = ["set radius"]
-            elif Draft.getType(obj) in ["BezCurve"]:
+            elif Draft.getType(self.obj) in ["BezCurve"]:
                 actions = ["make sharp", "make tangent", "make symmetric", "delete point"]
             else:
                 return
@@ -1824,11 +1683,14 @@ class Edit():
             obj = App.getDocument(doc).getObject(self.overNode.get_obj_name())
             idx = self.overNode.get_subelement_index()
             if action_label == "make sharp":
-                self.smoothBezPoint(obj, idx, 'Sharp')
+                self.obj.Proxy.smoothBezPoint(obj, idx, 'Sharp')
+                self.resetTrackers(self.obj)
             elif action_label == "make tangent":
-                self.smoothBezPoint(obj, idx, 'Tangent')
+                self.obj.Proxy.smoothBezPoint(obj, idx, 'Tangent')
+                self.resetTrackers(self.obj)
             elif action_label == "make symmetric":
-                self.smoothBezPoint(obj, idx, 'Symmetric')
+                self.obj.Proxy.smoothBezPoint(obj, idx, 'Symmetric')
+                self.resetTrackers(self.obj)
         # addPoint and deletePoint menu
         elif action_label == "delete point":
             self.delPoint(self.event)
