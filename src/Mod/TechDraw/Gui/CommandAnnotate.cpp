@@ -523,7 +523,7 @@ CmdTechDrawAnnotation::CmdTechDrawAnnotation()
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert Annotation");
     sToolTipText  = sMenuText;
-    sWhatsThis    = "TechDraw_NewAnnotation";
+    sWhatsThis    = "TechDraw_Annotation";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-annotation";
 }
