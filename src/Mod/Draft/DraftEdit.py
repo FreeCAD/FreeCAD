@@ -1753,14 +1753,14 @@ class Edit():
             self.obj.Placement.Base = v
             self.setPlacement(self.obj)
         elif self.editing == 1:
-            xApp.Vector = DraftVecUtils.project(delta,App.Vector(1,0,0))
-            self.obj.Length = xApp.Vector.Length            
+            vector = DraftVecUtils.project(delta,App.Vector(1,0,0))
+            self.obj.Length = vector.Length            
         elif self.editing == 2:
-            xApp.Vector = DraftVecUtils.project(delta,App.Vector(0,1,0))
-            self.obj.Width = xApp.Vector.Length            
+            vector = DraftVecUtils.project(delta,App.Vector(0,1,0))
+            self.obj.Width = vector.Length            
         elif self.editing == 3:
-            xApp.Vector = DraftVecUtils.project(delta,App.Vector(0,0,1))
-            self.obj.Height = xApp.Vector.Length            
+            vector = DraftVecUtils.project(delta,App.Vector(0,0,1))
+            self.obj.Height = vector.Length            
         self.trackers[self.obj.Name][0].set(self.obj.Placement.Base)
         self.trackers[self.obj.Name][1].set(self.pl.multVec(App.Vector(self.obj.Length,0,0)))
         self.trackers[self.obj.Name][2].set(self.pl.multVec(App.Vector(0,self.obj.Width,0)))
