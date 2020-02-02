@@ -1,7 +1,7 @@
-"""Provide the Draft ArrayTools command to group the other array tools."""
-## @package gui_arrays
+"""Provide the object code for Draft Array."""
+## @package orthoarray
 # \ingroup DRAFT
-# \brief Provide the Draft ArrayTools command to group the other array tools.
+# \brief Provide the object code for Draft Array.
 
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
@@ -25,32 +25,36 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
 import FreeCAD as App
-import FreeCADGui as Gui
-from PySide.QtCore import QT_TRANSLATE_NOOP
+import Draft
 
 
-class ArrayGroupCommand:
-    """Gui command for the group of array tools."""
-
-    def GetCommands(self):
-        """Tuple of array commands."""
-        return tuple(["Draft_OrthoArray",
-                      "Draft_PolarArray", "Draft_CircularArray",
-                      "Draft_PathArray", "Draft_PathLinkArray",
-                      "Draft_PointArray"])
-
-    def GetResources(self):
-        """Add menu and tooltip."""
-        _tooltip = ("Create various types of arrays, "
-                    "including rectangular, polar, circular, "
-                    "path, and point")
-        return {'MenuText': QT_TRANSLATE_NOOP("Draft", "Array tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch", _tooltip)}
-
-    def IsActive(self):
-        """Be active only when a document is active."""
-        return App.ActiveDocument is not None
+def make_ortho_array(obj,
+                     v_x=App.Vector(10, 0, 0),
+                     v_y=App.Vector(0, 10, 0),
+                     v_z=App.Vector(0, 0, 10),
+                     n_x=2,
+                     n_y=2,
+                     n_z=1,
+                     use_link=False):
+    """Create an orthogonal array from the given object."""
+    obj = Draft.makeArray(obj,
+                          arg1=v_x, arg2=v_y, arg3=v_z,
+                          arg4=n_x, arg5=n_y, arg6=n_z,
+                          useLink=use_link)
+    return obj
 
 
-Gui.addCommand('Draft_ArrayTools', ArrayGroupCommand())
+def make_ortho_array2(obj,
+                      v_x=App.Vector(10, 0, 0),
+                      v_y=App.Vector(0, 10, 0),
+                      n_x=2,
+                      n_y=2,
+                      use_link=False):
+    """Create a 2D orthogonal array from the given object."""
+    obj = Draft.makeArray(obj,
+                          arg1=v_x, arg2=v_y,
+                          arg3=n_x, arg4=n_y,
+                          useLink=use_link)
+    return obj
