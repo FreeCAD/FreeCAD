@@ -206,10 +206,9 @@ void TaskRichAnno::setUiPrimary()
     ui->teAnnoText->setFontPointSize(mre.getDefFontSizeNum());
     // set a placeholder text to inform the user
     // (QTextEdit has no placeholderText property in Qt4)
-    #if QT_VERSION >= 0x050200
-        ui->teAnnoText->setPlaceholderText(QString::fromLatin1("Input the annotation text directly or start the rich text editor"));
-    #else
-    #endif
+#if QT_VERSION >= 0x050200
+    ui->teAnnoText->setPlaceholderText(tr("Input the annotation text directly or start the rich text editor"));
+#endif
 }
 
 void TaskRichAnno::enableTextUi(bool b) 
