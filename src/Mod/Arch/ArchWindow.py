@@ -27,6 +27,7 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui, QtSvg
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import WheelFilter 
 else:
     # \cond
     def translate(ctxt,txt):
@@ -575,8 +576,6 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 
     print("Arch: Unknown window type")
 
-
-
 class _CommandWindow:
 
     "the Arch Window command definition"
@@ -762,10 +761,10 @@ class _CommandWindow:
         # sill height
         labels = QtGui.QLabel(translate("Arch","Sill height"))
         values = ui.createWidget("Gui::InputField")
+        WheelFilter.WheelFilter(values)
         grid.addWidget(labels,1,0,1,1)
         grid.addWidget(values,1,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
-
         # check for Parts library
         self.librarypresets = []
         librarypath = FreeCAD.ParamGet('User parameter:Plugins/parts_library').GetString('destination','')
@@ -791,6 +790,9 @@ class _CommandWindow:
         valuep.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToContents)
         valuep.addItems(WindowPresets)
         valuep.setCurrentIndex(self.Preset)
+
+        WheelFilter.WheelFilter(valuep)
+
         grid.addWidget(labelp,2,0,1,1)
         grid.addWidget(valuep,2,1,1,1)
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
@@ -816,6 +818,7 @@ class _CommandWindow:
             lab = QtGui.QLabel(translate("Arch",param))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
             wid = getattr(self,"val"+param)
+            WheelFilter.WheelFilter(wid)
             if param == "Width":
                 wid.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
             elif param == "Height":
