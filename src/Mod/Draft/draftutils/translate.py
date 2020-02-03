@@ -1,11 +1,11 @@
-"""This module provides translate functions for the Draft Workbench.
+"""Provide translate functions for the Draft Workbench.
 
 This module contains auxiliary functions to translate strings
-using the QtGui module.
+using the QtCore module.
 """
 ## @package translate
 # \ingroup DRAFT
-# \brief This module provides translate functions for the Draft Workbench
+# \brief Provide translate functions for the Draft Workbench.
 
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
@@ -47,28 +47,28 @@ except AttributeError:
 
 
 def translate(context, text, utf8_decode=False):
-    """Convenience function for the Qt translate function.
+    r"""Translate the text using the Qt translate function.
 
     It wraps around `QtGui.QApplication.translate`,
     which is the same as `QtCore.QCoreApplication.translate`.
 
     Parameters
     ----------
-    context : str
+    context: str
         In C++ it is typically a class name.
         But it can also be any other string to categorize the translation,
         for example, the name of a workbench, tool, or function
         that is being translated. Usually it will be the name
         of the workbench.
 
-    text : str
+    text: str
         Text that will be translated. It could be a single word,
         a full sentence, paragraph, or multiple paragraphs with new lines.
-        Usually the last endline character '\\\\n'
+        Usually the last endline character '\\n'
         that finishes the string doesn't need to be included
         for translation.
 
-    utf8_decode : bool
+    utf8_decode: bool
         It defaults to `False`.
         This must be set to `True` to indicate that the `text`
         is an `'utf8'` encoded string, so it should be returned as such.
@@ -198,3 +198,51 @@ def translate(context, text, utf8_decode=False):
 #                 return Qtranslate(context, text, None,
 #                                   _encoding).encode("utf8")
 # =============================================================================
+
+# The same Qt translate function is provided here
+QT_TRANSLATE_NOOP = QtCore.QT_TRANSLATE_NOOP
+
+
+def _tr(text):
+    """Translate with the context set to Draft. Our own function.
+
+    It uses our own `translate` defined function which internally still
+    uses `QtCore.QCoreApplication.translate`.
+
+    This is normally used inside a function that prints text.
+
+    >>> print(tr("Some text that will be translated"))
+
+    Parameters
+    ----------
+    text : str
+        Any text string.
+
+    Returns
+    -------
+    str
+        Returns the translated string at runtime.
+    """
+    return translate("Draft", text)
+
+
+def _qtr(text):
+    """Translate with the context set to Draft. QtCore function.
+
+    It uses `QtCore.QT_TRANSLATE_NOOP` function to perform translation.
+
+    This is normally used inside a function that prints text.
+
+    >>> print(qtr("Some text that will be translated"))
+
+    Parameters
+    ----------
+    text : str
+        Any text string.
+
+    Returns
+    -------
+    str
+        Returns the translated string at runtime.
+    """
+    return QT_TRANSLATE_NOOP("Draft", text)
