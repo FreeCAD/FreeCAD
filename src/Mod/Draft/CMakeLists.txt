@@ -62,6 +62,7 @@ SET(Draft_objects
     draftobjects/circulararray.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
+    draftobjects/arc_3points.py
 )
 
 SET(Draft_view_providers
