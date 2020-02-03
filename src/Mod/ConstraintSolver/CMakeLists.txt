@@ -6,6 +6,7 @@ endif(BUILD_GUI)
 
 set(ConstraintSolver_Scripts
     Init.py
+    ConstraintSolverPartGlue.py
 )
 
 if(BUILD_GUI)

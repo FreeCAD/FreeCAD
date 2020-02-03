@@ -49,3 +49,11 @@ PyObject* FCS::pyTryCatch(std::function<Py::Object()> body, PyObject* errorretur
 }
 
 
+
+Py::Module FCS::import(std::string modname)
+{
+    PyObject* pcmod = PyImport_ImportModule(modname.c_str());
+    if (pcmod == nullptr)
+        throw Py::Exception();
+    return Py::Module(pcmod);
+}

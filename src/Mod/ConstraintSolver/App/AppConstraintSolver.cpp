@@ -33,6 +33,8 @@
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
+#include "PyUtils.h"
+
 #include "ParameterStore.h"
 #include "ParameterStorePy.h"
 #include "ParameterRef.h"
@@ -159,6 +161,7 @@ inline Py::Module makeSubmodule(PyObject* parentMod, const char* internal_module
 /* Python entry */
 PyMOD_INIT_FUNC(ConstraintSolver)
 {
+    PY_TRY{
     PyObject* mod = ConstraintSolver::initModule();
 
     //rename python types
@@ -255,6 +258,18 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintDistance       ::init();
     FCS::G2D::ConstraintPlacementRules ::init();
 
+
+    { //import methods from ConstraintSolverPartGlue.py
+        Py::Module modPartGlue = FCS::import("ConstraintSolverPartGlue");
+
+        Py::List exports = modPartGlue.getAttr("exports");
+        for (Py::Object it : exports){
+            std::string attrname = Py::String(it);
+            Py::Module(mod).setAttr(attrname, modPartGlue.getAttr(attrname));
+        }
+    }
+
     Base::Console().Log("Loading ConstraintSolver module... done\n");
     PyMOD_Return(mod);
+    } PY_CATCH;
 }

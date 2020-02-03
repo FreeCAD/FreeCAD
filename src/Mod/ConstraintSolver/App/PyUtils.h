@@ -98,6 +98,9 @@ inline Enum str2enum(Py::String value, const char* valueNames[]){
 ///a non-macro replacement for try {} PY_CATCH;
 PyObject* pyTryCatch(std::function<Py::Object ()> body, PyObject* errorreturn = nullptr);
 
+///imports a python module
+Py::Module import(std::string modname);
+
 } //namespace
 
 #endif
