@@ -338,7 +338,7 @@ class TestCcxTools(unittest.TestCase):
             # do not save and print End of tests
             return fea
 
-        save_fc_file = analysis_dir + base_name + ".FCStd"
+        save_fc_file = join(analysis_dir, base_name + ".FCStd")
         fcc_print(
             "Save FreeCAD file for {} to {}..."
             .format(test_name, save_fc_file)
@@ -415,10 +415,7 @@ class TestCcxTools(unittest.TestCase):
             "Invalid results read from .frd file"
         )
 
-        save_fc_file = join(
-            analysis_dir,
-            (base_name + ".FCStd")
-        )
+        save_fc_file = join(analysis_dir, base_name + ".FCStd")
         fcc_print(
             "Save FreeCAD file for {} to {}..."
             .format(test_name, save_fc_file)
