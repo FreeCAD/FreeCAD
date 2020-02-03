@@ -310,7 +310,12 @@ class FemInputWriter():
                 self.femelement_table,
                 self.femnodes_ele_table, femobj
             )
-            femobj["PressureFaces"] = [(femobj["Object"].Name + ": face load", pressure_faces)]
+            # the data model is for compatibility reason with depreciated version
+            # get_pressure_obj_faces_depreciated returns the face ids in a tuple per ref_shape
+            # some_string was the reference_shape_element_string in depreciated method
+            # [(some_string, [ele_id, ele_face_id], [ele_id, ele_face_id], ...])]
+            some_string = "{}: face load".format(femobj["Object"].Name)
+            femobj["PressureFaces"] = [(some_string, pressure_faces)]
             FreeCAD.Console.PrintLog("{}\n".format(femobj["PressureFaces"]))
 
     def get_element_geometry2D_elements(self):

@@ -1571,7 +1571,8 @@ def get_ref_shape_node_sum_geom_table(
 
 
 # ************************************************************************************************
-# ***** methods for retrieving faces for constraint pressure *************************************
+# ***** methods for retrieving element face sets *************************************************
+# ***** pressure faces ***************************************************************************
 def get_pressure_obj_faces(
     femmesh,
     femelement_table,
@@ -1617,9 +1618,9 @@ def get_pressure_obj_faces(
     return pressure_faces
 
 
-# ************************************************************************************************
-# depreciated method for pressure faces for constraint pressure and finite solid element mesh
-# we switched to the get_ccxelement_faces_from_binary_search
+# ***** depreciated method for retrieving pressure faces *****************************************
+# for constraint pressure and finite solid element mesh
+# it was switched to the method get_ccxelement_faces_from_binary_search
 # because of performance and the support of all solid elements
 # see get_ccxelement_faces_from_binary_search for more information
 def get_pressure_obj_faces_depreciated(
