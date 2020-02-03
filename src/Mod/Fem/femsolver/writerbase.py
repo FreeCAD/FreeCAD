@@ -318,6 +318,32 @@ class FemInputWriter():
             femobj["PressureFaces"] = [(some_string, pressure_faces)]
             FreeCAD.Console.PrintLog("{}\n".format(femobj["PressureFaces"]))
 
+    def get_constraints_contact_faces(self):
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        if not self.femelement_table:
+            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+        if not self.femnodes_ele_table:
+            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
+                self.femnodes_mesh,
+                self.femelement_table
+            )
+
+        for femobj in self.contact_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            print_obj_info(femobj["Object"])
+            contact_slave_faces, contact_master_faces = meshtools.get_contact_obj_faces(
+                self.femmesh,
+                self.femelement_table,
+                self.femnodes_ele_table, femobj
+            )
+            # [ele_id, ele_face_id], [ele_id, ele_face_id], ...]
+            # whereas the ele_face_id might be ccx specific
+            femobj["ContactSlaveFaces"] = contact_slave_faces
+            femobj["ContactMasterFaces"] = contact_master_faces
+            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
+            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
+
     def get_element_geometry2D_elements(self):
         # get element ids and write them into the objects
         FreeCAD.Console.PrintMessage("Shell thicknesses\n")

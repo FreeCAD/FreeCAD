@@ -1640,6 +1640,100 @@ def get_pressure_obj_faces_depreciated(
     return pressure_faces
 
 
+# ***** contact faces ****************************************************************************
+def get_contact_obj_faces(
+    femmesh,
+    femelement_table,
+    femnodes_ele_table,
+    femobj
+):
+    # see comment on get_pressure_obj_faces_depreciated in the regard of getccxVolumesByFace()
+
+    # sets are needed for each of the references separated
+    # BTW constraint tie works the same way AFAIK
+    # TODO it might be useful to introduce a Reference_master and Reference_slave attribute
+
+    # groups makes no sense, since group would be needed for each contact face (master and slave)
+
+    # slave is DEP1 and master is IND1 in input file
+    # first element face or ref_shape is slave, second is master
+
+    # TODO above pre check in ccxtools
+    # TODO ref_shape_type should be Face
+
+    slave_faces, master_faces = [], []
+
+    contact_obj = femobj["Object"]
+    if len(contact_obj.References) == 1 and len(contact_obj.References[0][1]) == 2:
+        # [(<Part::PartFeature>, ('Face7', 'Face3'))]
+        # refs are merged because they are on the same doc obj
+        # but only one element face for each contact face (Gui, TaskPael contact)
+        ref_obj = contact_obj.References[0][0]
+        ref_ele = contact_obj.References[0][1]
+        slave_ref = (ref_obj, (ref_ele[0],))  # the comma is needed!
+        master_ref = (ref_obj, (ref_ele[1],))  # the comma is needed!
+    elif (
+        len(contact_obj.References) == 2
+        and len(contact_obj.References[0][1]) == 1
+        and len(contact_obj.References[1][1]) == 1
+    ):
+        # [(<Part::PartFeature>, ('Face3',)), (<Part::PartFeature>, ('Face7',))]
+        # refs are on different objects
+        # but only one element face for each contact face (Gui, TaskPael contact)
+        slave_ref = contact_obj.References[0]
+        master_ref = contact_obj.References[1]
+    else:
+        FreeCAD.Console.PrintError(
+            "Not valid (example: only master or slave defined) "
+            "or not supported reference shape elements, contact face combination "
+            "(example: multiple element faces per master or slave\n"
+        )
+
+    FreeCAD.Console.PrintLog("Slave: {}, {}\n".format(slave_ref[0].Name, slave_ref))
+    FreeCAD.Console.PrintLog("Master: {}, {}\n".format(master_ref[0].Name, master_ref))
+
+    if is_solid_femmesh(femmesh):
+        # get the nodes, sorted and duplicates removed
+        slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
+        masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
+        # FreeCAD.Console.PrintLog("slaveface_nds: {}\n".format(slaveface_nds))
+        # FreeCAD.Console.PrintLog("masterface_nds: {}\n".format(slaveface_nds))
+
+        # fill the bit_pattern_dict and search for the faces
+        slave_bit_pattern_dict = get_bit_pattern_dict(
+            femelement_table,
+            femnodes_ele_table,
+            slaveface_nds
+        )
+        master_bit_pattern_dict = get_bit_pattern_dict(
+            femelement_table,
+            femnodes_ele_table,
+            masterface_nds
+        )
+
+        # get the faces ids
+        slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
+        master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
+
+    elif is_face_femmesh(femmesh):
+        slave_ref_shape = slave_ref[0].Shape.getElement(slave_ref[1][0])
+        master_ref_shape = master_ref[0].Shape.getElement(master_ref[1][0])
+        # get the faces ids
+        slave_face_ids = femmesh.getFacesByFace(slave_ref_shape)
+        master_face_ids = femmesh.getFacesByFace(master_ref_shape)
+        # build slave_faces and master_faces
+        # face 2 for tria6 element
+        # is it face 2 for all shell elements
+        for fid in slave_face_ids:
+            slave_faces.append([fid, 2])
+        for fid in master_face_ids:
+            master_faces.append([fid, 2])
+
+    FreeCAD.Console.PrintLog("slave_faces: {}\n".format(slave_faces))
+    FreeCAD.Console.PrintLog("master_faces: {}\n".format(master_faces))
+    return [slave_faces, master_faces]
+
+
 # ************************************************************************************************
 # ***** groups ***********************************************************************************
 def get_mesh_group_elements(
