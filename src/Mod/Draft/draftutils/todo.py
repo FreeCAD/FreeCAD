@@ -110,12 +110,12 @@ class ToDo:
 
         The lists are `itinerary`, `commitlist` and `afteritinerary`.
         """
-        print("Debug: doing delayed tasks.\n"
-              "itinerary: {0}\n"
-              "commitlist: {1}\n"
-              "afteritinerary: {2}\n".format(todo.itinerary,
-                                             todo.commitlist,
-                                             todo.afteritinerary))
+#        print("Debug: doing delayed tasks.\n"
+#              "itinerary: {0}\n"
+#              "commitlist: {1}\n"
+#              "afteritinerary: {2}\n".format(todo.itinerary,
+#                                             todo.commitlist,
+#                                             todo.afteritinerary))
         try:
             for f, arg in todo.itinerary:
                 try:
