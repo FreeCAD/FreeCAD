@@ -1132,7 +1132,7 @@ CmdTechDrawArchView::CmdTechDrawArchView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert Section Plane");
+    sMenuText     = QT_TR_NOOP("Insert Arch Workbench Object");
     sToolTipText  = QT_TR_NOOP("Insert a View of a Section Plane from Arch Workbench");
     sWhatsThis    = "TechDraw_NewArch";
     sStatusTip    = sToolTipText;
@@ -1241,7 +1241,7 @@ CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG()
   : Command("TechDraw_ExportPageSVG")
 {
     sGroup        = QT_TR_NOOP("File");
-    sMenuText     = QT_TR_NOOP("Export page as SVG");
+    sMenuText     = QT_TR_NOOP("Export Page as SVG");
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageSVG";
     sStatusTip    = sToolTipText;
@@ -1285,7 +1285,7 @@ CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF()
   : Command("TechDraw_ExportPageDXF")
 {
     sGroup        = QT_TR_NOOP("File");
-    sMenuText     = QT_TR_NOOP("Export page as DXF");
+    sMenuText     = QT_TR_NOOP("Export Page as DXF");
     sToolTipText  = sMenuText;
     sWhatsThis    = "TechDraw_ExportPageDXF";
     sStatusTip    = sToolTipText;
