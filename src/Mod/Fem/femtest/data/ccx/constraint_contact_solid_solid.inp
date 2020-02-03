@@ -4433,7 +4433,7 @@ Evolumes
 ** Surfaces for contact constraint
 ** written by write_surfaces_constraints_contact function
 ** ConstraintContact
-*SURFACE, NAME=DEP1
+*SURFACE, NAME=DEPConstraintContact
 1344,S4
 1655,S1
 1703,S3
@@ -4892,7 +4892,7 @@ Evolumes
 2594,S3
 2595,S2
 2596,S3
-*SURFACE, NAME=IND1
+*SURFACE, NAME=INDConstraintContact
 1283,S2
 1286,S1
 1289,S1
@@ -5057,9 +5057,9 @@ Evolumes
 ** Contact Constraints
 ** written by write_constraints_contact function
 ** ConstraintContact
-*CONTACT PAIR, INTERACTION=INT1,TYPE=SURFACE TO SURFACE
-DEP1,IND1
-*SURFACE INTERACTION, NAME=INT1
+*CONTACT PAIR, INTERACTION=INTConstraintContact,TYPE=SURFACE TO SURFACE
+DEPConstraintContact,INDConstraintContact
+*SURFACE INTERACTION, NAME=INTConstraintContact
 *SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR
 1000000.0 
 
