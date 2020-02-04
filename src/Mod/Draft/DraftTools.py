@@ -5424,19 +5424,15 @@ class Draft_Arc_3Points:
                 self.tracker.on()
             FreeCADGui.Snapper.getPoint(last=self.points[-1],callback=self.getPoint,movecallback=self.drawArc)
         else:
-            import Part
-            e = Part.Arc(self.points[0],self.points[1],self.points[2]).toShape()
+            import draftobjects.arc_3points as arc3
             if Draft.getParam("UsePartPrimitives",False):
-                o = FreeCAD.ActiveDocument.addObject("Part::Feature","Arc")
-                o.Shape = e
+                arc3.make_arc_3points([self.points[0],
+                                       self.points[1],
+                                       self.points[2]], primitive=True)
             else:
-                radius = e.Curve.Radius
-                rot = FreeCAD.Rotation(e.Curve.XAxis,e.Curve.YAxis,e.Curve.Axis,"ZXY")
-                placement = FreeCAD.Placement(e.Curve.Center,rot)
-                start = e.FirstParameter
-                end = e.LastParameter/math.pi*180
-                c = Draft.makeCircle(radius,placement,startangle=start,endangle=end)
-                Draft.autogroup(c)
+                arc3.make_arc_3points([self.points[0],
+                                       self.points[1],
+                                       self.points[2]], primitive=False)
             self.tracker.off()
             FreeCAD.ActiveDocument.recompute()
 
