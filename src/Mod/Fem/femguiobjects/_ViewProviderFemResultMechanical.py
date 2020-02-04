@@ -565,7 +565,9 @@ class _TaskPanelFemResultShow:
         QtGui.QApplication.restoreOverrideCursor()
 
     def hsb_disp_factor_changed(self, value):
-        self.form.sb_displacement_factor.setValue(value / 100. * self.form.sb_displacement_factor_max.value())
+        self.form.sb_displacement_factor.setValue(
+            value / 100. * self.form.sb_displacement_factor_max.value()
+        )
         self.update_displacement()
 
     def sb_disp_factor_max_changed(self, value):
