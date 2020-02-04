@@ -33,6 +33,7 @@ setup()
 
 
 import FreeCAD
+import Part
 import ObjectsFem
 import Fem
 from FreeCAD import Vector, Rotation
@@ -64,31 +65,20 @@ def setup(doc=None, solvertype="ccxtools"):
         Rotation(0, 0, 0),
         Vector(0, 0, 0),
     )
+    doc.recompute()
 
-    # top half cylinder
-    top_cylinder_obj = doc.addObject("Part::Cylinder", "BottomCylinder")
-    top_cylinder_obj.Radius = 30
-    top_cylinder_obj.Height = 500
-    top_cylinder_obj.Placement = FreeCAD.Placement(
+    # top half cylinder, https://forum.freecadweb.org/viewtopic.php?f=18&t=43001#p366111
+    top_halfcyl_obj = doc.addObject("Part::Cylinder", "BottomHalfCylinder")
+    top_halfcyl_obj.Radius = 30
+    top_halfcyl_obj.Height = 500
+    top_halfcyl_obj.Angle = 180
+    top_halfcyl_sh = Part.getShape(top_halfcyl_obj, '', needSubElement=False, refine=True)
+    top_halfcyl_obj.Shape = top_halfcyl_sh
+    top_halfcyl_obj.Placement = FreeCAD.Placement(
         Vector(0, -42, 0),
         Rotation(0, 90, 0),
         Vector(0, 0, 0),
     )
-    top_box_obj = doc.addObject("Part::Box", "BottomBox")
-    top_box_obj.Length = 600
-    top_box_obj.Width = 100
-    top_box_obj.Height = 100
-    top_box_obj.Placement = FreeCAD.Placement(
-        Vector(-10, -142, -52),
-        Rotation(0, 0, 0),
-        Vector(0, 0, 0),
-    )
-    top_halfcyl_obj = doc.addObject("Part::Cut", "BottomHalfCylinder")
-    top_halfcyl_obj.Base = top_cylinder_obj
-    top_halfcyl_obj.Tool = top_box_obj
-    if FreeCAD.GuiUp:
-        top_cylinder_obj.ViewObject.hide()
-        top_box_obj.ViewObject.hide()
     doc.recompute()
 
     # all geom fusion
@@ -97,7 +87,6 @@ def setup(doc=None, solvertype="ccxtools"):
     if FreeCAD.GuiUp:
         bottom_box_obj.ViewObject.hide()
         top_halfcyl_obj.ViewObject.hide()
-
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -156,14 +145,14 @@ def setup(doc=None, solvertype="ccxtools"):
         (all_geom_fusion_obj, "Face5"),
         (all_geom_fusion_obj, "Face6"),
         (all_geom_fusion_obj, "Face8"),
-        (all_geom_fusion_obj, "Face10"),
+        (all_geom_fusion_obj, "Face9"),
     ]
 
     # constraint pressure
     con_pressure = analysis.addObject(
         ObjectsFem.makeConstraintPressure(doc, name="ConstraintPressure")
     )[0]
-    con_pressure.References = [(all_geom_fusion_obj, "Face9")]
+    con_pressure.References = [(all_geom_fusion_obj, "Face10")]
     con_pressure.Pressure = 100.0  # Pa ? = 100 Mpa ?
     con_pressure.Reversed = False
 
