@@ -80,6 +80,9 @@ public:
     virtual TechDraw::DrawRichAnno* getFeature(void);
     QPen rectPen() const;
 
+    void setExporting(bool b) { m_isExporting = b; }
+    bool getExporting(void) { return m_isExporting; }
+
 
 public Q_SLOTS:
 /*    void textDragging(void);*/
@@ -91,6 +94,8 @@ protected:
     virtual void draw() override;
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
+
+    bool m_isExporting;
 
 protected:
 /*    QGMText* m_text;*/
