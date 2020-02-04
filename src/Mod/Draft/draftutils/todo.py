@@ -43,6 +43,8 @@ __title__ = "FreeCAD Draft Workbench, Todo class"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
+_DEBUG = 0
+
 
 class ToDo:
     """A static class that delays execution of functions.
@@ -100,6 +102,7 @@ class ToDo:
     a string to identify the operation, and a `command_list` which is
     a list of strings, each string an individual Python instruction.
     """
+
     itinerary = []
     commitlist = []
     afteritinerary = []
@@ -110,12 +113,13 @@ class ToDo:
 
         The lists are `itinerary`, `commitlist` and `afteritinerary`.
         """
-        print("Debug: doing delayed tasks.\n"
-              "itinerary: {0}\n"
-              "commitlist: {1}\n"
-              "afteritinerary: {2}\n".format(todo.itinerary,
-                                             todo.commitlist,
-                                             todo.afteritinerary))
+        if _DEBUG:
+            print("Debug: doing delayed tasks.\n"
+                  "itinerary: {0}\n"
+                  "commitlist: {1}\n"
+                  "afteritinerary: {2}\n".format(todo.itinerary,
+                                                 todo.commitlist,
+                                                 todo.afteritinerary))
         try:
             for f, arg in todo.itinerary:
                 try:
