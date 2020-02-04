@@ -495,7 +495,8 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection" 
-                  << "Std_RandomColor" << "Separator" << "Std_Delete";
+                  << "Std_RandomColor" << "Separator" << "Std_Delete"
+                  << "Std_SendToPythonConsole";
         }
     }
     else if (strcmp(recipient,"Tree") == 0)
@@ -504,7 +505,8 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
                   << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
-                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" << "Separator";
+                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" 
+                  << "Std_SendToPythonConsole" << "Separator";
         }
     }
 }
@@ -534,7 +536,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" << "Std_SelectAll" << "Std_Delete"
+          << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" 
+          << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
           << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
           << "Std_Edit" << "Separator" << "Std_DlgPreferences";
 
