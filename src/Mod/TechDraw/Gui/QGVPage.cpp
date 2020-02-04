@@ -763,8 +763,12 @@ void QGVPage::setExporting(bool enable)
     QList<QGraphicsItem*> sceneItems = scene()->items();
     for (auto& qgi:sceneItems) {
         QGIViewPart* qgiPart = dynamic_cast<QGIViewPart *>(qgi);
+        QGIRichAnno* qgiRTA  = dynamic_cast<QGIRichAnno *>(qgi);
         if(qgiPart) {
             qgiPart->setExporting(enable);
+        }
+        if (qgiRTA) {
+            qgiRTA->setExporting(enable);
         }
     }
 }
