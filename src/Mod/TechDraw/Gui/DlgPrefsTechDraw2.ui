@@ -85,12 +85,12 @@
           </item>
           <item>
            <property name="text">
-            <string>Custom</string>
+            <string>Auto</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Auto</string>
+            <string>Custom</string>
            </property>
           </item>
          </widget>
