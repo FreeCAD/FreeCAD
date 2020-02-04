@@ -381,6 +381,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 #endif
 
+    bool treeView = false, propertyView = false;
     if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
         //work through parameter.
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -392,6 +393,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
+            treeView = true;
             TreeDockWidget* tree = new TreeDockWidget(0, this);
             tree->setObjectName
                 (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
@@ -412,6 +414,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
+            propertyView = true;
             PropertyDockView* pcPropView = new PropertyDockView(0, this);
             pcPropView->setObjectName
                 (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
@@ -431,10 +434,18 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Combo view
     if (hiddenDockWindows.find("Std_CombiView") == std::string::npos) {
-        CombiView* pcCombiView = new CombiView(0, this);
-        pcCombiView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
-        pcCombiView->setMinimumWidth(150);
-        pDockMgr->registerDockWindow("Std_CombiView", pcCombiView);
+        bool enable = !treeView || !propertyView;
+        if(!enable) {
+            ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");
+            enable = group->GetBool("Enabled", true);
+        }
+        if(enable) {
+            CombiView* pcCombiView = new CombiView(0, this);
+            pcCombiView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
+            pcCombiView->setMinimumWidth(150);
+            pDockMgr->registerDockWindow("Std_CombiView", pcCombiView);
+        }
     }
 
 #if QT_VERSION < 0x040500
