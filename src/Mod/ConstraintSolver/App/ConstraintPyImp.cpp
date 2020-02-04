@@ -36,7 +36,7 @@ PyObject* ConstraintPy::netError(PyObject* args)
 
     HValueSet hvals (vals, false);
     DualNumber ret = getConstraintPtr()->netError(*hvals);
-    return Py::new_reference_to(pyDualNumber(ret));
+    return ret.getPyObject();
 
 }
 
@@ -54,7 +54,7 @@ PyObject* ConstraintPy::errorVec(PyObject* args)
 
     Py::List ret(errvec.size());
     for(int i = 0; i < errvec.size(); ++i){
-        ret[i] = pyDualNumber(errvec[i]);
+        ret[i] = Py::asObject(errvec[i].getPyObject());
     }
     return Py::new_reference_to(ret);
 }

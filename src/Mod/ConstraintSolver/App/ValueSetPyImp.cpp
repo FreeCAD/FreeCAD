@@ -120,7 +120,7 @@ PyObject*  ValueSetPy::sequence_item(PyObject* self, Py_ssize_t index)
         return nullptr;
     }
     DualNumber v = (*myself)[int(index)];
-    return Py::new_reference_to(pyDualNumber(v));
+    return v.getPyObject();
 }
 
 PyObject*  ValueSetPy::mapping_subscript(PyObject* self, PyObject* key)
@@ -140,7 +140,7 @@ PyObject*  ValueSetPy::mapping_subscript(PyObject* self, PyObject* key)
     } else if (PyObject_TypeCheck(key, &ParameterRefPy::Type)) {
         HParameterRef hp(key, false);
         DualNumber v = myself->get(*hp);
-        return Py::new_reference_to(pyDualNumber(v));
+        return v.getPyObject();
     }
     PyErr_Format(PyExc_NotImplementedError, "Indexing can be by numbers and by parameter objects. Got %s", Py_TYPE(key)->tp_name);
     return nullptr;

@@ -19,9 +19,7 @@ PyObject* SimpleConstraintPy::error1(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!", &(ValueSetPy::Type), &pyvals))
         return nullptr;
     HValueSet vals(pyvals, false);
-    return Py::new_reference_to(pyDualNumber(
-        getSimpleConstraintPtr()->error1(*vals)
-    ));
+    return getSimpleConstraintPtr()->error1(*vals).getPyObject();
 }
 
 

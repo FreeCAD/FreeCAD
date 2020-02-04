@@ -46,13 +46,6 @@ inline Py::List asPyList(Vec& vec){ //vec is usually not changed... unless getPy
     return ret;
 }
 
-inline Py::Tuple pyDualNumber(Base::DualNumber v){
-    Py::Tuple tup(2);
-    tup[0] = Py::Float(v.re);
-    tup[1] = Py::Float(v.du);
-    return tup;
-}
-
 //temporary replacement for PyCXX's Object:::setAttr, that doesn't absorb the original error, for until PyCXX is uptated
 inline void setAttr(Py::Object obj, std::string attrname, Py::Object value)
 {
