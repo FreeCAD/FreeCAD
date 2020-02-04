@@ -1130,6 +1130,9 @@ void StdCmdDelete::activated(int iMsg)
             commitCommand();
             return;
         }
+
+        App::TransactionLocker tlock;
+
         Gui::getMainWindow()->setUpdatesEnabled(false);
         auto editDoc = Application::Instance->editDocument();
         ViewProviderDocumentObject *vpedit = 0;
