@@ -252,7 +252,6 @@ class _TaskPanelFemResultShow:
             self.form.sb_displacement_factor_max.setValue(10. * scale_factor)
             self.form.sb_displacement_factor.setValue(scale_factor)
 
-
     def restore_result_dialog(self):
         try:
             rt = FreeCAD.FEM_dialog["results_type"]
@@ -302,8 +301,8 @@ class _TaskPanelFemResultShow:
 
             df = FreeCAD.FEM_dialog["disp_factor"]
             dfm = FreeCAD.FEM_dialog["disp_factor_max"]
-            #self.form.hsb_displacement_factor.setMaximum(dfm)
-            #self.form.hsb_displacement_factor.setValue(df)
+            # self.form.hsb_displacement_factor.setMaximum(dfm)
+            # self.form.hsb_displacement_factor.setValue(df)
             self.form.sb_displacement_factor_max.setValue(dfm)
             self.form.sb_displacement_factor.setValue(df)
         except:
@@ -576,7 +575,9 @@ class _TaskPanelFemResultShow:
         if value == 0.:
             self.form.hsb_displacement_factor.setValue(0)
         else:
-            self.form.hsb_displacement_factor.setValue(self.form.sb_displacement_factor.value() / value * 100.)
+            self.form.hsb_displacement_factor.setValue(
+                self.form.sb_displacement_factor.value() / value * 100.
+            )
 
     def sb_disp_factor_changed(self, value):
         FreeCAD.FEM_dialog["disp_factor"] = value
@@ -585,7 +586,9 @@ class _TaskPanelFemResultShow:
         if self.form.sb_displacement_factor_max.value() == 0.:
             self.form.hsb_displacement_factor.setValue(0.)
         else:
-            self.form.hsb_displacement_factor.setValue(value / self.form.sb_displacement_factor_max.value() * 100.)
+            self.form.hsb_displacement_factor.setValue(
+                value / self.form.sb_displacement_factor_max.value() * 100.
+            )
 
     def disable_empty_result_buttons(self):
         """ disable radio buttons if result does not exists in result object"""
