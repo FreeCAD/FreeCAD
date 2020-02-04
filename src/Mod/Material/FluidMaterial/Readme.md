@@ -4,13 +4,15 @@
 
 ## User defined material
 
-To prevent the database from becomming inefficiently large it is only limited to commonly used variables at 20 degrees Celcius at 1 atm.  
+To prevent the database from becoming inefficiently large it is only limited to commonly used variables at 20 degrees Celsius at 1 atm.  
 
 Users can defined new material, either in Fem material card editor, or directly generate textual material file, * .FCMat, see example in this folder.   
 
-To enable new material, go to FreeCAD menu "Edit->Preference..." Cfd preference page (select on the left panel) and switch to materail tab on the right.  Browse to your material folder, and save/apply this preference, new material will b
+To enable new material, go to FreeCAD menu "Edit->Preference..." Cfd preference page (select on the left panel) and switch to materiai tab on the right. 
 
-Material with same name as FreeCAD material has higher priority, so user defined` Water` material will not appear in Fem material task panel's dropbox list, just give it a different name!
+Browse to your material folder, and save/apply this preference, new material will be Material with same name as FreeCAD material has higher priority,
+
+so user defined` Water` material will not appear in Fem material task panel's dropbox list, just give it a different name!
 
 ### Edit material value
 
