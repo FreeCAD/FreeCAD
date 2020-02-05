@@ -24,6 +24,7 @@
 """Unit test for the Draft Workbench, object creation tests."""
 
 import unittest
+import math
 import FreeCAD as App
 import Draft
 import drafttests.auxiliary as aux
@@ -205,6 +206,22 @@ class DraftCreation(unittest.TestCase):
         obj2 = Draft.makeDimension(circ, 0,
                                    p3="diameter", p4=Vector(3, 1, 0))
         self.assertTrue(obj1 and obj2, "'{}' failed".format(operation))
+
+    def test_dimension_angular(self):
+        """Create an angular dimension between two lines at given angles."""
+        operation = "Draft Dimension Angular"
+        _msg("  Test '{}'".format(operation))
+        _msg("  Occasionally crashes")
+        center = Vector(0, 0, 0)
+        angle1 = math.radians(60)
+        angle2 = math.radians(10)
+        p3 = Vector(3, 1, 0)
+        _msg("  center={}".format(center))
+        _msg("  angle1={0}, angle2={1}".format(math.degrees(angle1),
+                                               math.degrees(angle2)))
+        _msg("  point={}".format(p3))
+        obj = Draft.makeAngularDimension(center, [angle1, angle2], p3)
+        self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_bspline(self):
         """Create a BSpline of three points."""
