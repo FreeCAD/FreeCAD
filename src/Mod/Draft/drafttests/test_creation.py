@@ -134,8 +134,9 @@ class DraftCreation(unittest.TestCase):
         c = Vector(0, 5, 0)
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
-        Draft.make_arc_3points = _fake_function
-        obj = Draft.make_arc_3points(a, b, c)
+
+        import draftobjects.arc_3points as arc3
+        obj = arc3.make_arc_3points([a, b, c])
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_ellipse(self):
