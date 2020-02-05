@@ -30,6 +30,8 @@
 # include <QPushButton>
 #endif
 
+#include <QStyledItemDelegate>
+
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -51,6 +53,19 @@
 
 using namespace Gui::Dialog;
 
+class ItemDelegate: public QStyledItemDelegate {
+public:
+    ItemDelegate(QObject* parent=0): QStyledItemDelegate(parent) {}
+
+    virtual QWidget* createEditor(QWidget *parent,
+            const QStyleOptionViewItem &option, const QModelIndex &index) const
+    {
+        if(index.column() != 1)
+            return nullptr;
+        return QStyledItemDelegate::createEditor(parent, option, index);
+    }
+};
+
 /* TRANSLATOR Gui::Dialog::DlgPropertyLink */
 
 DlgPropertyLink::DlgPropertyLink(QWidget* parent)
@@ -66,6 +81,8 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
     timer->setSingleShot(true);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
+    ui->treeWidget->setEditTriggers(QAbstractItemView::DoubleClicked);
+    ui->treeWidget->setItemDelegate(new ItemDelegate(this));
     ui->treeWidget->setMouseTracking(true);
     connect(ui->treeWidget, SIGNAL(itemEntered(QTreeWidgetItem*, int)),
             this, SLOT(onItemEntered(QTreeWidgetItem*)));
@@ -79,7 +96,7 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
 
     connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(onClicked(QAbstractButton*)));
 
-    refreshButton = ui->buttonBox->addButton(tr("Refresh"), QDialogButtonBox::ActionRole);
+    refreshButton = ui->buttonBox->addButton(tr("Reset"), QDialogButtonBox::ActionRole);
     resetButton = ui->buttonBox->addButton(tr("Clear"), QDialogButtonBox::ResetRole);
 }
 
@@ -268,6 +285,8 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         ui->treeWidget->setSelectionMode(QAbstractItemView::MultiSelection);
     }
 
+    ui->checkSubObject->setVisible(allowSubObject);
+
     if(!allowSubObject) {
         ui->treeWidget->setColumnCount(1);
     } else {
@@ -309,6 +328,16 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
 
     if(oldLinks.isEmpty())
         return;
+
+    if(allowSubObject) {
+        for(auto &link : oldLinks) {
+            auto sobj = link.getSubObject();
+            if(sobj && sobj!=link.getObject()) {
+                ui->checkSubObject->setChecked(true);
+                break;
+            }
+        }
+    }
 
     // Try to select items corresponding to the current links inside the
     // property
@@ -532,8 +561,9 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
             obj = obj->getSubObject(subname);
             if(!obj)
                 return 0;
-        } else
+        } else {
             sobjs = obj->getSubObjectList(subname);
+        }
     }
 
     auto itDoc = docItems.find(obj->getDocument());
@@ -586,6 +616,16 @@ void DlgPropertyLink::onSelectionChanged(const SelectionChanges& msg)
 
     bool found = false;
     auto selObj = msg.Object.getObject();
+
+    std::pair<std::string,std::string> elementName;
+    const char *subname = msg.pSubName;
+    if(!ui->checkSubObject->isChecked()) {
+        selObj = App::GeoFeature::resolveElement(selObj,subname,elementName);
+        if(!selObj)
+            return;
+        subname = elementName.second.c_str();
+    }
+
     auto item = findItem(selObj, msg.pSubName, &found);
     if(!item || !found)
         return;
@@ -854,6 +894,7 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
     if(allowSubObject) {
         item->setChildIndicatorPolicy(obj->getLinkedObject(true)->getOutList().size()?
                 QTreeWidgetItem::ShowIndicator:QTreeWidgetItem::DontShowIndicator);
+        item->setFlags(item->flags() | Qt::ItemIsEditable);
     }
 
     const char *typeName = obj->getTypeId().getName();
