@@ -119,7 +119,7 @@ class DraftCreation(unittest.TestCase):
         _msg("  startangle={0}, endangle={1}".format(start_angle,
                                                      end_angle))
         obj = Draft.makeCircle(radius,
-                               start_angle, end_angle)
+                               startangle=start_angle, endangle=end_angle)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_arc_3points(self):
@@ -189,17 +189,22 @@ class DraftCreation(unittest.TestCase):
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_dimension_radial(self):
-        """Create a radial dimension. NOT IMPLEMENTED CURRENTLY."""
+        """Create a circle and then a radial dimension."""
         operation = "Draft Dimension Radial"
         _msg("  Test '{}'".format(operation))
-        a = Vector(5, 0, 0)
-        b = Vector(4, 3, 0)
-        c = Vector(0, 5, 0)
-        _msg("  a={0}, b={1}".format(a, b))
-        _msg("  c={}".format(c))
-        Draft.make_dimension_radial = aux._fake_function
-        obj = Draft.make_dimension_radial(a, b, c)
-        self.assertTrue(obj, "'{}' failed".format(operation))
+        radius = 3
+        start_angle = 0
+        end_angle = 90
+        _msg("  radius={}".format(radius))
+        _msg("  startangle={0}, endangle={1}".format(start_angle,
+                                                     end_angle))
+        circ = Draft.makeCircle(radius,
+                                startangle=start_angle, endangle=end_angle)
+        obj1 = Draft.makeDimension(circ, 0,
+                                   p3="radius", p4=Vector(1, 1, 0))
+        obj2 = Draft.makeDimension(circ, 0,
+                                   p3="diameter", p4=Vector(3, 1, 0))
+        self.assertTrue(obj1 and obj2, "'{}' failed".format(operation))
 
     def test_bspline(self):
         """Create a BSpline of three points."""
