@@ -167,12 +167,14 @@ class TestCcxTools(unittest.TestCase):
             "FEM_ccx_constraint_contact_solid_solid",
         )
 
+        """
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
             base_name=base_name,
             analysis_dir=analysis_dir,
         )
+        """
 
     # ********************************************************************************************
     def test_static_material_multiple(
