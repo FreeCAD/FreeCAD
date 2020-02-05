@@ -14,7 +14,7 @@
    <string>Link</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0">
+   <item row="6" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
@@ -31,6 +31,34 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="5" column="0">
+    <widget class="QTreeWidget" name="typeTree">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
    <item row="0" column="0">
     <widget class="QTreeWidget" name="treeWidget">
@@ -56,40 +84,26 @@
      </column>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QTreeWidget" name="typeTree">
-     <property name="selectionMode">
-      <enum>QAbstractItemView::ExtendedSelection</enum>
-     </property>
-     <property name="rootIsDecorated">
-      <bool>false</bool>
-     </property>
-     <property name="sortingEnabled">
-      <bool>true</bool>
-     </property>
-     <attribute name="headerVisible">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string notr="true">1</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item row="7" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
-    <widget class="QCheckBox" name="checkObjectType">
-     <property name="text">
-      <string>Filter by type</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QCheckBox" name="checkObjectType">
+       <property name="text">
+        <string>Filter by type</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkSubObject">
+       <property name="toolTip">
+        <string>If enabled, then 3D view selection will be syncrhonize with full object hierarchy.</string>
+       </property>
+       <property name="text">
+        <string>Sync sub-object selection</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
@@ -102,7 +116,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>treeWidget</tabstop>
-  <tabstop>checkObjectType</tabstop>
   <tabstop>typeTree</tabstop>
   <tabstop>searchBox</tabstop>
   <tabstop>buttonBox</tabstop>
