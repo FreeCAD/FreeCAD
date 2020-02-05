@@ -587,53 +587,24 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 f.write(str(MPC_nodes[i]) + ",\n")
 
     def write_surfaces_constraints_contact(self, f):
-        # get surface nodes and write them to file
+        # get faces
+        self.get_constraints_contact_faces()
+        # write faces to file
         f.write("\n***********************************************************\n")
         f.write("** Surfaces for contact constraint\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        obj = 0
         for femobj in self.contact_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             contact_obj = femobj["Object"]
             f.write("** " + contact_obj.Label + "\n")
-            cnt = 0
-            obj = obj + 1
-            for o, elem_tup in contact_obj.References:
-                for elem in elem_tup:
-                    ref_shape = o.Shape.getElement(elem)
-                    cnt = cnt + 1
-                    if ref_shape.ShapeType == "Face":
-                        if cnt == 1:
-                            name = "DEP" + str(obj)
-                        else:
-                            name = "IND" + str(obj)
-                        f.write("*SURFACE, NAME=" + name + "\n")
-
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
-                        if len(v) > 0:
-                            # volume elements found
-                            FreeCAD.Console.PrintLog(
-                                "{}, surface {}, {} touching volume elements found\n"
-                                .format(contact_obj.Label, name, len(v))
-                            )
-                            for i in v:
-                                f.write("{},S{}\n".format(i[0], i[1]))
-                        else:
-                            # try shell elements
-                            v = self.mesh_object.FemMesh.getFacesByFace(ref_shape)
-                            if len(v) > 0:
-                                FreeCAD.Console.PrintLog(
-                                    "{}, surface {}, {} touching shell elements found\n"
-                                    .format(contact_obj.Label, name, len(v))
-                                )
-                                for i in v:
-                                    f.write("{},S2\n".format(i))
-                            else:
-                                FreeCAD.Console.PrintError(
-                                    "{}, surface {}, Error: "
-                                    "Neither volume nor shell elements found!\n"
-                                    .format(contact_obj.Label, name)
-                                )
+            # slave DEP
+            f.write("*SURFACE, NAME=DEP{}\n".format(contact_obj.Name))
+            for i in femobj["ContactSlaveFaces"]:
+                f.write("{},S{}\n".format(i[0], i[1]))
+            # master IND
+            f.write("*SURFACE, NAME=IND{}\n".format(contact_obj.Name))
+            for i in femobj["ContactMasterFaces"]:
+                f.write("{},S{}\n".format(i[0], i[1]))
 
     def write_node_sets_constraints_transform(self, f):
         # get nodes
@@ -1044,17 +1015,18 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("\n***********************************************************\n")
         f.write("** Contact Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        obj = 0
         for femobj in self.contact_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            obj = obj + 1
             contact_obj = femobj["Object"]
             f.write("** " + contact_obj.Label + "\n")
-            f.write("*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n".format(obj))
-            ind_surf = "IND" + str(obj)
-            dep_surf = "DEP" + str(obj)
+            f.write(
+                "*CONTACT PAIR, INTERACTION=INT{},TYPE=SURFACE TO SURFACE\n"
+                .format(contact_obj.Name)
+            )
+            ind_surf = "IND" + contact_obj.Name
+            dep_surf = "DEP" + contact_obj.Name
             f.write(dep_surf + "," + ind_surf + "\n")
-            f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(obj))
+            f.write("*SURFACE INTERACTION, NAME=INT{}\n".format(contact_obj.Name))
             f.write("*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n")
             slope = contact_obj.Slope
             f.write(str(slope) + " \n")
@@ -1157,6 +1129,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             rev = -1 if prs_obj.Reversed else 1
             f.write("*DLOAD\n")
             for ref_shape in femobj["PressureFaces"]:
+                # the loop is needed for compatibility reason
+                # in depretiated method get_pressure_obj_faces_depreciated
+                # the face ids where per ref_shape
                 f.write("** " + ref_shape[0] + "\n")
                 for face, fno in ref_shape[1]:
                     if fno > 0:  # solid mesh face

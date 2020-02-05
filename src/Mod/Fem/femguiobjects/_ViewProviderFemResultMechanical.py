@@ -217,16 +217,18 @@ class _TaskPanelFemResultShow:
             QtCore.SIGNAL("valueChanged(int)"),
             self.hsb_disp_factor_changed
         )
-        QtCore.QObject.connect(
-            self.form.sb_displacement_factor,
-            QtCore.SIGNAL("valueChanged(int)"),
-            self.sb_disp_factor_changed
-        )
-        QtCore.QObject.connect(
-            self.form.sb_displacement_factor_max,
-            QtCore.SIGNAL("valueChanged(int)"),
-            self.sb_disp_factor_max_changed
-        )
+#         QtCore.QObject.connect(
+#             self.form.sb_displacement_factor,
+#             QtCore.SIGNAL("valueChanged(int)"),
+#             self.sb_disp_factor_changed
+#         )
+        self.form.sb_displacement_factor.valueChanged.connect(self.sb_disp_factor_changed)
+#         QtCore.QObject.connect(
+#             self.form.sb_displacement_factor_max,
+#             QtCore.SIGNAL("valueChanged(int)"),
+#             self.sb_disp_factor_max_changed
+#         )
+        self.form.sb_displacement_factor_max.valueChanged.connect(self.sb_disp_factor_max_changed)
 
         # user defined equation
         QtCore.QObject.connect(
@@ -247,11 +249,8 @@ class _TaskPanelFemResultShow:
             self.restore_initial_result_dialog()
             # initialize scale factor for show displacement
             scale_factor = get_displacement_scale_factor(self.result_obj)
+            self.form.sb_displacement_factor_max.setValue(10. * scale_factor)
             self.form.sb_displacement_factor.setValue(scale_factor)
-            self.form.hsb_displacement_factor.setValue(scale_factor)
-            diggits_scale_factor = len(str(abs(int(scale_factor))))
-            new_max_factor = 10 ** diggits_scale_factor
-            self.form.sb_displacement_factor_max.setValue(new_max_factor)
 
     def restore_result_dialog(self):
         try:
@@ -302,8 +301,8 @@ class _TaskPanelFemResultShow:
 
             df = FreeCAD.FEM_dialog["disp_factor"]
             dfm = FreeCAD.FEM_dialog["disp_factor_max"]
-            self.form.hsb_displacement_factor.setMaximum(dfm)
-            self.form.hsb_displacement_factor.setValue(df)
+            # self.form.hsb_displacement_factor.setMaximum(dfm)
+            # self.form.hsb_displacement_factor.setValue(df)
             self.form.sb_displacement_factor_max.setValue(dfm)
             self.form.sb_displacement_factor.setValue(df)
         except:
@@ -545,7 +544,7 @@ class _TaskPanelFemResultShow:
     def update_displacement(self, factor=None):
         if factor is None:
             if FreeCAD.FEM_dialog["show_disp"]:
-                factor = self.form.hsb_displacement_factor.value()
+                factor = self.form.sb_displacement_factor.value()
             else:
                 factor = 0.0
         self.mesh_obj.ViewObject.applyDisplacement(factor)
@@ -566,16 +565,32 @@ class _TaskPanelFemResultShow:
         QtGui.QApplication.restoreOverrideCursor()
 
     def hsb_disp_factor_changed(self, value):
-        self.form.sb_displacement_factor.setValue(value)
+        self.form.sb_displacement_factor.setValue(
+            value / 100. * self.form.sb_displacement_factor_max.value()
+        )
         self.update_displacement()
 
     def sb_disp_factor_max_changed(self, value):
         FreeCAD.FEM_dialog["disp_factor_max"] = value
-        self.form.hsb_displacement_factor.setMaximum(value)
+        if value < self.form.sb_displacement_factor.value():
+            self.form.sb_displacement_factor.setValue(value)
+        if value == 0.:
+            self.form.hsb_displacement_factor.setValue(0)
+        else:
+            self.form.hsb_displacement_factor.setValue(
+                self.form.sb_displacement_factor.value() / value * 100.
+            )
 
     def sb_disp_factor_changed(self, value):
         FreeCAD.FEM_dialog["disp_factor"] = value
-        self.form.hsb_displacement_factor.setValue(value)
+        if value > self.form.sb_displacement_factor_max.value():
+            self.form.sb_displacement_factor.setValue(self.form.sb_displacement_factor_max.value())
+        if self.form.sb_displacement_factor_max.value() == 0.:
+            self.form.hsb_displacement_factor.setValue(0.)
+        else:
+            self.form.hsb_displacement_factor.setValue(
+                value / self.form.sb_displacement_factor_max.value() * 100.
+            )
 
     def disable_empty_result_buttons(self):
         """ disable radio buttons if result does not exists in result object"""

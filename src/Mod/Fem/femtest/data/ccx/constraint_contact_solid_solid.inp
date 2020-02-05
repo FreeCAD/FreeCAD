@@ -4346,15 +4346,22 @@ Evolumes
 20,
 21,
 22,
-1561,
-1562,
-1563,
-1564,
-1565,
-1566,
-1567,
-1568,
-1569,
+91,
+92,
+93,
+94,
+95,
+96,
+97,
+98,
+99,
+164,
+165,
+166,
+167,
+168,
+274,
+366,
 559,
 560,
 561,
@@ -4373,15 +4380,6 @@ Evolumes
 574,
 575,
 576,
-91,
-92,
-93,
-94,
-95,
-96,
-97,
-98,
-99,
 649,
 650,
 651,
@@ -4394,20 +4392,6 @@ Evolumes
 658,
 659,
 660,
-164,
-165,
-166,
-167,
-168,
-1210,
-1211,
-1212,
-1213,
-1214,
-1215,
-1216,
-1217,
-1218,
 727,
 728,
 729,
@@ -4426,14 +4410,30 @@ Evolumes
 742,
 743,
 744,
-274,
-366,
+1210,
+1211,
+1212,
+1213,
+1214,
+1215,
+1216,
+1217,
+1218,
+1561,
+1562,
+1563,
+1564,
+1565,
+1566,
+1567,
+1568,
+1569,
 
 ***********************************************************
 ** Surfaces for contact constraint
 ** written by write_surfaces_constraints_contact function
 ** ConstraintContact
-*SURFACE, NAME=DEP1
+*SURFACE, NAME=DEPConstraintContact
 1344,S4
 1655,S1
 1703,S3
@@ -4892,7 +4892,7 @@ Evolumes
 2594,S3
 2595,S2
 2596,S3
-*SURFACE, NAME=IND1
+*SURFACE, NAME=INDConstraintContact
 1283,S2
 1286,S1
 1289,S1
@@ -5057,9 +5057,9 @@ Evolumes
 ** Contact Constraints
 ** written by write_constraints_contact function
 ** ConstraintContact
-*CONTACT PAIR, INTERACTION=INT1,TYPE=SURFACE TO SURFACE
-DEP1,IND1
-*SURFACE INTERACTION, NAME=INT1
+*CONTACT PAIR, INTERACTION=INTConstraintContact,TYPE=SURFACE TO SURFACE
+DEPConstraintContact,INDConstraintContact
+*SURFACE INTERACTION, NAME=INTConstraintContact
 *SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR
 1000000.0 
 
@@ -5359,9 +5359,9 @@ RF
 ***********************************************************
 ** CalculiX Input file
 ** written by write_footer function
-**   written by    --> FreeCAD 0.19.19441 (Git)
-**   written on    --> Sat Feb  1 13:08:12 2020
-**   file name     --> Constraint_Contact_Solid_Solid.FCStd
+**   written by    --> FreeCAD 0.19.19463 (Git)
+**   written on    --> Mon Feb  3 23:28:02 2020
+**   file name     --> 
 **   analysis name --> Analysis
 **
 **

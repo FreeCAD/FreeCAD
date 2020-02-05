@@ -22,23 +22,26 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Edge.hxx>
-  # include <TopoDS.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <Precision.hxx>
+#include <BRep_Builder.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <Precision.hxx>
 
-  # include <QGraphicsScene>
-  # include <QGraphicsSceneMouseEvent>
-  # include <QGraphicsItem>
-  # include <QPainter>
-  # include <QPaintDevice>
-  # include <QSvgGenerator>
-  #include <QRegExp>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsItem>
+#include <QPainter>
+#include <QPaintDevice>
+#include <QSvgGenerator>
+#include <QRegExp>
+#include <QTextDocument>
+#include <QTextFrame>
+#include <QTextBlock>
 
-  # include <math.h>
+# include <math.h>
 #endif
 
 #include <App/Application.h>
@@ -77,7 +80,8 @@ using namespace TechDrawGui;
 
 //**************************************************************
 QGIRichAnno::QGIRichAnno(QGraphicsItem* myParent,
-                         TechDraw::DrawRichAnno* anno)
+                         TechDraw::DrawRichAnno* anno) :
+    m_isExporting(false)
 {
     setHandlesChildEvents(false);
     setAcceptHoverEvents(false);
@@ -192,41 +196,49 @@ void QGIRichAnno::setTextItem()
 {
 //    Base::Console().Message("QGIRA::setTextItem() - %s\n",getViewName());
     TechDraw::DrawRichAnno* annoFeat = getFeature();
-
-    //convert point font sizes to (Rez,mm) font sizes
-    QRegExp rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
     QString inHtml = QString::fromUtf8(annoFeat->AnnoText.getValue());
-    QString match;
-    double mmPerPoint = 0.353;
-    double sizeConvert = Rez::getRezFactor() * mmPerPoint;
-    int pos = 0;
-    QStringList findList;
-    QStringList replList;
-    while ((pos = rxFontSize.indexIn(inHtml, pos)) != -1) {
-        QString found = rxFontSize.cap(0);
-        findList << found;
-        QString qsOldSize = rxFontSize.cap(1); 
 
-        QString repl = found;
-        double newSize = qsOldSize.toDouble();
-        newSize = newSize * sizeConvert;
-        QString qsNewSize = QString::number(newSize, 'f', 2);
-        repl.replace(qsOldSize,qsNewSize);
-        replList << repl;
-        pos += rxFontSize.matchedLength();
+    //don't do this multiplication if exporting to SVG as other apps interpret 
+    //font sizes differently from QGraphicsTextItem (?)
+    if (!getExporting()) {
+        //convert point font sizes to (Rez,mm) font sizes
+        QRegExp rxFontSize(QString::fromUtf8("font-size:([0-9]*)pt;"));
+        QString match;
+        double mmPerPoint = 0.353;
+        double sizeConvert = Rez::getRezFactor() * mmPerPoint;
+        int pos = 0;
+        QStringList findList;
+        QStringList replList;
+        while ((pos = rxFontSize.indexIn(inHtml, pos)) != -1) {
+            QString found = rxFontSize.cap(0);
+            findList << found;
+            QString qsOldSize = rxFontSize.cap(1); 
+
+            QString repl = found;
+            double newSize = qsOldSize.toDouble();
+            newSize = newSize * sizeConvert;
+            QString qsNewSize = QString::number(newSize, 'f', 2);
+            repl.replace(qsOldSize,qsNewSize);
+            replList << repl;
+            pos += rxFontSize.matchedLength();
+        }
+        QString outHtml = inHtml;
+        int iRepl = 0;
+        //TODO: check list for duplicates?
+        for ( ; iRepl < findList.size(); iRepl++) {
+            outHtml = outHtml.replace(findList[iRepl], replList[iRepl]);
+        }
+
+        m_text->setTextWidth(Rez::guiX(annoFeat->MaxWidth.getValue()));
+        m_text->setHtml(outHtml);
+    } else {
+        //TODO: fix line spacing.  common solutions (style sheet, 
+        //      QTextBlock::setLineHeight(150, QTextBlockFormat::ProportionalHeight)) don't help
+        double realWidth = m_text->boundingRect().width();
+        m_text->setTextWidth(realWidth);
+        m_text->setHtml(inHtml);
     }
-    QString outHtml = inHtml;
-    int iRepl = 0;
-    //TODO: check list for duplicates?
-    for ( ; iRepl < findList.size(); iRepl++) {
-        outHtml = outHtml.replace(findList[iRepl], replList[iRepl]);
-    }
 
-    m_text->setHtml(outHtml);
-
-    m_text->setTextWidth(Rez::guiX(annoFeat->MaxWidth.getValue()));
-
-//    m_text->showBox(annoFeat->ShowFrame.getValue());
     if (annoFeat->ShowFrame.getValue()) {
         QRectF r = m_text->boundingRect().adjusted(1,1,-1,-1);
         m_rect->setPen(rectPen());

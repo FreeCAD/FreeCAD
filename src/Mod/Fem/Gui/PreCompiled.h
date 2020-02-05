@@ -29,11 +29,13 @@
 // Importing of App classes
 #ifdef FC_OS_WIN32
 # define AppFemExport   __declspec(dllimport)
+# define FemExport   __declspec(dllimport)
 # define PartExport  __declspec(dllimport)
 # define FemGuiExport   __declspec(dllexport)
 #else // for Linux
 # define PartExport
 # define AppFemExport
+# define FemExport
 # define FemGuiExport
 #endif
 
