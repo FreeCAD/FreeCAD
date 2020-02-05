@@ -1,5 +1,3 @@
-"""Unit test for the Draft module, object creation tests.
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -23,15 +21,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit test for the Draft Workbench, object creation tests."""
 
 import unittest
 import FreeCAD as App
 import Draft
+import drafttests.auxiliary as aux
 from FreeCAD import Vector
-from .auxiliary import _msg
-from .auxiliary import _draw_header
-from .auxiliary import _no_gui
-from .auxiliary import _fake_function
+from draftutils.messages import _msg
 
 
 class DraftCreation(unittest.TestCase):
@@ -43,7 +40,7 @@ class DraftCreation(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        _draw_header()
+        aux._draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -91,7 +88,7 @@ class DraftCreation(unittest.TestCase):
         App.ActiveDocument.recompute()
 
         if not App.GuiUp:
-            _no_gui("DraftFillet")
+            aux._no_gui("DraftFillet")
             self.assertTrue(True)
             return
 
@@ -200,7 +197,7 @@ class DraftCreation(unittest.TestCase):
         c = Vector(0, 5, 0)
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
-        Draft.make_dimension_radial = _fake_function
+        Draft.make_dimension_radial = aux._fake_function
         obj = Draft.make_dimension_radial(a, b, c)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -231,9 +228,10 @@ class DraftCreation(unittest.TestCase):
         _msg("  Test '{}'".format(operation))
         _msg("  In order to test this, a font file is needed.")
         text = "Testing Shapestring "
-        font = None  # TODO: get a font file here
+        # TODO: find a reliable way to always get a font file here
+        font = None
         _msg("  text='{0}', font='{1}'".format(text, font))
-        Draft.makeShapeString = _fake_function
+        Draft.makeShapeString = aux._fake_function
         obj = Draft.makeShapeString("Text", font)
         # Draft.makeShapeString("Text", FontFile="")
         self.assertTrue(obj, "'{}' failed".format(operation))

@@ -1,5 +1,3 @@
-"""Unit test for the Draft module, GUI import tests.
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -23,57 +21,57 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit test for the Draft Workbench, GUI import tests."""
 
 import unittest
 import FreeCAD as App
-from .auxiliary import _draw_header
-from .auxiliary import _no_gui
-from .auxiliary import _import_test
+import drafttests.auxiliary as aux
 
 
 class DraftGuiImport(unittest.TestCase):
     """Import the Draft graphical modules."""
+
     # No document is needed to test 'import DraftGui' or other modules
     # thus 'setUp' just draws a line, and 'tearDown' isn't defined.
     def setUp(self):
-        _draw_header()
+        aux._draw_header()
 
     def test_import_gui_draftgui(self):
         """Import Draft TaskView GUI tools."""
         module = "DraftGui"
         if not App.GuiUp:
-            _no_gui(module)
+            aux._no_gui(module)
             self.assertTrue(True)
             return
-        imported = _import_test(module)
+        imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_snap(self):
         """Import Draft snapping."""
         module = "DraftSnap"
         if not App.GuiUp:
-            _no_gui(module)
+            aux._no_gui(module)
             self.assertTrue(True)
             return
-        imported = _import_test(module)
+        imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_tools(self):
         """Import Draft graphical commands."""
         module = "DraftTools"
         if not App.GuiUp:
-            _no_gui(module)
+            aux._no_gui(module)
             self.assertTrue(True)
             return
-        imported = _import_test(module)
+        imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_import_gui_draft_trackers(self):
         """Import Draft tracker utilities."""
         module = "DraftTrackers"
         if not App.GuiUp:
-            _no_gui(module)
+            aux._no_gui(module)
             self.assertTrue(True)
             return
-        imported = _import_test(module)
+        imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))

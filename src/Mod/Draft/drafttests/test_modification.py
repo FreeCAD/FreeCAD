@@ -1,5 +1,3 @@
-"""Unit test for the Draft module, object modification tests.
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -23,15 +21,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit test for the Draft Workbench, object modification tests."""
 
 import unittest
 import FreeCAD as App
 import Draft
+import drafttests.auxiliary as aux
 from FreeCAD import Vector
-from .auxiliary import _msg
-from .auxiliary import _wrn
-from .auxiliary import _draw_header
-from .auxiliary import _fake_function
+from draftutils.messages import _msg, _wrn
 
 
 class DraftModification(unittest.TestCase):
@@ -43,7 +40,7 @@ class DraftModification(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        _draw_header()
+        aux._draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -160,7 +157,7 @@ class DraftModification(unittest.TestCase):
         line2 = Draft.makeLine(c, d)
         App.ActiveDocument.recompute()
 
-        Draft.trim_objects = _fake_function
+        Draft.trim_objects = aux._fake_function
         obj = Draft.trim_objects(line, line2)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -181,7 +178,7 @@ class DraftModification(unittest.TestCase):
         line2 = Draft.makeLine(c, d)
         App.ActiveDocument.recompute()
 
-        Draft.extrude = _fake_function
+        Draft.extrude = aux._fake_function
         obj = Draft.extrude(line, line2)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -577,7 +574,7 @@ class DraftModification(unittest.TestCase):
         line = Draft.makeLine(a, b)
         direction = Vector(4, 1, 0)
 
-        Draft.stretch = _fake_function
+        Draft.stretch = aux._fake_function
         obj = Draft.stretch(line, direction)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
