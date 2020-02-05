@@ -1,5 +1,3 @@
-"""Auxiliary functions for the unit tests of the Draft Workbench.
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -23,38 +21,32 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Auxiliary functions for the unit tests of the Draft Workbench."""
 
-import FreeCAD as App
-
-
-def _msg(text, end="\n"):
-    App.Console.PrintMessage(text + end)
-
-
-def _wrn(text, end="\n"):
-    App.Console.PrintWarning(text + end)
-
-
-def _log(text, end="\n"):
-    App.Console.PrintLog(text + end)
+import traceback
+from draftutils.messages import _msg
 
 
 def _draw_header():
+    """Draw a header for the tests."""
     _msg("")
     _msg(78*"-")
 
 
 def _import_test(module):
+    """Try importing a module."""
     _msg("  Try importing '{}'".format(module))
     try:
         imported = __import__("{}".format(module))
     except ImportError as exc:
         imported = False
         _msg("  {}".format(exc))
+        _msg(traceback.format_exc())
     return imported
 
 
 def _no_gui(module):
+    """Print a message that there is no user interface."""
     _msg("  #-----------------------------------------------------#\n"
          "  #    No GUI; cannot test for '{}'\n"
          "  #-----------------------------------------------------#\n"
@@ -62,6 +54,7 @@ def _no_gui(module):
 
 
 def _no_test():
+    """Print a message that the test is not currently implemented."""
     _msg("  #-----------------------------------------------------#\n"
          "  #    This test is not implemented currently\n"
          "  #-----------------------------------------------------#\n"
@@ -69,6 +62,7 @@ def _no_test():
 
 
 def _fake_function(p1=None, p2=None, p3=None, p4=None, p5=None):
+    """Print a message for a test that doesn't actually exist."""
     _msg("  Arguments to placeholder function")
     _msg("  p1={0}; p2={1}".format(p1, p2))
     _msg("  p3={0}; p4={1}".format(p3, p4))

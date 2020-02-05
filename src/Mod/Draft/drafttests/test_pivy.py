@@ -1,5 +1,3 @@
-"""Unit test for the Draft module, Pivy (Coin) tests.
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -23,14 +21,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit test for the Draft Workbench, Coin (Pivy) tests."""
 
 import unittest
 import FreeCAD as App
 import FreeCADGui as Gui
-from .auxiliary import _msg
-from .auxiliary import _draw_header
-from .auxiliary import _no_gui
-from .auxiliary import _import_test
+import drafttests.auxiliary as aux
+from draftutils.messages import _msg
 
 
 class DraftPivy(unittest.TestCase):
@@ -42,7 +39,7 @@ class DraftPivy(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        _draw_header()
+        aux._draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -54,16 +51,16 @@ class DraftPivy(unittest.TestCase):
         _msg("  Temporary document '{}'".format(self.doc_name))
 
     def test_pivy_import(self):
-        """Import Pivy Coin."""
+        """Import Coin (Pivy)."""
         module = "pivy.coin"
-        imported = _import_test(module)
+        imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
     def test_pivy_draw(self):
         """Use Coin (pivy.coin) to draw a cube on the active view."""
         module = "pivy.coin"
         if not App.GuiUp:
-            _no_gui(module)
+            aux._no_gui(module)
             self.assertTrue(True)
             return
 
