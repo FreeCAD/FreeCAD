@@ -344,9 +344,9 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         // not its name. In this case we would force to read-in a wrong property
         // type and the behaviour would be undefined.
         try {
-            auto prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
+            auto prop = getPropertyByName(PropName.c_str());
             if(!prop)
-                prop = getPropertyByName(PropName.c_str());
+                prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
 
             decltype(Property::StatusBits) status;
             if(reader.hasAttribute("status")) {
