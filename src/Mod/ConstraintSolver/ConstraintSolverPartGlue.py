@@ -1,9 +1,20 @@
 import FreeCAD as App
 
 exports = [ #ConstraintSolver copies methods listed here into itself
+'show',
 'toPartGeom',
 'fromPartGeom',
 ]
+
+def show(obj, valueset = None):
+    """show(obj, valueset = None): displays a constraintsolver object in 3d view"""
+    import ConstraintSolver as FCS
+    import Part
+    if obj.isDerivedFrom('FCS::G2D::ParaGeometry2D'):
+        geom = toPartGeom(obj, valueset)
+        Part.show(geom.toShape())
+    else:
+        raise TypeError('type not supported: ' + str(type(obj)))
 
 def toPartGeom(cs_geom, valueset = None, part_geom = None):
     """toPartGeom(cs_geom, valueset = None, part_geom = None): converts Para-geometry to Part geometry.
@@ -48,11 +59,11 @@ def toPartGeom_G2D_Circle(cs_shape, valueset, part_geom):
         if cs_shape.IsFull:
             part_geom = Part.Circle()
         else:
-            part_geom = Part.ArcOfCircle(Part.Circle, 0, 1)
+            part_geom = Part.ArcOfCircle(Part.Circle(), 0, 1)
     part_geom.Location = cs_shape.center.value(valueset).re
     part_geom.Axis = App.Vector(0,0,1)
     part_geom.XAxis = App.Vector(1,0,0)
-    Part_geom.setParameterRange(valueset[cs_shape.u0], valueset[cs_shape.u1])
+    part_geom.setParameterRange(valueset[cs_shape.u0].re, valueset[cs_shape.u1].re)
     return part_geom
 
 def fromPartGeom(part_geom, cs_shape = None, store = None):
