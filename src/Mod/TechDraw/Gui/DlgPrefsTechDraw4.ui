@@ -172,10 +172,10 @@ can be a performance penalty in complex models.</string>
            <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>UseGlobalDecimals</cstring>
+           <cstring>HandleFaces</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Dimensions</cstring>
+           <cstring>/Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
