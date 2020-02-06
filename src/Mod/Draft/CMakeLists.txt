@@ -46,6 +46,7 @@ SET(Draft_tests
     drafttests/test_oca.py
     drafttests/test_airfoildat.py
     drafttests/draft_test_objects.py
+    drafttests/README.md
 )
 
 SET(Draft_utilities
@@ -56,6 +57,7 @@ SET(Draft_utilities
     draftutils/todo.py
     draftutils/translate.py
     draftutils/messages.py
+    draftutils/README.md
 )
 
 SET(Draft_objects
@@ -64,6 +66,7 @@ SET(Draft_objects
     draftobjects/orthoarray.py
     draftobjects/polararray.py
     draftobjects/arc_3points.py
+    draftobjects/README.md
 )
 
 SET(Draft_view_providers
@@ -71,6 +74,7 @@ SET(Draft_view_providers
     draftviewproviders/view_circulararray.py
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
+    draftviewproviders/README.md
 )
 
 SET(Draft_GUI_tools
@@ -80,6 +84,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
     draftguitools/gui_arrays.py
+    draftguitools/README.md
 )
 
 SET(Draft_task_panels
@@ -87,6 +92,7 @@ SET(Draft_task_panels
     drafttaskpanels/task_circulararray.py
     drafttaskpanels/task_orthoarray.py
     drafttaskpanels/task_polararray.py
+    drafttaskpanels/README.md
 )
 
 SET(Draft_SRCS_all
