@@ -41,7 +41,6 @@ doc = run_rcwall2d()
 doc = run_thermomech_flow1d()
 doc = run_thermomech_spine()
 
-
 doc = run_ccx_cantilevernodeload("calculix")
 doc = run_ccx_cantilevernodeload("ccxtools")
 doc = run_ccx_cantilevernodeload("z88")
@@ -286,6 +285,8 @@ def run_all():
     run_ccx_cantileverfaceload()
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
+    run_constraint_contact_shell_shell()
+    run_constraint_contact_solid_solid()
     run_material_nl_platewithhole()
     run_material_multiple_twoboxes()
     run_rcwall2d()
