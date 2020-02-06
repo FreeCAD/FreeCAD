@@ -195,6 +195,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/ccx/Flow1D_thermomech_expected_values
     femtest/data/ccx/Flow1D_thermomech_inout_nodes.txt
     femtest/data/ccx/Flow1D_thermomech.FCStd
+    femtest/data/ccx/thermomech_bimetall.inp
 )
 
 SET(FemTestsElmer_SRCS
