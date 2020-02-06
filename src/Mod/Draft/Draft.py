@@ -297,11 +297,13 @@ def makeDimension(p1,p2,p3=None,p4=None):
         l.append((p1,"Edge"+str(p2+1)))
         if p3 == "radius":
             #l.append((p1,"Center"))
-            obj.ViewObject.Override = "R $dim"
+            if FreeCAD.GuiUp:
+                obj.ViewObject.Override = "R $dim"
             obj.Diameter = False
         elif p3 == "diameter":
             #l.append((p1,"Diameter"))
-            obj.ViewObject.Override = "Ø $dim"
+            if FreeCAD.GuiUp:
+                obj.ViewObject.Override = "Ø $dim"
             obj.Diameter = True
         obj.LinkedGeometry = l
         obj.Support = p1
