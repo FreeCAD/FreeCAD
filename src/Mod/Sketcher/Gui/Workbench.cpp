@@ -90,6 +90,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     addSketcherWorkbenchVirtualSpace(*virtualspace);
 
     addSketcherWorkbenchSketchActions( *sketch );
+    *sketch << "Sketcher_StopOperation";
     *sketch << geom
             << cons
             << consaccel
