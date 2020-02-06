@@ -56,7 +56,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # parts
     # bottom box
-    bottom_box_obj = doc.addObject("Part::Box", "TopBox")
+    bottom_box_obj = doc.addObject("Part::Box", "BottomBox")
     bottom_box_obj.Length = 100
     bottom_box_obj.Width = 25
     bottom_box_obj.Height = 500
@@ -68,7 +68,7 @@ def setup(doc=None, solvertype="ccxtools"):
     doc.recompute()
 
     # top half cylinder, https://forum.freecadweb.org/viewtopic.php?f=18&t=43001#p366111
-    top_halfcyl_obj = doc.addObject("Part::Cylinder", "BottomHalfCylinder")
+    top_halfcyl_obj = doc.addObject("Part::Cylinder", "TopHalfCylinder")
     top_halfcyl_obj.Radius = 30
     top_halfcyl_obj.Height = 500
     top_halfcyl_obj.Angle = 180
