@@ -487,6 +487,13 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                     return true;
                 edit->buttonPress = pressed;
             }
+            // More control over Sketcher edit mode Esc key behavior
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=42207
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool key_esc = hGrp->GetBool("ViewEscKey",true);
+            if (!key_esc) {
+                return true;
+            }
             return false;
         }
     default:

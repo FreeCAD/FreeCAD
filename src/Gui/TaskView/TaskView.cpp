@@ -455,6 +455,11 @@ bool TaskView::event(QEvent* event)
 
 void TaskView::keyPressEvent(QKeyEvent* ke)
 {
+    // More control over Tasks panel Esc key behavior
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=42207
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    bool key_esc = hGrp->GetBool("TasksEscKey",true);
+
     if (ActiveCtrl && ActiveDialog) {
         if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter) {
             // get all buttons of the complete task dialog
@@ -477,7 +482,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
                 }
             }
         }
-        else if (ke->key() == Qt::Key_Escape) {
+        else if (ke->key() == Qt::Key_Escape and key_esc) {
             // get only the buttons of the button box
             QDialogButtonBox* box = ActiveCtrl->standardButtons();
             QList<QAbstractButton*> list = box->buttons();
