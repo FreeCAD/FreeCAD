@@ -18,6 +18,12 @@
 	  <UserDocu>2D point</UserDocu>
 	</Documentation>
     
+    <Methode Name="value">
+	  <Documentation>
+		<UserDocu>value(valueset): returns point position as G2D.Vector</UserDocu>
+	  </Documentation>
+	</Methode>	
+
     
   </PythonExport>
 </GenerateModel>

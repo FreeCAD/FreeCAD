@@ -5,6 +5,7 @@
 
 #include "ParameterStorePy.h"
 #include "ParameterRefPy.h"
+#include "ValueSetPy.h"
 
 using namespace FCS;
 
@@ -73,6 +74,14 @@ std::string ParaPointPy::representation(void) const
     return ParaGeometryPy::representation();
 }
 
+
+PyObject* ParaPointPy::value(PyObject *args)
+{
+    PyObject* pcvs = nullptr;
+    if (PyArg_ParseTuple(args, "O!",&(ValueSetPy::Type), &pcvs))
+        return nullptr;
+    return getParaPointPtr()->value(*HValueSet(pcvs, false)).getPyObject();
+}
 
 
 PyObject *ParaPointPy::getCustomAttributes(const char* attr) const
