@@ -78,7 +78,7 @@ std::string ParaPointPy::representation(void) const
 PyObject* ParaPointPy::value(PyObject *args)
 {
     PyObject* pcvs = nullptr;
-    if (PyArg_ParseTuple(args, "O!",&(ValueSetPy::Type), &pcvs))
+    if (!PyArg_ParseTuple(args, "O!",&(ValueSetPy::Type), &pcvs))
         return nullptr;
     return getParaPointPtr()->value(*HValueSet(pcvs, false)).getPyObject();
 }
