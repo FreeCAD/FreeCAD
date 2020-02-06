@@ -287,6 +287,12 @@ void  VectorPy::sety(Py::Object arg)
     throw Py::AttributeError("Not yet implemented");
 }
 
+Py::Object VectorPy::getre(void) const
+{
+    Base::Vector3d v(value.x.re, value.y.re, 0);
+    return Py::asObject(new Base::VectorPy(new Base::Vector3d(v)));
+}
+
 PyObject *VectorPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

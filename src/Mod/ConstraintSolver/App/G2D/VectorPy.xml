@@ -60,6 +60,13 @@
 			</Documentation>
 			<Parameter Name="y" Type="Object"/>
 		</Attribute>
+		<Attribute Name="re" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Real part of this vector, as FreeCAD.Vector(x,y,0)
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="re" Type="Object"/>
+		</Attribute>
 		<Sequence
 			sq_length="true"
 			sq_concat="false"
