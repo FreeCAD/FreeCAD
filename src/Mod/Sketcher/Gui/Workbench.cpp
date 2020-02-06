@@ -176,12 +176,7 @@ template <typename T>
 void SketcherAddWorkspaceRegularPolygon(T& geom);
 template <>
 inline void SketcherAddWorkspaceRegularPolygon<Gui::MenuItem>(Gui::MenuItem& geom){
-    geom    << "Sketcher_CreateTriangle"
-            << "Sketcher_CreateSquare"
-            << "Sketcher_CreatePentagon"
-            << "Sketcher_CreateHexagon"
-            << "Sketcher_CreateHeptagon"
-            << "Sketcher_CreateOctagon";
+    geom    << "Sketcher_CompCreateRegularPolygon";
 }
 template <>
 inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
