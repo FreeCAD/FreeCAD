@@ -276,7 +276,11 @@ class CommandAddonManager:
 
         import AddonManager_rc
         from PySide import QtGui
-        addonicon = QtGui.QIcon(":/icons/" + repo + "_workbench_icon.svg")
+        path = ":/icons/" + repo + "_workbench_icon.svg"
+        if QtCore.QFile.exists(path):
+            addonicon = QtGui.QIcon(path)
+        else:
+            addonicon = QtGui.QIcon(":/icons/document-package.svg")
         if addonicon.isNull():
             addonicon = QtGui.QIcon(":/icons/document-package.svg")
         return addonicon
