@@ -410,6 +410,7 @@ def getColorFromStyledItem(styled_item):
     if rgb_color is not None:
         col = [rgb_color.Red, rgb_color.Green, rgb_color.Blue]
         col.append(int(transparency) if transparency else 0)
+        col = tuple(col)
         # print(col)
     else:
         col = None

@@ -219,6 +219,27 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
+    def test_thermomech_bimetall(
+        self
+    ):
+        # set up
+        from femexamples.thermomech_bimetall import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "thermomech bimetall"
+        base_name = "thermomech_bimetall"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            "FEM_ccx_thermomech_bimetall"
+        )
+
+        # test input file writing
+        self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+        )
+
+    # ********************************************************************************************
     def test_thermomech_flow1D_analysis(
         self
     ):

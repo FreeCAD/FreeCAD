@@ -89,6 +89,8 @@ def setup(doc=None, solvertype="ccxtools"):
 
     BooleanFrag = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
     BooleanFrag.Objects = [upper_tube, force_point]
+    if FreeCAD.GuiUp:
+        upper_tube.ViewObject.hide()
 
     compound = doc.addObject("Part::Compound", "Compound")
     compound.Links = [BooleanFrag, lower_tube]

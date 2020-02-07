@@ -217,17 +217,8 @@ class _TaskPanelFemResultShow:
             QtCore.SIGNAL("valueChanged(int)"),
             self.hsb_disp_factor_changed
         )
-#         QtCore.QObject.connect(
-#             self.form.sb_displacement_factor,
-#             QtCore.SIGNAL("valueChanged(int)"),
-#             self.sb_disp_factor_changed
-#         )
+
         self.form.sb_displacement_factor.valueChanged.connect(self.sb_disp_factor_changed)
-#         QtCore.QObject.connect(
-#             self.form.sb_displacement_factor_max,
-#             QtCore.SIGNAL("valueChanged(int)"),
-#             self.sb_disp_factor_max_changed
-#         )
         self.form.sb_displacement_factor_max.valueChanged.connect(self.sb_disp_factor_max_changed)
 
         # user defined equation
@@ -321,9 +312,10 @@ class _TaskPanelFemResultShow:
         FreeCAD.FEM_dialog = {
             "results_type": "None",
             "show_disp": False,
-            "disp_factor": 0,
-            "disp_factor_max": 100
+            "disp_factor": 0.,
+            "disp_factor_max": 100.
         }
+        self.form.sb_displacement_factor_max.setValue(100.)    # init non standard values
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -488,7 +480,7 @@ class _TaskPanelFemResultShow:
             s2y = np.array(ps2vector[:, 1])
             s2z = np.array(ps2vector[:, 2])
         if self.result_obj.PS3Vector:
-            ps3vector = np.array(self.result_obj.PS1Vector)
+            ps3vector = np.array(self.result_obj.PS3Vector)
             s3x = np.array(ps3vector[:, 0])
             s3y = np.array(ps3vector[:, 1])
             s3z = np.array(ps3vector[:, 2])
@@ -578,7 +570,7 @@ class _TaskPanelFemResultShow:
             self.form.hsb_displacement_factor.setValue(0)
         else:
             self.form.hsb_displacement_factor.setValue(
-                self.form.sb_displacement_factor.value() / value * 100.
+                round(self.form.sb_displacement_factor.value() / value * 100.)
             )
 
     def sb_disp_factor_changed(self, value):
@@ -589,7 +581,7 @@ class _TaskPanelFemResultShow:
             self.form.hsb_displacement_factor.setValue(0.)
         else:
             self.form.hsb_displacement_factor.setValue(
-                value / self.form.sb_displacement_factor_max.value() * 100.
+                round(value / self.form.sb_displacement_factor_max.value() * 100.)
             )
 
     def disable_empty_result_buttons(self):

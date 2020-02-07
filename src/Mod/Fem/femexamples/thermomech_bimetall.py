@@ -22,21 +22,24 @@
 # ***************************************************************************
 
 
-# connstraint contact for solid to solid mesh
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
+# thermomechanical bimetall
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=43040&start=10#p366664
+# analytical solution 7.05 mm deflection in the invar material direction
+# see post in the forum link
+# this file has 7.15 mm max deflection
 # to run the example use:
 """
-from femexamples.constraint_contact_solid_solid import setup
+from femexamples.thermomech_bimetall import setup
 setup()
 
 """
 
 
 import FreeCAD
-import Part
 import ObjectsFem
 import Fem
 from FreeCAD import Vector, Rotation
+import BOPTools.SplitFeatures
 
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
@@ -58,35 +61,27 @@ def setup(doc=None, solvertype="ccxtools"):
     # bottom box
     bottom_box_obj = doc.addObject("Part::Box", "BottomBox")
     bottom_box_obj.Length = 100
-    bottom_box_obj.Width = 25
-    bottom_box_obj.Height = 500
-    bottom_box_obj.Placement = FreeCAD.Placement(
-        Vector(186, 0, -247),
+    bottom_box_obj.Width = 5
+    bottom_box_obj.Height = 1
+
+    # top box
+    top_box_obj = doc.addObject("Part::Box", "TopBox")
+    top_box_obj.Length = 100
+    top_box_obj.Width = 5
+    top_box_obj.Height = 1
+    top_box_obj.Placement = FreeCAD.Placement(
+        Vector(0, 0, 1),
         Rotation(0, 0, 0),
         Vector(0, 0, 0),
     )
     doc.recompute()
 
-    # top half cylinder, https://forum.freecadweb.org/viewtopic.php?f=18&t=43001#p366111
-    top_halfcyl_obj = doc.addObject("Part::Cylinder", "TopHalfCylinder")
-    top_halfcyl_obj.Radius = 30
-    top_halfcyl_obj.Height = 500
-    top_halfcyl_obj.Angle = 180
-    top_halfcyl_sh = Part.getShape(top_halfcyl_obj, '', needSubElement=False, refine=True)
-    top_halfcyl_obj.Shape = top_halfcyl_sh
-    top_halfcyl_obj.Placement = FreeCAD.Placement(
-        Vector(0, -42, 0),
-        Rotation(0, 90, 0),
-        Vector(0, 0, 0),
-    )
-    doc.recompute()
-
-    # all geom fusion
-    all_geom_fusion_obj = doc.addObject("Part::MultiFuse", "AllGeomFusion")
-    all_geom_fusion_obj.Shapes = [bottom_box_obj, top_halfcyl_obj]
+    # all geom boolean fragment
+    all_geom_boolfrag_obj = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
+    all_geom_boolfrag_obj.Objects = [bottom_box_obj, top_box_obj]
     if FreeCAD.GuiUp:
         bottom_box_obj.ViewObject.hide()
-        top_halfcyl_obj.ViewObject.hide()
+        top_box_obj.ViewObject.hide()
     doc.recompute()
 
     if FreeCAD.GuiUp:
@@ -108,67 +103,80 @@ def setup(doc=None, solvertype="ccxtools"):
         )[0]
         solver_object.WorkingDir = u""
     if solvertype == "calculix" or solvertype == "ccxtools":
-        solver_object.AnalysisType = "static"
+        solver_object.AnalysisType = "thermomech"
         solver_object.GeometricalNonlinearity = "linear"
-        solver_object.ThermoMechSteadyState = False
-        solver_object.MatrixSolverType = "default"
-        solver_object.IterationsControlParameterTimeUse = False
+        solver_object.ThermoMechSteadyState = True
+        # solver_object.MatrixSolverType = "default"
+        solver_object.MatrixSolverType = "spooles"  # thomas
         solver_object.SplitInputWriter = False
-
-        """
-        # solver parameter from fandaL, but they are not needed (see forum topic)
-        solver_object.IterationsControlParameterTimeUse = True
-        solver_object.IterationsControlParameterCutb = '0.25,0.5,0.75,0.85,,,1.5,'
-        solver_object.IterationsControlParameterIter = '4,8,9,200,10,400,,200,,'
-        solver_object.IterationsUserDefinedTimeStepLength = True
-        solver_object.TimeInitialStep = 0.1
-        solver_object.TimeEnd = 1.0
-        solver_object.IterationsUserDefinedIncrementations = True  # parameter DIRECT
-        """
+        solver_object.IterationsThermoMechMaximum = 2000
+        # solver_object.IterationsControlParameterTimeUse = True  # thermomech spine
 
     # material
-    material_obj = analysis.addObject(
-        ObjectsFem.makeMaterialSolid(doc, "MechanicalMaterial")
+    material_obj_bottom = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, "MaterialCopper")
     )[0]
-    mat = material_obj.Material
-    mat["Name"] = "Steel-Generic"
-    mat["YoungsModulus"] = "200000 MPa"
-    mat["PoissonRatio"] = "0.30"
-    material_obj.Material = mat
-    analysis.addObject(material_obj)
+    mat = material_obj_bottom.Material
+    mat["Name"] = "Copper"
+    mat["YoungsModulus"] = "130000 MPa"
+    mat["PoissonRatio"] = "0.354"
+    mat["SpecificHeat"] = "385 J/kg/K"
+    mat["ThermalConductivity"] = "200 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "0.00002 m/m/K"
+    material_obj_bottom.Material = mat
+    material_obj_bottom.References = [(all_geom_boolfrag_obj, "Solid1")]
+    analysis.addObject(material_obj_bottom)
+
+    material_obj_top = analysis.addObject(
+        ObjectsFem.makeMaterialSolid(doc, "MaterialInvar")
+    )[0]
+    mat = material_obj_top.Material
+    mat["Name"] = "Invar"
+    mat["YoungsModulus"] = "137000 MPa"
+    mat["PoissonRatio"] = "0.28"
+    mat["SpecificHeat"] = "510 J/kg/K"
+    mat["ThermalConductivity"] = "13 W/m/K"
+    mat["ThermalExpansionCoefficient"] = "0.0000012 m/m/K"
+    material_obj_top.Material = mat
+    material_obj_top.References = [(all_geom_boolfrag_obj, "Solid2")]
+    analysis.addObject(material_obj_top)
 
     # constraint fixed
     con_fixed = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
     con_fixed.References = [
-        (all_geom_fusion_obj, "Face5"),
-        (all_geom_fusion_obj, "Face6"),
-        (all_geom_fusion_obj, "Face8"),
-        (all_geom_fusion_obj, "Face9"),
+        (all_geom_boolfrag_obj, "Face1"),
+        (all_geom_boolfrag_obj, "Face7"),
     ]
 
-    # constraint pressure
-    con_pressure = analysis.addObject(
-        ObjectsFem.makeConstraintPressure(doc, name="ConstraintPressure")
+    # constraint initial temperature
+    constraint_initialtemp = analysis.addObject(
+        ObjectsFem.makeConstraintInitialTemperature(doc, "ConstraintInitialTemperature")
     )[0]
-    con_pressure.References = [(all_geom_fusion_obj, "Face10")]
-    con_pressure.Pressure = 100.0  # Pa ? = 100 Mpa ?
-    con_pressure.Reversed = False
+    constraint_initialtemp.initialTemperature = 273.0
 
-    # constraint contact
-    con_contact = doc.Analysis.addObject(
-        ObjectsFem.makeConstraintContact(doc, name="ConstraintContact")
+    # constraint temperature
+    constraint_temperature = analysis.addObject(
+        ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperature")
     )[0]
-    con_contact.References = [
-        (all_geom_fusion_obj, "Face7"),  # first seams slave face, TODO proof in writer code!
-        (all_geom_fusion_obj, "Face3"),  # second seams master face, TODO proof in writer code!
+    constraint_temperature.References = [
+        (all_geom_boolfrag_obj, "Face1"),
+        (all_geom_boolfrag_obj, "Face2"),
+        (all_geom_boolfrag_obj, "Face3"),
+        (all_geom_boolfrag_obj, "Face4"),
+        (all_geom_boolfrag_obj, "Face5"),
+        (all_geom_boolfrag_obj, "Face7"),
+        (all_geom_boolfrag_obj, "Face8"),
+        (all_geom_boolfrag_obj, "Face9"),
+        (all_geom_boolfrag_obj, "Face10"),
+        (all_geom_boolfrag_obj, "Face11"),
     ]
-    con_contact.Friction = 0.0
-    con_contact.Slope = 1000000.0  # contact stiffness 1000000.0 kg/(mm*s^2)
+    constraint_temperature.Temperature = 373.0
+    constraint_temperature.CFlux = 0.0
 
     # mesh
-    from .meshes.mesh_contact_box_halfcylinder_tetra10 import create_nodes, create_elements
+    from .meshes.mesh_thermomech_bimetall_tetra10 import create_nodes, create_elements
     fem_mesh = Fem.FemMesh()
     control = create_nodes(fem_mesh)
     if not control:
