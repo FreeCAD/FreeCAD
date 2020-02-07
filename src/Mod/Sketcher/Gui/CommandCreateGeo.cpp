@@ -7482,7 +7482,7 @@ CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
     sToolTipText    = QT_TR_NOOP("Create a regular polygon in the sketch");
     sWhatsThis      = "Sketcher_CreateRegularPolygon";
     sStatusTip      = sToolTipText;
-    sPixmap         = "CreateRegularPolygon";
+    sPixmap         = "Sketcher_CreateRegularPolygon";
     sAccel          = "";
     eType           = ForEdit;
 }
@@ -7490,7 +7490,11 @@ CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
 void CmdSketcherCreateRegularPolygon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8) );
+
+    // Pop-up asking for values
+    SketcherRegularPolygonDialog srpd;
+    if (srpd.exec() == QDialog::Accepted)
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(srpd.sides));
 }
 
 bool CmdSketcherCreateRegularPolygon::isActive(void)
@@ -7530,12 +7534,9 @@ void CmdSketcherCompCreateRegularPolygon::activated(int iMsg)
     case 6:
     {
         // Pop-up asking for values
-        SketcherRegularPolygonDialog * srpd = new SketcherRegularPolygonDialog();
-
-        if (srpd->exec() == QDialog::Accepted)
-            ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(srpd->sides));
-
-        delete srpd;
+        SketcherRegularPolygonDialog srpd;
+        if (srpd.exec() == QDialog::Accepted)
+            ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(srpd.sides));
     }
     break;
     default:
@@ -7688,6 +7689,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateHexagon());
     rcCmdMgr.addCommand(new CmdSketcherCreateHeptagon());
     rcCmdMgr.addCommand(new CmdSketcherCreateOctagon());
+    rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
