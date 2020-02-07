@@ -195,14 +195,20 @@ void DrawViewSection::onChanged(const App::Property* prop)
         if ((prop == &FileHatchPattern) &&
             (doc != nullptr) ) {
             if (!FileHatchPattern.isEmpty()) {
-                replaceSvgIncluded(FileHatchPattern.getValue());
+                Base::FileInfo fi(FileHatchPattern.getValue());
+                if (fi.isReadable()) {
+                    replaceSvgIncluded(FileHatchPattern.getValue());
+                }
             }
         }
 
         if ( (prop == &FileGeomPattern) &&
              (doc != nullptr) ) {
             if (!FileGeomPattern.isEmpty()) {
-                replacePatIncluded(FileGeomPattern.getValue());
+                Base::FileInfo fi(FileGeomPattern.getValue());
+                if (fi.isReadable()) {
+                    replacePatIncluded(FileGeomPattern.getValue());
+                }
             }
         }
     }
@@ -213,19 +219,24 @@ void DrawViewSection::onChanged(const App::Property* prop)
             std::string fileSpec = FileGeomPattern.getValue();
             Base::FileInfo fi(fileSpec);
             std::string ext = fi.extension();
-            if ( (ext == "pat") ||
-                 (ext == "PAT") ) {
-                if ((!fileSpec.empty())  &&
-                    (!NameGeomPattern.isEmpty())) {
-                    std::vector<PATLineSpec> specs = 
-                               DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
-                                                                      NameGeomPattern.getValue());
-                    m_lineSets.clear();
-                    for (auto& hl: specs) {
-                        //hl.dump("hl from section");
-                        LineSet ls;
-                        ls.setPATLineSpec(hl);
-                        m_lineSets.push_back(ls);
+            if (!fi.isReadable()) {
+                Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
+                Base::Console().Message("%s using included hatch file.\n", getNameInDocument());
+            } else {
+                if ( (ext == "pat") ||
+                     (ext == "PAT") ) {
+                    if ((!fileSpec.empty())  &&
+                        (!NameGeomPattern.isEmpty())) {
+                        std::vector<PATLineSpec> specs = 
+                                   DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
+                                                                          NameGeomPattern.getValue());
+                        m_lineSets.clear();
+                        for (auto& hl: specs) {
+                            //hl.dump("hl from section");
+                            LineSet ls;
+                            ls.setPATLineSpec(hl);
+                            m_lineSets.push_back(ls);
+                        }
                     }
                 }
             }
