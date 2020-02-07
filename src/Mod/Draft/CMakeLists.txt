@@ -84,6 +84,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
     draftguitools/gui_arrays.py
+    draftguitools/gui_snaps.py
     draftguitools/README.md
 )
 
