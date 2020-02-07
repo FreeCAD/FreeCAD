@@ -129,6 +129,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_solid_solid"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_material_multiple"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_material_nonlinar"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_thermomech_bimetall"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_thermomech_flow1D_analysis"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_thermomech_spine_analysis"
 ./bin/FreeCADCmd --run-test "femtest.app.test_common.TestFemCommon.test_adding_refshaps"
@@ -182,6 +183,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.a
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_material_nonlinar"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_thermomech_bimetall"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_thermomech_flow1D_analysis"))

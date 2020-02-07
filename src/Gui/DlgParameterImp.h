@@ -61,6 +61,7 @@ protected Q_SLOTS:
 
     void onGroupSelected(QTreeWidgetItem *);
     void on_closeButton_clicked();
+    void on_checkSort_toggled(bool);
 
 protected:
     void changeEvent(QEvent *e);
