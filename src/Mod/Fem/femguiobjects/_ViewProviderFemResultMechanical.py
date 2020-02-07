@@ -480,7 +480,7 @@ class _TaskPanelFemResultShow:
             s2y = np.array(ps2vector[:, 1])
             s2z = np.array(ps2vector[:, 2])
         if self.result_obj.PS3Vector:
-            ps3vector = np.array(self.result_obj.PS1Vector)
+            ps3vector = np.array(self.result_obj.PS3Vector)
             s3x = np.array(ps3vector[:, 0])
             s3y = np.array(ps3vector[:, 1])
             s3z = np.array(ps3vector[:, 2])
