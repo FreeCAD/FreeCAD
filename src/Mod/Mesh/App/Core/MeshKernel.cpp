@@ -745,11 +745,36 @@ std::vector<unsigned long> MeshKernel::GetFacetPoints(const std::vector<unsigned
         points.push_back(p0);
         points.push_back(p1);
         points.push_back(p2);
-  }
+    }
 
     std::sort(points.begin(), points.end());
     points.erase(std::unique(points.begin(), points.end()), points.end());
     return points;
+}
+
+std::vector<unsigned long> MeshKernel::GetPointFacets(const std::vector<unsigned long>& points) const
+{
+    _aclPointArray.ResetFlag(MeshPoint::TMP0);
+    _aclFacetArray.ResetFlag(MeshFacet::TMP0);
+    for (std::vector<unsigned long>::const_iterator pI = points.begin(); pI != points.end(); ++pI)
+        _aclPointArray[*pI].SetFlag(MeshPoint::TMP0);
+
+    // mark facets if at least one corner point is marked
+    for (MeshFacetArray::_TConstIterator pF = _aclFacetArray.begin(); pF != _aclFacetArray.end(); ++pF) {
+        const MeshPoint &rclP0 = _aclPointArray[pF->_aulPoints[0]];
+        const MeshPoint &rclP1 = _aclPointArray[pF->_aulPoints[1]];
+        const MeshPoint &rclP2 = _aclPointArray[pF->_aulPoints[2]];
+
+        if (rclP0.IsFlag(MeshPoint::TMP0) ||
+            rclP1.IsFlag(MeshPoint::TMP0) ||
+            rclP2.IsFlag(MeshPoint::TMP0)) {
+            pF->SetFlag(MeshFacet::TMP0);
+        }
+    }
+
+    std::vector<unsigned long> facets;
+    MeshAlgorithm(*this).GetFacetsFlag(facets, MeshFacet::TMP0);
+    return facets;
 }
 
 std::vector<unsigned long> MeshKernel::HasFacets (const MeshPointIterator &rclIter) const

@@ -312,7 +312,9 @@ NaviCubeImplementation::NaviCubeImplementation(
 	m_HiliteColor = QColor(170,226,247);
 	m_ButtonColor = QColor(226,233,239,128);
 	m_PickingFramebuffer = NULL;
-	m_CubeWidgetSize = 132;
+
+    m_CubeWidgetSize = (App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View")->GetInt("NaviWidgetSize", 132));
 
 	m_Menu = createNaviCubeMenu();
 }
@@ -372,7 +374,8 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, floa
 	if (text) {
 		paint.setPen(Qt::white);
 		QFont sansFont(str("Helvetica"), 0.18 * texSize);
-		sansFont.setStretch(QFont::ExtraCondensed);
+		sansFont.setStretch(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+            ->GetGroup("Preferences")->GetGroup("View")->GetInt("NaviFontStretch", 62));
 		paint.setFont(sansFont);
 		paint.drawText(QRect(0, 0, texSize, texSize), Qt::AlignCenter,qApp->translate("Gui::NaviCube",text));
 	}
@@ -677,12 +680,18 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
     if (labels.size() != 6) {
         labels.clear();
-        labels.push_back("FRONT");
-        labels.push_back("REAR");
-        labels.push_back("TOP");
-        labels.push_back("BOTTOM");
-        labels.push_back("RIGHT");
-        labels.push_back("LEFT");
+        labels.push_back(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+            ->GetGroup("Preferences")->GetGroup("View")->GetASCII("NaviTextFront", "FRONT"));
+        labels.push_back(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+            ->GetGroup("Preferences")->GetGroup("View")->GetASCII("NaviTextRear", "REAR"));
+        labels.push_back(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+            ->GetGroup("Preferences")->GetGroup("View")->GetASCII("NaviTextTop", "TOP"));
+        labels.push_back(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+            ->GetGroup("Preferences")->GetGroup("View")->GetASCII("NaviTextBottom", "BOTTOM"));
+        labels.push_back(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+            ->GetGroup("Preferences")->GetGroup("View")->GetASCII("NaviTextRight", "RIGHT"));
+        labels.push_back(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+            ->GetGroup("Preferences")->GetGroup("View")->GetASCII("NaviTextLeft", "LEFT"));
     }
 
 	float gap = 0.12f;

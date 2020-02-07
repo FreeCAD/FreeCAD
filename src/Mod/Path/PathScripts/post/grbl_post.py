@@ -47,6 +47,7 @@ grbl_post.export(object, "/path/to/file.ncc")
 OUTPUT_COMMENTS = True            # default output of comments in output gCode file
 OUTPUT_HEADER = True              # default output header in output gCode file
 OUTPUT_LINE_NUMBERS = False       # default doesn't output line numbers in output gCode file
+OUTPUT_BCNC = False               # default doesn't add bCNC operation block headers in output gCode file
 SHOW_EDITOR = True                # default show the resulting file dialog output in GUI
 PRECISION = 3                     # Default precision for metric (see http://linuxcnc.org/docs/2.7/html/gcode/overview.html#_g_code_best_practices)
 TRANSLATE_DRILL_CYCLES = False    # If true, G81, G82 & G83 are translated in G0/G1 moves
@@ -97,6 +98,8 @@ parser.add_argument('--inches',             action='store_true', help='Convert o
 parser.add_argument('--tool-change',        action='store_true', help='Insert M6 for all tool changes')
 parser.add_argument('--wait-for-spindle',   type=int, default=0, help='Wait for spindle to reach desired speed after M3 / M4, default=0')
 parser.add_argument('--return-to',          default='',          help='Move to the specified coordinates at the end, e.g. --return-to=0,0')
+parser.add_argument('--bcnc',               action='store_true', help='Add Job operations as bCNC block headers. Consider suppressing existing comments: Add argument --no-comments')
+parser.add_argument('--no-bcnc',            action='store_true', help='suppress bCNC block header output (default)')
 TOOLTIP_ARGS = parser.format_help()
 
 
@@ -135,6 +138,7 @@ def processArguments(argstring):
   global OUTPUT_TOOL_CHANGE
   global SPINDLE_WAIT
   global RETURN_TO
+  global OUTPUT_BCNC
 
   try:
     args = parser.parse_args(shlex.split(argstring))
@@ -177,6 +181,10 @@ def processArguments(argstring):
       if len(RETURN_TO) != 2:
         RETURN_TO = None
         print("--return-to coordinates must be specified as <x>,<y>, ignoring")
+    if args.bcnc:
+      OUTPUT_BCNC = True
+    if args.no_bcnc:
+      OUTPUT_BCNC = False
 
 
   except Exception as e:
@@ -243,6 +251,10 @@ def export(objectslist, filename, argstring):
       return
 
     # do the pre_op
+    if OUTPUT_BCNC:
+      gcode += linenumber() + "(Block-name: " + obj.Label + ")\n"
+      gcode += linenumber() + "(Block-expand: 0)\n"
+      gcode += linenumber() + "(Block-enable: 1)\n"
     if OUTPUT_COMMENTS:
       gcode += linenumber() + "(Begin operation: " + obj.Label + ")\n"
     for line in PRE_OPERATION.splitlines(True):
@@ -258,6 +270,10 @@ def export(objectslist, filename, argstring):
       gcode += linenumber() + line
 
   # do the post_amble
+  if OUTPUT_BCNC:
+    gcode += linenumber() + "(Block-name: post_amble)\n"
+    gcode += linenumber() + "(Block-expand: 0)\n"
+    gcode += linenumber() + "(Block-enable: 1)\n"
   if OUTPUT_COMMENTS:
     gcode += linenumber() + "(Begin postamble)\n"
   for line in POSTAMBLE.splitlines(True):
