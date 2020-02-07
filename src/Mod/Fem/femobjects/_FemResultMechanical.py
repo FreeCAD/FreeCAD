@@ -194,6 +194,13 @@ class _FemResultMechanical():
             True
         )
         obj.addProperty(
+            "App::PropertyString",
+            "UserDefinedEquation",
+            "NodeData",
+            "User Defined Equation",
+            True
+        )
+        obj.addProperty(
             "App::PropertyFloatList",
             "Temperature",
             "NodeData",

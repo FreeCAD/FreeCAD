@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>446</width>
+    <width>451</width>
     <height>768</height>
    </rect>
   </property>
@@ -302,61 +302,66 @@
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="user_def_eq">
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-size:11pt;&quot;&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <widget class="QPlainTextEdit" name="user_def_eq">
+            <property name="plainText">
+             <string>P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. </string>
             </property>
            </widget>
           </item>
-          <item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="7" column="0">
+           <widget class="QLabel" name="user_def_head_9">
+            <property name="text">
+             <string>min. principal stress vector: s1x, s1y, s1z</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="user_def_head_10">
+            <property name="text">
+             <string>med. principal stress vector: s2x, s2y, s2z</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="user_def_head_6">
+            <property name="text">
+             <string>principal stresses: P1, P2, P3</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="user_def_head_7">
+            <property name="text">
+             <string>equivalent plastic strain: Peeq</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="user_def_head_5">
+            <property name="text">
+             <string>reinforcement ratio: rx, ry, rz</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
            <widget class="QLabel" name="user_def_head_1">
             <property name="text">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Available result types:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QLabel" name="user_def_head_2">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="lineWidth">
-             <number>1</number>
-            </property>
+          <item row="3" column="0">
+           <widget class="QLabel" name="user_def_head_4">
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;displacement (x,y,z) and strain (exx,eyy,ezz,exy,exz,eyz)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="scaledContents">
-             <bool>false</bool>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>false</bool>
-            </property>
-            <property name="indent">
-             <number>-1</number>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::NoTextInteraction</set>
+             <string>strain: exx, eyy, ezz, exy, exz, eyz</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="2" column="0">
            <widget class="QLabel" name="user_def_head_3">
             <property name="minimumSize">
              <size>
@@ -374,7 +379,7 @@ p, li { white-space: pre-wrap; }
              <number>1</number>
             </property>
             <property name="text">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;stresses (sxx,syy,szz,sxy,sxz,syz) and principal stresses (P1,P2,P3)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>stress: sxx, syy, szz, sxy, sxz, syz</string>
             </property>
             <property name="scaledContents">
              <bool>false</bool>
@@ -390,6 +395,91 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="textInteractionFlags">
              <set>Qt::NoTextInteraction</set>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="user_def_head_13">
+            <property name="text">
+             <string>von Mises stress: Von</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="user_def_head_12">
+            <property name="text">
+             <string>mass flow rate: MF</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="user_def_head_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <property name="text">
+             <string>displacement: x, y, z</string>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>false</bool>
+            </property>
+            <property name="indent">
+             <number>-1</number>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::NoTextInteraction</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="user_def_head_15">
+            <property name="baseSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>network pressure: NP</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="user_def_head_14">
+            <property name="text">
+             <string>temperature: T</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="user_def_head_8">
+            <property name="text">
+             <string>Mohr Coulomb: mc</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="user_def_head_11">
+            <property name="text">
+             <string>max. principal stress vector: s3x, s3y, s3z</string>
             </property>
            </widget>
           </item>

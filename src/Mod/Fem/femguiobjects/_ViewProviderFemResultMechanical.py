@@ -220,13 +220,8 @@ class _TaskPanelFemResultShow:
 
         self.form.sb_displacement_factor.valueChanged.connect(self.sb_disp_factor_changed)
         self.form.sb_displacement_factor_max.valueChanged.connect(self.sb_disp_factor_max_changed)
+        self.form.user_def_eq.textChanged.connect(self.user_defined_text_changed)
 
-        # user defined equation
-        QtCore.QObject.connect(
-            self.form.user_def_eq,
-            QtCore.SIGNAL("textchanged()"),
-            self.user_defined_text
-        )
         QtCore.QObject.connect(
             self.form.calculate,
             QtCore.SIGNAL("clicked()"),
@@ -292,10 +287,12 @@ class _TaskPanelFemResultShow:
 
             df = FreeCAD.FEM_dialog["disp_factor"]
             dfm = FreeCAD.FEM_dialog["disp_factor_max"]
-            # self.form.hsb_displacement_factor.setMaximum(dfm)
-            # self.form.hsb_displacement_factor.setValue(df)
             self.form.sb_displacement_factor_max.setValue(dfm)
             self.form.sb_displacement_factor.setValue(df)
+
+            if len(self.result_obj.UserDefinedEquation) > 0:
+                self.form.user_def_eq.setPlainText(self.result_obj.UserDefinedEquation)
+
         except:
             self.restore_initial_result_dialog()
 
@@ -316,6 +313,8 @@ class _TaskPanelFemResultShow:
             "disp_factor_max": 100.
         }
         self.form.sb_displacement_factor_max.setValue(100.)    # init non standard values
+        if len(self.result_obj.UserDefinedEquation) > 0:
+            self.form.user_def_eq.setPlainText(self.result_obj.UserDefinedEquation)
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -428,9 +427,9 @@ class _TaskPanelFemResultShow:
             self.form.rb_none.setChecked(True)
             self.none_selected(True)
 
-    def user_defined_text(self, equation):
+    def user_defined_text_changed(self):
         FreeCAD.FEM_dialog["results_type"] = "user"
-        self.form.user_def_eq.toPlainText()
+        self.result_obj.UserDefinedEquation = self.form.user_def_eq.toPlainText()
 
     def calculate(self):
 
@@ -488,8 +487,7 @@ class _TaskPanelFemResultShow:
         FreeCAD.FEM_dialog["results_type"] = "None"
         self.update()
         self.restore_result_dialog()
-        userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
-        UserDefinedFormula = eval(userdefined_eq).tolist()
+        UserDefinedFormula = eval(self.result_obj.UserDefinedEquation).tolist()
         if UserDefinedFormula:
             self.result_obj.UserDefined = UserDefinedFormula
             minm = min(UserDefinedFormula)
