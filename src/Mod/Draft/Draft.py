@@ -1037,10 +1037,14 @@ def move(objectslist,vector,copy=False):
     newgroups = {}
     objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
+        newobj = None
         # real_vector have been introduced to take into account
         # the possibility that object is inside an App::Part
-        v_minus_global = obj.getGlobalPlacement().inverse().Rotation.multVec(vector)
-        real_vector = obj.Placement.Rotation.multVec(v_minus_global)
+        if hasattr(obj, "getGlobalPlacement"):
+            v_minus_global = obj.getGlobalPlacement().inverse().Rotation.multVec(vector)
+            real_vector = obj.Placement.Rotation.multVec(v_minus_global)
+        else:
+            real_vector = vector
         if getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
             v = v.add(real_vector)
@@ -1051,6 +1055,8 @@ def move(objectslist,vector,copy=False):
             newobj.X = v.x
             newobj.Y = v.y
             newobj.Z = v.z
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            pass
         elif hasattr(obj,'Shape'):
             if copy:
                 newobj = makeCopy(obj)
@@ -1100,7 +1106,8 @@ def move(objectslist,vector,copy=False):
             if "Placement" in obj.PropertiesList:
                 pla = obj.Placement
                 pla.move(real_vector)
-        newobjlist.append(newobj)
+        if newobj is not None:
+            newobjlist.append(newobj)
         if copy:
             for p in obj.InList:
                 if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
@@ -1228,12 +1235,18 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     newgroups = {}
     objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
+        newobj = None
         # real_center and real_axis are introduced to take into account
         # the possibility that object is inside an App::Part
-        ci = obj.getGlobalPlacement().inverse().multVec(center)
-        real_center = obj.Placement.multVec(ci)
-        ai = obj.getGlobalPlacement().inverse().Rotation.multVec(axis)
-        real_axis = obj.Placement.Rotation.multVec(ai)        
+        if hasattr(obj, "getGlobalPlacement"):
+            ci = obj.getGlobalPlacement().inverse().multVec(center)
+            real_center = obj.Placement.multVec(ci)
+            ai = obj.getGlobalPlacement().inverse().Rotation.multVec(axis)
+            real_axis = obj.Placement.Rotation.multVec(ai)
+        else:
+            real_center = center
+            real_axis = axis
+
         if copy:
             newobj = makeCopy(obj)
         else:
@@ -1262,6 +1275,8 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             newobj.X = v.x
             newobj.Y = v.y
             newobj.Z = v.z
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            pass
         elif hasattr(obj,"Placement"):
             #FreeCAD.Console.PrintMessage("placement rotation\n")
             shape = Part.Shape()
@@ -1275,7 +1290,8 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             newobj.Shape = shape
         if copy:
             formatObject(newobj,obj)
-        newobjlist.append(newobj)
+        if newobj is not None:
+            newobjlist.append(newobj)
         if copy:
             for p in obj.InList:
                 if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
