@@ -403,14 +403,14 @@ class DraftToolBar:
         boldtxt.setBold(True)
         self.cmdlabel.setFont(boldtxt)
 
-        # subcommands
+        # subcommands for draft Edit, OBSOLETE
 
-        self.addButton = self._pushbutton("addButton", self.layout, icon="Draft_AddPoint", width=22, checkable=True)
-        self.delButton = self._pushbutton("delButton", self.layout, icon="Draft_DelPoint", width=22, checkable=True)
-        self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
-        self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
-        self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
-        self.arc3PtButton = self._pushbutton("arc3PtButton", self.layout, icon="Draft_Arc", width=22, checkable=True)
+        # self.addButton = self._pushbutton("addButton", self.layout, icon="Draft_AddPoint", width=22, checkable=True)
+        # self.delButton = self._pushbutton("delButton", self.layout, icon="Draft_DelPoint", width=22, checkable=True)
+        # self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
+        # self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
+        # self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
+        # self.arc3PtButton = self._pushbutton("arc3PtButton", self.layout, icon="Draft_Arc", width=22, checkable=True)
 
         # point
 
@@ -549,12 +549,13 @@ class DraftToolBar:
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged()"),self.checkEnterText)
         QtCore.QObject.connect(self.textOkButton,QtCore.SIGNAL("clicked()"),self.sendText)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
-        QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
-        QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
-        QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
-        QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
-        QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
-        QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.setArc3PtMode)
+        # Draft Edit UI obsolete due to introduction of incommand context menu
+        # QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
+        # QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
+        # QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
+        # QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
+        # QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
+        # QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.setArc3PtMode)
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
@@ -681,12 +682,12 @@ class DraftToolBar:
         self.continueCmd.setText(translate("draft", "Continue")+" ("+inCommandShortcuts["Continue"][0]+")")
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
-        self.addButton.setToolTip(translate("draft", "Add points to the current object"))
-        self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
-        self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
-        self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
-        self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
-        self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
+        # self.addButton.setToolTip(translate("draft", "Add points to the current object"))
+        # self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
+        # self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
+        # self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
+        # self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
+        # self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
         self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
@@ -972,12 +973,12 @@ class DraftToolBar:
             self.isRelative.hide()
             self.hasFill.hide()
             self.finishButton.hide()
-            self.addButton.hide()
-            self.delButton.hide()
-            self.sharpButton.hide()
-            self.tangentButton.hide()
-            self.symmetricButton.hide()
-            self.arc3PtButton.hide()
+            # self.addButton.hide()
+            # self.delButton.hide()
+            # self.sharpButton.hide()
+            # self.tangentButton.hide()
+            # self.symmetricButton.hide()
+            # self.arc3PtButton.hide()
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
@@ -1110,28 +1111,28 @@ class DraftToolBar:
         self.numFaces.hide()
         self.isRelative.hide()
         self.hasFill.hide()
-        self.addButton.show()
-        self.delButton.show()
-        if mode == 'Wire':
-            self.setEditButtons(True)
-            self.setBezEditButtons(False)
-        elif mode == 'Arc':
-            self.addButton.hide()
-            self.delButton.hide()
-            self.arc3PtButton.show()
-        elif mode == 'BezCurve':
-            self.sharpButton.show()
-            self.tangentButton.show()
-            self.symmetricButton.show()
+        # self.addButton.show()
+        # self.delButton.show()
+        # if mode == 'Wire':
+        #     self.setEditButtons(True)
+        #     self.setBezEditButtons(False)
+        # elif mode == 'Arc':
+        #     self.addButton.hide()
+        #     self.delButton.hide()
+        #     self.arc3PtButton.show()
+        # elif mode == 'BezCurve':
+        #     self.sharpButton.show()
+        #     self.tangentButton.show()
+        #     self.symmetricButton.show()
         self.closeButton.show()
-        self.finishButton.show()
+        # self.finishButton.show()
         # always start Edit with buttons unchecked
-        self.addButton.setChecked(False)
-        self.delButton.setChecked(False)
-        self.sharpButton.setChecked(False)
-        self.tangentButton.setChecked(False)
-        self.symmetricButton.setChecked(False)
-        self.arc3PtButton.setChecked(False)
+        # self.addButton.setChecked(False)
+        # self.delButton.setChecked(False)
+        # self.sharpButton.setChecked(False)
+        # self.tangentButton.setChecked(False)
+        # self.symmetricButton.setChecked(False)
+        # self.arc3PtButton.setChecked(False)
 
     def extUi(self):
         if Draft.getParam("UsePartPrimitives",False):
@@ -1149,9 +1150,9 @@ class DraftToolBar:
             self.isCopy.setChecked(p.GetBool("copymodeValue",False))
         self.continueCmd.show()
 
-    def vertUi(self,addmode=True):
-        self.addButton.setChecked(addmode)
-        self.delButton.setChecked(not(addmode))
+    # def vertUi(self,addmode=True):
+    #     self.addButton.setChecked(addmode)
+    #     self.delButton.setChecked(not(addmode))
 
     def checkLocal(self):
         """checks if x,y,z coords must be displayed as local or global"""
@@ -1164,14 +1165,14 @@ class DraftToolBar:
                 self.labely.setText(translate("draft", "Local Y"))
                 self.labelz.setText(translate("draft", "Local Z"))
 
-    def setEditButtons(self,mode):
-        self.addButton.setEnabled(mode)
-        self.delButton.setEnabled(mode)
+    # def setEditButtons(self,mode):
+    #     self.addButton.setEnabled(mode)
+    #     self.delButton.setEnabled(mode)
 
-    def setBezEditButtons(self,mode):
-        self.sharpButton.setEnabled(mode)
-        self.tangentButton.setEnabled(mode)
-        self.symmetricButton.setEnabled(mode)
+    # def setBezEditButtons(self,mode):
+    #     self.sharpButton.setEnabled(mode)
+    #     self.tangentButton.setEnabled(mode)
+    #     self.symmetricButton.setEnabled(mode)
 
     def setNextFocus(self):
         def isThere(widget):
@@ -1790,44 +1791,44 @@ class DraftToolBar:
     def popupTriggered(self,action):
         self.sourceCmd.proceed(str(action.text()))
 
-    def setAddMode(self,bool):
-        if self.addButton.isChecked():
-            self.delButton.setChecked(False)
-            self.symmetricButton.setChecked(False)
-            self.sharpButton.setChecked(False)
-            self.tangentButton.setChecked(False)
+    # def setAddMode(self,bool):
+    #     if self.addButton.isChecked():
+    #         self.delButton.setChecked(False)
+    #         self.symmetricButton.setChecked(False)
+    #         self.sharpButton.setChecked(False)
+    #         self.tangentButton.setChecked(False)
 
-    def setDelMode(self,bool):
-        if self.delButton.isChecked():
-            self.addButton.setChecked(False)
-            self.symmetricButton.setChecked(False)
-            self.sharpButton.setChecked(False)
-            self.tangentButton.setChecked(False)
+    # def setDelMode(self,bool):
+    #     if self.delButton.isChecked():
+    #         self.addButton.setChecked(False)
+    #         self.symmetricButton.setChecked(False)
+    #         self.sharpButton.setChecked(False)
+    #         self.tangentButton.setChecked(False)
 
-    def setSharpMode(self,bool):
-        if self.sharpButton.isChecked():
-            self.tangentButton.setChecked(False)
-            self.symmetricButton.setChecked(False)
-            self.addButton.setChecked(False)
-            self.delButton.setChecked(False)
+    # def setSharpMode(self,bool):
+    #     if self.sharpButton.isChecked():
+    #         self.tangentButton.setChecked(False)
+    #         self.symmetricButton.setChecked(False)
+    #         self.addButton.setChecked(False)
+    #         self.delButton.setChecked(False)
 
-    def setTangentMode(self,bool):
-        if self.tangentButton.isChecked():
-            self.sharpButton.setChecked(False)
-            self.symmetricButton.setChecked(False)
-            self.addButton.setChecked(False)
-            self.delButton.setChecked(False)
+    # def setTangentMode(self,bool):
+    #     if self.tangentButton.isChecked():
+    #         self.sharpButton.setChecked(False)
+    #         self.symmetricButton.setChecked(False)
+    #         self.addButton.setChecked(False)
+    #         self.delButton.setChecked(False)
 
-    def setSymmetricMode(self,bool):
-        if self.symmetricButton.isChecked():
-            self.sharpButton.setChecked(False)
-            self.tangentButton.setChecked(False)
-            self.addButton.setChecked(False)
-            self.delButton.setChecked(False)
+    # def setSymmetricMode(self,bool):
+    #     if self.symmetricButton.isChecked():
+    #         self.sharpButton.setChecked(False)
+    #         self.tangentButton.setChecked(False)
+    #         self.addButton.setChecked(False)
+    #         self.delButton.setChecked(False)
 
-    def setArc3PtMode(self,bool):
-        if self.arc3PtButton.isChecked():
-            self.arc3PtButton.setChecked(True)
+    # def setArc3PtMode(self,bool):
+    #     if self.arc3PtButton.isChecked():
+    #         self.arc3PtButton.setChecked(True)
 
     def setRadiusValue(self,val,unit=None):
         #print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)
