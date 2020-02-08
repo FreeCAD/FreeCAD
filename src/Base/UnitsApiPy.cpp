@@ -32,7 +32,7 @@
 #include "UnitsApi.h"
 #include "Quantity.h"
 #include "QuantityPy.h"
-
+#include "UnitPy.h"
 
 
 using namespace Base;
@@ -69,6 +69,14 @@ PyMethodDef UnitsApi::Methods[] = {
     {"toNumber",  UnitsApi::sToNumber, METH_VARARGS,
      "toNumber(Quantity or float, [format='g', decimals=-1]) -> str\n\n"
      "Convert a quantity or float to a string"
+    },
+    {"listPredefinedUnits", (PyCFunction) UnitsApi::sListPredefinedUnits, METH_VARARGS,
+     "listPredefinedUnits() -> list(tuple(name, quantity))\n\n"
+     "Return a list of predefined units of quantities."
+    },
+    {"listUnitTypes", (PyCFunction) UnitsApi::sListUnitTypes, METH_VARARGS,
+     "listUnitTypes() -> list(tuple(name, unit))\n\n"
+     "Return a list of types of units."
     },
 
     {nullptr, nullptr, 0, nullptr}      /* Sentinel */
@@ -213,4 +221,30 @@ PyObject* UnitsApi::sToNumber(PyObject * /*self*/, PyObject *args)
 
     QString string = toNumber(value, qf);
     return Py::new_reference_to(Py::String(string.toStdString()));
+}
+
+PyObject* UnitsApi::sListPredefinedUnits(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    Py::List list;
+    for(auto &info : Quantity::unitInfo()) {
+        list.append(Py::TupleN(Py::String(info.name), Py::asObject(
+                        new QuantityPy(new Quantity(info.quantity)))));
+    }
+    return Py::new_reference_to(list);
+}
+
+PyObject* UnitsApi::sListUnitTypes(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    Py::List list;
+    for(auto &info : Unit::unitTypes()) {
+        list.append(Py::TupleN(Py::String(info.second), Py::asObject(
+                        new UnitPy(new Unit(info.first)))));
+    }
+    return Py::new_reference_to(list);
 }

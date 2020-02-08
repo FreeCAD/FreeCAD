@@ -64,10 +64,9 @@ extern int yydebug;
     PROPERTY_REF = 274,
     DOCUMENT = 275,
     OBJECT = 276,
-    EXPONENT = 277,
-    NUM_AND_UNIT = 278,
-    NEG = 279,
-    POS = 280
+    NEG = 277,
+    POS = 278,
+    NUM_AND_UNIT = 279
   };
 #endif
 

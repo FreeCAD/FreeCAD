@@ -25,6 +25,9 @@
 #define BASE_Unit_H
 
 #include <cstdint>
+#include <utility>
+#include <vector>
+#include <string>
 #include <QString>
 #include <FCGlobal.h>
 
@@ -83,8 +86,18 @@ public:
     bool isEmpty()const;
 
     QString getString() const;
+
+    std::string getStdString() const;
+
+    /// get the type as an string such as "Area", "Length" or "Pressure".
+    const char *getType() const;
+
     /// get the type as an string such as "Area", "Length" or "Pressure".
     QString getTypeString() const;
+
+    std::size_t hash() const;
+
+    static const std::vector<std::pair<Unit,const char*> > &unitTypes();
 
     /** Predefined Unit types. */
     //@{
@@ -166,4 +179,15 @@ inline Unit& Unit::operator /=(const Unit& that)
 
 } // namespace Base
 
+namespace std {
+
+template<> 
+struct hash<Base::Unit> {
+    typedef Base::Unit argument_type;
+    typedef std::size_t result_type;
+    inline result_type operator()(argument_type const& s) const {
+        return s.hash();
+    }
+};
+}
 #endif // BASE_Unit_H

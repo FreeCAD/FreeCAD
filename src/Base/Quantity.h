@@ -104,6 +104,8 @@ struct BaseExport QuantityFormat {
     }
 };
 
+struct UnitInfo;
+
 /**
  * The Quantity class.
  */
@@ -155,6 +157,12 @@ public:
     QString getUserString(UnitsSchema* schema, double &factor, QString &unitString) const;
 
     static Quantity parse(const QString &string);
+    static Quantity parse(const char *string);
+
+    static const std::vector<UnitInfo> &unitInfo();
+    static const UnitInfo *getUnitInfo(const char *name);
+
+    static bool fromUnitString(Quantity &q, const char *name);
 
     /// returns the unit of the quantity
     const Unit & getUnit() const{return _Unit;}
@@ -234,7 +242,6 @@ public:
     static Quantity Hundredweights;
     static Quantity Mile;
 
-    static Quantity MilePerHour;
     static Quantity SquareFoot;
     static Quantity CubicFoot;
 
@@ -333,6 +340,14 @@ protected:
     double         _Value;
     Unit           _Unit;
     QuantityFormat _Format;
+};
+
+struct UnitInfo {
+    const char *display;
+    const char *alias;
+    const char *name;
+    const Quantity &quantity;
+    const char *description;
 };
 
 } // namespace Base
