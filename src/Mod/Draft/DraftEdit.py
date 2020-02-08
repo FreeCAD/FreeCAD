@@ -439,12 +439,6 @@ class Edit():
             event.getButton() == event.BUTTON1
             ):#left click
             if not event.wasAltDown():
-                if self.ui.addButton.isChecked():
-                    self.addPoint(event)
-                    return
-                if self.ui.delButton.isChecked():
-                    self.delPoint(event)
-                    return
                 if Draft.getType(self.obj) == "BezCurve" and (self.ui.sharpButton.isChecked()
                                         or self.ui.tangentButton.isChecked() or
                                         self.ui.symmetricButton.isChecked()):
@@ -457,12 +451,6 @@ class Edit():
                     self.obj = doc.getObject(str(node.objectName.getValue()))
                     if self.obj is None:
                         return
-                    if self.ui.sharpButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Sharp')
-                    elif self.ui.tangentButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Tangent')
-                    elif self.ui.symmetricButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Symmetric')
                 if self.editing is None:
                     self.startEditing(event)
                 else:

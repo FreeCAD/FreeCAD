@@ -4401,56 +4401,6 @@ class AddToGroup():
                         pass
 
 
-class AddPoint(Modifier):
-    """The Draft_AddPoint FreeCAD command definition"""
-
-    def __init__(self):
-        self.running = False
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_AddPoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Add Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddPoint", "Adds a point to an existing Wire or B-spline")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if selection:
-            if (Draft.getType(selection[0]) in ['Wire','BSpline']):
-                FreeCADGui.runCommand("Draft_Edit")
-                FreeCADGui.draftToolBar.vertUi(True)
-
-
-class DelPoint(Modifier):
-    """The Draft_DelPoint FreeCAD command definition"""
-
-    def __init__(self):
-        self.running = False
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_DelPoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Remove Point"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_DelPoint", "Removes a point from an existing Wire or B-spline")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if selection:
-            if (Draft.getType(selection[0]) in ['Wire','BSpline']):
-                FreeCADGui.runCommand("Draft_Edit")
-                FreeCADGui.draftToolBar.vertUi(False)
-
-
 class WireToBSpline(Modifier):
     """The Draft_Wire2BSpline FreeCAD command definition"""
 
@@ -5681,8 +5631,6 @@ FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
 FreeCADGui.addCommand('Draft_Drawing',Drawing())
 FreeCADGui.addCommand('Draft_SubelementHighlight', SubelementHighlight())
-FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
-FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 FreeCADGui.addCommand('Draft_Array',Array())
