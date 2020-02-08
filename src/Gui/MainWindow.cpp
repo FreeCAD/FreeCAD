@@ -99,7 +99,7 @@
 #include "MenuManager.h"
 //#include "ToolBox.h"
 #include "ReportView.h"
-#include "CombiView.h"
+#include "ComboView.h"
 #include "PythonConsole.h"
 #include "TaskView/TaskView.h"
 #include "DAGView/DAGView.h"
@@ -387,7 +387,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("TreeView");
         bool enabled = group->GetBool("Enabled", true);
-        if(enabled != group->GetBool("Enabled", false)) {
+        if (enabled != group->GetBool("Enabled", false)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView",false);
         }
@@ -408,7 +408,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("PropertyView");
         bool enabled = group->GetBool("Enabled", true);
-        if(enabled != group->GetBool("Enabled", false)) {
+        if (enabled != group->GetBool("Enabled", false)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                             ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView",false);
         }
@@ -433,18 +433,19 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     // Combo view
-    if (hiddenDockWindows.find("Std_CombiView") == std::string::npos) {
+    if (hiddenDockWindows.find("Std_ComboView") == std::string::npos) {
         bool enable = !treeView || !propertyView;
-        if(!enable) {
+        if (!enable) {
             ParameterGrp::handle group = App::GetApplication().GetUserParameter().
                     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");
             enable = group->GetBool("Enabled", true);
         }
-        if(enable) {
-            CombiView* pcCombiView = new CombiView(0, this);
-            pcCombiView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
-            pcCombiView->setMinimumWidth(150);
-            pDockMgr->registerDockWindow("Std_CombiView", pcCombiView);
+
+        if (enable) {
+            ComboView* pcComboView = new ComboView(0, this);
+            pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
+            pcComboView->setMinimumWidth(150);
+            pDockMgr->registerDockWindow("Std_ComboView", pcComboView);
         }
     }
 

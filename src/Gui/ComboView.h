@@ -22,8 +22,8 @@
 
 
 
-#ifndef GUI_DOCKWND_COMBIVIEW_H
-#define GUI_DOCKWND_COMBIVIEW_H
+#ifndef GUI_DOCKWND_COMBOVIEW_H
+#define GUI_DOCKWND_COMBOVIEW_H
 
 #include "DockWindow.h"
 #include "Selection.h"
@@ -57,11 +57,11 @@ namespace Gui {
     class ControlSingleton;
 namespace DockWnd {
 
-/** Combi View
+/** Combo View
   * is a combination of a tree, property and TaskPanel for 
   * integrated user action.
  */
-class GuiExport CombiView : public Gui::DockWindow
+class GuiExport ComboView : public Gui::DockWindow
 {
     Q_OBJECT
 
@@ -70,13 +70,13 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    CombiView(Gui::Document*  pcDocument, QWidget *parent=0);
+    ComboView(Gui::Document*  pcDocument, QWidget *parent=0);
 
     /**
      * A destructor.
      * A more elaborate description of the destructor.
     */
-    virtual ~CombiView();
+    virtual ~ComboView();
 
     Gui::TaskView::TaskView *getTaskPanel(void){return taskPanel;}
     QTabWidget* getTabPanel() const { return tabs;}

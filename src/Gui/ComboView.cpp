@@ -28,7 +28,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
-#include "CombiView.h"
+#include "ComboView.h"
 #include "BitmapFactory.h"
 #include "PropertyView.h"
 #include "ProjectView.h"
@@ -42,12 +42,12 @@ using namespace Gui;
 using namespace Gui::DockWnd;
 
 
-/* TRANSLATOR Gui::DockWnd::CombiView */
+/* TRANSLATOR Gui::DockWnd::ComboView */
 
-CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
+ComboView::ComboView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent), oldTabIndex(0)
 {
-    setWindowTitle(tr("CombiView"));
+    setWindowTitle(tr("Combo View"));
 
     QGridLayout* pLayout = new QGridLayout(this); 
     pLayout->setSpacing( 0 );
@@ -80,11 +80,11 @@ CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
     //tabs->addTab(projectView, trUtf8("Project"));
 }
 
-CombiView::~CombiView()
+ComboView::~ComboView()
 {
 }
 
-void CombiView::showDialog(Gui::TaskView::TaskDialog *dlg)
+void ComboView::showDialog(Gui::TaskView::TaskDialog *dlg)
 {
     static QIcon icon = Gui::BitmapFactory().pixmap("edit-edit.svg");
 
@@ -96,13 +96,13 @@ void CombiView::showDialog(Gui::TaskView::TaskDialog *dlg)
     taskPanel->showDialog(dlg);
 }
 
-void CombiView::closeDialog()
+void ComboView::closeDialog()
 {
     // close the dialog
     taskPanel->removeDialog();
 }
 
-void CombiView::closedDialog()
+void ComboView::closedDialog()
 {
     static QIcon icon = QIcon();
 
@@ -111,19 +111,19 @@ void CombiView::closedDialog()
     tabs->setTabIcon(1, icon);
 }
 
-void CombiView::showTreeView()
+void ComboView::showTreeView()
 {
     // switch to the tree view
     tabs->setCurrentIndex(0);
 }
 
-void CombiView::showTaskView()
+void ComboView::showTaskView()
 {
     // switch to the task view
     tabs->setCurrentIndex(1);
 }
 
-void CombiView::changeEvent(QEvent *e)
+void ComboView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         tabs->setTabText(0, trUtf8("Model"));
@@ -135,4 +135,4 @@ void CombiView::changeEvent(QEvent *e)
 }
 
 
-#include "moc_CombiView.cpp"
+#include "moc_ComboView.cpp"
