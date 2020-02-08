@@ -111,6 +111,63 @@ bool StdCmdRandomColor::isActive(void)
 }
 
 
+//===========================================================================
+// Std_SendToPythonConsole
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdSendToPythonConsole)
+
+StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
+  :Command("Std_SendToPythonConsole")
+{
+    // setting the
+    sGroup        = QT_TR_NOOP("Edit");
+    sMenuText     = QT_TR_NOOP("&Send to Python Console");
+    sToolTipText  = QT_TR_NOOP("Sends the selected object to the Python console");
+    sWhatsThis    = "Std_SendToPythonConsole";
+    sStatusTip    = QT_TR_NOOP("Sends the selected object to the Python console");
+    sPixmap       = "applications-python";
+    sAccel        = "Ctrl+Shift+P";
+}
+
+bool StdCmdSendToPythonConsole::isActive(void)
+{
+    return (Gui::Selection().size() == 1);
+}
+
+void StdCmdSendToPythonConsole::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    const std::vector<Gui::SelectionObject> &sels = Gui::Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),true,true);
+    if (sels.empty())
+        return;
+    const App::DocumentObject *obj = sels[0].getObject();
+    QString docname = QString::fromLatin1(obj->getDocument()->getName());
+    QString objname = QString::fromLatin1(obj->getNameInDocument());
+    try {
+        QString cmd = QString::fromLatin1("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(docname,objname);
+        Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+        if (sels[0].hasSubNames()) {
+            std::vector<std::string> subnames = sels[0].getSubNames();
+            if (obj->getPropertyByName("Shape")) {
+                QString subname = QString::fromLatin1(subnames[0].c_str());
+                cmd = QString::fromLatin1("shp = App.getDocument(\"%1\").getObject(\"%2\").Shape")
+                    .arg(docname, objname);
+                Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+                cmd = QString::fromLatin1("elt = App.getDocument(\"%1\").getObject(\"%2\").Shape.%4")
+                    .arg(docname,objname,subname);
+                Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+    }
+
+}
+
+
 namespace Gui {
 
 void CreateFeatCommands(void)
@@ -119,6 +176,7 @@ void CreateFeatCommands(void)
 
     rcCmdMgr.addCommand(new StdCmdFeatRecompute());
     rcCmdMgr.addCommand(new StdCmdRandomColor());
+    rcCmdMgr.addCommand(new StdCmdSendToPythonConsole());
 }
 
 } // namespace Gui

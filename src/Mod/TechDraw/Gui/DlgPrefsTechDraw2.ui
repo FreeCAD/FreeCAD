@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>558</width>
-    <height>609</height>
+    <width>440</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -28,7 +28,7 @@
   <property name="toolTip">
    <string/>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
+  <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
     <widget class="QGroupBox" name="gbScale">
      <property name="sizePolicy">
@@ -40,7 +40,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>0</height>
+       <height>113</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -70,7 +70,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Default scale type for new Views</string>
+           <string>Default scale for new views</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DefaultScaleType</cstring>
@@ -85,12 +85,12 @@
           </item>
           <item>
            <property name="text">
-            <string>Custom</string>
+            <string>Auto</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Auto</string>
+            <string>Custom</string>
            </property>
           </item>
          </widget>
@@ -104,7 +104,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Default scale for new Views if Scale Type is Custom</string>
+           <string>Default scale for views if Scale Type is Custom</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -113,7 +113,7 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="decimals">
-           <number>4</number>
+           <number>2</number>
           </property>
           <property name="value">
            <double>1.000000000000000</double>
@@ -153,7 +153,7 @@
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="decimals">
-           <number>4</number>
+           <number>2</number>
           </property>
           <property name="value">
            <double>1.000000000000000</double>
@@ -208,225 +208,10 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="gb_SizeAdj">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Size Adjustments</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,1">
-        <item row="1" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbCenterScale">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Size of CenterMarks.  Multiplier of Vertex size.</string>
-          </property>
-          <property name="accessibleName">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>0.500000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CenterMarkScale</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbToleranceScale">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Tolerance font size adjustment.  Multiplier of Dimension text size.</string>
-          </property>
-          <property name="accessibleName">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>0.500000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TolSizeAdjust</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Vertex Scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Center Mark Scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="lbl_LabelFont">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Tolerance Text Scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Template Edit Mark</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbVertexScale">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Scale of Vertex dots.  Multiplies line weight.</string>
-          </property>
-          <property name="accessibleName">
-           <string/>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>VertexScale</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbTemplateMark">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Size of Template Field Edit click handles in mm&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>3.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>TemplateDotSize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="gb_Selection">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -434,7 +219,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>150</height>
+       <height>113</height>
       </size>
      </property>
      <property name="baseSize">
@@ -546,7 +331,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Size of selection area around edges.</string>
+           <string>Size of selection area around edges</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -586,7 +371,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Selection area around Center Marks</string>
+           <string>Selection area around center marks</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -607,6 +392,227 @@
         </item>
         <item row="0" column="1">
          <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="gb_SizeAdj">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>141</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Size Adjustments</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,1">
+        <item row="1" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbCenterScale">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Size of center marks.  Multiplier of vertex size.</string>
+          </property>
+          <property name="accessibleName">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CenterMarkScale</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbToleranceScale">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Tolerance font size adjustment.  Multiplier of dimension font size.</string>
+          </property>
+          <property name="accessibleName">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TolSizeAdjust</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Vertex Scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Center Mark Scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_LabelFont">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Tolerance Text Scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Template Edit Mark</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbVertexScale">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Scale of vertex dots.  Multiplier of line width.</string>
+          </property>
+          <property name="accessibleName">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>VertexScale</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="pdsbTemplateMark">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Size of template field click handles in mm</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>3.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>TemplateDotSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -649,8 +655,8 @@
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>40</height>
+       <width>17</width>
+       <height>48</height>
       </size>
      </property>
     </spacer>

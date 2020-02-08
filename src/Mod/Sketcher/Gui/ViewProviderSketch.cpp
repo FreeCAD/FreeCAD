@@ -401,6 +401,7 @@ void ViewProviderSketch::deactivateHandler()
         std::vector<Base::Vector2d> editCurve;
         editCurve.clear();
         drawEdit(editCurve); // erase any line
+        resetPositionText();
         edit->sketchHandler->deactivated(this);
         edit->sketchHandler->unsetCursor();
         delete(edit->sketchHandler);

@@ -38,9 +38,9 @@ doc = run_constraint_contact_solid_solid()
 doc = run_material_nl_platewithhole()
 doc = run_material_multiple_twoboxes()
 doc = run_rcwall2d()
+doc = run_thermomech_bimetall()
 doc = run_thermomech_flow1d()
 doc = run_thermomech_spine()
-
 
 doc = run_ccx_cantilevernodeload("calculix")
 doc = run_ccx_cantilevernodeload("ccxtools")
@@ -250,6 +250,21 @@ def run_rcwall2d(solver=None, base_name=None):
     return doc
 
 
+def run_thermomech_bimetall(solver=None, base_name=None):
+
+    from .thermomech_bimetall import setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Thermomech_Bimetall"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+    doc.recompute()
+
+    return doc
+
+
 def run_thermomech_flow1d(solver=None, base_name=None):
 
     from .thermomech_flow1d import setup
@@ -286,8 +301,11 @@ def run_all():
     run_ccx_cantileverfaceload()
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
+    run_constraint_contact_shell_shell()
+    run_constraint_contact_solid_solid()
     run_material_nl_platewithhole()
     run_material_multiple_twoboxes()
     run_rcwall2d()
+    run_thermomech_bimetall()
     run_thermomech_flow1d()
     run_thermomech_spine()

@@ -125,6 +125,8 @@ public:
                                 unsigned long &rclP1, unsigned long &rclP2) const;
     /** Returns the point indices of the given facet indices. */
     std::vector<unsigned long> GetFacetPoints(const std::vector<unsigned long>&) const;
+    /** Returns the facet indices that share the given point indices. */
+    std::vector<unsigned long> GetPointFacets(const std::vector<unsigned long>&) const;
     /** Returns the indices of the neighbour facets of the given facet index. */
     inline void GetFacetNeighbours (unsigned long ulIndex, unsigned long &rulNIdx0, 
                                     unsigned long &rulNIdx1, unsigned long &rulNIdx2) const;

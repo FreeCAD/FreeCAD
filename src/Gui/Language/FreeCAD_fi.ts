@@ -3628,9 +3628,9 @@ The 'Status' column shows whether the document could be recovered.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
+      <source>Combo View</source>
       <translation>CombiView</translation>
     </message>
     <message>

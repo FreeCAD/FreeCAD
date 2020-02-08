@@ -758,7 +758,7 @@ TaskDlgLeaderLine::TaskDlgLeaderLine(TechDraw::DrawView* baseFeat,
     : TaskDialog()
 {
     widget  = new TaskLeaderLine(baseFeat,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-mline"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-LeaderLine"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -768,7 +768,7 @@ TaskDlgLeaderLine::TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP)
     : TaskDialog()
 {
     widget  = new TaskLeaderLine(leadVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-mline"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-LeaderLine"),
                                              widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

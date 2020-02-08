@@ -776,9 +776,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
 
         if(!isMainDoc)
             return 0;
-        std::stringstream str;
-        str << "The project '" << FileName << "' is already open!";
-        throw Base::FileSystemError(str.str().c_str());
+
+        return it->second;
     }
 
     std::string name;

@@ -3625,9 +3625,9 @@ Kolumna "Stan" pokazuje, czy dokument może być odzyskany.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
+      <source>Combo View</source>
       <translation>MultiWidok</translation>
     </message>
     <message>

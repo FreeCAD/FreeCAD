@@ -86,7 +86,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 //    sToolTipText    = QT_TR_NOOP("Add a line to a view");
 //    sWhatsThis      = "TechDraw_LeaderLine";
 //    sStatusTip      = sToolTipText;
-//    sPixmap         = "actions/techdraw-mline";
+//    sPixmap         = "actions/techdraw-LeaderLine";
 //}
 
 //void CmdTechDrawLeaderLine::activated(int iMsg)
