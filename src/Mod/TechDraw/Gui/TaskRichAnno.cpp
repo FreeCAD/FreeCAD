@@ -90,11 +90,6 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     }
     ui->setupUi(this);
     
-#if QT_VERSION >= 0x050200
-    ui->teAnnoText.setPlaceholderText(QObject::tr(
-                "Input the annotation text directly or start the rich text editor"));
-#endif
-
     m_annoFeat = m_annoVP->getFeature();
 
     //m_baseFeat can be null 
