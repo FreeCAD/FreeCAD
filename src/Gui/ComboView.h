@@ -70,7 +70,7 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    ComboView(Gui::Document*  pcDocument, QWidget *parent=0);
+    ComboView(bool showModel, Gui::Document*  pcDocument, QWidget *parent=0);
 
     /**
      * A destructor.
@@ -93,9 +93,10 @@ protected:
     void closedDialog();
     void changeEvent(QEvent *e);
 
-    int oldTabIndex;
-
 private:
+    int oldTabIndex;
+    int modelIndex;
+    int taskIndex;
     QTabWidget                         * tabs;
     Gui::PropertyView                  * prop;
     Gui::TreePanel                     * tree;

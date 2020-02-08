@@ -441,12 +441,10 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
             enable = group->GetBool("Enabled", true);
         }
 
-        if (enable) {
-            ComboView* pcComboView = new ComboView(0, this);
-            pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
-            pcComboView->setMinimumWidth(150);
-            pDockMgr->registerDockWindow("Std_ComboView", pcComboView);
-        }
+        ComboView* pcComboView = new ComboView(enable, 0, this);
+        pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
+        pcComboView->setMinimumWidth(150);
+        pDockMgr->registerDockWindow("Std_ComboView", pcComboView);
     }
 
 #if QT_VERSION < 0x040500

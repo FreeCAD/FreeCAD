@@ -44,8 +44,11 @@ using namespace Gui::DockWnd;
 
 /* TRANSLATOR Gui::DockWnd::ComboView */
 
-ComboView::ComboView(Gui::Document* pcDocument, QWidget *parent)
-  : DockWindow(pcDocument,parent), oldTabIndex(0)
+ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
+  : DockWindow(pcDocument,parent)
+  , oldTabIndex(0)
+  , modelIndex(-1)
+  , taskIndex(-1)
 {
     setWindowTitle(tr("Combo View"));
 
@@ -59,21 +62,23 @@ ComboView::ComboView(Gui::Document* pcDocument, QWidget *parent)
     tabs->setTabPosition(QTabWidget::North);
     pLayout->addWidget( tabs, 0, 0 );
 
-    // splitter between tree and property view
-    QSplitter *splitter = new QSplitter();
-    splitter->setOrientation(Qt::Vertical);
+    if (showModel) {
+        // splitter between tree and property view
+        QSplitter *splitter = new QSplitter();
+        splitter->setOrientation(Qt::Vertical);
 
-    tree =  new TreePanel("ComboView", this);
-    splitter->addWidget(tree);
+        tree =  new TreePanel("ComboView", this);
+        splitter->addWidget(tree);
 
-    // property view
-    prop = new PropertyView(this);
-    splitter->addWidget(prop);
-    tabs->addTab(splitter,trUtf8("Model"));
+        // property view
+        prop = new PropertyView(this);
+        splitter->addWidget(prop);
+        modelIndex = tabs->addTab(splitter,trUtf8("Model"));
+    }
 
     // task panel
     taskPanel = new Gui::TaskView::TaskView(this);
-    tabs->addTab(taskPanel, trUtf8("Tasks"));
+    taskIndex = tabs->addTab(taskPanel, trUtf8("Tasks"));
 
     // task panel
     //projectView = new Gui::ProjectWidget(this);
@@ -90,10 +95,16 @@ void ComboView::showDialog(Gui::TaskView::TaskDialog *dlg)
 
     // switch to the TaskView tab
     oldTabIndex = tabs->currentIndex();
-    tabs->setCurrentIndex(1);
-    tabs->setTabIcon(1, icon);
+    tabs->setCurrentIndex(taskIndex);
+    tabs->setTabIcon(taskIndex, icon);
     // set the dialog
     taskPanel->showDialog(dlg);
+
+    // force to show the combo view
+    if (modelIndex < 0) {
+        if (parentWidget())
+            parentWidget()->raise();
+    }
 }
 
 void ComboView::closeDialog()
@@ -108,26 +119,26 @@ void ComboView::closedDialog()
 
     // dialog has been closed
     tabs->setCurrentIndex(oldTabIndex);
-    tabs->setTabIcon(1, icon);
+    tabs->setTabIcon(taskIndex, icon);
 }
 
 void ComboView::showTreeView()
 {
     // switch to the tree view
-    tabs->setCurrentIndex(0);
+    tabs->setCurrentIndex(modelIndex);
 }
 
 void ComboView::showTaskView()
 {
     // switch to the task view
-    tabs->setCurrentIndex(1);
+    tabs->setCurrentIndex(taskIndex);
 }
 
 void ComboView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        tabs->setTabText(0, trUtf8("Model"));
-        tabs->setTabText(1, trUtf8("Tasks"));
+        tabs->setTabText(modelIndex, trUtf8("Model"));
+        tabs->setTabText(taskIndex, trUtf8("Tasks"));
         //tabs->setTabText(2, trUtf8("Project"));
     }
 
