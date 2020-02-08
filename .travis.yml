@@ -259,7 +259,7 @@ before_install:
        cmd.exe /C 'C:\Users\travis\build\FreeCAD\FreeCAD\clcache.exe -s'
 
        curl -L https://github.com/FreeCAD/FreeCAD/releases/download/0.19_pre/FreeCADLibs_12.1.4_x64_VC15.7z --output FreeCADLibs.7z
-       7z x FreeCADLibs.7z -oFreeCADLibs > /dev/null
+       7z x FreeCADLibs.7z -oFreeCADLibs
        rm -f FreeCADLibs.7z
        export LIBPACK_DIR="$TRAVIS_BUILD_DIR\FreeCADLibs"
 
