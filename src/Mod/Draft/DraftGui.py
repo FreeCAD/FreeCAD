@@ -540,6 +540,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
+        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.pointButton,QtCore.SIGNAL("clicked()"),self.validatePoint)
@@ -798,22 +799,29 @@ class DraftToolBar:
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         if p.GetBool("focusOnLength",False) and self.lengthValue.isVisible():
             self.lengthValue.setFocus()
-            self.lengthValue.selectAll()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
         elif self.angleLock.isVisible() and self.angleLock.isChecked():
             self.lengthValue.setFocus()
-            self.lengthValue.selectAll()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
         elif (f is None) or (f == "x"):
             self.xValue.setFocus()
-            self.xValue.selectAll()
+            self.xValue.setSelection(0,self.number_length(self.xValue.text()))
         elif f == "y":
             self.yValue.setFocus()
-            self.yValue.selectAll()
+            self.yValue.setSelection(0,self.number_length(self.yValue.text()))
         elif f == "z":
             self.zValue.setFocus()
-            self.zValue.selectAll()
+            self.zValue.setSelection(0,self.number_length(self.zValue.text()))
         elif f == "radius":
             self.radiusValue.setFocus()
-            self.radiusValue.selectAll()
+            self.radiusValue.setSelection(0,self.number_length(self.radiusValue.text()))
+
+    def number_length(self, str):
+        nl = 0
+        for char in str:
+            if char in "0123456789.,-":
+                nl += 1
+        return nl
 
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -1500,70 +1508,70 @@ class DraftToolBar:
         #SetWP
 
         spec = False
-        if txt.upper().endswith(inCommandShortcuts["Relative"][0]):
+        if txt.upper().startswith(inCommandShortcuts["Relative"][0]):
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Fill"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Fill"][0]):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Exit"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Exit"][0]):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Continue"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Continue"][0]):
             self.toggleContinue()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Wipe"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Wipe"][0]):
             self.wipeLine()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["SelectEdge"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["SelectEdge"][0]):
             self.selectEdge()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Snap"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Snap"][0]):
             self.togglesnap()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["NearSnap"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["NearSnap"][0]):
             self.togglenearsnap()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Increase"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Increase"][0]):
             self.toggleradius(1)
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Decrease"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Decrease"][0]):
             self.toggleradius(-1)
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["AddHold"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["AddHold"][0]):
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.addHoldPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["RestrictX"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["RestrictX"][0]):
             self.constrain("x")
             self.displayPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["RestrictY"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["RestrictY"][0]):
             self.constrain("y")
             self.displayPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["RestrictZ"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["RestrictZ"][0]):
             self.constrain("z")
             self.displayPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Length"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Length"][0]):
             self.constrain("angle")
             self.displayPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Close"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Close"][0]):
             if self.closeButton.isVisible():
                 self.closeLine()
-        elif txt.upper().endswith(inCommandShortcuts["SetWP"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["SetWP"][0]):
             self.orientWP()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Copy"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Copy"][0]):
             if self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["SubelementMode"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["SubelementMode"][0]):
             if self.isSubelementMode.isVisible():
                 self.isSubelementMode.setChecked(not self.isSubelementMode.isChecked())
             spec = True
