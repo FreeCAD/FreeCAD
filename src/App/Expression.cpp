@@ -30,7 +30,7 @@
 # pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include <Base/Console.h>
 #include "Base/Exception.h"
@@ -1235,10 +1235,31 @@ Expression* Expression::copy() const {
 
 TYPESYSTEM_SOURCE(App::UnitExpression, App::Expression)
 
-UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantity & _quantity, const std::string &_unitStr)
+UnitExpression *UnitExpression::create(const DocumentObject *owner, const char *unit)
+{
+    auto info = Quantity::getUnitInfo(unit);
+    if(!info)
+        return 0;
+    
+    if(strcmp(unit, "in") == 0) {
+        FC_WARN("Using deprecated unit 'in', auto change to 'inch'");
+        unit = "inch";
+    } else 
+        unit = info->display;
+    return new UnitExpression(owner, info->quantity, unit);
+}
+
+UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantity & _quantity, const char *unit)
     : Expression(_owner)
     , quantity(_quantity)
-    , unitStr(_unitStr)
+    , unitStr(unit)
+{
+}
+
+UnitExpression::UnitExpression(const DocumentObject *_owner, const Base::Quantity & _quantity)
+    : Expression(_owner)
+    , quantity(_quantity)
+    , unitStr(0)
 {
 }
 
@@ -1297,7 +1318,10 @@ Expression *UnitExpression::simplify() const
 
 void UnitExpression::_toString(std::ostream &ss, bool,int) const
 {
-    ss << unitStr;
+    if(unitStr)
+        ss << unitStr;
+    else
+        ss << quantity.getUnit().getStdString();
 }
 
 /**
@@ -1469,6 +1493,7 @@ static Py::Object calc(const Expression *expr, int op,
     BINARY_OP(MUL,Multiply)
     BINARY_OP(UNIT,Multiply)
     BINARY_OP(DIV,TrueDivide)
+    BINARY_OP(UNIT_ADD,Add)
     case OperatorExpression::ADD: {
         PyObject *res;
 #if PY_MAJOR_VERSION < 3
@@ -1646,6 +1671,9 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     case GTE:
         s << " >= ";
         break;
+    case UNIT_ADD:
+        s << " ";
+        break;
     case UNIT:
         break;
     default:
@@ -1709,12 +1737,15 @@ int OperatorExpression::priority() const
     case DIV:
     case MOD:
         return 4;
-    case POW:
-        return 5;
-    case UNIT:
     case NEG:
     case POS:
+        return 5;
+    case UNIT_ADD:
         return 6;
+    case UNIT:
+        return 7;
+    case POW:
+        return 8;
     default:
         assert(false);
         return 0;
@@ -2611,7 +2642,18 @@ bool VariableExpression::_isIndexable() const {
 }
 
 Py::Object VariableExpression::_getPyValue() const {
-    return var.getPyValue(true);
+    try {
+        return var.getPyValue(true);
+    } catch (Base::Exception &) {
+        if(!hasComponent() && var.numComponents()==1
+                           && !var.hasDocumentObjectName(true))
+        {
+            Quantity q;
+            if(Quantity::fromUnitString(q,var.getComponents()[0].getName().c_str()))
+                return Py::asObject(new QuantityPy(new Quantity(q)));
+        }
+        throw;
+    }
 }
 
 void VariableExpression::_toString(std::ostream &ss, bool persistent,int) const {
@@ -2630,6 +2672,14 @@ void VariableExpression::_toString(std::ostream &ss, bool persistent,int) const 
 
 Expression *VariableExpression::simplify() const
 {
+    if(!hasComponent() && var.numComponents()==1
+                       && !var.hasDocumentObjectName(true)
+                       && !var.getProperty())
+    {
+        auto expr = UnitExpression::create(owner, var.getComponents()[0].getName().c_str());
+        if(expr)
+            return expr;
+    }
     return copy();
 }
 
@@ -3333,9 +3383,9 @@ static void initParser(const App::DocumentObject *owner)
     }
 }
 
-std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string &str)
+std::vector<boost::tuple<int, int, std::string> > tokenize(const char *str)
 {
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
+    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str);
     std::vector<boost::tuple<int, int, std::string> > result;
     int token;
 
@@ -3397,54 +3447,8 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
 
 UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, const char* buffer)
 {
-    // parse from buffer
-    ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
-
-    initParser(owner);
-
-    // run the parser
-    int result = ExpressionParser::ExpressionParser_yyparse ();
-
-    // free the scan buffer
-    ExpressionParser::ExpressionParser_delete_buffer (my_string_buffer);
-
-    if (result != 0)
-        throw ParserError("Failed to parse expression.");
-
-    if (ScanResult == 0)
-        throw ParserError("Unknown error in expression");
-
-    // Simplify expression
-    Expression * simplified = ScanResult->simplify();
-
-    if (!unitExpression) {
-        OperatorExpression * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
-
-        if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
-            NumberExpression * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
-            UnitExpression * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
-
-            // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
-            if (denom && nom && essentiallyEqual(nom->getValue(), 1.0))
-                unitExpression = true;
-        }
-    }
-    delete ScanResult;
-
-    if (unitExpression) {
-        NumberExpression * num = freecad_dynamic_cast<NumberExpression>(simplified);
-
-        if (num) {
-           simplified = new UnitExpression(num->getOwner(), num->getQuantity());
-            delete num;
-        }
-        return freecad_dynamic_cast<UnitExpression>(simplified);
-    }
-    else {
-        delete simplified;
-        throw Expression::Exception("Expression is not a unit.");
-        return 0;
-    }
+    Quantity q = Quantity::parse(buffer);
+    return new UnitExpression(owner, q);
 }
 
 bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
@@ -3462,15 +3466,7 @@ bool ExpressionParser::isTokenAnIndentifier(const std::string & str)
 
 bool ExpressionParser::isTokenAUnit(const std::string & str)
 {
-    ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
-    int token = ExpressionParserlex();
-    int status = ExpressionParserlex();
-    ExpressionParser_delete_buffer(buf);
-
-    if (status == 0 && token == UNIT)
-        return true;
-    else
-        return false;
+    return Quantity::getUnitInfo(boost::trim_copy(str).c_str()) != 0;
 }
 
 #if defined(__clang__)

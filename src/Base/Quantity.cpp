@@ -29,6 +29,9 @@
 # include <cmath>
 #endif
 
+#include <unordered_map>
+#include <boost/functional/hash.hpp>
+
 #include "Quantity.h"
 #include "Exception.h"
 #include "UnitsApi.h"
@@ -290,7 +293,6 @@ Quantity Quantity::Thou             (0.0254        ,Unit(1));
 Quantity Quantity::Yard             (914.4         ,Unit(1));
 Quantity Quantity::Mile             (1609344.0     ,Unit(1));
 
-Quantity Quantity::MilePerHour      (447.04        ,Unit(1,0,-1));
 Quantity Quantity::SquareFoot       (92903.04      ,Unit(2));
 Quantity Quantity::CubicFoot        (28316846.592  ,Unit(3));
 
@@ -457,8 +459,13 @@ int QuantityLexer(void);
 
 Quantity Quantity::parse(const QString &string)
 {
+    return parse(string.toUtf8().constData());
+}
+
+Quantity Quantity::parse(const char *string)
+{
     // parse from buffer
-    QuantityParser::YY_BUFFER_STATE my_string_buffer = QuantityParser::yy_scan_string (string.toUtf8().data());
+    QuantityParser::YY_BUFFER_STATE my_string_buffer = QuantityParser::yy_scan_string (string);
     // set the global return variables
     QuantResult = Quantity(DOUBLE_MIN);
     // run the parser
@@ -469,4 +476,196 @@ Quantity Quantity::parse(const QString &string)
     //if (QuantResult == Quantity(DOUBLE_MIN))
     //    throw Base::ParserError("Unknown error in Quantity expression");
     return QuantResult;
+}
+
+struct CStringHasher {
+    inline std::size_t operator()(const char *s) const {
+        if(!s) return 0;
+        return boost::hash_range(s,s+std::strlen(s));
+    }
+    inline bool operator()(const char *a, const char *b) const {
+        if(!a) return !b;
+        if(!b) return false;
+        return std::strcmp(a,b)==0;
+    }
+};
+
+const std::vector<UnitInfo> &Quantity::unitInfo() {
+    static std::vector<UnitInfo> _info = {
+        {"m", 0, "Metre", Quantity::Metre, "Metre"},
+        {"cm", 0, "CentiMetre", Quantity::CentiMetre, "Centi meter"},
+        {"dm", 0, "DeciMetre", Quantity::DeciMetre, "Deci meter"},
+        {"km", 0, "KiloMetre", Quantity::KiloMetre, "Kilo meter"},
+        {"mm", 0, "MilliMetre", Quantity::MilliMetre, "Milli meter (internal standard length)"},
+        {"um", 0, "MicroMetre", Quantity::MicroMetre, "Micro meter"},
+        {"\xC2\xB5m", "um", "MicroMetre", Quantity::MicroMetre, "Micro meter"},
+        {"nm", 0, "NanoMetre", Quantity::NanoMetre , "Nano meter"},
+
+        {"l", 0, "Liter", Quantity::Liter, "Liter dm^3"},
+        {"ml", 0, "MilliLiter", Quantity::MilliLiter, "Milli Liter"},
+
+        {"Hz", 0, "Hertz", Quantity::Hertz, "Hertz"},
+        {"kHz", 0, "KiloHertz", Quantity::KiloHertz, "Kilo Hertz"},
+        {"MHz", 0, "MegaHertz", Quantity::MegaHertz, "Mega Hertz"},
+        {"GHz", 0, "GigaHertz", Quantity::GigaHertz, "Giga Hertz"},
+        {"THz", 0, "TeraHertz", Quantity::TeraHertz, "Tera Hertz"},
+
+        {"ug", 0, "MicroGram", Quantity::MicroGram, "Micro gram"},
+        {"\xC2\xB5g", "ug", "MicroGram", Quantity::MicroGram, "Micro gram"},
+        {"mg", 0, "MilliGram", Quantity::MilliGram, "Milli gram"},
+        {"g", 0, "Gram", Quantity::Gram, "Gram"},
+        {"kg", 0, "KiloGram", Quantity::KiloGram, "Kilo gram (internal standard for mass)"},
+        {"t", 0, "Ton", Quantity::Ton, "Metric Tonne"},
+
+        {"s", 0, "Second", Quantity::Second, "Second (internal standard time)"},
+        {"min", 0, "Minute", Quantity::Minute, "Minute"},
+        {"h", 0, "Hour", Quantity::Hour, "Hour"},
+
+        {"A", 0, "Ampere", Quantity::Ampere, "Ampere (internal standard electric current)"},
+        {"mA", 0, "MilliAmpere", Quantity::MilliAmpere, "Milli Ampere"},
+        {"kA", 0, "KiloAmpere", Quantity::KiloAmpere, "Kilo Ampere"},
+        {"MA", 0, "MegaAmpere", Quantity::MegaAmpere, "Mega Ampere"},
+
+        {"K", 0, "Kelvin", Quantity::Kelvin, "Kelvin (internal standard thermodynamic temperature)"},
+        {"mK", 0, "MilliKelvin", Quantity::MilliKelvin, "Milli Kelvin"},
+        {"uK", 0, "MicroKelvin", Quantity::MicroKelvin, "Micro Kelvin"},
+        {"\xC2\xB5K", "uK", "MicroKelvin", Quantity::MicroKelvin, "Micro Kelvin"},
+
+        {"mol", 0, "Mole", Quantity::Mole, "Mole (internal standard amount of substance)"},
+        {"mmol", 0, "MilliMole", Quantity::MilliMole, "Milli Mole"},
+
+        {"cd", 0, "Candela", Quantity::Candela, "Candela (internal standard luminous intensity)"},
+
+        {"in", 0, "Inch", Quantity::Inch, "Inch (Deprecated! use 'inch' instead)"},
+        {"inch", 0, "Inch", Quantity::Inch, "Inch"},
+        {"\"", "inch", "Inch", Quantity::Inch, "Inch"},
+        {"ft", 0, "Foot", Quantity::Foot, "Foot"},
+        {"'", "ft", "Foot", Quantity::Foot, "Foot"},
+        {"thou", 0, "Thou", Quantity::Thou, "Thou (inch/1000)"},
+        {"mil", 0, "Mil", Quantity::Thou, "Mil  (inch/1000, the thou in US)"},
+        {"yd", 0, "Yard", Quantity::Yard, "Uard"},
+        {"mi", 0, "Mile", Quantity::Mile, "Mile"},
+
+        {"kmh", 0, "KMH", Quantity::KMH, "Kilo meter per hour "},
+
+        {"mph", 0, "MPH", Quantity::MPH, "Mile per hour "},
+        {"sqft", 0, "SquareFoot", Quantity::SquareFoot, "Square foot"},
+        {"cft", 0, "CubicFoot", Quantity::CubicFoot, "Cubic foot"},
+
+        {"lb", 0, "Pound", Quantity::Pound, "Pound"},
+        {"lbm", 0, "Pound", Quantity::Pound, "Pound"},
+        {"oz", 0, "Ounce", Quantity::Ounce, "Ounce"},
+        {"st", 0, "Stone", Quantity::Stone, "Stone"},
+        {"cwt", 0, "Hundredweights", Quantity::Hundredweights, "Hundredweights"},
+
+        {"lbf", 0, "PoundForce", Quantity::PoundForce, "Pound"},
+
+        {"N", 0, "Newton", Quantity::Newton, "Newton"},
+        {"mN", 0, "MilliNewton", Quantity::MilliNewton, "Milli Newton"},
+        {"kN", 0, "KiloNewton", Quantity::KiloNewton, "Kilo Newton"},
+        {"MN", 0, "MegaNewton", Quantity::MegaNewton, "Mega Newton"},
+
+        {"Pa", 0, "Pascal", Quantity::Pascal, "Pascal"},
+        {"kPa", 0, "KiloPascal", Quantity::KiloPascal, "Kilo Pascal"},
+        {"MPa", 0, "MegaPascal", Quantity::MegaPascal, "Mega Pascal"},
+        {"GPa", 0, "GigaPascal", Quantity::GigaPascal, "Giga Pascal"},
+
+        {"bar", 0, "Bar", Quantity::Bar, "Bar"},
+        {"mbar", 0, "MilliBar", Quantity::MilliBar, "Milli Bar"},
+
+        {"Torr", 0, "Torr", Quantity::Torr, "Portion of Pascal ( 101325/760 )"},
+        {"mTorr", 0, "mTorr", Quantity::mTorr, "Milli Torr"}, //
+        {"uTorr", 0, "yTorr", Quantity::yTorr, "Micro Torr"}, //
+        {"\xC2\xB5Torr", "uTorr", "uTorr", Quantity::yTorr, "Micro Torr"}, //
+
+        {"psi", 0, "PSI", Quantity::PSI, "Pounds/in^2"},
+        {"ksi", 0, "KSI", Quantity::KSI, "1000 x pounds/in^2"},
+        {"Mpsi", 0, "MPSI", Quantity::MPSI, "1000 ksi"},
+
+        {"W", 0, "Watt", Quantity::Watt, "Watt"},
+        {"mW", 0, "MilliWatt", Quantity::MilliWatt, "Milli Watt"},
+        {"kW", 0, "KiloWatt", Quantity::KiloWatt, "Kilo Watt"},
+        {"VA", 0, "VoltAmpere", Quantity::VoltAmpere, "VoltAmpere"},
+
+        {"V", 0, "Volt", Quantity::Volt, "Volt"},
+        {"kV", 0, "KiloVolt", Quantity::KiloVolt, "kilo Volt"},
+        {"mV", 0, "MilliVolt", Quantity::MilliVolt, "Milli Volt"},
+
+        {"S", 0, "Siemens", Quantity::Siemens, "Siemens"},
+        {"mS", 0, "MilliSiemens", Quantity::MilliSiemens, "Milli Siemens"},
+        {"uS", 0, "MicroSiemens", Quantity::MicroSiemens, "Micro Siemens"},
+        {"\xC2\xB5S", "uS", "MicroSiemens", Quantity::MicroSiemens, "Micro Siemens"},
+
+        {"Ohm", 0, "Ohm", Quantity::Ohm, "Ohm"},
+        {"kOhm", 0, "KiloOhm", Quantity::KiloOhm, "Kilo Ohm"},
+        {"MOhm", 0, "MegaOhm", Quantity::MegaOhm, "Mega Ohm"},
+
+        {"C", 0, "Coulomb", Quantity::Coulomb, "Coulomb (A*s)"},
+
+        {"T", 0, "Tesla", Quantity::Tesla, "Tesla (kg/s^2/A)"},
+        {"G", 0, "Gauss", Quantity::Gauss, "Gauss (1 G = 1e-4 T)"},
+
+        {"Wb", 0, "Weber", Quantity::Weber, "Weber"},
+
+        {"Oe", 0, "Oersted", Quantity::Oersted, "Oersted (A/m)"},
+
+        {"F", 0, "Farad", Quantity::Farad, "Farad"},
+        {"mF", 0, "MilliFarad", Quantity::MilliFarad, "Milli Farad"},
+        {"uF", 0, "MicroFarad", Quantity::MicroFarad, "Micro Farad"},
+        {"\xC2\xB5" "F", "uF", "MicroFarad", Quantity::MicroFarad, "Micro Farad"},
+        {"nF", 0, "NanoFarad", Quantity::NanoFarad, "Nano Farad"},
+        {"pF", 0, "PicoFarad", Quantity::PicoFarad, "Pico Farad"},
+
+        {"H", 0, "Henry", Quantity::Henry, "Henry"},
+        {"mH", 0, "MilliHenry", Quantity::MilliHenry, "Milli Henry"},
+        {"uH", 0, "MicroHenry", Quantity::MicroHenry, "Micro Henry"},
+        {"\xC2\xB5H", "uH", "MicroHenry", Quantity::MicroHenry, "Micro Henry"},
+        {"nH", 0, "NanoHenry", Quantity::NanoHenry, "Nano Henry"},
+
+        {"J", 0, "Joule", Quantity::Joule, "Joule"},
+        {"mJ", 0, "MilliJoule", Quantity::MilliJoule, "Milli Joule"},
+        {"kJ", 0, "KiloJoule", Quantity::KiloJoule, "kilo Joule"},
+        {"Nm", 0, "NewtonMeter", Quantity::NewtonMeter, "N*m = Joule"},
+        {"VAs", 0, "VoltAmpereSecond", Quantity::VoltAmpereSecond, "V*A*s = Joule"},
+        {"CV", 0, "WattSecond", Quantity::WattSecond, "CV"}, // what is this?
+        {"Ws", 0, "WattSecond", Quantity::WattSecond, "W*s = Joule"},
+        {"kWh", 0, "KiloWattHour", Quantity::KiloWattHour, "1 kWh = 3.6e6 J"},
+        {"eV", 0, "ElectronVolt", Quantity::ElectronVolt, "Electron volt, 1 ev = 1.602176634e-19 J"},
+        {"keV", 0, "KiloElectronVolt", Quantity::KiloElectronVolt, "Kilo electron volt"}, 
+        {"MeV", 0, "MegaElectronVolt", Quantity::MegaElectronVolt, "Mega electron volt"}, 
+        {"cal", 0, "Calorie", Quantity::Calorie, "Calorie, 1 cal = 4.1868 J"},
+        {"kcal", 0, "KiloCalorie", Quantity::KiloCalorie, "Kilo Calorie"}, 
+
+        {"deg", 0, "Degree", Quantity::Degree, "Degree (internal standard angle)"},
+        {"\xC2\xB0", "deg", "Degree", Quantity::Degree, "Degree (internal standard angle)"},
+        {"rad", 0, "Radian", Quantity::Radian, "Radian"},
+        {"gon", 0, "Gon", Quantity::Gon, "Gradian, 90 deg/100"},
+        {"M", 0, "AngularMinute", Quantity::AngMinute, "Angle minute"},
+        {"\xE2\x80\xB2", "M", "AngularMinute", Quantity::AngMinute, "Angle minute"},
+        {"AS", 0, "AngularSecond", Quantity::AngSecond, "Angle second "},
+        {"\xE2\x80\xB3", "AS", "AngularSecond", Quantity::AngSecond, "Angle second"},
+    };
+
+    return _info;
+}
+
+const UnitInfo *Quantity::getUnitInfo(const char *unit) {
+    static std::unordered_map<const char *,const UnitInfo*,CStringHasher,CStringHasher> _map;
+    if(_map.empty()) {
+        for(const auto &info : unitInfo()) {
+            _map[info.display] = &info;
+        }
+    }
+    auto iter = _map.find(unit);
+    if(iter == _map.end())
+        return 0;
+    return iter->second;
+}
+
+bool Quantity::fromUnitString(Quantity &q, const char *unit) {
+    const UnitInfo *info = getUnitInfo(unit);
+    if(!info)
+        return false;
+    q = info->quantity;
+    return true;
 }
