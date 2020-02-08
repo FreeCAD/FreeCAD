@@ -124,7 +124,7 @@
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="Gui::PrefSpinBox" name="DefaultShapeVertexWidth">
+         <widget class="Gui::PrefSpinBox" name="DefaultShapeVertexSize">
           <property name="toolTip">
            <string>The default size for new vertices</string>
           </property>
@@ -138,7 +138,7 @@
            <number>2</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>DefaultShapeVertexWidth</cstring>
+           <cstring>DefaultShapePointSize</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
