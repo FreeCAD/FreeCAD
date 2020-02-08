@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+
+#include <boost/algorithm/string/replace.hpp>
+
 #include "PropertiesDialog.h"
 #include <Base/Tools.h>
 #include <App/Range.h>
@@ -260,6 +263,7 @@ void PropertiesDialog::apply()
             }
             if (orgDisplayUnit != displayUnit) {
                 std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
+                boost::replace_all(escapedstr,"'", "\\'");
                 Gui::cmdAppObjectArgs(sheet, "setDisplayUnit('%s', '%s')",
                                         i->rangeString().c_str(), escapedstr.c_str());
                 changes = true;               
