@@ -746,6 +746,7 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
 
+    /*
     // handle visibility automation differently to the default method
     auto customvisfunc = [] (bool opening_not_closing,
                              const std::string &postfix,
@@ -780,6 +781,8 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
         }
     };
     parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"), customvisfunc);
+    */
+    parameter = new PartGui::TaskAttacher(PrimitiveView, nullptr, QString(), tr("Attachment"));
     Content.push_back(parameter);
 }
 
