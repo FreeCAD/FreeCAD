@@ -104,15 +104,34 @@ class DressupPathBoundary(object):
             self.clearanceHeight = float(PathUtil.opProperty(obj.Base, 'ClearanceHeight'))
 
             boundary = obj.Stock.Shape
-            cmd = obj.Base.Path.Commands[0]
-            pos = cmd.Placement.Base
-            commands = [cmd]
+            commands = []
+            nextcmd=0
+            cmd = obj.Base.Path.Commands[nextcmd]
+            while cmd.Name not in PathGeom.CmdMoveAll:
+                commands.append(cmd)
+                nextcmd+=1
+                cmd = obj.Base.Path.Commands[nextcmd]
+            PathLog.track("clearance G0 cmd: %s" % cmd.toGCode() )
+            commands.append(cmd)
+              
+            pos = cmd.Placement.Base  ### fake pos, unrelated to actual machine position which could be anything, see bug #4260
+            pos = PathGeom.commandEndPoint(cmd, pos ) # recover true machine z from initial move to clearanceHeight
+            
+            nextcmd+=1
+            cmd = obj.Base.Path.Commands[nextcmd]  # next is mv to path start x,y at clearance ht.
+            commands.append(cmd) 
+            PathLog.track("G0 to path start cmd: %s" % cmd.toGCode() )
+
             lastExit = None
-            for cmd in obj.Base.Path.Commands[1:]:
+            pos = PathGeom.commandEndPoint(cmd, pos)  # recover true machine x,y pos from first x,y move in path.
+            
+            nextcmd+=1;
+            for cmd in obj.Base.Path.Commands[nextcmd:]:
                 if cmd.Name in PathGeom.CmdMoveAll:
-                    edge = PathGeom.edgeForCmd(cmd, pos)
-                    inside  = edge.common(boundary).Edges
-                    outside = edge.cut(boundary).Edges
+                    fakeEdge = PathGeom.edgeForCmd(cmd, pos) # make edge like the cmd, given machine is at pos 
+                    inside  = fakeEdge.common(boundary).Edges
+                    outside = fakeEdge.cut(boundary).Edges
+
                     if not obj.Inside:
                         t = inside
                         inside = outside
