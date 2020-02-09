@@ -27,7 +27,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -128,16 +128,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
+          <property name="margin">
            <number>0</number>
           </property>
           <item>
@@ -241,7 +232,7 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_5">
        <item row="0" column="1">
-        <widget class="QLineEdit" name="displayUnit"/>
+        <widget class="Gui::ExpressionLineEdit" name="displayUnit"/>
        </item>
        <item row="1" column="1">
         <spacer name="verticalSpacer">
@@ -305,6 +296,11 @@
    <extends>QWidget</extends>
    <header>qtcolorpicker.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ExpressionLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">Gui/ExpressionCompleter.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

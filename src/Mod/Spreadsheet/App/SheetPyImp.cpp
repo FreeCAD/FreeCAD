@@ -446,24 +446,20 @@ PyObject* SheetPy::getStyle(PyObject *args)
 PyObject* SheetPy::setDisplayUnit(PyObject *args)
 {
     const char * cell;
-    const char * value;
+    PyObject *pyvalue;
 
-    if (!PyArg_ParseTuple(args, "ss:setDisplayUnit", &cell, &value))
+    if (!PyArg_ParseTuple(args, "sO:setDisplayUnit", &cell, &pyvalue))
         return 0;
 
-    try {
+    PY_TRY {
+        App::PropertyString tmp;
+        tmp.setPyObject(pyvalue);
         Range rangeIter(cell);
-
         do {
-            getSheetPtr()->setDisplayUnit(*rangeIter, value);
+            getSheetPtr()->setDisplayUnit(*rangeIter, tmp.getValue());
         } while (rangeIter.next());
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
-
-    Py_Return;
+        Py_Return;
+    } PY_CATCH
 }
 
 PyObject* SheetPy::setAlias(PyObject *args)

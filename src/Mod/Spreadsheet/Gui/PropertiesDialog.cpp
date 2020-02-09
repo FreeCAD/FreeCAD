@@ -50,6 +50,9 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     ui->foregroundColor->setStandardColors();
     ui->backgroundColor->setStandardColors();
 
+    ui->displayUnit->setDocumentObject(_sheet);
+    ui->displayUnit->setSearchUnit(true);
+
     assert(ranges.size() > 0);
     Range range = ranges[0];
 
@@ -101,7 +104,10 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     if (style.find("underline") != style.end())
         ui->styleUnderline->setChecked(true);
 
-    ui->displayUnit->setText(Base::Tools::fromStdString(displayUnit.stringRep));
+    {
+        QSignalBlocker blocker(ui->displayUnit);
+        ui->displayUnit->setText(Base::Tools::fromStdString(displayUnit.stringRep));
+    }
 
     ui->alias->setText(Base::Tools::fromStdString(alias));
 
@@ -123,7 +129,7 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     connect(ui->styleUnderline, SIGNAL(clicked()), this, SLOT(styleChanged()));
 
     // Display unit
-    connect(ui->displayUnit, SIGNAL(textEdited(QString)), this, SLOT(displayUnitChanged(QString)));
+    connect(ui->displayUnit, SIGNAL(textChanged(QString)), this, SLOT(displayUnitChanged(QString)));
 
     // Alias is only allowed for a single cell
     ui->tabWidget->widget(4)->setEnabled(_ranges.size() == 1 && _ranges[0].size() == 1);
@@ -264,7 +270,7 @@ void PropertiesDialog::apply()
             if (orgDisplayUnit != displayUnit) {
                 std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
                 boost::replace_all(escapedstr,"'", "\\'");
-                Gui::cmdAppObjectArgs(sheet, "setDisplayUnit('%s', '%s')",
+                Gui::cmdAppObjectArgs(sheet, "setDisplayUnit('%s', u'%s')",
                                         i->rangeString().c_str(), escapedstr.c_str());
                 changes = true;               
             }
