@@ -77,7 +77,6 @@ private Q_SLOTS:
 
 private:
     Ui_SketcherSettingsDisplay* ui;
-    SketcherGeneralWidget* form;
 };
 
 /**
