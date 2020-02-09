@@ -3623,9 +3623,9 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
+      <source>Combo View</source>
       <translation>Vista combinada</translation>
     </message>
     <message>

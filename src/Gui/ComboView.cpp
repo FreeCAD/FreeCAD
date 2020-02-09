@@ -28,7 +28,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
-#include "CombiView.h"
+#include "ComboView.h"
 #include "BitmapFactory.h"
 #include "PropertyView.h"
 #include "ProjectView.h"
@@ -42,12 +42,15 @@ using namespace Gui;
 using namespace Gui::DockWnd;
 
 
-/* TRANSLATOR Gui::DockWnd::CombiView */
+/* TRANSLATOR Gui::DockWnd::ComboView */
 
-CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
-  : DockWindow(pcDocument,parent), oldTabIndex(0)
+ComboView::ComboView(bool showModel, Gui::Document* pcDocument, QWidget *parent)
+  : DockWindow(pcDocument,parent)
+  , oldTabIndex(0)
+  , modelIndex(-1)
+  , taskIndex(-1)
 {
-    setWindowTitle(tr("CombiView"));
+    setWindowTitle(tr("Combo View"));
 
     QGridLayout* pLayout = new QGridLayout(this); 
     pLayout->setSpacing( 0 );
@@ -59,75 +62,83 @@ CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
     tabs->setTabPosition(QTabWidget::North);
     pLayout->addWidget( tabs, 0, 0 );
 
-    // splitter between tree and property view
-    QSplitter *splitter = new QSplitter();
-    splitter->setOrientation(Qt::Vertical);
+    if (showModel) {
+        // splitter between tree and property view
+        QSplitter *splitter = new QSplitter();
+        splitter->setOrientation(Qt::Vertical);
 
-    tree =  new TreePanel("ComboView", this);
-    splitter->addWidget(tree);
+        tree =  new TreePanel("ComboView", this);
+        splitter->addWidget(tree);
 
-    // property view
-    prop = new PropertyView(this);
-    splitter->addWidget(prop);
-    tabs->addTab(splitter,trUtf8("Model"));
+        // property view
+        prop = new PropertyView(this);
+        splitter->addWidget(prop);
+        modelIndex = tabs->addTab(splitter,trUtf8("Model"));
+    }
 
     // task panel
     taskPanel = new Gui::TaskView::TaskView(this);
-    tabs->addTab(taskPanel, trUtf8("Tasks"));
+    taskIndex = tabs->addTab(taskPanel, trUtf8("Tasks"));
 
     // task panel
     //projectView = new Gui::ProjectWidget(this);
     //tabs->addTab(projectView, trUtf8("Project"));
 }
 
-CombiView::~CombiView()
+ComboView::~ComboView()
 {
 }
 
-void CombiView::showDialog(Gui::TaskView::TaskDialog *dlg)
+void ComboView::showDialog(Gui::TaskView::TaskDialog *dlg)
 {
     static QIcon icon = Gui::BitmapFactory().pixmap("edit-edit.svg");
 
     // switch to the TaskView tab
     oldTabIndex = tabs->currentIndex();
-    tabs->setCurrentIndex(1);
-    tabs->setTabIcon(1, icon);
+    tabs->setCurrentIndex(taskIndex);
+    tabs->setTabIcon(taskIndex, icon);
     // set the dialog
     taskPanel->showDialog(dlg);
+
+    // force to show the combo view
+    if (modelIndex < 0) {
+        if (parentWidget())
+            parentWidget()->raise();
+    }
 }
 
-void CombiView::closeDialog()
+void ComboView::closeDialog()
 {
     // close the dialog
     taskPanel->removeDialog();
 }
 
-void CombiView::closedDialog()
+void ComboView::closedDialog()
 {
     static QIcon icon = QIcon();
 
     // dialog has been closed
     tabs->setCurrentIndex(oldTabIndex);
-    tabs->setTabIcon(1, icon);
+    tabs->setTabIcon(taskIndex, icon);
 }
 
-void CombiView::showTreeView()
+void ComboView::showTreeView()
 {
     // switch to the tree view
-    tabs->setCurrentIndex(0);
+    tabs->setCurrentIndex(modelIndex);
 }
 
-void CombiView::showTaskView()
+void ComboView::showTaskView()
 {
     // switch to the task view
-    tabs->setCurrentIndex(1);
+    tabs->setCurrentIndex(taskIndex);
 }
 
-void CombiView::changeEvent(QEvent *e)
+void ComboView::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        tabs->setTabText(0, trUtf8("Model"));
-        tabs->setTabText(1, trUtf8("Tasks"));
+        tabs->setTabText(modelIndex, trUtf8("Model"));
+        tabs->setTabText(taskIndex, trUtf8("Tasks"));
         //tabs->setTabText(2, trUtf8("Project"));
     }
 
@@ -135,4 +146,4 @@ void CombiView::changeEvent(QEvent *e)
 }
 
 
-#include "moc_CombiView.cpp"
+#include "moc_ComboView.cpp"
