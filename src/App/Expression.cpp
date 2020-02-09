@@ -1753,70 +1753,65 @@ struct HiddenReference {
     bool cond;
 };
 
+const std::vector<FunctionExpression::FunctionInfo> &FunctionExpression::getFunctions()
+{
+    static std::vector<FunctionInfo> functions = {
+        {ACOS, "acos", "Inverse cosine of a value"},
+        {ASIN, "asin", "Iverse sine of a value"},
+        {ATAN, "atan", "Iverse tangent of a value"},
+        {ABS, "abs", "Absolute value of a number"},
+        {EXP, "exp", "Euler's number raised to a power"},
+        {LOG, "log", "The natural (base e) logrithm of a number"},
+        {LOG10, "log10", "The common (base 10) logrithm of a number"},
+        {SIN, "sin", "Sine of a value"},
+        {SINH, "sinh", "Hybolic sine of a value"},
+        {TAN, "tan", "Tangent of a value"},
+        {TANH, "tanh", "Hybolic tangent of a value"},
+        {SQRT, "sqrt", "Square root of a number"},
+        {COS, "cos", "Cosine of a value"},
+        {COSH, "cosh", "Hybolic cosine of a value"},
+        {ATAN2, "atan2", "Arctangent of a value"},
+        {MOD, "mod", "mod(dividend, divider), modulo (remainder) operator"},
+        {POW, "pow", "power(base, exponent), return a number raised to a power"},
+        {ROUND, "round", "Rounds a number to the nearest integer"},
+        {TRUNC, "trunc", "Truncate a number to an integer"},
+        {CEIL, "ceil", "Return the largest integer not less than a number"},
+        {FLOOR, "floor", "Return the largest integer not greater than a number"},
+        {HYPOT, "hypot", "hypot(x, y, [z]) = sqrt(x^2 + y^2 + z^2), where z is optional"},
+        {CATH, "cath", "cath(x, y, [z]) = sqrt(x^2 - y^2 - z^2), where z is optional"},
+        {LIST, "list", "list(arg...), create a Python list"},
+        {TUPLE, "tuple", "tuple(arg...), create a Python tuple"},
+        {MSCALE, "mscale", "mscale(matrix, vector)\n"
+                           "mscale(matrix, scalex, scaley, scalez)\n\n"
+                           "Scaling of a matrix"},
+        {MINVERT, "minvert", "minvert(matrix|placement|rotation)\n\n"
+                             "Invert either a matrix, placement or rotation"},
+        {CREATE, "create", "create(type,...)\n\n"
+                           "Create a new Python object with the given type.\n"
+                           "Currently supported types can be specified as string\n"
+                           "with value, vector, matrix, placement or rotation"},
+        {STR, "str", "str(arg), convert the input argument to string"},
+        {HREF, "href", "href(arg), Deprecated! Use hiddenref() instead."},
+        {HIDDENREF, "hiddenref", "hiddenref(arg), hide any object reference inside the input.\n"
+                                  "This allows to create cyclic references. Use with caution!"},
+
+        // Aggregates
+        {SUM, "sum", "Sum a list of numbers or cells"},
+        {COUNT, "count", "Count the number of non-empty cells in the given range"},
+        {AVERAGE, "average", "Compute the average of a list of numbers or cells"},
+        {STDDEV, "stddev", "Compute the standard deviation of a list of numbers or cells"},
+        {MIN, "min", "Find the smallest number"},
+        {MAX, "max", "Find the largest number"},
+    };
+    return functions;
+}
+
 FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f, std::string &&name, std::vector<Expression *> _args)
     : UnitExpression(_owner)
     , f(_f)
     , fname(std::move(name))
     , args(_args)
 {
-    switch (f) {
-    case ACOS:
-    case ASIN:
-    case ATAN:
-    case ABS:
-    case EXP:
-    case LOG:
-    case LOG10:
-    case SIN:
-    case SINH:
-    case TAN:
-    case TANH:
-    case SQRT:
-    case COS:
-    case COSH:
-    case ROUND:
-    case TRUNC:
-    case CEIL:
-    case FLOOR:
-    case MINVERT:
-    case STR:
-    case HIDDENREF:
-    case HREF:
-        if (args.size() != 1)
-            EXPR_THROW("Invalid number of arguments: exactly one required.");
-        break;
-    case MOD:
-    case ATAN2:
-    case POW:
-        if (args.size() != 2)
-            EXPR_THROW("Invalid number of arguments: exactly two required.");
-        break;
-    case HYPOT:
-    case CATH:
-        if (args.size() < 2 || args.size() > 3)
-            EXPR_THROW("Invalid number of arguments: exactly two, or three required.");
-        break;
-    case STDDEV:
-    case SUM:
-    case AVERAGE:
-    case COUNT:
-    case MIN:
-    case MAX:
-    case CREATE:
-    case MSCALE:
-        if (args.size() == 0)
-            EXPR_THROW("Invalid number of arguments: at least one required.");
-        break;
-    case LIST:
-    case TUPLE:
-        break;
-    case NONE:
-    case AGGREGATES:
-    case LAST:
-    default:
-        PARSER_THROW("Unknown function");
-        break;
-    }
 }
 
 FunctionExpression::~FunctionExpression()
@@ -2267,7 +2262,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         unit = v1.getUnit();
         break;
     default:
-        _EXPR_THROW("Unknown function: " << f,0);
+        _EXPR_THROW("Unknown function: " << f,expr);
     }
 
     /* Compute result */
@@ -2347,7 +2342,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
         output = floor(value);
         break;
     default:
-        _EXPR_THROW("Unknown function: " << f,0);
+        _EXPR_THROW("Unknown function: " << f,expr);
     }
 
     return Py::asObject(new QuantityPy(new Quantity(scaler * output, unit)));
@@ -2398,84 +2393,20 @@ Expression *FunctionExpression::simplify() const
 
 void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 {
-    switch (f) {
-    case ACOS:
-        ss << "acos("; break;;
-    case ASIN:
-        ss << "asin("; break;;
-    case ATAN:
-        ss << "atan("; break;;
-    case ABS:
-        ss << "abs("; break;;
-    case EXP:
-        ss << "exp("; break;;
-    case LOG:
-        ss << "log("; break;;
-    case LOG10:
-        ss << "log10("; break;;
-    case SIN:
-        ss << "sin("; break;;
-    case SINH:
-        ss << "sinh("; break;;
-    case TAN:
-        ss << "tan("; break;;
-    case TANH:
-        ss << "tanh("; break;;
-    case SQRT:
-        ss << "sqrt("; break;;
-    case COS:
-        ss << "cos("; break;;
-    case COSH:
-        ss << "cosh("; break;;
-    case MOD:
-        ss << "mod("; break;;
-    case ATAN2:
-        ss << "atan2("; break;;
-    case POW:
-        ss << "pow("; break;;
-    case HYPOT:
-        ss << "hypot("; break;;
-    case CATH:
-        ss << "cath("; break;;
-    case ROUND:
-        ss << "round("; break;;
-    case TRUNC:
-        ss << "trunc("; break;;
-    case CEIL:
-        ss << "ceil("; break;;
-    case FLOOR:
-        ss << "floor("; break;;
-    case SUM:
-        ss << "sum("; break;;
-    case COUNT:
-        ss << "count("; break;;
-    case AVERAGE:
-        ss << "average("; break;;
-    case STDDEV:
-        ss << "stddev("; break;;
-    case MIN:
-        ss << "min("; break;;
-    case MAX:
-        ss << "max("; break;;
-    case LIST:
-        ss << "list("; break;;
-    case TUPLE:
-        ss << "tuple("; break;;
-    case MSCALE:
-        ss << "mscale("; break;;
-    case MINVERT:
-        ss << "minvert("; break;;
-    case CREATE:
-        ss << "create("; break;;
-    case STR:
-        ss << "str("; break;;
-    case HIDDENREF:
-        ss << "hiddenref("; break;;
-    case HREF:
-        ss << "href("; break;;
-    default:
-        ss << fname << "("; break;;
+    static std::unordered_map<int,int> _map;
+    const auto &functions = getFunctions();
+    if(_map.empty()) {
+        int i=0;
+        for(auto &info : functions)
+            _map[info.type] = i++;
     }
+    auto iter = _map.find(f);
+    if(iter != _map.end())
+        ss << functions[iter->second].name << '(';
+    else if(fname.size())
+        ss << fname << "(";
+    else
+        ss << "?(";
     for (size_t i = 0; i < args.size(); ++i) {
         ss << args[i]->toString(persistent);
         if (i != args.size() - 1)
@@ -3266,7 +3197,8 @@ static const App::DocumentObject * DocumentObject = 0; /**< The DocumentObject t
 static bool unitExpression = false;                    /**< True if the parsed string is a unit only */
 static bool valueExpression = false;                   /**< True if the parsed string is a full expression */
 static std::stack<std::string> labels;                /**< Label string primitive */
-static std::map<std::string, FunctionExpression::Function> registered_functions;                /**< Registered functions */
+static std::unordered_map<const char*, FunctionExpression::Function,
+                         CStringHasher, CStringHasher> registered_functions; /**< Registered functions */
 static int last_column;
 static int column;
 
@@ -3301,8 +3233,6 @@ int ExpressionParserlex(void);
 
 static void initParser(const App::DocumentObject *owner)
 {
-    static bool has_registered_functions = false;
-
     using namespace App::ExpressionParser;
 
     ScanResult = 0;
@@ -3311,48 +3241,9 @@ static void initParser(const App::DocumentObject *owner)
     column = 0;
     unitExpression = valueExpression = false;
 
-    if (!has_registered_functions) {
-        registered_functions["acos"] = FunctionExpression::ACOS;
-        registered_functions["asin"] = FunctionExpression::ASIN;
-        registered_functions["atan"] = FunctionExpression::ATAN;
-        registered_functions["abs"] = FunctionExpression::ABS;
-        registered_functions["exp"] = FunctionExpression::EXP;
-        registered_functions["log"] = FunctionExpression::LOG;
-        registered_functions["log10"] = FunctionExpression::LOG10;
-        registered_functions["sin"] = FunctionExpression::SIN;
-        registered_functions["sinh"] = FunctionExpression::SINH;
-        registered_functions["tan"] = FunctionExpression::TAN;
-        registered_functions["tanh"] = FunctionExpression::TANH;
-        registered_functions["sqrt"] = FunctionExpression::SQRT;
-        registered_functions["cos"] = FunctionExpression::COS;
-        registered_functions["cosh"] = FunctionExpression::COSH;
-        registered_functions["atan2"] = FunctionExpression::ATAN2;
-        registered_functions["mod"] = FunctionExpression::MOD;
-        registered_functions["pow"] = FunctionExpression::POW;
-        registered_functions["round"] = FunctionExpression::ROUND;
-        registered_functions["trunc"] = FunctionExpression::TRUNC;
-        registered_functions["ceil"] = FunctionExpression::CEIL;
-        registered_functions["floor"] = FunctionExpression::FLOOR;
-        registered_functions["hypot"] = FunctionExpression::HYPOT;
-        registered_functions["cath"] = FunctionExpression::CATH;
-        registered_functions["list"] = FunctionExpression::LIST;
-        registered_functions["tuple"] = FunctionExpression::TUPLE;
-        registered_functions["mscale"] = FunctionExpression::MSCALE;
-        registered_functions["minvert"] = FunctionExpression::MINVERT;
-        registered_functions["create"] = FunctionExpression::CREATE;
-        registered_functions["str"] = FunctionExpression::STR;
-        registered_functions["hiddenref"] = FunctionExpression::HIDDENREF;
-        registered_functions["href"] = FunctionExpression::HREF;
-
-        // Aggregates
-        registered_functions["sum"] = FunctionExpression::SUM;
-        registered_functions["count"] = FunctionExpression::COUNT;
-        registered_functions["average"] = FunctionExpression::AVERAGE;
-        registered_functions["stddev"] = FunctionExpression::STDDEV;
-        registered_functions["min"] = FunctionExpression::MIN;
-        registered_functions["max"] = FunctionExpression::MAX;
-
-        has_registered_functions = true;
+    if (registered_functions.empty()) {
+        for(auto &info : FunctionExpression::getFunctions())
+            registered_functions.emplace(info.name, info.type);
     }
 }
 
