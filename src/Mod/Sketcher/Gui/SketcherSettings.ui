@@ -106,9 +106,28 @@ Requires to re-enter edit mode to take effect.</string>
       </size>
      </property>
      <property name="title">
-      <string>Notifications</string>
+      <string>General</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_22">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxEnableEscape">
+        <property name="toolTip">
+         <string>Allow to leave sketch edit mode when pressing Esc button</string>
+        </property>
+        <property name="text">
+         <string>Esc can leave sketch edit mode</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LeaveSketchWithEscape</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
         <property name="toolTip">
