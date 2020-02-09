@@ -182,8 +182,60 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
     // recomputed.
     _LinkTouched.touch();
 
-    if(getLinkedObjectProperty() && !getTrueLinkedObject(true))
-        return new App::DocumentObjectExecReturn("Link broken");
+    if(getLinkedObjectProperty()) {
+        DocumentObject *linked = getTrueLinkedObject(true);
+        if(!linked)
+            return new App::DocumentObjectExecReturn("Link broken");
+
+        App::DocumentObject *container = getContainer();
+        PropertyPythonObject *proxy = 0;
+        if(getLinkExecuteProperty()
+                && !boost::iequals(getLinkExecuteValue(), "none")
+                && (!myOwner || !container->getDocument()->getObjectByID(myOwner)))
+        {
+            // Check if this is an element link. Do not invoke appLinkExecute()
+            // if so, because it will be called from the link array.
+            proxy = Base::freecad_dynamic_cast<PropertyPythonObject>(
+                    linked->getPropertyByName("Proxy"));
+        }
+        if(proxy) {
+            Base::PyGILStateLocker lock;
+            const char *errMsg = "Linked proxy execute failed";
+            try {
+                Py::Tuple args(3);
+                Py::Object proxyValue = proxy->getValue();
+                const char *method = getLinkExecuteValue();
+                if(!method || !method[0])
+                    method = "appLinkExecute";
+                Py::Object attr = proxyValue.getAttr(method);
+                if(attr.ptr() && attr.isCallable()) {
+                    Py::Tuple args(4);
+                    args.setItem(0, Py::asObject(linked->getPyObject()));
+                    args.setItem(1, Py::asObject(container->getPyObject()));
+                    if(!_getElementCountValue()) {
+                        Py::Callable(attr).apply(args);
+                    } else {
+                        const auto &elements = _getElementListValue();
+                        for(int i=0; i<_getElementCountValue(); ++i) {
+                            args.setItem(2, Py::Int(i));
+                            if(i < (int)elements.size())
+                                args.setItem(3, Py::asObject(elements[i]->getPyObject()));
+                            else
+                                args.setItem(3, Py::Object());
+                            Py::Callable(attr).apply(args);
+                        }
+                    }
+                }
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                e.ReportException();
+                return new App::DocumentObjectExecReturn(errMsg);
+            } catch (Base::Exception &e) {
+                e.ReportException();
+                return new App::DocumentObjectExecReturn(errMsg);
+            }
+        }
+    }
     return inherited::extensionExecute();
 }
 
@@ -906,17 +958,6 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                 auto placementProp = getPlacementListProperty();
                 auto scaleProp = getScaleListProperty();
                 const auto &vis = getVisibilityListValue();
-                auto proxy = freecad_dynamic_cast<PropertyPythonObject>(parent->getPropertyByName("Proxy"));
-                Py::Callable method;
-                Py::Tuple args(3);
-                if(proxy) {
-                    Py::Object proxyValue = proxy->getValue();
-                    const char *fname = "onCreateLinkElement";
-                    if (proxyValue.hasAttr(fname)) {
-                        method = proxyValue.getAttr(fname);
-                        args.setItem(0,Py::Object(parent->getPyObject(),true));
-                    }
-                }
 
                 auto owner = getContainer();
                 long ownerID = owner?owner->getID():0;
@@ -932,13 +973,7 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     if(obj && (!obj->myOwner || obj->myOwner==ownerID))
                         obj->Visibility.setValue(false);
                     else {
-                        if(!method.isNone()) {
-                            obj = new LinkElementPython;
-                            args.setItem(1,Py::Object(obj->getPyObject(),true));
-                            args.setItem(2,Py::Int((int)i));
-                            method.apply(args);
-                        } else
-                            obj = new LinkElement;
+                        obj = new LinkElement;
                         parent->getDocument()->addObject(obj,name.c_str());
                     }
 
