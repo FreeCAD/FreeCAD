@@ -303,6 +303,13 @@ public:
 
     static Py::Object evaluate(const Expression *owner, int type, const std::vector<Expression*> &args);
 
+    struct FunctionInfo {
+        Function type;
+        const char *name;
+        const char *description;
+    };
+    static const std::vector<FunctionInfo> &getFunctions();
+
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
     virtual Py::Object _getPyValue() const override;
