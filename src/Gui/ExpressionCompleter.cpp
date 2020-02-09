@@ -604,7 +604,56 @@ public:
             return objInfo.getProperty(row,prop,propName);
         }
 
+        QVariant unitData(int row, int role) const {
+            const auto &units = Base::Quantity::unitInfo();
+            if(row < 0 || row >= (int)units.size())
+                return QVariant();
+
+            auto &unit = units[row];
+            switch(role) {
+            case Qt::EditRole:
+                return QString::fromUtf8(unit.alias?unit.alias:unit.display);
+            case Qt::UserRole:
+            case Qt::DisplayRole:
+                return QString::fromUtf8(unit.display);
+            case Qt::ToolTipRole:
+                return QApplication::translate("Base:Quantity", unit.description);
+            case Qt::DecorationRole: {
+                static QIcon icon(BitmapFactory().pixmap("ClassBrowser/unit.svg"));
+                return icon;
+            }
+            default:
+                return QVariant();
+            }
+        }
+
+        QVariant functionData(int row, int role) const {
+            const auto &functions = FunctionExpression::getFunctions();
+            if(row < 0 || row >= (int)functions.size())
+                return QVariant();
+
+            auto &info = functions[row];
+            switch(role) {
+            case Qt::EditRole:
+            case Qt::UserRole:
+                return QString::fromLatin1("%1(").arg(QLatin1String(info.name));
+            case Qt::DisplayRole:
+                return QString::fromLatin1("%1()").arg(QLatin1String(info.name));
+            case Qt::ToolTipRole:
+                return QApplication::translate("App::Expression", info.description);
+            case Qt::DecorationRole: {
+                static QIcon icon(BitmapFactory().pixmap("ClassBrowser/function.svg"));
+                return icon;
+            }
+            default:
+                return QVariant();
+            }
+        }
+
         virtual QVariant childData(int row, int role) const {
+            if(getModel()->searchingUnit)
+                return unitData(row, role);
+
             auto pdata = getModel()->getPathData();
             if(pdata) {
                 switch(role) {
@@ -616,6 +665,18 @@ public:
                     break;
                 }
                 return QVariant();
+            }
+
+            if(!getModel()->noProperty) {
+                int count = childCountWithoutUnit();
+                if(row >= count) {
+                    row -= count;
+                    count = (int)Base::Quantity::unitInfo().size();
+                    if(row < count)
+                        return unitData(row, role);
+                    row -= count;
+                    return functionData(row, role);
+                }
             }
 
             App::Document *doc = nullptr;
@@ -645,10 +706,7 @@ public:
             return getModel()->createIndex(row,0,infoId(info));
         }
 
-        virtual int childCount() {
-            if(getModel()->getPathData())
-                return 1;
-
+        int childCountWithoutUnit() const {
             const auto &docs = App::GetApplication().getDocuments();
             int docSize = (int)docs.size()*2;
 
@@ -661,6 +719,19 @@ public:
 
             return docSize + objSize
                 + getModel()->getObjectInfo(currentObj).childCount(true);
+        }
+
+        virtual int childCount() {
+            int count = 0;
+            if(!getModel()->searchingUnit) {
+                if(getModel()->getPathData())
+                    return 1;
+                count = childCountWithoutUnit();
+            }
+            if(!getModel()->noProperty)
+                count += (int)Base::Quantity::unitInfo().size()
+                         + (int)FunctionExpression::getFunctions().size();
+            return count;
         }
 
         virtual const char *typeName() const {
@@ -733,6 +804,9 @@ public:
         }
 
         virtual QVariant childData(int row, int role) const {
+            if(getModel()->searchingUnit || mindex.row() >= childCountWithoutUnit())
+                return QVariant();
+
             App::Document *doc = nullptr;
             App::DocumentObject *obj = nullptr;
             App::DocumentObject *sobj = nullptr;
@@ -765,6 +839,9 @@ public:
         }
 
         virtual QModelIndex childIndex(int row) {
+            if(getModel()->searchingUnit || row >= childCountWithoutUnit())
+                return QModelIndex();
+
             App::Document *doc = nullptr;
             App::DocumentObject *obj = nullptr;
             App::DocumentObject *sobj = nullptr;
@@ -786,6 +863,9 @@ public:
         }
 
         virtual int childCount() {
+            if(getModel()->searchingUnit || mindex.row() >= childCountWithoutUnit())
+                return 0;
+
             App::Document *doc = nullptr;
             App::DocumentObject *obj = nullptr;
             App::DocumentObject *sobj = nullptr;
@@ -1366,6 +1446,10 @@ public:
                 return QLatin1String(".") + pathName;
             case Qt::DisplayRole:
                 return pathName;
+            case Qt::DecorationRole: {
+                static QIcon icon(BitmapFactory().pixmap("ClassBrowser/sub_path.svg"));
+                return icon;
+            }
             default:
                 return QVariant();
             }
@@ -1395,7 +1479,7 @@ public:
     };
 
     ExpressionCompleterModel(QObject *parent, bool noProperty)
-        :QAbstractItemModel(parent), noProperty(noProperty)
+        :QAbstractItemModel(parent), noProperty(noProperty), searchingUnit(false)
     {
         Info info;
         info.d.idx1 = -1;
@@ -1406,6 +1490,13 @@ public:
     ~ExpressionCompleterModel() {
         Base::PyGILStateLocker lock;
         modelData.clear();
+    }
+
+    void setSearchUnit(bool enable) {
+        if(enable == searchingUnit)
+            return;
+        searchingUnit = enable;
+        reset();
     }
 
     PythonData *getPathData() const {
@@ -1794,6 +1885,25 @@ public:
         return 1;
     }
 
+    bool isFunction(const QModelIndex &idx) const {
+        if(noProperty || !idx.isValid())
+            return false;
+        Info info = getInfo(idx);
+        if(info.d.idx1 >= 0 || info.d.idx2 >= 0)
+            return false;
+
+        int row = idx.row();
+        int count = RootData(this).childCount();
+        if(row < 0 || row >= count)
+            return false;
+
+        int fcount = (int)FunctionExpression::getFunctions().size();
+        if(count < fcount || row + fcount >= count)
+            return false;
+
+        return true;
+    }
+
 public:
     // Storage for model data that can't be efficiently calculated on demand
     mutable std::vector<std::unique_ptr<ModelData> > modelData;
@@ -1811,6 +1921,7 @@ public:
     std::set<App::DocumentObject*> inList;
     App::DocumentObjectT currentObj;
     bool noProperty;
+    bool searchingUnit;
 };
 
 /**
@@ -1820,7 +1931,7 @@ public:
  */
 ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, 
         QObject *parent, bool noProperty)
-    : QCompleter(parent), currentObj(currentDocObj), noProperty(noProperty)
+    : QCompleter(parent), currentObj(currentDocObj), noProperty(noProperty), searchUnit(false)
 {
     setCaseSensitivity(Qt::CaseInsensitive);
     // setCompletionMode(UnfilteredPopupCompletion);
@@ -1832,6 +1943,7 @@ void ExpressionCompleter::init() {
 
     auto m = new ExpressionCompleterModel(this,noProperty);
     m->setDocumentObject(currentObj.getObject());
+    m->setSearchUnit(searchUnit);
     setModel(m);
 }
 
@@ -1851,6 +1963,10 @@ void ExpressionCompleter::setNoProperty(bool enabled) {
     auto m = model();
     if(m)
         static_cast<ExpressionCompleterModel*>(m)->setNoProperty(enabled);
+}
+
+void ExpressionCompleter::setSearchUnit(bool enabled) {
+    searchUnit = enabled;
 }
 
 QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
@@ -2021,22 +2137,26 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     std::vector<boost::tuple<int, int, std::string> > tokens = ExpressionParser::tokenize(expression);
 
     // No tokens
-    if (tokens.size() == 0) {
+    if (tokens.empty()) {
         if (popup())
             popup()->setVisible(false);
         return;
     }
 
-    prefixEnd = prefix.size();
+    prefixEnd = expression.size();
+    pos -= start;
+
     closeString = false;
     insideString = false;
+
+    int tokenCount = (int)tokens.size();
 
     // Pop those trailing tokens depending on the given position, which may be
     // in the middle of a token, and we shall include that token.
     for(auto it=tokens.begin();it!=tokens.end();++it) {
 
         auto &tok = *it;
-        if(get<1>(tok) + (int)get<2>(tok).size() < pos-start)
+        if(get<1>(tok) + (int)get<2>(tok).size() < pos)
             continue;
 
         // In case we are in the middle of a string, search for the closest
@@ -2046,10 +2166,10 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
                 && get<0>(*(it-1)) == '.')
         {
             insideString = true;
-            int index = prefix.indexOf(QLatin1Char('.'),pos-1);
-            int end = start + get<1>(tok) + (int)get<2>(tok).size();
-            if(index+1 >= pos && index+1 < end) {
-                tokens.resize(it-tokens.begin()+1);
+            size_t index = expression.find('.',pos-1);
+            int end = get<1>(tok) + (int)get<2>(tok).size();
+            if(index!=std::string::npos && (int)index+1 >= pos && (int)index+1 < end) {
+                tokenCount = it-tokens.begin()+1;
                 prefixEnd = index+1;
                 closeString = true;
                 break;
@@ -2060,8 +2180,8 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         // consider it as part of the document name
         if(it+1!=tokens.end() && get<0>(*(it+1))=='#')
             ++it;
-        prefixEnd = start + get<1>(*it) + (int)get<2>(*it).size();
-        tokens.resize(it-tokens.begin()+1);
+        prefixEnd = get<1>(*it) + (int)get<2>(*it).size();
+        tokenCount = it-tokens.begin()+1;
         break;
     }
 
@@ -2070,40 +2190,82 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         trim = prefixEnd - pos;
 
     // Extract last tokens that can be rebuilt to a variable
-    ssize_t i = static_cast<ssize_t>(tokens.size()) - 1;
+    int i = tokenCount - 1;
+    if(i < 0) {
+        popup()->setVisible(false);
+        return;
+    }
 
-    // First, check if we have unclosing string starting from the end
     bool stringing = false;
-    for(; i>=0; --i) {
-        int token = get<0>(tokens[i]);
-        if(token == ExpressionParser::STRING)
-            break;
-        if(token==ExpressionParser::LT 
-            && i && get<0>(tokens[i-1])==ExpressionParser::LT)
-        {
-            i-=2;
-            stringing = true;
-            break;
+    if(insideString) 
+        stringing = true;
+    else {
+        // Check if we have unclosed string starting from the end. If the
+        // string is really unclosed, it won't be recognized as token STRING,
+        // hence, won't be detected as 'insideString'.
+        for(; i>=0; --i) {
+            int token = get<0>(tokens[i]);
+            if(token == ExpressionParser::STRING)
+                break;
+            if(token==ExpressionParser::LT 
+                && i && get<0>(tokens[i-1])==ExpressionParser::LT)
+            {
+                i-=2;
+                stringing = true;
+                break;
+            }
+        }
+        if(!stringing) {
+            // no string found, rewind
+            i = tokenCount - 1;
         }
     }
+
+    auto checkUnit = [&] (int t, int idx, const std::string &s) {
+        if(t != ExpressionParser::NUM
+            && t != ExpressionParser::INTEGER
+            && t != ExpressionParser::ONE)
+            return false;
+
+        auto m = static_cast<ExpressionCompleterModel*>(model());
+        m->setSearchUnit(true);
+
+        // adjust prefix start/end to account for unicode
+        prefixEnd = QString::fromUtf8(expression.c_str(), prefixEnd).size() + start;
+        prefixStart = QString::fromUtf8(expression.c_str(), idx).size() + start;
+
+        currentPrefix = savedPrefix = QString::fromUtf8(s.c_str());
+        setCompletionPrefix(currentPrefix);
+        showPopup(true);
+        return true;
+    };
 
     if(!stringing) {
-        // no string found, rewind
-        i = static_cast<ssize_t>(tokens.size()) - 1;
-
-        // Not an unclosed string and the last character is a space
-        if(prefix.size() && prefix[prefixEnd-1] == QLatin1Char(' ')) {
-            if (popup())
-                popup()->setVisible(false);
+        // Not inside an unclosed string and the last character is a space
+        if(expression.back() == ' ') {
+            if(noProperty || !checkUnit(get<0>(tokens[tokenCount-1]), prefixEnd, std::string()))
+                popup()->hide();
             return;
         }
+
+        if (tokenCount>1 && get<0>(tokens[tokenCount-1]) == ExpressionParser::IDENTIFIER) {
+            auto &tok = tokens[tokenCount-2];
+            if(!noProperty && checkUnit(get<0>(tok),
+                                        get<1>(tokens[tokenCount-1]),
+                                        get<2>(tokens[tokenCount-1])))
+                return;
+        }
     }
+
+    if(!searchUnit)
+        static_cast<ExpressionCompleterModel*>(model())->setSearchUnit(false);
 
     // Now searching forward for the prefix start
 
+    int token = -1;
     int brackets = 0;
     for(;i>=0;--i) {
-        int token = get<0>(tokens[i]);
+        token = get<0>(tokens[i]);
         if(token == ']') {
             ++brackets;
             continue;
@@ -2115,30 +2277,44 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         } else if(brackets)
             continue;
 
+        if(token == ')' || token == '}'
+            || token == ExpressionParser::NUM
+            || token == ExpressionParser::INTEGER
+            || token == ExpressionParser::ONE)
+        {
+            popup()->hide();
+            return;
+        }
+
         if (token != '.' && token != '#' && 
             token != ExpressionParser::IDENTIFIER &&
-            token != ExpressionParser::STRING &&
-            token != ExpressionParser::UNIT)
+            token != ExpressionParser::STRING)
             break;
     }
-    ++i;
+
+    if(token != ExpressionParser::FUNC)
+        ++i;
 
     // Set prefix start for use when replacing later
-    if (i == static_cast<ssize_t>(tokens.size()))
+    if (i == tokenCount)
         prefixStart = prefixEnd;
     else
-        prefixStart = start + get<1>(tokens[i]);
+        prefixStart = get<1>(tokens[i]);
 
     // Build prefix from tokens
-    while (i < static_cast<ssize_t>(tokens.size())) {
+    while (i < tokenCount) {
         completionPrefix += get<2>(tokens[i]);
         ++i;
     }
 
-    if(prefixEnd-start < (int)completionPrefix.size())
-        completionPrefix.resize(prefixEnd-start);
+    if(prefixEnd < (int)completionPrefix.size())
+        completionPrefix.resize(prefixEnd);
 
     savedPrefix = Base::Tools::fromStdString(completionPrefix);
+
+    // adjust prefix start/end to account for unicode
+    prefixEnd = QString::fromUtf8(expression.c_str(), prefixEnd).size() + start;
+    prefixStart = QString::fromUtf8(expression.c_str(), prefixStart).size() + start;
 
     if(trim && trim<(int)completionPrefix.size() ) {
         completionPrefix.resize(completionPrefix.size()-trim);
@@ -2151,7 +2327,11 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     // Set completion prefix
     setCompletionPrefix(currentPrefix);
 
-    if (!completionPrefix.empty() && widget()->hasFocus()) {
+    showPopup(!completionPrefix.empty());
+}
+
+void ExpressionCompleter::showPopup(bool show) {
+    if (show && widget()->hasFocus()) {
         QRect rect;
         ExpressionTextEdit *editor = qobject_cast<ExpressionTextEdit*>(widget());
         if(editor) {
@@ -2222,6 +2402,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget *parent, bool noProperty)
     , completer(0)
     , block(true)
     , noProperty(noProperty)
+    , searchUnit(false)
 {
     connect(this, SIGNAL(textEdited(const QString&)), this, SLOT(slotTextChanged(const QString&)));
 }
@@ -2234,6 +2415,7 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
     }
     if (currentDocObj != 0) {
         completer = new ExpressionCompleter(currentDocObj, this, noProperty);
+        completer->setSearchUnit(searchUnit);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
@@ -2246,6 +2428,12 @@ void ExpressionLineEdit::setNoProperty(bool enabled) {
     noProperty = enabled;
     if(completer)
         completer->setNoProperty(enabled);
+}
+
+void ExpressionLineEdit::setSearchUnit(bool enabled) {
+    searchUnit = enabled;
+    if(completer)
+        completer->setSearchUnit(enabled);
 }
 
 bool ExpressionLineEdit::completerActive() const
@@ -2261,7 +2449,8 @@ void ExpressionLineEdit::hideCompleter()
 
 void ExpressionLineEdit::slotTextChanged(const QString & text)
 {
-    Q_EMIT textChanged2(text,cursorPosition());
+    if (!text.startsWith(QLatin1Char('\'')))
+        Q_EMIT textChanged2(text,cursorPosition());
 }
 
 void ExpressionLineEdit::slotCompleteText(QString completionPrefix)
@@ -2319,6 +2508,10 @@ void ExpressionTextEdit::hideCompleter()
 void ExpressionTextEdit::slotTextChanged()
 {
     if (block)
+        return;
+    QTextCursor c = textCursor();
+    c.movePosition(QTextCursor::Start);
+    if(c.block().text().startsWith(QLatin1Char('\'')))
         return;
     QTextCursor cursor = textCursor();
     Q_EMIT textChanged2(cursor.block().text(),cursor.positionInBlock());
