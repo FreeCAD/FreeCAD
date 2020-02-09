@@ -37,16 +37,13 @@ Report to Draft.py for info
 """
 
 import os
-import six
 import sys
-import traceback
 import math
-import platform
 import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
-from PySide import QtCore, QtGui, QtSvg
+from PySide import QtCore, QtGui
 
 
 import draftutils.translate
@@ -91,7 +88,6 @@ def getDefaultUnit(dim):
     '''return default Unit of Measure for a Dimension based on user preference
     Units Schema'''
     # only Length and Angle so far
-    from FreeCAD import Units
     if dim == 'Length':
         qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Length)
         UOM = qty.getUserPreferred()[2]
@@ -116,7 +112,6 @@ def makeFormatSpec(decimals=4,dim='Length'):
 def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=None):
     '''return an internal value (ie mm) Length or Angle converted for display according
     to Units Schema in use. Unit can be used to force the value to express in a certain unit'''
-    from FreeCAD import Units
     if dim == 'Length':
         q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
         if not unit:
@@ -536,7 +531,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
-        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("returnPressed()"),self.checkangle)
+        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("returnPressed()"),self.checklength)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
@@ -1306,7 +1301,7 @@ class DraftToolBar:
     def checkx(self):
         if self.yValue.isEnabled():
             self.yValue.setFocus()
-            self.yValue.selectAll()
+            self.yValue.setSelection(0,self.number_length(self.yValue.text()))
             self.updateSnapper()
         else:
             self.checky()
@@ -1314,15 +1309,18 @@ class DraftToolBar:
     def checky(self):
         if self.zValue.isEnabled():
             self.zValue.setFocus()
-            self.zValue.selectAll()
+            self.zValue.setSelection(0,self.number_length(self.zValue.text()))
             self.updateSnapper()
         else:
             self.validatePoint()
 
-    def checkangle(self):
-        self.angleValue.setFocus()
-        self.angleValue.selectAll()
-        self.updateSnapper()
+    def checklength(self):
+        if self.angleValue.isEnabled():
+            self.angleValue.setFocus()
+            self.angleValue.setSelection(0,self.number_length(self.angleValue.text()))
+            self.updateSnapper()
+        else:
+            self.validatePoint()
 
     def validatePoint(self):
         """function for checking and sending numbers entered manually"""
@@ -1664,10 +1662,11 @@ class DraftToolBar:
             if not self.angleLock.isChecked():
                 self.angleValue.setText(displayExternal(a,None,'Angle'))
             if not mask:
-                # automask
+                # automask, a is rounded to identify one of the below cases
+                a = round(a, Draft.getParam("precision"))
                 if a in [0,180,-180]:
                     mask = "x"
-                elif a in [90,270,-90]:
+                elif a in [90,270,-90,-270]:
                     mask = "y"
 
         # set masks
@@ -1675,21 +1674,25 @@ class DraftToolBar:
             self.xValue.setEnabled(True)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(False)
+            self.angleValue.setEnabled(False)
             self.setFocus()
         elif (mask == "y") or (self.mask == "y"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(True)
             self.zValue.setEnabled(False)
+            self.angleValue.setEnabled(False)
             self.setFocus("y")
         elif (mask == "z") or (self.mask == "z"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(True)
+            self.angleValue.setEnabled(False)
             self.setFocus("z")
         else:
             self.xValue.setEnabled(True)
             self.yValue.setEnabled(True)
             self.zValue.setEnabled(True)
+            self.angleValue.setEnabled(True)
             self.setFocus()
 
 
