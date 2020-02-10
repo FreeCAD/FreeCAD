@@ -34,7 +34,7 @@ import codecs
 import six
 
 import FreeCAD
-from femmesh importhttps://forum.freecadweb.org/viewtopic.php?f=18&t=43178 meshtools
+from femmesh import meshtools
 from .. import writerbase
 
 
