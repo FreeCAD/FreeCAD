@@ -433,22 +433,10 @@ def splitArcAt(edge, pt):
     """splitArcAt(edge, pt)
     Returns a list of 2 edges which together form the original arc split at the given point.
     The Vector pt has to represent a point on the given arc."""
-    p1 = edge.valueAt(edge.FirstParameter)
-    p2 = pt
-    p3 = edge.valueAt(edge.LastParameter)
-    edges = []
-
-    p = edge.Curve.parameter(p2)
-    #print("splitArcAt(%.2f, %.2f, %.2f): %.2f - %.2f - %.2f" % (pt.x, pt.y, pt.z, edge.FirstParameter, p, edge.LastParameter))
-
-    p12 = edge.Curve.value((edge.FirstParameter + p)/2)
-    p23 = edge.Curve.value((p + edge.LastParameter)/2)
-    #print("splitArcAt: p12=(%.2f, %.2f, %.2f) p23=(%.2f, %.2f, %.2f)" % (p12.x, p12.y, p12.z, p23.x, p23.y, p23.z))
-
-    edges.append(Part.Edge(Part.Arc(p1, p12, p2)))
-    edges.append(Part.Edge(Part.Arc(p2, p23, p3)))
-
-    return edges
+    p = edge.Curve.parameter(pt)
+    e0 = Part.Arc(edge.Curve.copy(), edge.FirstParameter, p).toShape()
+    e1 = Part.Arc(edge.Curve.copy(), p, edge.LastParameter).toShape()
+    return [e0, e1]
 
 def splitEdgeAt(edge, pt):
     """splitEdgeAt(edge, pt)
