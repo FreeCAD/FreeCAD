@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>441</width>
-    <height>333</height>
+    <height>354</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>TechDraw HLR Parameters</string>
+   <string>HLR Parameters</string>
   </property>
   <property name="toolTip">
    <string/>
