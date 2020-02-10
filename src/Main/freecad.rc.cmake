@@ -21,9 +21,9 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "${PROJECT_NAME} Team"
             VALUE "FileDescription", "${PROJECT_NAME} main executable"
-            VALUE "InternalName", "${PROJECT_NAME}.exe"
+            VALUE "InternalName", "FreeCAD.exe"
             VALUE "LegalCopyright", "Copyright (C) 2020"
-            VALUE "OriginalFilename", "${PROJECT_NAME}.exe"
+            VALUE "OriginalFilename", "FreeCAD.exe"
             VALUE "ProductName", "${PROJECT_NAME}"
             VALUE "ProductVersion", "${FREECAD_VERSION}.${FREECAD_VERSION_PATCH}${PACKAGE_VERSION_SUFFIX}"
         END
