@@ -70,6 +70,7 @@ void SketcherSettings::saveSettings()
     // Sketch editing
     ui->checkBoxAdvancedSolverTaskBox->onSave();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
+    ui->checkBoxEnableEscape->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     form->saveSettings();
 }
@@ -79,6 +80,7 @@ void SketcherSettings::loadSettings()
     // Sketch editing
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
     ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
+    ui->checkBoxEnableEscape->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     form->loadSettings();
 }
