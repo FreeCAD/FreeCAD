@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TechDraw Advanced</string>
+   <string>Advanced</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
@@ -65,7 +65,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Max Svg Hatch Tiles</string>
+           <string>Max SVG Hatch Tiles</string>
           </property>
          </widget>
         </item>
@@ -121,7 +121,9 @@
         <item row="4" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
           <property name="toolTip">
-           <string>Limit on number of 64x64 Svg tiles used to hatch a single face</string>
+           <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
+For large scalings you might get an error about to many SVG tiles.
+Then you need to increase the tile limit.</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -277,7 +279,8 @@ can be a performance penalty in complex models.</string>
         <item row="5" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxPat">
           <property name="toolTip">
-           <string>The maximum number of hatch line segments to use when hatching a face with a PAT pattern</string>
+           <string>Maximum hatch line segments to use
+when hatching a face with a PAT pattern</string>
           </property>
           <property name="minimum">
            <number>1</number>
