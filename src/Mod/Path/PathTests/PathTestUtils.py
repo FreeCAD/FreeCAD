@@ -37,11 +37,11 @@ class PathTestBase(unittest.TestCase):
         """Verify that two float values are approximately the same."""
         self.assertTrue(math.fabs(f1 - f2) < error, "%f != %f" % (f1, f2))
 
-    def assertCoincide(self, pt1, pt2):
+    def assertCoincide(self, pt1, pt2, error=0.0001):
         """Verify that two points coincide - roughly speaking."""
-        self.assertRoughly(pt1.x, pt2.x)
-        self.assertRoughly(pt1.y, pt2.y)
-        self.assertRoughly(pt1.z, pt2.z)
+        self.assertRoughly(pt1.x, pt2.x, error)
+        self.assertRoughly(pt1.y, pt2.y, error)
+        self.assertRoughly(pt1.z, pt2.z, error)
 
     def assertPlacement(self, p1, p2):
         """Verify that two placements are roughly identical."""
