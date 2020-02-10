@@ -1,6 +1,8 @@
 #add_defintions(-D_FC_GUI_ENABLED_)
 #add_defintions(-DFREECADMAINPY)
 
+configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
+
 if(BUILD_GUI)
     include_directories(
         ${Boost_INCLUDE_DIRS}
@@ -24,7 +26,7 @@ endif(BUILD_GUI)
 if(BUILD_GUI)
 
     SET(FreeCAD_SRCS
-        freecad.rc
+        ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc
         icon.ico
         MainGui.cpp
     )
