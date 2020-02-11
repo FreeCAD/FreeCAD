@@ -59,6 +59,7 @@ if not hasattr(FreeCAD, "DraftWorkingPlane"):
 import DraftEdit
 # import DraftFillet
 import draftguitools.gui_selectplane
+import drafttaskpanels.task_shapestring as task_shapestring
 
 #---------------------------------------------------------------------------
 # Preflight stuff
@@ -2244,7 +2245,7 @@ class ShapeString(Creator):
                     del self.task
                 except AttributeError:
                     pass
-                self.task = DraftGui.ShapeStringTaskPanel()
+                self.task = task_shapestring.ShapeStringTaskPanel()
                 self.task.sourceCmd = self
                 todo.delay(FreeCADGui.Control.showDialog,self.task)
             else:
