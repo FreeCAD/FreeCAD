@@ -1,26 +1,26 @@
 # -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2019 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
-__title__="FreeCAD Draft Workbench GUI Tools - Working plane-related tools"
+__title__ = "FreeCAD Draft Workbench GUI Tools - Working plane-related tools"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
 __url__ = "https://www.freecadweb.org"
 
@@ -30,43 +30,43 @@ import FreeCADGui
 import math
 import Draft
 import DraftVecUtils
-from DraftGui import todo, translate
+from draftutils.todo import todo
+from draftutils.translate import translate
+
 
 def QT_TRANSLATE_NOOP(ctx,txt): return txt
 
 
 
 class Draft_SelectPlane:
-
-    """The Draft_SelectPlane FreeCAD command definition"""
+    """The Draft_SelectPlane FreeCAD command definition."""
 
     def __init__(self):
-
         self.ac = "FreeCAD.DraftWorkingPlane.alignToPointAndAxis"
         self.param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         self.states = []
 
     def GetResources(self):
-
+        """Set icon, menu and tooltip."""
         return {'Pixmap'  : 'Draft_SelectPlane',
                 'Accel' : "W, P",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_SelectPlane", "SelectPlane"),
                 'ToolTip' : QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select a working plane for geometry creation")}
 
     def IsActive(self):
-
+        """Return True when this command should be available."""
         if FreeCADGui.ActiveDocument:
             return True
         else:
             return False
 
     def Activated(self):
-
+        """Execute this when the command is called."""
         # reset variables
         self.view = Draft.get3DView()
         self.wpButton = FreeCADGui.draftToolBar.wplabel
         FreeCAD.DraftWorkingPlane.setup()
-        
+
         # write current WP if states are empty
         if not self.states:
             p = FreeCAD.DraftWorkingPlane
@@ -167,9 +167,7 @@ class Draft_SelectPlane:
             self.finish()
 
     def handle(self):
-        
-        """tries to build a WP. Returns True if successful"""
-
+        """Build a working plane. Return True if successful."""
         sel = FreeCADGui.Selection.getSelectionEx()
         if len(sel) == 1:
             sel = sel[0]
@@ -276,7 +274,7 @@ class Draft_SelectPlane:
                 return True
         return False
 
-    def getCenterPoint(self,x,y,z):
+    def getCenterPoint(self, x, y, z):
 
         if not self.taskd.form.checkCenter.isChecked():
             return FreeCAD.Vector()
@@ -293,19 +291,15 @@ class Draft_SelectPlane:
         cp = cam1.add(vcam2)
         return cp
 
-    def tostr(self,v):
-        
-        """makes a string from a vector or tuple"""
-
+    def tostr(self, v):
+        """Make a string from a vector or tuple."""
         return "FreeCAD.Vector("+str(v[0])+","+str(v[1])+","+str(v[2])+")"
 
     def getOffset(self):
-
-        """returns the offset value as a float in mm"""
-
+        """Return the offset value as a float in mm."""
         try:
             o = float(self.taskd.form.fieldOffset.text())
-        except:
+        except Exception:
             o = FreeCAD.Units.Quantity(self.taskd.form.fieldOffset.text())
             o = o.Value
         return o
@@ -377,16 +371,16 @@ class Draft_SelectPlane:
         # calculate delta
         p = FreeCAD.Vector(c.position.getValue().getValue())
         pp = FreeCAD.DraftWorkingPlane.projectPoint(p)
-        delta = pp.negative() # to bring it above the (0,0) point
+        delta = pp.negative()  # to bring it above the (0,0) point
         np = p.add(delta)
         c.position.setValue(tuple(np))
         self.finish()
 
     def onClickPrevious(self):
-        
+
         p = FreeCAD.DraftWorkingPlane
         if len(self.states) > 1:
-            self.states.pop() # discard the last one
+            self.states.pop()  # discard the last one
             s = self.states[-1]
             p.u = s[0]
             p.v = s[1]
@@ -416,13 +410,11 @@ class Draft_SelectPlane:
     def onSetSnapRadius(self,i):
 
         self.param.SetInt("snapRange",i)
-        if hasattr(FreeCADGui,"Snapper"):
+        if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.showradius()
 
     def display(self,arg):
-
-        """sets the text of the WP button"""
-
+        """Set the text of the working plane button."""
         o = self.getOffset()
         if o:
             if o > 0:
@@ -450,10 +442,8 @@ class Draft_SelectPlane:
         FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
 
 
-
 class SelectPlane_TaskPanel:
-
-    '''The editmode TaskPanel for Arch Material objects'''
+    """The task panel definition of the Draft_SelectPlane command."""
 
     def __init__(self):
 
@@ -462,30 +452,28 @@ class SelectPlane_TaskPanel:
 
     def getStandardButtons(self):
 
-        return 2097152 #int(QtGui.QDialogButtonBox.Close)
-
+        return 2097152  # int(QtGui.QDialogButtonBox.Close)
 
 
 class Draft_SetWorkingPlaneProxy():
-
     """The Draft_SetWorkingPlaneProxy FreeCAD command definition"""
 
     def GetResources(self):
-
-        return {'Pixmap'  : 'Draft_SelectPlane',
+        """Set icon, menu and tooltip."""
+        return {'Pixmap': 'Draft_SelectPlane',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Create Working Plane Proxy"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy", "Creates a proxy object from the current working plane")}
 
     def IsActive(self):
-
+        """Return True when this command should be available."""
         if FreeCADGui.ActiveDocument:
             return True
         else:
             return False
 
     def Activated(self):
-
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
+        """Execute this when the command is called."""
+        if hasattr(FreeCAD, "DraftWorkingPlane"):
             FreeCAD.ActiveDocument.openTransaction("Create WP proxy")
             FreeCADGui.addModule("Draft")
             FreeCADGui.doCommand("Draft.makeWorkingPlaneProxy(FreeCAD.DraftWorkingPlane.getPlacement())")
@@ -493,6 +481,5 @@ class Draft_SetWorkingPlaneProxy():
             FreeCAD.ActiveDocument.commitTransaction()
 
 
-
-FreeCADGui.addCommand('Draft_SelectPlane',Draft_SelectPlane())
-FreeCADGui.addCommand('Draft_SetWorkingPlaneProxy',Draft_SetWorkingPlaneProxy())
+FreeCADGui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
+FreeCADGui.addCommand('Draft_SetWorkingPlaneProxy', Draft_SetWorkingPlaneProxy())
