@@ -39,7 +39,8 @@ __url__ = "https://www.freecadweb.org"
 import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
 from PySide import QtCore,QtGui
-from DraftGui import todo, translate, utf8_decode
+from draftutils.todo import todo
+from draftutils.translate import translate
 import draftguitools.gui_snapper as gui_snapper
 import DraftGui
 import draftguitools.gui_trackers as trackers
@@ -2245,7 +2246,7 @@ class ShapeString(Creator):
                     pass
                 self.task = DraftGui.ShapeStringTaskPanel()
                 self.task.sourceCmd = self
-                DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
+                todo.delay(FreeCADGui.Control.showDialog,self.task)
             else:
                 self.dialog = None
                 self.text = ''
@@ -4130,9 +4131,9 @@ class Scale(Modifier):
                 self.view.removeEventCallback("SoEvent",self.call)
             self.task = DraftGui.ScaleTaskPanel()
             self.task.sourceCmd = self
-            DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
-            DraftGui.todo.delay(self.task.xValue.selectAll,None)
-            DraftGui.todo.delay(self.task.xValue.setFocus,None)
+            todo.delay(FreeCADGui.Control.showDialog,self.task)
+            todo.delay(self.task.xValue.selectAll,None)
+            todo.delay(self.task.xValue.setFocus,None)
             for ghost in self.ghosts:
                 ghost.on()
         elif len(self.node) == 2:
