@@ -262,30 +262,60 @@ DrawViewClip* DrawView::getClipGroup(void)
     return result;
 }
 
-
-double DrawView::autoScale(double w, double h) const
+double DrawView::autoScale(void) const
 {
-    double fudgeFactor = 0.90;
-    QRectF viewBox = getRect();
+    auto page = findParentPage();
+    double w = page->getPageWidth();
+    double h = page->getPageHeight();
+    return autoScale(w,h);
+}
+
+//compare 1:1 rect of view to pagesize(pw,h) 
+double DrawView::autoScale(double pw, double ph) const
+{
+//    Base::Console().Message("DV::autoScale(Page: %.3f, %.3f) - %s\n", pw, ph, getNameInDocument());
+    double fudgeFactor = 1.0;  //make it a bit smaller just in case.
+    QRectF viewBox = getRect();           //getRect is scaled (ie current actual size)
+    if (!viewBox.isValid()) {
+        return 1.0;
+    }
     //have to unscale rect to determine new scale
     double vbw = viewBox.width()/getScale();
     double vbh = viewBox.height()/getScale();
-    double xScale = w/vbw;
-    double yScale = h/vbh;
-    //TODO: find a standard scale that's close? 1:2, 1:10, 1:100...?  Logic in TaskProjGroup
-    double newScale = fudgeFactor * std::min(xScale,yScale);
-    newScale = DrawUtil::sensibleScale(newScale);
-    return newScale;
+    double xScale = pw/vbw;           // > 1 page bigger than figure
+    double yScale = ph/vbh;           // < 1 page is smaller than figure
+    double newScale = std::min(xScale,yScale) * fudgeFactor; 
+    double sensibleScale = DrawUtil::sensibleScale(newScale);
+    return sensibleScale;
 }
 
-//!check if View fits on Page
+bool DrawView::checkFit(void) const
+{
+    auto page = findParentPage();
+    return checkFit(page);
+}
+
+//!check if View is too big for page
+//should check if unscaled rect is too big for page
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
     bool result = true;
-    QRectF viewBox = getRect();
-    if ( (viewBox.width() > p->getPageWidth()) ||
-         (viewBox.height() > p->getPageHeight()) ) {
-        result = false;
+    double fudge = 1.1;
+
+    double width = 0.0;
+    double height = 0.0;
+    QRectF viewBox = getRect();    //rect is scaled
+    if (!viewBox.isValid()) {
+        result = true;
+    } else {
+        width = viewBox.width() / getScale();        //unscaled rect w x h
+        height = viewBox.height() / getScale(); 
+        width *= fudge;
+        height *= fudge;
+        if ( (width > p->getPageWidth()) ||
+             (height > p->getPageHeight()) ) {
+            result = false;
+        }
     }
     return result;
 }

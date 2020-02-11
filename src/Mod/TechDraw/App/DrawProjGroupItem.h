@@ -85,6 +85,9 @@ public:
     void autoPosition(void);
     bool isAnchor(void) const;
 
+    //DPGI always fits on page since DPG handles scaling
+    virtual bool checkFit(void) const override { return true; }
+    virtual bool checkFit(DrawPage*) const override { return true; }
 
 protected:
     void onChanged(const App::Property* prop) override;
