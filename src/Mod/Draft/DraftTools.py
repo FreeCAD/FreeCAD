@@ -40,14 +40,14 @@ import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, Dr
 from FreeCAD import Vector
 from PySide import QtCore,QtGui
 from DraftGui import todo, translate, utf8_decode
-import DraftSnap
+import draftguitools.gui_snapper as gui_snapper
 import DraftGui
 import DraftTrackers
 from DraftTrackers import *
 from pivy import coin
 
 if not hasattr(FreeCADGui, "Snapper"):
-    FreeCADGui.Snapper = DraftSnap.Snapper()
+    FreeCADGui.Snapper = gui_snapper.Snapper()
 
 if not hasattr(FreeCAD, "DraftWorkingPlane"):
     FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
