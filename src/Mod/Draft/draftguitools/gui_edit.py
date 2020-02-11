@@ -1,4 +1,8 @@
-# -*- coding: utf8 -*-
+"""Provide the Draft_Edit command used by the Draft workbench."""
+## @package gui_edit
+# \ingroup DRAFT
+# \brief Provide the Draft_Edit command used by the Draft workbench
+
 #***************************************************************************
 #*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 #*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
