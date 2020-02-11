@@ -42,8 +42,7 @@ from PySide import QtCore,QtGui
 from DraftGui import todo, translate, utf8_decode
 import draftguitools.gui_snapper as gui_snapper
 import DraftGui
-import DraftTrackers
-from DraftTrackers import *
+import draftguitools.gui_trackers as trackers
 from pivy import coin
 
 if not hasattr(FreeCADGui, "Snapper"):
@@ -271,7 +270,7 @@ class DraftTool:
         self.ui.setTitle(name)
         self.planetrack = None
         if Draft.getParam("showPlaneTracker",False):
-            self.planetrack = PlaneTracker()
+            self.planetrack = trackers.PlaneTracker()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.setTrackers()
 
@@ -596,7 +595,7 @@ class BSpline(Line):
     def Activated(self):
         Line.Activated(self,name=translate("draft","BSpline"))
         if self.doc:
-            self.bsplinetrack = bsplineTracker()
+            self.bsplinetrack = trackers.bsplineTracker()
 
     def action(self,arg):
         """scene event handler"""
@@ -697,7 +696,7 @@ class BezCurve(Line):
     def Activated(self):
         Line.Activated(self,name=translate("draft","BezCurve"))
         if self.doc:
-            self.bezcurvetrack = bezcurveTracker()
+            self.bezcurvetrack = trackers.bezcurveTracker()
 
     def action(self,arg):
         """scene event handler"""
@@ -816,7 +815,7 @@ class CubicBezCurve(Line):
     def Activated(self):
         Line.Activated(self,name=translate("draft","CubicBezCurve"))
         if self.doc:
-            self.bezcurvetrack = bezcurveTracker()
+            self.bezcurvetrack = trackers.bezcurveTracker()
 
     def action(self,arg):
         """scene event handler"""
@@ -1045,7 +1044,7 @@ class Rectangle(Creator):
                 self.fillstate = self.ui.hasFill.isChecked()
                 self.ui.hasFill.setChecked(True)
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.rect = rectangleTracker()
+            self.rect = trackers.rectangleTracker()
             FreeCAD.Console.PrintMessage(translate("draft", "Pick first point")+"\n")
 
     def finish(self,closed=False,cont=False):
@@ -1172,8 +1171,8 @@ class Arc(Creator):
             else: self.ui.circleUi()
             self.altdown = False
             self.ui.sourceCmd = self
-            self.linetrack = lineTracker(dotted=True)
-            self.arctrack = arcTracker()
+            self.linetrack = trackers.lineTracker(dotted=True)
+            self.arctrack = trackers.arcTracker()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             FreeCAD.Console.PrintMessage(translate("draft", "Pick center point")+"\n")
 
@@ -1510,7 +1509,7 @@ class Polygon(Creator):
             self.ui.numFacesLabel.show()
             self.altdown = False
             self.ui.sourceCmd = self
-            self.arctrack = arcTracker()
+            self.arctrack = trackers.arcTracker()
             self.call = self.view.addEventCallback("SoEvent",self.action)
             FreeCAD.Console.PrintMessage(translate("draft", "Pick center point")+"\n")
 
@@ -1688,7 +1687,7 @@ class Ellipse(Creator):
             self.ui.pointUi(name)
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.rect = rectangleTracker()
+            self.rect = trackers.rectangleTracker()
             FreeCAD.Console.PrintMessage(translate("draft", "Pick first point")+"\n")
 
     def finish(self,closed=False,cont=False):
@@ -1890,8 +1889,8 @@ class Dimension(Creator):
             self.finish()
         elif self.hasMeasures():
             Creator.Activated(self,name)
-            self.dimtrack = dimTracker()
-            self.arctrack = arcTracker()
+            self.dimtrack = trackers.dimTracker()
+            self.arctrack = trackers.arcTracker()
             self.createOnMeasures()
             self.finish()
         else:
@@ -1902,8 +1901,8 @@ class Dimension(Creator):
                 self.ui.selectButton.show()
                 self.altdown = False
                 self.call = self.view.addEventCallback("SoEvent",self.action)
-                self.dimtrack = dimTracker()
-                self.arctrack = arcTracker()
+                self.dimtrack = trackers.dimTracker()
+                self.arctrack = trackers.arcTracker()
                 self.link = None
                 self.edges = []
                 self.pts = []
@@ -2460,7 +2459,7 @@ class Move(Modifier):
     def set_ghosts(self):
         if self.ui.isSubelementMode.isChecked():
             return self.set_subelement_ghosts()
-        self.ghosts = [ghostTracker(self.selected_objects)]
+        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
     def set_subelement_ghosts(self):
         import Part
@@ -2468,7 +2467,7 @@ class Move(Modifier):
             for subelement in object.SubObjects:
                 if isinstance(subelement, Part.Vertex) \
                     or isinstance(subelement, Part.Edge):
-                    self.ghosts.append(ghostTracker(subelement))
+                    self.ghosts.append(trackers.ghostTracker(subelement))
 
     def move(self):
         if self.ui.isSubelementMode.isChecked():
@@ -2616,7 +2615,7 @@ class Rotate(Modifier):
         self.ui.rotateSetCenterUi()
         self.ui.modUi()
         self.ui.setTitle(translate("draft","Rotate"))
-        self.arctrack = arcTracker()
+        self.arctrack = trackers.arcTracker()
         self.call = self.view.addEventCallback("SoEvent",self.action)
         FreeCAD.Console.PrintMessage(translate("draft", "Pick rotation center")+"\n")
 
@@ -2730,7 +2729,7 @@ class Rotate(Modifier):
     def set_ghosts(self):
         if self.ui.isSubelementMode.isChecked():
             return self.set_subelement_ghosts()
-        self.ghosts = [ghostTracker(self.selected_objects)]
+        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
     def set_subelement_ghosts(self):
         import Part
@@ -2738,7 +2737,7 @@ class Rotate(Modifier):
             for subelement in object.SubObjects:
                 if isinstance(subelement, Part.Vertex) \
                     or isinstance(subelement, Part.Edge):
-                    self.ghosts.append(ghostTracker(subelement))
+                    self.ghosts.append(trackers.ghostTracker(subelement))
 
     def finish(self, closed=False, cont=False):
         """finishes the arc"""
@@ -2892,19 +2891,19 @@ class Offset(Modifier):
             self.npts = None
             self.constrainSeg = None
             self.ui.offsetUi()
-            self.linetrack = lineTracker()
+            self.linetrack = trackers.lineTracker()
             self.faces = False
             self.shape = self.sel.Shape
             self.mode = None
             if Draft.getType(self.sel) in ["Circle","Arc"]:
-                self.ghost = arcTracker()
+                self.ghost = trackers.arcTracker()
                 self.mode = "Circle"
                 self.center = self.shape.Edges[0].Curve.Center
                 self.ghost.setCenter(self.center)
                 self.ghost.setStartAngle(math.radians(self.sel.FirstAngle))
                 self.ghost.setEndAngle(math.radians(self.sel.LastAngle))
             elif Draft.getType(self.sel) == "BSpline":
-                self.ghost = bsplineTracker(points=self.sel.Points)
+                self.ghost = trackers.bsplineTracker(points=self.sel.Points)
                 self.mode = "BSpline"
             elif Draft.getType(self.sel) == "BezCurve":
                 FreeCAD.Console.PrintWarning(translate("draft", "Sorry, offset of Bezier curves is currently still not supported")+"\n")
@@ -2914,7 +2913,7 @@ class Offset(Modifier):
                 if len(self.sel.Shape.Edges) == 1:
                     import Part
                     if isinstance(self.sel.Shape.Edges[0].Curve,Part.Circle):
-                        self.ghost = arcTracker()
+                        self.ghost = trackers.arcTracker()
                         self.mode = "Circle"
                         self.center = self.shape.Edges[0].Curve.Center
                         self.ghost.setCenter(self.center)
@@ -2922,7 +2921,7 @@ class Offset(Modifier):
                             self.ghost.setStartAngle(self.sel.Shape.Edges[0].FirstParameter)
                             self.ghost.setEndAngle(self.sel.Shape.Edges[0].LastParameter)
                 if not self.ghost:
-                    self.ghost = wireTracker(self.shape)
+                    self.ghost = trackers.wireTracker(self.shape)
                     self.mode = "Wire"
             self.call = self.view.addEventCallback("SoEvent",self.action)
             FreeCAD.Console.PrintMessage(translate("draft", "Pick distance")+"\n")
@@ -3102,7 +3101,7 @@ class Stretch(Modifier):
             self.ui.pointUi("Stretch")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.rectracker = rectangleTracker(dotted=True,scolor=(0.0,0.0,1.0),swidth=2)
+            self.rectracker = trackers.rectangleTracker(dotted=True,scolor=(0.0,0.0,1.0),swidth=2)
             self.nodetracker = []
             self.displacement = None
             FreeCAD.Console.PrintMessage(translate("draft", "Pick first point of selection rectangle")+"\n")
@@ -3195,7 +3194,7 @@ class Stretch(Modifier):
                         self.ops.append([o])
                         nodes.append(p)
             for n in nodes:
-                nt = editTracker(n,inactive=True)
+                nt = trackers.editTracker(n,inactive=True)
                 nt.on()
                 self.nodetracker.append(nt)
             self.step = 3
@@ -3538,7 +3537,7 @@ class Trimex(Modifier):
             return
         self.obj = sel[0]
         self.ui.trimUi()
-        self.linetrack = lineTracker()
+        self.linetrack = trackers.lineTracker()
 
         import DraftGeomUtils
 
@@ -3548,10 +3547,10 @@ class Trimex(Modifier):
         if len(self.obj.Shape.Faces) == 1:
             # simple extrude mode, the object itself is extruded
             self.extrudeMode = True
-            self.ghost = [ghostTracker([self.obj])]
+            self.ghost = [trackers.ghostTracker([self.obj])]
             self.normal = self.obj.Shape.Faces[0].normalAt(.5,.5)
             for v in self.obj.Shape.Vertexes:
-                self.ghost.append(lineTracker())
+                self.ghost.append(trackers.lineTracker())
         elif len(self.obj.Shape.Faces) > 1:
             # face extrude mode, a new object is created
             ss =  FreeCADGui.Selection.getSelectionEx()[0]
@@ -3560,10 +3559,10 @@ class Trimex(Modifier):
                     self.obj = self.doc.addObject("Part::Feature","Face")
                     self.obj.Shape = ss.SubObjects[0]
                     self.extrudeMode = True
-                    self.ghost = [ghostTracker([self.obj])]
+                    self.ghost = [trackers.ghostTracker([self.obj])]
                     self.normal = self.obj.Shape.Faces[0].normalAt(.5,.5)
                     for v in self.obj.Shape.Vertexes:
-                        self.ghost.append(lineTracker())
+                        self.ghost.append(trackers.lineTracker())
         else:
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
@@ -3583,9 +3582,9 @@ class Trimex(Modifier):
             sw = self.width
             for e in self.edges:
                 if DraftGeomUtils.geomType(e) == "Line":
-                    self.ghost.append(lineTracker(scolor=sc,swidth=sw))
+                    self.ghost.append(trackers.lineTracker(scolor=sc,swidth=sw))
                 else:
-                    self.ghost.append(arcTracker(scolor=sc,swidth=sw))
+                    self.ghost.append(trackers.arcTracker(scolor=sc,swidth=sw))
         if not self.ghost: self.finish()
         for g in self.ghost: g.on()
         self.activePoint = 0
@@ -3967,7 +3966,7 @@ class Scale(Modifier):
     def set_ghosts(self):
         if self.ui.isSubelementMode.isChecked():
             return self.set_subelement_ghosts()
-        self.ghosts = [ghostTracker(self.selected_objects)]
+        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
     def set_subelement_ghosts(self):
         import Part
@@ -3975,7 +3974,7 @@ class Scale(Modifier):
             for subelement in object.SubObjects:
                 if isinstance(subelement, Part.Vertex) \
                     or isinstance(subelement, Part.Edge):
-                    self.ghosts.append(ghostTracker(subelement))
+                    self.ghosts.append(trackers.ghostTracker(subelement))
 
     def pickRef(self):
         self.pickmode = True
@@ -4972,7 +4971,7 @@ class Mirror(Modifier):
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
-        #self.ghost = ghostTracker(self.sel) TODO: solve this (see below)
+        # self.ghost = trackers.ghostTracker(self.sel) TODO: solve this (see below)
         self.call = self.view.addEventCallback("SoEvent",self.action)
         FreeCAD.Console.PrintMessage(translate("draft", "Pick start point of mirror line")+"\n")
         self.ui.isCopy.hide()
@@ -5199,7 +5198,7 @@ class Draft_Label(Creator):
         self.ui.labelUi(self.name,callback=self.setmode)
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
-        self.ghost = DraftTrackers.lineTracker()
+        self.ghost = trackers.lineTracker()
         self.call = self.view.addEventCallback("SoEvent",self.action)
         FreeCAD.Console.PrintMessage(translate("draft", "Pick target point")+"\n")
         self.ui.isCopy.hide()
@@ -5363,10 +5362,9 @@ class Draft_Arc_3Points:
 
     def Activated(self):
 
-        import DraftTrackers
         self.points = []
         self.normal = None
-        self.tracker = DraftTrackers.arcTracker()
+        self.tracker = trackers.arcTracker()
         self.tracker.autoinvert = False
         if hasattr(FreeCAD,"DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()
