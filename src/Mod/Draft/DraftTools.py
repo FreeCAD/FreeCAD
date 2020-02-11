@@ -58,7 +58,7 @@ if not hasattr(FreeCAD, "DraftWorkingPlane"):
 
 import DraftEdit
 # import DraftFillet
-import DraftSelectPlane
+import draftguitools.gui_selectplane
 
 #---------------------------------------------------------------------------
 # Preflight stuff
