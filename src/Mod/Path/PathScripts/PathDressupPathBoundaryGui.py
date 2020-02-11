@@ -169,6 +169,17 @@ class TaskPanel(object):
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
         self.form.stockInside.stateChanged.connect(self.setDirty)
+        self.form.stockExtXneg.textChanged.connect(self.setDirty)
+        self.form.stockExtXpos.textChanged.connect(self.setDirty)
+        self.form.stockExtYneg.textChanged.connect(self.setDirty)
+        self.form.stockExtYpos.textChanged.connect(self.setDirty)
+        self.form.stockExtZneg.textChanged.connect(self.setDirty)
+        self.form.stockExtZpos.textChanged.connect(self.setDirty)
+        self.form.stockBoxLength.textChanged.connect(self.setDirty)
+        self.form.stockBoxWidth.textChanged.connect(self.setDirty)
+        self.form.stockBoxHeight.textChanged.connect(self.setDirty)
+        self.form.stockCylinderRadius.textChanged.connect(self.setDirty)
+        self.form.stockCylinderHeight.textChanged.connect(self.setDirty)
 
 
 class DressupPathBoundaryViewProvider(object):
