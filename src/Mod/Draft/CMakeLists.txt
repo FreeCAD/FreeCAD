@@ -93,6 +93,7 @@ SET(Draft_task_panels
     drafttaskpanels/task_circulararray.py
     drafttaskpanels/task_orthoarray.py
     drafttaskpanels/task_polararray.py
+    drafttaskpanels/task_scale.py
     drafttaskpanels/task_shapestring.py
     drafttaskpanels/README.md
 )

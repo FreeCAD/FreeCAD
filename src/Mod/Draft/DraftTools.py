@@ -39,10 +39,10 @@ __url__ = "https://www.freecadweb.org"
 import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
 from PySide import QtCore,QtGui
+import DraftGui
 from draftutils.todo import todo
 from draftutils.translate import translate
 import draftguitools.gui_snapper as gui_snapper
-import DraftGui
 import draftguitools.gui_trackers as trackers
 from pivy import coin
 
@@ -60,6 +60,7 @@ import DraftEdit
 # import DraftFillet
 import draftguitools.gui_selectplane
 import drafttaskpanels.task_shapestring as task_shapestring
+import drafttaskpanels.task_scale as task_scale
 
 #---------------------------------------------------------------------------
 # Preflight stuff
@@ -4130,7 +4131,7 @@ class Scale(Modifier):
             self.ui.offUi()
             if self.call:
                 self.view.removeEventCallback("SoEvent",self.call)
-            self.task = DraftGui.ScaleTaskPanel()
+            self.task = task_scale.ScaleTaskPanel()
             self.task.sourceCmd = self
             todo.delay(FreeCADGui.Control.showDialog,self.task)
             todo.delay(self.task.xValue.selectAll,None)
