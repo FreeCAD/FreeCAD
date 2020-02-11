@@ -27,7 +27,8 @@ from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
-    from DraftTools import translate, utf8_decode
+    from draftutils.translate import translate
+    from draftutils.utils import utf8_decode
 else:
     # \cond
     def translate(ctxt,txt):
