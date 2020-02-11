@@ -26,18 +26,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import sys
+
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
 import Draft_rc
-import DraftVecUtils
-import DraftTools
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
 from draftutils.translate import translate
-from draftutils.messages import _msg, _err
-
 _Quantity = App.Units.Quantity
 
 
@@ -46,16 +42,16 @@ True if Draft_rc.__name__ else False
 
 
 class ScaleTaskPanel:
-    """A Task Panel for the Scale tool"""
+    """The task panel for the Draft Scale tool."""
 
     def __init__(self):
         self.sourceCmd = None
         self.form = QtGui.QWidget()
         layout = QtGui.QGridLayout(self.form)
         self.xLabel = QtGui.QLabel()
-        layout.addWidget(self.xLabel,0,0,1,1)
+        layout.addWidget(self.xLabel, 0, 0, 1, 1)
         self.xValue = QtGui.QDoubleSpinBox()
-        self.xValue.setRange(.0000001,1000000.0)
+        self.xValue.setRange(0.0000001, 1000000.0)
         self.xValue.setDecimals(Draft.getParam("precision"))
         self.xValue.setValue(1)
         layout.addWidget(self.xValue,0,1,1,1)
@@ -99,23 +95,28 @@ class ScaleTaskPanel:
         QtCore.QObject.connect(self.isClone,QtCore.SIGNAL("toggled(bool)"),self.setClone)
         self.retranslateUi()
 
-    def setLock(self,state):
+    def setLock(self, state):
+        """Set the uniform scaling."""
         App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleUniform", state)
 
-    def setRelative(self,state):
+    def setRelative(self, state):
+        """Set the relative scaling."""
         App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleRelative", state)
 
-    def setCopy(self,state):
+    def setCopy(self, state):
+        """Set the scale and copy option."""
         App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleCopy", state)
         if state and self.isClone.isChecked():
             self.isClone.setChecked(False)
 
-    def setClone(self,state):
+    def setClone(self, state):
+        """Set the clone and scale option."""
         App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").SetBool("ScaleClone", state)
         if state and self.isCopy.isChecked():
             self.isCopy.setChecked(False)
 
-    def setValue(self,val=None):
+    def setValue(self, val=None):
+        """Set the value of the points."""
         if self.lock.isChecked():
             self.xValue.setValue(val)
             self.yValue.setValue(val)
@@ -123,29 +124,33 @@ class ScaleTaskPanel:
         if self.sourceCmd:
             self.sourceCmd.scaleGhost(self.xValue.value(),self.yValue.value(),self.zValue.value(),self.relative.isChecked())
 
-    def retranslateUi(self,widget=None):
-        self.form.setWindowTitle(QtGui.QApplication.translate("Draft", "Scale", None))
-        self.xLabel.setText(QtGui.QApplication.translate("Draft", "X factor", None))
-        self.yLabel.setText(QtGui.QApplication.translate("Draft", "Y factor", None))
-        self.zLabel.setText(QtGui.QApplication.translate("Draft", "Z factor", None))
-        self.lock.setText(QtGui.QApplication.translate("Draft", "Uniform scaling", None))
-        self.relative.setText(QtGui.QApplication.translate("Draft", "Working plane orientation", None))
-        self.isCopy.setText(QtGui.QApplication.translate("draft", "Copy"))
-        self.isSubelementMode.setText(QtGui.QApplication.translate("draft", "Modify subelements"))
-        self.pickrefButton.setText(QtGui.QApplication.translate("Draft", "Pick from/to points", None))
-        self.isClone.setText(QtGui.QApplication.translate("Draft", "Create a clone", None))
+    def retranslateUi(self, widget=None):
+        """Translate the various widgets"""
+        self.form.setWindowTitle(translate("Draft", "Scale"))
+        self.xLabel.setText(translate("Draft", "X factor"))
+        self.yLabel.setText(translate("Draft", "Y factor"))
+        self.zLabel.setText(translate("Draft", "Z factor"))
+        self.lock.setText(translate("Draft", "Uniform scaling"))
+        self.relative.setText(translate("Draft", "Working plane orientation"))
+        self.isCopy.setText(translate("Draft", "Copy"))
+        self.isSubelementMode.setText(translate("Draft", "Modify subelements"))
+        self.pickrefButton.setText(translate("Draft", "Pick from/to points"))
+        self.isClone.setText(translate("Draft", "Create a clone"))
 
     def pickRef(self):
+        """Pick a reference point from the calling class."""
         if self.sourceCmd:
             self.sourceCmd.pickRef()
 
     def accept(self):
+        """Execute when clicking the OK button."""
         if self.sourceCmd:
             self.sourceCmd.scale()
         Gui.ActiveDocument.resetEdit()
         return True
 
     def reject(self):
+        """Execute when clicking the Cancel button."""
         if self.sourceCmd:
             self.sourceCmd.finish()
         Gui.ActiveDocument.resetEdit()
