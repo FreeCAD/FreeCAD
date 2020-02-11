@@ -877,6 +877,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         elif self.analysis_type == "check":
             analysis_type = "*NO ANALYSIS"
         # analysis line --> solver type
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=43178
         if self.solver_obj.MatrixSolverType == "default":
             pass
         elif self.solver_obj.MatrixSolverType == "spooles":

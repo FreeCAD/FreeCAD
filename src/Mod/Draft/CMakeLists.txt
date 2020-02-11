@@ -49,10 +49,12 @@ SET(Draft_tests
 
 SET(Draft_utilities
     draftutils/__init__.py
+    draftutils/init_tools.py
     draftutils/utils.py
     draftutils/gui_utils.py
     draftutils/todo.py
     draftutils/translate.py
+    draftutils/messages.py
 )
 
 SET(Draft_objects
