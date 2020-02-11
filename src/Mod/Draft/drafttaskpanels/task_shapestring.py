@@ -86,9 +86,11 @@ class ShapeStringTaskPanel:
         _msg(translate("draft", "Pick ShapeString location point:"))
 
     def fileSelect(self, fn):
+        """Assign the selected file."""
         self.fileSpec = fn
 
     def resetPoint(self):
+        """Reset the selected point."""
         self.pointPicked = False
         origin = App.Vector(0.0, 0.0, 0.0)
         self.setPoint(origin)
@@ -108,12 +110,13 @@ class ShapeStringTaskPanel:
                 self.pointPicked = True
 
     def setPoint(self, point):
+        """Assign the selected point."""
         self.task.sbX.setProperty('rawValue', point.x)
         self.task.sbY.setProperty('rawValue', point.y)
         self.task.sbZ.setProperty('rawValue', point.z)
 
     def createObject(self):
-        """Create object in the current doc."""
+        """Create object in the current document."""
         dquote = '"'
         if sys.version_info.major < 3:  # Python3: no more unicode
             String = 'u' + dquote + str(self.task.leString.text().encode('unicode_escape')) + dquote
@@ -142,28 +145,31 @@ class ShapeStringTaskPanel:
         except Exception:
             _err("Draft_ShapeString: error delaying commit\n")
 
-    def platWinDialog(self, Flag):
+    def platWinDialog(self, flag):
+        """Handle the type of dialog depending on the platform."""
         ParamGroup = App.ParamGet("User parameter:BaseApp/Preferences/Dialog")
-        if Flag == "Overwrite":
+        if flag == "Overwrite":
             GroupContent = ParamGroup.GetContents()
-            Found = False
+            found = False
             if GroupContent:
                 for ParamSet in GroupContent:
                     if ParamSet[1] == "DontUseNativeFontDialog":
-                        Found = True
+                        found = True
                         break
 
-            if Found is False:
-                ParamGroup.SetBool("DontUseNativeFontDialog", True)  # initialize nonexisting one
+            if found is False:
+                # initialize nonexisting one
+                ParamGroup.SetBool("DontUseNativeFontDialog", True)
 
             param = ParamGroup.GetBool("DontUseNativeFontDialog")
-            ShapeStringTaskPanel.oldValueBuffer = ParamGroup.GetBool("DontUseNativeDialog")
+            self.oldValueBuffer = ParamGroup.GetBool("DontUseNativeDialog")
             ParamGroup.SetBool("DontUseNativeDialog", param)
 
-        elif Flag == "Restore":
-            ParamGroup.SetBool("DontUseNativeDialog", ShapeStringTaskPanel.oldValueBuffer)
+        elif flag == "Restore":
+            ParamGroup.SetBool("DontUseNativeDialog", self.oldValueBuffer)
 
     def accept(self):
+        """Execute when clicking the OK button."""
         self.createObject()
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
@@ -174,6 +180,7 @@ class ShapeStringTaskPanel:
         return True
 
     def reject(self):
+        """Run when clicking the Cancel button."""
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
         Gui.ActiveDocument.resetEdit()
