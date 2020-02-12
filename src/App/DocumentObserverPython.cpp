@@ -111,6 +111,8 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     FC_PY_ELEMENT_ARG1(AppendDynamicProperty, AppendDynamicProperty)
     FC_PY_ELEMENT_ARG1(RemoveDynamicProperty, RemoveDynamicProperty)
     FC_PY_ELEMENT_ARG2(ChangePropertyEditor, ChangePropertyEditor)
+    FC_PY_ELEMENT_ARG2(BeforeAddingDynamicExtension, BeforeAddingDynamicExtension)
+    FC_PY_ELEMENT_ARG2(AddedDynamicExtension, AddedDynamicExtension)
 }
 
 DocumentObserverPython::~DocumentObserverPython()
@@ -541,3 +543,34 @@ void DocumentObserverPython::slotFinishSaveDocument(const App::Document& doc, co
         e.ReportException();
     }
 }
+
+void DocumentObserverPython::slotBeforeAddingDynamicExtension(const App::ExtensionContainer& extcont, std::string extension)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(2);
+        args.setItem(0, Py::Object(const_cast<App::ExtensionContainer&>(extcont).getPyObject()));
+        args.setItem(1, Py::String(extension));
+        Base::pyCall(pyBeforeAddingDynamicExtension.ptr(),args.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotAddedDynamicExtension(const App::ExtensionContainer& extcont, std::string extension)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(2);
+        args.setItem(0, Py::Object(const_cast<App::ExtensionContainer&>(extcont).getPyObject()));
+        args.setItem(1, Py::String(extension));
+        Base::pyCall(pyAddedDynamicExtension.ptr(),args.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+

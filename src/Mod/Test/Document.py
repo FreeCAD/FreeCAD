@@ -1504,6 +1504,16 @@ class DocumentObserverCases(unittest.TestCase):
       self.signal.append('DocFinishSave')
       self.parameter.append(obj)
       self.parameter2.append(name)
+      
+    def slotBeforeAddingDynamicExtension(self, obj, extension):
+      self.signal.append('ObjBeforeDynExt')
+      self.parameter.append(obj)
+      self.parameter2.append(extension)
+      
+    def slotAddedDynamicExtension(self, obj, extension):
+      self.signal.append('ObjDynExt')
+      self.parameter.append(obj)
+      self.parameter2.append(extension)
 
   class GuiObserver():
     
@@ -1777,6 +1787,18 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter2.pop() == 'Prop')
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
+    pyobj.addExtension("App::GroupExtensionPython", None)
+    self.failUnless(self.Obs.signal.pop() == 'ObjDynExt')
+    self.failUnless(self.Obs.parameter.pop() is pyobj)
+    self.failUnless(self.Obs.parameter2.pop() == 'App::GroupExtensionPython')
+    self.failUnless(self.Obs.signal.pop(0) == 'ObjBeforeDynExt')
+    self.failUnless(self.Obs.parameter.pop(0) is pyobj)
+    self.failUnless(self.Obs.parameter2.pop(0) == 'App::GroupExtensionPython')
+    #a proxy property was changed, hence those events are also in the signal list 
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
+    
     FreeCAD.closeDocument(self.Doc1.Name)
     self.Obs.signal = []
     self.Obs.parameter = []
@@ -1906,6 +1928,18 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.GuiObs.signal.pop(0) == 'ObjResetEdit')
     self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
+    
+    obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython", None)
+    self.failUnless(self.Obs.signal.pop() == 'ObjDynExt')
+    self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
+    self.failUnless(self.Obs.parameter2.pop() == 'Gui::ViewProviderGroupExtensionPython')
+    self.failUnless(self.Obs.signal.pop() == 'ObjBeforeDynExt')
+    self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
+    self.failUnless(self.Obs.parameter2.pop() == 'Gui::ViewProviderGroupExtensionPython')
+    #a proxy property was changed, hence those events are also in the signal list (but of GUI observer)
+    self.GuiObs.signal = []
+    self.GuiObs.parameter = []
+    self.GuiObs.parameter2 = []
     
     vo = obj.ViewObject
     FreeCAD.ActiveDocument.removeObject(obj.Name)
