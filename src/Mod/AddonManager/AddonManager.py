@@ -385,7 +385,11 @@ class CommandAddonManager:
                 from PySide import QtGui
                 self.macros.append(macro)
                 import AddonManager_rc
-                addonicon = QtGui.QIcon(":/icons/" + macro.name.replace(" ","_") + "_macro_icon.svg")
+                path = ":/icons/" + macro.name.replace(" ","_") + "_macro_icon.svg"
+                if QtCore.QFile.exists(path):
+                    addonicon = QtGui.QIcon(path)
+                else:
+                    addonicon = QtGui.QIcon(":/icons/document-python.svg")
                 if addonicon.isNull():
                     addonicon = QtGui.QIcon(":/icons/document-python.svg")
                 if macro.is_installed():
