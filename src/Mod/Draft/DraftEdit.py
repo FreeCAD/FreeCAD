@@ -35,7 +35,7 @@ if App.GuiUp:
     # Do not import GUI-related modules if GUI is not there
     import FreeCADGui as Gui
     import DraftTools
-    from DraftTrackers import editTracker, wireTracker, arcTracker, bsplineTracker, bezcurveTracker
+    from draftguitools.gui_trackers import editTracker, wireTracker, arcTracker, bsplineTracker, bezcurveTracker
     from pivy import coin
     from PySide import QtCore, QtGui
     from PySide.QtCore import QT_TRANSLATE_NOOP
