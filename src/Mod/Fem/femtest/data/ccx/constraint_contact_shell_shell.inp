@@ -23072,7 +23072,7 @@ Efaces
 ** Surfaces for contact constraint
 ** written by write_surfaces_constraints_contact function
 ** ConstraintContact
-*SURFACE, NAME=DEP1
+*SURFACE, NAME=DEPConstraintContact
 329,S2
 330,S2
 331,S2
@@ -30571,7 +30571,7 @@ Efaces
 7824,S2
 7825,S2
 7826,S2
-*SURFACE, NAME=IND1
+*SURFACE, NAME=INDConstraintContact
 7827,S2
 7828,S2
 7829,S2
@@ -38371,9 +38371,9 @@ Efaces
 ** Contact Constraints
 ** written by write_constraints_contact function
 ** ConstraintContact
-*CONTACT PAIR, INTERACTION=INT1,TYPE=SURFACE TO SURFACE
-DEP1,IND1
-*SURFACE INTERACTION, NAME=INT1
+*CONTACT PAIR, INTERACTION=INTConstraintContact,TYPE=SURFACE TO SURFACE
+DEPConstraintContact,INDConstraintContact
+*SURFACE INTERACTION, NAME=INTConstraintContact
 *SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR
 1000000.0 
 

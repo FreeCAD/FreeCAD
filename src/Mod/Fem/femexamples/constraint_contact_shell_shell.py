@@ -27,7 +27,7 @@
 # based on https://forum.freecadweb.org/viewtopic.php?f=18&t=42228#p359488
 # to run the example use:
 """
-from femexamples.contact_shell_shell import setup
+from femexamples.constraint_contact_shell_shell import setup
 setup()
 
 """
@@ -89,6 +89,8 @@ def setup(doc=None, solvertype="ccxtools"):
 
     BooleanFrag = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
     BooleanFrag.Objects = [upper_tube, force_point]
+    if FreeCAD.GuiUp:
+        upper_tube.ViewObject.hide()
 
     compound = doc.addObject("Part::Compound", "Compound")
     compound.Links = [BooleanFrag, lower_tube]

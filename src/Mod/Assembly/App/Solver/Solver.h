@@ -23,8 +23,6 @@
 #ifndef SOLVER_H
 #define SOLVER_H
 
-#include "PreCompiled.h"
-
 #include "opendcm/core.hpp"
 
 #ifdef ASSEMBLY_DEBUG_FACILITIES

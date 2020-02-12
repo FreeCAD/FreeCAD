@@ -33,15 +33,21 @@
 #include "Utilities.h"
 
 #include <Base/BoundBox.h>
+#include <Base/Console.h>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprPlaneFit3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4DistVector3Plane3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Matrix3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprPolyFit3.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4ApprSphereFit3.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4Sphere3.h>
+#include <Mod/Mesh/App/WildMagic4/Wm4ApprCylinderFit3.h>
 
 //#define FC_USE_EIGEN
 #include <Eigen/QR>
+#include <Eigen/Eigen>
+#include <unsupported/Eigen/NonLinearOptimization>
 #ifdef FC_USE_EIGEN
 #include <Eigen/Eigenvalues>
 #endif
@@ -784,6 +790,98 @@ void SurfaceFit::GetCoefficients(double& a,double& b,double& c,double& d,double&
 
 // -------------------------------------------------------------------------------
 
+namespace MeshCore {
+
+struct LMCylinderFunctor
+{
+    Eigen::MatrixXd measuredValues;
+
+    // Compute 'm' errors, one for each data point, for the given parameter values in 'x'
+    int operator()(const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const
+    {
+        // 'x' has dimensions n x 1
+        // It contains the current estimates for the parameters.
+
+        // 'fvec' has dimensions m x 1
+        // It will contain the error for each data point.
+        double aParam = x(0); // dir_x
+        double bParam = x(1); // dir_y
+        double cParam = x(2); // dir_z
+        double dParam = x(3); // cnt_x
+        double eParam = x(4); // cnt_y
+        double fParam = x(5); // cnt_z
+        double gParam = x(6); // radius
+
+        // use distance functions (fvec(i)) for cylinders as defined in the paper:
+        // Least-Squares Fitting Algorithms of the NIST Algorithm Testing System
+        for (int i = 0; i < values(); i++) {
+            double xValue = measuredValues(i, 0);
+            double yValue = measuredValues(i, 1);
+            double zValue = measuredValues(i, 2);
+
+            double a = aParam/(sqrt(aParam*aParam + bParam*bParam + cParam*cParam));
+            double b = bParam/(sqrt(aParam*aParam + bParam*bParam + cParam*cParam));
+            double c = cParam/(sqrt(aParam*aParam + bParam*bParam + cParam*cParam));
+            double x = dParam;
+            double y = eParam;
+            double z = fParam;
+            double u = c * (yValue - y) - b * (zValue - z);
+            double v = a * (zValue - z) - c * (xValue - x);
+            double w = b * (xValue - x) - a * (yValue - y);
+
+            fvec(i) = sqrt(u*u + v*v + w*w) - gParam;
+        }
+        return 0;
+    }
+
+    // Compute the jacobian of the errors
+    int df(const Eigen::VectorXd &x, Eigen::MatrixXd &fjac) const
+    {
+        // 'x' has dimensions n x 1
+        // It contains the current estimates for the parameters.
+
+        // 'fjac' has dimensions m x n
+        // It will contain the jacobian of the errors, calculated numerically in this case.
+
+        double epsilon;
+        epsilon = 1e-5;
+
+        for (int i = 0; i < x.size(); i++) {
+            Eigen::VectorXd xPlus(x);
+            xPlus(i) += epsilon;
+            Eigen::VectorXd xMinus(x);
+            xMinus(i) -= epsilon;
+
+            Eigen::VectorXd fvecPlus(values());
+            operator()(xPlus, fvecPlus);
+
+            Eigen::VectorXd fvecMinus(values());
+            operator()(xMinus, fvecMinus);
+
+            Eigen::VectorXd fvecDiff(values());
+            fvecDiff = (fvecPlus - fvecMinus) / (2.0f * epsilon);
+
+            fjac.block(0, i, values(), 1) = fvecDiff;
+        }
+
+        return 0;
+    }
+
+    // Number of data points, i.e. values.
+    int m;
+
+    // Returns 'm', the number of values.
+    int values() const { return m; }
+
+    // The number of parameters, i.e. inputs.
+    int n;
+
+    // Returns 'n', the number of inputs.
+    int inputs() const { return n; }
+};
+
+}
+
 CylinderFit::CylinderFit()
   : _vBase(0,0,0)
   , _vAxis(0,0,1)
@@ -801,9 +899,69 @@ float CylinderFit::Fit()
         return FLOAT_MAX;
     _bIsFitted = true;
 
-    // TODO
+#if 0
+    std::vector<Wm4::Vector3d> input;
+    std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
+                   [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });
 
-    _fLastResult = 0;
+    Wm4::Vector3d cnt, axis;
+    double radius, height;
+    Wm4::CylinderFit3<double> fit(input.size(), input.data(), cnt, axis, radius, height, false);
+    _vBase = Base::convertTo<Base::Vector3f>(cnt);
+    _vAxis = Base::convertTo<Base::Vector3f>(axis);
+    _fRadius = float(radius);
+
+    _fLastResult = double(fit);
+#else
+    int m = static_cast<int>(_vPoints.size());
+    int n = 7;
+
+    Eigen::MatrixXd measuredValues(m, 3);
+    int index = 0;
+    for (const auto& it : _vPoints) {
+        measuredValues(index, 0) = it.x;
+        measuredValues(index, 1) = it.y;
+        measuredValues(index, 2) = it.z;
+        index++;
+    }
+
+    Eigen::VectorXd x(n);
+    x(0) = 1.0;             // initial value for dir_x
+    x(1) = 1.0;             // initial value for dir_y
+    x(2) = 1.0;             // initial value for dir_z
+    x(3) = 0.0;             // initial value for cnt_x
+    x(4) = 0.0;             // initial value for cnt_y
+    x(5) = 0.0;             // initial value for cnt_z
+    x(6) = 0.0;             // initial value for radius
+
+    //
+    // Run the LM optimization
+    // Create a LevenbergMarquardt object and pass it the functor.
+    //
+
+    LMCylinderFunctor functor;
+    functor.measuredValues = measuredValues;
+    functor.m = m;
+    functor.n = n;
+
+    Eigen::LevenbergMarquardt<LMCylinderFunctor, double> lm(functor);
+    int status = lm.minimize(x);
+    Base::Console().Log("Cylinder fit: %d, iterations: %d, gradient norm: %f\n", status, lm.iter, lm.gnorm);
+
+    _vAxis.x = x(0);
+    _vAxis.y = x(1);
+    _vAxis.z = x(2);
+    _vAxis.Normalize();
+
+    _vBase.x = x(3);
+    _vBase.y = x(4);
+    _vBase.z = x(5);
+
+    _fRadius = x(6);
+
+    _fLastResult = lm.gnorm;
+#endif
+
     return _fLastResult;
 }
 
@@ -927,7 +1085,23 @@ Base::Vector3f SphereFit::GetCenter() const
 
 float SphereFit::Fit()
 {
-    return FLOAT_MAX;
+    _bIsFitted = true;
+    if (CountPoints() < 4)
+        return FLOAT_MAX;
+
+    std::vector<Wm4::Vector3d> input;
+    std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
+                   [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });
+
+    Wm4::Sphere3d sphere;
+    Wm4::SphereFit3<double>(input.size(), input.data(), 10, sphere, false);
+    _vCenter = Base::convertTo<Base::Vector3f>(sphere.Center);
+    _fRadius = float(sphere.Radius);
+
+    // TODO
+
+    _fLastResult = 0;
+    return _fLastResult;
 }
 
 float SphereFit::GetDistanceToSphere(const Base::Vector3f &) const

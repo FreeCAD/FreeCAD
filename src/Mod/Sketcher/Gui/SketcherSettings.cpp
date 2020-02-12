@@ -31,6 +31,7 @@
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
+#include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsColors.h"
 #include "TaskSketcherGeneral.h"
 #include <Base/Console.h>
@@ -48,13 +49,62 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     : PreferencePage(parent), ui(new Ui_SketcherSettings)
 {
     ui->setupUi(this);
-    QGroupBox* groupBox = new QGroupBox(this);
-    QGridLayout* gridLayout = new QGridLayout(groupBox);
+    QGridLayout* gridLayout = new QGridLayout(ui->placeholder);
     gridLayout->setSpacing(0);
     gridLayout->setMargin(0);
-    form = new SketcherGeneralWidget(groupBox);
+    form = new SketcherGeneralWidget(ui->placeholder);
     gridLayout->addWidget(form, 0, 0, 1, 1);
-    ui->gridLayout_3->addWidget(groupBox, 1, 0, 1, 1);
+}
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+SketcherSettings::~SketcherSettings()
+{
+    // no need to delete child widgets, Qt does it all for us
+    delete ui;
+}
+
+void SketcherSettings::saveSettings()
+{
+    // Sketch editing
+    ui->checkBoxAdvancedSolverTaskBox->onSave();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
+    ui->checkBoxEnableEscape->onSave();
+    ui->checkBoxNotifyConstraintSubstitutions->onSave();
+    form->saveSettings();
+}
+
+void SketcherSettings::loadSettings()
+{
+    // Sketch editing
+    ui->checkBoxAdvancedSolverTaskBox->onRestore();
+    ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
+    ui->checkBoxEnableEscape->onRestore();
+    ui->checkBoxNotifyConstraintSubstitutions->onRestore();
+    form->loadSettings();
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void SketcherSettings::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
+
+
+/* TRANSLATOR SketcherGui::SketcherSettingsDisplay */
+
+SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
+    : PreferencePage(parent), ui(new Ui_SketcherSettingsDisplay)
+{
+    ui->setupUi(this);
 
     QList < QPair<Qt::PenStyle, int> > styles;
     styles << qMakePair(Qt::SolidLine, 0xffff)
@@ -86,29 +136,24 @@ SketcherSettings::SketcherSettings(QWidget* parent)
 /**
  *  Destroys the object and frees any allocated resources
  */
-SketcherSettings::~SketcherSettings()
+SketcherSettingsDisplay::~SketcherSettingsDisplay()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
 }
 
-void SketcherSettings::saveSettings()
+void SketcherSettingsDisplay::saveSettings()
 {
-    // Sketch editing
     ui->EditSketcherFontSize->onSave();
     ui->SegmentsPerGeometry->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
     ui->constraintMode->onSave();
     ui->checkBoxHideUnits->onSave();
-    ui->checkBoxAdvancedSolverTaskBox->onSave();
-    ui->checkBoxRecalculateInitialSolutionWhileDragging->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
     ui->checkBoxTVRestoreCamera->onSave();
-    ui->checkBoxNotifyConstraintSubstitutions->onSave();
-    form->saveSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
@@ -116,23 +161,18 @@ void SketcherSettings::saveSettings()
     hGrp->SetInt("GridLinePattern", pattern);
 }
 
-void SketcherSettings::loadSettings()
+void SketcherSettingsDisplay::loadSettings()
 {
-    // Sketch editing
     ui->EditSketcherFontSize->onRestore();
     ui->SegmentsPerGeometry->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
     ui->constraintMode->onRestore();
     ui->checkBoxHideUnits->onRestore();
-    ui->checkBoxAdvancedSolverTaskBox->onRestore();
-    ui->checkBoxRecalculateInitialSolutionWhileDragging->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
     ui->checkBoxTVRestoreCamera->onRestore();
-    ui->checkBoxNotifyConstraintSubstitutions->onRestore();
-    form->loadSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
@@ -144,7 +184,7 @@ void SketcherSettings::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettings::changeEvent(QEvent *e)
+void SketcherSettingsDisplay::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
@@ -154,7 +194,7 @@ void SketcherSettings::changeEvent(QEvent *e)
     }
 }
 
-void SketcherSettings::onBtnTVApplyClicked(bool)
+void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
 {
     QString errMsg;
     try{

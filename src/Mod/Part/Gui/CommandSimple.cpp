@@ -364,7 +364,39 @@ CmdPartRefineShape::CmdPartRefineShape()
 void CmdPartRefineShape::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    _copyShape("Refined copy",true,false,true);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+    bool parametric = hGrp->GetBool("ParametricRefine", true);
+    if (parametric) {
+        Gui::WaitCursor wc;
+        Base::Type partid = Base::Type::fromName("Part::Feature");
+        std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
+        openCommand("Refine shape");
+        std::for_each(objs.begin(), objs.end(), [](App::DocumentObject* obj) {
+            try {
+                doCommand(Doc,"App.ActiveDocument.addObject('Part::Refine','%s').Source="
+                              "App.ActiveDocument.%s\n"
+                              "App.ActiveDocument.ActiveObject.Label="
+                              "App.ActiveDocument.%s.Label\n"
+                              "Gui.ActiveDocument.%s.hide()\n",
+                              obj->getNameInDocument(),
+                              obj->getNameInDocument(),
+                              obj->getNameInDocument(),
+                              obj->getNameInDocument());
+
+                copyVisual("ActiveObject", "ShapeColor", obj->getNameInDocument());
+                copyVisual("ActiveObject", "LineColor", obj->getNameInDocument());
+                copyVisual("ActiveObject", "PointColor", obj->getNameInDocument());
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Warning("%s: %s\n", obj->Label.getValue(), e.what());
+            }
+        });
+        commitCommand();
+        updateActive();
+    }
+    else {
+        _copyShape("Refined copy",true,false,true);
+    }
 }
 
 bool CmdPartRefineShape::isActive(void)

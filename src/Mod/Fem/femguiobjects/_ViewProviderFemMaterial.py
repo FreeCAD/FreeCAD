@@ -203,7 +203,9 @@ class _TaskPanelFemMaterial:
 
         # get all available materials (fill self.materials, self.cards and self.icons)
         from materialtools.cardutils import import_materials as getmats
-        self.materials, self.cards, self.icons = getmats()
+        # Note: import_materials(category="Solid", ...),
+        #           category default to Solid, but must be given for FluidMaterial to be imported
+        self.materials, self.cards, self.icons = getmats(self.obj.Category)
         # fill the material comboboxes with material cards
         self.add_cards_to_combo_box()
 

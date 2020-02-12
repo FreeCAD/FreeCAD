@@ -3623,10 +3623,10 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
-      <translation>CombiView</translation>
+      <source>Combo View</source>
+      <translation>Combo View</translation>
     </message>
     <message>
       <source>Tasks</source>

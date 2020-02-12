@@ -776,9 +776,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
 
         if(!isMainDoc)
             return 0;
-        std::stringstream str;
-        str << "The project '" << FileName << "' is already open!";
-        throw Base::FileSystemError(str.str().c_str());
+
+        return it->second;
     }
 
     std::string name;
@@ -1703,6 +1702,7 @@ void Application::initTypes(void)
     App ::PropertyXLink             ::init();
     App ::PropertyXLinkSub          ::init();
     App ::PropertyXLinkSubList      ::init();
+    App ::PropertyXLinkList         ::init();
     App ::PropertyXLinkContainer    ::init();
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();

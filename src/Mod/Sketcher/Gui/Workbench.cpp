@@ -90,6 +90,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     addSketcherWorkbenchVirtualSpace(*virtualspace);
 
     addSketcherWorkbenchSketchActions( *sketch );
+    *sketch << "Sketcher_StopOperation";
     *sketch << geom
             << cons
             << consaccel
@@ -181,7 +182,8 @@ inline void SketcherAddWorkspaceRegularPolygon<Gui::MenuItem>(Gui::MenuItem& geo
             << "Sketcher_CreatePentagon"
             << "Sketcher_CreateHexagon"
             << "Sketcher_CreateHeptagon"
-            << "Sketcher_CreateOctagon";
+            << "Sketcher_CreateOctagon"
+            << "Sketcher_CreateRegularPolygon";
 }
 template <>
 inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarItem& geom){

@@ -1348,6 +1348,8 @@ void CmdPartMakeFace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(),0,3);
+    if(sketches.empty())
+        return;
     openCommand("Make face");
 
     try {
@@ -1636,7 +1638,10 @@ CmdPartOffset::CmdPartOffset()
 void CmdPartOffset::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::DocumentObject* shape = getSelection().getObjectsOfType(Part::Feature::getClassTypeId()).front();
+    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
+    if(shapes.empty())
+        return;
+    App::DocumentObject* shape = shapes.front();
     std::string offset = getUniqueObjectName("Offset");
 
     openCommand("Make Offset");
@@ -1685,7 +1690,10 @@ CmdPartOffset2D::CmdPartOffset2D()
 void CmdPartOffset2D::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::DocumentObject* shape = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3).front();
+    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
+    if(shapes.empty())
+        return;
+    App::DocumentObject* shape = shapes.front();
     std::string offset = getUniqueObjectName("Offset2D");
 
     openCommand("Make 2D Offset");
@@ -2153,6 +2161,8 @@ void CmdColorPerFace::activated(int iMsg)
     if (getActiveGuiDocument()->getInEdit())
         getActiveGuiDocument()->resetEdit();
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
+    if(sel.empty())
+        return;
     Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sel.front());
     // FIXME: Need a way to force 'Color' edit mode
     // #0000477: Proper interface for edit modes of view provider

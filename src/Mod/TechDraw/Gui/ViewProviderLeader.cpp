@@ -69,7 +69,7 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawin
 
 ViewProviderLeader::ViewProviderLeader()
 {
-    sPixmap = "actions/techdraw-mline";
+    sPixmap = "actions/techdraw-LeaderLine";
 
     static const char *group = "Line Format";
 
