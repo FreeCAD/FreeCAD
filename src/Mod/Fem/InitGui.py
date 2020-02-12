@@ -48,6 +48,7 @@ class FemWorkbench(Workbench):
         import femcommands.commands
 
     def GetClassName(self):
+        # see https://forum.freecadweb.org/viewtopic.php?f=10&t=43300
         return "FemGui::Workbench"
 
 
