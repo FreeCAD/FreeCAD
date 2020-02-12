@@ -68,7 +68,7 @@ class DraftGuiImport(unittest.TestCase):
 
     def test_import_gui_draft_trackers(self):
         """Import Draft tracker utilities."""
-        module = "DraftTrackers"
+        module = "draftguitools.gui_trackers"
         if not App.GuiUp:
             aux._no_gui(module)
             self.assertTrue(True)
