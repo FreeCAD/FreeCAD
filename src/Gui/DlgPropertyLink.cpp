@@ -609,7 +609,7 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
     return item;
 }
 
-void DlgPropertyLink::onSelectionChanged(const SelectionChanges& msg)
+void DlgPropertyLink::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type != SelectionChanges::AddSelection)
         return;
