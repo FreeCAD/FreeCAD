@@ -1620,7 +1620,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                         {"long": shellth_obj.Name, "short": shellth_data["ShortName"]}
                     ]
                     ccx_elset = {}
-                    ccx_elset["ccx_elset"] = ccx_elset
+                    ccx_elset["ccx_elset"] = elset_data
                     ccx_elset["ccx_elset_name"] = get_ccx_elset_name_standard(names)
                     ccx_elset["mat_obj_name"] = mat_obj.Name
                     ccx_elset["ccx_mat_name"] = mat_obj.Material["Name"]
