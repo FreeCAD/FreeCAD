@@ -1,25 +1,25 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
-__title__="FreeCAD Draft Snap tools"
+__title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecadweb.org"
 
@@ -31,14 +31,18 @@ __url__ = "https://www.freecadweb.org"
 #  everything that goes with it (toolbar buttons, cursor icons, etc)
 
 
-import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils, itertools
+import FreeCAD, FreeCADGui, math, Draft, DraftVecUtils, itertools
+import draftguitools.gui_trackers as trackers
 from collections import OrderedDict
 from FreeCAD import Vector
 from pivy import coin
-from PySide import QtCore,QtGui
+from PySide import QtCore, QtGui
+
 
 class Snapper:
-    """The Snapper objects contains all the functionality used by draft
+    """Classes to manage snapping in Draft and Arch.
+
+    The Snapper objects contains all the functionality used by draft
     and arch module to manage object snapping. It is responsible for
     finding snap points and displaying snap markers. Usually You
     only need to invoke it's snap() function, all the rest is taken
@@ -972,9 +976,9 @@ class Snapper:
         "show arch dimensions between 2 points"
         if self.isEnabled("Dimensions"):
             if not self.dim1:
-                self.dim1 = DraftTrackers.archDimTracker(mode=2)
+                self.dim1 = trackers.archDimTracker(mode=2)
             if not self.dim2:
-                self.dim2 = DraftTrackers.archDimTracker(mode=3)
+                self.dim2 = trackers.archDimTracker(mode=3)
             self.dim1.p1(p1)
             self.dim2.p1(p1)
             self.dim1.p2(p2)
@@ -1090,9 +1094,9 @@ class Snapper:
         # setup trackers if needed
         if not self.constrainLine:
             if self.snapStyle:
-                self.constrainLine = DraftTrackers.lineTracker(scolor=FreeCADGui.draftToolBar.getDefaultColor("snap"))
+                self.constrainLine = trackers.lineTracker(scolor=FreeCADGui.draftToolBar.getDefaultColor("snap"))
             else:
-                self.constrainLine = DraftTrackers.lineTracker(dotted=True)
+                self.constrainLine = trackers.lineTracker(dotted=True)
 
         # setting basepoint
         if not basepoint:
@@ -1441,23 +1445,23 @@ class Snapper:
                 self.holdTracker = self.trackers[9][i]
             else:
                 if Draft.getParam("grid",True):
-                    self.grid = DraftTrackers.gridTracker()
+                    self.grid = trackers.gridTracker()
                     self.grid.on()
                 else:
                     self.grid = None
-                self.tracker = DraftTrackers.snapTracker()
-                self.trackLine = DraftTrackers.lineTracker()
+                self.tracker = trackers.snapTracker()
+                self.trackLine = trackers.lineTracker()
                 if self.snapStyle:
                     c = FreeCADGui.draftToolBar.getDefaultColor("snap")
-                    self.extLine = DraftTrackers.lineTracker(scolor=c)
-                    self.extLine2 = DraftTrackers.lineTracker(scolor = c)
+                    self.extLine = trackers.lineTracker(scolor=c)
+                    self.extLine2 = trackers.lineTracker(scolor = c)
                 else:
-                    self.extLine = DraftTrackers.lineTracker(dotted=True)
-                    self.extLine2 = DraftTrackers.lineTracker(dotted=True)
-                self.radiusTracker = DraftTrackers.radiusTracker()
-                self.dim1 = DraftTrackers.archDimTracker(mode=2)
-                self.dim2 = DraftTrackers.archDimTracker(mode=3)
-                self.holdTracker = DraftTrackers.snapTracker()
+                    self.extLine = trackers.lineTracker(dotted=True)
+                    self.extLine2 = trackers.lineTracker(dotted=True)
+                self.radiusTracker = trackers.radiusTracker()
+                self.dim1 = trackers.archDimTracker(mode=2)
+                self.dim2 = trackers.archDimTracker(mode=3)
+                self.holdTracker = trackers.snapTracker()
                 self.holdTracker.setMarker("cross")
                 self.holdTracker.clear()
                 self.trackers[0].append(v)
