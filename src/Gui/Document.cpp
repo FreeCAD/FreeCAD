@@ -462,7 +462,12 @@ void Document::_resetEdit(void)
         }
 
         d->_editViewProvider->finishEditing();
-        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
+
+        // Have to check d->_editViewProvider below, because there is a chance
+        // the editing object gets deleted inside the above call to
+        // 'finishEditing()', which will trigger our slotDeletedObject(), which
+        // nullifies _editViewProvider.
+        if (d->_editViewProvider && d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
             signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
         d->_editViewProvider = 0;
 
