@@ -63,9 +63,8 @@ def get_draft_modification_commands():
            "Draft_Trimex", "Draft_Join", "Draft_Split",
            "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
            "Draft_Edit", "Draft_SubelementHighlight",
-           "Draft_WireToBSpline", "Draft_AddPoint",
-           "Draft_DelPoint", "Draft_Shape2DView",
-           "Draft_Draft2Sketch"]
+           "Draft_WireToBSpline", "Draft_Draft2Sketch",
+           "Draft_Shape2DView"]
     lst += get_draft_array_commands()
     lst += ["Draft_Clone",
             "Draft_Drawing", "Draft_Mirror", "Draft_Stretch"]
