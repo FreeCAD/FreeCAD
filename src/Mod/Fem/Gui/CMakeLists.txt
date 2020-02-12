@@ -418,8 +418,8 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshGroup.ui
     Resources/ui/MeshGroupXDMFExport.ui
     Resources/ui/MeshRegion.ui
+    Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui
-    Resources/ui/ResultShowHints.ui
     Resources/ui/SolverCalculix.ui
 )
 
