@@ -259,7 +259,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     auto start = std::chrono::high_resolution_clock::now();
 
     m_saveShape = shape;
-    buildGeometry(shape);
+    partExec(shape);
 
     //second pass if required
     if (ScaleType.isValue("Automatic")) {
@@ -270,7 +270,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
             if (geometryObject != nullptr) {
                 delete geometryObject;
                 geometryObject = nullptr;
-                buildGeometry(shape);
+                partExec(shape);
             }
         }
     }
@@ -319,9 +319,9 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
 }
 
-void DrawViewPart::buildGeometry(TopoDS_Shape shape)
+void DrawViewPart::partExec(TopoDS_Shape shape)
 {
-//    Base::Console().Message("DVP::buildGeometry()\n");
+//    Base::Console().Message("DVP::partExec()\n");
     geometryObject = makeGeometryForShape(shape);
 
 #if MOD_TECHDRAW_HANDLE_FACES
@@ -331,7 +331,7 @@ void DrawViewPart::buildGeometry(TopoDS_Shape shape)
             extractFaces();
         }
         catch (Standard_Failure& e4) {
-            Base::Console().Log("LOG - DVP::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
+            Base::Console().Log("LOG - DVP::partExec - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
         }
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
