@@ -69,7 +69,9 @@ public:
         return "TechDrawGui::ViewProviderViewPart";
     }
 
-public:
+    void detailExec(TopoDS_Shape s, 
+                    DrawViewPart* baseView,
+                    DrawViewSection* sectionAlias);
     double getFudgeRadius(void);
 
 protected:

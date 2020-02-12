@@ -201,7 +201,7 @@ protected:
 
     virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis); //const??
     virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape shape);   //const??
-    void buildGeometry(TopoDS_Shape shape);
+    void partExec(TopoDS_Shape shape);
 
     void extractFaces();
 

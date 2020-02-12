@@ -319,6 +319,29 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         //unblock
     }
 
+    sectionExec(baseShape);
+
+    //second pass if required
+    if (ScaleType.isValue("Automatic")) {
+        if (!checkFit()) {
+            double newScale = autoScale();
+            Scale.setValue(newScale);
+            Scale.purgeTouched();
+            if (geometryObject != nullptr) {
+                delete geometryObject;
+                geometryObject = nullptr;
+                sectionExec(baseShape);
+            }
+        }
+    }
+
+
+    dvp->requestPaint();  //to refresh section line
+    return DrawView::execute();
+}
+
+void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
+{
     //is SectionOrigin valid?
     Bnd_Box centerBox;
     BRepBndLib::Add(baseShape, centerBox);
@@ -337,7 +360,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     BRepBuilderAPI_MakeFace mkFace(pln, -dMax,dMax,-dMax,dMax);
     TopoDS_Face aProjFace = mkFace.Face();
     if(aProjFace.IsNull()) {
-        return new App::DocumentObjectExecReturn("DrawViewSection - Projected face is NULL");
+        Base::Console().Warning("DVS: Section face is NULL in %s\n",getNameInDocument());
+        return;
     }
     gp_Vec extrudeDir = dMax * gp_Vec(gpNormal);
     TopoDS_Shape prism = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
@@ -348,7 +372,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
 
     BRepAlgoAPI_Cut mkCut(myShape, prism);
     if (!mkCut.IsDone()) {
-        return new App::DocumentObjectExecReturn("Section cut has failed");
+        Base::Console().Warning("DVS: Section cut has failed in %s\n",getNameInDocument());
+        return;
     }
 
     TopoDS_Shape rawShape = mkCut.Shape();
@@ -364,7 +389,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {           //prism & input don't intersect.  rawShape is garbage, don't bother.
         Base::Console().Warning("DVS::execute - prism & input don't intersect - %s\n", Label.getValue());
-        return DrawView::execute();
+        return;
     }
 
     gp_Ax2 viewAxis;
@@ -400,7 +425,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     catch (Standard_Failure& e1) {
         Base::Console().Warning("DVS::execute - failed to build base shape %s - %s **\n",
                                 getNameInDocument(),e1.GetMessageString());
-        return DrawView::execute();
+        return;
     }
 
     try {
@@ -462,15 +487,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     catch (Standard_Failure& e2) {
         Base::Console().Warning("DVS::execute - failed to build section faces for %s - %s **\n",
                                 getNameInDocument(),e2.GetMessageString());
-        return DrawView::execute();
+        return;
     }
 
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addCenterLinesToGeom();
-
-    dvp->requestPaint();  //to refresh section line
-    return DrawView::execute();
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const
