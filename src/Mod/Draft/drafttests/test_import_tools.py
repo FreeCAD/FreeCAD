@@ -68,7 +68,7 @@ class DraftImportTools(unittest.TestCase):
 
     def test_import_gui_draftplane(self):
         """Import Draft SelectPlane."""
-        module = "DraftSelectPlane"
+        module = "draftguitools.gui_selectplane"
         if not App.GuiUp:
             aux._no_gui(module)
             self.assertTrue(True)
