@@ -19,34 +19,40 @@
 ##
 env:
   global:
-    - FREECAD_RELEASE="0.18"
-    - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
-    - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
-    - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
-    - DEPLOY=${DEPLOY:-0}
     - GENERATOR="Unix Makefiles"
-  jobs:
-    # chunk.io key (if needed, obtain it with Yorik, PrzemoF, Kunda1)
-    secure: MJu0ZU/9Yqut6bUkHoSrXTV/c/WhCLR0KnHKCsnEU081PYoukzH6ngzgKk7/trAH2In080d/ra4B2OmTNl/LAgV6DXKFY9dO1aG8QwcrHgaMPf0pHYUy/OfwQSFYFByQDV2OEMAHcIWc/dtNkzK2QUi44Kn7d0GtSEiN4s816lriWtjg0vmEGAU8MjvcAGss4gKyn05Xm1NUCYPKgpgIHsywLbpE76lv0eOYoosEuKv5Q9Pb4FMQts02+JUlqE8eY4ZZ3nV8iQbgIDdseOSA7Ixn05zWjU/ZRZ74TrYxMnzfUAwQcJe9OcqoESq+pPWQt5HYG66VmeVxQim1gmsiDASH51U/nswKt0Q4bISj3tVk0YZMFV8Ax+SzPvLEmFZJQGfgO1mg7HdNcz9N9G5JHPawrV19DwYIEFbAw8MCSAoIXFOcPQZUWXCbtjm7NO9vCjMrqyVJMDD9L8omvQajHoajuHbOT8KB250gFokeLj3z8yu++Tz+IrZX5inUMrXsARVt/ALXpi8rJPXmoFMpMUjyWmDPqPWlnqUhLtTtEtKpuOWP8ZnWVwkg4QYOUhCy95C1okJSGkG+ylHWncWfY4mS+UBT525laoh+GOhH+sRW+p2xkI21xGFRqg1oHjjgY1yIYF6nnSHPzxMBRYmZwagyXsjkFG5FPMWR2oYk0Yg
-cache:
-    ccache: true
-    directories:
-      - $HOME/.ccache
+    - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
+#    - FREECAD_RELEASE="0.18"
+#    - DEPLOY_RELEASE=${DEPLOY_RELEASE:-$FREECAD_RELEASE}
+#    - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
+#    - DEPLOY=${DEPLOY:-0}
 
-language: cpp
-python:
-    - 2.7
-    - 3.6
+# jobs:
+    # chunk.io key (if needed, obtain it with Yorik, PrzemoF, Kunda1)
+    # secure: MJu0ZU/9Yqut6bUkHoSrXTV/c/WhCLR0KnHKCsnEU081PYoukzH6ngzgKk7/trAH2In080d/ra4B2OmTNl/LAgV6DXKFY9dO1aG8QwcrHgaMPf0pHYUy/OfwQSFYFByQDV2OEMAHcIWc/dtNkzK2QUi44Kn7d0GtSEiN4s816lriWtjg0vmEGAU8MjvcAGss4gKyn05Xm1NUCYPKgpgIHsywLbpE76lv0eOYoosEuKv5Q9Pb4FMQts02+JUlqE8eY4ZZ3nV8iQbgIDdseOSA7Ixn05zWjU/ZRZ74TrYxMnzfUAwQcJe9OcqoESq+pPWQt5HYG66VmeVxQim1gmsiDASH51U/nswKt0Q4bISj3tVk0YZMFV8Ax+SzPvLEmFZJQGfgO1mg7HdNcz9N9G5JHPawrV19DwYIEFbAw8MCSAoIXFOcPQZUWXCbtjm7NO9vCjMrqyVJMDD9L8omvQajHoajuHbOT8KB250gFokeLj3z8yu++Tz+IrZX5inUMrXsARVt/ALXpi8rJPXmoFMpMUjyWmDPqPWlnqUhLtTtEtKpuOWP8ZnWVwkg4QYOUhCy95C1okJSGkG+ylHWncWfY4mS+UBT525laoh+GOhH+sRW+p2xkI21xGFRqg1oHjjgY1yIYF6nnSHPzxMBRYmZwagyXsjkFG5FPMWR2oYk0Yg
+
+git:
+  depth: 5000
+
+notifications:
+  email: false
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/479456663cdf5c84e4d8
+    on_success: always
+    on_failure: always
+    on_start:   change
 
 # Inject osx build into matrix - needed to specify image/dist
 jobs:
- #   allow_failures:
- #     - python: 3.7
+#    allow_failures:
+#      - python: 3.7
     fast_finish: true  # https://blog.travis-ci.com/2013-11-27-fast-finishing-builds
     include:
       - os: linux
         dist: bionic
+        language: cpp
         compiler: clang
+        cache: ccache
         addons:
           apt:
             sources:
@@ -58,41 +64,41 @@ jobs:
         env:
           - CC=clang-9
           - CXX=clang++-9
-          - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
-          - PYTHON_MAJOR_VERSION=3
+          - CMAKE_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
           - CACHE_NAME=JOB1
 
-      # - os: linux
-      #   dist: bionic
-      #   compiler: gcc
-      #   addons:
-      #     apt:
-      #       sources:
-      #         - sourceline: 'ppa:ubuntu-toolchain-r/test'
-      #       packages:
-      #         - gcc-9
-      #         - g++-9
-      #   env:
-      #     - CC=gcc-9
-      #     - CXX=g++-9
-      #     - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
-      #     - PYTHON_MAJOR_VERSION=3
-      #     - CACHE_NAME=JOB2
-
       - os: linux
         dist: bionic
-        compiler: gcc
+        language: cpp
+        compiler: gcc-9
+        cache: ccache
+        addons:
+          apt:
+            sources:
+              - sourceline: 'ppa:ubuntu-toolchain-r/test'
+            packages:
+              - gcc-9
+              - g++-9
         env:
-          - CMAKE_OPTS="-DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
-          - PYTHON_MAJOR_VERSION=3
-          - CACHE_NAME=JOB3
+          - CC=gcc-9
+          - CXX=g++-9
+          - CC_FOR_BUILD=gcc-9
+          - CXX_FOR_BUILD=g++-9
+          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc -DPYTHON_EXECUTABLE=/usr/bin/python3 -DBUILD_FEM_NETGEN=ON -DBUILD_QT5=ON"
+          - CACHE_NAME=JOB2
 
       - os: linux
         dist: bionic
-        compiler: gcc
-        env:      
-          - PYTHON_MAJOR_VERSION=2
-          - CACHE_NAME=JOB4
+        language: cpp
+        compiler: gcc-7
+        cache: ccache
+        env:
+          - CC=gcc-7
+          - CXX=g++-7
+          - CC_FOR_BUILD=gcc-7
+          - CXX_FOR_BUILD=g++-7
+          - CMAKE_ARGS="-DCMAKE_CXX_COMPILER=/usr/bin/c++ -DCMAKE_C_COMPILER=/usr/bin/cc"
+          - CACHE_NAME=JOB3
 
       - os: windows
         language: cpp
@@ -122,20 +128,9 @@ jobs:
 #        # fail the build if there are Python syntax errors or undefined names
 #        script: flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics
 
-git:
-  depth: 5000
-
-notifications:
-  email: false
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/479456663cdf5c84e4d8
-    on_success: always
-    on_failure: always
-    on_start:   change
 
 before_install:
-- eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
+# - eval "$(curl -fsSL "https://raw.githubusercontent.com/${OSX_PORTS_CACHE}/v${FREECAD_RELEASE}/travis-helpers.sh")"
 - |
   case "${TRAVIS_OS_NAME}" in
 
@@ -196,52 +191,45 @@ before_install:
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 
-       export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
-       export CCACHE_CPP2=YES
-       if [[ ${PYTHON_MAJOR_VERSION} == 2 ]]
-       then
-        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python"
-       else
-        export CMAKE_ARGS="${CMAKE_OPTS} -DPYTHON_EXECUTABLE=/usr/bin/python3"
-       fi
        export INSTALLED_APP_PATH="/usr/local/bin/FreeCAD"
+       export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/netgen/:$LD_LIRBARY_PATH
        ;;
 
    "osx")
-       xcodebuild -version -sdk
-       brew --config
-       if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
-            brew install jq
-            cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
-            travis_wait prime_local_ports_cache $cacheContext
-       fi
-       brew update >/dev/null
-       brew --config
+       #xcodebuild -version -sdk
+       #brew --config
+       #if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
+       #     brew install jq
+       #     cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
+       #     travis_wait prime_local_ports_cache $cacheContext
+       #fi
+       #brew update >/dev/null
+       #brew --config
 
-       brew tap FreeCAD/freecad
+       #brew tap FreeCAD/freecad
 
-       brew install --verbose --only-dependencies freecad --with-packaging-utils
-       pip install six
-       # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
-       QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
-       QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
-       CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX};${QT5_WEBKIT_CMAKE_PREFIX}"
+       #brew install --verbose --only-dependencies freecad --with-packaging-utils
+       #pip install six
+       ## Qt5:  Set Qt5 build flag and CMAKE_PREFIX
+       #QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
+       #QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
+       #CMAKE_OPTS="${CMAKE_OPTS} -DBUILD_QT5=ON -DCMAKE_PREFIX_PATH=${QT5_CMAKE_PREFIX};${QT5_WEBKIT_CMAKE_PREFIX}"
 
-       #Install the 3DConnexion frameworks
-       if [ "${DEPLOY}" == "1" ]; then
-          if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
-             curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
-             hdiutil attach -readonly /tmp/3dFW.dmg
-             sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
-             diskutil eject /Volumes/3Dconnexion\ Software
-          fi
-          export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=ON"
-          export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
-       else
-          export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
-       fi
+       ##Install the 3DConnexion frameworks
+       #if [ "${DEPLOY}" == "1" ]; then
+       #   if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
+       #      curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
+       #      hdiutil attach -readonly /tmp/3dFW.dmg
+       #      sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
+       #      diskutil eject /Volumes/3Dconnexion\ Software
+       #   fi
+       #   export CMAKE_OPTS="${CMAKE_OPTS} -DFREECAD_CREATE_MAC_APP=ON"
+       #   export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/MacOS/FreeCAD"
+       #else
+       #   export INSTALLED_APP_PATH="/usr/local/MacOS/FreeCAD"
+       #fi
 
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
+       #export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON"
        ;;
 
    "windows")
@@ -305,9 +293,12 @@ script:
     else
         # Stop compiling (GCC) after 2 hrs 50 min (3 hrs limit).
         # Preserves created ccache for the next build job.
-        if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
-        if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo make -j2 install; fi
-        # sudo make -j2 install
+        # if [ "${TRAVIS_OS_NAME}" == "linux" ]; then sudo timeout -k 175m 170m make -j2 install || true; fi
+        # if [ "${TRAVIS_OS_NAME}" == "osx" ]; then sudo make -j2 install; fi
+        cat $HOME/.ccache/ccache.conf
+        ccache -z -s
+        sudo make -j2 install
+        ccache -s
         ${INSTALLED_APP_PATH} --console --run-test 0 || travis_terminate 1
         ${INSTALLED_APP_PATH} --log-file /tmp/FreeCAD_installed.log &
         sleep 10 && pkill FreeCAD
@@ -315,21 +306,21 @@ script:
         grep --file=../.log_errors /tmp/FreeCAD_installed.log ; [ $? == 1 ] && echo "No errors from .log_errors file found in the log after start from /usr/local/bin" || ( echo "Error from .log_errors found!" && false )
     fi
 
-after_success:
-####
+#after_success:
 #  Package and deploy the build to GitHub.  This will only run for builds on
 #  master (i.e. pull requests are only built and tested but not deployed).
 #
 #  GH_TOKEN must be set in order to deploy releases to GitHub
-##
-- |
-  if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" -a "${DEPLOY}" == "1" ]; then
-     brew ls --versions jq || brew install jq
-     npm install -g appdmg
-     export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
-     export DEPLOYMENT_ARCHIVE=${VSN}-${QT}.dmg
-     appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
-     deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
-     gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
-     gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
-  fi
+#
+#- |
+#  if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" -a "${DEPLOY}" == "1" ]; then
+#     brew ls --versions jq || brew install jq
+#     npm install -g appdmg
+#     export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
+#     export DEPLOYMENT_ARCHIVE=${VSN}-${QT}.dmg
+#     appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
+#     deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
+#     gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
+#     gitHub_prune_assets_for_release_named $deployContext "-${QT}" 1
+#  fi
+
