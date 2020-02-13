@@ -38,7 +38,7 @@ class DraftImportTools(unittest.TestCase):
 
     def test_import_gui_draftedit(self):
         """Import Draft Edit."""
-        module = "DraftEdit"
+        module = "draftguitools.gui_edit"
         if not App.GuiUp:
             aux._no_gui(module)
             self.assertTrue(True)
