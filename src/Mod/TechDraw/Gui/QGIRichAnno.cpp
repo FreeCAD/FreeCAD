@@ -41,6 +41,8 @@
 #include <QTextDocumentFragment>
 #include <QTextFrame>
 #include <QTextBlock>
+#include <QTextCursor>
+
 
 # include <math.h>
 #endif
