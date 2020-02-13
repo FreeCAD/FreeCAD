@@ -672,7 +672,7 @@ class _Structure(ArchComponent.Component):
                 extv = pla[0].Rotation.multVec(evi)
                 if obj.Tool:
                     try:
-                        shi = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
+                        shi = obj.Tool.Shape.copy().makePipe(shi)
                     except Part.OCCError:
                         FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
                         return
