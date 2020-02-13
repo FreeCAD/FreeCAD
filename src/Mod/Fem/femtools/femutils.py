@@ -462,12 +462,12 @@ def get_refshape_type(fem_doc_object):
         first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
         FreeCAD.Console.PrintMessage(
-            fem_doc_object.Name + " has " + st + " reference shapes.\n"
+            "References: {} in {}, {}\n". format(st, fem_doc_object.Name, fem_doc_object.Label)
         )
         return st
     else:
         FreeCAD.Console.PrintMessage(
-            fem_doc_object.Name + " has empty References.\n"
+            "References: empty in {}, {}\n". format(fem_doc_object.Name, fem_doc_object.Label)
         )
         return ""
 

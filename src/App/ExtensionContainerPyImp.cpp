@@ -207,7 +207,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         str << "No extension found of type '" << typeId << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
-
+    
     //register the extension
     App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
     //check if this really is a python extension!
@@ -217,7 +217,8 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         str << "Extension is not a python addable version: '" << typeId << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
-
+    
+    GetApplication().signalBeforeAddingDynamicExtension(*getExtensionContainerPtr(), typeId);
     ext->initExtension(getExtensionContainerPtr());
 
     //set the proxy to allow python overrides
@@ -260,6 +261,9 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     }
 
     Py_DECREF(obj);
+    
+    //throw the appropriate event
+    GetApplication().signalAddedDynamicExtension(*getExtensionContainerPtr(), typeId);
 
     Py_Return;
 }

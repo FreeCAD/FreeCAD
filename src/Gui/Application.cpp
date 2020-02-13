@@ -518,18 +518,34 @@ void Application::open(const char* FileName, const char* Module)
 
     if (Module != 0) {
         try {
-            // issue module loading
-            Command::doCommand(Command::App, "import %s", Module);
+            if(File.hasExtension("FCStd")) {
+                bool handled = false;
+                std::string filepath = File.filePath();
+                for(auto &v : d->documents) {
+                    auto doc = v.second->getDocument();
+                    std::string fi = Base::FileInfo(doc->FileName.getValue()).filePath();
+                    if(filepath == fi) {
+                        handled = true;
+                        Command::doCommand(Command::App, "FreeCADGui.reload('%s')", doc->getName());
+                        break;
+                    }
+                }
+                if(!handled)
+                    Command::doCommand(Command::App, "FreeCAD.openDocument('%s')", FileName);
+            } else {
+                // issue module loading
+                Command::doCommand(Command::App, "import %s", Module);
 
-            // load the file with the module
-            Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+                // load the file with the module
+                Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
 
-            // ViewFit
-            if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-                    ("User parameter:BaseApp/Preferences/View");
-                if (hGrp->GetBool("AutoFitToView", true))
-                    Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+                // ViewFit
+                if (sendHasMsgToActiveView("ViewFit")) {
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+                        ("User parameter:BaseApp/Preferences/View");
+                    if (hGrp->GetBool("AutoFitToView", true))
+                        Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+                }
             }
 
             // the original file name is required
@@ -955,6 +971,8 @@ Gui::MDIView* Application::editViewOfNode(SoNode *node) const
 }
 
 void Application::setEditDocument(Gui::Document *doc) {
+    if(doc == d->editDocument)
+        return;
     if(!doc) 
         d->editDocument = 0;
     for(auto &v : d->documents)
@@ -1879,12 +1897,22 @@ void Application::runApplication(void)
         Base::Console().Log("No OpenGL is present or no OpenGL context is current\n");
 #endif
 
+    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps/Theme");
 #if !defined(Q_OS_LINUX)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+#else
+    // Option to opt-out from using a Linux desktop icon theme.
+    // https://forum.freecadweb.org/viewtopic.php?f=4&t=35624
+    bool themePaths = hTheme->GetBool("ThemeSearchPaths",true);
+    if (!themePaths) {
+        QStringList searchPaths;
+        searchPaths.prepend(QString::fromUtf8(":/icons"));
+        QIcon::setThemeSearchPaths(searchPaths);
+        QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+    }
 #endif
 
-    ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Bitmaps/Theme");
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
         QStringList searchPaths = QIcon::themeSearchPaths();
@@ -2266,6 +2294,17 @@ App::Document *Application::reopen(App::Document *doc) {
                     || d->testStatus(App::Document::PartialRestore) )
                 docs.push_back(d->FileName.getValue());
         }
+
+        if(docs.empty()) {
+            Document *gdoc = getDocument(doc);
+            if(gdoc) {
+                setActiveDocument(gdoc);
+                if(!gdoc->setActiveView())
+                    gdoc->setActiveView(0,View3DInventor::getClassTypeId());
+            }
+            return doc;
+        }
+
         for(auto &file : docs)
             App::GetApplication().openDocument(file.c_str(),false);
     }

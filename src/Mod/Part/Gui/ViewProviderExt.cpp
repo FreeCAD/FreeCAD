@@ -240,6 +240,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     float r,g,b;
     r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
     int lwidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
+    int psize = Gui::ViewParams::instance()->getDefaultShapePointSize();
 
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Part");
@@ -268,7 +269,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(LineWidth,(lwidth));
     LineWidth.setConstraints(&sizeRange);
     PointSize.setConstraints(&sizeRange);
-    ADD_PROPERTY(PointSize,(lwidth));
+    ADD_PROPERTY(PointSize,(psize));
     ADD_PROPERTY(Deviation,(0.5f));
     Deviation.setConstraints(&tessRange);
     ADD_PROPERTY(AngularDeflection,(28.65));

@@ -36,6 +36,10 @@ public:
         setDocumentObject(obj);
     }
 
+    void setNoProperty(bool enabled) {
+        noProperty = enabled;
+    }
+
     void setDocumentObject(const App::DocumentObject *obj) {
         beginResetModel();
         if(obj) {
@@ -337,6 +341,13 @@ void ExpressionCompleter::setDocumentObject(const App::DocumentObject *obj) {
         static_cast<ExpressionCompleterModel*>(m)->setDocumentObject(obj);
 }
 
+void ExpressionCompleter::setNoProperty(bool enabled) {
+    noProperty = enabled;
+    auto m = model();
+    if(m)
+        static_cast<ExpressionCompleterModel*>(m)->setNoProperty(enabled);
+}
+
 QString ExpressionCompleter::pathFromIndex ( const QModelIndex & index ) const
 {
     auto m = model();
@@ -543,6 +554,12 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
         connect(this, SIGNAL(textChanged2(QString,int)), completer, SLOT(slotUpdate(QString,int)));
     }
+}
+
+void ExpressionLineEdit::setNoProperty(bool enabled) {
+    noProperty = enabled;
+    if(completer)
+        completer->setNoProperty(enabled);
 }
 
 bool ExpressionLineEdit::completerActive() const

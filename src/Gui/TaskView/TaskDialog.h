@@ -67,6 +67,14 @@ public:
     virtual void modifyStandardButtons(QDialogButtonBox*)
     {}
 
+    /// Defines whether a task dialog can be rejected by pressing Esc
+    void setEscapeButtonEnabled(bool on) {
+        escapeButton = on;
+    }
+    bool isEscapeButtonEnabled() const {
+        return escapeButton;
+    }
+
     const std::string& getDocumentName() const
     { return documentName; }
     void setDocumentName(const std::string& doc)
@@ -118,6 +126,7 @@ protected:
 
 private:
     std::string documentName;
+    bool escapeButton;
 };
 
 } //namespace TaskView

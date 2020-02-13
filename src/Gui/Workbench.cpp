@@ -41,7 +41,7 @@
 #include "Window.h"
 #include "Selection.h"
 #include "MainWindow.h"
-#include <Gui/CombiView.h>
+#include <Gui/ComboView.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskWatcher.h>
 
@@ -495,7 +495,8 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection" 
-                  << "Std_RandomColor" << "Separator" << "Std_Delete";
+                  << "Std_RandomColor" << "Separator" << "Std_Delete"
+                  << "Std_SendToPythonConsole";
         }
     }
     else if (strcmp(recipient,"Tree") == 0)
@@ -504,7 +505,8 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator" 
                   << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
-                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" << "Separator";
+                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete" 
+                  << "Std_SendToPythonConsole" << "Separator";
         }
     }
 }
@@ -534,7 +536,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     edit->setCommand("&Edit");
     *edit << "Std_Undo" << "Std_Redo" << "Separator" << "Std_Cut" << "Std_Copy"
           << "Std_Paste" << "Std_DuplicateSelection" << "Separator"
-          << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" << "Std_SelectAll" << "Std_Delete"
+          << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection" 
+          << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
           << "Separator" << "Std_Placement" /*<< "Std_TransformManip"*/ << "Std_Alignment"
           << "Std_Edit" << "Separator" << "Std_DlgPreferences";
 
@@ -701,7 +704,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, true, false);
     root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, true, false);
     root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, false, false);
-    root->addDockWidget("Std_CombiView", Qt::LeftDockWidgetArea, false, false);
+    root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, true);
     root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, true, true);
     

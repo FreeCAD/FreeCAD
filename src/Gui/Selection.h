@@ -38,7 +38,7 @@
 #include <Base/Type.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-
+#include <App/DocumentObserver.h>
 #include <Gui/SelectionObject.h>
 
 namespace App
@@ -85,13 +85,11 @@ public:
             float x=0, float y=0, float z=0, int subtype=0)
         : Type(type),SubType(subtype)
         , x(x),y(y),z(z)
+        , Object(docName,objName,subName)
     {
-        if(docName) DocName=docName;
-        pDocName = DocName.c_str();
-        if(objName) ObjName = objName;
-        pObjectName = ObjName.c_str();
-        if(subName) SubName = subName;
-        pSubName = SubName.c_str();
+        pDocName = Object.getDocumentName().c_str();
+        pObjectName = Object.getObjectName().c_str();
+        pSubName = Object.getSubName().c_str();
         if(typeName) TypeName = typeName;
         pTypeName = TypeName.c_str();
     }
@@ -104,14 +102,12 @@ public:
                      float x=0,float y=0,float z=0, int subtype=0)
         : Type(type), SubType(subtype)
         , x(x),y(y),z(z)
-        , DocName(docName)
-        , ObjName(objName)
-        , SubName(subName)
+        , Object(docName.c_str(), objName.c_str(), subName.c_str())
         , TypeName(typeName)
     {
-        pDocName = DocName.c_str();
-        pObjectName = ObjName.c_str();
-        pSubName = SubName.c_str();
+        pDocName = Object.getDocumentName().c_str();
+        pObjectName = Object.getObjectName().c_str();
+        pSubName = Object.getSubName().c_str();
         pTypeName = TypeName.c_str();
     }
 
@@ -125,17 +121,13 @@ public:
         x = other.x;
         y = other.y;
         z = other.z;
-        DocName = other.DocName;
-        ObjName = other.ObjName;
-        SubName = other.SubName;
+        Object = other.Object;
         TypeName = other.TypeName;
-        pDocName = DocName.c_str();
-        pObjectName = ObjName.c_str();
-        pSubName = SubName.c_str();
+        pDocName = Object.getDocumentName().c_str();
+        pObjectName = Object.getObjectName().c_str();
+        pSubName = Object.getSubName().c_str();
         pTypeName = TypeName.c_str();
         pOriginalMsg = other.pOriginalMsg;
-        pSubObject = other.pSubObject;
-        pParentObject = other.pParentObject;
         return *this;
     }
 
@@ -149,17 +141,13 @@ public:
         x = other.x;
         y = other.y;
         z = other.z;
-        DocName = std::move(other.DocName);
-        ObjName = std::move(other.ObjName);
-        SubName = std::move(other.SubName);
+        Object = std::move(other.Object);
         TypeName = std::move(other.TypeName);
-        pDocName = DocName.c_str();
-        pObjectName = ObjName.c_str();
-        pSubName = SubName.c_str();
+        pDocName = Object.getDocumentName().c_str();
+        pObjectName = Object.getObjectName().c_str();
+        pSubName = Object.getSubName().c_str();
         pTypeName = TypeName.c_str();
         pOriginalMsg = other.pOriginalMsg;
-        pSubObject = other.pSubObject;
-        pParentObject = other.pParentObject;
         return *this;
     }
 
@@ -174,18 +162,8 @@ public:
     float y;
     float z;
 
-    // For more robust selection notification (e.g. in case user make selection
-    // change inside selection notification handler), the notification message
-    // shall make a copy of all the strings here.
-    std::string DocName;
-    std::string ObjName;
-    std::string SubName;
+    App::SubObjectT Object;
     std::string TypeName;
-
-    // Resolved sub object in case resolve!=0, otherwise this is null
-    App::DocumentObject *pSubObject = 0;
-    // Resolved parent object in case resolve!=0, otherwise this is null
-    App::DocumentObject *pParentObject = 0;
 
     // Original selection message in case resolve!=0
     const SelectionChanges *pOriginalMsg = 0;

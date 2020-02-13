@@ -493,7 +493,10 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegment*>& segm)
 
         iCur = std::find_if(iBeg, iEnd, std::bind2nd(MeshCore::MeshIsNotFlag<MeshCore::MeshFacet>(),
             MeshCore::MeshFacet::VISIT));
-        startFacet = iCur - iBeg;
+        if (iCur < iEnd)
+            startFacet = iCur - iBeg;
+        else
+            startFacet = ULONG_MAX;
         while (startFacet != ULONG_MAX) {
             // collect all facets of the same geometry
             std::vector<unsigned long> indices;

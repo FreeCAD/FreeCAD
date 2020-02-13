@@ -128,9 +128,11 @@ class _TaskPanelFemResultShow:
         # in view provider checks: Mesh, active analysis and
         # if Mesh and result are in active analysis
 
-        self.form = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ResultShow.ui"
-        )
+        ui_path = FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/"
+        self.result_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultShow.ui")
+        self.info_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultHints.ui")
+        self.form = [self.result_widget, self.info_widget]
+
         self.fem_prefs = FreeCAD.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General"
         )
@@ -142,100 +144,97 @@ class _TaskPanelFemResultShow:
         # result type radio buttons
         # TODO: move to combo box, to be independent from result types and result types count
         QtCore.QObject.connect(
-            self.form.rb_none, QtCore.SIGNAL("toggled(bool)"),
+            self.result_widget.rb_none, QtCore.SIGNAL("toggled(bool)"),
             self.none_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_abs_displacement,
+            self.result_widget.rb_abs_displacement,
             QtCore.SIGNAL("toggled(bool)"),
             self.abs_displacement_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_x_displacement,
+            self.result_widget.rb_x_displacement,
             QtCore.SIGNAL("toggled(bool)"),
             self.x_displacement_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_y_displacement,
+            self.result_widget.rb_y_displacement,
             QtCore.SIGNAL("toggled(bool)"),
             self.y_displacement_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_z_displacement,
+            self.result_widget.rb_z_displacement,
             QtCore.SIGNAL("toggled(bool)"),
             self.z_displacement_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_temperature,
+            self.result_widget.rb_temperature,
             QtCore.SIGNAL("toggled(bool)"),
             self.temperature_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_vm_stress,
+            self.result_widget.rb_vm_stress,
             QtCore.SIGNAL("toggled(bool)"),
             self.vm_stress_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_maxprin,
+            self.result_widget.rb_maxprin,
             QtCore.SIGNAL("toggled(bool)"),
             self.max_prin_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_minprin,
+            self.result_widget.rb_minprin,
             QtCore.SIGNAL("toggled(bool)"),
             self.min_prin_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_max_shear_stress,
+            self.result_widget.rb_max_shear_stress,
             QtCore.SIGNAL("toggled(bool)"),
             self.max_shear_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_massflowrate,
+            self.result_widget.rb_massflowrate,
             QtCore.SIGNAL("toggled(bool)"),
             self.massflowrate_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_networkpressure,
+            self.result_widget.rb_networkpressure,
             QtCore.SIGNAL("toggled(bool)"),
             self.networkpressure_selected
         )
         QtCore.QObject.connect(
-            self.form.rb_peeq,
+            self.result_widget.rb_peeq,
             QtCore.SIGNAL("toggled(bool)"),
             self.peeq_selected
         )
 
         # displacement
         QtCore.QObject.connect(
-            self.form.cb_show_displacement,
+            self.result_widget.cb_show_displacement,
             QtCore.SIGNAL("clicked(bool)"),
             self.show_displacement
         )
         QtCore.QObject.connect(
-            self.form.hsb_displacement_factor,
+            self.result_widget.hsb_displacement_factor,
             QtCore.SIGNAL("valueChanged(int)"),
             self.hsb_disp_factor_changed
         )
-        QtCore.QObject.connect(
-            self.form.sb_displacement_factor,
-            QtCore.SIGNAL("valueChanged(int)"),
+
+        self.result_widget.sb_displacement_factor.valueChanged.connect(
             self.sb_disp_factor_changed
         )
-        QtCore.QObject.connect(
-            self.form.sb_displacement_factor_max,
-            QtCore.SIGNAL("valueChanged(int)"),
+        self.result_widget.sb_displacement_factor_max.valueChanged.connect(
             self.sb_disp_factor_max_changed
         )
 
         # user defined equation
         QtCore.QObject.connect(
-            self.form.user_def_eq,
+            self.result_widget.user_def_eq,
             QtCore.SIGNAL("textchanged()"),
             self.user_defined_text
         )
         QtCore.QObject.connect(
-            self.form.calculate,
+            self.result_widget.calculate,
             QtCore.SIGNAL("clicked()"),
             self.calculate
         )
@@ -247,65 +246,62 @@ class _TaskPanelFemResultShow:
             self.restore_initial_result_dialog()
             # initialize scale factor for show displacement
             scale_factor = get_displacement_scale_factor(self.result_obj)
-            self.form.sb_displacement_factor.setValue(scale_factor)
-            self.form.hsb_displacement_factor.setValue(scale_factor)
-            diggits_scale_factor = len(str(abs(int(scale_factor))))
-            new_max_factor = 10 ** diggits_scale_factor
-            self.form.sb_displacement_factor_max.setValue(new_max_factor)
+            self.result_widget.sb_displacement_factor_max.setValue(10. * scale_factor)
+            self.result_widget.sb_displacement_factor.setValue(scale_factor)
 
     def restore_result_dialog(self):
         try:
             rt = FreeCAD.FEM_dialog["results_type"]
             if rt == "None":
-                self.form.rb_none.setChecked(True)
+                self.result_widget.rb_none.setChecked(True)
                 self.none_selected(True)
             elif rt == "Uabs":
-                self.form.rb_abs_displacement.setChecked(True)
+                self.result_widget.rb_abs_displacement.setChecked(True)
                 self.abs_displacement_selected(True)
             elif rt == "U1":
-                self.form.rb_x_displacement.setChecked(True)
+                self.result_widget.rb_x_displacement.setChecked(True)
                 self.x_displacement_selected(True)
             elif rt == "U2":
-                self.form.rb_y_displacement.setChecked(True)
+                self.result_widget.rb_y_displacement.setChecked(True)
                 self.y_displacement_selected(True)
             elif rt == "U3":
-                self.form.rb_z_displacement.setChecked(True)
+                self.result_widget.rb_z_displacement.setChecked(True)
                 self.z_displacement_selected(True)
             elif rt == "Temp":
-                self.form.rb_temperature.setChecked(True)
+                self.result_widget.rb_temperature.setChecked(True)
                 self.temperature_selected(True)
             elif rt == "Sabs":
-                self.form.rb_vm_stress.setChecked(True)
+                self.result_widget.rb_vm_stress.setChecked(True)
                 self.vm_stress_selected(True)
             elif rt == "MaxPrin":
-                self.form.rb_maxprin.setChecked(True)
+                self.result_widget.rb_maxprin.setChecked(True)
                 self.max_prin_selected(True)
             elif rt == "MinPrin":
-                self.form.rb_minprin.setChecked(True)
+                self.result_widget.rb_minprin.setChecked(True)
                 self.min_prin_selected(True)
             elif rt == "MaxShear":
-                self.form.rb_max_shear_stress.setChecked(True)
+                self.result_widget.rb_max_shear_stress.setChecked(True)
                 self.max_shear_selected(True)
             elif rt == "MFlow":
-                self.form.rb_massflowrate.setChecked(True)
+                self.result_widget.rb_massflowrate.setChecked(True)
                 self.massflowrate_selected(True)
             elif rt == "NPress":
-                self.form.rb_networkpressure.setChecked(True)
+                self.result_widget.rb_networkpressure.setChecked(True)
                 self.networkpressure_selected(True)
             elif rt == "Peeq":
-                self.form.rb_peeq.setChecked(True)
+                self.result_widget.rb_peeq.setChecked(True)
                 self.peeq_selected(True)
 
             sd = FreeCAD.FEM_dialog["show_disp"]
-            self.form.cb_show_displacement.setChecked(sd)
+            self.result_widget.cb_show_displacement.setChecked(sd)
             self.show_displacement(sd)
 
             df = FreeCAD.FEM_dialog["disp_factor"]
             dfm = FreeCAD.FEM_dialog["disp_factor_max"]
-            self.form.hsb_displacement_factor.setMaximum(dfm)
-            self.form.hsb_displacement_factor.setValue(df)
-            self.form.sb_displacement_factor_max.setValue(dfm)
-            self.form.sb_displacement_factor.setValue(df)
+            # self.result_widget.hsb_displacement_factor.setMaximum(dfm)
+            # self.result_widget.hsb_displacement_factor.setValue(df)
+            self.result_widget.sb_displacement_factor_max.setValue(dfm)
+            self.result_widget.sb_displacement_factor.setValue(df)
         except:
             self.restore_initial_result_dialog()
 
@@ -322,9 +318,10 @@ class _TaskPanelFemResultShow:
         FreeCAD.FEM_dialog = {
             "results_type": "None",
             "show_disp": False,
-            "disp_factor": 0,
-            "disp_factor_max": 100
+            "disp_factor": 0.,
+            "disp_factor_max": 100.
         }
+        self.result_widget.sb_displacement_factor_max.setValue(100.)    # init non standard values
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -348,7 +345,7 @@ class _TaskPanelFemResultShow:
         if len(self.result_obj.DisplacementLengths) > 0:
             self.result_selected("Uabs", self.result_obj.DisplacementLengths, "mm")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def x_displacement_selected(self, state):
@@ -358,7 +355,7 @@ class _TaskPanelFemResultShow:
             )
             self.result_selected("U1", res_disp_u1, "mm")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def y_displacement_selected(self, state):
@@ -368,7 +365,7 @@ class _TaskPanelFemResultShow:
             )
             self.result_selected("U2", res_disp_u2, "mm")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def z_displacement_selected(self, state):
@@ -378,68 +375,68 @@ class _TaskPanelFemResultShow:
             )
             self.result_selected("U3", res_disp_u3, "mm")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def vm_stress_selected(self, state):
         if len(self.result_obj.StressValues) > 0:
             self.result_selected("Sabs", self.result_obj.StressValues, "MPa")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def max_shear_selected(self, state):
         if len(self.result_obj.MaxShear) > 0:
             self.result_selected("MaxShear", self.result_obj.MaxShear, "MPa")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def max_prin_selected(self, state):
         if len(self.result_obj.PrincipalMax) > 0:
             self.result_selected("MaxPrin", self.result_obj.PrincipalMax, "MPa")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def temperature_selected(self, state):
         if len(self.result_obj.Temperature) > 0:
             self.result_selected("Temp", self.result_obj.Temperature, "K")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def massflowrate_selected(self, state):
         if len(self.result_obj.MassFlowRate) > 0:
             self.result_selected("MFlow", self.result_obj.MassFlowRate, "kg/s")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def networkpressure_selected(self, state):
         if len(self.result_obj.NetworkPressure) > 0:
             self.result_selected("NPress", self.result_obj.NetworkPressure, "MPa")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def min_prin_selected(self, state):
         if len(self.result_obj.PrincipalMin) > 0:
             self.result_selected("MinPrin", self.result_obj.PrincipalMin, "MPa")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def peeq_selected(self, state):
         if len(self.result_obj.Peeq) > 0:
             self.result_selected("Peeq", self.result_obj.Peeq, "")
         else:
-            self.form.rb_none.setChecked(True)
+            self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
-        self.form.user_def_eq.toPlainText()
+        self.result_widget.user_def_eq.toPlainText()
 
     def calculate(self):
 
@@ -489,7 +486,7 @@ class _TaskPanelFemResultShow:
             s2y = np.array(ps2vector[:, 1])
             s2z = np.array(ps2vector[:, 2])
         if self.result_obj.PS3Vector:
-            ps3vector = np.array(self.result_obj.PS1Vector)
+            ps3vector = np.array(self.result_obj.PS3Vector)
             s3x = np.array(ps3vector[:, 0])
             s3y = np.array(ps3vector[:, 1])
             s3z = np.array(ps3vector[:, 2])
@@ -497,7 +494,7 @@ class _TaskPanelFemResultShow:
         FreeCAD.FEM_dialog["results_type"] = "None"
         self.update()
         self.restore_result_dialog()
-        userdefined_eq = self.form.user_def_eq.toPlainText()  # Get equation to be used
+        userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
         UserDefinedFormula = eval(userdefined_eq).tolist()
         if UserDefinedFormula:
             self.result_obj.UserDefined = UserDefinedFormula
@@ -535,17 +532,17 @@ class _TaskPanelFemResultShow:
         QtGui.QApplication.restoreOverrideCursor()
 
     def set_result_stats(self, unit, minm, avg, maxm):
-        self.form.le_min.setProperty("unit", unit)
-        self.form.le_min.setProperty("rawText", "{:.6} {}".format(minm, unit))
-        self.form.le_avg.setProperty("unit", unit)
-        self.form.le_avg.setProperty("rawText", "{:.6} {}".format(avg, unit))
-        self.form.le_max.setProperty("unit", unit)
-        self.form.le_max.setProperty("rawText", "{:.6} {}".format(maxm, unit))
+        self.result_widget.le_min.setProperty("unit", unit)
+        self.result_widget.le_min.setProperty("rawText", "{:.6} {}".format(minm, unit))
+        self.result_widget.le_avg.setProperty("unit", unit)
+        self.result_widget.le_avg.setProperty("rawText", "{:.6} {}".format(avg, unit))
+        self.result_widget.le_max.setProperty("unit", unit)
+        self.result_widget.le_max.setProperty("rawText", "{:.6} {}".format(maxm, unit))
 
     def update_displacement(self, factor=None):
         if factor is None:
             if FreeCAD.FEM_dialog["show_disp"]:
-                factor = self.form.hsb_displacement_factor.value()
+                factor = self.result_widget.sb_displacement_factor.value()
             else:
                 factor = 0.0
         self.mesh_obj.ViewObject.applyDisplacement(factor)
@@ -566,16 +563,34 @@ class _TaskPanelFemResultShow:
         QtGui.QApplication.restoreOverrideCursor()
 
     def hsb_disp_factor_changed(self, value):
-        self.form.sb_displacement_factor.setValue(value)
+        self.result_widget.sb_displacement_factor.setValue(
+            value / 100. * self.result_widget.sb_displacement_factor_max.value()
+        )
         self.update_displacement()
 
     def sb_disp_factor_max_changed(self, value):
         FreeCAD.FEM_dialog["disp_factor_max"] = value
-        self.form.hsb_displacement_factor.setMaximum(value)
+        if value < self.result_widget.sb_displacement_factor.value():
+            self.result_widget.sb_displacement_factor.setValue(value)
+        if value == 0.:
+            self.result_widget.hsb_displacement_factor.setValue(0)
+        else:
+            self.result_widget.hsb_displacement_factor.setValue(
+                round(self.result_widget.sb_displacement_factor.value() / value * 100.)
+            )
 
     def sb_disp_factor_changed(self, value):
         FreeCAD.FEM_dialog["disp_factor"] = value
-        self.form.hsb_displacement_factor.setValue(value)
+        if value > self.result_widget.sb_displacement_factor_max.value():
+            self.result_widget.sb_displacement_factor.setValue(
+                self.result_widget.sb_displacement_factor_max.value()
+            )
+        if self.result_widget.sb_displacement_factor_max.value() == 0.:
+            self.result_widget.hsb_displacement_factor.setValue(0.)
+        else:
+            self.result_widget.hsb_displacement_factor.setValue(
+                round(value / self.result_widget.sb_displacement_factor_max.value() * 100.)
+            )
 
     def disable_empty_result_buttons(self):
         """ disable radio buttons if result does not exists in result object"""
@@ -591,27 +606,27 @@ class _TaskPanelFemResultShow:
         NetworkPressure     --> rb_networkpressure
         Peeq                --> rb_peeq"""
         if len(self.result_obj.DisplacementLengths) == 0:
-            self.form.rb_abs_displacement.setEnabled(0)
+            self.result_widget.rb_abs_displacement.setEnabled(0)
         if len(self.result_obj.DisplacementVectors) == 0:
-            self.form.rb_x_displacement.setEnabled(0)
-            self.form.rb_y_displacement.setEnabled(0)
-            self.form.rb_z_displacement.setEnabled(0)
+            self.result_widget.rb_x_displacement.setEnabled(0)
+            self.result_widget.rb_y_displacement.setEnabled(0)
+            self.result_widget.rb_z_displacement.setEnabled(0)
         if len(self.result_obj.Temperature) == 0:
-            self.form.rb_temperature.setEnabled(0)
+            self.result_widget.rb_temperature.setEnabled(0)
         if len(self.result_obj.StressValues) == 0:
-            self.form.rb_vm_stress.setEnabled(0)
+            self.result_widget.rb_vm_stress.setEnabled(0)
         if len(self.result_obj.PrincipalMax) == 0:
-            self.form.rb_maxprin.setEnabled(0)
+            self.result_widget.rb_maxprin.setEnabled(0)
         if len(self.result_obj.PrincipalMin) == 0:
-            self.form.rb_minprin.setEnabled(0)
+            self.result_widget.rb_minprin.setEnabled(0)
         if len(self.result_obj.MaxShear) == 0:
-            self.form.rb_max_shear_stress.setEnabled(0)
+            self.result_widget.rb_max_shear_stress.setEnabled(0)
         if len(self.result_obj.MassFlowRate) == 0:
-            self.form.rb_massflowrate.setEnabled(0)
+            self.result_widget.rb_massflowrate.setEnabled(0)
         if len(self.result_obj.NetworkPressure) == 0:
-            self.form.rb_networkpressure.setEnabled(0)
+            self.result_widget.rb_networkpressure.setEnabled(0)
         if len(self.result_obj.Peeq) == 0:
-            self.form.rb_peeq.setEnabled(0)
+            self.result_widget.rb_peeq.setEnabled(0)
 
     def update(self):
         self.reset_result_mesh()

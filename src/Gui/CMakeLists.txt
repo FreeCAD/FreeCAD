@@ -280,7 +280,7 @@ set(Gui_MOC_HDRS
     Assistant.h
     AutoSaver.h
     CallTips.h
-    CombiView.h
+    ComboView.h
     Control.h
     Clipping.h
     DemoMode.h
@@ -701,7 +701,7 @@ SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 
 # The dock windows sources
 SET(Dock_Windows_CPP_SRCS
-    CombiView.cpp
+    ComboView.cpp
     DockWindow.cpp
     PropertyView.cpp
     ReportView.cpp
@@ -717,7 +717,7 @@ SET(Dock_Windows_CPP_SRCS
     DAGView/DAGFilter.cpp
 )
 SET(Dock_Windows_HPP_SRCS
-    CombiView.h
+    ComboView.h
     DockWindow.h
     PropertyView.h
     ReportView.h

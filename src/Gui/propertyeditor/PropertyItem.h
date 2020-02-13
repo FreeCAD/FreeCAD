@@ -35,6 +35,7 @@
 #include <Base/Placement.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
+#include <App/DocumentObserver.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Widgets.h>
 #include <Gui/ExpressionBinding.h>
@@ -63,7 +64,12 @@ void _class_::init(void) { \
 }
 
 namespace Gui {
-namespace Dialog { class TaskPlacement; }
+
+namespace Dialog { 
+class TaskPlacement; 
+class DlgPropertyLink;
+}
+
 namespace PropertyEditor {
 
 class PropertyItem;
@@ -945,25 +951,26 @@ class LinkSelection : public QObject
     Q_OBJECT
 
 public:
-    LinkSelection(const QStringList&);
+    LinkSelection(const App::SubObjectT &);
     ~LinkSelection();
 
 public Q_SLOTS:
     void select();
 
 private:
-    QStringList link;
+    App::SubObjectT link;
 };
+
 
 class LinkLabel : public QWidget
 {
     Q_OBJECT
 
 public:
-    LinkLabel (QWidget * parent = 0, bool xlink = false);
+    LinkLabel (QWidget * parent, const App::Property *prop);
     virtual ~LinkLabel();
-    void setPropertyLink(const QStringList& o);
-    QStringList propertyLink() const;
+    void updatePropertyLink();
+    QVariant propertyLink() const;
 
 protected:
     void resizeEvent(QResizeEvent*);
@@ -971,15 +978,18 @@ protected:
 protected Q_SLOTS:
     void onLinkActivated(const QString&);
     void onEditClicked();
+    void onLinkChanged();
 
 Q_SIGNALS:
-    void linkChanged(const QStringList&);
+    void linkChanged(const QVariant&);
 
 private:
     QLabel* label;
     QPushButton* editButton;
-    QStringList link;
-    bool isXLink;
+    QVariant link;
+    App::DocumentObjectT objProp;
+
+    Gui::Dialog::DlgPropertyLink* dlg;
 };
 
 /**
@@ -1003,53 +1013,16 @@ protected:
 
 protected:
     PropertyLinkItem();
-
-private:
-    mutable bool isXLink;
-};
-
-class LinkListLabel : public QWidget
-{
-    Q_OBJECT
-
-public:
-    LinkListLabel (QWidget * parent = 0);
-    virtual ~LinkListLabel();
-    void setPropertyLinkList(const QVariantList& o);
-    QVariantList propertyLinkList() const;
-
-protected:
-    void resizeEvent(QResizeEvent*);
-
-protected Q_SLOTS:
-    void onEditClicked();
-
-Q_SIGNALS:
-    void linkChanged(const QVariantList&);
-
-private:
-    QLabel* label;
-    QPushButton* editButton;
-    QVariantList links;
 };
 
 /**
  * Edit properties of link list type.
  * \author Werner Mayer
  */
-class GuiExport PropertyLinkListItem: public PropertyItem
+class GuiExport PropertyLinkListItem: public PropertyLinkItem
 {
     Q_OBJECT
     PROPERTYITEM_HEADER
-
-    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
-    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
-    virtual QVariant editorData(QWidget *editor) const;
-
-protected:
-    virtual QVariant toString(const QVariant&) const;
-    virtual QVariant value(const App::Property*) const;
-    virtual void setValue(const QVariant&);
 
 protected:
     PropertyLinkListItem();

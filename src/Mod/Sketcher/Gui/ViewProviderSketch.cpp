@@ -204,6 +204,7 @@ struct EditData {
     DrawSketchHandler *sketchHandler;
     bool editDatumDialog;
     bool buttonPress;
+    bool handleEscapeButton;
 
     // dragged point
     int DragPoint;
@@ -401,6 +402,7 @@ void ViewProviderSketch::deactivateHandler()
         std::vector<Base::Vector2d> editCurve;
         editCurve.clear();
         drawEdit(editCurve); // erase any line
+        resetPositionText();
         edit->sketchHandler->deactivated(this);
         edit->sketchHandler->unsetCursor();
         delete(edit->sketchHandler);
@@ -485,6 +487,10 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                 if (!pressed && !edit->buttonPress)
                     return true;
                 edit->buttonPress = pressed;
+
+                // More control over Sketcher edit mode Esc key behavior
+                // https://forum.freecadweb.org/viewtopic.php?f=3&t=42207
+                return edit->handleEscapeButton;
             }
             return false;
         }
@@ -1479,7 +1485,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     // are we in edit?
     if (edit) {
         // ignore external object
-        if(msg.ObjName.size() && msg.DocName.size() && msg.DocName!=getObject()->getDocument()->getName())
+        if(msg.Object.getObjectName().size() && msg.Object.getDocument()!=getObject()->getDocument())
             return;
 
         bool handled=false;
@@ -5649,6 +5655,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     edit->MarkerSize = hGrp->GetInt("MarkerSize", 7);
+
+    ParameterGrp::handle hSketch = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    edit->handleEscapeButton = !hSketch->GetBool("LeaveSketchWithEscape", true);
 
     createEditInventorNodes();
 

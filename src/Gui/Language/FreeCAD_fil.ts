@@ -3628,9 +3628,9 @@ Ang haligi ng 'Katayuan' ay nagpapakita kung ang dokumento ay maaaring mabawi.</
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
+      <source>Combo View</source>
       <translation>CombiView</translation>
     </message>
     <message>

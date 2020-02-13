@@ -67,7 +67,6 @@
         <file>icons/fem-solver-analysis-frequency.svg</file>
         <file>icons/fem-solver-analysis-static.svg</file>
         <file>icons/fem-solver-analysis-thermomechanical.svg</file>
-        <file>icons/fem-solver-cfd.svg</file>
         <file>icons/fem-solver-control.svg</file>
         <file>icons/fem-solver-elmer.svg</file>
         <file>icons/fem-solver-inp-editor.svg</file>
@@ -125,6 +124,7 @@
         <file>ui/MeshGroup.ui</file>
         <file>ui/MeshGroupXDMFExport.ui</file>
         <file>ui/MeshRegion.ui</file>
+        <file>ui/ResultHints.ui</file>
         <file>ui/ResultShow.ui</file>
         <file>ui/SolverCalculix.ui</file>
     </qresource>
