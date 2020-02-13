@@ -43,8 +43,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
 __contributors__ = "russ4262 (Russell Johnson)"
 __createdDate__ = "2017"
-__scriptVersion__ = "2m testing"
-__lastModified__ = "2019-07-20 13:29 CST"
+__scriptVersion__ = "2p"
+__lastModified__ = "2020-02-13 17:11 CST"
 
 LOGLEVEL = PathLog.Level.INFO
 PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
@@ -67,19 +67,12 @@ class ObjectOp(PathOp.ObjectOp):
     to Path.Area so subclasses only have to provide the shapes for the
     operations.'''
 
-    # These are static while document is open, if it contains a 3D Surface Op
-    initOpFinalDepth = None
-    initOpStartDepth = None
-    initWithRotation = False
-    defValsSet = False
-    docRestored = False
-
     def opFeatures(self, obj):
         '''opFeatures(obj) ... returns the base features supported by all Path.Area based operations.
         The standard feature list is OR'ed with the return value of areaOpFeatures().
         Do not overwrite, implement areaOpFeatures(obj) instead.'''
         # return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureRotation
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureCoolant 
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureCoolant
 
     def areaOpFeatures(self, obj):
         '''areaOpFeatures(obj) ... overwrite to add operation specific features.
@@ -91,6 +84,9 @@ class ObjectOp(PathOp.ObjectOp):
         '''initOperation(obj) ... sets up standard Path.Area properties and calls initAreaOp().
         Do not overwrite, overwrite initAreaOp(obj) instead.'''
         PathLog.track()
+
+        # These are static while document is open, if it contains a 3D Surface Op
+        self.initWithRotation = False
 
         # Debugging
         obj.addProperty("App::PropertyString", "AreaParams", "Path")
@@ -160,10 +156,6 @@ class ObjectOp(PathOp.ObjectOp):
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
 
-        self.initOpFinalDepth = obj.OpFinalDepth.Value
-        self.initOpStartDepth = obj.OpStartDepth.Value
-        self.docRestored = True
-
         self.setupAdditionalProperties(obj)
         self.areaOpOnDocumentRestored(obj)
 
@@ -221,26 +213,11 @@ class ObjectOp(PathOp.ObjectOp):
                     startDepth = max(xRotRad, yRotRad)
                 finalDepth = -1 * startDepth
 
-            # Manage operation start and final depths
-            if self.docRestored is True:  # This op is NOT the first in the Operations list
-                PathLog.debug("Doc restored")
-                obj.FinalDepth.Value = obj.OpFinalDepth.Value
-                obj.StartDepth.Value = obj.OpStartDepth.Value
-            else:
-                PathLog.debug("New operation")
-                obj.StartDepth.Value = startDepth
-                obj.FinalDepth.Value = finalDepth
-                obj.OpStartDepth.Value = startDepth
-                obj.OpFinalDepth.Value = finalDepth
+            obj.StartDepth.Value = startDepth
+            obj.FinalDepth.Value = finalDepth
+            obj.OpStartDepth.Value = startDepth
+            obj.OpFinalDepth.Value = finalDepth
 
-                if obj.EnableRotation != 'Off':
-                    if self.initOpFinalDepth is None:
-                        self.initOpFinalDepth = finalDepth
-                        PathLog.debug("Saved self.initOpFinalDepth")
-                    if self.initOpStartDepth is None:
-                        self.initOpStartDepth = startDepth
-                        PathLog.debug("Saved self.initOpStartDepth")
-                    self.defValsSet = True
             PathLog.debug("Default OpDepths are Start: {}, and Final: {}".format(obj.OpStartDepth.Value, obj.OpFinalDepth.Value))
             PathLog.debug("Default Depths are Start: {}, and Final: {}".format(startDepth, finalDepth))
 
@@ -330,20 +307,6 @@ class ObjectOp(PathOp.ObjectOp):
         self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox # pylint: disable=attribute-defined-outside-init
         self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
 
-        # Import OpFinalDepth from pre-existing operation for recompute() scenarios
-        if self.defValsSet is True:
-            PathLog.debug("self.defValsSet is True.")
-            if self.initOpStartDepth is not None:
-                if self.initOpStartDepth != obj.OpStartDepth.Value:
-                    obj.OpStartDepth.Value = self.initOpStartDepth
-                    obj.StartDepth.Value = self.initOpStartDepth
-
-            if self.initOpFinalDepth is not None:
-                if self.initOpFinalDepth != obj.OpFinalDepth.Value:
-                    obj.OpFinalDepth.Value = self.initOpFinalDepth
-                    obj.FinalDepth.Value = self.initOpFinalDepth
-            self.defValsSet = False
-
         if obj.EnableRotation != 'Off':
             # Calculate operation heights based upon rotation radii
             opHeights = self.opDetermineRotationRadii(obj)
@@ -362,11 +325,11 @@ class ObjectOp(PathOp.ObjectOp):
             obj.ClearanceHeight.Value = strDep + self.clrOfset
             obj.SafeHeight.Value = strDep + self.safOfst
 
-            if self.initWithRotation is False:
-                if obj.FinalDepth.Value == obj.OpFinalDepth.Value:
-                    obj.FinalDepth.Value = finDep
-                if obj.StartDepth.Value == obj.OpStartDepth.Value:
-                    obj.StartDepth.Value = strDep
+            #if self.initWithRotation is False:
+            #    if obj.FinalDepth.Value == obj.OpFinalDepth.Value:
+            #        obj.FinalDepth.Value = finDep
+            #    if obj.StartDepth.Value == obj.OpStartDepth.Value:
+            #        obj.StartDepth.Value = strDep
 
             # Create visual axes when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
@@ -898,23 +861,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         PathLog.info(translate("Path", "Rotated to inverse angle."))
         return (clnBase, clnStock, angle)
-
-    def calculateStartFinalDepths(self, obj, shape, stock):
-        '''calculateStartFinalDepths(obj, shape, stock)
-            Calculate correct start and final depths for the shape(face) object provided.'''
-        finDep = max(obj.FinalDepth.Value, shape.BoundBox.ZMin)
-        stockTop = stock.Shape.BoundBox.ZMax
-        if obj.EnableRotation == 'Off':
-            strDep = obj.StartDepth.Value
-            if strDep <= finDep:
-                strDep = stockTop
-        else:
-            strDep = min(obj.StartDepth.Value, stockTop)
-            if strDep <= finDep:
-                strDep = stockTop  # self.strDep
-                msg = translate('Path', "Start depth <= face depth.\nIncreased to stock top.")
-                PathLog.error(msg)
-        return (strDep, finDep)
 
     def sortTuplesByIndex(self, TupleList, tagIdx):
         '''sortTuplesByIndex(TupleList, tagIdx)
