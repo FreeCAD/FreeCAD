@@ -1,50 +1,69 @@
 # -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
-#*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+"""Provide GUI commands of the Draft Workbench.
 
-__title__="FreeCAD Draft Workbench GUI Tools"
-__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin"
-__url__ = "https://www.freecadweb.org"
-
+This module loads all graphical commands of the Draft Workbench,
+that is, those actions that can be called from menus and buttons.
+This module must be imported only when the graphical user interface
+is available, for example, during the workbench definition in `IntiGui.py`.
+"""
 ## @package DraftTools
 #  \ingroup DRAFT
-#  \brief GUI Commands of the Draft workbench
+#  \brief Provide GUI commands of the Draft workbench.
 #
-#  This module contains all the FreeCAD commands
-#  of the Draft module
+#  This module contains all the graphical commands of the Draft workbench,
+#  that is, those actions that can be called from menus and buttons.
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Generic stuff
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+import math
+import sys
+from PySide import QtCore, QtGui
+from pivy import coin
 
-import sys, FreeCAD, FreeCADGui, WorkingPlane, math, Draft, Draft_rc, DraftVecUtils
+import FreeCAD
+import FreeCADGui
 from FreeCAD import Vector
-from PySide import QtCore,QtGui
-import DraftGui
-from draftutils.todo import todo
+
+import Draft
+import Draft_rc
+import DraftGui  # Initializes the DraftToolBar class
+import DraftVecUtils
+import WorkingPlane
+from draftutils.todo import ToDo
 from draftutils.translate import translate
 import draftguitools.gui_snapper as gui_snapper
 import draftguitools.gui_trackers as trackers
-from pivy import coin
+
+# The module is used to prevent complaints from code checkers (flake8)
+True if Draft_rc.__name__ else False
+True if DraftGui.__name__ else False
+
+__title__ = "FreeCAD Draft Workbench GUI Tools"
+__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
+              "Dmitry Chigrin")
+__url__ = "https://www.freecadweb.org"
 
 if not hasattr(FreeCADGui, "Snapper"):
     FreeCADGui.Snapper = gui_snapper.Snapper()
@@ -52,20 +71,18 @@ if not hasattr(FreeCADGui, "Snapper"):
 if not hasattr(FreeCAD, "DraftWorkingPlane"):
     FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Commands that have been migrated to their own modules
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 import draftguitools.gui_edit
 import draftguitools.gui_selectplane
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Preflight stuff
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 # update the translation engine
 FreeCADGui.updateLocale()
 
@@ -86,10 +103,9 @@ MODCONSTRAIN = MODS[Draft.getParam("modconstrain",0)]
 MODSNAP = MODS[Draft.getParam("modsnap",1)]
 MODALT = MODS[Draft.getParam("modalt",2)]
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # General functions
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 def formatUnit(exp,unit="mm"):
     '''returns a formatting string to set a number to the correct unit'''
     return FreeCAD.Units.Quantity(exp,FreeCAD.Units.Length).UserString
@@ -221,12 +237,9 @@ def setMod(args,mod,state):
         args["AltDown"] = state
 
 
-
-
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Base Class
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 class DraftTool:
     """The base class of all Draft Tools"""
 
@@ -296,7 +309,7 @@ class DraftTool:
                 pass
             self.call = None
         if self.commitList:
-            todo.delayCommit(self.commitList)
+            ToDo.delayCommit(self.commitList)
         self.commitList = []
 
     def commit(self,name,func):
@@ -334,10 +347,9 @@ class DraftTool:
         return qr,sup,points,fil
 
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Geometry constructors
-#---------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 def redraw3DView():
     """redraw3DView(): forces a redraw of 3d view."""
     try:
@@ -463,7 +475,7 @@ class Line(Creator):
                 # object already deleted, for some reason
                 pass
             else:
-                todo.delay(self.doc.removeObject,old)
+                ToDo.delay(self.doc.removeObject, old)
         self.obj = None
 
     def undolast(self):
@@ -575,7 +587,7 @@ class Wire(Line):
                     pts = pts.replace("Vector","FreeCAD.Vector")
                     rems = ["FreeCAD.ActiveDocument.removeObject(\""+o.Name+"\")" for o in FreeCADGui.Selection.getSelection()]
                     FreeCADGui.addModule("Draft")
-                    todo.delayCommit([(translate("draft","Convert to Wire"),
+                    ToDo.delayCommit([(translate("draft", "Convert to Wire"),
                             ['wire = Draft.makeWire(['+pts+'])']+rems+['Draft.autogroup(wire)',
                              'FreeCAD.ActiveDocument.recompute()'])])
                     return
@@ -665,7 +677,7 @@ class BSpline(Line):
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
-            todo.delay(self.doc.removeObject,old)
+            ToDo.delay(self.doc.removeObject, old)
         if (len(self.node) > 1):
             try:
                 # building command string
@@ -785,7 +797,7 @@ class BezCurve(Line):
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
-            todo.delay(self.doc.removeObject,old)
+            ToDo.delay(self.doc.removeObject, old)
         if (len(self.node) > 1):
             try:
                 # building command string
@@ -944,7 +956,7 @@ class CubicBezCurve(Line):
         if self.obj:
             # remove temporary object, if any
             old = self.obj.Name
-            todo.delay(self.doc.removeObject,old)
+            ToDo.delay(self.doc.removeObject, old)
         if closed == False :
             cleannd=(len(self.node)-1) % self.degree
             if cleannd == 0 : self.node = self.node[0:-3]
@@ -2248,7 +2260,7 @@ class ShapeString(Creator):
                     pass
                 self.task = task_shapestring.ShapeStringTaskPanel()
                 self.task.sourceCmd = self
-                todo.delay(FreeCADGui.Control.showDialog,self.task)
+                ToDo.delay(FreeCADGui.Control.showDialog, self.task)
             else:
                 self.dialog = None
                 self.text = ''
@@ -2408,7 +2420,7 @@ class Move(Modifier):
             ghost.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
-                todo.delayAfter(self.Activated,[])
+                ToDo.delayAfter(self.Activated, [])
         Modifier.finish(self)
 
     def action(self,arg):
@@ -2750,7 +2762,7 @@ class Rotate(Modifier):
             ghost.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
-                todo.delayAfter(self.Activated,[])
+                ToDo.delayAfter(self.Activated, [])
         Modifier.finish(self)
         if self.doc:
             self.doc.recompute()
@@ -4133,9 +4145,9 @@ class Scale(Modifier):
                 self.view.removeEventCallback("SoEvent",self.call)
             self.task = task_scale.ScaleTaskPanel()
             self.task.sourceCmd = self
-            todo.delay(FreeCADGui.Control.showDialog,self.task)
-            todo.delay(self.task.xValue.selectAll,None)
-            todo.delay(self.task.xValue.setFocus,None)
+            ToDo.delay(FreeCADGui.Control.showDialog, self.task)
+            ToDo.delay(self.task.xValue.selectAll, None)
+            ToDo.delay(self.task.xValue.setFocus, None)
             for ghost in self.ghosts:
                 ghost.on()
         elif len(self.node) == 2:
@@ -4788,7 +4800,7 @@ class Point(Creator):
                                         ['point = Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')',
                                          'Draft.autogroup(point)',
                                          'FreeCAD.ActiveDocument.recompute()']))
-                todo.delayCommit(commitlist)
+                ToDo.delayCommit(commitlist)
                 FreeCADGui.Snapper.off()
             self.finish()
 
@@ -4856,7 +4868,7 @@ class Draft_Clone(Modifier):
     def finish(self,close=False):
         Modifier.finish(self,close=False)
         if self.moveAfterCloning:
-            todo.delay(FreeCADGui.runCommand,"Draft_Move")
+            ToDo.delay(FreeCADGui.runCommand, "Draft_Move")
 
 
 class ToggleGrid():
