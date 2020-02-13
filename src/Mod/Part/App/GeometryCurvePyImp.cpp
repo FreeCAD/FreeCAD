@@ -563,6 +563,21 @@ PyObject* GeometryCurvePy::intersect2d(PyObject *args)
             tuple.setItem(1, Py::Float(pt.Y()));
             list.append(tuple);
         }
+        if (intCC.NbSegments() > 0) {
+            // See also Curve2dPy::intersectCC() that uses Geom2dAPI_ExtremaCurveCurve
+            const Geom2dInt_GInter& gInter = intCC.Intersector();
+            for (int i=1; i <= gInter.NbSegments(); i++) {
+                const IntRes2d_IntersectionSegment& segm = gInter.Segment(i);
+                if (segm.HasFirstPoint()) {
+                    const IntRes2d_IntersectionPoint& fp = segm.FirstPoint();
+                    gp_Pnt2d pt = fp.Value();
+                    Py::Tuple tuple(2);
+                    tuple.setItem(0, Py::Float(pt.X()));
+                    tuple.setItem(1, Py::Float(pt.Y()));
+                    list.append(tuple);
+                }
+            }
+        }
         return Py::new_reference_to(list);
     }
     catch (Standard_Failure& e) {
