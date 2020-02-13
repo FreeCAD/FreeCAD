@@ -139,7 +139,7 @@ class _FemResultMechanical():
         )
         obj.addProperty(
             "App::PropertyFloatList",
-            "StressValues",
+            "vonMises",
             "NodeData",
             "",
             True

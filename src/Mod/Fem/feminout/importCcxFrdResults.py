@@ -151,7 +151,7 @@ def importFrd(
 
                 # fill DisplacementLengths
                 res_obj = restools.add_disp_apps(res_obj)
-                # fill StressValues
+                # fill vonMises
                 res_obj = restools.add_von_mises(res_obj)
                 if res_obj.getParentGroup():
                     has_reinforced_mat = False
