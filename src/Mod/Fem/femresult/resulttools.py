@@ -124,7 +124,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
         return
     if resultobj:
         if result_type == "Sabs":
-            values = resultobj.StressValues
+            values = resultobj.vonMises
         elif result_type == "Uabs":
             values = resultobj.DisplacementLengths
         # TODO: the result object does have more result types to show, implement them
@@ -282,10 +282,10 @@ def fill_femresult_stats(res_obj):
         a_min = min(res_obj.DisplacementLengths)
         a_avg = sum(res_obj.DisplacementLengths) / no_of_values
         a_max = max(res_obj.DisplacementLengths)
-    if res_obj.StressValues:
-        s_min = min(res_obj.StressValues)
-        s_avg = sum(res_obj.StressValues) / no_of_values
-        s_max = max(res_obj.StressValues)
+    if res_obj.vonMises:
+        s_min = min(res_obj.vonMises)
+        s_avg = sum(res_obj.vonMises) / no_of_values
+        s_max = max(res_obj.vonMises)
     if res_obj.PrincipalMax:
         p1_min = min(res_obj.PrincipalMax)
         p1_avg = sum(res_obj.PrincipalMax) / no_of_values
@@ -382,8 +382,8 @@ def add_von_mises(res_obj):
     )
     for Sxx, Syy, Szz, Sxy, Sxz, Syz in iterator:
         mstress.append(calculate_von_mises((Sxx, Syy, Szz, Sxy, Sxz, Syz)))
-    res_obj.StressValues = mstress
-    FreeCAD.Console.PrintLog("Added StressValues (von Mises).\n")
+    res_obj.vonMises = mstress
+    FreeCAD.Console.PrintLog("Added von Mises stress.\n")
     return res_obj
 
 
