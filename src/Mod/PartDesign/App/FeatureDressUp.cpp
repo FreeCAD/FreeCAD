@@ -33,6 +33,7 @@
 
 
 #include "FeatureDressUp.h"
+#include <App/Document.h>
 #include <Base/Exception.h>
 
 
@@ -42,12 +43,22 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::FeatureAddSub)
 
 DressUp::DressUp()
 {
     ADD_PROPERTY(Base,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
+
+    ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,
+            "Enable support for transform patterns");
+
+    addSubType = Additive;
+}
+
+void DressUp::setupObject() {
+    SupportTransform.setValue(true);
+    FeatureAddSub::setupObject();
 }
 
 short DressUp::mustExecute() const
@@ -169,6 +180,27 @@ void DressUp::onChanged(const App::Property* prop)
         // track the vice-versa changes
         if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
             BaseFeature.setValue (Base.getValue());
+        }
+    } else if (prop == &Shape || prop == &SupportTransform) {
+        if (!isRestoring() && !getDocument()->isPerformingTransaction()) {
+            Part::TopoShape s;
+            auto base = Base::freecad_dynamic_cast<FeatureAddSub>(getBaseObject(true));
+            if(!base) {
+                addSubType = Additive;
+                if(!SupportTransform.getValue())
+                    s = getBaseShape();
+                else
+                    s = Shape.getShape();
+            } else {
+                addSubType = base->getAddSubType();
+                if(!SupportTransform.getValue())
+                    s = base->AddSubShape.getShape();
+                else if(addSubType == Additive)
+                    s = Shape.getShape().cut(base->getBaseShape());
+                else
+                    s = TopoShape(base->getBaseShape()).cut(Shape.getValue());
+            }
+            AddSubShape.setValue(s);
         }
     }
 
