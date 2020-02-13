@@ -45,8 +45,6 @@ public:
     App::PropertyLinkSub Base;
     App::PropertyBool SupportTransform;
 
-    virtual void setupObject();
-
     short mustExecute() const;
     /// updates the Placement property from the Placement of the BaseFeature
     void positionByBaseFeature(void);

@@ -50,15 +50,10 @@ DressUp::DressUp()
     ADD_PROPERTY(Base,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,
-            "Enable support for transform patterns");
+    ADD_PROPERTY_TYPE(SupportTransform,(true),"Base", App::Prop_None,
+            "Enable support for transformed patterns");
 
     addSubType = Additive;
-}
-
-void DressUp::setupObject() {
-    SupportTransform.setValue(true);
-    FeatureAddSub::setupObject();
 }
 
 short DressUp::mustExecute() const
@@ -191,14 +186,19 @@ void DressUp::onChanged(const App::Property* prop)
                     s = getBaseShape();
                 else
                     s = Shape.getShape();
+            } else if (!SupportTransform.getValue()) {
+                addSubType = base->getAddSubType();
+                s = base->AddSubShape.getShape();
             } else {
                 addSubType = base->getAddSubType();
-                if(!SupportTransform.getValue())
-                    s = base->AddSubShape.getShape();
-                else if(addSubType == Additive)
-                    s = Shape.getShape().cut(base->getBaseShape());
+                auto baseBase = base->getBaseObject(true);
+                if(!baseBase) {
+                    s = Shape.getShape();
+                    addSubType = Additive;
+                } else if (addSubType == Additive)
+                    s = Shape.getShape().cut(base->getBaseTopoShape().getShape());
                 else
-                    s = TopoShape(base->getBaseShape()).cut(Shape.getValue());
+                    s = base->getBaseTopoShape().cut(Shape.getValue());
             }
             AddSubShape.setValue(s);
         }
