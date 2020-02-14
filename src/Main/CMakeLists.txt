@@ -2,6 +2,7 @@
 #add_defintions(-DFREECADMAINPY)
 
 configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
+file(COPY icon.ico DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 if(BUILD_GUI)
     include_directories(
