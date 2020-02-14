@@ -119,6 +119,12 @@ macro(SetupPython)
     endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT BUILD_WITH_CONDA)
 
     find_package(PythonInterp REQUIRED)
+    
+    # Issue in cmake prevents finding pythonlibs 3.x when python 2.7 is present
+    # setting NOTFOUND here resolves the issue
+    set(PYTHON_INCLUDE_DIR "NOTFOUND")
+    set(PYTHON_LIBRARY "NOTFOUND")
+    
     set(Python_ADDITIONAL_VERSIONS ${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
     if (NOT DEFINED PYTHON_VERSION_STRING)
         find_package(PythonLibs REQUIRED)
