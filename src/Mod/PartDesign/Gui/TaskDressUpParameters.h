@@ -60,7 +60,7 @@ public:
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
     void onButtonRefRemove(const bool checked);
-    virtual void onRefDeleted(void)=0;
+    virtual void onRefDeleted(void) = 0;
 
 protected:
     void exitSelectionMode();
