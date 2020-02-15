@@ -54,6 +54,7 @@
 # include <ShapeConstruct_Curve.hxx>
 # include <GeomAPI_IntCS.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <IntRes2d_IntersectionSegment.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>

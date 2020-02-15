@@ -37,6 +37,7 @@
 # include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <GeomAPI.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <IntRes2d_IntersectionSegment.hxx>
 #endif
 
 #ifndef M_PI
