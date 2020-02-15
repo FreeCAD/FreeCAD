@@ -86,6 +86,8 @@ public:
     /// Set sub-element visibility
     int setElementVisible(const char *, bool);
 
+    void  getElementMapVersion(std::string &ver, const App::Property *prop, bool restored) const;
+
 private:
     App::DocumentObject* object;
     bool has__object__;
@@ -107,7 +109,8 @@ private:
     FC_PY_ELEMENT(canLoadPartial)\
     FC_PY_ELEMENT(hasChildElement)\
     FC_PY_ELEMENT(isElementVisible)\
-    FC_PY_ELEMENT(setElementVisible)
+    FC_PY_ELEMENT(setElementVisible)\
+    FC_PY_ELEMENT(getElementMapVersion)\
 
 #define FC_PY_ELEMENT_DEFINE(_name) \
     Py::Object py_##_name;
@@ -303,6 +306,12 @@ public:
         if(ret>=0)
             return ret;
         return FeatureT::canLoadPartial();
+    }
+
+    virtual std::string getElementMapVersion(const App::Property *prop, bool restored=false) const override {
+        std::string ver = FeatureT::getElementMapVersion(prop, restored);
+        imp->getElementMapVersion(ver, prop, restored);
+        return ver;
     }
 
     PyObject *getPyObject(void) override {

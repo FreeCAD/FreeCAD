@@ -548,6 +548,31 @@ FeaturePythonImp::redirectSubName(std::ostringstream &ss,
     }
 }
 
+void FeaturePythonImp::getElementMapVersion(std::string &ver, const App::Property *prop, bool restored) const
+{
+    _FC_PY_CALL_CHECK(getElementMapVersion,return);
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(4);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        args.setItem(1,Py::String(ver));
+        args.setItem(2,Py::String(prop && prop->getName() ? prop->getName() : ""));
+        args.setItem(3,Py::Boolean(restored));
+        Py::Object ret(Base::pyCall(py_getElementMapVersion.ptr(),args.ptr()));
+        if (ret.isString())
+            ver = ret.as_string();
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return;
+        }
+
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
 // ---------------------------------------------------------
 
 namespace App {
