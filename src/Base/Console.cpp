@@ -944,6 +944,19 @@ int RedirectStdError::sync()
 
 //---------------------------------------------------------
 
+static int _TracePySrc;
+TracePySrc::TracePySrc(bool enable)
+    :enabled(enable)
+{
+    if(enabled)
+        ++_TracePySrc;
+}
+
+TracePySrc::~TracePySrc() {
+    if(enabled)
+        --_TracePySrc;
+}
+
 std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int line)
 {
     static FC_TIME_POINT s_tstart;
@@ -958,7 +971,11 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
         str << d.count() << ' ';
     }
     if(print_tag) str << '<' << tag << "> ";
-    if(print_src==2) {
+
+    const char *c_src = src;
+    int cline = line;
+
+    if(print_src==2 || _TracePySrc) {
         PyFrameObject* frame = PyEval_GetFrame();
         if(frame) {
             line = PyFrame_GetLineNumber(frame);
@@ -975,7 +992,16 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
 #else
         const char *_f = std::strrchr(src, '/');
 #endif
-        str << (_f?_f+1:src)<<"("<<line<<"): ";
+        str << (_f?_f+1:src)<<'('<<line<<')';
+        if(c_src && src!=c_src) {
+#ifdef FC_OS_WIN32
+            _f = std::strrchr(c_src, '\\');
+#else
+            _f = std::strrchr(c_src, '/');
+#endif
+            str << '|' << (_f?_f+1:c_src) << '(' << cline <<')';
+        }
+        str << ": ";
     }
     return str;
 }

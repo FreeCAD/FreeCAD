@@ -667,6 +667,19 @@ namespace Base {
             std::stringstream &prefix(std::stringstream &str, const char *src, int line);
     };
 
+    /// Helper class to print Python caller source file location to logger
+    /// WARNING, must hold Python GIL
+    class BaseExport TracePySrc {
+    private:
+        /// Private new operator to prevent heap allocation
+        void* operator new(size_t size);
+    public:
+        TracePySrc(bool enable=true);
+        ~TracePySrc();
+    private:
+        bool enabled;
+    };
+
 
     //=========================================================================
     // some special observers

@@ -551,6 +551,8 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject *args)
 -
 {
+    Base::TracePySrc _pyTrace;
+
 + if not i.Static and not i.Class:
     // make sure that not a null pointer is passed
     if (!self) {
@@ -647,6 +649,7 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 // has to be implemented in @self.export.Name@Imp.cpp
 PyObject * @self.export.Name@::staticCallback_get@i.Name@ (PyObject *self, void * /*closure*/)
 {
+    Base::TracePySrc _pyTrace;
     if (!static_cast<PyObjectBase*>(self)->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
         return NULL;
@@ -660,6 +663,7 @@ PyObject * @self.export.Name@::staticCallback_get@i.Name@ (PyObject *self, void 
 + if (i.ReadOnly):
 int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject * /*value*/, void * /*closure*/)
 {
+    Base::TracePySrc _pyTrace;
     if (!static_cast<PyObjectBase*>(self)->isValid()){
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
         return -1;
