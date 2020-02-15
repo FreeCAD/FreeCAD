@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <numeric>
 #include <gp_Pnt.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
