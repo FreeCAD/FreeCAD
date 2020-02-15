@@ -1,310 +1,264 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64"
-   height="64"
-   id="svg2"
+   viewBox="0 0 64.000001 64.000001"
    version="1.1"
-   inkscape:version="0.91+devel+osxmenu r12922"
-   sodipodi:docname="hbone_64.svg"
-   viewBox="0 0 64.000001 64.000001">
+   id="svg2"
+   height="64"
+   width="64">
   <defs
      id="defs4">
     <clipPath
        id="clip1">
       <path
-         id="path8169"
-         d="M 12.539062 12.5 L 13 12.5 L 13 13 L 12.539062 13 Z M 12.539062 12.5 " />
+         d="M 12.539062 12.5 L 13 12.5 L 13 13 L 12.539062 13 Z M 12.539062 12.5 "
+         id="path8169" />
     </clipPath>
     <clipPath
        id="clip2">
       <path
-         id="path8172"
-         d="M 12.539062 12.5 L 298 12.5 L 298 298 L 12.539062 298 Z M 12.539062 12.5 " />
+         d="M 12.539062 12.5 L 298 12.5 L 298 298 L 12.539062 298 Z M 12.539062 12.5 "
+         id="path8172" />
     </clipPath>
     <clipPath
        id="clip3">
       <path
-         id="path8175"
-         d="M 12.539062 154 L 441 154 L 441 582.5 L 12.539062 582.5 Z M 12.539062 154 " />
+         d="M 12.539062 154 L 441 154 L 441 582.5 L 12.539062 582.5 Z M 12.539062 154 "
+         id="path8175" />
     </clipPath>
     <clipPath
        id="clip4">
       <path
-         id="path8178"
-         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " />
+         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 "
+         id="path8178" />
     </clipPath>
     <clipPath
        id="clip5">
       <path
-         id="path8181"
-         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " />
+         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 "
+         id="path8181" />
     </clipPath>
     <clipPath
        id="clip6">
       <path
-         id="path8184"
-         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " />
+         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 "
+         id="path8184" />
     </clipPath>
     <clipPath
        id="clip7">
       <path
-         id="path8187"
-         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " />
+         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 "
+         id="path8187" />
     </clipPath>
     <clipPath
        id="clip8">
       <path
-         id="path8190"
-         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " />
+         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 "
+         id="path8190" />
     </clipPath>
     <clipPath
        id="clip9">
       <path
-         id="path8193"
-         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " />
+         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 "
+         id="path8193" />
     </clipPath>
     <clipPath
        id="clip10">
       <path
-         id="path8196"
-         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " />
+         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 "
+         id="path8196" />
     </clipPath>
     <clipPath
        id="clip11">
       <path
-         id="path8199"
-         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " />
+         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 "
+         id="path8199" />
     </clipPath>
     <clipPath
        id="clip12">
       <path
-         id="path8202"
-         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " />
+         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 "
+         id="path8202" />
     </clipPath>
     <clipPath
        id="clip13">
       <path
-         id="path8205"
-         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 " />
+         d="M 581 12.5 L 584 12.5 L 584 14 L 581 14 Z M 581 12.5 "
+         id="path8205" />
     </clipPath>
     <clipPath
        id="clip14">
       <path
-         id="path8208"
-         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 " />
+         d="M 582 12.5 L 583 12.5 L 583 13 L 582 13 Z M 582 12.5 "
+         id="path8208" />
     </clipPath>
     <clipPath
        id="clip15">
       <path
-         id="path8211"
-         d="M 297 439 L 441 439 L 441 582.5 L 297 582.5 Z M 297 439 " />
+         d="M 297 439 L 441 439 L 441 582.5 L 297 582.5 Z M 297 439 "
+         id="path8211" />
     </clipPath>
     <clipPath
        id="clip16">
       <path
-         id="path8214"
-         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " />
+         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 "
+         id="path8214" />
     </clipPath>
     <clipPath
        id="clip17">
       <path
-         id="path8217"
-         d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 " />
+         d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 "
+         id="path8217" />
     </clipPath>
     <clipPath
        id="clip18">
       <path
-         id="path8220"
-         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " />
+         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 "
+         id="path8220" />
     </clipPath>
     <clipPath
        id="clip19">
       <path
-         id="path8223"
-         d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 " />
+         d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 "
+         id="path8223" />
     </clipPath>
     <clipPath
        id="clip20">
       <path
-         id="path8226"
-         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " />
+         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 "
+         id="path8226" />
     </clipPath>
     <clipPath
        id="clip21">
       <path
-         id="path8229"
-         d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 " />
+         d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 "
+         id="path8229" />
     </clipPath>
     <clipPath
        id="clip22">
       <path
-         id="path8232"
-         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " />
+         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 "
+         id="path8232" />
     </clipPath>
     <clipPath
        id="clip23">
       <path
-         id="path8235"
-         d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 " />
+         d="M 581 581 L 584 581 L 584 582.5 L 581 582.5 Z M 581 581 "
+         id="path8235" />
     </clipPath>
     <clipPath
        id="clip24">
       <path
-         id="path8238"
-         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 " />
+         d="M 582 582 L 583 582 L 583 582.5 L 582 582.5 Z M 582 582 "
+         id="path8238" />
     </clipPath>
     <clipPath
        id="clip25">
       <path
-         id="path8241"
-         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " />
+         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 "
+         id="path8241" />
     </clipPath>
     <clipPath
        id="clip26">
       <path
-         id="path8244"
-         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " />
+         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 "
+         id="path8244" />
     </clipPath>
     <clipPath
        id="clip27">
       <path
-         id="path8247"
-         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " />
+         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 "
+         id="path8247" />
     </clipPath>
     <clipPath
        id="clip28">
       <path
-         id="path8250"
-         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " />
+         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 "
+         id="path8250" />
     </clipPath>
     <clipPath
        id="clip29">
       <path
-         id="path8253"
-         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " />
+         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 "
+         id="path8253" />
     </clipPath>
     <clipPath
        id="clip30">
       <path
-         id="path8256"
-         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " />
+         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 "
+         id="path8256" />
     </clipPath>
     <clipPath
        id="clip31">
       <path
-         id="path8259"
-         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " />
+         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 "
+         id="path8259" />
     </clipPath>
     <clipPath
        id="clip32">
       <path
-         id="path8262"
-         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " />
+         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 "
+         id="path8262" />
     </clipPath>
     <clipPath
        id="clip33">
       <path
-         id="path8265"
-         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " />
+         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 "
+         id="path8265" />
     </clipPath>
     <clipPath
        id="clip34">
       <path
-         id="path8268"
-         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 " />
+         d="M 296 581 L 299 581 L 299 582.5 L 296 582.5 Z M 296 581 "
+         id="path8268" />
     </clipPath>
     <clipPath
        id="clip35">
       <path
-         id="path8271"
-         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 " />
+         d="M 297 582 L 298 582 L 298 582.5 L 297 582.5 Z M 297 582 "
+         id="path8271" />
     </clipPath>
     <clipPath
        id="clip36">
       <path
-         id="path8274"
-         d="M 12.539062 297 L 156 297 L 156 441 L 12.539062 441 Z M 12.539062 297 " />
+         d="M 12.539062 297 L 156 297 L 156 441 L 12.539062 441 Z M 12.539062 297 "
+         id="path8274" />
     </clipPath>
     <clipPath
        id="clip37">
       <path
-         id="path8277"
-         d="M 297 297 L 583 297 L 583 582.5 L 297 582.5 Z M 297 297 " />
+         d="M 297 297 L 583 297 L 583 582.5 L 297 582.5 Z M 297 297 "
+         id="path8277" />
     </clipPath>
     <clipPath
        id="clip38">
       <path
-         id="path8280"
-         d="M 12.539062 12.5 L 156 12.5 L 156 156 L 12.539062 156 Z M 12.539062 12.5 " />
+         d="M 12.539062 12.5 L 156 12.5 L 156 156 L 12.539062 156 Z M 12.539062 12.5 "
+         id="path8280" />
     </clipPath>
     <clipPath
        id="clip39">
       <path
-         id="path8283"
-         d="M 297 12.5 L 583 12.5 L 583 298 L 297 298 Z M 297 12.5 " />
+         d="M 297 12.5 L 583 12.5 L 583 298 L 297 298 Z M 297 12.5 "
+         id="path8283" />
     </clipPath>
     <clipPath
        id="clip40">
       <path
-         id="path8286"
-         d="M 12.539062 12.5 L 583 12.5 L 583 582.5 L 12.539062 582.5 Z M 12.539062 12.5 " />
+         d="M 12.539062 12.5 L 583 12.5 L 583 582.5 L 12.539062 582.5 Z M 12.539062 12.5 "
+         id="path8286" />
     </clipPath>
     <clipPath
        id="clip41">
       <path
-         id="path8289"
-         d="M 12.539062 12.5 L 13 12.5 L 13 582.5 L 12.539062 582.5 Z M 12.539062 12.5 " />
+         d="M 12.539062 12.5 L 13 12.5 L 13 582.5 L 12.539062 582.5 Z M 12.539062 12.5 "
+         id="path8289" />
     </clipPath>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#c0c0c0"
-     borderopacity="1"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="9.0275169"
-     inkscape:cx="24.426328"
-     inkscape:cy="28.11505"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     showguides="true"
-     inkscape:guide-bbox="true"
-     inkscape:object-nodes="true"
-     guidecolor="#0092ff"
-     guideopacity="0.49803922"
-     guidehicolor="#ff5200"
-     guidehiopacity="0.49803922"
-     fit-margin-top="10"
-     fit-margin-left="10"
-     fit-margin-right="10"
-     fit-margin-bottom="10"
-     inkscape:snap-global="true"
-     inkscape:window-width="2560"
-     inkscape:window-height="1329"
-     inkscape:window-x="0"
-     inkscape:window-y="23"
-     inkscape:window-maximized="0"
-     borderlayer="true"
-     units="px"
-     inkscape:showpageshadow="false">
-    <inkscape:grid
-       type="xygrid"
-       id="grid8143"
-       spacingx="8.0000001"
-       spacingy="8.0000001"
-       empspacing="4" />
-  </sodipodi:namedview>
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -329,39 +283,31 @@
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Capa 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(-240.06625,-450.59799)">
+     transform="translate(-240.06625,-450.59799)"
+     id="layer1">
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 240.06625,450.59799 16,16"
        id="path8652"
-       inkscape:connector-curvature="0" />
+       d="m 240.06625,450.59799 16,16"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 240.06625,482.59799 32,-32 16,16 -32,32 z"
        id="path8654"
-       inkscape:connector-curvature="0" />
+       d="m 240.06625,482.59799 32,-32 16,16 -32,32 z"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 304.06625,482.59799 -16,-16"
        id="path8656"
-       inkscape:connector-curvature="0" />
+       d="m 304.06625,482.59799 -16,-16"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 304.06625,514.59799 -32,-32"
        id="path8658"
-       inkscape:connector-curvature="0" />
+       d="m 304.06625,514.59799 -32,-32"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 288.06625,498.59799 -16,16"
        id="path8660"
-       inkscape:connector-curvature="0" />
+       d="m 288.06625,498.59799 -16,16"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 240.06625,514.59799 16,-16"
        id="path8662"
-       inkscape:connector-curvature="0" />
+       d="m 240.06625,514.59799 16,-16"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   </g>
 </svg>
