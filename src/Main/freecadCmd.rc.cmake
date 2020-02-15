@@ -10,7 +10,7 @@
 // remains consistent on all systems.
 IDI_ICON1               ICON    DISCARDABLE     "icon.ico"
 
-// File info for the FreeCAD.exe
+// File info for the FreeCADCmd.exe
 //
 1 VERSIONINFO 
 FILEVERSION ${PACKAGE_VERSION_MAJOR},${PACKAGE_VERSION_MINOR},${FREECAD_VERSION_PATCH},${PACKAGE_VERSION_PATCH}
@@ -20,10 +20,10 @@ BEGIN
         BLOCK "040904b0" // 409 stands for US English
         BEGIN
             VALUE "CompanyName", "${PROJECT_NAME} Team"
-            VALUE "FileDescription", "${PROJECT_NAME} main executable"
-            VALUE "InternalName", "FreeCAD.exe"
+            VALUE "FileDescription", "${PROJECT_NAME} command line executable"
+            VALUE "InternalName", "FreeCADCmd.exe"
             VALUE "LegalCopyright", "Copyright (C) 2020"
-            VALUE "OriginalFilename", "FreeCAD.exe"
+            VALUE "OriginalFilename", "FreeCADCmd.exe"
             VALUE "ProductName", "${PROJECT_NAME}"
             VALUE "ProductVersion", "${FREECAD_VERSION}.${FREECAD_VERSION_PATCH}${PACKAGE_VERSION_SUFFIX}"
         END
