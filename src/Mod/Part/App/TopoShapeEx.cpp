@@ -212,6 +212,43 @@ static void expandCompound(const TopoShape &shape, std::vector<TopoShape> &res) 
         expandCompound(s,res);
 }
 
+void ShapeMapper::populate(bool generated, const TopoShape &src, const std::vector<TopoShape> &dst) {
+    auto insert = [](ShapeMap &map,
+                     const TopoDS_Shape &s,
+                     const std::unordered_set<TopoDS_Shape> &d) {
+        auto &entry = map[s];
+        for(auto &shape : d) {
+            if(entry.shapeSet.insert(shape).second)
+                entry.shapes.push_back(shape);
+        }
+    };
+
+    if(src.isNull())
+        return;
+
+    auto &map = generated?_generated:_modified;
+
+    std::unordered_set<TopoDS_Shape> dstShapes;
+    for(auto &d : dst) {
+        if(d.isNull())
+            continue;
+        for(TopExp_Explorer xp(d.getShape(), TopAbs_FACE);xp.More();xp.Next())
+            dstShapes.insert(xp.Current());
+        for(TopExp_Explorer xp(d.getShape(), TopAbs_EDGE, TopAbs_FACE);xp.More();xp.Next())
+            dstShapes.insert(xp.Current());
+        for(TopExp_Explorer xp(d.getShape(), TopAbs_VERTEX, TopAbs_EDGE);xp.More();xp.Next())
+            dstShapes.insert(xp.Current());
+    }
+    if(shapeSet.insert(src.getShape()).second)
+        shapes.push_back(src);
+    for(TopExp_Explorer xp(src.getShape(), TopAbs_FACE);xp.More();xp.Next())
+        insert(map, xp.Current(), dstShapes);
+    for(TopExp_Explorer xp(src.getShape(), TopAbs_EDGE, TopAbs_FACE);xp.More();xp.Next())
+        insert(map, xp.Current(), dstShapes);
+    for(TopExp_Explorer xp(src.getShape(), TopAbs_VERTEX, TopAbs_EDGE);xp.More();xp.Next())
+        insert(map, xp.Current(), dstShapes);
+}
+
 struct ShapeRelationKey {
     std::string name;
     bool sameType;
@@ -1019,19 +1056,19 @@ struct MapperMaker: Part::TopoShape::Mapper {
     MapperMaker(BRepBuilderAPI_MakeShape &maker)
         :maker(maker)
     {}
-    virtual std::vector<TopoDS_Shape> modified(const TopoDS_Shape &s) const override {
-        std::vector<TopoDS_Shape> ret;
+    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override {
+        _res.clear();
         TopTools_ListIteratorOfListOfShape it;
         for (it.Initialize(maker.Modified(s)); it.More(); it.Next())
-            ret.push_back(it.Value());
-        return ret;
+            _res.push_back(it.Value());
+        return _res;
     }
-    virtual std::vector<TopoDS_Shape> generated(const TopoDS_Shape &s) const override {
-        std::vector<TopoDS_Shape> ret;
+    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override {
+        _res.clear();
         TopTools_ListIteratorOfListOfShape it;
         for (it.Initialize(maker.Generated(s)); it.More(); it.Next())
-            ret.push_back(it.Value());
-        return ret;
+            _res.push_back(it.Value());
+        return _res;
     }
 };
 
@@ -1048,18 +1085,18 @@ struct MapperThruSections: MapperMaker {
         if(!tmaker.LastShape().IsNull())
             lastProfile = profiles.back();
     }
-    virtual std::vector<TopoDS_Shape> generated(const TopoDS_Shape &s) const override {
-        std::vector<TopoDS_Shape> ret = MapperMaker::generated(s);
-        if(ret.size()) return ret;
+    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override {
+        MapperMaker::generated(s);
+        if(_res.size()) return _res;
         auto &tmaker = static_cast<BRepOffsetAPI_ThruSections&>(maker);
         auto shape = tmaker.GeneratedFace(s);
         if(!shape.IsNull())
-            ret.push_back(shape);
+            _res.push_back(shape);
         if(firstProfile.getShape().IsSame(s) || firstProfile.findShape(s))
-            ret.push_back(tmaker.FirstShape());
+            _res.push_back(tmaker.FirstShape());
         else if(lastProfile.getShape().IsSame(s) || lastProfile.findShape(s))
-            ret.push_back(tmaker.LastShape());
-        return ret;
+            _res.push_back(tmaker.LastShape());
+        return _res;
     }
 };
 
@@ -1187,17 +1224,17 @@ struct MapperSewing: Part::TopoShape::Mapper {
     MapperSewing(BRepBuilderAPI_Sewing &maker)
         :maker(maker)
     {}
-    virtual std::vector<TopoDS_Shape> modified(const TopoDS_Shape &s) const override {
-        std::vector<TopoDS_Shape> ret;
+    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override {
+        _res.clear();
         const auto &shape = maker.Modified(s);
         if(!shape.IsNull() && !shape.IsSame(s))
-            ret.push_back(shape);
+            _res.push_back(shape);
         else {
             const auto &sshape = maker.ModifiedSubShape(s);
             if(!sshape.IsNull() && !sshape.IsSame(s))
-                ret.push_back(sshape);
+                _res.push_back(sshape);
         }
-        return ret;
+        return _res;
     }
 };
 

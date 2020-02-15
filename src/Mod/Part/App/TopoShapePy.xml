@@ -9,6 +9,7 @@
       Namespace="Part" 
       FatherInclude="App/ComplexGeoDataPy.h" 
       FatherNamespace="Data"
+ 	  RichCompare="true"
       Constructor="true">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
@@ -709,10 +710,27 @@ infos contains additional info on the solutions. It is a list of tuples:
     <Methode Name="mapSubElement">
       <Documentation>
         <UserDocu>
-mapSubElement(shape|[shape...], op=None) - maps the sub element of other shape
+mapSubElement(shape|[shape...], op='') - maps the sub element of other shape
 
 shape:  other shape or sequence of shapes to map the sub-elements
 op:     optional string prefix to append before the mapped sub element names
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="mapShapes">
+      <Documentation>
+        <UserDocu>
+mapShapes(generated, modified, op='')
+
+generate element names with user defined mapping
+
+generated: a list of tuple(src, dst) that indicating src shape(shapes..)
+           generates dst shape(shapes). Note that the dst shape(shapes) 
+           must be sub-shapes of this shape.
+modified: a list of tuple(src, dst) that indicating src shape(shapes..)
+          modifies dst shape(shapes). Note that the dst shape(shapes) 
+          must be sub-shapes of this shape.
+op: optional string prefix to append before the mapped sub element names
         </UserDocu>
       </Documentation>
     </Methode>

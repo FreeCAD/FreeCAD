@@ -69,6 +69,8 @@
 # include <Standard_Version.hxx>
 #endif
 
+#include <unordered_set>
+#include <unordered_map>
 #include <boost/algorithm/string.hpp>
 
 #include <Base/GeometryPyCXX.h>
@@ -108,6 +110,22 @@ using namespace Part;
 #ifndef M_PI_2
     #define M_PI_2  1.57079632679489661923 /* pi/2 */
 #endif
+
+struct TopoShapePyInit {
+    TopoShapePyInit() {
+        TopoShapePy::Type.tp_hash = [](PyObject *self) -> long {
+            if (!self) {
+                PyErr_SetString(PyExc_TypeError, "descriptor 'hash' of 'Part.TopoShape' object needs an argument");
+                return 0;
+            }
+            if (!static_cast<Base::PyObjectBase*>(self)->isValid()) {
+                PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
+                return 0;
+            }
+            return static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape().HashCode(INT_MAX);
+        };
+    }
+} _TopoShapePyInit;
 
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapePy::representation(void) const
@@ -2908,6 +2926,51 @@ PyObject *TopoShapePy::getRelatedElements(PyObject *args) {
     }PY_CATCH_OCC
 }
 
+struct PyShapeMapper: Part::ShapeMapper {
+    bool populate(bool generated, PyObject *pyobj) {
+        if(!pyobj || pyobj == Py_None)
+            return true;
+        try {
+            Py::Sequence seq(pyobj);
+            for(size_t i=0, count=seq.size(); i<count; ++i) {
+                Py::Sequence item(seq[i].ptr());
+                if(item.size() != 2)
+                    return false;
+
+                Part::ShapeMapper::populate(generated,
+                        getPyShapes(item[0].ptr()), getPyShapes(item[1].ptr()));
+            }
+        } catch (Py::Exception &) {
+            PyErr_Clear();
+            return false;
+        }
+        return true;
+    }
+
+    void init(PyObject *g, PyObject *m) {
+        const char *msg = "Expect input mapping to be a list of tuple(srcShape|shapeList, dstShape|shapeList)";
+        if(!populate(true,g) || !populate(false,m))
+            throw Py::TypeError(msg);
+    }
+};
+
+PyObject *TopoShapePy::mapShapes(PyObject *args) {
+    PyObject *generated;
+    PyObject *modified;
+    const char *op = 0;
+    if (!PyArg_ParseTuple(args, "OO|s", &generated, &modified, &op))
+        return 0;
+    PY_TRY {
+        PyShapeMapper mapper;
+        mapper.init(generated, modified);
+        TopoShape &self = *getTopoShapePtr();
+        TopoShape s(self.Tag, self.Hasher);
+        s.makESHAPE(self.getShape(), mapper, mapper.shapes, op);
+        self = s;
+        return IncRef();
+    }PY_CATCH_OCC
+}
+
 PyObject *TopoShapePy::mapSubElement(PyObject *args) {
     const char *op = 0;
     PyObject *sh;
@@ -2917,6 +2980,38 @@ PyObject *TopoShapePy::mapSubElement(PyObject *args) {
         getTopoShapePtr()->mapSubElement(getPyShapes(sh),op);
         return IncRef();
     }PY_CATCH_OCC
+}
+
+PyObject* TopoShapePy::richCompare(PyObject *v, PyObject *w, int op)
+{
+    if (PyObject_TypeCheck(v, &(TopoShapePy::Type)) &&
+        PyObject_TypeCheck(w, &(TopoShapePy::Type))) {
+
+        const auto &s1 = static_cast<TopoShapePy*>(v)->getTopoShapePtr()->getShape();
+        const auto &s2 = static_cast<TopoShapePy*>(w)->getTopoShapePtr()->getShape();
+
+        PyObject *res=0;
+        if (op != Py_EQ && op != Py_NE) {
+            PyErr_SetString(PyExc_TypeError,
+            "no ordering relation is defined for Shape");
+            return 0;
+        }
+        else if (op == Py_EQ) {
+            res = (s1.IsEqual(s2)) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else {
+            res = (!s1.IsEqual(s2)) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+    }
+    else {
+        // This always returns False
+        Py_INCREF(Py_NotImplemented);
+        return Py_NotImplemented;
+    }
 }
 
 PyObject *TopoShapePy::getCustomAttributes(const char* attr) const

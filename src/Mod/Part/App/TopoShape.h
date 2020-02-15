@@ -26,6 +26,9 @@
 
 #include <memory>
 #include <iostream>
+#include <climits>
+#include <unordered_map>
+#include <unordered_set>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
@@ -98,8 +101,6 @@ public:
     TopoDS_Shape Shape;
 };
 
-
-
 /** The representation for a CAD Shape
  */
 class PartExport TopoShape : public Data::ComplexGeoData
@@ -130,6 +131,10 @@ public:
     }
 
     void operator = (const TopoShape&);
+
+    bool operator == (const TopoShape &other) const {
+        return _Shape.IsEqual(other._Shape);
+    }
 
     /** @name Placement control */
     //@{
@@ -403,13 +408,16 @@ public:
     }
 
     struct Mapper {
-        virtual std::vector<TopoDS_Shape> generated(const TopoDS_Shape &) const {
-            return std::vector<TopoDS_Shape>();
+        mutable std::vector<TopoDS_Shape> _res;
+        virtual ~Mapper() {}
+        virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &) const {
+            return _res;
         }
-        virtual std::vector<TopoDS_Shape> modified(const TopoDS_Shape &) const {
-            return std::vector<TopoDS_Shape>();
+        virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &) const {
+            return _res;
         }
     };
+
     TopoShape &makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper, 
             const std::vector<TopoShape> &sources, const char *op=0);
 
@@ -647,5 +655,67 @@ private:
 
 } //namespace Part
 
+
+namespace std {
+
+template<> 
+struct hash<Part::TopoShape> {
+    typedef Part::TopoShape argument_type;
+    typedef std::size_t result_type;
+    inline result_type operator()(argument_type const& s) const {
+        return s.getShape().HashCode(INT_MAX);
+    }
+};
+
+template<> 
+struct hash<TopoDS_Shape> {
+    typedef TopoDS_Shape argument_type;
+    typedef std::size_t result_type;
+    inline result_type operator()(argument_type const& s) const {
+        return s.HashCode(INT_MAX);
+    }
+};
+
+} //namespace std
+
+
+namespace Part {
+
+struct PartExport ShapeMapper: TopoShape::Mapper {
+
+    void populate(bool generated, const TopoShape &src, const std::vector<TopoShape> &dst);
+
+    void populate(bool generated, const std::vector<TopoShape> &src, const std::vector<TopoShape> &dst) {
+        for(auto &s : src)
+            populate(generated,s,dst);
+    }
+
+    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override {
+        auto iter = _generated.find(s);
+        if(iter != _generated.end())
+            return iter->second.shapes;
+        return _res;
+    }
+
+    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override {
+        auto iter = _modified.find(s);
+        if(iter != _modified.end())
+            return iter->second.shapes;
+        return _res;
+    }
+
+    std::vector<TopoShape> shapes;
+    std::unordered_set<TopoDS_Shape> shapeSet;
+
+    struct ShapeValue {
+        std::vector<TopoDS_Shape> shapes;
+        std::unordered_set<TopoDS_Shape> shapeSet;
+    };
+    typedef std::unordered_map<TopoDS_Shape, ShapeValue> ShapeMap;
+    ShapeMap _generated;
+    ShapeMap _modified;
+};
+
+} // namespace Part
 
 #endif // PART_TOPOSHAPE_H
