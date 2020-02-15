@@ -67,6 +67,8 @@ private Q_SLOTS:
     virtual void onFeatureDeleted(void);
 
 protected:
+    virtual void addObject(App::DocumentObject*);
+    virtual void removeObject(App::DocumentObject*);
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     virtual void clearButtons();
