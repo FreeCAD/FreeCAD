@@ -131,6 +131,9 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
         DressUpView->highlightReferences(true);
+    } else {
+        exitSelectionMode();
+        DressUpView->highlightReferences(false);
     }
 }
 
@@ -143,6 +146,10 @@ void TaskDressUpParameters::onButtonRefRemove(const bool checked)
         Gui::Selection().clearSelection();        
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
         DressUpView->highlightReferences(true);
+    }
+    else {
+        exitSelectionMode();
+        DressUpView->highlightReferences(false);
     }
 }
 
