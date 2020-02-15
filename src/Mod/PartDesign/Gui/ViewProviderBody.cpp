@@ -229,6 +229,9 @@ void ViewProviderBody::updateData(const App::Property* prop)
 
 
 void ViewProviderBody::updateOriginSize () {
+    if(App::GetApplication().isRestoring())
+        return;
+
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
 
     const auto & model = body->getFullModel ();
@@ -276,8 +279,8 @@ void ViewProviderBody::updateOriginSize () {
         }
         assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
         vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );
-    } catch (const Base::Exception &ex) {
-        Base::Console().Error ("%s\n", ex.what() );
+    } catch (const Base::Exception &e) {
+        e.ReportException();
         return;
     }
 
