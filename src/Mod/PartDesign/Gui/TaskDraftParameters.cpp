@@ -128,8 +128,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
             else
                 removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-            clearButtons(none);
-            exitSelectionMode();
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         } else if (selectionMode == plane) {
             PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
             std::vector<std::string> planes;
@@ -142,8 +142,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->linePlane->setText(getRefStr(selObj, planes));
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
-            clearButtons(none);
-            exitSelectionMode();
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         } else if (selectionMode == line) {
             PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
             std::vector<std::string> edges;
@@ -156,8 +156,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->lineLine->setText(getRefStr(selObj, edges));
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
-            clearButtons(none);
-            exitSelectionMode();
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         }
     }
 }
