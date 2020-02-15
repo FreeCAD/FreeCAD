@@ -190,6 +190,8 @@ protected:
     void checkVisibility();
 
 protected:
+    virtual void addObject(App::DocumentObject*);
+    virtual void removeObject(App::DocumentObject*);
     /** Notifies when the object is about to be removed. */
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
     virtual void changeEvent(QEvent *e) = 0;
