@@ -128,8 +128,8 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
             else
                 removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-            clearButtons(none);
-            exitSelectionMode();
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         } 
     }
 }

@@ -187,10 +187,10 @@ This feature may slightly increase recomputation time.</string>
          <string>Allow aborting recomputation</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>CanAbortRecompute</string>
+         <cstring>CanAbortRecompute</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Document</string>
+         <cstring>Document</cstring>
         </property>
        </widget>
       </item>

@@ -141,7 +141,7 @@ class _FemResultMechanical():
             "App::PropertyFloatList",
             "vonMises",
             "NodeData",
-            "",
+            "List of von Mises equivalent stresses",
             True
         )
         obj.addProperty(
@@ -300,6 +300,20 @@ class _FemResultMechanical():
 
     def onChanged(self, obj, prop):
         return
+
+    def onDocumentRestored(self, obj):
+        # migrate old result objects, because property "StressValues"
+        # was renamed to "vonMises" wirh commit 8b68ab7
+        if hasattr(obj, "StressValues") == True:
+            obj.addProperty(
+                "App::PropertyFloatList",
+                "vonMises",
+                "NodeData",
+                "List of von Mises equivalent stresses",
+                True
+            )
+            obj.vonMises = obj.StressValues
+            obj.removeProperty("StressValues")
 
     def __getstate__(self):
         return self.Type
