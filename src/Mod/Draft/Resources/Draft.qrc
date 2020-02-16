@@ -48,6 +48,9 @@
         <file>icons/Draft_Macro.svg</file>
         <file>icons/Draft_Mirror.svg</file>
         <file>icons/Draft_Move.svg</file>
+        <file>icons/Draft_N-Curve.svg</file>
+        <file>icons/Draft_N-Linear.svg</file>
+        <file>icons/Draft_N-Polygon.svg</file>
         <file>icons/Draft_Offset.svg</file>
         <file>icons/Draft_PathArray.svg</file>
         <file>icons/Draft_PathLinkArray.svg</file>
