@@ -58,7 +58,7 @@ class Prepare(run.Prepare):
         w = writer.FemInputWriterZ88(
             self.analysis,
             self.solver,
-            c.mesh,
+            femutils.get_mesh_to_solve(self.analysis)[0],  # pre check hast been done already
             c.materials_linear,
             c.materials_nonlinear,
             c.constraints_fixed,
@@ -154,19 +154,6 @@ class _Container(object):
 
     def __init__(self, analysis):
         self.analysis = analysis
-
-        # get mesh
-        mesh, message = femutils.get_mesh_to_solve(self.analysis)
-        if mesh is not None:
-            self.mesh = mesh
-        else:
-            if FreeCAD.GuiUp:
-                QtGui.QMessageBox.critical(
-                    None,
-                    "Missing prerequisite",
-                    message
-                )
-            raise Exception(message + "\n")
 
         # get member, empty lists are not supported by z88
         # materials
