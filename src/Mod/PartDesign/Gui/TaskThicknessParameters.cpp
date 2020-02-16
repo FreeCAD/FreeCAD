@@ -181,12 +181,6 @@ void TaskThicknessParameters::clearButtons(const selectionModes notThis)
 
 void TaskThicknessParameters::onRefDeleted(void)
 {
-    // get vector of selected objects of active document to assure we have a valid selection
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-    if (selection.size() == 0) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
-        return;
-    }
     // assure we we are not in selection mode
     exitSelectionMode();
     clearButtons(none);
