@@ -170,26 +170,21 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
     // remove any highlights andd selections
     DressUpView->highlightReferences(false);
     Gui::Selection().clearSelection();
+
+    // enable next possible single-click event after double-click time passed
+    QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
 }
 
 void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
-    // it might be a double-click, thus check this
-
-    if (!wasDoubleClicked) {
-        // we treat it as single-click event once the QApplication double-click time is passed
-        QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
-        SingleClickedItem = current;
-    }
-}
-
-void TaskDressUpParameters::itemClickedTimeout() {
     // executed when the user selected an item in the list (but double-clicked it)
     // highlights the currently selected item
 
     if (!wasDoubleClicked) {
-        //QMessageBox::warning(this, tr("itemClickedTimeout"), tr("itemClickedTimeout"));
+        // we treat it as single-click event once the QApplication double-click time is passed
+        QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
+
         // name of the item
-        std::string subName = SingleClickedItem->text().toStdString();
+        std::string subName = current->text().toStdString();
         // get the document name
         std::string docName = DressUpView->getObject()->getDocument()->getName();
         // get the name of the body we are in
@@ -206,7 +201,11 @@ void TaskDressUpParameters::itemClickedTimeout() {
         // highligh the selected item
         Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
     }
-    else wasDoubleClicked = false;
+}
+
+void TaskDressUpParameters::itemClickedTimeout() {
+    // executed after double-click time passed
+    wasDoubleClicked = false;
 }
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const

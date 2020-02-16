@@ -69,7 +69,6 @@ protected Q_SLOTS:
 protected:
     void exitSelectionMode();
     bool referenceSelected(const Gui::SelectionChanges& msg);
-    QListWidgetItem* SingleClickedItem;
     bool wasDoubleClicked = false;
 
 protected:
