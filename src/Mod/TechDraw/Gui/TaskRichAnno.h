@@ -107,7 +107,6 @@ private:
     bool blockUpdate;
 
     MDIViewPage* m_mdi;
-    QGraphicsScene* m_scene;
     QGVPage* m_view;
     ViewProviderRichAnno* m_annoVP;
     TechDraw::DrawView* m_baseFeat;
@@ -131,6 +130,7 @@ private:
     QDialog* m_textDialog;
     MRichTextEdit* m_rte;
     QString m_title;
+    bool m_haveMdi;
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog
