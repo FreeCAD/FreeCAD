@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QListWidget>
 #endif
 
 #include "ui_TaskThicknessParameters.h"
@@ -131,6 +132,9 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // executed when the user selected something in the CAD object
+    // adds/deletes the selection accordingly
+
     if (selectionMode == none)
         return;
 
@@ -177,23 +181,39 @@ void TaskThicknessParameters::clearButtons(const selectionModes notThis)
 
 void TaskThicknessParameters::onRefDeleted(void)
 {
+    // get vector of selected objects of active document to assure we have a valid selection
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    if (selection.size() == 0) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        return;
+    }
     // assure we we are not in selection mode
     exitSelectionMode();
     clearButtons(none);
-    // delete any selections since the reference might be highlighted
+    // delete any selections since the reference(s) might be highlighted
     Gui::Selection().clearSelection();
     DressUpView->highlightReferences(false);
 
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
-    App::DocumentObject* base = pcThickness->Base.getValue();
-    std::vector<std::string> faces = pcThickness->Base.getSubValues();
-    faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
-    setupTransaction();
-    pcThickness->Base.setValue(base, faces);
-    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
-    clearButtons(none);
-    exitSelectionMode();
+    // get the list of items to be deleted
+    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
+
+    // delete the selection backwards to assure the list index keeps valid for the deletion
+    for (int i = selectedList.count() - 1; i > -1; i--) {
+        QListWidgetItem* item = selectedList.at(i);
+        // get the fillet object
+        PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+        App::DocumentObject* base = pcThickness->Base.getValue();
+        // get all fillet references
+        std::vector<std::string> refs = pcThickness->Base.getSubValues();
+        // the ref index is the same as the listWidgetReferences index
+        // so we can erase using the row number of the element to be deleted
+        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
+        refs.erase(refs.begin() + rowNumber);
+        setupTransaction();
+        pcThickness->Base.setValue(base, refs);
+        ui->listWidgetReferences->model()->removeRow(rowNumber);
+        pcThickness->getDocument()->recomputeFeature(pcThickness);
+    }
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {

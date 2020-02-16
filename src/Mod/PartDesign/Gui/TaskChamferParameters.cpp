@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QListWidget>
 #endif
 
 #include "ui_TaskChamferParameters.h"
@@ -109,6 +110,9 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
 
 void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // executed when the user selected something in the CAD object
+    // adds/deletes the selection accordingly
+
     if (selectionMode == none)
         return;
 
@@ -155,21 +159,39 @@ void TaskChamferParameters::clearButtons(const selectionModes notThis)
 
 void TaskChamferParameters::onRefDeleted(void)
 {
+    // get vector of selected objects of active document to assure we have a valid selection
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    if (selection.size() == 0) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        return;
+    }
     // assure we we are not in selection mode
     exitSelectionMode();
     clearButtons(none);
-    // delete any selections since the reference might be highlighted
+    // delete any selections since the reference(s) might be highlighted
     Gui::Selection().clearSelection();
     DressUpView->highlightReferences(false);
 
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    App::DocumentObject* base = pcChamfer->Base.getValue();
-    std::vector<std::string> refs = pcChamfer->Base.getSubValues();
-    refs.erase(refs.begin() + ui->listWidgetReferences->currentRow());
-    setupTransaction();
-    pcChamfer->Base.setValue(base, refs);
-    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    // get the list of items to be deleted
+    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
+
+    // delete the selection backwards to assure the list index keeps valid for the deletion
+    for (int i = selectedList.count() - 1; i > -1; i--) {
+        QListWidgetItem* item = selectedList.at(i);
+        // get the fillet object
+        PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+        App::DocumentObject* base = pcChamfer->Base.getValue();
+        // get all fillet references
+        std::vector<std::string> refs = pcChamfer->Base.getSubValues();
+        // the ref index is the same as the listWidgetReferences index
+        // so we can erase using the row number of the element to be deleted
+        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
+        refs.erase(refs.begin() + rowNumber);
+        setupTransaction();
+        pcChamfer->Base.setValue(base, refs);
+        ui->listWidgetReferences->model()->removeRow(rowNumber);
+        pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    }
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
