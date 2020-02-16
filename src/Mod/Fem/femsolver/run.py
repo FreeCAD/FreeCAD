@@ -146,6 +146,17 @@ def run_fem_solver(solver, working_dir=None):
             machine.target = RESULTS
             machine.start()
             machine.join()  # wait for the machine to finish.
+            if machine.failed is True:
+                App.Console.PrintError("Machine failed to run.\n")
+                from .report import displayLog
+                displayLog(machine.report)
+                if App.GuiUp:
+                    error_message = (
+                        "Failed to run. Please try again after all "
+                        "of the following errors are resolved."
+                    )
+                    from .report import display
+                    display(machine.report, "Run Report", error_message)
 
 
 def getMachine(solver, path=None):
