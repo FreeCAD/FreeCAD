@@ -225,10 +225,11 @@ void TaskDressUpParameters::hideObject()
 
 void TaskDressUpParameters::showObject()
 {
-    DressUpView->getObject()->Visibility.setValue(true);
     App::DocumentObject* base = getBase();
-    if (base) 
+    if (base) {
+        DressUpView->getObject()->Visibility.setValue(true);
         base->Visibility.setValue(false);
+    }
 }
 
 Part::Feature* TaskDressUpParameters::getBase(void) const
