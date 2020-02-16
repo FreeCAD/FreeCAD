@@ -174,7 +174,7 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
 }
 
 void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
-    // executed when the user selected an item in the list (but double-clicked it)
+    // executed when the user selected an item in the list (but not double-clicked it)
     // highlights the currently selected item
 
     if (!wasDoubleClicked) {
@@ -235,7 +235,6 @@ void TaskDressUpParameters::hideObject()
 
 void TaskDressUpParameters::showObject()
 {
-    DressUpView->getObject()->Visibility.setValue(true);
     App::DocumentObject* base = getBase();
     if (base) {
         DressUpView->getObject()->Visibility.setValue(true);
