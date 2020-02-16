@@ -25,8 +25,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QListWidget>
 # include <QListWidgetItem>
+# include <QTimer>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
