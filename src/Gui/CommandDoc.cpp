@@ -1291,13 +1291,22 @@ StdCmdRefresh::StdCmdRefresh()
     sAccel        = keySequenceToAccel(QKeySequence::Refresh);
     eType         = AlterDoc | Alter3DView | AlterSelection | ForEdit;
     bCanLog        = false;
+
+    // Make it optional to create a transaction for a recompute.
+    // The new default behaviour is quite cumbersome in some cases because when
+    // undoing the last transaction the manual recompute will clear the redo stack.
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Document");
+    bool create = hGrp->GetBool("TransactionOnRecompute", true);
+    if (!create)
+        eType = eType | NoTransaction;
 }
 
 void StdCmdRefresh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (getActiveGuiDocument()) {
-        App::AutoTransaction trans("Recompute");
+        App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
         try {
             doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
         }
