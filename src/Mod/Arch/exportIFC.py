@@ -1812,44 +1812,49 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                     pl = extdata[2]
                     if not isinstance(pl,list):
                         pl = [pl]
-                    for i in range(len(p)):
-                        pi = p[i]
-                        pi.scale(preferences['SCALE_FACTOR'])
-                        if i < len(ev):
-                            evi = FreeCAD.Vector(ev[i])
-                        else:
-                            evi = FreeCAD.Vector(ev[-1])
-                        evi.multiply(preferences['SCALE_FACTOR'])
-                        if i < len(pl):
-                            pli = pl[i].copy()
-                        else:
-                            pli = pl[-1].copy()
-                        pli.Base = pli.Base.multiply(preferences['SCALE_FACTOR'])
-                        pstr = str([v.Point for v in p[i].Vertexes])
-                        if pstr in profiledefs:
-                            profile = profiledefs[pstr]
-                            shapetype = "reusing profile"
-                        else:
-                            profile = getProfile(ifcfile,pi)
-                            if profile:
-                                profiledefs[pstr] = profile
-                        if profile and not(DraftVecUtils.isNull(evi)):
-                            #ev = pl.Rotation.inverted().multVec(evi)
-                            #print("evi:",evi)
-                            if not tostore:
-                                # add the object placement to the profile placement. Otherwise it'll be done later at map insert
-                                pl2 = obj.getGlobalPlacement()
-                                pl2.Base = pl2.Base.multiply(preferences['SCALE_FACTOR'])
-                                pli = pl2.multiply(pli)
-                            xvc =       ifcbin.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(1,0,0))))
-                            zvc =       ifcbin.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(0,0,1))))
-                            ovc =       ifcbin.createIfcCartesianPoint(tuple(pli.Base))
-                            lpl =       ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                            edir =      ifcbin.createIfcDirection(tuple(FreeCAD.Vector(evi).normalize()))
-                            shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,evi.Length)
-                            shapes.append(shape)
-                            solidType = "SweptSolid"
-                            shapetype = "extrusion"
+                    simpleExtrusion = True
+                    for evi in ev:
+                        if not isinstance(evi, FreeCAD.Vector):
+                            simpleExtrusion = False
+                    if simpleExtrusion:
+                        for i in range(len(p)):
+                            pi = p[i]
+                            pi.scale(preferences['SCALE_FACTOR'])
+                            if i < len(ev):
+                                evi = FreeCAD.Vector(ev[i])
+                            else:
+                                evi = FreeCAD.Vector(ev[-1])
+                            evi.multiply(preferences['SCALE_FACTOR'])
+                            if i < len(pl):
+                                pli = pl[i].copy()
+                            else:
+                                pli = pl[-1].copy()
+                            pli.Base = pli.Base.multiply(preferences['SCALE_FACTOR'])
+                            pstr = str([v.Point for v in p[i].Vertexes])
+                            if pstr in profiledefs:
+                                profile = profiledefs[pstr]
+                                shapetype = "reusing profile"
+                            else:
+                                profile = getProfile(ifcfile,pi)
+                                if profile:
+                                    profiledefs[pstr] = profile
+                            if profile and not(DraftVecUtils.isNull(evi)):
+                                #ev = pl.Rotation.inverted().multVec(evi)
+                                #print("evi:",evi)
+                                if not tostore:
+                                    # add the object placement to the profile placement. Otherwise it'll be done later at map insert
+                                    pl2 = obj.getGlobalPlacement()
+                                    pl2.Base = pl2.Base.multiply(preferences['SCALE_FACTOR'])
+                                    pli = pl2.multiply(pli)
+                                xvc =       ifcbin.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+                                zvc =       ifcbin.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+                                ovc =       ifcbin.createIfcCartesianPoint(tuple(pli.Base))
+                                lpl =       ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
+                                edir =      ifcbin.createIfcDirection(tuple(FreeCAD.Vector(evi).normalize()))
+                                shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,evi.Length)
+                                shapes.append(shape)
+                                solidType = "SweptSolid"
+                                shapetype = "extrusion"
 
     if not shapes:
 
