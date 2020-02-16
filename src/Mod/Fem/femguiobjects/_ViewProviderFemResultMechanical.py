@@ -514,7 +514,7 @@ class _TaskPanelFemResultShow:
         yacc.parse(input="UserDefinedFormula={0}".format(userdefined_eq), lexer=lexer)
         UserDefinedFormula = tokrules.names["UserDefinedFormula"].tolist()
         tokrules.names = {}
-        #UserDefinedFormula = eval(userdefined_eq).tolist()
+        # UserDefinedFormula = eval(userdefined_eq).tolist()
 
         if UserDefinedFormula:
             self.result_obj.UserDefined = UserDefinedFormula
