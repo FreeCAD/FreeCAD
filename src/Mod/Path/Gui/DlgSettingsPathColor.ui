@@ -406,10 +406,10 @@
       <item row="1" column="1">
        <widget class="Gui::PrefComboBox" name="DefaultTaskPanelLayout">
         <property name="prefEntry" stdset="0">
-         <string>DefaultTaskPanelLayout</string>
+         <cstring>DefaultTaskPanelLayout</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Path</string>
+         <cstring>Mod/Path</cstring>
         </property>
         <item>
          <property name="text">

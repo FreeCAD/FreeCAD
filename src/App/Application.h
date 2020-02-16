@@ -48,6 +48,7 @@ class DocumentObject;
 class ApplicationObserver;
 class Property;
 class AutoTransaction;
+class ExtensionContainer;
 
 enum GetLinkOption {
     /// Get all links (both directly and in directly) linked to the given object
@@ -261,6 +262,18 @@ public:
     /// signal on about changing the editor mode of a property
     boost::signals2::signal<void (const App::Document&, const App::Property&)> signalChangePropertyEditor;
     //@}
+    
+    /** @name Signals of extension changes
+     * These signals are emitted on dynamic extension addition. Dynamic extensions are the ones added by python (c++ ones are part 
+     * of the class definition, hence not dynamic)
+     * The extension in question is provided as parameter.
+     */
+    //@{
+    /// signal before adding the extension
+    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
+    /// signal after the extension was added
+    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
+     //@}
 
 
     /** @name methods for parameter handling */

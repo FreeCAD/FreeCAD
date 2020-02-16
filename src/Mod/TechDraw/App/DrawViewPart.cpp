@@ -167,6 +167,8 @@ DrawViewPart::DrawViewPart(void) :
 
     geometryObject = nullptr;
     getRunControl();
+    //initialize bbox to non-garbage
+    bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
 }
 
 DrawViewPart::~DrawViewPart()
@@ -254,25 +256,24 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         XDirection.purgeTouched();  //don't trigger updates!
         //unblock
     }
-
-//    m_saveShape = shape;
-    geometryObject = makeGeometryForShape(shape);
-
-#if MOD_TECHDRAW_HANDLE_FACES
     auto start = std::chrono::high_resolution_clock::now();
-    if (handleFaces() && !geometryObject->usePolygonHLR()) {
-        try {
-            extractFaces();
-        }
-        catch (Standard_Failure& e4) {
-            Base::Console().Log("LOG - DVP::execute - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
-            return new App::DocumentObjectExecReturn(e4.GetMessageString());
+
+    m_saveShape = shape;
+    partExec(shape);
+
+    //second pass if required
+    if (ScaleType.isValue("Automatic")) {
+        if (!checkFit()) {
+            double newScale = autoScale();
+            Scale.setValue(newScale);
+            Scale.purgeTouched();
+            if (geometryObject != nullptr) {
+                delete geometryObject;
+                geometryObject = nullptr;
+                partExec(shape);
+            }
         }
     }
-
-    addCosmeticVertexesToGeom();
-    addCosmeticEdgesToGeom();
-    addCenterLinesToGeom();
 
     auto end   = std::chrono::high_resolution_clock::now();
     auto diff  = end - start;
@@ -280,7 +281,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs handling Faces\n",
                         getNameInDocument(),diffOut);
 
-#endif //#if MOD_TECHDRAW_HANDLE_FACES
+//#endif //#if MOD_TECHDRAW_HANDLE_FACES
 //    Base::Console().Message("DVP::execute - exits\n");
     return DrawView::execute();
 }
@@ -316,6 +317,28 @@ void DrawViewPart::onChanged(const App::Property* prop)
     DrawView::onChanged(prop);
 
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
+}
+
+void DrawViewPart::partExec(TopoDS_Shape shape)
+{
+//    Base::Console().Message("DVP::partExec()\n");
+    geometryObject = makeGeometryForShape(shape);
+
+#if MOD_TECHDRAW_HANDLE_FACES
+//    auto start = std::chrono::high_resolution_clock::now();
+    if (handleFaces() && !geometryObject->usePolygonHLR()) {
+        try {
+            extractFaces();
+        }
+        catch (Standard_Failure& e4) {
+            Base::Console().Log("LOG - DVP::partExec - extractFaces failed for %s - %s **\n",getNameInDocument(),e4.GetMessageString());
+        }
+    }
+#endif //#if MOD_TECHDRAW_HANDLE_FACES
+
+    addCosmeticVertexesToGeom();
+    addCosmeticEdgesToGeom();
+    addCenterLinesToGeom();
 }
 
 GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
@@ -725,15 +748,10 @@ double DrawViewPart::getBoxY(void) const
 
 QRectF DrawViewPart::getRect() const
 {
+//    Base::Console().Message("DVP::getRect() - %s\n", getNameInDocument());
     double x = getBoxX();
     double y = getBoxY();
-    QRectF result;
-    if (std::isinf(x) || std::isinf(y)) {
-        //geometry isn't created yet.  return an arbitrary rect.
-        result = QRectF(0.0,0.0,100.0,100.0);
-    } else {
-        result = QRectF(0.0,0.0,getBoxX(),getBoxY());  //this is from GO and is already scaled
-    }
+    QRectF result(0.0, 0.0, x, y);
     return result;
 }
 

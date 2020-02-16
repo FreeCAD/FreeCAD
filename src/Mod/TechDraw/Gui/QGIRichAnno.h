@@ -94,11 +94,11 @@ protected:
     virtual void draw() override;
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
+    void setLineSpacing(int lineSpacing);
+    double prefPointSize(void);
+    QFont prefFont(void);
 
     bool m_isExporting;
-
-protected:
-/*    QGMText* m_text;*/
     QGCustomText* m_text;
     bool m_hasHover;
     QGCustomRect* m_rect;

@@ -4172,7 +4172,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             return ["2D","3D"][getParam("dimstyle",0)]
 
     def getIcon(self):
-        return ":/icons/Draft_Dimension_Tree.svg"
+        return ":/icons/Draft_DimensionAngular.svg"
 
     def __getstate__(self):
         return self.Object.ViewObject.DisplayMode

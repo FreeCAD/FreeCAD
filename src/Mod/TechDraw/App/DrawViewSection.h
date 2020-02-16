@@ -90,6 +90,8 @@ public:
     virtual void unsetupObject() override;
     virtual short mustExecute() const override;
 
+    void sectionExec(TopoDS_Shape s);
+
     std::vector<TechDraw::Face*> getFaceGeometry();
 
     void setCSFromBase(const std::string sectionName);

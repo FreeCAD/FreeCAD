@@ -828,13 +828,25 @@ class GmshTools():
             error = "Error executing: {}\n".format(" ".join(comandlist))
             Console.PrintError(error)
             self.error = True
-        return error
+
+        # workaround
+        # filter useless gmsh warning in the regard of unknown element MSH type 15
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=33946
+        useless_warning = (
+            "Warning : Unknown element type for UNV export "
+            "(MSH type 15) - output file might be invalid"
+        )
+        new_err = error.replace(useless_warning, "")
+        # remove empty lines, https://stackoverflow.com/a/1140967
+        new_err = "".join([s for s in new_err.splitlines(True) if s.strip("\r\n")])
+
+        return new_err
 
     def read_and_set_new_mesh(self):
         if not self.error:
             fem_mesh = Fem.read(self.temp_file_mesh)
             self.mesh_obj.FemMesh = fem_mesh
-            Console.PrintMessage("  The Part should have a pretty new FEM mesh!\n")
+            Console.PrintMessage("  New mesh was added to to the mesh object.\n")
         else:
             Console.PrintError("No mesh was created.\n")
 

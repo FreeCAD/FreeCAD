@@ -126,6 +126,10 @@ public:
 #define LINK_PARAM_MODE(...) \
     (LinkMode, long, App::PropertyEnumeration, ((long)0), "Link group mode", ##__VA_ARGS__)
 
+#define LINK_PARAM_LINK_EXECUTE(...) \
+    (LinkExecute, const char*, App::PropertyString, (""),\
+     "Link execute function. Default to 'appLinkExecute'. 'None' to disable.", ##__VA_ARGS__)
+
 #define LINK_PARAM_COLORED_ELEMENTS(...) \
     (ColoredElements, App::DocumentObject*, App::PropertyLinkSubHidden, \
      0, "Link colored elements", ##__VA_ARGS__)
@@ -155,7 +159,8 @@ public:
     LINK_PARAM(ELEMENTS)\
     LINK_PARAM(SHOW_ELEMENT)\
     LINK_PARAM(MODE)\
-    LINK_PARAM(COLORED_ELEMENTS)
+    LINK_PARAM(LINK_EXECUTE)\
+    LINK_PARAM(COLORED_ELEMENTS)\
 
     enum PropIndex {
 #define LINK_PINDEX_DEFINE(_1,_2,_param) LINK_PINDEX(_param),
@@ -446,6 +451,7 @@ public:
     LINK_PARAM_EXT(PLACEMENT)\
     LINK_PARAM_EXT(SHOW_ELEMENT)\
     LINK_PARAM_EXT_TYPE(COUNT,App::PropertyIntegerConstraint)\
+    LINK_PARAM_EXT(LINK_EXECUTE)\
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS,App::Prop_Hidden)\
 
     LINK_PROPS_DEFINE(LINK_PARAMS_LINK)

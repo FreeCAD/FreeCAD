@@ -218,6 +218,7 @@ SET(FemTools_SRCS
     femtools/__init__.py
     femtools/ccxtools.py
     femtools/femutils.py
+    femtools/tokrules.py
 )
 
 SET(FemObjectsScripts_SRCS

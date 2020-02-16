@@ -379,8 +379,8 @@ class _TaskPanelFemResultShow:
             self.none_selected(True)
 
     def vm_stress_selected(self, state):
-        if len(self.result_obj.StressValues) > 0:
-            self.result_selected("Sabs", self.result_obj.StressValues, "MPa")
+        if len(self.result_obj.vonMises) > 0:
+            self.result_selected("Sabs", self.result_obj.vonMises, "MPa")
         else:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
@@ -445,7 +445,7 @@ class _TaskPanelFemResultShow:
         P1 = np.array(self.result_obj.PrincipalMax)
         P2 = np.array(self.result_obj.PrincipalMed)
         P3 = np.array(self.result_obj.PrincipalMin)
-        Von = np.array(self.result_obj.StressValues)
+        vM = np.array(self.result_obj.vonMises)
         Peeq = np.array(self.result_obj.Peeq)
         T = np.array(self.result_obj.Temperature)
         MF = np.array(self.result_obj.MassFlowRate)
@@ -495,7 +495,27 @@ class _TaskPanelFemResultShow:
         self.update()
         self.restore_result_dialog()
         userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
-        UserDefinedFormula = eval(userdefined_eq).tolist()
+
+        from ply import lex
+        from ply import yacc
+        import femtools.tokrules as tokrules
+        identifiers = [
+            'x', 'y', 'z', 'T', 'vM', 'Peeq', 'P1', 'P2', 'P3',
+            'sxx', 'syy', 'szz', 'sxy', 'sxz', 'syz',
+            'exx', 'eyy', 'ezz', 'exy', 'exz', 'eyz',
+            'MF', 'NP', 'rx', 'ry', 'rz', 'mc',
+            's1x', 's1y', 's1z', 's2x', 's2y', 's2z', 's3x', 's3y', 's3z'
+        ]
+        tokrules.names = {}
+        for i in identifiers:
+            tokrules.names[i] = locals()[i]
+
+        lexer = lex.lex(module=tokrules)
+        yacc.parse(input="UserDefinedFormula={0}".format(userdefined_eq), lexer=lexer)
+        UserDefinedFormula = tokrules.names["UserDefinedFormula"].tolist()
+        tokrules.names = {}
+        #UserDefinedFormula = eval(userdefined_eq).tolist()
+
         if UserDefinedFormula:
             self.result_obj.UserDefined = UserDefinedFormula
             minm = min(UserDefinedFormula)
@@ -504,7 +524,7 @@ class _TaskPanelFemResultShow:
             self.update_colors_stats(UserDefinedFormula, "", minm, avg, maxm)
 
         # Dummy use of the variables to get around flake8 error
-        del x, y, z, T, Von, Peeq, P1, P2, P3
+        del x, y, z, T, vM, Peeq, P1, P2, P3
         del sxx, syy, szz, sxy, sxz, syz
         del exx, eyy, ezz, exy, exz, eyz
         del MF, NP, rx, ry, rz, mc
@@ -598,7 +618,7 @@ class _TaskPanelFemResultShow:
         DisplacementLengths --> rb_abs_displacement
         DisplacementVectors --> rb_x_displacement, rb_y_displacement, rb_z_displacement
         Temperature         --> rb_temperature
-        StressValues        --> rb_vm_stress
+        vonMises        --> rb_vm_stress
         PrincipalMax        --> rb_maxprin
         PrincipalMin        --> rb_minprin
         MaxShear            --> rb_max_shear_stress
@@ -613,7 +633,7 @@ class _TaskPanelFemResultShow:
             self.result_widget.rb_z_displacement.setEnabled(0)
         if len(self.result_obj.Temperature) == 0:
             self.result_widget.rb_temperature.setEnabled(0)
-        if len(self.result_obj.StressValues) == 0:
+        if len(self.result_obj.vonMises) == 0:
             self.result_widget.rb_vm_stress.setEnabled(0)
         if len(self.result_obj.PrincipalMax) == 0:
             self.result_widget.rb_maxprin.setEnabled(0)

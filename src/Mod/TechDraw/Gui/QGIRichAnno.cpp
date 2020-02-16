@@ -38,8 +38,11 @@
 #include <QSvgGenerator>
 #include <QRegExp>
 #include <QTextDocument>
+#include <QTextDocumentFragment>
 #include <QTextFrame>
 #include <QTextBlock>
+#include <QTextCursor>
+
 
 # include <math.h>
 #endif
@@ -49,6 +52,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Command.h>
 
@@ -231,26 +235,52 @@ void QGIRichAnno::setTextItem()
 
         m_text->setTextWidth(Rez::guiX(annoFeat->MaxWidth.getValue()));
         m_text->setHtml(outHtml);
+//        setLineSpacing(50);    //this has no effect on the display?!
+//        m_text->update();
+
+        if (annoFeat->ShowFrame.getValue()) {
+            QRectF r = m_text->boundingRect().adjusted(1,1,-1,-1);
+            m_rect->setPen(rectPen());
+            m_rect->setBrush(Qt::NoBrush);
+            m_rect->setRect(r);
+            m_rect->show();
+        } else {
+            m_rect->hide();
+        }
     } else {
-        //TODO: fix line spacing.  common solutions (style sheet, 
-        //      QTextBlock::setLineHeight(150, QTextBlockFormat::ProportionalHeight)) don't help
+        // don't force line wrap & strip formatting that doesn't export well!
         double realWidth = m_text->boundingRect().width();
         m_text->setTextWidth(realWidth);
-        m_text->setHtml(inHtml);
-    }
 
-    if (annoFeat->ShowFrame.getValue()) {
-        QRectF r = m_text->boundingRect().adjusted(1,1,-1,-1);
-        m_rect->setPen(rectPen());
-        m_rect->setBrush(Qt::NoBrush);
-        m_rect->setRect(r);
-        m_rect->show();
-    } else {
+        QFont f = prefFont();
+        double ptSize = prefPointSize();
+        f.setPointSizeF(ptSize);
+        m_text->setFont(f);
+
+        QString plainText = QTextDocumentFragment::fromHtml( inHtml ).toPlainText();
+        m_text->setPlainText(plainText);
+        setLineSpacing(100);       //this doesn't appear in the generated Svg, but does space the lines!
         m_rect->hide();
+        m_rect->update();
     }
 
     m_text->centerAt(0.0, 0.0);
     m_rect->centerAt(0.0, 0.0);
+}
+
+void QGIRichAnno::setLineSpacing(int lineSpacing)
+{
+    //this line spacing should be px, but seems to be %? in any event, it does
+    //space out the lines.
+    QTextBlock block = m_text->document()->begin();
+    for (; block.isValid(); block = block.next()) {
+        QTextCursor tc = QTextCursor(block);
+        QTextBlockFormat fmt = block.blockFormat();
+//        fmt.setTopMargin(lineSpacing);            //no effect???
+        fmt.setBottomMargin(lineSpacing);           //spaces out the lines!
+        tc.setBlockFormat(fmt);
+//        }
+    }
 }
 
 //void QGIRichAnno::drawBorder()
@@ -308,6 +338,32 @@ QPen QGIRichAnno::rectPen() const
     pen.setWidthF(rectWeight);
     pen.setColor(rectColor);
     return pen;
+}
+
+QFont QGIRichAnno::prefFont(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
+    std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+    QString family = Base::Tools::fromStdString(fontName);
+    QFont result;
+    result.setFamily(family);
+    return result;
+}
+
+double QGIRichAnno::prefPointSize(void)
+{
+//    Base::Console().Message("QGIRA::prefPointSize()\n");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    double fontSize = hGrp->GetFloat("FontSize", 5.0);   // this is mm, not pts!
+
+    //this conversion is only approximate. the factor changes for different fonts.
+//    double mmToPts = 2.83;  //theoretical value
+    double mmToPts = 2.00;  //practical value. seems to be reasonable for common fonts.
+    
+    double ptsSize = round(fontSize * mmToPts);
+    return ptsSize;
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>

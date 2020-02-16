@@ -90,7 +90,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="user_def_head_13">
             <property name="text">
-             <string>von Mises stress: Von</string>
+             <string>von Mises stress: vM</string>
             </property>
             <property name="textInteractionFlags">
              <set>Qt::TextSelectableByMouse</set>

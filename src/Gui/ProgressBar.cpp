@@ -571,6 +571,9 @@ bool ProgressBar::eventFilter(QObject* o, QEvent* e)
         case QEvent::Enter:
         case QEvent::Leave:
         case QEvent::MouseButtonDblClick:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseMove:
+        case QEvent::NativeGesture:
         case QEvent::ContextMenu:
             {
                 return true;

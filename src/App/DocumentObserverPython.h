@@ -28,6 +28,8 @@
 
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
+#include <string>
+
 
 namespace App
 {
@@ -105,6 +107,11 @@ private:
     void slotStartSaveDocument(const App::Document&, const std::string&);
     /** Called when an document has been saved*/
     void slotFinishSaveDocument(const App::Document&, const std::string&);
+    /** Called before an object gets a new extension added*/
+    void slotBeforeAddingDynamicExtension(const App::ExtensionContainer&, std::string extension);
+    /** Called when an object gets a dynamic extension added*/
+    void slotAddedDynamicExtension(const App::ExtensionContainer&, std::string extension);
+  
 
 private:
     Py::Object inst;
@@ -145,6 +152,8 @@ private:
     Connection pyAppendDynamicProperty;
     Connection pyRemoveDynamicProperty;
     Connection pyChangePropertyEditor;
+    Connection pyBeforeAddingDynamicExtension;
+    Connection pyAddedDynamicExtension;
 };
 
 } //namespace App

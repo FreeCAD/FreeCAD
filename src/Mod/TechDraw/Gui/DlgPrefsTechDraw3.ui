@@ -1068,10 +1068,10 @@
            <string>Style for hidden lines.</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>SectionLineStyle</cstring>
+           <cstring>HiddenLine</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Standards</cstring>
+           <cstring>Mod/TechDraw/General</cstring>
           </property>
           <item>
            <property name="text">

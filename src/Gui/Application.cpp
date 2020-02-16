@@ -971,6 +971,8 @@ Gui::MDIView* Application::editViewOfNode(SoNode *node) const
 }
 
 void Application::setEditDocument(Gui::Document *doc) {
+    if(doc == d->editDocument)
+        return;
     if(!doc) 
         d->editDocument = 0;
     for(auto &v : d->documents)
