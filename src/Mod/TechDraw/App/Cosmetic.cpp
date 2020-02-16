@@ -191,6 +191,16 @@ CosmeticVertex::CosmeticVertex(Base::Vector3d loc) : TechDraw::Vertex(loc)
 
 }
 
+void CosmeticVertex::move(Base::Vector3d newPos)
+{
+    permaPoint = newPos;
+}
+
+void CosmeticVertex::moveRelative(Base::Vector3d movement)
+{
+    permaPoint += movement;
+}
+
 std::string CosmeticVertex::toString(void) const
 {
     std::stringstream ss;

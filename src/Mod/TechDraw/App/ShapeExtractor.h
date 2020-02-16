@@ -25,8 +25,6 @@
 
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -37,6 +35,9 @@
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 
+#include <Base/Type.h>
+#include <Base/Vector3D.h>
+
 namespace TechDraw
 {
 
@@ -44,9 +45,17 @@ class TechDrawExport ShapeExtractor
 {
 public:
     static TopoDS_Shape getShapes(const std::vector<App::DocumentObject*> links); 
+    static std::vector<TopoDS_Shape> getShapes2d(const std::vector<App::DocumentObject*> links);
     static std::vector<TopoDS_Shape> getShapesFromObject(const App::DocumentObject* docObj);
     static TopoDS_Shape getShapesFused(const std::vector<App::DocumentObject*> links);
     static std::vector<TopoDS_Shape> extractDrawableShapes(const TopoDS_Shape shapeIn);
+
+    static bool is2dObject(App::DocumentObject* obj);
+    static bool isEdgeType(App::DocumentObject* obj);
+    static bool isPointType(App::DocumentObject* obj);
+    static bool isDraftPoint(App::DocumentObject* obj);
+    static Base::Vector3d getLocation3dFromFeat(App::DocumentObject* obj);
+
 
 protected:
 

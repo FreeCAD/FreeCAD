@@ -144,6 +144,10 @@ public:
     TopoDS_Shape getHidSeam(void)    { return hidSeam; }
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
+    void addVertex(TechDraw::Vertex* v);
+    void addEdge(TechDraw::BaseGeom* bg);
+
+
     int addCosmeticVertex(CosmeticVertex* cv);
     int addCosmeticVertex(Base::Vector3d pos);
     int addCosmeticVertex(Base::Vector3d pos,
