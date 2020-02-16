@@ -27,6 +27,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <QListWidget>
 
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"

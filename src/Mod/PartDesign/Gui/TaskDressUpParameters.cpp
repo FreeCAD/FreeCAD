@@ -158,6 +158,8 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
     // executed when the user selected a new item in the list
     // shows the fillets as they are -> useful to switch out of selection mode
 
+    Q_UNUSED(item);
+
     // assure we are not in selection mode
     exitSelectionMode();
     clearButtons(none);
