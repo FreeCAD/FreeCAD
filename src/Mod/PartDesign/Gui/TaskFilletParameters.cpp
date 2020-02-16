@@ -178,7 +178,6 @@ void TaskFilletParameters::onRefDeleted(void)
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count()-1; i > -1; i--) {
-        QListWidgetItem* item = selectedList.at(i);
         // get the fillet object
         PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
         App::DocumentObject* base = pcFillet->Base.getValue();

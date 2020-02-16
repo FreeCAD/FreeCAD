@@ -252,7 +252,6 @@ void TaskDraftParameters::onRefDeleted(void)
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count() - 1; i > -1; i--) {
-        QListWidgetItem* item = selectedList.at(i);
         // get the fillet object
         PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
         App::DocumentObject* base = pcDraft->Base.getValue();

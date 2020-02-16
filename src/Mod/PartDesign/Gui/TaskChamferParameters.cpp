@@ -178,7 +178,6 @@ void TaskChamferParameters::onRefDeleted(void)
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count() - 1; i > -1; i--) {
-        QListWidgetItem* item = selectedList.at(i);
         // get the fillet object
         PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
         App::DocumentObject* base = pcChamfer->Base.getValue();
