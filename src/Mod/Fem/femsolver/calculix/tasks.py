@@ -40,9 +40,6 @@ from .. import run
 from .. import settings
 from . import writer
 
-if FreeCAD.GuiUp:
-    from PySide import QtGui
-
 
 _inputFileName = None
 

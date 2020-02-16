@@ -38,9 +38,6 @@ from .. import run
 from .. import settings
 from . import writer
 
-if FreeCAD.GuiUp:
-    from PySide import QtGui
-
 
 class Check(run.Check):
 
