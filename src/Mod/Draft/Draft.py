@@ -3283,7 +3283,15 @@ class _ViewProviderDraft:
         return False
 
     def getIcon(self):
-        return(":/icons/Draft_Draft.svg")
+        tp = self.Object.Proxy.Type
+        if tp in ('Line', 'Wire', 'Polyline'):
+            return ":/icons/Draft_N-Linear.svg"
+        elif tp in ('Rectangle', 'Polygon'):
+            return ":/icons/Draft_N-Polygon.svg"
+        elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
+            return ":/icons/Draft_N-Curve.svg"
+        else:
+            return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):
         objs = []
