@@ -37,8 +37,9 @@ import femsolver.report
 _UPDATE_INTERVAL = 50
 _REPORT_TITLE = "Run Report"
 _REPORT_ERR = (
-    "Failed to run. Please try again after all"
-    "of the following errors are resolved.")
+    "Failed to run. Please try again after all "
+    "of the following errors are resolved."
+)
 
 
 class ControlTaskPanel(QtCore.QObject):
