@@ -434,6 +434,7 @@ void DrawView::handleChangedPropertyType(
 
 bool DrawView::keepUpdated(void)
 {
+//    Base::Console().Message("DV::keepUpdated() - %s\n", getNameInDocument());
     bool result = false;
 
     bool pageUpdate = false;
@@ -455,7 +456,6 @@ bool DrawView::keepUpdated(void)
     if (force) {         //when do we turn this off??
         result = true;
     }
-
     return result;
 }
 

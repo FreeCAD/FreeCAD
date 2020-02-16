@@ -146,6 +146,8 @@ public:
 
 
     virtual Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
+    virtual BaseGeom* projectEdge(const TopoDS_Edge& e) const;
+
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction,
                                const bool flip=true) const;
@@ -166,6 +168,8 @@ public:
 
     virtual TopoDS_Shape getSourceShape(void) const; 
     virtual TopoDS_Shape getSourceShapeFused(void) const; 
+    virtual std::vector<TopoDS_Shape> getSourceShape2d(void) const;
+
 
     bool isIso(void) const;
 
@@ -173,6 +177,7 @@ public:
     void refreshCVGeoms(void);
     void addCosmeticVertexesToGeom(void);
     int add1CVToGV(std::string tag);
+    int getCVIndex(std::string tag);
 
     void clearCosmeticEdges(void); 
     void refreshCEGeoms(void);
@@ -190,6 +195,13 @@ public:
     void dumpCosVerts(const std::string text);
     void dumpCosEdges(const std::string text);
 
+    std::string addReferenceVertex(Base::Vector3d v);
+    void addReferencesToGeom(void);
+    void removeReferenceVertex(std::string tag);
+    void updateReferenceVert(std::string tag, Base::Vector3d loc2d);
+    void removeAllReferencesFromGeom();
+    void resetReferenceVerts();
+
 protected:
     bool checkXDirection(void) const;
 
@@ -202,6 +214,7 @@ protected:
     virtual TechDraw::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis); //const??
     virtual TechDraw::GeometryObject*  makeGeometryForShape(TopoDS_Shape shape);   //const??
     void partExec(TopoDS_Shape shape);
+    virtual void addShapes2d(void);
 
     void extractFaces();
 
@@ -226,6 +239,7 @@ protected:
     bool prefIsoHid(void);
     int  prefIsoCount(void);
 
+    std::vector<TechDraw::Vertex*> m_referenceVerts;
 
 private:
     bool nowUnsetting;
