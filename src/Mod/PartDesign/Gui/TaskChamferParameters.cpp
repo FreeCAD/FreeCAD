@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QListWidget>
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskChamferParameters.h"
@@ -168,6 +169,12 @@ void TaskChamferParameters::onRefDeleted(void)
 
     // get the list of items to be deleted
     QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
+
+    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
+    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()) {
+        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
+        return;
+    }
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count() - 1; i > -1; i--) {
