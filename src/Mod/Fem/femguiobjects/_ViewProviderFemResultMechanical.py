@@ -496,12 +496,11 @@ class _TaskPanelFemResultShow:
         self.restore_result_dialog()
         userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
 
-        """
         from ply import lex
         from ply import yacc
         import femtools.tokrules as tokrules
         identifiers = [
-            'x', 'y', 'z', 'T', 'Von', 'Peeq', 'P1', 'P2', 'P3',
+            'x', 'y', 'z', 'T', 'vM', 'Peeq', 'P1', 'P2', 'P3',
             'sxx', 'syy', 'szz', 'sxy', 'sxz', 'syz',
             'exx', 'eyy', 'ezz', 'exy', 'exz', 'eyz',
             'MF', 'NP', 'rx', 'ry', 'rz', 'mc',
@@ -515,8 +514,7 @@ class _TaskPanelFemResultShow:
         yacc.parse(input="UserDefinedFormula={0}".format(userdefined_eq), lexer=lexer)
         UserDefinedFormula = tokrules.names["UserDefinedFormula"].tolist()
         tokrules.names = {}
-        """
-        UserDefinedFormula = eval(userdefined_eq).tolist()
+        #UserDefinedFormula = eval(userdefined_eq).tolist()
 
         if UserDefinedFormula:
             self.result_obj.UserDefined = UserDefinedFormula

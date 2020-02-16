@@ -116,6 +116,14 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
     return 500;
 }
 
+void TaskTransformedParameters::addObject(App::DocumentObject*)
+{
+}
+
+void TaskTransformedParameters::removeObject(App::DocumentObject*)
+{
+}
+
 bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && (
@@ -132,15 +140,21 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
             std::vector<App::DocumentObject*>::iterator o = std::find(originals.begin(), originals.end(), selectedObject);
             if (selectionMode == addFeature) {
-                if (o == originals.end())
+                if (o == originals.end()) {
                     originals.push_back(selectedObject);
-                else
+                    addObject(selectedObject);
+                }
+                else {
                     return false; // duplicate selection
+                }
             } else {
-                if (o != originals.end())
+                if (o != originals.end()) {
                     originals.erase(o);
-                else
+                    removeObject(selectedObject);
+                }
+                else {
                     return false;
+                }
             }
             setupTransaction();
             pcTransformed->Originals.setValues(originals);

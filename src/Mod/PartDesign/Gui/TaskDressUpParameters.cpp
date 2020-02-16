@@ -41,6 +41,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
@@ -131,6 +132,9 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
         DressUpView->highlightReferences(true);
+    } else {
+        exitSelectionMode();
+        DressUpView->highlightReferences(false);
     }
 }
 
@@ -144,6 +148,50 @@ void TaskDressUpParameters::onButtonRefRemove(const bool checked)
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
         DressUpView->highlightReferences(true);
     }
+    else {
+        exitSelectionMode();
+        DressUpView->highlightReferences(false);
+    }
+}
+
+void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
+    // executed when the user selected a new item in the list
+    // shows the fillets as they are -> useful to switch out of selection mode
+
+    Q_UNUSED(item);
+
+    // assure we are not in selection mode
+    exitSelectionMode();
+    clearButtons(none);
+
+    // assure the fillets are shown
+    showObject();
+    // remove any highlights andd selections
+    DressUpView->highlightReferences(false);
+    Gui::Selection().clearSelection();
+}
+
+void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
+    // executed when the user selected a new item in the list
+    // highlights the currently selected item
+
+     // name of the item
+    std::string subName = current->text().toStdString();
+    // get the document name
+    std::string docName = DressUpView->getObject()->getDocument()->getName();
+    // get the name of the body we are in
+    Part::BodyBase* body = PartDesign::Body::findBodyOf(DressUpView->getObject());
+    std::string objName = body->getNameInDocument();
+
+    // hide fillet to see the original edge
+    // (a fillet creates new edges so that the original one is not available)
+    hideObject();
+    // highlight all objects in the list
+    DressUpView->highlightReferences(true);
+    // clear existing selections
+    Gui::Selection().clearSelection();
+    // highligh the selected item
+    Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
 }
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const

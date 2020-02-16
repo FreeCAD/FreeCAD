@@ -27,6 +27,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <QListWidget>
 
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
@@ -60,6 +61,8 @@ public:
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
     void onButtonRefRemove(const bool checked);
+    void doubleClicked(QListWidgetItem* item);
+    void setSelection(QListWidgetItem* current);
     virtual void onRefDeleted(void) = 0;
 
 protected:

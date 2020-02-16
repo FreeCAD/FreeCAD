@@ -226,6 +226,23 @@ void TaskPolarPatternParameters::kickUpdateViewTimer() const
     updateViewTimer->start();
 }
 
+void TaskPolarPatternParameters::addObject(App::DocumentObject* obj)
+{
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    QString objectName = QString::fromLatin1(obj->getNameInDocument());
+
+    QListWidgetItem* item = new QListWidgetItem();
+    item->setText(label);
+    item->setData(Qt::UserRole, objectName);
+    ui->listWidgetFeatures->addItem(item);
+}
+
+void TaskPolarPatternParameters::removeObject(App::DocumentObject* obj)
+{
+    QString label = QString::fromUtf8(obj->Label.getValue());
+    removeItemFromListWidget(ui->listWidgetFeatures, label);
+}
+
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {

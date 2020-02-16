@@ -49,7 +49,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskFilletParameters */
 
-TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
+TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, true, true, parent)
 {
     // we need a separate container widget to add all controls to
@@ -77,11 +77,11 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->filletRadius, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
+        this, SLOT(onLengthChanged(double)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
+        this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
+        this, SLOT(onButtonRefRemove(bool)));
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -91,8 +91,20 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
     action->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetReferences->addAction(action);
+    // if there is only one item, it cannot be deleted
+    if (ui->listWidgetReferences->count() == 1) {
+        action->setEnabled(false);
+        action->setStatusTip(tr("There must be at least one item"));
+        ui->buttonRefRemove->setEnabled(false);
+        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+    }
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+        this, SLOT(doubleClicked(QListWidgetItem*)));
 }
 
 void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -102,12 +114,34 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd)
+            QAction *action = ui->listWidgetReferences->actions().at(0); // we have only one action
+            if (selectionMode == refAdd) {
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-            else
+                // it might be the second one so we can enable the context menu
+                if (ui->listWidgetReferences->count() > 1) {
+                    action->setEnabled(true);
+                    action->setStatusTip(QString());
+                    ui->buttonRefRemove->setEnabled(true);
+                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
+                }
+            }
+            else {
                 removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-            clearButtons(none);
-            exitSelectionMode();
+                // remove its selection too
+                Gui::Selection().clearSelection();
+                // if there is only one item left, it cannot be deleted
+                if (ui->listWidgetReferences->count() == 1) {
+                    action->setEnabled(false);
+                    action->setStatusTip(tr("There must be at least one item"));
+                    ui->buttonRefRemove->setEnabled(false);
+                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+                    // we must also end the selection mode
+                    exitSelectionMode();
+                    clearButtons(none);
+                }
+            }
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         }
     }
 }
@@ -121,6 +155,13 @@ void TaskFilletParameters::clearButtons(const selectionModes notThis)
 
 void TaskFilletParameters::onRefDeleted(void)
 {
+    // assure we we are not in selection mode
+    exitSelectionMode();
+    clearButtons(none);
+    // delete any selections since the reference might be highlighted
+    Gui::Selection().clearSelection();
+    DressUpView->highlightReferences(false);
+
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
     App::DocumentObject* base = pcFillet->Base.getValue();
     std::vector<std::string> refs = pcFillet->Base.getSubValues();
@@ -129,6 +170,15 @@ void TaskFilletParameters::onRefDeleted(void)
     pcFillet->Base.setValue(base, refs);
     ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcFillet->getDocument()->recomputeFeature(pcFillet);
+
+    // if there is only one item left, it cannot be deleted
+    if (ui->listWidgetReferences->count() == 1) {
+        QAction *action = ui->listWidgetReferences->actions().at(0); // we have only one action
+        action->setEnabled(false);
+        action->setStatusTip(tr("There must be at least one item"));
+        ui->buttonRefRemove->setEnabled(false);
+        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+    }
 }
 
 void TaskFilletParameters::onLengthChanged(double len)
@@ -147,7 +197,13 @@ double TaskFilletParameters::getLength(void) const
 
 TaskFilletParameters::~TaskFilletParameters()
 {
+    // assure the fillets are shown
+    showObject();
+    // remove any highlights and selections
+    DressUpView->highlightReferences(false);
+    Gui::Selection().clearSelection(); 
     Gui::Selection().rmvSelectionGate();
+
     delete ui;
 }
 

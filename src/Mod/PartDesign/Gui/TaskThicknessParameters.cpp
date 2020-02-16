@@ -49,7 +49,7 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskThicknessParameters */
 
-TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
+TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpView, QWidget *parent)
     : TaskDressUpParameters(DressUpView, false, true, parent)
 {
     // we need a separate container widget to add all controls to
@@ -85,19 +85,19 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->Value, SIGNAL(valueChanged(double)),
-            this, SLOT(onValueChanged(double)));
+        this, SLOT(onValueChanged(double)));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
+        this, SLOT(onReversedChanged(bool)));
     connect(ui->checkIntersection, SIGNAL(toggled(bool)),
-            this, SLOT(onIntersectionChanged(bool)));
+        this, SLOT(onIntersectionChanged(bool)));
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
+        this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
+        this, SLOT(onButtonRefRemove(bool)));
     connect(ui->modeComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onModeChanged(int)));
+        this, SLOT(onModeChanged(int)));
     connect(ui->joinComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onJoinTypeChanged(int)));
+        this, SLOT(onJoinTypeChanged(int)));
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -107,8 +107,20 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     action->setShortcutVisibleInContextMenu(true);
 #endif
     ui->listWidgetReferences->addAction(action);
+    // if there is only one item, it cannot be deleted
+    if (ui->listWidgetReferences->count() == 1) {
+        action->setEnabled(false);
+        action->setStatusTip(tr("There must be at least one item"));
+        ui->buttonRefRemove->setEnabled(false);
+        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+    }
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
+        this, SLOT(doubleClicked(QListWidgetItem*)));
 
     int mode = pcThickness->Mode.getValue();
     ui->modeComboBox->setCurrentIndex(mode);
@@ -124,12 +136,34 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            if (selectionMode == refAdd)
+            QAction *action = ui->listWidgetReferences->actions().at(0); // we have only one action
+            if (selectionMode == refAdd) {
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-            else
+                // it might be the second one so we can enable the context menu
+                if (ui->listWidgetReferences->count() > 1) {
+                    action->setEnabled(true);
+                    action->setStatusTip(QString());
+                    ui->buttonRefRemove->setEnabled(true);
+                    ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
+                }
+            }
+            else {
                 removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-            clearButtons(none);
-            exitSelectionMode();
+                // remove its selection too
+                Gui::Selection().clearSelection();
+                // if there is only one item left, it cannot be deleted
+                if (ui->listWidgetReferences->count() == 1) {
+                    action->setEnabled(false);
+                    action->setStatusTip(tr("There must be at least one item"));
+                    ui->buttonRefRemove->setEnabled(false);
+                    ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+                    // we must also end the selection mode
+                    exitSelectionMode();
+                    clearButtons(none);
+                }
+            }
+            // highlight existing references for possible further selections
+            DressUpView->highlightReferences(true);
         } 
     }
 }
@@ -143,6 +177,13 @@ void TaskThicknessParameters::clearButtons(const selectionModes notThis)
 
 void TaskThicknessParameters::onRefDeleted(void)
 {
+    // assure we we are not in selection mode
+    exitSelectionMode();
+    clearButtons(none);
+    // delete any selections since the reference might be highlighted
+    Gui::Selection().clearSelection();
+    DressUpView->highlightReferences(false);
+
     PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
     App::DocumentObject* base = pcThickness->Base.getValue();
     std::vector<std::string> faces = pcThickness->Base.getSubValues();
@@ -153,6 +194,15 @@ void TaskThicknessParameters::onRefDeleted(void)
     pcThickness->getDocument()->recomputeFeature(pcThickness);
     clearButtons(none);
     exitSelectionMode();
+
+    // if there is only one item left, it cannot be deleted
+    if (ui->listWidgetReferences->count() == 1) {
+        QAction *action = ui->listWidgetReferences->actions().at(0); // we have only one action
+        action->setEnabled(false);
+        action->setStatusTip(tr("There must be at least one item"));
+        ui->buttonRefRemove->setEnabled(false);
+        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
+    }
 }
 
 void TaskThicknessParameters::onValueChanged(double angle)
@@ -226,7 +276,13 @@ int TaskThicknessParameters::getMode(void) const {
 
 TaskThicknessParameters::~TaskThicknessParameters()
 {
+    // assure the fillets are shown
+    showObject();
+    // remove any highlights and selections
+    DressUpView->highlightReferences(false);
+    Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
+
     delete ui;
 }
 
