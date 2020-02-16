@@ -159,12 +159,6 @@ void TaskFilletParameters::clearButtons(const selectionModes notThis)
 
 void TaskFilletParameters::onRefDeleted(void)
 {
-    // get vector of selected objects of active document to assure we have a valid selection
-    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-    if (selection.size() == 0) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
-        return;
-    }
     // assure we we are not in selection mode
     exitSelectionMode();
     clearButtons(none);
@@ -177,7 +171,6 @@ void TaskFilletParameters::onRefDeleted(void)
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count()-1; i > -1; i--) {
-        //QMessageBox::warning(this, tr("i"), QString::number(i));
         QListWidgetItem* item = selectedList.at(i);
         // get the fillet object
         PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
