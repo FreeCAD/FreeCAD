@@ -318,7 +318,7 @@ class Component(ArchIFC.IfcProduct):
 
     def getExtrusionData(self,obj):
 
-        "returns (shape,extrusion vector,placement) or None"
+        "returns (shape,extrusion vector or path,placement) or None"
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
                 if hasattr(obj.CloneOf,"Proxy"):
