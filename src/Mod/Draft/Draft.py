@@ -46,6 +46,7 @@ __url__ = "https://www.freecadweb.org"
 """The Draft module offers a range of tools to create and manipulate basic 2D objects"""
 
 import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
+import DraftGeomUtils
 import draftutils.translate
 from FreeCAD import Vector
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -3864,7 +3865,21 @@ class _ViewProviderDimension(_ViewProviderDraft):
     def setDisplayMode(self,mode):
         return mode
 
+    def is_linked_to_circle(self):
+        _obj = self.Object
+        if _obj.LinkedGeometry and len(_obj.LinkedGeometry) == 1:
+            lobj = _obj.LinkedGeometry[0][0]
+            lsub = _obj.LinkedGeometry[0][1]
+            if len(lsub) == 1 and "Edge" in lsub[0]:
+                n = int(lsub[0][4:]) - 1
+                edge = lobj.Shape.Edges[n]
+                if DraftGeomUtils.geomType(edge) == "Circle":
+                    return True
+        return False
+
     def getIcon(self):
+        if self.is_linked_to_circle():
+            return ":/icons/Draft_DimensionRadius.svg"
         return ":/icons/Draft_Dimension_Tree.svg"
 
     def __getstate__(self):
