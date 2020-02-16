@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QListWidget>
 # include <QListWidgetItem>
 #endif
 
@@ -158,19 +159,16 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
     // executed when the user double-clicks on any item in the list
     // shows the fillets as they are -> useful to switch out of selection mode
 
-    Q_UNUSED(item);
+    Q_UNUSED(item)
     wasDoubleClicked = true;
-
     // assure we are not in selection mode
     exitSelectionMode();
     clearButtons(none);
-
     // assure the fillets are shown
     showObject();
     // remove any highlights andd selections
     DressUpView->highlightReferences(false);
     Gui::Selection().clearSelection();
-
     // enable next possible single-click event after double-click time passed
     QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
 }
@@ -190,7 +188,6 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
         // get the name of the body we are in
         Part::BodyBase* body = PartDesign::Body::findBodyOf(DressUpView->getObject());
         std::string objName = body->getNameInDocument();
-
         // hide fillet to see the original edge
         // (a fillet creates new edges so that the original one is not available)
         hideObject();
