@@ -2381,7 +2381,6 @@ SoFCPathAnnotation::SoFCPathAnnotation(ViewProvider *vp, const char *sub, View3D
 {
     SO_NODE_CONSTRUCTOR(SoFCPathAnnotation);
     path = 0;
-    tmpPath = 0;
     det = false;
     this->renderCaching = SoSeparator::OFF;
     this->boundingBoxCaching = SoSeparator::OFF;
@@ -2390,8 +2389,6 @@ SoFCPathAnnotation::SoFCPathAnnotation(ViewProvider *vp, const char *sub, View3D
 SoFCPathAnnotation::~SoFCPathAnnotation()
 {
     setPath(0);
-    if(tmpPath)
-        tmpPath->unref();
 }
 
 void SoFCPathAnnotation::finish() 
@@ -2421,17 +2418,17 @@ void SoFCPathAnnotation::GLRender(SoGLRenderAction * action)
 
 void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
-    if(!path || !path->getLength() || !tmpPath || !tmpPath->getLength())
+    if(!path || !path->getLength() || !tmpPath.getLength())
         return;
 
-    if(path->getLength() != tmpPath->getLength()) {
+    if(path->getLength() != tmpPath.getLength()) {
         // The auditing SoPath may be truncated due to harmless things such as
-        // fliping a SoSwitch sibling node. So we keep an unauditing SoTempPath
+        // fliping a SoSwitch sibling node. So we keep a SoNodeList (tmpPath)
         // around to try to restore the path.
-        for(int i=path->getLength()-1;i<tmpPath->getLength()-1;++i) {
+        for(int i=path->getLength()-1;i<tmpPath.getLength()-1;++i) {
             auto children = path->getNode(i)->getChildren();
             if(children) {
-                int idx = children->find(tmpPath->getNode(i+1));
+                int idx = children->find(tmpPath[i+1]);
                 if(idx >= 0) {
                     path->append(idx);
                     continue;
@@ -2549,32 +2546,26 @@ void SoFCPathAnnotation::setPath(SoPath *newPath) {
     if(path) {
         path->unref();
         path = 0;
-        if(tmpPath) {
-            for(int i=0;i<tmpPath->getLength();++i) {
-                auto node = tmpPath->getNode(i);
-                if(node->isOfType(SoFCSwitch::getClassTypeId())) {
-                    auto &notify = static_cast<SoFCSwitch*>(node)->childNotify;
-                    if(notify.getValue()>0)
-                        notify = notify.getValue()-1;
-                }
+        for(int i=0;i<tmpPath.getLength();++i) {
+            auto node = tmpPath[i];
+            if(node->isOfType(SoFCSwitch::getClassTypeId())) {
+                auto &notify = static_cast<SoFCSwitch*>(node)->childNotify;
+                if(notify.getValue()>0)
+                    notify = notify.getValue()-1;
             }
-            tmpPath->truncate(0);
         }
+        tmpPath.truncate(0);
     }
     if(!newPath || !newPath->getLength())
         return;
 
-    if(!tmpPath) {
-        tmpPath = new SoTempPath(newPath->getLength());
-        tmpPath->ref();
-    }
     for(int i=0;i<newPath->getLength();++i) {
         auto node = newPath->getNode(i);
         if(node->isOfType(SoFCSwitch::getClassTypeId())) {
             auto &notify = static_cast<SoFCSwitch*>(node)->childNotify;
             notify = notify.getValue()+1;
         }
-        tmpPath->append(node);
+        tmpPath.append(node);
     }
     path = newPath->copy();
     path->ref();

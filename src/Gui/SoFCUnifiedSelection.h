@@ -23,6 +23,7 @@
 #ifndef GUI_SOFCUNIFIEDSELECTION_H
 #define GUI_SOFCUNIFIEDSELECTION_H
 
+#include <Inventor/lists/SoNodeList.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -241,7 +242,7 @@ protected:
     std::string subname;
     View3DInventorViewer *viewer;
     SoPath *path;
-    SoTempPath *tmpPath;
+    SoNodeList tmpPath;
     bool det;
 };
 
