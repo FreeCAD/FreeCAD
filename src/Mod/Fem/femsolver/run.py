@@ -299,7 +299,7 @@ class BaseTask(task.Thread):
 
     @property
     def analysis(self):
-        return femutils.findAnalysisOfMember(self.solver)
+        return self.solver.getParentGroup()
 
 
 class Machine(BaseTask):
@@ -528,7 +528,7 @@ class _DocObserver(object):
                     _machines[o].reset()
 
     def _checkSolver(self, obj):
-        analysis = femutils.findAnalysisOfMember(obj)
+        analysis = obj.getParentGroup()
         for m in iter(_machines.values()):
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
@@ -546,7 +546,7 @@ class _DocObserver(object):
 
     def _checkModel(self, obj):
         if self._partOfModel(obj):
-            analysis = femutils.findAnalysisOfMember(obj)
+            analysis = obj.getParentGroup()
             if analysis is not None:
                 self._resetAll(analysis)
 

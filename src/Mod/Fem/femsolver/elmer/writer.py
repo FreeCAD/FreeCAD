@@ -93,7 +93,7 @@ def getConstant(name, dimension):
 class Writer(object):
 
     def __init__(self, solver, directory, testmode=False):
-        self.analysis = femutils.findAnalysisOfMember(solver)
+        self.analysis = solver.getParentGroup()
         self.solver = solver
         self.directory = directory
         self.testmode = testmode
