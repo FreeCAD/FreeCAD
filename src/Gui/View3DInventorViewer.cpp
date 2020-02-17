@@ -1249,11 +1249,12 @@ SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 
 SbBool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
 {
-    SoSearchAction sa;
-    sa.setNode(vp->getRoot());
-    sa.setSearchingAll(true);
-    sa.apply(getSoRenderManager()->getSceneGraph());
-    return sa.getPath() != nullptr;
+    return hasViewProvider(const_cast<ViewProvider*>(vp));
+    // SoSearchAction sa;
+    // sa.setNode(vp->getRoot());
+    // sa.setSearchingAll(true);
+    // sa.apply(getSoRenderManager()->getSceneGraph());
+    // return sa.getPath() != nullptr;
 }
 
 /// adds an ViewProvider to the view, e.g. from a feature
