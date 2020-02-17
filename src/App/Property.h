@@ -376,8 +376,7 @@ public:
         P & mProp; /**< Referenced to property we work on */
     };
 
-private:
-
+protected:
     int signalCounter; /**< Counter for invoking transaction start/stop */
     bool hasChanged;
 };

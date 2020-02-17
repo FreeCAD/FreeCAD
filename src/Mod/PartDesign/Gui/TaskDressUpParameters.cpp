@@ -25,7 +25,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
+# include <QListWidget>
 # include <QListWidgetItem>
+# include <QTimer>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -41,6 +44,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
@@ -131,6 +135,9 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
         DressUpView->highlightReferences(true);
+    } else {
+        exitSelectionMode();
+        DressUpView->highlightReferences(false);
     }
 }
 
@@ -144,6 +151,64 @@ void TaskDressUpParameters::onButtonRefRemove(const bool checked)
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
         DressUpView->highlightReferences(true);
     }
+    else {
+        exitSelectionMode();
+        DressUpView->highlightReferences(false);
+    }
+}
+
+void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
+    // executed when the user double-clicks on any item in the list
+    // shows the fillets as they are -> useful to switch out of selection mode
+
+    Q_UNUSED(item)
+    wasDoubleClicked = true;
+
+    // assure we are not in selection mode
+    exitSelectionMode();
+    clearButtons(none);
+
+    // assure the fillets are shown
+    showObject();
+    // remove any highlights andd selections
+    DressUpView->highlightReferences(false);
+    Gui::Selection().clearSelection();
+
+    // enable next possible single-click event after double-click time passed
+    QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
+}
+
+void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
+    // executed when the user selected an item in the list (but double-clicked it)
+    // highlights the currently selected item
+
+    if (!wasDoubleClicked) {
+        // we treat it as single-click event once the QApplication double-click time is passed
+        QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
+
+        // name of the item
+        std::string subName = current->text().toStdString();
+        // get the document name
+        std::string docName = DressUpView->getObject()->getDocument()->getName();
+        // get the name of the body we are in
+        Part::BodyBase* body = PartDesign::Body::findBodyOf(DressUpView->getObject());
+        std::string objName = body->getNameInDocument();
+
+        // hide fillet to see the original edge
+        // (a fillet creates new edges so that the original one is not available)
+        hideObject();
+        // highlight all objects in the list
+        DressUpView->highlightReferences(true);
+        // clear existing selection because only the current item is highlighted, not all selected ones to keep the overview
+        Gui::Selection().clearSelection();
+        // highligh the selected item
+        Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+    }
+}
+
+void TaskDressUpParameters::itemClickedTimeout() {
+    // executed after double-click time passed
+    wasDoubleClicked = false;
 }
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const
@@ -176,10 +241,11 @@ void TaskDressUpParameters::hideObject()
 
 void TaskDressUpParameters::showObject()
 {
-    DressUpView->getObject()->Visibility.setValue(true);
     App::DocumentObject* base = getBase();
-    if (base) 
+    if (base) {
+        DressUpView->getObject()->Visibility.setValue(true);
         base->Visibility.setValue(false);
+    }
 }
 
 Part::Feature* TaskDressUpParameters::getBase(void) const

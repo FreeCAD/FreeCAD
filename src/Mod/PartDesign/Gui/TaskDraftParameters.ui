@@ -18,6 +18,10 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QToolButton" name="buttonRefAdd">
+       <property name="toolTip">
+        <string>Click button to enter selection mode,
+click again to end selection</string>
+       </property>
        <property name="text">
         <string>Add face</string>
        </property>
@@ -28,6 +32,10 @@
      </item>
      <item>
       <widget class="QToolButton" name="buttonRefRemove">
+       <property name="toolTip">
+        <string>Click button to enter selection mode,
+click again to end selection</string>
+       </property>
        <property name="text">
         <string>Remove face</string>
        </property>
@@ -39,7 +47,15 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetReferences"/>
+    <widget class="QListWidget" name="listWidgetReferences">
+     <property name="toolTip">
+      <string>- select an item to highlight it
+- double-click on an item to see the drafts</string>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -51,20 +67,20 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="draftAngle">
+      <widget class="Gui::QuantitySpinBox" name="draftAngle" native="true">
        <property name="unit" stdset="0">
         <string notr="true">deg</string>
        </property>
-       <property name="minimum">
+       <property name="minimum" stdset="0">
         <double>0.000000000000000</double>
        </property>
-       <property name="maximum">
+       <property name="maximum" stdset="0">
         <double>89.999999999999986</double>
        </property>
-       <property name="singleStep">
+       <property name="singleStep" stdset="0">
         <double>0.100000000000000</double>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>1.500000000000000</double>
        </property>
       </widget>

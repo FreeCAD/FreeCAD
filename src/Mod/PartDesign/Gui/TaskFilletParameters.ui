@@ -18,8 +18,12 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QToolButton" name="buttonRefAdd">
+       <property name="toolTip">
+        <string>Click button to enter selection mode,
+click again to end selection</string>
+       </property>
        <property name="text">
-        <string>Add ref</string>
+        <string>Add</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -28,8 +32,12 @@
      </item>
      <item>
       <widget class="QToolButton" name="buttonRefRemove">
+       <property name="toolTip">
+        <string>Click button to enter selection mode,
+click again to end selection</string>
+       </property>
        <property name="text">
-        <string>Remove ref</string>
+        <string>Remove</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -39,7 +47,15 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetReferences"/>
+    <widget class="QListWidget" name="listWidgetReferences">
+     <property name="toolTip">
+      <string>- select an item to highlight it
+- double-click on an item to see the fillets</string>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -51,7 +67,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="filletRadius"/>
+      <widget class="Gui::QuantitySpinBox" name="filletRadius" native="true"/>
      </item>
     </layout>
    </item>

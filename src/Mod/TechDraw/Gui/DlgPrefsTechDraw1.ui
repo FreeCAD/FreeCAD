@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>TechDraw General</string>
+   <string>General</string>
   </property>
   <property name="toolTip">
    <string/>
@@ -216,7 +216,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Normal line color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -286,7 +286,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Preselection color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>255</green>
@@ -318,7 +318,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Section face color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>225</red>
             <green>225</green>
@@ -350,7 +350,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Selected item color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>28</red>
             <green>173</green>
@@ -382,7 +382,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Section face hatch color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -414,7 +414,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Window background color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>80</red>
             <green>80</green>
@@ -446,7 +446,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Geometric hatch color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -473,7 +473,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Color of Dimension lines and text.</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -565,7 +565,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Face color</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>255</green>
@@ -597,7 +597,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Default color for annotations </string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -733,7 +733,7 @@ for ProjectionGroups</string>
          </spacer>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_LabelSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_LabelSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -743,7 +743,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Label size</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>8.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -793,7 +793,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_DefTemp">
+         <widget class="Gui::PrefFileChooser" name="pfc_DefTemp" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -844,7 +844,7 @@ for ProjectionGroups</string>
          </spacer>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_DefDir">
+         <widget class="Gui::PrefFileChooser" name="pfc_DefDir" native="true">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -884,7 +884,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
+         <widget class="Gui::PrefFileChooser" name="pfc_HatchFile" native="true">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -921,7 +921,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_LineGroup">
+         <widget class="Gui::PrefFileChooser" name="pfc_LineGroup" native="true">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -958,7 +958,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="4" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_Welding">
+         <widget class="Gui::PrefFileChooser" name="pfc_Welding" native="true">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -998,7 +998,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="5" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_FilePattern">
+         <widget class="Gui::PrefFileChooser" name="pfc_FilePattern" native="true">
           <property name="minimumSize">
            <size>
             <width>0</width>

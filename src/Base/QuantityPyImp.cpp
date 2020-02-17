@@ -205,6 +205,17 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
     return new QuantityPy(new Quantity(quant));
 }
 
+PyObject * QuantityPy::__round__ (PyObject *args)
+{
+    double val= getQuantityPtr()->getValue();
+    Unit unit = getQuantityPtr()->getUnit();
+    Py::Float flt(val);
+    Py::Callable func(flt.getAttr("__round__"));
+    double rnd = static_cast<double>(Py::Float(func.apply(args)));
+
+    return new QuantityPy(new Quantity(rnd, unit));
+}
+
 PyObject * QuantityPy::number_float_handler (PyObject *self)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {

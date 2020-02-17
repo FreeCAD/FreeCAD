@@ -32,6 +32,7 @@
 #include "ViewProviderDressUp.h"
 
 class QListWidget;
+class QListWidgetItem;
 
 namespace Part {
     class Feature;
@@ -60,11 +61,15 @@ public:
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
     void onButtonRefRemove(const bool checked);
-    virtual void onRefDeleted(void)=0;
+    void doubleClicked(QListWidgetItem* item);
+    void setSelection(QListWidgetItem* current);
+    void itemClickedTimeout();
+    virtual void onRefDeleted(void) = 0;
 
 protected:
     void exitSelectionMode();
     bool referenceSelected(const Gui::SelectionChanges& msg);
+    bool wasDoubleClicked = false;
 
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };

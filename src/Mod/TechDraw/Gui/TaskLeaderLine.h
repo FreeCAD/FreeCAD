@@ -158,6 +158,8 @@ private:
     std::vector<Base::Vector3d> m_savePoints;
     double m_saveX;
     double m_saveY;
+
+    bool m_haveMdi;
 };
 
 class TaskDlgLeaderLine : public Gui::TaskView::TaskDialog

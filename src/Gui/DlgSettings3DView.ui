@@ -408,10 +408,10 @@ The value is the diameter of the sphere to fit on the screen.</string>
            <double>10000000.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>NewDocumentCameraScale</string>
+           <cstring>NewDocumentCameraScale</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <string>View</string>
+           <cstring>View</cstring>
           </property>
           <property name="rawValue" stdset="0">
            <double>100.000000000000000</double>

@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>TechDraw Dimensions</string>
+   <string>Dimensions</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
@@ -284,7 +284,7 @@
          </widget>
         </item>
         <item row="5" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -294,7 +294,7 @@
           <property name="toolTip">
            <string>Dimension font size</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -306,7 +306,7 @@
          </widget>
         </item>
         <item row="8" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -316,7 +316,7 @@
           <property name="toolTip">
            <string>Dimension arrowhead size</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -581,7 +581,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Solid</string>
+            <string>Continuous</string>
            </property>
           </item>
           <item>
@@ -726,7 +726,7 @@
           </item>
           <item>
            <property name="text">
-            <string>Solid</string>
+            <string>Continuous</string>
            </property>
           </item>
           <item>
@@ -1068,14 +1068,14 @@
            <string>Style for hidden lines.</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>SectionLineStyle</cstring>
+           <cstring>HiddenLine</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Standards</cstring>
+           <cstring>Mod/TechDraw/General</cstring>
           </property>
           <item>
            <property name="text">
-            <string>Solid</string>
+            <string>Continuous</string>
            </property>
           </item>
           <item>

@@ -91,6 +91,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <QCoreApplication>
 #include <QCryptographicHash>
 
+#include "AutoTransaction.h"
 #include "Document.h"
 #include "Application.h"
 #include "DocumentObject.h"
@@ -1831,7 +1832,8 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 
     if(!isExporting(0)) {
         for(auto o : obj) {
-            const auto &outList = o->getOutList(DocumentObject::OutListNoHidden);
+            const auto &outList = o->getOutList(DocumentObject::OutListNoHidden
+                                                | DocumentObject::OutListNoXLinked);
             writer.Stream() << writer.ind() 
                 << "<" FC_ELEMENT_OBJECT_DEPS " " FC_ATTR_DEP_OBJ_NAME "=\""
                 << o->getNameInDocument() << "\" " FC_ATTR_DEP_COUNT "=\"" << outList.size();
@@ -3764,6 +3766,8 @@ void Document::removeObject(const char* sName)
         return;
     }
 
+    TransactionLocker tlock;
+
     _checkTransaction(pos->second,0,__LINE__);
 
 #if 0
@@ -3864,6 +3868,8 @@ void Document::_removeObject(DocumentObject* pcObject)
         FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
         return;
     }
+
+    TransactionLocker tlock;
 
     // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject,0,__LINE__);

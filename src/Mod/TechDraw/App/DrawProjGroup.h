@@ -69,7 +69,6 @@ public:
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
     virtual QRectF getRect(void) const override;
-    virtual bool checkFit(TechDraw::DrawPage* p) const override;
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
 
@@ -175,7 +174,8 @@ protected:
     gp_Dir vec2dir(Base::Vector3d v);
 
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-
+    
+    bool m_lockScale;
 };
 
 } //namespace TechDraw

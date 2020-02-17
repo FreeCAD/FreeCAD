@@ -861,7 +861,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             return;
         }
         if(childRoot->findChild(childVp->getRoot())<0) {
-            FC_WARN("cannot find '" << childVp->getObject()->getFullName() 
+            FC_LOG("cannot find '" << childVp->getObject()->getFullName() 
                     << "' in geo group '" << grp->getNameInDocument() << "'");
             break;
         }

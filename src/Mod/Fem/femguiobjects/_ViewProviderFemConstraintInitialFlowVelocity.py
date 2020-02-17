@@ -65,7 +65,7 @@ class _TaskPanel(object):
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/InitialFlowVelocity.ui")
         self._initParamWidget()
         self.form = [self._paramWidget]
-        analysis = femutils.findAnalysisOfMember(obj)
+        analysis = obj.getParentGroup()
         self._mesh = femutils.get_single_member(analysis, "Fem::FemMeshObject")
         self._part = None
         if self._mesh is not None:

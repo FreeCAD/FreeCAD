@@ -1035,22 +1035,28 @@ void PropertyLinkSub::setPyObject(PyObject *value)
             throw Base::ValueError("Expect input sequence of size 2");
         else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
             DocumentObjectPy  *pcObj = (DocumentObjectPy*)seq[0].ptr();
+            static const char *errMsg = "type of second element in tuple must be str or sequence of str";
+            PropertyString propString;
             if (seq[1].isString()) {
                 std::vector<std::string> vals;
-                vals.push_back((std::string)Py::String(seq[1]));
+                propString.setPyObject(seq[1].ptr());
+                vals.emplace_back(propString.getValue());
                 setValue(pcObj->getDocumentObjectPtr(),std::move(vals));
             }
             else if (seq[1].isSequence()) {
                 Py::Sequence list(seq[1]);
                 std::vector<std::string> vals(list.size());
                 unsigned int i=0;
-                for (Py::Sequence::iterator it = list.begin();it!=list.end();++it,++i)
-                    vals[i] = Py::String(*it);
+                for (Py::Sequence::iterator it = list.begin();it!=list.end();++it,++i) {
+                    if(!(*it).isString())
+                        throw Base::TypeError(errMsg);
+                    propString.setPyObject((*it).ptr());
+                    vals[i] = propString.getValue();
+                }
                 setValue(pcObj->getDocumentObjectPtr(),std::move(vals));
             }
             else {
-                std::string error = std::string("type of second element in tuple must be str or sequence of str");
-                throw Base::TypeError(error);
+                throw Base::TypeError(errMsg);
             }
         }
         else {
@@ -1964,12 +1970,11 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
         return;
     }catch(...) {}
 
-#define SUBLIST_THROW \
-    throw Base::TypeError(\
-        "Expects sequence of items of type DocObj, (DocObj,SubName), or (DocObj, (SubName,...))")
+    static const char *errMsg = 
+        "Expects sequence of items of type DocObj, (DocObj,SubName), or (DocObj, (SubName,...))";
 
     if (!PyTuple_Check(value) && !PyList_Check(value))
-        SUBLIST_THROW;
+        throw Base::TypeError(errMsg);
 
     Py::Sequence list(value);
     Py::Sequence::size_type size = list.size();
@@ -1984,17 +1989,22 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
             Py::Sequence seq(item);
             if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))){
                 auto obj = static_cast<DocumentObjectPy*>(seq[0].ptr())->getDocumentObjectPtr();
+                PropertyString propString;
                 if (seq[1].isString()) {
                     values.push_back(obj);
-                    SubNames.push_back(Py::String(seq[1]));
+                    propString.setPyObject(seq[1].ptr());
+                    SubNames.emplace_back(propString.getValue());
                 } else if (seq[1].isSequence()) {
                     Py::Sequence list(seq[1]);
                     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                        if(!(*it).isString())
+                            throw Base::TypeError(errMsg);
                         values.push_back(obj);
-                        SubNames.push_back(Py::String(*it));
+                        propString.setPyObject((*it).ptr());
+                        SubNames.emplace_back(propString.getValue());
                     }
                 } else
-                    SUBLIST_THROW;
+                    throw Base::TypeError(errMsg);
             }
         } else if (PyObject_TypeCheck(*item, &(DocumentObjectPy::Type))) {
             DocumentObjectPy *pcObj;
@@ -2002,7 +2012,7 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
             values.push_back(pcObj->getDocumentObjectPtr());
             SubNames.emplace_back();
         } else
-            SUBLIST_THROW;
+            throw Base::TypeError(errMsg);
     }
     setValues(values,SubNames);
 }
@@ -2511,6 +2521,14 @@ public:
             auto ret = _DocInfoMap.insert(std::make_pair(path,info));
             info->init(ret.first,objName,l);
         }
+
+        if(info->pcDoc) {
+            // make sure to attach only external object
+            auto owner = Base::freecad_dynamic_cast<DocumentObject>(l->getContainer());
+            if(owner && owner->getDocument() == info->pcDoc)
+                return info;
+        }
+
         info->links.insert(l);
         return info;
     }
@@ -2621,6 +2639,13 @@ public:
             if(links.empty())
                 deinit();
         }
+    }
+
+    static void restoreDocument(const App::Document &doc) {
+        auto it = _DocInfoMap.find(getFullPath(doc.FileName.getValue()));
+        if(it==_DocInfoMap.end())
+            return;
+        it->second->slotFinishRestoreDocument(doc);
     }
 
     void slotFinishRestoreDocument(const App::Document &doc) {
@@ -3288,9 +3313,9 @@ Property *PropertyXLink::CopyOnImportExternal(
     if(subs.empty() && linked==_pcLink) 
         return 0;
 
-    PropertyXLink *p= createInstance();
+    std::unique_ptr<PropertyXLink> p(new PropertyXLink);
     copyTo(*p,linked,&subs);
-    return p;
+    return p.release();
 }
 
 Property *PropertyXLink::CopyOnLinkReplace(const App::DocumentObject *parent,
@@ -3299,13 +3324,9 @@ Property *PropertyXLink::CopyOnLinkReplace(const App::DocumentObject *parent,
     auto res = tryReplaceLinkSubs(getContainer(),_pcLink,parent,oldObj,newObj,_SubList);
     if(!res.first) 
         return 0;
-    PropertyXLink *p= createInstance();
+    std::unique_ptr<PropertyXLink> p(new PropertyXLink);
     copyTo(*p,res.first,&res.second);
-    return p;
-}
-
-PropertyXLink *PropertyXLink::createInstance() const {
-    return new PropertyXLink();
+    return p.release();
 }
 
 Property *PropertyXLink::CopyOnLabelChange(App::DocumentObject *obj, 
@@ -3317,9 +3338,9 @@ Property *PropertyXLink::CopyOnLabelChange(App::DocumentObject *obj,
     auto subs = updateLinkSubs(_pcLink,_SubList,&updateLabelReference,obj,ref,newLabel);
     if(subs.empty()) 
         return 0;
-    PropertyXLink *p= createInstance();
+    std::unique_ptr<PropertyXLink> p(new PropertyXLink);
     copyTo(*p,_pcLink,&subs);
-    return p;
+    return p.release();
 }
 
 void PropertyXLink::copyTo(PropertyXLink &other, 
@@ -3330,6 +3351,8 @@ void PropertyXLink::copyTo(PropertyXLink &other,
     if(linked && linked->getNameInDocument()) {
         other.docName = linked->getDocument()->getName();
         other.objectName = linked->getNameInDocument();
+        other.docInfo.reset();
+        other.filePath.clear();
     }else{
         other.objectName = objectName;
         other.docName.clear();
@@ -3345,9 +3368,9 @@ void PropertyXLink::copyTo(PropertyXLink &other,
 
 Property *PropertyXLink::Copy(void) const
 {
-    PropertyXLink *p= createInstance();
+    std::unique_ptr<PropertyXLink> p(new PropertyXLink);
     copyTo(*p);
-    return p;
+    return p.release();
 }
 
 void PropertyXLink::Paste(const Property &from)
@@ -3405,6 +3428,10 @@ bool PropertyXLink::hasXLink(
         }
     }
     return ret;
+}
+
+void PropertyXLink::restoreDocument(const App::Document &doc) {
+    DocInfo::restoreDocument(doc);
 }
 
 std::map<App::Document*,std::set<App::Document*> > 
@@ -3573,10 +3600,6 @@ PropertyXLinkSub::PropertyXLinkSub(bool allowPartial, PropertyLinkBase *parent)
 PropertyXLinkSub::~PropertyXLinkSub() {
 }
 
-PropertyXLink *PropertyXLinkSub::createInstance() const{
-    return new PropertyXLinkSub();
-}
-
 bool PropertyXLinkSub::upgrade(Base::XMLReader &reader, const char *typeName) {
     if(strcmp(typeName, PropertyLinkSubGlobal::getClassTypeId().getName())==0 ||
        strcmp(typeName, PropertyLinkSub::getClassTypeId().getName())==0 ||
@@ -3697,7 +3720,7 @@ void PropertyXLinkSubList::setValues(
             FC_THROWM(Base::ValueError,"invalid document object");
     }
     
-    aboutToSetValue();
+    atomic_change guard(*this);
 
     for(auto it=_Links.begin(),itNext=it;it!=_Links.end();it=itNext) {
         ++itNext;
@@ -3714,7 +3737,7 @@ void PropertyXLinkSubList::setValues(
         _Links.emplace_back(testFlag(LinkAllowPartial),this);
         _Links.back().setValue(v.first,std::move(v.second));
     }
-    hasSetValue();
+    guard.tryInvoke();
 }
 
 void PropertyXLinkSubList::addValue(App::DocumentObject *obj, 
@@ -3742,10 +3765,10 @@ void PropertyXLinkSubList::addValue(App::DocumentObject *obj,
             return;
         }
     }
-    aboutToSetValue();
+    atomic_change guard(*this);
     _Links.emplace_back(testFlag(LinkAllowPartial),this);
     _Links.back().setValue(obj,std::move(subs));
-    hasSetValue();
+    guard.tryInvoke();
 }
 
 void PropertyXLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
@@ -3754,6 +3777,41 @@ void PropertyXLinkSubList::setValue(DocumentObject* lValue, const std::vector<st
     if(lValue)
         values[lValue] = SubList;
     setValues(std::move(values));
+}
+
+void PropertyXLinkSubList::setValues(const std::vector<DocumentObject*> &values) {
+    atomic_change guard(*this);
+    _Links.clear();
+    for(auto obj : values) {
+        _Links.emplace_back(testFlag(LinkAllowPartial),this);
+        _Links.back().setValue(obj);
+    }
+    guard.tryInvoke();
+}
+
+void PropertyXLinkSubList::set1Value(int idx,
+                                     DocumentObject *value,
+                                     const std::vector<std::string> &SubList) 
+{
+    if(idx < -1 || idx > getSize())
+        throw Base::RuntimeError("index out of bound");
+
+    if(idx < 0 || idx+1 == getSize()) {
+        if(SubList.empty()) {
+            addValue(value,SubList);
+            return;
+        }
+        atomic_change guard(*this);
+        _Links.emplace_back(testFlag(LinkAllowPartial),this);
+        _Links.back().setValue(value);
+        guard.tryInvoke();
+        return;
+    }
+
+    auto it = _Links.begin();
+    for(;idx;--idx)
+        ++it;
+    it->setValue(value,SubList);
 }
 
 const string PropertyXLinkSubList::getPyReprString() const
@@ -3790,15 +3848,18 @@ DocumentObject *PropertyXLinkSubList::getValue() const
 
 int PropertyXLinkSubList::removeValue(App::DocumentObject *lValue)
 {
+    atomic_change guard(*this,false);
     int ret = 0;
-    auto it = std::find_if(_Links.begin(),_Links.end(),
-                [=](const PropertyXLinkSub &l){return l.getValue()==lValue;});
-    if(it != _Links.end()) {
-        ret = (int)it->getSubValues().size();
-        if(!ret)
-            ret = 1;
-        _Links.erase(it);
+    for(auto it=_Links.begin();it!=_Links.end();) {
+        if(it->getValue() != lValue)
+            ++it;
+        else {
+            guard.aboutToChange();
+            it = _Links.erase(it);
+            ++ret;
+        }
     }
+    guard.tryInvoke();
     return ret;
 }
 
@@ -3809,6 +3870,7 @@ PyObject *PropertyXLinkSubList::getPyObject(void)
         auto obj = link.getValue();
         if(!obj || !obj->getNameInDocument())
             continue;
+
         Py::Tuple tup(2);
         tup[0] = Py::asObject(obj->getPyObject());
 
@@ -3898,12 +3960,14 @@ void PropertyXLinkSubList::Restore(Base::XMLReader &reader)
                 reader.hasAttribute("partial") &&
                 reader.getAttributeAsInteger("partial"));
     int count = reader.getAttributeAsInteger("count");
+    atomic_change guard(*this,false);
     _Links.clear();
     for(int i=0;i<count;++i) {
         _Links.emplace_back(false,this);
         _Links.back().Restore(reader);
     }
     reader.readEndElement("XLinkSubList");
+    guard.tryInvoke();
 }
 
 Property *PropertyXLinkSubList::CopyOnImportExternal(
@@ -4088,6 +4152,16 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject *> &objs,
             if(obj && obj->getNameInDocument())
                 count += l.getSubValues().size();
         }
+        if(!count) {
+            objs.reserve(objs.size()+_Links.size());
+            for(auto &l : _Links) {
+                auto obj = l.getValue();
+                if(obj && obj->getNameInDocument())
+                    objs.push_back(obj);
+            }
+            return;
+        }
+
         objs.reserve(objs.size()+count);
         subs->reserve(subs->size()+count);
         for(auto &l : _Links) {
@@ -4107,18 +4181,14 @@ void PropertyXLinkSubList::breakLink(App::DocumentObject *obj, bool clear) {
         setValue(0);
         return;
     }
-    bool touched = false;
+    atomic_change guard(*this,false);
     for(auto &l : _Links) {
         if(l.getValue() == obj) {
-            if(!touched) {
-                touched = true;
-                aboutToSetValue();
-            }
+            guard.aboutToChange();
             l.setValue(0);
         }
     }
-    if(touched)
-        hasSetValue();
+    guard.tryInvoke();
 }
 
 bool PropertyXLinkSubList::adjustLink(const std::set<App::DocumentObject*> &inList) {
@@ -4163,9 +4233,18 @@ int PropertyXLinkSubList::checkRestore(std::string *msg) const {
 }
 
 bool PropertyXLinkSubList::upgrade(Base::XMLReader &reader, const char *typeName) {
-    if(strcmp(typeName, PropertyLinkSubListGlobal::getClassTypeId().getName())==0 ||
-       strcmp(typeName, PropertyLinkSubList::getClassTypeId().getName())==0 ||
-       strcmp(typeName, PropertyLinkSubListChild::getClassTypeId().getName())==0) 
+    if(strcmp(typeName, PropertyLinkListGlobal::getClassTypeId().getName())==0 ||
+       strcmp(typeName, PropertyLinkList::getClassTypeId().getName())==0 ||
+       strcmp(typeName, PropertyLinkListChild::getClassTypeId().getName())==0) 
+    {
+        PropertyLinkList linkProp;
+        linkProp.setContainer(getContainer());
+        linkProp.Restore(reader);
+        setValues(linkProp.getValues());
+        return true;
+    } else if (strcmp(typeName, PropertyLinkSubListGlobal::getClassTypeId().getName())==0 ||
+               strcmp(typeName, PropertyLinkSubList::getClassTypeId().getName())==0 ||
+               strcmp(typeName, PropertyLinkSubListChild::getClassTypeId().getName())==0) 
     {
         PropertyLinkSubList linkProp;
         linkProp.setContainer(getContainer());
@@ -4195,11 +4274,67 @@ void PropertyXLinkSubList::setAllowPartial(bool enable) {
 }
 
 void PropertyXLinkSubList::hasSetChildValue(Property &) {
-    hasSetValue();
+    if(!signalCounter)
+        hasSetValue();
 }
 
 void PropertyXLinkSubList::aboutToSetChildValue(Property &) {
-    aboutToSetValue();
+    if(!signalCounter || !hasChanged) {
+        aboutToSetValue();
+        if(signalCounter)
+            hasChanged = true;
+    }
+}
+
+//**************************************************************************
+// PropertyXLinkList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyXLinkList , App::PropertyXLinkSubList)
+
+//**************************************************************************
+// Construction/Destruction
+
+PropertyXLinkList::PropertyXLinkList()
+{
+}
+
+PropertyXLinkList::~PropertyXLinkList()
+{
+}
+
+PyObject *PropertyXLinkList::getPyObject(void)
+{
+    for(auto &link : _Links) {
+        auto obj = link.getValue();
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        if(link.hasSubName()) 
+            return PropertyXLinkSubList::getPyObject();
+    }
+
+    Py::List list;
+    for(auto &link : _Links) {
+        auto obj = link.getValue();
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        list.append(Py::asObject(obj->getPyObject()));
+    }
+    return Py::new_reference_to(list);
+}
+
+void PropertyXLinkList::setPyObject(PyObject *value)
+{
+    try { //try PropertyLinkList syntax
+        PropertyLinkList dummy;
+        dummy.setAllowExternal(true);
+        dummy.setPyObject(value);
+        this->setValues(dummy.getValues());
+        return;
+    }
+    catch (Base::Exception&) {}
+
+    PropertyXLinkSubList::setPyObject(value);
 }
 
 //**************************************************************************

@@ -222,7 +222,10 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
         //set current font size to match inserted text at cursor pos
         QTextCharFormat fmt = cursor.charFormat();
         double currSize = fmt.fontPointSize();
-        int fSize = f_fontsize->findText(QString::number(currSize));
+        int intSize = round(currSize);
+        QString qsSize = QString::number(intSize);
+        addFontSize(qsSize);
+        int fSize = f_fontsize->findText(qsSize);
         f_fontsize  ->setCurrentIndex(fSize);
     } else {
         QTextCursor cursor = f_textedit->textCursor();
@@ -236,6 +239,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
         f_fontsize->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
     }
+       
 }
 
 
@@ -816,7 +820,6 @@ void MRichTextEdit::addFontSize(QString fs)
     }
     f_fontsize->clear();
     f_fontsize->addItems(newList);
-    size = newList.size();
 }
 
 #include <Mod/TechDraw/Gui/moc_mrichtextedit.cpp>

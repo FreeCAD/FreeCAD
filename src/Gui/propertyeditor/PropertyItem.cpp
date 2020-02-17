@@ -54,6 +54,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/Placement.h>
 #include <Gui/FileDialog.h>
@@ -65,6 +66,7 @@
 #include <Gui/SpinBox.h>
 
 using namespace Gui::PropertyEditor;
+using namespace Gui::Dialog;
 
 Gui::PropertyEditor::PropertyItemFactory* Gui::PropertyEditor::PropertyItemFactory::_singleton = NULL;
 
@@ -3572,7 +3574,7 @@ QVariant PropertyTransientFileItem::editorData(QWidget *editor) const
 
 // ---------------------------------------------------------------
 
-LinkSelection::LinkSelection(const QStringList& list) : link(list)
+LinkSelection::LinkSelection(const App::SubObjectT &link) : link(link)
 {
 }
 
@@ -3582,15 +3584,23 @@ LinkSelection::~LinkSelection()
 
 void LinkSelection::select()
 {
+    auto sobj = link.getSubObject();
+    if(!sobj) {
+        QMessageBox::critical(getMainWindow(), tr("Error"), tr("Object not found"));
+        return;
+    }
+    Gui::Selection().selStackPush();
     Gui::Selection().clearSelection();
-    Gui::Selection().addSelection((const char*)link[0].toLatin1(),
-                                  (const char*)link[1].toLatin1());
+    Gui::Selection().addSelection(link.getDocumentName().c_str(),
+                                  link.getObjectName().c_str(),
+                                  link.getSubName().c_str());
     this->deleteLater();
 }
 
 // ---------------------------------------------------------------
 
-LinkLabel::LinkLabel (QWidget * parent, bool xlink) : QWidget(parent), isXLink(xlink)
+LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
+    : QWidget(parent), objProp(prop), dlg(nullptr)
 {   
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
@@ -3599,6 +3609,8 @@ LinkLabel::LinkLabel (QWidget * parent, bool xlink) : QWidget(parent), isXLink(x
     label = new QLabel(this);
     label->setAutoFillBackground(true);
     label->setTextFormat(Qt::RichText);
+    // Below is necessary for the hytperlink to be clickable without losing focus
+    label->setTextInteractionFlags(Qt::TextBrowserInteraction);
     layout->addWidget(label);
 
     editButton = new QPushButton(QLatin1String("..."), this);
@@ -3620,23 +3632,42 @@ LinkLabel::~LinkLabel()
 {
 }
 
-void LinkLabel::setPropertyLink(const QStringList& o)
+void LinkLabel::updatePropertyLink()
 {
-    link = o;
-    QString linkcolor = QApplication::palette().color(QPalette::Link).name();
-    QString text = QString::fromLatin1(
-        "<html><head><style type=\"text/css\">"
-        "p, li { white-space: pre-wrap; }"
-        "</style></head><body>"
-        "<p>"
-        "<a href=\"%1.%2\"><span style=\" text-decoration: underline; color:%3;\">%4</span></a>"
-        "</p></body></html>"
-    )
-    .arg(link[0], link[1], linkcolor, link[2]);
+    QString text;
+    auto owner = objProp.getObject();
+    auto prop = Base::freecad_dynamic_cast<App::PropertyLinkBase>(objProp.getProperty());
+
+    link = QVariant();
+
+    if(owner && prop) {
+        auto links = DlgPropertyLink::getLinksFromProperty(prop);
+        if(links.size() == 1) {
+            auto &sobj = links.front();
+            link = QVariant::fromValue(sobj);
+            QString linkcolor = QApplication::palette().color(QPalette::Link).name();
+            text = QString::fromLatin1(
+                    "<html><head><style type=\"text/css\">"
+                    "p, li { white-space: pre-wrap; }"
+                    "</style></head><body>"
+                    "<p>"
+                    "<a href=\"%1#%2.%3\"><span style=\" text-decoration: underline; color:%4;\">%5</span></a>"
+                    "</p></body></html>"
+                    )
+                .arg(QLatin1String(sobj.getDocumentName().c_str()),
+                     QLatin1String(sobj.getObjectName().c_str()),
+                     QString::fromUtf8(sobj.getSubName().c_str()),
+                     linkcolor,
+                     DlgPropertyLink::formatObject(
+                         owner->getDocument(), sobj.getObject(), sobj.getSubName().c_str()));
+        } else if (links.size()) {
+            text = DlgPropertyLink::formatLinks(owner->getDocument(), links);
+        }
+    }
     label->setText(text);
 }
 
-QStringList LinkLabel::propertyLink() const
+QVariant LinkLabel::propertyLink() const
 {
     return link;
 }
@@ -3644,50 +3675,71 @@ QStringList LinkLabel::propertyLink() const
 void LinkLabel::onLinkActivated (const QString& s)
 {
     Q_UNUSED(s);
-    LinkSelection* select = new LinkSelection(link);
+    LinkSelection* select = new LinkSelection(qvariant_cast<App::SubObjectT>(link));
     QTimer::singleShot(50, select, SLOT(select()));
 }
 
 void LinkLabel::onEditClicked ()
 {
-    Gui::Dialog::DlgPropertyLink dlg(link, this, 0, isXLink);
-    if (dlg.exec() == QDialog::Accepted) {
-        setPropertyLink(dlg.propertyLink());
-        /*emit*/ linkChanged(link);
+    if(!dlg) {
+        dlg = new DlgPropertyLink(this);
+        dlg->init(objProp,true);
+        connect(dlg, SIGNAL(accepted()), this, SLOT(onLinkChanged()));
+    } else
+        dlg->init(objProp,false);
+    dlg->show();
+}
+
+void LinkLabel::onLinkChanged() {
+    if(dlg) {
+        auto links = dlg->currentLinks();
+        if(links != dlg->originalLinks()) {
+            link = QVariant::fromValue(links);
+            /*emit*/ linkChanged(link);
+            updatePropertyLink();
+        }
     }
 }
 
 void LinkLabel::resizeEvent(QResizeEvent* e)
 {
     editButton->setFixedWidth(e->size().height());
-    editButton->setFixedHeight(e->size().height());
 }
 
+// --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkItem)
 
-PropertyLinkItem::PropertyLinkItem():isXLink(false)
+PropertyLinkItem::PropertyLinkItem()
 {
 }
 
 QVariant PropertyLinkItem::toString(const QVariant& prop) const
 {
-    QStringList list = prop.toStringList();
-    return QVariant(list[2]);
+    QString res;
+    if(propertyItems.size()) {
+        App::DocumentObjectT owner(propertyItems[0]);
+        res = DlgPropertyLink::formatLinks(owner.getDocument(),
+                                           qvariant_cast<QList<App::SubObjectT> >(prop));
+    }
+    return res;
 }
 
 QVariant PropertyLinkItem::data(int column, int role) const {
     if(propertyItems.size() && column == 1 
             && (role == Qt::TextColorRole || role == Qt::ToolTipRole))
     {
-        auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
-        if(xlink) {
-            if(role==Qt::TextColorRole && xlink->checkRestore()>1)
+        auto propLink = Base::freecad_dynamic_cast<const App::PropertyLinkBase>(propertyItems[0]);
+        if(propLink) {
+            if(role==Qt::TextColorRole && propLink->checkRestore()>1)
                 return QVariant::fromValue(QColor(0xff,0,0));
             else if(role == Qt::ToolTipRole) {
-                const char *filePath = xlink->getFilePath();
-                if(filePath && filePath[0])
-                    return QVariant::fromValue(QString::fromUtf8(filePath));
+                auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(propertyItems[0]);
+                if(xlink) {
+                    const char *filePath = xlink->getFilePath();
+                    if(filePath && filePath[0])
+                        return QVariant::fromValue(QString::fromUtf8(filePath));
+                }
             }
         }
     }
@@ -3696,363 +3748,53 @@ QVariant PropertyLinkItem::data(int column, int role) const {
 
 QVariant PropertyLinkItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()));
+    auto propLink = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+    if(!propLink)
+        return QVariant();
 
-    auto xlink = Base::freecad_dynamic_cast<const App::PropertyXLink>(prop);
-    isXLink = xlink!=0;
+    auto links = DlgPropertyLink::getLinksFromProperty(propLink);
+    if(links.empty())
+        return QVariant();
 
-    const App::PropertyLink* prop_link = static_cast<const App::PropertyLink*>(prop);
-    App::PropertyContainer* c = prop_link->getContainer();
-
-    // The list has five mandatory elements: 
-    //
-    //      document name of the container, 
-    //      internal name of the linked object, 
-    //      label, 
-    //      internal name of container,
-    //      property name
-    //
-    // and two additional elements if it is a PropertyXLink
-    //
-    //      subname 
-    //      (optional) document name of linked object if it is different from the container
-    //
-
-    App::DocumentObject* obj = prop_link->getValue();
-    QStringList list;
-    if (obj) {
-        list << QString::fromLatin1(obj->getDocument()->getName());
-        list << QString::fromLatin1(obj->getNameInDocument());
-
-        std::string _objName;
-        const char *objName = obj->getNameInDocument();
-        auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(c);
-        if(!objName || (owner && owner->getDocument()!=obj->getDocument())) {
-            _objName = obj->getFullName();
-            objName = _objName.c_str();
-        }
-
-        if(xlink && xlink->getSubValues().size()) {
-            int count = 0;
-            std::stringstream ss;
-            ss << objName << ' ';
-
-            std::string prevSub;
-            for(const auto &sub : xlink->getSubValues(false)) {
-                if(++count > 3)
-                    break;
-
-                if(count>1)
-                    ss << ',';
-                else
-                    ss << '(';
-
-                auto element = Data::ComplexGeoData::findElementName(sub.c_str());
-                if(prevSub.size()==(std::size_t)(element-sub.c_str()) 
-                        && boost::starts_with(sub,prevSub))
-                {
-                    ss << element;
-                    continue;
-                }
-
-                prevSub.clear();
-
-                if(element && element[0])
-                    prevSub = sub.substr(0,element-sub.c_str());
-
-                if(count > 1)
-                    ss << ' ';
-                ss << sub;
-            }
-            if(count) {
-                if(count>3)
-                    ss << "...";
-                ss << ')';
-            }
-            list << QString::fromUtf8(ss.str().c_str());
-
-        }else if(obj->Label.getStrValue() != objName) {
-            list << QString::fromLatin1("%1 (%2)").
-                    arg(QString::fromUtf8(obj->Label.getValue()),
-                        QString::fromLatin1(objName));
-        } else {
-            list << QString::fromUtf8(obj->Label.getValue());
-        }
-    } else {
-        // no object assigned
-        // the document name
-        if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
-            list << QString::fromLatin1(obj->getDocument()->getName());
-        }
-        else {
-            list << QString::fromLatin1("");
-        }
-
-        // the internal object name
-        list << QString::fromLatin1("Null");
-
-        // the object label
-        std::string msg;
-        if(xlink && xlink->checkRestore(&msg)>1)
-            list << QString::fromUtf8(msg.c_str());
-        else
-            list << QString::fromLatin1("");
-    }
-
-    // the name of this object
-    if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
-        list << QString::fromLatin1(obj->getNameInDocument());
-    }
-    else 
-        list << QString::fromLatin1("Null");
-
-    list << QString::fromLatin1(prop->getName());
-    assert(list.size() == FC_XLINK_VALUE_INDEX);
-
-    if(xlink) {
-        list << QString::fromUtf8(xlink->getSubName(false));
-        auto cobj = dynamic_cast<App::DocumentObject*>(c);
-        if(cobj && obj && cobj->getDocument()!=obj->getDocument())
-            list << QString::fromLatin1(obj->getDocument()->getName());
-    }
-
-    return QVariant(list);
+    return QVariant::fromValue(links);
 }
 
 void PropertyLinkItem::setValue(const QVariant& value)
 {
-    if (!value.canConvert(QVariant::StringList))
-        return;
-    QStringList items = value.toStringList();
-    if (items.size() > 1) {
-        QString d = items[0];
-        QString o = items[1];
-        QString data;
-        if ( o.isEmpty() )
-            data = QString::fromLatin1("None");
-        else if(isXLink && items.size()>FC_XLINK_VALUE_INDEX+1) {
-            QString doc;
-            if(items.size()>=FC_XLINK_VALUE_INDEX+2)
-                doc = items[FC_XLINK_VALUE_INDEX+1];
-            else
-                doc = d;
-            data = QString::fromLatin1("(App.getDocument('%1').getObject('%2'),'%3')").
-                    arg(doc,o,items[FC_XLINK_VALUE_INDEX]);
-        }else
-            data = QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d,o);
-        setPropertyValue(data);
-    }
+    auto links = qvariant_cast<QList<App::SubObjectT> >(value);
+    setPropertyValue(DlgPropertyLink::linksToPython(links));
 }
 
 QWidget* PropertyLinkItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    LinkLabel *ll = new LinkLabel(parent, isXLink);
+    if(propertyItems.empty())
+        return 0;
+    LinkLabel *ll = new LinkLabel(parent, propertyItems.front());
     ll->setAutoFillBackground(true);
     ll->setDisabled(isReadOnly());
-    QObject::connect(ll, SIGNAL(linkChanged(const QStringList&)), receiver, method);
+    QObject::connect(ll, SIGNAL(linkChanged(const QVariant&)), receiver, method);
     return ll;
 }
 
 void PropertyLinkItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
-    QStringList list = data.toStringList();
+    (void)data;
     LinkLabel *ll = static_cast<LinkLabel*>(editor);
-    ll->setPropertyLink(list);
+    return ll->updatePropertyLink();
 }
 
 QVariant PropertyLinkItem::editorData(QWidget *editor) const
 {
     LinkLabel *ll = static_cast<LinkLabel*>(editor);
-    return QVariant(ll->propertyLink());
+    return ll->propertyLink();
 }
 
 // --------------------------------------------------------------------
-
-LinkListLabel::LinkListLabel (QWidget * parent) : QWidget(parent)
-{
-    QHBoxLayout *layout = new QHBoxLayout(this);
-    layout->setMargin(0);
-    layout->setSpacing(1);
-
-    label = new QLabel(this);
-    label->setAutoFillBackground(true);
-    layout->addWidget(label);
-
-    editButton = new QPushButton(QLatin1String("..."), this);
-    editButton->setToolTip(tr("Change the linked objects"));
-    layout->addWidget(editButton);
-
-    // setLayout(layout);
-    connect(editButton, SIGNAL(clicked()),
-            this, SLOT(onEditClicked()));
-}
-
-LinkListLabel::~LinkListLabel()
-{
-}
-
-void LinkListLabel::setPropertyLinkList(const QVariantList& o)
-{
-    links = o;
-    if (links.isEmpty()) {
-        label->clear();
-    }
-    else if (links.size() == 1) {
-        QStringList s = links.front().toStringList();
-        label->setText(s[2]);
-    }
-    else {
-        QStringList obj;
-        for (QVariantList::iterator it = links.begin(); it != links.end(); ++it)
-            obj << it->toStringList()[2];
-        label->setText(QString::fromLatin1("[%1]").arg(obj.join(QString::fromLatin1(", "))));
-    }
-}
-
-QVariantList LinkListLabel::propertyLinkList() const
-{
-    return links;
-}
-
-void LinkListLabel::onEditClicked ()
-{
-    QStringList list = links.front().toStringList();
-    Gui::Dialog::DlgPropertyLink dlg(list, this);
-    dlg.setSelectionMode(QAbstractItemView::ExtendedSelection);
-    if (dlg.exec() == QDialog::Accepted) {
-        setPropertyLinkList(dlg.propertyLinkList());
-        Q_EMIT linkChanged(links);
-    }
-}
-
-void LinkListLabel::resizeEvent(QResizeEvent* e)
-{
-    editButton->setFixedWidth(e->size().height());
-}
-
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkListItem)
 
 PropertyLinkListItem::PropertyLinkListItem()
 {
-}
-
-QVariant PropertyLinkListItem::toString(const QVariant& prop) const
-{
-    QVariantList list = prop.toList();
-    if (list.empty()) {
-        return QString();
-    }
-    else if (list.size() == 1) {
-        QStringList item = list.front().toStringList();
-        return QString::fromLatin1("%1").arg(item[2]);
-    }
-    else {
-        QStringList obj;
-        for (QVariantList::iterator it = list.begin(); it != list.end(); ++it)
-            obj << it->toStringList()[2];
-        return QString::fromLatin1("[%1]").arg(obj.join(QString::fromLatin1(", ")));
-    }
-}
-
-QVariant PropertyLinkListItem::value(const App::Property* prop) const
-{
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId()));
-
-    const App::PropertyLinkList* prop_link = static_cast<const App::PropertyLinkList*>(prop);
-    App::PropertyContainer* c = prop_link->getContainer();
-
-    // the name of this object
-    QString objName;
-    if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
-        objName = QString::fromLatin1(obj->getNameInDocument());
-    }
-    else {
-        objName = QString::fromLatin1("Null");
-    }
-
-    // each item is a list of five elements:
-    //[document name, internal name, label, internal name of container, property name]
-    // the variant list contains at least one item
-    std::vector<App::DocumentObject*> obj = prop_link->getValues();
-    QVariantList varList;
-    if (!obj.empty()) {
-        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
-            QStringList list;
-            list << QString::fromLatin1((*it)->getDocument()->getName());
-            list << QString::fromLatin1((*it)->getNameInDocument());
-            list << QString::fromUtf8((*it)->Label.getValue());
-            list << objName;
-            list << QString::fromLatin1(prop->getName());
-            varList << list;
-        }
-    }
-    else {
-        QStringList list;
-        // no object assigned
-        // the document name
-        if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
-            list << QString::fromLatin1(obj->getDocument()->getName());
-        }
-        else {
-            list << QString::fromLatin1("");
-        }
-
-        // the internal object name
-        list << QString::fromLatin1("Null");
-        // the object label
-        list << QString::fromLatin1("");
-        list << objName;
-        list << QString::fromLatin1(prop->getName());
-        varList << list;
-    }
-
-    return QVariant(varList);
-}
-
-void PropertyLinkListItem::setValue(const QVariant& value)
-{
-    if (!value.canConvert(QVariant::List))
-        return;
-    QVariantList items = value.toList();
-    QStringList data;
-    for (QVariantList::iterator it = items.begin(); it != items.end(); ++it) {
-        QStringList list = it->toStringList();
-        QString d = list[0];
-        QString o = list[1];
-        if (!o.isEmpty())
-            data << QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d, o);
-    }
-    if(data.size()==0)
-        setPropertyValue(QLatin1String("[]"));
-    else
-        setPropertyValue(QString::fromLatin1("[%1]").arg(data.join(QString::fromLatin1(", "))));
-}
-
-QWidget* PropertyLinkListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
-{
-    LinkListLabel *ll = new LinkListLabel(parent);
-    ll->setAutoFillBackground(true);
-    ll->setDisabled(isReadOnly());
-    QObject::connect(ll, SIGNAL(linkChanged(const QVariantList&)), receiver, method);
-    return ll;
-}
-
-void PropertyLinkListItem::setEditorData(QWidget *editor, const QVariant& data) const
-{
-    QVariantList list = data.toList();
-    LinkListLabel *ll = static_cast<LinkListLabel*>(editor);
-    ll->setPropertyLinkList(list);
-}
-
-QVariant PropertyLinkListItem::editorData(QWidget *editor) const
-{
-    LinkListLabel *ll = static_cast<LinkListLabel*>(editor);
-    return QVariant(ll->propertyLinkList());
 }
 
 // --------------------------------------------------------------------

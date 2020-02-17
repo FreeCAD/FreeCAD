@@ -124,6 +124,7 @@
         <file>ui/MeshGroup.ui</file>
         <file>ui/MeshGroupXDMFExport.ui</file>
         <file>ui/MeshRegion.ui</file>
+        <file>ui/ResultHints.ui</file>
         <file>ui/ResultShow.ui</file>
         <file>ui/SolverCalculix.ui</file>
     </qresource>

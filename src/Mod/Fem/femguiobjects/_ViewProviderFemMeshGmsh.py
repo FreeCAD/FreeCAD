@@ -403,10 +403,12 @@ class _TaskPanelFemMeshGmsh:
                 .format(sys.exc_info()[0])
             )
         if error:
+            FreeCAD.Console.PrintMessage("Gmsh had warnings ...\n")
             FreeCAD.Console.PrintMessage("{}\n".format(error))
             self.console_log("Gmsh had warnings ...")
             self.console_log(error, "#FF0000")
         else:
+            FreeCAD.Console.PrintMessage("Clean run of Gmsh\n")
             self.console_log("Clean run of Gmsh")
         self.console_log("Gmsh done!")
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))

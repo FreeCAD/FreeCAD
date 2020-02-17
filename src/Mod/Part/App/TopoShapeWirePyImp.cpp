@@ -326,12 +326,14 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
     }
 }
 
-PyObject* TopoShapeWirePy::approximate(PyObject *args)
+PyObject* TopoShapeWirePy::approximate(PyObject *args, PyObject *kwds)
 {
     double tol2d = gp::Resolution();
     double tol3d = 0.0001;
     int maxseg=10, maxdeg=3;
-    if (!PyArg_ParseTuple(args, "ddii",&tol2d,&tol3d,&maxseg,&maxdeg))
+
+    static char* kwds_approx[] = {"Tol2d","Tol3d","MaxSegments","MaxDegree",NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|ddii", kwds_approx, &tol2d, &tol3d, &maxseg, &maxdeg))
         return 0;
     try {
         BRepAdaptor_CompCurve adapt(TopoDS::Wire(getTopoShapePtr()->getShape()));

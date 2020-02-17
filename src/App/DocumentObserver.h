@@ -62,7 +62,7 @@ public:
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
-    std::string getDocumentName() const;
+    const std::string &getDocumentName() const;
     /*! Get the document as Python command. */
     std::string getDocumentPython() const;
 
@@ -83,22 +83,32 @@ public:
     /*! Constructor */
     DocumentObjectT();
     /*! Constructor */
+    DocumentObjectT(const DocumentObjectT &);
+    /*! Constructor */
+    DocumentObjectT(DocumentObjectT &&);
+    /*! Constructor */
     DocumentObjectT(const DocumentObject*);
+    /*! Constructor */
+    DocumentObjectT(const char *docName, const char *objName);
     /*! Constructor */
     DocumentObjectT(const Property*);
     /*! Destructor */
     ~DocumentObjectT();
     /*! Assignment operator */
-    void operator=(const DocumentObjectT&);
+    DocumentObjectT &operator=(const DocumentObjectT&);
+    /*! Assignment operator */
+    DocumentObjectT &operator=(DocumentObjectT &&);
     /*! Assignment operator */
     void operator=(const DocumentObject*);
     /*! Assignment operator */
     void operator=(const Property*);
+    /*! Equality operator */
+    bool operator==(const DocumentObjectT&) const;
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
-    std::string getDocumentName() const;
+    const std::string &getDocumentName() const;
     /*! Get the document as Python command. */
     std::string getDocumentPython() const;
     /*! Get a pointer to the document object or 0 if it doesn't exist any more. */
@@ -106,11 +116,11 @@ public:
     /*! Get a pointer to the property or 0 if it doesn't exist any more. */
     Property* getProperty() const;
     /*! Get the name of the document object. */
-    std::string getObjectName() const;
+    const std::string &getObjectName() const;
     /*! Get the label of the document object. */
-    std::string getObjectLabel() const;
+    const std::string &getObjectLabel() const;
     /*! Get the name of the property. */
-    std::string getPropertyName() const;
+    const std::string &getPropertyName() const;
     /*! Get the document object as Python command. */
     std::string getObjectPython() const;
     /*! Get the property as Python command. */
@@ -132,6 +142,67 @@ private:
     std::string object;
     std::string label;
     std::string property;
+};
+
+class AppExport SubObjectT: public DocumentObjectT
+{
+public:
+    /*! Constructor */
+    SubObjectT();
+
+    /*! Constructor */
+    SubObjectT(const SubObjectT &);
+
+    /*! Constructor */
+    SubObjectT(SubObjectT &&);
+
+    /*! Constructor */
+    SubObjectT(const DocumentObject*, const char *subname);
+
+    /*! Constructor */
+    SubObjectT(const char *docName, const char *objName, const char *subname);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(const SubObjectT&);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(SubObjectT &&);
+
+    /*! Equality operator */
+    bool operator==(const SubObjectT&) const;
+
+    /// Set the subname path to the sub-object
+    void setSubName(const char *subname);
+
+    /// Return the subname path
+    const std::string &getSubName() const;
+
+    /// Return the subname path without sub-element
+    std::string getSubNameNoElement() const;
+
+    /// Return the sub-element (Face, Edge, etc) of the subname path
+    const char *getElementName() const;
+
+    /// Return the new style sub-element name
+    std::string getNewElementName() const;
+
+    /** Return the old style sub-element name
+     * @param index: if given, then return the element type, and extract the index
+     */
+    std::string getOldElementName(int *index=0) const;
+
+    /// Return the sub-object
+    DocumentObject *getSubObject() const;
+
+    /// Return all objects along the subname path
+    std::vector<DocumentObject *> getSubObjectList() const;
+
+    bool operator<(const SubObjectT &other) const;
+
+    std::string getSubObjectPython(bool force=true) const;
+
+private:
+    std::string subname;
 };
 
 /**

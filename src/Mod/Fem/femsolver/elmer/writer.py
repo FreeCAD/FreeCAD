@@ -93,7 +93,7 @@ def getConstant(name, dimension):
 class Writer(object):
 
     def __init__(self, solver, directory, testmode=False):
-        self.analysis = femutils.findAnalysisOfMember(solver)
+        self.analysis = solver.getParentGroup()
         self.solver = solver
         self.directory = directory
         self.testmode = testmode
@@ -353,7 +353,8 @@ class Writer(object):
         for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    if obj.Potential:
+                    if hasattr(obj, "Potential"):
+                        # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454
                         potential = getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
                         self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
