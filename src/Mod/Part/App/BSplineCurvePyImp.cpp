@@ -1241,7 +1241,15 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
                 occmults.SetValue(occmults.Length(), degree+1);
                 sum_of_mults = occmults.Length()+2*degree;
             }
-            else { sum_of_mults = occmults.Length()-1;}
+            else {
+                sum_of_mults = occmults.Length()-1;
+            }
+        }
+        // check multiplicity of inner knots
+        for (Standard_Integer i=2; i < occmults.Length(); i++) {
+            if (occmults(i) > degree) {
+                Standard_Failure::Raise("multiplicity of inner knot higher than degree");
+            }
         }
         if (knots != Py_None) { //knots are given
             Py::Sequence knotssq(knots);

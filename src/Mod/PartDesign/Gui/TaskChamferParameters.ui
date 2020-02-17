@@ -23,7 +23,7 @@
 click again to end selection</string>
        </property>
        <property name="text">
-        <string>Add ref</string>
+        <string>Add</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -37,7 +37,7 @@ click again to end selection</string>
 click again to end selection</string>
        </property>
        <property name="text">
-        <string>Remove ref</string>
+        <string>Remove</string>
        </property>
        <property name="checkable">
         <bool>true</bool>

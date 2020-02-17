@@ -83,14 +83,20 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_textDialog(nullptr),
     m_rte(nullptr)
 {
+//    Base::Console().Message("TRA::TRA() - edit\n");
     if (m_annoVP == nullptr)  {
         //should be caught in CMD caller
         Base::Console().Error("TaskRichAnno - bad parameters.  Can not proceed.\n");
         return;
     }
-    ui->setupUi(this);
-    
+
     m_annoFeat = m_annoVP->getFeature();
+
+    m_basePage = m_annoFeat->findParentPage();
+    if ( m_basePage == nullptr ) {
+        Base::Console().Error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
+        return;
+    }
 
     //m_baseFeat can be null 
     App::DocumentObject* obj = m_annoFeat->AnnoParent.getValue();
@@ -99,23 +105,28 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
             m_baseFeat = static_cast<TechDraw::DrawView*>(m_annoFeat->AnnoParent.getValue());
         }
     }
-    m_basePage = m_annoFeat->findParentPage();
-    if ( m_basePage == nullptr ) {
-        Base::Console().Error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
-        return;
+
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
+    Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
+    ViewProviderPage* dvp = static_cast<ViewProviderPage*>(vp);
+
+    m_mdi = dvp->getMDIViewPage();
+    m_qgParent = nullptr;
+    m_haveMdi = true;
+    if (m_mdi != nullptr) {    
+        m_view = m_mdi->getQGVPage();
+        if (m_baseFeat != nullptr) {
+            m_qgParent = m_view->findQViewForDocObj(m_baseFeat);
+        }
+    } else {
+        m_haveMdi = false;
     }
 
+
+    ui->setupUi(this);
+
+    m_title = QObject::tr("Rich text editor");
     setUiEdit();
-//    m_title = QObject::tr("Rich text editor");
-
-    m_mdi = m_annoVP->getMDIViewPage();
-    m_scene = m_mdi->m_scene;
-    m_view = m_mdi->getQGVPage();
-    if (m_baseFeat != nullptr) {
-        m_qgParent = m_view->findQViewForDocObj(m_baseFeat);
-    }
-    
-    m_saveContextPolicy = m_mdi->contextMenuPolicy();
 
     m_attachPoint = Rez::guiX(Base::Vector3d(m_annoFeat->X.getValue(),
                                             -m_annoFeat->Y.getValue(),
@@ -139,27 +150,30 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_textDialog(nullptr),
     m_rte(nullptr)
 {
+//    Base::Console().Message("TRA::TRA() - create\n");
     if (m_basePage == nullptr)  {
         //should be caught in CMD caller
         Base::Console().Error("TaskRichAnno - bad parameters.  Can not proceed.\n");
         return;
     }
 
-    
-    ui->setupUi(this);
-    m_title = QObject::tr("Rich text creator");
-
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
-    ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
-    m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->m_scene;
-    m_view = m_mdi->getQGVPage();
-    if (baseFeat != nullptr) {
-        m_qgParent = m_view->findQViewForDocObj(baseFeat);
-    }
+    ViewProviderPage* dvp = static_cast<ViewProviderPage*>(vp);
 
-    m_saveContextPolicy = m_mdi->contextMenuPolicy();
+    m_qgParent = nullptr;
+    m_haveMdi = true;
+    m_mdi = dvp->getMDIViewPage();
+    if (m_mdi != nullptr) {    
+        m_view = m_mdi->getQGVPage();
+        if (baseFeat != nullptr) {
+            m_qgParent = m_view->findQViewForDocObj(baseFeat);
+        }
+    } else {
+        m_haveMdi = false;
+    }
+    ui->setupUi(this);
+    m_title = QObject::tr("Rich text creator");
 
     setUiPrimary();
 
@@ -346,10 +360,16 @@ void TaskRichAnno::createAnnoFeature()
     if (obj->isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
         commonFeatureUpdate();
-        QPointF qTemp = calcTextStartPos(m_annoFeat->getScale());
-        Base::Vector3d vTemp(qTemp.x(), qTemp.y());
-        m_annoFeat->X.setValue(Rez::appX(vTemp.x));
-        m_annoFeat->Y.setValue(Rez::appX(vTemp.y));
+        if (m_haveMdi) {
+            QPointF qTemp = calcTextStartPos(m_annoFeat->getScale());
+            Base::Vector3d vTemp(qTemp.x(), qTemp.y());
+            m_annoFeat->X.setValue(Rez::appX(vTemp.x));
+            m_annoFeat->Y.setValue(Rez::appX(vTemp.y));
+        } else {
+            //if we don't have a mdi, we can't calculate start position, so just put it mid-page
+            m_annoFeat->X.setValue(m_basePage->getPageWidth()/2.0);
+            m_annoFeat->Y.setValue(m_basePage->getPageHeight()/2.0);
+        }
     }
 
     if (m_annoFeat != nullptr) {
@@ -463,7 +483,7 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
             QPointF result(w,h);
             return result;
         } else {
-            Base::Console().Message("TRA::calcStartPos - no m_basePage\n");
+            Base::Console().Message("TRA::calcStartPos - no m_basePage\n"); //shouldn't happen. caught elsewhere
         }
     }
 
@@ -518,7 +538,7 @@ bool TaskRichAnno::accept()
     } else {
         createAnnoFeature();
     }
-    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
+//    m_mdi->setContextMenuPolicy(m_saveContextPolicy);
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 
     return true;
@@ -536,10 +556,6 @@ bool TaskRichAnno::reject()
         Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
         if (!doc) {
             return false;
-        }
-
-        if (m_mdi != nullptr) {
-            m_mdi->setContextMenuPolicy(m_saveContextPolicy);
         }
         if (getCreateMode() &&
             (m_annoFeat != nullptr) )  {

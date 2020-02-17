@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QListWidget>
 # include <QListWidgetItem>
 #endif
 
@@ -158,7 +159,7 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
     // executed when the user selected a new item in the list
     // shows the fillets as they are -> useful to switch out of selection mode
 
-    Q_UNUSED(item);
+    Q_UNUSED(item)
 
     // assure we are not in selection mode
     exitSelectionMode();
@@ -224,10 +225,11 @@ void TaskDressUpParameters::hideObject()
 
 void TaskDressUpParameters::showObject()
 {
-    DressUpView->getObject()->Visibility.setValue(true);
     App::DocumentObject* base = getBase();
-    if (base) 
+    if (base) {
+        DressUpView->getObject()->Visibility.setValue(true);
         base->Visibility.setValue(false);
+    }
 }
 
 Part::Feature* TaskDressUpParameters::getBase(void) const
