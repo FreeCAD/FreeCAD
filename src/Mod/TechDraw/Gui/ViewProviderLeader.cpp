@@ -27,6 +27,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <QMessageBox>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -96,7 +98,6 @@ bool ViewProviderLeader::setEdit(int ModNum)
         if (Gui::Control().activeDialog())  {         //TaskPanel already open!
             return false;
         }
-        // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgLeaderLine(this));
         return true;

@@ -196,10 +196,6 @@ double TaskChamferParameters::getLength(void) const
 
 TaskChamferParameters::~TaskChamferParameters()
 {
-    // assure the fillets are shown
-    showObject();
-    // remove any highlights and selections
-    DressUpView->highlightReferences(false);
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
 

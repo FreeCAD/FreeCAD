@@ -66,35 +66,6 @@ def createObject(doc, name, proxy, viewProxy=None):
     return obj
 
 
-def findAnalysisOfMember(member):
-    """ Find Analysis the *member* belongs to.
-
-    :param member: a document object
-
-    :returns:
-     If a analysis that contains *member* can be found a reference is returned.
-     If no such object exists in the document of *member*, ``None`` is returned.
-    """
-    if member is None:
-        raise ValueError("Member must not be None")
-    for obj in member.Document.Objects:
-        if obj.isDerivedFrom("Fem::FemAnalysis"):
-            if member in obj.Group:
-                return obj
-            if _searchGroups(member, obj.Group):
-                return obj
-    return None
-
-
-def _searchGroups(member, objs):
-    for o in objs:
-        if o == member:
-            return True
-        if hasattr(o, "Group"):
-            return _searchGroups(member, o.Group)
-    return False
-
-
 def get_member(analysis, t):
     """ Return list of all members of *analysis* of type *t*.
 

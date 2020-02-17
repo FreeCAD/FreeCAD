@@ -1020,7 +1020,7 @@ void MDIViewPage::clearSceneSelection()
 {
 //    Base::Console().Message("MDIVP::clearSceneSelection()\n");
     blockSelection(true);
-    m_sceneSelected.clear();
+    qgSceneSelected.clear();
 
     std::vector<QGIView *> views = m_view->getViews();
 
@@ -1100,35 +1100,35 @@ void MDIViewPage::sceneSelectionManager()
     QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
 
     if (sceneSel.isEmpty()) {
-        m_sceneSelected.clear(); //TODO: need to signal somebody?  Tree? handled elsewhere
+        qgSceneSelected.clear(); //TODO: need to signal somebody?  Tree? handled elsewhere
         //clearSelection
         return;
     }
 
-    if (m_sceneSelected.isEmpty() &&
+    if (qgSceneSelected.isEmpty() &&
         !sceneSel.isEmpty()) {
-        m_sceneSelected.push_back(sceneSel.front());
+        qgSceneSelected.push_back(sceneSel.front());
         return;
     }
 
-    //add to m_sceneSelected anything that is in q_sceneSel
+    //add to qgSceneSelected anything that is in q_sceneSel
     for (auto qts: sceneSel) {
         bool found = false;
-        for (auto ms: m_sceneSelected) {
+        for (auto ms: qgSceneSelected) {
             if ( qts == ms ) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            m_sceneSelected.push_back(qts);
+            qgSceneSelected.push_back(qts);
             break;
         }
     }
 
-    //remove items from m_sceneSelected that are not in q_sceneSel
+    //remove items from qgSceneSelected that are not in q_sceneSel
     QList<QGraphicsItem*> m_new;
-    for (auto m: m_sceneSelected) {
+    for (auto m: qgSceneSelected) {
         for (auto q: sceneSel)  {
             if (m == q) {
                 m_new.push_back(m);
@@ -1136,7 +1136,7 @@ void MDIViewPage::sceneSelectionManager()
             }
         }
     }
-    m_sceneSelected = m_new;
+    qgSceneSelected = m_new;
 }
 
 //! update Tree Selection from QGraphicsScene selection
@@ -1154,7 +1154,7 @@ void MDIViewPage::sceneSelectionChanged()
 
     std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
 //    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
-    QList<QGraphicsItem*> sceneSel = m_sceneSelected;
+    QList<QGraphicsItem*> sceneSel = qgSceneSelected;
 
     //check if really need to change selection
     bool sameSel = compareSelections(treeSel,sceneSel);
@@ -1173,7 +1173,7 @@ void MDIViewPage::setTreeToSceneSelect(void)
     blockSelection(true);
     Gui::Selection().clearSelection();
 //    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();   //"no particular order"!!!
-    QList<QGraphicsItem*> sceneSel = m_sceneSelected;
+    QList<QGraphicsItem*> sceneSel = qgSceneSelected;
     for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView == 0) {

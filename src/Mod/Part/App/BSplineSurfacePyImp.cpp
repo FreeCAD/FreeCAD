@@ -1514,6 +1514,18 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
             (PyObject_Not(vperiodic) && sum_of_vmults - vdegree -1 != lv)) {
             Standard_Failure::Raise("number of poles and sum of mults mismatch");
         }
+        // check multiplicity of inner knots
+        for (Standard_Integer i=2; i < occumults.Length(); i++) {
+            if (occumults(i) > udegree) {
+                Standard_Failure::Raise("multiplicity of inner knot higher than degree");
+            }
+        }
+        for (Standard_Integer i=2; i < occvmults.Length(); i++) {
+            if (occvmults(i) > vdegree) {
+                Standard_Failure::Raise("multiplicity of inner knot higher than degree");
+            }
+        }
+
         Handle(Geom_BSplineSurface) spline = new Geom_BSplineSurface(occpoles,occweights,
             occuknots,occvknots,occumults,occvmults,udegree,vdegree,
             PyObject_IsTrue(uperiodic) ? Standard_True : Standard_False,

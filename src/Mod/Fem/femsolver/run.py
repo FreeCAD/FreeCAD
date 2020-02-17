@@ -146,6 +146,17 @@ def run_fem_solver(solver, working_dir=None):
             machine.target = RESULTS
             machine.start()
             machine.join()  # wait for the machine to finish.
+            if machine.failed is True:
+                App.Console.PrintError("Machine failed to run.\n")
+                from .report import displayLog
+                displayLog(machine.report)
+                if App.GuiUp:
+                    error_message = (
+                        "Failed to run. Please try again after all "
+                        "of the following errors are resolved."
+                    )
+                    from .report import display
+                    display(machine.report, "Run Report", error_message)
 
 
 def getMachine(solver, path=None):
@@ -288,7 +299,7 @@ class BaseTask(task.Thread):
 
     @property
     def analysis(self):
-        return femutils.findAnalysisOfMember(self.solver)
+        return self.solver.getParentGroup()
 
 
 class Machine(BaseTask):
@@ -517,7 +528,7 @@ class _DocObserver(object):
                     _machines[o].reset()
 
     def _checkSolver(self, obj):
-        analysis = femutils.findAnalysisOfMember(obj)
+        analysis = obj.getParentGroup()
         for m in iter(_machines.values()):
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
@@ -535,7 +546,7 @@ class _DocObserver(object):
 
     def _checkModel(self, obj):
         if self._partOfModel(obj):
-            analysis = femutils.findAnalysisOfMember(obj)
+            analysis = obj.getParentGroup()
             if analysis is not None:
                 self._resetAll(analysis)
 
