@@ -1653,6 +1653,15 @@ MDIView *Document::createView(const Base::Type& typeId)
             view3D->getViewer()->setOverrideMode(overrideMode);
         }
 
+        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
+        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
+            view3D->getViewer()->addViewProvider(It1->second);
+        }
+        std::map<std::string,ViewProvider*>::const_iterator It2;
+        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
+            view3D->getViewer()->addViewProvider(It2->second);
+        }
+
         const char* name = getDocument()->Label.getValue();
         QString title = QString::fromLatin1("%1 : %2[*]")
             .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
@@ -1683,6 +1692,15 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
         View3DInventor* firstView = static_cast<View3DInventor*>(oldview);
         std::string overrideMode = firstView->getViewer()->getOverrideMode();
         view3D->getViewer()->setOverrideMode(overrideMode);
+
+        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
+        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
+            view3D->getViewer()->addViewProvider(It1->second);
+        }
+        std::map<std::string,ViewProvider*>::const_iterator It2;
+        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
+            view3D->getViewer()->addViewProvider(It2->second);
+        }
 
         view3D->setWindowTitle(oldview->windowTitle());
         view3D->setWindowModified(oldview->isWindowModified());
