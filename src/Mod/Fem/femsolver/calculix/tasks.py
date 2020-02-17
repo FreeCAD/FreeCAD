@@ -61,7 +61,7 @@ class Prepare(run.Prepare):
         w = writer.FemInputWriterCcx(
             self.analysis,
             self.solver,
-            femutils.get_mesh_to_solve(self.analysis)[0],  # pre check hast been done already
+            femutils.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
             c.materials_linear,
             c.materials_nonlinear,
             c.constraints_fixed,

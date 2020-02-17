@@ -303,7 +303,7 @@ class _FemResultMechanical():
 
     def onDocumentRestored(self, obj):
         # migrate old result objects, because property "StressValues"
-        # was renamed to "vonMises" wirh commit 8b68ab7
+        # was renamed to "vonMises" in commit 8b68ab7
         if hasattr(obj, "StressValues") is True:
             obj.addProperty(
                 "App::PropertyFloatList",
