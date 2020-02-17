@@ -700,6 +700,15 @@ void MainWindow::activatePreviousWindow ()
 
 void MainWindow::activateWorkbench(const QString& name)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
+    QMdiSubWindow* subWin = d->mdiArea->activeSubWindow();
+    if (subWin /*!= nullptr*/ && saveWB) {
+        QString currWb = subWin->property("ownWB").toString();
+        if (currWb.isEmpty() || currWb != name) {
+            subWin->setProperty("ownWB", name);
+        }
+    }
     // emit this signal
     workbenchActivated(name);
     updateActions(true);
@@ -1020,6 +1029,18 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
     if (!w) return;
     MDIView* view = dynamic_cast<MDIView*>(w->widget());
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
+    if (saveWB) {
+        QString currWb = w->property("ownWB").toString();
+        if (! currWb.isEmpty()) {
+            this->activateWorkbench(currWb);
+        }
+        else {
+            w->setProperty("ownWB", QString::fromStdString(WorkbenchManager::instance()->active()->name()));
+        }
+    }
+    
     // Even if windowActivated() signal is emitted mdi doesn't need to be a top-level window.
     // This happens e.g. if two windows are top-level and one of them gets docked again.
     // QWorkspace emits the signal then even though the other window is in front.

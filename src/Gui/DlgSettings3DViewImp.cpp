@@ -102,6 +102,7 @@ void DlgSettings3DViewImp::saveSettings()
     ui->spinBoxZoomStep->onSave();
     ui->checkBoxDragAtCursor->onSave();
     ui->CheckBox_CornerCoordSystem->onSave();
+    ui->CheckBox_WbByTab->onSave();
     ui->CheckBox_ShowFPS->onSave();
     ui->CheckBox_useVBO->onSave();
     ui->CheckBox_NaviCube->onSave();
@@ -134,6 +135,7 @@ void DlgSettings3DViewImp::loadSettings()
     ui->spinBoxZoomStep->onRestore();
     ui->checkBoxDragAtCursor->onRestore();
     ui->CheckBox_CornerCoordSystem->onRestore();
+    ui->CheckBox_WbByTab->onRestore();
     ui->CheckBox_ShowFPS->onRestore();
     ui->CheckBox_useVBO->onRestore();
     ui->CheckBox_NaviCube->onRestore();
