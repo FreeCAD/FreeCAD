@@ -1149,7 +1149,7 @@ void StdCmdDelete::activated(int iMsg)
         } else {
             std::set<QString> affectedLabels;
             bool more = false;
-            auto sels = Selection().getSelectionEx();
+            auto sels = Selection().getSelectionEx("*");
             bool autoDeletion = true;
             for(auto &sel : sels) {
                 auto obj = sel.getObject();
