@@ -14,7 +14,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
     endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
     # check for mips64 platform
-    if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "mips64")
+    if("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "mips64")
         message(STATUS "Architecture: mips64")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mxgot")
     endif()
