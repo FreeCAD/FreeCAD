@@ -636,21 +636,29 @@ Py::Object pyFromQuantity(const Quantity &quantity) {
     }
 }
 
-Quantity anyToQuantity(const App::any &value, const char *msg) {
+static inline bool _anyToQuantity(const App::any &value, Quantity &q) {
     Timing(anyToQuantity);
     if (is_type(value,typeid(Quantity))) {
-        return cast<Quantity>(value);
+        q = cast<Quantity>(value);
     } else if (is_type(value,typeid(bool))) {
-        return Quantity(cast<bool>(value)?1.0:0.0);
+        q = Quantity(cast<bool>(value)?1.0:0.0);
     } else if (is_type(value,typeid(int))) {
-        return Quantity(cast<int>(value));
+        q = Quantity(cast<int>(value));
     } else if (is_type(value,typeid(long))) {
-        return Quantity(cast<long>(value));
+        q = Quantity(cast<long>(value));
     } else if (is_type(value,typeid(float))) {
-        return Quantity(cast<float>(value));
+        q = Quantity(cast<float>(value));
     } else if (is_type(value,typeid(double))) {
-        return Quantity(cast<double>(value));
-    }
+        q = Quantity(cast<double>(value));
+    } else
+        return false;
+    return true;
+}
+
+Quantity anyToQuantity(const App::any &value, const char *msg) {
+    Quantity q;
+    if(_anyToQuantity(value,q))
+        return q;
     if(!msg)
         msg = "Failed to convert to Quantity";
     TYPE_THROW(msg);
@@ -692,10 +700,17 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
         return false;
 
     if(!is_type(v1,v2.type())) {
-        if(is_type(v1,typeid(Quantity))) 
-            return cast<Quantity>(v1) == anyToQuantity(v2);
-        else if(is_type(v2,typeid(Quantity)))
-            return anyToQuantity(v1) == cast<Quantity>(v2);
+        if(is_type(v1,typeid(Quantity))) {
+            Quantity q;
+            if(!_anyToQuantity(v2,q))
+                return false;
+            return cast<Quantity>(v1) == q;
+        } else if(is_type(v2,typeid(Quantity))) {
+            Quantity q;
+            if(!_anyToQuantity(v1,q))
+                return false;
+            return q == cast<Quantity>(v2);
+        }
 
         long l1,l2;
         double d1,d2;
@@ -745,8 +760,11 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
     if (is_type(v1,typeid(Quantity))) 
         return cast<Quantity>(v1) == cast<Quantity>(v2);
 
-    if (!isAnyPyObject(v1))
-        throw Base::TypeError("Unknown type");
+    if (!isAnyPyObject(v1)) {
+        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            FC_WARN("Unknown type any: " << v1.type().name());
+        return false;
+    }
 
     Base::PyGILStateLocker lock;
     Py::Object o1 = __pyObjectFromAny(v1);
@@ -754,8 +772,12 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
     if(!o1.isType(o2.type()))
         return false;
     int res = PyObject_RichCompareBool(o1.ptr(),o2.ptr(),Py_EQ);
-    if(res<0)
-        PyException::ThrowException();
+    if(res<0) {
+        PyException e;
+        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+            e.ReportException();
+        return false;
+    }
     return !!res;
 }
 
