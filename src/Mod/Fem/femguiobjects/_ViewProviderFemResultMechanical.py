@@ -554,7 +554,7 @@ class _TaskPanelFemResultShow:
 
         if len(plt.get_fignums()) > 0:
             plt.close()
-        plt.hist(res_values, bins = 50, alpha = 0.5, facecolor = "blue")
+        plt.hist(res_values, bins=50, alpha=0.5, facecolor="blue")
         plt.xlabel(res_unit)
         plt.title("Histogram of {}".format(res_type))
         plt.ylabel("Nodes")
