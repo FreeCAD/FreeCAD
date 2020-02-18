@@ -31,6 +31,7 @@
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
 
+class QAction;
 class QListWidget;
 class QListWidgetItem;
 
@@ -65,16 +66,18 @@ protected Q_SLOTS:
     void setSelection(QListWidgetItem* current);
     void itemClickedTimeout();
     virtual void onRefDeleted(void) = 0;
+    void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
 
 protected:
+    QAction* deleteAction;
     void exitSelectionMode();
     bool referenceSelected(const Gui::SelectionChanges& msg);
     bool wasDoubleClicked = false;
+    bool KeyEvent(QEvent *e);
 
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };
     virtual void clearButtons(const selectionModes notThis) = 0;
-    virtual void changeEvent(QEvent *e) = 0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
     ViewProviderDressUp* getDressUpView() const

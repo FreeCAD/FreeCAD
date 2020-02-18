@@ -53,7 +53,6 @@ protected:
     double getLength(void) const;
 
 private:
-    QAction* deleteAction;
     Ui_TaskChamferParameters* ui;
 };
 

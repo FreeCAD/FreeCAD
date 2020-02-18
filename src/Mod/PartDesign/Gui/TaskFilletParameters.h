@@ -53,7 +53,6 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 private:
-    QAction* deleteAction;
     Ui_TaskFilletParameters* ui;
 };
 
