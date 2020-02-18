@@ -120,6 +120,14 @@ class _TaskPanel(object):
         self._paramWidget.potentialConstantBox.setChecked(
             self._obj.PotentialConstant)
 
+        self._paramWidget.electricInfinityBox.setChecked(
+            self._obj.ElectricInfinity)
+                                                         
+        self._paramWidget.capacitanceBodyBox.setChecked(
+            not self._obj.CapacitanceBodyEnabled)
+        self._paramWidget.capacitanceBody_spinBox.setValue(
+            self._obj.CapacitanceBody)
+        
     def _applyWidgetChanges(self):
         unit = "V"
         self._obj.PotentialEnabled = \

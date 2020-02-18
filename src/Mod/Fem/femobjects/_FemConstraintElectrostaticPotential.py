@@ -44,4 +44,15 @@ class Proxy(FemConstraint.Proxy):
             "Parameter", "Potential Enabled"),
         obj.addProperty(
             "App::PropertyBool", "PotentialConstant",
-            "Parameter", "Potential Constant")
+            "Parameter", "Potential Constant"),
+        obj.addProperty(      # Howil added
+            "App::PropertyBool", "ElectricInfinity",
+            "Parameter", "Electric Infinity")
+        obj.addProperty(
+            "App::PropertyInteger", "CapacitanceBody",
+            "Parameter", "Capacitance Body")
+        obj.addProperty(
+            "App::PropertyBool", "CapacitanceBodyEnabled",
+            "Parameter", "Capacitance Body Enabled")
+        
+

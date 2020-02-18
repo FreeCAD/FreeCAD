@@ -362,6 +362,11 @@ class Writer(object):
                             self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
                         self._boundary(name, "Potential Constant", True)
+                    if obj.ElectricInfinity:
+                        self._boundary(name, "Electric Infinity BC", True)
+                    if obj.CapacitanceBodyEnabled:
+                        if hasattr(obj, 'CapacitanceBody'):
+                            self._boundary(name, "Capacitance Body", obj.CapacitanceBody)        
                 self._handled(obj)
 
     def _handleFluxsolver(self):
