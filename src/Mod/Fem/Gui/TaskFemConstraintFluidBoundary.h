@@ -100,7 +100,6 @@ private:
     void updateTurbulenceUI();
 
 private:
-    QAction* deleteAction;
     Ui_TaskFemConstraintFluidBoundary* ui;
     int dimension;  // -1: unknown, 2 for 2D and 3 for 3D
     Fem::FemSolverObject* pcSolver;

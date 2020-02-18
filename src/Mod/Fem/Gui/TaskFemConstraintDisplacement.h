@@ -101,7 +101,6 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
-    QAction* deleteAction;
     void updateUI();
     Ui_TaskFemConstraintDisplacement* ui;
 

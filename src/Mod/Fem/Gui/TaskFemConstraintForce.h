@@ -71,7 +71,6 @@ protected:
     virtual void changeEvent(QEvent *e);
 
 private:
-    QAction* deleteAction;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
 

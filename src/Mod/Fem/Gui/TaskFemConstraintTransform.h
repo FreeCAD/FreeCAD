@@ -75,7 +75,6 @@ protected:
     const QString makeText(const App::DocumentObject* obj) const;
 
 private:
-    QAction* deleteAction;
     void updateUI();
     Ui_TaskFemConstraintTransform* ui;
 };
