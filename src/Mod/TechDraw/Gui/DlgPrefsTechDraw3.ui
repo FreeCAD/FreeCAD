@@ -540,8 +540,11 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="toolTip">
+           <string>Forces last leader line segment to be horizontal</string>
+          </property>
           <property name="text">
-           <string>Leader Auto Horizontal</string>
+           <string>Leader Line Auto Horizontal</string>
           </property>
           <property name="checked">
            <bool>true</bool>

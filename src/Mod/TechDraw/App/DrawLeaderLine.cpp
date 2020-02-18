@@ -57,7 +57,7 @@ DrawLeaderLine::DrawLeaderLine(void)
     ADD_PROPERTY_TYPE(StartSymbol, (-1), group, App::Prop_None, "Symbol (arrowhead) for start of line");
     ADD_PROPERTY_TYPE(EndSymbol, (-1), group, App::Prop_None, "Symbol (arrowhead) for end of line");
     ADD_PROPERTY_TYPE(Scalable ,(false),group,App::Prop_None,"Scale line with LeaderParent");
-    ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()),group,App::Prop_None,"Forces last line segment horizontal");
+    ADD_PROPERTY_TYPE(AutoHorizontal ,(getDefAuto()),group,App::Prop_None,"Forces last line segment to be horizontal");
 
     //hide the DrawView properties that don't apply to Leader
     ScaleType.setStatus(App::Property::ReadOnly,true);
