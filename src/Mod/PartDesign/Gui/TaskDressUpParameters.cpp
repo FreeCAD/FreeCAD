@@ -27,6 +27,7 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QApplication>
+# include <QKeyEvent>
 # include <QListWidget>
 # include <QListWidgetItem>
 # include <QTimer>
