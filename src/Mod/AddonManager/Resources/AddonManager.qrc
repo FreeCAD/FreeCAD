@@ -11,6 +11,7 @@
         <file>icons/BOLTSFC_workbench_icon.svg</file>
         <file>icons/CADExchanger_workbench_icon.svg</file>
         <file>icons/cadquery_module_workbench_icon.svg</file>
+        <file>icons/Cfd_workbench_icon.svg</file>
         <file>icons/CfdOF_workbench_icon.svg</file>
         <file>icons/CurvedShapes_workbench_icon.svg</file>
         <file>icons/Curves_workbench_icon.svg</file>
@@ -22,6 +23,7 @@
         <file>icons/ExplodedAssembly_workbench_icon.svg</file>
         <file>icons/fasteners_workbench_icon.svg</file>
         <file>icons/flamingo_workbench_icon.svg</file>
+        <file>icons/GDML_workbench_icon.svg</file>
         <file>icons/GDT_workbench_icon.svg</file>
         <file>icons/FCGear_workbench_icon.svg</file>
         <file>icons/Geomatics_workbench_icon.svg</file>

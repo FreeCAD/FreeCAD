@@ -43,8 +43,9 @@ using namespace TechDrawGui;
 QGIPrimPath::QGIPrimPath():
     m_width(0),
     m_capStyle(Qt::RoundCap),
-    m_fillStyleCurrent (Qt::NoBrush)
-//    m_fillStyleCurrent (Qt::SolidPattern)
+    m_fillStyleCurrent (Qt::NoBrush),
+//    m_fillStyleCurrent (Qt::SolidPattern),
+    m_fillOverride(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -128,13 +129,17 @@ void QGIPrimPath::setPrettyNormal() {
 void QGIPrimPath::setPrettyPre() {
 //    Base::Console().Message("QGIPP::setPrettyPre()\n");
     m_colCurrent = getPreColor();
-    m_fillColorCurrent = getPreColor();
+    if (!m_fillOverride) {
+        m_fillColorCurrent = getPreColor();
+    }
 }
 
 void QGIPrimPath::setPrettySel() {
 //    Base::Console().Message("QGIPP::setPrettySel()\n");
     m_colCurrent = getSelectColor();
-    m_fillColorCurrent = getSelectColor();
+    if (!m_fillOverride) {
+        m_fillColorCurrent = getSelectColor();
+    }
 }
 
 //wf: why would a face use it's parent's normal colour?
@@ -251,13 +256,32 @@ Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
     return hGrp;
 }
 
+//EdgeCapStyle param changed from UInt (Qt::PenCapStyle) to Int (QComboBox index)
 Qt::PenCapStyle QGIPrimPath::prefCapStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     Qt::PenCapStyle result;
-    unsigned int cap = hGrp->GetUnsigned("EdgeCapStyle", 0x20);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
-    result = (Qt::PenCapStyle) cap;
+    //old parameter format UINT
+    unsigned int oldStyle = hGrp->GetUnsigned("EdgeCapStyle", 0xFF);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+    result = (Qt::PenCapStyle) oldStyle;
+    int newStyle;
+    if (oldStyle == 0xFF) {              //no old style parm found
+        newStyle = hGrp->GetInt("EdgeCapStyle", 32);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
+        switch (newStyle) {
+            case 0:
+                result = (Qt::PenCapStyle) 0x20;   //round;
+                break;
+            case 1:
+                result = (Qt::PenCapStyle) 0x10;   //square;
+                break;
+            case 2:
+                result = (Qt::PenCapStyle) 0x00;   //flat
+                break;
+            default:
+                result = (Qt::PenCapStyle) 0x20;
+        }
+    }
     return result;
 }
 

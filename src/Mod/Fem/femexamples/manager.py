@@ -22,6 +22,33 @@
 # ***************************************************************************
 
 
+# to run the examples copy the code:
+"""
+from femexamples.manager import *
+run_all()
+
+from femexamples.manager import *
+doc = run_boxanalysisstatic()
+doc = run_boxanalysisfrequency()
+doc = run_ccx_cantileverfaceload()
+doc = run_ccx_cantilevernodeload()
+doc = run_ccx_cantileverprescribeddisplacement()
+doc = run_constraint_contact_shell_shell()
+doc = run_constraint_contact_solid_solid()
+doc = run_material_nl_platewithhole()
+doc = run_material_multiple_twoboxes()
+doc = run_rcwall2d()
+doc = run_thermomech_bimetall()
+doc = run_thermomech_flow1d()
+doc = run_thermomech_spine()
+
+doc = run_ccx_cantilevernodeload("calculix")
+doc = run_ccx_cantilevernodeload("ccxtools")
+doc = run_ccx_cantilevernodeload("z88")
+
+"""
+
+
 import FreeCAD
 
 
@@ -148,6 +175,36 @@ def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
     return doc
 
 
+def run_constraint_contact_shell_shell(solver=None, base_name=None):
+
+    from .constraint_contact_shell_shell import setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Constraint_Contact_Shell_Shell"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+    doc.recompute()
+
+    return doc
+
+
+def run_constraint_contact_solid_solid(solver=None, base_name=None):
+
+    from .constraint_contact_solid_solid import setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Constraint_Contact_Solid_Solid"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+    doc.recompute()
+
+    return doc
+
+
 def run_material_multiple_twoboxes(solver=None, base_name=None):
 
     from .material_multiple_twoboxes import setup
@@ -180,11 +237,26 @@ def run_material_nl_platewithhole(solver=None, base_name=None):
 
 def run_rcwall2d(solver=None, base_name=None):
 
-    from .rc_wall_2d import setup as setup
+    from .rc_wall_2d import setup
     doc = setup()
 
     if base_name is None:
         base_name = "RC_FIB_Wall_2D"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+    doc.recompute()
+
+    return doc
+
+
+def run_thermomech_bimetall(solver=None, base_name=None):
+
+    from .thermomech_bimetall import setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "Thermomech_Bimetall"
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
@@ -229,33 +301,11 @@ def run_all():
     run_ccx_cantileverfaceload()
     run_ccx_cantilevernodeload()
     run_ccx_cantileverprescribeddisplacement()
+    run_constraint_contact_shell_shell()
+    run_constraint_contact_solid_solid()
     run_material_nl_platewithhole()
     run_material_multiple_twoboxes()
     run_rcwall2d()
+    run_thermomech_bimetall()
     run_thermomech_flow1d()
     run_thermomech_spine()
-
-
-"""
-from femexamples.manager import *
-run_all()
-
-from femexamples.manager import *
-doc = run_boxanalysisstatic()
-doc = run_boxanalysisfrequency()
-doc = run_ccx_cantileverfaceload()
-doc = run_ccx_cantilevernodeload()
-doc = run_ccx_cantileverprescribeddisplacement()
-doc = run_material_nl_platewithhole()
-doc = run_material_multiple_twoboxes()
-doc = run_rcwall2d()
-doc = run_thermomech_flow1d()
-doc = run_thermomech_spine()
-
-
-doc = run_ccx_cantilevernodeload("calculix")
-doc = run_ccx_cantilevernodeload("ccxtools")
-doc = run_ccx_cantilevernodeload("z88")
-
-
-"""

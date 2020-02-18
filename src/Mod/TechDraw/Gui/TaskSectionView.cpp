@@ -277,19 +277,23 @@ void TaskSectionView::onApplyClicked(bool b)
 bool TaskSectionView::apply(void)
 {
 //    Base::Console().Message("TSV::apply() - m_dirName: %s\n", m_dirName.c_str());
+    if (m_dirName.empty()) {
+        std::string msg = Base::Tools::toStdString(tr("TaskSectionView::apply - No section direction picked yet"));
+        Base::Console().Error((msg + "\n").c_str());
+        return false;
+    }
+    if (m_section == nullptr) {
+        return false;
+    }
     App::Document* doc = m_section->getDocument();
     App::DocumentObject* baseObj = doc->getObject(m_saveBaseName.c_str());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
     if (dvp == nullptr) {
         return false;
     }
-    if (m_dirName.empty()) {
-        std::string msg = Base::Tools::toStdString(tr("TSV::apply - No section direction picked yet"));
-        Base::Console().Error((msg + "\n").c_str());
-    } else {
-        checkAll(false);
-        applyQuick(m_dirName);
-    }
+
+    checkAll(false);
+    applyQuick(m_dirName);
     return true;
 }
 
@@ -346,7 +350,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
     Gui::Command::openCommand("Create SectionView");
     TechDraw::DrawViewSection* newSection = nullptr;
     if (m_section == nullptr) {
-        sectionName = m_base->getDocument()->getUniqueObjectName("DrawViewSection");
+        sectionName = m_base->getDocument()->getUniqueObjectName("SectionView");
         std::string sectionType = "TechDraw::DrawViewSection";
 
         TechDraw::DrawPage* page = m_base->findParentPage();

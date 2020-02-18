@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/TechDraw_Tree_Annotation.svg</file>
         <file>icons/TechDraw_Tree_Hatch.svg</file>
         <file>icons/TechDraw_Tree_Page.svg</file>
         <file>icons/TechDraw_Tree_Page_Unsync.svg</file>
@@ -66,11 +65,11 @@
         <file>icons/actions/techdraw-SpreadsheetView.svg</file>
         <file>icons/actions/techdraw-image.svg</file>
         <file>icons/actions/techdraw-DetailView.svg</file>
-        <file>icons/actions/techdraw-mline.svg</file>
+        <file>icons/actions/techdraw-LeaderLine.svg</file>
         <file>icons/actions/techdraw-RichTextAnnotation.svg</file>
-        <file>icons/actions/techdraw-point.svg</file>
-        <file>icons/actions/techdraw-midpoint.svg</file>
-        <file>icons/actions/techdraw-quadrant.svg</file>
+        <file>icons/actions/techdraw-CosmeticVertex.svg</file>
+        <file>icons/actions/techdraw-Midpoints.svg</file>
+        <file>icons/actions/techdraw-Quadrants.svg</file>
         <file>icons/actions/techdraw-facecenterline.svg</file>
         <file>icons/actions/techdraw-2linecenterline.svg</file>
         <file>icons/actions/techdraw-2pointcenterline.svg</file>

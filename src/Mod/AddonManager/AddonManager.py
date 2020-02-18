@@ -123,6 +123,7 @@ class CommandAddonManager:
         self.dialog.buttonInstall.setIcon(QtGui.QIcon.fromTheme("download",QtGui.QIcon(":/icons/edit_OK.svg")))
         self.dialog.buttonUpdateAll.setIcon(QtGui.QIcon(":/icons/button_valid.svg"))
         self.dialog.buttonConfigure.setIcon(QtGui.QIcon(":/icons/preferences-system.svg"))
+        self.dialog.buttonClose.setIcon(QtGui.QIcon.fromTheme("close",QtGui.QIcon(":/icons/process-stop.svg")))
         self.dialog.tabWidget.setTabIcon(0,QtGui.QIcon.fromTheme("folder",QtGui.QIcon(":/icons/folder.svg")))
         self.dialog.tabWidget.setTabIcon(1,QtGui.QIcon(":/icons/applications-python.svg"))
 
@@ -143,6 +144,7 @@ class CommandAddonManager:
         self.dialog.tabWidget.currentChanged.connect(self.switchtab)
         self.dialog.listMacros.currentRowChanged.connect(self.show_macro)
         self.dialog.buttonConfigure.clicked.connect(self.show_config)
+        self.dialog.buttonClose.clicked.connect(self.dialog.reject)
 
         # allow to open links in browser
         self.dialog.description.setOpenLinks(True)
@@ -274,7 +276,11 @@ class CommandAddonManager:
 
         import AddonManager_rc
         from PySide import QtGui
-        addonicon = QtGui.QIcon(":/icons/" + repo + "_workbench_icon.svg")
+        path = ":/icons/" + repo + "_workbench_icon.svg"
+        if QtCore.QFile.exists(path):
+            addonicon = QtGui.QIcon(path)
+        else:
+            addonicon = QtGui.QIcon(":/icons/document-package.svg")
         if addonicon.isNull():
             addonicon = QtGui.QIcon(":/icons/document-package.svg")
         return addonicon
@@ -379,7 +385,11 @@ class CommandAddonManager:
                 from PySide import QtGui
                 self.macros.append(macro)
                 import AddonManager_rc
-                addonicon = QtGui.QIcon(":/icons/" + macro.name.replace(" ","_") + "_macro_icon.svg")
+                path = ":/icons/" + macro.name.replace(" ","_") + "_macro_icon.svg"
+                if QtCore.QFile.exists(path):
+                    addonicon = QtGui.QIcon(path)
+                else:
+                    addonicon = QtGui.QIcon(":/icons/document-python.svg")
                 if addonicon.isNull():
                     addonicon = QtGui.QIcon(":/icons/document-python.svg")
                 if macro.is_installed():

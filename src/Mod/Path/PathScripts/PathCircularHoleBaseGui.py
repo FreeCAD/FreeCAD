@@ -52,6 +52,8 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     DataObject      = QtCore.Qt.ItemDataRole.UserRole + 1
     DataObjectSub   = QtCore.Qt.ItemDataRole.UserRole + 2
 
+    InitBase = False
+
     def getForm(self):
         '''getForm() ... load and return page'''
         return FreeCADGui.PySideUic.loadUi(":/panels/PageBaseHoleGeometryEdit.ui")

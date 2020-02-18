@@ -22,6 +22,14 @@
 # ***************************************************************************
 
 
+# to run the example use:
+"""
+from femexamples.thermomech_flow1d import setup
+setup()
+
+"""
+
+
 import FreeCAD
 import ObjectsFem
 import Fem
@@ -101,6 +109,7 @@ def setup(doc=None, solvertype="ccxtools"):
         )[0]
         solver_object.WorkingDir = u""
     if solvertype == "calculix" or solvertype == "ccxtools":
+        solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "thermomech"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = True
@@ -246,10 +255,3 @@ def setup(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples import thermomech_flow1d as flow
-flow.setup()
-
-"""

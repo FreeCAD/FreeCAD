@@ -37,6 +37,7 @@
 
 #include "FeatureDressUp.h"
 #include <Base/Console.h>
+#include <App/Document.h>
 #include <Base/Exception.h>
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
@@ -46,12 +47,17 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::FeatureAddSub)
 
 DressUp::DressUp()
 {
     ADD_PROPERTY(Base,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
+
+    ADD_PROPERTY_TYPE(SupportTransform,(true),"Base", App::Prop_None,
+            "Enable support for transformed patterns");
+
+    addSubType = Additive;
 }
 
 short DressUp::mustExecute() const
@@ -188,6 +194,32 @@ void DressUp::onChanged(const App::Property* prop)
         // track the vice-versa changes
         if (BaseFeature.getValue() && Base.getValue() != BaseFeature.getValue()) {
             BaseFeature.setValue (Base.getValue());
+        }
+    } else if (prop == &Shape || prop == &SupportTransform) {
+        if (!isRestoring() && !getDocument()->isPerformingTransaction()) {
+            Part::TopoShape s(0,getDocument()->getStringHasher());
+            auto base = Base::freecad_dynamic_cast<FeatureAddSub>(getBaseObject(true));
+            if(!base) {
+                addSubType = Additive;
+                if(!SupportTransform.getValue())
+                    s = getBaseShape();
+                else
+                    s = Shape.getShape();
+            } else if (!SupportTransform.getValue()) {
+                addSubType = base->getAddSubType();
+                s = base->AddSubShape.getShape();
+            } else {
+                addSubType = base->getAddSubType();
+                auto baseBase = base->getBaseObject(true);
+                if(!baseBase) {
+                    s = Shape.getShape();
+                    addSubType = Additive;
+                } else if (addSubType == Additive)
+                    s.makECut({Shape.getShape(),base->getBaseShape()});
+                else
+                    s.makECut({base->getBaseShape(),Shape.getShape()});
+            }
+            AddSubShape.setValue(s);
         }
     }
 

@@ -92,13 +92,6 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     connect(ui->joinComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onJoinTypeChanged(int)));
 
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
-    ui->listWidgetReferences->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
-    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
-
     int mode = pcThickness->Mode.getValue();
     ui->modeComboBox->setCurrentIndex(mode);
 
@@ -130,20 +123,6 @@ void TaskThicknessParameters::clearButtons(const selectionModes notThis)
     if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
     if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
     DressUpView->highlightReferences(false);
-}
-
-void TaskThicknessParameters::onRefDeleted(void)
-{
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
-    App::DocumentObject* base = pcThickness->Base.getValue();
-    std::vector<std::string> faces = pcThickness->Base.getSubValues();
-    faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
-    setupTransaction();
-    pcThickness->Base.setValue(base, faces);
-    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
-    clearButtons(none);
-    exitSelectionMode();
 }
 
 void TaskThicknessParameters::onValueChanged(double angle)

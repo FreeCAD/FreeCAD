@@ -324,16 +324,16 @@ public:
             bool press = (kbev->getState() == SoKeyboardEvent::DOWN);
             switch (kbev->getKey()) {
                 case SoKeyboardEvent::H:
-                    if (press)
+                    if (!press)
                         ns.onSetRotationCenter(kbev->getPosition());
                 break;
                 case SoKeyboardEvent::PAGE_UP:
-                    if(press){
+                    if(!press){
                         ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), true, posn);
                     }
                 break;
                 case SoKeyboardEvent::PAGE_DOWN:
-                    if(press){
+                    if(!press){
                         ns.doZoom(ns.viewer->getSoRenderManager()->getCamera(), false, posn);
                     }
                 break;

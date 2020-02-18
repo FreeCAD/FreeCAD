@@ -503,47 +503,47 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.fixed_constraints:
             for c in self.fixed_constraints:
                 if len(c["Object"].References) == 0:
-                    message += "At least one constraint fixed has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # displacement
         if self.displacement_constraints:
             for di in self.displacement_constraints:
                 if len(di["Object"].References) == 0:
-                    message += "At least one constraint displacement has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # plane rotation
         if self.planerotation_constraints:
             for c in self.planerotation_constraints:
                 if len(c["Object"].References) == 0:
-                    message += "At least one constraint plane rotation has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # contact
         if self.contact_constraints:
             for c in self.contact_constraints:
                 if len(c["Object"].References) == 0:
-                    message += "At least one constraint contact has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # transform
         if self.transform_constraints:
             for c in self.transform_constraints:
                 if len(c["Object"].References) == 0:
-                    message += "At least one constraint transform has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # pressure
         if self.pressure_constraints:
             for c in self.pressure_constraints:
                 if len(c["Object"].References) == 0:
-                    message += "At least one constraint pressure has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # force
         if self.force_constraints:
             for c in self.force_constraints:
                 if len(c["Object"].References) == 0:
-                    message += "At least one constraint force has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # temperature
         if self.temperature_constraints:
             for c in self.temperature_constraints:
                 if len(c["Object"].References) == 0:
-                    message += "At least one constraint temperature has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # heat flux
         if self.heatflux_constraints:
             for c in self.heatflux_constraints:
                 if len(c["Object"].References) == 0:
-                    message += "At least one constraint heat flux has an empty reference.\n"
+                    message += "{} has empty references.".format(c["Object"].Name)
         # beam section
         if self.beam_sections:
             if self.shell_thicknesses:

@@ -60,6 +60,8 @@ public:
     App::PropertyBool        OriginIsSet;
     App::PropertyFloat       TextWrapLen;
 
+    App::PropertyDistance    KinkLength;
+
     short mustExecute() const override;
 
     DrawViewPart* getViewPart() const;
@@ -68,9 +70,7 @@ public:
     //virtual PyObject *getPyObject(void);
 
     virtual App::DocumentObjectExecReturn *execute(void) override;
-    //@}
 
-    /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderBalloon";
     }
@@ -80,11 +80,18 @@ public:
 
     void handleXYLock(void) override;
 
+    double prefKinkLength(void) const;
+    int prefShape(void) const;
+    int prefEnd(void) const;
+
 protected:
     void onChanged(const App::Property* prop) override;
-/*    virtual void onDocumentRestored();*/
-    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop) override;
-    virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, 
+                                           const char *TypeName, 
+                                           App::Property * prop) override;
+    virtual void handleChangedPropertyName(Base::XMLReader &reader, 
+                                           const char * TypeName, 
+                                           const char *PropName) override;
 
 private:
 };

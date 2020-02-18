@@ -640,7 +640,7 @@ CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for initial temperature acting on a body");
     sWhatsThis      = "FEM_ConstraintInitialTemperature";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-InitialTemperature";
+    sPixmap         = "fem-constraint-initial-temperature";
 }
 
 void CmdFemConstraintInitialTemperature::activated(int)

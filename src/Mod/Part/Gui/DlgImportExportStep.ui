@@ -55,10 +55,10 @@
          <string>Export invisible objects</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ExportHiddenObject</string>
+         <cstring>ExportHiddenObject</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -114,10 +114,10 @@
          <string>Use legacy exporter</string>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ExportLegacy</string>
+         <cstring>ExportLegacy</cstring>
         </property>
        </widget>
       </item>
@@ -133,10 +133,10 @@ it inside the Placement property.</string>
          <string>Export single object placement</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ExportKeepPlacement</string>
+         <cstring>ExportKeepPlacement</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -245,10 +245,10 @@ it inside the Placement property.</string>
          <string>Use Part container</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>UseAppPart</string>
+         <cstring>UseAppPart</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -261,10 +261,10 @@ it inside the Placement property.</string>
          <string>Import invisible objects</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ImportHiddenObject</string>
+         <cstring>ImportHiddenObject</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -277,10 +277,10 @@ it inside the Placement property.</string>
          <string>Reduce number of objects</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ReduceObjects</string>
+         <cstring>ReduceObjects</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -293,10 +293,10 @@ it inside the Placement property.</string>
          <string>Expand compound shape</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ExpandCompound</string>
+         <cstring>ExpandCompound</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -309,10 +309,10 @@ it inside the Placement property.</string>
          <string>Show progress bar when importing</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>ShowProgress</string>
+         <cstring>ShowProgress</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -325,10 +325,10 @@ it inside the Placement property.</string>
          <string>Ignore instance names</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <string>UseBaseName</string>
+         <cstring>UseBaseName</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <string>Mod/Import</string>
+         <cstring>Mod/Import</cstring>
         </property>
        </widget>
       </item>
@@ -350,10 +350,10 @@ it inside the Placement property.</string>
            </sizepolicy>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>ImportMode</string>
+           <cstring>ImportMode</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <string>Mod/Import</string>
+           <cstring>Mod/Import</cstring>
           </property>
           <item>
            <property name="text">

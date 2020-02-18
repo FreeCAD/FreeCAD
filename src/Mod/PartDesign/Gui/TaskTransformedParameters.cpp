@@ -127,8 +127,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
             return false;
 
         PartDesign::Transformed* pcTransformed = getObject();
-        auto selectedObject = Base::freecad_dynamic_cast<PartDesign::Feature>(
-                pcTransformed->getDocument()->getObject(msg.pObjectName));
+        auto selectedObject = Base::freecad_dynamic_cast<PartDesign::Feature>(msg.Object.getObject());
         if (selectedObject) {
             auto subset = pcTransformed->OriginalSubs.getSubListValues();
             std::map<App::DocumentObject*,std::pair<size_t,std::set<std::string> > > submap;
@@ -154,24 +153,25 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
             }
 
             auto o = submap.find(selectedObject);
+            const std::string &subname = msg.Object.getOldElementName();
             if (selectionMode == addFeature) {
                 if (o == submap.end()) {
                     std::vector<std::string> subs;
                     if(selectedObject->Shape.getShape().countSubShapes(TopAbs_SOLID))
-                        subs.push_back(msg.SubName);
+                        subs.push_back(subname);
                     subset.emplace_back(selectedObject,subs);
-                } else if(o->second.second.insert(msg.SubName).second) 
-                    subset[o->second.first].second.push_back(msg.SubName);
+                } else if(o->second.second.insert(subname).second) 
+                    subset[o->second.first].second.push_back(subname);
                 else
                     return false; // duplicate selection
             } else {
                 if (o == submap.end())
                     return false;
-                if(msg.SubName.empty())
+                if(subname.empty())
                     subset.erase(subset.begin()+o->second.first);
                 else {
                     auto &subs = subset[o->second.first].second;
-                    auto it = std::find(subs.begin(),subs.end(),msg.SubName);
+                    auto it = std::find(subs.begin(),subs.end(),subname);
                     if(it==subs.end())
                         return false;
                     subs.erase(it);
@@ -284,9 +284,14 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
 }
 
 void TaskTransformedParameters::setupListWidget(QListWidget *widget) {
+
     listWidget = widget;
     QAction* action = new QAction(tr("Remove"), widget);
-    action->setShortcut(QString::fromLatin1("Del"));
+    action->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    action->setShortcutVisibleInContextMenu(true);
+#endif
     listWidget->addAction(action);
     QObject::connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
     listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);

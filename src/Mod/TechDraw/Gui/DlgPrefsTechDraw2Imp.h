@@ -23,8 +23,8 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
-#define DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
+#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H
+#define DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H
 
 #include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw2.h>
 #include <Gui/PropertyPage.h>
@@ -47,4 +47,4 @@ protected:
 
 } // namespace TechDrawGui
 
-#endif // DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
+#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP2_H

@@ -27,6 +27,8 @@
 #ifndef _PreComp_
 #endif
 
+#include <QMessageBox>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -59,6 +61,9 @@
 
 using namespace TechDrawGui;
 
+// there are only 5 line styles
+App::PropertyIntegerConstraint::Constraints ViewProviderLeader::LineStyleRange = { 0, 5, 1 };
+
 PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
@@ -66,13 +71,15 @@ PROPERTY_SOURCE(TechDrawGui::ViewProviderLeader, TechDrawGui::ViewProviderDrawin
 
 ViewProviderLeader::ViewProviderLeader()
 {
-    sPixmap = "actions/techdraw-mline";
+    sPixmap = "actions/techdraw-LeaderLine";
 
     static const char *group = "Line Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight())    ,group,(App::PropertyType)(App::Prop_None),"Line weight");
-    ADD_PROPERTY_TYPE(LineStyle,(1)    ,group,(App::PropertyType)(App::Prop_None),"Line style");
+    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()),group,(App::PropertyType)(App::Prop_None),"Line width");
+    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Line style index");
     ADD_PROPERTY_TYPE(Color,(getDefLineColor()),group,App::Prop_None,"The color of the Markup");
+
+    LineStyle.setConstraints(&LineStyleRange);
 }
 
 ViewProviderLeader::~ViewProviderLeader()
@@ -91,7 +98,6 @@ bool ViewProviderLeader::setEdit(int ModNum)
         if (Gui::Control().activeDialog())  {         //TaskPanel already open!
             return false;
         }
-        // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgLeaderLine(this));
         return true;
@@ -204,4 +210,23 @@ App::Color ViewProviderLeader::getDefLineColor(void)
     return result;
 }
 
+void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+// transforms properties that had been changed
+{
+    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat LineWidthProperty;
+        // restore the PropertyFloat to be able to set its value
+        LineWidthProperty.Restore(reader);
+        LineWidth.setValue(LineWidthProperty.getValue());
+    }
+
+    // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger LineStyleProperty;
+        // restore the PropertyInteger to be able to set its value
+        LineStyleProperty.Restore(reader);
+        LineStyle.setValue(LineStyleProperty.getValue());
+    }
+}
 

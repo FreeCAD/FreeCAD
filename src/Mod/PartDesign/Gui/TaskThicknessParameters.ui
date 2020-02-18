@@ -18,6 +18,10 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QToolButton" name="buttonRefAdd">
+       <property name="toolTip">
+        <string>Click button to enter selection mode,
+click again to end selection</string>
+       </property>
        <property name="text">
         <string>Add face</string>
        </property>
@@ -28,6 +32,10 @@
      </item>
      <item>
       <widget class="QToolButton" name="buttonRefRemove">
+       <property name="toolTip">
+        <string>Click button to enter selection mode,
+click again to end selection</string>
+       </property>
        <property name="text">
         <string>Remove face</string>
        </property>
@@ -39,7 +47,15 @@
     </layout>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidgetReferences"/>
+    <widget class="QListWidget" name="listWidgetReferences">
+     <property name="toolTip">
+      <string>- select an item to highlight it
+- double-click on an item to see the features</string>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::MultiSelection</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_2">

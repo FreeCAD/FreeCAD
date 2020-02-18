@@ -117,9 +117,16 @@ void  SurfaceOfExtrusionPy::setDirection(Py::Object arg)
     }
 }
 
+namespace Part {
+    extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
+}
+
 Py::Object SurfaceOfExtrusionPy::getBasisCurve(void) const
 {
-    throw Py::Exception(PyExc_NotImplementedError, "Not yet implemented");
+    Handle(Geom_SurfaceOfLinearExtrusion) surf = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast
+    (getGeometryPtr()->handle());
+    Handle(Geom_Curve) curve = surf->BasisCurve();
+    return makeGeometryCurvePy(curve);
 }
 
 void  SurfaceOfExtrusionPy::setBasisCurve(Py::Object arg)

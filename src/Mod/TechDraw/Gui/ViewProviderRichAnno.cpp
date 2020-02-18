@@ -57,6 +57,9 @@
 
 using namespace TechDrawGui;
 
+// there are only 5 frame line styles
+App::PropertyIntegerConstraint::Constraints ViewProviderRichAnno::LineStyleRange = {0, 5, 1};
+
 PROPERTY_SOURCE(TechDrawGui::ViewProviderRichAnno, TechDrawGui::ViewProviderDrawingView)
 
 //**************************************************************************
@@ -68,9 +71,11 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 
     static const char *group = "Frame Format";
 
-    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()), group,(App::PropertyType)(App::Prop_None),"Frame line weight");
-    ADD_PROPERTY_TYPE(LineStyle,(1), group,(App::PropertyType)(App::Prop_None),"Frame line style");
+    ADD_PROPERTY_TYPE(LineWidth,(getDefLineWeight()), group,(App::PropertyType)(App::Prop_None),"Frame line width");
+    ADD_PROPERTY_TYPE(LineStyle,(1),group,(App::PropertyType)(App::Prop_None),"Frame line style index");
     ADD_PROPERTY_TYPE(LineColor,(getDefLineColor()),group,App::Prop_None,"The color of the frame");
+
+    LineStyle.setConstraints(&LineStyleRange);
 }
 
 ViewProviderRichAnno::~ViewProviderRichAnno()
@@ -89,7 +94,6 @@ bool ViewProviderRichAnno::setEdit(int ModNum)
         if (Gui::Control().activeDialog())  {         //TaskPanel already open!
             return false;
         }
-        // clear the selection (convenience)
         Gui::Selection().clearSelection();
         Gui::Control().showDialog(new TaskDlgRichAnno(this));
         return true;
@@ -119,11 +123,33 @@ bool ViewProviderRichAnno::doubleClicked(void)
 
 void ViewProviderRichAnno::updateData(const App::Property* p)
 {
+    // only if there is a frame we can enable the frame line parameters
+    if (getViewObject() != nullptr) {
+        if (getViewObject()->ShowFrame.getValue()) {
+            LineWidth.setStatus(App::Property::ReadOnly, false);
+            LineStyle.setStatus(App::Property::ReadOnly, false);
+            LineColor.setStatus(App::Property::ReadOnly, false);
+        }
+        else {
+            LineWidth.setStatus(App::Property::ReadOnly, true);
+            LineStyle.setStatus(App::Property::ReadOnly, true);
+            LineColor.setStatus(App::Property::ReadOnly, true);
+        }
+    }
     ViewProviderDrawingView::updateData(p);
 }
 
 void ViewProviderRichAnno::onChanged(const App::Property* p)
 {
+    if ((p == &LineColor) ||
+        (p == &LineWidth) ||
+        (p == &LineStyle)) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
+        }
+    }
+
     ViewProviderDrawingView::onChanged(p);
 }
 
@@ -175,4 +201,23 @@ double ViewProviderRichAnno::getDefLineWeight(void)
     return result;
 }
 
+void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
+// transforms properties that had been changed
+{
+    // property LineWidth had the App::PropertyFloat and was changed to App::PropertyLength
+    if (prop == &LineWidth && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat LineWidthProperty;
+        // restore the PropertyFloat to be able to set its value
+        LineWidthProperty.Restore(reader);
+        LineWidth.setValue(LineWidthProperty.getValue());
+    }
+
+    // property LineStyle had the App::PropertyInteger and was changed to App::PropertyIntegerConstraint
+    if (prop == &LineStyle && strcmp(TypeName, "App::PropertyInteger") == 0) {
+        App::PropertyInteger LineStyleProperty;
+        // restore the PropertyInteger to be able to set its value
+        LineStyleProperty.Restore(reader);
+        LineStyle.setValue(LineStyleProperty.getValue());
+    }
+}
 

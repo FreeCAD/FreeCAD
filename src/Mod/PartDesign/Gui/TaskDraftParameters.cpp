@@ -90,13 +90,6 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     connect(ui->buttonLine, SIGNAL(toggled(bool)),
             this, SLOT(onButtonLine(bool)));
 
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
-    ui->listWidgetReferences->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
-    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
-
     App::DocumentObject* ref = pcDraft->NeutralPlane.getValue();
     auto strings = pcDraft->NeutralPlane.getSubValues();
     ui->linePlane->setText(getRefStr(ref, strings));
@@ -182,18 +175,6 @@ void TaskDraftParameters::onButtonLine(bool checked)
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), true, false, true));
     }
-}
-
-void TaskDraftParameters::onRefDeleted(void)
-{
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
-    App::DocumentObject* base = pcDraft->Base.getValue();
-    std::vector<std::string> faces = pcDraft->Base.getSubValues();
-    faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
-    setupTransaction();
-    pcDraft->Base.setValue(base, faces);
-    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
-    pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
 
 void TaskDraftParameters::getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const

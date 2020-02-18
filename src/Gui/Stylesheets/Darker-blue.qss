@@ -1,7 +1,7 @@
 /*
 ABOUT
 ============================================================================================================
-version 2.21
+version 2.22
 Qt theme (stylesheet) specially developed for FreeCAD (https://www.freecadweb.org/).
 It might work with other software that uses Qt styling.
 
@@ -1165,8 +1165,8 @@ QDateEdit,
 QDateTimeEdit {
     color: #bebebe;
     background-color: #2a2a2a;
-    selection-color: #cbd8e6;
-    selection-background-color: #2053c0;
+    selection-color: white;
+    selection-background-color: #1b3774 ;
     border: 1px solid #2a2a2a;
     border-radius: 3px;
     min-width: 50px; /* it ensures the default value is correctly displayed */
@@ -2131,7 +2131,7 @@ QTableView > QWidget > QDateTimeEdit:read-only {
 
 
 /*==================================================================================================
-TABBAR widget (3rd party plugin)
+SELECTORTOOLBAR widget (3rd party plugin)
 ==================================================================================================*/
 QToolBar:horizontal#Selector,
 QToolBar:vertical#Selector {
@@ -2170,7 +2170,7 @@ QToolButton[toolbar_orientation="horizontal"] {
 }
 
 QToolButton[toolbar_orientation="vertical"] {
-    width: 100%;
+    /* nothing, when Horizontal there's no need to add special parameters */
 }
 
 QToolBar#Selector QToolButton {
@@ -2202,6 +2202,24 @@ QToolBar#Selector QToolButton:!checked:hover {
 /* Unactive tabs (pressed) */
 QToolBar#Selector QToolButton:!checked:pressed {
     background-color: rgba(255,255,255,40);
+}
+
+
+/*==================================================================================================
+TABBAR widget (3rd party plugin)
+==================================================================================================*/
+QTabWidget#TabBar > QTabBar {
+    border-top: 0;
+}
+
+QTabWidget#TabBar > QTabBar::tab:top,
+QTabWidget#TabBar > QTabBar::tab:bottom {
+    min-width: -1;
+}
+
+QTabWidget#TabBar > QTabBar::tab:left,
+QTabWidget#TabBar > QTabBar::tab:right {
+    min-height: -1;
 }
 
 

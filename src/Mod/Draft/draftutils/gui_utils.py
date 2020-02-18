@@ -34,18 +34,21 @@ the graphical user interface (GUI).
 
 
 import FreeCAD
-import FreeCADGui
 from .utils import _msg
 from .utils import _wrn
 # from .utils import _log
 from .utils import _tr
 from .utils import getParam
-from pivy import coin
-from PySide import QtGui
-# from PySide import QtSvg  # for load_texture
+from .utils import get_type
 import os
 import math
 import six
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+    from pivy import coin
+    from PySide import QtGui
+#   from PySide import QtSvg  # for load_texture
 
 
 def get_3d_view():
@@ -95,28 +98,50 @@ def autogroup(obj):
     obj : App::DocumentObject
         Any type of object that will be stored in the group.
     """
-    doc = FreeCAD.ActiveDocument
     if FreeCAD.GuiUp:
-        view = FreeCADGui.ActiveDocument.ActiveView
-        if hasattr(FreeCADGui, "draftToolBar"):
-            if (hasattr(FreeCADGui.draftToolBar, "autogroup")
-                    and not FreeCADGui.draftToolBar.isConstructionMode()):
+        # look for active Arch container
+        active_arch_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+        if hasattr(FreeCADGui,"draftToolBar"):
+            if (hasattr(FreeCADGui.draftToolBar,"autogroup") 
+                and not FreeCADGui.draftToolBar.isConstructionMode()
+                ):
                 if FreeCADGui.draftToolBar.autogroup is not None:
-                    g = doc.getObject(FreeCADGui.draftToolBar.autogroup)
-                    if g:
+                    active_group = FreeCAD.ActiveDocument.getObject(FreeCADGui.draftToolBar.autogroup)
+                    if active_group:
                         found = False
-                        for o in g.Group:
+                        for o in active_group.Group:
                             if o.Name == obj.Name:
                                 found = True
                         if not found:
-                            gr = g.Group
+                            gr = active_group.Group
                             gr.append(obj)
-                            g.Group = gr
-                else:
-                    # Arch active container
-                    a = view.getActiveObject("Arch")
-                    if a:
-                        a.addObject(obj)
+                            active_group.Group = gr
+                elif active_arch_obj:
+                    active_arch_obj.addObject(obj)
+                elif FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
+                    # add object to active part and change it's placement accordingly
+                    # so object does not jump to different position, works with App::Link
+                    # if not scaled. Modified accordingly to realthunder suggestions
+                    p, parent, sub = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part", False)
+                    matrix = parent.getSubObject(sub, retType=4)
+                    if matrix.hasScale() == 1:
+                        FreeCAD.Console.PrintMessage(translate("Draft",
+                                                               "Unable to insert new object into "
+                                                               "a scaled part")
+                                                    )
+                        return
+                    inverse_placement = FreeCAD.Placement(matrix.inverse())
+                    if get_type(obj) == 'Point':
+                        # point vector have a kind of placement, so should be
+                        # processed before generic object with placement
+                        point_vector = FreeCAD.Vector(obj.X, obj.Y, obj.Z)
+                        real_point = inverse_placement.multVec(point_vector)
+                        obj.X = real_point.x
+                        obj.Y = real_point.y
+                        obj.Z = real_point.z
+                    elif hasattr(obj,"Placement"):
+                        obj.Placement = FreeCAD.Placement(inverse_placement.multiply(obj.Placement))
+                    p.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):

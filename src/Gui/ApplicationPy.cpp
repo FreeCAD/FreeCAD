@@ -218,6 +218,13 @@ PyMethodDef Application::Methods[] = {
    "reload(name) -> doc\n\n"
    "Reload a partial opened document"},
 
+  {"loadFile",       (PyCFunction) Application::sLoadFile, METH_VARARGS,
+   "loadFile(string=filename,[string=module]) -> None\n\n"
+   "Loads an arbitrary file by delegating to the given Python module:\n"
+   "* If no module is given it will be determined by the file extension.\n"
+   "* If more than one module can load a file the first one one will be taken.\n"
+   "* If no module exists to load the file an exception will be raised."},
+
   {"coinRemoveAllChildren",     (PyCFunction) Application::sCoinRemoveAllChildren, METH_VARARGS,
    "Remove all children from a group node"},
 
@@ -1468,6 +1475,37 @@ PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
             return doc->getPyObject();
     }PY_CATCH;
     Py_Return;
+}
+
+PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
+{
+    char *path, *mod="";
+    if (!PyArg_ParseTuple(args, "s|s", &path, &mod))     // convert args: Python->C
+        return 0;                             // NULL triggers exception
+    PY_TRY {
+        Base::FileInfo fi(path);
+        if (!fi.isFile() || !fi.exists()) {
+            PyErr_Format(PyExc_IOError, "File %s doesn't exist.", path);
+            return 0;
+        }
+
+        std::string module = mod;
+        if (module.empty()) {
+            std::string ext = fi.extension();
+            std::vector<std::string> modules = App::GetApplication().getImportModules(ext.c_str());
+            if (modules.empty()) {
+                PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
+                return 0;
+            }
+            else {
+                module = modules.front();
+            }
+        }
+
+        Application::Instance->open(path,mod);
+
+        Py_Return;
+    } PY_CATCH
 }
 
 PyObject* Application::sAddDocObserver(PyObject * /*self*/, PyObject *args)

@@ -3629,9 +3629,9 @@ Cột 'Trạng thái' cho biết liệu tài liệu có thể được khôi ph�
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
+      <source>Combo View</source>
       <translation>Chế độ xem kết hợp</translation>
     </message>
     <message>

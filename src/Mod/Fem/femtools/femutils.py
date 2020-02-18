@@ -66,35 +66,6 @@ def createObject(doc, name, proxy, viewProxy=None):
     return obj
 
 
-def findAnalysisOfMember(member):
-    """ Find Analysis the *member* belongs to.
-
-    :param member: a document object
-
-    :returns:
-     If a analysis that contains *member* can be found a reference is returned.
-     If no such object exists in the document of *member*, ``None`` is returned.
-    """
-    if member is None:
-        raise ValueError("Member must not be None")
-    for obj in member.Document.Objects:
-        if obj.isDerivedFrom("Fem::FemAnalysis"):
-            if member in obj.Group:
-                return obj
-            if _searchGroups(member, obj.Group):
-                return obj
-    return None
-
-
-def _searchGroups(member, objs):
-    for o in objs:
-        if o == member:
-            return True
-        if hasattr(o, "Group"):
-            return _searchGroups(member, o.Group)
-    return False
-
-
 def get_member(analysis, t):
     """ Return list of all members of *analysis* of type *t*.
 
@@ -462,12 +433,12 @@ def get_refshape_type(fem_doc_object):
         first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
         st = first_ref_shape.ShapeType
         FreeCAD.Console.PrintMessage(
-            fem_doc_object.Name + " has " + st + " reference shapes.\n"
+            "References: {} in {}, {}\n". format(st, fem_doc_object.Name, fem_doc_object.Label)
         )
         return st
     else:
         FreeCAD.Console.PrintMessage(
-            fem_doc_object.Name + " has empty References.\n"
+            "References: empty in {}, {}\n". format(fem_doc_object.Name, fem_doc_object.Label)
         )
         return ""
 

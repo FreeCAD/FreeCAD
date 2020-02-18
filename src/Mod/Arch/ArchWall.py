@@ -742,6 +742,7 @@ class _Wall(ArchComponent.Component):
             return
 
         base = self.processSubShapes(obj,base,pl)
+
         self.applyShape(obj,base,pl)
 
         # count blocks
@@ -835,10 +836,13 @@ class _Wall(ArchComponent.Component):
                     widths = obj.Base.Proxy.getWidths(obj.Base)  # return a list of Width corresponds to indexes of sorted edges of Sketch
 
         # Get width of each edge/wall segment from ArchWall.OverrideWidth if Base Object does not provide it
+
         if not widths:
+
             if obj.OverrideWidth:
-                if Draft.getType(obj.Base) == 'Sketch':
-                    # If Base Object is ordinary Sketch, sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
+                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                    # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implemented yet):-
+                    # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
                     except:
@@ -872,8 +876,9 @@ class _Wall(ArchComponent.Component):
         # Get align of each edge/wall segment from ArchWall.OverrideAlign if Base Object does not provide it
         if not aligns:
             if obj.OverrideAlign:
-                if Draft.getType(obj.Base) == 'Sketch':
-                    # If Base Object is ordinary Sketch, sort the align list in OverrideAlign to correspond to indexes of sorted edges of Sketch
+                if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                    # If Base Object is ordinary Sketch (or when ArchSketch.getAligns() not implemented yet):-
+                    # sort the align list in OverrideAlign to correspond to indexes of sorted edges of Sketch
                     try:
                         import ArchSketchObject
                     except:
@@ -1033,16 +1038,18 @@ class _Wall(ArchComponent.Component):
                                     layeroffset += abs(layers[i])
                                 else:
                                     dvec.multiply(width)
-                                if off:
-                                    dvec2 = DraftVecUtils.scaleTo(dvec,off)
-                                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
+                                # Now DraftGeomUtils.offsetWire() support similar effect as ArchWall Offset
+                                #
+                                #if off:
+                                #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
+                                #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
-                                # Get the 'offseted' wire taking into account of width and align of each edge
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,None,aligns,normal)
+                                # Get the 'offseted' wire taking into account of Width and Align of each edge, and overall Offset
+                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,None,aligns,normal,off)
 
                                 # Get the 'base' wire taking into account of width and align of each edge
-                                w1 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,"BasewireMode",aligns,normal)
+                                w1 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,"BasewireMode",aligns,normal,off)
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             elif curAligns == "Right":
@@ -1054,12 +1061,15 @@ class _Wall(ArchComponent.Component):
                                     layeroffset += abs(layers[i])
                                 else:
                                     dvec.multiply(width)
-                                if off:
-                                    dvec2 = DraftVecUtils.scaleTo(dvec,off)
-                                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
 
-                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,None,aligns,normal)
-                                w1 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,"BasewireMode",aligns,normal)
+                                # Now DraftGeomUtils.offsetWire() support similar effect as ArchWall Offset
+                                #
+                                #if off:
+                                #    dvec2 = DraftVecUtils.scaleTo(dvec,off)
+                                #    wire = DraftGeomUtils.offsetWire(wire,dvec2)
+
+                                w2 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,None,aligns,normal,off)
+                                w1 = DraftGeomUtils.offsetWire(wire,dvec,False,False,widths,"BasewireMode",aligns,normal,off)
                                 sh = DraftGeomUtils.bind(w1,w2)
 
                             #elif obj.Align == "Center":
@@ -1081,7 +1091,9 @@ class _Wall(ArchComponent.Component):
                             del widths[0:edgeNum]
                             del aligns[0:edgeNum]
                             if sh:
+
                                 sh.fix(0.1,0,1) # fixes self-intersecting wires
+
                                 f = Part.Face(sh)
                                 if baseface:
 

@@ -172,6 +172,7 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ViewProviderOffset2D                   ::init();
     PartGui::ViewProviderThickness                  ::init();
     PartGui::ViewProviderRefine                     ::init();
+    PartGui::ViewProviderReverse                    ::init();
     PartGui::ViewProviderCustom                     ::init();
     PartGui::ViewProviderCustomPython               ::init();
     PartGui::ViewProviderBoolean                    ::init();

@@ -3627,9 +3627,9 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     </message>
   </context>
   <context>
-    <name>Gui::DockWnd::CombiView</name>
+    <name>Gui::DockWnd::ComboView</name>
     <message>
-      <source>CombiView</source>
+      <source>Combo View</source>
       <translation>Vista combinada</translation>
     </message>
     <message>

@@ -42,6 +42,8 @@ public:
 
     void setDocumentObject(const App::DocumentObject*, bool checkInList=true);
 
+    void setNoProperty(bool enabled=true);
+
 public Q_SLOTS:
     void slotUpdate(const QString &prefix, int pos);
 
@@ -67,6 +69,7 @@ public:
     void setPrefix(char prefix);
     bool completerActive() const;
     void hideCompleter();
+    void setNoProperty(bool enabled=true);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:

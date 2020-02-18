@@ -22,6 +22,18 @@
 # ***************************************************************************
 
 
+# to run the example use:
+"""
+from femexamples import ccx_cantilever_std as canti
+
+canti.setup_cantileverbase()
+canti.setup_cantileverfaceload()
+canti.setup_cantilevernodeload()
+canti.setup_cantileverprescribeddisplacement()
+
+"""
+
+
 import FreeCAD
 import ObjectsFem
 import Fem
@@ -70,6 +82,7 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
     if solvertype == "calculix" or solvertype == "ccxtools":
+        solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
@@ -171,14 +184,3 @@ def setup_cantileverprescribeddisplacement(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples import ccx_cantilever_std as canti
-
-canti.setup_cantileverbase()
-canti.setup_cantileverfaceload()
-canti.setup_cantilevernodeload()
-canti.setup_cantileverprescribeddisplacement()
-
-"""

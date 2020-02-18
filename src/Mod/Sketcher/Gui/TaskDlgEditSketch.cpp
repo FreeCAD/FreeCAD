@@ -50,6 +50,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     SolverAdvanced = new TaskSketcherSolverAdvanced(sketchView);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", true));
 
     Content.push_back(Messages);
 

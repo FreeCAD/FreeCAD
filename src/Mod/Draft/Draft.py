@@ -46,22 +46,23 @@ __url__ = "https://www.freecadweb.org"
 """The Draft module offers a range of tools to create and manipulate basic 2D objects"""
 
 import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
+import draftutils.translate
 from FreeCAD import Vector
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 
 if FreeCAD.GuiUp:
     import FreeCADGui, Draft_rc
     from PySide import QtCore
-    from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
     #from DraftGui import translate
 else:
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
+    # def QT_TRANSLATE_NOOP(ctxt,txt):
+    #     return txt
     #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
 
-def translate(ctx,txt):
-    return txt
+translate = draftutils.translate.translate
 
 #---------------------------------------------------------------------------
 # Backwards compatibility
@@ -296,11 +297,13 @@ def makeDimension(p1,p2,p3=None,p4=None):
         l.append((p1,"Edge"+str(p2+1)))
         if p3 == "radius":
             #l.append((p1,"Center"))
-            obj.ViewObject.Override = "R $dim"
+            if FreeCAD.GuiUp:
+                obj.ViewObject.Override = "R $dim"
             obj.Diameter = False
         elif p3 == "diameter":
             #l.append((p1,"Diameter"))
-            obj.ViewObject.Override = "Ø $dim"
+            if FreeCAD.GuiUp:
+                obj.ViewObject.Override = "Ø $dim"
             obj.Diameter = True
         obj.LinkedGeometry = l
         obj.Support = p1
@@ -1036,9 +1039,17 @@ def move(objectslist,vector,copy=False):
     newgroups = {}
     objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
+        newobj = None
+        # real_vector have been introduced to take into account
+        # the possibility that object is inside an App::Part
+        if hasattr(obj, "getGlobalPlacement"):
+            v_minus_global = obj.getGlobalPlacement().inverse().Rotation.multVec(vector)
+            real_vector = obj.Placement.Rotation.multVec(v_minus_global)
+        else:
+            real_vector = vector
         if getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
-            v = v.add(vector)
+            v = v.add(real_vector)
             if copy:
                 newobj = makeCopy(obj)
             else:
@@ -1046,13 +1057,15 @@ def move(objectslist,vector,copy=False):
             newobj.X = v.x
             newobj.Y = v.y
             newobj.Z = v.z
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            pass
         elif hasattr(obj,'Shape'):
             if copy:
                 newobj = makeCopy(obj)
             else:
                 newobj = obj
             pla = newobj.Placement
-            pla.move(vector)
+            pla.move(real_vector)
         elif getType(obj) == "Annotation":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::Annotation",getRealName(obj.Name))
@@ -1061,7 +1074,7 @@ def move(objectslist,vector,copy=False):
                     formatObject(newobj,obj)
             else:
                 newobj = obj
-            newobj.Position = obj.Position.add(vector)
+            newobj.Position = obj.Position.add(real_vector)
         elif getType(obj) == "DraftText":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
@@ -1075,7 +1088,7 @@ def move(objectslist,vector,copy=False):
                     formatObject(newobj,obj)
             else:
                 newobj = obj
-            newobj.Placement.Base = obj.Placement.Base.add(vector)
+            newobj.Placement.Base = obj.Placement.Base.add(real_vector)
         elif getType(obj) == "Dimension":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
@@ -1085,17 +1098,18 @@ def move(objectslist,vector,copy=False):
                     formatObject(newobj,obj)
             else:
                 newobj = obj
-            newobj.Start = obj.Start.add(vector)
-            newobj.End = obj.End.add(vector)
-            newobj.Dimline = obj.Dimline.add(vector)
+            newobj.Start = obj.Start.add(real_vector)
+            newobj.End = obj.End.add(real_vector)
+            newobj.Dimline = obj.Dimline.add(real_vector)
         else:
             if copy and obj.isDerivedFrom("Mesh::Feature"):
                 print("Mesh copy not supported at the moment") # TODO
             newobj = obj
             if "Placement" in obj.PropertiesList:
                 pla = obj.Placement
-                pla.move(vector)
-        newobjlist.append(newobj)
+                pla.move(real_vector)
+        if newobj is not None:
+            newobjlist.append(newobj)
         if copy:
             for p in obj.InList:
                 if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
@@ -1223,15 +1237,23 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     newgroups = {}
     objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
+        newobj = None
+        # real_center and real_axis are introduced to take into account
+        # the possibility that object is inside an App::Part
+        if hasattr(obj, "getGlobalPlacement"):
+            ci = obj.getGlobalPlacement().inverse().multVec(center)
+            real_center = obj.Placement.multVec(ci)
+            ai = obj.getGlobalPlacement().inverse().Rotation.multVec(axis)
+            real_axis = obj.Placement.Rotation.multVec(ai)
+        else:
+            real_center = center
+            real_axis = axis
+
         if copy:
             newobj = makeCopy(obj)
         else:
             newobj = obj
-        if hasattr(obj,'Shape') and (getType(obj) not in ["WorkingPlaneProxy","BuildingPart"]):
-            shape = obj.Shape.copy()
-            shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
-            newobj.Shape = shape
-        elif (obj.isDerivedFrom("App::Annotation")):
+        if obj.isDerivedFrom("App::Annotation"):
             if axis.normalize() == Vector(1,0,0):
                 newobj.ViewObject.RotationAxis = "X"
                 newobj.ViewObject.Rotation = angle
@@ -1249,20 +1271,29 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
                 newobj.ViewObject.Rotation = -angle
         elif getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
-            rv = v.sub(center)
-            rv = DraftVecUtils.rotate(rv,math.radians(angle),axis)
-            v = center.add(rv)
+            rv = v.sub(real_center)
+            rv = DraftVecUtils.rotate(rv,math.radians(angle),real_axis)
+            v = real_center.add(rv)
             newobj.X = v.x
             newobj.Y = v.y
             newobj.Z = v.z
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            pass
         elif hasattr(obj,"Placement"):
+            #FreeCAD.Console.PrintMessage("placement rotation\n")
             shape = Part.Shape()
             shape.Placement = obj.Placement
-            shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
+            shape.rotate(DraftVecUtils.tup(real_center), DraftVecUtils.tup(real_axis), angle)
             newobj.Placement = shape.Placement
+        elif hasattr(obj,'Shape') and (getType(obj) not in ["WorkingPlaneProxy","BuildingPart"]):
+            #think it make more sense to try first to rotate placement and later to try with shape. no?
+            shape = obj.Shape.copy()
+            shape.rotate(DraftVecUtils.tup(real_center), DraftVecUtils.tup(real_axis), angle)
+            newobj.Shape = shape
         if copy:
             formatObject(newobj,obj)
-        newobjlist.append(newobj)
+        if newobj is not None:
+            newobjlist.append(newobj)
         if copy:
             for p in obj.InList:
                 if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
@@ -4141,7 +4172,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             return ["2D","3D"][getParam("dimstyle",0)]
 
     def getIcon(self):
-        return ":/icons/Draft_Dimension_Tree.svg"
+        return ":/icons/Draft_DimensionAngular.svg"
 
     def __getstate__(self):
         return self.Object.ViewObject.DisplayMode
@@ -5357,7 +5388,7 @@ class _Array(_DraftLink):
             n = math.floor(c/tdist)
             n = int(math.floor(n/sym)*sym)
             if n == 0: continue
-            angle = 360/n
+            angle = 360.0/n
             for ycount in range(0, n):
                 npl = pl.copy()
                 trans = FreeCAD.Vector(direction).multiply(rc)
@@ -6027,6 +6058,8 @@ class ViewProviderWorkingPlaneProxy:
         c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetUnsigned("ColorHelpers",674321151)
         vobj.LineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
         vobj.Proxy = self
+        vobj.RestoreView = True
+        vobj.RestoreState = True
 
     def getIcon(self):
         import Draft_rc

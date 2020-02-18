@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <numeric>
 #include <gp_Pnt.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -59,10 +60,11 @@
 
 using namespace Inspection;
 
-InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _iter(rMesh.getKernel())
+InspectActualMesh::InspectActualMesh(const Mesh::MeshObject& rMesh) : _mesh(rMesh.getKernel())
 {
-    this->_count = rMesh.countPoints();
-    this->_iter.Transform(rMesh.getTransform());
+    Base::Matrix4D tmp;
+    _clTrf = rMesh.getTransform();
+    _bApply = _clTrf != tmp;
 }
 
 InspectActualMesh::~InspectActualMesh()
@@ -71,13 +73,15 @@ InspectActualMesh::~InspectActualMesh()
 
 unsigned long InspectActualMesh::countPoints() const
 {
-    return this->_count;
+    return _mesh.CountPoints();
 }
 
-Base::Vector3f InspectActualMesh::getPoint(unsigned long index)
+Base::Vector3f InspectActualMesh::getPoint(unsigned long index) const
 {
-    _iter.Set(index);
-    return *_iter;
+    Base::Vector3f point = _mesh.GetPoint(index);
+    if (_bApply)
+        _clTrf.multVec(point, point);
+    return point;
 }
 
 // ----------------------------------------------------------------
@@ -91,10 +95,10 @@ unsigned long InspectActualPoints::countPoints() const
     return _rKernel.size();
 }
 
-Base::Vector3f InspectActualPoints::getPoint(unsigned long index)
+Base::Vector3f InspectActualPoints::getPoint(unsigned long index) const
 {
     Base::Vector3d p = _rKernel.getPoint(index);
-    return Base::Vector3f((float)p.x,(float)p.y,(float)p.z);
+    return Base::Vector3f(float(p.x), float(p.y), float(p.z));
 }
 
 // ----------------------------------------------------------------
@@ -117,7 +121,7 @@ unsigned long InspectActualShape::countPoints() const
     return points.size();
 }
 
-Base::Vector3f InspectActualShape::getPoint(unsigned long index)
+Base::Vector3f InspectActualShape::getPoint(unsigned long index) const
 {
     return Base::toVector<float>(points[index]);
 }
@@ -252,18 +256,19 @@ namespace Inspection {
     };
 }
 
-InspectNominalMesh::InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset) : _iter(rMesh.getKernel())
+InspectNominalMesh::InspectNominalMesh(const Mesh::MeshObject& rMesh, float offset) : _mesh(rMesh.getKernel())
 {
-    const MeshCore::MeshKernel& kernel = rMesh.getKernel();
-    _iter.Transform(rMesh.getTransform());
+    Base::Matrix4D tmp;
+    _clTrf = rMesh.getTransform();
+    _bApply = _clTrf != tmp;
 
     // Max. limit of grid elements
     float fMaxGridElements=8000000.0f;
-    Base::BoundBox3f box = kernel.GetBoundBox().Transformed(rMesh.getTransform());
+    Base::BoundBox3f box = _mesh.GetBoundBox().Transformed(rMesh.getTransform());
 
     // estimate the minimum allowed grid length
     float fMinGridLen = (float)pow((box.LengthX()*box.LengthY()*box.LengthZ()/fMaxGridElements), 0.3333f);
-    float fGridLen = 5.0f * MeshCore::MeshAlgorithm(kernel).GetAverageEdgeLength();
+    float fGridLen = 5.0f * MeshCore::MeshAlgorithm(_mesh).GetAverageEdgeLength();
 
     // We want to avoid to get too small grid elements otherwise building up the grid structure would take
     // too much time and memory. 
@@ -272,7 +277,7 @@ InspectNominalMesh::InspectNominalMesh(const Mesh::MeshObject& rMesh, float offs
     fGridLen = std::max<float>(fMinGridLen, fGridLen);
 
     // build up grid structure to speed up algorithms
-    _pGrid = new MeshInspectGrid(kernel, fGridLen, rMesh.getTransform());
+    _pGrid = new MeshInspectGrid(_mesh, fGridLen, rMesh.getTransform());
     _box = box;
     _box.Enlarge(offset);
 }
@@ -282,7 +287,7 @@ InspectNominalMesh::~InspectNominalMesh()
     delete this->_pGrid;
 }
 
-float InspectNominalMesh::getDistance(const Base::Vector3f& point)
+float InspectNominalMesh::getDistance(const Base::Vector3f& point) const
 {
     if (!_box.IsInBox(point))
         return FLT_MAX; // must be inside bbox
@@ -298,11 +303,15 @@ float InspectNominalMesh::getDistance(const Base::Vector3f& point)
     float fMinDist=FLT_MAX;
     bool positive = true;
     for (std::vector<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        _iter.Set(*it);
-        float fDist = _iter->DistanceToPoint(point);
+        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(*it);
+        if (_bApply) {
+            geomFace.Transform(_clTrf);
+        }
+
+        float fDist = geomFace.DistanceToPoint(point);
         if (fabs(fDist) < fabs(fMinDist)) {
             fMinDist = fDist;
-            positive = point.DistanceToPlane(_iter->_aclPoints[0], _iter->GetNormal()) > 0;
+            positive = point.DistanceToPlane(geomFace._aclPoints[0], geomFace.GetNormal()) > 0;
         }
     }
 
@@ -313,10 +322,13 @@ float InspectNominalMesh::getDistance(const Base::Vector3f& point)
 
 // ----------------------------------------------------------------
 
-InspectNominalFastMesh::InspectNominalFastMesh(const Mesh::MeshObject& rMesh, float offset) : _iter(rMesh.getKernel())
+InspectNominalFastMesh::InspectNominalFastMesh(const Mesh::MeshObject& rMesh, float offset) : _mesh(rMesh.getKernel())
 {
     const MeshCore::MeshKernel& kernel = rMesh.getKernel();
-    _iter.Transform(rMesh.getTransform());
+
+    Base::Matrix4D tmp;
+    _clTrf = rMesh.getTransform();
+    _bApply = _clTrf != tmp;
 
     // Max. limit of grid elements
     float fMaxGridElements=8000000.0f;
@@ -348,7 +360,7 @@ InspectNominalFastMesh::~InspectNominalFastMesh()
  * This algorithm is not that exact as that from InspectNominalMesh but is by
  * factors faster and sufficient for many cases.
  */
-float InspectNominalFastMesh::getDistance(const Base::Vector3f& point)
+float InspectNominalFastMesh::getDistance(const Base::Vector3f& point) const
 {
     if (!_box.IsInBox(point))
         return FLT_MAX; // must be inside bbox
@@ -371,11 +383,15 @@ float InspectNominalFastMesh::getDistance(const Base::Vector3f& point)
     float fMinDist=FLT_MAX;
     bool positive = true;
     for (std::set<unsigned long>::iterator it = indices.begin(); it != indices.end(); ++it) {
-        _iter.Set(*it);
-        float fDist = _iter->DistanceToPoint(point);
+        MeshCore::MeshGeomFacet geomFace = _mesh.GetFacet(*it);
+        if (_bApply) {
+            geomFace.Transform(_clTrf);
+        }
+
+        float fDist = geomFace.DistanceToPoint(point);
         if (fabs(fDist) < fabs(fMinDist)) {
             fMinDist = fDist;
-            positive = point.DistanceToPlane(_iter->_aclPoints[0], _iter->GetNormal()) > 0;
+            positive = point.DistanceToPlane(geomFace._aclPoints[0], geomFace.GetNormal()) > 0;
         }
     }
 
@@ -398,7 +414,7 @@ InspectNominalPoints::~InspectNominalPoints()
     delete this->_pGrid;
 }
 
-float InspectNominalPoints::getDistance(const Base::Vector3f& point)
+float InspectNominalPoints::getDistance(const Base::Vector3f& point) const
 {
     //TODO: Make faster
     std::set<unsigned long> indices;
@@ -447,7 +463,7 @@ InspectNominalShape::~InspectNominalShape()
     delete distss;
 }
 
-float InspectNominalShape::getDistance(const Base::Vector3f& point)
+float InspectNominalShape::getDistance(const Base::Vector3f& point) const
 {
     gp_Pnt pnt3d(point.x,point.y,point.z);
     BRepBuilderAPI_MakeVertex mkVert(pnt3d);
@@ -497,6 +513,7 @@ TYPESYSTEM_SOURCE(Inspection::PropertyDistanceList, App::PropertyLists)
 
 // ----------------------------------------------------------------
 
+namespace Inspection {
 // helper class to use Qt's concurrent framework
 struct DistanceInspection
 {
@@ -506,12 +523,12 @@ struct DistanceInspection
                     : radius(radius), actual(a), nominal(n)
     {
     }
-    float mapped(unsigned long index)
+    float mapped(unsigned long index) const
     {
         Base::Vector3f pnt = actual->getPoint(index);
 
         float fMinDist=FLT_MAX;
-        for (std::vector<InspectNominalGeometry*>::iterator it = nominal.begin(); it != nominal.end(); ++it) {
+        for (std::vector<InspectNominalGeometry*>::const_iterator it = nominal.begin(); it != nominal.end(); ++it) {
             float fDist = (*it)->getDistance(pnt);
             if (fabs(fDist) < fabs(fMinDist))
                 fMinDist = fDist;
@@ -529,6 +546,25 @@ struct DistanceInspection
     InspectActualGeometry*  actual;
     std::vector<InspectNominalGeometry*> nominal;
 };
+
+// Helper internal class for QtConcurrent map operation. Holds sums-of-squares and counts for RMS calculation
+class DistanceInspectionRMS {
+public:
+    DistanceInspectionRMS() : m_numv(0), m_sumsq(0.0) {};
+    DistanceInspectionRMS& operator += (const DistanceInspectionRMS& rhs)
+    {
+        this->m_numv += rhs.m_numv;
+        this->m_sumsq += rhs.m_sumsq;
+        return *this;
+    }
+    double getRMS()
+    {
+        return sqrt(this->m_sumsq / (double)this->m_numv);
+    }
+    int m_numv;
+    double m_sumsq;
+};
+}
 
 PROPERTY_SOURCE(Inspection::Feature, App::DocumentObject)
 
@@ -603,8 +639,8 @@ App::DocumentObjectExecReturn* Feature::execute(void)
             inspectNominal.push_back(nominal);
     }
 
-#if 0 // test with some huge data sets
-    Standard::SetReentrant(Standard_True);
+#if 0
+#if 1 // test with some huge data sets
     std::vector<unsigned long> index(actual->countPoints());
     std::generate(index.begin(), index.end(), Base::iotaGen<unsigned long>(0));
     DistanceInspection check(this->SearchRadius.getValue(), actual, inspectNominal);
@@ -615,16 +651,17 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     QFutureWatcher<float> watcher;
     QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
                      &progress, SLOT(progressValueChanged(int)));
-    watcher.setFuture(future);
 
     // keep it responsive during computation
     QEventLoop loop;
     QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+    watcher.setFuture(future);
     loop.exec();
 
     std::vector<float> vals;
     vals.insert(vals.end(), future.begin(), future.end());
 #else
+    DistanceInspection insp(this->SearchRadius.getValue(), actual, inspectNominal);
     unsigned long count = actual->countPoints();
     std::stringstream str;
     str << "Inspecting " << this->Label.getValue() << "...";
@@ -632,19 +669,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
 
     std::vector<float> vals(count);
     for (unsigned long index = 0; index < count; index++) {
-        Base::Vector3f pnt = actual->getPoint(index);
-
-        float fMinDist=FLT_MAX;
-        for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it) {
-            float fDist = (*it)->getDistance(pnt);
-            if (fabs(fDist) < fabs(fMinDist))
-                fMinDist = fDist;
-        }
-
-        if (fMinDist > this->SearchRadius.getValue())
-            fMinDist = FLT_MAX;
-        else if (-fMinDist > this->SearchRadius.getValue())
-            fMinDist = -FLT_MAX;
+        float fMinDist = insp.mapped(index);
         vals[index] = fMinDist;
         seq.next();
     }
@@ -666,8 +691,72 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         fRMS = sqrt(fRMS);
     }
 
-    Base::Console().Message("RMS value for '%s' with search radius=%.4f is: %.4f\n",
-        this->Label.getValue(), this->SearchRadius.getValue(), fRMS);
+    Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+        this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), fRMS);
+#else
+    bool useMultithreading = true;
+    unsigned long count = actual->countPoints();
+    std::vector<float> vals(count);
+    std::function<DistanceInspectionRMS(int)> fMap = [&](unsigned int index)
+    {
+        DistanceInspectionRMS res;
+        Base::Vector3f pnt = actual->getPoint(index);
+
+        float fMinDist = FLT_MAX;
+        for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it) {
+            float fDist = (*it)->getDistance(pnt);
+            if (fabs(fDist) < fabs(fMinDist))
+                fMinDist = fDist;
+        }
+
+        if (fMinDist > this->SearchRadius.getValue())
+            fMinDist = FLT_MAX;
+        else if (-fMinDist > this->SearchRadius.getValue())
+            fMinDist = -FLT_MAX;
+        else {
+            res.m_sumsq += fMinDist * fMinDist;
+            res.m_numv++;
+        }
+
+        vals[index] = fMinDist;
+        return res;
+    };
+
+    DistanceInspectionRMS res;
+
+    if (useMultithreading) {
+        // Build vector of increasing indices
+        std::vector<unsigned long> index(count);
+        std::iota(index.begin(), index.end(), 0);
+        // Perform map-reduce operation : compute distances and update sum of squares for RMS computation
+        QFuture<DistanceInspectionRMS> future = QtConcurrent::mappedReduced(
+            index, fMap, &DistanceInspectionRMS::operator+=);
+        // Setup progress bar
+        Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
+        QFutureWatcher<DistanceInspectionRMS> watcher;
+        QObject::connect(&watcher, SIGNAL(progressValueChanged(int)),
+            &progress, SLOT(progressValueChanged(int)));
+        // Keep UI responsive during computation
+        QEventLoop loop;
+        QObject::connect(&watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+        watcher.setFuture(future);
+        loop.exec();
+        res = future.result();
+    }
+    else {
+        // Single-threaded operation
+        std::stringstream str;
+        str << "Inspecting " << this->Label.getValue() << "...";
+        Base::SequencerLauncher seq(str.str().c_str(), count);
+
+        for (unsigned int i = 0; i < count; i++)
+            res += fMap(i);
+    }
+
+    Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+        this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), res.getRMS());
+    Distances.setValues(vals);
+#endif
 
     delete actual;
     for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it)

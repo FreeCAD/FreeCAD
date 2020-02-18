@@ -104,6 +104,14 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
     }
 
     App::DocumentObject* sourceObj = Source.getValue();
+    //if (sourceObj is not ArchSection) return
+    App::Property* proxy = sourceObj->getPropertyByName("Proxy");
+    if (proxy == nullptr) {
+        Base::Console().Error("DVA::execute - %s is not an ArchSection\n", sourceObj->Label.getValue());
+        //this is definitely not an ArchSection
+        return DrawView::execute();
+    }
+
     if (sourceObj) {
         std::stringstream cmd;
         cmd << "import ArchSectionPlane\n"

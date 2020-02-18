@@ -144,7 +144,21 @@ void DlgGeneralImp::saveSettings()
     hGrp->SetInt("ToolbarIconSize", pixel);
     getMainWindow()->setIconSize(QSize(pixel,pixel));
 
-    hGrp->SetInt("TreeViewMode",ui->treeMode->currentIndex());
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
+    bool treeView=false, propertyView=false, comboView=true;
+    switch(ui->treeMode->currentIndex()) {
+    case 1:
+        treeView = propertyView = true;
+        comboView = false;
+        break;
+    case 2:
+        comboView = true;
+        treeView = propertyView = true;
+        break;
+    }
+    hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
+    hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
+    hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
@@ -223,6 +237,7 @@ void DlgGeneralImp::loadSettings()
 
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
+    ui->Languages->clear();
     ui->Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
     for (TStringMap::iterator it = list.begin(); it != list.end(); ++it, index++) {
         QByteArray lang = it->first.c_str();
@@ -260,12 +275,18 @@ void DlgGeneralImp::loadSettings()
     } 
     ui->toolbarIconSize->setCurrentIndex(index);
 
-    ui->treeMode->addItem(tr("CombiView"));
-    ui->treeMode->addItem(tr("TreeView + PropertyView"));
+    ui->treeMode->addItem(tr("Combo View"));
+    ui->treeMode->addItem(tr("TreeView and PropertyView"));
     ui->treeMode->addItem(tr("Both"));
-    index = hGrp->GetInt("TreeViewMode");
-    if (index<0 || index>2)
-        index=0;
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
+    bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled",false);
+    bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled",false);
+    bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled",true);
+    index = 0;
+    if(propertyView || treeView) {
+        index = comboView?2:1;
+    }
     ui->treeMode->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");

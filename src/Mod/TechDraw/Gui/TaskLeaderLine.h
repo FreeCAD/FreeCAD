@@ -113,8 +113,10 @@ protected:
     void enableVPUi(bool b);
     void setEditCursor(QCursor c);
 
-   QGIView* findParentQGIV();
-   int getPrefArrowStyle();
+    QGIView* findParentQGIV();
+    int getPrefArrowStyle();
+    double prefWeight() const;
+    App::Color prefLineColor(void);
 
    void saveState(void);
    void restoreState(void);
@@ -156,6 +158,8 @@ private:
     std::vector<Base::Vector3d> m_savePoints;
     double m_saveX;
     double m_saveY;
+
+    bool m_haveMdi;
 };
 
 class TaskDlgLeaderLine : public Gui::TaskView::TaskDialog

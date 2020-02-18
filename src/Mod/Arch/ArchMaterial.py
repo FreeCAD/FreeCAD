@@ -288,7 +288,7 @@ class _ArchMaterial:
         d = obj.Material
         if prop == "Material":
             if "DiffuseColor" in obj.Material:
-                c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
+                c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").strip("[]").split(",")])
                 if hasattr(obj,"Color"):
                     if not self.isSameColor(obj.Color,c):
                         obj.Color = c
@@ -321,7 +321,7 @@ class _ArchMaterial:
         elif prop == "Color":
             if hasattr(obj,"Color"):
                 if "DiffuseColor" in d:
-                    if self.isSameColor(tuple([float(f) for f in d['DiffuseColor'].strip("()").split(",")]),obj.Color[:3]):
+                    if self.isSameColor(tuple([float(f) for f in d['DiffuseColor'].strip("()").strip("[]").split(",")]),obj.Color[:3]):
                         return
                 d["DiffuseColor"] = str(obj.Color[:3])
         elif prop == "Transparency":
@@ -363,7 +363,7 @@ class _ArchMaterial:
         if obj.Material:
             if FreeCAD.GuiUp:
                 if "DiffuseColor" in obj.Material:
-                    c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
+                    c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").strip("[]").split(",")])
                     for p in obj.InList:
                         if hasattr(p,"Material") and ( (not hasattr(p.ViewObject,"UseMaterialColor")) or p.ViewObject.UseMaterialColor):
                             if p.Material.Name == obj.Name:

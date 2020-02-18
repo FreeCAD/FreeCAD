@@ -40,11 +40,11 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "2i usable"
-__lastModified__ = "2019-09-07 08:32 CST"
+__scriptVersion__ = "2i"
+__lastModified__ = "2020-02-13 17:01 CST"
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 # Qt translation handling
@@ -65,10 +65,11 @@ def endPoints(edgeOrWire):
                 unique.append(p)
         return unique
     pfirst = edgeOrWire.valueAt(edgeOrWire.FirstParameter)
-    plast  = edgeOrWire.valueAt(edgeOrWire.LastParameter)
+    plast = edgeOrWire.valueAt(edgeOrWire.LastParameter)
     if PathGeom.pointsCoincide(pfirst, plast):
         return None
     return [pfirst, plast]
+
 
 def includesPoint(p, pts):
     '''includesPoint(p, pts) ... answer True if the collection of pts includes the point p'''
@@ -83,7 +84,7 @@ def selectOffsetWire(feature, wires):
     closest = None
     for w in wires:
         dist = feature.distToShape(w)[0]
-        if closest is None or dist > closest[0]: # pylint: disable=unsubscriptable-object
+        if closest is None or dist > closest[0]:  # pylint: disable=unsubscriptable-object
             closest = (dist, w)
     if closest is not None:
         return closest[1]
@@ -115,6 +116,7 @@ def extendWire(feature, wire, length):
                     edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[1])))
                 return Part.Wire(edges)
     return None
+
 
 class Extension(object):
     DirectionNormal = 0
@@ -163,7 +165,7 @@ class Extension(object):
         return [self.obj.Shape.getElement(sub) for sub in self._getEdgeNames()]
 
     def _getDirectedNormal(self, p0, normal):
-        poffPlus  = p0 + 0.01 * normal
+        poffPlus = p0 + 0.01 * normal
         poffMinus = p0 - 0.01 * normal
         if not self.obj.Shape.isInside(poffPlus, 0.005, True):
             return normal
@@ -281,7 +283,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         baseSubsTuples = []
         subCount = 0
         allTuples = []
-        finalDepths = []
 
         def planarFaceFromExtrusionEdges(face, trans):
             useFace = 'useFaceName'
@@ -383,7 +384,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         if obj.Base:
             PathLog.debug('Processing... obj.Base')
-            self.removalshapes = [] # pylint: disable=attribute-defined-outside-init
+            self.removalshapes = []  # pylint: disable=attribute-defined-outside-init
             # ----------------------------------------------------------------------
             if obj.EnableRotation == 'Off':
                 stock = PathUtils.findParentJob(obj).Stock
@@ -401,14 +402,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         PathLog.info("Common Surface.Axis or normalAt() value found for loop faces.")
                         rtn = False
                         subCount += 1
-                        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
+                        (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
                         PathLog.info("angle: {};  axis: {}".format(angle, axis))
 
                         if rtn is True:
                             faceNums = ""
                             for f in subsList:
                                 faceNums += '_' + f.replace('Face', '')
-                            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNums) # pylint: disable=unused-variable
+                            (clnBase, angle, clnStock, tag) = self.applyRotationalAnalysis(obj, base, angle, axis, faceNums)  # pylint: disable=unused-variable
 
                             # Verify faces are correctly oriented - InverseAngle might be necessary
                             PathLog.debug("Checking if faces are oriented correctly after rotation...")
@@ -458,7 +459,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                         PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
 
                                 (norm, surf) = self.getFaceNormAndSurf(face)
-                                (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
+                                (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
 
                                 if rtn is True:
                                     faceNum = sub.replace('Face', '')
@@ -466,7 +467,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                     # Verify faces are correctly oriented - InverseAngle might be necessary
                                     faceIA = clnBase.Shape.getElement(sub)
                                     (norm, surf) = self.getFaceNormAndSurf(faceIA)
-                                    (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
+                                    (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
                                     if rtn is True:
                                         PathLog.debug("Face not aligned after initial rotation.")
                                         if obj.AttemptInverseAngle is True and obj.InverseAngle is False:
@@ -492,8 +493,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                 PathLog.error(translate('Path', "Selected feature is not a Face. Ignoring: {}".format(ignoreSub)))
 
             for o in baseSubsTuples:
-                self.horiz = [] # pylint: disable=attribute-defined-outside-init
-                self.vert = [] # pylint: disable=attribute-defined-outside-init
+                self.horiz = []  # pylint: disable=attribute-defined-outside-init
+                self.vert = []  # pylint: disable=attribute-defined-outside-init
                 subBase = o[0]
                 subsList = o[1]
                 angle = o[2]
@@ -545,7 +546,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                 # move all horizontal faces to FinalDepth
                 for f in self.horiz:
-                    finDep = max(obj.FinalDepth.Value, f.BoundBox.ZMin)
+                    finDep = obj.FinalDepth.Value  # max(obj.FinalDepth.Value, f.BoundBox.ZMin)
                     f.translate(FreeCAD.Vector(0, 0, finDep - f.BoundBox.ZMin))
 
                 # check all faces and see if they are touching/overlapping and combine those into a compound
@@ -560,20 +561,17 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     else:
                         self.horizontal.append(shape)
 
+                # extrude all faces up to StartDepth and those are the removal shapes
+                sD = obj.StartDepth.Value
+                fD = obj.FinalDepth.Value
+                extent = FreeCAD.Vector(0, 0, sD - fD)
                 for face in self.horizontal:
-                    # extrude all faces up to StartDepth and those are the removal shapes
-                    (strDep, finDep) = self.calculateStartFinalDepths(obj, face, stock)
-                    finalDepths.append(finDep)
-                    extent = FreeCAD.Vector(0, 0, strDep - finDep)
-                    self.removalshapes.append((face.removeSplitter().extrude(extent), False, 'pathPocketShape', angle, axis, strDep, finDep))
-                    PathLog.debug("Extent depths are str: {}, and fin: {}".format(strDep, finDep))
+                    self.removalshapes.append((face.removeSplitter().extrude(extent),
+                                                False, 'pathPocketShape', angle, axis, sD, fD))
+                    PathLog.debug("Extent depths are str: {}, and fin: {}".format(sD, fD))
                 # Efor face
+            # Efor
 
-            # Adjust obj.FinalDepth.Value as needed.
-            if len(finalDepths) > 0:
-                finalDep = min(finalDepths)
-                if subCount == 1:
-                    obj.FinalDepth.Value = finalDep
         else:
             # process the job base object as a whole
             PathLog.debug(translate("Path", 'Processing model as a whole ...'))

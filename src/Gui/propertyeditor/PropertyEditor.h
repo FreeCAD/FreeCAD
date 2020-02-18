@@ -107,6 +107,7 @@ private:
     void setEditorMode(const QModelIndex & parent, int start, int end);
     void updateItemEditor(bool enable, int column, const QModelIndex& parent);
     void setupTransaction(const QModelIndex &);
+    void closeTransaction();
 
 private:
     PropertyItemDelegate *delegate;

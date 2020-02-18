@@ -1309,7 +1309,7 @@ class _Window(ArchComponent.Component):
         if obj.Base:
             base = obj.Base
         width = 0
-        if hasattr(obj,"HoleDepth"):
+        if hasattr(obj,"HoleDepth"):  # the code have not checked whether this is a clone and use the original's HoleDepth; if HoleDepth is set in this object, even it is a clone, the original's HoleDepth is overridden
             if obj.HoleDepth.Value:
                 width = obj.HoleDepth.Value
         if not width:
@@ -1317,13 +1317,14 @@ class _Window(ArchComponent.Component):
                 b = base.Shape.BoundBox
                 width = max(b.XLength,b.YLength,b.ZLength)
         if not width:
-            if Draft.isClone(obj,"Window"):
+            if Draft.isClone(obj,"Window"):  # check whether this is a clone and use the original's HoleDepth or Shape's Boundbox
                 if hasattr(obj,"CloneOf"):
                     orig = obj.CloneOf
                 else:
                     orig = obj.Objects[0]
                 if orig.Base:
                     base = orig.Base
+
                 if hasattr(orig,"HoleDepth"):
                     if orig.HoleDepth.Value:
                         width = orig.HoleDepth.Value
@@ -1333,16 +1334,33 @@ class _Window(ArchComponent.Component):
                         width = max(b.XLength,b.YLength,b.ZLength)
         if not width:
             width = 1.1112 # some weird value to have little chance to overlap with an existing face
+
         if not base:
-            return None
+            if Draft.isClone(obj,"Window"):  # if this object has not base, check whether this is a clone and use the original's base
+                if hasattr(obj,"CloneOf"):
+                    orig = obj.CloneOf
+                else:
+                    orig = obj.Objects[0]  # not sure what is this exactly
+                if orig.Base:
+                    base = orig.Base
+                else:
+                    return None
 
         # finding which wire to use to drill the hole
 
         f = None
-        if hasattr(obj,"HoleWire"):
+        if hasattr(obj,"HoleWire"):  # the code have not checked whether this is a clone and use the original's HoleWire; if HoleWire is set in this object, even it is a clone, the original's BoundBox/HoleWire is overridden
             if obj.HoleWire > 0:
                 if obj.HoleWire <= len(base.Shape.Wires):
                     f = base.Shape.Wires[obj.HoleWire-1]
+
+        if not f:
+            if Draft.isClone(obj,"Window"):  
+                # check original HoleWire then
+                if orig.HoleWire > 0:
+                    if orig.HoleWire <= len(base.Shape.Wires):
+                        f = base.Shape.Wires[obj.HoleWire-1]
+
         if not f:
             # finding biggest wire in the base shape
             max_length = 0
@@ -1709,11 +1727,11 @@ class _ArchWindowTaskPanel:
     def getIcon(self,obj):
 
         if hasattr(obj.ViewObject,"Proxy"):
-            return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
-        elif obj.isDerivedFrom("Sketcher::SketchObject"):
+            if hasattr(obj.ViewObject.Proxy,"getIcon"):
+                return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
+        if obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
-        else:
-            return QtGui.QIcon(":/icons/Tree_Part.svg")
+        return QtGui.QIcon(":/icons/Tree_Part.svg")
 
     def update(self):
 

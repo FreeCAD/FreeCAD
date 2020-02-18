@@ -151,6 +151,19 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="buttonClose">
+       <property name="toolTip">
+        <string>Close the addons manager</string>
+       </property>
+       <property name="text">
+        <string>Close</string>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

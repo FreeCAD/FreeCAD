@@ -819,9 +819,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
 
         if(!isMainDoc)
             return 0;
-        std::stringstream str;
-        str << "The project '" << FileName << "' is already open!";
-        throw Base::FileSystemError(str.str().c_str());
+
+        return it->second;
     }
 
     std::string name;
@@ -1125,6 +1124,16 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     }
 }
 
+void Application::changeImportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
+{
+    for (auto& it : _mImportTypes) {
+        if (it.filter == Type && it.module == OldModuleName) {
+            it.module = NewModuleName;
+            break;
+        }
+    }
+}
+
 std::vector<std::string> Application::getImportModules(const char* Type) const
 {
     std::vector<std::string> modules;
@@ -1235,6 +1244,16 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     }
     else {
         _mExportTypes.push_back(item);
+    }
+}
+
+void Application::changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
+{
+    for (auto& it : _mExportTypes) {
+        if (it.filter == Type && it.module == OldModuleName) {
+            it.module = NewModuleName;
+            break;
+        }
     }
 }
 
@@ -1729,6 +1748,7 @@ void Application::initTypes(void)
     App ::PropertyXLink             ::init();
     App ::PropertyXLinkSub          ::init();
     App ::PropertyXLinkSubList      ::init();
+    App ::PropertyXLinkList         ::init();
     App ::PropertyXLinkContainer    ::init();
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();

@@ -51,7 +51,6 @@ private Q_SLOTS:
     void onReversedChanged(bool reversed);
     void onButtonPlane(const bool checked);
     void onButtonLine(const bool checked);
-    void onRefDeleted(void);
 
 protected:
     virtual void clearButtons(const selectionModes notThis);

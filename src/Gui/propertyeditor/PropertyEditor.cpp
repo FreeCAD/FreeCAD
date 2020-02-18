@@ -164,16 +164,7 @@ void PropertyEditor::editorDestroyed (QObject * editor)
     // When editing expression through context menu, the editor (ExpLineEditor)
     // deletes itself when finished, so it won't trigger closeEditor signal. We
     // must handle it here to perform auto update.
-    if (autoupdate) {
-        App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc) {
-            if (!doc->isTransactionEmpty()) {
-                if (doc->isTouched())
-                    doc->recompute();
-            }
-        }
-        App::GetApplication().closeActiveTransaction();
-    }
+    closeTransaction();
 }
 
 void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelIndex & previous )
@@ -251,10 +242,8 @@ void PropertyEditor::onItemActivated ( const QModelIndex & index )
     setupTransaction(index);
 }
 
-void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
+void PropertyEditor::closeTransaction()
 {
-    QTreeView::closeEditor(editor, hint);
-
     if (autoupdate) {
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
@@ -267,6 +256,13 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
         }
         App::GetApplication().closeActiveTransaction();
     }
+}
+
+void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
+{
+    QTreeView::closeEditor(editor, hint);
+
+    closeTransaction();
 
     QModelIndex indexSaved = currentIndex();
     FC_LOG("index saved " << indexSaved.row() << ", " << indexSaved.column());
@@ -335,6 +331,9 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDoc
         delaybuild = true;
         return;
     }
+
+    if(this->state() == EditingState)
+        closeTransaction();
 
     QModelIndex index = this->currentIndex();
     QStringList propertyPath = propertyModel->propertyPathFromIndex(index);

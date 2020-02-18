@@ -864,7 +864,7 @@ class Edit():
             self.setPlacement(self.obj)
             if Draft.getType(self.obj) == "Wire" and 'Edge' in info["Component"]:
                 pt = App.Vector(info["x"], info["y"], info["z"])
-                self.addPointToWire(pt, int(info["Component"][4:]))
+                self.addPointToWire(self.obj, pt, int(info["Component"][4:]))
             elif Draft.getType(self.obj) in ["BSpline", "BezCurve"]: #to fix double vertex created
                 #pt = self.point
                 if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
@@ -879,17 +879,24 @@ class Edit():
         return
 
 
-    def addPointToWire(self, newPoint, edgeIndex):
+    def addPointToWire(self, obj, newPoint, edgeIndex):
         newPoints = []
         hasAddedPoint = False
+        if hasattr(obj, "ChamferSize") and hasattr(obj, "FilletRadius"):
+            if obj.ChamferSize > 0 and obj.FilletRadius > 0:
+                edgeIndex = (edgeIndex +3) / 4
+            elif obj.ChamferSize > 0 or obj.FilletRadius > 0:
+                edgeIndex = (edgeIndex +1) / 2
+
         for index, point in enumerate(self.obj.Points):
             if index == edgeIndex:
                 hasAddedPoint = True
                 newPoints.append(self.invpl.multVec(newPoint))
             newPoints.append(point)
-        if not hasAddedPoint:
-            newPoints.append(point)
-        self.obj.Points = newPoints
+        if obj.Closed and edgeIndex == len(obj.Points):
+            # last segment when object is closed
+            newPoints.append(self.invpl.multVec(newPoint))
+        obj.Points = newPoints
 
     def addPointToCurve(self,point,info=None):
         import Part

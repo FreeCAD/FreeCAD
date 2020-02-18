@@ -80,6 +80,9 @@ public:
     virtual TechDraw::DrawRichAnno* getFeature(void);
     QPen rectPen() const;
 
+    void setExporting(bool b) { m_isExporting = b; }
+    bool getExporting(void) { return m_isExporting; }
+
 
 public Q_SLOTS:
 /*    void textDragging(void);*/
@@ -91,9 +94,11 @@ protected:
     virtual void draw() override;
     virtual QVariant itemChange( GraphicsItemChange change,
                                  const QVariant &value ) override;
+    void setLineSpacing(int lineSpacing);
+    double prefPointSize(void);
+    QFont prefFont(void);
 
-protected:
-/*    QGMText* m_text;*/
+    bool m_isExporting;
     QGCustomText* m_text;
     bool m_hasHover;
     QGCustomRect* m_rect;

@@ -86,7 +86,6 @@ class OpenSCADWorkbench ( Workbench ):
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/openscadprefs-base.ui","OpenSCAD")
     def GetClassName(self):
-        #return "OpenSCADGui::Workbench"
         return "Gui::PythonWorkbench"
 
 

@@ -78,7 +78,7 @@ bool _checkSelectionHatch(Gui::Command* cmd);
 
 void execCosmeticVertex(Gui::Command* cmd);
 void execMidpoints(Gui::Command* cmd);
-void execQuadrant(Gui::Command* cmd);
+void execQuadrants(Gui::Command* cmd);
 void execCenterLine(Gui::Command* cmd);
 void exec2LineCenterLine(Gui::Command* cmd);
 void exec2PointCenterLine(Gui::Command* cmd);
@@ -97,11 +97,11 @@ CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Line to View");
+    sMenuText       = QT_TR_NOOP("Add Leaderline to View");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_LeaderLine";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-mline";
+    sPixmap         = "actions/techdraw-LeaderLine";
 }
 
 void CmdTechDrawLeaderLine::activated(int iMsg)
@@ -234,7 +234,7 @@ void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
             execMidpoints(this);
             break;
         case 2:
-            execQuadrant(this);
+            execQuadrants(this);
             break;
         default:
             Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n",iMsg);
@@ -248,17 +248,17 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-point"));
+    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-CosmeticVertex"));
     p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
     p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertx"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-midpoint"));
+    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-Midpoints"));
     p2->setObjectName(QString::fromLatin1("TechDraw_Midpoints"));
     p2->setWhatsThis(QString::fromLatin1("TechDraw_Midpoints"));
     QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-quadrant"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_Quadrant"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_Quadrant"));
+    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-Quadrants"));
+    p3->setObjectName(QString::fromLatin1("TechDraw_Quadrants"));
+    p3->setWhatsThis(QString::fromLatin1("TechDraw_Quadrants"));
 
     _pcAction = pcAction;
     languageChange();
@@ -280,16 +280,16 @@ void CmdTechDrawCosmeticVertexGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup","Cosmetic Vertex"));
-    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex","Insert a Cosmetic Vertex into a View"));
+    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup","Add Cosmetic Vertex"));
+    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex","Inserts a Cosmetic Vertex into a View"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdMidpoints","Midpoints"));
-    arc2->setToolTip(QApplication::translate("TechDraw_Midpoints","Insert Cosmetic Vertex at midpoint of Edge(s)"));
+    arc2->setText(QApplication::translate("CmdMidpoints","Add Midpoint Vertices"));
+    arc2->setToolTip(QApplication::translate("TechDraw_Midpoints","Inserts Cosmetic Vertices at Midpoint of selected Edge(s)"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("CmdQuadrant","Quadrant"));
-    arc3->setToolTip(QApplication::translate("TechDraw_Quadrant","Insert Cosmetic Vertex at quadrant points of Circle(s)"));
+    arc3->setText(QApplication::translate("CmdQuadrants","Add Quadrant Vertices"));
+    arc3->setToolTip(QApplication::translate("TechDraw_Quadrants","Inserts Cosmetic Vertices at Quadrant Points of selected Circle(s)"));
     arc3->setStatusTip(arc3->toolTip());
 }
 
@@ -352,9 +352,9 @@ void execMidpoints(Gui::Command* cmd)
     dvp->recomputeFeature();
 }
 
-void execQuadrant(Gui::Command* cmd)
+void execQuadrants(Gui::Command* cmd)
 {
-//    Base::Console().Message("execQuadrant()\n");
+//    Base::Console().Message("execQuadrants()\n");
     TechDraw::DrawViewPart* dvp = nullptr;
     std::vector<std::string> selectedEdges = getSelectedSubElements(cmd, dvp, "Edge");
 
@@ -388,7 +388,7 @@ CmdTechDrawCosmeticVertex::CmdTechDrawCosmeticVertex()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_CosmeticVertex";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-point";
+    sPixmap         = "actions/techdraw-CosmeticVertex";
 }
 
 void CmdTechDrawCosmeticVertex::activated(int iMsg)
@@ -443,11 +443,11 @@ CmdTechDrawMidpoints::CmdTechDrawMidpoints()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Midpoint vertices");
+    sMenuText       = QT_TR_NOOP("Add Midpoint Vertices");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_Midpoints";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-midpoint";
+    sPixmap         = "actions/techdraw-Midpoints";
 }
 
 void CmdTechDrawMidpoints::activated(int iMsg)
@@ -472,24 +472,24 @@ bool CmdTechDrawMidpoints::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_Quadrant
+// TechDraw_Quadrants
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawQuadrant)
+DEF_STD_CMD_A(CmdTechDrawQuadrants)
 
-CmdTechDrawQuadrant::CmdTechDrawQuadrant()
-  : Command("TechDraw_Quadrant")
+CmdTechDrawQuadrants::CmdTechDrawQuadrants()
+  : Command("TechDraw_Quadrants")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Add Quadrant Vertices");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_Quadrant";
+    sWhatsThis      = "TechDraw_Quadrants";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-quadrant";
+    sPixmap         = "actions/techdraw-Quadrants";
 }
 
-void CmdTechDrawQuadrant::activated(int iMsg)
+void CmdTechDrawQuadrants::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
@@ -498,12 +498,12 @@ void CmdTechDrawQuadrant::activated(int iMsg)
             QObject::tr("Close active task dialog and try again."));
         return;
     }
-    execQuadrant(this);
+    execQuadrants(this);
     updateActive();
     Gui::Selection().clearSelection();
 }
 
-bool CmdTechDrawQuadrant::isActive(void)
+bool CmdTechDrawQuadrants::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -570,7 +570,7 @@ CmdTechDrawCenterLineGroup::CmdTechDrawCenterLineGroup()
 
 void CmdTechDrawCenterLineGroup::activated(int iMsg)
 {
-//    Base::Console().Message("CMD::CenterLineGrp - activated(%d)\n", iMsg);
+//    Base::Console().Message("CMD::CenterLineGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg != nullptr) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -634,16 +634,16 @@ void CmdTechDrawCenterLineGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGrp","Center Line"));
-    arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine","Insert a CenterLine into a Face(s)"));
+    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup","Add Centerline to Face(s)"));
+    arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine","Adds a Centerline to Face(s)"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("Cmd2LineCenterLine","2 Line CenterLine"));
-    arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine","Insert CenterLine between 2 lines"));
+    arc2->setText(QApplication::translate("Cmd2LineCenterLine","Add Centerline between 2 Lines"));
+    arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine","Adds a Centerline between 2 Lines"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("Cmd2PointCenterLine","2 Point CenterLine"));
-    arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine","Insert CenterLine between 2 points"));
+    arc3->setText(QApplication::translate("Cmd2PointCenterLine","Add Centerline between 2 Points"));
+    arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine","Adds a Centerline between 2 Points"));
     arc3->setStatusTip(arc3->toolTip());
 }
 
@@ -1093,8 +1093,8 @@ CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Change Appearance of a Line");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Change Appearance of Line(s)");
+    sToolTipText    = "Change Appearance of selected Line(s)";
     sWhatsThis      = "TechDraw_DecorateLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-DecorateLine";
@@ -1235,7 +1235,7 @@ CmdTechDrawWeldSymbol::CmdTechDrawWeldSymbol()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add Welding Information to a Leader");
+    sMenuText       = QT_TR_NOOP("Add Welding Information to Leaderline");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_WeldSymbol";
     sStatusTip      = sToolTipText;
@@ -1296,7 +1296,7 @@ void CreateTechDrawCommandsAnnotate(void)
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticVertexGroup());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticVertex());
     rcCmdMgr.addCommand(new CmdTechDrawMidpoints());
-    rcCmdMgr.addCommand(new CmdTechDrawQuadrant());
+    rcCmdMgr.addCommand(new CmdTechDrawQuadrants());
     rcCmdMgr.addCommand(new CmdTechDrawCenterLineGroup());
     rcCmdMgr.addCommand(new CmdTechDrawFaceCenterLine());
     rcCmdMgr.addCommand(new CmdTechDraw2LineCenterLine());

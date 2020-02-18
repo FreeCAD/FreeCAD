@@ -749,8 +749,7 @@ def get_group_contents(objectslist,
     for obj in objectslist:
         if obj:
             if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                    or (getType(obj) in ("App::Part",
-                                         "Building", "BuildingPart",
+                    or (getType(obj) in ("Building", "BuildingPart",
                                          "Space", "Site")
                         and hasattr(obj, "Group"))):
                 if getType(obj) == "Site":

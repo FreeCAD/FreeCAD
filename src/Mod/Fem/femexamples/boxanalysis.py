@@ -22,6 +22,17 @@
 # ***************************************************************************
 
 
+# to run the example use:
+"""
+from femexamples import boxanalysis as box
+
+box.setup_base()
+box.setup_static()
+box.setup_frequency()
+
+"""
+
+
 import FreeCAD
 import ObjectsFem
 import Fem
@@ -105,6 +116,7 @@ def setup_static(doc=None, solvertype="ccxtools"):
     elif solvertype == "z88":
         analysis.addObject(ObjectsFem.makeSolverZ88(doc, "SolverZ88"))
     if solvertype == "calculix" or solvertype == "ccxtools":
+        solver_object.SplitInputWriter = False
         solver_object.AnalysisType = "static"
         solver_object.GeometricalNonlinearity = "linear"
         solver_object.ThermoMechSteadyState = False
@@ -166,13 +178,3 @@ def setup_frequency(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples import boxanalysis as box
-
-box.setup_base()
-box.setup_static()
-box.setup_frequency()
-
-"""

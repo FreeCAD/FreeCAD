@@ -40,6 +40,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QLabel>
+#include <QTextCodec>
 #include <cmath>
 #endif
 
@@ -107,6 +108,11 @@
 #include "ViewProviderPage.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
+
+// used SVG namespaces
+#define CC_NS_URI "http://creativecommons.org/ns#"
+#define DC_NS_URI "http://purl.org/dc/elements/1.1/"
+#define RDF_NS_URI "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -496,33 +502,30 @@ void QGVPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 QGIView * QGVPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
 {
 //    Base::Console().Message("QGVP::addViewLeader(%s)\n",leader->getNameInDocument());
-    QGILeaderLine* leaderGroup = nullptr;
+    QGILeaderLine* leaderGroup = new QGILeaderLine();
 
-    App::DocumentObject* parentObj = leader->LeaderParent.getValue();
-    TechDraw::DrawView*  parentDV  = dynamic_cast<TechDraw::DrawView*>(parentObj);
+    auto ourScene( scene() );
+    ourScene->addItem(leaderGroup);
 
-    //NOTE: if Leaders are ever allowed to not be attached to a View, this next bit will have to change
-    if (parentDV != nullptr) {
-        QGIView* parentQV = findQViewForDocObj(parentObj);
-        if (parentQV != nullptr) {
-            leaderGroup = new QGILeaderLine(parentQV, leader);
-            leaderGroup->updateView(true);            //this is different from everybody else,
-                                                      //but it works. 
-            return leaderGroup;
-        }
-    } else {
-        throw Base::TypeError("QGVP::addViewLeader - parent DV has no QGIV");
+    leaderGroup->setLeaderFeature(leader);
+
+    QGIView *parent = 0;
+    parent = findParent(leaderGroup);
+
+    if(parent) {
+        addLeaderToParent(leaderGroup,parent);
     }
-    return nullptr;
+
+    leaderGroup->updateView(true);
+
+    return leaderGroup;
 }
 
-//assign leader to correct parent if not already so
 void QGVPage::addLeaderToParent(QGILeaderLine* lead, QGIView* parent)
 {
-    QGraphicsItem* qgiParent = lead->parentItem();
-    if (qgiParent != parent) {
-        parent->addToGroup(lead);
-    }
+//    Base::Console().Message("QGVP::addLeaderToParent()\n");
+    parent->addToGroup(lead);
+    lead->setZValue(ZVALUE::DIMENSION);
 }
 
 QGIView * QGVPage::addRichAnno(TechDraw::DrawRichAnno* anno)
@@ -760,8 +763,12 @@ void QGVPage::setExporting(bool enable)
     QList<QGraphicsItem*> sceneItems = scene()->items();
     for (auto& qgi:sceneItems) {
         QGIViewPart* qgiPart = dynamic_cast<QGIViewPart *>(qgi);
+        QGIRichAnno* qgiRTA  = dynamic_cast<QGIRichAnno *>(qgi);
         if(qgiPart) {
             qgiPart->setExporting(enable);
+        }
+        if (qgiRTA) {
+            qgiRTA->setExporting(enable);
         }
     }
 }
@@ -864,6 +871,15 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     // Insert Freecad SVG namespace into namespace declarations
     exportDocElem.setAttribute(QString::fromUtf8("xmlns:freecad"),
                                QString::fromUtf8(FREECAD_SVG_NS_URI));
+    // Insert all namespaces used by TechDraw's page template SVGs
+    exportDocElem.setAttribute(QString::fromUtf8("xmlns:svg"),
+        QString::fromUtf8(SVG_NS_URI));
+    exportDocElem.setAttribute(QString::fromUtf8("xmlns:cc"),
+        QString::fromUtf8(CC_NS_URI));
+    exportDocElem.setAttribute(QString::fromUtf8("xmlns:dc"),
+        QString::fromUtf8(DC_NS_URI));
+    exportDocElem.setAttribute(QString::fromUtf8("xmlns:rdf"),
+        QString::fromUtf8(RDF_NS_URI));
 
     // Create the root group which will host the drawing group and the template group
     QDomElement rootGroup = exportDoc.createElement(QString::fromUtf8("g"));
@@ -947,8 +963,9 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
 
     QTextStream stream( &outFile );
     stream.setGenerateByteOrderMark(true);
+    stream.setCodec("UTF-8");
 
-    stream << exportDoc.toString();
+    stream << exportDoc.toByteArray();
     outFile.close();
 }
 

@@ -51,7 +51,6 @@ private Q_SLOTS:
     void onJoinTypeChanged(int join);
     void onReversedChanged(bool reversed);
     void onIntersectionChanged(bool intersection);
-    void onRefDeleted(void);
 
 protected:
     virtual void clearButtons(const selectionModes notThis);

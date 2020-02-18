@@ -779,8 +779,6 @@ public:
     PropertyLinkListHidden() {_pcScope = LinkScope::Hidden;};
 };
 
-class PropertyXLinkSub;
-
 /** the Link Property with sub elements
  *  This property links an object and a defined sequence of
  *  sub elements. These subelements (like Edges of a Shape)
@@ -850,6 +848,9 @@ public:
 
     virtual Property *Copy(void) const override;
     virtual void Paste(const Property &from) override;
+
+    virtual const char* getEditorName(void) const override
+    { return "Gui::PropertyEditor::PropertyLinkItem"; }
 
     /// Return a copy of the property if any changes caused by importing external object 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
@@ -992,6 +993,9 @@ public:
 
     virtual Property *Copy(void) const override;
     virtual void Paste(const Property &from) override;
+
+    virtual const char* getEditorName(void) const override
+    { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
     /// Return a copy of the property if any changes caused by importing external object 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
@@ -1148,15 +1152,13 @@ public:
         return filePath.c_str();
     }
 
+    virtual bool upgrade(Base::XMLReader &reader, const char *typeName);
+
 protected:
     void unlink();
     void detach();
 
     void restoreLink(App::DocumentObject *);
-
-    virtual PropertyXLink *createInstance() const;
-
-    virtual bool upgrade(Base::XMLReader &reader, const char *typeName);
 
     void copyTo(PropertyXLink &other, App::DocumentObject *linked=0, std::vector<std::string> *subs=0) const;
 
@@ -1193,15 +1195,20 @@ public:
 
     virtual PyObject *getPyObject(void) override;
 
-protected:
-    virtual PropertyXLink *createInstance() const override;
+    virtual const char* getEditorName(void) const override
+    { return "Gui::PropertyEditor::PropertyLinkItem"; }
 };
 
 
 /** Link to one or more (sub)object(s) of one or more object(s) from the same or different document
  */
-class AppExport PropertyXLinkSubList: public PropertyLinkBase {
+class AppExport PropertyXLinkSubList: public PropertyLinkBase
+                                    , public AtomicPropertyChangeInterface<PropertyXLinkSubList>
+{
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+    typedef typename AtomicPropertyChangeInterface<PropertyXLinkSubList>::AtomicPropertyChange atomic_change;
+    friend atomic_change;
 
 public:
     PropertyXLinkSubList();
@@ -1216,6 +1223,9 @@ public:
      * setValue(0, whatever) clears the property
      */
     void setValue(DocumentObject*,const char*);
+    void setValues(const std::vector<DocumentObject*>&);
+    void set1Value(int idx, DocumentObject *value, const std::vector<std::string> &SubList={});
+
     void setValues(const std::vector<DocumentObject*>&,const std::vector<const char*>&);
     void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&);
     void setValues(std::map<App::DocumentObject*,std::vector<std::string> > &&);
@@ -1228,7 +1238,7 @@ public:
      * @brief setValue: PropertyLinkSub-compatible overload
      * @param SubList
      */
-    void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
+    void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList={});
 
     std::vector<DocumentObject*> getValues(void);
 
@@ -1262,6 +1272,9 @@ public:
 
     virtual Property *Copy(void) const override;
     virtual void Paste(const Property &from) override;
+
+    virtual const char* getEditorName(void) const override
+    { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
 
@@ -1297,6 +1310,25 @@ public:
 protected:
     std::list<PropertyXLinkSub> _Links;
 };
+
+
+/** Link to one or more (sub)object(s) of one or more object(s) from the same or different document
+ *
+ * The only difference for PropertyXLinkList and PropertyXLinkSubList is in
+ * their getPyObject().  PropertyXLinkList will return a list of object is
+ * there is no sub-object/sub-elements in the property.
+ */
+class AppExport PropertyXLinkList: public PropertyXLinkSubList {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    PropertyXLinkList();
+    virtual ~PropertyXLinkList();
+
+    virtual PyObject *getPyObject(void) override;
+    virtual void setPyObject(PyObject *) override;
+};
+
 
 /** Abstract property that can link to multiple external objects
  *

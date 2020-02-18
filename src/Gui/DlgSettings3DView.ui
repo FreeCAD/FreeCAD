@@ -92,6 +92,48 @@ will be shown at the lower left corner in opened files</string>
          </spacer>
         </item>
         <item>
+         <widget class="QLabel" name="stepLabel">
+          <property name="text">
+           <string>Steps by turn</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="prefStepByTurn">
+          <property name="toolTip">
+           <string>Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)</string>
+          </property>
+          <property name="value">
+           <number>8</number>
+          </property>
+          <property name="minimum">
+           <double>4</double>
+          </property>
+          <property name="maximum">
+           <double>36</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>NaviStepByTurn</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QLabel" name="cornerLabel">
           <property name="text">
            <string>Corner</string>
@@ -366,10 +408,10 @@ The value is the diameter of the sphere to fit on the screen.</string>
            <double>10000000.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <string>NewDocumentCameraScale</string>
+           <cstring>NewDocumentCameraScale</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <string>View</string>
+           <cstring>View</cstring>
           </property>
           <property name="rawValue" stdset="0">
            <double>100.000000000000000</double>
@@ -848,6 +890,11 @@ bounding box size of the 3D object that is currently displayed. </string>
    <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

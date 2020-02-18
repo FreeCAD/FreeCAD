@@ -1,5 +1,5 @@
 ﻿/***************************************************************************
- *   Copyright (c) 2004 J�rgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2012 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -44,10 +44,10 @@ public:
     /// destructor
     virtual ~ViewProviderDimension();
 
-    App::PropertyFont        Font;
-    App::PropertyLength      Fontsize;
-    App::PropertyFloat       LineWidth;
-    App::PropertyColor       Color;
+    App::PropertyFont   Font;
+    App::PropertyLength Fontsize;
+    App::PropertyLength LineWidth;
+    App::PropertyColor  Color;
 
     static const int STD_STYLE_ISO_ORIENTED     = 0;
     static const int STD_STYLE_ISO_REFERENCING  = 1;
@@ -81,8 +81,10 @@ public:
     double prefWeight() const;
     int prefStandardAndStyle() const;
 
-private:
+protected:
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);
 
+private:
     static const char *StandardAndStyleEnums[];
     static const char *RenderingExtentEnums[];
 

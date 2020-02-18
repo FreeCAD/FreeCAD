@@ -55,6 +55,7 @@ public:
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
+    virtual void onChanged(const App::Property* p);
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);

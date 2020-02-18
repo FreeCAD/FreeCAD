@@ -83,17 +83,27 @@ public:
     /*! Constructor */
     DocumentObjectT();
     /*! Constructor */
+    DocumentObjectT(const DocumentObjectT &);
+    /*! Constructor */
+    DocumentObjectT(DocumentObjectT &&);
+    /*! Constructor */
     DocumentObjectT(const DocumentObject*);
+    /*! Constructor */
+    DocumentObjectT(const char *docName, const char *objName);
     /*! Constructor */
     DocumentObjectT(const Property*);
     /*! Destructor */
     ~DocumentObjectT();
     /*! Assignment operator */
-    void operator=(const DocumentObjectT&);
+    DocumentObjectT &operator=(const DocumentObjectT&);
+    /*! Assignment operator */
+    DocumentObjectT &operator=(DocumentObjectT &&);
     /*! Assignment operator */
     void operator=(const DocumentObject*);
     /*! Assignment operator */
     void operator=(const Property*);
+    /*! Equality operator */
+    bool operator==(const DocumentObjectT&) const;
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
@@ -141,7 +151,25 @@ public:
     SubObjectT();
 
     /*! Constructor */
+    SubObjectT(const SubObjectT &);
+
+    /*! Constructor */
+    SubObjectT(SubObjectT &&);
+
+    /*! Constructor */
     SubObjectT(const DocumentObject*, const char *subname);
+
+    /*! Constructor */
+    SubObjectT(const char *docName, const char *objName, const char *subname);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(const SubObjectT&);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(SubObjectT &&);
+
+    /*! Equality operator */
+    bool operator==(const SubObjectT&) const;
 
     /// Set the subname path to the sub-object
     void setSubName(const char *subname);
@@ -170,6 +198,8 @@ public:
     std::vector<DocumentObject *> getSubObjectList() const;
 
     bool operator<(const SubObjectT &other) const;
+
+    std::string getSubObjectPython(bool force=true) const;
 
 private:
     std::string subname;

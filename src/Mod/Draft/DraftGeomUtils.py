@@ -1196,7 +1196,7 @@ def calculatePlacement(shape):
     return pla
 
 
-def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, alignList=[], normal=None):  # offsetMode="BasewireMode" or None
+def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, alignList=[], normal=None, basewireOffset=0):  # offsetMode="BasewireMode" or None
     '''
     offsetWire(wire,vector,[bind]): offsets the given wire along the given
     vector. The vector will be applied at the first vertex of the wire. If bind
@@ -1216,6 +1216,8 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
         OffsetWire() is now aware of width and align per edge (Primarily for use with ArchWall based on Sketch object )
 
         'dvec' vector to offset is now derived (and can be ignored) in this function if widthList and alignList are provided - 'dvec' to be obsolete in future ?
+
+        'basewireOffset' corresponds to 'offset' in ArchWall which offset the basewire before creating the wall outline
     '''
 
     # Accept 'wire' as a list of edges (use the list directly), or previously as a wire or a face (Draft Wire with MakeFace True or False supported)
@@ -1379,6 +1381,8 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
                     nedge = offset(curredge,delta,trim=True)
             else:
                 # if curAlign in ['Left', 'Right']: # elif curAlign == 'Center': # Both conditions same result..
+                if basewireOffset:  # ArchWall has an Offset properties for user to offset the basewire before creating the base profile of wall (not applicable to 'Center' align)
+                    delta = DraftVecUtils.scaleTo(delta, delta.Length+basewireOffset)
                 nedge = offset(curredge,delta,trim=True)
 
             if curOrientation == "Reversed": # TODO arc alway in counter-clockwise directinon ... ( not necessarily 'reversed')
@@ -1396,13 +1400,20 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
         elif offsetMode in ["BasewireMode"]:
             if not ( (curOrientation == firstOrientation) != (curDir == firstDir) ):
                 if curAlign in ['Left', 'Right']:
-                    nedge = curredge
+                    if basewireOffset:  # ArchWall has an Offset properties for user to offset the basewire before creating the base profile of wall (not applicable to 'Center' align)
+                        delta = DraftVecUtils.scaleTo(delta, basewireOffset)
+                        nedge = offset(curredge,delta,trim=True)
+                    else:
+                        nedge = curredge
                 elif curAlign == 'Center':
                     delta = delta.negative()
                     nedge = offset(curredge,delta,trim=True)
             else:
                 if curAlign in ['Left', 'Right']:
+                    if basewireOffset:  # ArchWall has an Offset properties for user to offset the basewire before creating the base profile of wall (not applicable to 'Center' align)
+                        delta = DraftVecUtils.scaleTo(delta, delta.Length+basewireOffset)
                     nedge = offset(curredge,delta,trim=True)
+
                 elif curAlign == 'Center':
                     nedge = offset(curredge,delta,trim=True)
             if curOrientation == "Reversed":

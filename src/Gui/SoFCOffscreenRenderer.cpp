@@ -819,9 +819,6 @@ SoQtOffscreenRenderer::writeToImage (QImage& img) const
             }
         }
     }
-    else if (PRIVATE(this)->backgroundcolor[3] == 1.0) {
-        img = img.convertToFormat(QImage::Format_RGB32);
-    }
 }
 
 /*!

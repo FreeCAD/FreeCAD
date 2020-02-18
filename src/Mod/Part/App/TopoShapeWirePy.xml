@@ -49,7 +49,7 @@ Make a loft defined by a list of profiles along a wire. Transition can be
 0 (default), 1 (right corners) or 2 (rounded corners).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="approximate" Const="true">
+    <Methode Name="approximate" Const="true" Keyword="true">
       <Documentation>
         <UserDocu>Approximate B-Spline-curve from this wire</UserDocu>
       </Documentation>

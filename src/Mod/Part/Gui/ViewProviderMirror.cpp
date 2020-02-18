@@ -686,3 +686,17 @@ ViewProviderRefine::ViewProviderRefine()
 ViewProviderRefine::~ViewProviderRefine()
 {
 }
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderReverse, PartGui::ViewProviderPart)
+
+ViewProviderReverse::ViewProviderReverse()
+{
+    //TODO: Need a specific icon here!
+    //sPixmap = "Part_Reverse_Shape";
+}
+
+ViewProviderReverse::~ViewProviderReverse()
+{
+}

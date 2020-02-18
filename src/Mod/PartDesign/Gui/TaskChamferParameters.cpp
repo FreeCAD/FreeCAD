@@ -78,13 +78,6 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QW
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
             this, SLOT(onButtonRefRemove(bool)));
 
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QString::fromLatin1("Del"));
-    ui->listWidgetReferences->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
-    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
-
     setup(ui->listWidgetReferences);
 }
 
@@ -110,18 +103,6 @@ void TaskChamferParameters::clearButtons(const selectionModes notThis)
     if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
     if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
     DressUpView->highlightReferences(false);
-}
-
-void TaskChamferParameters::onRefDeleted(void)
-{
-    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
-    App::DocumentObject* base = pcChamfer->Base.getValue();
-    std::vector<std::string> refs = pcChamfer->Base.getSubValues();
-    refs.erase(refs.begin() + ui->listWidgetReferences->currentRow());
-    setupTransaction();
-    pcChamfer->Base.setValue(base, refs);
-    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 
 void TaskChamferParameters::onLengthChanged(double len)

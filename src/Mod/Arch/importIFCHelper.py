@@ -46,12 +46,13 @@ def dd2dms(dd):
 
     "converts decimal degrees to degrees,minutes,seconds"
 
+    sign = 1 if dd >= 0 else -1
     dd = abs(dd)
     minutes,seconds = divmod(dd*3600,60)
     degrees,minutes = divmod(minutes,60)
     if dd < 0:
         degrees = -degrees
-    return (int(degrees),int(minutes),int(seconds))
+    return (int(degrees)*sign,int(minutes)*sign,int(seconds)*sign)
 
 
 # used in import
@@ -347,6 +348,7 @@ def getColorFromStyledItem(styled_item):
         return None
 
     rgb_color = None
+    transparency = None
 
     # print(styled_item)
     # The IfcStyledItem holds presentation style information for products,
@@ -370,7 +372,11 @@ def getColorFromStyledItem(styled_item):
             # never seen an ifc with more than one Styles in IfcStyledItem
     else:
         # get the IfcPresentationStyleAssignment, there should only be one, see above
-        assign_style = styled_item.Styles[0]
+        if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
+            assign_style = styled_item.Styles[0]
+        else:
+            # IfcPresentationStyleAssignment is deprecated in IFC4.
+            assign_style = styled_item
         # print(assign_style)  # IfcPresentationStyleAssignment
 
         # IfcPresentationStyleAssignment can hold various kinde and count of styles
@@ -380,6 +386,10 @@ def getColorFromStyledItem(styled_item):
             # print(assign_style.Styles[0].Styles[0])  # IfcSurfaceStyleRendering
             rgb_color = assign_style.Styles[0].Styles[0].SurfaceColour  # IfcColourRgb
             # print(rgb_color)
+            if assign_style.Styles[0].Styles[0].is_a('IfcSurfaceStyleShading') \
+                    and hasattr(assign_style.Styles[0].Styles[0], 'Transparency') \
+                    and assign_style.Styles[0].Styles[0].Transparency:
+                transparency = assign_style.Styles[0].Styles[0].Transparency * 100
         elif assign_style.Styles[0].is_a("IfcCurveStyle"):
             if (
                 len(assign_style.Styles) == 2
@@ -398,7 +408,9 @@ def getColorFromStyledItem(styled_item):
                 rgb_color = assign_style.Styles[0].CurveColour
 
     if rgb_color is not None:
-        col = rgb_color.Red, rgb_color.Green, rgb_color.Blue
+        col = [rgb_color.Red, rgb_color.Green, rgb_color.Blue]
+        col.append(int(transparency) if transparency else 0)
+        col = tuple(col)
         # print(col)
     else:
         col = None

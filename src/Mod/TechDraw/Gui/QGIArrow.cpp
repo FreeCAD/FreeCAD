@@ -43,7 +43,7 @@ using namespace TechDrawGui;
 
 QGIArrow::QGIArrow() :
     m_fill(Qt::SolidPattern),
-    m_size(5.0),
+    m_size(getPrefArrowSize()),
     m_style(0),
     m_dirMode(false),
     m_dir(Base::Vector3d(1.0,0.0,0.0))
@@ -63,45 +63,39 @@ QGIArrow::QGIArrow() :
 void QGIArrow::draw() {
     QPainterPath path;
     if (m_style == FILLED_TRIANGLE) {
-        setFillStyle(Qt::SolidPattern);
         if (m_dirMode) {
             path = makeFilledTriangle(getDirection(), m_size,m_size/6.0);
         } else {
             path = makeFilledTriangle(m_size,m_size/6.0,isFlipped());     //"arrow l/w sb 3/1" ??
         }
     } else if (m_style == OPEN_ARROW) {
-        setFillStyle(Qt::NoBrush);
         if (m_dirMode) {
             path = makeOpenArrow(getDirection(), m_size,m_size/3.0);          //broad arrow?
         } else {
             path = makeOpenArrow(m_size,m_size/3.0,isFlipped());
         }
     } else if (m_style == HASH_MARK) {
-        setFillStyle(Qt::NoBrush);
         if (m_dirMode) {
             path = makeHashMark(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
         } else {
             path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped());       //big enough?
         }
     } else if (m_style == DOT) {
-        setFillStyle(Qt::SolidPattern);
         path = makeDot(m_size/2.0,m_size/2.0,isFlipped());
     } else if (m_style == OPEN_CIRCLE) {
         path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped());
     } else if (m_style == FORK) {
-        setFillStyle(Qt::NoBrush);
         if (m_dirMode) {
             path = makeForkArrow(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
         } else {
             path = makeForkArrow(m_size/2.0,m_size/2.0,isFlipped());       //big enough?
         }
     } else if (m_style == PYRAMID){
-    	setFillStyle(Qt::SolidPattern);
-    	if (m_dirMode) {
-    		path = makePyramid(getDirection(), m_size);
-    	} else {
-    		path = makePyramid(m_size,isFlipped());
-    	}
+        if (m_dirMode) {
+            path = makePyramid(getDirection(), m_size);
+        } else {
+            path = makePyramid(m_size,isFlipped());
+        }
     }else {
         path = makeFilledTriangle(m_size,m_size/6.0,isFlipped());     //sb a question mark or ???
     }
@@ -271,50 +265,51 @@ QPainterPath QGIArrow::makeForkArrow(Base::Vector3d dir, double length, double w
 
 QPainterPath QGIArrow::makePyramid(double length, bool flipped)
 {
-	double half_width = length/2.;
-	double top = -length;
-	double base = 0.;
-	// [(0,-width), (0, width)] is base of arrow
-	if (flipped) {
-		top = 0.;
-		base = -length;
-	}
-	top = Rez::guiX(top);
-	base = Rez::guiX(base);
-	QPainterPath path;
-	path.moveTo(QPointF(top, 0.));
-	path.lineTo(QPointF(base,Rez::guiX(-half_width)));
-	path.lineTo(QPointF(base,Rez::guiX(half_width)));
-	path.closeSubpath();
-	setFillStyle(Qt::SolidPattern);
-	return path;
+    double half_width = length/2.;
+    double top = -length;
+    double base = 0.;
+    // [(0,-width), (0, width)] is base of arrow
+    if (flipped) {
+        top = 0.;
+        base = -length;
+    }
+    top = Rez::guiX(top);
+    base = Rez::guiX(base);
+    QPainterPath path;
+    path.moveTo(QPointF(top, 0.));
+    path.lineTo(QPointF(base,Rez::guiX(-half_width)));
+    path.lineTo(QPointF(base,Rez::guiX(half_width)));
+    path.closeSubpath();
+    setFillStyle(Qt::SolidPattern);
+    return path;
 }
 
 QPainterPath QGIArrow::makePyramid(Base::Vector3d dir, double length)
 {
-	//(0,0) is tip of arrow
-	// dir is direction arrow points
-	Base::Vector3d negDir = -dir;
-	negDir.Normalize();
-	double width = length / 2.;
-	Base::Vector3d perp(-negDir.y,negDir.x, 0.0);
-	Base::Vector3d barb1 = perp * width;
-	Base::Vector3d barb2 = perp * -width;
-	Base::Vector3d top = negDir * length;
+    //(0,0) is tip of arrow
+    // dir is direction arrow points
+    Base::Vector3d negDir = -dir;
+    negDir.Normalize();
+    double width = length / 2.;
+    Base::Vector3d perp(-negDir.y,negDir.x, 0.0);
+    Base::Vector3d barb1 = perp * width;
+    Base::Vector3d barb2 = perp * -width;
+    Base::Vector3d top = negDir * length;
 
-	QPainterPath path;
-	path.moveTo(QPointF(Rez::guiX(top.x),Rez::guiX(top.y)));
-	path.lineTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
-	path.lineTo(QPointF(Rez::guiX(barb2.x),Rez::guiX(barb2.y)));
-	path.closeSubpath();
-	setFillStyle(Qt::SolidPattern);
-	return path;
+    QPainterPath path;
+    path.moveTo(QPointF(Rez::guiX(top.x),Rez::guiX(top.y)));
+    path.lineTo(QPointF(Rez::guiX(barb1.x),Rez::guiX(barb1.y)));
+    path.lineTo(QPointF(Rez::guiX(barb2.x),Rez::guiX(barb2.y)));
+    path.closeSubpath();
+    setFillStyle(Qt::SolidPattern);
+    return path;
 }
 
 int QGIArrow::getPrefArrowStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
     int style = hGrp->GetInt("ArrowStyle", 0);
     return style;
 }
@@ -356,8 +351,11 @@ double QGIArrow::getOverlapAdjust(int style, double size)
             result = 0.0;
             break;
         case PYRAMID:
-        	result = 0.0;
-        	break;
+            result = size;
+            break;
+        case NONE:
+            result = 0.0;
+            break;
         default:        //unknown
             result = 1.0;
     }

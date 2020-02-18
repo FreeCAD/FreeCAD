@@ -22,6 +22,14 @@
 # ***************************************************************************
 
 
+# to run the example use:
+"""
+from femexamples.rc_wall_2d import setup
+setup()
+
+"""
+
+
 import FreeCAD
 import ObjectsFem
 import Fem
@@ -85,6 +93,7 @@ def setup(doc=None, solvertype="ccxtools"):
         )[0]
         solver.WorkingDir = u""
     if solvertype == "calculix" or solvertype == "ccxtools":
+        solver.SplitInputWriter = False
         solver.AnalysisType = "static"
         solver.GeometricalNonlinearity = "linear"
         solver.ThermoMechSteadyState = False
@@ -155,10 +164,3 @@ def setup(doc=None, solvertype="ccxtools"):
 
     doc.recompute()
     return doc
-
-
-"""
-from femexamples import rc_wall_2d as rc
-rc.setup()
-
-"""

@@ -48,6 +48,7 @@ class DocumentObject;
 class ApplicationObserver;
 class Property;
 class AutoTransaction;
+class ExtensionContainer;
 
 enum GetLinkOption {
     /// Get all links (both directly and in directly) linked to the given object
@@ -271,6 +272,18 @@ public:
     /// signal on about changing the editor mode of a property
     boost::signals2::signal<void (const App::Document&, const App::Property&)> signalChangePropertyEditor;
     //@}
+    
+    /** @name Signals of extension changes
+     * These signals are emitted on dynamic extension addition. Dynamic extensions are the ones added by python (c++ ones are part 
+     * of the class definition, hence not dynamic)
+     * The extension in question is provided as parameter.
+     */
+    //@{
+    /// signal before adding the extension
+    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalBeforeAddingDynamicExtension;
+    /// signal after the extension was added
+    boost::signals2::signal<void (const App::ExtensionContainer&, std::string extension)> signalAddedDynamicExtension;
+     //@}
 
 
     /** @name methods for parameter handling */
@@ -310,6 +323,8 @@ public:
     //@{
     /// Register an import filetype and a module name
     void addImportType(const char* Type, const char* ModuleName);
+    /// Change the module name of a registered filetype
+    void changeImportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
     std::vector<std::string> getImportModules(const char* Type) const;
     /// Return a list of all modules.
@@ -326,6 +341,8 @@ public:
     //@{
     /// Register an export filetype and a module name
     void addExportType(const char* Type, const char* ModuleName);
+    /// Change the module name of a registered filetype
+    void changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
     std::vector<std::string> getExportModules(const char* Type) const;
     /// Return a list of all modules.
@@ -468,8 +485,10 @@ private:
     static PyObject* sSetConfig         (PyObject *self,PyObject *args);
     static PyObject* sDumpConfig        (PyObject *self,PyObject *args);
     static PyObject* sAddImportType     (PyObject *self,PyObject *args);
+    static PyObject* sChangeImportModule(PyObject *self,PyObject *args);
     static PyObject* sGetImportType     (PyObject *self,PyObject *args);
     static PyObject* sAddExportType     (PyObject *self,PyObject *args);
+    static PyObject* sChangeExportModule(PyObject *self,PyObject *args);
     static PyObject* sGetExportType     (PyObject *self,PyObject *args);
     static PyObject* sGetResourceDir    (PyObject *self,PyObject *args);
     static PyObject* sGetUserAppDataDir (PyObject *self,PyObject *args);

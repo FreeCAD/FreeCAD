@@ -108,10 +108,12 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     }
 }
 
-TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider,QWidget *parent, QString picture, QString text)
+TaskAttacher::TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent,
+                           QString picture, QString text, TaskAttacher::VisibilityFunction visFunc)
     : TaskBox(Gui::BitmapFactory().pixmap(picture.toLatin1()), text, true, parent),
       SelectionObserver(ViewProvider),
-      ViewProvider(ViewProvider)
+      ViewProvider(ViewProvider),
+      visibilityFunc(visFunc)
 {
     //check if we are attachable
     if (!ViewProvider->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId()))
@@ -318,7 +320,7 @@ bool TaskAttacher::updatePreview()
             ui->message->setStyleSheet(QString::fromLatin1("QLabel{color: green;}"));
         }
     }
-    QString splmLabelText = attached ? tr("Attachment Offset:") : tr("Attachment Offset (inactive - not attached):");
+    QString splmLabelText = attached ? tr("Attachment Offset (in local coordinates):") : tr("Attachment Offset (inactive - not attached):");
     ui->groupBox_AttachmentOffset->setTitle(splmLabelText);
     ui->groupBox_AttachmentOffset->setEnabled(attached);
 
@@ -935,6 +937,41 @@ void TaskAttacher::changeEvent(QEvent *e)
 
 void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 {
+    auto defvisfunc = [] (bool opening_not_closing,
+                          Gui::ViewProviderDocumentObject* vp,
+                          App::DocumentObject *editObj,
+                          const std::string& editSubName) {
+        if (opening_not_closing) {
+            QString code = QString::fromLatin1(
+                "import Show\n"
+                "tv = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
+                "tvObj = %1\n"
+                "dep_features = tv.get_all_dependent(%2, '%3')\n"
+                "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
+                "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
+                "\tdel(visible_features)\n"
+                "tv.hide(dep_features)\n"
+                "del(dep_features)\n"
+                "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
+                "\t\tif len(tvObj.Support) > 0:\n"
+                "\t\t\ttv.show([lnk[0] for lnk in tvObj.Support])\n"
+                "del(tvObj)"
+                ).arg(
+                    QString::fromLatin1(Gui::Command::getObjectCmd(vp->getObject()).c_str()),
+                    QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
+                    QString::fromLatin1(editSubName.c_str()));
+            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
+        }
+        else {
+            Base::Interpreter().runString(
+                    "tv.restore()\n"
+                    "tv.del(tv)");
+        }
+    };
+
+    auto visAutoFunc = visibilityFunc ? visibilityFunc : defvisfunc;
+
     if (opening_not_closing) {
         //crash guards
         if (!ViewProvider)
@@ -944,46 +981,17 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         if (!ViewProvider->getObject()->getNameInDocument())
             return;
 
+        auto editDoc = Gui::Application::Instance->editDocument();
         App::DocumentObject *editObj = ViewProvider->getObject();
         std::string editSubName;
-        auto sels = Gui::Selection().getSelection(0,0,true);
-        if(sels.size() && sels[0].pResolvedObject 
-                       && sels[0].pResolvedObject->getLinkedObject()==editObj) 
-        {
-            editObj = sels[0].pObject;
-            editSubName = sels[0].SubName;
-        } else {
-            ViewProviderDocumentObject *editVp = 0;
-            auto editDoc = Gui::Application::Instance->editDocument();
-            if(editDoc) {
-                editDoc->getInEdit(&editVp,&editSubName);
-                if(editVp)
-                    editObj = editVp->getObject();
-            }
+        ViewProviderDocumentObject *editVp = 0;
+        if (editDoc) {
+            editDoc->getInEdit(&editVp,&editSubName);
+            if (editVp)
+                editObj = editVp->getObject();
         }
-        try{
-            ObjectName = ViewProvider->getObject()->getNameInDocument();
-            QString code = QString::fromLatin1(
-                "import Show\n"
-                "_tv_%4 = Show.TempoVis(App.ActiveDocument, tag= 'PartGui::TaskAttacher')\n"
-                "tvObj = %1\n"
-                "dep_features = _tv_%4.get_all_dependent(%2, '%3')\n"
-                "if tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\tvisible_features = [feat for feat in tvObj.InList if feat.isDerivedFrom('PartDesign::FeaturePrimitive')]\n"
-                "\tdep_features = [feat for feat in dep_features if feat not in visible_features]\n"
-                "\tdel(visible_features)\n"
-                "_tv_%4.hide(dep_features)\n"
-                "del(dep_features)\n"
-                "if not tvObj.isDerivedFrom('PartDesign::CoordinateSystem'):\n"
-                "\t\tif len(tvObj.Support) > 0:\n"
-                "\t\t\t_tv_%4.show([lnk[0] for lnk in tvObj.Support])\n"
-                "del(tvObj)"
-                ).arg(
-                    QString::fromLatin1(Gui::Command::getObjectCmd(ViewProvider->getObject()).c_str()),
-                    QString::fromLatin1(Gui::Command::getObjectCmd(editObj).c_str()),
-                    QString::fromLatin1(editSubName.c_str()),
-                    QString::fromLatin1(ObjectName.c_str()));
-            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
+        try {
+            visAutoFunc(opening_not_closing, ViewProvider, editObj, editSubName);
         }
         catch (const Base::Exception &e){
             e.ReportException();
@@ -995,12 +1003,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
     }
     else if(ObjectName.size()) {
         try {
-            QString code = QString::fromLatin1(
-                "_tv_%1.restore()\n"
-                "del(_tv_%1)"
-                ).arg(QString::fromLatin1(ObjectName.c_str()));
-            Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
-            ObjectName.clear();
+            visAutoFunc(opening_not_closing, nullptr, nullptr, std::string());
         }
         catch (Base::Exception &e) {
             e.ReportException();

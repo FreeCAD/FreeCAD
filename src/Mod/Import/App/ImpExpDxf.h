@@ -83,7 +83,7 @@ namespace Import
         void exportText(const char* text, Base::Vector3d position1, Base::Vector3d position2, double size, int just);
         void exportLinearDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
                              Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
-                             char* dimText);
+                             char* dimText, int type);
         void exportAngularDim(Base::Vector3d textLocn, Base::Vector3d lineLocn, 
                              Base::Vector3d extLine1Start, Base::Vector3d extLine2Start, 
                              Base::Vector3d apexPoint,

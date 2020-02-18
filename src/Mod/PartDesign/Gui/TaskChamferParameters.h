@@ -43,7 +43,6 @@ public:
 
 private Q_SLOTS:
     void onLengthChanged(double);
-    void onRefDeleted(void);
 
 protected:
     virtual void clearButtons(const selectionModes notThis);

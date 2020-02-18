@@ -151,7 +151,7 @@ private:
                     }
                 }
                 else {
-                    throw Py::TypeError("Export of this object type is not supported by TechDraw module");
+                    throw Py::TypeError("No Technical Drawing Page found in selection.");
                 }
             }
         }

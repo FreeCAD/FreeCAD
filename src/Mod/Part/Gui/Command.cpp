@@ -1235,17 +1235,15 @@ void CmdPartReverseShape::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (Part::Feature::getClassTypeId());
-    runCommand(Doc, "import Part");
+    openCommand("Reverse");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
         if (!shape.IsNull()) {
             QString str = QString::fromLatin1(
-                "__s__=App.ActiveDocument.%1.Shape.copy()\n"
-                "__s__.reverse()\n"
-                "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_rev\")\n"
+                "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1_rev\")\n"
+                "__o__.Source=App.ActiveDocument.%1\n"
                 "__o__.Label=\"%2 (Rev)\"\n"
-                "__o__.Shape=__s__\n"
-                "del __s__, __o__"
+                "del __o__"
                 )
                 .arg(QLatin1String((*it)->getNameInDocument()))
                 .arg(QLatin1String((*it)->Label.getValue()));
@@ -1260,6 +1258,9 @@ void CmdPartReverseShape::activated(int iMsg)
             }
         }
     }
+
+    commitCommand();
+    updateActive();
 }
 
 bool CmdPartReverseShape::isActive(void)
@@ -1347,6 +1348,8 @@ void CmdPartMakeFace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(),0,3);
+    if(sketches.empty())
+        return;
     openCommand("Make face");
 
     try {
@@ -1635,7 +1638,10 @@ CmdPartOffset::CmdPartOffset()
 void CmdPartOffset::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::DocumentObject* shape = getSelection().getObjectsOfType(Part::Feature::getClassTypeId()).front();
+    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
+    if(shapes.empty())
+        return;
+    App::DocumentObject* shape = shapes.front();
     std::string offset = getUniqueObjectName("Offset");
 
     openCommand("Make Offset");
@@ -1684,7 +1690,10 @@ CmdPartOffset2D::CmdPartOffset2D()
 void CmdPartOffset2D::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::DocumentObject* shape = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3).front();
+    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
+    if(shapes.empty())
+        return;
+    App::DocumentObject* shape = shapes.front();
     std::string offset = getUniqueObjectName("Offset2D");
 
     openCommand("Make 2D Offset");
@@ -2152,6 +2161,8 @@ void CmdColorPerFace::activated(int iMsg)
     if (getActiveGuiDocument()->getInEdit())
         getActiveGuiDocument()->resetEdit();
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
+    if(sel.empty())
+        return;
     Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(sel.front());
     // FIXME: Need a way to force 'Color' edit mode
     // #0000477: Proper interface for edit modes of view provider

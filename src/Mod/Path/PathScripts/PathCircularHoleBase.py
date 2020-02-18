@@ -50,8 +50,8 @@ __url__ = "https://www.freecadweb.org"
 __doc__ = "Base class an implementation for operations on circular holes."
 __contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2017"
-__scriptVersion__ = "1e testing"
-__lastModified__ = "2019-07-26 14:15 CST"
+__scriptVersion__ = "2b"
+__lastModified__ = "2020-02-13 17:11 CST"
 
 
 # Qt translation handling
@@ -60,7 +60,7 @@ def translate(context, text, disambig=None):
 
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
 
 
 class ObjectOp(PathOp.ObjectOp):
@@ -75,7 +75,7 @@ class ObjectOp(PathOp.ObjectOp):
     def opFeatures(self, obj):
         '''opFeatures(obj) ... calls circularHoleFeatures(obj) and ORs in the standard features required for processing circular holes.
         Do not overwrite, implement circularHoleFeatures(obj) instead'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | self.circularHoleFeatures(obj) | PathOp.FeatureCoolant 
+        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureBaseFaces | self.circularHoleFeatures(obj) | PathOp.FeatureCoolant
 
     def circularHoleFeatures(self, obj):
         '''circularHoleFeatures(obj) ... overwrite to add operations specific features.
@@ -136,15 +136,14 @@ class ObjectOp(PathOp.ObjectOp):
 
             if shape.ShapeType == 'Edge' and type(shape.Curve) == Part.Circle:
                 return shape.Curve.Radius * 2
-            
+
             if shape.ShapeType == 'Face':
                 for i in range(len(shape.Edges)):
-                    if (type(shape.Edges[i].Curve) == Part.Circle and 
-                        shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength*1.1 and 
+                    if (type(shape.Edges[i].Curve) == Part.Circle and
+                        shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength*1.1 and
                         shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength*0.9):
                         return shape.Edges[i].Curve.Radius * 2
-                        
-            
+
             # for all other shapes the diameter is just the dimension in X. This may be inaccurate as the BoundBox is calculated on the tessellated geometry
             PathLog.warning(translate("Path", "Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge."))
             return shape.BoundBox.XLength
@@ -207,7 +206,6 @@ class ObjectOp(PathOp.ObjectOp):
         self.safeHeight = obj.SafeHeight.Value  # pylint: disable=attribute-defined-outside-init
         self.axialFeed = 0.0  # pylint: disable=attribute-defined-outside-init
         self.axialRapid = 0.0  # pylint: disable=attribute-defined-outside-init
-        trgtDep = None
 
         def haveLocations(self, obj):
             if PathOp.FeatureLocations & self.opFeatures(obj):
@@ -324,37 +322,28 @@ class ObjectOp(PathOp.ObjectOp):
                     pos = self.holePosition(obj, base, sub)
                     if pos:
                         # Default is treat selection as 'Face' shape
-                        finDep = base.Shape.getElement(sub).BoundBox.ZMin
+                        holeBtm = base.Shape.getElement(sub).BoundBox.ZMin
                         if base.Shape.getElement(sub).ShapeType == 'Edge':
-                            msg = translate("Path", "Verify Final Depth of holes based on edges. {} depth is: {} mm".format(sub, round(finDep, 4))) + "  "
+                            msg = translate("Path", "Verify Final Depth of holes based on edges. {} depth is: {} mm".format(sub, round(holeBtm, 4))) + "  "
                             msg += translate("Path", "Always select the bottom edge of the hole when using an edge.")
                             PathLog.warning(msg)
 
-                        # If user has not adjusted Final Depth value, attempt to determine from sub
-                        trgtDep = obj.FinalDepth.Value
-                        if obj.OpFinalDepth.Value == obj.FinalDepth.Value:
-                            trgtDep = finDep
-                        if obj.FinalDepth.Value < finDep:
-                            msg = translate("Path", "Final Depth setting is below the hole bottom for {}.".format(sub))
+                        # Warn user if Final Depth set lower than bottom of hole
+                        if finDep < holeBtm:
+                            msg = translate("Path", "Final Depth setting is below the hole bottom for {}.".format(sub)) + '  '
+                            msg += translate("Path", "{} depth is calculated at {} mm".format(sub, round(holeBtm, 4)))
                             PathLog.warning(msg)
 
                         holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub),
-                                     'angle': angle, 'axis': axis, 'trgtDep': trgtDep,
+                                     'angle': angle, 'axis': axis, 'trgtDep': finDep,
                                       'stkTop': stock.Shape.BoundBox.ZMax})
 
         if haveLocations(self, obj):
             for location in obj.Locations:
-                # holes.append({'x': location.x, 'y': location.y, 'r': 0, 'angle': 0.0, 'axis': 'X', 'finDep': obj.FinalDepth.Value})
-                trgtDep = obj.FinalDepth.Value
+                # holes.append({'x': location.x, 'y': location.y, 'r': 0, 'angle': 0.0, 'axis': 'X', 'holeBtm': obj.FinalDepth.Value})
                 holes.append({'x': location.x, 'y': location.y, 'r': 0,
-                             'angle': 0.0, 'axis': 'X', 'trgtDep': trgtDep,
+                             'angle': 0.0, 'axis': 'X', 'trgtDep': finDep,
                               'stkTop': PathUtils.findParentJob(obj).stock.Shape.BoundBox.ZMax})
-
-        # If all holes based upon edges, set post-operation Final Depth to highest edge height
-        if obj.OpFinalDepth.Value == obj.FinalDepth.Value:
-            if len(holes) == 1:
-                PathLog.info(translate('Path', "Single-hole operation. Saving Final Depth determined from hole base."))
-                obj.FinalDepth.Value = trgtDep
 
         if len(holes) > 0:
             self.circularHoleExecute(obj, holes)  # circularHoleExecute() located in PathDrilling.py
@@ -821,23 +810,6 @@ class ObjectOp(PathOp.ObjectOp):
         obj.AttemptInverseAngle = False
         angle = -1 * angle
         return (clnBase, clnStock, angle)
-
-    def calculateStartFinalDepths(self, obj, shape, stock):
-        '''calculateStartFinalDepths(obj, shape, stock)
-            Calculate correct start and final depths for the shape(face) object provided.'''
-        finDep = max(obj.FinalDepth.Value, shape.BoundBox.ZMin)
-        stockTop = stock.Shape.BoundBox.ZMax
-        if obj.EnableRotation == 'Off':
-            strDep = obj.StartDepth.Value
-            if strDep <= finDep:
-                strDep = stockTop
-        else:
-            strDep = min(obj.StartDepth.Value, stockTop)
-            if strDep <= finDep:
-                strDep = stockTop
-                msg = translate('Path', "Start depth <= face depth.\nIncreased to stock top.")
-                PathLog.error(msg)
-        return (strDep, finDep)
 
     def sortTuplesByIndex(self, TupleList, tagIdx):
         '''sortTuplesByIndex(TupleList, tagIdx)

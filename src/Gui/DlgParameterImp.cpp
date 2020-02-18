@@ -65,11 +65,18 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
   , ui(new Ui_DlgParameter)
 {
     ui->setupUi(this);
-    QStringList groupLabels; 
+    ui->checkSort->setVisible(false); // for testing
+
+    QStringList groupLabels;
     groupLabels << tr( "Group" );
     paramGroup = new ParameterGroup(ui->splitter3);
     paramGroup->setHeaderLabels(groupLabels);
     paramGroup->setRootIsDecorated(false);
+#if QT_VERSION >= 0x050000
+    paramGroup->setSortingEnabled(true);
+    paramGroup->sortByColumn(0, Qt::AscendingOrder);
+    paramGroup->header()->setProperty("showSortIndicator", QVariant(true));
+#endif
 
     QStringList valueLabels; 
     valueLabels << tr( "Name" ) << tr( "Type" ) << tr( "Value" );
@@ -78,6 +85,9 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     paramValue->setRootIsDecorated(false);
 #if QT_VERSION >= 0x050000
     paramValue->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    paramValue->setSortingEnabled(true);
+    paramValue->sortByColumn(0, Qt::AscendingOrder);
+    paramValue->header()->setProperty("showSortIndicator", QVariant(true));
 #else
     paramValue->header()->setResizeMode(0, QHeaderView::Stretch);
 #endif
@@ -142,6 +152,21 @@ void DlgParameterImp::changeEvent(QEvent *e)
     } else {
         QDialog::changeEvent(e);
     }
+}
+
+void DlgParameterImp::on_checkSort_toggled(bool on)
+{
+#if QT_VERSION >= 0x050000
+    paramGroup->setSortingEnabled(on);
+    paramGroup->sortByColumn(0, Qt::AscendingOrder);
+    paramGroup->header()->setProperty("showSortIndicator", QVariant(on));
+#endif
+
+#if QT_VERSION >= 0x050000
+    paramValue->setSortingEnabled(on);
+    paramValue->sortByColumn(0, Qt::AscendingOrder);
+    paramValue->header()->setProperty("showSortIndicator", QVariant(on));
+#endif
 }
 
 void DlgParameterImp::on_closeButton_clicked()
@@ -209,6 +234,7 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
 {
     if ( item && item->type() == QTreeWidgetItem::UserType + 1 )
     {
+        bool sortingEnabled = paramValue->isSortingEnabled();
         paramValue->clear();
         Base::Reference<ParameterGrp> _hcGrp = static_cast<ParameterGroupItem*>(item)->_hcGrp;
         static_cast<ParameterValue*>(paramValue)->setCurrentGroup( _hcGrp );
@@ -248,6 +274,7 @@ void DlgParameterImp::onGroupSelected( QTreeWidgetItem * item )
         {
             (void)new ParameterUInt(paramValue,QString::fromUtf8(It6->first.c_str()),It6->second, _hcGrp);
         }
+        paramValue->setSortingEnabled(sortingEnabled);
     }
 }
 

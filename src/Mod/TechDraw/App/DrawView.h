@@ -83,7 +83,9 @@ public:
 
     virtual DrawPage* findParentPage() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class
+    virtual double autoScale(void) const;
     virtual double autoScale(double w, double h) const;
+    virtual bool checkFit(void) const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y, bool force = false);
     bool keepUpdated(void);
@@ -102,6 +104,9 @@ protected:
     std::string pageFeatName;
     bool autoPos;
     bool mouseMove;
+
+    int prefScaleType(void);
+    double prefScale(void);
 
 private:
     static const char* ScaleTypeEnums[];

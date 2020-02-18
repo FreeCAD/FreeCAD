@@ -42,7 +42,8 @@ enum ArrowType {
     DOT,
     OPEN_CIRCLE,
     FORK,
-    PYRAMID
+    PYRAMID,
+    NONE
 };
 
 class TechDrawGuiExport QGIArrow : public QGIPrimPath

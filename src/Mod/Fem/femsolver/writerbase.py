@@ -123,6 +123,12 @@ class FemInputWriter():
         self.femelement_edges_table = {}
         self.femelement_count_test = True
 
+    # use set for node sets to be sure all nodes are unique
+    # use sorted to be sure the order is the same on different runs
+    # be aware a sorted set returns a list, because set are not sorted by default
+    #     - done in return value of meshtools.get_femnodes_by_femobj_with_references
+    # might be appropriate for element sets too
+
     def get_constraints_fixed_nodes(self):
         # get nodes
         for femobj in self.fixed_objects:
@@ -310,8 +316,39 @@ class FemInputWriter():
                 self.femelement_table,
                 self.femnodes_ele_table, femobj
             )
-            femobj["PressureFaces"] = [(femobj["Object"].Name + ": face load", pressure_faces)]
+            # the data model is for compatibility reason with depreciated version
+            # get_pressure_obj_faces_depreciated returns the face ids in a tuple per ref_shape
+            # some_string was the reference_shape_element_string in depreciated method
+            # [(some_string, [ele_id, ele_face_id], [ele_id, ele_face_id], ...])]
+            some_string = "{}: face load".format(femobj["Object"].Name)
+            femobj["PressureFaces"] = [(some_string, pressure_faces)]
             FreeCAD.Console.PrintLog("{}\n".format(femobj["PressureFaces"]))
+
+    def get_constraints_contact_faces(self):
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        if not self.femelement_table:
+            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
+        if not self.femnodes_ele_table:
+            self.femnodes_ele_table = meshtools.get_femnodes_ele_table(
+                self.femnodes_mesh,
+                self.femelement_table
+            )
+
+        for femobj in self.contact_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            print_obj_info(femobj["Object"])
+            contact_slave_faces, contact_master_faces = meshtools.get_contact_obj_faces(
+                self.femmesh,
+                self.femelement_table,
+                self.femnodes_ele_table, femobj
+            )
+            # [ele_id, ele_face_id], [ele_id, ele_face_id], ...]
+            # whereas the ele_face_id might be ccx specific
+            femobj["ContactSlaveFaces"] = contact_slave_faces
+            femobj["ContactMasterFaces"] = contact_master_faces
+            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactSlaveFaces"]))
+            # FreeCAD.Console.PrintLog("{}\n".format(femobj["ContactMasterFaces"]))
 
     def get_element_geometry2D_elements(self):
         # get element ids and write them into the objects
