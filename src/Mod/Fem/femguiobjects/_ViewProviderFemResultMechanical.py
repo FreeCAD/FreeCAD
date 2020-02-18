@@ -496,6 +496,8 @@ class _TaskPanelFemResultShow:
         self.restore_result_dialog()
         userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
 
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=42425&start=10#p368774 ff
+        # https://github.com/FreeCAD/FreeCAD/pull/3020
         from ply import lex
         from ply import yacc
         import femtools.tokrules as tokrules
