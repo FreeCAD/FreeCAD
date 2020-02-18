@@ -27,6 +27,7 @@
 #ifndef _PreComp_
 # include <sstream>
 
+# include <QAction>
 # include <QKeyEvent>
 # include <QRegExp>
 # include <QTextStream>
@@ -181,6 +182,45 @@ void TaskFemConstraint::onButtonWizCancel()
 const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, const std::string& subName) const
 {
     return QString::fromUtf8((std::string(obj->getNameInDocument()) + ":" + subName).c_str());
+}
+
+void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
+{
+    // creates a context menu, a shortcutt for it and connects it to e slot function
+
+    deleteAction = new QAction(tr("Delete"), this);
+    deleteAction->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    deleteAction->setShortcutVisibleInContextMenu(true);
+#endif
+    parentList->addAction(deleteAction);
+    parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+bool TaskFemConstraint::KeyEvent(QEvent *e)
+{
+    // in case another instance takes key events, accept the overridden key even
+    if (e && e->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->modifiers() == Qt::NoModifier) {
+            if (kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                return true;
+            }
+        }
+    }
+    // if we have a Del key, trigger the deleteAction
+    else if (e && e->type() == QEvent::KeyPress) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->key() == Qt::Key_Delete) {
+            if (deleteAction->isEnabled())
+                deleteAction->trigger();
+            return true;
+        }
+    }
+
+    return TaskFemConstraint::event(e);
 }
 
 //**************************************************************************

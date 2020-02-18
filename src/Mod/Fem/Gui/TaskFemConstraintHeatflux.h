@@ -74,7 +74,6 @@ protected:
     virtual void changeEvent(QEvent *e);
 
 private:
-    QAction* deleteAction;
     void updateUI();
     Ui_TaskFemConstraintHeatflux* ui;
 };

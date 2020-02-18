@@ -73,7 +73,6 @@ protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
 protected:
-    QAction* deleteAction;
     Ui_TaskFemConstraintBearing* ui;
 
 };
