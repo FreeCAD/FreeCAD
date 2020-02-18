@@ -47,11 +47,13 @@ private Q_SLOTS:
 
 protected:
     virtual void clearButtons(const selectionModes notThis);
+    bool event(QEvent *e);
     void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     double getLength(void) const;
 
 private:
+    QAction* deleteAction;
     Ui_TaskChamferParameters* ui;
 };
 
