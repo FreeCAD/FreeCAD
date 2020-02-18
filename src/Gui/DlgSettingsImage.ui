@@ -98,97 +98,97 @@
           </item>
           <item>
            <property name="text">
-            <string>CGA       320 x 200</string>
+            <string notr="true">CGA       320 x 200</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>QVGA     320 x 240</string>
+            <string notr="true">QVGA     320 x 240</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>VGA       640 x 480</string>
+            <string notr="true">VGA       640 x 480</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>NTSC     720 x 480</string>
+            <string notr="true">NTSC     720 x 480</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>PAL        768 x 578</string>
+            <string notr="true">PAL        768 x 578</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>SVGA     800 x 600</string>
+            <string notr="true">SVGA     800 x 600</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>XGA       1024 x 768</string>
+            <string notr="true">XGA       1024 x 768</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>HD720   1280 x 720</string>
+            <string notr="true">HD720   1280 x 720</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>SXGA     1280 x 1024</string>
+            <string notr="true">SXGA     1280 x 1024</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>SXGA+   1400 x 1050</string>
+            <string notr="true">SXGA+   1400 x 1050</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>UXGA     1600 x 1200</string>
+            <string notr="true">UXGA     1600 x 1200</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>HD1080 1920 x 1080</string>
+            <string notr="true">HD1080 1920 x 1080</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>WUXGA  1920 x 1200</string>
+            <string notr="true">WUXGA  1920 x 1200</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>QXGA     2048 x 1538</string>
+            <string notr="true">QXGA     2048 x 1538</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>WQXGA  2560 x 1600</string>
+            <string notr="true">WQXGA  2560 x 1600</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>QSXGA   2560 x 2048</string>
+            <string notr="true">QSXGA   2560 x 2048</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>QUXGA   3200 × 2400</string>
+            <string notr="true">QUXGA   3200 × 2400</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>HUXGA   6400 × 4800</string>
+            <string notr="true">HUXGA   6400 × 4800</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>!!!          10000 x 10000</string>
+            <string notr="true">!!!          10000 x 10000</string>
            </property>
           </item>
          </widget>
