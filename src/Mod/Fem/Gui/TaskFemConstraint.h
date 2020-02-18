@@ -31,6 +31,9 @@
 
 #include "ViewProviderFemConstraint.h"
 
+class QAction;
+class QListWidget;
+
 namespace FemGui {
 
 class TaskFemConstraint : public Gui::TaskView::TaskBox, public Gui::SelectionObserver

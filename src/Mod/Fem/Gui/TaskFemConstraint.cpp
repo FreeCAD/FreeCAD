@@ -29,6 +29,7 @@
 
 # include <QAction>
 # include <QKeyEvent>
+# include <QListWidget>
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
