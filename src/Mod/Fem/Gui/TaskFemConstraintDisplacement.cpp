@@ -31,10 +31,13 @@
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <Precision.hxx>
-# include <QMessageBox>
+
 # include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
+
 # include <TopoDS.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
@@ -67,9 +70,15 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
+    // create a context menu for the listview of the references
+    deleteAction = new QAction(tr("Delete"), ui->lw_references);
+    deleteAction->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    deleteAction->setShortcutVisibleInContextMenu(true);
+#endif
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
+    ui->lw_references->addAction(deleteAction);
     ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
@@ -574,6 +583,31 @@ bool TaskFemConstraintDisplacement::get_rotyfix() const{return ui->rotyfix->isCh
 bool TaskFemConstraintDisplacement::get_rotyfree() const{return ui->rotyfree->isChecked();}
 bool TaskFemConstraintDisplacement::get_rotzfix() const{return ui->rotzfix->isChecked();}
 bool TaskFemConstraintDisplacement::get_rotzfree() const{return ui->rotzfree->isChecked();}
+
+bool TaskFemConstraintDisplacement::event(QEvent *e)
+{
+    // in case another instance takes key events, accept the overridden key event
+    if (e && e->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->modifiers() == Qt::NoModifier) {
+            if (kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                return true;
+            }
+        }
+    }
+    // if we have a Del key, trigger the deleteAction
+    else if (e && e->type() == QEvent::KeyPress) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->key() == Qt::Key_Delete) {
+            if (deleteAction->isEnabled())
+                deleteAction->trigger();
+            return true;
+        }
+    }
+
+    return TaskFemConstraint::event(e);
+}
 
 void TaskFemConstraintDisplacement::changeEvent(QEvent *)
 {

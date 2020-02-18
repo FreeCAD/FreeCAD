@@ -38,6 +38,7 @@
 #include <QObject>
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
+#include <QKeyEvent>
 #include <QListWidgetItem>
 
 class Ui_TaskFemConstraintPlaneRotation;
@@ -60,10 +61,11 @@ private Q_SLOTS:
     void setSelection(QListWidgetItem* item);
 
 protected:
+    bool event(QEvent *e);
     void changeEvent(QEvent *e);
 
 private:
-    //void onSelectionChanged(const Gui::SelectionChanges& msg);
+    QAction* deleteAction;
     void updateUI();
     Ui_TaskFemConstraintPlaneRotation* ui;
 
