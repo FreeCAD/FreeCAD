@@ -38,6 +38,7 @@
 #include <QObject>
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
+#include <QKeyEvent>
 #include <QListWidgetItem>
 
 class Ui_TaskFemConstraintDisplacement;
@@ -48,7 +49,7 @@ class TaskFemConstraintDisplacement : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView, QWidget *parent = 0);
     ~TaskFemConstraintDisplacement();
     const std::string getReferences() const;
     double get_spinxDisplacement()const;
@@ -96,10 +97,10 @@ private Q_SLOTS:
     void setSelection(QListWidgetItem* item);
 
 protected:
+    bool event(QEvent *e); 
     void changeEvent(QEvent *e);
 
 private:
-    //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintDisplacement* ui;
 

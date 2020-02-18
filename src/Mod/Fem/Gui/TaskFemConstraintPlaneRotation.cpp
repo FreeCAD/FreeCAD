@@ -28,10 +28,11 @@
 #ifndef _PreComp_
 # include <sstream>
 
+# include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
-# include <QAction>
 
 # include <Precision.hxx>
 # include <TopoDS.hxx>
@@ -76,10 +77,9 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemCo
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
-    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
@@ -283,6 +283,10 @@ const std::string TaskFemConstraintPlaneRotation::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
+bool TaskFemConstraintPlaneRotation::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
+}
 
 void TaskFemConstraintPlaneRotation::changeEvent(QEvent *)
 {

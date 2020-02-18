@@ -31,10 +31,13 @@
 # include <Geom_Line.hxx>
 # include <Geom_Plane.hxx>
 # include <Precision.hxx>
-# include <QMessageBox>
+
 # include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
+
 # include <TopoDS.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
@@ -67,10 +70,9 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
-    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
@@ -574,6 +576,11 @@ bool TaskFemConstraintDisplacement::get_rotyfix() const{return ui->rotyfix->isCh
 bool TaskFemConstraintDisplacement::get_rotyfree() const{return ui->rotyfree->isChecked();}
 bool TaskFemConstraintDisplacement::get_rotzfix() const{return ui->rotzfix->isChecked();}
 bool TaskFemConstraintDisplacement::get_rotzfree() const{return ui->rotzfree->isChecked();}
+
+bool TaskFemConstraintDisplacement::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
+}
 
 void TaskFemConstraintDisplacement::changeEvent(QEvent *)
 {

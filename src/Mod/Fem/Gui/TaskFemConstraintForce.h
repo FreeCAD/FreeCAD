@@ -32,6 +32,8 @@
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintForce.h"
 
+#include <QKeyEvent>
+
 class Ui_TaskFemConstraintForce;
 
 namespace App {
@@ -65,6 +67,7 @@ private Q_SLOTS:
     void onCheckReverse(bool);
 
 protected:
+    bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
 
 private:

@@ -32,6 +32,8 @@
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintBearing.h"
 
+#include <QKeyEvent>
+
 class Ui_TaskFemConstraintBearing;
 
 namespace App {
@@ -66,6 +68,7 @@ private Q_SLOTS:
     void onCheckAxial(bool);
 
 protected:
+    bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 

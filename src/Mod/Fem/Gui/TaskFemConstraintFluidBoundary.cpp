@@ -28,10 +28,11 @@
 #ifndef _PreComp_
 # include <sstream>
 
+# include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
-# include <QAction>
 
 # include <Precision.hxx>
 # include <TopoDS.hxx>
@@ -139,12 +140,9 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    // Create a context menu for the listview of the references
-    QAction* action = new QAction(tr("Delete"), ui->listReferences);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onReferenceDeleted()));
-    ui->listReferences->addAction(action);
-    ui->listReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->listReferences);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->comboBoundaryType, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onBoundaryTypeChanged(void)));
@@ -798,6 +796,11 @@ bool TaskFemConstraintFluidBoundary::getReverse() const
 TaskFemConstraintFluidBoundary::~TaskFemConstraintFluidBoundary()
 {
     delete ui;
+}
+
+bool TaskFemConstraintFluidBoundary::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintFluidBoundary::changeEvent(QEvent *e)

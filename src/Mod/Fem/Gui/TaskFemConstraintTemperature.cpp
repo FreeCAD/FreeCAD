@@ -37,9 +37,9 @@
 # include <gp_Pln.hxx>
 
 # include <sstream>
-
-# include <QMessageBox>
 # include <QAction>
+# include <QMessageBox>
+# include <QKeyEvent>
 # include <QRegExp>
 # include <QTextStream>
 #endif
@@ -69,10 +69,9 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
-    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
@@ -328,6 +327,11 @@ std::string TaskFemConstraintTemperature::get_constraint_type(void) const {
         type = "\"CFlux\"";
     }
     return type;
+}
+
+bool TaskFemConstraintTemperature::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintTemperature::changeEvent(QEvent *)

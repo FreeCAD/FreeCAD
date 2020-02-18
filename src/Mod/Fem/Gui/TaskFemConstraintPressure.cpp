@@ -33,9 +33,9 @@
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
-
-# include <QMessageBox>
 # include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
 
@@ -67,10 +67,9 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPr
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
-    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
@@ -281,7 +280,11 @@ bool TaskFemConstraintPressure::get_Reverse() const
 {
     return ui->checkBoxReverse->isChecked();
 }
-/* */
+
+bool TaskFemConstraintPressure::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
+}
 
 void TaskFemConstraintPressure::changeEvent(QEvent *)
 {
