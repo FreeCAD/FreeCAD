@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
 # include <QApplication>
 # include <QListWidget>
 # include <QListWidgetItem>
@@ -209,6 +210,52 @@ void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
 void TaskDressUpParameters::itemClickedTimeout() {
     // executed after double-click time passed
     wasDoubleClicked = false;
+}
+
+void TaskDressUpParameters::createDeleteAction(QListWidget* parentList, QWidget* parentButton)
+{
+    // creates a context menu, a shortcutt for it and connects it to e slot function
+
+    deleteAction = new QAction(tr("Remove"), this);
+    deleteAction->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    deleteAction->setShortcutVisibleInContextMenu(true);
+#endif
+    parentList->addAction(deleteAction);
+    // if there is only one item, it cannot be deleted
+    if (parentList->count() == 1) {
+        deleteAction->setEnabled(false);
+        deleteAction->setStatusTip(tr("There must be at least one item"));
+        parentButton->setEnabled(false);
+        parentButton->setToolTip(tr("There must be at least one item"));
+    }
+    parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+bool TaskDressUpParameters::KeyEvent(QEvent *e)
+{
+    // in case another instance takes key events, accept the overridden key event
+    if (e && e->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->modifiers() == Qt::NoModifier) {
+            if (kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                return true;
+            }
+        }
+    }
+    // if we have a Del key, trigger the deleteAction
+    else if (e && e->type() == QEvent::KeyPress) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->key() == Qt::Key_Delete) {
+            if (deleteAction->isEnabled())
+                deleteAction->trigger();
+            return true;
+        }
+    }
+
+    return TaskDressUpParameters::event(e);
 }
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const
