@@ -226,6 +226,7 @@ TaskFilletParameters::~TaskFilletParameters()
 
 bool TaskFilletParameters::event(QEvent *e)
 {
+    // in case another instance takes key events, accept the overridden key event
     if (e && e->type() == QEvent::ShortcutOverride) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
         if (kevent->modifiers() == Qt::NoModifier) {
@@ -235,6 +236,7 @@ bool TaskFilletParameters::event(QEvent *e)
             }
         }
     }
+    // if we have a Del key, trigger the deleteAction
     else if (e && e->type() == QEvent::KeyPress) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
         if (kevent->key() == Qt::Key_Delete) {

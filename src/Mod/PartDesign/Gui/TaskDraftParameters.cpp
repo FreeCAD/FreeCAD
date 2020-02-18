@@ -27,6 +27,7 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QAction>
+# include <QKeyEvent>
 # include <QListWidget>
 # include <QMessageBox>
 #endif
@@ -100,21 +101,21 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
         this, SLOT(onButtonLine(bool)));
 
     // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
+    deleteAction = new QAction(tr("Remove"), this);
+    deleteAction->setShortcut(QKeySequence::Delete);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
+    deleteAction->setShortcutVisibleInContextMenu(true);
 #endif
-    ui->listWidgetReferences->addAction(action);
+    ui->listWidgetReferences->addAction(deleteAction);
     // if there is only one item, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
-        action->setEnabled(false);
-        action->setStatusTip(tr("There must be at least one item"));
+        deleteAction->setEnabled(false);
+        deleteAction->setStatusTip(tr("There must be at least one item"));
         ui->buttonRefRemove->setEnabled(false);
         ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
     }
-    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
@@ -141,13 +142,12 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            QAction *action = ui->listWidgetReferences->actions().at(0); // we have only one action
             if (selectionMode == refAdd) {
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
                 // it might be the second one so we can enable the context menu
                 if (ui->listWidgetReferences->count() > 1) {
-                    action->setEnabled(true);
-                    action->setStatusTip(QString());
+                    deleteAction->setEnabled(true);
+                    deleteAction->setStatusTip(QString());
                     ui->buttonRefRemove->setEnabled(true);
                     ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
                 }
@@ -158,8 +158,8 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 Gui::Selection().clearSelection();
                 // if there is only one item left, it cannot be deleted
                 if (ui->listWidgetReferences->count() == 1) {
-                    action->setEnabled(false);
-                    action->setStatusTip(tr("There must be at least one item"));
+                    deleteAction->setEnabled(false);
+                    deleteAction->setStatusTip(tr("There must be at least one item"));
                     ui->buttonRefRemove->setEnabled(false);
                     ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
                     // we must also end the selection mode
@@ -269,9 +269,8 @@ void TaskDraftParameters::onRefDeleted(void)
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
-        QAction *action = ui->listWidgetReferences->actions().at(0); // we have only one action
-        action->setEnabled(false);
-        action->setStatusTip(tr("There must be at least one item"));
+        deleteAction->setEnabled(false);
+        deleteAction->setStatusTip(tr("There must be at least one item"));
         ui->buttonRefRemove->setEnabled(false);
         ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
     }
@@ -328,6 +327,31 @@ TaskDraftParameters::~TaskDraftParameters()
     Gui::Selection().rmvSelectionGate();
 
     delete ui;
+}
+
+bool TaskDraftParameters::event(QEvent *e)
+{
+    // in case another instance takes key events, accept the overridden key event
+    if (e && e->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->modifiers() == Qt::NoModifier) {
+            if (kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                return true;
+            }
+        }
+    }
+    // if we have a Del key, trigger the deleteAction
+    else if (e && e->type() == QEvent::KeyPress) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->key() == Qt::Key_Delete) {
+            if (deleteAction->isEnabled())
+                deleteAction->trigger();
+            return true;
+        }
+    }
+
+    return TaskDressUpParameters::event(e);
 }
 
 void TaskDraftParameters::changeEvent(QEvent *e)
