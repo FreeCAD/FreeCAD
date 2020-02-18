@@ -39,6 +39,8 @@ from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
@@ -208,6 +210,11 @@ class _TaskPanelFemResultShow:
             self.peeq_selected
         )
 
+        # stats
+        self.result_widget.show_histogram.clicked.connect(
+            self.show_histogram_clicked
+        )
+
         # displacement
         QtCore.QObject.connect(
             self.result_widget.cb_show_displacement,
@@ -228,9 +235,7 @@ class _TaskPanelFemResultShow:
         )
 
         # user defined equation
-        QtCore.QObject.connect(
-            self.result_widget.user_def_eq,
-            QtCore.SIGNAL("textchanged()"),
+        self.result_widget.user_def_eq.textChanged.connect(
             self.user_defined_text
         )
         QtCore.QObject.connect(
@@ -331,8 +336,10 @@ class _TaskPanelFemResultShow:
 
     def none_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "None"
-        self.set_result_stats("mm", 0.0, 0.0, 0.0)
+        self.set_result_stats("mm", 0.0, 0.0)
         self.reset_mesh_color()
+        if len(plt.get_fignums()) > 0:
+            plt.close()
 
     # if an analysis has different result types and one has
     # stress and the other not the restore result dialog
@@ -434,6 +441,9 @@ class _TaskPanelFemResultShow:
             self.result_widget.rb_none.setChecked(True)
             self.none_selected(True)
 
+    def show_histogram_clicked(self):
+        plt.show()
+
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
         self.result_widget.user_def_eq.toPlainText()
@@ -496,6 +506,8 @@ class _TaskPanelFemResultShow:
         self.restore_result_dialog()
         userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
 
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=42425&start=10#p368774 ff
+        # https://github.com/FreeCAD/FreeCAD/pull/3020
         from ply import lex
         from ply import yacc
         import femtools.tokrules as tokrules
@@ -519,9 +531,8 @@ class _TaskPanelFemResultShow:
         if UserDefinedFormula:
             self.result_obj.UserDefined = UserDefinedFormula
             minm = min(UserDefinedFormula)
-            avg = sum(UserDefinedFormula) / len(UserDefinedFormula)
             maxm = max(UserDefinedFormula)
-            self.update_colors_stats(UserDefinedFormula, "", minm, avg, maxm)
+            self.update_colors_stats(UserDefinedFormula, "", minm, maxm)
 
         # Dummy use of the variables to get around flake8 error
         del x, y, z, T, vM, Peeq, P1, P2, P3
@@ -538,24 +549,32 @@ class _TaskPanelFemResultShow:
 
     def result_selected(self, res_type, res_values, res_unit):
         FreeCAD.FEM_dialog["results_type"] = res_type
-        (minm, avg, maxm) = self.get_result_stats(res_type)
-        self.update_colors_stats(res_values, res_unit, minm, avg, maxm)
+        (minm, maxm) = self.get_result_stats(res_type)
+        self.update_colors_stats(res_values, res_unit, minm, maxm)
 
-    def update_colors_stats(self, res_values, res_unit, minm, avg, maxm):
+        if len(plt.get_fignums()) > 0:
+            plt.close()
+        plt.hist(res_values, bins=50, alpha=0.5, facecolor="blue")
+        plt.xlabel(res_unit)
+        plt.title("Histogram of {}".format(res_type))
+        plt.ylabel("Nodes")
+        plt.grid(True)
+        fig_manager = plt.get_current_fig_manager()
+        fig_manager.window.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)    # stay ontop
+
+    def update_colors_stats(self, res_values, res_unit, minm, maxm):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeColorByScalars(
                 self.result_obj.NodeNumbers,
                 res_values
             )
-        self.set_result_stats(res_unit, minm, avg, maxm)
+        self.set_result_stats(res_unit, minm, maxm)
         QtGui.QApplication.restoreOverrideCursor()
 
-    def set_result_stats(self, unit, minm, avg, maxm):
+    def set_result_stats(self, unit, minm, maxm):
         self.result_widget.le_min.setProperty("unit", unit)
         self.result_widget.le_min.setProperty("rawText", "{:.6} {}".format(minm, unit))
-        self.result_widget.le_avg.setProperty("unit", unit)
-        self.result_widget.le_avg.setProperty("rawText", "{:.6} {}".format(avg, unit))
         self.result_widget.le_max.setProperty("unit", unit)
         self.result_widget.le_max.setProperty("rawText", "{:.6} {}".format(maxm, unit))
 
@@ -618,7 +637,7 @@ class _TaskPanelFemResultShow:
         DisplacementLengths --> rb_abs_displacement
         DisplacementVectors --> rb_x_displacement, rb_y_displacement, rb_z_displacement
         Temperature         --> rb_temperature
-        vonMises        --> rb_vm_stress
+        vonMises            --> rb_vm_stress
         PrincipalMax        --> rb_maxprin
         PrincipalMin        --> rb_minprin
         MaxShear            --> rb_max_shear_stress
@@ -679,6 +698,7 @@ class _TaskPanelFemResultShow:
 
     def reject(self):
         self.reset_result_mesh()
+        plt.close()
         # if the tasks panel is called from Command obj is not in edit mode
         # thus reset edit does not close the dialog, maybe don't call but set in edit instead
         FreeCADGui.Control.closeDialog()

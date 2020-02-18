@@ -27,6 +27,8 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QAction>
+# include <QListWidget>
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskDraftParameters.h"
@@ -115,7 +117,7 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
     connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
         this, SLOT(doubleClicked(QListWidgetItem*)));
@@ -131,6 +133,9 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidg
 
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // executed when the user selected something in the CAD object
+    // adds/deletes the selection accordingly
+
     if (selectionMode == none)
         return;
 
@@ -232,18 +237,35 @@ void TaskDraftParameters::onRefDeleted(void)
     // assure we we are not in selection mode
     exitSelectionMode();
     clearButtons(none);
-    // delete any selections since the reference might be highlighted
+    // delete any selections since the reference(s) might be highlighted
     Gui::Selection().clearSelection();
     DressUpView->highlightReferences(false);
 
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
-    App::DocumentObject* base = pcDraft->Base.getValue();
-    std::vector<std::string> faces = pcDraft->Base.getSubValues();
-    faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
-    setupTransaction();
-    pcDraft->Base.setValue(base, faces);
-    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
-    pcDraft->getDocument()->recomputeFeature(pcDraft);
+    // get the list of items to be deleted
+    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
+
+    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
+    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()) {
+        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
+        return;
+    }
+
+    // delete the selection backwards to assure the list index keeps valid for the deletion
+    for (int i = selectedList.count() - 1; i > -1; i--) {
+        // get the fillet object
+        PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+        App::DocumentObject* base = pcDraft->Base.getValue();
+        // get all fillet references
+        std::vector<std::string> refs = pcDraft->Base.getSubValues();
+        // the ref index is the same as the listWidgetReferences index
+        // so we can erase using the row number of the element to be deleted
+        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
+        refs.erase(refs.begin() + rowNumber);
+        setupTransaction();
+        pcDraft->Base.setValue(base, refs);
+        ui->listWidgetReferences->model()->removeRow(rowNumber);
+        pcDraft->getDocument()->recomputeFeature(pcDraft);
+    }
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {

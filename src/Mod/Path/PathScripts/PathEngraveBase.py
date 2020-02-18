@@ -59,7 +59,7 @@ class ObjectOp(PathOp.ObjectOp):
         zValues.append(obj.FinalDepth.Value)
         return zValues
 
-    def buildpathocc(self, obj, wires, zValues, relZ=False):
+    def buildpathocc(self, obj, wires, zValues, relZ=False, forward=True):
         '''buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands.'''
         PathLog.track(obj.Label, len(wires), zValues)
 
@@ -70,7 +70,7 @@ class ObjectOp(PathOp.ObjectOp):
             if hasattr(obj, 'StartVertex'):
                 offset = DraftGeomUtils.rebaseWire(offset, obj.StartVertex)
 
-            edges = copy.copy(PathOpTools.orientWire(offset).Edges)
+            edges = copy.copy(PathOpTools.orientWire(offset, forward).Edges)
             last = None
 
             for z in zValues:

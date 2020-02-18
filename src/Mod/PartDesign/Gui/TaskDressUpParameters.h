@@ -63,11 +63,13 @@ protected Q_SLOTS:
     void onButtonRefRemove(const bool checked);
     void doubleClicked(QListWidgetItem* item);
     void setSelection(QListWidgetItem* current);
+    void itemClickedTimeout();
     virtual void onRefDeleted(void) = 0;
 
 protected:
     void exitSelectionMode();
     bool referenceSelected(const Gui::SelectionChanges& msg);
+    bool wasDoubleClicked = false;
 
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };
