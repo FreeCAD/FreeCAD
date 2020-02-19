@@ -442,7 +442,13 @@ class _TaskPanelFemResultShow:
             self.none_selected(True)
 
     def show_histogram_clicked(self):
-        plt.show()
+        if len(plt.get_fignums()) > 0:
+            plt.show()
+        else:
+            QtGui.QMessageBox.information(None,
+                self.result_obj.Label + " - Information",
+                "No histogram available.\nPlease select a result type first."
+            )
 
     def user_defined_text(self, equation):
         FreeCAD.FEM_dialog["results_type"] = "user"
