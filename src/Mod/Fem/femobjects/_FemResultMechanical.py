@@ -286,7 +286,7 @@ class _FemResultMechanical():
 
         # initialize the Stats with the appropriate count of items
         # see fill_femresult_stats in femresult/resulttools.py
-        zero_list = 39 * [0]
+        zero_list = 26 * [0]
         obj.Stats = zero_list
 
     # standard Feature methods
@@ -314,6 +314,14 @@ class _FemResultMechanical():
             )
             obj.vonMises = obj.StressValues
             obj.removeProperty("StressValues")
+
+        # migrate old result objects, because property "Stats"
+        # consisting of min, avg, max values was reduced to min, max in commit ???????
+        if len(obj.Stats) == 39:
+            temp = obj.Stats
+            for i in range(12, -1, -1):
+                del temp [3 * i + 1]
+            obj.Stats = temp
 
     def __getstate__(self):
         return self.Type
