@@ -284,7 +284,7 @@
          </widget>
         </item>
         <item row="5" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize" native="true">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -294,7 +294,7 @@
           <property name="toolTip">
            <string>Dimension font size</string>
           </property>
-          <property name="value" stdset="0">
+          <property name="value">
            <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -306,7 +306,7 @@
          </widget>
         </item>
         <item row="8" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize" native="true">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -316,7 +316,7 @@
           <property name="toolTip">
            <string>Dimension arrowhead size</string>
           </property>
-          <property name="value" stdset="0">
+          <property name="value">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -821,20 +821,23 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
           <property name="prefEntry" stdset="0">
-           <cstring>SectionLineStyle</cstring>
+           <cstring>SectionLineStandard</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
+           <cstring>Mod/TechDraw/Standards</cstring>
           </property>
           <item>
            <property name="text">
-            <string>ISO</string>
+            <string>ANSI</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>ANSI</string>
+            <string>ISO</string>
            </property>
           </item>
          </widget>
