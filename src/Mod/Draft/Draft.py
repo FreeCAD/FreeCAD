@@ -1,73 +1,77 @@
 # -*- coding: utf-8 -*-
-#***************************************************************************
-#*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
-#*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+"""Provide the Draft Workbench public programming interface.
 
-#from __future__ import division
-
-__title__="FreeCAD Draft Workbench"
-__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Daniel Falck"
-__url__ = "https://www.freecadweb.org"
-
+The Draft module offers tools to create and manipulate 2D objects.
+The functions in this file must be usable without requiring the
+graphical user interface.
+These functions can be used as the backend for the graphical commands
+defined in `DraftTools.py`.
+"""
 ## \addtogroup DRAFT
 #  \brief Create and manipulate basic 2D objects
 #
-#  This module offers a range of tools to create and manipulate basic 2D objects
+#  This module offers tools to create and manipulate basic 2D objects
 #
-#  The module allows to create 2D geometric objects such as line, rectangle, circle,
-#  etc, modify these objects by moving, scaling or rotating them, and offers a couple of
-#  other utilities to manipulate further these objects, such as decompose them (downgrade)
-#  into smaller elements.
+#  The module allows to create 2D geometric objects such as line, rectangle,
+#  circle, etc., modify these objects by moving, scaling or rotating them,
+#  and offers a couple of other utilities to manipulate further these objects,
+#  such as decompose them (downgrade) into smaller elements.
 #
 #  The functionality of the module is divided into GUI tools, usable from the
-#  FreeCAD interface, and corresponding python functions, that can perform the same
-#  operation programmatically.
+#  visual interface, and corresponding python functions, that can perform
+#  the same operation programmatically.
 #
 #  @{
 
-"""The Draft module offers a range of tools to create and manipulate basic 2D objects"""
-
-import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
-import DraftGeomUtils
-import draftutils.translate
-from FreeCAD import Vector
+import math
+import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD
+from FreeCAD import Vector
+
+import DraftVecUtils
+import WorkingPlane
+from draftutils.translate import translate
 
 if FreeCAD.GuiUp:
-    import FreeCADGui, Draft_rc
-    from PySide import QtCore
+    import FreeCADGui
+    import Draft_rc
     gui = True
-    #from DraftGui import translate
+    # To prevent complaints from code checkers (flake8)
+    True if Draft_rc.__name__ else False
 else:
-    # def QT_TRANSLATE_NOOP(ctxt,txt):
-    #     return txt
-    #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
 
-translate = draftutils.translate.translate
+__title__ = "FreeCAD Draft Workbench"
+__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
+              "Dmitry Chigrin, Daniel Falck")
+__url__ = "https://www.freecadweb.org"
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Backwards compatibility
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 import DraftLayer
 _VisGroup = DraftLayer.Layer
@@ -78,9 +82,9 @@ makeLayer = DraftLayer.makeLayer
 # Fillet = DraftFillet.Fillet
 # makeFillet = DraftFillet.makeFillet
 
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # General functions
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 import draftutils.utils
 import draftutils.gui_utils
 
