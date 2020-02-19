@@ -18547,7 +18547,7 @@ Evolumes
 ** Surfaces for tie constraint
 ** written by write_surfaces_constraints_tie function
 ** ConstraintTie
-*SURFACE, NAME=TIE_DEP1
+*SURFACE, NAME=TIE_DEPConstraintTie
 4834,S1
 4835,S1
 4890,S1
@@ -18570,7 +18570,7 @@ Evolumes
 9637,S1
 9877,S1
 10493,S2
-*SURFACE, NAME=TIE_IND1
+*SURFACE, NAME=TIE_INDConstraintTie
 4687,S4
 5445,S3
 5759,S4
@@ -18613,8 +18613,8 @@ Evolumes
 ** Tie Constraints
 ** written by write_constraints_tie function
 ** ConstraintTie
-*TIE, POSITION TOLERANCE=25, ADJUST=NO, NAME=TIE1
-TIE_DEP1,TIE_IND1
+*TIE, POSITION TOLERANCE=25, ADJUST=NO, NAME=TIEConstraintTie
+TIE_DEPConstraintTie,TIE_INDConstraintTie
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
@@ -18665,8 +18665,8 @@ RF
 ***********************************************************
 ** CalculiX Input file
 ** written by write_footer function
-**   written by    --> FreeCAD 0.19.19475 (Git)
-**   written on    --> Tue Feb  4 16:49:27 2020
+**   written by    --> FreeCAD 0.19.19481 (Git)
+**   written on    --> Wed Feb  5 08:55:37 2020
 **   file name     --> 
 **   analysis name --> Analysis
 **

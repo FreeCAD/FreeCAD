@@ -591,44 +591,24 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 f.write("{},S{}\n".format(i[0], i[1]))
 
     def write_surfaces_constraints_tie(self, f):
-        # get surface nodes and write them to file
+        # get faces
+        self.get_constraints_tie_faces()
+        # write faces to file
         f.write("\n***********************************************************\n")
         f.write("** Surfaces for tie constraint\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        obj = 0
         for femobj in self.tie_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
             tie_obj = femobj["Object"]
             f.write("** " + tie_obj.Label + "\n")
-            cnt = 0
-            obj = obj + 1
-            for o, elem_tup in tie_obj.References:
-                for elem in elem_tup:
-                    ref_shape = o.Shape.getElement(elem)
-                    cnt = cnt + 1
-                    if ref_shape.ShapeType == "Face":
-                        if cnt == 1:
-                            name = "TIE_DEP" + str(obj)
-                        else:
-                            name = "TIE_IND" + str(obj)
-                        f.write("*SURFACE, NAME=" + name + "\n")
-
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
-                        if len(v) > 0:
-                            # volume elements found
-                            FreeCAD.Console.PrintLog(
-                                "{}, surface {}, {} touching volume elements found\n"
-                                .format(tie_obj.Label, name, len(v))
-                            )
-                            for i in v:
-                                f.write("{},S{}\n".format(i[0], i[1]))
-                        else:
-                            # no volume elements found, shell elements not allowed
-                            FreeCAD.Console.PrintError(
-                                "{}, surface {}, Error: "
-                                "No volume elements found!\n"
-                                .format(tie_obj.Label, name)
-                            )
+            # slave DEP
+            f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
+            for i in femobj["TieSlaveFaces"]:
+                f.write("{},S{}\n".format(i[0], i[1]))
+            # master IND
+            f.write("*SURFACE, NAME=TIE_IND{}\n".format(tie_obj.Name))
+            for i in femobj["TieMasterFaces"]:
+                f.write("{},S{}\n".format(i[0], i[1]))
 
     def write_node_sets_constraints_transform(self, f):
         # get nodes
@@ -1065,19 +1045,17 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         f.write("\n***********************************************************\n")
         f.write("** Tie Constraints\n")
         f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
-        obj = 0
         for femobj in self.tie_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
-            obj = obj + 1
             tie_obj = femobj["Object"]
             f.write("** {}\n".format(tie_obj.Label))
             tolerance = str(tie_obj.Tolerance.getValueAs("mm")).rstrip()
             f.write(
                 "*TIE, POSITION TOLERANCE={}, ADJUST=NO, NAME=TIE{}\n"
-                .format(tolerance, obj)
+                .format(tolerance, tie_obj.Name)
             )
-            ind_surf = "TIE_IND" + str(obj)
-            dep_surf = "TIE_DEP" + str(obj)
+            ind_surf = "TIE_IND" + tie_obj.Name
+            dep_surf = "TIE_DEP" + tie_obj.Name
             f.write("{},{}\n".format(dep_surf, ind_surf))
 
     def write_constraints_planerotation(self, f):
