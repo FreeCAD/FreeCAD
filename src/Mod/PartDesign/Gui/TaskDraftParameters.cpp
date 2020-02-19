@@ -236,22 +236,28 @@ void TaskDraftParameters::onRefDeleted(void)
         return;
     }
 
+    // get the draft object
+    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+    App::DocumentObject* base = pcDraft->Base.getValue();
+    // get all draft references
+    std::vector<std::string> refs = pcDraft->Base.getSubValues();
+
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count() - 1; i > -1; i--) {
-        // get the fillet object
-        PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
-        App::DocumentObject* base = pcDraft->Base.getValue();
-        // get all fillet references
-        std::vector<std::string> refs = pcDraft->Base.getSubValues();
         // the ref index is the same as the listWidgetReferences index
         // so we can erase using the row number of the element to be deleted
         int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
+        // erase the reference
         refs.erase(refs.begin() + rowNumber);
         setupTransaction();
+        // update the object
         pcDraft->Base.setValue(base, refs);
+        // remove from the list
         ui->listWidgetReferences->model()->removeRow(rowNumber);
-        pcDraft->getDocument()->recomputeFeature(pcDraft);
     }
+
+    // recompute the feature
+    pcDraft->getDocument()->recomputeFeature(pcDraft);
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
