@@ -72,6 +72,7 @@ using namespace Gui;
 TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent,const char* pixmapname)
     : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent)
     , proxy(nullptr)
+    , deleteAction(nullptr)
     , ConstraintView(ConstraintView)
     , buttonBox(nullptr)
     , okButton(nullptr)
@@ -205,7 +206,7 @@ bool TaskFemConstraint::KeyEvent(QEvent *e)
     if (e && e->type() == QEvent::ShortcutOverride) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
         if (kevent->modifiers() == Qt::NoModifier) {
-            if (kevent->key() == Qt::Key_Delete) {
+            if (deleteAction && kevent->key() == Qt::Key_Delete) {
                 kevent->accept();
                 return true;
             }
@@ -215,7 +216,7 @@ bool TaskFemConstraint::KeyEvent(QEvent *e)
     else if (e && e->type() == QEvent::KeyPress) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
         if (kevent->key() == Qt::Key_Delete) {
-            if (deleteAction->isEnabled())
+            if (deleteAction && deleteAction->isEnabled())
                 deleteAction->trigger();
             return true;
         }

@@ -64,6 +64,7 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
               parent)
     , proxy(0)
     , DressUpView(DressUpView)
+    , deleteAction(nullptr)
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
 {
@@ -240,7 +241,7 @@ bool TaskDressUpParameters::KeyEvent(QEvent *e)
     if (e && e->type() == QEvent::ShortcutOverride) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
         if (kevent->modifiers() == Qt::NoModifier) {
-            if (kevent->key() == Qt::Key_Delete) {
+            if (deleteAction && kevent->key() == Qt::Key_Delete) {
                 kevent->accept();
                 return true;
             }
@@ -250,7 +251,7 @@ bool TaskDressUpParameters::KeyEvent(QEvent *e)
     else if (e && e->type() == QEvent::KeyPress) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
         if (kevent->key() == Qt::Key_Delete) {
-            if (deleteAction->isEnabled())
+            if (deleteAction && deleteAction->isEnabled())
                 deleteAction->trigger();
             return true;
         }

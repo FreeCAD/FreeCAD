@@ -69,7 +69,6 @@ protected Q_SLOTS:
     void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
 
 protected:
-    QAction* deleteAction;
     void exitSelectionMode();
     bool referenceSelected(const Gui::SelectionChanges& msg);
     bool wasDoubleClicked = false;
@@ -86,6 +85,7 @@ protected:
 protected:
     QWidget* proxy;
     ViewProviderDressUp *DressUpView;
+    QAction* deleteAction;
 
     bool allowFaces, allowEdges;
     selectionModes selectionMode;    
