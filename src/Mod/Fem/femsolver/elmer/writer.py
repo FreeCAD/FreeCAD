@@ -35,6 +35,7 @@ from FreeCAD import Units
 from FreeCAD import Console
 import Fem
 import femtools.femutils as femutils
+import femtools.membertools as membertools
 import femmesh.gmshtools as gmshtools
 from .. import settings
 from . import sifio
@@ -780,10 +781,10 @@ class Writer(object):
         self._builder.addSection(section)
 
     def _getMember(self, t):
-        return femutils.get_member(self.analysis, t)
+        return membertools.get_member(self.analysis, t)
 
     def _getSingleMember(self, t):
-        return femutils.get_single_member(self.analysis, t)
+        return membertools.get_single_member(self.analysis, t)
 
 
 class WriteError(Exception):

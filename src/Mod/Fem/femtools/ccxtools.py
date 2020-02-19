@@ -33,6 +33,7 @@ import sys
 import subprocess
 import FreeCAD
 import femtools.femutils as femutils
+import femtools.membertools as membertools
 from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
@@ -188,7 +189,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.purge_results()
 
     def _get_several_member(self, obj_type):
-        return femutils.get_several_member(self.analysis, obj_type)
+        return membertools.get_several_member(self.analysis, obj_type)
 
     def find_analysis(self):
         if FreeCAD.GuiUp:
@@ -245,7 +246,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
-        mesh, message = femutils.get_mesh_to_solve(self.analysis)
+        mesh, message = membertools.get_mesh_to_solve(self.analysis)
         if mesh is not None:
             self.mesh = mesh
         else:

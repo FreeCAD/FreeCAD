@@ -33,6 +33,7 @@ import os.path
 
 import FreeCAD
 import femtools.femutils as femutils
+import femtools.membertools as membertools
 import feminout.importCcxFrdResults as importCcxFrdResults
 import feminout.importCcxDatResults as importCcxDatResults
 
@@ -61,7 +62,7 @@ class Prepare(run.Prepare):
         w = writer.FemInputWriterCcx(
             self.analysis,
             self.solver,
-            femutils.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
+            membertools.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
             c.materials_linear,
             c.materials_nonlinear,
             c.constraints_fixed,
@@ -128,7 +129,7 @@ class Results(run.Results):
         self.load_results_ccxdat()
 
     def purge_results(self):
-        for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
+        for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
             if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
@@ -155,7 +156,7 @@ class Results(run.Results):
             raise Exception(
                 "FEM: No .dat results found at {}!".format(dat_result_file))
         if mode_frequencies:
-            for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
+            for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
                 if m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf["eigenmode"]:
@@ -231,6 +232,6 @@ class _Container(object):
         )
 
     def get_several_member(self, t):
-        return femutils.get_several_member(self.analysis, t)
+        return membertools.get_several_member(self.analysis, t)
 
 ##  @}

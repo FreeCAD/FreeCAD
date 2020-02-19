@@ -216,6 +216,7 @@ SET(FemTestsMesh_SRCS
 
 SET(FemTools_SRCS
     femtools/__init__.py
+    femtools/membertools.py
     femtools/ccxtools.py
     femtools/femutils.py
     femtools/tokrules.py
