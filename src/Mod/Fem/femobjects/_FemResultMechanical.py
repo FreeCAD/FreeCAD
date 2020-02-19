@@ -316,7 +316,7 @@ class _FemResultMechanical():
             obj.removeProperty("StressValues")
 
         # migrate old result objects, because property "Stats"
-        # consisting of min, avg, max values was reduced to min, max in commit ???????
+        # consisting of min, avg, max values was reduced to min, max in commit c2a57b3e
         if len(obj.Stats) == 39:
             temp = obj.Stats
             for i in range(12, -1, -1):
