@@ -35,6 +35,10 @@ __title__ = "Path Deburr Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Deburr operation page controller and command implementation."
+__contributors__ = "Schildkroet"
+__created__ = "2018"
+__scriptVersion__ = "1.1"
+__lastModified__ = "2020-02-19"
 
 LOGLEVEL = False
 
@@ -64,6 +68,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         iconRound.addFile(':/icons/edge-join-round.svg', state=QtGui.QIcon.On)
         self.form.joinMiter.setIcon(iconMiter)
         self.form.joinRound.setIcon(iconRound)
+        self.form.direction.addItem('CW')
+        self.form.direction.addItem('CCW')
 
     def getFields(self, obj):
         PathGui.updateInputField(obj, 'Width', self.form.value_W)
@@ -72,6 +78,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Join = 'Round'
         elif self.form.joinMiter.isChecked():
             obj.Join = 'Miter'
+		
+        if obj.Direction != str(self.form.direction.currentText()):
+            obj.Direction = str(self.form.direction.currentText())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -84,6 +93,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.joinRound.setChecked('Round' == obj.Join)
         self.form.joinMiter.setChecked('Miter' == obj.Join)
         self.form.joinFrame.hide()
+        self.selectInComboBox(obj.Direction, self.form.direction)
 
     def updateWidth(self):
         PathGui.updateInputField(self.obj, 'Width', self.form.value_W)
@@ -96,6 +106,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.joinMiter.clicked)
         signals.append(self.form.joinRound.clicked)
         signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.direction.currentIndexChanged)
         return signals
 
     def registerSignalHandlers(self, obj):
