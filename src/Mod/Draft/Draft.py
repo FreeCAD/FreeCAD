@@ -72,11 +72,9 @@ __url__ = "https://www.freecadweb.org"
 # ---------------------------------------------------------------------------
 # Backwards compatibility
 # ---------------------------------------------------------------------------
-
-import DraftLayer
-_VisGroup = DraftLayer.Layer
-_ViewProviderVisGroup = DraftLayer.ViewProviderLayer
-makeLayer = DraftLayer.makeLayer
+from DraftLayer import Layer as _VisGroup
+from DraftLayer import ViewProviderLayer as _ViewProviderVisGroup
+from DraftLayer import makeLayer
 
 # import DraftFillet
 # Fillet = DraftFillet.Fillet
@@ -85,94 +83,91 @@ makeLayer = DraftLayer.makeLayer
 # ---------------------------------------------------------------------------
 # General functions
 # ---------------------------------------------------------------------------
-import draftutils.utils
-import draftutils.gui_utils
+from draftutils.utils import ARROW_TYPES as arrowtypes
 
-arrowtypes = draftutils.utils.ARROW_TYPES
+from draftutils.utils import stringencodecoin
+from draftutils.utils import string_encode_coin
 
-stringencodecoin = draftutils.utils.string_encode_coin
-string_encode_coin = draftutils.utils.string_encode_coin
+from draftutils.utils import typecheck
+from draftutils.utils import type_check
 
-typecheck = draftutils.utils.type_check
-type_check = draftutils.utils.type_check
+from draftutils.utils import getParamType
+from draftutils.utils import get_param_type
 
-getParamType = draftutils.utils.get_param_type
-get_param_type = draftutils.utils.get_param_type
+from draftutils.utils import getParam
+from draftutils.utils import get_param
 
-getParam = draftutils.utils.get_param
-get_param = draftutils.utils.get_param
+from draftutils.utils import setParam
+from draftutils.utils import set_param
 
-setParam = draftutils.utils.set_param
-set_param = draftutils.utils.set_param
+from draftutils.utils import precision
+from draftutils.utils import tolerance
+from draftutils.utils import epsilon
 
-precision = draftutils.utils.precision
-tolerance = draftutils.utils.tolerance
-epsilon = draftutils.utils.epsilon
+from draftutils.utils import getRealName
+from draftutils.utils import get_real_name
 
-getRealName = draftutils.utils.get_real_name
-get_real_name = draftutils.utils.get_real_name
+from draftutils.utils import getType
+from draftutils.utils import get_type
 
-getType = draftutils.utils.get_type
-get_type = draftutils.utils.get_type
+from draftutils.utils import getObjectsOfType
+from draftutils.utils import get_objects_of_type
 
-getObjectsOfType = draftutils.utils.get_objects_of_type
-get_objects_of_type = draftutils.utils.get_objects_of_type
+from draftutils.utils import isClone
+from draftutils.utils import is_clone
 
-get3DView = draftutils.gui_utils.get_3d_view
-get_3d_view = draftutils.gui_utils.get_3d_view
+from draftutils.utils import getGroupNames
+from draftutils.utils import get_group_names
 
-isClone = draftutils.utils.is_clone
-is_clone = draftutils.utils.is_clone
+from draftutils.utils import ungroup
 
-getGroupNames = draftutils.utils.get_group_names
-get_group_names = draftutils.utils.get_group_names
+from draftutils.utils import getGroupContents
+from draftutils.utils import get_group_contents
 
-ungroup = draftutils.utils.ungroup
+from draftutils.utils import printShape
+from draftutils.utils import print_shape
 
-autogroup = draftutils.gui_utils.autogroup
+from draftutils.utils import compareObjects
+from draftutils.utils import compare_objects
 
-dimSymbol = draftutils.gui_utils.dim_symbol
-dim_symbol = draftutils.gui_utils.dim_symbol
+from draftutils.utils import shapify
 
-dimDash = draftutils.gui_utils.dim_dash
-dim_dash = draftutils.gui_utils.dim_dash
+from draftutils.utils import loadSvgPatterns
+from draftutils.utils import load_svg_patterns
 
-shapify = draftutils.utils.shapify
+from draftutils.utils import svgpatterns
+from draftutils.utils import svg_patterns
 
-getGroupContents = draftutils.utils.get_group_contents
-get_group_contents = draftutils.utils.get_group_contents
+from draftutils.utils import getMovableChildren
+from draftutils.utils import get_movable_children
 
-removeHidden = draftutils.gui_utils.remove_hidden
-remove_hidden = draftutils.gui_utils.remove_hidden
+from draftutils.gui_utils import get3DView
+from draftutils.gui_utils import get_3d_view
 
-printShape = draftutils.utils.print_shape
-print_shape = draftutils.utils.print_shape
+from draftutils.gui_utils import autogroup
 
-compareObjects = draftutils.utils.compare_objects
-compare_objects = draftutils.utils.compare_objects
+from draftutils.gui_utils import dimSymbol
+from draftutils.gui_utils import dim_symbol
 
-formatObject = draftutils.gui_utils.format_object
-format_object = draftutils.gui_utils.format_object
+from draftutils.gui_utils import dimDash
+from draftutils.gui_utils import dim_dash
 
-getSelection = draftutils.gui_utils.get_selection
-get_selection = draftutils.gui_utils.get_selection
+from draftutils.gui_utils import removeHidden
+from draftutils.gui_utils import remove_hidden
 
-getSelectionEx = draftutils.gui_utils.get_selection_ex
-get_selection_ex = draftutils.gui_utils.get_selection_ex
+from draftutils.gui_utils import formatObject
+from draftutils.gui_utils import format_object
 
-select = draftutils.gui_utils.select
+from draftutils.gui_utils import getSelection
+from draftutils.gui_utils import get_selection
 
-loadSvgPatterns = draftutils.utils.load_svg_patterns
-load_svg_patterns = draftutils.utils.load_svg_patterns
+from draftutils.gui_utils import getSelectionEx
+from draftutils.gui_utils import get_selection_ex
 
-svgpatterns = draftutils.utils.svg_patterns
-svg_patterns = draftutils.utils.svg_patterns
+from draftutils.gui_utils import select
 
-loadTexture = draftutils.gui_utils.load_texture
-load_texture = draftutils.gui_utils.load_texture
-
-getMovableChildren = draftutils.utils.get_movable_children
-get_movable_children = draftutils.utils.get_movable_children
+from draftutils.gui_utils import loadTexture
+from draftutils.gui_utils import load_texture
 
 
 def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):
@@ -3879,6 +3874,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         return mode
 
     def is_linked_to_circle(self):
+        import DraftGeomUtils
         _obj = self.Object
         if _obj.LinkedGeometry and len(_obj.LinkedGeometry) == 1:
             lobj = _obj.LinkedGeometry[0][0]
