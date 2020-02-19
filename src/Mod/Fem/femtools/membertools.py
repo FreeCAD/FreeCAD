@@ -146,3 +146,149 @@ def get_mesh_to_solve(analysis):
         return (mesh_to_solve, "")
     else:
         return (None, "FEM: no mesh object found in analysis.")
+
+
+class AnalysisMember():
+
+    def __init__(self, analysis):
+        self.analysis = analysis
+        """
+        # members of the analysis. All except solvers and the mesh
+
+        materials:
+        materials_linear : list of dictionaries
+            list of nonlinear materials from the analysis.
+            [{"Object":materials_linear}, {}, ...]
+
+        materials_nonlinear : list of dictionaries
+            list of nonlinear materials from the analysis.
+            [{"Object":materials_nonlinear}, {}, ...]
+
+        geometries:
+        beam_sections : list of dictionaries
+            list of beam sections from the analysis.
+            [{"Object":beam_section_obj, "xxxxxxxx":value}, {}, ...]
+
+        beam_rotations :  list of dictionaries
+            list of beam rotations from the analysis.
+            [{"Object":beam_rotation_obj, "xxxxxxxx":value}, {}, ...]
+
+        fluid_sections : list of dictionaries
+            list of fluid sections from the analysis.
+            [{"Object":fluid_section_obj, "xxxxxxxx":value}, {}, ...]
+
+        shell_thicknesses : list of dictionaries
+            list of shell thicknesses from the analysis.
+            [{"Object":shell_thickness_obj, "xxxxxxxx":value}, {}, ...]
+
+        constraints:
+        constraints_contact : list of dictionaries
+            list of contact constraints from the analysis.
+            [{"Object":contact_obj, "xxxxxxxx":value}, {}, ...]
+
+        constraints_displacement : list of dictionaries
+            list of displacements for the analysis.
+            [{"Object":displacement_obj, "xxxxxxxx":value}, {}, ...]
+
+        constraints_fixed :  list of dictionaries
+            list of fixed constraints from the analysis.
+            [{"Object":fixed_obj, "NodeSupports":bool}, {}, ...]
+
+        constraints_force : list of dictionaries
+            list of force constraints from the analysis.
+            [{"Object":force_obj, "NodeLoad":value}, {}, ...
+
+        constraints_heatflux : list of dictionaries
+            list of heatflux constraints for the analysis.
+            [{"Object":heatflux_obj, "xxxxxxxx":value}, {}, ...]
+
+        constraints_initialtemperature : list of dictionaries
+            list of initial temperatures for the analysis.
+            [{"Object":initialtemperature_obj, "xxxxxxxx":value}, {}, ...]
+
+        constraints_planerotation : list of dictionaries
+            list of plane rotation constraints from the analysis.
+            [{"Object":planerotation_obj, "xxxxxxxx":value}, {}, ...]
+
+        constraints_pressure : list of dictionaries
+            list of pressure constraints from the analysis.
+            [{"Object":pressure_obj, "xxxxxxxx":value}, {}, ...]
+
+        constraints_selfweight : list of dictionaries
+            list of selfweight constraints from the analysis.
+            [{"Object":selfweight_obj, "xxxxxxxx":value}, {}, ...]
+
+        constraints_temperature : list of dictionaries
+            [{"Object":temerature_obj, "xxxxxxxx":value}, {}, ...]
+            list of temperatures for the analysis.
+
+        constraints_transform : list of dictionaries
+            list of transform constraints from the analysis.
+            [{"Object":transform_obj, "xxxxxxxx":value}, {}, ...]
+        """
+
+        # get member
+        # materials
+        std_mats = self.get_several_member(
+            "Fem::Material"
+        )
+        rei_mats = self.get_several_member(
+            "Fem::MaterialReinforced"
+        )
+        self.mats_linear = std_mats + rei_mats
+
+        self.mats_nonlinear = self.get_several_member(
+            "Fem::MaterialMechanicalNonlinear"
+        )
+
+        # geometries
+        self.geos_beamsection = self.get_several_member(
+            "Fem::FemElementGeometry1D"
+        )
+        self.geos_beamrotation = self.get_several_member(
+            "Fem::FemElementRotation1D"
+        )
+        self.geos_fluidsection = self.get_several_member(
+            "Fem::FemElementFluid1D"
+        )
+        self.geos_shellthickness = self.get_several_member(
+            "Fem::FemElementGeometry2D"
+        )
+
+        # constraints
+        self.cons_contact = self.get_several_member(
+            "Fem::ConstraintContact"
+        )
+        self.cons_displacement = self.get_several_member(
+            "Fem::ConstraintDisplacement"
+        )
+        self.cons_fixed = self.get_several_member(
+            "Fem::ConstraintFixed"
+        )
+        self.cons_force = self.get_several_member(
+            "Fem::ConstraintForce"
+        )
+        self.cons_heatflux = self.get_several_member(
+            "Fem::ConstraintHeatflux"
+        )
+        self.cons_initialtemperature = self.get_several_member(
+            "Fem::ConstraintInitialTemperature"
+        )
+        self.cons_planerotation = self.get_several_member(
+            "Fem::ConstraintPlaneRotation"
+        )
+        self.cons_pressure = self.get_several_member(
+            "Fem::ConstraintPressure"
+        )
+        self.cons_selfweight = self.get_several_member(
+            "Fem::ConstraintSelfWeight"
+        )
+        self.cons_temperature = self.get_several_member(
+            "Fem::ConstraintTemperature"
+        )
+        self.cons_transform = self.get_several_member(
+            "Fem::ConstraintTransform"
+        )
+
+    def get_several_member(self, t):
+        return get_several_member(self.analysis, t)

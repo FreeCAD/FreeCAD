@@ -58,28 +58,28 @@ class Prepare(run.Prepare):
     def run(self):
         global _inputFileName
         self.pushStatus("Preparing input files...\n")
-        c = _Container(self.analysis)
+        c = membertools.AnalysisMember(self.analysis)
         w = writer.FemInputWriterCcx(
             self.analysis,
             self.solver,
             membertools.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
-            c.materials_linear,
-            c.materials_nonlinear,
-            c.constraints_fixed,
-            c.constraints_displacement,
-            c.constraints_contact,
-            c.constraints_planerotation,
-            c.constraints_transform,
-            c.constraints_selfweight,
-            c.constraints_force,
-            c.constraints_pressure,
-            c.constraints_temperature,
-            c.constraints_heatflux,
-            c.constraints_initialtemperature,
-            c.beam_sections,
-            c.beam_rotations,
-            c.shell_thicknesses,
-            c.fluid_sections,
+            c.mats_linear,
+            c.mats_nonlinear,
+            c.cons_fixed,
+            c.cons_displacement,
+            c.cons_contact,
+            c.cons_planerotation,
+            c.cons_transform,
+            c.cons_selfweight,
+            c.cons_force,
+            c.cons_pressure,
+            c.cons_temperature,
+            c.cons_heatflux,
+            c.cons_initialtemperature,
+            c.geos_beamsection,
+            c.geos_beamrotation,
+            c.geos_shellthickness,
+            c.geos_fluidsection,
             self.directory
         )
         path = w.write_calculix_input_file()
@@ -161,77 +161,5 @@ class Results(run.Results):
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf["eigenmode"]:
                             m.EigenmodeFrequency = mf["frequency"]
-
-
-class _Container(object):
-
-    def __init__(self, analysis):
-        self.analysis = analysis
-
-        # get member
-        # materials
-        std_mats = self.get_several_member(
-            "Fem::Material"
-        )
-        rei_mats = self.get_several_member(
-            "Fem::MaterialReinforced"
-        )
-        self.materials_linear = std_mats + rei_mats
-
-        self.materials_nonlinear = self.get_several_member(
-            "Fem::MaterialMechanicalNonlinear"
-        )
-
-        # geometries
-        self.beam_sections = self.get_several_member(
-            "Fem::FemElementGeometry1D"
-        )
-        self.beam_rotations = self.get_several_member(
-            "Fem::FemElementRotation1D"
-        )
-        self.fluid_sections = self.get_several_member(
-            "Fem::FemElementFluid1D"
-        )
-        self.shell_thicknesses = self.get_several_member(
-            "Fem::FemElementGeometry2D"
-        )
-
-        # constraints
-        self.constraints_contact = self.get_several_member(
-            "Fem::ConstraintContact"
-        )
-        self.constraints_displacement = self.get_several_member(
-            "Fem::ConstraintDisplacement"
-        )
-        self.constraints_fixed = self.get_several_member(
-            "Fem::ConstraintFixed"
-        )
-        self.constraints_force = self.get_several_member(
-            "Fem::ConstraintForce"
-        )
-        self.constraints_heatflux = self.get_several_member(
-            "Fem::ConstraintHeatflux"
-        )
-        self.constraints_initialtemperature = self.get_several_member(
-            "Fem::ConstraintInitialTemperature"
-        )
-        self.constraints_planerotation = self.get_several_member(
-            "Fem::ConstraintPlaneRotation"
-        )
-        self.constraints_pressure = self.get_several_member(
-            "Fem::ConstraintPressure"
-        )
-        self.constraints_selfweight = self.get_several_member(
-            "Fem::ConstraintSelfWeight"
-        )
-        self.constraints_temperature = self.get_several_member(
-            "Fem::ConstraintTemperature"
-        )
-        self.constraints_transform = self.get_several_member(
-            "Fem::ConstraintTransform"
-        )
-
-    def get_several_member(self, t):
-        return membertools.get_several_member(self.analysis, t)
 
 ##  @}

@@ -58,40 +58,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     working_dir : str
     results_present : bool
         indicating if there are calculation results ready for us
-
-    materials_linear : list of dictionaries
-        list of nonlinear materials from the analysis. Updated with update_objects
-    fixed_constraints :  list of dictionaries
-        list of fixed constraints from the analysis. Updated with update_objects
-    selfweight_constraints : list of dictionaries
-        list of selfweight constraints from the analysis. Updated with update_objects
-    force_constraints : list of dictionaries
-        list of force constraints from the analysis. Updated with update_objects
-    pressure_constraints : list of dictionaries
-        list of pressure constraints from the analysis. Updated with update_objects
-    beam_sections : list of dictionaries
-        list of beam sections from the analysis. Updated with update_objects
-    beam_rotations :  list of dictionaries
-        list of beam rotations from the analysis. Updated with update_objects
-    fluid_sections : list of dictionaries
-        list of fluid sections from the analysis. Updated with update_objects
-    shell_thicknesses : list of dictionaries
-        list of shell thicknesses from the analysis. Updated with update_objects
-    displacement_constraints : list of dictionaries
-        list of displacements for the analysis. Updated with update_objects
-    temperature_constraints : list of dictionaries
-        list of temperatures for the analysis. Updated with update_objects
-    heatflux_constraints : list of dictionaries
-        list of heatflux constraints for the analysis. Updated with update_objects
-    initialtemperature_constraints : list of dictionaries
-        list of initial temperatures for the analysis. Updated with update_objects
-    planerotation_constraints : list of dictionaries
-        list of plane rotation constraints from the analysis. Updated with update_objects
-    contact_constraints : list of dictionaries
-        list of contact constraints from the analysis. Updated with update_objects
-    transform_constraints : list of dictionaries
-        list of transform constraints from the analysis. Updated with update_objects
-
+    members : class femtools/membertools/AnalysisMember
+        contains references to all analysis member except solvers and mesh
+        Updated with update_objects
     """
 
     known_analysis_types = ["static", "frequency", "thermomech", "check"]
@@ -254,42 +223,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
             raise Exception(message + "\n")
 
-        # [{"Object":materials_linear}, {}, ...]
-        # [{"Object":materials_nonlinear}, {}, ...]
-        # [{"Object":fixed_constraints, "NodeSupports":bool}, {}, ...]
-        # [{"Object":force_constraints, "NodeLoad":value}, {}, ...
-        # [{"Object":pressure_constraints, "xxxxxxxx":value}, {}, ...]
-        # [{"Object":temerature_constraints, "xxxxxxxx":value}, {}, ...]
-        # [{"Object":heatflux_constraints, "xxxxxxxx":value}, {}, ...]
-        # [{"Object":initialtemperature_constraints, "xxxxxxxx":value}, {}, ...]
-        # [{"Object":beam_sections, "xxxxxxxx":value}, {}, ...]
-        # [{"Object":beam_rotations, "xxxxxxxx":value}, {}, ...]
-        # [{"Object":fluid_sections, "xxxxxxxx":value}, {}, ...]
-        # [{"Object":shell_thicknesses, "xxxxxxxx":value}, {}, ...]
-        # [{"Object":contact_constraints, "xxxxxxxx":value}, {}, ...]
-
-        self.materials_linear = (
-            self._get_several_member("Fem::Material")
-            + self._get_several_member("Fem::MaterialReinforced")
-        )
-        self.materials_nonlinear = self._get_several_member("Fem::MaterialMechanicalNonlinear")
-        self.fixed_constraints = self._get_several_member("Fem::ConstraintFixed")
-        self.selfweight_constraints = self._get_several_member("Fem::ConstraintSelfWeight")
-        self.force_constraints = self._get_several_member("Fem::ConstraintForce")
-        self.pressure_constraints = self._get_several_member("Fem::ConstraintPressure")
-        self.beam_sections = self._get_several_member("Fem::FemElementGeometry1D")
-        self.beam_rotations = self._get_several_member("Fem::FemElementRotation1D")
-        self.fluid_sections = self._get_several_member("Fem::FemElementFluid1D")
-        self.shell_thicknesses = self._get_several_member("Fem::FemElementGeometry2D")
-        self.displacement_constraints = self._get_several_member("Fem::ConstraintDisplacement")
-        self.temperature_constraints = self._get_several_member("Fem::ConstraintTemperature")
-        self.heatflux_constraints = self._get_several_member("Fem::ConstraintHeatflux")
-        self.initialtemperature_constraints = self._get_several_member(
-            "Fem::ConstraintInitialTemperature"
-        )
-        self.planerotation_constraints = self._get_several_member("Fem::ConstraintPlaneRotation")
-        self.contact_constraints = self._get_several_member("Fem::ConstraintContact")
-        self.transform_constraints = self._get_several_member("Fem::ConstraintTransform")
+        ## @var members
+        # members of the analysis. All except solvers and the mesh
+        self.member = membertools.AnalysisMember(self.analysis)
 
     def check_prerequisites(self):
         FreeCAD.Console.PrintMessage("Check prerequisites.\n")
@@ -323,7 +259,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "Frequency analysis: Solver has no EigenmodesCount.\n"
             if hasattr(self.solver, "MaterialNonlinearity") \
                     and self.solver.MaterialNonlinearity == "nonlinear":
-                if not self.materials_nonlinear:
+                if not self.member.mats_nonlinear:
                     message += (
                         "Solver is set to nonlinear materials, "
                         "but there is no nonlinear material in the analysis.\n"
@@ -342,7 +278,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.mesh:
             if self.mesh.FemMesh.VolumeCount == 0 \
                     and self.mesh.FemMesh.FaceCount > 0 \
-                    and not self.shell_thicknesses:
+                    and not self.member.geos_shellthickness:
                 message += (
                     "FEM mesh has no volume elements, "
                     "either define a shell thicknesses or "
@@ -351,8 +287,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             if self.mesh.FemMesh.VolumeCount == 0 \
                     and self.mesh.FemMesh.FaceCount == 0 \
                     and self.mesh.FemMesh.EdgeCount > 0 \
-                    and not self.beam_sections \
-                    and not self.fluid_sections:
+                    and not self.member.geos_beamsection \
+                    and not self.member.geos_fluidsection:
                 message += (
                     "FEM mesh has no volume and no shell elements, "
                     "either define a beam/fluid section or provide "
@@ -366,10 +302,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     "Provide a FEM mesh with elements!\n"
                 )
         # material linear and nonlinear
-        if not self.materials_linear:
+        if not self.member.mats_linear:
             message += "No material object defined in the analysis\n"
         has_no_references = False
-        for m in self.materials_linear:
+        for m in self.member.mats_linear:
             if len(m["Object"].References) == 0:
                 if has_no_references is True:
                     message += (
@@ -378,7 +314,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     )
                 has_no_references = True
         mat_ref_shty = ""
-        for m in self.materials_linear:
+        for m in self.member.mats_linear:
             ref_shty = femutils.get_refshape_type(m["Object"])
             if not mat_ref_shty:
                 mat_ref_shty = ref_shty
@@ -390,7 +326,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     "(all material objects must have the same reference shape type, "
                     "at the moment).\n"
                 )
-        for m in self.materials_linear:
+        for m in self.member.mats_linear:
             mat_map = m["Object"].Material
             mat_obj = m["Object"]
             if mat_obj.Category == "Solid":
@@ -403,7 +339,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 if "PoissonRatio" not in mat_map:
                     # PoissonRatio is allowed to be 0.0 (in ccx), but it should be set anyway.
                     message += "No PoissonRatio defined for at least one material.\n"
-            if self.solver.AnalysisType == "frequency" or self.selfweight_constraints:
+            if self.solver.AnalysisType == "frequency" or self.member.cons_selfweight:
                 if "Density" not in mat_map:
                     message += "No Density defined for at least one material.\n"
             if self.solver.AnalysisType == "thermomech":
@@ -466,16 +402,16 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                         "No YieldStrength defined for the reinforcement "
                         "of at least one reinforced material.\n"
                     )
-        if len(self.materials_linear) == 1:
-            mobj = self.materials_linear[0]["Object"]
+        if len(self.member.mats_linear) == 1:
+            mobj = self.member.mats_linear[0]["Object"]
             if hasattr(mobj, "References") and mobj.References:
                 FreeCAD.Console.PrintError(
                     "Only one material object, but this one has a reference shape. "
                     "The reference shape will be ignored.\n"
                 )
-        for m in self.materials_linear:
+        for m in self.member.mats_linear:
             has_nonlinear_material = False
-            for nlm in self.materials_nonlinear:
+            for nlm in self.member.mats_nonlinear:
                 if nlm["Object"].LinearBaseMaterial == m["Object"]:
                     if has_nonlinear_material is False:
                         has_nonlinear_material = True
@@ -488,79 +424,79 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         # no check in the regard of loads existence (constraint force, pressure, self weight)
         # is done, because an analysis without loads at all is an valid analysis too
         if self.solver.AnalysisType == "static":
-            if not (self.fixed_constraints or self.displacement_constraints):
+            if not (self.member.cons_fixed or self.member.cons_displacement):
                 message += (
                     "Static analysis: Neither constraint fixed nor "
                     "constraint displacement defined.\n"
                 )
         if self.solver.AnalysisType == "thermomech":
-            if not self.initialtemperature_constraints:
-                if not self.fluid_sections:
+            if not self.member.cons_initialtemperature:
+                if not self.member.geos_fluidsection:
                     message += "Thermomechanical analysis: No initial temperature defined.\n"
-            if len(self.initialtemperature_constraints) > 1:
+            if len(self.member.cons_initialtemperature) > 1:
                 message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
         # constraints
         # fixed
-        if self.fixed_constraints:
-            for c in self.fixed_constraints:
+        if self.member.cons_fixed:
+            for c in self.member.cons_fixed:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # displacement
-        if self.displacement_constraints:
-            for di in self.displacement_constraints:
+        if self.member.cons_displacement:
+            for di in self.member.cons_displacement:
                 if len(di["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # plane rotation
-        if self.planerotation_constraints:
-            for c in self.planerotation_constraints:
+        if self.member.cons_planerotation:
+            for c in self.member.cons_planerotation:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # contact
-        if self.contact_constraints:
-            for c in self.contact_constraints:
+        if self.member.cons_contact:
+            for c in self.member.cons_contact:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # transform
-        if self.transform_constraints:
-            for c in self.transform_constraints:
+        if self.member.cons_transform:
+            for c in self.member.cons_transform:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # pressure
-        if self.pressure_constraints:
-            for c in self.pressure_constraints:
+        if self.member.cons_pressure:
+            for c in self.member.cons_pressure:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # force
-        if self.force_constraints:
-            for c in self.force_constraints:
+        if self.member.cons_force:
+            for c in self.member.cons_force:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # temperature
-        if self.temperature_constraints:
-            for c in self.temperature_constraints:
+        if self.member.cons_temperature:
+            for c in self.member.cons_temperature:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # heat flux
-        if self.heatflux_constraints:
-            for c in self.heatflux_constraints:
+        if self.member.cons_heatflux:
+            for c in self.member.cons_heatflux:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
         # beam section
-        if self.beam_sections:
-            if self.shell_thicknesses:
+        if self.member.geos_beamsection:
+            if self.member.geos_shellthickness:
                 # this needs to be checked only once either here or in shell_thicknesses
                 message += (
                     "Beam sections and shell thicknesses in one analysis "
                     "is not supported at the moment.\n"
                 )
-            if self.fluid_sections:
+            if self.member.geos_fluidsection:
                 # this needs to be checked only once either here or in shell_thicknesses
                 message += (
                     "Beam sections and fluid sections in one analysis "
                     "is not supported at the moment.\n"
                 )
             has_no_references = False
-            for b in self.beam_sections:
+            for b in self.member.geos_beamsection:
                 if len(b["Object"].References) == 0:
                     if has_no_references is True:
                         message += (
@@ -577,17 +513,17 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += (
                         "Beam sections defined but FEM mesh has no edge elements.\n"
                     )
-            if len(self.beam_rotations) > 1:
+            if len(self.member.geos_beamrotation) > 1:
                 message += (
                     "Multiple beam rotations in one analysis are not supported at the moment.\n"
                 )
         # beam rotations
-        if self.beam_rotations and not self.beam_sections:
+        if self.member.geos_beamrotation and not self.member.geos_beamsection:
             message += "Beam rotations in the analysis but no beam sections defined.\n"
         # shell thickness
-        if self.shell_thicknesses:
+        if self.member.geos_shellthickness:
             has_no_references = False
-            for s in self.shell_thicknesses:
+            for s in self.member.geos_shellthickness:
                 if len(s["Object"].References) == 0:
                     if has_no_references is True:
                         message += (
@@ -601,15 +537,15 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 if self.mesh.FemMesh.FaceCount == 0:
                     message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
         # fluid section
-        if self.fluid_sections:
-            if not self.selfweight_constraints:
+        if self.member.geos_fluidsection:
+            if not self.member.cons_selfweight:
                 message += (
                     "A fluid network analysis requires self weight constraint to be applied\n"
                 )
             if self.solver.AnalysisType != "thermomech":
                 message += "A fluid network analysis can only be done in a thermomech analysis\n"
             has_no_references = False
-            for f in self.fluid_sections:
+            for f in self.member.geos_fluidsection:
                 if len(f["Object"].References) == 0:
                     if has_no_references is True:
                         message += (
@@ -734,23 +670,23 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.analysis,
                 self.solver,
                 self.mesh,
-                self.materials_linear,
-                self.materials_nonlinear,
-                self.fixed_constraints,
-                self.displacement_constraints,
-                self.contact_constraints,
-                self.planerotation_constraints,
-                self.transform_constraints,
-                self.selfweight_constraints,
-                self.force_constraints,
-                self.pressure_constraints,
-                self.temperature_constraints,
-                self.heatflux_constraints,
-                self.initialtemperature_constraints,
-                self.beam_sections,
-                self.beam_rotations,
-                self.shell_thicknesses,
-                self.fluid_sections,
+                self.member.mats_linear,
+                self.member.mats_nonlinear,
+                self.member.cons_fixed,
+                self.member.cons_displacement,
+                self.member.cons_contact,
+                self.member.cons_planerotation,
+                self.member.cons_transform,
+                self.member.cons_selfweight,
+                self.member.cons_force,
+                self.member.cons_pressure,
+                self.member.cons_temperature,
+                self.member.cons_heatflux,
+                self.member.cons_initialtemperature,
+                self.member.geos_beamsection,
+                self.member.geos_beamrotation,
+                self.member.geos_shellthickness,
+                self.member.geos_fluidsection,
                 self.working_dir
             )
             self.inp_file_name = inp_writer.write_calculix_input_file()
