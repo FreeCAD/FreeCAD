@@ -223,8 +223,8 @@ class AnalysisMember():
             [{"Object":selfweight_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints_temperature : list of dictionaries
-            [{"Object":temerature_obj, "xxxxxxxx":value}, {}, ...]
             list of temperatures for the analysis.
+            [{"Object":temerature_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints_transform : list of dictionaries
             list of transform constraints from the analysis.
