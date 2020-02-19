@@ -199,6 +199,137 @@ std::string ViewProviderT::getObjectPython() const
 
 // -----------------------------------------------------------------------------
 
+class DocumentWeakPtrT::Private {
+public:
+    Private(Gui::Document* doc) : _document(doc) {
+        if (doc) {
+            connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
+                (&Private::deletedDocument, this, _1));
+        }
+    }
+
+    void deletedDocument(const Gui::Document& doc) {
+        if (_document == &doc)
+            reset();
+    }
+    void reset() {
+        connectApplicationDeletedDocument.disconnect();
+        _document = nullptr;
+    }
+
+    Gui::Document* _document;
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connectApplicationDeletedDocument;
+};
+
+DocumentWeakPtrT::DocumentWeakPtrT(Gui::Document* doc) noexcept
+  : d(new Private(doc))
+{
+}
+
+DocumentWeakPtrT::~DocumentWeakPtrT()
+{
+}
+
+void DocumentWeakPtrT::reset() noexcept
+{
+    d->reset();
+}
+
+bool DocumentWeakPtrT::expired() const noexcept
+{
+    return (d->_document == nullptr);
+}
+
+Gui::Document* DocumentWeakPtrT::operator->() noexcept
+{
+    return d->_document;
+}
+
+// -----------------------------------------------------------------------------
+
+class ViewProviderWeakPtrT::Private {
+public:
+    Private(ViewProviderDocumentObject* obj) : object(obj), indocument(false) {
+        if (obj) {
+            indocument = true;
+            Gui::Document* doc = obj->getDocument();
+            connectApplicationDeletedDocument = doc->signalDeleteDocument.connect(boost::bind
+                (&Private::deletedDocument, this, _1));
+            connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
+                (&Private::createdObject, this, _1));
+            connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
+                (&Private::deletedObject, this, _1));
+        }
+    }
+    void deletedDocument(const Gui::Document& doc) {
+        // When deleting document then there is no way to undo it
+        if (object && object->getDocument() == &doc) {
+            reset();
+        }
+    }
+    void createdObject(const Gui::ViewProvider& obj) {
+        // When undoing the removal
+        if (object == &obj) {
+            indocument = true;
+        }
+    }
+    void deletedObject(const Gui::ViewProvider& obj) {
+        if (object == &obj) {
+            indocument = false;
+        }
+    }
+    void reset() {
+        connectApplicationDeletedDocument.disconnect();
+        connectDocumentCreatedObject.disconnect();
+        connectDocumentDeletedObject.disconnect();
+        object = nullptr;
+        indocument = false;
+    }
+    ViewProviderDocumentObject* get() const {
+        return indocument ? object : nullptr;
+    }
+
+    Gui::ViewProviderDocumentObject* object;
+    bool indocument;
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connectApplicationDeletedDocument;
+    Connection connectDocumentCreatedObject;
+    Connection connectDocumentDeletedObject;
+};
+
+ViewProviderWeakPtrT::ViewProviderWeakPtrT(ViewProviderDocumentObject* obj) noexcept
+  : d(new Private(obj))
+{
+}
+
+ViewProviderWeakPtrT::~ViewProviderWeakPtrT()
+{
+
+}
+
+ViewProviderDocumentObject* ViewProviderWeakPtrT::_get() const noexcept
+{
+    return d->get();
+}
+
+void ViewProviderWeakPtrT::reset() noexcept
+{
+    d->reset();
+}
+
+bool ViewProviderWeakPtrT::expired() const noexcept
+{
+    return !d->indocument;
+}
+
+ViewProviderDocumentObject* ViewProviderWeakPtrT::operator->() noexcept
+{
+    return d->get();
+}
+
+// -----------------------------------------------------------------------------
+
 DocumentObserver::DocumentObserver()
 {
 }
