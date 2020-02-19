@@ -33,7 +33,7 @@ import FreeCADGui
 import FemGui  # needed to display the icons in TreeView
 
 # for the panel
-from PySide import QtCore
+from PySide import QtCore, QtGui
 from . import FemSelectionWidgets
 
 False if FemGui.__name__ else True  # flake8, dummy FemGui usage
@@ -68,9 +68,31 @@ class _ViewProviderFemConstraintTie:
         return
 
     def setEdit(self, vobj, mode=0):
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show task panel
+        taskd = _TaskPanelFemConstraintTie(self.Object)
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
         return True
 
     def unsetEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        return True
+
+    def doubleClicked(self, vobj):
+        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
+        # check if another VP is in edit mode
+        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
+        if not guidoc.getInEdit():
+            guidoc.setEdit(vobj.Object.Name)
+        else:
+            from PySide.QtGui import QMessageBox
+            message = "Active Task Dialog found! Please close this one before opening  a new one!"
+            QMessageBox.critical(None, "Error in tree view", message)
+            FreeCAD.Console.PrintError(message + "\n")
         return True
 
     def __getstate__(self):
@@ -78,3 +100,79 @@ class _ViewProviderFemConstraintTie:
 
     def __setstate__(self, state):
         return None
+
+
+class _TaskPanelFemConstraintTie:
+    """The TaskPanel for editing References property of FemConstraintTie objects"""
+
+    def __init__(self, obj):
+
+        self.obj = obj
+
+        # parameter widget
+        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ConstraintTie.ui"
+        )
+        QtCore.QObject.connect(
+            self.parameterWidget.if_tolerance,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.tolerance_changed
+        )
+        self.init_parameter_widget()
+
+        # geometry selection widget
+        self.selectionWidget = FemSelectionWidgets.GeometryElementsSelection(
+            obj.References,
+            ["Face"]
+        )
+
+        # form made from param and selection widget
+        self.form = [self.parameterWidget, self.selectionWidget]
+
+    def accept(self):
+        # check values
+        items = len(self.selectionWidget.references)
+        FreeCAD.Console.PrintMessage(
+            "Task panel: found references: {}\n{}\n"
+            .format(items, self.selectionWidget.references)
+        )
+
+        if items != 2:
+            msgBox = QtGui.QMessageBox()
+            msgBox.setIcon(QtGui.QMessageBox.Question)
+            msgBox.setText(
+                "Constraint Tie requires exactly two faces\n\nfound references: {}"
+                .format(items)
+            )
+            msgBox.setWindowTitle("FreeCAD FEM Constraint Tie")
+            retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
+            ignoreButton = msgBox.addButton(QtGui.QMessageBox.Ignore)
+            msgBox.exec_()
+
+            if msgBox.clickedButton() == retryButton:
+                return False
+            elif msgBox.clickedButton() == ignoreButton:
+                pass
+        self.obj.Tolerance = self.tolerance
+        self.obj.References = self.selectionWidget.references
+        self.recompute_and_set_back_all()
+        return True
+
+    def reject(self):
+        self.recompute_and_set_back_all()
+        return True
+
+    def recompute_and_set_back_all(self):
+        doc = FreeCADGui.getDocument(self.obj.Document)
+        doc.Document.recompute()
+        self.selectionWidget.setback_listobj_visibility()
+        if self.selectionWidget.sel_server:
+            FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
+        doc.resetEdit()
+
+    def init_parameter_widget(self):
+        self.tolerance = self.obj.Tolerance
+        self.parameterWidget.if_tolerance.setText(self.tolerance.UserString)
+
+    def tolerance_changed(self, base_quantity_value):
+        self.tolerance = base_quantity_value

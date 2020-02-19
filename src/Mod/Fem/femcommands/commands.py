@@ -245,6 +245,29 @@ class _ConstraintSelfWeight(CommandManager):
         self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
 
 
+class _ConstraintTie(CommandManager):
+    "The FEM_ConstraintTie command definition"
+
+    def __init__(self):
+        super(_ConstraintTie, self).__init__()
+        self.resources = {
+            "Pixmap": "fem-constraint-tie",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintTie",
+                "Constraint tie"
+            ),
+            "Accel": "C, T",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "FEM_ConstraintTie",
+                "Creates a FEM constraint tie"
+            )
+        }
+        self.is_active = "with_analysis"
+
+    def Activated(self):
+        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+
+
 class _ElementFluid1D(CommandManager):
     "The FEM_ElementFluid1D command definition"
 
@@ -1133,6 +1156,10 @@ FreeCADGui.addCommand(
 FreeCADGui.addCommand(
     "FEM_ConstraintSelfWeight",
     _ConstraintSelfWeight()
+)
+FreeCADGui.addCommand(
+    "FEM_ConstraintTie",
+    _ConstraintTie()
 )
 FreeCADGui.addCommand(
     "FEM_ElementFluid1D",
