@@ -45,10 +45,9 @@ private Q_SLOTS:
     void onLengthChanged(double);
 
 protected:
-    virtual void clearButtons(const selectionModes notThis);
     void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     double getLength(void) const;
+    virtual void refresh();
 
 private:
     Ui_TaskChamferParameters* ui;

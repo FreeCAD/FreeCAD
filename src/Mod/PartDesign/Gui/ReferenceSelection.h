@@ -26,6 +26,8 @@
 
 #include <Gui/SelectionFilter.h>
 
+class QLabel;
+
 namespace PartDesignGui {
 
 class ReferenceSelection : public Gui::SelectionFilterGate
@@ -61,12 +63,16 @@ public:
 
 class NoDependentsSelection : public Gui::SelectionFilterGate
 {
-    const App::DocumentObject* support;
+    std::set<App::DocumentObject *> inList;
 
 public:
     NoDependentsSelection(const App::DocumentObject* support_)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), support(support_)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
     {
+        if(support_) {
+            inList = support_->getInListEx(true);
+            inList.insert(const_cast<App::DocumentObject*>(support_));
+        }
     }
     /**
     * Allow the user to pick only objects which are not in objs getDependencyList
@@ -101,6 +107,17 @@ std::string buildLinkListPythonStr(const std::vector<App::DocumentObject*> & obj
 /// Returns sub reference list as a python string in the format [(obj1,"sub1"),(obj2,"sub2"),...]
 std::string buildLinkSubListPythonStr(const std::vector<App::DocumentObject*> & objs,
         const std::vector<std::string>& subs);
+
+/** Populate the label widget with the give property link sub
+ * @param prop: input property
+ * @param label: label widget
+ * @param canTouch: if set to True, the check if the element reference exists,
+ *                  and try to guess a related element if not found.
+ *
+ * @return Return true if the property is changed due to missing element.
+ */
+bool populateRefElement(App::PropertyLinkSub *prop, QLabel *label, bool canTouch);
+
 } //namespace PartDesignGui
 
 #endif // GUI_ReferenceSelection_H

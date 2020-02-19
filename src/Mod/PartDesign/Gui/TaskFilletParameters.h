@@ -46,9 +46,8 @@ private Q_SLOTS:
 
 protected:
     double getLength(void) const;
-    virtual void clearButtons(const selectionModes notThis);
     void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void refresh();
 
 private:
     Ui_TaskFilletParameters* ui;

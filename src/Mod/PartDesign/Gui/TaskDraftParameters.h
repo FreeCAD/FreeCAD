@@ -51,11 +51,18 @@ private Q_SLOTS:
     void onReversedChanged(bool reversed);
     void onButtonPlane(const bool checked);
     void onButtonLine(const bool checked);
+    void onClearPlane();
+    void onClearLine();
 
 protected:
+    virtual void onTimer();
+    virtual void refresh();
     virtual void clearButtons(const selectionModes notThis);
     void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    bool eventFilter(QObject *o, QEvent *e);
+    void onButton(selectionModes mode, bool checked);
+    void onClear(selectionModes mode);
 
 private:
     Ui_TaskDraftParameters* ui;

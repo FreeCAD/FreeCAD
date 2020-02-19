@@ -38,6 +38,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureFillet.h>
@@ -73,46 +74,34 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView,QWid
 
     connect(ui->filletRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
 
-    setup(ui->listWidgetReferences);
-
+    setup(ui->message, ui->listWidgetReferences, ui->buttonRefAdd);
 }
 
-void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+void TaskFilletParameters::refresh()
 {
-    if (selectionMode == none)
+    if(!DressUpView)
         return;
 
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (referenceSelected(msg)) {
-            if (selectionMode == refAdd)
-                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-            else
-                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-            clearButtons(none);
-            exitSelectionMode();
-        }
+    TaskDressUpParameters::refresh();
+    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    double r = pcFillet->Radius.getValue();
+    {
+        QSignalBlocker blocker(ui->filletRadius);
+        ui->filletRadius->setValue(r);
     }
-}
-
-void TaskFilletParameters::clearButtons(const selectionModes notThis)
-{
-    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
-    DressUpView->highlightReferences(false);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)
 {
+    if(!DressUpView)
+        return;
+
     clearButtons(none);
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
     setupTransaction();
     pcFillet->Radius.setValue(len);
-    pcFillet->getDocument()->recomputeFeature(pcFillet);
+    recompute();
 }
 
 double TaskFilletParameters::getLength(void) const

@@ -37,6 +37,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
@@ -73,44 +74,35 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QW
 
     connect(ui->chamferDistance, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
-    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
-    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
 
-    setup(ui->listWidgetReferences);
+    setup(ui->message, ui->listWidgetReferences, ui->buttonRefAdd);
 }
 
-void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+void TaskChamferParameters::refresh()
 {
-    if (selectionMode == none)
+    if(!DressUpView)
         return;
 
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (referenceSelected(msg)) {
-            if (selectionMode == refAdd)
-                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-            else
-                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
-            clearButtons(none);
-            exitSelectionMode();
-        }
-    }
-}
+    TaskDressUpParameters::refresh();
 
-void TaskChamferParameters::clearButtons(const selectionModes notThis)
-{
-    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
-    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
-    DressUpView->highlightReferences(false);
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    double r = pcChamfer->Size.getValue();
+
+    {
+        QSignalBlocker blocker(ui->chamferDistance);
+        ui->chamferDistance->setValue(r);
+    }
 }
 
 void TaskChamferParameters::onLengthChanged(double len)
 {
+    if(!DressUpView)
+        return;
+
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
     setupTransaction();
     pcChamfer->Size.setValue(len);
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    recompute();
 }
 
 double TaskChamferParameters::getLength(void) const
@@ -134,6 +126,9 @@ void TaskChamferParameters::changeEvent(QEvent *e)
 
 void TaskChamferParameters::apply()
 {
+    if(!DressUpView)
+        return;
+
     std::string name = DressUpView->getObject()->getNameInDocument();
 
     //Gui::Command::openCommand("Chamfer changed");

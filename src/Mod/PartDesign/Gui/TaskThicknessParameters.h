@@ -53,9 +53,8 @@ private Q_SLOTS:
     void onIntersectionChanged(bool intersection);
 
 protected:
-    virtual void clearButtons(const selectionModes notThis);
     void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void refresh();
 
 private:
     Ui_TaskThicknessParameters* ui;

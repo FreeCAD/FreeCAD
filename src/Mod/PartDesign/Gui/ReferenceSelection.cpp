@@ -29,6 +29,7 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <QDialog>
+# include <QLabel>
 #endif
 
 #include <App/OriginFeature.h>
@@ -52,6 +53,8 @@
 #include "ReferenceSelection.h"
 #include "TaskFeaturePick.h"
 #include <ui_DlgReference.h>
+
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -177,7 +180,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 bool NoDependentsSelection::allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* /*sSubName*/)
 {
-    if (support && support->testIfLinkDAGCompatible(pObj)) {
+    if(!inList.count(pObj)) {
         return true;
     }
     else {
@@ -268,6 +271,49 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
     else
         return QString();
 }
+
+bool populateRefElement(App::PropertyLinkSub *prop, QLabel *label, bool canTouch) {
+    if(!prop || !label)
+        return false;
+
+    App::DocumentObject* obj = prop->getValue();
+    if(!obj || !obj->getNameInDocument()) {
+        label->setText(QObject::tr("None"));
+        return false;
+    }
+    const auto &subs = prop->getShadowSubs();
+    if(subs.empty()) {
+        label->setText(QLatin1String(obj->getNameInDocument()));
+        return false;
+    }
+
+    // first=new style topo name, second=old index based name
+    std::pair<std::string, std::string> sub = subs.front();
+
+    QString fmt = QString::fromLatin1("%1:%2");
+
+    // Sheck if the element is missing
+    bool touched = false;
+    if(Data::ComplexGeoData::hasMissingElement(sub.second.c_str())) {
+        if(canTouch) {
+            for(auto &name : Part::Feature::getRelatedElements(obj,sub.first.c_str())) {
+                FC_WARN("guess element reference: " << sub.first << " -> " << name.first);
+                touched = true;
+                sub = std::move(name);
+                prop->setValue(obj, {sub.second});
+                break;
+            }
+        }
+        if(!touched)
+            fmt = QLatin1String("<font color='red'>%1:%2</font>");
+    }
+
+    // Display the shorter index based name
+    label->setText(fmt.arg(QLatin1String(obj->getNameInDocument()),
+                           QLatin1String(sub.second.c_str())));
+    return touched;
+}
+
 
 std::string buildLinkSubPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& subs)
 {

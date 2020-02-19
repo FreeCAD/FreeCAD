@@ -25,6 +25,8 @@
 #ifndef GUI_TASKVIEW_TaskDressUpParameters_H
 #define GUI_TASKVIEW_TaskDressUpParameters_H
 
+#include <boost/signals2.hpp>
+
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 
@@ -38,6 +40,8 @@ namespace Part {
     class Feature;
 }
 
+class Ui_TaskDressUpParameters;
+
 namespace PartDesignGui {
 
 class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
@@ -48,40 +52,51 @@ public:
     TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = 0);
     virtual ~TaskDressUpParameters();
 
-    const std::vector<std::string> getReferences(void) const;
+    std::vector<std::string> getReferences(void) const;
     Part::Feature *getBase(void) const;
 
     void hideObject();
     void showObject();
     void setupTransaction();
 
-    void setup(QListWidget *widget);
+    void setup(QLabel *msg, QListWidget *widget, QPushButton *btnAdd, bool touched=false);
 
     /// Apply the changes made to the object to it
     virtual void apply() {};
 
+    int getTransactionID() const {
+        return transactionID;
+    }
+
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
-    void onButtonRefRemove(const bool checked);
-    void doubleClicked(QListWidgetItem* item);
-    void setSelection(QListWidgetItem* current);
-    void itemClickedTimeout();
+    void onItemEntered(QListWidgetItem* current);
+    void onItemSelectionChanged();
+    virtual void onTimer();
     virtual void onRefDeleted(void);
 
 protected:
     void exitSelectionMode();
-    bool referenceSelected(const Gui::SelectionChanges& msg);
-    bool wasDoubleClicked = false;
+    App::DocumentObject *getInEdit(std::string &subname, App::DocumentObject *base=nullptr);
+    App::SubObjectT getInEdit(App::DocumentObject *base=nullptr, const char *sub=nullptr);
+    bool showOnTop(bool enable, std::vector<App::SubObjectT> &&objs = {});
+    bool syncItems(const std::vector<App::SubObjectT> &sels = {}, bool select=false);
+    void recompute();
+    bool populate(bool refresh=false);
+    virtual void refresh();
+    void showMessage(const char *msg=nullptr);
 
 protected:
-    enum selectionModes { none, refAdd, refRemove, plane, line };
-    virtual void clearButtons(const selectionModes notThis) = 0;
+    enum selectionModes { none, refToggle, plane, line };
+    virtual void clearButtons(const selectionModes notThis);
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     virtual void changeEvent(QEvent *e) = 0;
-    static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
     bool event(QEvent *e);
 
     ViewProviderDressUp* getDressUpView() const
     { return DressUpView; }
+
+    bool eventFilter(QObject *o, QEvent *e);
 
 protected:
     QWidget* proxy;
@@ -89,10 +104,23 @@ protected:
 
     bool allowFaces, allowEdges;
     selectionModes selectionMode;    
-    int transactionID;
+    int transactionID = 0;
 
     QAction* deleteAction = nullptr;
     QListWidget *listWidget = nullptr;
+    QPushButton *btnAdd = nullptr;
+    QLabel *messageLabel = nullptr;
+
+    bool onTopEnabled;
+
+    std::vector<App::SubObjectT> onTopObjs;
+
+    boost::signals2::scoped_connection connUndo;
+    boost::signals2::scoped_connection connRedo;
+    boost::signals2::scoped_connection connDelete;
+
+    QTimer *timer = nullptr;
+    QObject *enteredObject = nullptr;
 };
 
 /// simulation dialog for the TaskView

@@ -15,29 +15,30 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="message">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QToolButton" name="buttonRefAdd">
+      <widget class="QPushButton" name="buttonRefAdd">
        <property name="toolTip">
-        <string>Click button to enter selection mode,
-click again to end selection</string>
+        <string>Click the button to enter toggle mode. Click
+again to return to normal mode.
+
+In toggle mode, you can select geometry either
+in the list below, or in the 3D view to toggle
+its state.
+
+In normal mode, you can only add new geometry
+by selection. Existing geometry references can
+be removed using the Delete key.</string>
        </property>
        <property name="text">
-        <string>Add</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="buttonRefRemove">
-       <property name="toolTip">
-        <string>Click button to enter selection mode,
-click again to end selection</string>
-       </property>
-       <property name="text">
-        <string>Remove</string>
+        <string>Toggle</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -48,13 +49,6 @@ click again to end selection</string>
    </item>
    <item>
     <widget class="QListWidget" name="listWidgetReferences">
-     <property name="toolTip">
-      <string>- select an item to highlight it
-- double-click on an item to see the chamfers</string>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::ExtendedSelection</enum>
-     </property>
     </widget>
    </item>
    <item>
