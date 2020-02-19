@@ -39,23 +39,7 @@ class FemInputWriter():
         analysis_obj,
         solver_obj,
         mesh_obj,
-        matlin_obj,
-        matnonlin_obj,
-        fixed_obj,
-        displacement_obj,
-        contact_obj,
-        planerotation_obj,
-        transform_obj,
-        selfweight_obj,
-        force_obj,
-        pressure_obj,
-        temperature_obj,
-        heatflux_obj,
-        initialtemperature_obj,
-        beamsection_obj,
-        beamrotation_obj,
-        shellthickness_obj,
-        fluidsection_obj,
+        member,
         dir_name=None
     ):
         # class attributes from parameter values
@@ -63,23 +47,27 @@ class FemInputWriter():
         self.solver_obj = solver_obj
         self.analysis_type = self.solver_obj.AnalysisType
         self.mesh_object = mesh_obj
-        self.material_objects = matlin_obj
-        self.material_nonlinear_objects = matnonlin_obj
-        self.fixed_objects = fixed_obj
-        self.displacement_objects = displacement_obj
-        self.contact_objects = contact_obj
-        self.planerotation_objects = planerotation_obj
-        self.transform_objects = transform_obj
-        self.selfweight_objects = selfweight_obj
-        self.force_objects = force_obj
-        self.pressure_objects = pressure_obj
-        self.temperature_objects = temperature_obj
-        self.heatflux_objects = heatflux_obj
-        self.initialtemperature_objects = initialtemperature_obj
-        self.beamsection_objects = beamsection_obj
-        self.beamrotation_objects = beamrotation_obj
-        self.fluidsection_objects = fluidsection_obj
-        self.shellthickness_objects = shellthickness_obj
+        # materials
+        self.material_objects = member.mats_linear
+        self.material_nonlinear_objects = member.mats_nonlinear
+        # geometries
+        self.beamsection_objects = member.geos_beamsection
+        self.beamrotation_objects = member.geos_beamrotation
+        self.fluidsection_objects = member.geos_fluidsection
+        self.shellthickness_objects = member.geos_shellthickness
+        # constraints
+        self.contact_objects = member.cons_contact
+        self.displacement_objects = member.cons_displacement
+        self.fixed_objects = member.cons_fixed
+        self.force_objects = member.cons_force
+        self.heatflux_objects = member.cons_heatflux
+        self.initialtemperature_objects = member.cons_initialtemperature
+        self.planerotation_objects = member.cons_planerotation
+        self.pressure_objects = member.cons_pressure
+        self.selfweight_objects = member.cons_selfweight
+        self.temperature_objects = member.cons_temperature
+        self.transform_objects = member.cons_transform
+        # working dir
         self.dir_name = dir_name
         # if dir_name was not given or if it exists but isn't empty: create a temporary dir
         # Purpose: makes sure the analysis can be run even on wired situation

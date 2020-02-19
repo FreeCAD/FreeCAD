@@ -58,28 +58,11 @@ class Prepare(run.Prepare):
     def run(self):
         global _inputFileName
         self.pushStatus("Preparing input files...\n")
-        c = membertools.AnalysisMember(self.analysis)
         w = writer.FemInputWriterCcx(
             self.analysis,
             self.solver,
             membertools.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
-            c.mats_linear,
-            c.mats_nonlinear,
-            c.cons_fixed,
-            c.cons_displacement,
-            c.cons_contact,
-            c.cons_planerotation,
-            c.cons_transform,
-            c.cons_selfweight,
-            c.cons_force,
-            c.cons_pressure,
-            c.cons_temperature,
-            c.cons_heatflux,
-            c.cons_initialtemperature,
-            c.geos_beamsection,
-            c.geos_beamrotation,
-            c.geos_shellthickness,
-            c.geos_fluidsection,
+            membertools.AnalysisMember(self.analysis),
             self.directory
         )
         path = w.write_calculix_input_file()
