@@ -226,6 +226,10 @@ class AnalysisMember():
             list of temperatures for the analysis.
             [{"Object":temerature_obj, "xxxxxxxx":value}, {}, ...]
 
+        constraints_tie : list of dictionaries
+            list of ties for the analysis.
+            [{"Object":tie_obj, "xxxxxxxx":value}, {}, ...]
+
         constraints_transform : list of dictionaries
             list of transform constraints from the analysis.
             [{"Object":transform_obj, "xxxxxxxx":value}, {}, ...]
@@ -289,6 +293,9 @@ class AnalysisMember():
         )
         self.cons_temperature = self.get_several_member(
             "Fem::ConstraintTemperature"
+        )
+        self.cons_tie = self.get_several_member(
+            "Fem::ConstraintTie"
         )
         self.cons_transform = self.get_several_member(
             "Fem::ConstraintTransform"

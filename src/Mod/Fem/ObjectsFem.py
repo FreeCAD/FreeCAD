@@ -258,6 +258,23 @@ def makeConstraintTransform(
     return obj
 
 
+def makeConstraintTie(
+    doc,
+    name="ConstraintTie"
+):
+    """makeConstraintTie(document, [name]):
+    creates an tie object to define bonded faces constraint"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import _FemConstraintTie
+    _FemConstraintTie._FemConstraintTie(obj)
+    if FreeCAD.GuiUp:
+        from femguiobjects import _ViewProviderFemConstraintTie
+        _ViewProviderFemConstraintTie._ViewProviderFemConstraintTie(
+            obj.ViewObject
+        )
+    return obj
+
+
 # ********* element definition objects ***********************************************************
 def makeElementFluid1D(
     doc,

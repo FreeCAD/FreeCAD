@@ -456,6 +456,17 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             for c in self.member.cons_contact:
                 if len(c["Object"].References) == 0:
                     message += "{} has empty references.".format(c["Object"].Name)
+        # tie
+        if self.member.cons_tie:
+            for c in self.member.cons_tie:
+                items = 0
+                for reference in c["Object"].References:
+                    items += len(reference[1])
+                if items != 2:
+                    message += (
+                        "{} doesn't references exactly two needed faces.\n"
+                        .format(c["Object"].Name)
+                    )
         # transform
         if self.member.cons_transform:
             for c in self.member.cons_transform:

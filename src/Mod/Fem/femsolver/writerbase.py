@@ -66,6 +66,7 @@ class FemInputWriter():
         self.pressure_objects = member.cons_pressure
         self.selfweight_objects = member.cons_selfweight
         self.temperature_objects = member.cons_temperature
+        self.tie_objects = member.cons_tie
         self.transform_objects = member.cons_transform
         # working dir
         self.dir_name = dir_name
