@@ -186,7 +186,7 @@ before_install:
                                libmetis-dev                     \
                                libspnav-dev
        # Runtime deps
-       sudo apt-get install -y --no-install-recommends freecad-daily-python3 python-ply python3-ply
+       sudo apt-get install -y --no-install-recommends freecad-daily-python3 python-pivy python3-pivy python-ply python3-ply
 
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
