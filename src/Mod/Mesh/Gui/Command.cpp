@@ -72,6 +72,7 @@
 #include "DlgEvaluateMeshImp.h"
 #include "DlgRegularSolidImp.h"
 #include "RemoveComponents.h"
+#include "RemeshGmsh.h"
 #include "DlgSmoothing.h"
 #include "ViewProviderMeshFaceSet.h"
 #include "ViewProviderCurvature.h"
@@ -1261,6 +1262,39 @@ bool CmdMeshRemoveComponents::isActive(void)
 
 //--------------------------------------------------------------------------------------
 
+DEF_STD_CMD_A(CmdMeshRemeshGmsh)
+
+CmdMeshRemeshGmsh::CmdMeshRemeshGmsh()
+  : Command("Mesh_RemeshGmsh")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Refinement...");
+    sToolTipText  = QT_TR_NOOP("Refine existing mesh");
+    sStatusTip    = QT_TR_NOOP("Refine existing mesh");
+    sWhatsThis    = "Mesh_RemeshGmsh";
+  //sPixmap       = "Mesh_RemeshGmsh";
+}
+
+void CmdMeshRemeshGmsh::activated(int)
+{
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        std::vector<Mesh::Feature*> mesh = getSelection().getObjectsOfType<Mesh::Feature>();
+        if (mesh.size() != 1)
+            return;
+        dlg = new MeshGui::TaskRemeshGmsh(mesh.front());
+    }
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdMeshRemeshGmsh::isActive(void)
+{
+    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) == 1;
+}
+
+//--------------------------------------------------------------------------------------
+
 DEF_STD_CMD_A(CmdMeshRemoveCompByHand)
 
 CmdMeshRemoveCompByHand::CmdMeshRemoveCompByHand()
@@ -1812,6 +1846,7 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshBuildRegularSolid());
     rcCmdMgr.addCommand(new CmdMeshFillupHoles());
     rcCmdMgr.addCommand(new CmdMeshRemoveComponents());
+    rcCmdMgr.addCommand(new CmdMeshRemeshGmsh());
     rcCmdMgr.addCommand(new CmdMeshFillInteractiveHole());
     rcCmdMgr.addCommand(new CmdMeshRemoveCompByHand());
     rcCmdMgr.addCommand(new CmdMeshFromGeometry());
