@@ -320,7 +320,7 @@ class _FemResultMechanical():
         if len(obj.Stats) == 39:
             temp = obj.Stats
             for i in range(12, -1, -1):
-                del temp [3 * i + 1]
+                del temp[3 * i + 1]
             obj.Stats = temp
 
     def __getstate__(self):
