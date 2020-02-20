@@ -68,8 +68,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         iconRound.addFile(':/icons/edge-join-round.svg', state=QtGui.QIcon.On)
         self.form.joinMiter.setIcon(iconMiter)
         self.form.joinRound.setIcon(iconRound)
-        self.form.direction.addItem('CW')
-        self.form.direction.addItem('CCW')
+        #self.form.direction.addItem('CW')
+        #self.form.direction.addItem('CCW')
 
     def getFields(self, obj):
         PathGui.updateInputField(obj, 'Width', self.form.value_W)
