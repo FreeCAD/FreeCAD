@@ -155,10 +155,13 @@ class _ConstraintBodyHeatSource(CommandManager):
             "Pixmap": "fem-constraint-heatflux",  # the heatflux icon is used
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintBodyHeatSource",
-                "Constraint body heat source"),
+                "Constraint body heat source"
+            ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintBodyHeatSource",
-                "Creates a FEM constraint body heat source")}
+                "Creates a FEM constraint body heat source"
+            )
+        }
         self.is_active = "with_analysis"
 
     def Activated(self):
@@ -174,10 +177,13 @@ class _ConstraintElectrostaticPotential(CommandManager):
             "Pixmap": "fem-constraint-electrostatic-potential",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
-                "Constraint electrostatic potential"),
+                "Constraint electrostatic potential"
+            ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
-                "Creates a FEM constraint electrostatic potential")}
+                "Creates a FEM constraint electrostatic potential"
+            )
+        }
         self.is_active = "with_analysis"
 
     def Activated(self):
@@ -193,10 +199,13 @@ class _ConstraintFlowVelocity(CommandManager):
             "Pixmap": "fem-constraint-flow-velocity",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
-                "Constraint flow velocity"),
+                "Constraint flow velocity"
+            ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintFlowVelocity",
-                "Creates a FEM constraint flow velocity")}
+                "Creates a FEM constraint flow velocity"
+            )
+        }
         self.is_active = "with_analysis"
 
     def Activated(self):
@@ -212,10 +221,13 @@ class _ConstraintInitialFlowVelocity(CommandManager):
             "Pixmap": "fem-constraint-initial-flow-velocity",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintInitialFlowVelocity",
-                "Constraint initial flow velocity"),
+                "Constraint initial flow velocity"
+            ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintInitialFlowVelocity",
-                "Creates a FEM constraint initial flow velocity")}
+                "Creates a FEM constraint initial flow velocity"
+            )
+        }
         self.is_active = "with_analysis"
 
     def Activated(self):
@@ -391,7 +403,8 @@ class _EquationElasticity(CommandManager):
             "Pixmap": "fem-equation-elasticity",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_EquationElasticity",
-                "Elasticity equation"),
+                "Elasticity equation"
+            ),
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_EquationElasticity",
                 "Creates a FEM equation for elasticity"
@@ -723,7 +736,8 @@ class _MeshClear(CommandManager):
             "Pixmap": "fem-femmesh-clear-mesh",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MeshClear",
-                "Clear FEM mesh"),
+                "Clear FEM mesh"
+            ),
             # "Accel": "Z, Z",
             "ToolTip": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MeshClear",
