@@ -445,7 +445,8 @@ class _TaskPanelFemResultShow:
         if len(plt.get_fignums()) > 0:
             plt.show()
         else:
-            QtGui.QMessageBox.information(None,
+            QtGui.QMessageBox.information(
+                None,
                 self.result_obj.Label + " - Information",
                 "No histogram available.\nPlease select a result type first."
             )
