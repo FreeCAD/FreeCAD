@@ -28,6 +28,10 @@ from PySide import QtCore
 
 # Python command definitions
 # for C++ command definitions see src/Mod/Fem/Command.cpp
+# TODO, may be even more generic class creation
+# with type() and identifier instead of class for
+# the commands which add new document objects.
+# see https://www.python-course.eu/python3_classes_and_type.php
 
 
 class _Analysis(CommandManager):
