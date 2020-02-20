@@ -33,6 +33,7 @@
 #include "ViewProviderFemConstraintForce.h"
 
 #include <QKeyEvent>
+#include <QListWidgetItem>
 
 class Ui_TaskFemConstraintForce;
 
@@ -53,9 +54,8 @@ class TaskFemConstraintForce : public TaskFemConstraint
 public:
     TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent = 0);
     virtual ~TaskFemConstraintForce();
-
     double getForce(void) const;
-    virtual const std::string getReferences() const;
+    const std::string getReferences() const;
     const std::string getDirectionName(void) const;
     const std::string getDirectionObject(void) const;
     bool getReverse(void) const;
@@ -65,13 +65,15 @@ private Q_SLOTS:
     void onForceChanged(double);
     void onButtonDirection(const bool pressed = true);
     void onCheckReverse(bool);
+    void addToSelection();
+    void removeFromSelection();
+    void setSelection(QListWidgetItem* item);
 
 protected:
     bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
 
 private:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
 
 private:

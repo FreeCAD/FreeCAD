@@ -50,9 +50,6 @@
 #include "ui_TaskFemConstraintDisplacement.h"
 #include <App/Application.h>
 #include <Gui/Command.h>
-
-
-
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 
