@@ -37,22 +37,38 @@ class Proxy(FemConstraint.Proxy):
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
         obj.addProperty(
-            "App::PropertyFloat", "Potential",
-            "Parameter", "Potential"),
+            "App::PropertyFloat",
+            "Potential",
+            "Parameter",
+            "Potential"
+        ),
         obj.addProperty(
-            "App::PropertyBool", "PotentialEnabled",
-            "Parameter", "Potential Enabled"),
+            "App::PropertyBool",
+            "PotentialEnabled",
+            "Parameter",
+            "Potential Enabled"
+        ),
         obj.addProperty(
-            "App::PropertyBool", "PotentialConstant",
-            "Parameter", "Potential Constant"),
-        obj.addProperty(      # Howil added
-            "App::PropertyBool", "ElectricInfinity",
-            "Parameter", "Electric Infinity")
+            "App::PropertyBool",
+            "PotentialConstant",
+            "Parameter",
+            "Potential Constant"
+        ),
         obj.addProperty(
-            "App::PropertyInteger", "CapacitanceBody",
-            "Parameter", "Capacitance Body")
+            "App::PropertyBool",
+            "ElectricInfinity",
+            "Parameter",
+            "Electric Infinity"
+        )
         obj.addProperty(
-            "App::PropertyBool", "CapacitanceBodyEnabled",
-            "Parameter", "Capacitance Body Enabled")
-        
-
+            "App::PropertyInteger",
+            "CapacitanceBody",
+            "Parameter",
+            "Capacitance Body"
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "CapacitanceBodyEnabled",
+            "Parameter",
+            "Capacitance Body Enabled"
+        )

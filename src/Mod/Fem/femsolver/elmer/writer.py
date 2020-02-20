@@ -357,7 +357,7 @@ class Writer(object):
                 for name in obj.References[0][1]:
                     # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454  ff
                     if obj.PotentialEnabled:
-                        if hasattr(obj, 'Potential'):
+                        if hasattr(obj, "Potential"):
                             potential = getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
                             self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
@@ -365,8 +365,8 @@ class Writer(object):
                     if obj.ElectricInfinity:
                         self._boundary(name, "Electric Infinity BC", True)
                     if obj.CapacitanceBodyEnabled:
-                        if hasattr(obj, 'CapacitanceBody'):
-                            self._boundary(name, "Capacitance Body", obj.CapacitanceBody)        
+                        if hasattr(obj, "CapacitanceBody"):
+                            self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
                 self._handled(obj)
 
     def _handleFluxsolver(self):
