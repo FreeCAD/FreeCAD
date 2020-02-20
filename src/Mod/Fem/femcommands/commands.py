@@ -163,9 +163,7 @@ class _ConstraintBodyHeatSource(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
 class _ConstraintElectrostaticPotential(CommandManager):
@@ -185,9 +183,7 @@ class _ConstraintElectrostaticPotential(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ConstraintFlowVelocity(CommandManager):
@@ -207,9 +203,7 @@ class _ConstraintFlowVelocity(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ConstraintInitialFlowVelocity(CommandManager):
@@ -229,9 +223,7 @@ class _ConstraintInitialFlowVelocity(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ConstraintSelfWeight(CommandManager):
@@ -252,9 +244,7 @@ class _ConstraintSelfWeight(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
 class _ConstraintTie(CommandManager):
@@ -275,9 +265,7 @@ class _ConstraintTie(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ElementFluid1D(CommandManager):
@@ -298,9 +286,7 @@ class _ElementFluid1D(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ElementGeometry1D(CommandManager):
@@ -321,9 +307,7 @@ class _ElementGeometry1D(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ElementGeometry2D(CommandManager):
@@ -344,9 +328,7 @@ class _ElementGeometry2D(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _ElementRotation1D(CommandManager):
@@ -367,9 +349,7 @@ class _ElementRotation1D(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
 class _EquationElectrostatic(CommandManager):
@@ -389,9 +369,7 @@ class _EquationElectrostatic(CommandManager):
             )
         }
         self.is_active = "with_solver_elmer"
-
-    def Activated(self):
-        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
 class _EquationElasticity(CommandManager):
@@ -411,9 +389,7 @@ class _EquationElasticity(CommandManager):
             )
         }
         self.is_active = "with_solver_elmer"
-
-    def Activated(self):
-        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
 class _EquationFlow(CommandManager):
@@ -433,9 +409,7 @@ class _EquationFlow(CommandManager):
             )
         }
         self.is_active = "with_solver_elmer"
-
-    def Activated(self):
-        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
 class _EquationFluxsolver(CommandManager):
@@ -455,9 +429,7 @@ class _EquationFluxsolver(CommandManager):
             )
         }
         self.is_active = "with_solver_elmer"
-
-    def Activated(self):
-        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
 class _EquationHeat(CommandManager):
@@ -477,9 +449,7 @@ class _EquationHeat(CommandManager):
             )
         }
         self.is_active = "with_solver_elmer"
-
-    def Activated(self):
-        self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_selobj_noset_edit"
 
 
 class _MaterialEditor(CommandManager):
@@ -524,9 +494,7 @@ class _MaterialFluid(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _MaterialMechanicalNonlinear(CommandManager):
@@ -626,9 +594,7 @@ class _MaterialReinforced(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _MaterialSolid(CommandManager):
@@ -649,9 +615,7 @@ class _MaterialSolid(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_set_edit"
 
 
 class _Mesh2Mesh(CommandManager):
@@ -722,9 +686,7 @@ class _MeshBoundaryLayer(CommandManager):
             )
         }
         self.is_active = "with_gmsh_femmesh"
-
-    def Activated(self):
-        self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
 
 class _MeshClear(CommandManager):
@@ -855,9 +817,7 @@ class _MeshGroup(CommandManager):
             )
         }
         self.is_active = "with_gmsh_femmesh"
-
-    def Activated(self):
-        self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
 
 class _MeshNetgenFromShape(CommandManager):
@@ -926,9 +886,7 @@ class _MeshRegion(CommandManager):
             )
         }
         self.is_active = "with_gmsh_femmesh"
-
-    def Activated(self):
-        self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
 
 class _ResultShow(CommandManager):
@@ -1038,9 +996,7 @@ class _SolverCalculix(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
 class _SolverControl(CommandManager):
@@ -1084,9 +1040,7 @@ class _SolverElmer(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
 class _SolverRun(CommandManager):
@@ -1133,9 +1087,7 @@ class _SolverZ88(CommandManager):
             )
         }
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
 # the string in add command will be the page name on FreeCAD wiki
