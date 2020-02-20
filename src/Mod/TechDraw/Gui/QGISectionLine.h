@@ -67,7 +67,7 @@ protected:
     void makeSymbolsTrad();
     void makeSymbolsISO();
     void setTools();
-    int  getPrefSectionFormat();
+    int  getPrefSectionStandard();
 
 private:
     char* m_symbol;

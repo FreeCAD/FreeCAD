@@ -445,7 +445,8 @@ class _TaskPanelFemResultShow:
         if len(plt.get_fignums()) > 0:
             plt.show()
         else:
-            QtGui.QMessageBox.information(None,
+            QtGui.QMessageBox.information(
+                None,
                 self.result_obj.Label + " - Information",
                 "No histogram available.\nPlease select a result type first."
             )
@@ -518,11 +519,11 @@ class _TaskPanelFemResultShow:
         from ply import yacc
         import femtools.tokrules as tokrules
         identifiers = [
-            'x', 'y', 'z', 'T', 'vM', 'Peeq', 'P1', 'P2', 'P3',
-            'sxx', 'syy', 'szz', 'sxy', 'sxz', 'syz',
-            'exx', 'eyy', 'ezz', 'exy', 'exz', 'eyz',
-            'MF', 'NP', 'rx', 'ry', 'rz', 'mc',
-            's1x', 's1y', 's1z', 's2x', 's2y', 's2z', 's3x', 's3y', 's3z'
+            "x", "y", "z", "T", "vM", "Peeq", "P1", "P2", "P3",
+            "sxx", "syy", "szz", "sxy", "sxz", "syz",
+            "exx", "eyy", "ezz", "exy", "exz", "eyz",
+            "MF", "NP", "rx", "ry", "rz", "mc",
+            "s1x", "s1y", "s1z", "s2x", "s2y", "s2z", "s3x", "s3y", "s3z"
         ]
         tokrules.names = {}
         for i in identifiers:

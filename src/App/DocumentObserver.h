@@ -27,6 +27,7 @@
 #include <Base/BaseClass.h>
 #include <boost/signals2.hpp>
 #include <set>
+#include <memory>
 
 namespace App
 {
@@ -144,7 +145,7 @@ private:
     std::string property;
 };
 
-class AppExport SubObjectT: public DocumentObjectT
+class AppExport SubObjectT : public DocumentObjectT
 {
 public:
     /*! Constructor */
@@ -203,6 +204,82 @@ public:
 
 private:
     std::string subname;
+};
+
+/**
+ * @brief The DocumentWeakPtrT class
+ */
+class AppExport DocumentWeakPtrT
+{
+public:
+    DocumentWeakPtrT(App::Document*) noexcept;
+    ~DocumentWeakPtrT();
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset() noexcept;
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const noexcept;
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    App::Document* operator->() noexcept;
+
+private:
+    // disable
+    DocumentWeakPtrT(const DocumentWeakPtrT&);
+    DocumentWeakPtrT& operator=(const DocumentWeakPtrT&);
+
+    class Private;
+    std::unique_ptr<Private> d;
+};
+
+/**
+ * @brief The DocumentObjectWeakPtrT class
+ */
+class AppExport DocumentObjectWeakPtrT
+{
+public:
+    DocumentObjectWeakPtrT(App::DocumentObject*) noexcept;
+    ~DocumentObjectWeakPtrT();
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset() noexcept;
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const noexcept;
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    App::DocumentObject* operator->() noexcept;
+    /*! Get a pointer to the object or 0 if it doesn't exist any more or the type doesn't match. */
+    template<typename T>
+    inline T* get() const noexcept
+    {
+        return Base::freecad_dynamic_cast<T>(_get());
+    }
+
+private:
+    App::DocumentObject* _get() const noexcept;
+    // disable
+    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT&);
+    DocumentObjectWeakPtrT& operator=(const DocumentObjectWeakPtrT&);
+
+private:
+    class Private;
+    std::unique_ptr<Private> d;
 };
 
 /**

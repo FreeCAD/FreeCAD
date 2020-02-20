@@ -257,6 +257,7 @@ Property *DocumentObjectT::getProperty() const {
         return obj->getPropertyByName(property.c_str());
     return 0;
 }
+
 // -----------------------------------------------------------------------------
 
 SubObjectT::SubObjectT()
@@ -387,6 +388,138 @@ std::vector<App::DocumentObject*> SubObjectT::getSubObjectList() const {
 }
 
 // -----------------------------------------------------------------------------
+
+class DocumentWeakPtrT::Private {
+public:
+    Private(App::Document* doc) : _document(doc) {
+        if (doc) {
+            connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
+                (&Private::deletedDocument, this, _1));
+        }
+    }
+
+    void deletedDocument(const App::Document& doc) {
+        if (_document == &doc)
+            reset();
+    }
+    void reset() {
+        connectApplicationDeletedDocument.disconnect();
+        _document = nullptr;
+    }
+
+    App::Document* _document;
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connectApplicationDeletedDocument;
+};
+
+DocumentWeakPtrT::DocumentWeakPtrT(App::Document* doc) noexcept
+  : d(new Private(doc))
+{
+}
+
+DocumentWeakPtrT::~DocumentWeakPtrT()
+{
+}
+
+void DocumentWeakPtrT::reset() noexcept
+{
+    d->reset();
+}
+
+bool DocumentWeakPtrT::expired() const noexcept
+{
+    return (d->_document == nullptr);
+}
+
+App::Document* DocumentWeakPtrT::operator->() noexcept
+{
+    return d->_document;
+}
+
+// -----------------------------------------------------------------------------
+
+class DocumentObjectWeakPtrT::Private {
+public:
+    Private(App::DocumentObject* obj) : object(obj), indocument(false) {
+        if (obj) {
+            indocument = true;
+            connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
+                (&Private::deletedDocument, this, _1));
+            App::Document* doc = obj->getDocument();
+            connectDocumentCreatedObject = doc->signalNewObject.connect(boost::bind
+                (&Private::createdObject, this, _1));
+            connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
+                (&Private::deletedObject, this, _1));
+        }
+    }
+    void deletedDocument(const App::Document& doc) {
+        // When deleting document then there is no way to undo it
+        if (object && object->getDocument() == &doc) {
+            reset();
+        }
+    }
+    void createdObject(const App::DocumentObject& obj) {
+        // When undoing the removal
+        if (object == &obj) {
+            indocument = true;
+        }
+    }
+    void deletedObject(const App::DocumentObject& obj) {
+        if (object == &obj) {
+            indocument = false;
+        }
+    }
+    void reset() {
+        connectApplicationDeletedDocument.disconnect();
+        connectDocumentCreatedObject.disconnect();
+        connectDocumentDeletedObject.disconnect();
+        object = nullptr;
+        indocument = false;
+    }
+    App::DocumentObject* get() const {
+        return indocument ? object : nullptr;
+    }
+
+    App::DocumentObject* object;
+    bool indocument;
+    typedef boost::signals2::scoped_connection Connection;
+    Connection connectApplicationDeletedDocument;
+    Connection connectDocumentCreatedObject;
+    Connection connectDocumentDeletedObject;
+};
+
+DocumentObjectWeakPtrT::DocumentObjectWeakPtrT(App::DocumentObject* obj) noexcept
+  : d(new Private(obj))
+{
+}
+
+DocumentObjectWeakPtrT::~DocumentObjectWeakPtrT()
+{
+
+}
+
+App::DocumentObject* DocumentObjectWeakPtrT::_get() const noexcept
+{
+    return d->get();
+}
+
+void DocumentObjectWeakPtrT::reset() noexcept
+{
+    d->reset();
+}
+
+bool DocumentObjectWeakPtrT::expired() const noexcept
+{
+    return !d->indocument;
+}
+
+App::DocumentObject* DocumentObjectWeakPtrT::operator->() noexcept
+{
+    return d->get();
+}
+
+// -----------------------------------------------------------------------------
+
 DocumentObserver::DocumentObserver() : _document(0)
 {
     this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(boost::bind
