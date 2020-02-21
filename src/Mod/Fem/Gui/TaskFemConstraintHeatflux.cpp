@@ -79,6 +79,8 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     //        this, SLOT(onFaceTempChanged(double)));
     connect(ui->if_filmcoef, SIGNAL(valueChanged(double)),
             this, SLOT(onFilmCoefChanged(double)));
+    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -135,8 +137,6 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     ui->lw_references->blockSignals(false);
     ui->btnAdd->blockSignals(false);
     ui->btnRemove->blockSignals(false);
-
-
 
     updateUI();
 }
