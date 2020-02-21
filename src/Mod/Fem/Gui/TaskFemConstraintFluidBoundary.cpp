@@ -554,6 +554,7 @@ void TaskFemConstraintFluidBoundary::onReferenceDeleted() {
 void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed) {
     // sets the normal vector of the currently selecteed planar face as direction
 
+    Q_UNUSED(pressed)
     //get vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.size() == 0) {
