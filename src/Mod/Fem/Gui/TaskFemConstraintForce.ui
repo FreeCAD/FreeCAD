@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>330</width>
-    <height>350</height>
+    <height>320</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>330</width>
-    <height>350</height>
+    <height>300</height>
    </size>
   </property>
   <property name="baseSize">
@@ -95,13 +95,21 @@
     <layout class="QHBoxLayout" name="layoutDirection">
      <item>
       <widget class="QPushButton" name="buttonDirection">
+       <property name="toolTip">
+        <string>Select a planar edge or face, then press this button</string>
+       </property>
        <property name="text">
         <string>Direction</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineDirection"/>
+      <widget class="QLineEdit" name="lineDirection">
+       <property name="toolTip">
+        <string>The direction of the edge or the direction of the
+normal vector of the face is used as direction</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -111,19 +119,6 @@
       <string>Reverse direction</string>
      </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>17</width>
-       <height>56</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
