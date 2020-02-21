@@ -86,6 +86,8 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
             this, SLOT(onButtonDirection()));
     connect(ui->checkReverse, SIGNAL(toggled(bool)),
             this, SLOT(onCheckReverse(bool)));
+    connect(ui->listReferences, SIGNAL(itemClicked(QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -284,14 +286,69 @@ void TaskFemConstraintForce::onReferenceDeleted() {
     TaskFemConstraintForce::removeFromSelection(); //OvG: On right-click face is automatically selected, so just remove
 }
 
-void TaskFemConstraintForce::onButtonDirection(const bool pressed) {
-    if (pressed) {
-        selectionMode = seldir;
-    } else {
-        selectionMode = selnone;
+void TaskFemConstraintForce::onButtonDirection(const bool pressed)
+{
+    // sets the normal vector of the currently selecteed planar face as direction
+
+    //get vector of selected objects of active document
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); 
+    if (selection.size() == 0) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        return;
     }
-    ui->buttonDirection->setChecked(pressed);
-    Gui::Selection().clearSelection();
+    Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
+
+    // we only handle the first selected object
+    std::vector<Gui::SelectionObject>::iterator selectionElement = selection.begin();
+    std::string TypeName = static_cast<std::string>(selectionElement->getTypeName());
+
+    // we can only handle part objects
+    if (TypeName.substr(0, 4).compare(std::string("Part")) != 0) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+        return;
+    }
+    // get the names of the subobjects
+    std::vector<std::string> subNames = selectionElement->getSubNames();
+
+    if (subNames.size() > 1) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Only one planar face or edge can be selected!"));
+        return;
+    }
+    // we are now sure we only have one object
+    std::string subNamesElement = subNames[0];
+    // vector for the direction
+    std::vector<std::string> direction(1, subNamesElement);
+
+    App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(selectionElement->getFeatName());
+    Part::Feature* feat = static_cast<Part::Feature*>(obj);
+    TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNamesElement.c_str());
+
+    if (TypeName.substr(0, 4).compare(std::string("Part")) != 0) {
+        QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+        return;
+    }
+    if (subNamesElement.substr(0, 4) == "Face") {
+        if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
+            QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked for 3D"));
+            return;
+        }
+    }
+    else if (subNamesElement.substr(0, 4) == "Edge") { // 2D or 3D can use edge as direction vector
+        if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
+            QMessageBox::warning(this, tr("Selection error"), tr("Only planar edges can be picked for 2D"));
+            return;
+        }
+    }
+    else {
+        QMessageBox::warning(this, tr("Selection error"), tr("Only faces for 3D part or edges for 2D can be picked"));
+        return;
+    }
+    // update the direction
+    pcConstraint->Direction.setValue(obj, direction);
+    ui->lineDirection->setText(makeRefText(obj, subNamesElement));
+
+    //Update UI
+    updateUI(); 
 }
 
 void TaskFemConstraintForce::onCheckReverse(const bool pressed)
