@@ -148,3 +148,11 @@ class _TaskPanel(object):
             if quantity is not None:
                 self._obj.Potential = float(quantity.getValueAs(unit))
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
+
+        self._obj.ElectricInfinity = self._paramWidget.electricInfinityBox.isChecked()
+
+        self._obj.CapacitanceBodyEnabled = \
+            not self._paramWidget.capacitanceBodyBox.isChecked()
+        if self._obj.CapacitanceBodyEnabled:
+            self._paramWidget.capacitanceBody_spinBox.setEnabled(True)
+            self._obj.CapacitanceBody = self._paramWidget.capacitanceBody_spinBox.value()
