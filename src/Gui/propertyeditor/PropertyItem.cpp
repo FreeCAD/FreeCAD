@@ -3775,18 +3775,18 @@ void LinkLabel::onLinkActivated (const QString& s)
 void LinkLabel::onEditClicked ()
 {
     if(!dlg) {
-        dlg = new DlgPropertyLink(this);
-        dlg->init(objProp,true);
+        dlg = new PropertyLinkEditor(this);
+        dlg->getProxy()->init(objProp,true);
         connect(dlg, SIGNAL(accepted()), this, SLOT(onLinkChanged()));
     } else
-        dlg->init(objProp,false);
+        dlg->getProxy()->init(objProp,false);
     dlg->show();
 }
 
 void LinkLabel::onLinkChanged() {
     if(dlg) {
-        auto links = dlg->currentLinks();
-        if(links != dlg->originalLinks()) {
+        auto links = dlg->getProxy()->currentLinks();
+        if(links != dlg->getProxy()->originalLinks()) {
             link = QVariant::fromValue(links);
             /*emit*/ linkChanged(link);
             updatePropertyLink();

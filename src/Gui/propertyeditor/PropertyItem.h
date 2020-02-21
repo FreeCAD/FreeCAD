@@ -67,7 +67,7 @@ namespace Gui {
 
 namespace Dialog { 
 class TaskPlacement; 
-class DlgPropertyLink;
+class PropertyLinkEditor;
 }
 
 namespace PropertyEditor {
@@ -999,7 +999,7 @@ private:
     QVariant link;
     App::DocumentObjectT objProp;
 
-    Gui::Dialog::DlgPropertyLink* dlg;
+    Gui::Dialog::PropertyLinkEditor* dlg;
 };
 
 /**

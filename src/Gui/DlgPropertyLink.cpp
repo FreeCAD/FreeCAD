@@ -28,6 +28,7 @@
 # include <QTreeWidgetItem>
 # include <QMessageBox>
 # include <QPushButton>
+# include <QVBoxLayout>
 #endif
 
 #include <QStyledItemDelegate>
@@ -68,14 +69,35 @@ public:
 
 /* TRANSLATOR Gui::Dialog::DlgPropertyLink */
 
-DlgPropertyLink::DlgPropertyLink(QWidget* parent)
-  : QDialog(parent), SelectionObserver(false,0)
+DlgPropertyLink::DlgPropertyLink(QWidget* parent, int flags)
+  : QWidget(parent)
   , ui(new Ui_DlgPropertyLink)
+  , flags(flags)
 {
     ui->setupUi(this);
+
     ui->typeTree->hide();
-    ui->searchBox->installEventFilter(this);
-    ui->searchBox->setNoProperty(true);
+    if(flags & NoTypeFilter) {
+        QSignalBlocker blocker(ui->checkObjectType);
+        ui->checkObjectType->setChecked(true);
+        ui->checkObjectType->hide();
+    }
+
+    if(flags & NoSearchBox) {
+        ui->searchBox->hide();
+        ui->labelSearch->hide();
+    } else {
+        ui->searchBox->installEventFilter(this);
+        ui->searchBox->setNoProperty(true);
+        connect(ui->searchBox, SIGNAL(returnPressed()), this, SLOT(onItemSearch()));
+    }
+
+    if(flags & NoSyncSubObject)
+        ui->checkSubObject->hide();
+    else if(flags & AlwaysSyncSubObject) {
+        ui->checkSubObject->hide();
+        ui->checkSubObject->setChecked(true);
+    }
 
     timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -87,17 +109,24 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
     connect(ui->treeWidget, SIGNAL(itemEntered(QTreeWidgetItem*, int)),
             this, SLOT(onItemEntered(QTreeWidgetItem*)));
 
+    ui->treeWidget->viewport()->installEventFilter(this);
+
     connect(ui->treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
             this, SLOT(onItemExpanded(QTreeWidgetItem*)));
 
+    connect(ui->treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)),
+            this, SLOT(onCurrentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
     connect(ui->treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(onItemSelectionChanged()));
 
-    connect(ui->searchBox, SIGNAL(returnPressed()), this, SLOT(onItemSearch()));
-
-    connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(onClicked(QAbstractButton*)));
-
-    refreshButton = ui->buttonBox->addButton(tr("Reset"), QDialogButtonBox::ActionRole);
-    resetButton = ui->buttonBox->addButton(tr("Clear"), QDialogButtonBox::ResetRole);
+    if(flags & NoButton)
+        ui->buttonBox->hide();
+    else {
+        connect(ui->buttonBox, SIGNAL(accepted()), this, SIGNAL(accepted()));
+        connect(ui->buttonBox, SIGNAL(rejected()), this, SIGNAL(rejected()));
+        connect(ui->buttonBox, SIGNAL(clicked(QAbstractButton*)), this, SLOT(onClicked(QAbstractButton*)));
+        refreshButton = ui->buttonBox->addButton(tr("Reset"), QDialogButtonBox::ActionRole);
+        resetButton = ui->buttonBox->addButton(tr("Clear"), QDialogButtonBox::ResetRole);
+    }
 }
 
 /**
@@ -105,10 +134,12 @@ DlgPropertyLink::DlgPropertyLink(QWidget* parent)
  */
 DlgPropertyLink::~DlgPropertyLink()
 {
-    detachObserver();
-
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+QTreeWidget *DlgPropertyLink::treeWidget() {
+    return ui->treeWidget;
 }
 
 QList<App::SubObjectT> DlgPropertyLink::getLinksFromProperty(const App::PropertyLinkBase *prop)
@@ -212,24 +243,58 @@ QString DlgPropertyLink::formatLinks(App::Document *ownerDoc, QList<App::SubObje
                                              QLatin1String(links.size()>3?" ...":""));
 }
 
-void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
-    ui->treeWidget->blockSignals(true);
-    ui->treeWidget->clear();
-    ui->treeWidget->blockSignals(false);
+void DlgPropertyLink::setTypeFilter(std::set<QByteArray> &&filter)
+{
+    selectedTypes = std::move(filter);
+}
 
-    ui->typeTree->blockSignals(true);
-    ui->typeTree->clear();
-    ui->typeTree->blockSignals(false);
+void DlgPropertyLink::setTypeFilter(const std::vector<Base::Type> &types)
+{
+    selectedTypes.clear();
+    for(auto &type : types) {
+        const char *name = type.getName();
+        selectedTypes.insert(QByteArray::fromRawData(name,strlen(name)+1));
+    }
+}
 
+void DlgPropertyLink::setTypeFilter(Base::Type type)
+{
+    selectedTypes.clear();
+    const char *name = type.getName();
+    selectedTypes.insert(QByteArray::fromRawData(name,strlen(name)+1));
+}
+
+void DlgPropertyLink::setContext(App::SubObjectT &&ctx)
+{
+    selContext = std::move(ctx);
+}
+
+void DlgPropertyLink::setInitObjects(std::vector<App::DocumentObjectT> &&objs)
+{
+    initObjs = std::move(objs);
+}
+
+void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter)
+{
+    {
+        QSignalBlocker blocker(ui->typeTree);
+        ui->typeTree->clear();
+    }
+
+    {
+        QSignalBlocker blocker(ui->treeWidget);
+        ui->treeWidget->clear();
+    }
     oldLinks.clear();
     docItems.clear();
     typeItems.clear();
     itemMap.clear();
     inList.clear();
-    selectedTypes.clear();
+    if(tryFilter)
+        selectedTypes.clear();
     currentObj = nullptr;
     searchItem = nullptr;
-    subSelections.clear();
+    elementSels.clear();
     selections.clear();
 
     objProp  = prop;
@@ -264,11 +329,18 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         singleSelect = true;
     }
 
+    std::vector<App::DocumentObject*> objs;
+
     if(App::PropertyXLink::supportXLink(propLink)) {
         allowSubObject = true;
         docs = App::GetApplication().getDocuments();
-    } else
-        docs.push_back(owner->getDocument());
+    } else if (initObjs.empty()) {
+        objs = owner->getDocument()->getObjects();
+    } else {
+        objs.reserve(initObjs.size());
+        for(auto &o : initObjs) 
+            objs.push_back(o.getObject());
+    }
 
     bool isLinkList = false;
     if (propLink->isDerivedFrom(App::PropertyXLinkList::getClassTypeId())
@@ -285,11 +357,18 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         ui->treeWidget->setSelectionMode(QAbstractItemView::MultiSelection);
     }
 
-    ui->checkSubObject->setVisible(allowSubObject);
+    if(!(flags & (NoSyncSubObject|AlwaysSyncSubObject)))
+        ui->checkSubObject->setVisible(allowSubObject);
 
-    if(!allowSubObject) {
+    if(!allowSubObject && !(flags & AllowSubElement)) {
+        ui->treeWidget->setHeaderHidden(true);
         ui->treeWidget->setColumnCount(1);
+        ui->treeWidget->setSelectionBehavior(QTreeWidget::SelectRows);
     } else {
+        ui->treeWidget->setSelectionBehavior(QTreeWidget::SelectItems);
+        ui->treeWidget->setHeaderHidden(false);
+        ui->treeWidget->headerItem()->setText(0, tr("Object"));
+        ui->treeWidget->headerItem()->setText(1, tr("Element"));
         ui->treeWidget->setColumnCount(2);
 
         // make sure to show a horizontal scrollbar if needed
@@ -312,24 +391,34 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         }
     }
 
-    QPixmap docIcon(Gui::BitmapFactory().pixmap("Document"));
-    for(auto d : docs) {
-        auto item = new QTreeWidgetItem(ui->treeWidget);
-        item->setIcon(0, docIcon);
-        item->setText(0, QString::fromUtf8(d->Label.getValue()));
-        item->setData(0, Qt::UserRole, QByteArray(""));
-        item->setData(0, Qt::UserRole+1, QByteArray(d->getName()));
-        item->setFlags(Qt::ItemIsEnabled);
-        item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
-        if(expandDocs.count(d))
-            item->setExpanded(true);
-        docItems[d] = item;
+    if(objs.size()) {
+        for(auto obj : objs) {
+            if(!obj || itemMap.count(obj))
+                continue;
+            auto item = createItem(obj,nullptr);
+            if(item)
+                itemMap[obj] = item;
+        }
+    } else {
+        QPixmap docIcon(Gui::BitmapFactory().pixmap("Document"));
+        for(auto d : docs) {
+            auto item = new QTreeWidgetItem(ui->treeWidget);
+            item->setIcon(0, docIcon);
+            item->setText(0, QString::fromUtf8(d->Label.getValue()));
+            item->setData(0, Qt::UserRole, QByteArray(""));
+            item->setData(0, Qt::UserRole+1, QByteArray(d->getName()));
+            item->setFlags(Qt::ItemIsEnabled);
+            item->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+            if(expandDocs.count(d))
+                item->setExpanded(true);
+            docItems[d] = item;
+        }
     }
 
     if(oldLinks.isEmpty())
         return;
 
-    if(allowSubObject) {
+    if(allowSubObject && !(flags & (NoSyncSubObject|AlwaysSyncSubObject))) {
         for(auto &link : oldLinks) {
             auto sobj = link.getSubObject();
             if(sobj && sobj!=link.getObject()) {
@@ -341,14 +430,26 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
 
     // Try to select items corresponding to the current links inside the
     // property
-    ui->treeWidget->blockSignals(true);
-    for(auto &link : oldLinks) {
-        onSelectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
-                                                 link.getDocumentName(),
-                                                 link.getObjectName(),
-                                                 link.getSubName()));
+    if(selContext.getDocumentName().size()) {
+        std::string subname;
+        for(auto &link : oldLinks) {
+            subname = selContext.getSubName();
+            subname += link.getObjectName();
+            subname += ".";
+            subname += link.getSubName();
+            selectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
+                                                        selContext.getDocumentName(),
+                                                        selContext.getObjectName(),
+                                                        subname));
+        }
+    } else {
+        for(auto &link : oldLinks) {
+            selectionChanged(Gui::SelectionChanges(SelectionChanges::AddSelection,
+                                                    link.getDocumentName(),
+                                                    link.getObjectName(),
+                                                    link.getSubName()));
+        }
     }
-    ui->treeWidget->blockSignals(false);
 
     // For link list type property, try to auto filter type
     if(tryFilter && isLinkList) {
@@ -398,34 +499,23 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
 
 void DlgPropertyLink::onClicked(QAbstractButton *button) {
     if(button == resetButton) {
-        ui->treeWidget->blockSignals(true);
+        QSignalBlocker blocker(ui->treeWidget);
         ui->treeWidget->selectionModel()->clearSelection();
-        for(auto item : subSelections)
+        for(auto item : elementSels)
             item->setText(1, QString());
-        ui->treeWidget->blockSignals(false);
-        subSelections.clear();
+        elementSels.clear();
         Gui::Selection().clearSelection();
     } else if (button == refreshButton) {
         init(objProp);
     }
 }
 
-void DlgPropertyLink::hideEvent(QHideEvent *ev) {
-    detachObserver();
-    QDialog::hideEvent(ev);
-}
-
-void DlgPropertyLink::closeEvent(QCloseEvent *ev) {
-    detachObserver();
-    QDialog::closeEvent(ev);
-}
-
-void DlgPropertyLink::attachObserver() {
-    if(isConnectionAttached())
+void DlgPropertyLink::attachObserver(Gui::SelectionObserver *observer) {
+    if(observer->isConnectionAttached())
         return;
 
     Gui::Selection().selStackPush();
-    attachSelection();
+    observer->attachSelection();
 
     if(!parentView) {
         for(auto p=parent(); p; p=p->parent()) {
@@ -443,27 +533,26 @@ void DlgPropertyLink::attachObserver() {
         view->blockConnection(true);
 }
 
-void DlgPropertyLink::showEvent(QShowEvent *ev) {
-    attachObserver();
-    QDialog::showEvent(ev);
-}
-
 void DlgPropertyLink::onItemEntered(QTreeWidgetItem *) {
+    if(!timer->isActive() && enterTime.elapsed() < Gui::TreeParams::Instance()->PreSelectionDelay()) {
+        onTimer();
+        return;
+    }
     int timeout = Gui::TreeParams::Instance()->PreSelectionDelay()/2;
     if(timeout < 0)
         timeout = 1;
     timer->start(timeout);
-    Gui::Selection().rmvPreselect();
 }
 
 void DlgPropertyLink::leaveEvent(QEvent *ev) {
+    timer->stop();
     Gui::Selection().rmvPreselect();
-    QDialog::leaveEvent(ev);
+    QWidget::leaveEvent(ev);
 }
 
-void DlgPropertyLink::detachObserver() {
-    if(isConnectionAttached())
-        detachSelection();
+void DlgPropertyLink::detachObserver(Gui::SelectionObserver *observer) {
+    if(observer->isConnectionAttached())
+        observer->detachSelection();
 
     auto view = qobject_cast<Gui::PropertyView*>(parentView.data());
     if(view && savedSelections.size()) {
@@ -482,20 +571,13 @@ void DlgPropertyLink::detachObserver() {
     parentView = nullptr;
 }
 
-void DlgPropertyLink::onItemSelectionChanged()
+void DlgPropertyLink::onCurrentItemChanged(QTreeWidgetItem *item, QTreeWidgetItem*)
 {
-    auto newSelections = ui->treeWidget->selectedItems();
-
-    if(newSelections.isEmpty() || selections.contains(newSelections.back())) {
-        selections = newSelections;
-        if(newSelections.isEmpty())
-            currentObj = 0;
+    if(!item)
         return;
-    }
+    int column = ui->treeWidget->currentColumn();
 
-    selections = newSelections;
-
-    auto sobjs = getLinkFromItem(newSelections.back());
+    auto sobjs = getLinkFromItem(item, column==1);
     App::DocumentObject *obj = sobjs.size()?sobjs.front().getObject():nullptr;
     if(!obj) {
         Gui::Selection().clearSelection();
@@ -504,7 +586,7 @@ void DlgPropertyLink::onItemSelectionChanged()
 
     bool focus = false;
     // Do auto view switch if tree view does not do it
-    if(!TreeParams::Instance()->SyncView()) {
+    if(!TreeParams::Instance()->SyncView() && selContext.getObjectName().empty()) {
         focus = ui->treeWidget->hasFocus();
         auto doc = Gui::Application::Instance->getDocument(sobjs.front().getDocumentName().c_str());
         if(doc) {
@@ -516,34 +598,84 @@ void DlgPropertyLink::onItemSelectionChanged()
         }
     }
 
-    // Sync 3d view selection. To give a better visual feedback, we
-    // only keep the latest selection.
-    bool blocked = blockConnection(true);
-    Gui::Selection().clearSelection();
-    for(auto &sobj : sobjs)
-        Gui::Selection().addSelection(sobj.getDocumentName().c_str(),
-                                      sobj.getObjectName().c_str(),
-                                      sobj.getSubName().c_str());
-    blockConnection(blocked);
-
-    // Enforce single parent 
-    if(singleParent && currentObj && currentObj!=obj) {
-        ui->treeWidget->blockSignals(true);
-        for(auto item : ui->treeWidget->selectedItems()) {
-            if(item != selections.back())
-                item->setSelected(false);
+    // Sync 3d view selection. Note that we selecting the current item in 3D
+    // view, however the current item may not be selected in the tree widget.
+    // This is by design, because we want to give user visual feedback of the
+    // item so that they can make a decision to change the selection, which
+    // may trigger expensive recomputes
+    {
+        Base::StateLocker locker(busy);
+        Gui::Selection().clearSelection();
+        
+        if(selContext.getDocumentName().size()) {
+            std::string subname;
+            for(auto &sobj : sobjs) {
+                subname = selContext.getSubName();
+                subname += sobj.getObjectName();
+                subname += ".";
+                subname += sobj.getSubName();
+                Gui::Selection().addSelection(selContext.getDocumentName().c_str(),
+                                            selContext.getObjectName().c_str(),
+                                            subname.c_str());
+            }
+        } else {
+            for(auto &sobj : sobjs) {
+                Gui::Selection().addSelection(sobj.getDocumentName().c_str(),
+                                            sobj.getObjectName().c_str(),
+                                            sobj.getSubName().c_str());
+            }
         }
-        auto last = selections.back();
-        selections.clear();
-        selections.append(last);
-        ui->treeWidget->blockSignals(false);
     }
-    currentObj = obj;
 
     if(focus) {
         // FIXME: does not work, why?
         ui->treeWidget->setFocus();
     }
+}
+
+void DlgPropertyLink::onItemSelectionChanged()
+{
+    checkItemSelection();
+}
+
+void DlgPropertyLink::checkItemSelection()
+{
+    auto newSelections = ui->treeWidget->selectedItems();
+    if(newSelections == selections)
+        return;
+
+    int column = ui->treeWidget->currentColumn();
+    auto item = ui->treeWidget->currentItem();
+
+    App::DocumentObject *obj = nullptr;
+    if(item->isSelected()) {
+        auto sobjs = getLinkFromItem(item, column==1);
+        obj = sobjs.size()?sobjs.front().getObject():nullptr;
+        if(obj && singleParent && currentObj!=obj) {
+            // Enforce single parent 
+            QSignalBlocker blocker(ui->treeWidget);
+            for(auto sel : newSelections) {
+                if(sel != item) 
+                    sel->setSelected(false);
+            }
+            newSelections.clear();
+            newSelections.append(item);
+        }
+    }
+
+    // Clear elements on unselected items
+    for(auto it=elementSels.begin(); it!=elementSels.end();) {
+        auto sitem = *it;
+        if(!sitem->isSelected()) {
+            sitem->setText(1, QString());
+            it = elementSels.erase(it);
+        } else
+            ++it;
+    }
+
+    currentObj = obj;
+    selections = newSelections;
+    linkChanged();
 }
 
 QTreeWidgetItem *DlgPropertyLink::findItem(
@@ -556,7 +688,22 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
         return 0;
 
     std::vector<App::DocumentObject *> sobjs;
-    if(subname && subname[0]) {
+    
+    if(selContext.getDocumentName().size()) {
+        if(allowSubObject) {
+            auto ctxObjs = selContext.getSubObjectList();
+            auto sobjs = obj->getSubObjectList(subname);
+            if(ctxObjs.size() >= sobjs.size())
+                return 0;
+            for(size_t i=0;i<ctxObjs.size();++i) {
+                if(ctxObjs[i]!=sobjs[i])
+                    return 0;
+            }
+            sobjs.erase(sobjs.begin(),sobjs.begin()+ctxObjs.size());
+            obj = sobjs.front();
+            sobjs.erase(sobjs.begin());
+        }
+    } else if(subname && subname[0]) {
         if(!allowSubObject) {
             obj = obj->getSubObject(subname);
             if(!obj)
@@ -564,15 +711,17 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
         } else {
             sobjs = obj->getSubObjectList(subname);
         }
+
+        if(docItems.size()) {
+            auto itDoc = docItems.find(obj->getDocument());
+            if(itDoc == docItems.end())
+                return 0;
+            onItemExpanded(itDoc->second);
+        }
     }
 
-    auto itDoc = docItems.find(obj->getDocument());
-    if(itDoc == docItems.end())
-        return 0;
-    onItemExpanded(itDoc->second);
-
     auto it = itemMap.find(obj);
-    if(it == itemMap.end())
+    if(it == itemMap.end() || it->second->isHidden())
         return 0;
 
     if(!allowSubObject) {
@@ -593,6 +742,8 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
         bool found = false;
         for(int i=0,count=item->childCount();i<count;++i) {
             auto child = item->child(i);
+            if(child->isHidden())
+                break;
             if(strcmp(o->getNameInDocument(),
                         child->data(0, Qt::UserRole).toByteArray().constData())==0)
             {
@@ -609,8 +760,16 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
     return item;
 }
 
-void DlgPropertyLink::onSelectionChanged(const Gui::SelectionChanges& msg)
+void DlgPropertyLink::selectionChanged(const Gui::SelectionChanges& msg)
 {
+    if(busy)
+        return;
+
+    if(msg.pOriginalMsg) {
+        selectionChanged(*msg.pOriginalMsg);
+        return;
+    }
+
     if (msg.Type != SelectionChanges::AddSelection)
         return;
 
@@ -630,42 +789,53 @@ void DlgPropertyLink::onSelectionChanged(const Gui::SelectionChanges& msg)
     if(!item || !found)
         return;
 
+    std::string element = msg.Object.getOldElementName();
+    if(elementFilter && elementFilter(msg.Object,element))
+        return;
+
     if(!item->isSelected()) {
-        ui->treeWidget->blockSignals(true);
-        if(singleSelect || (singleParent && currentObj && currentObj!=selObj))
+        QSignalBlocker blocker(ui->treeWidget);
+        if(singleSelect || (singleParent && currentObj && currentObj!=selObj)) {
             ui->treeWidget->selectionModel()->clearSelection();
+            for(auto it=elementSels.begin(); it!=elementSels.end();) {
+                if(*it!=item) {
+                    (*it)->setText(1,QString());
+                    it = elementSels.erase(it);
+                } else
+                    ++it;
+            }
+            selections.clear();
+        }
         currentObj = selObj;
-        item->setSelected(true);
+        ui->treeWidget->setCurrentItem(item,0);
         selections.append(item);
-        ui->treeWidget->blockSignals(false);
     }
 
     ui->treeWidget->scrollToItem(item);
-    if(allowSubObject) {
-        QString element = QString::fromLatin1(msg.Object.getOldElementName().c_str());
+    if(allowSubObject || (flags & AllowSubElement)) {
         if(element.size()) {
+            QString e = QString::fromLatin1(element.c_str());
             QStringList list;
             QString text = item->text(1);
             if(text.size())
                 list = text.split(QLatin1Char(','));
-            if(list.indexOf(element)<0) {
-                list << element;
+            if(list.indexOf(e)<0) {
+                list << e;
                 item->setText(1, list.join(QLatin1String(",")));
-                subSelections.insert(item);
+                elementSels.insert(item);
+                linkChanged();
             }
-        } else if (subSelections.erase(item))
+        } else if (elementSels.erase(item)) {
             item->setText(1, QString());
+            linkChanged();
+        }
     }
-}
-
-void DlgPropertyLink::accept()
-{
-    QDialog::accept();
 }
 
 static QTreeWidgetItem *_getLinkFromItem(std::ostringstream &ss, QTreeWidgetItem *item, const char *objName) {
     auto parent = item->parent();
-    assert(parent);
+    if(!parent)
+        return item;
     const char *nextName = parent->data(0, Qt::UserRole).toByteArray().constData();
     if(!nextName[0])
         return item;
@@ -675,25 +845,35 @@ static QTreeWidgetItem *_getLinkFromItem(std::ostringstream &ss, QTreeWidgetItem
     return item;
 }
 
-QList<App::SubObjectT>
-DlgPropertyLink::getLinkFromItem(QTreeWidgetItem *item, bool needSubName) const
+static App::SubObjectT subObjectFromItem(QTreeWidgetItem *item)
 {
-    QList<App::SubObjectT> res;
-
+    App::SubObjectT sobj;
     auto parent = item->parent();
-    if(!parent)
-        return res;
-
+    if(!parent) {
+        return App::SubObjectT(item->data(0, Qt::UserRole+1).toByteArray().constData(),
+                               item->data(0, Qt::UserRole).toByteArray().constData(), 0);
+    }
+    
     std::ostringstream ss;
     auto parentItem = _getLinkFromItem(ss, item,
             item->data(0,Qt::UserRole).toByteArray().constData());
 
-    App::SubObjectT sobj(parentItem->data(0, Qt::UserRole+1).toByteArray().constData(),
-                         parentItem->data(0, Qt::UserRole).toByteArray().constData(),
-                         ss.str().c_str());
+    return App::SubObjectT(parentItem->data(0, Qt::UserRole+1).toByteArray().constData(),
+                           parentItem->data(0, Qt::UserRole).toByteArray().constData(),
+                           ss.str().c_str());
+}
+
+QList<App::SubObjectT>
+DlgPropertyLink::getLinkFromItem(QTreeWidgetItem *item, bool needElement) const
+{
+    QList<App::SubObjectT> res;
+
+    auto sobj = subObjectFromItem(item);
+    if(sobj.getObjectName().empty())
+        return res;
 
     QString elements;
-    if(needSubName && allowSubObject)
+    if(needElement && (allowSubObject || (flags & AllowSubElement)))
         elements = item->text(1);
 
     if(elements.isEmpty()) {
@@ -712,18 +892,35 @@ DlgPropertyLink::getLinkFromItem(QTreeWidgetItem *item, bool needSubName) const
 }
 
 void DlgPropertyLink::onTimer() {
-    auto item = ui->treeWidget->itemAt(
-            ui->treeWidget->viewport()->mapFromGlobal(QCursor::pos()));
+    auto pos = ui->treeWidget->viewport()->mapFromGlobal(QCursor::pos());
+    auto item = ui->treeWidget->itemAt(pos);
     if(!item) 
         return;
-    auto sobjs = getLinkFromItem(item);
+    bool needElement = true;
+    if(ui->treeWidget->columnCount() > 1) {
+        int hpos = ui->treeWidget->header()->sectionPosition(1);
+        auto rect = ui->treeWidget->visualItemRect(item);
+        needElement = pos.x() >= rect.left() + hpos;
+    }
+    auto sobjs = getLinkFromItem(item, needElement);
     if(sobjs.isEmpty())
         return;
     const auto &sobj = sobjs.front();
-    Gui::Selection().setPreselect(sobj.getDocumentName().c_str(),
-                                  sobj.getObjectName().c_str(),
-                                  sobj.getSubName().c_str(),
-                                  0,0,0,2);
+
+    if(selContext.getDocumentName().size()) {
+        Gui::Selection().setPreselect(selContext.getDocumentName().c_str(),
+                                      selContext.getObjectName().c_str(),
+                                      (selContext.getSubName()
+                                       + sobj.getObjectName() + "." 
+                                       + sobj.getSubName()).c_str(),
+                                      0,0,0,2);
+    } else {
+        Gui::Selection().setPreselect(sobj.getDocumentName().c_str(),
+                                      sobj.getObjectName().c_str(),
+                                      sobj.getSubName().c_str(),
+                                      0,0,0,2);
+    }
+    enterTime.start();
 }
 
 QList<App::SubObjectT> DlgPropertyLink::currentLinks() const
@@ -776,8 +973,13 @@ void DlgPropertyLink::filterObjects()
     }
 }
 
-void DlgPropertyLink::filterItem(QTreeWidgetItem *item) {
+void DlgPropertyLink::filterItem(QTreeWidgetItem *item)
+{
     if(filterType(item)) {
+        item->setHidden(true);
+        return;
+    }
+    if(objFilter && objFilter(subObjectFromItem(item))) {
         item->setHidden(true);
         return;
     }
@@ -787,14 +989,45 @@ void DlgPropertyLink::filterItem(QTreeWidgetItem *item) {
 }
 
 bool DlgPropertyLink::eventFilter(QObject *obj, QEvent *e) {
-    if(obj == ui->searchBox 
-            && e->type() == QEvent::KeyPress
+    if(obj == ui->searchBox) {
+        if(e->type() == QEvent::KeyPress
             && static_cast<QKeyEvent*>(e)->key() == Qt::Key_Escape)
-    {
-        ui->searchBox->setText(QString());
-        return true;
+        {
+            ui->searchBox->setText(QString());
+            return true;
+        }
+    } else if (obj == ui->treeWidget->viewport()) {
+        if(e->type() == QEvent::MouseButtonPress) {
+            // In case there are two columns, we block item selection via
+            // clicking the second column. Instead, we use the click to set the
+            // current item only, and by handling the currentItemChanged()
+            // event, we'll set the selection in 3D view. This allows user the
+            // chance to bring the item on top for visual inspection without
+            // changing the item selection, which may trigger linkChanged()
+            // event and potentially expensive recomputation.  
+            if(ui->treeWidget->columnCount() <= 1)
+                return false;
+            auto ke = static_cast<QMouseEvent*>(e);
+            auto pos = ke->pos();
+            auto item = ui->treeWidget->itemAt(pos);
+            if(!item) 
+                return false;
+            int hpos = ui->treeWidget->header()->sectionPosition(1);
+            auto rect = ui->treeWidget->visualItemRect(item);
+            if(pos.x() >= rect.left() + hpos) {
+                if(ui->treeWidget->currentItem() == item && ui->treeWidget->currentColumn() == 1) {
+                    // already the current item, currentItemChanged() won't be triggered,,
+                    // so call the slot manually to make the 3D selection
+                    onCurrentItemChanged(item, nullptr);
+                } else {
+                    ui->treeWidget->setCurrentItem(item,1,QItemSelectionModel::Deselect);
+                }
+                return true;
+            }
+            return false;
+        }
     }
-    return QDialog::eventFilter(obj,e);
+    return QWidget::eventFilter(obj,e);
 }
 
 void DlgPropertyLink::onItemSearch() {
@@ -807,7 +1040,7 @@ void DlgPropertyLink::keyPressEvent(QKeyEvent *ev)
         if(ui->searchBox->hasFocus())
             return;
     }
-    QDialog::keyPressEvent(ev);
+    QWidget::keyPressEvent(ev);
 }
 
 void DlgPropertyLink::itemSearch(const QString &text, bool select) {
@@ -873,7 +1106,7 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
     if(!obj || !obj->getNameInDocument())
         return 0;
 
-    if(inList.find(obj)!=inList.end())
+    if(inList.count(obj))
         return 0;
 
     auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
@@ -891,9 +1124,10 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
     item->setData(0, Qt::UserRole, QByteArray(obj->getNameInDocument()));
     item->setData(0, Qt::UserRole+1, QByteArray(obj->getDocument()->getName()));
 
-    if(allowSubObject) {
-        item->setChildIndicatorPolicy(obj->getLinkedObject(true)->getOutList().size()?
-                QTreeWidgetItem::ShowIndicator:QTreeWidgetItem::DontShowIndicator);
+    if(allowSubObject || (flags & AllowSubElement)) {
+        if(allowSubObject)
+            item->setChildIndicatorPolicy(obj->getLinkedObject(true)->getOutList().size()?
+                    QTreeWidgetItem::ShowIndicator:QTreeWidgetItem::DontShowIndicator);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
     }
 
@@ -1055,6 +1289,46 @@ void DlgPropertyLink::on_typeTree_itemSelectionChanged() {
 void DlgPropertyLink::on_searchBox_textChanged(const QString& text)
 {
     itemSearch(text,false);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+PropertyLinkEditor::PropertyLinkEditor(QWidget *parent)
+    :QDialog(parent), SelectionObserver(false)
+{
+    proxy = new DlgPropertyLink(this);
+    auto layout = new QVBoxLayout(this);
+    layout->addWidget(proxy);
+    connect(proxy, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(proxy, SIGNAL(rejected()), this, SLOT(reject()));
+}
+
+PropertyLinkEditor::~PropertyLinkEditor()
+{
+    proxy->detachObserver(this);
+}
+
+void PropertyLinkEditor::showEvent(QShowEvent *ev)
+{
+    proxy->attachObserver(this);
+    QDialog::showEvent(ev);
+}
+
+void PropertyLinkEditor::hideEvent(QHideEvent *ev)
+{
+    proxy->detachObserver(this);
+    QDialog::hideEvent(ev);
+}
+
+void PropertyLinkEditor::closeEvent(QCloseEvent *ev)
+{
+    proxy->detachObserver(this);
+    QDialog::closeEvent(ev);
+}
+
+void PropertyLinkEditor::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    proxy->selectionChanged(msg);
 }
 
 #include "moc_DlgPropertyLink.cpp"
