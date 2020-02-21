@@ -79,6 +79,8 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
 
     connect(ui->lw_Rect, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_Rect, SIGNAL(itemClicked(QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
 

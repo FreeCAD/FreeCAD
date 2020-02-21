@@ -49,9 +49,6 @@
 #include "ui_TaskFemConstraintTemperature.h"
 #include <App/Application.h>
 #include <Gui/Command.h>
-
-
-
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 
@@ -74,6 +71,8 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
     deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->rb_temperature, SIGNAL(clicked(bool)),  this, SLOT(Temp()));
     connect(ui->rb_cflux, SIGNAL(clicked(bool)),  this, SLOT(Flux()));
