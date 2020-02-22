@@ -65,8 +65,6 @@ private Q_SLOTS:
 
 protected:
     virtual void changeEvent(QEvent *e);
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
     double getFactor(void) const;
     unsigned getOccurrences(void) const;
 

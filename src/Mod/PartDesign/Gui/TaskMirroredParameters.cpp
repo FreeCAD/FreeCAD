@@ -92,9 +92,6 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->buttonAddFeature->hide();
-    ui->buttonRemoveFeature->hide();
-    ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
     selectionMode = none;
@@ -105,10 +102,7 @@ TaskMirroredParameters::TaskMirroredParameters(TaskMultiTransformParameters *par
 
 void TaskMirroredParameters::setupUI()
 {
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
-
-    setupListWidget(ui->listWidgetFeatures);
+    TaskTransformedParameters::setupUI();
 
     connect(ui->comboPlane, SIGNAL(activated(int)),
             this, SLOT(onPlaneChanged(int)));
@@ -138,8 +132,6 @@ void TaskMirroredParameters::setupUI()
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
-
-    updateUI();
 }
 
 void TaskMirroredParameters::updateUI()
@@ -163,31 +155,24 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
 {
     if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
 
-        if (originalSelected(msg)) {
-            exitSelectionMode();
-        } else {
-            std::vector<std::string> mirrorPlanes;
-            App::DocumentObject* selObj;
-            PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-            getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
-            if (!selObj)
-                    return;
-            
-            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
-                setupTransaction();
-                pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
-                recomputeFeature();
-                updateUI();
-            }
-            exitSelectionMode();
+        std::vector<std::string> mirrorPlanes;
+        App::DocumentObject* selObj;
+        PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+        getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
+        if (!selObj)
+                return;
+        
+        if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
+            setupTransaction();
+            pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
+            recomputeFeature();
+            updateUI();
         }
+        exitSelectionMode();
+        return;
     }
-}
 
-void TaskMirroredParameters::clearButtons()
-{
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
+    TaskTransformedParameters::onSelectionChanged(msg);
 }
 
 void TaskMirroredParameters::onPlaneChanged(int /*num*/)

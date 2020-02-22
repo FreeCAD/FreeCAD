@@ -70,10 +70,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
 
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
-
-    setupListWidget(ui->listWidgetFeatures);
+    setupUI();
 
     // Create a context menu for the listview of transformation features
     auto action = new QAction(tr("Edit"), ui->listTransformFeatures);
@@ -115,6 +112,11 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     connect(ui->listTransformFeatures, SIGNAL(activated(QModelIndex)),
             this, SLOT(onTransformActivated(QModelIndex)));
 
+    updateUI();
+}
+
+void TaskMultiTransformParameters::updateUI()
+{
     // Get the transformFeatures data
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
@@ -124,8 +126,12 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     ui->listTransformFeatures->clear();
     for (std::vector<App::DocumentObject*>::const_iterator i = transformFeatures.begin(); i != transformFeatures.end(); i++)
     {
-        if ((*i) != NULL)
-            ui->listTransformFeatures->addItem(QString::fromUtf8((*i)->Label.getValue()));
+        if ((*i) != NULL) {
+            auto vp = Application::Instance->getViewProvider(*i);
+            new QListWidgetItem(vp?vp->getIcon():QIcon(),
+                                QString::fromUtf8((*i)->Label.getValue()),
+                                ui->listTransformFeatures);
+        }
     }
     if (transformFeatures.size() > 0) {
         ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -134,20 +140,6 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         ui->listTransformFeatures->addItem(tr("Right-click to add"));
         editHint = true;
     }
-
-}
-
-void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-    if (originalSelected(msg)) {
-        exitSelectionMode();
-    }
-}
-
-void TaskMultiTransformParameters::clearButtons()
-{
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
 }
 
 void TaskMultiTransformParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
@@ -230,13 +222,19 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     auto pcActiveBody = PartDesignGui::getBody(false);
     if(!pcActiveBody) return;
 
-    Gui::Command::openCommand("Mirrored");
+    // Gui::Command::openCommand("Mirrored");
+    setupTransaction();
+
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
         FCMD_OBJ_CMD(Feat,"MirrorPlane = ("<<Gui::Command::getObjectCmd(sketch)<<",['V_Axis'])");
+    else {
+        FCMD_OBJ_CMD(Feat,"MirrorPlane = ("
+                << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getXY()) << ",[''])");
+    }
 
     finishAdd(newFeatName);
 }
@@ -250,7 +248,9 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     auto pcActiveBody = PartDesignGui::getBody(false);
     if(!pcActiveBody) return;
 
-    Gui::Command::openCommand("Make LinearPattern");
+    // Gui::Command::openCommand("Make LinearPattern");
+    setupTransaction();
+
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     //Gui::Command::updateActive();
@@ -261,10 +261,8 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     else {
         // set Direction value before filling up the combo box to avoid creating an empty item
         // inside updateUI()
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(getObject()));
-        if (body) {
-            FCMD_OBJ_CMD(Feat,"Direction = ("<<Gui::Command::getObjectCmd(body->getOrigin()->getX())<<",[''])");
-        }
+        FCMD_OBJ_CMD(Feat,"Direction = ("
+                << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getX())<<",[''])");
     }
 
     FCMD_OBJ_CMD(Feat,"Length = 100");
@@ -280,13 +278,19 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     auto pcActiveBody = PartDesignGui::getBody(false);
     if(!pcActiveBody) return;
 
-    Gui::Command::openCommand("PolarPattern");
+    // Gui::Command::openCommand("PolarPattern");
+    setupTransaction();
+    
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     //Gui::Command::updateActive();
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
         FCMD_OBJ_CMD(Feat, "Axis = ("<<Gui::Command::getObjectCmd(sketch)<<",['N_Axis'])");
+    else {
+        FCMD_OBJ_CMD(Feat, "Axis = ("
+                << Gui::Command::getObjectCmd(pcActiveBody->getOrigin()->getZ())<<",[''])");
+    }
     FCMD_OBJ_CMD(Feat,"Angle = 360");
     FCMD_OBJ_CMD(Feat,"Occurrences = 2");
 
@@ -300,7 +304,9 @@ void TaskMultiTransformParameters::onTransformAddScaled()
     auto pcActiveBody = PartDesignGui::getBody(false);
     if(!pcActiveBody) return;
 
-    Gui::Command::openCommand("Scaled");
+    // Gui::Command::openCommand("Scaled");
+    setupTransaction();
+
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Scaled','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     //Gui::Command::updateActive();
@@ -323,11 +329,6 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
         ui->listTransformFeatures->model()->removeRow(0);
     }
     int row = ui->listTransformFeatures->currentIndex().row();
-    if (row < 0) {
-        // Happens when first row (first transformation) is created
-        // Hide all the originals now (hiding them in Command.cpp presents the user with an empty screen!)
-        hideBase();
-    }
 
     // Insert new transformation after the selected row
     // This means that in order to insert at the beginning, the user has to use "Move Up" in the menu
@@ -337,7 +338,10 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
         // Note: Inserts always happen before the specified iterator so in order to append at the
         // end we need to use push_back() and append()
         transformFeatures.push_back(newFeature);
-        ui->listTransformFeatures->addItem(QString::fromLatin1(newFeature->Label.getValue()));
+        auto vp = Application::Instance->getViewProvider(newFeature);
+        new QListWidgetItem(vp?vp->getIcon():QIcon(),
+                            QString::fromUtf8(newFeature->Label.getValue()),
+                            ui->listTransformFeatures);
         ui->listTransformFeatures->setCurrentRow(row+1, QItemSelectionModel::ClearAndSelect);
     } else {
         // Note: The feature tree always seems to append to the end, no matter what we say here
@@ -347,10 +351,10 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
     }
     pcMultiTransform->Transformations.setValues(transformFeatures);
 
+    showObject();
+
     recomputeFeature();
 
-    // Set state to hidden - only the MultiTransform should be visible
-    FCMD_OBJ_HIDE(newFeature);
     editHint = false;
 
     onTransformEdit();

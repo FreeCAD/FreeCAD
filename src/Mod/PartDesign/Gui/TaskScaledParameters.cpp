@@ -81,9 +81,6 @@ TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentT
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->buttonAddFeature->hide();
-    ui->buttonRemoveFeature->hide();
-    ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
     blockUpdate = false; // Hack, sometimes it is NOT false although set to false in Transformed::Transformed()!!
@@ -92,10 +89,7 @@ TaskScaledParameters::TaskScaledParameters(TaskMultiTransformParameters *parentT
 
 void TaskScaledParameters::setupUI()
 {
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
-
-    setupListWidget(ui->listWidgetFeatures);
+    TaskTransformedParameters::setupUI();
 
     connect(ui->spinFactor, SIGNAL(valueChanged(double)),
             this, SLOT(onFactor(double)));
@@ -131,19 +125,6 @@ void TaskScaledParameters::updateUI()
     ui->spinOccurrences->setValue(occurrences);
 
     blockUpdate = false;
-}
-
-void TaskScaledParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-    if (originalSelected(msg)) {
-        exitSelectionMode();
-    }
-}
-
-void TaskScaledParameters::clearButtons()
-{
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
 }
 
 void TaskScaledParameters::onFactor(const double f)

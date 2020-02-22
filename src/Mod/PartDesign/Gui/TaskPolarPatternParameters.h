@@ -69,7 +69,6 @@ private Q_SLOTS:
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
     void getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     const std::string getStdAxis(void) const;
     const std::string getAxis(void) const;

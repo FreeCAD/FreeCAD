@@ -160,25 +160,28 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
         pcTransformed->recomputeFeature(true);
     const PartDesign::Transformed::rejectedMap &rejected_trsf = pcTransformed->getRejectedTransformations();
+
+    QString msg;
+
     unsigned rejected = rejected_trsf.size();
-    QString msg = QString::fromLatin1("%1");
-    if (rejected > 0) {
-        msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
-        if (rejected == 1)
-            msg = msg.arg(QObject::tr("One transformed shape is cuasing error"));
-        else {
-            msg = msg.arg(QObject::tr("%1 transformed shapes are causing error"));
-            msg = msg.arg(rejected);
+    auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
+    if(rejected>0 || error) {
+        if (rejected>0) {
+            msg = QString::fromLatin1("<font color='orange'>%1</font>");
+            if (rejected == 1)
+                msg = msg.arg(QObject::tr("One transformed shape is cuasing error"));
+            else {
+                msg = msg.arg(QObject::tr("%1 transformed shapes are causing error"));
+                msg = msg.arg(rejected);
+            }
+        }
+        if(error) {
+            if(msg.size())
+                msg += QLatin1String("</br></br>");
+            msg += QString::fromLatin1("<font color='red'>%1</font>").arg(QObject::tr(error));
         }
     }
-    auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
-    if (error) {
-        msg = msg.arg(QString::fromLatin1("<font color='red'>%1<br/></font>"));
-        msg = msg.arg(QString::fromUtf8(error));
-    } else {
-        msg = msg.arg(QString::fromLatin1("<font color='green'>%1<br/></font>"));
-        msg = msg.arg(QObject::tr("Transformation succeeded"));
-    }
+
     diagMessage = msg;
     signalDiagnosis(msg);
 

@@ -95,9 +95,6 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->buttonAddFeature->hide();
-    ui->buttonRemoveFeature->hide();
-    ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
     selectionMode = none;
@@ -108,10 +105,7 @@ TaskLinearPatternParameters::TaskLinearPatternParameters(TaskMultiTransformParam
 
 void TaskLinearPatternParameters::setupUI()
 {
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
-
-    setupListWidget(ui->listWidgetFeatures);
+    TaskTransformedParameters::setupUI();
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
@@ -210,10 +204,7 @@ void TaskLinearPatternParameters::kickUpdateViewTimer() const
 void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode != none && msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (originalSelected(msg)) {
-            exitSelectionMode();
-        }
-        else if (selectionMode == reference) {
+        if (selectionMode == reference) {
             // TODO check if this works correctly (2015-09-01, Fat-Zer)
             exitSelectionMode();
             std::vector<std::string> directions;
@@ -234,14 +225,10 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
                     updateUI();
                 }
             }
+            return;
         }
     }
-}
-
-void TaskLinearPatternParameters::clearButtons()
-{
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
+    TaskTransformedParameters::onSelectionChanged(msg);
 }
 
 void TaskLinearPatternParameters::onCheckReverse(const bool on) {

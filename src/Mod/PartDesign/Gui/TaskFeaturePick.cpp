@@ -108,7 +108,9 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
     bool attached = false;
     for (; statusIt != status.end(); ++statusIt, ++objIt) {
+        auto vp = Gui::Application::Instance->getViewProvider(*objIt);
         QListWidgetItem* item = new QListWidgetItem(
+                vp ? vp->getIcon() : QIcon(),
                 QString::fromLatin1("%1 (%2)")
                     .arg(QString::fromUtf8((*objIt)->Label.getValue()))
                     .arg(getFeatureStatusString(*statusIt)

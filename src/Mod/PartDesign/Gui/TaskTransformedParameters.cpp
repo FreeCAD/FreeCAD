@@ -27,6 +27,8 @@
 # include <QListWidget>
 # include <QAction>
 # include <QCheckBox>
+# include <QSplitter>
+# include <QHeaderView>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
@@ -36,6 +38,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -47,6 +50,8 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/ViewParams.h>
+#include <Gui/DlgPropertyLink.h>
 
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -62,6 +67,7 @@ FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesignGui;
 using namespace Gui;
+using namespace Gui::Dialog;
 
 /* TRANSLATOR PartDesignGui::TaskTransformedParameters */
 
@@ -82,6 +88,10 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
         Gui::Document* doc = TransformedView->getDocument();
         this->attachDocument(doc);
     }
+
+    onTopEnabled = Gui::ViewParams::instance()->getShowSelectionOnTop()?1:0;
+    if(!onTopEnabled)
+        Gui::ViewParams::instance()->setShowSelectionOnTop(true);
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
@@ -92,7 +102,6 @@ TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameter
       insideMultiTransform(true),
       blockUpdate(false)
 {
-    // Original feature selection makes no sense inside a MultiTransform
     selectionMode = none;
 }
 
@@ -100,12 +109,27 @@ TaskTransformedParameters::~TaskTransformedParameters()
 {
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
+
+    if(onTopEnabled>0)
+        Gui::ViewParams::instance()->setShowSelectionOnTop(false);
 }
 
 void TaskTransformedParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
 {
     if (TransformedView == &Obj)
         TransformedView = nullptr;
+}
+
+void TaskTransformedParameters::slotUndoDocument(const Gui::Document& Doc)
+{
+    if (TransformedView && TransformedView->getDocument() == &Doc)
+        refresh();
+}
+
+void TaskTransformedParameters::slotRedoDocument(const Gui::Document& Doc)
+{
+    if (TransformedView && TransformedView->getDocument() == &Doc)
+        refresh();
 }
 
 bool TaskTransformedParameters::isViewUpdated() const
@@ -118,139 +142,34 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
     return 500;
 }
 
-bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
+void TaskTransformedParameters::originalSelectionChanged()
 {
-    if (msg.Type == Gui::SelectionChanges::AddSelection && (
-                (selectionMode == addFeature) || (selectionMode == removeFeature))) {
-
-        if (strcmp(msg.pDocName, getObject()->getDocument()->getName()) != 0)
-            return false;
-
-        PartDesign::Transformed* pcTransformed = getObject();
-        auto selectedObject = Base::freecad_dynamic_cast<PartDesign::Feature>(msg.Object.getObject());
-        if (selectedObject) {
-            auto subset = pcTransformed->OriginalSubs.getSubListValues();
-            std::map<App::DocumentObject*,std::pair<size_t,std::set<std::string> > > submap;
-            for(auto it=subset.begin(),itNext=it;it!=subset.end();it=itNext) {
-                ++itNext;
-                auto &info = submap[it->first];
-                if(info.second.empty()) {
-                    info.first = it - subset.begin();
-                    auto &subs = it->second;
-                    for(auto itSub=subs.begin(),itSubNext=itSub;itSub!=subs.end();itSub=itSubNext) {
-                        ++itSubNext;
-                        if(!info.second.insert(*itSub).second)
-                            subs.erase(itSub);
-                    }
-                }else{
-                    auto &subs = subset[info.first].second;
-                    for(auto &sub : it->second) {
-                        if(info.second.insert(sub).second)
-                            subs.push_back(sub);
-                    }
-                    subset.erase(it);
-                }
-            }
-
-            auto o = submap.find(selectedObject);
-            const std::string &subname = msg.Object.getOldElementName();
-            if (selectionMode == addFeature) {
-                if (o == submap.end()) {
-                    std::vector<std::string> subs;
-                    if(selectedObject->Shape.getShape().countSubShapes(TopAbs_SOLID))
-                        subs.push_back(subname);
-                    subset.emplace_back(selectedObject,subs);
-                } else if(o->second.second.insert(subname).second) 
-                    subset[o->second.first].second.push_back(subname);
-                else
-                    return false; // duplicate selection
-            } else {
-                if (o == submap.end())
-                    return false;
-                if(subname.empty())
-                    subset.erase(subset.begin()+o->second.first);
-                else {
-                    auto &subs = subset[o->second.first].second;
-                    auto it = std::find(subs.begin(),subs.end(),subname);
-                    if(it==subs.end())
-                        return false;
-                    subs.erase(it);
-                }
-            }
-            setupTransaction();
-            pcTransformed->OriginalSubs.setSubListValues(subset);
-            populate();
-            recomputeFeature();
-            return true;
-        }
+    std::vector<App::DocumentObject*> objs;
+    std::vector<std::string> subs;
+    for(auto &link : linkEditor->currentLinks()) {
+        objs.push_back(link.getObject());
+        subs.push_back(link.getSubName());
     }
 
-    return false;
+    PartDesign::Transformed* pcTransformed = getObject();
+    setupTransaction();
+    pcTransformed->OriginalSubs.setValues(std::move(objs),std::move(subs));
+    recomputeFeature();
 }
 
 void TaskTransformedParameters::setupTransaction() {
     int tid = 0;
     const char *name = App::GetApplication().getActiveTransaction(&tid);
-    std::string n("Edit ");
-    n += getObject()->Label.getValue();
-    if(!name || n != name)
-        App::GetApplication().setActiveTransaction(n.c_str());
-}
-
-void TaskTransformedParameters::populate() {
-    if(!listWidget) 
+    if(tid && tid == transactionID)
         return;
-    PartDesign::Transformed* pcTransformed = getObject();
-    listWidget->clear();
-    auto values = pcTransformed->OriginalSubs.getValues();
-    auto itValue = values.begin();
-    const auto &shadows = pcTransformed->OriginalSubs.getShadowSubs();
-    auto itShadow = shadows.begin();
-    PartDesign::Feature *feat = 0;
-    auto subs = pcTransformed->OriginalSubs.getSubValues(false);
-    bool touched = false;
-    for(auto &sub : subs) {
-        bool missing = false;
-        auto obj = *itValue++;
-        const auto &shadow = *itShadow++;
-        QLatin1String subName(sub.c_str());
-        if(feat!=obj)
-            feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
-        if(feat && shadow.first.size()) {
-            try {
-                feat->Shape.getShape().getSubShape(shadow.first.c_str());
-            }catch(...) {
-                auto names = Part::Feature::getRelatedElements(obj,shadow.first.c_str());
-                if(names.size()) {
-                    auto &name = names.front();
-                    FC_WARN("guess element reference: " << shadow.first << " -> " << name.first);
-                    sub = name.second;
-                    subName = QLatin1String(sub.c_str());
-                    touched = true;
-                }else{
-                    if(!boost::starts_with(sub,Data::ComplexGeoData::missingPrefix()))
-                        sub = Data::ComplexGeoData::missingPrefix() + sub;
-                    subName = QLatin1String(sub.c_str());
-                    sub = shadow.first; // use new style name for future guessing
-                    missing = true;
-                }
-            }
-        }
-        QString label = QString::fromUtf8(obj->Label.getValue());
-        QLatin1String objectName(obj->getNameInDocument());
-        if(sub.size()) 
-            label += QString::fromLatin1(" (%1)").arg(subName);
-        QListWidgetItem* item = new QListWidgetItem(listWidget);
-        item->setText(label);
-        if(missing)
-            item->setForeground(Qt::red);
-    }
 
-    if(touched) {
-        setupTransaction();
-        getObject()->OriginalSubs.setValues(values,subs);
-        recomputeFeature();
-    }
+    std::string n("Edit ");
+    n += getObject()->getNameInDocument();
+    if(!name || n!=name)
+        App::GetApplication().setActiveTransaction(n.c_str());
+
+    if(!transactionID)
+        transactionID = tid;
 }
 
 // Make sure only some feature before the given one is visible
@@ -271,56 +190,174 @@ void TaskTransformedParameters::checkVisibility() {
     FCMD_OBJ_SHOW(getBaseObject());
 }
 
-void TaskTransformedParameters::onButtonAddFeature(bool checked)
-{
-    if (checked) {
-        checkVisibility();
-        selectionMode = addFeature;
-        Gui::Selection().clearSelection();
-        addReferenceSelectionGate(false,true,false,true);
-    } else {
-        exitSelectionMode();
+void TaskTransformedParameters::setupUI() {
+    if(!TransformedView || !proxy)
+        return;
+
+    // remembers the initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
+
+    connMessage = TransformedView->signalDiagnosis.connect(
+            boost::bind(&TaskTransformedParameters::slotDiagnosis, this,_1));
+    labelMessage = new QLabel(this);
+    labelMessage->hide();
+
+    linkEditor = new DlgPropertyLink(this, DlgPropertyLink::NoButton
+                                          |DlgPropertyLink::NoSearchBox
+                                          |DlgPropertyLink::NoTypeFilter
+                                          |DlgPropertyLink::NoSyncSubObject
+                                          |DlgPropertyLink::AllowSubElement);
+    auto treeWidget = linkEditor->treeWidget();
+    if(treeWidget && treeWidget->header()) {
+        treeWidget->header()->setToolTip(
+                tr("Select one or more objects as the base for transformation.\n"
+                   "Or Leave it unselected to transform the previous feature.\n\n"
+                   "Click item in 'Object' column to make selection in both the\n"
+                   "feature list and 3D view.\n\n"
+                   "Click item in 'Element' column to make selection only in 3D\n"
+                   "view without changing the feature list.\n\n"
+                   "Element (Face) selection is only effecitive for features with\n"
+                   "multiple solids."));
     }
-}
 
-void TaskTransformedParameters::setupListWidget(QListWidget *widget) {
+    linkEditor->setElementFilter([](const App::SubObjectT &sobj, std::string &element) {
+        if(!boost::starts_with(element, "Face")) {
+            element.clear();
+        } else {
+            auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(sobj.getSubObject());
+            if(!feature || feature->Shape.getShape().countSubShapes("Solid") <= 1)
+                element.clear();
+        }
+        return false;
+    });
 
-    listWidget = widget;
-    QAction* action = new QAction(tr("Remove"), widget);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
-    listWidget->addAction(action);
-    QObject::connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
-    listWidget->setContextMenuPolicy(Qt::ActionsContextMenu);
-    populate();
-}
+    auto splitter = new QSplitter(Qt::Vertical, this);
+    splitter->addWidget(labelMessage);
+    splitter->addWidget(linkEditor);
+    splitter->addWidget(proxy);
 
-void TaskTransformedParameters::onFeatureDeleted(void) {
+    this->groupLayout()->addWidget(splitter);
+
+    checkBoxSubTransform = new QCheckBox(this);
+    checkBoxSubTransform->setText(tr("Transform sub-feature"));
+    checkBoxSubTransform->setToolTip(tr("Check this option to transform individual sub-features,\n"
+                                        "or else, transform the entire history up till the selected base."));
+    checkBoxSubTransform->setChecked(getObject()->SubTransform.getValue());
+    connect(checkBoxSubTransform, SIGNAL(toggled(bool)), this, SLOT(onChangedSubTransform(bool)));
+
+    auto layout = qobject_cast<QBoxLayout*>(proxy->layout());
+    assert(layout);
+    layout->insertWidget(0,checkBoxSubTransform);
+
+    auto editDoc = Gui::Application::Instance->editDocument();
+    if(editDoc) {
+        ViewProviderDocumentObject *editVp = nullptr;
+        std::string subname;
+        editDoc->getInEdit(&editVp,&subname);
+        if(editVp) {
+            auto sobjs = editVp->getObject()->getSubObjectList(subname.c_str());
+            while(sobjs.size()) {
+                if(Base::freecad_dynamic_cast<PartDesign::Body>(sobjs.back()))
+                    break;
+                sobjs.pop_back();
+            }
+            if(sobjs.size()) {
+                std::ostringstream ss;
+                for(size_t i=1;i<sobjs.size();++i)
+                    ss << sobjs[i]->getNameInDocument() << ".";
+                linkEditor->setContext(App::SubObjectT(sobjs.front(), ss.str().c_str()));
+            }
+        }
+    }
+
     PartDesign::Transformed* pcTransformed = getObject();
-    auto values = pcTransformed->OriginalSubs.getValues();
-    auto subs = pcTransformed->OriginalSubs.getSubValues(false);
-    if(values.size()==subs.size() && listWidget->currentRow()<(int)values.size()) {
-        values.erase(values.begin() + listWidget->currentRow());
-        subs.erase(subs.begin() + listWidget->currentRow());
+    auto bodyVp = Base::freecad_dynamic_cast<Gui::ViewProviderDocumentObject>(
+            Application::Instance->getViewProvider(PartDesign::Body::findBodyOf(pcTransformed)));
+    if(bodyVp) {
+        std::vector<App::DocumentObjectT> objs;
+        for(auto child : bodyVp->getCachedChildren()) {
+            if(!child->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                continue;
+            if(child->isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
+                    !static_cast<PartDesign::Transformed*>(child)->getBaseObject(true))
+                continue;
+            objs.emplace_back(child);
+        }
+        linkEditor->setInitObjects(std::move(objs));
+    }
 
+    auto values = pcTransformed->OriginalSubs.getValues();
+    auto itValue = values.begin();
+    const auto &shadows = pcTransformed->OriginalSubs.getShadowSubs();
+    auto itShadow = shadows.begin();
+    PartDesign::Feature *feat = 0;
+    auto subs = pcTransformed->OriginalSubs.getSubValues(false);
+    bool touched = false;
+    for(auto &sub : subs) {
+        auto obj = *itValue++;
+        const auto &shadow = *itShadow++;
+        if(feat!=obj)
+            feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
+        if(feat && shadow.first.size()) {
+            try {
+                feat->Shape.getShape().getSubShape(shadow.first.c_str());
+            }catch(...) {
+                auto names = Part::Feature::getRelatedElements(obj,shadow.first.c_str());
+                if(names.size()) {
+                    auto &name = names.front();
+                    FC_WARN("guess element reference: " << shadow.first << " -> " << name.first);
+                    sub = name.second;
+                    touched = true;
+                } else {
+                    sub = shadow.first; // use new style name for future guessing
+                }
+            }
+        }
+    }
+
+    if(touched) {
+        setupTransaction();
         pcTransformed->OriginalSubs.setValues(values,subs);
         recomputeFeature();
     }
-    populate();
+
+    linkEditor->init(App::DocumentObjectT(&pcTransformed->OriginalSubs),false);
+
+    QObject::connect(linkEditor, SIGNAL(linkChanged()), this, SLOT(originalSelectionChanged()));
 }
 
-void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
+void TaskTransformedParameters::slotDiagnosis(QString msg)
 {
-    if (checked) {
-        checkVisibility();
-        selectionMode = removeFeature;
-        Gui::Selection().clearSelection();
-    } else {
-        exitSelectionMode();
+    if(labelMessage) {
+        if(msg.isEmpty())
+            labelMessage->hide();
+        else {
+            labelMessage->show();
+            labelMessage->setText(msg);
+        }
     }
+}
+
+void TaskTransformedParameters::refresh()
+{
+    if(TransformedView) {
+        auto pcTransformed = static_cast<PartDesign::Transformed*>(TransformedView->getObject());
+        if(linkEditor) {
+            QSignalBlocker blocker(linkEditor);
+            linkEditor->init(App::DocumentObjectT(&pcTransformed->OriginalSubs),false);
+        }
+        if(checkBoxSubTransform) {
+            QSignalBlocker blocker(checkBoxSubTransform);
+            checkBoxSubTransform->setChecked(getObject()->SubTransform.getValue());
+        }
+    }
+    updateUI();
+}
+
+void TaskTransformedParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if(selectionMode == none && linkEditor)
+        linkEditor->selectionChanged(msg);
 }
 
 void TaskTransformedParameters::fillAxisCombo(ComboLinks &combolinks,
@@ -400,7 +437,7 @@ void TaskTransformedParameters::recomputeFeature() {
     getTopTransformedView()->recomputeFeature();
 }
 
-PartDesignGui::ViewProviderTransformed *TaskTransformedParameters::getTopTransformedView() const {
+PartDesignGui::ViewProviderTransformed *TaskTransformedParameters::getTopTransformedView(bool silent) const {
     PartDesignGui::ViewProviderTransformed *rv;
 
     if (insideMultiTransform) {
@@ -408,13 +445,18 @@ PartDesignGui::ViewProviderTransformed *TaskTransformedParameters::getTopTransfo
     } else {
         rv = TransformedView;
     }
-    assert (rv);
+
+    if(!rv && !silent)
+        throw Base::RuntimeError("No Transformed object");
 
     return rv;
 }
 
-PartDesign::Transformed *TaskTransformedParameters::getTopTransformedObject() const {
-    App::DocumentObject *transform = getTopTransformedView()->getObject();
+PartDesign::Transformed *TaskTransformedParameters::getTopTransformedObject(bool silent) const {
+    auto view = getTopTransformedView(silent);
+    if(!view)
+        return nullptr;
+    App::DocumentObject *transform = view->getObject();
     assert (transform->isDerivedFrom(PartDesign::Transformed::getClassTypeId()));
     return static_cast<PartDesign::Transformed*>(transform);
 }
@@ -446,12 +488,16 @@ App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
 
 void TaskTransformedParameters::hideObject()
 {
-    FCMD_OBJ_HIDE(getTopTransformedObject());
+    auto obj = getTopTransformedObject(true);
+    if(obj)
+        FCMD_OBJ_HIDE(obj);
 }
 
 void TaskTransformedParameters::showObject()
 {
-    FCMD_OBJ_SHOW(getTopTransformedObject());
+    auto obj = getTopTransformedObject(true);
+    if(obj)
+        FCMD_OBJ_SHOW(obj);
 }
 
 void TaskTransformedParameters::hideBase()
@@ -467,7 +513,6 @@ void TaskTransformedParameters::showBase()
 void TaskTransformedParameters::exitSelectionMode()
 {
     try {
-        clearButtons();
         selectionMode = none;
         Gui::Selection().rmvSelectionGate();
         showObject();
@@ -482,11 +527,6 @@ void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, 
             new ReferenceSelection(getBaseObject(), edge, face, planar,false,whole));
     std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
-}
-
-void TaskTransformedParameters::setupCheckBox(QCheckBox *checkbox) {
-    checkbox->setChecked(getObject()->SubTransform.getValue());
-    QObject::connect(checkbox, SIGNAL(toggled(bool)), this, SLOT(onChangedSubTransform(bool)));
 }
 
 void TaskTransformedParameters::onChangedSubTransform(bool checked) {
@@ -505,10 +545,6 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(
     : TaskDlgFeatureParameters(TransformedView_), parameter(parameter)
 {
     assert(vp);
-    message = new TaskTransformedMessages(getTransformedView());
-    Content.push_back(message);
-
-    parameter->setupCheckBox(message->getCheckBox());
     Content.push_back(parameter);
 }
 
@@ -526,6 +562,10 @@ bool TaskDlgTransformedParameters::reject()
 {
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
+
+    auto editDoc = Gui::Application::Instance->editDocument();
+    if(editDoc && parameter->getTransactionID())
+        editDoc->getDocument()->undo(parameter->getTransactionID());
 
     return TaskDlgFeatureParameters::reject ();
 }

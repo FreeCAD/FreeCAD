@@ -68,7 +68,6 @@ private Q_SLOTS:
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    virtual void clearButtons();
 
 private:
     void setupUI();

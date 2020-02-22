@@ -93,9 +93,6 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
     layout->addWidget(proxy);
 
     ui->buttonOK->setEnabled(true);
-    ui->buttonAddFeature->hide();
-    ui->buttonRemoveFeature->hide();
-    ui->listWidgetFeatures->hide();
     ui->checkBoxUpdateView->hide();
 
     selectionMode = none;
@@ -106,10 +103,7 @@ TaskPolarPatternParameters::TaskPolarPatternParameters(TaskMultiTransformParamet
 
 void TaskPolarPatternParameters::setupUI()
 {
-    connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
-    connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
-
-    setupListWidget(ui->listWidgetFeatures);
+    TaskTransformedParameters::setupUI();
 
     updateViewTimer = new QTimer(this);
     updateViewTimer->setSingleShot(true);
@@ -206,33 +200,24 @@ void TaskPolarPatternParameters::kickUpdateViewTimer() const
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (selectionMode!=none && msg.Type == Gui::SelectionChanges::AddSelection) {
+        std::vector<std::string> axes;
+        App::DocumentObject* selObj;
+        PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+        getReferencedSelection(pcPolarPattern, msg, selObj, axes);
+        if(!selObj)
+            return;
         
-        if (originalSelected(msg)) {
-            exitSelectionMode();
+        if (selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+            setupTransaction();
+            pcPolarPattern->Axis.setValue(selObj, axes);
+            recomputeFeature();
+            updateUI();
         }
-        else {
-            std::vector<std::string> axes;
-            App::DocumentObject* selObj;
-            PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-            if(!selObj)
-                    return;
-            
-            if (selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
-                setupTransaction();
-                pcPolarPattern->Axis.setValue(selObj, axes);
-                recomputeFeature();
-                updateUI();
-            }
-            exitSelectionMode();
-        }
+        exitSelectionMode();
+        return;
     }
-}
 
-void TaskPolarPatternParameters::clearButtons()
-{
-    ui->buttonAddFeature->setChecked(false);
-    ui->buttonRemoveFeature->setChecked(false);
+    TaskTransformedParameters::onSelectionChanged(msg);
 }
 
 void TaskPolarPatternParameters::onCheckReverse(const bool on) {
