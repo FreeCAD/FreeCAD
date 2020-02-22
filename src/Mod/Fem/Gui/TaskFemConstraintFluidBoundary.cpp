@@ -588,10 +588,6 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed) {
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
     TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNamesElement.c_str());
 
-    if (TypeName.substr(0, 4).compare(std::string("Part")) != 0) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
-        return;
-    }
     if (subNamesElement.substr(0, 4) == "Face") {
         if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
             QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked for 3D"));
