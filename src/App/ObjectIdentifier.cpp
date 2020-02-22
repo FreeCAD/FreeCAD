@@ -116,6 +116,7 @@ enum PseudoPropertyType {
     PseudoLinkPlacement,
     PseudoLinkMatrix,
     PseudoSelf,
+    PseudoRef,
     PseudoApp,
     PseudoPart,
     PseudoRegex,
@@ -1510,6 +1511,8 @@ const std::vector<std::pair<const char *, App::Property*> > &ObjectIdentifier::g
         addProp(dummy, pseudoProps,
                 "_self",   "Return the object itself in order to access its Python attributes", PseudoSelf);
         addProp(dummy, pseudoProps,
+                "_ref",   "Return a (sub)object reference that is suitable for assigning to a link type property", PseudoRef);
+        addProp(dummy, pseudoProps,
                 "_app",    "Return the FreeCAD Python module", PseudoApp);
         addProp(dummy, pseudoProps,
                 "_part",   "Return the Part Python module", PseudoPart);
@@ -1948,8 +1951,19 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
         }
         break;
     } default: { 
-        Base::Matrix4D mat;
         auto obj = result.resolvedDocumentObject;
+
+        if(ptype == PseudoRef) {
+            if(subObjectName.getString().size()) {
+                PropertyString tmp;
+                tmp.setValue(subObjectName.getString().c_str());
+                pyobj = Py::TupleN(Py::asObject(obj->getPyObject()),Py::asObject(tmp.getPyObject()));
+            } else
+                pyobj = Py::Object(obj->getPyObject(),true);
+            break;
+        }
+        Base::Matrix4D mat;
+
         switch(ptype) {
         case PseudoPlacement:
         case PseudoMatrix:
@@ -1960,8 +1974,10 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
         default:
             break;
         }
+
         if(result.resolvedSubObject)
             obj = result.resolvedSubObject;
+
         switch(ptype) {
         case PseudoPlacement:
             pyobj = Py::Placement(Base::Placement(mat));
@@ -1986,6 +2002,8 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
         case PseudoSelf:
         case PseudoSubObject:
             pyobj = Py::Object(obj->getPyObject(),true);
+            break;
+        case PseudoRef:
             break;
         default: {
             // NOTE! We cannot directly call Property::getPyObject(), but
