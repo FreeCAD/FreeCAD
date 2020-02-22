@@ -58,10 +58,10 @@ private Q_SLOTS:
     void setSelection(QListWidgetItem* item);
 
 protected:
+    bool event(QEvent *e);
     void changeEvent(QEvent *e);
 
 private:
-    //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintFixed* ui;
 

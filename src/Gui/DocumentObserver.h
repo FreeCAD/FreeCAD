@@ -119,6 +119,82 @@ private:
 };
 
 /**
+ * @brief The DocumentWeakPtrT class
+ */
+class GuiExport DocumentWeakPtrT
+{
+public:
+    DocumentWeakPtrT(Gui::Document*) noexcept;
+    ~DocumentWeakPtrT();
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset() noexcept;
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const noexcept;
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    Gui::Document* operator->() noexcept;
+
+private:
+    // disable
+    DocumentWeakPtrT(const DocumentWeakPtrT&);
+    DocumentWeakPtrT& operator=(const DocumentWeakPtrT&);
+
+    class Private;
+    std::unique_ptr<Private> d;
+};
+
+/**
+ * @brief The ViewProviderWeakPtrT class
+ */
+class AppExport ViewProviderWeakPtrT
+{
+public:
+    ViewProviderWeakPtrT(ViewProviderDocumentObject*) noexcept;
+    ~ViewProviderWeakPtrT();
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset() noexcept;
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const noexcept;
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    ViewProviderDocumentObject* operator->() noexcept;
+    /*! Get a pointer to the object or 0 if it doesn't exist any more or the type doesn't match. */
+    template<typename T>
+    inline T* get() const noexcept
+    {
+        return Base::freecad_dynamic_cast<T>(_get());
+    }
+
+private:
+    ViewProviderDocumentObject* _get() const noexcept;
+    // disable
+    ViewProviderWeakPtrT(const ViewProviderWeakPtrT&);
+    ViewProviderWeakPtrT& operator=(const ViewProviderWeakPtrT&);
+
+private:
+    class Private;
+    std::unique_ptr<Private> d;
+};
+
+/**
  * The DocumentObserver class simplifies the step to write classes that listen
  * to what happens inside a document.
  * This is very useful for classes that needs to be notified when an observed

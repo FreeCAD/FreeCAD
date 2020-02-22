@@ -177,6 +177,27 @@ class TestCcxTools(unittest.TestCase):
         """
 
     # ********************************************************************************************
+    def test_static_constraint_tie(
+        self
+    ):
+        # set up
+        from femexamples.constraint_tie import setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "constraint tie"
+        base_name = "constraint_tie"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            "FEM_ccx_constraint_tie",
+        )
+
+        # test input file writing
+        self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+        )
+
+    # ********************************************************************************************
     def test_static_material_multiple(
         self
     ):

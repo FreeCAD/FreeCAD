@@ -32,6 +32,7 @@ import sys
 
 import FreeCAD
 import femtools.femutils as femutils
+import femtools.membertools as membertools
 
 from .. import run
 from .. import settings
@@ -48,7 +49,7 @@ class Check(run.Check):
         self.checkEquations()
 
     def checkMeshType(self):
-        mesh = femutils.get_single_member(self.analysis, "Fem::FemMeshObject")
+        mesh = membertools.get_single_member(self.analysis, "Fem::FemMeshObject")
         if not femutils.is_of_type(mesh, "Fem::FemMeshGmsh"):
             self.report.error(
                 "Unsupported type of mesh. "
@@ -87,7 +88,7 @@ class Prepare(run.Prepare):
 
     def checkHandled(self, w):
         handled = w.getHandledConstraints()
-        allConstraints = femutils.get_member(self.analysis, "Fem::Constraint")
+        allConstraints = membertools.get_member(self.analysis, "Fem::Constraint")
         for obj in set(allConstraints) - handled:
             self.report.warning("Ignored constraint %s." % obj.Label)
 

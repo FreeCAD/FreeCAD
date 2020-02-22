@@ -25,6 +25,9 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QKeyEvent>
+# include <QListWidget>
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskThicknessParameters.h"
@@ -100,24 +103,12 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
         this, SLOT(onJoinTypeChanged(int)));
 
     // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    action->setShortcut(QKeySequence::Delete);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    // display shortcut behind the context menu entry
-    action->setShortcutVisibleInContextMenu(true);
-#endif
-    ui->listWidgetReferences->addAction(action);
-    // if there is only one item, it cannot be deleted
-    if (ui->listWidgetReferences->count() == 1) {
-        action->setEnabled(false);
-        action->setStatusTip(tr("There must be at least one item"));
-        ui->buttonRefRemove->setEnabled(false);
-        ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
-    }
-    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
-    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
+    connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
 
     connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
         this, SLOT(doubleClicked(QListWidgetItem*)));
@@ -131,18 +122,20 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // executed when the user selected something in the CAD object
+    // adds/deletes the selection accordingly
+
     if (selectionMode == none)
         return;
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         if (referenceSelected(msg)) {
-            QAction *action = ui->listWidgetReferences->actions().at(0); // we have only one action
             if (selectionMode == refAdd) {
                 ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
                 // it might be the second one so we can enable the context menu
                 if (ui->listWidgetReferences->count() > 1) {
-                    action->setEnabled(true);
-                    action->setStatusTip(QString());
+                    deleteAction->setEnabled(true);
+                    deleteAction->setStatusTip(QString());
                     ui->buttonRefRemove->setEnabled(true);
                     ui->buttonRefRemove->setToolTip(tr("Click button to enter selection mode,\nclick again to end selection"));
                 }
@@ -153,8 +146,8 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
                 Gui::Selection().clearSelection();
                 // if there is only one item left, it cannot be deleted
                 if (ui->listWidgetReferences->count() == 1) {
-                    action->setEnabled(false);
-                    action->setStatusTip(tr("There must be at least one item"));
+                    deleteAction->setEnabled(false);
+                    deleteAction->setStatusTip(tr("There must be at least one item"));
                     ui->buttonRefRemove->setEnabled(false);
                     ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
                     // we must also end the selection mode
@@ -180,26 +173,40 @@ void TaskThicknessParameters::onRefDeleted(void)
     // assure we we are not in selection mode
     exitSelectionMode();
     clearButtons(none);
-    // delete any selections since the reference might be highlighted
+    // delete any selections since the reference(s) might be highlighted
     Gui::Selection().clearSelection();
     DressUpView->highlightReferences(false);
 
-    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
-    App::DocumentObject* base = pcThickness->Base.getValue();
-    std::vector<std::string> faces = pcThickness->Base.getSubValues();
-    faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
-    setupTransaction();
-    pcThickness->Base.setValue(base, faces);
-    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
-    clearButtons(none);
-    exitSelectionMode();
+    // get the list of items to be deleted
+    QList<QListWidgetItem*> selectedList = ui->listWidgetReferences->selectedItems();
+
+    // if all items are selected, we must stop because one must be kept to avoid that the feature gets broken
+    if (selectedList.count() == ui->listWidgetReferences->model()->rowCount()) {
+        QMessageBox::warning(this, tr("Selection error"), tr("At least one item must be kept."));
+        return;
+    }
+
+    // delete the selection backwards to assure the list index keeps valid for the deletion
+    for (int i = selectedList.count() - 1; i > -1; i--) {
+        // get the fillet object
+        PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+        App::DocumentObject* base = pcThickness->Base.getValue();
+        // get all fillet references
+        std::vector<std::string> refs = pcThickness->Base.getSubValues();
+        // the ref index is the same as the listWidgetReferences index
+        // so we can erase using the row number of the element to be deleted
+        int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
+        refs.erase(refs.begin() + rowNumber);
+        setupTransaction();
+        pcThickness->Base.setValue(base, refs);
+        ui->listWidgetReferences->model()->removeRow(rowNumber);
+        pcThickness->getDocument()->recomputeFeature(pcThickness);
+    }
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
-        QAction *action = ui->listWidgetReferences->actions().at(0); // we have only one action
-        action->setEnabled(false);
-        action->setStatusTip(tr("There must be at least one item"));
+        deleteAction->setEnabled(false);
+        deleteAction->setStatusTip(tr("There must be at least one item"));
         ui->buttonRefRemove->setEnabled(false);
         ui->buttonRefRemove->setToolTip(tr("There must be at least one item"));
     }
@@ -231,7 +238,6 @@ void TaskThicknessParameters::onModeChanged(int mode) {
     pcThickness->Mode.setValue(mode);
     pcThickness->getDocument()->recomputeFeature(pcThickness);
 }
-
 
 double TaskThicknessParameters::getValue(void) const
 {
@@ -280,6 +286,11 @@ TaskThicknessParameters::~TaskThicknessParameters()
     Gui::Selection().rmvSelectionGate();
 
     delete ui;
+}
+
+bool TaskThicknessParameters::event(QEvent *e)
+{
+    return TaskDressUpParameters::KeyEvent(e);
 }
 
 void TaskThicknessParameters::changeEvent(QEvent *e)

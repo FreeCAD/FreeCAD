@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD as App
 from ... import equationbase
-import femtools.femutils as femutils
+import femtools.membertools as membertools
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -76,7 +76,7 @@ class _TaskPanel(object):
         else:
             self.form = [self.refWidget, propWidget]
         analysis = obj.getParentGroup()
-        self._mesh = femutils.get_single_member(analysis, "Fem::FemMeshObject")
+        self._mesh = membertools.get_single_member(analysis, "Fem::FemMeshObject")
         self._part = self._mesh.Part if self._mesh is not None else None
         self._partVisible = None
         self._meshVisible = None

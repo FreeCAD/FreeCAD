@@ -41,6 +41,7 @@ import tempfile
 
 import FreeCAD as App
 import femtools.femutils as femutils
+import femtools.membertools as membertools
 from . import settings
 from . import signal
 from . import task
@@ -402,7 +403,7 @@ class Machine(BaseTask):
 class Check(BaseTask):
 
     def checkMesh(self):
-        meshes = femutils.get_member(
+        meshes = membertools.get_member(
             self.analysis, "Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
@@ -417,7 +418,7 @@ class Check(BaseTask):
         return True
 
     def checkMaterial(self):
-        matObjs = femutils.get_member(
+        matObjs = membertools.get_member(
             self.analysis, "App::MaterialObjectPython")
         if len(matObjs) == 0:
             self.report.error(

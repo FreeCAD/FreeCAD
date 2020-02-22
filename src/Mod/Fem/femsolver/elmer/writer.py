@@ -35,6 +35,7 @@ from FreeCAD import Units
 from FreeCAD import Console
 import Fem
 import femtools.femutils as femutils
+import femtools.membertools as membertools
 import femmesh.gmshtools as gmshtools
 from .. import settings
 from . import sifio
@@ -324,6 +325,7 @@ class Writer(object):
         # s["Calculate Electric Flux"] = equation.CalculateElectricFlux
         s["Calculate Electric Energy"] = equation.CalculateElectricEnergy
         s["Calculate Surface Charge"] = equation.CalculateSurfaceCharge
+        s["Calculate Capacitance Matrix"] = equation.CalculateCapacitanceMatrix
         s["Displace mesh"] = False
         s["Exec Solver"] = "Always"
         s["Stabilize"] = equation.Stabilize
@@ -353,12 +355,18 @@ class Writer(object):
         for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    if hasattr(obj, "Potential"):
-                        # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454
-                        potential = getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
-                        self._boundary(name, "Potential", potential)
+                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454  ff
+                    if obj.PotentialEnabled:
+                        if hasattr(obj, "Potential"):
+                            potential = getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
+                            self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
                         self._boundary(name, "Potential Constant", True)
+                    if obj.ElectricInfinity:
+                        self._boundary(name, "Electric Infinity BC", True)
+                    if obj.CapacitanceBodyEnabled:
+                        if hasattr(obj, "CapacitanceBody"):
+                            self._boundary(name, "Capacitance Body", obj.CapacitanceBody)
                 self._handled(obj)
 
     def _handleFluxsolver(self):
@@ -778,10 +786,10 @@ class Writer(object):
         self._builder.addSection(section)
 
     def _getMember(self, t):
-        return femutils.get_member(self.analysis, t)
+        return membertools.get_member(self.analysis, t)
 
     def _getSingleMember(self, t):
-        return femutils.get_single_member(self.analysis, t)
+        return membertools.get_single_member(self.analysis, t)
 
 
 class WriteError(Exception):

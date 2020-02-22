@@ -36,9 +36,9 @@
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
-
-# include <QMessageBox>
 # include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
 
@@ -73,12 +73,13 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* actionRect = new QAction(tr("Delete"), ui->lw_Rect);
-    actionRect->connect(actionRect, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_Rect->addAction(actionRect);
-    ui->lw_Rect->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_Rect);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_Rect, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_Rect, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
@@ -481,6 +482,11 @@ std::string TaskFemConstraintTransform::get_transform_type(void) const {
         transform = "\"Cylindrical\"";
     }
     return transform;
+}
+
+bool TaskFemConstraintTransform::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintTransform::changeEvent(QEvent *){

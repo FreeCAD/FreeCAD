@@ -250,7 +250,7 @@ void TaskLeaderLine::setUiPrimary()
 
     if (m_baseFeat != nullptr) {
         std::string baseName = m_baseFeat->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
     }
 
     ui->pbTracker->setText(QString::fromUtf8("Pick points"));
@@ -289,7 +289,7 @@ void TaskLeaderLine::setUiEdit()
 
     if (m_lineFeat != nullptr) {
         std::string baseName = m_lineFeat->LeaderParent.getValue()->getNameInDocument();
-        ui->leBaseView->setText(Base::Tools::fromStdString(baseName));
+        ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
         ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue() + 1);
         ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue() + 1);
         ui->pbTracker->setText(QString::fromUtf8("Edit points"));

@@ -25,8 +25,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAction>
+# include <QApplication>
+# include <QKeyEvent>
 # include <QListWidget>
 # include <QListWidgetItem>
+# include <QTimer>
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -60,6 +64,7 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
               parent)
     , proxy(0)
     , DressUpView(DressUpView)
+    , deleteAction(nullptr)
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
 {
@@ -156,10 +161,11 @@ void TaskDressUpParameters::onButtonRefRemove(const bool checked)
 }
 
 void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
-    // executed when the user selected a new item in the list
+    // executed when the user double-clicks on any item in the list
     // shows the fillets as they are -> useful to switch out of selection mode
 
     Q_UNUSED(item)
+    wasDoubleClicked = true;
 
     // assure we are not in selection mode
     exitSelectionMode();
@@ -170,29 +176,88 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
     // remove any highlights andd selections
     DressUpView->highlightReferences(false);
     Gui::Selection().clearSelection();
+
+    // enable next possible single-click event after double-click time passed
+    QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
 }
 
 void TaskDressUpParameters::setSelection(QListWidgetItem* current) {
-    // executed when the user selected a new item in the list
+    // executed when the user selected an item in the list (but double-clicked it)
     // highlights the currently selected item
 
-     // name of the item
-    std::string subName = current->text().toStdString();
-    // get the document name
-    std::string docName = DressUpView->getObject()->getDocument()->getName();
-    // get the name of the body we are in
-    Part::BodyBase* body = PartDesign::Body::findBodyOf(DressUpView->getObject());
-    std::string objName = body->getNameInDocument();
+    if (!wasDoubleClicked) {
+        // we treat it as single-click event once the QApplication double-click time is passed
+        QTimer::singleShot(QApplication::doubleClickInterval(), this, SLOT(itemClickedTimeout()));
 
-    // hide fillet to see the original edge
-    // (a fillet creates new edges so that the original one is not available)
-    hideObject();
-    // highlight all objects in the list
-    DressUpView->highlightReferences(true);
-    // clear existing selections
-    Gui::Selection().clearSelection();
-    // highligh the selected item
-    Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+        // name of the item
+        std::string subName = current->text().toStdString();
+        // get the document name
+        std::string docName = DressUpView->getObject()->getDocument()->getName();
+        // get the name of the body we are in
+        Part::BodyBase* body = PartDesign::Body::findBodyOf(DressUpView->getObject());
+        std::string objName = body->getNameInDocument();
+
+        // hide fillet to see the original edge
+        // (a fillet creates new edges so that the original one is not available)
+        hideObject();
+        // highlight all objects in the list
+        DressUpView->highlightReferences(true);
+        // clear existing selection because only the current item is highlighted, not all selected ones to keep the overview
+        Gui::Selection().clearSelection();
+        // highligh the selected item
+        Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+    }
+}
+
+void TaskDressUpParameters::itemClickedTimeout() {
+    // executed after double-click time passed
+    wasDoubleClicked = false;
+}
+
+void TaskDressUpParameters::createDeleteAction(QListWidget* parentList, QWidget* parentButton)
+{
+    // creates a context menu, a shortcutt for it and connects it to e slot function
+
+    deleteAction = new QAction(tr("Remove"), this);
+    deleteAction->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    deleteAction->setShortcutVisibleInContextMenu(true);
+#endif
+    parentList->addAction(deleteAction);
+    // if there is only one item, it cannot be deleted
+    if (parentList->count() == 1) {
+        deleteAction->setEnabled(false);
+        deleteAction->setStatusTip(tr("There must be at least one item"));
+        parentButton->setEnabled(false);
+        parentButton->setToolTip(tr("There must be at least one item"));
+    }
+    parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+bool TaskDressUpParameters::KeyEvent(QEvent *e)
+{
+    // in case another instance takes key events, accept the overridden key event
+    if (e && e->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->modifiers() == Qt::NoModifier) {
+            if (deleteAction && kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                return true;
+            }
+        }
+    }
+    // if we have a Del key, trigger the deleteAction
+    else if (e && e->type() == QEvent::KeyPress) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->key() == Qt::Key_Delete) {
+            if (deleteAction && deleteAction->isEnabled())
+                deleteAction->trigger();
+            return true;
+        }
+    }
+
+    return TaskDressUpParameters::event(e);
 }
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const

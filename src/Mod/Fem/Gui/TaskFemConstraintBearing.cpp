@@ -27,10 +27,11 @@
 #ifndef _PreComp_
 # include <sstream>
 
+# include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
-# include <QAction>
 
 # include <Precision.hxx>
 # include <TopoDS.hxx>
@@ -76,12 +77,9 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    // Create a context menu for the listview of the references
-    QAction* action = new QAction(tr("Delete"), ui->listReferences);
-    action->connect(action, SIGNAL(triggered()),
-                    this, SLOT(onReferenceDeleted()));
-    ui->listReferences->addAction(action);
-    ui->listReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->listReferences);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->spinDistance, SIGNAL(valueChanged(double)),
             this, SLOT(onDistanceChanged(double)));
@@ -300,6 +298,11 @@ bool TaskFemConstraintBearing::getAxial() const
 TaskFemConstraintBearing::~TaskFemConstraintBearing()
 {
     delete ui;
+}
+
+bool TaskFemConstraintBearing::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintBearing::changeEvent(QEvent *e)

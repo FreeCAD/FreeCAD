@@ -65,16 +65,16 @@ import Test, TestFem
 Test.runTestsFromModule(TestFem)
 
 # module
-import Test, femtest.testcommon
-Test.runTestsFromModule(femtest.testcommon)
+import Test, femtest.app.test_common
+Test.runTestsFromModule(femtest.app.test_common)
 
 # class
-import Test, femtest.testcommon
-Test.runTestsFromClass(femtest.testcommon.TestFemCommon)
+import Test, femtest.app.test_common
+Test.runTestsFromClass(femtest.app.test_common.TestFemCommon)
 
 # method
 import unittest
-thetest = "femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"
+thetest = "femtest.app.test_common.TestFemCommon.test_pyimport_all_FEM_modules"
 alltest = unittest.TestLoader().loadTestsFromName(thetest)
 unittest.TextTestRunner().run(alltest)
 
@@ -89,8 +89,8 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCADCmd --run-test "TestFem"
 
 # import Fem and FemGui
-./bin/FreeCAD --run-test "femtest.testfemimport"
-./bin/FreeCADCmd --run-test "femtest.testfemimport"
+./bin/FreeCAD --run-test "femtest.app.test_femimport"
+./bin/FreeCADCmd --run-test "femtest.app.test_femimport"
 
 # other module
 ./bin/FreeCAD --run-test "femtest.app.test_femimport"
@@ -111,10 +111,10 @@ unittest.TextTestRunner().run(alltest)
 ./bin/FreeCADCmd --run-test "femtest.app.test_solverframework"
 
 # class
-./bin/FreeCAD --run-test "femtest.testcommon.TestFemCommon"
+./bin/FreeCAD --run-test "femtest.app.test_common.TestFemCommon"
 
 # method
-./bin/FreeCAD --run-test "femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"
+./bin/FreeCAD --run-test "femtest.app.test_common.TestFemCommon.test_pyimport_all_FEM_modules"
 
 # unit test command to run a specific FEM unit test to copy for fast tests :-)
 # to get all commands to start FreeCAD from build dir on Linux
@@ -127,6 +127,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_analysis"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_shell_shell"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_solid_solid"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_tie"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_material_multiple"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_material_nonlinar"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_thermomech_bimetall"
@@ -177,6 +178,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.a
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_solid_solid"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_tie"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_material_multiple"))

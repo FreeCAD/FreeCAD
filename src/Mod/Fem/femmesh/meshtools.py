@@ -1737,6 +1737,81 @@ def get_contact_obj_faces(
     return [slave_faces, master_faces]
 
 
+# ***** tie faces ****************************************************************************
+def get_tie_obj_faces(
+    femmesh,
+    femelement_table,
+    femnodes_ele_table,
+    femobj
+):
+    # see comment get_contact_obj_faces
+    # solid mesh is same as contact, but face mesh is not allowed for tie
+    # TODO get rid of duplicate code for contact and tie
+
+    slave_faces, master_faces = [], []
+
+    tie_obj = femobj["Object"]
+    if len(tie_obj.References) == 1 and len(tie_obj.References[0][1]) == 2:
+        # [(<Part::PartFeature>, ('Face7', 'Face3'))]
+        # refs are merged because they are on the same doc obj
+        # but only one element face for each contact face (Gui, TaskPael tie)
+        ref_obj = tie_obj.References[0][0]
+        ref_ele = tie_obj.References[0][1]
+        slave_ref = (ref_obj, (ref_ele[0],))  # the comma is needed!
+        master_ref = (ref_obj, (ref_ele[1],))  # the comma is needed!
+    elif (
+        len(tie_obj.References) == 2
+        and len(tie_obj.References[0][1]) == 1
+        and len(tie_obj.References[1][1]) == 1
+    ):
+        # [(<Part::PartFeature>, ('Face3',)), (<Part::PartFeature>, ('Face7',))]
+        # refs are on different objects
+        # but only one element face for each contact face (Gui, TaskPael tie)
+        slave_ref = tie_obj.References[0]
+        master_ref = tie_obj.References[1]
+    else:
+        FreeCAD.Console.PrintError(
+            "Not valid (example: only master or slave defined) "
+            "or not supported reference shape elements, contact face combination "
+            "(example: multiple element faces per master or slave\n"
+        )
+
+    FreeCAD.Console.PrintLog("Slave: {}, {}\n".format(slave_ref[0].Name, slave_ref))
+    FreeCAD.Console.PrintLog("Master: {}, {}\n".format(master_ref[0].Name, master_ref))
+
+    if is_solid_femmesh(femmesh):
+        # get the nodes, sorted and duplicates removed
+        slaveface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, slave_ref))))
+        masterface_nds = sorted(list(set(get_femnodes_by_refshape(femmesh, master_ref))))
+        # FreeCAD.Console.PrintLog("slaveface_nds: {}\n".format(slaveface_nds))
+        # FreeCAD.Console.PrintLog("masterface_nds: {}\n".format(slaveface_nds))
+
+        # fill the bit_pattern_dict and search for the faces
+        slave_bit_pattern_dict = get_bit_pattern_dict(
+            femelement_table,
+            femnodes_ele_table,
+            slaveface_nds
+        )
+        master_bit_pattern_dict = get_bit_pattern_dict(
+            femelement_table,
+            femnodes_ele_table,
+            masterface_nds
+        )
+
+        # get the faces ids
+        slave_faces = get_ccxelement_faces_from_binary_search(slave_bit_pattern_dict)
+        master_faces = get_ccxelement_faces_from_binary_search(master_bit_pattern_dict)
+
+    elif is_face_femmesh(femmesh):
+        FreeCAD.Console.PrintError(
+            "Shell mesh is not allowed for constraint tie.\n"
+        )
+
+    FreeCAD.Console.PrintLog("slave_faces: {}\n".format(slave_faces))
+    FreeCAD.Console.PrintLog("master_faces: {}\n".format(master_faces))
+    return [slave_faces, master_faces]
+
+
 # ************************************************************************************************
 # ***** groups ***********************************************************************************
 def get_mesh_group_elements(

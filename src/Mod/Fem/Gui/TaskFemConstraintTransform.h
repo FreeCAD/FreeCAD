@@ -38,6 +38,7 @@
 #include <QObject>
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
+#include <QKeyEvent>
 #include <QListWidgetItem>
 
 class Ui_TaskFemConstraintTransform;
@@ -69,11 +70,11 @@ private Q_SLOTS:
     void z_Changed(int z);
 
 protected:
+    bool event(QEvent *e);
     void changeEvent(QEvent *e);
     const QString makeText(const App::DocumentObject* obj) const;
 
 private:
-    //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintTransform* ui;
 };

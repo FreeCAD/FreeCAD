@@ -36,8 +36,9 @@
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
 
-# include <QMessageBox>
 # include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
 
@@ -63,10 +64,9 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
-    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->rb_convection, SIGNAL(clicked(bool)),  this, SLOT(Conv()));
     connect(ui->rb_dflux, SIGNAL(clicked(bool)),  this, SLOT(Flux()));
@@ -79,6 +79,8 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     //        this, SLOT(onFaceTempChanged(double)));
     connect(ui->if_filmcoef, SIGNAL(valueChanged(double)),
             this, SLOT(onFilmCoefChanged(double)));
+    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
 
@@ -135,8 +137,6 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     ui->lw_references->blockSignals(false);
     ui->btnAdd->blockSignals(false);
     ui->btnRemove->blockSignals(false);
-
-
 
     updateUI();
 }
@@ -386,6 +386,11 @@ std::string TaskFemConstraintHeatflux::get_constraint_type(void) const {
         type = "\"DFlux\"";
     }
     return type;
+}
+
+bool TaskFemConstraintHeatflux::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintHeatflux::changeEvent(QEvent *e)

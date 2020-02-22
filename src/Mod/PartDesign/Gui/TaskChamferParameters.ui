@@ -52,6 +52,9 @@ click again to end selection</string>
       <string>- select an item to highlight it
 - double-click on an item to see the chamfers</string>
      </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
     </widget>
    </item>
    <item>

@@ -39,6 +39,9 @@
 #include "QGIView.h"
 #include "QGISectionLine.h"
 
+#define ANSISTANDARD 0
+#define ISOSTANDARD 1
+
 using namespace TechDrawGui;
 using namespace TechDraw;
 
@@ -82,8 +85,8 @@ void QGISectionLine::makeLine()
     QPointF beginExtLine1,beginExtLine2;   //ext line start pts for measure Start side and measure End side
     QPointF endExtLine1, endExtLine2;
     QPointF offsetDir(m_arrowDir.x,-m_arrowDir.y);
-    int format = getPrefSectionFormat();
-    if (format == 0) {                           //"ASME"
+    int format = getPrefSectionStandard();
+    if (format == ANSISTANDARD) {                           //"ASME"/"ANSI"
         //draw from section line endpoint
         QPointF offsetBegin = m_extLen * offsetDir;
         beginExtLine1 = m_start;           //from
@@ -115,8 +118,8 @@ void QGISectionLine::makeLine()
 
 void QGISectionLine::makeArrows()
 {
-    int format = getPrefSectionFormat();
-    if (format == 0) {
+    int format = getPrefSectionStandard();
+    if (format == ANSISTANDARD) {
         makeArrowsTrad();
     } else {
         makeArrowsISO();
@@ -180,8 +183,8 @@ void QGISectionLine::makeArrowsTrad()
 
 void QGISectionLine::makeSymbols()
 {
-    int format = getPrefSectionFormat();
-    if (format == 0) {
+    int format = getPrefSectionStandard();
+    if (format == ANSISTANDARD) {
         makeSymbolsTrad();
     } else {
         makeSymbolsISO();
@@ -291,11 +294,11 @@ Qt::PenStyle QGISectionLine::getSectionStyle()
 }
 
 //ASME("traditional") vs ISO("reference arrow method") arrows
-int QGISectionLine::getPrefSectionFormat()
+int QGISectionLine::getPrefSectionStandard()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Format");
-    int format = hGrp->GetInt("SectionFormat", 0);
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Standards");
+    int format = hGrp->GetInt("SectionLineStandard", ISOSTANDARD);
     return format;
 }
 

@@ -44,23 +44,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         analysis_obj,
         solver_obj,
         mesh_obj,
-        matlin_obj,
-        matnonlin_obj,
-        fixed_obj,
-        displacement_obj,
-        contact_obj,
-        planerotation_obj,
-        transform_obj,
-        selfweight_obj,
-        force_obj,
-        pressure_obj,
-        temperature_obj,
-        heatflux_obj,
-        initialtemperature_obj,
-        beamsection_obj,
-        beamrotation_obj,
-        shellthickness_obj,
-        fluidsection_obj,
+        member,
         dir_name=None
     ):
         writerbase.FemInputWriter.__init__(
@@ -68,23 +52,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             analysis_obj,
             solver_obj,
             mesh_obj,
-            matlin_obj,
-            matnonlin_obj,
-            fixed_obj,
-            displacement_obj,
-            contact_obj,
-            planerotation_obj,
-            transform_obj,
-            selfweight_obj,
-            force_obj,
-            pressure_obj,
-            temperature_obj,
-            heatflux_obj,
-            initialtemperature_obj,
-            beamsection_obj,
-            beamrotation_obj,
-            shellthickness_obj,
-            fluidsection_obj,
+            member,
             dir_name
         )
         from os.path import join
@@ -149,6 +117,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.write_node_sets_constraints_planerotation(inpfile)
         if self.contact_objects:
             self.write_surfaces_constraints_contact(inpfile)
+        if self.tie_objects:
+            self.write_surfaces_constraints_tie(inpfile)
         if self.transform_objects:
             self.write_node_sets_constraints_transform(inpfile)
         if self.analysis_type == "thermomech" and self.temperature_objects:
@@ -175,6 +145,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.write_constraints_planerotation(inpfile)
         if self.contact_objects:
             self.write_constraints_contact(inpfile)
+        if self.tie_objects:
+            self.write_constraints_tie(inpfile)
         if self.transform_objects:
             self.write_constraints_transform(inpfile)
 
@@ -261,6 +233,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             inpfileHeatflux = open(name + "_Node_Heatlfux.inp", "w")
         if self.contact_objects:
             inpfileContact = open(name + "_Surface_Contact.inp", "w")
+        if self.tie_objects:
+            inpfileContact = open(name + "_Surface_Tie.inp", "w")
         if self.transform_objects:
             inpfileTransform = open(name + "_Node_Transform.inp", "w")
 
@@ -274,6 +248,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.write_node_sets_constraints_planerotation(inpfileNodes)
         if self.contact_objects:
             self.write_surfaces_constraints_contact(inpfileContact)
+        if self.tie_objects:
+            self.write_surfaces_constraints_tie(inpfileContact)
         if self.transform_objects:
             self.write_node_sets_constraints_transform(inpfileTransform)
 
@@ -291,6 +267,12 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         inpfileMain.write("** written by write_surfaces_constraints_contact\n")
         if self.contact_objects:
             inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Surface_Contact.inp \n")
+
+        inpfileMain.write("\n***********************************************************\n")
+        inpfileMain.write("** Surfaces for tie constraint\n")
+        inpfileMain.write("** written by write_surfaces_constraints_tie\n")
+        if self.tie_objects:
+            inpfileMain.write("*INCLUDE,INPUT=" + include_name + "_Surface_Tie.inp \n")
 
         inpfileMain.write("\n***********************************************************\n")
         inpfileMain.write("** Node sets for transform constraint\n")
@@ -327,6 +309,8 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.write_constraints_planerotation(inpfileMain)
         if self.contact_objects:
             self.write_constraints_contact(inpfileMain)
+        if self.tie_objects:
+            self.write_constraints_tie(inpfileMain)
         if self.transform_objects:
             self.write_constraints_transform(inpfileMain)
 
@@ -604,6 +588,26 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             # master IND
             f.write("*SURFACE, NAME=IND{}\n".format(contact_obj.Name))
             for i in femobj["ContactMasterFaces"]:
+                f.write("{},S{}\n".format(i[0], i[1]))
+
+    def write_surfaces_constraints_tie(self, f):
+        # get faces
+        self.get_constraints_tie_faces()
+        # write faces to file
+        f.write("\n***********************************************************\n")
+        f.write("** Surfaces for tie constraint\n")
+        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        for femobj in self.tie_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            tie_obj = femobj["Object"]
+            f.write("** " + tie_obj.Label + "\n")
+            # slave DEP
+            f.write("*SURFACE, NAME=TIE_DEP{}\n".format(tie_obj.Name))
+            for i in femobj["TieSlaveFaces"]:
+                f.write("{},S{}\n".format(i[0], i[1]))
+            # master IND
+            f.write("*SURFACE, NAME=TIE_IND{}\n".format(tie_obj.Name))
+            for i in femobj["TieMasterFaces"]:
                 f.write("{},S{}\n".format(i[0], i[1]))
 
     def write_node_sets_constraints_transform(self, f):
@@ -1036,6 +1040,23 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
                 f.write("*FRICTION \n")
                 stick = (slope / 10.0)
                 f.write(str(friction) + ", " + str(stick) + " \n")
+
+    def write_constraints_tie(self, f):
+        f.write("\n***********************************************************\n")
+        f.write("** Tie Constraints\n")
+        f.write("** written by {} function\n".format(sys._getframe().f_code.co_name))
+        for femobj in self.tie_objects:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            tie_obj = femobj["Object"]
+            f.write("** {}\n".format(tie_obj.Label))
+            tolerance = str(tie_obj.Tolerance.getValueAs("mm")).rstrip()
+            f.write(
+                "*TIE, POSITION TOLERANCE={}, ADJUST=NO, NAME=TIE{}\n"
+                .format(tolerance, tie_obj.Name)
+            )
+            ind_surf = "TIE_IND" + tie_obj.Name
+            dep_surf = "TIE_DEP" + tie_obj.Name
+            f.write("{},{}\n".format(dep_surf, ind_surf))
 
     def write_constraints_planerotation(self, f):
         f.write("\n***********************************************************\n")

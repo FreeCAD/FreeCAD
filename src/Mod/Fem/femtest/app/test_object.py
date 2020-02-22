@@ -68,6 +68,7 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
         analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
         analysis.addObject(ObjectsFem.makeConstraintContact(doc))
+        analysis.addObject(ObjectsFem.makeConstraintTie(doc))
         analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
         analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
         analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
@@ -261,6 +262,10 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintTemperature(doc))
         )
         self.assertEqual(
+            "Fem::ConstraintTie",
+            type_of_obj(ObjectsFem.makeConstraintTie(doc))
+        )
+        self.assertEqual(
             "Fem::ConstraintTransform",
             type_of_obj(ObjectsFem.makeConstraintTransform(doc))
         )
@@ -452,6 +457,10 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintTemperature(doc),
             "Fem::ConstraintTemperature"
+        ))
+        self.assertTrue(is_of_type(
+            ObjectsFem.makeConstraintTie(doc),
+            "Fem::ConstraintTie"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeConstraintTransform(doc),
@@ -853,6 +862,25 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(
             constraint_temperature,
             "Fem::ConstraintTemperature"
+        ))
+
+        # ConstraintTie
+        constraint_tie = ObjectsFem.makeConstraintTie(doc)
+        self.assertTrue(is_derived_from(
+            constraint_tie,
+            "App::DocumentObject"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_tie,
+            "Fem::Constraint"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_tie,
+            "Fem::ConstraintPython"
+        ))
+        self.assertTrue(is_derived_from(
+            constraint_tie,
+            "Fem::ConstraintTie"
         ))
 
         # ConstraintTransform
@@ -1344,6 +1372,11 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeConstraintTemperature(
                 doc
             ).isDerivedFrom("Fem::ConstraintTemperature")
+        )
+        self.assertTrue(
+            ObjectsFem.makeConstraintTie(
+                doc
+            ).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
             ObjectsFem.makeConstraintTransform(

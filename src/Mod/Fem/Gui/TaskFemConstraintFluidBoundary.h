@@ -33,6 +33,8 @@
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
 
+#include <QKeyEvent>
+
 class Ui_TaskFemConstraintFluidBoundary;
 
 namespace App {
@@ -86,6 +88,7 @@ private Q_SLOTS:
     void onCheckReverse(bool); // consider removing this slot as the UI is hidden
 
 protected:
+    bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
 
 private:
