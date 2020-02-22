@@ -246,6 +246,8 @@ ViewProviderPartExt::ViewProviderPartExt()
         ("User parameter:BaseApp/Preferences/Mod/Part");
     NormalsFromUV = hPart->GetBool("NormalsFromUVNodes", NormalsFromUV);
 
+    long twoside = hPart->GetBool("TwoSideRendering", false) ? 1 : 0;
+
     // Let the user define a custom lower limit but a value less than
     // OCCT's epsilon is not allowed
     double lowerLimit = hPart->GetFloat("MinimumDeviation", tessRange.LowerBound);
@@ -274,7 +276,7 @@ ViewProviderPartExt::ViewProviderPartExt()
     Deviation.setConstraints(&tessRange);
     ADD_PROPERTY(AngularDeflection,(28.65));
     AngularDeflection.setConstraints(&angDeflectionRange);
-    ADD_PROPERTY(Lighting,(1));
+    ADD_PROPERTY(Lighting,(twoside));
     Lighting.setEnums(LightingEnums);
     ADD_PROPERTY(DrawStyle,((long int)0));
     DrawStyle.setEnums(DrawStyleEnums);
@@ -501,10 +503,6 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
         pcWireframeRoot->boundingBoxCaching =
         pcPointsRoot->boundingBoxCaching =
         wireframe->boundingBoxCaching = SoSeparator::OFF;
-
-    // enable two-side rendering
-    pShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
-    pShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
 
     // Avoid any Z-buffer artifacts, so that the lines always appear on top of the faces
     // The correct order is Edges, Polygon offset, Faces.

@@ -64,6 +64,7 @@ void DlgSettingsObjectColor::saveSettings()
     ui->DefaultShapeVertexColor->onSave();
     ui->DefaultShapeVertexSize->onSave();
     ui->BoundingBoxColor->onSave();
+    ui->twosideRendering->onSave();
     // Annotations
     ui->AnnotationTextColor->onSave();
 }
@@ -78,6 +79,7 @@ void DlgSettingsObjectColor::loadSettings()
     ui->DefaultShapeVertexColor->onRestore();
     ui->DefaultShapeVertexSize->onRestore();
     ui->BoundingBoxColor->onRestore();
+    ui->twosideRendering->onRestore();
     // Annotations
     ui->AnnotationTextColor->onRestore();
 }
