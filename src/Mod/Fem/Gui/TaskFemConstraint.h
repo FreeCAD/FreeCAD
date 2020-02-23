@@ -33,6 +33,7 @@
 
 class QAction;
 class QListWidget;
+class QListWidgetItem;
 
 namespace FemGui {
 
