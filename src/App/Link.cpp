@@ -219,22 +219,24 @@ App::DocumentObjectExecReturn *LinkBaseExtension::extensionExecute(void) {
                 const char *method = getLinkExecuteValue();
                 if(!method || !method[0])
                     method = "appLinkExecute";
-                Py::Object attr = proxyValue.getAttr(method);
-                if(attr.ptr() && attr.isCallable()) {
-                    Py::Tuple args(4);
-                    args.setItem(0, Py::asObject(linked->getPyObject()));
-                    args.setItem(1, Py::asObject(container->getPyObject()));
-                    if(!_getElementCountValue()) {
-                        Py::Callable(attr).apply(args);
-                    } else {
-                        const auto &elements = _getElementListValue();
-                        for(int i=0; i<_getElementCountValue(); ++i) {
-                            args.setItem(2, Py::Int(i));
-                            if(i < (int)elements.size())
-                                args.setItem(3, Py::asObject(elements[i]->getPyObject()));
-                            else
-                                args.setItem(3, Py::Object());
+                if(proxyValue.hasAttr(method)) {
+                    Py::Object attr = proxyValue.getAttr(method);
+                    if(attr.ptr() && attr.isCallable()) {
+                        Py::Tuple args(4);
+                        args.setItem(0, Py::asObject(linked->getPyObject()));
+                        args.setItem(1, Py::asObject(container->getPyObject()));
+                        if(!_getElementCountValue()) {
                             Py::Callable(attr).apply(args);
+                        } else {
+                            const auto &elements = _getElementListValue();
+                            for(int i=0; i<_getElementCountValue(); ++i) {
+                                args.setItem(2, Py::Int(i));
+                                if(i < (int)elements.size())
+                                    args.setItem(3, Py::asObject(elements[i]->getPyObject()));
+                                else
+                                    args.setItem(3, Py::Object());
+                                Py::Callable(attr).apply(args);
+                            }
                         }
                     }
                 }
