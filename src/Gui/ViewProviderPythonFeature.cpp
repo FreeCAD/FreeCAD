@@ -1390,6 +1390,34 @@ ViewProviderPythonFeatureImp::replaceObject(
     return Rejected;
 }
 
+ViewProviderPythonFeatureImp::ValueT 
+ViewProviderPythonFeatureImp::canReplaceObject(
+        App::DocumentObject *oldObj, App::DocumentObject *newObj)
+{
+    if(!oldObj || !oldObj->getNameInDocument()
+            || !newObj || !newObj->getNameInDocument())
+        return NotImplemented;
+
+    FC_PY_CALL_CHECK(canReplaceObject);
+
+    Base::PyGILStateLocker lock;
+    try {
+        Py::TupleN args(Py::asObject(oldObj->getPyObject()),
+                Py::asObject(newObj->getPyObject()));
+        Py::Boolean ok(Base::pyCall(py_canReplaceObject.ptr(),args.ptr()));
+        return ok ? Accepted : Rejected;
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return NotImplemented;
+        }
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return Rejected;
+}
+
 bool ViewProviderPythonFeatureImp::getLinkedViewProvider(
         ViewProviderDocumentObject *&vp, std::string *subname, bool recursive) const
 {

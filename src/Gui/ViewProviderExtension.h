@@ -74,6 +74,9 @@ public:
     virtual int extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) 
         { return -1; }
 
+    virtual int extensionCanReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) 
+        { return -1; }
+
     /// Hides the view provider
     virtual void extensionHide(void) { }
     /// Shows the view provider

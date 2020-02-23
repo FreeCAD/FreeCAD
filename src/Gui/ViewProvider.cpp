@@ -744,16 +744,30 @@ std::string ViewProvider::dropObjectEx(App::DocumentObject* obj, App::DocumentOb
 
 int ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
 {
+    if(!canReplaceObject(oldValue, newValue))
+        return -1;
+
     int res = -1;
     foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
-        if (ext->extensionCanDropObject(newValue)) {
-            res = ext->extensionReplaceObject(oldValue, newValue);
-            if(res>=0)
-                return true;
-        }
-        return false;
+        res = ext->extensionReplaceObject(oldValue, newValue);
+        return res>=0;
     });
     return res;
+}
+
+bool ViewProvider::canReplaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    int res = -1;
+    foreachExtension<ViewProviderExtension>([&](ViewProviderExtension *ext) {
+        res = ext->extensionCanReplaceObject(oldValue, newValue);
+        return res>=0;
+    });
+    
+    if(res < 0) {
+        // no one implements this function, fallback to canDropObject
+        return canDropObject(newValue);
+    }
+    return res>=0;
 }
 
 void ViewProvider::Restore(Base::XMLReader& reader) {

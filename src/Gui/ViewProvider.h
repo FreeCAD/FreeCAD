@@ -322,6 +322,13 @@ public:
      * @return Returns 0 if not found, 1 if succeeded, -1 if not supported
      */
     virtual int replaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
+
+    /** Query if it is possible to replace an object to the view provider by drag and drop
+     *
+     * @param oldObj: object to be replaced
+     * @param newObj: object to replace with
+     */
+    virtual bool canReplaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj);
     //@}
 
     /** Tell the tree view if this object should appear there */

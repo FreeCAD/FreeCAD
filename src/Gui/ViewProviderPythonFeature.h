@@ -116,6 +116,7 @@ public:
     bool dropObjectEx(App::DocumentObject *obj, App::DocumentObject *,
             const char *, const std::vector<std::string> &elements, std::string &ret);
     ValueT replaceObject(App::DocumentObject *, App::DocumentObject *);
+    ValueT canReplaceObject(App::DocumentObject *, App::DocumentObject *);
     //@}
 
     bool getLinkedViewProvider(ViewProviderDocumentObject *&res, 
@@ -169,6 +170,7 @@ private:
     FC_PY_ELEMENT(canAddToSceneGraph) \
     FC_PY_ELEMENT(getDropPrefix) \
     FC_PY_ELEMENT(replaceObject) \
+    FC_PY_ELEMENT(canReplaceObject) \
     FC_PY_ELEMENT(getLinkedViewProvider) \
 
 #undef FC_PY_ELEMENT
@@ -563,6 +565,17 @@ protected:
             return 0;
         default:
             return ViewProviderT::replaceObject(oldObj,newObj);
+        }
+    }
+
+    virtual bool canReplaceObject(App::DocumentObject *oldObj, App::DocumentObject *newObj) override {
+        switch (imp->canReplaceObject(oldObj,newObj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canReplaceObject(oldObj,newObj);
         }
     }
 
