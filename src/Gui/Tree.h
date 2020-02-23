@@ -180,6 +180,7 @@ private Q_SLOTS:
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
     void onUpdateStatus(void);
+    void onItemPressed();
 
 Q_SIGNALS:
     void emitSearchObjects();

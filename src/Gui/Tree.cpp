@@ -363,8 +363,6 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     , myName(name)
 {
     Instances.insert(this);
-    if(!_LastSelectedTreeWidget)
-        _LastSelectedTreeWidget = this;
 
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
@@ -489,6 +487,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
             this, SLOT(onPreSelectTimer()));
     connect(this->selectTimer, SIGNAL(timeout()),
             this, SLOT(onSelectTimer()));
+    connect(this, SIGNAL(pressed(const QModelIndex &)), SLOT(onItemPressed()));
     preselectTime.start();
 
     setupText();
@@ -1032,6 +1031,10 @@ void TreeWidget::selectAllInstances(const ViewProviderDocumentObject &vpd) {
 
     for(const auto &v : DocumentMap) 
         v.second->selectAllInstances(vpd);
+}
+
+void TreeWidget::onItemPressed() {
+    _LastSelectedTreeWidget = this;
 }
 
 TreeWidget *TreeWidget::instance() {
@@ -2553,9 +2556,8 @@ void TreeWidget::onItemExpanded(QTreeWidgetItem * item)
 void TreeWidget::scrollItemToTop()
 {
     auto doc = Application::Instance->activeDocument();
-    for(auto tree : Instances) {
-        if(!tree->isConnectionAttached() || tree->isConnectionBlocked()) 
-            continue;
+    auto tree = instance();
+    if (tree && tree->isConnectionAttached() && !tree->isConnectionBlocked()) {
 
         tree->_updateStatus(false);
 
@@ -2711,8 +2713,6 @@ void TreeWidget::onItemSelectionChanged ()
 
     preselectTimer->stop();
 
-    _LastSelectedTreeWidget = this;
-
     // block tmp. the connection to avoid to notify us ourself
     bool lock = this->blockConnection(true);
 
@@ -2813,7 +2813,7 @@ void TreeWidget::onSelectTimer() {
 
     _updateStatus(false);
 
-    bool syncSelect = TreeParams::Instance()->SyncSelection();
+    bool syncSelect = instance()==this && TreeParams::Instance()->SyncSelection();
     bool locked = this->blockConnection(true);
     if(Selection().hasSelection()) {
         for(auto &v : DocumentMap) {
