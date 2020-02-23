@@ -169,6 +169,7 @@ void TaskFilletParameters::onRefDeleted(void)
     App::DocumentObject* base = pcFillet->Base.getValue();
     // get all fillet references
     std::vector<std::string> refs = pcFillet->Base.getSubValues();
+    setupTransaction();
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count()-1; i > -1; i--) {
@@ -177,15 +178,14 @@ void TaskFilletParameters::onRefDeleted(void)
         int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
         // erase the reference
         refs.erase(refs.begin() + rowNumber);
-        setupTransaction();
-        // update the object
-        pcFillet->Base.setValue(base, refs);
         // remove from the list
         ui->listWidgetReferences->model()->removeRow(rowNumber);
     }
 
+    // update the object
+    pcFillet->Base.setValue(base, refs);
     // recompute the feature
-    pcFillet->getDocument()->recomputeFeature(pcFillet);
+    pcFillet->recomputeFeature();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {

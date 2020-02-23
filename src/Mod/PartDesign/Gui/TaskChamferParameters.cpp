@@ -169,6 +169,7 @@ void TaskChamferParameters::onRefDeleted(void)
     App::DocumentObject* base = pcChamfer->Base.getValue();
     // get all chamfer references
     std::vector<std::string> refs = pcChamfer->Base.getSubValues();
+    setupTransaction();
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count() - 1; i > -1; i--) {
@@ -177,15 +178,14 @@ void TaskChamferParameters::onRefDeleted(void)
         int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
         // erase the reference
         refs.erase(refs.begin() + rowNumber);
-        setupTransaction();
-        // update the object
-        pcChamfer->Base.setValue(base, refs);
         // remove from the list
         ui->listWidgetReferences->model()->removeRow(rowNumber);  
     }
 
+    // update the object
+    pcChamfer->Base.setValue(base, refs);
     // recompute the feature
-    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
+    pcChamfer->recomputeFeature();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {

@@ -191,6 +191,7 @@ void TaskThicknessParameters::onRefDeleted(void)
     App::DocumentObject* base = pcThickness->Base.getValue();
     // get all thickness references
     std::vector<std::string> refs = pcThickness->Base.getSubValues();
+    setupTransaction();
 
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count() - 1; i > -1; i--) {
@@ -199,15 +200,14 @@ void TaskThicknessParameters::onRefDeleted(void)
         int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
         // erase the reference
         refs.erase(refs.begin() + rowNumber);
-        setupTransaction();
-        // update the object
-        pcThickness->Base.setValue(base, refs);
         // remove from the list
         ui->listWidgetReferences->model()->removeRow(rowNumber);
     }
 
+    // update the object
+    pcThickness->Base.setValue(base, refs);
     // recompute the feature
-    pcThickness->getDocument()->recomputeFeature(pcThickness);
+    pcThickness->recomputeFeature();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {
