@@ -1423,19 +1423,30 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                             event->ignore();
                             return;
                         }
-                        if(!targetItemObj->getParentItem()) {
-                            TREE_TRACE("Cannot replace without parent");
-                            event->ignore();
-                            return;
-                        }
                         event->setDropAction(Qt::LinkAction);
+                        da = Qt::LinkAction;
+                    } else {
+                        TREE_TRACE("cannot drop " << obj->getFullName() << ' '
+                                << (owner?owner->getFullName():"<No Owner>") << '.' << subname);
+                        event->ignore();
                         return;
                     }
+                }
 
-                    TREE_TRACE("cannot drop " << obj->getFullName() << ' '
-                            << (owner?owner->getFullName():"<No Owner>") << '.' << subname);
-                    event->ignore();
-                    return;
+                if (da == Qt::LinkAction) {
+                    auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
+                    auto parentItem = targetItemObj->getParentItem();
+                    if((!ext || !ext->getLinkedObjectProperty()) && !parentItem) {
+                        TREE_TRACE("Cannot replace without parent");
+                        event->ignore();
+                        return;
+                    } else if (parentItem && !parentItem->object()->canReplaceObject(
+                                                targetItemObj->object()->getObject(), obj))
+                    {
+                        TREE_TRACE("Replace operation not supported");
+                        event->ignore();
+                        return;
+                    }
                 }
             }
         } catch (Base::Exception &e){
@@ -1622,16 +1633,25 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     && !vp->canDropObjectEx(obj,owner,info.subname.c_str(),item->mySubs)) 
             {
                 if(event->possibleActions() & Qt::LinkAction) {
-                    if(items.size()>1) {
-                        TREE_TRACE("Cannot replace with more than one object");
-                        return;
-                    }
-                    auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
-                    if((!ext || !ext->getLinkedObjectProperty()) && !targetItemObj->getParentItem()) {
-                        TREE_TRACE("Cannot replace without parent");
+                    if(itemInfo.size()>1) {
+                        FC_WARN("Cannot replace with more than one object");
                         return;
                     }
                     da = Qt::LinkAction;
+                }
+            }
+
+            if(da == Qt::LinkAction) {
+                auto ext = vp->getObject()->getExtensionByType<App::LinkBaseExtension>(true);
+                auto parentItem = targetItemObj->getParentItem();
+                if((!ext || !ext->getLinkedObjectProperty()) && !parentItem) {
+                    FC_WARN("Cannot replace without parent");
+                    return;
+                } else if (parentItem && !parentItem->object()->canReplaceObject(
+                            targetItemObj->object()->getObject(), obj))
+                {
+                    FC_WARN("Replace operation not supported");
+                    return;
                 }
             }
         }
@@ -1768,6 +1788,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
                 std::string dropName;
                 ss.str("");
+                auto lines = manager->getLines();
+
                 if(da == Qt::LinkAction) {
                     if(targetItemObj->getParentItem()) {
                         auto parentItem = targetItemObj->getParentItem();
@@ -1776,22 +1798,30 @@ void TreeWidget::dropEvent(QDropEvent *event)
                             << Command::getObjectCmd(targetObj) << ","
                             << Command::getObjectCmd(obj) << ")";
 
-                        std::ostringstream ss;
+                        int res = parentItem->object()->replaceObject(targetObj, obj);
+                        if (res <= 0) {
+                            FC_THROWM(Base::RuntimeError,
+                                    (res<0?"Cannot":"Failed to")
+                                    << " replace object " << targetObj->getNameInDocument()
+                                    << " with " << obj->getNameInDocument());
+                        }
+
+                        std::ostringstream ss2;
 
                         dropParent = 0;
-                        parentItem->getSubName(ss,dropParent);
+                        parentItem->getSubName(ss2,dropParent);
                         if(dropParent) 
-                            ss << parentItem->object()->getObject()->getNameInDocument() << '.';
+                            ss2 << parentItem->object()->getObject()->getNameInDocument() << '.';
                         else 
                             dropParent = parentItem->object()->getObject();
-                        ss << obj->getNameInDocument() << '.';
-                        dropName = ss.str();
+                        ss2 << obj->getNameInDocument() << '.';
+                        dropName = ss2.str();
                     } else {
-                        TREE_WARN("ignore replace operation without parent");
+                        FC_WARN("ignore replace operation without parent");
                         continue;
                     }
-
-                    Gui::Command::runCommand(Gui::Command::App, ss.str().c_str());
+                    if(dropName.size())
+                        dropName = targetSubname.str() + dropName;
                     
                 }else{
                     ss << Command::getObjectCmd(vp->getObject())
@@ -1804,13 +1834,13 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     for(auto &sub : info.subs)
                         ss << "'" << sub << "',";
                     ss << "])";
-                    auto lines = manager->getLines();
                     dropName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
-                    if(manager->getLines() == lines)
-                        manager->addLine(MacroManager::Gui,ss.str().c_str());
                     if(dropName.size())
                         dropName = targetSubname.str() + dropName;
                 }
+
+                if(manager->getLines() == lines)
+                    manager->addLine(MacroManager::Gui,ss.str().c_str());
 
                 touched = true;
 
