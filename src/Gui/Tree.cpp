@@ -4732,6 +4732,17 @@ int DocumentObjectItem::isGroup() const {
         return SuperGroup;
     else if(obj->hasChildElement())
         return LinkGroup;
+
+    // Check for plain group inside a link/linkgroup, which has special treatment
+    if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
+        for(auto parent=getParentItem();parent;parent=parent->getParentItem()) {
+            auto pobj = parent->object()->getObject();
+            if(App::GeoFeatureGroupExtension::isNonGeoGroup(pobj))
+                continue;
+            if(pobj->isElementVisible(obj->getNameInDocument())>=0)
+                return LinkGroup;
+        }
+    }
     return NotGroup;
 }
 
