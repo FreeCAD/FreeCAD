@@ -369,7 +369,13 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
     this->setDropIndicatorShown(false);
-    this->setDragDropMode(QTreeWidget::InternalMove);
+
+    // In case two tree views are shown (ComboView and TreeView), we need to
+    // allow drag and drop between them in order for StdTreeDrag command to
+    // work. So, we cannot use InternalMove
+    //
+    // this->setDragDropMode(QTreeWidget::InternalMove);
+
     this->setRootIsDecorated(false);
     this->setColumnCount(2);
     this->setItemDelegate(new TreeWidgetEditDelegate(this));
@@ -1281,8 +1287,6 @@ void TreeWidget::startDragging() {
 
     setState(DraggingState);
     startDrag(model()->supportedDragActions());
-    setState(NoState);
-    stopAutoScroll();
 }
 
 void TreeWidget::startDrag(Qt::DropActions supportedActions)
@@ -1291,6 +1295,19 @@ void TreeWidget::startDrag(Qt::DropActions supportedActions)
     if(_DragEventFilter) {
         _DragEventFilter = false;
         qApp->removeEventFilter(this);
+    }
+
+    // The following code is necessary for dragging between the tree view to
+    // work. Note that the standard behaivor of drag and drop between different
+    // QTreeWidget is to move the item from one to the other, and obviously we
+    // don't want that. The trick is to NOT call QDropEvent::acceptDropAction()
+    // inside dropEvent(), and add the following code to manually terminate the
+    // the drop.
+    for(auto tree : Instances) {
+        if(tree->state() == DraggingState) {
+            tree->setState(NoState);
+            tree->stopAutoScroll();
+        }
     }
 }
 
