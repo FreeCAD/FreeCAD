@@ -130,25 +130,31 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
     return BaseObject;
 }
 
-TopoShape Feature::getBaseShape() const {
-    const Part::Feature* BaseObject = getBaseObject();
+TopoShape Feature::getBaseShape(bool silent) const {
+    Part::TopoShape result;
+
+    const Part::Feature* BaseObject = getBaseObject(silent);
+    if (!BaseObject)
+        return result;
 
     if(BaseObject != BaseFeature.getValue()) {
-        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())||
+        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
             BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
         {
+            if(silent)
+                return result;
             throw Base::ValueError("Base shape of shape binder cannot be used");
         }
     }
 
-    // auto shape = getTopoShape(BaseObject);
-    auto shape = BaseObject->Shape.getShape();
-    if(shape.isNull())
-        throw Part::NullShapeException("Base feature's shape is invalid");
-    if(!shape.hasSubShape(TopAbs_SOLID))
-        throw Base::ValueError("Base feature's shape is not a solid");
-
-    return shape;
+    result = BaseObject->Shape.getShape();
+    if(!silent) {
+        if (result.isNull())
+            throw Part::NullShapeException("Base feature's TopoShape is invalid");
+        if (!result.hasSubShape(TopAbs_SOLID))
+            throw Base::ValueError("Base feature's shape is not a solid");
+    }
+    return result;
 }
 
 const TopoDS_Shape& Feature::getBaseShapeOld() const {
