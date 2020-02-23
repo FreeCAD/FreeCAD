@@ -168,9 +168,6 @@ void StdCmdLinkMakeGroup::activated(int option) {
                     name = obj->getNameInDocument();
                 Command::doCommand(Command::Doc,"__objs__.append(App.getDocument('%s').getObject('%s'))",
                         doc->getName(),name.c_str());
-                Command::doCommand(Command::Doc,
-                        "App.getDocument('%s').getObject('%s').ViewObject.Visibility=False",
-                        doc->getName(),name.c_str());
             }
             Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').setLink(__objs__)",
                     doc->getName(),groupName.c_str());

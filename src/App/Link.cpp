@@ -425,7 +425,7 @@ void LinkBaseExtension::checkCopyOnChange(
         return;
 
     linked = objs.back();
-    linked->Visibility.setValue(false);
+    // linked->Visibility.setValue(false);
     linkedProp = linked->getPropertyByName(prop.getName());
     if(linkedProp && linkedProp->getTypeId()==prop.getTypeId()) {
         std::unique_ptr<Property> pcopy(prop.Copy());
@@ -1199,9 +1199,9 @@ void LinkBaseExtension::update(App::DocumentObject *parent, const Property *prop
                     // for example, undo and redo. So we try to re-claim the
                     // children element first.
                     auto obj = freecad_dynamic_cast<LinkElement>(doc->getObject(name.c_str()));
-                    if(obj && (!obj->myOwner || obj->myOwner==ownerID))
-                        obj->Visibility.setValue(false);
-                    else {
+                    if(obj && (!obj->myOwner || obj->myOwner==ownerID)) {
+                        // obj->Visibility.setValue(false);
+                    } else {
                         obj = new LinkElement;
                         parent->getDocument()->addObject(obj,name.c_str());
                     }
@@ -1531,7 +1531,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
                 auto pla = freecad_dynamic_cast<PropertyPlacement>(obj->getPropertyByName("Placement"));
                 if(pla)
                     link->Placement.setValue(pla->getValue());
-                link->Visibility.setValue(false);
+                // link->Visibility.setValue(false);
                 obj = link;
             }
 
