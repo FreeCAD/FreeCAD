@@ -35,6 +35,7 @@
 #include "Control.h"
 #include "TaskView/TaskView.h"
 
+#include <App/AutoTransaction.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ComboView.h>
 #include <Gui/DockWindowManager.h>
@@ -147,6 +148,11 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
             dw->raise();
         }
     }
+
+    // Since the caller sets up a modeless task panel, it indicates intension
+    // for prolonged editing. So disable auto transaction in the current call
+    // stack.
+    App::AutoTransaction::setEnable(false);
 }
 
 QTabWidget* ControlSingleton::tabPanel() const
