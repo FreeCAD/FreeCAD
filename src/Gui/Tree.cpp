@@ -1528,9 +1528,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
     Base::EmptySequencer seq;
 
     // filter out the selected items we cannot handle
-    std::vector<std::pair<DocumentObjectItem*,std::vector<std::string> > > items;
+    std::vector<std::pair<DocumentObjectItem*,std::vector<std::string> > > itemInfo;
     auto sels = selectedItems();
-    items.reserve(sels.size());
+    itemInfo.reserve(sels.size());
     for(auto ti : sels) {
         if (ti->type() != TreeWidget::ObjectType)
             continue;
@@ -1540,13 +1540,13 @@ void TreeWidget::dropEvent(QDropEvent *event)
         if (ti == targetItem)
             continue;
         auto item = static_cast<DocumentObjectItem*>(ti);
-        items.emplace_back();
-        auto &info = items.back();
+        itemInfo.emplace_back();
+        auto &info = itemInfo.back();
         info.first = item;
         info.second.insert(info.second.end(),item->mySubs.begin(),item->mySubs.end());
     }
 
-    if (items.empty())
+    if (itemInfo.empty())
         return; // nothing needs to be done
 
     std::string errMsg;
@@ -1554,7 +1554,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     if(QApplication::keyboardModifiers()== Qt::ControlModifier)
         event->setDropAction(Qt::CopyAction);
     else if(QApplication::keyboardModifiers()== Qt::AltModifier 
-            && (items.size()==1||targetItem->type()==TreeWidget::DocumentType))
+            && (itemInfo.size()==1||targetItem->type()==TreeWidget::DocumentType))
         event->setDropAction(Qt::LinkAction);
     else
         event->setDropAction(Qt::MoveAction);
@@ -1568,13 +1568,13 @@ void TreeWidget::dropEvent(QDropEvent *event)
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
         if(!vp || !vp->getObject() || !vp->getObject()->getNameInDocument()) {
-            TREE_TRACE("invalid object");
+            FC_WARN("invalid object");
             return;
         }
 
         if (da!=Qt::LinkAction && !vp->canDropObjects()) {
-            if(!(event->possibleActions() & Qt::LinkAction) || items.size()!=1) {
-                TREE_TRACE("Cannot drop objects");
+            if(!(event->possibleActions() & Qt::LinkAction) || itemInfo.size()!=1) {
+                FC_WARN("Cannot drop objects");
                 return; // no group like object
             }
         }
@@ -1605,8 +1605,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
         std::vector<ItemInfo> infos;
         // Only keep text names here, because you never know when doing drag
         // and drop some object may delete other objects.
-        infos.reserve(items.size());
-        for(auto &v : items) {
+        infos.reserve(itemInfo.size());
+        for(auto &v : itemInfo) {
             infos.emplace_back();
             auto &info = infos.back();
             auto item = v.first;
@@ -1650,7 +1650,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             }
 
             if (da!=Qt::LinkAction 
-                    && !vp->canDropObjectEx(obj,owner,info.subname.c_str(),item->mySubs)) 
+                    && !vp->canDropObjectEx(obj,owner,info.subname.c_str(),info.subs)) 
             {
                 if(event->possibleActions() & Qt::LinkAction) {
                     if(itemInfo.size()>1) {
@@ -1930,11 +1930,11 @@ void TreeWidget::dropEvent(QDropEvent *event)
         thisDoc = targetDocItem->document()->getDocument();
 
         std::vector<ItemInfo2> infos;
-        infos.reserve(items.size());
+        infos.reserve(itemInfo.size());
         bool syncPlacement = TreeParams::Instance()->SyncPlacement();
 
         // check if items can be dragged
-        for(auto &v : items) {
+        for(auto &v : itemInfo) {
             auto item = v.first;
             auto obj = item->object()->getObject();
             auto parentItem = item->getParentItem();
@@ -1949,7 +1949,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             }else if(!parentItem->object()->canDragObjects() 
                     || !parentItem->object()->canDragObject(obj)) 
             {
-                TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << 
+                FC_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << 
                     parentItem->object()->getObject()->getFullName() << "'");
                 return;
             }
@@ -2835,10 +2835,15 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
 {
     switch (msg.Type)
     {
+    case SelectionChanges::ClrSelection: 
+        for(auto item : selectedItems()) {
+            if(item->type() == ObjectType)
+                static_cast<DocumentObjectItem*>(item)->mySubs.clear();
+        }
+        // fall through
     case SelectionChanges::AddSelection:
     case SelectionChanges::RmvSelection:
-    case SelectionChanges::SetSelection:
-    case SelectionChanges::ClrSelection: {
+    case SelectionChanges::SetSelection: {
         int timeout = TreeParams::Instance()->SelectionTimeout();
         if(timeout<=0)
             timeout = 1;
