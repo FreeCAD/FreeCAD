@@ -4616,20 +4616,38 @@ void DocumentObjectItem::displayStatusInfo()
 {
     App::DocumentObject* Obj = object()->getObject();
 
-    QString info = QString::fromLatin1(Obj->getStatusString());
-    if ( Obj->mustExecute() == 1 && !Obj->isError())
-        info += QString::fromLatin1(" (but must be executed)");
-    QString status = TreeWidget::tr("%1, Internal name: %2")
-            .arg(info,
-                 QString::fromLatin1(Obj->getNameInDocument()));
+    QString status;
+    if ( (Obj->isTouched() || Obj->mustExecute() == 1) && !Obj->isError())
+        status = QString::fromLatin1("Touched, ");
 
-    if (!Obj->isError())
-        getMainWindow()->showMessage(status);
-    else {
-        getMainWindow()->showStatus(MainWindow::Err,status);
+    status += QLatin1String("Internal name: %1");
+    QString objName = QString::fromLatin1(Obj->getNameInDocument());
+    status = status.arg(objName);
+
+    std::ostringstream ss;
+    App::DocumentObject *parent = nullptr;
+    getSubName(ss, parent);
+    if(parent) {
+        status += QString::fromLatin1(", Path: %1.%2%3.").arg(
+                QLatin1String(parent->getFullName().c_str()),
+                QLatin1String(ss.str().c_str()), objName);
+    }
+
+    getMainWindow()->showMessage(status);
+
+    if (!Obj->isError()) {
+        QToolTip::hideText();
+    } else {
+        // getMainWindow()->showStatus(MainWindow::Err,status);
         QTreeWidget* tree = this->treeWidget();
-        QPoint pos = tree->visualItemRect(this).topRight();
-        QToolTip::showText(tree->mapToGlobal(pos), info);
+        QPoint pos = tree->visualItemRect(this).topLeft();
+
+        // Add some margin so that the newly showup tooltop widget won't
+        // immediate trigger another itemEntered() event.
+        pos.setY(pos.y()+10);
+
+        QString info = QObject::tr(Obj->getStatusString());
+        QToolTip::showText(tree->viewport()->mapToGlobal(pos), info);
     }
 }
 

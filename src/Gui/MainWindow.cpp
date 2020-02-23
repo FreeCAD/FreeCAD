@@ -1858,7 +1858,9 @@ void MainWindow::showMessage(const QString& message, int timeout) {
         return;
     }
     d->actionLabel->setText(message.simplified());
-    if(timeout) {
+    if(timeout == 0)
+        timeout = 3000;
+    if(timeout > 0) {
         d->actionTimer->setSingleShot(true);
         d->actionTimer->start(timeout);
     }else
