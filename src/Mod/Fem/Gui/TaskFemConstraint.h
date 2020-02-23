@@ -51,6 +51,7 @@ public:
 protected Q_SLOTS:
     void onReferenceDeleted(const int row);
     void onButtonReference(const bool pressed = true);
+    void setSelection(QListWidgetItem* item);
     // Shaft Wizard integration
     void onButtonWizOk();
     void onButtonWizCancel();

@@ -34,7 +34,6 @@
 #include "ViewProviderFemConstraintFluidBoundary.h"
 
 #include <QKeyEvent>
-#include <QListWidgetItem>
 
 class Ui_TaskFemConstraintFluidBoundary;
 
@@ -89,7 +88,6 @@ private Q_SLOTS:
     void onCheckReverse(bool); // consider removing this slot as the UI is hidden
     void addToSelection();
     void removeFromSelection();
-    void setSelection(QListWidgetItem* item);
 
 protected:
     bool event(QEvent *e);

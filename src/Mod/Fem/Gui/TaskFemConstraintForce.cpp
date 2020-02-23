@@ -257,25 +257,6 @@ void TaskFemConstraintForce::removeFromSelection()
     pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
 }
-
-void TaskFemConstraintForce::setSelection(QListWidgetItem* item) {
-    std::string s = item->text().toStdString();
-    std::string docName = ConstraintView->getObject()->getDocument()->getName();
-
-    std::string delimiter = ":";
-
-    size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName = s;
-
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
-}
-
 void TaskFemConstraintForce::onForceChanged(double f)
 {
     Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
@@ -324,10 +305,6 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
     TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNamesElement.c_str());
 
-    if (TypeName.substr(0, 4).compare(std::string("Part")) != 0) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
-        return;
-    }
     if (subNamesElement.substr(0, 4) == "Face") {
         if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
             QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked for 3D"));

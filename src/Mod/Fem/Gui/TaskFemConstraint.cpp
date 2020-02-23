@@ -135,6 +135,24 @@ const std::string TaskFemConstraint::getScale() const //OvG: Return pre-calculat
     return result;
 }
 
+void TaskFemConstraint::setSelection(QListWidgetItem* item) {
+    std::string s = item->text().toStdString();
+    std::string docName = ConstraintView->getObject()->getDocument()->getName();
+
+    std::string delimiter = ":";
+
+    size_t pos = 0;
+    std::string objName;
+    std::string subName;
+    pos = s.find(delimiter);
+    objName = s.substr(0, pos);
+    s.erase(0, pos + delimiter.length());
+    subName = s;
+
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+}
+
 void TaskFemConstraint::onReferenceDeleted(const int row) {
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();

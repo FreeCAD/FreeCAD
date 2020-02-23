@@ -47,9 +47,6 @@
 #include "ui_TaskFemConstraintPressure.h"
 #include <App/Application.h>
 #include <Gui/Command.h>
-
-
-
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 
@@ -236,24 +233,6 @@ void TaskFemConstraintPressure::removeFromSelection()
 
     pcConstraint->References.setValues(Objects,SubElements);
     updateUI();
-}
-
-void TaskFemConstraintPressure::setSelection(QListWidgetItem* item){
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-
-    std::string s = item->text().toStdString();
-    std::string delimiter = ":";
-
-    size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName=s;
-
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
 }
 
 void TaskFemConstraintPressure::onReferenceDeleted() {

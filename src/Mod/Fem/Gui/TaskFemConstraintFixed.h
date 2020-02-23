@@ -36,7 +36,6 @@
 #include <QObject>
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
-#include <QListWidgetItem>
 
 class Ui_TaskFemConstraintFixed;
 
@@ -52,10 +51,8 @@ public:
 
 private Q_SLOTS:
     void onReferenceDeleted(void);
-
     void addToSelection();
     void removeFromSelection();
-    void setSelection(QListWidgetItem* item);
 
 protected:
     bool event(QEvent *e);
