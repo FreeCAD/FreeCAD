@@ -2252,6 +2252,108 @@ bool Document::save (void)
     return false;
 }
 
+namespace App {
+// Helper class to handle different backup policies
+class BackupPolicy {
+public:
+    enum Policy {
+        Standard,
+        TimeStamp
+    };
+    BackupPolicy() {
+        policy = Standard;
+        numberOfFiles = 1;
+    }
+    ~BackupPolicy() {
+    }
+    void setPolicy(Policy p) {
+        policy = p;
+    }
+    void setNumberOfFiles(int count) {
+        numberOfFiles = count;
+    }
+    void apply(const std::string& sourcename, const std::string& targetname) {
+        switch (policy) {
+        case Standard:
+            applyStandard(sourcename, targetname);
+            break;
+        case TimeStamp:
+            applyTimeStamp(sourcename, targetname);
+            break;
+        }
+    }
+
+private:
+    void applyStandard(const std::string& sourcename, const std::string& targetname) {
+        // if saving the project data succeeded rename to the actual file name
+        Base::FileInfo fi(targetname);
+        if (fi.exists()) {
+            if (numberOfFiles > 0) {
+                int nSuff = 0;
+                std::string fn = fi.fileName();
+                Base::FileInfo di(fi.dirPath());
+                std::vector<Base::FileInfo> backup;
+                std::vector<Base::FileInfo> files = di.getDirectoryContent();
+                for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
+                    std::string file = it->fileName();
+                    if (file.substr(0,fn.length()) == fn) {
+                        // starts with the same file name
+                        std::string suf(file.substr(fn.length()));
+                        if (suf.size() > 0) {
+                            std::string::size_type nPos = suf.find_first_not_of("0123456789");
+                            if (nPos==std::string::npos) {
+                                // store all backup files
+                                backup.push_back(*it);
+                                nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
+                            }
+                        }
+                    }
+                }
+
+                if (!backup.empty() && (int)backup.size() >= numberOfFiles) {
+                    // delete the oldest backup file we found
+                    Base::FileInfo del = backup.front();
+                    for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
+                        if (it->lastModified() < del.lastModified())
+                            del = *it;
+                    }
+
+                    del.deleteFile();
+                    fn = del.filePath();
+                }
+                else {
+                    // create a new backup file
+                    std::stringstream str;
+                    str << fi.filePath() << (nSuff + 1);
+                    fn = str.str();
+                }
+
+                if (fi.renameFile(fn.c_str()) == false)
+                    Base::Console().Warning("Cannot rename project file to backup file\n");
+            }
+            else {
+                fi.deleteFile();
+            }
+        }
+
+        Base::FileInfo tmp(sourcename);
+        if (tmp.renameFile(targetname.c_str()) == false) {
+            Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
+                                    sourcename.c_str(), targetname.c_str());
+        }
+
+    }
+    void applyTimeStamp(const std::string& sourcename, const std::string& targetname) {
+        (void)sourcename;
+        (void)targetname;
+    }
+
+private:
+    Policy policy;
+    int numberOfFiles;
+};
+}
+
 bool Document::saveToFile(const char* filename) const
 {
     signalStartSave(*this, filename);
@@ -2310,63 +2412,18 @@ bool Document::saveToFile(const char* filename) const
 
     if (policy) {
         // if saving the project data succeeded rename to the actual file name
-        Base::FileInfo fi(filename);
-        if (fi.exists()) {
-            bool backup = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
-            int count_bak = App::GetApplication().GetParameterGroupByPath
-                ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
-            if (backup) {
-                int nSuff = 0;
-                std::string fn = fi.fileName();
-                Base::FileInfo di(fi.dirPath());
-                std::vector<Base::FileInfo> backup;
-                std::vector<Base::FileInfo> files = di.getDirectoryContent();
-                for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                    std::string file = it->fileName();
-                    if (file.substr(0,fn.length()) == fn) {
-                        // starts with the same file name
-                        std::string suf(file.substr(fn.length()));
-                        if (suf.size() > 0) {
-                            std::string::size_type nPos = suf.find_first_not_of("0123456789");
-                            if (nPos==std::string::npos) {
-                                // store all backup files
-                                backup.push_back(*it);
-                                nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
-                            }
-                        }
-                    }
-                }
-
-                if (!backup.empty() && (int)backup.size() >= count_bak) {
-                    // delete the oldest backup file we found
-                    Base::FileInfo del = backup.front();
-                    for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
-                        if (it->lastModified() < del.lastModified())
-                            del = *it;
-                    }
-
-                    del.deleteFile();
-                    fn = del.filePath();
-                }
-                else {
-                    // create a new backup file
-                    std::stringstream str;
-                    str << fi.filePath() << (nSuff + 1);
-                    fn = str.str();
-                }
-
-                if (fi.renameFile(fn.c_str()) == false)
-                    Base::Console().Warning("Cannot rename project file to backup file\n");
-            }
-            else {
-                fi.deleteFile();
-            }
+        int count_bak = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
+        bool backup = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
+        if (!backup) {
+            count_bak = -1;
         }
-        if (tmp.renameFile(filename) == false) {
-            Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
-                                    fn.c_str(), filename);
-        }
+
+        BackupPolicy policy;
+        policy.setPolicy(BackupPolicy::Standard);
+        policy.setNumberOfFiles(count_bak);
+        policy.apply(fn, filename);
     }
 
     signalFinishSave(*this, filename);
