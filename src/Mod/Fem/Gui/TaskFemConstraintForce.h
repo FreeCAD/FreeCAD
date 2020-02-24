@@ -33,7 +33,6 @@
 #include "ViewProviderFemConstraintForce.h"
 
 #include <QKeyEvent>
-#include <QListWidgetItem>
 
 class Ui_TaskFemConstraintForce;
 
@@ -67,7 +66,6 @@ private Q_SLOTS:
     void onCheckReverse(bool);
     void addToSelection();
     void removeFromSelection();
-    void setSelection(QListWidgetItem* item);
 
 protected:
     bool event(QEvent *e);

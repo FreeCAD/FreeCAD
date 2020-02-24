@@ -39,7 +39,6 @@
 #include <Base/Console.h>
 #include <App/DocumentObject.h>
 #include <QKeyEvent>
-#include <QListWidgetItem>
 
 class Ui_TaskFemConstraintPressure;
 
@@ -57,11 +56,9 @@ public:
 
 private Q_SLOTS:
     void onReferenceDeleted(void);
-
     void onCheckReverse(bool);
     void addToSelection();
     void removeFromSelection();
-    void setSelection(QListWidgetItem* item);
 
 protected:
     bool event(QEvent *e);

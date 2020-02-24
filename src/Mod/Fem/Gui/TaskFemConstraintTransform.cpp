@@ -49,13 +49,12 @@
 #include "TaskFemConstraintTransform.h"
 #include "ui_TaskFemConstraintTransform.h"
 #include <App/Application.h>
-#include <Gui/Command.h>
 #include <Base/Console.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Fem/App/FemTools.h>
-
+#include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Fem/App/FemTools.h>
 
 #include <math.h>
 #define PI (3.141592653589793238462643383279502884L)
@@ -406,24 +405,6 @@ void TaskFemConstraintTransform::removeFromSelection()
     ui->sp_X->setValue(0);
     ui->sp_Y->setValue(0);
     ui->sp_Z->setValue(0);
-}
-
-void TaskFemConstraintTransform::setSelection(QListWidgetItem* item){
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-
-    std::string s = item->text().toStdString();
-    std::string delimiter = ":";
-
-    size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName=s;
-
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
 }
 
 const std::string TaskFemConstraintTransform::getReferences() const
