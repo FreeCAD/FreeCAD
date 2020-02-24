@@ -7,22 +7,7 @@
 
 std::string ParameterRefPy::representation(void) const
 {
-    std::stringstream ss;
-    if (getParameterRefPtr()->isNull())
-        return "<ParameterRef (Null!)>";
-    ss << "<";
-    if (getParameterRefPtr()->param().label.size() == 0)
-        ss << "unnamed ";
-    ss << "ParameterRef [";
-    if (getParameterRefPtr()->isMaster())
-        ss << getParameterRefPtr()->masterIndex();
-    else
-        ss << getParameterRefPtr()->ownIndex() << "->" << getParameterRefPtr()->masterIndex();
-    ss << "]";
-    if (getParameterRefPtr()->param().label.size() > 0)
-        ss << " '" << getParameterRefPtr()->param().label << "'";
-    ss << ">";
-    return ss.str();
+    return getParameterRefPtr()->repr();
 }
 
 PyObject* ParameterRefPy::isSameRef(PyObject* args)

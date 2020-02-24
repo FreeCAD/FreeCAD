@@ -80,6 +80,7 @@ public://methods
 
     UnsafePyHandle<ParameterRef> getPyHandle() const;
     PyObject* getPyObject() const;
+    std::string repr() const;
 public://iterator interface
     void operator++(){++_ownIndex;}
     bool operator!=(const ParameterRef& other) const {return _ownIndex != other._ownIndex;}

@@ -106,3 +106,24 @@ PyObject* ParameterRef::getPyObject() const
 {
     return Py::new_reference_to(getPyHandle());
 }
+
+std::string ParameterRef::repr() const
+{
+    std::stringstream ss;
+    if (isNull())
+        return "<ParameterRef (Null!)>";
+    ss << "<";
+    if (param().label.size() == 0)
+        ss << "unnamed ";
+    ss << "ParameterRef [";
+    if (isMaster())
+        ss << masterIndex();
+    else
+        ss << ownIndex() << "->" << masterIndex();
+    ss << "]";
+    if (param().label.size() > 0)
+        ss << " '" << param().label << "'";
+    ss << ">";
+    return ss.str();
+
+}
