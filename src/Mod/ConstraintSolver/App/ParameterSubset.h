@@ -49,6 +49,7 @@ protected://methods
     void attach(HParameterStore store);
     void detach();
     void onStoreExpand();
+    ///checks if given parameter is from the right store
     bool checkParameter(const ParameterRef& param) const;
 
 public://methods
