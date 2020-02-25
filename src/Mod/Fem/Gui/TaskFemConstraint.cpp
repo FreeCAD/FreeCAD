@@ -136,21 +136,23 @@ const std::string TaskFemConstraint::getScale() const //OvG: Return pre-calculat
 }
 
 void TaskFemConstraint::setSelection(QListWidgetItem* item) {
-    std::string s = item->text().toStdString();
+    // highlights the list item in the model
+
+    // get the document name
     std::string docName = ConstraintView->getObject()->getDocument()->getName();
-
+    // name of the item
+    std::string ItemName = item->text().toStdString();
+    // the object name is the part of the before the ':' of the item name
     std::string delimiter = ":";
-
     size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName = s;
-
+    pos = ItemName.find(delimiter);
+    std::string objName = ItemName.substr(0, pos);
+    // the subName is the name part tbehind the ':'
+    ItemName.erase(0, pos + delimiter.length());
+    // clear existing selection
     Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(), objName.c_str(), subName.c_str(), 0, 0, 0);
+    // highligh the selected item
+    Gui::Selection().addSelection(docName.c_str(), objName.c_str(), ItemName.c_str(), 0, 0, 0);
 }
 
 void TaskFemConstraint::onReferenceDeleted(const int row) {
