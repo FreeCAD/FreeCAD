@@ -234,14 +234,8 @@ void ViewProviderDocumentObject::hide(void)
 }
 
 void ViewProviderDocumentObject::setModeSwitch() {
-    if(!isShowable()) {
-        if(pcModeSwitch->whichChild.getValue()!=-1) {
-            pcModeSwitch->whichChild = -1;
-            callExtension(&ViewProviderExtension::extensionModeSwitchChange);
-        }
-        return;
-    }
-    ViewProvider::setModeSwitch();
+    if(isShowable())
+        ViewProvider::setModeSwitch();
 }
 
 void ViewProviderDocumentObject::show(void)
@@ -813,13 +807,10 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
             // this means new child detected
             updated = true;
             if(vpd->parentSet.insert(obj).second 
-                    && child->getDocument() == obj->getDocument()
-                    && vpd->Visibility.getValue()) 
+                    && child->getDocument() == obj->getDocument())
             {
-                // Trigger visibility check through
-                // ViewProviderDocumentObject::setModeSwitch(), which will call
-                // ViewProviderDocumentObject::isShowable().
-                vpd->show();
+                // Trigger visibility check
+                vpd->isShowable(true);
             }
         }
     }
@@ -833,11 +824,9 @@ void ViewProviderDocumentObject::updateChildren(bool propagate) {
             if(!vpd)
                 continue;
             vpd->parentSet.erase(obj);
-            if(vpd->Visibility.getValue()) {
-                // Trigger visibility check through
-                // ViewProviderDocumentObject::setModeSwitch(), which will call
-                // ViewProviderDocumentObject::isShowable().
-                vpd->show();
+            if(child->getDocument() == obj->getDocument()) {
+                // Trigger showability check
+                vpd->isShowable(true);
             }
         }
     }
@@ -894,22 +883,68 @@ SoGroup *ViewProviderDocumentObject::getChildrenGroup() const {
     return 0;
 }
 
-bool ViewProviderDocumentObject::isShowable() const {
+bool ViewProviderDocumentObject::isShowable(bool refresh) {
+    if(!refresh)
+        return _Showable;
+
     auto obj = getObject();
-    if(!obj)
-        return true;
+    if(!obj || _Busy) 
+        return _Showable;
+
+    // guard against cyclic dependency
+    Base::StateLocker locker(_Busy);
     bool showable = true;
     for(auto parent : parentSet) {  
-        // Calling getViewProvider() here is a more of a safty measure, to make
+        // Calling getViewProvider() also servers as a safty measure, to make
         // sure the object exists.
-        if(!Application::Instance->getViewProvider(parent)
-                || parent->getDocument()!=obj->getDocument())
+        auto parentVp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                                    Application::Instance->getViewProvider(parent));
+        if(!parentVp || parent->getDocument()!=obj->getDocument())
             continue;
-        if(!parent->hasChildElement() 
-                && parent->getLinkedObject(false)==parent)
-            return true;
+        if(App::GeoFeatureGroupExtension::isNonGeoGroup(parent)) {
+            if(parentVp->isShowable()) {
+                showable = true;
+                break;
+            }
+        } else if(!parent->hasChildElement() 
+                    && parent->getLinkedObject(false)==parent)
+        {
+            showable = true;
+            break;
+        }
         showable = false;
     }
-    return showable;
+
+    if(_Showable == showable)
+        return showable;
+
+    _Showable = showable;
+    FC_LOG((_Showable?"showable ":"not showable ") << obj->getNameInDocument());
+
+    // showability changed
+
+    int which = getModeSwitch()->whichChild.getValue();
+    if(_Showable && which == -1 && Visibility.getValue()) {
+        setModeSwitch();
+    } else if (!_Showable) {
+        if(which >= 0) {
+            getModeSwitch()->whichChild = -1;
+            callExtension(&ViewProviderExtension::extensionModeSwitchChange);
+        }
+    }
+    
+    // Plain group is special, as its view provider does not claim any of its
+    // child nodes, and its mode switch node may not have any children, so its
+    // whichChild may always be -1.  Therefore, we have to manually propagate
+    // the showability changes to all children
+    if(App::GeoFeatureGroupExtension::isNonGeoGroup(obj)) {
+        for(auto &child : claimedChildren) {
+            auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
+                    Application::Instance->getViewProvider(child));
+            if(vpd)
+                vpd->isShowable(true);
+        }
+    }
+    return _Showable;
 }
 

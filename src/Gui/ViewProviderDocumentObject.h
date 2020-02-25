@@ -169,7 +169,7 @@ public:
      * An object is not showable if it is only claimed by Link type objects.
      * They will be shown by ViewProviderLink through node tree snapshot.
      */
-    bool isShowable() const;
+    bool isShowable(bool refresh=false);
 
     /** Obtain a group node holding all claimed children
      *
@@ -241,7 +241,8 @@ protected:
 private:
     std::vector<const char*> aDisplayEnumsArray;
     std::vector<std::string> aDisplayModesArray;
-    bool _UpdatingView;
+    bool _Busy = false;
+    bool _Showable = true;
 
     std::vector<App::DocumentObject*> claimedChildren;
     std::set<App::DocumentObject*> childSet;
