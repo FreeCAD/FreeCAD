@@ -2101,10 +2101,14 @@ PyObject* TopoShapePy::removeSplitter(PyObject *args)
 PyObject* TopoShapePy::getElement(PyObject *args)
 {
     char* input;
-    if (!PyArg_ParseTuple(args, "s", &input))
+    PyObject *silent = Py_False;
+    if (!PyArg_ParseTuple(args, "s|O", &input, &silent))
         return NULL;
     PY_TRY {
-        return getTopoShapePtr()->getPySubShape(input);
+        PyObject *res = getTopoShapePtr()->getPySubShape(input, PyObject_IsTrue(silent));
+        if(!res)
+            Py_Return;
+        return res;
     } PY_CATCH_OCC
 }
 
@@ -2663,6 +2667,38 @@ PyObject* TopoShapePy::defeaturing(PyObject *args)
         static_cast<TopoShapePy*>(inst)->getTopoShapePtr()->setShape
             (this->getTopoShapePtr()->defeaturing(shapes));
         return inst;
+    } PY_CATCH_OCC
+}
+
+PyObject *TopoShapePy::searchSubShape(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {"shape", "needName", "checkGeometry", "tol", "atol", NULL};
+    PyObject *pyobj;
+    PyObject *needName = Py_False;
+    PyObject *checkGeometry = Py_True;
+    double tol=1e-7;
+    double atol=1e-12;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O!|OOdd", kwlist,
+                                    &Type,&pyobj,&needName,&checkGeometry,&tol,&atol))
+        return NULL;
+
+    PY_TRY {
+        Py::List res;
+        const TopoShape &shape = *static_cast<TopoShapePy*>(pyobj)->getTopoShapePtr();
+        if(PyObject_IsTrue(needName)) {
+            std::vector<std::string> names;
+            auto shapes = getTopoShapePtr()->searchSubShape(
+                    shape,&names,PyObject_IsTrue(checkGeometry),tol,atol);
+            for(std::size_t i=0; i<shapes.size(); ++i)
+                res.append(Py::TupleN(Py::String(names[i]), shape2pyshape(shapes[i])));
+        } else {
+            for(auto &s : getTopoShapePtr()->searchSubShape(
+                        shape,nullptr,PyObject_IsTrue(checkGeometry),tol,atol))
+            {
+                res.append(shape2pyshape(s));
+            }
+        }
+        return Py::new_reference_to(res);
     } PY_CATCH_OCC
 }
 

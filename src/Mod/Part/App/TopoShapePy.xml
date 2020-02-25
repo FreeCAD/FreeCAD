@@ -857,6 +857,27 @@ or None if no history.
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="searchSubShape" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>searchSubShape(shape, needName=False, checkGeometry=True, tol=1e-7, atol=1e-12)
+
+shape: input elementary shape, currently only support Face, Edge, or Vertex
+
+needName: if True, return a list of tuple(name, shape), or else return a list
+          of shapes.
+
+checkGeometry: whether to compare geometry
+
+tol: distance tolerance
+
+atol: angular tolerance
+
+Search sub shape by checking vertex coordinates and comparing the underlying
+geometries, This can find shapes that are copied. It currently only works with
+elementary shapes, Face, Edge, Vertex.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>

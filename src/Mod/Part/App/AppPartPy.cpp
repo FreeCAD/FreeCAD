@@ -484,7 +484,7 @@ public:
         );
         add_varargs_method("getRelatedElements",&Module::getRelatedElements,
             "getRelatedElements(obj,name,[sameType=True]):\n"
-            "Obtain the element references related to 'name'"
+            "Return a list of tuple(mapped_name, element_name) that are related to the input 'name'"
         );
         add_varargs_method("getElementHistory",&Module::getElementHistory,
             "getElementHistory(obj,name,recursive=True,sameType=False)\n"
@@ -2221,10 +2221,10 @@ private:
         auto obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
         auto ret = Part::Feature::getRelatedElements(obj,name,
                 PyObject_IsTrue(sameType), PyObject_IsTrue(withCache));
-        Py::Dict dict;
+        Py::List list;
         for(auto &v : ret)
-            dict.setItem(Py::String(v.first),Py::String(v.second));
-        return dict;
+            list.append(Py::TupleN(Py::String(v.first),Py::String(v.second)));
+        return list;
     }
 
     Py::Object getElementHistory(const Py::Tuple& args) {

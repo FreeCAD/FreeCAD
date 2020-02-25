@@ -183,6 +183,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
+#include "Geometry.h"
 
 #define TOPOP_VERSION 14
 
@@ -476,6 +477,111 @@ TopoDS_Shape TopoShape::findShape(TopAbs_ShapeEnum type, int idx) const {
     return _Cache->findShape(_Shape,type,idx);
 }
 
+std::vector<TopoShape> TopoShape::searchSubShape(
+        const TopoShape &subshape, std::vector<std::string> *names,
+        bool checkGeometry, double tol, double atol) const
+{
+    std::vector<TopoShape> res;
+    if(subshape.isNull() || this->isNull())
+        return res;
+    double tol2 = tol*tol;
+    int i=0;
+    TopAbs_ShapeEnum shapeType = subshape.shapeType();
+    switch(shapeType) {
+    case TopAbs_VERTEX:
+        // Vertex search will do comparsion with tolerance to account for
+        // rounding error inccured through transformation.
+        for(auto &s : getSubTopoShapes(TopAbs_VERTEX)) {
+            ++i;
+            if(BRep_Tool::Pnt(TopoDS::Vertex(s.getShape())).SquareDistance(
+                        BRep_Tool::Pnt(TopoDS::Vertex(subshape.getShape()))) <= tol2)
+            {
+                if(names)
+                    names->push_back(std::string("Vertex")+std::to_string(i));
+                res.push_back(s);
+            }
+        }
+        break;
+    case TopAbs_EDGE:
+    case TopAbs_FACE: {
+        std::unique_ptr<Geometry> g;
+        if(checkGeometry) {
+            g.reset(Geometry::fromShape(subshape.getShape()));
+            if(!g)
+                return res;
+        }
+
+        //TODO: no implementation for inifinite edge/face, which does not have vertex
+        auto vertices = subshape.getSubShapes(TopAbs_VERTEX);
+        if(vertices.empty())
+            break;
+
+        std::vector<TopoDS_Shape> edges;
+        if(shapeType == TopAbs_FACE)
+            edges = subshape.getSubShapes(TopAbs_EDGE);
+
+        // The basic idea of shape search is about the same for both edge and face.
+        // * Search the first vertex, which is done with tolerance.
+        // * Find the ancestor shape of the found vertex
+        // * Compare each vertex of the ancestor shape and the input shape
+        // * Perform geometry comparison of the ancestor and input shape.
+        //      * For face, perform addition geometry comparsion of each edges.
+        std::unordered_set<TopoShape> shapeSet;
+        for(auto &v : searchSubShape(vertices[0],nullptr,checkGeometry,tol,atol)) {
+            for(auto idx : findAncestors(v.getShape(), shapeType)) {
+                auto s = getSubTopoShape(shapeType, idx);
+                if(!shapeSet.insert(s).second)
+                    continue;
+                if (s.countSubShapes(TopAbs_VERTEX) != vertices.size())
+                    continue;
+                if (shapeType == TopAbs_FACE
+                        && s.countSubShapes(TopAbs_EDGE) != edges.size())
+                    continue;
+                if(checkGeometry) {
+                    std::unique_ptr<Geometry> g2(Geometry::fromShape(s.getShape()));
+                    if(!g2 || !g2->isSame(*g,tol,atol))
+                        continue;
+                }
+                int i = 1;
+                for(auto &v : vertices) {
+                    auto v1 = s.getSubShape(TopAbs_VERTEX, i);
+                    if(BRep_Tool::Pnt(TopoDS::Vertex(v)).SquareDistance(
+                                BRep_Tool::Pnt(TopoDS::Vertex(v1))) > tol2)
+                        break;
+                    ++i;
+                }
+                if(i <= (int)vertices.size())
+                    continue;
+
+                if(shapeType == TopAbs_FACE && checkGeometry) {
+                    // Is it really necessary to check geometries of each edge of a face?
+                    i = 1;
+                    for(auto &e : edges) {
+                        std::unique_ptr<Geometry> g(Geometry::fromShape(e));
+                        if(!g)
+                            break;
+                        auto e1 = s.getSubShape(TopAbs_EDGE, i);
+                        std::unique_ptr<Geometry> g1(Geometry::fromShape(e1));
+                        if(!g1 || !g1->isSame(*g,tol,atol))
+                            break;
+                        ++i;
+                    }
+                    if(i <= (int)edges.size())
+                        continue;
+                }
+                if(names)
+                    names->push_back(shapeName(shapeType) + std::to_string(idx));
+                res.push_back(s);
+            }
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    return res;
+}
+
 int TopoShape::findAncestor(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const {
     INIT_SHAPE_CACHE();
     return _Cache->findShape(_Shape,_Cache->findAncestor(_Shape,subshape,type));
@@ -678,24 +784,24 @@ TopoShape TopoShape::getSubTopoShape(const char *Type, bool silent) const {
 TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent) const {
     if(isNull()) {
         if(!silent)
-            FC_THROWM(Base::CADKernelError,"null shape");
+            FC_THROWM(NullShapeException,"null shape");
         return TopoShape();
     }
     if(idx <= 0) {
         if(!silent)
-            FC_THROWM(Base::CADKernelError,"Invalid shape index " << idx);
+            FC_THROWM(Base::ValueError,"Invalid shape index " << idx);
         return TopoShape();
     }
     if(type<0 || type>=TopAbs_SHAPE) {
         if(!silent)
-            FC_THROWM(Base::CADKernelError,"Invalid shape type " << type);
+            FC_THROWM(Base::ValueError,"Invalid shape type " << type);
         return TopoShape();
     }
     INIT_SHAPE_CACHE();
     auto &info = _Cache->getInfo(type);
     if(idx > info.count()) {
         if(!silent)
-            FC_THROWM(Base::CADKernelError,"Shape index " << idx << " out of bound "  << info.count());
+            FC_THROWM(Base::ValueError,"Shape index " << idx << " out of bound "  << info.count());
         return TopoShape();
     }
 

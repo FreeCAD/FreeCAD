@@ -635,6 +635,15 @@ public:
     TopoDS_Shape findAncestorShape(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
     std::vector<int> findAncestors(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
     std::vector<TopoDS_Shape> findAncestorsShapes(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    /** Search sub shape 
+     *
+     * unlike findShape(), the input shape does not have to be an actual
+     * sub-shape of this shape. The sub-shape is searched by shape geometry
+     */
+    std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
+                                          std::vector<std::string> *names=nullptr,
+                                          bool checkGeometry=true,
+                                          double tol=1e-7, double atol=1e-12) const;
     //@}
 
     static TopAbs_ShapeEnum shapeType(const char *type,bool silent=false);

@@ -519,6 +519,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomSurface             ::init();
     Part::GeomBezierSurface       ::init();
     Part::GeomBSplineSurface      ::init();
+    Part::GeomElementarySurface   ::init();
     Part::GeomCylinder            ::init();
     Part::GeomCone                ::init();
     Part::GeomSphere              ::init();
@@ -527,6 +528,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomOffsetSurface       ::init();
     Part::GeomPlateSurface        ::init();
     Part::GeomTrimmedSurface      ::init();
+    Part::GeomSweptSurface        ::init();
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();
     Part::Datum                   ::init();

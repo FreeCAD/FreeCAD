@@ -26,6 +26,9 @@
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <Geom_CartesianPoint.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom_Curve.hxx>
@@ -99,7 +102,9 @@
 # include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <ShapeConstruct_Curve.hxx>
 # include <LProp_NotDefined.hxx>
+# include <TopoDS.hxx>
 
+# include <memory>
 # include <ctime>
 # include <cmath>
 #endif //_PreComp_
@@ -133,6 +138,7 @@
 #include <Mod/Part/App/SurfaceOfExtrusionPy.h>
 #include <Mod/Part/App/SurfaceOfRevolutionPy.h>
 #include <Mod/Part/App/ToroidPy.h>
+#include <Mod/Part/App/TopoShape.h>
 
 #include <Base/Exception.h>
 #include <Base/Writer.h>
@@ -202,6 +208,36 @@ Geometry::~Geometry()
 unsigned int Geometry::getMemSize (void) const
 {
     return 1;
+}
+
+Geometry* Geometry::fromShape(const TopoDS_Shape &s, bool silent)
+{
+    if (s.IsNull()) {
+        if(!silent)
+            throw NullShapeException();
+        return nullptr;
+    }
+
+    switch (s.ShapeType()) {
+    case TopAbs_VERTEX: {
+        gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(s));
+        return new GeomPoint(Base::Vector3d(p.X(),p.Y(),p.Z()));
+    }
+    case TopAbs_EDGE: {
+        const TopoDS_Edge& e = TopoDS::Edge(s);
+        BRepAdaptor_Curve adapt(e);
+        return makeFromCurve(adapt.Curve().Curve());
+    }
+    case TopAbs_FACE: {
+        const TopoDS_Face& f = TopoDS::Face(s);
+        BRepAdaptor_Surface adapt(f);
+        return makeFromSurface(adapt.Surface().Surface());
+    }
+    default:
+        if(!silent)
+            FC_THROWM(Base::TypeError, "Unsupported shape type " << TopoShape::shapeName(s.ShapeType()));
+        return nullptr;
+    }
 }
 
 void Geometry::Save(Base::Writer &writer) const
@@ -484,6 +520,12 @@ void GeomPoint::Restore(Base::XMLReader &reader)
 PyObject *GeomPoint::getPyObject(void)
 {
     return new PointPy(new GeomPoint(getPoint()));
+}
+
+bool GeomPoint::isSame(const Geometry &other, double tol, double) const
+{
+    return other.getTypeId() == getTypeId()
+        && Base::DistanceP2(static_cast<const GeomPoint &>(other).getPoint(),getPoint()) <= tol*tol;
 }
 
 // -------------------------------------------------
@@ -996,6 +1038,26 @@ PyObject *GeomBezierCurve::getPyObject(void)
     return new BezierCurvePy((GeomBezierCurve*)this->clone());
 }
 
+bool GeomBezierCurve::isSame(const Geometry &_other, double tol, double) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomBezierCurve &>(_other);
+
+    Standard_Integer c = myCurve->NbPoles();
+    if(c!= other.myCurve->NbPoles())
+        return false;
+
+    double tol2 = tol*tol;
+    for(Standard_Integer i=1; i<=c; ++i) {
+        if(myCurve->Pole(i).SquareDistance(other.myCurve->Pole(i)) > tol2
+                || fabs(myCurve->Weight(i) - other.myCurve->Weight(i)) > tol)
+            return false;
+    }
+    return true;
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomBSplineCurve,Part::GeomBoundedCurve)
@@ -1505,6 +1567,36 @@ PyObject *GeomBSplineCurve::getPyObject(void)
     return new BSplineCurvePy((GeomBSplineCurve*)this->clone());
 }
 
+bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomBSplineCurve &>(_other);
+    (void)atol;
+
+    if(countPoles() != other.countPoles()
+        || countKnots() != other.countKnots()
+        || getDegree() != other.getDegree()
+        || isPeriodic() != other.isPeriodic())
+        return false;
+
+    double tol2 = tol*tol;
+    for(int i=1, c=countPoles(); i<=c; ++i) {
+        if(myCurve->Pole(i).SquareDistance(other.myCurve->Pole(i)) > tol2
+                || fabs(myCurve->Weight(i) - other.myCurve->Weight(i)) > tol)
+            return false;
+    }
+
+
+    for(int i=1, c=countKnots(); i<=c; ++i) {
+        if(fabs(myCurve->Knot(i) - other.myCurve->Knot(i)) > tol)
+            return false;
+    }
+    return true;
+}
+
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomConic, Part::GeomCurve)
@@ -1623,6 +1715,16 @@ bool GeomConic::isReversed() const
     return conic->Axis().Direction().Z() < 0;
 }
 
+bool GeomConic::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(!_other.isDerivedFrom(GeomConic::getClassTypeId()))
+        return false;
+
+    auto &other = static_cast<const GeomConic &>(_other);
+    return fabs(getAngleXU() - other.getAngleXU()) <= atol
+        && Base::DistanceP2(getLocation(),other.getLocation()) <= tol*tol
+        && isReversed() == other.isReversed();
+}
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomBoundedCurve)
@@ -1665,6 +1767,28 @@ void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {asse
 PyObject *GeomTrimmedCurve::getPyObject(void)
 {
     return 0;
+}
+
+bool GeomTrimmedCurve::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomTrimmedCurve &>(_other);
+    double u,v,u1,v1;
+    getRange(u,v);
+    other.getRange(u1,v1);
+    if(fabs(u-u1)>tol || fabs(v-v1)>tol)
+        return false;
+
+    Handle(Geom_Curve) basis = myCurve->BasisCurve();
+    Handle(Geom_Curve) basis1 = other.myCurve->BasisCurve();
+    if(basis.IsNull() || basis1.IsNull() || basis->DynamicType() != basis1->DynamicType())
+        return false;
+
+    std::unique_ptr<Geometry> b(makeFromCurve(basis));
+    std::unique_ptr<Geometry> b1(makeFromCurve(basis1));
+    return b && b1 && b->isSame(*b1, tol, atol);
 }
 
 bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
@@ -2088,6 +2212,16 @@ void GeomCircle::Restore(Base::XMLReader& reader)
 PyObject *GeomCircle::getPyObject(void)
 {
     return new CirclePy(static_cast<GeomCircle*>(this->clone()));
+}
+
+bool GeomCircle::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    (void)atol;
+    auto &other = static_cast<const GeomCircle &>(_other);
+    return GeomConic::isSame(other,tol,atol) && fabs(getRadius() - other.getRadius()) <= tol;
 }
 
 // -------------------------------------------------
@@ -2576,6 +2710,18 @@ PyObject *GeomEllipse::getPyObject(void)
     return new EllipsePy((GeomEllipse*)this->clone());
 }
 
+bool GeomEllipse::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    (void)atol;
+    auto &other = static_cast<const GeomEllipse &>(_other);
+    return GeomConic::isSame(other,tol,atol)
+        && fabs(getMajorRadius() - other.getMajorRadius()) <= tol
+        && fabs(getMinorRadius() - other.getMinorRadius()) <= tol;
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomArcOfEllipse,Part::GeomArcOfConic)
@@ -3013,6 +3159,19 @@ PyObject *GeomHyperbola::getPyObject(void)
 {
     return new HyperbolaPy(static_cast<GeomHyperbola*>(this->clone()));
 }
+
+bool GeomHyperbola::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    (void)atol;
+    auto &other = static_cast<const GeomHyperbola &>(_other);
+    return GeomConic::isSame(other,tol,atol)
+        && fabs(getMajorRadius() - other.getMajorRadius()) <= tol
+        && fabs(getMinorRadius() - other.getMinorRadius()) <= tol;
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomArcOfHyperbola,Part::GeomArcOfConic)
@@ -3423,6 +3582,15 @@ PyObject *GeomParabola::getPyObject(void)
     return new ParabolaPy(static_cast<GeomParabola*>(this->clone()));
 }
 
+bool GeomParabola::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    (void)atol;
+    auto &other = static_cast<const GeomParabola &>(_other);
+    return GeomConic::isSame(other,tol,atol) && fabs(getFocal() - other.getFocal()) < tol;
+}
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomArcOfParabola,Part::GeomArcOfConic)
@@ -3746,6 +3914,16 @@ PyObject *GeomLine::getPyObject(void)
     return 0;
 }
 
+bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomLine &>(_other);
+
+    return getDir().GetAngle(other.getDir()) <= atol
+            && Base::DistanceP2(getPos(), other.getPos()) <= tol*tol;
+}
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomLineSegment,Part::GeomTrimmedCurve)
@@ -3940,6 +4118,17 @@ Geometry *GeomOffsetCurve::copy(void) const
     return newCurve;
 }
 
+Base::Vector3d GeomOffsetCurve::getDir(void) const
+{
+    gp_Dir Dir = this->myCurve->Direction();
+    return Base::Vector3d(Dir.X(),Dir.Y(),Dir.Z());
+}
+
+double GeomOffsetCurve::getOffset() const
+{
+    return this->myCurve->Offset();
+}
+
 void GeomOffsetCurve::setHandle(const Handle(Geom_OffsetCurve)& c)
 {
     this->myCurve = Handle(Geom_OffsetCurve)::DownCast(c->Copy());
@@ -3958,6 +4147,25 @@ void         GeomOffsetCurve::Restore    (Base::XMLReader &/*reader*/)    {asser
 PyObject *GeomOffsetCurve::getPyObject(void)
 {
     return new OffsetCurvePy((GeomOffsetCurve*)this->clone());
+}
+
+bool GeomOffsetCurve::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomOffsetCurve &>(_other);
+    if(myCurve->Direction().Angle(other.myCurve->Direction()) > atol || fabs(getOffset() - other.getOffset()) > tol)
+        return false;
+
+    Handle(Geom_Curve) basis = myCurve->BasisCurve();
+    Handle(Geom_Curve) basis1 = other.myCurve->BasisCurve();
+    if(basis.IsNull() || basis1.IsNull() || basis->DynamicType() != basis1->DynamicType())
+        return false;
+
+    std::unique_ptr<Geometry> b(makeFromCurve(basis));
+    std::unique_ptr<Geometry> b1(makeFromCurve(basis1));
+    return b && b1 && b->isSame(*b1, tol, atol);
 }
 
 // -------------------------------------------------
@@ -4122,6 +4330,32 @@ PyObject *GeomBezierSurface::getPyObject(void)
     return new BezierSurfacePy((GeomBezierSurface*)this->clone());
 }
 
+bool GeomBezierSurface::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomBezierSurface &>(_other);
+    Standard_Integer uc = mySurface->NbUPoles();
+    Standard_Integer vc = mySurface->NbVPoles();
+    if(uc != other.mySurface->NbUPoles()
+            || vc != other.mySurface->NbVPoles()
+            || mySurface->UDegree() != other.mySurface->UDegree()
+            || mySurface->VDegree() != other.mySurface->VDegree())
+        return false;
+
+    (void)atol;
+    double tol2 = tol*tol;
+    for(Standard_Integer u=1; u<=uc; ++u) {
+        for(Standard_Integer v=1; v<=vc; ++v) {
+            if(mySurface->Pole(u,v).SquareDistance(other.mySurface->Pole(u,v)) > tol2
+                    || fabs(mySurface->Weight(u,v) - other.mySurface->Weight(u,v)) > tol)
+                return false;
+        }
+    }
+    return true;
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomBSplineSurface,Part::GeomSurface)
@@ -4181,9 +4415,103 @@ PyObject *GeomBSplineSurface::getPyObject(void)
     return new BSplineSurfacePy((GeomBSplineSurface*)this->clone());
 }
 
+bool GeomBSplineSurface::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomBSplineSurface &>(_other);
+    Standard_Integer uc = mySurface->NbUPoles();
+    Standard_Integer vc = mySurface->NbVPoles();
+    Standard_Integer ukc = mySurface->NbUKnots();
+    Standard_Integer vkc = mySurface->NbVKnots();
+    if(uc != other.mySurface->NbUPoles()
+            || vc != other.mySurface->NbVPoles()
+            || ukc != other.mySurface->NbUKnots()
+            || vkc != other.mySurface->NbVKnots()
+            || mySurface->UDegree() != other.mySurface->UDegree()
+            || mySurface->VDegree() != other.mySurface->VDegree()
+            || mySurface->IsUPeriodic() != other.mySurface->IsUPeriodic()
+            || mySurface->IsVPeriodic() != other.mySurface->IsVPeriodic())
+        return false;
+
+    (void)atol;
+    double tol2 = tol*tol;
+    for(Standard_Integer u=1; u<=uc; ++u) {
+        for(Standard_Integer v=1; v<=vc; ++v) {
+            if(mySurface->Pole(u,v).SquareDistance(other.mySurface->Pole(u,v)) > tol2
+                    || fabs(mySurface->Weight(u,v) - other.mySurface->Weight(u,v)) > tol)
+                return false;
+        }
+    }
+    for(Standard_Integer u=1; u<=ukc; ++u) {
+        if(fabs(mySurface->UKnot(u) - other.mySurface->UKnot(u)) > tol
+                || fabs(mySurface->UMultiplicity(u) - other.mySurface->UMultiplicity(u)) > tol)
+            return false;
+    }
+    for(Standard_Integer v=1; v<=ukc; ++v) {
+        if(fabs(mySurface->VKnot(v) - other.mySurface->VKnot(v)) > tol
+                || fabs(mySurface->VMultiplicity(v) - other.mySurface->VMultiplicity(v)) > tol)
+            return false;
+    }
+    return true;
+}
+
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomCylinder,Part::GeomSurface)
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomElementarySurface, Part::GeomSurface)
+
+GeomElementarySurface::GeomElementarySurface()
+{
+}
+
+GeomElementarySurface::~GeomElementarySurface()
+{
+}
+
+Base::Vector3d GeomElementarySurface::getLocation(void) const
+{
+    Handle(Geom_ElementarySurface) surf =  Handle(Geom_ElementarySurface)::DownCast(handle());
+    gp_Pnt loc = surf->Location();
+    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+}
+
+Base::Vector3d GeomElementarySurface::getDir(void) const
+{
+    Handle(Geom_ElementarySurface) surf =  Handle(Geom_ElementarySurface)::DownCast(handle());
+    const gp_Dir &dir = surf->Position().Direction();
+    return Base::Vector3d(dir.X(),dir.Y(),dir.Z());
+}
+
+Base::Vector3d GeomElementarySurface::getXDir(void) const
+{
+    Handle(Geom_ElementarySurface) surf =  Handle(Geom_ElementarySurface)::DownCast(handle());
+    const gp_Dir &dir = surf->Position().XDirection();
+    return Base::Vector3d(dir.X(),dir.Y(),dir.Z());
+}
+
+Base::Vector3d GeomElementarySurface::getYDir(void) const
+{
+    Handle(Geom_ElementarySurface) surf =  Handle(Geom_ElementarySurface)::DownCast(handle());
+    const gp_Dir &dir = surf->Position().YDirection();
+    return Base::Vector3d(dir.X(),dir.Y(),dir.Z());
+}
+
+bool GeomElementarySurface::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(!_other.isDerivedFrom(GeomElementarySurface::getClassTypeId()))
+        return false;
+
+    auto &other = static_cast<const GeomElementarySurface &>(_other);
+    return Base::DistanceP2(getLocation(), other.getLocation()) <= tol*tol
+        && getDir().GetAngle(other.getDir()) <= atol
+        && getXDir().GetAngle(other.getXDir()) <= atol
+        && getYDir().GetAngle(other.getYDir()) <= atol;
+}
+
+// -------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::GeomCylinder,Part::GeomElementarySurface)
 
 GeomCylinder::GeomCylinder()
 {
@@ -4228,9 +4556,26 @@ PyObject *GeomCylinder::getPyObject(void)
     return new CylinderPy((GeomCylinder*)this->clone());
 }
 
+double GeomCylinder::getRadius() const
+{
+    return mySurface->Radius();
+}
+
+bool GeomCylinder::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    (void)atol;
+    auto &other = static_cast<const GeomCylinder &>(_other);
+    return GeomElementarySurface::isSame(other,tol,atol)
+        && fabs(getRadius() - other.getRadius()) <= tol;
+}
+
+
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomCone,Part::GeomSurface)
+TYPESYSTEM_SOURCE(Part::GeomCone,Part::GeomElementarySurface)
 
 GeomCone::GeomCone()
 {
@@ -4275,9 +4620,31 @@ PyObject *GeomCone::getPyObject(void)
     return new ConePy((GeomCone*)this->clone());
 }
 
+double GeomCone::getRadius() const
+{
+    return mySurface->RefRadius();
+}
+
+double GeomCone::getSemiAngle() const
+{
+    return mySurface->SemiAngle();
+}
+
+bool GeomCone::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomCone &>(_other);
+    return GeomElementarySurface::isSame(other,tol,atol)
+        && fabs(getRadius() - other.getRadius()) <= tol
+        && fabs(getSemiAngle() - other.getSemiAngle()) <= atol;
+}
+
+
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomToroid,Part::GeomSurface)
+TYPESYSTEM_SOURCE(Part::GeomToroid,Part::GeomElementarySurface)
 
 GeomToroid::GeomToroid()
 {
@@ -4322,9 +4689,32 @@ PyObject *GeomToroid::getPyObject(void)
     return new ToroidPy((GeomToroid*)this->clone());
 }
 
+double GeomToroid::getMajorRadius() const
+{
+    return mySurface->MajorRadius();
+}
+
+double GeomToroid::getMinorRadius() const
+{
+    return mySurface->MinorRadius();
+}
+
+bool GeomToroid::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    (void)atol;
+    auto &other = static_cast<const GeomToroid &>(_other);
+    return GeomElementarySurface::isSame(other,tol,atol)
+        && fabs(getMajorRadius() - other.getMajorRadius()) <= tol
+        && fabs(getMinorRadius() - other.getMinorRadius()) <= tol;
+}
+
+
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomSphere,Part::GeomSurface)
+TYPESYSTEM_SOURCE(Part::GeomSphere,Part::GeomElementarySurface)
 
 GeomSphere::GeomSphere()
 {
@@ -4369,9 +4759,26 @@ PyObject *GeomSphere::getPyObject(void)
     return new SpherePy((GeomSphere*)this->clone());
 }
 
+double GeomSphere::getRadius() const
+{
+    return mySurface->Radius();
+}
+
+bool GeomSphere::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    (void)atol;
+    auto &other = static_cast<const GeomSphere &>(_other);
+    return GeomElementarySurface::isSame(other,tol,atol)
+        && fabs(getRadius() - other.getRadius()) <= tol;
+}
+
+
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomPlane,Part::GeomSurface)
+TYPESYSTEM_SOURCE(Part::GeomPlane,Part::GeomElementarySurface)
 
 GeomPlane::GeomPlane()
 {
@@ -4414,6 +4821,15 @@ void         GeomPlane::Restore    (Base::XMLReader &/*reader*/)    {assert(0); 
 PyObject *GeomPlane::getPyObject(void)
 {
     return new PlanePy((GeomPlane*)this->clone());
+}
+
+bool GeomPlane::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomPlane &>(_other);
+    return GeomElementarySurface::isSame(other,tol,atol);
 }
 
 // -------------------------------------------------
@@ -4463,6 +4879,30 @@ void         GeomOffsetSurface::Restore    (Base::XMLReader &/*reader*/)    {ass
 PyObject *GeomOffsetSurface::getPyObject(void)
 {
     return new OffsetSurfacePy((GeomOffsetSurface*)this->clone());
+}
+
+double GeomOffsetSurface::getOffset() const
+{
+    return mySurface->Offset();
+}
+
+bool GeomOffsetSurface::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
+
+    auto &other = static_cast<const GeomOffsetSurface &>(_other);
+    if(fabs(getOffset() - other.getOffset()) > tol)
+        return false;
+
+    Handle(Geom_Surface) basis = mySurface->BasisSurface();
+    Handle(Geom_Surface) basis1 = other.mySurface->BasisSurface();
+    if(basis.IsNull() || basis1.IsNull() || basis->DynamicType() != basis1->DynamicType())
+        return false;
+
+    std::unique_ptr<Geometry> b(makeFromSurface(basis));
+    std::unique_ptr<Geometry> b1(makeFromSurface(basis1));
+    return b && b1 && b->isSame(*b1,tol,atol);
 }
 
 // -------------------------------------------------
@@ -4531,6 +4971,12 @@ PyObject *GeomPlateSurface::getPyObject(void)
     return new PlateSurfacePy(static_cast<GeomPlateSurface*>(this->clone()));
 }
 
+bool GeomPlateSurface::isSame(const Geometry &, double, double) const
+{
+    // TODO: How to compare this type of surface?
+    return false;
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomTrimmedSurface,Part::GeomSurface)
@@ -4575,8 +5021,72 @@ PyObject *GeomTrimmedSurface::getPyObject(void)
     return 0;
 }
 
-// -------------------------------------------------
+bool GeomTrimmedSurface::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(_other.getTypeId() != getTypeId())
+        return false;
 
+    auto &other = static_cast<const GeomTrimmedSurface &>(_other);
+
+    Standard_Real u1[2],u2[2],v1[2],v2[2];
+    mySurface->Bounds(u1[0],u2[0],v1[0],v2[0]);
+    other.mySurface->Bounds(u1[1],u2[1],v1[1],v2[1]);
+
+    if(fabs(u1[0]-u1[1])>tol || fabs(u2[0]-u2[1])>tol
+            || fabs(v1[0]-v1[1])>tol || fabs(v2[0]-v2[1])>tol)
+        return false;
+
+    Handle(Geom_Surface) basis = mySurface->BasisSurface();
+    Handle(Geom_Surface) basis1 = other.mySurface->BasisSurface();
+    if(basis.IsNull() || basis1.IsNull() || basis->DynamicType() != basis1->DynamicType())
+        return false;
+
+    std::unique_ptr<Geometry> b(makeFromSurface(basis));
+    std::unique_ptr<Geometry> b1(makeFromSurface(basis1));
+    return b && b1 && b->isSame(*b1,tol,atol);
+}
+
+// -------------------------------------------------
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomSweptSurface, Part::GeomSurface)
+
+GeomSweptSurface::GeomSweptSurface()
+{
+}
+
+GeomSweptSurface::~GeomSweptSurface()
+{
+}
+
+Base::Vector3d GeomSweptSurface::getDir(void) const
+{
+    Handle(Geom_SweptSurface) surf =  Handle(Geom_SweptSurface)::DownCast(handle());
+    const gp_Dir &dir = surf->Direction();
+    return Base::Vector3d(dir.X(),dir.Y(),dir.Z());
+}
+
+bool GeomSweptSurface::isSame(const Geometry &_other, double tol, double atol) const
+{
+    if(!_other.isDerivedFrom(GeomSweptSurface::getClassTypeId()))
+        return false;
+
+    auto &other = static_cast<const GeomSweptSurface &>(_other);
+    if(getDir().GetAngle(other.getDir()) > atol)
+        return false;
+
+    Handle(Geom_SweptSurface) surf =  Handle(Geom_SweptSurface)::DownCast(handle());
+    Handle(Geom_SweptSurface) surf1 =  Handle(Geom_SweptSurface)::DownCast(other.handle());
+
+    Handle(Geom_Curve) basis = surf->BasisCurve();
+    Handle(Geom_Curve) basis1 = surf1->BasisCurve();
+    if(basis.IsNull() || basis1.IsNull() || basis->DynamicType() != basis1->DynamicType())
+        return false;
+
+    std::unique_ptr<Geometry> b(makeFromCurve(basis));
+    std::unique_ptr<Geometry> b1(makeFromCurve(basis1));
+    return b && b1 && b->isSame(*b1,tol,atol);
+}
+
+// -------------------------------------------------
 TYPESYSTEM_SOURCE(Part::GeomSurfaceOfRevolution,Part::GeomSurface)
 
 GeomSurfaceOfRevolution::GeomSurfaceOfRevolution()
@@ -4845,8 +5355,14 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     return arc;
 }
 
-GeomSurface* makeFromSurface(const Handle(Geom_Surface)& s)
+GeomSurface* makeFromSurface(const Handle(Geom_Surface)& s, bool silent)
 {
+    if (s.IsNull()) {
+        if (!silent)
+            throw Base::ValueError("Null surface");
+        return nullptr;
+    }
+
     if (s->IsKind(STANDARD_TYPE(Geom_ToroidalSurface))) {
         Handle(Geom_ToroidalSurface) hSurf = Handle(Geom_ToroidalSurface)::DownCast(s);
         return new GeomToroid(hSurf);
@@ -4896,9 +5412,52 @@ GeomSurface* makeFromSurface(const Handle(Geom_Surface)& s)
         return new GeomSurfaceOfExtrusion(hSurf);
     }
 
+    if (silent)
+        return nullptr;
+
     std::string err = "Unhandled surface type ";
     err += s->DynamicType()->Name();
     throw Base::TypeError(err);
 }
 
+GeomCurve* makeFromCurve(const Handle(Geom_Curve)& c, bool silent)
+{
+    if (c.IsNull()) {
+        if (!silent)
+            throw Base::ValueError("Null curve");
+        return nullptr;
+    }
+
+    if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+        return new GeomLine(Handle(Geom_Line)::DownCast(c));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
+        return new GeomCircle(Handle(Geom_Circle)::DownCast(c));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
+        return new GeomEllipse(Handle(Geom_Ellipse)::DownCast(c));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
+        return new GeomHyperbola(Handle(Geom_Hyperbola)::DownCast(c));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
+        return new GeomParabola(Handle(Geom_Parabola)::DownCast(c));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+        return new GeomBezierCurve(Handle(Geom_BezierCurve)::DownCast(c));
+    } else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+        return new GeomBSplineCurve(Handle(Geom_BSplineCurve)::DownCast(c));
+    }
+#if OCC_VERSION_HEX >= 0x070000
+    else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
+        Handle(Geom_OffsetCurve) off = Handle(Geom_OffsetCurve)::DownCast(c);
+        if (!off.IsNull())
+            return new GeomOffsetCurve(off);
+    }
+#endif
+
+    if (silent)
+        return nullptr;
+
+    std::string err = "Unhandled curve type ";
+    err += c->DynamicType()->Name();
+    throw Base::TypeError(err);
 }
+
+} // namespace Part
+
