@@ -171,6 +171,7 @@ DrawViewPart::DrawViewPart(void) :
 
 DrawViewPart::~DrawViewPart()
 {
+    removeAllReferencesFromGeom();
     delete geometryObject;
 }
 
@@ -1079,7 +1080,7 @@ void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
 
 void DrawViewPart::addReferencesToGeom(void)
 {
-//    Base::Console().Message("DVP::addReferences()\n");
+//    Base::Console().Message("DVP::addReferencesToGeom() - %s\n", getNameInDocument());
     std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
     gVerts.insert(gVerts.end(), m_referenceVerts.begin(), m_referenceVerts.end());
     getGeometryObject()->setVertexGeometry(gVerts);
@@ -1089,9 +1090,12 @@ void DrawViewPart::addReferencesToGeom(void)
 //ex. LandmarkDimension as a reference
 std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
 {
-//    Base::Console().Message("DVP::addReferenceVertex(%s)\n", DrawUtil::formatVector(v).c_str());
+//    Base::Console().Message("DVP::addReferenceVertex(%s) - %s\n", 
+//                            DrawUtil::formatVector(v).c_str(), getNameInDocument());
     std::string refTag;
-    Base::Vector3d scaledV = v * getScale();
+//    Base::Vector3d scaledV = v * getScale();
+//    TechDraw::Vertex* ref = new TechDraw::Vertex(scaledV);
+    Base::Vector3d scaledV = v;
     TechDraw::Vertex* ref = new TechDraw::Vertex(scaledV);
     ref->reference = true;
     refTag = ref->getTagAsString();
@@ -1114,6 +1118,7 @@ void DrawViewPart::removeReferenceVertex(std::string tag)
 
 void DrawViewPart::removeAllReferencesFromGeom()
 {
+//    Base::Console().Message("DVP::removeAllReferencesFromGeom()\n");
     std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
     std::vector<TechDraw::Vertex *> newVerts;
     for (auto& gv: gVerts) {
@@ -1126,7 +1131,7 @@ void DrawViewPart::removeAllReferencesFromGeom()
 
 void DrawViewPart::resetReferenceVerts()
 {
-//    Base::Console().Message("DVP::resetReferenceVerts()\n");
+//    Base::Console().Message("DVP::resetReferenceVerts() %s\n", getNameInDocument());
     removeAllReferencesFromGeom();
     addReferencesToGeom();
 }

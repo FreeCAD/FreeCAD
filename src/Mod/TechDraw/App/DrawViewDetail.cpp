@@ -226,6 +226,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     }
 
     detailExec(shape, dvp, dvs);
+    addShapes2d();
 
     //second pass if required
     if (ScaleType.isValue("Automatic")) {
@@ -260,6 +261,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     gp_Pnt gpCenter = TechDraw::findCentroid(copyShape,
                                              dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
+    m_saveCentroid = shapeCenter;              //centroid of original shape
 
     if (dvs != nullptr) {
         //section cutShape should already be on origin
@@ -269,6 +271,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     }
 
     shapeCenter = Base::Vector3d(0.0, 0.0, 0.0);
+
 
     gp_Ax2 viewAxis;
 
@@ -350,6 +353,7 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     Base::Vector3d centroid(inputCenter.X(),
                             inputCenter.Y(),
                             inputCenter.Z());
+    m_saveCentroid += centroid;              //center of massaged shape
 
     Base::Vector3d stdOrg(0.0,0.0,0.0);
     gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);  //sb same CS as base view. 
@@ -395,6 +399,9 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addCenterLinesToGeom();
+
+    addReferencesToGeom();   //what if landmarks are outside detail area??
+
 }
 
 double DrawViewDetail::getFudgeRadius()
