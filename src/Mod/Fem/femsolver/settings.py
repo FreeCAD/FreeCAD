@@ -34,6 +34,7 @@ are supported:
 
     - Calculix
     - ElmerSolver
+    - OpenSees
     - Z88
 
 To query settings about those solver the solver name must be given exactly in
@@ -224,6 +225,11 @@ _SOLVER_PARAM = {
         param_path=_PARAM_PATH + "Elmer",
         use_default="UseStandardGridLocation",
         custom_path="gridBinaryPath"),
+    "OpenSees": _SolverDlg(
+        default="OpenSees",
+        param_path=_PARAM_PATH + "OpenSees",
+        use_default="UseStandardOpenSeesLocation",
+        custom_path="OpenSeesBinaryPath"),
     "Z88": _SolverDlg(
         default="z88r",
         param_path=_PARAM_PATH + "Z88",
