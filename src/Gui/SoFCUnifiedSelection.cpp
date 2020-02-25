@@ -646,11 +646,12 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
     {
         const char *docname = vpd->getObject()->getDocument()->getName();
         const char *objname = vpd->getObject()->getNameInDocument();
+        std::string subname = Data::ComplexGeoData::oldElementName(element);
 
         this->preSelection = 1;
         char buf[513];
-        snprintf(buf,512,"Preselected: %s.%s.%s (%g, %g, %g)"
-                ,docname,objname,element
+        snprintf(buf,512,"Preselected: %s#%s.%s (%g, %g, %g)"
+                ,docname,objname,subname.c_str()
                 ,fabs(x)>1e-7?x:0.0
                 ,fabs(y)>1e-7?y:0.0
                 ,fabs(z)>1e-7?z:0.0);
