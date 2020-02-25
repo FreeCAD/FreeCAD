@@ -67,7 +67,7 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop) override;
-    virtual void unsetupObject() override;
+    virtual void onDocumentRestored() override;
 
     Base::Vector3d projectPoint(const Base::Vector3d& pt, DrawViewPart* dvp) const;
 

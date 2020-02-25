@@ -140,16 +140,19 @@ App::DocumentObjectExecReturn *LandmarkDimension::execute(void)
             Base::Vector3d loc3d = ShapeExtractor::getLocation3dFromFeat(f);
             Base::Vector3d loc2d = projectPoint(loc3d, dvp) * dvp->getScale();
             points.push_back(loc2d);
-            dvp->updateReferenceVert(reprs.at(index), loc2d);
+            dvp->updateReferenceVert(reprs.at(index), loc2d);  //sb by tag
             index++;
         }
     }
     m_linearPoints.first = points.front();
     m_linearPoints.second = points.back();
+ 
+    //m_anglePoints.first = 
     
     App::DocumentObjectExecReturn* dvdResult = DrawViewDimension::execute();
 
-    dvp->resetReferenceVerts();
+//    dvp->resetReferenceVerts();
+    dvp->addReferencesToGeom();
     dvp->requestPaint();
     return dvdResult;
 }
@@ -232,18 +235,27 @@ DrawViewPart* LandmarkDimension::getViewPart() const
     return result;
 }
 
-//clean up at deletion time
-void LandmarkDimension::unsetupObject()
+void LandmarkDimension::onDocumentRestored()
 {
-//    Base::Console().Message("LD::unsetupObject()\n");
     DrawViewPart* dvp = getViewPart();
-    if (dvp != nullptr) {
-        std::vector<std::string> tags = ReferenceTags.getValues();
-        for (auto& t: tags) {
-            dvp->removeReferenceVertex(t);
-        }
+
+    std::vector<DocumentObject*> features = References3D.getValues();
+    std::vector<Base::Vector3d> points;
+    std::vector<std::string> tags;
+    //add verts to dvp & vert tags to RD
+    for (auto& f: features) {
+        Base::Vector3d loc3d = ShapeExtractor::getLocation3dFromFeat(f);
+        Base::Vector3d loc2d = projectPoint(loc3d, dvp) * dvp->getScale();
+        points.push_back(loc2d);
+        std::string tag = dvp->addReferenceVertex(loc2d);
+        tags.push_back(tag);
     }
-    DrawViewDimension::unsetupObject();
+    ReferenceTags.setValues(tags); 
+
+    m_linearPoints.first = points.front();
+    m_linearPoints.second = points.back();
+
+    DrawViewDimension::onDocumentRestored();
 }
 
 //??? why does getPyObject work sometimes and no others???
