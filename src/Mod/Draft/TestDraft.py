@@ -1,12 +1,3 @@
-"""Unit tests for the Draft workbench.
-
-From the terminal, run the following:
-FreeCAD -t TestDraft
-
-From within FreeCAD, run the following:
-import Test, TestDraft
-Test.runTestsFromModule(TestDraft)
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -30,6 +21,15 @@ Test.runTestsFromModule(TestDraft)
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit tests for the Draft workbench.
+
+From the terminal, run the following:
+FreeCAD -t TestDraft
+
+From within FreeCAD, run the following:
+import Test, TestDraft
+Test.runTestsFromModule(TestDraft)
+"""
 
 # ===========================================================================
 # The unit tests can be run from the operating system terminal, or from
