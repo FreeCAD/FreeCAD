@@ -716,6 +716,17 @@ def makeSolverElmer(
     return obj
 
 
+def makeSolverOpenSees(
+    doc,
+    name="SolverOpenSees"
+):
+    '''makeSolverOpenSees(document, [name]):
+    makes a OpenSees solver object'''
+    import femsolver.opensees.solver
+    obj = femsolver.opensees.solver.create(doc, name)
+    return obj
+
+
 def makeSolverZ88(
     doc,
     name="SolverZ88"
