@@ -78,15 +78,17 @@ class Solve(run.Solve):
         if not _inputFileName:
             # TODO do not run solver, do not try to read results in a smarter way than an Exception
             raise Exception("Error on writing OpenSees input file.\n")
-        infile = _inputFileName + ".in"
-        FreeCAD.Console.PrintError("OpenSees-info: infile: {} \n\n".format(infile))
+        infile = _inputFileName + ".tcl"
+        FreeCAD.Console.PrintError("OpenSees solver input file: {} \n".format(infile))  # will be changed into log later
 
         self.pushStatus("Executing solver...\n")
         binary = settings.get_binary("OpenSees")
+        FreeCAD.Console.PrintError("OpenSees solver binary: {} \n".format(binary))  # will be changed into log later
+        FreeCAD.Console.PrintError("OpenSees solver run dir: {} \n".format(self.directory))  # will be changed into log later
         # if something goes wrong the binary path could be set for debugging
-        # binary = "/home/hugo/bin/m"
+        # binary = "/path/to/binary/OpenSees"
         self._process = subprocess.Popen(
-            [binary, "-f", infile],
+            [binary, infile],
             cwd=self.directory,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
@@ -105,23 +107,6 @@ class Results(run.Results):
         self.load_results_opensees()
 
     def load_results_opensees(self):
-        res_file = os.path.join(self.directory, "2DPlaneStress.out.m0.1.vtu")
-        FreeCAD.Console.PrintError("OpenSees-info: refile: " + res_file + " \n")
-        if os.path.isfile(res_file):
-            result_name_prefix = "OpenSees_" + "2DPlaneStress"
-            from feminout.importVTKResults import importVtkVtkResult as importVTU
-            resobj = importVTU(res_file, result_name_prefix)
-            if FreeCAD.GuiUp:
-                resobj.ViewObject.DisplayMode = "Surface with Edges"
-                resobj.ViewObject.Field = "DisplacementVector"
-                import FreeCADGui
-                FreeCADGui.SendMsgToActiveView("ViewFit")
-                FreeCADGui.ActiveDocument.activeView().viewIsometric()
-            self.solver.Document.recompute()
-            self.analysis.addObject(resobj)
-            # TODO add a wrap factor
-        else:
-            raise Exception(
-                "FEM: No results found at {}!".format(res_file))
+        FreeCAD.Console.PrintMessage("OpenSees-info: reading output not yet implemented.\n")
 
 ##  @}
