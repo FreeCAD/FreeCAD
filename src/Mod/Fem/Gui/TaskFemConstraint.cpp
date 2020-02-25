@@ -142,12 +142,12 @@ void TaskFemConstraint::setSelection(QListWidgetItem* item) {
     std::string docName = ConstraintView->getObject()->getDocument()->getName();
     // name of the item
     std::string ItemName = item->text().toStdString();
-    // the object name is the part of the before the ':' of the item name
     std::string delimiter = ":";
     size_t pos = 0;
     pos = ItemName.find(delimiter);
+    // the objName is the name piece before the ':' of the item name
     std::string objName = ItemName.substr(0, pos);
-    // the subName is the name part tbehind the ':'
+    // the subName is the name piece behind the ':'
     ItemName.erase(0, pos + delimiter.length());
     // clear existing selection
     Gui::Selection().clearSelection();
