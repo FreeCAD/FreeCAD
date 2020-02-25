@@ -573,6 +573,16 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
     }  //end TopExp
 }
 
+void GeometryObject::addVertex(TechDraw::Vertex* v)
+{
+    vertexGeom.push_back(v);
+}
+
+void GeometryObject::addEdge(TechDraw::BaseGeom* bg)
+{
+    edgeGeom.push_back(bg);
+}
+
 //********** Cosmetic Vertex ***************************************************
 
 //adds a new GeomVert surrogate for CV

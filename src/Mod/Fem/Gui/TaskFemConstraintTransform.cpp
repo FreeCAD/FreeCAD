@@ -124,12 +124,15 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     //Transformable surfaces
     Gui::Command::doCommand(Gui::Command::Doc,TaskFemConstraintTransform::getSurfaceReferences((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
-    std::vector<App::DocumentObject*> nDispl = pcConstraint->NameDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
 
     for (std::size_t i = 0; i < ObjDispl.size(); i++) {
         ui->lw_displobj_rect->addItem(makeRefText(ObjDispl[i], SubElemDispl[i]));
         ui->lw_displobj_cylin->addItem(makeRefText(ObjDispl[i], SubElemDispl[i]));
+    }
+
+    std::vector<App::DocumentObject*> nDispl = pcConstraint->NameDispl.getValues();
+    for (std::size_t i = 0; i < nDispl.size(); i++) {
         ui->lw_dis_rect->addItem(makeText(nDispl[i]));
         ui->lw_dis_cylin->addItem(makeText(nDispl[i]));
     }

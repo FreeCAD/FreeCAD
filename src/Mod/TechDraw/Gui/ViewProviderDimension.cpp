@@ -40,6 +40,7 @@
 #include <App/Material.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/LandmarkDimension.h>
 
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
@@ -88,6 +89,11 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
     ViewProviderDrawingView::attach(pcFeat);
+
+    sPixmap = "TechDraw_Dimension";
+    if (getViewObject()->isDerivedFrom(TechDraw::LandmarkDimension::getClassTypeId())) {
+        sPixmap = "techdraw-landmarkdistance";
+    }
 }
 
 void ViewProviderDimension::setDisplayMode(const char* ModeName)

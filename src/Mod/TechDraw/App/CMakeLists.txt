@@ -100,6 +100,8 @@ SET(Draw_SRCS
     DrawViewDimension.h
     DrawViewDimExtent.cpp
     DrawViewDimExtent.h
+    LandmarkDimension.cpp
+    LandmarkDimension.h
     DrawViewBalloon.cpp
     DrawViewBalloon.h
     DrawViewSection.cpp

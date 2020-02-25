@@ -1293,6 +1293,7 @@ Vertex::Vertex()
     cosmetic = false;
     cosmeticLink = -1;
     cosmeticTag = std::string();
+    reference = false;
     createNewTag();
 }
 
@@ -1307,6 +1308,7 @@ Vertex::Vertex(const Vertex* v)
     cosmetic = v->cosmetic;
     cosmeticLink = v->cosmeticLink;
     cosmeticTag = v->cosmeticTag;
+    reference = false;
     createNewTag();
 }
 
@@ -1322,6 +1324,7 @@ Vertex::Vertex(double x, double y)
     cosmetic = false;
     cosmeticLink = -1;
     cosmeticTag = std::string();
+    reference = false;
     createNewTag();
 }
 
@@ -1360,6 +1363,11 @@ void Vertex::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
+
+    //do we need to save this?  always recreated by program.
+//    const char r = reference?'1':'0';
+//    writer.Stream() << writer.ind() << "<Reference value=\"" <<  r << "\"/>" << endl;
+
     writer.Stream() << writer.ind() << "<VertexTag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
@@ -1384,6 +1392,11 @@ void Vertex::Restore(Base::XMLReader &reader)
     cosmeticLink = reader.getAttributeAsInteger("value");
     reader.readElement("CosmeticTag");
     cosmeticTag = reader.getAttribute("value");
+
+    //will restore read to eof looking for "Reference" in old docs??  YES!!
+//    reader.readElement("Reference");
+//    reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+
     reader.readElement("VertexTag");
     std::string temp = reader.getAttribute("value");
     boost::uuids::string_generator gen;
