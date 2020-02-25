@@ -286,7 +286,7 @@ public:
     void testStatus(void);
     void setData(int column, int role, const QVariant & value) override;
     void populateItem(DocumentObjectItem *item, bool refresh=false, bool delayUpdate=true);
-    bool populateObject(App::DocumentObject *obj);
+    bool populateObject(App::DocumentObject *obj, bool delay=false);
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     bool showItem(DocumentObjectItem *item, bool select, bool force=false);
     void updateItemsVisibility(QTreeWidgetItem *item, bool show);
@@ -397,7 +397,7 @@ public:
     DocumentItem *getOwnerDocument() const;
 
     // check if a new item is required at root
-    bool requiredAtRoot(bool excludeSelf=true) const;
+    bool requiredAtRoot(bool excludeSelf=true, bool delay=false) const;
     
     // return the owner, and full quanlified subname
     App::DocumentObject *getFullSubName(std::ostringstream &str,

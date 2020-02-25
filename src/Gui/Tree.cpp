@@ -717,7 +717,7 @@ void TreeWidget::_updateStatus(bool delay) {
     int timeout = TreeParams::Instance()->StatusTimeout();
     if (timeout<0)
         timeout = 1;
-    FC_TRACE("delay update status");
+    TREE_TRACE("delay update status");
     statusTimer->start(timeout);
 }
 
@@ -2313,7 +2313,7 @@ void TreeWidget::onUpdateStatus(void)
         }
     }
 
-    FC_LOG("begin update status");
+    TREE_LOG("begin update status");
 
     UpdateDisabler disabler(*this,updateBlocked);
 
@@ -2334,13 +2334,17 @@ void TreeWidget::onUpdateStatus(void)
             auto obj = doc->getObjectByID(id);
             if(!obj)
                 continue;
+            if(docItem->ObjectMap.count(obj)) {
+                TREE_TRACE("ignore new object " << obj->getNameInDocument());
+                continue;
+            }
             if(obj->isError())
                 errors.push_back(obj);
-            if(docItem->ObjectMap.count(obj))
-                continue;
             auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(gdoc->getViewProvider(obj));
-            if(vpd)
+            if(vpd) {
+                TREE_TRACE("new object " << obj->getNameInDocument());
                 docItem->createNewItem(*vpd);
+            }
         }
     }
     NewObjects.clear();
@@ -3131,6 +3135,7 @@ void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj) {
         FC_ERR("view provider not attached");
         return;
     }
+    TREE_TRACE("pending new object " << obj.getObject()->getFullName());
     getTree()->NewObjects[pDocument->getDocument()->getName()].push_back(obj.getObject()->getID());
     getTree()->_updateStatus();
 }
@@ -3259,70 +3264,36 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
     TREE_LOG("delete object " << obj->getFullName());
 
-    bool needUpdate = false;
-
     for(auto data : itEntry->second) {
         DocumentItem *docItem = data->docItem;
         if(docItem == deletingDoc)
             continue;
 
-        auto doc = docItem->document()->getDocument();
-        auto &items = data->items;
+        decltype(data->items) items;
+        items.swap(data->items);
 
+        docItem->ObjectMap.erase(obj);
+
+        bool checkChildren = true;
         bool lock = blockConnection(true);
-        for(auto cit=items.begin(),citNext=cit;cit!=items.end();cit=citNext) {
-            ++citNext;
-            (*cit)->myOwner = 0;
-            delete *cit;
+        for(auto item : items) {
+            if(!checkChildren && item->populated) {
+                checkChildren = false;
+                // Refresh child item to give an early chance for reloation,
+                // in stead of re-create the child item later. Note that by
+                // the time this function is called, this deleting object's
+                // claimed children cache is expected to have been cleared.
+                docItem->populateItem(item, true);
+            }
+            item->myOwner = 0;
+            delete item;
         }
         blockConnection(lock);
-
-        // Check for any child of the deleted object that is not in the tree, and put it
-        // under document item.
-        for(auto child : data->viewObject->getCachedChildren()) {
-            auto vpd = docItem->getViewProvider(child);
-            if(!vpd || child->getDocument()!=doc)
-                continue;
-
-            auto cit = docItem->ObjectMap.find(child);
-            if(cit==docItem->ObjectMap.end() || cit->second->items.empty()) {
-                // Here means the child object has no corresponding tree item
-                // in this document.
-                bool created = false;
-                for(auto parent : vpd->claimedBy()) {
-                    if(parent == data->viewObject->getObject())
-                        continue;
-
-                    // Because lazy loading, there maybe some parent of this
-                    // child out there didn't populate its tree item. We
-                    // iteratre the parent map to try to put the child into one
-                    // of its parent. 
-                    if(docItem->populateObject(parent)) {
-                        created = true;
-                        break;
-                    }
-                }
-                // If no parent can be found, create a new item to put the
-                // child in the root.
-                if(!created && docItem->createNewItem(*vpd))
-                    needUpdate = true;
-            }else {
-                auto childItem = *cit->second->items.begin();
-                if(childItem->requiredAtRoot(false)) {
-                    if(docItem->createNewItem(*childItem->object(),docItem,-1,childItem->myData))
-                        needUpdate = true;
-                }
-            }
-        }
-        docItem->ObjectMap.erase(obj);
     }
     ObjectTable.erase(itEntry);
-
-    if(needUpdate)
-        _updateStatus();
 }
 
-bool DocumentItem::populateObject(App::DocumentObject *obj) {
+bool DocumentItem::populateObject(App::DocumentObject *obj, bool delay) {
     // make sure at least one of the item corresponding to obj is populated
     auto it = ObjectMap.find(obj);
     if(it == ObjectMap.end())
@@ -3334,8 +3305,13 @@ bool DocumentItem::populateObject(App::DocumentObject *obj) {
         if(item->populated)
             return true;
     }
-    TREE_LOG("force populate object " << obj->getFullName());
     auto item = *items.begin();
+    if(delay) {
+        PopulateObjects.push_back(obj);
+        getTree()->_updateStatus();
+        return true;
+    }
+    TREE_LOG("force populate object " << obj->getFullName());
     item->populated = true;
     populateItem(item,true);
     return true;
@@ -4309,23 +4285,16 @@ DocumentObjectItem::~DocumentObjectItem()
 {
     --countItems;
     TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
-    auto it = myData->items.find(this);
-    if(it == myData->items.end())
-        assert(0);
-    else
-        myData->items.erase(it);
+    myData->items.erase(this);
 
     if(myData->rootItem == this)
         myData->rootItem = 0;
 
-    if(myOwner && myData->items.empty()) {
-        for(auto parent : object()->claimedBy()) {
-            if(myOwner->ObjectMap.count(parent)) {
-                myOwner->PopulateObjects.push_back(parent);
-                myOwner->getTree()->_updateStatus();
-                break;
-            }
-        }
+    if(myOwner) {
+        if(myData->items.empty())
+            myOwner->ObjectMap.erase(object()->getObject());
+        if(requiredAtRoot(true,true))
+            myOwner->slotNewObject(*object());
     }
 }
 
@@ -4680,7 +4649,8 @@ bool DocumentObjectItem::isChildOfItem(DocumentObjectItem* item)
     return false;
 }
 
-bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
+bool DocumentObjectItem::requiredAtRoot(bool excludeSelf, bool delay) const
+{
     if(myData->rootItem || object()->getDocument()!=getOwnerDocument()->document()) 
         return false;
     bool checkMap = true;
@@ -4705,7 +4675,7 @@ bool DocumentObjectItem::requiredAtRoot(bool excludeSelf) const{
             // expand its parent item. It only causes minor problems, such as,
             // tree scroll to object command won't work properly.
 
-            if(getOwnerDocument()->populateObject(parent))
+            if(getOwnerDocument()->populateObject(parent, delay))
                 return false;
         }
     }
