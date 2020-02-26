@@ -32,13 +32,9 @@ import PathScripts.PathOpGui as PathOpGui
 from PySide import QtCore, QtGui
 
 __title__ = "Path Deburr Operation UI"
-__author__ = "sliptonic (Brad Collette)"
+__author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Deburr operation page controller and command implementation."
-__contributors__ = "Schildkroet"
-__created__ = "2018"
-__scriptVersion__ = "1.1"
-__lastModified__ = "2020-02-19"
 
 LOGLEVEL = False
 
@@ -68,8 +64,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         iconRound.addFile(':/icons/edge-join-round.svg', state=QtGui.QIcon.On)
         self.form.joinMiter.setIcon(iconMiter)
         self.form.joinRound.setIcon(iconRound)
-        #self.form.direction.addItem('CW')
-        #self.form.direction.addItem('CCW')
 
     def getFields(self, obj):
         PathGui.updateInputField(obj, 'Width', self.form.value_W)
