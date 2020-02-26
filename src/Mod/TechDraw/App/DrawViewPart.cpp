@@ -335,6 +335,9 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
 {
 //    Base::Console().Message("DVP::partExec()\n");
     geometryObject = makeGeometryForShape(shape);
+    if (geometryObject == nullptr) {
+        return;
+    }
 
 #if MOD_TECHDRAW_HANDLE_FACES
 //    auto start = std::chrono::high_resolution_clock::now();
@@ -347,7 +350,7 @@ void DrawViewPart::partExec(TopoDS_Shape shape)
         }
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
-    std::vector<TechDraw::Vertex*> verts = getVertexGeometry();
+//    std::vector<TechDraw::Vertex*> verts = getVertexGeometry();
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addCenterLinesToGeom();
@@ -486,6 +489,9 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
 //! make faces from the existing edge geometry
 void DrawViewPart::extractFaces()
 {
+    if (geometryObject == nullptr) {
+        return;
+    }
     geometryObject->clearFaceGeom();
     const std::vector<TechDraw::BaseGeom*>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
@@ -668,18 +674,29 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
 
 const std::vector<TechDraw::Vertex *> DrawViewPart::getVertexGeometry() const
 {
-    std::vector<TechDraw::Vertex*> gVerts = geometryObject->getVertexGeometry();
-    return gVerts;
+    std::vector<TechDraw::Vertex *> result;
+    if (geometryObject != nullptr) {
+        result = geometryObject->getVertexGeometry();
+    }
+    return result;
 }
 
-const std::vector<TechDraw::Face *> & DrawViewPart::getFaceGeometry() const
+const std::vector<TechDraw::Face *> DrawViewPart::getFaceGeometry() const
 {
-    return geometryObject->getFaceGeometry();
+    std::vector<TechDraw::Face*> result;
+    if (geometryObject != nullptr) {
+        result = geometryObject->getFaceGeometry();
+    }
+    return result;
 }
 
-const std::vector<TechDraw::BaseGeom  *> & DrawViewPart::getEdgeGeometry() const
+const std::vector<TechDraw::BaseGeom*> DrawViewPart::getEdgeGeometry() const
 {
-    return geometryObject->getEdgeGeometry();
+    std::vector<TechDraw::BaseGeom  *> result;
+    if (geometryObject != nullptr) {
+        result = geometryObject->getEdgeGeometry();
+    }
+    return result;
 }
 
 //! returns existing BaseGeom of 2D Edge(idx)
@@ -1113,20 +1130,23 @@ void DrawViewPart::removeReferenceVertex(std::string tag)
 //            delete v;  //??? who deletes v?
         }
     }
+    m_referenceVerts = newRefVerts;
     resetReferenceVerts();  
 }
 
 void DrawViewPart::removeAllReferencesFromGeom()
 {
 //    Base::Console().Message("DVP::removeAllReferencesFromGeom()\n");
-    std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
-    std::vector<TechDraw::Vertex *> newVerts;
-    for (auto& gv: gVerts) {
-        if (!gv->reference) {
-            newVerts.push_back(gv);
+    if (!m_referenceVerts.empty()) {
+        std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
+        std::vector<TechDraw::Vertex *> newVerts;
+        for (auto& gv: gVerts) {
+            if (!gv->reference) {
+                newVerts.push_back(gv);
+            }
         }
+        getGeometryObject()->setVertexGeometry(newVerts);
     }
-    getGeometryObject()->setVertexGeometry(newVerts);
 }
 
 void DrawViewPart::resetReferenceVerts()

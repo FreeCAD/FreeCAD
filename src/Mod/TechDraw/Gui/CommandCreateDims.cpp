@@ -1360,16 +1360,15 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
 void CmdTechDrawLandmarkDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    bool result = _checkSelection(this,3);  //redundant??
+    bool result = _checkSelection(this,3);
     if (!result)
         return;
 
     const std::vector<App::DocumentObject*> objects = getSelection().
                                         getObjectsOfType(Part::Feature::getClassTypeId());  //??
-    if ( (objects.size() != 2) &&
-         (objects.size() != 3) ) {
+    if (objects.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select 2 or 3 point objects and 1 View. (1)"));
+            QObject::tr("Select 2 point objects and 1 View. (1)"));
         return;
     }
 
@@ -1377,7 +1376,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
                                         getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
     if (views.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select 2 or 3 two point objects and 1 View. (2)"));
+            QObject::tr("Select 2 point objects and 1 View. (2)"));
         return;
     }
 
@@ -1403,13 +1402,16 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(), "Distance");
         refs2d.push_back(dvp);
         refs2d.push_back(dvp);
-    } else if (objects.size() == 3) {
-        doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(), "Angle3Pt");
-        refs2d.push_back(dvp);
-        refs2d.push_back(dvp);
-        refs2d.push_back(dvp);
-        subs.push_back("Vertex1");
     }
+//    } else if (objects.size() == 3) {             //not implemented yet
+//        doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str(), "Angle3Pt");
+//        refs2d.push_back(dvp);
+//        refs2d.push_back(dvp);
+//        refs2d.push_back(dvp);
+//        //subs.push_back("Vertex1");
+//        //subs.push_back("Vertex1");
+//        //subs.push_back("Vertex1");
+//    }
 
     dim = dynamic_cast<TechDraw::LandmarkDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
