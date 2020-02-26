@@ -59,6 +59,10 @@ public:
     /// Apply the changes made to the object to it
     virtual void apply() {};
 
+    int getTransactionID() const {
+        return transactionID;
+    }
+
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);
     void onButtonRefRemove(const bool checked);

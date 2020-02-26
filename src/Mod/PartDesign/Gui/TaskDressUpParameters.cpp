@@ -68,6 +68,9 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
 {
+    // remember initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
+
     selectionMode = none;
     showObject();
 }
@@ -79,10 +82,16 @@ TaskDressUpParameters::~TaskDressUpParameters()
 }
 
 void TaskDressUpParameters::setupTransaction() {
+    if(!DressUpView)
+        return;
+
     int tid = 0;
     const char *name = App::GetApplication().getActiveTransaction(&tid);
+    if(tid && tid == transactionID)
+        return;
+
     std::string n("Edit ");
-    n += DressUpView->getObject()->Label.getValue();
+    n += DressUpView->getObject()->getNameInDocument();
     if(!name || n != name)
         App::GetApplication().setActiveTransaction(n.c_str());
 }
@@ -352,6 +361,11 @@ bool TaskDlgDressUpParameters::accept()
 bool TaskDlgDressUpParameters::reject()
 {
     getDressUpView()->highlightReferences(false);
+
+    auto editDoc = Gui::Application::Instance->editDocument();
+    if(editDoc && parameter->getTransactionID())
+        editDoc->getDocument()->undo(parameter->getTransactionID());
+
     return TaskDlgFeatureParameters::reject();
 }
 
