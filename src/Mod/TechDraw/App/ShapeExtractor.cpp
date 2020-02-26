@@ -62,6 +62,9 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
 //    Base::Console().Message("SE::getShapes2d()\n");
 
     std::vector<TopoDS_Shape> shapes2d;
+    if (!prefAdd2d()) {
+        return shapes2d;
+    }
     for (auto& l:links) {
         const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
 //        App::Property* gProp = l->getPropertyByName("Group");
@@ -341,3 +344,11 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
     return result;
 }
 
+bool ShapeExtractor::prefAdd2d(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    bool result = hGrp->GetBool("ShowLoose2d", false); 
+    return result;
+}
+    

@@ -55,6 +55,7 @@ public:
     static bool isPointType(App::DocumentObject* obj);
     static bool isDraftPoint(App::DocumentObject* obj);
     static Base::Vector3d getLocation3dFromFeat(App::DocumentObject* obj);
+    static bool prefAdd2d(void);
 
 
 protected:
