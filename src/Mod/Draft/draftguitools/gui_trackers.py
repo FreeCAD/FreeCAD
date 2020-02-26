@@ -1,44 +1,57 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+"""Provide Coin based objects used for previews in the Draft Workbench.
 
-__title__="FreeCAD Draft Trackers"
+This module provides Coin (pivy) based objects
+that are used by the Draft Workbench to draw temporary geometry,
+that is, previews, of the real objects that will be created on the 3D view.
+"""
+## @package DraftTrackers
+#  \ingroup DRAFT
+#  \brief Provide Coin based objects used for previews in the Draft Workbench.
+#
+# This module provides Coin (pivy) based objects
+# that are used by the Draft Workbench to draw temporary geometry,
+# that is, previews, of the real objects that will be created on the 3D view.
+
+import math
+from pivy import coin
+
+import FreeCAD
+import FreeCADGui
+import Draft
+import DraftVecUtils
+from FreeCAD import Vector
+from draftutils.todo import ToDo
+
+__title__ = "FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecadweb.org"
 
-## @package DraftTrackers
-#  \ingroup DRAFT
-#  \brief Custom Pivy-based objects used by the Draft workbench
-#
-# This module contains a collection of Coin3D (pivy)-based objects
-# that are used by the Draft workbench to draw temporary geometry
-# on the 3D view
-
-import FreeCAD,FreeCADGui,math,Draft, DraftVecUtils
-from FreeCAD import Vector
-from pivy import coin
-
 
 class Tracker:
-    """A generic Draft Tracker, to be used by other specific trackers"""
-    def __init__(self,dotted=False,scolor=None,swidth=None,children=[],ontop=False,name=None):
+    """A generic Draft Tracker, to be used by other specific trackers."""
+
+    def __init__(self, dotted=False, scolor=None, swidth=None,
+                 children=[], ontop=False, name=None):
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
         self.ontop = ontop
@@ -50,37 +63,35 @@ class Tracker:
         if dotted:
             drawstyle.style = coin.SoDrawStyle.LINES
             drawstyle.lineWeight = 3
-            drawstyle.linePattern = 0x0f0f #0xaa
+            drawstyle.linePattern = 0x0f0f  # 0xaa
         node = coin.SoSeparator()
         for c in [drawstyle, color] + children:
             node.addChild(c)
-        self.switch = coin.SoSwitch() # this is the on/off switch
+        self.switch = coin.SoSwitch()  # this is the on/off switch
         if name:
             self.switch.setName(name)
         self.switch.addChild(node)
         self.switch.whichChild = -1
         self.Visible = False
-        from DraftGui import todo
-        todo.delay(self._insertSwitch, self.switch)
+        ToDo.delay(self._insertSwitch, self.switch)
 
     def finalize(self):
-        from DraftGui import todo
-        todo.delay(self._removeSwitch, self.switch)
+        ToDo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
     def _insertSwitch(self, switch):
         '''insert self.switch into the scene graph.  Must not be called
         from an event handler (or other scene graph traversal).'''
-        sg=Draft.get3DView().getSceneGraph()
+        sg = Draft.get3DView().getSceneGraph()
         if self.ontop:
-            sg.insertChild(switch,0)
+            sg.insertChild(switch, 0)
         else:
             sg.addChild(switch)
 
     def _removeSwitch(self, switch):
         '''remove self.switch from the scene graph.  As with _insertSwitch,
         must not be called during scene graph traversal).'''
-        sg=Draft.get3DView().getSceneGraph()
+        sg = Draft.get3DView().getSceneGraph()
         if sg.findChild(switch) >= 0:
             sg.removeChild(switch)
 
@@ -96,7 +107,7 @@ class Tracker:
         '''lowers the tracker to the bottom of the scenegraph, so
         it doesn't obscure the other objects'''
         if self.switch:
-            sg=Draft.get3DView().getSceneGraph()
+            sg = Draft.get3DView().getSceneGraph()
             sg.removeChild(self.switch)
             sg.addChild(self.switch)
 
@@ -104,12 +115,14 @@ class Tracker:
         '''raises the tracker to the top of the scenegraph, so
         it obscures the other objects'''
         if self.switch:
-            sg=Draft.get3DView().getSceneGraph()
+            sg = Draft.get3DView().getSceneGraph()
             sg.removeChild(self.switch)
-            sg.insertChild(self.switch,0)
-        
+            sg.insertChild(self.switch, 0)
+
+
 class snapTracker(Tracker):
-    """A Snap Mark tracker, used by tools that support snapping"""
+    """Define Snap Mark tracker, used by tools that support snapping."""
+
     def __init__(self):
         color = coin.SoBaseColor()
         color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
