@@ -61,7 +61,7 @@ public:
     Base::Vector3d getAttachPoint(void);
     DrawView* getBaseView(void) const;
     virtual App::DocumentObject* getBaseObject(void) const;
-    bool keepUpdated(void);
+    bool keepUpdated(void) override;
     double getScale(void) const override;
     double getBaseScale(void) const;
     void adjustLastSegment(void);

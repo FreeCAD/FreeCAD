@@ -46,7 +46,7 @@ class DrawLeaderLine;
  */
 class TechDrawExport DrawView : public App::DocumentObject
 {
-    Q_DECLARE_TR_FUNCTIONS(TechDraw::DrawView);
+    Q_DECLARE_TR_FUNCTIONS(TechDraw::DrawView)
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawView);
 
 public:
