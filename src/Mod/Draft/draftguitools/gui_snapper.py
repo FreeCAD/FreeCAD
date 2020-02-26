@@ -18,25 +18,36 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provide the Snapper class to control snapping in the Draft Workbench.
+
+This module provides tools to handle point snapping and
+everything that goes with it (toolbar buttons, cursor icons, etc.).
+It also creates the Draft grid, which is actually a tracker
+defined by `gui_trackers.gridTracker`.
+"""
+## @package gui_snapper
+#  \ingroup DRAFT
+#  \brief Snapper class to control snapping in the Draft Workbench.
+#
+#  This module provides tools to handle point snapping and
+#  everything that goes with it (toolbar buttons, cursor icons, etc.).
+
+import collections as coll
+import itertools
+import math
+from pivy import coin
+from PySide import QtCore, QtGui
+
+import FreeCAD
+import FreeCADGui
+import Draft
+import DraftVecUtils
+from FreeCAD import Vector
+import draftguitools.gui_trackers as trackers
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecadweb.org"
-
-## @package DraftSnap
-#  \ingroup DRAFT
-#  \brief Snapping system used by Draft & Arch workbenches
-#
-#  This module provides tools to handle point snapping and
-#  everything that goes with it (toolbar buttons, cursor icons, etc)
-
-
-import FreeCAD, FreeCADGui, math, Draft, DraftVecUtils, itertools
-import draftguitools.gui_trackers as trackers
-from collections import OrderedDict
-from FreeCAD import Vector
-from pivy import coin
-from PySide import QtCore, QtGui
 
 
 class Snapper:
@@ -63,7 +74,7 @@ class Snapper:
 
     def __init__(self):
         self.activeview = None
-        self.lastObj = [None,None]
+        self.lastObj = [None, None]
         self.maxEdges = 0
         self.radius = 0
         self.constraintAxis = None
@@ -71,9 +82,9 @@ class Snapper:
         self.affinity = None
         self.mask = None
         self.cursorMode = None
-        if Draft.getParam("maxSnap",0):
-            self.maxEdges = Draft.getParam("maxSnapEdges",0)
-        self.snapStyle = Draft.getParam("snapStyle",0)
+        if Draft.getParam("maxSnap", 0):
+            self.maxEdges = Draft.getParam("maxSnapEdges", 0)
+        self.snapStyle = Draft.getParam("snapStyle", 0)
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -90,9 +101,12 @@ class Snapper:
         self.active = True
         self.forceGridOff = False
         self.lastExtensions = []
-        # the trackers are stored in lists because there can be several views, each with its own set
-        self.trackers = [[],[],[],[],[],[],[],[],[],[]] # view, grid, snap, extline, radius, dim1, dim2, trackLine, extline2, crosstrackers
-        self.polarAngles = [90,45]
+        # the trackers are stored in lists because there can be several views,
+        # each with its own set
+        # view, grid, snap, extline, radius, dim1, dim2, trackLine,
+        # extline2, crosstrackers
+        self.trackers = [[], [], [], [], [], [], [], [], [], []]
+        self.polarAngles = [90, 45]
         self.selectMode = False
         self.holdTracker = None
         self.holdPoints = []
@@ -103,44 +117,45 @@ class Snapper:
 
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
-            self.mk = OrderedDict([('passive',      'empty'),
-                                   ('extension',    'empty'),
-                                   ('parallel',     'empty'),
-                                   ('grid',         'quad'),
-                                   ('endpoint',     'quad'),
-                                   ('midpoint',     'quad'),
-                                   ('perpendicular','quad'),
-                                   ('angle',        'quad'),
-                                   ('center',       'quad'),
-                                   ('ortho',        'quad'),
-                                   ('intersection', 'quad'),
-                                   ('special',      'quad')])
+            self.mk = coll.OrderedDict([('passive',       'empty'),
+                                        ('extension',     'empty'),
+                                        ('parallel',      'empty'),
+                                        ('grid',          'quad'),
+                                        ('endpoint',      'quad'),
+                                        ('midpoint',      'quad'),
+                                        ('perpendicular', 'quad'),
+                                        ('angle',         'quad'),
+                                        ('center',        'quad'),
+                                        ('ortho',         'quad'),
+                                        ('intersection',  'quad'),
+                                        ('special',       'quad')])
         else:
-            self.mk = OrderedDict([('passive',      'circle'),
-                                   ('extension',    'circle'),
-                                   ('parallel',     'circle'),
-                                   ('grid',         'circle'),
-                                   ('endpoint',     'dot'),
-                                   ('midpoint',     'square'),
-                                   ('perpendicular','dot'),
-                                   ('angle',        'square'),
-                                   ('center',       'dot'),
-                                   ('ortho',        'dot'),
-                                   ('intersection', 'dot'),
-                                   ('special',      'dot')])
+            self.mk = coll.OrderedDict([('passive',       'circle'),
+                                        ('extension',     'circle'),
+                                        ('parallel',      'circle'),
+                                        ('grid',          'circle'),
+                                        ('endpoint',      'dot'),
+                                        ('midpoint',      'square'),
+                                        ('perpendicular', 'dot'),
+                                        ('angle',         'square'),
+                                        ('center',        'dot'),
+                                        ('ortho',         'dot'),
+                                        ('intersection',  'dot'),
+                                        ('special',       'dot')])
 
-        self.cursors = OrderedDict([('passive',         ':/icons/Snap_Near.svg'),
-                                    ('extension',       ':/icons/Snap_Extension.svg'),
-                                    ('parallel',        ':/icons/Snap_Parallel.svg'),
-                                    ('grid',            ':/icons/Snap_Grid.svg'),
-                                    ('endpoint',        ':/icons/Snap_Endpoint.svg'),
-                                    ('midpoint',        ':/icons/Snap_Midpoint.svg'),
-                                    ('perpendicular',   ':/icons/Snap_Perpendicular.svg'),
-                                    ('angle',           ':/icons/Snap_Angle.svg'),
-                                    ('center',          ':/icons/Snap_Center.svg'),
-                                    ('ortho',           ':/icons/Snap_Ortho.svg'),
-                                    ('intersection',    ':/icons/Snap_Intersection.svg'),
-                                    ('special',         ':/icons/Snap_Special.svg')])
+        self.cursors = \
+            coll.OrderedDict([('passive',       ':/icons/Snap_Near.svg'),
+                              ('extension',     ':/icons/Snap_Extension.svg'),
+                              ('parallel',      ':/icons/Snap_Parallel.svg'),
+                              ('grid',          ':/icons/Snap_Grid.svg'),
+                              ('endpoint',      ':/icons/Snap_Endpoint.svg'),
+                              ('midpoint',      ':/icons/Snap_Midpoint.svg'),
+                              ('perpendicular', ':/icons/Snap_Perpendicular.svg'),
+                              ('angle',         ':/icons/Snap_Angle.svg'),
+                              ('center',        ':/icons/Snap_Center.svg'),
+                              ('ortho',         ':/icons/Snap_Ortho.svg'),
+                              ('intersection',  ':/icons/Snap_Intersection.svg'),
+                              ('special',       ':/icons/Snap_Special.svg')])
 
     def cstr(self, lastpoint, constrain, point):
         "constrains if needed"
