@@ -1,12 +1,3 @@
-"""This module provides GUI utility functions for the Draft Workbench.
-
-This module should contain auxiliary functions which require
-the graphical user interface (GUI).
-"""
-## @package gui_utils
-# \ingroup DRAFT
-# \brief This module provides utility functions for the Draft Workbench
-
 # ***************************************************************************
 # *   (c) 2009, 2010                                                        *
 # *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
@@ -31,24 +22,32 @@ the graphical user interface (GUI).
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides GUI utility functions for the Draft Workbench.
 
+This module contains auxiliary functions which can be used
+in other modules of the workbench, and which require
+the graphical user interface (GUI), as they access the view providers
+of the objects or the 3D view.
+"""
+## @package gui_utils
+# \ingroup DRAFT
+# \brief This module provides GUI utility functions for the Draft Workbench
+
+import math
+import os
+import six
 
 import FreeCAD
-from .utils import _msg
-from .utils import _wrn
-# from .utils import _log
-from .utils import _tr
-from .utils import getParam
-from .utils import get_type
-import os
-import math
-import six
+from draftutils.messages import _msg, _wrn
+from draftutils.utils import getParam
+from draftutils.utils import get_type
+from draftutils.translate import _tr, translate
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     from pivy import coin
     from PySide import QtGui
-#   from PySide import QtSvg  # for load_texture
+    # from PySide import QtSvg  # for load_texture
 
 
 def get_3d_view():
@@ -80,7 +79,7 @@ get3DView = get_3d_view
 
 
 def autogroup(obj):
-    """Adds a given object to the defined Draft autogroup, if applicable.
+    """Add a given object to the defined Draft autogroup, if applicable.
 
     This function only works if the graphical interface is available.
     It checks that the `FreeCAD.draftToolBar` class is available,
