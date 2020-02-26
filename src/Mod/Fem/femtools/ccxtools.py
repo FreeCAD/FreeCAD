@@ -32,8 +32,8 @@ import os
 import sys
 import subprocess
 import FreeCAD
-import femtools.femutils as femutils
-import femtools.membertools as membertools
+from femtools import femutils
+from femtools import membertools
 from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui

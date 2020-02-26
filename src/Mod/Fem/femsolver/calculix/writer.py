@@ -63,6 +63,9 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             self.dir_name,
             "{}_inout_nodes.txt".format(self.mesh_object.Name)
         )
+        from femtools import constants
+        from FreeCAD import Units
+        self.gravity = Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
 
     def write_calculix_input_file(self):
         timestart = time.process_time()
@@ -1095,9 +1098,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f.write("** " + selwei_obj.Label + "\n")
             f.write("*DLOAD\n")
             f.write(
-                "{},GRAV,9810,{},{},{}\n"
+                "{},GRAV,{},{},{},{}\n"
                 .format(
                     self.ccx_eall,
+                    self.gravity,
                     selwei_obj.Gravity_x,
                     selwei_obj.Gravity_y,
                     selwei_obj.Gravity_z

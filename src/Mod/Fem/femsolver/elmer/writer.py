@@ -34,9 +34,10 @@ import tempfile
 from FreeCAD import Units
 from FreeCAD import Console
 import Fem
-import femtools.femutils as femutils
-import femtools.membertools as membertools
-import femmesh.gmshtools as gmshtools
+from femmesh import gmshtools
+from femtools import constants
+from femtools import femutils
+from femtools import membertools
 from .. import settings
 from . import sifio
 
@@ -60,10 +61,10 @@ UNITS = {
 
 
 CONSTS_DEF = {
-    "Gravity": "9.82 m/s^2",
-    "StefanBoltzmann": "5.67e-8 W/(m^2*K^4)",
-    "PermittivityOfVacuum": "8.8542e-12 s^4*A^2/(m*kg)",
-    "BoltzmannConstant": "1.3807e-23 J/K",
+    "Gravity": constants.gravity(),
+    "StefanBoltzmann": constants.stefan_boltzmann(), 
+    "PermittivityOfVacuum": constants.permittivity_of_vakuum(),
+    "BoltzmannConstant": constants.boltzmann_constant(),
 }
 
 

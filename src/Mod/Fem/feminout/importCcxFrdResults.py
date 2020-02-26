@@ -127,7 +127,7 @@ def importFrd(
 
                 # complementary result object calculations
                 import femresult.resulttools as restools
-                import femtools.femutils as femutils
+                from femtools import femutils
                 if not res_obj.MassFlowRate:
                     # information 1:
                     # only compact result if not Flow 1D results

@@ -35,7 +35,7 @@ from FreeCAD import Console
 import Fem
 from FreeCAD import Units
 from . import meshtools
-import femtools.femutils as femutils
+from femtools import femutils
 
 
 class GmshTools():

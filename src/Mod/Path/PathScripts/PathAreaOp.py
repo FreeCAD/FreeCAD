@@ -30,21 +30,17 @@ import PathScripts.PathUtils as PathUtils
 import PathScripts.PathGeom as PathGeom
 import Draft
 import math
+import Part
 
 # from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 if FreeCAD.GuiUp:
     import FreeCADGui
 
-
 __title__ = "Base class for PathArea based operations."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and properties for Path.Area based operations."
-__contributors__ = "russ4262 (Russell Johnson)"
-__createdDate__ = "2017"
-__scriptVersion__ = "2p"
-__lastModified__ = "2020-02-13 17:11 CST"
 
 LOGLEVEL = PathLog.Level.INFO
 PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
@@ -53,8 +49,6 @@ if LOGLEVEL is PathLog.Level.DEBUG:
     PathLog.trackModule()
 
 # Qt translation handling
-
-
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
@@ -286,6 +280,59 @@ class ObjectOp(PathOp.ObjectOp):
 
         return pp, simobj
 
+    def _buildProfileOpenEdges(self, obj, baseShape, isHole, start, getsim):
+        '''_buildPathArea(obj, baseShape, isHole, start, getsim) ... internal function.'''
+        # pylint: disable=unused-argument
+        PathLog.track()
+
+        paths = []
+        heights = [i for i in self.depthparams]
+        PathLog.debug('depths: {}'.format(heights))
+        lstIdx = len(heights) - 1
+        for i in range(0, len(heights)):
+            hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
+            hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
+
+            pathParams = {} # pylint: disable=assignment-from-no-return
+            pathParams['shapes'] = [hWire]
+            pathParams['feedrate'] = self.horizFeed
+            pathParams['feedrate_v'] = self.vertFeed
+            pathParams['verbose'] = True
+            pathParams['resume_height'] = obj.SafeHeight.Value
+            pathParams['retraction'] = obj.ClearanceHeight.Value
+            pathParams['return_end'] = True
+            # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
+            pathParams['preamble'] = False
+            #if not self.areaOpRetractTool(obj):
+            #    pathParams['threshold'] = 2.001 * self.radius
+
+            if self.endVector is None:
+                V = hWire.Wires[0].Vertexes
+                lv = len(V) - 1
+                pathParams['start'] = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
+                if obj.Direction == 'CCW':
+                    pathParams['start'] = FreeCAD.Vector(V[lv].X, V[lv].Y, V[lv].Z)
+            else:
+                pathParams['start'] = self.endVector
+
+            obj.PathParams = str({key: value for key, value in pathParams.items() if key != 'shapes'})
+            PathLog.debug("Path with params: {}".format(obj.PathParams))
+
+            (pp, end_vector) = Path.fromShapes(**pathParams)
+            paths.extend(pp.Commands)
+            PathLog.debug('pp: {}, end vector: {}'.format(pp, end_vector))
+
+        self.endVector = end_vector # pylint: disable=attribute-defined-outside-init
+
+        simobj = None
+        if getsim and False:
+            areaParams['ToolRadius'] = self.radius - self.radius * .005
+            area.setParams(**areaParams)
+            sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
+            simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
+
+        return paths, simobj
+
     def opExecute(self, obj, getsim=False): # pylint: disable=arguments-differ
         '''opExecute(obj, getsim=False) ... implementation of Path.Area ops.
         determines the parameters for _buildPathArea().
@@ -306,6 +353,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.tempObjectNames = []  # pylint: disable=attribute-defined-outside-init
         self.stockBB = PathUtils.findParentJob(obj).Stock.Shape.BoundBox # pylint: disable=attribute-defined-outside-init
         self.useTempJobClones('Delete')  # Clear temporary group and recreate for temp job clones
+        self.profileEdgesIsOpen = False
 
         if obj.EnableRotation != 'Off':
             # Calculate operation heights based upon rotation radii
@@ -384,9 +432,13 @@ class ObjectOp(PathOp.ObjectOp):
 
             shapes = [j['shape'] for j in jobs]
 
+        if self.profileEdgesIsOpen is True:
+            if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
+                osp = obj.StartPoint
+                self.commandlist.append(Path.Command('G0', {'X': osp.x, 'Y': osp.y, 'F': self.horizRapid}))
+
         sims = []
         numShapes = len(shapes)
-
         for ns in range(0, numShapes):
             (shape, isHole, sub, angle, axis, strDep, finDep) = shapes[ns] # pylint: disable=unused-variable
             if ns < numShapes - 1:
@@ -405,12 +457,18 @@ class ObjectOp(PathOp.ObjectOp):
                 user_depths=None)
 
             try:
-                (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
+                if self.profileEdgesIsOpen is True:
+                    (pp, sim) = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
+                else:
+                    (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
             except Exception as e: # pylint: disable=broad-except
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError("Something unexpected happened. Check project and tool config.")
             else:
-                ppCmds = pp.Commands
+                if self.profileEdgesIsOpen is True:
+                    ppCmds = pp
+                else:
+                    ppCmds = pp.Commands
                 if obj.EnableRotation != 'Off' and self.rotateFlag is True:
                     # Rotate model to index for cut
                     if axis == 'X':

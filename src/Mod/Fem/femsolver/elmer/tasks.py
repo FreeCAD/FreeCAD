@@ -31,8 +31,8 @@ import os.path
 import sys
 
 import FreeCAD
-import femtools.femutils as femutils
-import femtools.membertools as membertools
+from femtools import femutils
+from femtools import membertools
 
 from .. import run
 from .. import settings

@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -18,34 +18,39 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+""" Collection of natural constants for the Fem module.
 
-__title__ = "FreeCAD FEM solver Elmer equation object Flow"
-__author__ = "Markus Hovorka"
+This module contains natural constants for the Fem module.
+All constants are in SI units.
+"""
+
+
+__title__ = "Constants"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
 
-from femtools import femutils
-from . import nonlinear
-from ... import equationbase
+def gravity():
+    return "9.82 m/s^2"
 
 
-def create(doc, name="Flow"):
-    return femutils.createObject(
-        doc, name, Proxy, ViewProxy)
+def stefan_boltzmann():
+    return "5.67e-8 W/(m^2*K^4)"
 
 
-class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
-
-    Type = "Fem::FemEquationElmerFlow"
-
-    def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
-        obj.Priority = 10
+def permittivity_of_vakuum():
+    return "8.8542e-12 s^4*A^2/(m*kg)"
 
 
-class ViewProxy(nonlinear.ViewProxy, equationbase.FlowViewProxy):
-    pass
+def boltzmann_constant():
+    return "1.3807e-23 J/K"
 
-##  @}
+
+"""
+from FreeCAD import Units
+from femtools import constants
+Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
+
+"""
+
+# TODO: a unit test to be sure these values are returned!

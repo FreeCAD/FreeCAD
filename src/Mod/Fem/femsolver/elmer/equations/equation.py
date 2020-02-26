@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD as App
 from ... import equationbase
-import femtools.membertools as membertools
+from femtools import membertools
 
 if App.GuiUp:
     import FreeCADGui as Gui

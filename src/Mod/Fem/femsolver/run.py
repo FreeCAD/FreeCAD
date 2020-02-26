@@ -40,8 +40,8 @@ import shutil
 import tempfile
 
 import FreeCAD as App
-import femtools.femutils as femutils
-import femtools.membertools as membertools
+from femtools import femutils
+from femtools import membertools
 from . import settings
 from . import signal
 from . import task
