@@ -26,7 +26,7 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import femtools.femutils as femutils
+from femtools import femutils
 from . import nonlinear
 from ... import equationbase
 

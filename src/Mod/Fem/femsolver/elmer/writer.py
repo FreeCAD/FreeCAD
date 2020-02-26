@@ -34,9 +34,9 @@ import tempfile
 from FreeCAD import Units
 from FreeCAD import Console
 import Fem
-import femtools.femutils as femutils
-import femtools.membertools as membertools
-import femmesh.gmshtools as gmshtools
+from femmesh import gmshtools
+from femtools import femutils
+from femtools import membertools
 from .. import settings
 from . import sifio
 

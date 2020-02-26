@@ -27,7 +27,7 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
-import femtools.femutils as femutils
+from femtools import femutils
 import numpy as np
 from math import isnan
 
