@@ -117,12 +117,15 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     //Transformable surfaces
     Gui::Command::doCommand(Gui::Command::Doc,TaskFemConstraintTransform::getSurfaceReferences((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
-    std::vector<App::DocumentObject*> nDispl = pcConstraint->NameDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
 
     for (std::size_t i = 0; i < ObjDispl.size(); i++) {
         ui->lw_displobj_rect->addItem(makeRefText(ObjDispl[i], SubElemDispl[i]));
         ui->lw_displobj_cylin->addItem(makeRefText(ObjDispl[i], SubElemDispl[i]));
+    }
+
+    std::vector<App::DocumentObject*> nDispl = pcConstraint->NameDispl.getValues();
+    for (std::size_t i = 0; i < nDispl.size(); i++) {
         ui->lw_dis_rect->addItem(makeText(nDispl[i]));
         ui->lw_dis_cylin->addItem(makeText(nDispl[i]));
     }
@@ -447,7 +450,7 @@ A = []\n\
 i = 0\n\
 ss = []\n\
 for member in members:\n\
-        if (member.isDerivedFrom(\"Fem::ConstraintDisplacement\")) or (member.isDerivedFrom(\"Fem::ConstraintForce\")):\n\
+        if ((member.isDerivedFrom(\"Fem::ConstraintDisplacement\")) or (member.isDerivedFrom(\"Fem::ConstraintForce\"))) and len(member.References) > 0:\n\
                 m = member.References\n\
                 A.append(m)\n\
                 if i >0:\n\
@@ -463,7 +466,10 @@ for member in members:\n\
                 i = i+1\n\
 if i>0:\n\
         App.ActiveDocument."+showConstr+".RefDispl = [x]\n\
-        App.ActiveDocument."+showConstr+".NameDispl = ss\n";
+        App.ActiveDocument."+showConstr+".NameDispl = ss\n\
+else:\n\
+        App.ActiveDocument."+showConstr+".RefDispl = None\n\
+        App.ActiveDocument."+showConstr+".NameDispl = []\n";
 }
 
 /* Note: */
