@@ -984,6 +984,10 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
 #else
             src = PyString_AsString(frame->f_code->co_filename);
 #endif
+            if(src && strcmp(src,"<string>")==0) {
+                src = c_src;
+                line = cline;
+            }
         }
     }
     if(print_src && src && src[0]) {
