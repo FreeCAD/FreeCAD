@@ -124,10 +124,10 @@ public:
     std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
     std::vector<TechDraw::DrawViewBalloon*> getBalloons() const;
 
-    const std::vector<TechDraw::Vertex *> getVertexGeometry() const;
-    const std::vector<TechDraw::BaseGeom  *> & getEdgeGeometry() const;
-    const std::vector<TechDraw::BaseGeom  *> getVisibleFaceEdges() const;
-    const std::vector<TechDraw::Face *> & getFaceGeometry() const;
+    const std::vector<TechDraw::Vertex*> getVertexGeometry() const;
+    const std::vector<TechDraw::BaseGeom*> getEdgeGeometry() const;
+    const std::vector<TechDraw::BaseGeom*> getVisibleFaceEdges() const;
+    const std::vector<TechDraw::Face*> getFaceGeometry() const;
 
     bool hasGeometry(void) const;
     TechDraw::GeometryObject* getGeometryObject(void) const { return geometryObject; }
