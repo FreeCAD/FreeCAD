@@ -573,7 +573,8 @@ bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *sub
     }
     if(!ret) 
         return false;
-    return ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
+    ret = ret->getSubObject(dot+1,pyObj,mat,true,depth+1);
+    return true;
 }
 
 bool GroupExtension::extensionGetSubObjects(std::vector<std::string> &ret, int reason) const {
