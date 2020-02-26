@@ -427,14 +427,16 @@ void TaskFemConstraintTransform::onReferenceDeleted() {
 std::string TaskFemConstraintTransform::getSurfaceReferences(std::string showConstr="")
 // https://forum.freecadweb.org/viewtopic.php?f=18&t=43650
 {
-    return "for obj in FreeCAD.ActiveDocument.Objects:\n\
+    return "\n\
+doc = FreeCAD.ActiveDocument\n\
+for obj in doc.Objects:\n\
         if obj.isDerivedFrom(\"Fem::FemAnalysis\"):\n\
-                if FreeCAD.ActiveDocument."+showConstr+" in obj.Group:\n\
-                        members = obj.Group\n\
+                if doc."+showConstr+" in obj.Group:\n\
+                        analysis = obj\n\
 A = []\n\
 i = 0\n\
 ss = []\n\
-for member in members:\n\
+for member in analysis.Group:\n\
         if ((member.isDerivedFrom(\"Fem::ConstraintDisplacement\")) or (member.isDerivedFrom(\"Fem::ConstraintForce\"))) and len(member.References) > 0:\n\
                 m = member.References\n\
                 A.append(m)\n\
@@ -450,11 +452,11 @@ for member in members:\n\
                                 ss.append(member)\n\
                 i = i+1\n\
 if i>0:\n\
-        App.ActiveDocument."+showConstr+".RefDispl = [x]\n\
-        App.ActiveDocument."+showConstr+".NameDispl = ss\n\
+        doc."+showConstr+".RefDispl = [x]\n\
+        doc."+showConstr+".NameDispl = ss\n\
 else:\n\
-        App.ActiveDocument."+showConstr+".RefDispl = None\n\
-        App.ActiveDocument."+showConstr+".NameDispl = []\n";
+        doc."+showConstr+".RefDispl = None\n\
+        doc."+showConstr+".NameDispl = []\n";
 }
 
 /* Note: */
