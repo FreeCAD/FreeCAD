@@ -49,6 +49,7 @@
 
 #include "ui_TaskFemConstraintFluidBoundary.h"
 #include "TaskFemConstraintFluidBoundary.h"
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -551,62 +552,64 @@ void TaskFemConstraintFluidBoundary::onReferenceDeleted() {
     TaskFemConstraintFluidBoundary::removeFromSelection(); //On right-click face is automatically selected, so just remove
 }
 
-void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed) {
+void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
+{
     // sets the normal vector of the currently selecteed planar face as direction
 
     Q_UNUSED(pressed)
     //get vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.size() == 0) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Empty selection"), tr("Select an edge or a face, please."));
         return;
     }
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
 
     // we only handle the first selected object
-    std::vector<Gui::SelectionObject>::iterator selectionElement = selection.begin();
-    std::string TypeName = static_cast<std::string>(selectionElement->getTypeName());
+    Gui::SelectionObject& selectionElement = selection.at(0);
 
     // we can only handle part objects
-    if (TypeName.substr(0, 4).compare(std::string("Part")) != 0) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+    if (!selectionElement.isObjectTypeOf(Part::Feature::getClassTypeId())) {
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Selected object is not a part object!"));
         return;
     }
     // get the names of the subobjects
-    std::vector<std::string> subNames = selectionElement->getSubNames();
+    const std::vector<std::string>& subNames = selectionElement.getSubNames();
 
-    if (subNames.size() > 1) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Only one planar face or edge can be selected!"));
+    if (subNames.size() != 1) {
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Only one planar face or edge can be selected!"));
         return;
     }
+
     // we are now sure we only have one object
     std::string subNamesElement = subNames[0];
     // vector for the direction
     std::vector<std::string> direction(1, subNamesElement);
 
-    App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(selectionElement->getFeatName());
-    Part::Feature* feat = static_cast<Part::Feature*>(obj);
+    Part::Feature* feat = static_cast<Part::Feature*>(selectionElement.getObject());
     TopoDS_Shape ref = feat->Shape.getShape().getSubShape(subNamesElement.c_str());
 
     if (subNamesElement.substr(0, 4) == "Face") {
         if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Only planar faces can be picked for 3D"));
+            QMessageBox::warning(this, tr("Wrong selection"), tr("Only planar faces can be picked for 3D"));
             return;
         }
     }
     else if (subNamesElement.substr(0, 4) == "Edge") { // 2D or 3D can use edge as direction vector
         if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Only planar edges can be picked for 2D"));
+            QMessageBox::warning(this, tr("Wrong selection"), tr("Only planar edges can be picked for 2D"));
             return;
         }
     }
     else {
-        QMessageBox::warning(this, tr("Selection error"), tr("Only faces for 3D part or edges for 2D can be picked"));
+        QMessageBox::warning(this, tr("Wrong selection"), tr("Only faces for 3D part or edges for 2D can be picked"));
         return;
     }
+
     // update the direction
-    pcConstraint->Direction.setValue(obj, direction);
-    ui->lineDirection->setText(makeRefText(obj, subNamesElement));
+    pcConstraint->Direction.setValue(feat, direction);
+    ui->lineDirection->setText(makeRefText(feat, subNamesElement));
+
     //Update UI
     updateUI();
 }
@@ -741,14 +744,14 @@ void TaskFemConstraintFluidBoundary::addToSelection()
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
-        if (static_cast<std::string>(it->getTypeName()).substr(0, 4).compare(std::string("Part")) != 0) {
+        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
 
-        std::vector<std::string> subNames = it->getSubNames();
-        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-        for (unsigned int subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
+        const std::vector<std::string>& subNames = it->getSubNames();
+        App::DocumentObject* obj = it->getObject();
+        for (size_t subIt = 0; subIt < subNames.size(); ++subIt) {// for every selected sub element
             bool addMe = true;
             for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
                 itr != SubElements.end();
@@ -758,16 +761,18 @@ void TaskFemConstraintFluidBoundary::addToSelection()
                     addMe = false;
                 }
             }
+
             // limit constraint such that only vertexes or faces or edges can be used depending on what was selected first
-            std::string searchStr("");
+            std::string searchStr;
             if (subNames[subIt].find("Vertex") != std::string::npos)
                 searchStr = "Vertex";
             else if (subNames[subIt].find("Edge") != std::string::npos)
                 searchStr = "Edge";
             else
                 searchStr = "Face";
-            for (unsigned int iStr = 0; iStr < (SubElements.size()); ++iStr) {
-                if ((SubElements[iStr].find(searchStr) == std::string::npos) && (SubElements.size() > 0)) {
+
+            for (size_t iStr = 0; iStr < (SubElements.size()); ++iStr) {
+                if (SubElements[iStr].find(searchStr) == std::string::npos) {
                     QString msg = tr("Only one type of selection (vertex,face or edge) per constraint allowed!");
                     QMessageBox::warning(this, tr("Selection error"), msg);
                     addMe = false;
@@ -775,16 +780,14 @@ void TaskFemConstraintFluidBoundary::addToSelection()
                 }
             }
             if (addMe) {
-                disconnect(ui->listReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-                    this, SLOT(setSelection(QListWidgetItem*)));
+                QSignalBlocker block(ui->listReferences);
                 Objects.push_back(obj);
                 SubElements.push_back(subNames[subIt]);
                 ui->listReferences->addItem(makeRefText(obj, subNames[subIt]));
-                connect(ui->listReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-                    this, SLOT(setSelection(QListWidgetItem*)));
             }
         }
     }
+
     //Update UI
     pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
@@ -801,17 +804,17 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    std::vector<unsigned int> itemsToDel;
+    std::vector<size_t> itemsToDel;
     for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
-        if (static_cast<std::string>(it->getTypeName()).substr(0, 4).compare(std::string("Part")) != 0) {
+        if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
 
-        std::vector<std::string> subNames = it->getSubNames();
-        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
+        const std::vector<std::string>& subNames = it->getSubNames();
+        App::DocumentObject* obj = it->getObject();
 
-        for (unsigned int subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
+        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
             for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
                 itr != SubElements.end();
                 itr = std::find(++itr, SubElements.end(), subNames[subIt]))
@@ -831,15 +834,13 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
     }
 
     //Update UI
-    disconnect(ui->listReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
-
-    ui->listReferences->clear();
-    for (unsigned int j = 0; j < Objects.size(); j++) {
-        ui->listReferences->addItem(makeRefText(Objects[j], SubElements[j]));
+    {
+        QSignalBlocker block(ui->listReferences);
+        ui->listReferences->clear();
+        for (size_t j = 0; j < Objects.size(); j++) {
+            ui->listReferences->addItem(makeRefText(Objects[j], SubElements[j]));
+        }
     }
-    connect(ui->listReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-        this, SLOT(setSelection(QListWidgetItem*)));
 
     pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
