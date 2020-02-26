@@ -50,32 +50,34 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* draw = new Gui::MenuItem;
     root->insertItem(item, draw);
 
-	// dimensions
-	Gui::MenuItem* dimensions = new Gui::MenuItem;
-	dimensions->setCommand("Dimensions");
-	*dimensions << "TechDraw_LengthDimension" << "TechDraw_HorizontalDimension" << "TechDraw_VerticalDimension"
-		<< "TechDraw_RadiusDimension" << "TechDraw_DiameterDimension" << "TechDraw_AngleDimension"
-		<< "TechDraw_HorizontalExtentDimension" << "TechDraw_VerticalExtentDimension" << "TechDraw_LinkDimension";
+    // dimensions
+    Gui::MenuItem* dimensions = new Gui::MenuItem;
+    dimensions->setCommand("Dimensions");
+    *dimensions << "TechDraw_LengthDimension" << "TechDraw_HorizontalDimension" << "TechDraw_VerticalDimension"
+        << "TechDraw_RadiusDimension" << "TechDraw_DiameterDimension" << "TechDraw_AngleDimension"
+        << "TechDraw_HorizontalExtentDimension" << "TechDraw_VerticalExtentDimension" << "TechDraw_LinkDimension"
+        << "TechDraw_LandmarkDimension"
+;
 
-	// annotations
-	Gui::MenuItem* annotations = new Gui::MenuItem;
-	annotations->setCommand("Annotations");
-	*annotations << "TechDraw_Annotation" << "TechDraw_RichTextAnnotation" << "TechDraw_Balloon";
+    // annotations
+    Gui::MenuItem* annotations = new Gui::MenuItem;
+    annotations->setCommand("Annotations");
+    *annotations << "TechDraw_Annotation" << "TechDraw_RichTextAnnotation" << "TechDraw_Balloon";
 
-	// lines
-	Gui::MenuItem* lines = new Gui::MenuItem;
-	lines->setCommand("Add Lines");
-	*lines << "TechDraw_LeaderLine" << "TechDraw_FaceCenterLine"
-		<< "TechDraw_2LineCenterLine" << "TechDraw_2PointCenterLine";
+    // lines
+    Gui::MenuItem* lines = new Gui::MenuItem;
+    lines->setCommand("Add Lines");
+    *lines << "TechDraw_LeaderLine" << "TechDraw_FaceCenterLine"
+        << "TechDraw_2LineCenterLine" << "TechDraw_2PointCenterLine";
 
-	// vertices
-	Gui::MenuItem* vertices = new Gui::MenuItem;
-	vertices->setCommand("Add Vertices");
-	*vertices << "TechDraw_CosmeticVertex" << "TechDraw_Midpoints"
-		<< "TechDraw_Quadrants";
+    // vertices
+    Gui::MenuItem* vertices = new Gui::MenuItem;
+    vertices->setCommand("Add Vertices");
+    *vertices << "TechDraw_CosmeticVertex" << "TechDraw_Midpoints"
+        << "TechDraw_Quadrants";
 
-	// main menu
-	draw->setCommand("TechDraw");
+    // main menu
+    draw->setCommand("TechDraw");
     *draw << "TechDraw_PageDefault";
     *draw << "TechDraw_PageTemplate";
     *draw << "TechDraw_RedrawPage";
@@ -94,7 +96,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_ClipGroupAdd";
     *draw << "TechDraw_ClipGroupRemove";
     *draw << "Separator";
-	*draw << dimensions;
+    *draw << dimensions;
     *draw << "Separator";
     *draw << "TechDraw_ExportPageSVG";
     *draw << "TechDraw_ExportPageDXF";
@@ -106,7 +108,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_ToggleFrame";
     *draw << "Separator";
     *draw << annotations;
-	*draw << lines;
+    *draw << lines;
     *draw << vertices;
     *draw << "TechDraw_CosmeticEraser";
     *draw << "TechDraw_DecorateLine";
@@ -155,6 +157,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 //    *dims << "TechDraw_VerticalExtentDimension";
     *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
+    *dims << "TechDraw_LandmarkDimension";
 //    *dims << "TechDraw_Dimension"
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);
@@ -227,6 +230,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 //    *dims << "TechDraw_VerticalExtentDimension";
     *dims << "TechDraw_LinkDimension";
     *dims << "TechDraw_Balloon";
+    *dims << "TechDraw_LandmarkDimension";
 //    *dims << "TechDraw_Dimension";
 
     Gui::ToolBarItem *file = new Gui::ToolBarItem(root);

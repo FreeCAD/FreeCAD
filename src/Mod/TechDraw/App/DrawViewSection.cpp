@@ -320,6 +320,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
     }
 
     sectionExec(baseShape);
+    addShapes2d();
 
     //second pass if required
     if (ScaleType.isValue("Automatic")) {
@@ -399,6 +400,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
         centeredShape = TechDraw::moveShape(rawShape,
                                             sectionOrigin * -1.0);
         m_cutShape = centeredShape;
+        m_saveCentroid = sectionOrigin;
 
         TopoDS_Shape scaledShape   = TechDraw::scaleShape(centeredShape,
                                                           getScale());
@@ -493,6 +495,8 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addCenterLinesToGeom();
+
+    addReferencesToGeom();
 }
 
 gp_Pln DrawViewSection::getSectionPlane() const

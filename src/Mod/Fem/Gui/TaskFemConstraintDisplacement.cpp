@@ -50,9 +50,6 @@
 #include "ui_TaskFemConstraintDisplacement.h"
 #include <App/Application.h>
 #include <Gui/Command.h>
-
-
-
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 
@@ -75,6 +72,8 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemCons
     deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
@@ -523,24 +522,6 @@ void TaskFemConstraintDisplacement::removeFromSelection()
 
     pcConstraint->References.setValues(Objects,SubElements);
     updateUI();
-}
-
-void TaskFemConstraintDisplacement::setSelection(QListWidgetItem* item){
-    std::string s = item->text().toStdString();
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-
-    std::string delimiter = ":";
-
-    size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName=s;
-
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
 }
 
 void TaskFemConstraintDisplacement::onReferenceDeleted() {

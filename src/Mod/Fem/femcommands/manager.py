@@ -47,6 +47,7 @@ class CommandManager(object):
         }
         # FIXME add option description
         self.is_active = None
+        self.do_activated = None
         self.selobj = None
         self.selobj2 = None
         self.active_analysis = None
@@ -129,6 +130,17 @@ class CommandManager(object):
                 and not self.analysis_has_solver()
             )
         return active
+
+    def Activated(self):
+        if self.do_activated == "add_obj_on_gui_noset_edit":
+            self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_set_edit":
+            self.add_obj_on_gui_set_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_selobj_noset_edit":
+            self.add_obj_on_gui_selobj_noset_edit(self.__class__.__name__.lstrip("_"))
+        elif self.do_activated == "add_obj_on_gui_selobj_set_edit":
+            self.add_obj_on_gui_selobj_set_edit(self.__class__.__name__.lstrip("_"))
+        # in all other cases Activated is implemented it the command class
 
     def results_present(self):
         results = False

@@ -118,7 +118,7 @@ def is_derived_from(obj, t):
 def get_pref_working_dir(solver_obj):
     """ Return working directory for solver honoring user settings.
 
-    :throws femsolver.run.MustSaveError:
+    :throws femtools.erros.MustSaveError:
      If user setting is set to BESIDE and the document isn't saved.
 
     :note:
@@ -179,6 +179,7 @@ def get_beside_base(obj):
                 "Can't start Solver or Mesh creation besides FC file.",
                 error_message
             )
+        # from .errors import MustSaveError
         # raise MustSaveError()
         return get_temp_dir()
     else:
@@ -197,7 +198,9 @@ def get_custom_base(solver):
                 "Can't start Solver or Mesh creation.",
                 error_message
             )
-        raise DirectoryDoesNotExistError("Invalid path")
+        # from .errors import DirectoryDoesNotExistError
+        # raise DirectoryDoesNotExistError("Invalid path")
+        return get_temp_dir()
     return path
 
 
@@ -209,15 +212,6 @@ def check_working_dir(wdir):
         return True
     else:
         return False
-
-
-# TODO: move in own error module
-class MustSaveError(Exception):
-    pass
-
-
-class DirectoryDoesNotExistError(Exception):
-    pass
 
 
 # ************************************************************************************************

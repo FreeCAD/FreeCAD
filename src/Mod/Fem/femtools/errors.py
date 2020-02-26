@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,56 +20,14 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM constraint electrostatic potential document object"
+__title__ = "FEM Errors"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemConstraintElectrostaticPotential
-#  \ingroup FEM
-#  \brief FreeCAD FEM constraint electrostatic potential object
 
-from . import FemConstraint
+class MustSaveError(Exception):
+    pass
 
 
-class Proxy(FemConstraint.Proxy):
-
-    Type = "Fem::ConstraintElectrostaticPotential"
-
-    def __init__(self, obj):
-        super(Proxy, self).__init__(obj)
-        obj.addProperty(
-            "App::PropertyFloat",
-            "Potential",
-            "Parameter",
-            "Potential"
-        ),
-        obj.addProperty(
-            "App::PropertyBool",
-            "PotentialEnabled",
-            "Parameter",
-            "Potential Enabled"
-        ),
-        obj.addProperty(
-            "App::PropertyBool",
-            "PotentialConstant",
-            "Parameter",
-            "Potential Constant"
-        ),
-        obj.addProperty(
-            "App::PropertyBool",
-            "ElectricInfinity",
-            "Parameter",
-            "Electric Infinity"
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "CapacitanceBody",
-            "Parameter",
-            "Capacitance Body"
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "CapacitanceBodyEnabled",
-            "Parameter",
-            "Capacitance Body Enabled"
-        )
+class DirectoryDoesNotExistError(Exception):
+    pass

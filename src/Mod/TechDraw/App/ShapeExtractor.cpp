@@ -29,7 +29,11 @@
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepTools.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
-
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -43,12 +47,45 @@
 #include <Base/Parameter.h>
 
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/PrimitiveFeature.h>
+#include <Mod/Part/App/FeaturePartCircle.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PropertyTopoShape.h>
 
 #include "ShapeExtractor.h"
+#include "DrawUtil.h"
 
 using namespace TechDraw;
+
+std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links)
+{
+//    Base::Console().Message("SE::getShapes2d()\n");
+
+    std::vector<TopoDS_Shape> shapes2d;
+    for (auto& l:links) {
+        const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
+//        App::Property* gProp = l->getPropertyByName("Group");
+        if (gex != nullptr) {
+            std::vector<App::DocumentObject*> objs = gex->Group.getValues();
+            for (auto& d: objs) {
+                if (is2dObject(d)) {
+                    auto shape = Part::Feature::getShape(d);
+                    if(!shape.IsNull()) {
+                        shapes2d.push_back(shape);
+                    }
+                }
+            }
+        } else {
+            if (is2dObject(l)) {
+                auto shape = Part::Feature::getShape(l);
+                if(!shape.IsNull()) {
+                    shapes2d.push_back(shape);
+                }
+            }
+        }
+    }
+    return shapes2d;
+}
 
 TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links)
 {
@@ -56,7 +93,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     std::vector<TopoDS_Shape> sourceShapes;
 
     for (auto& l:links) {
-        auto shape = Part::Feature::getShape(l);    //finds shape within DocObj??
+        auto shape = Part::Feature::getShape(l);
         if(!shape.IsNull()) {
 //            BRepTools::Write(shape, "DVPgetShape.brep");            //debug
             if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
@@ -201,7 +238,8 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
                 extShapes.push_back(s);
             }
         }
-        //get edges not part of a solid
+        //vs using 2d geom as construction geom? 
+        //get edges not part of a solid 
         //???? should this look for Faces(Wires?) before Edges?
         TopExp_Explorer expEdge(shapeIn, TopAbs_EDGE, TopAbs_SOLID);
         for (int i = 1; expEdge.More(); expEdge.Next(), i++) {
@@ -219,6 +257,87 @@ std::vector<TopoDS_Shape> ShapeExtractor::extractDrawableShapes(const TopoDS_Sha
     if (!extEdges.empty()) {
         result.insert(std::end(result), std::begin(extEdges), std::end(extEdges));
     }
+    return result;
+}
+
+bool ShapeExtractor::is2dObject(App::DocumentObject* obj)
+{
+    bool result = false;
+    if (isEdgeType(obj) || isPointType(obj)) {
+        result = true;
+    }
+    return result;
+}
+
+//skip edges for now.
+bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
+{
+    (void) obj;
+    bool result = false;
+//    Base::Type t = obj->getTypeId();
+//    if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
+//        result = true;
+//    } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
+//        result = true; 
+//    } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
+//        result = true; 
+//    } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
+//        result = true; 
+//    }
+    return result;
+}
+
+bool ShapeExtractor::isPointType(App::DocumentObject* obj)
+{
+    bool result = false;
+    Base::Type t = obj->getTypeId();
+    if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
+        result = true; 
+    } else if (isDraftPoint(obj)) {
+        result = true;
+    }
+    return result;
+}
+
+bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
+{
+//    Base::Console().Message("SE::isDraftPoint()\n");
+    bool result = false;
+    //if the docObj doesn't have a Proxy property, it definitely isn't a Draft point
+    App::Property* proxy = obj->getPropertyByName("Proxy");
+    if (proxy != nullptr) {
+        App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
+        std::string  pp = proxyPy->toString();
+//        Base::Console().Message("SE::isDraftPoint - pp: %s\n", pp.c_str());
+        if (pp.find("Point") != std::string::npos) {
+            result = true;
+        }
+    }
+    return result;
+}
+
+Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
+{
+//    Base::Console().Message("SE::getLocation3dFromFeat()\n");
+    Base::Vector3d result(0.0, 0.0, 0.0);
+    if (!isPointType(obj)) {
+        return result;
+    }
+//    if (isDraftPoint(obj) {
+//        //Draft Points are not necc. Part::PartFeature??
+//        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
+//        Base::Vector3d featPos = features[i]->(Placement.getValue()).Position();
+
+    Part::Feature* pf = dynamic_cast<Part::Feature*>(obj);
+    if (pf != nullptr) {
+        TopoDS_Shape ts = pf->Shape.getValue();
+        if (ts.ShapeType() == TopAbs_VERTEX)  {
+            TopoDS_Vertex v = TopoDS::Vertex(ts);
+            result = DrawUtil::vertex2Vector(v);
+        }
+    }
+//    Base::Console().Message("SE::getLocation3dFromFeat - returns: %s\n",
+//                            DrawUtil::formatVector(result).c_str());
     return result;
 }
 

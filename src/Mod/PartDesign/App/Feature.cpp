@@ -156,17 +156,30 @@ const TopoDS_Shape& Feature::getBaseShape() const {
     return result;
 }
 
-const Part::TopoShape Feature::getBaseTopoShape() const {
-    const Part::Feature* BaseObject = getBaseObject();
+Part::TopoShape Feature::getBaseTopoShape(bool silent) const {
+    Part::TopoShape result;
 
-    if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId())) {
-        throw Base::ValueError("Base shape of shape binder cannot be used");
+    const Part::Feature* BaseObject = getBaseObject(silent);
+    if (!BaseObject)
+        return result;
+
+    if(BaseObject != BaseFeature.getValue()) {
+        if (BaseObject->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
+            BaseObject->isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId()))
+        {
+            if(silent)
+                return result;
+            throw Base::ValueError("Base shape of shape binder cannot be used");
+        }
     }
 
-    const Part::TopoShape& result = BaseObject->Shape.getShape();
-    if (result.getShape().IsNull())
-        throw Base::ValueError("Base feature's TopoShape is invalid");
-
+    result = BaseObject->Shape.getShape();
+    if(!silent) {
+        if (result.isNull())
+            throw Base::ValueError("Base feature's TopoShape is invalid");
+        if (!result.hasSubShape(TopAbs_SOLID))
+            throw Base::ValueError("Base feature's shape is not a solid");
+    }
     return result;
 }
 

@@ -120,6 +120,14 @@ class _TaskPanel(object):
         self._paramWidget.potentialConstantBox.setChecked(
             self._obj.PotentialConstant)
 
+        self._paramWidget.electricInfinityBox.setChecked(
+            self._obj.ElectricInfinity)
+
+        self._paramWidget.capacitanceBodyBox.setChecked(
+            not self._obj.CapacitanceBodyEnabled)
+        self._paramWidget.capacitanceBody_spinBox.setValue(
+            self._obj.CapacitanceBody)
+
     def _applyWidgetChanges(self):
         unit = "V"
         self._obj.PotentialEnabled = \
@@ -140,3 +148,11 @@ class _TaskPanel(object):
             if quantity is not None:
                 self._obj.Potential = float(quantity.getValueAs(unit))
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
+
+        self._obj.ElectricInfinity = self._paramWidget.electricInfinityBox.isChecked()
+
+        self._obj.CapacitanceBodyEnabled = \
+            not self._paramWidget.capacitanceBodyBox.isChecked()
+        if self._obj.CapacitanceBodyEnabled:
+            self._paramWidget.capacitanceBody_spinBox.setEnabled(True)
+            self._obj.CapacitanceBody = self._paramWidget.capacitanceBody_spinBox.value()

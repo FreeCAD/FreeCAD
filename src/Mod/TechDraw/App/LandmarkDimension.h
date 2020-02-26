@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2019 Wanderer Fan <wandererfan@gmail.com>               *
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,65 +20,59 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawLeaderLine_h_
-#define _TechDraw_DrawLeaderLine_h_
-#include <tuple>
+#ifndef _TechDraw_LandmarkDimension_h_
+#define _TechDraw_LandmarkDimension_h_
 
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
 # include <App/PropertyLinks.h>
 
-#include "DrawView.h"
+#include "DrawViewDimension.h"
 
+class TopoDS_Shape;
+class gp_Ax2;
 
+namespace Measure {
+class Measurement;
+}
 namespace TechDraw
 {
+class DrawViewPart;
 
-class TechDrawExport DrawLeaderLine : public TechDraw::DrawView
+class TechDrawExport LandmarkDimension : public TechDraw::DrawViewDimension
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawLeaderLine);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::LandmarkDimension);
 
 public:
-    DrawLeaderLine();
-    virtual ~DrawLeaderLine();
+    /// Constructor
+    LandmarkDimension();
+    virtual ~LandmarkDimension();
 
-    App::PropertyLink         LeaderParent;
-    App::PropertyVectorList   WayPoints;
-    App::PropertyInteger      StartSymbol;          //see Gui/QGIArrow for values
-    App::PropertyInteger      EndSymbol;
-    App::PropertyBool         Scalable;
-    App::PropertyBool         AutoHorizontal;
-
-    virtual short mustExecute() const override;
+    App::PropertyStringList  ReferenceTags;     //tags of 2d vertices in DVP
+    
     virtual App::DocumentObjectExecReturn *execute(void) override;
-
+    short mustExecute() const override;
     virtual const char* getViewProviderName(void) const override {
-        return "TechDrawGui::ViewProviderLeader";
-    }
-    virtual PyObject *getPyObject(void) override;
-    virtual QRectF getRect() const override { return QRectF(0,0,1,1);}
+        return "TechDrawGui::ViewProviderDimension"; }
+/*    virtual PyObject *getPyObject(void) override;*/
 
-    Base::Vector3d getAttachPoint(void);
-    DrawView* getBaseView(void) const;
-    virtual App::DocumentObject* getBaseObject(void) const;
-    bool keepUpdated(void) override;
-    double getScale(void) const override;
-    double getBaseScale(void) const;
-    void adjustLastSegment(void);
-    bool getDefAuto(void) const;
+    virtual bool checkReferences2D() const override;
+    virtual bool has2DReferences(void) const override;
+    virtual pointPair getPointsTwoVerts() override;
+    std::vector<Base::Vector3d> get2DPoints(void) const;
+    virtual DrawViewPart* getViewPart() const override;
+    virtual int getRefType() const override;
 
-    Base::Vector3d getTileOrigin(void) const;
-    Base::Vector3d getKinkPoint(void) const;
-    Base::Vector3d getTailPoint(void) const;
-
+    gp_Ax2 getProjAxis(void) const;
 
 protected:
     virtual void onChanged(const App::Property* prop) override;
+    virtual void onDocumentRestored() override;
+
+    Base::Vector3d projectPoint(const Base::Vector3d& pt, DrawViewPart* dvp) const;
 
 private:
 };
-
-typedef App::FeaturePythonT<DrawLeaderLine> DrawLeaderLinePython;
 
 } //namespace TechDraw
 #endif

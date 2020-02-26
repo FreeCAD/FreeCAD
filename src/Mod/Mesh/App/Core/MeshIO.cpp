@@ -2009,9 +2009,9 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
     Base::SequencerLauncher seq("saving...", _rclMesh.CountFacets() + 1);
 
     if (this->objectName.empty())
-        rstrOut << "solid Mesh" << std::endl;
+        rstrOut << "solid Mesh\n";
     else
-        rstrOut << "solid " << this->objectName << std::endl;
+        rstrOut << "solid " << this->objectName << '\n';
 
     clIter.Begin();
     clEnd.End();
@@ -2021,24 +2021,24 @@ bool MeshOutput::SaveAsciiSTL (std::ostream &rstrOut) const
         // normal
         rstrOut << "  facet normal " << pclFacet->GetNormal().x << " "
                                      << pclFacet->GetNormal().y << " "
-                                     << pclFacet->GetNormal().z << std::endl;
-        rstrOut << "    outer loop" << std::endl;
+                                     << pclFacet->GetNormal().z << '\n';
+        rstrOut << "    outer loop\n";
 
         // vertices
         for (i = 0; i < 3; i++) {
             rstrOut << "      vertex "  << pclFacet->_aclPoints[i].x << " "
                                         << pclFacet->_aclPoints[i].y << " "
-                                        << pclFacet->_aclPoints[i].z << std::endl;
+                                        << pclFacet->_aclPoints[i].z << '\n';
         }
 
-        rstrOut << "    endloop" << std::endl;
-        rstrOut << "  endfacet" << std::endl;
+        rstrOut << "    endloop\n";
+        rstrOut << "  endfacet\n";
 
         ++clIter;
         seq.next(true);// allow to cancel
     }
 
-    rstrOut << "endsolid Mesh" << std::endl;
+    rstrOut << "endsolid Mesh\n";
 
     return true;
 }
@@ -2134,9 +2134,9 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
     }
 
     // Header
-    out << "# Created by FreeCAD <http://www.freecadweb.org>" << std::endl;
+    out << "# Created by FreeCAD <http://www.freecadweb.org>\n";
     if (exportColorPerFace) {
-        out << "mtllib " << _material->library << std::endl;
+        out << "mtllib " << _material->library << '\n';
     }
 
     out.precision(6);
@@ -2166,10 +2166,10 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
             int g = static_cast<int>(c.g * 255.0f);
             int b = static_cast<int>(c.b * 255.0f);
 
-            out << "v " << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b << std::endl;
+            out << "v " << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b << '\n';
         }
         else {
-            out << "v " << pt.x << " " << pt.y << " " << pt.z << std::endl;
+            out << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
         }
         seq.next(true); // allow to cancel
     }
@@ -2184,7 +2184,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
         pclFacet = &(*clIter);
         out << "vn " << pclFacet->GetNormal().x << " "
             << pclFacet->GetNormal().y << " "
-            << pclFacet->GetNormal().z << std::endl;
+            << pclFacet->GetNormal().z << '\n';
         ++clIter;
         seq.next(true); // allow to cancel
     }
@@ -2207,12 +2207,12 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
                     prev = Kd[index];
                     std::vector<App::Color>::iterator c_it = std::find(colors.begin(), colors.end(), prev);
                     if (c_it != colors.end()) {
-                        out << "usemtl material_" << (c_it - colors.begin()) << std::endl;
+                        out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                     }
                 }
                 out << "f " << it->_aulPoints[0]+1 << "//" << faceIdx << " "
                             << it->_aulPoints[1]+1 << "//" << faceIdx << " "
-                            << it->_aulPoints[2]+1 << "//" << faceIdx << std::endl;
+                            << it->_aulPoints[2]+1 << "//" << faceIdx << '\n';
                 seq.next(true); // allow to cancel
                 faceIdx++;
             }
@@ -2223,7 +2223,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
             for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
                 out << "f " << it->_aulPoints[0]+1 << "//" << faceIdx << " "
                             << it->_aulPoints[1]+1 << "//" << faceIdx << " "
-                            << it->_aulPoints[2]+1 << "//" << faceIdx << std::endl;
+                            << it->_aulPoints[2]+1 << "//" << faceIdx << '\n';
                 seq.next(true); // allow to cancel
                 faceIdx++;
             }
@@ -2241,7 +2241,7 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
             const std::vector<App::Color>& Kd = _material->diffuseColor;
 
             for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
-                out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << std::endl;
+                out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
                 for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
                     const MeshFacet& f = rFacets[*it];
                     if (first || prev != Kd[*it]) {
@@ -2249,25 +2249,25 @@ bool MeshOutput::SaveOBJ (std::ostream &out) const
                         prev = Kd[*it];
                         std::vector<App::Color>::iterator c_it = std::find(colors.begin(), colors.end(), prev);
                         if (c_it != colors.end()) {
-                            out << "usemtl material_" << (c_it - colors.begin()) << std::endl;
+                            out << "usemtl material_" << (c_it - colors.begin()) << '\n';
                         }
                     }
 
                     out << "f " << f._aulPoints[0]+1 << "//" << *it + 1 << " "
                                 << f._aulPoints[1]+1 << "//" << *it + 1 << " "
-                                << f._aulPoints[2]+1 << "//" << *it + 1 << std::endl;
+                                << f._aulPoints[2]+1 << "//" << *it + 1 << '\n';
                     seq.next(true); // allow to cancel
                 }
             }
         }
         else {
             for (std::vector<Group>::const_iterator gt = _groups.begin(); gt != _groups.end(); ++gt) {
-                out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << std::endl;
+                out << "g " << Base::Tools::escapedUnicodeFromUtf8(gt->name.c_str()) << '\n';
                 for (std::vector<unsigned long>::const_iterator it = gt->indices.begin(); it != gt->indices.end(); ++it) {
                     const MeshFacet& f = rFacets[*it];
                     out << "f " << f._aulPoints[0]+1 << "//" << *it + 1 << " "
                                 << f._aulPoints[1]+1 << "//" << *it + 1 << " "
-                                << f._aulPoints[2]+1 << "//" << *it + 1 << std::endl;
+                                << f._aulPoints[2]+1 << "//" << *it + 1 << '\n';
                     seq.next(true); // allow to cancel
                 }
             }
@@ -2291,17 +2291,17 @@ bool MeshOutput::SaveMTL(std::ostream &out) const
 
             out.precision(6);
             out.setf(std::ios::fixed | std::ios::showpoint);
-            out << "# Created by FreeCAD <http://www.freecadweb.org>: 'None'" << std::endl;
-            out << "# Material Count: " << Kd.size() << std::endl;
+            out << "# Created by FreeCAD <http://www.freecadweb.org>: 'None'\n";
+            out << "# Material Count: " << Kd.size() << '\n';
 
             for (std::size_t i=0; i<Kd.size(); i++) {
-                out << std::endl;
-                out << "newmtl material_" << i << std::endl;
-                out << "    Ns 10.000000" << std::endl;
-                out << "    Ni 1.000000" << std::endl;
-                out << "    d 1.000000" << std::endl;
-                out << "    illum 2" << std::endl;
-                out << "    Kd " << Kd[i].r << " " << Kd[i].g << " " << Kd[i].b << std::endl;
+                out << '\n';
+                out << "newmtl material_" << i << '\n';
+                out << "    Ns 10.000000" << '\n';
+                out << "    Ni 1.000000" << '\n';
+                out << "    d 1.000000" << '\n';
+                out << "    illum 2" << '\n';
+                out << "    Kd " << Kd[i].r << " " << Kd[i].g << " " << Kd[i].b << '\n';
             }
 
             return true;
@@ -2324,11 +2324,11 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
 
     // Header
-    out << "#$SMF 1.0" << std::endl;
-    out << "#$vertices " << rPoints.size() << std::endl;
-    out << "#$faces " << rFacets.size() << std::endl;
-    out << "#" << std::endl;
-    out << "# Created by FreeCAD <http://www.freecadweb.org>" << std::endl;
+    out << "#$SMF 1.0\n";
+    out << "#$vertices " << rPoints.size() << '\n';
+    out << "#$faces " << rFacets.size() << '\n';
+    out << "#\n";
+    out << "# Created by FreeCAD <http://www.freecadweb.org>\n";
 
     out.precision(6);
     out.setf(std::ios::fixed | std::ios::showpoint);
@@ -2344,7 +2344,7 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
             pt.Set(it->x, it->y, it->z);
         }
 
-        out << "v " << pt.x << " " << pt.y << " " << pt.z << std::endl;
+        out << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
         seq.next(true); // allow to cancel
     }
 
@@ -2352,7 +2352,7 @@ bool MeshOutput::SaveSMF (std::ostream &out) const
     for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
         out << "f " << it->_aulPoints[0]+1 << " "
                     << it->_aulPoints[1]+1 << " "
-                    << it->_aulPoints[2]+1 << std::endl;
+                    << it->_aulPoints[2]+1 << '\n';
         seq.next(true); // allow to cancel
     }
 
@@ -2394,10 +2394,10 @@ bool MeshOutput::SaveOFF (std::ostream &out) const
     }
 
     if (exportColor)
-        out << "COFF" << std::endl;
+        out << "COFF\n";
     else
-        out << "OFF" << std::endl;
-    out << rPoints.size() << " " << rFacets.size() << " 0" << std::endl;
+        out << "OFF\n";
+    out << rPoints.size() << " " << rFacets.size() << " 0\n";
 
     // vertices
     Base::Vector3f pt;
@@ -2424,10 +2424,10 @@ bool MeshOutput::SaveOFF (std::ostream &out) const
             int b = static_cast<int>(c.b * 255.0f);
             int a = static_cast<int>(c.a * 255.0f);
 
-            out << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b << " " << a << std::endl;
+            out << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b << " " << a << '\n';
         }
         else {
-            out << pt.x << " " << pt.y << " " << pt.z << std::endl;
+            out << pt.x << " " << pt.y << " " << pt.z << '\n';
         }
         seq.next(true); // allow to cancel
     }
@@ -2436,7 +2436,7 @@ bool MeshOutput::SaveOFF (std::ostream &out) const
     for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
         out << "3 " << it->_aulPoints[0]
             << " " << it->_aulPoints[1]
-            << " " << it->_aulPoints[2] << std::endl;
+            << " " << it->_aulPoints[2] << '\n';
         seq.next(true); // allow to cancel
     }
 
@@ -2453,21 +2453,21 @@ bool MeshOutput::SaveBinaryPLY (std::ostream &out) const
         return false;
     bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
         && _material->diffuseColor.size() == rPoints.size());
-    out << "ply" << std::endl
-        << "format binary_little_endian 1.0" << std::endl
-        << "comment Created by FreeCAD <http://www.freecadweb.org>" << std::endl
-        << "element vertex " << v_count << std::endl
-        << "property float32 x" << std::endl
-        << "property float32 y" << std::endl
-        << "property float32 z" << std::endl;
+    out << "ply\n"
+        << "format binary_little_endian 1.0\n"
+        << "comment Created by FreeCAD <http://www.freecadweb.org>\n"
+        << "element vertex " << v_count << '\n'
+        << "property float32 x\n"
+        << "property float32 y\n"
+        << "property float32 z\n";
     if (saveVertexColor) {
-        out << "property uchar red" << std::endl
-            << "property uchar green" << std::endl
-            << "property uchar blue" << std::endl;
+        out << "property uchar red\n"
+            << "property uchar green\n"
+            << "property uchar blue\n";
     }
-    out << "element face " << f_count << std::endl
-        << "property list uchar int vertex_index" << std::endl
-        << "end_header" << std::endl;
+    out << "element face " << f_count << '\n'
+        << "property list uchar int vertex_index\n"
+        << "end_header\n";
 
     Base::OutputStream os(out);
     os.setByteOrder(Base::Stream::LittleEndian);
@@ -2514,21 +2514,21 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
 
     bool saveVertexColor = (_material && _material->binding == MeshIO::PER_VERTEX
         && _material->diffuseColor.size() == rPoints.size());
-    out << "ply" << std::endl
-        << "format ascii 1.0" << std::endl
-        << "comment Created by FreeCAD <http://www.freecadweb.org>" << std::endl
-        << "element vertex " << v_count << std::endl
-        << "property float32 x" << std::endl
-        << "property float32 y" << std::endl
-        << "property float32 z" << std::endl;
+    out << "ply\n"
+        << "format ascii 1.0\n"
+        << "comment Created by FreeCAD <http://www.freecadweb.org>\n"
+        << "element vertex " << v_count << '\n'
+        << "property float32 x\n"
+        << "property float32 y\n"
+        << "property float32 z\n";
     if (saveVertexColor) {
-        out << "property uchar red" << std::endl
-            << "property uchar green" << std::endl
-            << "property uchar blue" << std::endl;
+        out << "property uchar red\n"
+            << "property uchar green\n"
+            << "property uchar blue\n";
     }
-    out << "element face " << f_count << std::endl
-        << "property list uchar int vertex_index" << std::endl
-        << "end_header" << std::endl;
+    out << "element face " << f_count << '\n'
+        << "property list uchar int vertex_index\n"
+        << "end_header\n";
 
     Base::Vector3f pt;
 
@@ -2549,7 +2549,7 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
             int r = (int)(255.0f * c.r);
             int g = (int)(255.0f * c.g);
             int b = (int)(255.0f * c.b);
-            out << " " << r << " " << g << " " << b << std::endl;
+            out << " " << r << " " << g << " " << b << '\n';
         }
     }
     else {
@@ -2557,10 +2557,10 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
             const MeshPoint& p = rPoints[i];
             if (this->apply_transform) {
                 Base::Vector3f pt = this->_transform * p;
-                out << pt.x << " " << pt.y << " " << pt.z << std::endl;
+                out << pt.x << " " << pt.y << " " << pt.z << '\n';
             }
             else {
-                out << p.x << " " << p.y << " " << p.z << std::endl;
+                out << p.x << " " << p.y << " " << p.z << '\n';
             }
         }
     }
@@ -2572,7 +2572,7 @@ bool MeshOutput::SaveAsciiPLY (std::ostream &out) const
         f1 = (int)f._aulPoints[0];
         f2 = (int)f._aulPoints[1];
         f3 = (int)f._aulPoints[2];
-        out << n << " " << f1 << " " << f2 << " " << f3 << std::endl;
+        out << n << " " << f1 << " " << f2 << " " << f3 << '\n';
     }
 
     return true;
@@ -2587,26 +2587,26 @@ bool MeshOutput::SaveMeshNode (std::ostream &rstrOut)
         return false;
 
     // vertices
-    rstrOut << "[" << std::endl;
+    rstrOut << "[" << '\n';
     if (this->apply_transform) {
         Base::Vector3f pt;
         for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
             pt = this->_transform * *it;
-            rstrOut << "v " << pt.x << " " << pt.y << " " << pt.z << std::endl;
+            rstrOut << "v " << pt.x << " " << pt.y << " " << pt.z << '\n';
         }
     }
     else {
         for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
-            rstrOut << "v " << it->x << " " << it->y << " " << it->z << std::endl;
+            rstrOut << "v " << it->x << " " << it->y << " " << it->z << '\n';
         }
     }
     // facet indices (no texture and normal indices)
     for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
         rstrOut << "f " << it->_aulPoints[0]+1 << " "
                         << it->_aulPoints[1]+1 << " "
-                        << it->_aulPoints[2]+1 << std::endl;
+                        << it->_aulPoints[2]+1 << '\n';
     }
-    rstrOut << "]" << std::endl;
+    rstrOut << "]" << '\n';
 
     return true;
 }
@@ -2617,10 +2617,10 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
     const MeshPointArray& rPoints = _rclMesh.GetPoints();
     const MeshFacetArray& rFacets = _rclMesh.GetFacets();
 
-    //  writer << writer.ind() << "<Mesh>" << std::endl;
+    //  writer << writer.ind() << "<Mesh>" << '\n';
 
     writer.incInd();
-    writer.Stream() << writer.ind() << "<Points Count=\"" << _rclMesh.CountPoints() << "\">" << std::endl;
+    writer.Stream() << writer.ind() << "<Points Count=\"" << _rclMesh.CountPoints() << "\">" << '\n';
 
     writer.incInd();
     if (this->apply_transform) {
@@ -2631,7 +2631,7 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
                             << "x=\"" <<  pt.x << "\" "
                             << "y=\"" <<  pt.y << "\" "
                             << "z=\"" <<  pt.z << "\"/>"
-                            << std::endl;
+                            << '\n';
         }
     }
     else {
@@ -2640,14 +2640,14 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
                             << "x=\"" <<  itp->x << "\" "
                             << "y=\"" <<  itp->y << "\" "
                             << "z=\"" <<  itp->z << "\"/>"
-                            << std::endl;
+                            << '\n';
         }
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</Points>" << std::endl;
+    writer.Stream() << writer.ind() << "</Points>" << '\n';
 
     // write the faces
-    writer.Stream() << writer.ind() << "<Faces Count=\"" << _rclMesh.CountFacets() << "\">" << std::endl;
+    writer.Stream() << writer.ind() << "<Faces Count=\"" << _rclMesh.CountFacets() << "\">" << '\n';
 
     writer.incInd();
     for (MeshFacetArray::_TConstIterator it = rFacets.begin(); it != rFacets.end(); ++it) {
@@ -2658,12 +2658,12 @@ void MeshOutput::SaveXML (Base::Writer &writer) const
                         << "n0=\"" <<  it->_aulNeighbours[0] << "\" "
                         << "n1=\"" <<  it->_aulNeighbours[1] << "\" "
                         << "n2=\"" <<  it->_aulNeighbours[2] << "\"/>"
-                        << std::endl;
+                        << '\n';
     }
     writer.decInd();
-    writer.Stream() << writer.ind() << "</Faces>" << std::endl;
+    writer.Stream() << writer.ind() << "</Faces>" << '\n';
 
-    writer.Stream() << writer.ind() << "</Mesh>" << std::endl;
+    writer.Stream() << writer.ind() << "</Mesh>" << '\n';
     writer.decInd();
 }
 
@@ -2682,81 +2682,81 @@ bool MeshOutput::SaveIDTF (std::ostream &str) const
     str.precision(6);
     str.setf(std::ios::fixed | std::ios::showpoint);
 
-    str << "FILE_FORMAT \"IDTF\"" << std::endl
-        << "FORMAT_VERSION 100" << std::endl << std::endl;
+    str << "FILE_FORMAT \"IDTF\"\n"
+        << "FORMAT_VERSION 100\n\n";
 
-    str << Base::tabs(0) << "NODE \"MODEL\" {" << std::endl;
-    str << Base::tabs(1) << "NODE_NAME \"FreeCAD\"" << std::endl;
-    str << Base::tabs(1) << "PARENT_LIST {" << std::endl;
-    str << Base::tabs(2) << "PARENT_COUNT 1" << std::endl;
-    str << Base::tabs(2) << "PARENT 0 {" << std::endl;
-    str << Base::tabs(3) << "PARENT_NAME \"<NULL>\"" << std::endl;
-    str << Base::tabs(3) << "PARENT_TM {" << std::endl;
-    str << Base::tabs(4) << "1.000000 0.000000 0.000000 0.000000" << std::endl;
-    str << Base::tabs(4) << "0.000000 1.000000 0.000000 0.000000" << std::endl;
-    str << Base::tabs(4) << "0.000000 0.000000 1.000000 0.000000" << std::endl;
-    str << Base::tabs(4) << "0.000000 0.000000 0.000000 1.000000" << std::endl;
-    str << Base::tabs(3) << "}" << std::endl;
-    str << Base::tabs(2) << "}" << std::endl;
-    str << Base::tabs(1) << "}" << std::endl;
-    str << Base::tabs(1) << "RESOURCE_NAME \"FreeCAD\"" << std::endl;
-    str << Base::tabs(0) << "}" << std::endl << std::endl;
+    str << Base::tabs(0) << "NODE \"MODEL\" {\n";
+    str << Base::tabs(1) << "NODE_NAME \"FreeCAD\"\n";
+    str << Base::tabs(1) << "PARENT_LIST {\n";
+    str << Base::tabs(2) << "PARENT_COUNT 1\n";
+    str << Base::tabs(2) << "PARENT 0 {\n";
+    str << Base::tabs(3) << "PARENT_NAME \"<NULL>\"\n";
+    str << Base::tabs(3) << "PARENT_TM {\n";
+    str << Base::tabs(4) << "1.000000 0.000000 0.000000 0.000000\n";
+    str << Base::tabs(4) << "0.000000 1.000000 0.000000 0.000000\n";
+    str << Base::tabs(4) << "0.000000 0.000000 1.000000 0.000000\n";
+    str << Base::tabs(4) << "0.000000 0.000000 0.000000 1.000000\n";
+    str << Base::tabs(3) << "}\n";
+    str << Base::tabs(2) << "}\n";
+    str << Base::tabs(1) << "}\n";
+    str << Base::tabs(1) << "RESOURCE_NAME \"FreeCAD\"\n";
+    str << Base::tabs(0) << "}\n\n";
 
-    str << Base::tabs(0) << "RESOURCE_LIST \"MODEL\" {" << std::endl;
-    str << Base::tabs(1) << "RESOURCE_COUNT 1" << std::endl;
-    str << Base::tabs(1) << "RESOURCE 0 {" << std::endl;
-    str << Base::tabs(2) << "RESOURCE_NAME \"" << resource << "\"" << std::endl;
-    str << Base::tabs(2) << "MODEL_TYPE \"MESH\"" << std::endl;
-    str << Base::tabs(2) << "MESH {" << std::endl;
-    str << Base::tabs(3) << "FACE_COUNT " << fts.size() << std::endl;
-    str << Base::tabs(3) << "MODEL_POSITION_COUNT " << pts.size() << std::endl;
-    str << Base::tabs(3) << "MODEL_NORMAL_COUNT " << 3*fts.size() << std::endl;
-    str << Base::tabs(3) << "MODEL_DIFFUSE_COLOR_COUNT 0" << std::endl;
-    str << Base::tabs(3) << "MODEL_SPECULAR_COLOR_COUNT 0" << std::endl;
-    str << Base::tabs(3) << "MODEL_TEXTURE_COORD_COUNT 0" << std::endl;
-    str << Base::tabs(3) << "MODEL_BONE_COUNT 0" << std::endl;
-    str << Base::tabs(3) << "MODEL_SHADING_COUNT 1" << std::endl;
-    str << Base::tabs(3) << "MODEL_SHADING_DESCRIPTION_LIST {" << std::endl;
-    str << Base::tabs(4) << "SHADING_DESCRIPTION 0 {" << std::endl;
-    str << Base::tabs(5) << "TEXTURE_LAYER_COUNT 0" << std::endl;
-    str << Base::tabs(5) << "SHADER_ID 0" << std::endl;
-    str << Base::tabs(4) << "}" << std::endl;
-    str << Base::tabs(3) << "}" << std::endl;
-    str << Base::tabs(3) << "MESH_FACE_POSITION_LIST {" << std::endl;
+    str << Base::tabs(0) << "RESOURCE_LIST \"MODEL\" {\n";
+    str << Base::tabs(1) << "RESOURCE_COUNT 1\n";
+    str << Base::tabs(1) << "RESOURCE 0 {\n";
+    str << Base::tabs(2) << "RESOURCE_NAME \"" << resource << "\"\n";
+    str << Base::tabs(2) << "MODEL_TYPE \"MESH\"\n";
+    str << Base::tabs(2) << "MESH {\n";
+    str << Base::tabs(3) << "FACE_COUNT " << fts.size() << '\n';
+    str << Base::tabs(3) << "MODEL_POSITION_COUNT " << pts.size() << '\n';
+    str << Base::tabs(3) << "MODEL_NORMAL_COUNT " << 3*fts.size() << '\n';
+    str << Base::tabs(3) << "MODEL_DIFFUSE_COLOR_COUNT 0\n";
+    str << Base::tabs(3) << "MODEL_SPECULAR_COLOR_COUNT 0\n";
+    str << Base::tabs(3) << "MODEL_TEXTURE_COORD_COUNT 0\n";
+    str << Base::tabs(3) << "MODEL_BONE_COUNT 0\n";
+    str << Base::tabs(3) << "MODEL_SHADING_COUNT 1\n";
+    str << Base::tabs(3) << "MODEL_SHADING_DESCRIPTION_LIST {\n";
+    str << Base::tabs(4) << "SHADING_DESCRIPTION 0 {\n";
+    str << Base::tabs(5) << "TEXTURE_LAYER_COUNT 0\n";
+    str << Base::tabs(5) << "SHADER_ID 0\n";
+    str << Base::tabs(4) << "}\n";
+    str << Base::tabs(3) << "}\n";
+    str << Base::tabs(3) << "MESH_FACE_POSITION_LIST {\n";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
-        str << Base::tabs(4) << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << std::endl;
+        str << Base::tabs(4) << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << '\n';
     }
-    str << Base::tabs(3) << "}" << std::endl;
-    str << Base::tabs(3) << "MESH_FACE_NORMAL_LIST {" << std::endl;
+    str << Base::tabs(3) << "}\n";
+    str << Base::tabs(3) << "MESH_FACE_NORMAL_LIST {\n";
     int index = 0;
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
-        str << Base::tabs(4) << index << " " << index + 1 << " " << index + 2 << std::endl;
+        str << Base::tabs(4) << index << " " << index + 1 << " " << index + 2 << '\n';
         index += 3;
     }
-    str << Base::tabs(3) << "}" << std::endl;
-    str << Base::tabs(3) << "MESH_FACE_SHADING_LIST {" << std::endl;
+    str << Base::tabs(3) << "}\n";
+    str << Base::tabs(3) << "MESH_FACE_SHADING_LIST {\n";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
-        str << Base::tabs(4) << "0" << std::endl;
+        str << Base::tabs(4) << "0\n";
     }
-    str << Base::tabs(3) << "}" << std::endl;
-    str << Base::tabs(3) << "MODEL_POSITION_LIST {" << std::endl;
+    str << Base::tabs(3) << "}\n";
+    str << Base::tabs(3) << "MODEL_POSITION_LIST {\n";
     for (MeshPointArray::_TConstIterator it = pts.begin(); it != pts.end(); ++it) {
-        str << Base::tabs(4) << it->x << " " << it->y << " " << it->z << std::endl;
+        str << Base::tabs(4) << it->x << " " << it->y << " " << it->z << '\n';
     }
-    str << Base::tabs(3) << "}" << std::endl;
-    str << Base::tabs(3) << "MODEL_NORMAL_LIST {" << std::endl;
+    str << Base::tabs(3) << "}\n";
+    str << Base::tabs(3) << "MODEL_NORMAL_LIST {\n";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
         MeshGeomFacet face = _rclMesh.GetFacet(*it);
         Base::Vector3f normal = face.GetNormal();
-        str << Base::tabs(4) << normal.x << " " << normal.y << " " << normal.z << std::endl;
-        str << Base::tabs(4) << normal.x << " " << normal.y << " " << normal.z << std::endl;
-        str << Base::tabs(4) << normal.x << " " << normal.y << " " << normal.z << std::endl;
+        str << Base::tabs(4) << normal.x << " " << normal.y << " " << normal.z << '\n';
+        str << Base::tabs(4) << normal.x << " " << normal.y << " " << normal.z << '\n';
+        str << Base::tabs(4) << normal.x << " " << normal.y << " " << normal.z << '\n';
     }
 
-    str << Base::tabs(3) << "}" << std::endl;
-    str << Base::tabs(2) << "}" << std::endl;
-    str << Base::tabs(1) << "}" << std::endl;
-    str << Base::tabs(0) << "}" << std::endl;
+    str << Base::tabs(3) << "}\n";
+    str << Base::tabs(2) << "}\n";
+    str << Base::tabs(1) << "}\n";
+    str << Base::tabs(0) << "}\n";
 
     return true;
 }
@@ -2782,7 +2782,7 @@ triplot t xt yt zt 'b'
     str.precision(2);
     str.setf(std::ios::fixed | std::ios::showpoint);
 
-    str << "light on" << std::endl;
+    str << "light on\n";
     str << "list t ";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
         str << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << " | ";
@@ -2903,18 +2903,18 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
     out.setf(std::ios::fixed | std::ios::showpoint);
 
     // Header info
-    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
     out << "<X3D profile=\"Immersive\" version=\"3.2\" xmlns:xsd="
         << "\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation="
-        << "\"http://www.web3d.org/specifications/x3d-3.2.xsd\">" << std::endl;
-    out << "  <head>" << std::endl
-        << "    <meta name=\"generator\" content=\"FreeCAD\"/>" << std::endl
-        << "    <meta name=\"author\" content=\"\"/> " << std::endl
-        << "    <meta name=\"company\" content=\"\"/>" << std::endl
-        << "  </head>" << std::endl;
+        << "\"http://www.web3d.org/specifications/x3d-3.2.xsd\">\n";
+    out << "  <head>\n"
+        << "    <meta name=\"generator\" content=\"FreeCAD\"/>\n"
+        << "    <meta name=\"author\" content=\"\"/> \n"
+        << "    <meta name=\"company\" content=\"\"/>\n"
+        << "  </head>\n";
 
     // Beginning
-    out << "  <Scene>" << std::endl;
+    out << "  <Scene>\n";
     if (apply_transform) {
         Base::Placement p(_transform);
         const Base::Vector3d& v = p.getPosition();
@@ -2930,33 +2930,33 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
             << axis.x << " "
             << axis.y << " "
             << axis.z << " "
-            << angle << "'>" << std::endl;
+            << angle << "'>\n";
     }
     else {
-        out << "    <Transform>" << std::endl;
+        out << "    <Transform>\n";
     }
-    out << "      <Shape>" << std::endl;
+    out << "      <Shape>\n";
     out << "        <Appearance><Material DEF='Shape_Mat' diffuseColor='0.65 0.65 0.65'"
-           " shininess='0.9' specularColor='1 1 1'></Material></Appearance>" << std::endl;
+           " shininess='0.9' specularColor='1 1 1'></Material></Appearance>\n";
 
     out << "        <IndexedFaceSet solid=\"false\" coordIndex=\"";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
         out << it->_aulPoints[0] << " " << it->_aulPoints[1] << " " << it->_aulPoints[2] << " -1 ";
     }
-    out << "\">" << std::endl;
+    out << "\">\n";
 
     out << "          <Coordinate point=\"";
     for (MeshPointArray::_TConstIterator it = pts.begin(); it != pts.end(); ++it) {
         out << it->x << " " << it->y << " " << it->z << ", ";
     }
-    out << "\"/>" << std::endl;
+    out << "\"/>\n";
 
     // End
-    out << "        </IndexedFaceSet>" << std::endl
-        << "      </Shape>" << std::endl
-        << "    </Transform>" << std::endl
-        << "  </Scene>" << std::endl
-        << "</X3D>" << std::endl;
+    out << "        </IndexedFaceSet>\n"
+        << "      </Shape>\n"
+        << "    </Transform>\n"
+        << "  </Scene>\n"
+        << "</X3D>\n";
 
     return true;
 }
@@ -2987,7 +2987,7 @@ bool MeshOutput::SaveNastran (std::ostream &rstrOut) const
         rstrOut << std::setfill(' ') << std::setw(16) << x;
         rstrOut << std::setfill(' ') << std::setw(8)  << y;
         rstrOut << std::setfill(' ') << std::setw(8)  << z;
-        rstrOut << std::endl;
+        rstrOut << '\n';
 
         iIndx++;
         seq.next();
@@ -3002,7 +3002,7 @@ bool MeshOutput::SaveNastran (std::ostream &rstrOut) const
         rstrOut << std::setfill(' ') << std::setw(8) << clTIter.GetIndices()._aulPoints[1]+1;
         rstrOut << std::setfill(' ') << std::setw(8) << clTIter.GetIndices()._aulPoints[0]+1;
         rstrOut << std::setfill(' ') << std::setw(8) << clTIter.GetIndices()._aulPoints[2]+1;
-        rstrOut <<std::endl;
+        rstrOut << '\n';
 
         iIndx++;
         seq.next();
@@ -3030,7 +3030,7 @@ bool MeshOutput::SavePython (std::ostream &str) const
     str.precision(4);
     str.setf(std::ios::fixed | std::ios::showpoint);
 
-    str << "faces = [" << std::endl;
+    str << "faces = [\n";
     for (clIter.Init(); clIter.More(); clIter.Next()) {
         const MeshGeomFacet& rFacet = *clIter;
         for (int i = 0; i < 3; i++) {
@@ -3039,10 +3039,10 @@ bool MeshOutput::SavePython (std::ostream &str) const
                 << "," << rFacet._aclPoints[i].z
                 << "],";
         }
-        str << std::endl;
+        str << '\n';
     }
 
-    str << "]" << std::endl;
+    str << "]\n";
 
     return true;
 }

@@ -191,14 +191,14 @@ void DressUp::onChanged(const App::Property* prop)
                 s = base->AddSubShape.getShape();
             } else {
                 addSubType = base->getAddSubType();
-                auto baseBase = base->getBaseObject(true);
-                if(!baseBase) {
+                Part::TopoShape baseShape = base->getBaseTopoShape(true);
+                if (baseShape.isNull() || !baseShape.hasSubShape(TopAbs_SOLID)) {
                     s = Shape.getShape();
                     addSubType = Additive;
                 } else if (addSubType == Additive)
-                    s = Shape.getShape().cut(base->getBaseTopoShape().getShape());
+                    s = Shape.getShape().cut(baseShape.getShape());
                 else
-                    s = base->getBaseTopoShape().cut(Shape.getValue());
+                    s = baseShape.cut(Shape.getValue());
             }
             AddSubShape.setValue(s);
         }

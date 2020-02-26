@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 from PySide import QtGui
 
 import FreeCAD as App
-import femtools.femutils as femutils
+from femtools.errors import MustSaveError, DirectoryDoesNotExistError
 from . import run
 
 if App.GuiUp:
@@ -78,7 +78,7 @@ class ViewProxy(object):
     def setEdit(self, vobj, mode=0):
         try:
             machine = run.getMachine(vobj.Object)
-        except femutils.MustSaveError:
+        except MustSaveError:
             error_message = (
                 "Please save the file before opening the task panel. "
                 "This must be done because the location of the working "
@@ -91,7 +91,7 @@ class ViewProxy(object):
                 error_message
             )
             return False
-        except femutils.DirectoryDoesNotExistError:
+        except DirectoryDoesNotExistError:
             error_message = "Selected working directory doesn't exist."
             App.Console.PrintError(error_message + "\n")
             QtGui.QMessageBox.critical(

@@ -106,6 +106,8 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
     connect(deleteAction, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
 
+    connect(ui->listWidgetReferences, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->listWidgetReferences, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
@@ -184,22 +186,28 @@ void TaskThicknessParameters::onRefDeleted(void)
         return;
     }
 
+    // get the thickness object
+    PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
+    App::DocumentObject* base = pcThickness->Base.getValue();
+    // get all thickness references
+    std::vector<std::string> refs = pcThickness->Base.getSubValues();
+    setupTransaction();
+
     // delete the selection backwards to assure the list index keeps valid for the deletion
     for (int i = selectedList.count() - 1; i > -1; i--) {
-        // get the fillet object
-        PartDesign::Thickness* pcThickness = static_cast<PartDesign::Thickness*>(DressUpView->getObject());
-        App::DocumentObject* base = pcThickness->Base.getValue();
-        // get all fillet references
-        std::vector<std::string> refs = pcThickness->Base.getSubValues();
         // the ref index is the same as the listWidgetReferences index
         // so we can erase using the row number of the element to be deleted
         int rowNumber = ui->listWidgetReferences->row(selectedList.at(i));
+        // erase the reference
         refs.erase(refs.begin() + rowNumber);
-        setupTransaction();
-        pcThickness->Base.setValue(base, refs);
+        // remove from the list
         ui->listWidgetReferences->model()->removeRow(rowNumber);
-        pcThickness->getDocument()->recomputeFeature(pcThickness);
     }
+
+    // update the object
+    pcThickness->Base.setValue(base, refs);
+    // recompute the feature
+    pcThickness->recomputeFeature();
 
     // if there is only one item left, it cannot be deleted
     if (ui->listWidgetReferences->count() == 1) {

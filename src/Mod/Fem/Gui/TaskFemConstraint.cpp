@@ -135,6 +135,26 @@ const std::string TaskFemConstraint::getScale() const //OvG: Return pre-calculat
     return result;
 }
 
+void TaskFemConstraint::setSelection(QListWidgetItem* item) {
+    // highlights the list item in the model
+
+    // get the document name
+    std::string docName = ConstraintView->getObject()->getDocument()->getName();
+    // name of the item
+    std::string ItemName = item->text().toStdString();
+    std::string delimiter = ":";
+    size_t pos = 0;
+    pos = ItemName.find(delimiter);
+    // the objName is the name piece before the ':' of the item name
+    std::string objName = ItemName.substr(0, pos);
+    // the subName is the name piece behind the ':'
+    ItemName.erase(0, pos + delimiter.length());
+    // clear existing selection
+    Gui::Selection().clearSelection();
+    // highligh the selected item
+    Gui::Selection().addSelection(docName.c_str(), objName.c_str(), ItemName.c_str(), 0, 0, 0);
+}
+
 void TaskFemConstraint::onReferenceDeleted(const int row) {
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();

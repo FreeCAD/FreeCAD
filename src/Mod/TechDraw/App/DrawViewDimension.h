@@ -105,9 +105,19 @@ public:
     App::PropertyFloat             OverTolerance;
     App::PropertyFloat             UnderTolerance;
 
+    enum RefType{
+            invalidRef,
+            oneEdge,
+            twoEdge,
+            twoVertex,
+            vertexEdge,
+            threeVertex
+        };
+
+
     short mustExecute() const override;
-    bool has2DReferences(void) const;
-    bool has3DReferences(void) const;
+    virtual bool has2DReferences(void) const;
+    virtual bool has3DReferences(void) const;
     bool hasTolerance(void) const;
 
     /** @name methods override Feature */
@@ -125,14 +135,14 @@ public:
 
     virtual std::string getFormatedValue(int partial = 0);
     virtual double getDimValue();
-    DrawViewPart* getViewPart() const;
+    virtual DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const override { return QRectF(0,0,1,1);}          //pretend dimensions always fit!
     static int getRefType1(const std::string s);
     static int getRefType2(const std::string s1, const std::string s2);
     static int getRefType3(const std::string g1,
                            const std::string g2,
                            const std::string g3);
-    int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
+    virtual int getRefType() const;                                   //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
     virtual bool checkReferences2D(void) const;
@@ -140,7 +150,6 @@ public:
     arcPoints getArcPoints(void) {return m_arcPoints; }
     anglePoints getAnglePoints(void) {return m_anglePoints; }
     bool leaderIntersectsArc(Base::Vector3d s, Base::Vector3d pointOnCircle);
-    bool references(std::string geomName) const;
 
     bool isMultiValueSchema(void) const;
 
@@ -164,13 +173,14 @@ protected:
                      Base::Vector3d e2) const;
     pointPair closestPoints(TopoDS_Shape s1,
                             TopoDS_Shape s2) const;
+    pointPair   m_linearPoints;
 
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
     void dumpRefs2D(const char* text) const;
     //Dimension "geometry"
-    pointPair   m_linearPoints;
+/*    pointPair   m_linearPoints;*/
     arcPoints   m_arcPoints;
     anglePoints m_anglePoints;
     bool        m_hasGeometry;

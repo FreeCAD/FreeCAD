@@ -77,6 +77,9 @@ public:
     CosmeticVertex(Base::Vector3d loc);
     virtual ~CosmeticVertex() = default;
 
+    void move(Base::Vector3d newPos);
+    void moveRelative(Base::Vector3d movement);
+
     std::string toString(void) const;
     void dump(const char* title);
     Base::Vector3d scaled(double factor);
