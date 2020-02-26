@@ -1,13 +1,4 @@
 # -*- coding: utf-8 -*-
-"""This module provides utility functions for the Draft Workbench.
-
-This module should contain auxiliary functions which don't require
-the graphical user interface (GUI).
-"""
-## @package utils
-# \ingroup DRAFT
-# \brief This module provides utility functions for the Draft Workbench
-
 # ***************************************************************************
 # *   (c) 2009, 2010                                                        *
 # *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
@@ -32,52 +23,35 @@ the graphical user interface (GUI).
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides utility functions for the Draft Workbench.
+
+This module contains auxiliary functions which can be used
+in other modules of the workbench, and which don't require
+the graphical user interface (GUI).
+"""
+## @package utils
+# \ingroup DRAFT
+# \brief This module provides utility functions for the Draft Workbench
 
 import os
-import FreeCAD
 from PySide import QtCore
+
+import FreeCAD
 import Draft_rc
+from draftutils.messages import _msg
+from draftutils.translate import _tr
+
 App = FreeCAD
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc else False
-
-
-if App.GuiUp:
-    # The right translate function needs to be imported here
-    # from DraftGui import translate
-
-    # At the moment it is the same function as without GUI
-    def translate(context, text):
-        return text
-else:
-    def translate(context, text):
-        return text
-
-
-def _tr(text):
-    """Function to translate with the context set."""
-    return translate("Draft", text)
-
-
-def _msg(text, end="\n"):
-    App.Console.PrintMessage(text + end)
-
-
-def _wrn(text, end="\n"):
-    App.Console.PrintWarning(text + end)
-
-
-def _log(text, end="\n"):
-    App.Console.PrintLog(text + end)
-
 
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
 arrowtypes = ARROW_TYPES
 
 
 def string_encode_coin(ustr):
-    """Encode a unicode object to be used as a string in coin
+    """Encode a unicode object to be used as a string in coin.
 
     Parameters
     ----------
@@ -132,7 +106,7 @@ def type_check(args_and_types, name="?"):
         Defaults to `'?'`. The name of the check.
 
     Raises
-    -------
+    ------
     TypeError
         If the first element in the tuple is not an instance of the second
         element, it raises `Draft.name`.
@@ -265,7 +239,7 @@ getParam = get_param
 
 
 def set_param(param, value):
-    """Set a Draft parameter with the given value
+    """Set a Draft parameter with the given value.
 
     The parameter database is located in the tree
     ::
@@ -981,7 +955,7 @@ getMovableChildren = get_movable_children
 
 
 def utf8_decode(text):
-    """Decode the input string and return a unicode string.
+    r"""Decode the input string and return a unicode string.
 
     Python 2:
     ::
@@ -1017,14 +991,14 @@ def utf8_decode(text):
 
         >>> "Aá".decode("utf-8")
         >>> b"Aá".decode("utf-8")
-        u'A\\xe1'
+        u'A\xe1'
 
         In Python 2 the unicode string is prefixed with `u`,
         and unicode characters are replaced by their two-digit hexadecimal
         representation, or four digit unicode escape.
 
         >>> "AáBẃCñ".decode("utf-8")
-        u'A\\xe1B\\u1e83C\\xf1'
+        u'A\xe1B\u1e83C\xf1'
 
         In Python 2 it will always return a `unicode` object.
 
