@@ -33,13 +33,9 @@ import math
 from PySide import QtCore
 
 __title__ = "Path Deburr Operation"
-__author__ = "sliptonic (Brad Collette)"
+__author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Deburr operation."
-__contributors__ = "Schildkroet"
-__created__ = "2018"
-__scriptVersion__ = "1.1"
-__lastModified__ = "2020-02-19"
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 #PathLog.trackModule(PathLog.thisModule())
