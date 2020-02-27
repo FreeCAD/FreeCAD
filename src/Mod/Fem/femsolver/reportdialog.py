@@ -26,7 +26,8 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-from PySide import QtGui
+if FreeCAD.GuiUp:
+    from PySide import QtGui
 
 
 ERROR_COLOR = "red"

@@ -28,18 +28,18 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import os
-import subprocess
 import os.path
+import subprocess
 
 import FreeCAD
-from femtools import femutils
-from femtools import membertools
-import feminout.importCcxFrdResults as importCcxFrdResults
-import feminout.importCcxDatResults as importCcxDatResults
 
+from . import writer
 from .. import run
 from .. import settings
-from . import writer
+from feminout import importCcxDatResults
+from feminout import importCcxFrdResults
+from femtools import femutils
+from femtools import membertools
 
 
 _inputFileName = None

@@ -26,17 +26,17 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import subprocess
 import os.path
+import subprocess
 import sys
 
 import FreeCAD
-from femtools import femutils
-from femtools import membertools
 
+from . import writer
 from .. import run
 from .. import settings
-from . import writer
+from femtools import femutils
+from femtools import membertools
 
 
 class Check(run.Check):

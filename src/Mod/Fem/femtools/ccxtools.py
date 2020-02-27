@@ -31,10 +31,13 @@ __url__ = "http://www.freecadweb.org"
 import os
 import sys
 import subprocess
+
 import FreeCAD
+
 from femtools import femutils
 from femtools import membertools
-from PySide import QtCore
+
+from PySide import QtCore  # there might be a special reason this is not guarded ?!?
 if FreeCAD.GuiUp:
     from PySide import QtGui
     import FemGui

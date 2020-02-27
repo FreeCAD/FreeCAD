@@ -31,15 +31,16 @@ import os.path
 import subprocess
 import tempfile
 
-from FreeCAD import Units
 from FreeCAD import Console
+from FreeCAD import Units
+
 import Fem
+from . import sifio
+from .. import settings
 from femmesh import gmshtools
 from femtools import constants
 from femtools import femutils
 from femtools import membertools
-from .. import settings
-from . import sifio
 
 
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"

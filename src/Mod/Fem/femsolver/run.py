@@ -35,21 +35,23 @@ __url__ = "http://www.freecadweb.org"
 
 import os
 import os.path
-# import threading  # not used ATM
 import shutil
 import tempfile
+# import threading  # not used ATM
 
 import FreeCAD as App
-from femtools import femutils
-from femtools import membertools
+
 from . import settings
 from . import signal
 from . import task
-from femtools.errors import MustSaveError, DirectoryDoesNotExistError
+from femtools import femutils
+from femtools import membertools
+from femtools.errors import DirectoryDoesNotExistError
+from femtools.errors import MustSaveError
 
 if App.GuiUp:
-    import FreeCADGui
     from PySide import QtGui
+    import FreeCADGui
 
 
 CHECK = 0

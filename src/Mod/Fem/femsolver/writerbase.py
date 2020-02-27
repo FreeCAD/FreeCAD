@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 import os
 
 import FreeCAD
+
 from femmesh import meshtools
 from femtools.femutils import type_of_obj
 

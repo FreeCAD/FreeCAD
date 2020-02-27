@@ -26,16 +26,15 @@ __url__ = "http://www.freecadweb.org"
 ## @package SolverCalculix
 #  \ingroup FEM
 
-import os
 import glob
+import os
 
 import FreeCAD
-from femtools import femutils
 
+from . import tasks
 from .. import run
 from .. import solverbase
-from . import tasks
-
+from femtools import femutils
 
 if FreeCAD.GuiUp:
     import FemGui

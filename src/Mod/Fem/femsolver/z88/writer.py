@@ -26,11 +26,13 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import FreeCAD
 import time
-import femmesh.meshtools as FemMeshTools
-import feminout.importZ88Mesh as importZ88Mesh
+
+import FreeCAD
+
 from .. import writerbase as FemInputWriter
+from feminout import importZ88Mesh
+from femmesh import meshtools as FemMeshTools
 
 
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):

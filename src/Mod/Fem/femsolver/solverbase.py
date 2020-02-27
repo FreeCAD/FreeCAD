@@ -26,13 +26,15 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-from PySide import QtGui
 
 import FreeCAD as App
-from femtools.errors import MustSaveError, DirectoryDoesNotExistError
+
 from . import run
+from femtools.errors import MustSaveError
+from femtools.errors import DirectoryDoesNotExistError
 
 if App.GuiUp:
+    from PySide import QtGui
     import FreeCADGui as Gui
     from femguiobjects import _TaskPanelFemSolverControl
 

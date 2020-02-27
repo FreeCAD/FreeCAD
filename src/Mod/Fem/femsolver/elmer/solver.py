@@ -26,17 +26,15 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-from femtools import femutils
-
-from .. import run
-from .. import solverbase
 from . import tasks
-
-from .equations import heat
 from .equations import elasticity
 from .equations import electrostatic
-from .equations import fluxsolver
 from .equations import flow
+from .equations import fluxsolver
+from .equations import heat
+from .. import run
+from .. import solverbase
+from femtools import femutils
 
 
 def create(doc, name="ElmerSolver"):

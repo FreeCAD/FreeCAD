@@ -27,13 +27,14 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import sys
 import subprocess
+import sys
 
 import FreeCAD
 from FreeCAD import Console
-import Fem
 from FreeCAD import Units
+
+import Fem
 from . import meshtools
 from femtools import femutils
 
