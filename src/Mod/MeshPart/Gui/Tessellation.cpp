@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 # include <TopExp_Explorer.hxx>
 # include <QMessageBox>
-# include <QButtonGroup>
 #endif
 
 #include "Tessellation.h"
@@ -55,13 +54,6 @@ Tessellation::Tessellation(QWidget* parent)
 {
     ui->setupUi(this);
 
-    buttonGroup = new QButtonGroup(this);
-    buttonGroup->addButton(ui->radioButtonStandard, 0);
-    buttonGroup->addButton(ui->radioButtonMefisto, 1);
-    buttonGroup->addButton(ui->radioButtonNetgen, 2);
-    connect(buttonGroup, SIGNAL(buttonClicked(int)),
-            this, SLOT(meshingMethod(int)));
-
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
     double value = ui->spinSurfaceDeviation->value().getValue();
@@ -78,33 +70,23 @@ Tessellation::Tessellation(QWidget* parent)
 
     ui->spinMaximumEdgeLength->setRange(0, INT_MAX);
 
-    // set the standard method
-    ui->radioButtonStandard->setChecked(true);
     ui->comboFineness->setCurrentIndex(2);
     on_comboFineness_currentIndexChanged(2);
 
 #if !defined (HAVE_MEFISTO)
-    ui->radioButtonMefisto->setDisabled(true);
-#else
-    ui->radioButtonMefisto->setChecked(true);
+    ui->stackedWidget->setTabEnabled(Mefisto, false);
 #endif
 #if !defined (HAVE_NETGEN)
-    ui->radioButtonNetgen->setDisabled(true);
-#else
-    ui->radioButtonNetgen->setChecked(true);
+    ui->stackedWidget->setTabEnabled(Netgen, false);
 #endif
 
     Gui::Command::doCommand(Gui::Command::Doc, "import Mesh, Part, PartGui");
     try {
         Gui::Command::doCommand(Gui::Command::Doc, "import MeshPart");
     }
-    catch(...) {
-        ui->radioButtonNetgen->setDisabled(true);
-        ui->radioButtonMefisto->setDisabled(true);
-        ui->radioButtonStandard->setChecked(true);
+    catch (...) {
+        ui->stackedWidget->setDisabled(true);
     }
-
-    meshingMethod(buttonGroup->checkedId());
 }
 
 Tessellation::~Tessellation()
@@ -255,10 +237,10 @@ bool Tessellation::accept()
         QString objname, label, subname;
         Gui::WaitCursor wc;
 
-        int method = buttonGroup->checkedId();
+        int method = ui->stackedWidget->currentIndex();
 
         // Save parameters
-        if (method == 0) {
+        if (method == Standard) {
             ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
                 ("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
             double value = ui->spinSurfaceDeviation->value().getValue();
@@ -288,7 +270,7 @@ bool Tessellation::accept()
                     Gui::Application::Instance->getViewProvider(sobj));
 
             QString param;
-            if (method == 0) { // Standard
+            if (method == Standard) { // Standard
                 double devFace = ui->spinSurfaceDeviation->value().getValue();
                 double devAngle = ui->spinAngularDeviation->value().getValue();
                 devAngle = Base::toRadians<double>(devAngle);
@@ -319,13 +301,13 @@ bool Tessellation::accept()
                                  QString::fromLatin1(sobj->getNameInDocument()));
                 }
             }
-            else if (method == 1) { // Mefisto
+            else if (method == Mefisto) { // Mefisto
                 double maxEdge = ui->spinMaximumEdgeLength->value().getValue();
                 if (!ui->spinMaximumEdgeLength->isEnabled())
                     maxEdge = 0;
                 param = QString::fromLatin1("Shape=__shape__,MaxLength=%1").arg(maxEdge);
             }
-            else if (method == 2) { // Netgen
+            else if (method == Netgen) { // Netgen
                 int fineness = ui->comboFineness->currentIndex();
                 double growthRate = ui->doubleGrading->value();
                 double nbSegPerEdge = ui->spinEdgeElements->value();
@@ -370,7 +352,7 @@ bool Tessellation::accept()
             Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
 
             // if Standard mesher is used and face colors should be applied
-            if (method == 0) { // Standard
+            if (method == Standard) { // Standard
                 if (ui->meshShapeColors->isChecked()) {
                     Gui::ViewProvider* vpm = Gui::Application::Instance->getViewProvider
                             (activeDoc->getActiveObject());
@@ -394,6 +376,7 @@ bool Tessellation::accept()
         activeDoc->commitTransaction();
     }
     catch (const Base::Exception& e) {
+        activeDoc->abortTransaction();
         Base::Console().Error(e.what());
     }
 

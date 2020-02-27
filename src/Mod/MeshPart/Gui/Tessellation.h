@@ -30,14 +30,18 @@
 #include <App/DocumentObserver.h>
 #include <memory>
 
-class QButtonGroup;
-
 namespace MeshPartGui {
 
 class Ui_Tessellation;
 class Tessellation : public QWidget
 {
     Q_OBJECT
+
+    enum {
+        Standard,
+        Mefisto,
+        Netgen
+    };
 
 public:
     Tessellation(QWidget* parent = 0);
@@ -56,7 +60,6 @@ private Q_SLOTS:
 
 private:
     QString document;
-    QButtonGroup* buttonGroup;
     std::unique_ptr<Ui_Tessellation> ui;
 };
 
