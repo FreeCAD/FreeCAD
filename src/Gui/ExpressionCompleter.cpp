@@ -443,19 +443,19 @@ public:
             case Qt::UserRole:
             case Qt::EditRole:
                 return objName(obj, row, sep);
-            case Qt::DisplayRole:
-                return objName(obj, row, local);
+            case Qt::DisplayRole: {
+                QString name = objName(obj, row, local);
+                if(getModel()->inList.count(obj))
+                    name += QObject::tr(" (Cyclic reference!)");
+                return name;
+            }
             case Qt::DecorationRole: {
                 auto vp = Gui::Application::Instance->getViewProvider(obj);
                 if(vp)
                     return vp->getIcon();
                 return QIcon();
             }
-            case Qt::ToolTipRole:
-                if(getModel()->inList.count(obj))
-                    return QObject::tr("Warning: cyclic reference");
-                break;
-            case Qt::TextColorRole:
+            case Qt::ForegroundRole:
                 if(getModel()->inList.count(obj))
                     return QColor(255.0, 0, 0);
                 break;
@@ -1612,13 +1612,13 @@ public:
     }
 
     void setDocumentObject(const App::DocumentObject *obj) {
+        inList.clear();
         if(obj && obj->getNameInDocument()) {
             currentObj = obj;
             if(!noProperty)
                 inList = obj->getInListEx(true);
         } else {
             currentObj = App::DocumentObjectT();
-            inList.clear();
         }
 
         reset();
@@ -1809,6 +1809,7 @@ public:
         case Qt::DisplayRole:
         case Qt::ToolTipRole:
         case Qt::DecorationRole:
+        case Qt::ForegroundRole:
             break;
         default:
             return QVariant();
