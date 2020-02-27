@@ -62,7 +62,7 @@ UNITS = {
 
 CONSTS_DEF = {
     "Gravity": constants.gravity(),
-    "StefanBoltzmann": constants.stefan_boltzmann(), 
+    "StefanBoltzmann": constants.stefan_boltzmann(),
     "PermittivityOfVacuum": constants.permittivity_of_vakuum(),
     "BoltzmannConstant": constants.boltzmann_constant(),
 }
