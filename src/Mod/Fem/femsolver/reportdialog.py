@@ -26,10 +26,9 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import FreeCAD
-
-if FreeCAD.GuiUp:
-    from PySide import QtGui
+# it is a Gui only module and should only be imported in Gui mode
+# thus no guard is needed
+from PySide import QtGui
 
 
 ERROR_COLOR = "red"
