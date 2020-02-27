@@ -35,19 +35,19 @@ class _FemConstraintSelfWeight:
             "App::PropertyFloat",
             "Gravity_x",
             "Gravity",
-            "set the gravity component in the x direction"
+            "Gravity direction: set the x-component of the normalized gravity vector"
         )
         obj.addProperty(
             "App::PropertyFloat",
             "Gravity_y",
             "Gravity",
-            "set the gravity component in the y direction"
+            "Gravity direction: set the y-component of the normalized gravity vector"
         )
         obj.addProperty(
             "App::PropertyFloat",
             "Gravity_z",
             "Gravity",
-            "set the gravity component in the z direction"
+            "Gravity direction: set the z-component of the normalized gravity vector"
         )
         obj.Gravity_x = 0.0
         obj.Gravity_y = 0.0
