@@ -1502,7 +1502,7 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
             }
         }
 
-        Application::Instance->open(path,mod);
+        Application::Instance->open(path,module.c_str());
 
         Py_Return;
     } PY_CATCH
