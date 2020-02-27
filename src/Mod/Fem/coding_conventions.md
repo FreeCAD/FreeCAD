@@ -42,12 +42,13 @@ These coding rules apply to FEM module code only. Other modules or the base syst
     - One empty line
     - FreeCAD-specific imports from module FreeCAD
     - One empty line
-    - other FreeCAD non Gui imports
+    - Other FreeCAD non Gui imports
     - One empty line
-    - FreeCAD Gui imports guraded by if statement 
-        - on Gui only modules the guard is not needed
-        - same as above but withoud an empty line
-        - Standard libray imports
+    - FreeCAD Gui imports: 
+        - The import of Gui modules should be guarded by a 'if FreeCAD.GuiUp:'
+        - On Gui only modules the guard is not needed
+        - Same as above but without an empty line
+        - Standard library imports
         - Third-party Gui imports
         - FreeCAD-specific imports from module FreeCADGui
         - other FreeCAD Gui imports
@@ -56,9 +57,8 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 - On from imports firs the one dot, than two dot and so on imports 
 - Only one import per line
 - Even for from mymodule import mymethod should only be one method
-- These above highly reduces merge conflicts
+- The above paragraphs highly reduces merge conflicts
 - Star import should not be used at all (from mymodule import *)
-- the import of FreeCADGui should be guarded by a 'if FreeCAD.GuiUp:'
 
 ### Naming policy
 - snake_case_names
