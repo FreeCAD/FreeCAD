@@ -1314,7 +1314,33 @@ public:
     };
 
     struct PropertyData: PythonData {
-        std::vector<std::pair<App::ObjectIdentifier,QString> > paths;
+        struct PathInfo {
+            ObjectIdentifier path;
+            QString pathName;
+            QString displayName;
+
+            PathInfo(PathInfo &&other)
+                :path(std::move(other.path))
+                ,pathName(other.pathName)
+                ,displayName(other.displayName)
+            {
+            }
+
+            PathInfo(ObjectIdentifier &&p, const std::string &subpath) {
+
+                pathName = QString::fromUtf8(subpath.c_str());
+
+                if(boost::starts_with(subpath, "[<<")
+                        && boost::ends_with(subpath, ">>]")
+                        && p.numSubComponents()==2)
+                {
+                    displayName = QString::fromUtf8(subpath.c_str()+3,subpath.size()-6);
+                } else
+                    displayName = pathName;
+            }
+        };
+
+        std::vector<PathInfo> paths;
         const ObjInfo &objInfo;
         int propIndex;
 
@@ -1387,7 +1413,7 @@ public:
             for(auto &p : _paths) {
                 std::string pathName = p.getSubPathStr(false,false);
                 if(pathName.size())
-                    paths.emplace_back(std::move(p), QString::fromLatin1(pathName.c_str()));
+                    paths.emplace_back(std::move(p),pathName);
             }
         }
 
@@ -1404,7 +1430,7 @@ public:
             if(row >= offset) 
                 return PythonData::initChild(child);
 
-            const auto &path = paths[row].first;
+            const auto &path = paths[row].path;
             try {
                 child.pyObj = Py::new_reference_to(path.getPyValue(true));
                 return true;
@@ -1439,13 +1465,16 @@ public:
             if(row >= (int)paths.size()) 
                 return PythonData::childData(row-(int)paths.size(), role);
 
-            const QString &pathName = paths[row].second;
+            const auto &pathInfo = paths[row];
             switch(role) {
             case Qt::UserRole:
+                if(pathInfo.pathName.startsWith(QLatin1Char('[')))
+                    return pathInfo.pathName;
+                return QLatin1String(".") + pathInfo.pathName;
             case Qt::EditRole:
-                return QLatin1String(".") + pathName;
+                return QLatin1String(".") + pathInfo.displayName;
             case Qt::DisplayRole:
-                return pathName;
+                return pathInfo.displayName;
             case Qt::DecorationRole: {
                 static QIcon icon(BitmapFactory().pixmap("ClassBrowser/sub_path.svg"));
                 return icon;
@@ -1469,7 +1498,7 @@ public:
                 return QModelIndex();
 
             if(mdata->name.isEmpty())
-                mdata->name = paths[row].second;
+                mdata->name = paths[row].pathName;
             return mdata->mindex;
         }
 

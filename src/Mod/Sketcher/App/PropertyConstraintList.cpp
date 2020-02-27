@@ -27,6 +27,8 @@
 #   include <assert.h>
 #endif
 
+#include <boost/regex.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
 #include <Base/Exception.h>
@@ -258,7 +260,7 @@ bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, P
 
     if (c1.isArray()) 
         cstr = _lValueList[c1.getIndex(_lValueList.size())];
-    else if (c1.isSimple()) {
+    else if (c1.isSimple() || c1.isMap()) {
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
         for(auto c : _lValueList) {
             if(c->Name == c1.getName()) {
@@ -487,7 +489,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
         hasSetValue();
         return;
     }
-    else if (c1.isSimple()) {
+    else if (c1.isSimple() || c1.isMap()) {
         for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             int index = it - _lValueList.begin();
 
@@ -519,7 +521,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
     if (c1.isArray()) {
         return _lValueList[c1.getIndex(_lValueList.size())];
     }
-    else if (c1.isSimple()) {
+    else if (c1.isSimple() || c1.isMap()) {
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
 
         for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
@@ -548,7 +550,7 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
             return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(_lValueList[idx]->Name);
         return p;
     }
-    else if (c1.isSimple()) {
+    else if (c1.isSimple() || c1.isMap()) {
         return p;
     }
     FC_THROWM(Base::ValueError,"Invalid constraint path " << p.toString());
@@ -556,9 +558,18 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
 
 void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
-    for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
-        if ((*it)->Name.size() > 0)
-            paths.push_back(ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent((*it)->Name));
+    static const boost::regex re("^[A-Za-z][_A-Za-z0-9]*$");
+    boost::cmatch cm;
+
+    for(auto &cstr : _lValueList) {
+        if (cstr->Name.empty())
+            continue;
+        // If a valid identifier (no space, etc.), add as a simple component, or else, treat as map
+        if (boost::regex_match(cstr->Name.c_str(), cm, re))
+            paths.push_back(ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(cstr->Name));
+        else
+            paths.push_back(ObjectIdentifier(*this) 
+                    << ObjectIdentifier::MapComponent(ObjectIdentifier::String(cstr->Name,true)));
     }
 }
 
