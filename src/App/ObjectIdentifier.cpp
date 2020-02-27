@@ -449,13 +449,21 @@ std::string ObjectIdentifier::toPersistentString() const {
         if(documentObjectName.isRealString())
             s << '@';
         s << '.';
-    } else if (documentNameSet && documentName.getString().size()) {
+    } else if ((owner->isExporting() || documentNameSet)
+                && result.resolvedDocumentObject != owner
+                && (documentName.getString().size()
+                    || result.resolvedDocumentName.getString().size()))
+    {
+        if(documentName.getString().size())
+            s << documentName;
+        else
+            s << result.resolvedDocumentName;
+        s << '#';
         if(documentObjectNameSet && documentObjectName.getString().size())
-            s << documentName << "#"
-                << documentObjectName << '.';
-        else if(result.resolvedDocumentObjectName.getString().size())
-            s << documentName << "#"
-                << result.resolvedDocumentObjectName << '.';
+            s << documentObjectName;
+        else
+            s << result.resolvedDocumentObjectName;
+        s << '.';
     } else if (documentObjectNameSet && documentObjectName.getString().size()) {
         s << documentObjectName << '.';
     } else if (result.propertyIndex > 0) {
