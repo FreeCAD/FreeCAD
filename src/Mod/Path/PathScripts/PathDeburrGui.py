@@ -32,7 +32,7 @@ import PathScripts.PathOpGui as PathOpGui
 from PySide import QtCore, QtGui
 
 __title__ = "Path Deburr Operation UI"
-__author__ = "sliptonic (Brad Collette)"
+__author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Deburr operation page controller and command implementation."
 
@@ -72,6 +72,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.Join = 'Round'
         elif self.form.joinMiter.isChecked():
             obj.Join = 'Miter'
+		
+        if obj.Direction != str(self.form.direction.currentText()):
+            obj.Direction = str(self.form.direction.currentText())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -84,6 +87,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.joinRound.setChecked('Round' == obj.Join)
         self.form.joinMiter.setChecked('Miter' == obj.Join)
         self.form.joinFrame.hide()
+        self.selectInComboBox(obj.Direction, self.form.direction)
 
     def updateWidth(self):
         PathGui.updateInputField(self.obj, 'Width', self.form.value_W)
@@ -96,6 +100,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.joinMiter.clicked)
         signals.append(self.form.joinRound.clicked)
         signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.direction.currentIndexChanged)
         return signals
 
     def registerSignalHandlers(self, obj):
