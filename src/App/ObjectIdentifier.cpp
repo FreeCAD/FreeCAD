@@ -702,7 +702,7 @@ Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
             res = Py::Mapping(pyobj).getItem(Py::Int(begin));
         else
             res = Py::Sequence(pyobj).getItem(begin);
-    }else if(isMap())
+    }else if(isMap() || isLabel())
         res = Py::Mapping(pyobj).getItem(getName());
     else if(isRange()){
         Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
@@ -730,7 +730,7 @@ void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value
             Py::Mapping(pyobj).setItem(Py::Int(begin),value);
         else
             Py::Sequence(pyobj).setItem(begin,value);
-    }else if(isMap())
+    }else if(isMap() || isLabel())
         Py::Mapping(pyobj).setItem(getName(),value);
     else if(isRange()) {
         Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
@@ -750,7 +750,7 @@ void ObjectIdentifier::Component::del(Py::Object &pyobj) const {
             Py::Mapping(pyobj).delItem(Py::Int(begin));
         else
             PySequence_DelItem(pyobj.ptr(),begin);
-    } else if(isMap())
+    } else if(isMap() || isLabel())
         Py::Mapping(pyobj).delItem(getName());
     else if(isRange()) {
         Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
@@ -1406,6 +1406,15 @@ void ObjectIdentifier::addComponent(ObjectIdentifier::Component &&c) {
             documentObjectName = std::move(components.front().name);
             components.erase(components.begin());
         }
+    }
+
+    // If a property is found by now, do not try to concatenate label
+    // components as sub-object name, because the label may be used as key to a
+    // mapping.
+    int ptype;
+    if(getProperty(&ptype) && ptype!=PseudoSubObject) {
+        components.push_back(std::move(c));
+        return;
     }
 
     // A label component indicates this and all existing components is part of
