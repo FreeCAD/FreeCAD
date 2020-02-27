@@ -26,6 +26,8 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import FreeCAD
+
 if FreeCAD.GuiUp:
     from PySide import QtGui
 
