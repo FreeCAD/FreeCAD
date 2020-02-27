@@ -1566,7 +1566,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
 
     App::Property *prop = 0;
     std::string sub;
-    bool foundSobj;
+    bool foundSobj = false;
     while(1) {
         const char *name = 0;
         if(propertyIndex >= 0 && propertyIndex < (int)components.size()) {
