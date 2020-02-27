@@ -33,7 +33,31 @@ These coding rules apply to FEM module code only. Other modules or the base syst
 - except W503 all Python code is pep8 compliant
 - maximal line length is 100
 - double quotes as string identifier
-- One import per line, no * imports allowed as it makes harder to validate code
+
+### Imports
+- Python imports should be grouped into three groups:
+    - Standard library imports
+    - One empty line
+    - Third-party imports
+    - One empty line
+    - FreeCAD-specific imports from module FreeCAD
+    - One empty line
+    - other FreeCAD non Gui imports
+    - One empty line
+    - FreeCAD Gui imports guraded by if statement 
+        - on Gui only modules the guard is not needed
+        - same as above but withoud an empty line
+        - Standard libray imports
+        - Third-party Gui imports
+        - FreeCAD-specific imports from module FreeCADGui
+        - other FreeCAD Gui imports
+- Each group should be sorted alphabetically
+- First the import imports, than the from imports
+- On from imports firs the one dot, than two dot and so on imports 
+- Only one import per line
+- Even for from mymodule import mymethod should only be one method
+- These above highly reduces merge conflicts
+- Star import should not be used at all (from mymodule import *)
 - the import of FreeCADGui should be guarded by a 'if FreeCAD.GuiUp:'
 
 ### Naming policy
