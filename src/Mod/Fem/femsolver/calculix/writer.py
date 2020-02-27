@@ -66,7 +66,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         )
         from femtools import constants
         from FreeCAD import Units
-        self.gravity = Units.Quantity(constants.gravity()).getValueAs("mm/s^2")
+        self.gravity = int(Units.Quantity(constants.gravity()).getValueAs("mm/s^2"))  # 9820 mm/s2
 
     def write_calculix_input_file(self):
         timestart = time.process_time()
