@@ -263,7 +263,7 @@ bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, P
 
     if (c1.isArray())
         cstr = _lValueList[c1.getIndex(_lValueList.size())];
-    else if (c1.isSimple() || c1.isMap()) {
+    else if (c1.isSimple() || c1.isMap() || c1.isLabel()) {
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
         for(auto c : _lValueList) {
             if(c->Name == c1.getName()) {
@@ -530,7 +530,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
         hasSetValue();
         return;
     }
-    else if (c1.isSimple() || c1.isMap()) {
+    else if (c1.isSimple() || c1.isMap() || c1.isLabel()) {
         for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             int index = it - _lValueList.begin();
 
@@ -562,7 +562,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
     if (c1.isArray()) {
         return _lValueList[c1.getIndex(_lValueList.size())];
     }
-    else if (c1.isSimple() || c1.isMap()) {
+    else if (c1.isSimple() || c1.isMap() || c1.isLabel()) {
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
 
         for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
@@ -578,6 +578,8 @@ const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier &pa
     return boost::any(getConstraint(path)->getPresentationValue());
 }
 
+static const boost::regex re("^[A-Za-z][_A-Za-z0-9]*$");
+
 ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p) const
 {
     if(p.numSubComponents()!=2 || p.getPropertyComponent(0).getName()!=getName())
@@ -585,21 +587,35 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
 
     const ObjectIdentifier::Component & c1 = p.getPropertyComponent(1);
 
+    boost::cmatch cm;
+
     if (c1.isArray()) {
         size_t idx = c1.getIndex();
-        if (idx < _lValueList.size() && _lValueList[idx]->Name.size() > 0)
-            return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(_lValueList[idx]->Name);
+        if (idx < _lValueList.size() && _lValueList[idx]->Name.size() > 0) {
+            const std::string &name = _lValueList[idx]->Name;
+            if (boost::regex_match(name.c_str(), cm, re)) {
+                return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(name);
+            } else {
+                return ObjectIdentifier(*this) 
+                        << ObjectIdentifier::MapComponent(ObjectIdentifier::String(name,true));
+            }
+        }
         return p;
     }
-    else if (c1.isSimple() || c1.isMap()) {
-        return p;
+    else if (c1.isSimple() || c1.isMap() || c1.isLabel()) {
+        const std::string &name = c1.getName();
+        if (boost::regex_match(name.c_str(), cm, re)) {
+            return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(name);
+        } else {
+            return ObjectIdentifier(*this) 
+                    << ObjectIdentifier::MapComponent(ObjectIdentifier::String(name,true));
+        }
     }
     FC_THROWM(Base::ValueError,"Invalid constraint path " << p.toString());
 }
 
 void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
-    static const boost::regex re("^[A-Za-z][_A-Za-z0-9]*$");
     boost::cmatch cm;
 
     for(auto &cstr : _lValueList) {
