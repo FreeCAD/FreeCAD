@@ -387,7 +387,7 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None,bs2wi
     if placement:
         typecheck([(placement,FreeCAD.Placement)], "makeWire")
         ipl = placement.inverse()
-        if bs2wire is not True:
+        if not bs2wire:
             pointslist = [ipl.multVec(p) for p in pointslist]
     if len(pointslist) == 2: fname = "Line"
     else: fname = "Wire"
