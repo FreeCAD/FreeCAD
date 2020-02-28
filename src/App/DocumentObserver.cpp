@@ -275,7 +275,13 @@ SubObjectT::SubObjectT(SubObjectT &&other)
 
 SubObjectT::SubObjectT(const DocumentObject *obj, const char *s)
     :DocumentObjectT(obj),subname(s?s:"")
-{}
+{
+}
+
+SubObjectT::SubObjectT(const DocumentObjectT& obj, const char *s)
+    :DocumentObjectT(obj),subname(s?s:"")
+{
+}
 
 SubObjectT::SubObjectT(const char *docName, const char *objName, const char *s)
     :DocumentObjectT(docName,objName), subname(s?s:"")

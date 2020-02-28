@@ -158,6 +158,9 @@ public:
     SubObjectT(SubObjectT &&);
 
     /*! Constructor */
+    SubObjectT(const DocumentObjectT & obj, const char *subname);
+
+    /*! Constructor */
     SubObjectT(const DocumentObject*, const char *subname);
 
     /*! Constructor */
