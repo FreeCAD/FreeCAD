@@ -25,7 +25,6 @@
 
 import unittest
 import FreeCAD as App
-import FreeCADGui as Gui
 import drafttests.auxiliary as aux
 from draftutils.messages import _msg
 
@@ -53,6 +52,10 @@ class DraftPivy(unittest.TestCase):
     def test_pivy_import(self):
         """Import Coin (Pivy)."""
         module = "pivy.coin"
+        if not App.GuiUp:
+            aux._no_gui(module)
+            self.assertTrue(True)
+            return
         imported = aux._import_test(module)
         self.assertTrue(imported, "Problem importing '{}'".format(module))
 
@@ -64,8 +67,9 @@ class DraftPivy(unittest.TestCase):
             self.assertTrue(True)
             return
 
-        import pivy.coin
-        cube = pivy.coin.SoCube()
+        import FreeCADGui as Gui
+        import pivy.coin as coin
+        cube = coin.SoCube()
         _msg("  Draw cube")
         Gui.ActiveDocument.ActiveView.getSceneGraph().addChild(cube)
         _msg("  Adding cube to the active view scene")
