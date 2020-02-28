@@ -361,7 +361,7 @@ def makeAngularDimension(center,angles,p3,normal=None):
 
     return obj
 
-def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
+def makeWire(pointslist,closed=False,placement=None,face=None,support=None,bs2wire=False):
     """makeWire(pointslist,[closed],[placement]): Creates a Wire object
     from the given list of vectors. If closed is True or first
     and last points are identical, the wire is closed. If face is
@@ -387,7 +387,8 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
     if placement:
         typecheck([(placement,FreeCAD.Placement)], "makeWire")
         ipl = placement.inverse()
-        pointslist = [ipl.multVec(p) for p in pointslist]
+        if bs2wire is not True:
+            pointslist = [ipl.multVec(p) for p in pointslist]
     if len(pointslist) == 2: fname = "Line"
     else: fname = "Wire"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
