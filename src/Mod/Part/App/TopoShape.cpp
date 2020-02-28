@@ -3960,8 +3960,8 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
 TopoShape &TopoShape::makEFace(const TopoShape &shape, const char *op, const char *maker)
 {
     std::vector<TopoShape> shapes;
-    if(shape.getShape().ShapeType() == TopAbs_COMPOUND) {
-        for(TopoDS_Iterator it(_Shape);it.More();it.Next())
+    if(shape.shapeType() == TopAbs_COMPOUND) {
+        for(TopoDS_Iterator it(shape.getShape());it.More();it.Next())
             shapes.push_back(it.Value());
     } else
         shapes.push_back(shape);
