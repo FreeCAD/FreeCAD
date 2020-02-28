@@ -297,6 +297,14 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         FC_ERR("cannot edit non ViewProviderDocumentObject");
         return false;
     }
+
+    // Fix regression: https://forum.freecadweb.org/viewtopic.php?f=19&t=43629&p=371972#p371972
+    // When an object is already in edit mode a subsequent call for editing is only possible
+    // when resetting the currently edited object.
+    if (d->_editViewProvider) {
+        _resetEdit();
+    }
+
     auto obj = vp->getObject();
     if(!obj->getNameInDocument()) {
         FC_ERR("cannot edit detached object");

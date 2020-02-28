@@ -118,13 +118,11 @@ public:\
 class  AppExport UnitExpression : public Expression {
     EXPR_TYPESYSTEM_HEADER();
 public:
+
+    UnitExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & _quantity = Base::Quantity());
     ~UnitExpression();
 
-    static ExpressionPtr create(const App::DocumentObject *owner, 
-            const Base::Quantity &quantity, std::string &&unitStr);
-
-    static ExpressionPtr create(const App::DocumentObject *owner, 
-            const Base::Quantity &quantity, const char *unitStr);
+    static ExpressionPtr create(const App::DocumentObject *owner, const char *unitStr);
 
     virtual ExpressionPtr simplify() const;
 
@@ -136,13 +134,12 @@ public:
 
     const Base::Quantity & getQuantity() const { return quantity; }
 
-    const std::string getUnitString() const { return unitStr; }
+    const char *getUnitString() const { return unitStr; }
 
     double getScaler() const { return quantity.getValue(); }
 
 protected:
-    UnitExpression(const App::DocumentObject *_owner, 
-            const Base::Quantity &q, std::string &&unitStr=std::string());
+    UnitExpression(const App::DocumentObject *_owner, const Base::Quantity & _quantity, const char *unit);
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
@@ -153,7 +150,7 @@ protected:
 
 private:
     Base::Quantity quantity;
-    std::string unitStr; /**< The unit string from the original parsed string */
+    const char *unitStr; /**< The unit string from the original parsed string */
 };
 
 /**
@@ -223,7 +220,14 @@ public:
 
     virtual void addComponent(ComponentPtr &&component);
 
+    std::vector<std::string> getStringList() const;
+
+    // strip out given number of component
+    void popComponents(int count=1);
+
     VarInfo push(const Expression *owner, bool mustExist, std::string *name=0) const;
+
+    virtual ExpressionPtr simplify() const;
 
 protected:
     VariableExpression(const App::DocumentObject *_owner):Expression(_owner) {}
@@ -566,6 +570,13 @@ public:
     static Py::Object evaluate(const Expression *owner, int type, const ExpressionList &args);
 
     const ExpressionList &getArgs() const {return args;}
+
+    struct FunctionInfo {
+        FunctionType type;
+        const char *name;
+        const char *description;
+    };
+    static const std::vector<FunctionInfo> &getFunctions();
 
 protected:
     FunctionExpression(const App::DocumentObject *_owner):Expression(_owner){}
@@ -1203,12 +1214,16 @@ namespace ExpressionParser {
 
 AppExport ExpressionPtr parse(const App::DocumentObject *owner, 
         const char *buffer, std::size_t len=0, bool verbose=false, bool pythonMode=false);
-AppExport ExpressionPtr parseUnit(const App::DocumentObject *owner, const char *buffer, std::size_t len=0);
+AppExport ExpressionPtr parseUnit(const App::DocumentObject *owner, const char *buffer);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject *owner, const char* buffer, std::size_t len=0);
 AppExport bool isTokenAnIndentifier(const std::string & str);
 AppExport bool isTokenAUnit(const std::string & str);
 
-AppExport std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string & str);
+AppExport std::vector<boost::tuple<int, int, std::string> > tokenize(const char *str);
+
+inline std::vector<boost::tuple<int, int, std::string> > tokenize(const std::string & str) {
+    return tokenize(str.c_str());
+}
 
 AppExport void clearWarning();
 
@@ -1240,5 +1255,4 @@ AppExport bool isModuleImported(PyObject *);
 } // end of namespace App
 
 #endif //EXPRESSION_PARSER_H
-
 

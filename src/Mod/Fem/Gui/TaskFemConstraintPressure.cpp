@@ -33,9 +33,9 @@
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
-
-# include <QMessageBox>
 # include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
 
@@ -47,9 +47,6 @@
 #include "ui_TaskFemConstraintPressure.h"
 #include <App/Application.h>
 #include <Gui/Command.h>
-
-
-
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 
@@ -67,12 +64,13 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPr
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
-    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
 
     connect(ui->checkBoxReverse, SIGNAL(toggled(bool)),
@@ -237,24 +235,6 @@ void TaskFemConstraintPressure::removeFromSelection()
     updateUI();
 }
 
-void TaskFemConstraintPressure::setSelection(QListWidgetItem* item){
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-
-    std::string s = item->text().toStdString();
-    std::string delimiter = ":";
-
-    size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName=s;
-
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
-}
-
 void TaskFemConstraintPressure::onReferenceDeleted() {
     TaskFemConstraintPressure::removeFromSelection();
 }
@@ -281,7 +261,11 @@ bool TaskFemConstraintPressure::get_Reverse() const
 {
     return ui->checkBoxReverse->isChecked();
 }
-/* */
+
+bool TaskFemConstraintPressure::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
+}
 
 void TaskFemConstraintPressure::changeEvent(QEvent *)
 {

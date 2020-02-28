@@ -24,7 +24,7 @@
 #include <Base/Reader.h>
 #include <Base/Base64.h>
 #include <Base/TimeInfo.h>
-#include <xlocale.h>
+//#include <xlocale.h>
 
 #include <App/PropertyContainer.h>
 #include <App/PropertyStandard.h>

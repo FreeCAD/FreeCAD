@@ -41,6 +41,9 @@
         <file>ClassBrowser/type_class.svg</file>
         <file>ClassBrowser/type_enum.svg</file>
         <file>ClassBrowser/type_module.svg</file>
+        <file>ClassBrowser/sub_path.svg</file>
+        <file>ClassBrowser/unit.svg</file>
+        <file>ClassBrowser/function.svg</file>
         <file>style/windows_branch_closed.png</file>
         <file>style/windows_branch_open.png</file>
         <file>Std_ViewScreenShot.svg</file>

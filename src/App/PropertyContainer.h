@@ -180,7 +180,7 @@ public:
   virtual void getPropertyMap(std::map<std::string,Property*> &Map) const;
   /// get all properties of the class (including properties of the parent)
   virtual void getPropertyList(std::vector<Property*> &List) const;
-  /// get all properties with their names
+  /// get all properties with their names, may contain duplicates and aliases
   virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
   /// set the Status bit of all properties at once
   void setPropertyStatus(unsigned char bit,bool value);

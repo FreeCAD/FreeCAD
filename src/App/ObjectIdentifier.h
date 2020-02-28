@@ -65,6 +65,7 @@ AppExport std::string quote(const std::string &input, bool toPython=false);
     _t(_t &&other) { *this = std::move(other); }\
     _t &operator=(_t &&other)
 
+
 class AppExport ObjectIdentifier {
 
 public:
@@ -109,9 +110,16 @@ public:
         /** Returns a possibly quoted string */
         std::string toString(bool toPython=false) const;
 
+        void toString(std::ostream &os, bool toPython=false) const;
+
+        friend inline std::ostream &operator<<(std::ostream &os, const String &s) {
+            s.toString(os);
+            return os;
+        }
+
         // Operators
 
-        operator std::string() const { return str; }
+        operator const std::string&() const { return str; }
 
         operator const char *() const { return str.c_str(); }
 
@@ -150,6 +158,7 @@ public:
             MAP,
             ARRAY,
             RANGE,
+            LABEL,
         } ;
 
     public:
@@ -169,9 +178,26 @@ public:
         Component(String &&_name, typeEnum _type=SIMPLE, 
                 int begin=INT_MAX, int end=INT_MAX, int step=1);
 
+        static Component SimpleComponent(const char * _component);
+        static Component SimpleComponent(const String &_component); 
+        static Component SimpleComponent(String &&_component);
+
+        static Component LabelComponent(const char * _component);
+        static Component LabelComponent(const std::string & _component);
+        static Component LabelComponent(std::string &&_component);
+
+        static Component ArrayComponent(int _index);
+
+        static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1);
+
+        static Component MapComponent(const String &_key);
+        static Component MapComponent(String &&_key);
+
         // Type queries
 
         bool isSimple() const { return type == SIMPLE; }
+
+        bool isLabel() const { return type == LABEL; }
 
         bool isMap() const { return type == MAP; }
 
@@ -212,21 +238,37 @@ public:
 
     };
 
-    static Component SimpleComponent(const char * _component);
+    static Component SimpleComponent(const char * _component) 
+        {return Component::SimpleComponent(_component);}
 
-    static Component SimpleComponent(const String & _component);
-    static Component SimpleComponent(String &&_component);
+    static Component SimpleComponent(const String &_component) 
+        {return Component::SimpleComponent(_component);}
 
-    static Component ArrayComponent(int _index);
+    static Component SimpleComponent(String &&_component) 
+        {return Component::SimpleComponent(std::move(_component));}
 
-    static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1);
+    static Component LabelComponent(std::string &&_component) 
+        {return Component::LabelComponent(std::move(_component));}
 
-    static Component MapComponent(const String &_key);
-    static Component MapComponent(String &&_key);
+    static Component LabelComponent(const std::string &_component) 
+        {return Component::LabelComponent(_component);}
 
+    static Component ArrayComponent(int _index) 
+        {return Component::ArrayComponent(_index); }
+
+    static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1)
+        {return Component::RangeComponent(_begin,_end,_step);}
+
+    static Component MapComponent(const String &_key)
+        {return Component::MapComponent(_key);}
+
+    static Component MapComponent(String &&_key)
+        {return Component::MapComponent(_key);}
 
     ObjectIdentifier(const App::PropertyContainer * _owner = 0, 
             const std::string & property = std::string(), int index=INT_MAX);
+
+    ObjectIdentifier(const App::PropertyContainer * _owner, const char *property, int index=INT_MAX);
 
     ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty);
 
@@ -243,7 +285,7 @@ public:
         documentObjectNameSet = other.documentObjectNameSet;
         localProperty = other.localProperty;
         _cache = std::move(other._cache);
-        _hash = std::move(other._hash);
+        _hash = other._hash;
         return *this;
     }
 
@@ -252,28 +294,28 @@ public:
     App::DocumentObject *getOwner() const { return owner; }
 
     // Components
-    void addComponent(const Component &c) { 
-        components.push_back(c);
-        _cache.clear();
-    }
+    void addComponent(const Component &c);
 
     // Components
-    void addComponent(Component &&c) { 
-        components.push_back(std::move(c));
-        _cache.clear();
-    }
+    void addComponent(Component &&c);
+
+    // Pop components from back
+    void popComponents(int count=1);
 
     std::string getPropertyName() const;
+
+    static const std::vector<std::pair<const char *, App::Property*> > &getPseudoProperties();
+    static bool isPseudoProperty(const App::Property *prop);
 
     const Component & getPropertyComponent(int i, int *idx=0) const;
 
     void setComponent(int idx, Component &&comp);
     void setComponent(int idx, const Component &comp);
 
-    std::vector<Component> getPropertyComponents() const;
+    std::vector<Component> getPropertyComponents(int i=0) const;
     const std::vector<Component> &getComponents() const { return components; }
 
-    std::string getSubPathStr(bool toPython=false) const;
+    std::string getSubPathStr(bool toPython=false, bool prefix=true) const;
 
     int numComponents() const;
 
@@ -433,9 +475,9 @@ protected:
     friend struct ResolveResults;
 
     App::Property *resolveProperty(const App::DocumentObject *obj, 
-        const char *propertyName, App::DocumentObject *&sobj,int &ptype) const;
+        String &subname, int &propertyIndex, App::DocumentObject *&sobj,int &ptype) const;
 
-    void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
+    void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false, bool prefix=true) const;
 
     Py::Object access(const ResolveResults &rs,
             Py::Object *value=0, Dependencies *deps=0) const;

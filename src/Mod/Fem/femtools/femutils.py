@@ -21,10 +21,8 @@
 # ***************************************************************************
 """ Collection of functions for the Fem module.
 
-This module contains function for managing a analysis and all the different
-types of objects it contains, helper for executing a simulation, function for
-extracting relevant parts of geometry and a few unrelated function useful at
-various places in the Fem module.
+This module contains function for extracting relevant parts of geometry and
+a few unrelated function useful at various places in the Fem module.
 """
 
 
@@ -42,6 +40,8 @@ if FreeCAD.GuiUp:
     from PySide import QtGui
 
 
+# ************************************************************************************************
+# document objects
 def createObject(doc, name, proxy, viewProxy=None):
     """ Add python object to document using python type string.
 
@@ -64,120 +64,6 @@ def createObject(doc, name, proxy, viewProxy=None):
     if FreeCAD.GuiUp and viewProxy is not None:
         viewProxy(obj.ViewObject)
     return obj
-
-
-def get_member(analysis, t):
-    """ Return list of all members of *analysis* of type *t*.
-
-    Search *analysis* for members of type *t*. This method checks the custom
-    python typesytem (BaseType class property) used by the Fem module if
-    possible. If the object does not use the python typesystem the usual
-    isDerivedFrom from the C++ dynamic type system is used.
-
-    :param analysis: only objects part of this analysis are considered
-    :param t:        only objects of this type are returned
-
-    :note:
-     Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
-     type is just checked for equality. If the type doesn't match
-     ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
-    """
-    if analysis is None:
-        raise ValueError("Analysis must not be None")
-    matching = []
-    for m in analysis.Group:
-        # since is _derived_from is used the father could be used
-        # to test too (ex. "Fem::FemMeshObject")
-        if is_derived_from(m, t):
-            matching.append(m)
-    return matching
-
-
-def get_single_member(analysis, t):
-    """ Return one object of type *t* and part of *analysis*.
-
-    Search *analysis* for members of type *t* and return the first one that's
-    found. This method checks the custom python typesytem (BaseType class
-    property) used by the Fem module if possible. If the object doesn't use the
-    python typesystem the usual isDerivedFrom from the C++ dynamic type system
-    is used.
-
-    :param analysis: only objects part of this analysis are considered
-    :param t:        only a object of this type is returned
-
-    :note:
-     Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
-     type is just checked for equality. If the type doesn't match
-     ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
-    """
-    objs = get_member(analysis, t)
-    return objs[0] if objs else None
-
-
-def get_several_member(analysis, t):
-    """ Get members and pack them for Calculix/Z88.
-
-    Collect members by calling :py:func:`get_member` and pack them into a
-    data structure that can be consumed by calculix and Z88 solver modules.
-
-    :param analysis: see :py:func:`get_member`
-    :param t: see :py:func:`get_member`
-
-    :returns:
-     A list containing one dict per member. Each dict has two entries:
-     ``"Object"`` and ``"RefShapeType"``. ``dict["Object"]`` contains the
-     member document object. ``dict["RefShapeType"]`` contains the shape type
-     of the *References* property of the member (used by constraints) as a
-     string ("Vertex", "Edge", "Face" or "Solid"). If the member doesn't have a
-     *References* property ``dict["RefShapeType"]`` is the empty string ``""``.
-
-    :note:
-     Undefined behaviour if one of the members has a *References* property
-     which is empty.
-
-    :note:
-     Undefined behaviour if the type of the references of one object are not
-     all the same.
-
-    :note:
-     Inheritance of Fem types is not checked. If *obj* uses Fems typesystem the
-     type is just checked for equality. If the type doesn't match
-     ``obj.isDerivedFrom`` is called as usual. See
-     https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
-    """
-    # if no member is found, an empty list is returned
-    objs = get_member(analysis, t)
-    members = []
-    for m in objs:
-        obj_dict = {}
-        obj_dict["Object"] = m
-        obj_dict["RefShapeType"] = get_refshape_type(m)
-        members.append(obj_dict)
-    return members
-
-
-def get_mesh_to_solve(analysis):
-    """ Find one and only mesh object of *analysis*.
-
-    :returns:
-     A tuple ``(object, message)``. If and only if the analysis contains
-     exactly one mesh object the first value of the tuple is the mesh document
-     object. Otherwise the first value is ``None`` and the second value is a
-     error message indicating what went wrong.
-    """
-    mesh_to_solve = None
-    for m in analysis.Group:
-        if m.isDerivedFrom("Fem::FemMeshObject") and not is_of_type(m, "Fem::FemMeshResult"):
-            if not mesh_to_solve:
-                mesh_to_solve = m
-            else:
-                return (None, "FEM: multiple mesh in analysis not yet supported!")
-    if mesh_to_solve is not None:
-        return (mesh_to_solve, "")
-    else:
-        return (None, "FEM: no mesh object found in analysis.")
 
 
 # typeID and object type defs
@@ -232,7 +118,7 @@ def is_derived_from(obj, t):
 def get_pref_working_dir(solver_obj):
     """ Return working directory for solver honoring user settings.
 
-    :throws femsolver.run.MustSaveError:
+    :throws femtools.erros.MustSaveError:
      If user setting is set to BESIDE and the document isn't saved.
 
     :note:
@@ -293,6 +179,7 @@ def get_beside_base(obj):
                 "Can't start Solver or Mesh creation besides FC file.",
                 error_message
             )
+        # from .errors import MustSaveError
         # raise MustSaveError()
         return get_temp_dir()
     else:
@@ -311,7 +198,9 @@ def get_custom_base(solver):
                 "Can't start Solver or Mesh creation.",
                 error_message
             )
-        raise DirectoryDoesNotExistError("Invalid path")
+        # from .errors import DirectoryDoesNotExistError
+        # raise DirectoryDoesNotExistError("Invalid path")
+        return get_temp_dir()
     return path
 
 
@@ -323,15 +212,6 @@ def check_working_dir(wdir):
         return True
     else:
         return False
-
-
-# TODO: move in own error module
-class MustSaveError(Exception):
-    pass
-
-
-class DirectoryDoesNotExistError(Exception):
-    pass
 
 
 # ************************************************************************************************

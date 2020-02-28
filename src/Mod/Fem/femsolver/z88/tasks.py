@@ -32,6 +32,7 @@ import os.path
 
 import FreeCAD
 import femtools.femutils as femutils
+import femtools.membertools as membertools
 import feminout.importZ88O2Results as importZ88O2Results
 
 from .. import run
@@ -51,28 +52,11 @@ class Prepare(run.Prepare):
 
     def run(self):
         self.pushStatus("Preparing input files...\n")
-        c = _Container(self.analysis)
         w = writer.FemInputWriterZ88(
             self.analysis,
             self.solver,
-            femutils.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
-            c.materials_linear,
-            c.materials_nonlinear,
-            c.constraints_fixed,
-            c.constraints_displacement,
-            c.constraints_contact,
-            c.constraints_planerotation,
-            c.constraints_transform,
-            c.constraints_selfweight,
-            c.constraints_force,
-            c.constraints_pressure,
-            c.constraints_temperature,
-            c.constraints_heatflux,
-            c.constraints_initialtemperature,
-            c.beam_sections,
-            c.beam_rotations,
-            c.shell_thicknesses,
-            c.fluid_sections,
+            membertools.get_mesh_to_solve(self.analysis)[0],  # pre check has been done already
+            membertools.AnalysisMember(self.analysis),
             self.directory
         )
         path = w.write_z88_input()
@@ -129,7 +113,7 @@ class Results(run.Results):
         self.load_results_z88o2()
 
     def purge_results(self):
-        for m in femutils.get_member(self.analysis, "Fem::FemResultObject"):
+        for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
             if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
@@ -145,48 +129,5 @@ class Results(run.Results):
         else:
             raise Exception(
                 "FEM: No results found at {}!".format(disp_result_file))
-
-
-class _Container(object):
-
-    def __init__(self, analysis):
-        self.analysis = analysis
-
-        # get member, empty lists are not supported by z88
-        # materials
-        self.materials_linear = self.get_several_member(
-            "Fem::Material"
-        )
-        self.materials_nonlinear = []
-
-        # geometries
-        self.beam_sections = self.get_several_member(
-            "Fem::FemElementGeometry1D"
-        )
-        self.beam_rotations = []
-        self.fluid_sections = []
-        self.shell_thicknesses = self.get_several_member(
-            "Fem::FemElementGeometry2D"
-        )
-
-        # constraints
-        self.constraints_contact = []
-        self.constraints_displacement = []
-        self.constraints_fixed = self.get_several_member(
-            "Fem::ConstraintFixed"
-        )
-        self.constraints_force = self.get_several_member(
-            "Fem::ConstraintForce"
-        )
-        self.constraints_heatflux = []
-        self.constraints_initialtemperature = []
-        self.constraints_pressure = []
-        self.constraints_planerotation = []
-        self.constraints_selfweight = []
-        self.constraints_temperature = []
-        self.constraints_transform = []
-
-    def get_several_member(self, t):
-        return femutils.get_several_member(self.analysis, t)
 
 ##  @}

@@ -31,10 +31,7 @@ public:
     ExpressionCompleter(const App::DocumentObject * currentDocObj, 
             QObject *parent = 0, bool noProperty = false, bool checkInList = true);
 
-    void getPrefixRange(int &start, int &end) const { 
-        start = prefixStart;
-        end = prefixEnd;
-    }
+    void getPrefixRange(QString &prefix, int &start, int &end, int &offset) const;
 
     void updatePrefixEnd(int end) {
         prefixEnd = end;
@@ -44,20 +41,33 @@ public:
 
     void setNoProperty(bool enabled=true);
 
+    void setSearchUnit(bool enabled=true);
+
+    bool isInsideString() const {return insideString;}
+
 public Q_SLOTS:
     void slotUpdate(const QString &prefix, int pos);
+
+protected:
+    bool eventFilter(QObject *o, QEvent *e);
 
 private:
     void init();
     virtual QString pathFromIndex ( const QModelIndex & index ) const;
     virtual QStringList splitPath ( const QString & path ) const;
+    void showPopup(bool show);
 
     int prefixStart = 0;
     int prefixEnd = 0;
+    bool closeString = false;
+    bool insideString = false;
+    QString currentPrefix;
+    QString savedPrefix;
 
     App::DocumentObjectT currentObj;
-    bool noProperty;
-    bool checkInList;
+    bool noProperty = false;
+    bool checkInList = true;
+    bool searchUnit = false;
 };
 
 class GuiExport ExpressionLineEdit : public QLineEdit {
@@ -70,19 +80,18 @@ public:
     bool completerActive() const;
     void hideCompleter();
     void setNoProperty(bool enabled=true);
+    void setSearchUnit(bool enabled=true);
 Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
     void slotTextChanged(const QString & text);
-    void slotCompleteText(const QString & completionPrefix);
-protected:
-    void keyPressEvent(QKeyEvent * event);
+    void slotCompleteText(QString completionPrefix);
 private:
     ExpressionCompleter * completer;
-    bool block;
     bool noProperty;
     bool checkInList;
     char checkPrefix;
+    bool searchUnit;
 };
 
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {
@@ -98,7 +107,7 @@ Q_SIGNALS:
     void textChanged2(QString text, int pos);
 public Q_SLOTS:
     void slotTextChanged();
-    void slotCompleteText(const QString & completionPrefix);
+    void slotCompleteText(QString completionPrefix);
 private:
     ExpressionCompleter * completer;
     bool block;

@@ -497,6 +497,9 @@ bool FileInfo::renameFile(const char* NewName)
         int code = errno;
         std::clog << "Error in renameFile: " << strerror(code) << " (" << code << ")" << std::endl;
     }
+    else {
+        FileName = NewName;
+    }
 
     return res;
 }

@@ -27,7 +27,9 @@
 #ifndef _PreComp_
 # include <sstream>
 
+# include <QAction>
 # include <QKeyEvent>
+# include <QListWidget>
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
@@ -70,6 +72,7 @@ using namespace Gui;
 TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent,const char* pixmapname)
     : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent)
     , proxy(nullptr)
+    , deleteAction(nullptr)
     , ConstraintView(ConstraintView)
     , buttonBox(nullptr)
     , okButton(nullptr)
@@ -132,6 +135,26 @@ const std::string TaskFemConstraint::getScale() const //OvG: Return pre-calculat
     return result;
 }
 
+void TaskFemConstraint::setSelection(QListWidgetItem* item) {
+    // highlights the list item in the model
+
+    // get the document name
+    std::string docName = ConstraintView->getObject()->getDocument()->getName();
+    // name of the item
+    std::string ItemName = item->text().toStdString();
+    std::string delimiter = ":";
+    size_t pos = 0;
+    pos = ItemName.find(delimiter);
+    // the objName is the name piece before the ':' of the item name
+    std::string objName = ItemName.substr(0, pos);
+    // the subName is the name piece behind the ':'
+    ItemName.erase(0, pos + delimiter.length());
+    // clear existing selection
+    Gui::Selection().clearSelection();
+    // highligh the selected item
+    Gui::Selection().addSelection(docName.c_str(), objName.c_str(), ItemName.c_str(), 0, 0, 0);
+}
+
 void TaskFemConstraint::onReferenceDeleted(const int row) {
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
@@ -181,6 +204,45 @@ void TaskFemConstraint::onButtonWizCancel()
 const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, const std::string& subName) const
 {
     return QString::fromUtf8((std::string(obj->getNameInDocument()) + ":" + subName).c_str());
+}
+
+void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
+{
+    // creates a context menu, a shortcutt for it and connects it to e slot function
+
+    deleteAction = new QAction(tr("Delete"), this);
+    deleteAction->setShortcut(QKeySequence::Delete);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    // display shortcut behind the context menu entry
+    deleteAction->setShortcutVisibleInContextMenu(true);
+#endif
+    parentList->addAction(deleteAction);
+    parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
+}
+
+bool TaskFemConstraint::KeyEvent(QEvent *e)
+{
+    // in case another instance takes key events, accept the overridden key even
+    if (e && e->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->modifiers() == Qt::NoModifier) {
+            if (deleteAction && kevent->key() == Qt::Key_Delete) {
+                kevent->accept();
+                return true;
+            }
+        }
+    }
+    // if we have a Del key, trigger the deleteAction
+    else if (e && e->type() == QEvent::KeyPress) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(e);
+        if (kevent->key() == Qt::Key_Delete) {
+            if (deleteAction && deleteAction->isEnabled())
+                deleteAction->trigger();
+            return true;
+        }
+    }
+
+    return TaskFemConstraint::event(e);
 }
 
 //**************************************************************************

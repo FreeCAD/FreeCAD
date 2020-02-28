@@ -149,7 +149,12 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
         onSelectionChanged(msg);
     } catch (Base::Exception &e) {
         e.ReportException();
-        FC_ERR("Unhandled Base::Exception caught in selection observer: ");
+        FC_ERR("Unhandled Base::Exception caught in selection observer");
+    } catch (Py::Exception &) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        e.ReportException();
+        FC_ERR("Unhandled Python exception caught in selection observer");
     } catch (std::exception &e) {
         FC_ERR("Unhandled std::exception caught in selection observer: " << e.what());
     } catch (...) {

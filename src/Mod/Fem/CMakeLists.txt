@@ -39,6 +39,7 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_std.py
     femexamples/constraint_contact_shell_shell.py
     femexamples/constraint_contact_solid_solid.py
+    femexamples/constraint_tie.py
     femexamples/manager.py
     femexamples/material_multiple_twoboxes.py
     femexamples/material_nl_platewithhole.py
@@ -53,6 +54,7 @@ SET(FemExampleMeshes_SRCS
     femexamples/meshes/mesh_boxanalysis_tetra10.py
     femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
     femexamples/meshes/mesh_canticcx_tetra10.py
+    femexamples/meshes/mesh_constraint_tie_tetra10.py
     femexamples/meshes/mesh_contact_box_halfcylinder_tetra10.py
     femexamples/meshes/mesh_contact_tube_tube_tria3.py
     femexamples/meshes/mesh_rc_wall_2d_tria6.py
@@ -171,6 +173,7 @@ SET(FemTestsCcx_SRCS
     femtest/data/ccx/constraint_contact_shell_shell.inp
     femtest/data/ccx/constraint_contact_solid_solid.FCStd
     femtest/data/ccx/constraint_contact_solid_solid.inp
+    femtest/data/ccx/constraint_tie.inp
     femtest/data/ccx/cube_frequency.inp
     femtest/data/ccx/cube_frequency.dat
     femtest/data/ccx/cube_frequency.frd
@@ -216,7 +219,9 @@ SET(FemTestsMesh_SRCS
 
 SET(FemTools_SRCS
     femtools/__init__.py
+    femtools/membertools.py
     femtools/ccxtools.py
+    femtools/errors.py
     femtools/femutils.py
     femtools/tokrules.py
 )
@@ -228,6 +233,7 @@ SET(FemObjectsScripts_SRCS
     femobjects/_FemConstraintFlowVelocity.py
     femobjects/_FemConstraintInitialFlowVelocity.py
     femobjects/_FemConstraintSelfWeight.py
+    femobjects/_FemConstraintTie.py
     femobjects/_FemElementFluid1D.py
     femobjects/_FemElementGeometry1D.py
     femobjects/_FemElementGeometry2D.py
@@ -311,6 +317,7 @@ SET(FemGuiScripts_SRCS
     femguiobjects/_ViewProviderFemConstraintFlowVelocity.py
     femguiobjects/_ViewProviderFemConstraintInitialFlowVelocity.py
     femguiobjects/_ViewProviderFemConstraintSelfWeight.py
+    femguiobjects/_ViewProviderFemConstraintTie.py
     femguiobjects/_ViewProviderFemElementFluid1D.py
     femguiobjects/_ViewProviderFemElementGeometry1D.py
     femguiobjects/_ViewProviderFemElementGeometry2D.py

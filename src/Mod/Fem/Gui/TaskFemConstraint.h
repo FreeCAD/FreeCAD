@@ -31,6 +31,10 @@
 
 #include "ViewProviderFemConstraint.h"
 
+class QAction;
+class QListWidget;
+class QListWidgetItem;
+
 namespace FemGui {
 
 class TaskFemConstraint : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
@@ -48,6 +52,7 @@ public:
 protected Q_SLOTS:
     void onReferenceDeleted(const int row);
     void onButtonReference(const bool pressed = true);
+    void setSelection(QListWidgetItem* item);
     // Shaft Wizard integration
     void onButtonWizOk();
     void onButtonWizCancel();
@@ -56,12 +61,15 @@ protected:
     virtual void changeEvent(QEvent *e) { TaskBox::changeEvent(e); }
     const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
     virtual void keyPressEvent(QKeyEvent * ke);
+    void createDeleteAction(QListWidget* parentList);
+    bool KeyEvent(QEvent *e);
 
 private:
     virtual void onSelectionChanged(const Gui::SelectionChanges&) {}
 
 protected:
     QWidget* proxy;
+    QAction* deleteAction;
     ViewProviderFemConstraint *ConstraintView;
     enum {seldir, selref, selloc, selnone} selectionMode;
 

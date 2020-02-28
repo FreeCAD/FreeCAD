@@ -152,7 +152,8 @@ App::any Property::getPathValue(const ObjectIdentifier &path) const
 
 void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
-    paths.emplace_back(*this);
+    (void)paths;
+    // paths.emplace_back(getContainer(), getName());
 }
 
 ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const

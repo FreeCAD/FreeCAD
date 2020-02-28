@@ -149,6 +149,12 @@ void ExtensionContainer::getPropertyList(std::vector< Property* >& List) const {
         entry.second->extensionGetPropertyList(List);
 }
 
+void ExtensionContainer::getPropertyNamedList(std::vector<std::pair<const char*,Property*> >& List) const {
+    App::PropertyContainer::getPropertyNamedList(List);
+    for(auto entry : _extensions)         
+        entry.second->extensionGetPropertyNamedList(List);
+}
+
 void ExtensionContainer::getPropertyMap(std::map< std::string, Property* >& Map) const {
     App::PropertyContainer::getPropertyMap(Map);
     for(auto entry : _extensions)     

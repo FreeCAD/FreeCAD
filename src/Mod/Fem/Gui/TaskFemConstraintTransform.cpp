@@ -36,9 +36,9 @@
 # include <gp_Ax1.hxx>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
-
-# include <QMessageBox>
 # include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
 
@@ -49,13 +49,12 @@
 #include "TaskFemConstraintTransform.h"
 #include "ui_TaskFemConstraintTransform.h"
 #include <App/Application.h>
-#include <Gui/Command.h>
 #include <Base/Console.h>
-#include <Mod/Part/App/PartFeature.h>
-#include <Mod/Fem/App/FemTools.h>
-
+#include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Fem/App/FemTools.h>
 
 #include <math.h>
 #define PI (3.141592653589793238462643383279502884L)
@@ -73,12 +72,18 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* actionRect = new QAction(tr("Delete"), ui->lw_Rect);
-    actionRect->connect(actionRect, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_Rect->addAction(actionRect);
-    ui->lw_Rect->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_Rect);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
+    // highlight seletcted list items in the model
     connect(ui->lw_Rect, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_Rect, SIGNAL(itemClicked(QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_displobj_rect, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_displobj_rect, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
@@ -119,12 +124,15 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     //Transformable surfaces
     Gui::Command::doCommand(Gui::Command::Doc,TaskFemConstraintTransform::getSurfaceReferences((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
-    std::vector<App::DocumentObject*> nDispl = pcConstraint->NameDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
 
     for (std::size_t i = 0; i < ObjDispl.size(); i++) {
         ui->lw_displobj_rect->addItem(makeRefText(ObjDispl[i], SubElemDispl[i]));
         ui->lw_displobj_cylin->addItem(makeRefText(ObjDispl[i], SubElemDispl[i]));
+    }
+
+    std::vector<App::DocumentObject*> nDispl = pcConstraint->NameDispl.getValues();
+    for (std::size_t i = 0; i < nDispl.size(); i++) {
         ui->lw_dis_rect->addItem(makeText(nDispl[i]));
         ui->lw_dis_cylin->addItem(makeText(nDispl[i]));
     }
@@ -407,24 +415,6 @@ void TaskFemConstraintTransform::removeFromSelection()
     ui->sp_Z->setValue(0);
 }
 
-void TaskFemConstraintTransform::setSelection(QListWidgetItem* item){
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-
-    std::string s = item->text().toStdString();
-    std::string delimiter = ":";
-
-    size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName=s;
-
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
-}
-
 const std::string TaskFemConstraintTransform::getReferences() const
 {
     std::vector<std::string> items;
@@ -440,16 +430,19 @@ void TaskFemConstraintTransform::onReferenceDeleted() {
 }
 
 std::string TaskFemConstraintTransform::getSurfaceReferences(std::string showConstr="")
+// https://forum.freecadweb.org/viewtopic.php?f=18&t=43650
 {
-    return "for obj in FreeCAD.ActiveDocument.Objects:\n\
+    return "\n\
+doc = FreeCAD.ActiveDocument\n\
+for obj in doc.Objects:\n\
         if obj.isDerivedFrom(\"Fem::FemAnalysis\"):\n\
-                if FreeCAD.ActiveDocument."+showConstr+" in obj.Group:\n\
-                        members = obj.Group\n\
+                if doc."+showConstr+" in obj.Group:\n\
+                        analysis = obj\n\
 A = []\n\
 i = 0\n\
 ss = []\n\
-for member in members:\n\
-        if (member.isDerivedFrom(\"Fem::ConstraintDisplacement\")) or (member.isDerivedFrom(\"Fem::ConstraintForce\")):\n\
+for member in analysis.Group:\n\
+        if ((member.isDerivedFrom(\"Fem::ConstraintDisplacement\")) or (member.isDerivedFrom(\"Fem::ConstraintForce\"))) and len(member.References) > 0:\n\
                 m = member.References\n\
                 A.append(m)\n\
                 if i >0:\n\
@@ -464,8 +457,11 @@ for member in members:\n\
                                 ss.append(member)\n\
                 i = i+1\n\
 if i>0:\n\
-        App.ActiveDocument."+showConstr+".RefDispl = [x]\n\
-        App.ActiveDocument."+showConstr+".NameDispl = ss\n";
+        doc."+showConstr+".RefDispl = [x]\n\
+        doc."+showConstr+".NameDispl = ss\n\
+else:\n\
+        doc."+showConstr+".RefDispl = None\n\
+        doc."+showConstr+".NameDispl = []\n";
 }
 
 /* Note: */
@@ -481,6 +477,11 @@ std::string TaskFemConstraintTransform::get_transform_type(void) const {
         transform = "\"Cylindrical\"";
     }
     return transform;
+}
+
+bool TaskFemConstraintTransform::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintTransform::changeEvent(QEvent *){

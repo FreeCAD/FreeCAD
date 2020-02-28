@@ -70,12 +70,11 @@ namespace App {
      %type <ExpressionPtr> primary_exp unary_exp multiply_exp additive_exp relational_exp assignment_exp
      %type <ExpressionPtr> equality_exp or_exp and_exp power_exp assignment_exp2 assignment_exp1
      %type <ExpressionPtr> cond_exp nocond_exp lambda_exp lambda_nocond_exp
-     %type <ExpressionPtr> input exp unit_exp indexable indexable2 num range callable target target2
+     %type <ExpressionPtr> input exp uexp unit_exp indexable indexable2 num range callable target target2
      %type <ExpressionPtr> comp_for list tuple dict dict1 idict idict1 string pstring
      %type <ExpressionPtr> stmt statement if_stmt small_stmt simple_stmt while_stmt try_stmt
      %type <ExpressionPtr> function_stmt for_stmt compound_stmt suite import_stmt1 import_stmt2 import_stmt3
-     %type <UnitInfo> UNIT
-     %type <std::string> id_or_cell IDENTIFIER CELLADDRESS STRING
+     %type <std::string> id_or_cell IDENTIFIER CELLADDRESS STRING UNIT
      %type <ExpressionString> PSTRING
      %type <Integer> INTEGER
      %type <double> ONE
@@ -90,26 +89,28 @@ namespace App {
      %left '?' ':'
      %left MINUSSIGN '+'
      %left '*' '/' '%'
-     %precedence NUM_AND_UNIT
-     %left '^'    /* exponentiation */
      %left NEG     /* negation--unary minus */
      %left NOT
      %left POS     /* unary plus */
      %left EXPAND
+     %precedence NUM_AND_UNIT
+     %precedence NUM_DIV_UNIT
+     %left '^'    /* exponentiation */
 
 %start input
 
 %%
 
 input
-    : statement                             { ctx.ScanResult = std::move($1); ctx.valueExpression = true;                                       }
-    | unit_exp                              { ctx.ScanResult = std::move($1); ctx.unitExpression = true;                                        }
-    | INDENT unit_exp DEDENT                { ctx.ScanResult = std::move($2); ctx.unitExpression = true;                                        }
+    : statement                             { ctx.ScanResult = std::move($1); ctx.valueExpression = true; }
     ;
 
+uexp    
+    : num unit_exp  %prec NUM_AND_UNIT      { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_UNIT, std::move($2));  }
+    | uexp num unit_exp %prec NUM_AND_UNIT  { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_UNIT_ADD, OperatorExpression::create(ctx.obj, std::move($2), OP_UNIT, std::move($3))); }
 primary_exp
-    : num                                   { $$ = std::move($1);                                                                        }
-    | num unit_exp %prec NUM_AND_UNIT       { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_UNIT, std::move($2));  }
+    : num                                   { $$ = std::move($1); }
+    | uexp %prec NUM_AND_UNIT               { $$ = std::move($1); }
     | string                                { $$ = std::move($1); }
     | identifier                            { $$ = VariableExpression::create(ctx.obj, std::move($1)); }
     | indexable                             { $$ = std::move($1); }
@@ -141,10 +142,6 @@ indexable
 callable
     : identifier '(' ')'                    { $$ = CallableExpression::create(ctx.obj,std::move($1)); }
     | identifier '(' args ')'               { $$ = CallableExpression::create(ctx.obj, std::move($1), std::move($3.first), std::move($3.second)); }
-    | UNIT '(' args ')'                     {   // This rule exists because of possible name clash of 
-                                                // function and unit, e.g. min
-                                                $$ = CallableExpression::create(ctx.obj, std::move($1.first), std::move($3.first), std::move($3.second));
-                                            }
     | indexable '(' ')'                     { $$ = CallableExpression::create(ctx.obj, std::move($1)); }
     | indexable '(' args ')'                { $$ = CallableExpression::create(ctx.obj, std::move($1), std::move($3.first), std::move($3.second)); }
     | callable '(' ')'                      { $$ = CallableExpression::create(ctx.obj, std::move($1)); }
@@ -173,7 +170,6 @@ multiply_exp
     : power_exp                             { $$ = std::move($1); }
     | multiply_exp '*' power_exp            { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_MUL, std::move($3));   }
     | multiply_exp '/' power_exp            { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_DIV, std::move($3));   }
-    | multiply_exp '/' unit_exp             { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_DIV, std::move($3));   }
     | multiply_exp '%' power_exp            { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_MOD, std::move($3));   }
     ;
 
@@ -535,13 +531,15 @@ range
     ;
 
 unit_exp
-    : UNIT                                  { $$ = UnitExpression::create(ctx.obj, $1.second, std::move($1.first));                }
+    : UNIT                                  { $$ = UnitExpression::create(ctx.obj, $1.c_str());                                 }
+    | IDENTIFIER                            { $$ = UnitExpression::create(ctx.obj, $1.c_str());                                 }
     /* | IN                                    { $$ = UnitExpression::create(ctx.obj, Quantity::Inch, "in");                } */
     | unit_exp '/' unit_exp                 { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_DIV, std::move($3));   }
     | unit_exp '*' unit_exp                 { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_MUL, std::move($3));   }
     | unit_exp '^' integer                  { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_POW, NumberExpression::create(ctx.obj, Quantity((double)$3)));   }
-    | unit_exp '^' MINUSSIGN integer        { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_POW, OperatorExpression::create(ctx.obj, NumberExpression::create(ctx.obj, Quantity((double)$4)), OP_NEG, NumberExpression::create(ctx.obj, Quantity(-1))));   }
-    | '(' unit_exp ')'                      { $$ = std::move($2);                                                                        }
+    | unit_exp '^' MINUSSIGN integer        { $$ = OperatorExpression::create(ctx.obj, std::move($1), OP_POW, NumberExpression::create(ctx.obj, Quantity(-(double)$4)));   }
+    | '(' unit_exp ')'                      { $$ = std::move($2);                                                               }
+    | '(' num '/' unit_exp ')'              { $$ = OperatorExpression::create(ctx.obj, std::move($2), OP_DIV, std::move($4));   }
     ;
 
 identifier 
@@ -549,45 +547,41 @@ identifier
     | iden                                  { $$ = std::move($1); }
     ;
 
-iden 
-    :  '.' STRING '.' id_or_cell            { /* Path to property of a sub-object of the current object*/
-                                                $$ = ObjectIdentifier(ctx.obj,true);
-                                                $$.setDocumentObjectName(ctx.obj,false,ObjectIdentifier::String(std::move($2),true),true);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($4));
+iden
+    :  '.' STRING                           {
+                                                $$ = ObjectIdentifier(ctx.obj, true);
+                                                $$.addComponent(ObjectIdentifier::LabelComponent(std::move($2)));
                                             }
-    | '.' id_or_cell                        { /* Path to property of the current document object */
-                                                $$ = ObjectIdentifier(ctx.obj,true);
-                                                $$.setDocumentObjectName(ctx.obj);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($2));
+    | '.' id_or_cell                        {
+                                                $$ = ObjectIdentifier(ctx.obj, true);
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent(std::move($2)));
                                             }
-    | object '.' STRING '.' id_or_cell      { /* Path to property of a sub-object */
+    | object '.' STRING                     {
                                                 $$ = ObjectIdentifier(ctx.obj);
                                                 $$.setDocumentObjectName(std::move($1), true, ObjectIdentifier::String(std::move($3),true),true);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($5));
-                                                $$.resolveAmbiguity();
                                             }
-    | object '.' id_or_cell                 { /* Path to property of a given document object */
+    | object '.' id_or_cell                 {
                                                 $$ = ObjectIdentifier(ctx.obj);
                                                 $1.checkImport(ctx.obj);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($1));
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($3));
-                                                $$.resolveAmbiguity();
+                                                if($1.isRealString())
+                                                    $$.addComponent(ObjectIdentifier::LabelComponent(std::move($1.getString())));
+                                                else
+                                                    $$.addComponent(ObjectIdentifier::SimpleComponent(std::move($1.getString())));
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent(std::move($3)));
                                             }
-    | document '#' object '.' id_or_cell    { /* Path to property from an external document, within a named document object */
+    | document '#' object                   {
                                                 $$ = ObjectIdentifier(ctx.obj);
                                                 $$.setDocumentName(std::move($1), true);
                                                 $$.setDocumentObjectName(std::move($3), true);
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($5));
-                                                $$.resolveAmbiguity();
                                             }
-    | document '#' object '.' STRING '.' id_or_cell    
-                                            {   $$ = ObjectIdentifier(ctx.obj);
-                                                $$.setDocumentName(std::move($1), true);
-                                                $$.setDocumentObjectName(std::move($3), true, ObjectIdentifier::String(std::move($5),true));
-                                                $$.addComponent(ObjectIdentifier::SimpleComponent($7));
-                                                $$.resolveAmbiguity();
+    | iden '.' STRING                       {
+                                                $$ = std::move($1);
+                                                $$.addComponent(ObjectIdentifier::LabelComponent(std::move($3)));
                                             }
-    | iden '.' IDENTIFIER                   { $$= std::move($1); $$.addComponent(ObjectIdentifier::SimpleComponent($3)); }
+    | iden '.' id_or_cell                   {
+                                                $$ = std::move($1);
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent(std::move($3)));
+                                            }
     ;
 
 integer

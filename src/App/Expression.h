@@ -212,10 +212,10 @@ public:
         return parse(owner,buffer.c_str(),buffer.size(),verbose,pythonMode);
     }
 
-    static ExpressionPtr parseUnit(const App::DocumentObject * owner, const char* buffer, size_t len=0);
+    static ExpressionPtr parseUnit(const App::DocumentObject * owner, const char* buffer);
 
     static ExpressionPtr parseUnit(const App::DocumentObject * owner, const std::string &buffer) {
-        return parseUnit(owner,buffer.c_str(),buffer.size());
+        return parseUnit(owner,buffer.c_str());
     }
 
     virtual int priority() const;

@@ -49,10 +49,29 @@
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
          <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Base View</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="leBaseView">
+           <widget class="QTextBrowser" name="tbBaseView">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>22</height>
+             </size>
             </property>
             <property name="mouseTracking">
              <bool>false</bool>
@@ -63,12 +82,8 @@
             <property name="acceptDrops">
              <bool>false</bool>
             </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Base View</string>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
            </widget>
           </item>
@@ -111,6 +126,11 @@
           </item>
           <item>
            <widget class="QPushButton" name="pbTracker">
+            <property name="toolTip">
+             <string>First pick the start pint of the line,
+then at least a second point.
+You can pick further points to get line segments.</string>
+            </property>
             <property name="text">
              <string>Pick Points</string>
             </property>

@@ -317,6 +317,7 @@ class TechDrawExport Vertex
         bool cosmetic;
         int cosmeticLink;                 //deprec. use cosmeticTag
         std::string cosmeticTag;
+        bool reference;                   //reference vertex (ex robust dimension)
 
         double x() {return pnt.x;}
         double y() {return pnt.y;}

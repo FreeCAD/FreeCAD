@@ -25,6 +25,7 @@
         <file>icons/fem-constraint-pulley.svg</file>
         <file>icons/fem-constraint-selfweight.svg</file>
         <file>icons/fem-constraint-temperature.svg</file>
+        <file>icons/fem-constraint-tie.svg</file>
         <file>icons/fem-constraint-transform.svg</file>
         <file>icons/fem-element-fluid-1d.svg</file>
         <file>icons/fem-element-geometry-1d.svg</file>
@@ -110,6 +111,7 @@
         <file>translations/Fem_vi.qm</file>
         <file>translations/Fem_zh-CN.qm</file>
         <file>translations/Fem_zh-TW.qm</file>
+        <file>ui/ConstraintTie.ui</file>
         <file>ui/ElectrostaticPotential.ui</file>
         <file>ui/ElementFluid1D.ui</file>
         <file>ui/ElementGeometry1D.ui</file>

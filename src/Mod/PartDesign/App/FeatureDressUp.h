@@ -62,6 +62,8 @@ public:
 
     std::vector<TopoShape> getFaces(const TopoShape &shape);
 
+    virtual void setupObject();
+
 protected:
     virtual void onChanged(const App::Property* prop);
 };

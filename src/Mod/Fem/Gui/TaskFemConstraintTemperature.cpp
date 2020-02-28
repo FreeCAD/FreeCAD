@@ -37,9 +37,9 @@
 # include <gp_Pln.hxx>
 
 # include <sstream>
-
-# include <QMessageBox>
 # include <QAction>
+# include <QMessageBox>
+# include <QKeyEvent>
 # include <QRegExp>
 # include <QTextStream>
 #endif
@@ -49,9 +49,6 @@
 #include "ui_TaskFemConstraintTemperature.h"
 #include <App/Application.h>
 #include <Gui/Command.h>
-
-
-
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 
@@ -69,12 +66,13 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
-    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->rb_temperature, SIGNAL(clicked(bool)),  this, SLOT(Temp()));
     connect(ui->rb_cflux, SIGNAL(clicked(bool)),  this, SLOT(Flux()));
@@ -276,24 +274,6 @@ void TaskFemConstraintTemperature::removeFromSelection()
     updateUI();
 }
 
-void TaskFemConstraintTemperature::setSelection(QListWidgetItem* item){
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-
-    std::string s = item->text().toStdString();
-    std::string delimiter = ":";
-
-    size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName=s;
-
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
-}
-
 void TaskFemConstraintTemperature::onReferenceDeleted() {
     TaskFemConstraintTemperature::removeFromSelection();
 }
@@ -328,6 +308,11 @@ std::string TaskFemConstraintTemperature::get_constraint_type(void) const {
         type = "\"CFlux\"";
     }
     return type;
+}
+
+bool TaskFemConstraintTemperature::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
 }
 
 void TaskFemConstraintTemperature::changeEvent(QEvent *)

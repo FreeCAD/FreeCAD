@@ -41,9 +41,11 @@ import tempfile
 
 import FreeCAD as App
 import femtools.femutils as femutils
+import femtools.membertools as membertools
 from . import settings
 from . import signal
 from . import task
+from femtools.errors import MustSaveError, DirectoryDoesNotExistError
 
 if App.GuiUp:
     import FreeCADGui
@@ -117,7 +119,7 @@ def run_fem_solver(solver, working_dir=None):
                 machine = getMachine(solver, working_dir)
             else:
                 machine = getMachine(solver)
-        except femutils.MustSaveError:
+        except MustSaveError:
             error_message = (
                 "Please save the file before executing the solver. "
                 "This must be done because the location of the working "
@@ -131,7 +133,7 @@ def run_fem_solver(solver, working_dir=None):
                     error_message
                 )
             return
-        except femutils.DirectoryDoesNotExistError:
+        except DirectoryDoesNotExistError:
             error_message = "Selected working directory doesn't exist."
             App.Console.PrintError(error_message + "\n")
             if App.GuiUp:
@@ -250,7 +252,7 @@ def _getBesideBase(solver):
                 "Can't start Solver",
                 error_message
             )
-        raise femutils.MustSaveError()
+        raise MustSaveError()
     return path
 
 
@@ -275,7 +277,7 @@ def _getCustomBase(solver):
                 "Can't start Solver",
                 error_message
             )
-        raise femutils.DirectoryDoesNotExistError("Invalid path")
+        raise DirectoryDoesNotExistError("Invalid path")
     return path
 
 
@@ -402,7 +404,7 @@ class Machine(BaseTask):
 class Check(BaseTask):
 
     def checkMesh(self):
-        meshes = femutils.get_member(
+        meshes = membertools.get_member(
             self.analysis, "Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
@@ -417,7 +419,7 @@ class Check(BaseTask):
         return True
 
     def checkMaterial(self):
-        matObjs = femutils.get_member(
+        matObjs = membertools.get_member(
             self.analysis, "App::MaterialObjectPython")
         if len(matObjs) == 0:
             self.report.error(

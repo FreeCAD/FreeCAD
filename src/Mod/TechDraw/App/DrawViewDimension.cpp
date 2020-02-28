@@ -82,15 +82,6 @@ const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
                                                     "Projected",
                                                     NULL};
 
-enum RefType{
-        invalidRef,
-        oneEdge,
-        twoEdge,
-        twoVertex,
-        vertexEdge,
-        threeVertex
-    };
-
 DrawViewDimension::DrawViewDimension(void)
 {
     ADD_PROPERTY_TYPE(References2D,(0,0),"",(App::Prop_None),"Projected Geometry References");
@@ -98,7 +89,7 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::Prop_None),"3D Geometry References");
     References3D.setScope(App::LinkScope::Global);
 
-    ADD_PROPERTY_TYPE(FormatSpec,("") , "Format", App::Prop_Output,"Dimension Format");
+    ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec()) , "Format", App::Prop_Output,"Dimension Format");
     ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format", App::Prop_Output,"Value overridden by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
@@ -112,7 +103,7 @@ DrawViewDimension::DrawViewDimension(void)
 
     //hide the properties the user can't edit in the property editor
 //    References2D.setStatus(App::Property::Hidden,true);
-    References3D.setStatus(App::Property::Hidden,true);
+//    References3D.setStatus(App::Property::Hidden,true);
 
     //hide the DrawView properties that don't apply to Dimensions
     ScaleType.setStatus(App::Property::ReadOnly,true);
@@ -161,6 +152,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 MeasureType.setValue("Projected");
             }
         } else if (prop == &References3D) {   //have to rebuild the Measurement object
+//            Base::Console().Message("DVD::onChanged - References3D\n");
             clear3DMeasurements();                                                             //Measurement object
             if (!(References3D.getValues()).empty()) {
                 setAll3DMeasurement();
@@ -222,11 +214,9 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     }
     DrawViewPart* dvp = getViewPart();
     if (dvp == nullptr) {
-        Base::Console().Message("DVD::execute - no DVP!\n");
         return App::DocumentObject::StdReturn;
     }
 
-    //any empty Reference2D??
     if (!has2DReferences()) {                                            //too soon?
         if (isRestoring() ||
             getDocument()->testStatus(App::Document::Status::Restoring)) {
@@ -243,7 +233,6 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
             getDocument()->testStatus(App::Document::Status::Restoring)) {
             return App::DocumentObject::StdReturn;
         } else {
-            Base::Console().Warning("%s - target has no geometry\n", getNameInDocument());
             return App::DocumentObject::StdReturn;
         }
     }
@@ -259,7 +248,6 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
     if ( Type.isValue("Distance")  ||
          Type.isValue("DistanceX") ||
          Type.isValue("DistanceY") )  {
-
         if (getRefType() == oneEdge) {
             m_linearPoints = getPointsOneEdge();
         }else if (getRefType() == twoEdge) {
@@ -802,7 +790,6 @@ double DrawViewDimension::getDimValue()
             result = -result;
         }
     }
-
     return result;
 }
 
@@ -1226,27 +1213,27 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
     return Base::Tools::toStdString(formatSpec);
 }
 
-//! is refName a target of this Dim (2D references)
-bool DrawViewDimension::references(std::string refName) const
-{
-    Base::Console().Message("DVD::references(%s) - %s\n",refName.c_str(),getNameInDocument());
-    bool result = false;
-    const std::vector<App::DocumentObject*> &objects = References2D.getValues();
-    if (!objects.empty()) {
-        const std::vector<std::string> &subElements = References2D.getSubValues();
-        if (!subElements.empty()) {
-            for (auto& s: subElements) {
-                if (!s.empty()) {
-                    if (s == refName) {
-                        result = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    return result;
-}
+////! is refName a target of this Dim (2D references)
+//bool DrawViewDimension::references(std::string refName) const
+//{
+//    Base::Console().Message("DVD::references(%s) - %s\n",refName.c_str(),getNameInDocument());
+//    bool result = false;
+//    const std::vector<App::DocumentObject*> &objects = References2D.getValues();
+//    if (!objects.empty()) {
+//        const std::vector<std::string> &subElements = References2D.getSubValues();
+//        if (!subElements.empty()) {
+//            for (auto& s: subElements) {
+//                if (!s.empty()) {
+//                    if (s == refName) {
+//                        result = true;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    return result;
+//}
 
 PyObject *DrawViewDimension::getPyObject(void)
 {

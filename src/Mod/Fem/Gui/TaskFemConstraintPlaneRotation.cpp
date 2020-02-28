@@ -28,10 +28,11 @@
 #ifndef _PreComp_
 # include <sstream>
 
+# include <QAction>
+# include <QKeyEvent>
+# include <QMessageBox>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
-# include <QAction>
 
 # include <Precision.hxx>
 # include <TopoDS.hxx>
@@ -76,12 +77,13 @@ TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemCo
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    QAction* action = new QAction(tr("Delete"), ui->lw_references);
-    action->connect(action, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
-    ui->lw_references->addAction(action);
-    ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
+    // create a context menu for the listview of the references
+    createDeleteAction(ui->lw_references);
+    deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
     connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+    connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
 
     this->groupLayout()->addWidget(proxy);
@@ -251,24 +253,6 @@ void TaskFemConstraintPlaneRotation::removeFromSelection()
     updateUI();
 }
 
-void TaskFemConstraintPlaneRotation::setSelection(QListWidgetItem* item){
-    std::string docName=ConstraintView->getObject()->getDocument()->getName();
-
-    std::string s = item->text().toStdString();
-    std::string delimiter = ":";
-
-    size_t pos = 0;
-    std::string objName;
-    std::string subName;
-    pos = s.find(delimiter);
-    objName = s.substr(0, pos);
-    s.erase(0, pos + delimiter.length());
-    subName=s;
-
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
-}
-
 void TaskFemConstraintPlaneRotation::onReferenceDeleted() {
     TaskFemConstraintPlaneRotation::removeFromSelection();
 }
@@ -283,6 +267,10 @@ const std::string TaskFemConstraintPlaneRotation::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
+bool TaskFemConstraintPlaneRotation::event(QEvent *e)
+{
+    return TaskFemConstraint::KeyEvent(e);
+}
 
 void TaskFemConstraintPlaneRotation::changeEvent(QEvent *)
 {

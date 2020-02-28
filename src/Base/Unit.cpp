@@ -26,6 +26,8 @@
 # include <stdlib.h>
 #endif
 
+#include <unordered_map>
+
 #include "Unit.h"
 #include "Quantity.h"
 #include "Exception.h"
@@ -233,12 +235,16 @@ Unit& Unit::operator = (const Unit &New)
     return *this;
 }
 
-QString Unit::getString(void) const
+QString Unit::getString(void) const {
+    return QString::fromUtf8(getStdString().c_str());
+}
+
+std::string Unit::getStdString(void) const
 {
     std::stringstream ret;
 
     if (isEmpty())
-        return QString();
+        return std::string();
 
     if (Sig.Length                  > 0 ||
         Sig.Mass                    > 0 ||
@@ -421,50 +427,87 @@ QString Unit::getString(void) const
             ret << ')';
     }
 
-    return QString::fromUtf8(ret.str().c_str());
+    return ret.str();
 }
 
-QString Unit::getTypeString(void) const
-{
-    if(*this == Unit::Length                      )       return QString::fromLatin1("Length");
-    if(*this == Unit::Area                        )       return QString::fromLatin1("Area");
-    if(*this == Unit::Volume                      )       return QString::fromLatin1("Volume");
-    if(*this == Unit::Mass                        )       return QString::fromLatin1("Mass");
-    if(*this == Unit::Angle                       )       return QString::fromLatin1("Angle");
-    if(*this == Unit::Density                     )       return QString::fromLatin1("Density");
-    if(*this == Unit::TimeSpan                    )       return QString::fromLatin1("TimeSpan");
-    if(*this == Unit::Frequency                   )       return QString::fromLatin1("Frequency");
-    if(*this == Unit::Velocity                    )       return QString::fromLatin1("Velocity");
-    if(*this == Unit::Acceleration                )       return QString::fromLatin1("Acceleration");
-    if(*this == Unit::Temperature                 )       return QString::fromLatin1("Temperature");
-    if(*this == Unit::ElectricCurrent             )       return QString::fromLatin1("ElectricCurrent");
-    if(*this == Unit::ElectricPotential           )       return QString::fromLatin1("ElectricPotential");
-    if(*this == Unit::ElectricCharge              )       return QString::fromLatin1("ElectricCharge");
-    if(*this == Unit::MagneticFieldStrength       )       return QString::fromLatin1("MagneticFieldStrength");
-    if(*this == Unit::MagneticFlux                )       return QString::fromLatin1("MagneticFlux");
-    if(*this == Unit::MagneticFluxDensity         )       return QString::fromLatin1("MagneticFluxDensity");
-    if(*this == Unit::ElectricalCapacitance       )       return QString::fromLatin1("ElectricalCapacitance");
-    if(*this == Unit::ElectricalInductance        )       return QString::fromLatin1("ElectricalInductance");
-    if(*this == Unit::ElectricalConductance       )       return QString::fromLatin1("ElectricalConductance");
-    if(*this == Unit::ElectricalResistance        )       return QString::fromLatin1("ElectricalResistance");
-    if(*this == Unit::AmountOfSubstance           )       return QString::fromLatin1("AmountOfSubstance");
-    if(*this == Unit::LuminousIntensity           )       return QString::fromLatin1("LuminousIntensity");
-    if(*this == Unit::Pressure                    )       return QString::fromLatin1("Pressure");
-    if(*this == Unit::Force                       )       return QString::fromLatin1("Force");
-    if(*this == Unit::Work                        )       return QString::fromLatin1("Work");
-    if(*this == Unit::Power                       )       return QString::fromLatin1("Power");
-    if(*this == Unit::SpecificEnergy              )       return QString::fromLatin1("SpecificEnergy");
-    if(*this == Unit::ThermalConductivity         )       return QString::fromLatin1("ThermalConductivity");
-    if(*this == Unit::ThermalExpansionCoefficient )       return QString::fromLatin1("ThermalExpansionCoefficient");
-    if(*this == Unit::SpecificHeat                )       return QString::fromLatin1("SpecificHeat");
-    if(*this == Unit::ThermalTransferCoefficient  )       return QString::fromLatin1("ThermalTransferCoefficient");
-    if(*this == Unit::HeatFlux                    )       return QString::fromLatin1("HeatFlux");
-    if(*this == Unit::DynamicViscosity            )       return QString::fromLatin1("DynamicViscosity");
-    if(*this == Unit::KinematicViscosity          )       return QString::fromLatin1("KinematicViscosity");
-    if(*this == Unit::VacuumPermittivity          )       return QString::fromLatin1("VacuumPermittivity");
+std::size_t Unit::hash() const {
+    if(sizeof(UnitSignature) <= sizeof(std::size_t)) {
+        std::size_t h = 0;
+        memcpy(&h, &Sig, sizeof(Sig));
+        return h;
+    } else {
+        assert(sizeof(UnitSignature) <= sizeof(unsigned long long));
+        unsigned long long h = 0;
+        memcpy(&h, &Sig, sizeof(Sig));
+        return std::hash<unsigned long long>()(h);
+    }
+}
 
-    return QString();
+QString Unit::getTypeString(void) const {
+    return QString::fromLatin1(getType());
+}
 
+const std::vector<std::pair<Unit, const char *> > &Unit::unitTypes() {
+    static std::vector<std::pair<Unit, const char*> > units;
+    if(units.empty()) {
+        units.emplace_back(Unit::Length,"Length");
+        units.emplace_back(Unit::Area,"Area");
+        units.emplace_back(Unit::Volume,"Volume");
+        units.emplace_back(Unit::Mass,"Mass");
+        units.emplace_back(Unit::Angle,"Angle");
+        units.emplace_back(Unit::AngleOfFriction,"AngleOfFriction");
+        units.emplace_back(Unit::Density,"Density");
+        units.emplace_back(Unit::TimeSpan,"TimeSpan");
+        units.emplace_back(Unit::Frequency,"Frequency");
+        units.emplace_back(Unit::Velocity,"Velocity");
+        units.emplace_back(Unit::Acceleration,"Acceleration");
+        units.emplace_back(Unit::Temperature,"Temperature");
+        units.emplace_back(Unit::ElectricCurrent,"ElectricCurrent");
+        units.emplace_back(Unit::ElectricPotential,"ElectricPotential");
+        units.emplace_back(Unit::ElectricCharge,"ElectricCharge");
+        units.emplace_back(Unit::MagneticFieldStrength,"MagneticFieldStrength");
+        units.emplace_back(Unit::MagneticFlux,"MagneticFlux");
+        units.emplace_back(Unit::MagneticFluxDensity,"MagneticFluxDensity");
+        units.emplace_back(Unit::ElectricalCapacitance,"ElectricalCapacitance");
+        units.emplace_back(Unit::ElectricalInductance,"ElectricalInductance");
+        units.emplace_back(Unit::ElectricalConductance,"ElectricalConductance");
+        units.emplace_back(Unit::ElectricalResistance,"ElectricalResistance");
+        units.emplace_back(Unit::AmountOfSubstance,"AmountOfSubstance");
+        units.emplace_back(Unit::LuminousIntensity,"LuminousIntensity");
+        units.emplace_back(Unit::CompressiveStrength,"CompressiveStrength");
+        units.emplace_back(Unit::Pressure,"Pressure");
+        units.emplace_back(Unit::ShearModulus,"ShearModulus");
+        units.emplace_back(Unit::Stress,"Stress");
+        units.emplace_back(Unit::UltimateTensileStrength,"UltimateTensileStrength");
+        units.emplace_back(Unit::YieldStrength,"YieldStrength");
+        units.emplace_back(Unit::YoungsModulus,"YoungsModulus");
+        units.emplace_back(Unit::Force,"Force");
+        units.emplace_back(Unit::Work,"Work");
+        units.emplace_back(Unit::Power,"Power");
+        units.emplace_back(Unit::SpecificEnergy,"SpecificEnergy");
+        units.emplace_back(Unit::ThermalConductivity,"ThermalConductivity");
+        units.emplace_back(Unit::ThermalExpansionCoefficient,"ThermalExpansionCoefficient");
+        units.emplace_back(Unit::SpecificHeat,"SpecificHeat");
+        units.emplace_back(Unit::ThermalTransferCoefficient,"ThermalTransferCoefficient");
+        units.emplace_back(Unit::HeatFlux,"HeatFlux");
+        units.emplace_back(Unit::DynamicViscosity,"DynamicViscosity");
+        units.emplace_back(Unit::KinematicViscosity,"KinematicViscosity");
+        units.emplace_back(Unit::VacuumPermittivity,"VacuumPermittivity");
+    }
+    return units;
+}
+
+const char *Unit::getType() const {
+    static std::unordered_map<Unit,const char *> _map;
+    if(_map.empty()) {
+        for(auto &v : unitTypes())
+            _map.insert(v);
+    }
+    auto iter = _map.find(*this);
+    if(iter == _map.end())
+        return "Invalid";
+
+    return iter->second;
 }
 
 Unit Unit::Length(1);

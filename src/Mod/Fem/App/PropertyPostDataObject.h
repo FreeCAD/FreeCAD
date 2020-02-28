@@ -78,6 +78,9 @@ public:
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
 protected:
+    void save(std::ostream &s, Base::Writer &writer) const;
+    void restore(std::istream &s, const std::string &ext);
+
     void createDataObjectByExternalType(vtkSmartPointer<vtkDataObject> ex);
     vtkSmartPointer<vtkDataObject> m_dataObject;
 };

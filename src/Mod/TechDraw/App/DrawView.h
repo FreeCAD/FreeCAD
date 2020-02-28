@@ -25,6 +25,7 @@
 
 #include <boost/signals2.hpp>
 
+#include <QCoreApplication>
 #include <QRectF>
 
 #include <App/DocumentObject.h>
@@ -45,6 +46,7 @@ class DrawLeaderLine;
  */
 class TechDrawExport DrawView : public App::DocumentObject
 {
+    Q_DECLARE_TR_FUNCTIONS(TechDraw::DrawView);
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawView);
 
 public:
@@ -88,7 +90,7 @@ public:
     virtual bool checkFit(void) const;
     virtual bool checkFit(DrawPage*) const;
     virtual void setPosition(double x, double y, bool force = false);
-    bool keepUpdated(void);
+    virtual bool keepUpdated(void);
     boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
     virtual double getScale(void) const;
     void checkScale(void);

@@ -33,6 +33,8 @@
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintFluidBoundary.h"
 
+#include <QKeyEvent>
+
 class Ui_TaskFemConstraintFluidBoundary;
 
 namespace App {
@@ -70,7 +72,7 @@ public:
     double getHeatFluxValue(void) const;
     double getHTCoeffValue(void) const;
 
-    virtual const std::string getReferences() const;
+    const std::string getReferences() const;
     const std::string getDirectionName(void) const;
     const std::string getDirectionObject(void) const;
     bool getReverse(void) const;
@@ -84,17 +86,19 @@ private Q_SLOTS:
     void onReferenceDeleted(void);
     void onButtonDirection(const bool pressed = true);
     void onCheckReverse(bool); // consider removing this slot as the UI is hidden
+    void addToSelection();
+    void removeFromSelection();
 
 protected:
+    bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
 
 private:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateSelectionUI();
     void updateBoundaryTypeUI();
     void updateSubtypeUI();
     void updateThermalBoundaryUI();
     void updateTurbulenceUI();
+    void updateUI();
 
 private:
     Ui_TaskFemConstraintFluidBoundary* ui;

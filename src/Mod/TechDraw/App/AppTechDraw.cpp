@@ -28,6 +28,7 @@
 #include "DrawViewAnnotation.h"
 #include "DrawViewDimension.h"
 #include "DrawViewDimExtent.h"
+#include "LandmarkDimension.h"
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroup.h"
 #include "DrawViewSymbol.h"
@@ -85,6 +86,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewMulti       ::init();
     TechDraw::DrawViewDimension   ::init();
     TechDraw::DrawViewDimExtent   ::init();
+    TechDraw::LandmarkDimension     ::init();
     TechDraw::DrawProjGroup       ::init();
     TechDraw::DrawProjGroupItem   ::init();
     TechDraw::DrawViewDetail      ::init();

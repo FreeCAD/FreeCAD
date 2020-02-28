@@ -18,8 +18,8 @@
 #define GET_TOKEN(_t) parser::token::_t
 #define RET_TOKEN(_t) _RET_TOKEN(GET_TOKEN(_t))
 
-#define RET_UNIT(_q) do{\
-    if(yylval) yylval->build<UnitInfo>(std::make_pair(std::string(yytext),_q));\
+#define RET_UNIT() do{\
+    if(yylval) yylval->build<std::string>(std::string(yytext));\
     RET_TOKEN(TOK_UNIT);\
 }while(0)
 
@@ -357,90 +357,6 @@ not[ \t]+in                  COUNTCHARS; RET_TOKEN(TOK_NOT_IN);
 "-"                          COUNTCHARS; RET_TOKEN(TOK_MINUSSIGN);
 "\xe2\x88\x92"               COUNTCHARS; RET_TOKEN(TOK_MINUSSIGN);
 
-<INITIAL>{
-    "nm"                COUNTCHARS; RET_UNIT(Quantity::NanoMetre); // nano meter
-    "um"                COUNTCHARS; RET_UNIT(Quantity::MicroMetre); // micro meter
-    "\xC2\xB5m"         COUNTCHARS; RET_UNIT(Quantity::MicroMetre); // micro meter    (greek micro in UTF8)
-    "mm"                COUNTCHARS; RET_UNIT(Quantity::MilliMetre); // milli meter    (internal standard length)
-    "cm"                COUNTCHARS; RET_UNIT(Quantity::CentiMetre); // centi meter
-    "dm"                COUNTCHARS; RET_UNIT(Quantity::DeciMetre); // deci meter
-    "m"                 COUNTCHARS; RET_UNIT(Quantity::Metre); // metre
-    "km"                COUNTCHARS; RET_UNIT(Quantity::KiloMetre); // kilo meter
-    "l"                 COUNTCHARS; RET_UNIT(Quantity::Liter); // Liter      dm^3
-    "ug"                COUNTCHARS; RET_UNIT(Quantity::MicroGram); // micro gram
-    "\xC2\xB5g"         COUNTCHARS; RET_UNIT(Quantity::MicroGram); // micro gram
-    "mg"                COUNTCHARS; RET_UNIT(Quantity::MilliGram); // milli gram
-    "g"                 COUNTCHARS; RET_UNIT(Quantity::Gram); // gram
-    "kg"                COUNTCHARS; RET_UNIT(Quantity::KiloGram); // kilo gram      (internal standard for mass)
-    "t"                 COUNTCHARS; RET_UNIT(Quantity::Ton); // Metric Tonne
-
-    "s"                 COUNTCHARS; RET_UNIT(Quantity::Second); // second         (internal standard time)
-    "min"               COUNTCHARS; RET_UNIT(Quantity::Minute); // minute
-    "h"                 COUNTCHARS; RET_UNIT(Quantity::Hour); // hour
-
-    "A"                 COUNTCHARS; RET_UNIT(Quantity::Ampere); // Ampere         (internal standard electric current)
-    "mA"                COUNTCHARS; RET_UNIT(Quantity::MilliAmpere); // milli Ampere
-    "kA"                COUNTCHARS; RET_UNIT(Quantity::KiloAmpere); // kilo Ampere
-    "MA"                COUNTCHARS; RET_UNIT(Quantity::MegaAmpere); // Mega Ampere
-
-    "K"                 COUNTCHARS; RET_UNIT(Quantity::Kelvin); // Kelvin         (internal standard thermodynamic temperature)
-    "mK"                COUNTCHARS; RET_UNIT(Quantity::MilliKelvin); // Kelvin
-    "\xC2\xB5K"         COUNTCHARS; RET_UNIT(Quantity::MicroKelvin); // Kelvin
-    "uK"                COUNTCHARS; RET_UNIT(Quantity::MicroKelvin); // Kelvin
-
-    "mol"               COUNTCHARS; RET_UNIT(Quantity::Mole); // Mole           (internal standard amount of substance)
-
-    "cd"                COUNTCHARS; RET_UNIT(Quantity::Candela); // Candela        (internal standard luminous intensity)
-
-    "\""                COUNTCHARS; RET_UNIT(Quantity::Inch); // inch
-    "ft"                COUNTCHARS; RET_UNIT(Quantity::Foot); // foot
-    "'"                 COUNTCHARS; RET_UNIT(Quantity::Foot); // foot
-    "thou"              COUNTCHARS; RET_UNIT(Quantity::Thou); // thou (in/1000)
-    "mil"               COUNTCHARS; RET_UNIT(Quantity::Thou); // mil  (the thou in US)
-    "yd"                COUNTCHARS; RET_UNIT(Quantity::Yard); // yard
-    "mi"                COUNTCHARS; RET_UNIT(Quantity::Mile); // mile
-
-    "lb"                COUNTCHARS; RET_UNIT(Quantity::Pound); // pound
-    "lbm"               COUNTCHARS; RET_UNIT(Quantity::Pound); // pound
-    "oz"                COUNTCHARS; RET_UNIT(Quantity::Ounce); // ounce
-    "st"                COUNTCHARS; RET_UNIT(Quantity::Stone); // Stone
-    "cwt"               COUNTCHARS; RET_UNIT(Quantity::Hundredweights); // hundredweights
-
-    "lbf"               COUNTCHARS; RET_UNIT(Quantity::PoundForce); // pound
-
-    "N"                 COUNTCHARS; RET_UNIT(Quantity::Newton); // Newton (kg*m/s^2)a-za-za-z
-    "kN"                COUNTCHARS; RET_UNIT(Quantity::KiloNewton); // Newton
-    "MN"                COUNTCHARS; RET_UNIT(Quantity::MegaNewton); // Newton
-    "mN"                COUNTCHARS; RET_UNIT(Quantity::MilliNewton); // Newton
-
-    "Pa"                COUNTCHARS; RET_UNIT(Quantity::Pascal); // Pascal (kg/m*s^2 or N/m^2)
-    "kPa"               COUNTCHARS; RET_UNIT(Quantity::KiloPascal); // Pascal
-    "MPa"               COUNTCHARS; RET_UNIT(Quantity::MegaPascal); // Pascal
-    "GPa"               COUNTCHARS; RET_UNIT(Quantity::GigaPascal); // Pascal
-
-    "Torr"              COUNTCHARS; RET_UNIT(Quantity::Torr); // portion of Pascal ( 101325/760 )
-    "mTorr"             COUNTCHARS; RET_UNIT(Quantity::mTorr); //
-    "uTorr"             COUNTCHARS; RET_UNIT(Quantity::yTorr); //
-    "\xC2\xB5Torr"      COUNTCHARS; RET_UNIT(Quantity::yTorr); //
-
-    "psi"               COUNTCHARS; RET_UNIT(Quantity::PSI); // pounds/in^2
-    "ksi"               COUNTCHARS; RET_UNIT(Quantity::KSI); // 1000 x pounds/in^2
-
-    "W"                 COUNTCHARS; RET_UNIT(Quantity::Watt); // Watt (kg*m^2/s^3)
-    "VA"                COUNTCHARS; RET_UNIT(Quantity::VoltAmpere); // VoltAmpere (kg*m^2/s^3)
-
-    "J"                 COUNTCHARS; RET_UNIT(Quantity::Joule); // Joule (kg*m^2/s^2)
-    "Nm"                COUNTCHARS; RET_UNIT(Quantity::NewtonMeter); // N*m = Joule
-    "VAs"               COUNTCHARS; RET_UNIT(Quantity::VoltAmpereSecond); // V*A*s = Joule
-    "CV"                COUNTCHARS; RET_UNIT(Quantity::WattSecond); //
-    "Ws"                COUNTCHARS; RET_UNIT(Quantity::WattSecond); // W*s = Joule
-
-    "\xC2\xB0"          COUNTCHARS; RET_UNIT(Quantity::Degree); // degree         (internal standard angle)
-    "deg"               COUNTCHARS; RET_UNIT(Quantity::Degree); // degree         (internal standard angle)
-    "rad"               COUNTCHARS; RET_UNIT(Quantity::Radian); // radian
-    "gon"               COUNTCHARS; RET_UNIT(Quantity::Gon); // gon
-}
-
 {DIGIT}*"."{DIGIT}+{EXPO}?              COUNTCHARS; RET_NUM(num_change(yytext,'.',','));
 <INITIAL>{DIGIT}*","{DIGIT}+{EXPO}?     COUNTCHARS; RET_NUM(num_change(yytext,',','.'));
 {DIGIT}+"."{DIGIT}*{EXPO}?              COUNTCHARS; RET_NUM(num_change(yytext,',','.'));
@@ -469,6 +385,10 @@ $[A-Za-z]{1,2}+${DIGIT}+     COUNTCHARS; RET_TEXT(TOK_CELLADDRESS);
 [A-Za-z]{1,2}${DIGIT}+       COUNTCHARS; RET_TEXT(TOK_CELLADDRESS);
 $[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; RET_TEXT(TOK_CELLADDRESS);
 
-({L}{M}*|_)({L}{M}*|{N}|_|@)*   COUNTCHARS; RET_TEXT(TOK_IDENTIFIER);
+({L}{M}*|_)({L}{M}*|{N}|_|@)*  COUNTCHARS; RET_TEXT(TOK_IDENTIFIER);
 
-.                            throw ParserError("Unknown token"); 
+'|\"|[^[:space:][:graph:]]+    COUNTCHARS; RET_UNIT();
+                               /* For other tokens that cannot be classified as IDENTIFIER, treat
+                                * as unit and let parser check
+                                */
+                                

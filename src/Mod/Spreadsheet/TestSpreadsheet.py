@@ -760,9 +760,9 @@ class SpreadsheetCases(unittest.TestCase):
         try:
             sheet.setAlias("A1","mA")
         except:
-            self.assertEqual(sheet.getAlias("A1"), None)
+            self.fail("A unit (reserved word) was used as alias which should be allowed by now")
         else:
-            self.fail("A unit (reserved word) was used as alias which shouldn't be allowed")
+            self.assertEqual(sheet.getAlias("A1"), "mA")
 
     def testPlacementName(self):
         """ Object name is equal to property name (bug #2389) """

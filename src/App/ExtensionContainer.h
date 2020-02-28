@@ -225,6 +225,8 @@ public:
     virtual void getPropertyMap(std::map<std::string,Property*> &Map) const override;
     /// get all properties of the class (including properties of the parent)
     virtual void getPropertyList(std::vector<Property*> &List) const override;
+    /// get all properties with their names, may contain duplicates and aliases
+    virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const override;
 
     /// get the Type of a Property
     virtual short getPropertyType(const Property* prop) const override;
