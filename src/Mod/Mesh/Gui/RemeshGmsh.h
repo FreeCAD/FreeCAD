@@ -47,18 +47,24 @@ namespace MeshGui {
  * Non-modal dialog to remesh an existing mesh.
  * @author Werner Mayer
  */
-class MeshGuiExport RemeshGmsh : public QWidget
+class MeshGuiExport GmshWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = 0);
-    ~RemeshGmsh();
+    GmshWidget(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    ~GmshWidget();
     void accept();
     void reject();
 
 protected:
     void changeEvent(QEvent *e);
+    int meshingAlgorithm() const;
+    double getAngle() const;
+    double getMaxSize() const;
+    double getMinSize() const;
+    virtual bool writeProject(QString& inpFile, QString& outFile);
+    virtual bool loadOutput();
 
 private Q_SLOTS:
     void started();
@@ -69,6 +75,27 @@ private Q_SLOTS:
 
     void readyReadStandardError();
     void readyReadStandardOutput();
+
+private:
+    class Private;
+    std::unique_ptr<Private> d;
+};
+
+/**
+ * Non-modal dialog to remesh an existing mesh.
+ * @author Werner Mayer
+ */
+class MeshGuiExport RemeshGmsh : public GmshWidget
+{
+    Q_OBJECT
+
+public:
+    RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    ~RemeshGmsh();
+
+protected:
+    virtual bool writeProject(QString& inpFile, QString& outFile);
+    virtual bool loadOutput();
 
 private:
     class Private;
