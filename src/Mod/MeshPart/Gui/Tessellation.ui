@@ -416,6 +416,13 @@ A value in the range of 0.2-10.</string>
         </widget>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="checkBoxDontQuit">
+        <property name="text">
+         <string>Leave panel open</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

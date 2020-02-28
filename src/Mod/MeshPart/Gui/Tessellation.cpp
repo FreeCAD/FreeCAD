@@ -36,11 +36,14 @@
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -53,6 +56,10 @@ Tessellation::Tessellation(QWidget* parent)
   : QWidget(parent), ui(new Ui_Tessellation)
 {
     ui->setupUi(this);
+    gmsh = new Mesh2ShapeGmsh(this);
+    connect(gmsh, SIGNAL(processed()), this, SLOT(gmshProcessed()));
+
+    ui->stackedWidget->addTab(gmsh, tr("gmsh"));
 
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
@@ -85,7 +92,8 @@ Tessellation::Tessellation(QWidget* parent)
         Gui::Command::doCommand(Gui::Command::Doc, "import MeshPart");
     }
     catch (...) {
-        ui->stackedWidget->setDisabled(true);
+        ui->stackedWidget->setTabEnabled(Mefisto, false);
+        ui->stackedWidget->setTabEnabled(Netgen, false);
     }
 }
 
@@ -152,6 +160,13 @@ void Tessellation::on_checkQuadDominated_toggled(bool on)
 {
     if (on)
         ui->checkSecondOrder->setChecked(false);
+}
+
+void Tessellation::gmshProcessed()
+{
+    bool doClose = !ui->checkBoxDontQuit->isChecked();
+    if (doClose)
+        Gui::Control().reject();
 }
 
 void Tessellation::changeEvent(QEvent *e)
@@ -233,11 +248,23 @@ bool Tessellation::accept()
         return false;
     }
 
+    bool doClose = !ui->checkBoxDontQuit->isChecked();
+    int method = ui->stackedWidget->currentIndex();
+
+    // For gmsh the workflow is very different because it uses an executable
+    // and therefore things are asynchronous
+    if (method == Gmsh) {
+        std::list<App::SubObjectT> obj;
+        for (const auto &info : shapeObjects) {
+            obj.emplace_back(info.obj, info.subname.c_str());
+        }
+        gmsh->process(activeDoc, obj);
+        return false;
+    }
+
     try {
         QString objname, label, subname;
         Gui::WaitCursor wc;
-
-        int method = ui->stackedWidget->currentIndex();
 
         // Save parameters
         if (method == Standard) {
@@ -379,6 +406,137 @@ bool Tessellation::accept()
         activeDoc->abortTransaction();
         Base::Console().Error(e.what());
     }
+
+    return doClose;
+}
+
+// ---------------------------------------
+
+class Mesh2ShapeGmsh::Private {
+public:
+    std::string label;
+    std::list<App::SubObjectT> shapes;
+    App::DocumentT doc;
+    std::string cadFile;
+    std::string stlFile;
+    std::string geoFile;
+};
+
+Mesh2ShapeGmsh::Mesh2ShapeGmsh(QWidget* parent, Qt::WindowFlags fl)
+  : GmshWidget(parent, fl)
+  , d(new Private())
+{
+    d->cadFile = App::Application::getTempFileName() + "mesh.brep";
+    d->stlFile = App::Application::getTempFileName() + "mesh.stl";
+    d->geoFile = App::Application::getTempFileName() + "mesh.geo";
+}
+
+Mesh2ShapeGmsh::~Mesh2ShapeGmsh()
+{
+}
+
+void Mesh2ShapeGmsh::process(App::Document* doc, const std::list<App::SubObjectT>& objs)
+{
+    d->doc = doc;
+    d->shapes = objs;
+
+    doc->openTransaction("Meshing");
+    accept();
+}
+
+bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
+{
+    if (!d->shapes.empty()) {
+        App::SubObjectT sub = d->shapes.front();
+        d->shapes.pop_front();
+
+        App::DocumentObject* part = sub.getObject();
+        if (part) {
+            Part::TopoShape shape = Part::Feature::getTopoShape(part, sub.getSubName().c_str());
+            shape.exportBrep(d->cadFile.c_str());
+            d->label = part->Label.getStrValue() + " (Meshed)";
+
+            // Parameters
+            int algorithm = meshingAlgorithm();
+            double maxSize = getMaxSize();
+            if (maxSize == 0.0)
+                maxSize = 1.0e22;
+            double minSize = getMinSize();
+
+            // gmsh geo file
+            Base::FileInfo geo(d->geoFile);
+            Base::ofstream geoOut(geo, std::ios::out);
+            geoOut << "// geo file for meshing with Gmsh meshing software created by FreeCAD\n"
+                << "// open brep geometry\n"
+                << "Merge \"" << d->cadFile << "\";\n\n"
+                << "// Characteristic Length\n"
+                << "// no boundary layer settings for this mesh\n"
+                << "// min, max Characteristic Length\n"
+                << "Mesh.CharacteristicLengthMax = " << maxSize << ";\n"
+                << "Mesh.CharacteristicLengthMin = " << minSize << ";\n\n"
+                << "// optimize the mesh\n"
+                << "Mesh.Optimize = 1;\n"
+                << "Mesh.OptimizeNetgen = 0;\n"
+                << "// for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html\n"
+                << "Mesh.HighOrderOptimize = 0;\n\n"
+                << "// mesh order\n"
+                << "Mesh.ElementOrder = 2;\n"
+                << "// Second order nodes are created by linear interpolation instead by curvilinear\n"
+                << "Mesh.SecondOrderLinear = 1;\n\n"
+                << "// mesh algorithm, only a few algorithms are usable with 3D boundary layer generation\n"
+                << "// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)\n"
+                << "Mesh.Algorithm = " << algorithm << ";\n"
+                << "// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)\n"
+                << "Mesh.Algorithm3D = 1;\n\n"
+                << "// meshing\n"
+                << "// set geometrical tolerance (also used for merging nodes)\n"
+                << "Geometry.Tolerance = 1e-06;\n"
+                << "Mesh  2;\n"
+                << "Coherence Mesh; // Remove duplicate vertices\n";
+            geoOut.close();
+
+            inpFile = QString::fromUtf8(d->geoFile.c_str());
+            outFile = QString::fromUtf8(d->stlFile.c_str());
+
+            return true;
+        }
+    }
+    else {
+        App::Document* doc = d->doc.getDocument();
+        if (doc)
+            doc->commitTransaction();
+
+        Q_EMIT processed();
+    }
+
+    return false;
+}
+
+bool Mesh2ShapeGmsh::loadOutput()
+{
+    App::Document* doc = d->doc.getDocument();
+    if (!doc)
+        return false;
+
+    // Now read-in the mesh
+    Base::FileInfo stl(d->stlFile);
+    Base::FileInfo geo(d->geoFile);
+
+    Mesh::MeshObject kernel;
+    MeshCore::MeshInput input(kernel.getKernel());
+    Base::ifstream stlIn(stl, std::ios::in | std::ios::binary);
+    input.LoadBinarySTL(stlIn);
+    stlIn.close();
+    kernel.harmonizeNormals();
+
+    Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
+    fea->Label.setValue(d->label);
+    fea->Mesh.setValue(kernel.getKernel());
+    stl.deleteFile();
+    geo.deleteFile();
+
+    // process next object
+    accept();
 
     return true;
 }

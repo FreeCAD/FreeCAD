@@ -32,6 +32,7 @@
 
 #include "RemeshGmsh.h"
 #include "ui_RemeshGmsh.h"
+#include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
@@ -115,39 +116,6 @@ void GmshWidget::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
-#if 0 // this is for meshing a CAD shape see gmshtools.py write_geo
-// geo file for meshing with Gmsh meshing software created by FreeCAD
-
-// open brep geometry
-Merge "/tmp/fcfem_f1enjjfa/Part__Feature_Geometry.brep";
-
-// Characteristic Length
-// no boundary layer settings for this mesh
-// min, max Characteristic Length
-Mesh.CharacteristicLengthMax = 1e+22;
-Mesh.CharacteristicLengthMin = 0.0;
-
-// optimize the mesh
-Mesh.Optimize = 1;
-Mesh.OptimizeNetgen = 0;
-Mesh.HighOrderOptimize = 0;  // for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html
-
-// mesh order
-Mesh.ElementOrder = 2;
-Mesh.SecondOrderLinear = 1; // Second order nodes are created by linear interpolation instead by curvilinear
-
-// mesh algorithm, only a few algorithms are usable with 3D boundary layer generation
-// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)
-Mesh.Algorithm = 2;
-// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)
-Mesh.Algorithm3D = 1;
-
-// meshing
-Geometry.Tolerance = 1e-06; // set geometrical tolerance (also used for merging nodes)
-Mesh  2;
-Coherence Mesh; // Remove duplicate vertices
-#endif
-
 bool GmshWidget::writeProject(QString& inpFile, QString& outFile)
 {
     Q_UNUSED(inpFile)
@@ -183,6 +151,11 @@ double GmshWidget::getMinSize() const
 
 void GmshWidget::accept()
 {
+    if (d->gmsh.state() == QProcess::Running) {
+        Base::Console().Warning("Cannot start gmsh because it's already running\n");
+        return;
+    }
+
     QString inpFile;
     QString outFile;
     if (writeProject(inpFile, outFile)) {
@@ -311,38 +284,6 @@ RemeshGmsh::~RemeshGmsh()
 {
 }
 
-#if 0 // this is for meshing a CAD shape see gmshtools.py write_geo
-// geo file for meshing with Gmsh meshing software created by FreeCAD
-
-// open brep geometry
-Merge "/tmp/fcfem_f1enjjfa/Part__Feature_Geometry.brep";
-
-// Characteristic Length
-// no boundary layer settings for this mesh
-// min, max Characteristic Length
-Mesh.CharacteristicLengthMax = 1e+22;
-Mesh.CharacteristicLengthMin = 0.0;
-
-// optimize the mesh
-Mesh.Optimize = 1;
-Mesh.OptimizeNetgen = 0;
-Mesh.HighOrderOptimize = 0;  // for more HighOrderOptimize parameter check http://gmsh.info/doc/texinfo/gmsh.html
-
-// mesh order
-Mesh.ElementOrder = 2;
-Mesh.SecondOrderLinear = 1; // Second order nodes are created by linear interpolation instead by curvilinear
-
-// mesh algorithm, only a few algorithms are usable with 3D boundary layer generation
-// 2D mesh algorithm (1=MeshAdapt, 2=Automatic, 5=Delaunay, 6=Frontal, 7=BAMG, 8=DelQuad)
-Mesh.Algorithm = 2;
-// 3D mesh algorithm (1=Delaunay, 2=New Delaunay, 4=Frontal, 5=Frontal Delaunay, 6=Frontal Hex, 7=MMG3D, 9=R-tree)
-Mesh.Algorithm3D = 1;
-
-// meshing
-Geometry.Tolerance = 1e-06; // set geometrical tolerance (also used for merging nodes)
-Mesh  2;
-Coherence Mesh; // Remove duplicate vertices
-#endif
 bool RemeshGmsh::writeProject(QString& inpFile, QString& outFile)
 {
     if (!d->mesh.expired()) {

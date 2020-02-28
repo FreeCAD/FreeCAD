@@ -28,9 +28,41 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <App/DocumentObserver.h>
+#include <Mod/Mesh/Gui/RemeshGmsh.h>
 #include <memory>
+#include <QPointer>
 
+namespace App {
+class Document;
+class SubObjectT;
+}
 namespace MeshPartGui {
+
+/**
+ * Non-modal dialog to mesh a shape.
+ * @author Werner Mayer
+ */
+class MeshGuiExport Mesh2ShapeGmsh : public MeshGui::GmshWidget
+{
+    Q_OBJECT
+
+public:
+    Mesh2ShapeGmsh(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    ~Mesh2ShapeGmsh();
+
+    void process(App::Document* doc, const std::list<App::SubObjectT>&);
+
+Q_SIGNALS:
+    void processed();
+
+protected:
+    virtual bool writeProject(QString& inpFile, QString& outFile);
+    virtual bool loadOutput();
+
+private:
+    class Private;
+    std::unique_ptr<Private> d;
+};
 
 class Ui_Tessellation;
 class Tessellation : public QWidget
@@ -40,7 +72,8 @@ class Tessellation : public QWidget
     enum {
         Standard,
         Mefisto,
-        Netgen
+        Netgen,
+        Gmsh
     };
 
 public:
@@ -57,9 +90,11 @@ private Q_SLOTS:
     void on_comboFineness_currentIndexChanged(int);
     void on_checkSecondOrder_toggled(bool);
     void on_checkQuadDominated_toggled(bool);
+    void gmshProcessed();
 
 private:
     QString document;
+    QPointer<Mesh2ShapeGmsh> gmsh;
     std::unique_ptr<Ui_Tessellation> ui;
 };
 
