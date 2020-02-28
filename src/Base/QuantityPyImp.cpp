@@ -36,10 +36,21 @@ using namespace Base;
 std::string QuantityPy::representation(void) const
 {
     std::stringstream ret;
+#if 0
     //ret.precision(getQuantityPtr()->getFormat().precision);
     //ret.setf(std::ios::fixed, std::ios::floatfield);
     ret << getQuantityPtr()->getValue() << " "; 
     ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
+#else
+    double val= getQuantityPtr()->getValue();
+    Unit unit = getQuantityPtr()->getUnit();
+
+    // Use Python's implementation to repr() a float
+    Py::Float flt(val);
+    ret << static_cast<std::string>(flt.repr());
+    if (!unit.isEmpty())
+        ret << " " << unit.getString().toUtf8().constData();
+#endif
 
     return ret.str();
 }
