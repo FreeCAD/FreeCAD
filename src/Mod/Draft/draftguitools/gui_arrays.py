@@ -1,8 +1,3 @@
-"""Provide the Draft ArrayTools command to group the other array tools."""
-## @package gui_arrays
-# \ingroup DRAFT
-# \brief Provide the Draft ArrayTools command to group the other array tools.
-
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -25,9 +20,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provide the Draft ArrayTools command to group the other array tools."""
+## @package gui_arrays
+# \ingroup DRAFT
+# \brief Provide the Draft ArrayTools command to group the other array tools.
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
 import FreeCAD as App
 import FreeCADGui as Gui
-from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
 class ArrayGroupCommand:
@@ -49,8 +49,11 @@ class ArrayGroupCommand:
                 'ToolTip': QT_TRANSLATE_NOOP("Arch", _tooltip)}
 
     def IsActive(self):
-        """Be active only when a document is active."""
-        return App.ActiveDocument is not None
+        """Return True when this command should be available."""
+        if App.ActiveDocument:
+            return True
+        else:
+            return False
 
 
 Gui.addCommand('Draft_ArrayTools', ArrayGroupCommand())
