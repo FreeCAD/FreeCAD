@@ -75,6 +75,7 @@
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
@@ -824,6 +825,16 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             trans0 = trans[i]<defaultTrans?defaultTrans:trans[i];
             break;
         }
+    }
+
+    SoShapeHintsElement::VertexOrdering vo;
+    SoShapeHintsElement::ShapeType st;
+    SoShapeHintsElement::FaceType ft;
+    SoShapeHintsElement::get(state, vo, st, ft);
+    if(vo != SoShapeHintsElement::COUNTERCLOCKWISE) {
+        vo = SoShapeHintsElement::COUNTERCLOCKWISE;
+        SoShapeHintsElement::set(state, vo, st, ft);
+        SoOverrideElement::setShapeHintsOverride(state, this, true);
     }
 
     // Override material binding to PER_PART_INDEXED so that we can reuse coin
