@@ -6674,13 +6674,31 @@ class ViewProviderDraftText:
     """A View Provider for the Draft Label"""
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","FontSize","Base",QT_TRANSLATE_NOOP("App::Property","The size of the text"))
-        vobj.addProperty("App::PropertyFont","FontName","Base",QT_TRANSLATE_NOOP("App::Property","The font of the text"))
-        vobj.addProperty("App::PropertyEnumeration","Justification","Base",QT_TRANSLATE_NOOP("App::Property","The vertical alignment of the text"))
-        vobj.addProperty("App::PropertyColor","TextColor","Base",QT_TRANSLATE_NOOP("App::Property","Text color"))
-        vobj.addProperty("App::PropertyFloat","LineSpacing","Base",QT_TRANSLATE_NOOP("App::Property","Line spacing (relative to font size)"))
+        vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Dimension size overall multiplier"))
+        vobj.addProperty("App::PropertyLength","FontSize",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The size of the text"))
+        vobj.addProperty("App::PropertyFont","FontName",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The font of the text"))
+        vobj.addProperty("App::PropertyEnumeration","Justification",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The vertical alignment of the text"))
+        vobj.addProperty("App::PropertyColor","TextColor",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text color"))
+        vobj.addProperty("App::PropertyFloat","LineSpacing",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Line spacing (relative to font size)"))
         vobj.Proxy = self
         self.Object = vobj.Object
+        
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
+        vobj.ScaleMultiplier = 1 / annotation_scale
+
         vobj.Justification = ["Left","Center","Right"]
         vobj.FontName = getParam("textfont","sans")
         vobj.FontSize = getParam("textheight",1)
@@ -6744,7 +6762,9 @@ class ViewProviderDraftText:
             self.trans.rotation.setValue(obj.Placement.Rotation.Q)
 
     def onChanged(self,vobj,prop):
-        if prop == "TextColor":
+        if prop == "ScaleMultiplier":
+            self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
+        elif prop == "TextColor":
             if "TextColor" in vobj.PropertiesList:
                 l = vobj.TextColor
                 self.mattext.diffuseColor.setValue([l[0],l[1],l[2]])
@@ -6753,7 +6773,7 @@ class ViewProviderDraftText:
                 self.font.name = vobj.FontName.encode("utf8")
         elif prop  == "FontSize":
             if "FontSize" in vobj.PropertiesList:
-                self.font.size = vobj.FontSize.Value
+                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
         elif prop == "Justification":
             from pivy import coin
             try:
