@@ -3433,37 +3433,121 @@ class _Dimension(_DraftObject):
 
 
 class _ViewProviderDimension(_ViewProviderDraft):
-    """A View Provider for the Draft Dimension object"""
-    def __init__(self, obj):
-        obj.addProperty("App::PropertyLength","FontSize","Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
-        obj.addProperty("App::PropertyInteger","Decimals","Draft",QT_TRANSLATE_NOOP("App::Property","The number of decimals to show"))
-        obj.addProperty("App::PropertyLength","ArrowSize","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
-        obj.addProperty("App::PropertyLength","TextSpacing","Draft",QT_TRANSLATE_NOOP("App::Property","The spacing between the text and the dimension line"))
-        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
-        obj.addProperty("App::PropertyFont","FontName","Draft",QT_TRANSLATE_NOOP("App::Property","Font name"))
-        obj.addProperty("App::PropertyFloat","LineWidth","Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
-        obj.addProperty("App::PropertyColor","LineColor","Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))
-        obj.addProperty("App::PropertyDistance","ExtLines","Draft",QT_TRANSLATE_NOOP("App::Property","Length of the extension lines"))
-        obj.addProperty("App::PropertyDistance","DimOvershoot","Draft",QT_TRANSLATE_NOOP("App::Property","The distance the dimension line is extended past the extension lines"))
-        obj.addProperty("App::PropertyDistance","ExtOvershoot","Draft",QT_TRANSLATE_NOOP("App::Property","Length of the extension line above the dimension line"))
-        obj.addProperty("App::PropertyBool","FlipArrows","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension arrows 180 degrees"))
-        obj.addProperty("App::PropertyBool","FlipText","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension text 180 degrees"))
-        obj.addProperty("App::PropertyBool","ShowUnit","Draft",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
-        obj.addProperty("App::PropertyBool","ShowLine","Draft",QT_TRANSLATE_NOOP("App::Property","Shows the dimension line and arrows"))
-        obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
-        obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use $dim to insert the dimension length"))
-        obj.addProperty("App::PropertyString","UnitOverride","Draft",QT_TRANSLATE_NOOP("App::Property","A unit to express the measurement. Leave blank for system default"))
+    """
+    A View Provider for the Draft Dimension object
+    
+    DIMENSION VIEW PROVIDER:
+    
+        |              txt               |       e
+    ----o--------------------------------o-----
+        |                                |
+        |                                |       d  
+        |                                |
+
+     a  b               c                b  a
+    
+    a = DimOvershoot (vobj)
+    b = Arrows (vobj)
+    c = Dimline (obj)
+    d = ExtLines (vobj)
+    e = ExtOvershoot (vobj)
+    txt = label (vobj)
+
+    STRUCTURE:
+    vobj.node.color
+             .drawstyle
+             .lineswitch1.coords
+                         .line
+                         .marks
+                         .marksDimOvershoot
+                         .marksExtOvershoot
+             .label.textpos
+                   .color
+                   .font
+                   .text
+             
+    vobj.node3d.color
+               .drawstyle
+               .lineswitch3.coords
+                           .line
+                           .marks
+                           .marksDimOvershoot
+                           .marksExtOvershoot
+               .label3d.textpos
+                       .color
+                       .font3d
+                       .text3d
+    
+    """
+    def __init__(self, obj): 
+        # general properties
+        obj.addProperty("App::PropertyFloat","ScaleMultiplier","Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Dimension size overall multiplier"))
+        obj.addProperty("App::PropertyFloat","LineWidth",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
+        obj.addProperty("App::PropertyColor","LineColor",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))                
+        # text properties
+        obj.addProperty("App::PropertyFont","FontName",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Font name"))
+        obj.addProperty("App::PropertyLength","FontSize",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
+        obj.addProperty("App::PropertyLength","TextSpacing",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "The spacing between the text and the dimension line"))
+        obj.addProperty("App::PropertyBool","FlipText",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Rotate the dimension text 180 degrees"))
+        obj.addProperty("App::PropertyVectorDistance","TextPosition",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "The position of the text. Leave (0,0,0) for automatic position"))
+        obj.addProperty("App::PropertyString","Override",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text override. Use $dim to insert the dimension length"))
+        # units properties
+        obj.addProperty("App::PropertyInteger","Decimals",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "The number of decimals to show"))
+        obj.addProperty("App::PropertyBool","ShowUnit",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Show the unit suffix"))
+        obj.addProperty("App::PropertyString","UnitOverride",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "A unit to express the measurement. Leave blank for system default"))
+        # graphics properties
+        obj.addProperty("App::PropertyLength","ArrowSize",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
+        obj.addProperty("App::PropertyEnumeration","ArrowType",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
+        obj.addProperty("App::PropertyBool","FlipArrows",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Rotate the dimension arrows 180 degrees"))        
+        obj.addProperty("App::PropertyDistance","DimOvershoot",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "The distance the dimension line is extended past the extension lines"))        
+        obj.addProperty("App::PropertyDistance","ExtLines",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Length of the extension lines"))
+        obj.addProperty("App::PropertyDistance","ExtOvershoot",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Length of the extension line above the dimension line"))
+        obj.addProperty("App::PropertyBool","ShowLine",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Shows the dimension line and arrows"))
+        
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-        obj.FontSize = getParam("textheight",0.20) * annotation_scale
-        obj.TextSpacing = getParam("dimspacing",0.05) * annotation_scale
+        obj.ScaleMultiplier = 1 / annotation_scale
+        obj.FontSize = getParam("textheight",0.20)
+        obj.TextSpacing = getParam("dimspacing",0.05)
         obj.FontName = getParam("textfont","")
-        obj.ArrowSize = getParam("arrowsize",0.1) * annotation_scale
+        obj.ArrowSize = getParam("arrowsize",0.1)
         obj.ArrowType = arrowtypes
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
-        obj.ExtLines = getParam("extlines",0.3) * annotation_scale
-        obj.DimOvershoot = getParam("dimovershoot",0) * annotation_scale
-        obj.ExtOvershoot = getParam("extovershoot",0) * annotation_scale
+        obj.ExtLines = getParam("extlines",0.3)
+        obj.DimOvershoot = getParam("dimovershoot",0)
+        obj.ExtOvershoot = getParam("extovershoot",0)
         obj.Decimals = getParam("dimPrecision",2)
         obj.ShowUnit = getParam("showUnit",True)
         obj.ShowLine = True
@@ -3589,7 +3673,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     self.p3 = self.p4
             if proj:
                 if hasattr(obj.ViewObject,"ExtLines"):
-                    dmax = obj.ViewObject.ExtLines.Value
+                    dmax = obj.ViewObject.ExtLines.Value * obj.ViewObject.ScaleMultiplier
                     if dmax and (proj.Length > dmax):
                         if (dmax > 0):
                             self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
@@ -3650,7 +3734,8 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 self.transExtOvershoot1.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
                 self.transExtOvershoot2.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
             if hasattr(obj.ViewObject,"TextSpacing"):
-                offset = DraftVecUtils.scaleTo(v1,obj.ViewObject.TextSpacing.Value)
+                ts = obj.ViewObject.TextSpacing.Value * obj.ViewObject.ScaleMultiplier
+                offset = DraftVecUtils.scaleTo(v1,ts)
             else:
                 offset = DraftVecUtils.scaleTo(v1,0.05)
             rott = rot1
@@ -3719,120 +3804,61 @@ class _ViewProviderDimension(_ViewProviderDraft):
 
     def onChanged(self, vobj, prop):
         """called when a view property has changed"""
-
-        if (prop == "FontSize") and hasattr(vobj,"FontSize"):
+        if prop == "ScaleMultiplier" and hasattr(vobj,"ScaleMultiplier"):
+            # update all dimension values
             if hasattr(self,"font"):
-                self.font.size = vobj.FontSize.Value
+                self.font.size = vobj.FontSize.Value*vobj.ScaleMultiplier
             if hasattr(self,"font3d"):
-                self.font3d.size = vobj.FontSize.Value*100
+                self.font3d.size = vobj.FontSize.Value*100*vobj.ScaleMultiplier
+            if hasattr(self,"node") and hasattr(self,"p2") and hasattr(vobj,"ArrowSize"):
+                self.remove_dim_arrows()
+                self.draw_dim_arrows(vobj)
+            if hasattr(vobj,"DimOvershoot"):
+                self.remove_dim_overshoot()
+                self.draw_dim_overshoot(vobj)
+            if hasattr(vobj,"ExtOvershoot"):
+                self.remove_ext_overshoot()
+                self.draw_ext_overshoot(vobj)
+            self.updateData(vobj.Object,"Start")
             vobj.Object.touch()
+            
+        elif (prop == "FontSize") and hasattr(vobj,"FontSize"):
+            if hasattr(self,"font"):
+                self.font.size = vobj.FontSize.Value*vobj.ScaleMultiplier
+            if hasattr(self,"font3d"):
+                self.font3d.size = vobj.FontSize.Value*100*vobj.ScaleMultiplier
+            vobj.Object.touch()
+            
         elif (prop == "FontName") and hasattr(vobj,"FontName"):
             if hasattr(self,"font") and hasattr(self,"font3d"):
                 self.font.name = self.font3d.name = str(vobj.FontName)
                 vobj.Object.touch()
+                
         elif (prop == "LineColor") and hasattr(vobj,"LineColor"):
             if hasattr(self,"color"):
                 c = vobj.LineColor
                 self.color.rgb.setValue(c[0],c[1],c[2])
+                
         elif (prop == "LineWidth") and hasattr(vobj,"LineWidth"):
             if hasattr(self,"drawstyle"):
                 self.drawstyle.lineWidth = vobj.LineWidth
+                
         elif (prop in ["ArrowSize","ArrowType"]) and hasattr(vobj,"ArrowSize"):
             if hasattr(self,"node") and hasattr(self,"p2"):
-                from pivy import coin
-
-                if not hasattr(vobj,"ArrowType"):
-                    return
-
-                if self.p3.x < self.p2.x:
-                    inv = False
-                else:
-                    inv = True
-
-                # set scale
-                symbol = arrowtypes.index(vobj.ArrowType)
-                s = vobj.ArrowSize.Value
-                self.trans1.scaleFactor.setValue((s,s,s))
-                self.trans2.scaleFactor.setValue((s,s,s))
-
-                # remove existing nodes
-                self.node.removeChild(self.marks)
-                self.node3d.removeChild(self.marks)
-
-                # set new nodes
-                self.marks = coin.SoSeparator()
-                self.marks.addChild(self.color)
-                s1 = coin.SoSeparator()
-                if symbol == "Circle":
-                    s1.addChild(self.coord1)
-                else:
-                    s1.addChild(self.trans1)
-                s1.addChild(dimSymbol(symbol,invert=not(inv)))
-                self.marks.addChild(s1)
-                s2 = coin.SoSeparator()
-                if symbol == "Circle":
-                    s2.addChild(self.coord2)
-                else:
-                    s2.addChild(self.trans2)
-                s2.addChild(dimSymbol(symbol,invert=inv))
-                self.marks.addChild(s2)
-                self.node.insertChild(self.marks,2)
-                self.node3d.insertChild(self.marks,2)
+                self.remove_dim_arrows()
+                self.draw_dim_arrows(vobj)
                 vobj.Object.touch()
+                
         elif (prop == "DimOvershoot") and hasattr(vobj,"DimOvershoot"):
-            from pivy import coin
-
-            # set scale
-            s = vobj.DimOvershoot.Value
-            self.transDimOvershoot1.scaleFactor.setValue((s,s,s))
-            self.transDimOvershoot2.scaleFactor.setValue((s,s,s))
-
-            # remove existing nodes
-            self.node.removeChild(self.marksDimOvershoot)
-            self.node3d.removeChild(self.marksDimOvershoot)
-
-            # set new nodes
-            self.marksDimOvershoot = coin.SoSeparator()
-            if vobj.DimOvershoot.Value:
-                self.marksDimOvershoot.addChild(self.color)
-                s1 = coin.SoSeparator()
-                s1.addChild(self.transDimOvershoot1)
-                s1.addChild(dimDash((-1,0,0),(0,0,0)))
-                self.marksDimOvershoot.addChild(s1)
-                s2 = coin.SoSeparator()
-                s2.addChild(self.transDimOvershoot2)
-                s2.addChild(dimDash((0,0,0),(1,0,0)))
-                self.marksDimOvershoot.addChild(s2)
-            self.node.insertChild(self.marksDimOvershoot,2)
-            self.node3d.insertChild(self.marksDimOvershoot,2)
+            self.remove_dim_overshoot()
+            self.draw_dim_overshoot(vobj)
             vobj.Object.touch()
+            
         elif (prop == "ExtOvershoot") and hasattr(vobj,"ExtOvershoot"):
-            from pivy import coin
-
-            # set scale
-            s = vobj.ExtOvershoot.Value
-            self.transExtOvershoot1.scaleFactor.setValue((s,s,s))
-            self.transExtOvershoot2.scaleFactor.setValue((s,s,s))
-
-            # remove existing nodes
-            self.node.removeChild(self.marksExtOvershoot)
-            self.node3d.removeChild(self.marksExtOvershoot)
-
-            # set new nodes
-            self.marksExtOvershoot = coin.SoSeparator()
-            if vobj.ExtOvershoot.Value:
-                self.marksExtOvershoot.addChild(self.color)
-                s1 = coin.SoSeparator()
-                s1.addChild(self.transExtOvershoot1)
-                s1.addChild(dimDash((0,0,0),(-1,0,0)))
-                self.marksExtOvershoot.addChild(s1)
-                s2 = coin.SoSeparator()
-                s2.addChild(self.transExtOvershoot2)
-                s2.addChild(dimDash((0,0,0),(-1,0,0)))
-                self.marksExtOvershoot.addChild(s2)
-            self.node.insertChild(self.marksExtOvershoot,2)
-            self.node3d.insertChild(self.marksExtOvershoot,2)
+            self.remove_ext_overshoot()
+            self.draw_ext_overshoot(vobj)
             vobj.Object.touch()
+            
         elif (prop == "ShowLine") and hasattr(vobj,"ShowLine"):
             if vobj.ShowLine:
                 self.lineswitch2.whichChild = -3
@@ -3842,6 +3868,109 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 self.lineswitch3.whichChild = -1
         else:
             self.updateData(vobj.Object,"Start")
+            
+    def remove_dim_arrows(self):
+        # remove existing nodes
+        self.node.removeChild(self.marks)
+        self.node3d.removeChild(self.marks)
+
+    def draw_dim_arrows(self, vobj):
+        from pivy import coin
+
+        if not hasattr(vobj,"ArrowType"):
+            return
+
+        if self.p3.x < self.p2.x:
+            inv = False
+        else:
+            inv = True
+
+        # set scale
+        symbol = arrowtypes.index(vobj.ArrowType)
+        s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
+        self.trans1.scaleFactor.setValue((s,s,s))
+        self.trans2.scaleFactor.setValue((s,s,s))
+
+
+        # set new nodes
+        self.marks = coin.SoSeparator()
+        self.marks.addChild(self.color)
+        s1 = coin.SoSeparator()
+        if symbol == "Circle":
+            s1.addChild(self.coord1)
+        else:
+            s1.addChild(self.trans1)
+        s1.addChild(dimSymbol(symbol,invert=not(inv)))
+        self.marks.addChild(s1)
+        s2 = coin.SoSeparator()
+        if symbol == "Circle":
+            s2.addChild(self.coord2)
+        else:
+            s2.addChild(self.trans2)
+        s2.addChild(dimSymbol(symbol,invert=inv))
+        self.marks.addChild(s2)
+        self.node.insertChild(self.marks,2)
+        self.node3d.insertChild(self.marks,2)
+
+    def remove_dim_overshoot(self):
+        self.node.removeChild(self.marksDimOvershoot)
+        self.node3d.removeChild(self.marksDimOvershoot)
+
+    
+    def draw_dim_overshoot(self, vobj):
+        from pivy import coin
+
+        # set scale
+        s = vobj.DimOvershoot.Value * vobj.ScaleMultiplier
+        self.transDimOvershoot1.scaleFactor.setValue((s,s,s))
+        self.transDimOvershoot2.scaleFactor.setValue((s,s,s))
+
+        # remove existing nodes
+
+        # set new nodes
+        self.marksDimOvershoot = coin.SoSeparator()
+        if vobj.DimOvershoot.Value:
+            self.marksDimOvershoot.addChild(self.color)
+            s1 = coin.SoSeparator()
+            s1.addChild(self.transDimOvershoot1)
+            s1.addChild(dimDash((-1,0,0),(0,0,0)))
+            self.marksDimOvershoot.addChild(s1)
+            s2 = coin.SoSeparator()
+            s2.addChild(self.transDimOvershoot2)
+            s2.addChild(dimDash((0,0,0),(1,0,0)))
+            self.marksDimOvershoot.addChild(s2)
+        self.node.insertChild(self.marksDimOvershoot,2)
+        self.node3d.insertChild(self.marksDimOvershoot,2)
+
+    
+    def remove_ext_overshoot(self):
+        self.node.removeChild(self.marksExtOvershoot)
+        self.node3d.removeChild(self.marksExtOvershoot)
+
+    
+    def draw_ext_overshoot(self, vobj):
+        from pivy import coin
+
+        # set scale
+        s = vobj.ExtOvershoot.Value * vobj.ScaleMultiplier
+        self.transExtOvershoot1.scaleFactor.setValue((s,s,s))
+        self.transExtOvershoot2.scaleFactor.setValue((s,s,s))
+
+        # set new nodes
+        self.marksExtOvershoot = coin.SoSeparator()
+        if vobj.ExtOvershoot.Value:
+            self.marksExtOvershoot.addChild(self.color)
+            s1 = coin.SoSeparator()
+            s1.addChild(self.transExtOvershoot1)
+            s1.addChild(dimDash((0,0,0),(-1,0,0)))
+            self.marksExtOvershoot.addChild(s1)
+            s2 = coin.SoSeparator()
+            s2.addChild(self.transExtOvershoot2)
+            s2.addChild(dimDash((0,0,0),(-1,0,0)))
+            self.marksExtOvershoot.addChild(s2)
+        self.node.insertChild(self.marksExtOvershoot,2)
+        self.node3d.insertChild(self.marksExtOvershoot,2)
+
 
     def doubleClicked(self,vobj):
         self.setEdit(vobj)
