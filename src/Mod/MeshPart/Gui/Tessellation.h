@@ -42,7 +42,7 @@ namespace MeshPartGui {
  * Non-modal dialog to mesh a shape.
  * @author Werner Mayer
  */
-class MeshGuiExport Mesh2ShapeGmsh : public MeshGui::GmshWidget
+class Mesh2ShapeGmsh : public MeshGui::GmshWidget
 {
     Q_OBJECT
 
