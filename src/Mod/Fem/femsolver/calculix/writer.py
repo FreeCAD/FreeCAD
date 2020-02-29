@@ -238,7 +238,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.contact_objects:
             inpfileContact = open(name + "_Surface_Contact.inp", "w")
         if self.tie_objects:
-            inpfileContact = open(name + "_Surface_Tie.inp", "w")
+            inpfileTie = open(name + "_Surface_Tie.inp", "w")
         if self.transform_objects:
             inpfileTransform = open(name + "_Node_Transform.inp", "w")
 
@@ -253,7 +253,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         if self.contact_objects:
             self.write_surfaces_constraints_contact(inpfileContact)
         if self.tie_objects:
-            self.write_surfaces_constraints_tie(inpfileContact)
+            self.write_surfaces_constraints_tie(inpfileTie)
         if self.transform_objects:
             self.write_node_sets_constraints_transform(inpfileTransform)
 
