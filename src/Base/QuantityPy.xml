@@ -27,6 +27,15 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
 		</UserDocu>
 		<DeveloperDocu>Quantity</DeveloperDocu>
 	</Documentation>
+    <Methode Name="toStr" Const="true">
+      <Documentation>
+        <UserDocu>
+          toStr([decimals])
+          returns a string representation rounded to number of decimals. If no decimals are specified then
+          the internal precision is used
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getUserPreferred" Const="true">
       <Documentation>
         <UserDocu>
