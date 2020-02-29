@@ -6434,17 +6434,42 @@ class ViewProviderDraftLabel:
     """A View Provider for the Draft Label"""
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","TextSize","Base",QT_TRANSLATE_NOOP("App::Property","The size of the text"))
-        vobj.addProperty("App::PropertyFont","TextFont","Base",QT_TRANSLATE_NOOP("App::Property","The font of the text"))
-        vobj.addProperty("App::PropertyLength","ArrowSize","Base",QT_TRANSLATE_NOOP("App::Property","The size of the arrow"))
-        vobj.addProperty("App::PropertyEnumeration","TextAlignment","Base",QT_TRANSLATE_NOOP("App::Property","The vertical alignment of the text"))
-        vobj.addProperty("App::PropertyEnumeration","ArrowType","Base",QT_TRANSLATE_NOOP("App::Property","The type of arrow of this label"))
-        vobj.addProperty("App::PropertyEnumeration","Frame","Base",QT_TRANSLATE_NOOP("App::Property","The type of frame around the text of this object"))
-        vobj.addProperty("App::PropertyBool","Line","Base",QT_TRANSLATE_NOOP("App::Property","Display a leader line or not"))
-        vobj.addProperty("App::PropertyFloat","LineWidth","Base",QT_TRANSLATE_NOOP("App::Property","Line width"))
-        vobj.addProperty("App::PropertyColor","LineColor","Base",QT_TRANSLATE_NOOP("App::Property","Line color"))
-        vobj.addProperty("App::PropertyColor","TextColor","Base",QT_TRANSLATE_NOOP("App::Property","Text color"))
-        vobj.addProperty("App::PropertyInteger","MaxChars","Base",QT_TRANSLATE_NOOP("App::Property","The maximum number of characters on each line of the text box"))
+        vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Dimension size overall multiplier"))
+        vobj.addProperty("App::PropertyLength","TextSize",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The size of the text"))
+        vobj.addProperty("App::PropertyFont","TextFont",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The font of the text"))
+        vobj.addProperty("App::PropertyLength","ArrowSize",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The size of the arrow"))
+        vobj.addProperty("App::PropertyEnumeration","TextAlignment",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The vertical alignment of the text"))
+        vobj.addProperty("App::PropertyEnumeration","ArrowType",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The type of arrow of this label"))
+        vobj.addProperty("App::PropertyEnumeration","Frame",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The type of frame around the text of this object"))
+        vobj.addProperty("App::PropertyBool","Line",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Display a leader line or not"))
+        vobj.addProperty("App::PropertyFloat","LineWidth",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Line width"))
+        vobj.addProperty("App::PropertyColor","LineColor",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Line color"))
+        vobj.addProperty("App::PropertyColor","TextColor",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text color"))
+        vobj.addProperty("App::PropertyInteger","MaxChars",
+                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "The maximum number of characters on each line of the text box"))
         vobj.Proxy = self
         self.Object = vobj.Object
         vobj.TextAlignment = ["Top","Middle","Bottom"]
@@ -6457,6 +6482,10 @@ class ViewProviderDraftLabel:
         vobj.ArrowType = arrowtypes[getParam("dimsymbol")]
         vobj.Frame = ["None","Rectangle"]
         vobj.Line = True
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
+        vobj.ScaleMultiplier = 1 / annotation_scale
+
 
     def getIcon(self):
         import Draft_rc
@@ -6572,7 +6601,16 @@ class ViewProviderDraftLabel:
         return b.getBoundingBox().getSize().getValue()
 
     def onChanged(self,vobj,prop):
-        if prop == "LineColor":
+        if prop == "ScaleMultiplier":
+            if not hasattr(vobj,"ScaleMultiplier"):
+                return
+            if hasattr(vobj,"TextSize") and hasattr(vobj,"TextAlignment"):
+                self.update_label(vobj)
+            if hasattr(vobj,"ArrowSize"):
+                s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
+                if s:
+                    self.arrowpos.scaleFactor.setValue((s,s,s))
+        elif prop == "LineColor":
             if hasattr(vobj,"LineColor"):
                 l = vobj.LineColor
                 self.matline.diffuseColor.setValue([l[0],l[1],l[2]])
@@ -6588,22 +6626,7 @@ class ViewProviderDraftLabel:
                 self.font.name = vobj.TextFont.encode("utf8")
         elif prop in ["TextSize","TextAlignment"]:
             if hasattr(vobj,"TextSize") and hasattr(vobj,"TextAlignment"):
-                self.font.size = vobj.TextSize.Value
-                v = Vector(1,0,0)
-                if vobj.Object.StraightDistance > 0:
-                    v = v.negative()
-                v.multiply(vobj.TextSize/10)
-                tsize = self.getTextSize(vobj)
-                if len(vobj.Object.Text) > 1:
-                    v = v.add(Vector(0,(tsize[1]-1)*2,0))
-                if vobj.TextAlignment == "Top":
-                    v = v.add(Vector(0,-tsize[1]*2,0))
-                elif vobj.TextAlignment == "Middle":
-                    v = v.add(Vector(0,-tsize[1],0))
-                v = vobj.Object.Placement.Rotation.multVec(v)
-                pos = vobj.Object.Placement.Base.add(v)
-                self.textpos.translation.setValue(pos)
-                self.textpos.rotation.setValue(vobj.Object.Placement.Rotation.Q)
+                self.update_label(vobj)
         elif prop == "Line":
             if hasattr(vobj,"Line"):
                 if vobj.Line:
@@ -6623,7 +6646,6 @@ class ViewProviderDraftLabel:
                     v1 = vobj.Object.Points[-2].sub(vobj.Object.Points[-1])
                     if not DraftVecUtils.isNull(v1):
                         v1.normalize()
-                        import DraftGeomUtils
                         v2 = Vector(0,0,1)
                         if round(v2.getAngle(v1),4) in [0,round(math.pi,4)]:
                             v2 = Vector(0,1,0)
@@ -6632,7 +6654,7 @@ class ViewProviderDraftLabel:
                         self.arrowpos.rotation.setValue((q[0],q[1],q[2],q[3]))
         elif prop == "ArrowSize":
             if hasattr(vobj,"ArrowSize"):
-                s = vobj.ArrowSize.Value
+                s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
                 if s:
                     self.arrowpos.scaleFactor.setValue((s,s,s))
         elif prop == "Frame":
@@ -6649,6 +6671,25 @@ class ViewProviderDraftLabel:
                     pts.append(pts[0])
                     self.fcoords.point.setValues(pts)
                     self.frame.coordIndex.setValues(0,len(pts),range(len(pts)))
+
+
+    def update_label(self, vobj):
+        self.font.size = vobj.TextSize.Value * vobj.ScaleMultiplier
+        v = Vector(1,0,0)
+        if vobj.Object.StraightDistance > 0:
+            v = v.negative()
+        v.multiply(vobj.TextSize/10)
+        tsize = self.getTextSize(vobj)
+        if (tsize is not None) and (len(vobj.Object.Text) > 1):
+            v = v.add(Vector(0,(tsize[1]-1)*2,0))
+        if vobj.TextAlignment == "Top":
+            v = v.add(Vector(0,-tsize[1]*2,0))
+        elif vobj.TextAlignment == "Middle":
+            v = v.add(Vector(0,-tsize[1],0))
+        v = vobj.Object.Placement.Rotation.multVec(v)
+        pos = vobj.Object.Placement.Base.add(v)
+        self.textpos.translation.setValue(pos)
+        self.textpos.rotation.setValue(vobj.Object.Placement.Rotation.Q)
 
     def __getstate__(self):
         return None
