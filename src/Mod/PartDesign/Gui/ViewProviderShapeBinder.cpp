@@ -258,7 +258,6 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property *prop) {
             mapTrans = hPart->GetBool("MapTransparency");
         }
 
-        setProperty(ShapeColor, shapeColor);
         setProperty(LineColor, lineColor);
         setProperty(PointColor, pointColor);
         setProperty(Transparency, transparency);
@@ -267,7 +266,8 @@ void ViewProviderSubShapeBinder::onChanged(const App::Property *prop) {
         setProperty(MapLineColor, mapLine);
         setProperty(MapPointColor, mapPoint);
         setProperty(MapTransparency, mapTrans);
-        updateColors();
+        // This will trigger PartGui::ViewProviderExt::updateColors()
+        ShapeColor.setValue(shapeColor);
     }
 
     ViewProviderPart::onChanged(prop);
