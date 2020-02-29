@@ -1369,3 +1369,23 @@ else(WIN32)
     INSTALL(FILES Icons/freecad.xpm DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pixmaps)
     INSTALL(FILES Icons/freecad-doc.svg DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/scalable/mimetypes RENAME application-x-extension-fcstd.svg)
 endif(WIN32)
+
+set(FreeCADGui_Scripts
+    RemoteDebugger.ui
+    RemoteDebugger.py
+)
+
+add_custom_target(FreeCADGui_Resources ALL
+    SOURCES ${FreeCADGui_Scripts}
+)
+
+fc_copy_sources(FreeCADGui_Resources
+    ${CMAKE_BINARY_DIR}/Ext/freecad/gui
+    ${FreeCADGui_Scripts})
+
+INSTALL(
+    FILES
+        ${FreeCADGui_Scripts}
+    DESTINATION
+        Ext/freecad/gui
+)
