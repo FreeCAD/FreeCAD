@@ -1,9 +1,3 @@
-"""This module provides the Base object for all Draft Gui commands.
-"""
-## @package gui_base
-# \ingroup DRAFT
-# \brief This module provides the Base object for all Draft Gui commands.
-
 # ***************************************************************************
 # *   (c) 2009 Yorik van Havre <yorik@uncreated.net>                        *
 # *   (c) 2010 Ken Cline <cline@frii.com>                                   *
@@ -28,10 +22,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provide the Base object for all Draft Gui commands."""
+## @package gui_base
+# \ingroup DRAFT
+# \brief This module provides the Base object for all Draft Gui commands.
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import DraftGui
+import draftutils.todo as todo
 
 
 class GuiCommandBase:
@@ -52,7 +50,7 @@ class GuiCommandBase:
 
         Each string in the list of strings represents a Python instruction
         which will be executed in a delayed fashion
-        by `DraftGui.todo.delayCommit()`
+        by `todo.ToDo.delayCommit()`
         ::
             list1 = ["a = FreeCAD.Vector()",
                      "pl = FreeCAD.Placement()",
@@ -69,6 +67,7 @@ class GuiCommandBase:
             >>> pl = FreeCAD.Placement()
             >>> Draft.autogroup(obj)
     """
+
     def __init__(self):
         self.call = None
         self.commit_list = []
@@ -78,7 +77,8 @@ class GuiCommandBase:
         self.planetrack = None
 
     def IsActive(self):
-        if Gui.ActiveDocument:
+        """Return True when this command should be available."""
+        if App.ActiveDocument:
             return True
         else:
             return False
@@ -102,7 +102,7 @@ class GuiCommandBase:
                 pass
             self.call = None
         if self.commit_list:
-            DraftGui.todo.delayCommit(self.commit_list)
+            todo.ToDo.delayCommit(self.commit_list)
         self.commit_list = []
 
     def commit(self, name, func):
