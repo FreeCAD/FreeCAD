@@ -3453,15 +3453,17 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
         obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use $dim to insert the dimension length"))
         obj.addProperty("App::PropertyString","UnitOverride","Draft",QT_TRANSLATE_NOOP("App::Property","A unit to express the measurement. Leave blank for system default"))
-        obj.FontSize = getParam("textheight",0.20)
-        obj.TextSpacing = getParam("dimspacing",0.05)
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
+        obj.FontSize = getParam("textheight",0.20) * annotation_scale
+        obj.TextSpacing = getParam("dimspacing",0.05) * annotation_scale
         obj.FontName = getParam("textfont","")
-        obj.ArrowSize = getParam("arrowsize",0.1)
+        obj.ArrowSize = getParam("arrowsize",0.1) * annotation_scale
         obj.ArrowType = arrowtypes
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
-        obj.ExtLines = getParam("extlines",0.3)
-        obj.DimOvershoot = getParam("dimovershoot",0)
-        obj.ExtOvershoot = getParam("extovershoot",0)
+        obj.ExtLines = getParam("extlines",0.3) * annotation_scale
+        obj.DimOvershoot = getParam("dimovershoot",0) * annotation_scale
+        obj.ExtOvershoot = getParam("extovershoot",0) * annotation_scale
         obj.Decimals = getParam("dimPrecision",2)
         obj.ShowUnit = getParam("showUnit",True)
         obj.ShowLine = True
