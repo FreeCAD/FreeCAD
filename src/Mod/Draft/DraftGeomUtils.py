@@ -1,29 +1,31 @@
-#***************************************************************************
-#*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
-#*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+"""Define geometry functions for manipulating shapes in the Draft Workbench.
 
-__title__="FreeCAD Draft Workbench - Geometry library"
-__author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
-__url__ = ["https://www.freecadweb.org"]
-
+These functions are used by different object creation functions
+of the Draft Workbench, both in `Draft.py` and `DraftTools.py`.
+They operate on the internal shapes (`Part::TopoShape`) of different objects
+and on their subelements, that is, vertices, edges, and faces.
+"""
 ## \defgroup DRAFTGEOMUTILS DraftGeomUtils
 #  \ingroup UTILITIES
 #  \brief Shape manipulation utilities for the Draft workbench
@@ -32,20 +34,26 @@ __url__ = ["https://www.freecadweb.org"]
 
 ## \addtogroup DRAFTGEOMUTILS
 #  @{
+import cmath
+import math
 
-"this file contains generic geometry functions for manipulating Part shapes"
-
-import FreeCAD, Part, DraftVecUtils, math, cmath
+import FreeCAD
+import Part
+import DraftVecUtils
 from FreeCAD import Vector
 
-NORM = Vector(0,0,1) # provisory normal direction for all geometry ops.
+__title__ = "FreeCAD Draft Workbench - Geometry library"
+__author__ = "Yorik van Havre, Jacques-Antoine Gaudin, Ken Cline"
+__url__ = ["https://www.freecadweb.org"]
+
+NORM = Vector(0, 0, 1)  # provisory normal direction for all geometry ops.
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 # Generic functions *********************************************************
 
 def precision():
-    "precision(): returns the Draft precision setting"
+    """precision(): returns the Draft precision setting"""
     # Set precision level with a cap to avoid overspecification that:
     #  1 - whilst it is precise enough (e.g. that OCC would consider 2 points are coincident)
     #      (not sure what it should be 10 or otherwise);
@@ -1260,7 +1268,8 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
 
     # Make a copy of alignList - to avoid changes in this function become starting input of next call of this function ?
     # https://www.dataquest.io/blog/tutorial-functions-modify-lists-dictionaries-python/
-    alignListC = alignList.copy()
+    # alignListC = alignList.copy()  # Only Python 3
+    alignListC = list(alignList)  # Python 2 and 3
 
     # Check the direction / offset of starting edge
 
