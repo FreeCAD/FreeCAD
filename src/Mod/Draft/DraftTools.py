@@ -5290,6 +5290,7 @@ class Draft_Label(Creator):
             FreeCAD.ActiveDocument.openTransaction("Create Label")
             FreeCADGui.addModule("Draft")
             FreeCADGui.doCommand("l = Draft.makeLabel("+tp+sel+"direction='"+direction+"',distance="+str(dist)+",labeltype='"+self.labeltype+"',"+pl+")")
+            FreeCADGui.doCommand("Draft.autogroup(l)")
             FreeCAD.ActiveDocument.recompute()
             FreeCAD.ActiveDocument.commitTransaction()
         self.finish()
