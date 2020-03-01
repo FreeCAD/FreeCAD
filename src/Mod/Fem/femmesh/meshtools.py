@@ -1418,11 +1418,13 @@ def build_mesh_faces_of_volume_elements(
         FreeCAD.Console.PrintLog("  --> {}\n".format(femelement_table[veID]))
         FreeCAD.Console.PrintLog("  --> {}\n".format(face_table[veID]))
         FreeCAD.Console.PrintLog("  --> {}\n".format(face_nodenumber_table[veID]))
+
     for veID in face_nodenumber_table:
+        FreeCAD.Console.PrintLog("VolElement: {}\n".format(veID))
         vol_node_ct = len(femelement_table[veID])
         face_node_indexs = sorted(face_nodenumber_table[veID])
-        # tetra10 --> tria6 face
         if vol_node_ct == 10:
+            FreeCAD.Console.PrintLog("  --> tetra10 --> tria6 face\n")
             # node order of face in tetra10 volume element
             if face_node_indexs == [1, 2, 3, 5, 6, 7]:
                 # node order of a tria6 face of tetra10
@@ -1439,8 +1441,8 @@ def build_mesh_faces_of_volume_elements(
                     "hexa20: face not found! {}\n"
                     .format(face_node_indexs)
                 )
-        # tetra4 --> tria3 face
         elif vol_node_ct == 4:
+            FreeCAD.Console.PrintLog("  --> tetra4 --> tria3 face\n")
             # node order of face in tetra4 volume element
             if face_node_indexs == [1, 2, 3]:
                 # node order of a tria3 face of tetra4
@@ -1457,7 +1459,8 @@ def build_mesh_faces_of_volume_elements(
                     "hexa20: face not found! {}\n"
                     .format(face_node_indexs)
                 )
-        elif vol_node_ct == 20:  # hexa20 --> quad8 face
+        elif vol_node_ct == 20:
+            FreeCAD.Console.PrintLog("  --> hexa20 --> quad8 face\n")
             # node order of face in hexa20 volume element
             if face_node_indexs == [1, 2, 3, 4, 9, 10, 11, 12]:
                 # node order of a quad8 face of hexa20
@@ -1478,8 +1481,8 @@ def build_mesh_faces_of_volume_elements(
                     "hexa20: face not found! {}\n"
                     .format(face_node_indexs)
                 )
-        elif vol_node_ct == 8:  # hexa8 --> quad4 face
-            face_node_indexs = sorted(face_nodenumber_table[veID])
+        elif vol_node_ct == 8:
+            FreeCAD.Console.PrintLog("  --> hexa8 --> quad4 face\n")
             # node order of face in hexa8 volume element
             if face_node_indexs == [1, 2, 3, 4]:
                 # node order of a quad8 face of hexa8
@@ -1500,8 +1503,8 @@ def build_mesh_faces_of_volume_elements(
                     "hexa20: face not found! {}\n"
                     .format(face_node_indexs)
                 )
-        # penta15 --> tria6 and quad8 faces
         elif vol_node_ct == 15:
+            FreeCAD.Console.PrintLog("  --> penta15 --> tria6 and quad8 faces\n")
             # node order of face in penta15 volume element
             if face_node_indexs == [1, 2, 3, 7, 8, 9]:
                 # node order of a tria6 face of penta15
@@ -1520,8 +1523,8 @@ def build_mesh_faces_of_volume_elements(
                     "penta15: face not found! {}\n"
                     .format(face_node_indexs)
                 )
-        # penta6 --> tria3 and quad4 faces
         elif vol_node_ct == 6:
+            FreeCAD.Console.PrintLog("  --> penta6 --> tria3 and quad4 faces\n")
             # node order of face in penta6 volume element
             if face_node_indexs == [1, 2, 3]:
                 # node order of a tria3 face of penta6
@@ -1554,7 +1557,7 @@ def build_mesh_faces_of_volume_elements(
             i -= 1
             face_nodes.append(femelement_table[veID][i])
         face_table[veID] = face_nodes  # reset the entry in face_table
-        # FreeCAD.Console.PrintMessage("  --> {}\n".format(face_table[veID]))
+        FreeCAD.Console.PrintLog("  --> {}\n".format(face_table[veID]))
     return face_table
 
 
