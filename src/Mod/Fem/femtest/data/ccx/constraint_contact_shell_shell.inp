@@ -38365,7 +38365,7 @@ Efaces
 ** Sections
 ** written by write_femelementsets function
 *SHELL SECTION, ELSET=MechanicalMaterialShellThickness, MATERIAL=MechanicalMaterial
-0.5 
+0.5
 
 ***********************************************************
 ** Contact Constraints

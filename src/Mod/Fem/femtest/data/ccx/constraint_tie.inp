@@ -18613,7 +18613,7 @@ Evolumes
 ** Tie Constraints
 ** written by write_constraints_tie function
 ** ConstraintTie
-*TIE, POSITION TOLERANCE=25, ADJUST=NO, NAME=TIEConstraintTie
+*TIE, POSITION TOLERANCE=25.0, ADJUST=NO, NAME=TIEConstraintTie
 TIE_DEPConstraintTie,TIE_INDConstraintTie
 
 ***********************************************************
