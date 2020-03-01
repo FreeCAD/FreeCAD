@@ -34,6 +34,7 @@ import subprocess
 
 import FreeCAD
 
+from femsolver.calculix.solver import ANALYSIS_TYPES
 from femtools import femutils
 from femtools import membertools
 
@@ -66,7 +67,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         Updated with update_objects
     """
 
-    known_analysis_types = ["static", "frequency", "thermomech", "check"]
     finished = QtCore.Signal(int)
 
     def __init__(self, analysis=None, solver=None, test_mode=False):
@@ -248,7 +248,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if not self.solver:
             message += "No solver object defined in the analysis\n"
         else:
-            if self.solver.AnalysisType not in self.known_analysis_types:
+            if self.solver.AnalysisType not in ANALYSIS_TYPES:
                 message += (
                     "Unknown analysis type: {}\n"
                     .format(self.solver.AnalysisType)
