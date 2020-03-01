@@ -253,7 +253,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 int count = shapeMap.Extent();
                 if(shapeMap.Add(s.getShape())<=count)
                     continue;
-                originalShapes.push_back(s);
+                originalShapes.push_back(s.makETransform(trsfInv));
                 if(sub.size())
                     originalSubs.push_back(obj->getFullName() + '.' + sub);
                 else
