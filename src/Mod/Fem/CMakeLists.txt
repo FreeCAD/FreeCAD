@@ -1,4 +1,4 @@
-
+        
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
 endif(BUILD_FEM_VTK)
@@ -221,6 +221,7 @@ SET(FemTools_SRCS
     femtools/__init__.py
     femtools/membertools.py
     femtools/ccxtools.py
+    femtools/checksanalysis.py
     femtools/constants.py
     femtools/errors.py
     femtools/femutils.py
