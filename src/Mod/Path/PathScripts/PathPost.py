@@ -299,7 +299,7 @@ class CommandPathPost:
                 # Now generate the gcode
                 for obj in job.Operations.Group:
                     tc = PathUtil.toolControllerForOp(obj)
-                    if tc is not None:
+                    if tc is not None and obj.Active:
                         if tc.ToolNumber != currTool:
                             sublist.append(tc)
                             PathLog.debug("Appending TC: {}".format(tc.Name))
@@ -330,13 +330,13 @@ class CommandPathPost:
 
             for idx, obj in enumerate(job.Operations.Group):
                 tc = PathUtil.toolControllerForOp(obj)
-                if tc is None or tc.ToolNumber == currTool:
+                if tc is None or tc.ToolNumber == currTool or not obj.Active:
                     curlist.append(obj)
-                elif tc.ToolNumber != currTool and currTool is None:  # first TC
+                elif tc.ToolNumber != currTool and currTool is None and obj.Active:  # first TC
                     sublist.append(tc)
                     curlist.append(obj)
                     currTool = tc.ToolNumber
-                elif tc.ToolNumber != currTool and currTool is not None:  # TC
+                elif tc.ToolNumber != currTool and currTool is not None and obj.Active:  # TC
                     for fixture in fixturelist:
                         sublist.append(fixture)
                         sublist.extend(curlist)
@@ -373,7 +373,7 @@ class CommandPathPost:
                 for fixture in fixturelist:
                     sublist.append(fixture)
                     tc = PathUtil.toolControllerForOp(obj)
-                    if tc is not None:
+                    if tc is not None and obj.Active:
                         if tc.ToolNumber != currTool:
                             sublist.append(tc)
                             currTool = tc.ToolNumber
