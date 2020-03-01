@@ -1550,7 +1550,8 @@ def build_mesh_faces_of_volume_elements(
         for i in node_numbers:
             # node_number starts with 1
             # index starts with 0 -->
-            # index = node number - 1i -= 1
+            # index = node number - 1
+            i -= 1
             face_nodes.append(femelement_table[veID][i])
         face_table[veID] = face_nodes  # reset the entry in face_table
         # FreeCAD.Console.PrintMessage("  --> {}\n".format(face_table[veID]))
