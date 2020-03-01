@@ -133,6 +133,27 @@ class TestCcxTools(unittest.TestCase):
         )
 
     # ********************************************************************************************
+    def test_static_constraint_force_faceload_hexa20(
+        self
+    ):
+        # set up
+        from femexamples.ccx_cantilever_std import setup_cantileverhexa20faceload as setup
+        setup(self.active_doc, "ccxtools")
+        test_name = "canti ccx faceload hexa20"
+        base_name = "canti_ccx_faceload_hexa20"
+        analysis_dir = testtools.get_unit_test_tmp_dir(
+            self.temp_dir,
+            ("FEM_" + base_name),
+        )
+        fcc_print(self.active_doc.Objects)
+        # test input file writing
+        self.input_file_writing_test(
+            test_name=test_name,
+            base_name=base_name,
+            analysis_dir=analysis_dir,
+        )
+
+    # ********************************************************************************************
     def test_static_constraint_contact_shell_shell(
         self
     ):

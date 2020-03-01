@@ -170,6 +170,7 @@ SET(FemTestsFiles_SRCS
 
 SET(FemTestsCcx_SRCS
     femtest/data/ccx/__init__.py
+    femtest/data/ccx/canti_ccx_faceload_hexa20.inp
     femtest/data/ccx/constraint_contact_shell_shell.FCStd
     femtest/data/ccx/constraint_contact_shell_shell.inp
     femtest/data/ccx/constraint_contact_solid_solid.FCStd
