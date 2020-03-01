@@ -269,7 +269,7 @@ class Edit:
         """
         if self.running:
             self.finish()
-        DraftTools.Modifier.Activated(self,"Edit")
+        DraftTools.Modifier.Activated(self, "Edit")
         if not App.ActiveDocument:
             self.finish()
 
@@ -281,26 +281,26 @@ class Edit:
         else:
             self.ui.selectUi()
             App.Console.PrintMessage(translate("draft", 
-                                                   "Select a Draft object to edit")
-                                                   + "\n")
+                                               "Select a Draft object to edit")
+                                               + "\n")
             self.register_selection_callback()
 
     def proceed(self):
-        "this method defines editpoints and set the editTrackers"
+        """this method defines editpoints and set the editTrackers"""
         self.unregister_selection_callback()
         self.edited_objects = self.getObjsFromSelection()
         if not self.edited_objects:
-            return self.finish() 
+            return self.finish()
 
         # Save selectstate and turn selectable false.
         # Object can remain selectable commenting following lines:
-        # self.saveSelectState(self.obj)        
+        # self.saveSelectState(self.obj)
         # self.setSelectState(self.obj, False)
 
         # start object editing
         Gui.Selection.clearSelection()
         Gui.Snapper.setSelectMode(True)
-        
+
         self.ui.editUi()
 
         for obj in self.edited_objects:
@@ -313,10 +313,8 @@ class Edit:
         # self.alignWorkingPlane()
 
 
-    def finish(self,closed=False):
-        """
-        terminates Edit Tool
-        """
+    def finish(self, closed=False):
+        """Terminate Edit Tool."""
         self.unregister_selection_callback()
         self.unregister_editing_callbacks()
         self.editing = None
@@ -347,16 +345,14 @@ class Edit:
         self.running = False
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
-        QtCore.QTimer.singleShot(0,Gui.ActiveDocument.resetEdit)
+        QtCore.QTimer.singleShot(0, Gui.ActiveDocument.resetEdit)
 
     # -------------------------------------------------------------------------
     # SCENE EVENTS CALLBACKS
     # -------------------------------------------------------------------------
 
     def register_selection_callback(self):
-        """
-        register callback for selection when command is launched
-        """
+        """Register callback for selection when command is launched."""
         self.unregister_selection_callback()
         self.selection_callback = self.view.addEventCallback("SoEvent",DraftTools.selectObject)
 
@@ -365,7 +361,7 @@ class Edit:
         remove selection callback if it exists
         """
         if self.selection_callback:
-            self.view.removeEventCallback("SoEvent",self.selection_callback)
+            self.view.removeEventCallback("SoEvent", self.selection_callback)
         self.selection_callback = None
 
     def register_editing_callbacks(self):
@@ -409,23 +405,21 @@ class Edit:
     # -------------------------------------------------------------------------
 
     def keyPressed(self, event_callback):
-        """
-        keyboard event handler
-        """
-        #TODO: Get the keys from preferences
+        """Execute as callback for keyboard event."""
+        # TODO: Get the keys from preferences
         event = event_callback.getEvent()
         if event.getState() == coin.SoKeyboardEvent.DOWN:
             key = event.getKey()
-            #App.Console.PrintMessage("pressed key : "+str(key)+"\n")
-            if key == 65307: # ESC
+            # App.Console.PrintMessage("pressed key : "+str(key)+"\n")
+            if key == 65307:  # ESC
                 self.finish()
-            if key == 97: # "a"
+            if key == 97:  # "a"
                 self.finish()
-            if key == 111: # "o"
+            if key == 111:  # "o"
                 self.finish(closed=True)
-            if key == 101: # "e"
+            if key == 101:  # "e"
                 self.display_tracker_menu(event)
-            if key == 105: # "i"
+            if key == 105:  # "i"
                 if Draft.getType(self.obj) == "Circle":
                     self.arcInvert(self.obj)
 
@@ -441,14 +435,17 @@ class Edit:
                 if self.editing is None:
                     self.startEditing(event)
                 else:
-                    self.endEditing(self.obj,self.editing)
-            elif event.wasAltDown(): #left click with ctrl down
+                    self.endEditing(self.obj, self.editing)
+            elif event.wasAltDown():  # left click with ctrl down
                 self.display_tracker_menu(event)
 
     def mouseMoved(self, event_callback):
-        "mouse moved event handler, update tracker position and update preview ghost"
+        """Execute as callback for mouse movement.
+
+        Update tracker position and update preview ghost.
+        """
         event = event_callback.getEvent()
-        if self.editing != None:
+        if self.editing is not None:
             self.updateTrackerAndGhost(event)
         else:
             # look for a node in mouse position and highlight it
@@ -466,7 +463,7 @@ class Edit:
                     self.overNode = None
 
     def startEditing(self, event):
-        "start editing selected EditNode"
+        """Start editing selected EditNode."""
         pos = event.getPosition()
         node = self.getEditNode(pos)
         ep = self.getEditNodeIndex(node)
@@ -494,18 +491,19 @@ class Edit:
         self.hideTrackers()
 
     def updateTrackerAndGhost(self, event):
-        "updates tracker position when editing and update ghost"
+        """Update tracker position when editing and update ghost."""
         pos = event.getPosition().getValue()
         orthoConstrain = False
-        if event.wasShiftDown() == 1: orthoConstrain = True
+        if event.wasShiftDown() == 1:
+            orthoConstrain = True
         snappedPos = Gui.Snapper.snap((pos[0],pos[1]),self.node[-1], constrain=orthoConstrain)
         self.trackers[self.obj.Name][self.editing].set(snappedPos)
-        self.ui.displayPoint(snappedPos,self.node[-1])
+        self.ui.displayPoint(snappedPos, self.node[-1])
         if self.ghost:
-            self.updateGhost(obj=self.obj,idx=self.editing,pt=snappedPos)
+            self.updateGhost(obj=self.obj, idx=self.editing, pt=snappedPos)
 
-    def endEditing(self, obj, nodeIndex, v = None):
-        "terminate editing and start object updating process"
+    def endEditing(self, obj, nodeIndex, v=None):
+        """Terminate editing and start object updating process."""
         self.finalizeGhost()
         self.trackers[obj.Name][nodeIndex].on()
         Gui.Snapper.setSelectMode(True)
@@ -529,7 +527,7 @@ class Edit:
     # -------------------------------------------------------------------------
 
     def getObjsFromSelection(self):
-        "evaluate selection and returns a valid object to edit"
+        """Evaluate selection and return a valid object to edit."""
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
         if len(selection) > self.maxObjects:
@@ -552,8 +550,9 @@ class Edit:
         return self.edited_objects
 
     def get_selected_obj_at_position(self, pos):
-        """return object at given position
-        if object is one of the edited objects (self.edited_objects)
+        """Return object at given position.
+
+        If object is one of the edited objects (self.edited_objects).
         """
         selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
         if not selobjs:
@@ -566,19 +565,22 @@ class Edit:
                     return obj
 
     def numericInput(self, v, numy=None, numz=None):
-        """this function gets called by the toolbar
-        or by the mouse click and activate the update function"""
-        if (numy is not None):
-            v = App.Vector(v,numy,numz)
+        """Execute callback by the toolbar to activate the update function.
+
+        This function gets called by the toolbar
+        or by the mouse click and activate the update function.
+        """
+        if numy:
+            v = App.Vector(v, numy, numz)
         self.endEditing(self.obj, self.editing, v)
         App.ActiveDocument.recompute()
 
-    def setSelectState(self, obj, selState = False):
-        if hasattr(obj.ViewObject,"Selectable"):
+    def setSelectState(self, obj, selState=False):
+        if hasattr(obj.ViewObject, "Selectable"):
             obj.ViewObject.Selectable = selState
 
     def saveSelectState(self, obj):
-        if hasattr(obj.ViewObject,"Selectable"):
+        if hasattr(obj.ViewObject, "Selectable"):
             self.selectstate = obj.ViewObject.Selectable
 
     def restoreSelectState(self,obj):
@@ -586,8 +588,12 @@ class Edit:
             if hasattr(obj.ViewObject,"Selectable") and (self.selectstate is not None):
                 obj.ViewObject.Selectable = self.selectstate
 
-    def setPlacement(self,obj):
-        "set self.pl and self.invpl to self.obj placement and inverse placement"
+    def setPlacement(self, obj):
+        """Set placement of object.
+
+        Set self.pl and self.invpl to self.obj placement
+        and inverse placement.
+        """
         if not obj:
             return
         if "Placement" in obj.PropertiesList:
@@ -595,7 +601,7 @@ class Edit:
             self.invpl = self.pl.inverse()
 
     def alignWorkingPlane(self):
-        "align working plane to self.obj"
+        """Align working plane to self.obj."""
         if "Shape" in self.obj.PropertiesList:
             if DraftTools.plane.weak:
                 DraftTools.plane.alignToFace(self.obj.Shape)
@@ -603,12 +609,12 @@ class Edit:
             self.planetrack.set(self.editpoints[0])
 
     def getEditNode(self, pos):
-        "get edit node from given screen position"
+        """Get edit node from given screen position."""
         node = self.sendRay(pos)
         return node
     
     def sendRay(self, mouse_pos):
-        "sends a ray through the scene and return the nearest entity"
+        """Send a ray through the scene and return the nearest entity."""
         ray_pick = coin.SoRayPickAction(self.render_manager.getViewportRegion())
         ray_pick.setPoint(coin.SbVec2s(*mouse_pos))
         ray_pick.setRadius(self.pick_radius)
@@ -618,7 +624,7 @@ class Edit:
         return self.searchEditNode(picked_point)
 
     def searchEditNode(self, picked_point):
-        "search edit node inside picked point list and retrurn node number"
+        """Search edit node inside picked point list and return node number."""
         for point in picked_point:
             path = point.getPath()
             length = path.getLength()
@@ -629,7 +635,7 @@ class Edit:
         return None
 
     def getEditNodeIndex(self, point):
-        "get edit node index from given screen position"
+        """Get edit node index from given screen position."""
         if point:
             subElement = str(point.subElementName.getValue())
             ep = int(subElement[8:])
@@ -637,19 +643,18 @@ class Edit:
         else:
             return None
 
-
     # -------------------------------------------------------------------------
     # EDIT TRACKERS functions
     # -------------------------------------------------------------------------
 
     def setTrackers(self, obj, points=None):
-        "set Edit Trackers for editpoints collected from self.obj"
+        """Set Edit Trackers for editpoints collected from self.obj."""
         if points is None or len(points) == 0:
             App.Console.PrintWarning(translate("draft", 
-                                                   "No edit point found for selected object")
-                                                   + "\n")
+                                               "No edit point found for selected object")
+                                               + "\n")
             # do not finish if some trackers are still present
-            if self.trackers == {'object':[]}:
+            if self.trackers == {'object': []}:
                 self.finish()
             return
         self.trackers[obj.Name] = []
@@ -662,12 +667,12 @@ class Edit:
                 self.trackers[obj.Name].append(trackers.editTracker(pos=points[ep],name=obj.Name,idx=ep))
 
     def resetTrackers(self, obj):
-        "reset Edit Trackers and set them again"
+        """Reset Edit Trackers and set them again."""
         self.removeTrackers(obj)
         self.setTrackers(obj, self.getEditPoints(obj))
 
-    def removeTrackers(self, obj = None):
-        "reset Edit Trackers and set them again"
+    def removeTrackers(self, obj=None):
+        """Remove Edit Trackers."""
         if obj:
             if obj.Name in self.trackers:
                 for t in self.trackers[obj.Name]:
@@ -677,16 +682,16 @@ class Edit:
             for key in self.trackers.keys():
                 for t in self.trackers[key]:
                     t.finalize()
-            self.trackers = {'object':[]}
+            self.trackers = {'object': []}
 
 
     def hideTrackers(self, obj=None):
-        """hide Edit Trackers
+        """Hide Edit Trackers.
 
         Attributes
         ----------
-        obj : FreeCAD object
-            hides trackers only for given object, 
+        obj: FreeCAD object
+            Hides trackers only for given object,
             if obj is None, hides all trackers
         """
         if obj is None:
@@ -698,12 +703,12 @@ class Edit:
                 t.off()
 
     def showTrackers(self, obj=None):
-        """show Edit Trackers
+        """Show Edit Trackers.
 
         Attributes
         ----------
-        obj : FreeCAD object
-            shows trackers only for given object, 
+        obj: FreeCAD object
+            Shows trackers only for given object,
             if obj is None, shows all trackers
         """
         if obj is None:
@@ -718,8 +723,8 @@ class Edit:
     # PREVIEW
     # -------------------------------------------------------------------------
 
-    def initGhost(self,obj):
-        "initialize preview ghost"
+    def initGhost(self, obj):
+        """Initialize preview ghost."""
         if Draft.getType(obj) == "Wire":
             return trackers.wireTracker(obj.Shape)
         elif Draft.getType(obj) == "BSpline":
@@ -729,7 +734,7 @@ class Edit:
         elif Draft.getType(obj) == "Circle":
             return trackers.arcTracker()
 
-    def updateGhost(self,obj,idx,pt):
+    def updateGhost(self, obj, idx, pt):
         if Draft.getType(obj) in ["Wire"]:
             self.ghost.on()
             pointList = self.applyPlacement(obj.Points)
@@ -777,9 +782,9 @@ class Edit:
                         self.ghost.setCenter(self.pl.multVec(p0))
                         return
                     else:
-                        p1=self.getArcStart(obj,global_placement=True)
-                        p2=self.getArcMid(obj,global_placement=True)
-                        p3=self.getArcEnd(obj,global_placement=True)
+                        p1 = self.getArcStart(obj, global_placement=True)
+                        p2 = self.getArcMid(obj, global_placement=True)
+                        p3 = self.getArcEnd(obj, global_placement=True)
                         if self.editing == 1:
                             p1=pt
                         elif self.editing == 3:
@@ -801,7 +806,7 @@ class Edit:
                         self.ghost.setRadius(self.invpl.multVec(pt).Length)
         DraftTools.redraw3DView()
 
-    def applyPlacement(self,pointList):
+    def applyPlacement(self, pointList):
         if self.pl:
             plist = []
             for p in pointList:
@@ -822,10 +827,10 @@ class Edit:
     # EDIT OBJECT TOOLS : Add/Delete Vertexes
     # -------------------------------------------------------------------------
 
-    def addPoint(self,event):
-        "called by action, add point to obj and reset trackers"
+    def addPoint(self, event):
+        """Execute callback, add point to obj and reset trackers."""
         pos = event.getPosition()
-        #self.setSelectState(self.obj, True)
+        # self.setSelectState(self.obj, True)
         selobjs = Gui.ActiveDocument.ActiveView.getObjectsInfo((pos[0],pos[1]))
         if not selobjs:
             return
@@ -842,27 +847,26 @@ class Edit:
                 pt = App.Vector(info["x"], info["y"], info["z"])
                 self.addPointToWire(self.obj, pt, int(info["Component"][4:]))
             elif Draft.getType(self.obj) in ["BSpline", "BezCurve"]: #to fix double vertex created
-                #pt = self.point
+                # pt = self.point
                 if "x" in info:# prefer "real" 3D location over working-plane-driven one if possible
                     pt = App.Vector(info["x"], info["y"], info["z"])
                 else:
                     continue
-                self.addPointToCurve(pt,info)
+                self.addPointToCurve(pt, info)
         self.obj.recompute()
         self.removeTrackers(self.obj)
         self.setEditPoints(self.obj)
         # self.setSelectState(self.obj, False)
         return
 
-
     def addPointToWire(self, obj, newPoint, edgeIndex):
         newPoints = []
         hasAddedPoint = False
         if hasattr(obj, "ChamferSize") and hasattr(obj, "FilletRadius"):
             if obj.ChamferSize > 0 and obj.FilletRadius > 0:
-                edgeIndex = (edgeIndex +3) / 4
+                edgeIndex = (edgeIndex + 3) / 4
             elif obj.ChamferSize > 0 or obj.FilletRadius > 0:
-                edgeIndex = (edgeIndex +1) / 2
+                edgeIndex = (edgeIndex + 1) / 2
 
         for index, point in enumerate(self.obj.Points):
             if index == edgeIndex:
@@ -874,24 +878,24 @@ class Edit:
             newPoints.append(self.invpl.multVec(newPoint))
         obj.Points = newPoints
 
-    def addPointToCurve(self,point,info=None):
+    def addPointToCurve(self, point, info=None):
         import Part
-        if not (Draft.getType(self.obj) in ["BSpline","BezCurve"]):
+        if not (Draft.getType(self.obj) in ["BSpline", "BezCurve"]):
             return
         pts = self.obj.Points
         if Draft.getType(self.obj) == "BezCurve":
             if not info['Component'].startswith('Edge'):
-                return # clicked control point
-            edgeindex = int(info['Component'].lstrip('Edge')) -1
+                return  # clicked control point
+            edgeindex = int(info['Component'].lstrip('Edge')) - 1
             wire = self.obj.Shape.Wires[0]
             bz = wire.Edges[edgeindex].Curve
             param = bz.parameter(point)
             seg1 = wire.Edges[edgeindex].copy().Curve
             seg2 = wire.Edges[edgeindex].copy().Curve
-            seg1.segment(seg1.FirstParameter,param)
-            seg2.segment(param,seg2.LastParameter)
+            seg1.segment(seg1.FirstParameter, param)
+            seg2.segment(param, seg2.LastParameter)
             if edgeindex == len(wire.Edges):
-                #we hit the last segment, we need to fix the degree
+                # we hit the last segment, we need to fix the degree
                 degree=wire.Edges[0].Curve.Degree
                 seg1.increase(degree)
                 seg2.increase(degree)
@@ -917,44 +921,44 @@ class Edit:
             uPoints = []
             for p in self.obj.Points:
                 uPoints.append(curve.parameter(p))
-            for i in range(len(uPoints) -1):
+            for i in range(len(uPoints) - 1):
                 if ( uNewPoint > uPoints[i] ) and ( uNewPoint < uPoints[i+1] ):
                     pts.insert(i + 1, self.invpl.multVec(point))
                     break
             # DNC: fix: add points to last segment if curve is closed
-            if ( self.obj.Closed ) and ( uNewPoint > uPoints[-1] ) :
+            if self.obj.Closed and (uNewPoint > uPoints[-1]):
                 pts.append(self.invpl.multVec(point))
         self.obj.Points = pts
 
-    def delPoint(self,event):
+    def delPoint(self, event):
         pos = event.getPosition()
         node = self.getEditNode(pos)
         ep = self.getEditNodeIndex(node)
 
         if ep is None:
             return App.Console.PrintWarning(translate("draft",
-                                                          "Node not found")
-                                                          + "\n")
+                                                      "Node not found")
+                                                      + "\n")
 
         doc = App.getDocument(str(node.documentName.getValue()))
         self.obj = doc.getObject(str(node.objectName.getValue()))
         if self.obj is None:
             return
-        if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]):
+        if not (Draft.getType(self.obj) in ["Wire", "BSpline", "BezCurve"]):
             return
         if len(self.obj.Points) <= 2:
             App.Console.PrintWarning(translate("draft", 
-                                                   "Active object must have more than two points/nodes") 
-                                                   + "\n")
+                                               "Active object must have more than two points/nodes") 
+                                               + "\n")
             return
 
         pts = self.obj.Points
         pts.pop(ep)
         self.obj.Points = pts
-        if Draft.getType(self.obj) =="BezCurve":
+        if Draft.getType(self.obj) == "BezCurve":
             self.obj.Proxy.resetcontinuity(self.obj)
         self.obj.recompute()
-        
+
         # don't do tan/sym on DWire/BSpline!
         self.removeTrackers(self.obj)
         self.setEditPoints(self.obj)
@@ -963,22 +967,22 @@ class Edit:
     # EDIT OBJECT TOOLS : GENERAL
     # -------------------------------------------------------------------------
 
-    def setEditPoints(self,obj):
-        "append given object's editpoints to self.edipoints and set EditTrackers"
-        
+    def setEditPoints(self, obj):
+        """append given object's editpoints to self.edipoints and set EditTrackers"""
         self.setPlacement(obj)
         self.editpoints = self.getEditPoints(obj)
-        if self.editpoints: # set trackers and align plane
+        if self.editpoints:  # set trackers and align plane
             self.setTrackers(obj, self.editpoints)
             self.editpoints = []
 
     def getEditPoints(self, obj):
-        """
-        (object) return a list of App.Vectors relative to object edit nodes
+        """Return a list of App.Vectors relative to object edit nodes.
+
+        (object)
         """
         objectType = Draft.getType(obj)
 
-        if objectType in ["Wire","BSpline"]:
+        if objectType in ["Wire", "BSpline"]:
             self.ui.editUi("Wire")
             return self.getWirePts(obj)
         elif objectType == "BezCurve":
@@ -1015,13 +1019,13 @@ class Edit:
         else:
             return None
 
-    def update(self,obj, nodeIndex, v):
-        "apply the App.Vector to the modified point and update self.obj"
+    def update(self, obj, nodeIndex, v):
+        """Apply the App.Vector to the modified point and update self.obj."""
 
         objectType = Draft.getType(obj)
         App.ActiveDocument.openTransaction("Edit")
 
-        if objectType in ["Wire","BSpline"]:
+        if objectType in ["Wire", "BSpline"]:
             self.updateWire(obj, nodeIndex, v)
         elif objectType == "BezCurve":
             self.updateWire(obj, nodeIndex, v)
@@ -1051,7 +1055,6 @@ class Edit:
             self.updatePartLine(obj, nodeIndex, v)
         elif objectType == "Part" and self.obj.TypeId == "Part::Box":
             self.updatePartBox(obj, nodeIndex, v)
-        
         obj.recompute()
 
         App.ActiveDocument.commitTransaction()
@@ -1065,7 +1068,7 @@ class Edit:
     # EDIT OBJECT TOOLS : Line/Wire/Bspline/Bezcurve
     # -------------------------------------------------------------------------
 
-    def getWirePts(self,obj):
+    def getWirePts(self, obj):
         editpoints = []
         for p in obj.Points:
             p = obj.getGlobalPlacement().multVec(p)
@@ -1108,8 +1111,8 @@ class Edit:
         obj.Points = pts
         self.trackers[obj.Name][nodeIndex].set(v)
 
-
-    def recomputePointsBezier(self,obj,pts,idx,v,degree,moveTrackers=True):
+    def recomputePointsBezier(self, obj, pts, idx, v,
+                              degree, moveTrackers=True):
         """
         (object, Points as list, nodeIndex as Int, App.Vector of new point, moveTrackers as Bool)
         return the new point list, applying the App.Vector to the given index point
@@ -1143,18 +1146,18 @@ class Edit:
 
         elif ispole == 1 and (idx >=2 or obj.Closed): #right pole
             knot = idx -1
-            changep = idx -2 # -1 in case of closed curve
+            changep = idx - 2  # -1 in case of closed curve
 
-        elif ispole == degree-1 and idx <= len(pts)-3: #left pole
-            knot = idx +1
-            changep = idx +2
+        elif ispole == degree-1 and idx <= len(pts)-3:  # left pole
+            knot = idx + 1
+            changep = idx + 2
 
         elif ispole == degree-1 and obj.Closed and idx == len(pts)-1: #last pole
             knot = 0
             changep = 1
 
-        if knot is not None: # we need to modify the opposite pole
-            segment = int(knot / degree) -1
+        if knot is not None:  # we need to modify the opposite pole
+            segment = int(knot / degree) - 1
             cont = obj.Continuity[segment] if len(obj.Continuity) > segment else 0
             if cont == 1: #tangent
                 pts[changep] = obj.Proxy.modifytangentpole(pts[knot],
@@ -1165,12 +1168,12 @@ class Edit:
                 pts[changep] = obj.Proxy.modifysymmetricpole(pts[knot],editPnt)
                 if moveTrackers:
                     self.trackers[obj.Name][changep].set(pts[changep])
-        pts[idx]=v
+        pts[idx] = v
 
-        return pts #returns the list of new points, taking into account knot continuity
+        return pts  # returns the list of new points, taking into account knot continuity
 
     def resetTrackersBezier(self, obj):
-        #in future move tracker definition to DraftTrackers
+        # in future move tracker definition to DraftTrackers
         from pivy import coin
         knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
                 coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
@@ -1188,8 +1191,8 @@ class Edit:
                 knotmarkeri = cont[edgeindex] if len(cont) > edgeindex else 0
                 pointswithmarkers.append((poles[-1],knotmarkers[knotmarkeri]))
         for index, pwm in enumerate(pointswithmarkers):
-            p,marker = pwm
-            #if self.pl: p = self.pl.multVec(p)
+            p, marker = pwm
+            # if self.pl: p = self.pl.multVec(p)
             self.trackers[obj.Name].append(trackers.editTracker(p,obj.Name,
                 index,obj.ViewObject.LineColor,marker=marker))
 
@@ -1204,8 +1207,8 @@ class Edit:
         deg = obj.Degree
         if deg < 2:
             return
-        if point % deg != 0: #point is a pole
-            if deg >=3: #allow to select poles
+        if point % deg != 0:  # point is a pole
+            if deg >=3:  # allow to select poles
                 if (point % deg == 1) and (point > 2 or obj.Closed): #right pole
                     knot = point -1
                     keepp = point
@@ -1221,9 +1224,9 @@ class Edit:
                     keepp = point
                     changep = 1
                 else:
-                    App.Console.PrintWarning(translate("draft", 
-                                                           "Can't change Knot belonging to pole %d"%point)
-                                                           + "\n")
+                    App.Console.PrintWarning(translate("draft",
+                                                       "Can't change Knot belonging to pole %d"%point)
+                                                       + "\n")
                     return
                 if knot:
                     if style == 'Tangent':
@@ -1235,9 +1238,9 @@ class Edit:
                     else: #sharp
                         pass #
             else:
-                App.Console.PrintWarning(translate("draft", 
-                                                       "Selection is not a Knot")
-                                                       + "\n")
+                App.Console.PrintWarning(translate("draft",
+                                                   "Selection is not a Knot")
+                                                   + "\n")
                 return
         else: #point is a knot
             if style == 'Sharp':
@@ -1249,12 +1252,12 @@ class Edit:
                 prev, next = obj.Proxy.tangentpoles(pts[point], pts[point-1], pts[point+1])
                 pts[point-1] = prev
                 pts[point+1] = next
-                knot = point #index for continuity
+                knot = point  # index for continuity
             elif style == 'Symmetric' and point > 0 and point < len(pts)-1:
                 prev, next = obj.Proxy.symmetricpoles(pts[point], pts[point-1], pts[point+1])
                 pts[point-1] = prev
                 pts[point+1] = next
-                knot = point #index for continuity
+                knot = point  # index for continuity
             elif obj.Closed and (style == 'Symmetric' or style == 'Tangent'):
                 if style == 'Tangent':
                     pts[1], pts[-1] = obj.Proxy.tangentpoles(pts[0], pts[1], pts[-1])
@@ -1266,8 +1269,8 @@ class Edit:
                                                        "Endpoint of BezCurve can't be smoothed")
                                                        + "\n")
                 return
-        segment = knot // deg #segment index
-        newcont = obj.Continuity[:] #don't edit a property inplace !!!
+        segment = knot // deg  # segment index
+        newcont = obj.Continuity[:]  # don't edit a property inplace !!!
         if not obj.Closed and (len(obj.Continuity) == segment -1 or
             segment == 0) :
             pass # open curve
@@ -1276,7 +1279,7 @@ class Edit:
             newcont[segment-1] = style2cont.get(style)
         else: #should not happen
             App.Console.PrintWarning('Continuity indexing error:'
-                                         + 'point:%d deg:%d len(cont):%d' % (knot,deg,
+                                     + 'point:%d deg:%d len(cont):%d' % (knot,deg,
                                          len(obj.Continuity)))
         obj.Points = pts
         obj.Continuity = newcont
@@ -1287,8 +1290,8 @@ class Edit:
     # -------------------------------------------------------------------------
 
     def getRectanglePts(self, obj):
-        """
-        returns the list of edipoints for the given Draft Rectangle
+        """Return the list of edipoints for the given Draft Rectangle.
+
         0 : Placement.Base
         1 : Length
         2 : Height
@@ -1308,8 +1311,8 @@ class Edit:
         import DraftVecUtils
         delta = obj.getGlobalPlacement().inverse().multVec(v)
         if nodeIndex == 0:
-            #p = obj.getGlobalPlacement()
-            #p.move(delta)
+            # p = obj.getGlobalPlacement()
+            # p.move(delta)
             obj.Placement.move(delta)
         elif self.editing == 1:
             obj.Length = DraftVecUtils.project(delta,App.Vector(1,0,0)).Length
@@ -1332,17 +1335,18 @@ class Edit:
     # -------------------------------------------------------------------------
 
     def getCirclePts(self, obj):
-        """
-        returns the list of edipoints for the given Draft Arc or Circle
+        """Return the list of edipoints for the given Draft Arc or Circle.
+
         circle:
         0 : Placement.Base or center
         1 : radius
+
         arc:
         0 : Placement.Base or center
         1 : first endpoint
         2 : second endpoint
         3 : midpoint
-        """        
+        """
         editpoints = []
         editpoints.append(obj.getGlobalPlacement().Base)
         if obj.FirstAngle == obj.LastAngle:
@@ -1382,7 +1386,7 @@ class Edit:
                 # edit arc by 3 points
                 import Part
                 if nodeIndex == 0:
-                    #center point
+                    # center point
                     import DraftVecUtils
                     p1 = self.getArcStart(obj)
                     p2 = self.getArcEnd(obj)
@@ -1436,7 +1440,7 @@ class Edit:
     def getArcStart(self, obj, global_placement=False):#Returns object midpoint
         if Draft.getType(obj) == "Circle":
             return self.pointOnCircle(obj, obj.FirstAngle, global_placement)
-    
+
     def getArcEnd(self, obj, global_placement=False):#Returns object midpoint
         if Draft.getType(obj) == "Circle":
             return self.pointOnCircle(obj, obj.LastAngle, global_placement)
@@ -1502,7 +1506,7 @@ class Edit:
         editpoints.append(obj.Start)
         editpoints.append(obj.End)
         editpoints.append(obj.Dimline)
-        editpoints.append(App.Vector(p[0],p[1],p[2]))
+        editpoints.append(App.Vector(p[0], p[1], p[2]))
         return editpoints
 
     def updateDimension(self, obj, nodeIndex, v):
@@ -1522,8 +1526,9 @@ class Edit:
     # SKETCH: just if it's composed by a single segment-----------------------
 
     def getSketchPts(self, obj):
-        """
-        returns the list of edipoints for the given single line sketch (WallTrace)
+        """Return the list of edipoints for the given single line sketch.
+
+        (WallTrace)
         0 : startpoint
         1 : endpoint
         """
@@ -1534,13 +1539,14 @@ class Edit:
             return editpoints
         else:
             App.Console.PrintWarning(translate("draft",
-                                                   "Sketch is too complex to edit: "
-                                                   "it is suggested to use sketcher default editor")
+                                               "Sketch is too complex to edit: "
+                                               "it is suggested to use sketcher default editor")
                                      + "\n")
             return None
 
     def updateSketch(self, obj, nodeIndex, v):
-        """
+        """Move a single line sketch vertex a certain displacement.
+
         (single segment sketch object, node index as Int, App.Vector)
         move a single line sketch (WallTrace) vertex according to a given App.Vector
         0 : startpoint
@@ -1552,17 +1558,16 @@ class Edit:
             obj.movePoint(0,2,obj.getGlobalPlacement().inverse().multVec(v))
         obj.recompute()
 
-
     # WALL---------------------------------------------------------------------
 
     def getWallPts(self, obj):
-        """
-        returns the list of edipoints for the given Arch Wall object
+        """Return the list of edipoints for the given Arch Wall object.
+
         0 : height of the wall
         1-to end : base object editpoints, in place with the wall
         """
         editpoints = []
-        #height of the wall
+        # height of the wall
         editpoints.append(obj.getGlobalPlacement().multVec(App.Vector(0,0,obj.Height)))
         # try to add here an editpoint based on wall height (maybe should be good to associate it with a circular tracker)
         if obj.Base:
@@ -1575,28 +1580,24 @@ class Edit:
                     editpoints.append(obj.Placement.multVec(point)) #works ok except if App::Part is rotated... why?
         return editpoints
 
-
     def updateWallTrackers(self, obj):
-        """
-        update self.trackers[obj.Name][0] to match with given object
-        """
+        """Update self.trackers[obj.Name][0] to match with given object."""
         pass
 
     def updateWall(self, obj, nodeIndex, v):
         import DraftVecUtils
         if nodeIndex == 0:
             delta= obj.getGlobalPlacement().inverse().multVec(v)
-            vz=DraftVecUtils.project(delta,App.Vector(0,0,1))
+            vz=DraftVecUtils.project(delta,App.Vector(0, 0, 1))
             if vz.Length > 0:
                 obj.Height = vz.Length
         elif nodeIndex > 0:
             if obj.Base:
-                if Draft.getType(obj.Base) in ["Wire","Circle","Rectangle",
-                                                "Polygon", "Sketch"]:
+                if Draft.getType(obj.Base) in ["Wire", "Circle", "Rectangle",
+                                               "Polygon", "Sketch"]:
                     self.update(obj.Base, nodeIndex - 1, 
                         obj.Placement.inverse().multVec(v))
         obj.recompute()
-
 
     # WINDOW-------------------------------------------------------------------
 
@@ -1615,9 +1616,9 @@ class Edit:
         return editpoints
 
     def updateWindow(self, obj, nodeIndex, v):
-        pos=self.obj.Base.Placement.Base
+        pos = self.obj.Base.Placement.Base
         if self.editing == 0:
-            self.obj.Base.Placement.Base=v
+            self.obj.Base.Placement.Base = v
             self.obj.Base.recompute()
         if self.editing == 1:
             self.obj.Width = pos.sub(v).Length
@@ -1639,7 +1640,7 @@ class Edit:
             self.originalNodes = obj.ViewObject.ShowNodes
             self.obj.ViewObject.DisplayMode = "Wireframe"
             self.obj.ViewObject.NodeSize = 1
-            #   self.obj.ViewObject.ShowNodes = True
+            # self.obj.ViewObject.ShowNodes = True
             for p in obj.Nodes:
                 if self.pl:
                     p = self.pl.multVec(p)
@@ -1719,9 +1720,9 @@ class Edit:
     def getPartBoxPts(self, obj):
         editpoints = []
         editpoints.append(obj.Placement.Base)
-        editpoints.append(self.pl.multVec(App.Vector(obj.Length,0,0)))
-        editpoints.append(self.pl.multVec(App.Vector(0,obj.Width,0)))
-        editpoints.append(self.pl.multVec(App.Vector(0,0,obj.Height)))
+        editpoints.append(self.pl.multVec(App.Vector(obj.Length, 0, 0)))
+        editpoints.append(self.pl.multVec(App.Vector(0, obj.Width, 0)))
+        editpoints.append(self.pl.multVec(App.Vector(0, 0, obj.Height)))
         return editpoints
 
     def updatePartBox(self, obj, nodeIndex, v):
@@ -1731,14 +1732,14 @@ class Edit:
             self.obj.Placement.Base = v
             self.setPlacement(self.obj)
         elif self.editing == 1:
-            xApp.Vector = DraftVecUtils.project(delta,App.Vector(1,0,0))
-            self.obj.Length = xApp.Vector.Length            
+            xApp.Vector = DraftVecUtils.project(delta, App.Vector(1, 0, 0))
+            self.obj.Length = xApp.Vector.Length
         elif self.editing == 2:
-            xApp.Vector = DraftVecUtils.project(delta,App.Vector(0,1,0))
-            self.obj.Width = xApp.Vector.Length            
+            xApp.Vector = DraftVecUtils.project(delta, App.Vector(0, 1, 0))
+            self.obj.Width = xApp.Vector.Length
         elif self.editing == 3:
-            xApp.Vector = DraftVecUtils.project(delta,App.Vector(0,0,1))
-            self.obj.Height = xApp.Vector.Length            
+            xApp.Vector = DraftVecUtils.project(delta, App.Vector(0, 0, 1))
+            self.obj.Height = xApp.Vector.Length
         self.trackers[self.obj.Name][0].set(self.obj.Placement.Base)
         self.trackers[self.obj.Name][1].set(self.pl.multVec(App.Vector(self.obj.Length,0,0)))
         self.trackers[self.obj.Name][2].set(self.pl.multVec(App.Vector(0,self.obj.Width,0)))
@@ -1761,23 +1762,24 @@ class Edit:
                 actions = ["delete point"]
             elif Draft.getType(obj) in ["Circle"]:
                 if obj.FirstAngle != obj.LastAngle:
-                    if ep == 0: # user is over arc start point
+                    if ep == 0:  # user is over arc start point
                         actions = ["move arc"]
-                    elif ep == 1: # user is over arc start point
+                    elif ep == 1:  # user is over arc start point
                         actions = ["set first angle"]
-                    elif ep == 2: # user is over arc end point
+                    elif ep == 2:  # user is over arc end point
                         actions = ["set last angle"]
-                    elif ep == 3: # user is over arc mid point
+                    elif ep == 3:  # user is over arc mid point
                         actions = ["set radius"]
             elif Draft.getType(obj) in ["BezCurve"]:
-                actions = ["make sharp", "make tangent", "make symmetric", "delete point"]
+                actions = ["make sharp", "make tangent",
+                           "make symmetric", "delete point"]
             else:
                 return
         else:
             # if user is over an edited object
             pos = self.event.getPosition()
             obj = self.get_selected_obj_at_position(pos)
-            if Draft.getType(obj) in ["Line", "Wire","BSpline", "BezCurve"]:
+            if Draft.getType(obj) in ["Line", "Wire", "BSpline", "BezCurve"]:
                 actions = ["add point"]
             elif Draft.getType(obj) in ["Circle"] and obj.FirstAngle != obj.LastAngle:
                 actions = ["invert arc"]
@@ -1788,7 +1790,7 @@ class Edit:
         self.tracker_menu.popup(Gui.getMainWindow().cursor().pos())
         QtCore.QObject.connect(self.tracker_menu,QtCore.SIGNAL("triggered(QAction *)"),self.evaluate_menu_action)
 
-    def evaluate_menu_action(self,labelname):
+    def evaluate_menu_action(self, labelname):
         action_label = str(labelname.text())
         # Bezier curve menu
         if action_label in ["make sharp", "make tangent", "make symmetric"]:
@@ -1807,7 +1809,8 @@ class Edit:
         elif action_label == "add point":
             self.addPoint(self.event)
         # arc tools
-        elif action_label in ["move arc","set radius", "set first angle", "set last angle"]:
+        elif action_label in ("move arc", "set radius",
+                              "set first angle", "set last angle"):
             self.alt_edit_mode = 1
             self.startEditing(self.event)
         elif action_label == "invert arc":
