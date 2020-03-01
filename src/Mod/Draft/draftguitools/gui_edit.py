@@ -1,94 +1,89 @@
+# ***************************************************************************
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+# *   Copyright (c) 2019, 2020 Carlo Pavan <carlopav@gmail.com>             *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 """Provide the Draft_Edit command used by the Draft workbench."""
 ## @package gui_edit
 # \ingroup DRAFT
 # \brief Provide the Draft_Edit command used by the Draft workbench
 
-#***************************************************************************
-#*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
-#*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
-#*   Copyright (c) 2019, 2020 Carlo Pavan <carlopav@gmail.com>             *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
-
-__title__= "FreeCAD Draft Edit Tool"
-__author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, \
-                Dmitry Chigrin, Carlo Pavan"
-__url__ = "https://www.freecadweb.org"
+import math
+from pivy import coin
+from PySide import QtCore, QtGui
 
 import FreeCAD as App
-import math
+import FreeCADGui as Gui
 import Draft
+import DraftTools
+from draftutils.translate import translate
+import draftguitools.gui_trackers as trackers
 
-if App.GuiUp:
-    # Do not import GUI-related modules if GUI is not there
-    import FreeCADGui as Gui
-    import DraftTools
-    from draftguitools.gui_trackers import editTracker, wireTracker, arcTracker, bsplineTracker, bezcurveTracker
-    from pivy import coin
-    from PySide import QtCore, QtGui
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-    from DraftTools import translate
+__title__ = "FreeCAD Draft Edit Tool"
+__author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
+              "Dmitry Chigrin, Carlo Pavan")
+__url__ = "https://www.freecadweb.org"
 
-    COLORS = {
-        "default": Gui.draftToolBar.getDefaultColor("snap"),
-        "black":  (0., 0., 0.),
-        "white":  (1., 1., 1.),
-        "grey":   (.5, .5, .5),
-        "red":    (1., 0., 0.),
-        "green":  (0., 1., 0.),
-        "blue":   (0., 0., 1.),
-        "yellow": (1., 1., 0.),
-        "cyan":   (0., 1., 1.),
-        "magenta":(1., 0., 1.)
-    }
+COLORS = {
+    "default": Gui.draftToolBar.getDefaultColor("snap"),
+    "black":  (0., 0., 0.),
+    "white":  (1., 1., 1.),
+    "grey":   (.5, .5, .5),
+    "red":    (1., 0., 0.),
+    "green":  (0., 1., 0.),
+    "blue":   (0., 0., 1.),
+    "yellow": (1., 1., 0.),
+    "cyan":   (0., 1., 1.),
+    "magenta": (1., 0., 1.)
+}
 
 
-class Edit():
-    """
-    The Draft_Edit FreeCAD command definition.
+class Edit:
+    """The Draft_Edit FreeCAD command definition.
+
     A tool to graphically edit FreeCAD objects.
     Current implementation use many parts of pivy graphics code by user "looo".
-    The tool collect editpoints from objects and display Trackers on them to allow
-    editing their Shape and their parameters.
-
+    The tool collect editpoints from objects and display Trackers on them
+    to allow editing their Shape and their parameters.
 
     Callbacks
-    ----------
+    ---------
     selection_callback
         registered when tool is launched, identify
         selected objects.
-    
+
     editing_callbacks
         self._keyPressedCB      -> self.keyPressed
         self._mouseMovedCB      -> self._mouseMovedCB
         if self._mousePressedCB -> self.mousePressed
         when trackers are displayed for selected objects,
-        these callbacks capture user events and forward 
+        these callbacks capture user events and forward
         them to related functions
-
 
     Task panel (Draft Toolbar)
     ----------
     self.ui = Gui.draftToolBar
     TODO: since we introduced context menu for interacting
-          with editTrackers, point 2 should become obsolete, 
+          with editTrackers, point 2 should become obsolete,
           because not consistent with multi-object editing.
+
     Draft_Edit uses taskpanel in 3 ways:
 
     1 - when waiting for user to select an object
@@ -112,62 +107,58 @@ class Edit():
         self.ui.lineUi()
         self.ui.isRelative.show()
 
-
     Tracker selection
-    ----------
+    -----------------
     If the tool recognize mouse click as an attempt to startEditing,
     using soRayPickAction, it identifies the selected editTracker and
     start editing it. Here is where "looo" code was very useful.
 
 
     Editing preview
-    ----------
-    When object editing begins, self.ghost is initiated with the 
+    ---------------
+    When object editing begins, self.ghost is initiated with the
     corresponding DraftTracker of the object type. The object Tracker
     is deleted when user clicks again and endEditing.
 
-
     Context Menu
-    ----------
+    ------------
     Activated with Alt+LeftClick or pressing key "e"
     It's a custom context menu, that depends on clicked tracker
     or on clicked object.
 
     display_tracker_menu
         populates the menu with custom actions
-    
+
     evaluate_menu_action
         evaluate user chosen action and launch corresponding
         function.
 
-
     Preferences
-    ----------
-    maxObjects : Int
+    -----------
+    maxObjects: Int
         set by "DraftEditMaxObjects" in user preferences
         The max number of FreeCAD objects the tool is
         allowed to edit at the same time.
 
-    pick_radius : Int
+    pick_radius: Int
         set by "DraftEditPickRadius" in user preferences
         The pick radius during editing operation.
         Increase if you experience problems in clicking
         on a editTracker because of screen resolution.
 
-
     Attributes
     ----------
-    obj : Edited object
+    obj: Edited object
         I'm planning to discard this attribute.
-        In old implementation every function was supposed to 
+        In old implementation every function was supposed to
         act on self.obj, self.editpoints, self.trackers,
         self.pl, self.invpl.
         Due to multiple object editing, i'm planning to keep
         just self.trackers. Any other object will be identified
         and processed starting from editTracker information.
-    
-    editing : Int
-        Index of the editTracker that has been clicked by the 
+
+    editing: Int
+        Index of the editTracker that has been clicked by the
         user. Tracker selection mechanism is based on it.
         if self.editing == None :
             the user didn't click any node, and next click will
@@ -176,51 +167,48 @@ class Edit():
             the user is editing corresponding node, so next click
             will be processed as an attempt to end editing operation
 
-    editpoints : List [FreeCAD::App.Vector]
-        List of editpoints collected from the edited object, 
+    editpoints: List [FreeCAD::App.Vector]
+        List of editpoints collected from the edited object,
         on whick editTrackers will be placed.
 
-    trackers : Dictionary {object.Name : [editTrackers]}
+    trackers: Dictionary {object.Name : [editTrackers]}
         It records the list of DraftTrackers.editTracker.
         {object.Name as String : [editTrackers for the object]}
-        Each tracker is created with (position,obj.Name,idx), 
-        so it's possible to recall it 
+        Each tracker is created with (position,obj.Name,idx),
+        so it's possible to recall it
         self.trackers[str(node.objectName.getValue())][ep]
 
-    overNode : DraftTrackers.editTracker
+    overNode: DraftTrackers.editTracker
         It represent the editTracker under the cursor position.
         It is used to preview the tracker selection action.
 
-    ghost : DraftTrackers.*
+    ghost: DraftTrackers.*
         Handles the tracker to preview editing operations.
         it is initialized when user clicks on a editTracker
         by self.startEditing() function.
 
-    alt_edit_mode : Int
+    alt_edit_mode: Int
         Allows alternative editing modes for objects.
         ATM supported for:
-        - arcs: if 0 edit by 3 points, if 1 edit by center, 
+        - arcs: if 0 edit by 3 points, if 1 edit by center,
                 radius, angles
 
-    supportedObjs : List
+    supportedObjs: List
         List of supported Draft Objects.
         The tool use Draft.getType(obj) to compare object type
         to the list.
 
-    supportedPartObjs : List
+    supportedPartObjs: List
         List of supported Part Objects.
-        The tool use Draft.getType(obj) and obj.TypeId to compare 
+        The tool use Draft.getType(obj) and obj.TypeId to compare
         object type to the list.
-        
     """
-    
+
     def __init__(self):
-        """
-        Initialize Draft_Edit Command.
-        """
+        """Initialize Draft_Edit Command."""
         self.running = False
-        self.trackers = {'object':[]}
-        self.overNode = None # preselected node with mouseover
+        self.trackers = {'object': []}
+        self.overNode = None  # preselected node with mouseover
         self.obj = None
         self.editing = None
 
@@ -269,9 +257,9 @@ class Edit():
                 }
 
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # MAIN FUNCTIONS
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def Activated(self):
         """
@@ -361,9 +349,9 @@ class Edit():
         from PySide import QtCore
         QtCore.QTimer.singleShot(0,Gui.ActiveDocument.resetEdit)
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # SCENE EVENTS CALLBACKS
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def register_selection_callback(self):
         """
@@ -416,9 +404,9 @@ class Edit():
             self._mousePressedCB = None
             #App.Console.PrintMessage("Draft edit mouse button callback unregistered \n")
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # SCENE EVENT HANDLERS
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def keyPressed(self, event_callback):
         """
@@ -456,7 +444,7 @@ class Edit():
                     self.endEditing(self.obj,self.editing)
             elif event.wasAltDown(): #left click with ctrl down
                 self.display_tracker_menu(event)
-    
+
     def mouseMoved(self, event_callback):
         "mouse moved event handler, update tracker position and update preview ghost"
         event = event_callback.getEvent()
@@ -536,9 +524,9 @@ class Edit():
         self.showTrackers()
         DraftTools.redraw3DView()
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # UTILS
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def getObjsFromSelection(self):
         "evaluate selection and returns a valid object to edit"
@@ -650,9 +638,9 @@ class Edit():
             return None
 
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT TRACKERS functions
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def setTrackers(self, obj, points=None):
         "set Edit Trackers for editpoints collected from self.obj"
@@ -671,7 +659,7 @@ class Edit():
             if obj.Name in self.trackers:
                 self.removeTrackers(obj)
             for ep in range(len(points)):
-                self.trackers[obj.Name].append(editTracker(pos=points[ep],name=obj.Name,idx=ep))
+                self.trackers[obj.Name].append(trackers.editTracker(pos=points[ep],name=obj.Name,idx=ep))
 
     def resetTrackers(self, obj):
         "reset Edit Trackers and set them again"
@@ -726,20 +714,20 @@ class Edit():
             for t in self.trackers[obj.Name]:
                 t.on()
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # PREVIEW
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def initGhost(self,obj):
         "initialize preview ghost"
         if Draft.getType(obj) == "Wire":
-            return wireTracker(obj.Shape)
+            return trackers.wireTracker(obj.Shape)
         elif Draft.getType(obj) == "BSpline":
-            return bsplineTracker()
+            return trackers.bsplineTracker()
         elif Draft.getType(obj) == "BezCurve":
-            return bezcurveTracker()
+            return trackers.bezcurveTracker()
         elif Draft.getType(obj) == "Circle":
-            return arcTracker()
+            return trackers.arcTracker()
 
     def updateGhost(self,obj,idx,pt):
         if Draft.getType(obj) in ["Wire"]:
@@ -830,9 +818,9 @@ class Edit():
         except:
             return
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Add/Delete Vertexes
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def addPoint(self,event):
         "called by action, add point to obj and reset trackers"
@@ -863,7 +851,7 @@ class Edit():
         self.obj.recompute()
         self.removeTrackers(self.obj)
         self.setEditPoints(self.obj)
-        #self.setSelectState(self.obj, False)
+        # self.setSelectState(self.obj, False)
         return
 
 
@@ -971,9 +959,9 @@ class Edit():
         self.removeTrackers(self.obj)
         self.setEditPoints(self.obj)
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : GENERAL
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def setEditPoints(self,obj):
         "append given object's editpoints to self.edipoints and set EditTrackers"
@@ -1007,7 +995,7 @@ class Edit():
         elif objectType == "Dimension":
             return self.getDimensionPts(obj)
         elif objectType == "Wall":
-            return self.getWallPts(obj)            
+            return self.getWallPts(obj)
         elif objectType == "Window":
             return self.getWindowPts(obj)
         elif objectType == "Space":
@@ -1073,9 +1061,9 @@ class Edit():
         except AttributeError as err:
             pass
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Line/Wire/Bspline/Bezcurve
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def getWirePts(self,obj):
         editpoints = []
@@ -1106,7 +1094,7 @@ class Edit():
             return
         if Draft.getType(obj) in ["BezCurve"]:
             pts = self.recomputePointsBezier(obj,pts,nodeIndex,v,obj.Degree,moveTrackers=False)
-            
+
         if obj.Closed:
             # check that the new point lies on the plane of the wire
             if hasattr(obj.Shape,"normalAt"):
@@ -1202,7 +1190,7 @@ class Edit():
         for index, pwm in enumerate(pointswithmarkers):
             p,marker = pwm
             #if self.pl: p = self.pl.multVec(p)
-            self.trackers[obj.Name].append(editTracker(p,obj.Name,
+            self.trackers[obj.Name].append(trackers.editTracker(p,obj.Name,
                 index,obj.ViewObject.LineColor,marker=marker))
 
     def smoothBezPoint(self, obj, point, style='Symmetric'):
@@ -1294,9 +1282,9 @@ class Edit():
         obj.Continuity = newcont
         self.resetTrackers(obj)
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Rectangle
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def getRectanglePts(self, obj):
         """
@@ -1329,9 +1317,9 @@ class Edit():
             obj.Height = DraftVecUtils.project(delta,App.Vector(0,1,0)).Length
         self.updateRectangleTrackers(obj)
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Ellipse (# TODO: yet to be implemented)
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def setEllipsePts(self):
         return
@@ -1339,9 +1327,9 @@ class Edit():
     def updateEllipse(self,v):
         return
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Circle/Arc
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def getCirclePts(self, obj):
         """
@@ -1406,15 +1394,15 @@ class Edit():
                     self.setPlacement(obj)
 
                 else:
-                    if nodeIndex == 1:#first point
+                    if nodeIndex == 1:  # first point
                         p1=v
                         p2=self.getArcMid(obj,global_placement=True)
                         p3=self.getArcEnd(obj,global_placement=True)
-                    elif nodeIndex == 3:#midpoint
+                    elif nodeIndex == 3:  # midpoint
                         p1=self.getArcStart(obj,global_placement=True)
                         p2=v
                         p3=self.getArcEnd(obj,global_placement=True)
-                    elif nodeIndex == 2:#second point
+                    elif nodeIndex == 2:  # second point
                         p1=self.getArcStart(obj,global_placement=True)
                         p2=self.getArcMid(obj,global_placement=True)
                         p3=v
@@ -1477,9 +1465,9 @@ class Edit():
         obj.recompute()
         self.updateCircleTrackers(obj)
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Polygon (maybe could also rotate the polygon)
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def getPolygonPts(self, obj):
         editpoints = []
@@ -1504,9 +1492,9 @@ class Edit():
             self.obj.recompute()
         self.trackers[self.obj.Name][1].set(self.obj.Shape.Vertexes[0].Point)
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : Dimension (point on dimension line is not clickable)
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def getDimensionPts(self, obj):
         editpoints = []
@@ -1527,11 +1515,11 @@ class Edit():
         elif self.editing == 3:
             self.obj.ViewObject.TextPosition = v
 
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # EDIT OBJECT TOOLS : ARCH Wall, Windows, Structure, Panel, etc.
-    #---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
-    # SKETCH: just if it's composed by a single segment-------------------------
+    # SKETCH: just if it's composed by a single segment-----------------------
 
     def getSketchPts(self, obj):
         """
@@ -1565,7 +1553,7 @@ class Edit():
         obj.recompute()
 
 
-    #WALL-----------------------------------------------------------------------
+    # WALL---------------------------------------------------------------------
 
     def getWallPts(self, obj):
         """
@@ -1610,7 +1598,7 @@ class Edit():
         obj.recompute()
 
 
-    #WINDOW---------------------------------------------------------------------
+    # WINDOW-------------------------------------------------------------------
 
     def getWindowPts(self, obj):
         import DraftGeomUtils
@@ -1641,7 +1629,7 @@ class Edit():
             obj.recompute()
         self.obj.recompute()
 
-    #STRUCTURE-------------------------------------------------------------------
+    # STRUCTURE----------------------------------------------------------------
 
     def getStructurePts(self, obj):
         if obj.Nodes:
@@ -1665,7 +1653,7 @@ class Edit():
         nodes[self.editing] = self.invpl.multVec(v)
         self.obj.Nodes = nodes
 
-    #SPACE----------------------------------------------------------------------
+    # SPACE--------------------------------------------------------------------
 
     def getSpacePts(self, obj):
         try:
@@ -1679,7 +1667,7 @@ class Edit():
         if self.editing == 0:
             self.obj.ViewObject.TextPosition = v
 
-    #PANELS---------------------------------------------------------------------
+    # PANELS-------------------------------------------------------------------
 
     def getPanelCutPts(self, obj):
         editpoints = []
@@ -1707,7 +1695,7 @@ class Edit():
         else:
             self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
     
-    # PART::LINE----------------------------------------------------------------
+    # PART::LINE--------------------------------------------------------------
 
     def getPartLinePts(self, obj):
         editpoints = []
@@ -1726,7 +1714,7 @@ class Edit():
             self.obj.Y2 = pt.y
             self.obj.Z2 = pt.z
 
-    # PART::BOX-----------------------------------------------------------------
+    # PART::BOX---------------------------------------------------------------
 
     def getPartBoxPts(self, obj):
         editpoints = []
@@ -1756,9 +1744,9 @@ class Edit():
         self.trackers[self.obj.Name][2].set(self.pl.multVec(App.Vector(0,self.obj.Width,0)))
         self.trackers[self.obj.Name][3].set(self.pl.multVec(App.Vector(0,0,self.obj.Height)))
 
-    #---------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
     # Context menu
-    #---------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def display_tracker_menu(self, event):
         self.tracker_menu = QtGui.QMenu()
@@ -1829,7 +1817,4 @@ class Edit():
         del self.event
 
 
-
-if App.GuiUp:
-    # setup command
-    Gui.addCommand('Draft_Edit', Edit())
+Gui.addCommand('Draft_Edit', Edit())
