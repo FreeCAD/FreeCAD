@@ -4031,18 +4031,43 @@ class _AngularDimension(_DraftObject):
 class _ViewProviderAngularDimension(_ViewProviderDraft):
     """A View Provider for the Draft Angular Dimension object"""
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength","FontSize","Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
-        obj.addProperty("App::PropertyInteger","Decimals","Draft",QT_TRANSLATE_NOOP("App::Property","The number of decimals to show"))
-        obj.addProperty("App::PropertyFont","FontName","Draft",QT_TRANSLATE_NOOP("App::Property","Font name"))
-        obj.addProperty("App::PropertyLength","ArrowSize","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
-        obj.addProperty("App::PropertyLength","TextSpacing","Draft",QT_TRANSLATE_NOOP("App::Property","The spacing between the text and the dimension line"))
-        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
-        obj.addProperty("App::PropertyFloat","LineWidth","Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
-        obj.addProperty("App::PropertyColor","LineColor","Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))
-        obj.addProperty("App::PropertyBool","FlipArrows","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension arrows 180 degrees"))
-        obj.addProperty("App::PropertyBool","ShowUnit","Draft",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
-        obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
-        obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use 'dim' to insert the dimension length"))
+        obj.addProperty("App::PropertyFloat","ScaleMultiplier","Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                        "Dimension size overall multiplier"))
+        obj.addProperty("App::PropertyLength","FontSize",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
+        obj.addProperty("App::PropertyInteger","Decimals",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "The number of decimals to show"))
+        obj.addProperty("App::PropertyFont","FontName",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Font name"))
+        obj.addProperty("App::PropertyLength","ArrowSize",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
+        obj.addProperty("App::PropertyLength","TextSpacing",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "The spacing between the text and the dimension line"))
+        obj.addProperty("App::PropertyEnumeration","ArrowType",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
+        obj.addProperty("App::PropertyFloat","LineWidth",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
+        obj.addProperty("App::PropertyColor","LineColor",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))
+        obj.addProperty("App::PropertyBool","FlipArrows",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Rotate the dimension arrows 180 degrees"))
+        obj.addProperty("App::PropertyBool","ShowUnit",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Show the unit suffix"))
+        obj.addProperty("App::PropertyVectorDistance","TextPosition",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "The position of the text. Leave (0,0,0) for automatic position"))
+        obj.addProperty("App::PropertyString","Override",
+                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text override. Use 'dim' to insert the dimension length"))
+        
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
+        obj.ScaleMultiplier = 1 / annotation_scale
         obj.FontSize = getParam("textheight",0.20)
         obj.FontName = getParam("textfont","")
         obj.TextSpacing = getParam("dimspacing",0.05)
@@ -4112,8 +4137,6 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             from pivy import coin
             import Part, DraftGeomUtils
             import DraftGui
-            text = None
-            ivob = None
             arcsegs = 24
 
             # calculate the arc data
@@ -4232,11 +4255,22 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 obj.Angle = a
 
     def onChanged(self, vobj, prop):
-        if prop == "FontSize":
+        if prop == "ScaleMultiplier" and hasattr(vobj,"ScaleMultiplier"):
+            # update all dimension values
             if hasattr(self,"font"):
-                self.font.size = vobj.FontSize.Value
+                self.font.size = vobj.FontSize.Value*vobj.ScaleMultiplier
             if hasattr(self,"font3d"):
-                self.font3d.size = vobj.FontSize.Value*100
+                self.font3d.size = vobj.FontSize.Value*100*vobj.ScaleMultiplier
+            if hasattr(self,"node") and hasattr(self,"p2") and hasattr(vobj,"ArrowSize"):
+                self.remove_dim_arrows()
+                self.draw_dim_arrows(vobj)
+            self.updateData(vobj.Object,"Start")
+            vobj.Object.touch()
+        elif prop == "FontSize":
+            if hasattr(self,"font"):
+                self.font.size = vobj.FontSize.Value*vobj.ScaleMultiplier
+            if hasattr(self,"font3d"):
+                self.font3d.size = vobj.FontSize.Value*100*vobj.ScaleMultiplier
             vobj.Object.touch()
         elif prop == "FontName":
             if hasattr(self,"font") and hasattr(self,"font3d"):
@@ -4251,43 +4285,49 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 self.drawstyle.lineWidth = vobj.LineWidth
         elif prop in ["ArrowSize","ArrowType"]:
             if hasattr(self,"node") and hasattr(self,"p2"):
-                from pivy import coin
-
-                if not hasattr(vobj,"ArrowType"):
-                    return
-
-                # set scale
-                symbol = arrowtypes.index(vobj.ArrowType)
-                s = vobj.ArrowSize.Value
-                self.trans1.scaleFactor.setValue((s,s,s))
-                self.trans2.scaleFactor.setValue((s,s,s))
-
-                # remove existing nodes
-                self.node.removeChild(self.marks)
-                self.node3d.removeChild(self.marks)
-
-                # set new nodes
-                self.marks = coin.SoSeparator()
-                self.marks.addChild(self.color)
-                s1 = coin.SoSeparator()
-                if symbol == "Circle":
-                    s1.addChild(self.coord1)
-                else:
-                    s1.addChild(self.trans1)
-                s1.addChild(dimSymbol(symbol,invert=False))
-                self.marks.addChild(s1)
-                s2 = coin.SoSeparator()
-                if symbol == "Circle":
-                    s2.addChild(self.coord2)
-                else:
-                    s2.addChild(self.trans2)
-                s2.addChild(dimSymbol(symbol,invert=True))
-                self.marks.addChild(s2)
-                self.node.insertChild(self.marks,2)
-                self.node3d.insertChild(self.marks,2)
+                self.remove_dim_arrows()
+                self.draw_dim_arrows(vobj)
                 vobj.Object.touch()
         else:
             self.updateData(vobj.Object, None)
+
+    def remove_dim_arrows(self):
+        # remove existing nodes
+        self.node.removeChild(self.marks)
+        self.node3d.removeChild(self.marks)
+
+    def draw_dim_arrows(self, vobj):
+        from pivy import coin
+
+        if not hasattr(vobj,"ArrowType"):
+            return
+
+        # set scale
+        symbol = arrowtypes.index(vobj.ArrowType)
+        s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
+        self.trans1.scaleFactor.setValue((s,s,s))
+        self.trans2.scaleFactor.setValue((s,s,s))
+
+        # set new nodes
+        self.marks = coin.SoSeparator()
+        self.marks.addChild(self.color)
+        s1 = coin.SoSeparator()
+        if symbol == "Circle":
+            s1.addChild(self.coord1)
+        else:
+            s1.addChild(self.trans1)
+        s1.addChild(dimSymbol(symbol,invert=False))
+        self.marks.addChild(s1)
+        s2 = coin.SoSeparator()
+        if symbol == "Circle":
+            s2.addChild(self.coord2)
+        else:
+            s2.addChild(self.trans2)
+        s2.addChild(dimSymbol(symbol,invert=True))
+        self.marks.addChild(s2)
+        self.node.insertChild(self.marks,2)
+        self.node3d.insertChild(self.marks,2)
+
 
     def doubleClicked(self,vobj):
         self.setEdit(vobj)
