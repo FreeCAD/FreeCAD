@@ -33,6 +33,7 @@ doc = run_boxanalysisfrequency()
 doc = run_ccx_cantileverfaceload()
 doc = run_ccx_cantilevernodeload()
 doc = run_ccx_cantileverprescribeddisplacement()
+doc = setup_cantileverhexa20faceload()
 doc = run_constraint_contact_shell_shell()
 doc = run_constraint_contact_solid_solid()
 doc = run_constraint_tie()
@@ -168,6 +169,21 @@ def run_ccx_cantileverprescribeddisplacement(solver=None, base_name=None):
 
     if base_name is None:
         base_name = "CantileverPrescribedDisplacement"
+        if solver is not None:
+            base_name += "_" + solver
+    run_analysis(doc, base_name)
+    doc.recompute()
+
+    return doc
+
+
+def setup_cantileverhexa20faceload(solver=None, base_name=None):
+
+    from .ccx_cantilever_std import setup_cantileverhexa20faceload as setup
+    doc = setup()
+
+    if base_name is None:
+        base_name = "CantilverHexa20FaceLoad"
         if solver is not None:
             base_name += "_" + solver
     run_analysis(doc, base_name)
