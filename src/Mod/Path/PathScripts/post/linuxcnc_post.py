@@ -366,8 +366,8 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command == 'M6':
-                # if OUTPUT_COMMENTS:
-                #     out += linenumber() + "(begin toolchange)\n"
+                # stop the spindle
+                out += linenumber() + "M5\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
 
