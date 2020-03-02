@@ -185,6 +185,14 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
 
+        # Skip inactive operations
+        if hasattr(obj, 'Active'): 
+            if not obj.Active:
+                continue
+        if hasattr(obj, 'Base') and hasattr(obj.Base, 'Active'):
+            if not obj.Base.Active:
+                continue
+
         # fetch machine details
         job = PathUtils.findParentJob(obj)
 
