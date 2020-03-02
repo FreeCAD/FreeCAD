@@ -41,6 +41,25 @@ lower right corner within opened files</string>
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="CheckBox_WbByTab">
+        <property name="toolTip">
+         <string>If checked, application will remember which workbench is active for each tab of the viewport</string>
+        </property>
+        <property name="text">
+         <string>Remember active workbench by tab</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SaveWBbyTab</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_ShowFPS">
         <property name="toolTip">
          <string>Time needed for last operation and resulting frame rate

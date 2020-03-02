@@ -28,7 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD FEM _FemSolverCalculix
 
 import FreeCAD
-from femtools import ccxtools
+from femsolver.calculix.solver import ANALYSIS_TYPES
 
 
 class _FemSolverCalculix():
@@ -58,9 +58,9 @@ class _FemSolverCalculix():
             "Fem",
             "Type of the analysis"
         )
-        obj.AnalysisType = ccxtools.FemToolsCcx.known_analysis_types
+        obj.AnalysisType = ANALYSIS_TYPES
         analysis_type = ccx_prefs.GetInt("AnalysisType", 0)
-        obj.AnalysisType = ccxtools.FemToolsCcx.known_analysis_types[analysis_type]
+        obj.AnalysisType = ANALYSIS_TYPES[analysis_type]
 
         choices_geom_nonlinear = ["linear", "nonlinear"]
         obj.addProperty(

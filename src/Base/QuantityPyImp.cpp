@@ -55,6 +55,25 @@ std::string QuantityPy::representation(void) const
     return ret.str();
 }
 
+PyObject* QuantityPy::toStr(PyObject* args)
+{
+    int prec = getQuantityPtr()->getFormat().precision;
+    if (!PyArg_ParseTuple(args,"|i", &prec))
+        return nullptr;
+
+    double val= getQuantityPtr()->getValue();
+    Unit unit = getQuantityPtr()->getUnit();
+
+    std::stringstream ret;
+    ret.precision(prec);
+    ret.setf(std::ios::fixed, std::ios::floatfield);
+    ret << val;
+    if (!unit.isEmpty())
+        ret << " " << unit.getString().toUtf8().constData();
+
+    return Py_BuildValue("s", ret.str().c_str());
+}
+
 PyObject *QuantityPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of QuantityPy and the Twin object 

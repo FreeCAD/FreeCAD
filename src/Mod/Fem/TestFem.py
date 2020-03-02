@@ -125,6 +125,7 @@ gf()
 ./bin/FreeCADCmd --run-test "femtest.app.test_femimport.TestObjectExistance.test_objects_existance"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_freq_analysis"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_analysis"
+./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_force_faceload_hexa20"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_shell_shell"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_solid_solid"
 ./bin/FreeCADCmd --run-test "femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_tie"
@@ -172,6 +173,9 @@ unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.a
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_analysis"))
+
+import unittest
+unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_force_faceload_hexa20"))
 
 import unittest
 unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName("femtest.app.test_ccxtools.TestCcxTools.test_static_constraint_contact_shell_shell"))

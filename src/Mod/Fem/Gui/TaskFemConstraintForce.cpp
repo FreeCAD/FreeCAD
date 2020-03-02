@@ -46,6 +46,7 @@
 
 #include "ui_TaskFemConstraintForce.h"
 #include "TaskFemConstraintForce.h"
+#include <Base/Console.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -61,7 +62,6 @@
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
 
 using namespace FemGui;
 using namespace Gui;
@@ -149,7 +149,6 @@ void TaskFemConstraintForce::addToSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-
     Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -159,7 +158,6 @@ void TaskFemConstraintForce::addToSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
         for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
@@ -172,7 +170,6 @@ void TaskFemConstraintForce::addToSelection()
                     addMe = false;
                 }
             }
-
             // limit constraint such that only vertexes or faces or edges can be used depending on what was selected first
             std::string searchStr;
             if (subNames[subIt].find("Vertex") != std::string::npos)
@@ -198,7 +195,6 @@ void TaskFemConstraintForce::addToSelection()
             }
         }
     }
-
     //Update UI
     pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
@@ -211,7 +207,6 @@ void TaskFemConstraintForce::removeFromSelection()
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
-
     Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(ConstraintView->getObject());
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
@@ -221,7 +216,6 @@ void TaskFemConstraintForce::removeFromSelection()
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-
         const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
 
@@ -236,14 +230,12 @@ void TaskFemConstraintForce::removeFromSelection()
             }
         }
     }
-
     std::sort(itemsToDel.begin(), itemsToDel.end());
     while (itemsToDel.size() > 0) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
     }
-
     //Update UI
     {
         QSignalBlocker block(ui->listReferences);
@@ -252,7 +244,6 @@ void TaskFemConstraintForce::removeFromSelection()
             ui->listReferences->addItem(makeRefText(Objects[j], SubElements[j]));
         }
     }
-
     pcConstraint->References.setValues(Objects, SubElements);
     updateUI();
 }
@@ -295,7 +286,6 @@ void TaskFemConstraintForce::onButtonDirection(const bool pressed)
         QMessageBox::warning(this, tr("Wrong selection"), tr("Only one planar face or edge can be selected!"));
         return;
     }
-
     // we are now sure we only have one object
     std::string subNamesElement = subNames[0];
     // vector for the direction
