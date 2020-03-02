@@ -725,27 +725,92 @@ Mesh.show(m)
     }
 #endif
 #if defined(HAVE_PCL_SAMPLE_CONSENSUS)
+    /*
+import ReverseEngineering as reen
+import Points
+import Part
+
+p = App.ActiveDocument.Points.Points
+data = p.Points
+n = reen.normalEstimation(p, 10)
+
+model = reen.sampleConsensus(SacModel="Plane", Points=p)
+indices = model["Model"]
+param = model["Parameters"]
+
+plane = Part.Plane()
+plane.Axis = param[0:3]
+plane.Position = -plane.Axis * param[3]
+
+np = Points.Points()
+np.addPoints([data[i] for i in indices])
+Points.show(np)
+
+# sort in descending order
+indices = list(indices)
+indices.sort(reverse=True)
+
+# remove points of segment
+for i in indices:
+    del data[i]
+    del n[i]
+
+p = Points.Points()
+p.addPoints(data)
+model = reen.sampleConsensus(SacModel="Cylinder", Points=p, Normals=n)
+indices = model["Model"]
+
+np = Points.Points()
+np.addPoints([data[i] for i in indices])
+Points.show(np)
+    */
     Py::Object sampleConsensus(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
+        PyObject *vec = nullptr;
+        const char* sacModelType = nullptr;
 
-        static char* kwds_sample[] = {"Points", NULL};
-        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!", kwds_sample,
-                                        &(Points::PointsPy::Type), &pts))
+        static char* kwds_sample[] = {"SacModel", "Points", "Normals", NULL};
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "sO!|O", kwds_sample,
+                                        &sacModelType, &(Points::PointsPy::Type), &pts, &vec))
             throw Py::Exception();
 
         Points::PointKernel* points = static_cast<Points::PointsPy*>(pts)->getPointKernelPtr();
+        std::vector<Base::Vector3d> normals;
+        if (vec) {
+            Py::Sequence list(vec);
+            normals.reserve(list.size());
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Base::Vector3d v = Py::Vector(*it).toVector();
+                normals.push_back(v);
+            }
+        }
+
+        SampleConsensus::SacModel sacModel = SampleConsensus::SACMODEL_PLANE;
+        if (sacModelType) {
+            if (strcmp(sacModelType, "Cylinder") == 0)
+                sacModel = SampleConsensus::SACMODEL_CYLINDER;
+            else if (strcmp(sacModelType, "Sphere") == 0)
+                sacModel = SampleConsensus::SACMODEL_SPHERE;
+            else if (strcmp(sacModelType, "Cone") == 0)
+                sacModel = SampleConsensus::SACMODEL_CONE;
+        }
 
         std::vector<float> parameters;
-        SampleConsensus sample(*points);
-        double probability = sample.perform(parameters);
+        SampleConsensus sample(sacModel, *points, normals);
+        std::vector<int> model;
+        double probability = sample.perform(parameters, model);
 
         Py::Dict dict;
         Py::Tuple tuple(parameters.size());
         for (std::size_t i = 0; i < parameters.size(); i++)
             tuple.setItem(i, Py::Float(parameters[i]));
+        Py::Tuple data(model.size());
+        for (std::size_t i = 0; i < model.size(); i++)
+            data.setItem(i, Py::Long(model[i]));
         dict.setItem(Py::String("Probability"), Py::Float(probability));
         dict.setItem(Py::String("Parameters"), tuple);
+        dict.setItem(Py::String("Model"), data);
 
         return dict;
     }
