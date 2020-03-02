@@ -177,7 +177,12 @@ void DressUp::onChanged(const App::Property* prop)
             BaseFeature.setValue (Base.getValue());
         }
     } else if (prop == &Shape || prop == &SupportTransform) {
-        if (!isRestoring() && !getDocument()->isPerformingTransaction()) {
+        // This is an expensive operation and to avoid to perform it unnecessarily it's not sufficient
+        // to check for the 'Restore' flag of the dress-up feature because at that time it's already reset.
+        // Instead the 'Restore' flag of the document must be checked.
+        // For more details see: https://forum.freecadweb.org/viewtopic.php?f=3&t=43799 (and issue 4276)
+        if (!getDocument()->testStatus(App::Document::Restoring) &&
+            !getDocument()->isPerformingTransaction()) {
             Part::TopoShape s;
             auto base = Base::freecad_dynamic_cast<FeatureAddSub>(getBaseObject(true));
             if(!base) {
