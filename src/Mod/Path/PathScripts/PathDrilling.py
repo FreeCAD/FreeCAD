@@ -162,6 +162,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             
             # Perform and cancel canned drilling cycle
             self.commandlist.append(Path.Command(cmd, params))
+            self.commandlist.append(Path.Command('G80'))
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
             
 
