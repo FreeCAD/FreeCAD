@@ -44,7 +44,7 @@ class _FemElementGeometry2D:
             "List of shell thickness shapes"
         )
         obj.Proxy = self
-        self.Type = "Fem::FemElementGeometry2D"
+        self.Type = "Fem::ElementGeometry2D"
 
     def execute(self, obj):
         return

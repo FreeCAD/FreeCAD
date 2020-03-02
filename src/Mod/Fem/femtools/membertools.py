@@ -251,16 +251,16 @@ class AnalysisMember():
 
         # geometries
         self.geos_beamsection = self.get_several_member(
-            "Fem::FemElementGeometry1D"
+            "Fem::ElementGeometry1D"
         )
         self.geos_beamrotation = self.get_several_member(
-            "Fem::FemElementRotation1D"
+            "Fem::ElementRotation1D"
         )
         self.geos_fluidsection = self.get_several_member(
-            "Fem::FemElementFluid1D"
+            "Fem::ElementFluid1D"
         )
         self.geos_shellthickness = self.get_several_member(
-            "Fem::FemElementGeometry2D"
+            "Fem::ElementGeometry2D"
         )
 
         # constraints

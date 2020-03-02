@@ -735,13 +735,13 @@ def get_elset_short_name(
     from femtools.femutils import is_of_type
     if is_of_type(obj, "Fem::Material"):
         return "M" + str(i)
-    elif is_of_type(obj, "Fem::FemElementGeometry1D"):
+    elif is_of_type(obj, "Fem::ElementGeometry1D"):
         return "B" + str(i)
-    elif is_of_type(obj, "Fem::FemElementRotation1D"):
+    elif is_of_type(obj, "Fem::ElementRotation1D"):
         return "R" + str(i)
-    elif is_of_type(obj, "Fem::FemElementFluid1D"):
+    elif is_of_type(obj, "Fem::ElementFluid1D"):
         return "F" + str(i)
-    elif is_of_type(obj, "Fem::FemElementGeometry2D"):
+    elif is_of_type(obj, "Fem::ElementGeometry2D"):
         return "S" + str(i)
     else:
         FreeCAD.Console.PrintError(

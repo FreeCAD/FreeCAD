@@ -270,19 +270,19 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeConstraintTransform(doc))
         )
         self.assertEqual(
-            "Fem::FemElementFluid1D",
+            "Fem::ElementFluid1D",
             type_of_obj(ObjectsFem.makeElementFluid1D(doc))
         )
         self.assertEqual(
-            "Fem::FemElementGeometry1D",
+            "Fem::ElementGeometry1D",
             type_of_obj(ObjectsFem.makeElementGeometry1D(doc))
         )
         self.assertEqual(
-            "Fem::FemElementGeometry2D",
+            "Fem::ElementGeometry2D",
             type_of_obj(ObjectsFem.makeElementGeometry2D(doc))
         )
         self.assertEqual(
-            "Fem::FemElementRotation1D",
+            "Fem::ElementRotation1D",
             type_of_obj(ObjectsFem.makeElementRotation1D(doc))
         )
         materialsolid = ObjectsFem.makeMaterialSolid(doc)
@@ -468,19 +468,19 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeElementFluid1D(doc),
-            "Fem::FemElementFluid1D"
+            "Fem::ElementFluid1D"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeElementGeometry1D(doc),
-            "Fem::FemElementGeometry1D"
+            "Fem::ElementGeometry1D"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeElementGeometry2D(doc),
-            "Fem::FemElementGeometry2D"
+            "Fem::ElementGeometry2D"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeElementRotation1D(doc),
-            "Fem::FemElementRotation1D"
+            "Fem::ElementRotation1D"
         ))
         materialsolid = ObjectsFem.makeMaterialSolid(doc)
         self.assertTrue(is_of_type(
@@ -906,7 +906,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             fluid1d,
-            "Fem::FemElementFluid1D"
+            "Fem::ElementFluid1D"
         ))
 
         # FemElementGeometry1D
@@ -921,7 +921,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             geometry1d,
-            "Fem::FemElementGeometry1D"
+            "Fem::ElementGeometry1D"
         ))
 
         # FemElementGeometry2D
@@ -936,7 +936,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             geometry2d,
-            "Fem::FemElementGeometry2D"
+            "Fem::ElementGeometry2D"
         ))
 
         # FemElementRotation1D
@@ -951,7 +951,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             rotation1d,
-            "Fem::FemElementRotation1D"
+            "Fem::ElementRotation1D"
         ))
 
         # Material Fluid
