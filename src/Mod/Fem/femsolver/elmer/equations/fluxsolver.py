@@ -38,7 +38,7 @@ def create(doc, name="Fluxsolver"):
 
 class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
 
-    Type = "Fem::FemEquationElmerFluxsolver"
+    Type = "Fem::EquationElmerFluxsolver"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)

@@ -38,7 +38,7 @@ def create(doc, name="Heat"):
 
 class Proxy(nonlinear.Proxy, equationbase.HeatProxy):
 
-    Type = "Fem::FemEquationElmerHeat"
+    Type = "Fem::EquationElmerHeat"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)

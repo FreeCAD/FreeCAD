@@ -347,23 +347,23 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeSolverZ88(doc))
         )
         self.assertEqual(
-            "Fem::FemEquationElmerElasticity",
+            "Fem::EquationElmerElasticity",
             type_of_obj(ObjectsFem.makeEquationElasticity(doc, solverelmer))
         )
         self.assertEqual(
-            "Fem::FemEquationElmerElectrostatic",
+            "Fem::EquationElmerElectrostatic",
             type_of_obj(ObjectsFem.makeEquationElectrostatic(doc, solverelmer))
         )
         self.assertEqual(
-            "Fem::FemEquationElmerFlow",
+            "Fem::EquationElmerFlow",
             type_of_obj(ObjectsFem.makeEquationFlow(doc, solverelmer))
         )
         self.assertEqual(
-            "Fem::FemEquationElmerFluxsolver",
+            "Fem::EquationElmerFluxsolver",
             type_of_obj(ObjectsFem.makeEquationFluxsolver(doc, solverelmer))
         )
         self.assertEqual(
-            "Fem::FemEquationElmerHeat",
+            "Fem::EquationElmerHeat",
             type_of_obj(ObjectsFem.makeEquationHeat(doc, solverelmer))
         )
 
@@ -547,23 +547,23 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElasticity(doc, solverelmer),
-            "Fem::FemEquationElmerElasticity"
+            "Fem::EquationElmerElasticity"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationElectrostatic(doc, solverelmer),
-            "Fem::FemEquationElmerElectrostatic"
+            "Fem::EquationElmerElectrostatic"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationFlow(doc, solverelmer),
-            "Fem::FemEquationElmerFlow"
+            "Fem::EquationElmerFlow"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationFluxsolver(doc, solverelmer),
-            "Fem::FemEquationElmerFluxsolver"
+            "Fem::EquationElmerFluxsolver"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeEquationHeat(doc, solverelmer),
-            "Fem::FemEquationElmerHeat"
+            "Fem::EquationElmerHeat"
         ))
 
         fcc_print("doc objects count: {}, method: {}".format(
@@ -1203,7 +1203,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_elasticity,
-            "Fem::FemEquationElmerElasticity"
+            "Fem::EquationElmerElasticity"
         ))
 
         # FemEquationElmerElectrostatic
@@ -1218,7 +1218,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_electrostatic,
-            "Fem::FemEquationElmerElectrostatic"
+            "Fem::EquationElmerElectrostatic"
         ))
 
         # FemEquationElmerFlow
@@ -1233,7 +1233,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_flow,
-            "Fem::FemEquationElmerFlow"
+            "Fem::EquationElmerFlow"
         ))
 
         # FemEquationElmerFluxsolver
@@ -1248,7 +1248,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_flux,
-            "Fem::FemEquationElmerFluxsolver"
+            "Fem::EquationElmerFluxsolver"
         ))
 
         # FemEquationElmerHeat
@@ -1263,7 +1263,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             equation_heat,
-            "Fem::FemEquationElmerHeat"
+            "Fem::EquationElmerHeat"
         ))
 
         fcc_print("doc objects count: {}, method: {}".format(

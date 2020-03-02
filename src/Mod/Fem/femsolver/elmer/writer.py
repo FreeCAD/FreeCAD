@@ -201,7 +201,7 @@ class Writer(object):
     def _handleHeat(self):
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::FemEquationElmerHeat"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -302,7 +302,7 @@ class Writer(object):
     def _handleElectrostatic(self):
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::FemEquationElmerElectrostatic"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerElectrostatic"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -374,7 +374,7 @@ class Writer(object):
     def _handleFluxsolver(self):
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::FemEquationElmerFluxsolver"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerFluxsolver"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -395,7 +395,7 @@ class Writer(object):
     def _handleElasticity(self):
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::FemEquationElmerElasticity"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -555,7 +555,7 @@ class Writer(object):
     def _handleFlow(self):
         activeIn = []
         for equation in self.solver.Group:
-            if femutils.is_of_type(equation, "Fem::FemEquationElmerFlow"):
+            if femutils.is_of_type(equation, "Fem::EquationElmerFlow"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
