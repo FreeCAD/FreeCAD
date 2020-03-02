@@ -153,6 +153,9 @@ public:
 
     bool isMultiValueSchema(void) const;
 
+    pointPair getArrowPositions(void);
+    void saveArrowPositions(const Base::Vector2d positions[]);
+
 protected:
     virtual void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
@@ -174,6 +177,7 @@ protected:
     pointPair closestPoints(TopoDS_Shape s1,
                             TopoDS_Shape s2) const;
     pointPair   m_linearPoints;
+    pointPair   m_arrowPositions;
 
 private:
     static const char* TypeEnums[];

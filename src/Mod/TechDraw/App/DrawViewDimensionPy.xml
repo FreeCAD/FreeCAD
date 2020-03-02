@@ -33,6 +33,11 @@
         <UserDocu>getAnglePoints() - returns list of points for angle Dimension</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getArrowPositions">
+      <Documentation>
+        <UserDocu>getArrowPositions() - returns list of locations or Dimension Arrowheads. Locations are in unscaled coordinates of parent View </UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>
