@@ -3481,9 +3481,9 @@ class _ViewProviderDimension(_ViewProviderDraft):
     """
     def __init__(self, obj): 
         # general properties
-        obj.addProperty("App::PropertyFloat","ScaleMultiplier","Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Dimension size overall multiplier"))
+        obj.addProperty("App::PropertyFloat","ScaleMultiplier",
+                        "Annotation",QT_TRANSLATE_NOOP("App::Property",
+                        "Dimension size overall multiplier"))
         obj.addProperty("App::PropertyFloat","LineWidth",
                         "Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
         obj.addProperty("App::PropertyColor","LineColor",
@@ -3672,7 +3672,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     self.p2 = self.p1
                     self.p3 = self.p4
             if proj:
-                if hasattr(obj.ViewObject,"ExtLines"):
+                if hasattr(obj.ViewObject,"ExtLines") and hasattr(obj.ViewObject,"ScaleMultiplier"):
                     dmax = obj.ViewObject.ExtLines.Value * obj.ViewObject.ScaleMultiplier
                     if dmax and (proj.Length > dmax):
                         if (dmax > 0):
@@ -3733,7 +3733,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 rot3 = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation.Q
                 self.transExtOvershoot1.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
                 self.transExtOvershoot2.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
-            if hasattr(obj.ViewObject,"TextSpacing"):
+            if hasattr(obj.ViewObject,"TextSpacing") and hasattr(obj.ViewObject,"ScaleMultiplier"):
                 ts = obj.ViewObject.TextSpacing.Value * obj.ViewObject.ScaleMultiplier
                 offset = DraftVecUtils.scaleTo(v1,ts)
             else:
@@ -3823,9 +3823,9 @@ class _ViewProviderDimension(_ViewProviderDraft):
             vobj.Object.touch()
             
         elif (prop == "FontSize") and hasattr(vobj,"FontSize"):
-            if hasattr(self,"font"):
+            if hasattr(self,"font") and hasattr(vobj,"ScaleMultiplier"):
                 self.font.size = vobj.FontSize.Value*vobj.ScaleMultiplier
-            if hasattr(self,"font3d"):
+            if hasattr(self,"font3d") and hasattr(vobj,"ScaleMultiplier"):
                 self.font3d.size = vobj.FontSize.Value*100*vobj.ScaleMultiplier
             vobj.Object.touch()
             
@@ -3845,19 +3845,22 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 
         elif (prop in ["ArrowSize","ArrowType"]) and hasattr(vobj,"ArrowSize"):
             if hasattr(self,"node") and hasattr(self,"p2"):
-                self.remove_dim_arrows()
-                self.draw_dim_arrows(vobj)
-                vobj.Object.touch()
+                if hasattr(vobj,"ScaleMultiplier"):
+                    self.remove_dim_arrows()
+                    self.draw_dim_arrows(vobj)
+                    vobj.Object.touch()
                 
         elif (prop == "DimOvershoot") and hasattr(vobj,"DimOvershoot"):
-            self.remove_dim_overshoot()
-            self.draw_dim_overshoot(vobj)
-            vobj.Object.touch()
+            if hasattr(vobj,"ScaleMultiplier"):
+                self.remove_dim_overshoot()
+                self.draw_dim_overshoot(vobj)
+                vobj.Object.touch()
             
         elif (prop == "ExtOvershoot") and hasattr(vobj,"ExtOvershoot"):
-            self.remove_ext_overshoot()
-            self.draw_ext_overshoot(vobj)
-            vobj.Object.touch()
+            if hasattr(vobj,"ScaleMultiplier"):
+                self.remove_ext_overshoot()
+                self.draw_ext_overshoot(vobj)
+                vobj.Object.touch()
             
         elif (prop == "ShowLine") and hasattr(vobj,"ShowLine"):
             if vobj.ShowLine:
@@ -4031,8 +4034,8 @@ class _AngularDimension(_DraftObject):
 class _ViewProviderAngularDimension(_ViewProviderDraft):
     """A View Provider for the Draft Angular Dimension object"""
     def __init__(self, obj):
-        obj.addProperty("App::PropertyFloat","ScaleMultiplier","Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
+        obj.addProperty("App::PropertyFloat","ScaleMultiplier",
+                        "Annotation",QT_TRANSLATE_NOOP("App::Property",
                         "Dimension size overall multiplier"))
         obj.addProperty("App::PropertyLength","FontSize",
                         "Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
@@ -4266,7 +4269,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 self.draw_dim_arrows(vobj)
             self.updateData(vobj.Object,"Start")
             vobj.Object.touch()
-        elif prop == "FontSize":
+        elif prop == "FontSize" and hasattr(vobj,"ScaleMultiplier"):
             if hasattr(self,"font"):
                 self.font.size = vobj.FontSize.Value*vobj.ScaleMultiplier
             if hasattr(self,"font3d"):
@@ -4283,7 +4286,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         elif prop == "LineWidth":
             if hasattr(self,"drawstyle"):
                 self.drawstyle.lineWidth = vobj.LineWidth
-        elif prop in ["ArrowSize","ArrowType"]:
+        elif prop in ["ArrowSize","ArrowType"] and hasattr(vobj,"ScaleMultiplier"):
             if hasattr(self,"node") and hasattr(self,"p2"):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
@@ -6384,7 +6387,6 @@ def makeLabel(targetpoint=None,target=None,direction=None,distance=None,labeltyp
         obj.LabelType = labeltype
     if placement:
         obj.Placement = placement
-
     return obj
 
 
@@ -6475,7 +6477,7 @@ class ViewProviderDraftLabel:
 
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
                          "Dimension size overall multiplier"))
         vobj.addProperty("App::PropertyLength","TextSize",
                          "Base",QT_TRANSLATE_NOOP("App::Property",
@@ -6664,7 +6666,7 @@ class ViewProviderDraftLabel:
         elif (prop == "TextFont"):
             if hasattr(vobj,"TextFont"):
                 self.font.name = vobj.TextFont.encode("utf8")
-        elif prop in ["TextSize","TextAlignment"]:
+        elif prop in ["TextSize","TextAlignment"] and hasattr(vobj,"ScaleMultiplier"):
             if hasattr(vobj,"TextSize") and hasattr(vobj,"TextAlignment"):
                 self.update_label(vobj)
         elif prop == "Line":
@@ -6693,7 +6695,7 @@ class ViewProviderDraftLabel:
                         q = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(v1,v3,v2)).Rotation.Q
                         self.arrowpos.rotation.setValue((q[0],q[1],q[2],q[3]))
         elif prop == "ArrowSize":
-            if hasattr(vobj,"ArrowSize"):
+            if hasattr(vobj,"ArrowSize") and hasattr(vobj,"ScaleMultiplier"):
                 s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
                 if s:
                     self.arrowpos.scaleFactor.setValue((s,s,s))
@@ -6756,7 +6758,7 @@ class ViewProviderDraftText:
 
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
                          "Dimension size overall multiplier"))
         vobj.addProperty("App::PropertyLength","FontSize",
                          "Base",QT_TRANSLATE_NOOP("App::Property",
@@ -6844,7 +6846,8 @@ class ViewProviderDraftText:
 
     def onChanged(self,vobj,prop):
         if prop == "ScaleMultiplier":
-            self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
+            if "ScaleMultiplier" in vobj.PropertiesList:
+                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
         elif prop == "TextColor":
             if "TextColor" in vobj.PropertiesList:
                 l = vobj.TextColor
@@ -6853,7 +6856,7 @@ class ViewProviderDraftText:
             if "FontName" in vobj.PropertiesList:
                 self.font.name = vobj.FontName.encode("utf8")
         elif prop  == "FontSize":
-            if "FontSize" in vobj.PropertiesList:
+            if "FontSize" in vobj.PropertiesList and "ScaleMultiplier" in vobj.PropertiesList:
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
         elif prop == "Justification":
             from pivy import coin
