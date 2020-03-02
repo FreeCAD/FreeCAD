@@ -35,7 +35,6 @@ if FreeCAD.GuiUp:
     import FreeCADGui, FreeCAD, Part
     import math
     import pivy.coin as pvy
-    from PySide import QtCore, QtGui
     import DraftTrackers, Draft
 
 # translation-related code
@@ -86,14 +85,13 @@ def cmdCreateImageScaling(name):
         dz=p2[2]-p1[2]
         return math.sqrt(dx*dx+dy*dy+dz*dz)
         
-    sizeX = 300; sizeY = 102
     def centerOnScreen (widg):
         '''centerOnScreen()
         Centers the window on the screen.'''
-        resolution = QtGui.QDesktopWidget().screenGeometry()
-        xp=(resolution.width() / 2) - sizeX/2
-        yp=(resolution.height() / 2) - sizeY/2
-        widg.setGeometry(xp, yp, sizeX, sizeY)
+        resolution = QtGui.QDesktopWidget().screenGeometry() # TODO: fix multi monitor support
+        xp=(resolution.width() / 2) - widg.frameGeometry().width()/2
+        yp=(resolution.height() / 2) - widg.frameGeometry().height()/2
+        widg.move(xp, yp)
     
     class Ui_Dialog(object):
         def setupUi(self, Dialog):
@@ -105,22 +103,33 @@ def cmdCreateImageScaling(name):
             self.dialog=Dialog
             Dialog.setObjectName(_fromUtf8("Dialog"))
             Dialog.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-            Dialog.resize(sizeX, sizeY)
+
+            self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+            self.verticalLayout.setObjectName("verticalLayout")
+            self.horizontalLayout = QtGui.QHBoxLayout()
+            self.horizontalLayout.setObjectName("horizontalLayout")
+
+            self.label = QtGui.QLabel(Dialog)
+            self.label.setObjectName(_fromUtf8("label"))
+            self.horizontalLayout.addWidget(self.label)
+
+            self.lineEdit = QtGui.QLineEdit(Dialog)
+            self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
+            self.horizontalLayout.addWidget(self.lineEdit)
+
+            self.label1 = QtGui.QLabel(Dialog)
+            self.label1.setObjectName(_fromUtf8("label1"))
+
             self.buttonBox = QtGui.QDialogButtonBox(Dialog)
-            self.buttonBox.setGeometry(QtCore.QRect(50, 70, 191, 32))
             self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
             self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
             self.buttonBox.setObjectName(_fromUtf8("buttonBox"))
             self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
-            self.label = QtGui.QLabel(Dialog)
-            self.label.setGeometry(QtCore.QRect(30, 10, 86, 17))
-            self.label.setObjectName(_fromUtf8("label"))
-            self.lineEdit = QtGui.QLineEdit(Dialog)
-            self.lineEdit.setGeometry(QtCore.QRect(140, 10, 153, 29))
-            self.lineEdit.setObjectName(_fromUtf8("lineEdit"))
-            self.label1 = QtGui.QLabel(Dialog)
-            self.label1.setGeometry(QtCore.QRect(20, 45, 260, 17))
-            self.label1.setObjectName(_fromUtf8("label1"))
+
+            self.verticalLayout.addLayout(self.horizontalLayout)
+            self.verticalLayout.addWidget(self.label1)
+            self.verticalLayout.addWidget(self.buttonBox)
+
             self.retranslateUi(Dialog)
             QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("accepted()")), self.accept)
             QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL(_fromUtf8("rejected()")), self.reject)
