@@ -724,9 +724,14 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     Workbench::createLinkMenu(&view);
 
     QMenu contextMenu;
-
     QMenu subMenu;
     QMenu editMenu;
+
+#if QT_VERSION >= 0x050100
+    contextMenu.setToolTipsVisible(true);
+#else
+    contextMenu.installEventFilter(this);
+#endif
     QActionGroup subMenuGroup(&subMenu);
     subMenuGroup.setExclusive(true);
     connect(&subMenuGroup, SIGNAL(triggered(QAction*)),
@@ -1177,8 +1182,26 @@ bool TreeWidget::event(QEvent *e)
     return QTreeWidget::event(e);
 }
 
-bool TreeWidget::eventFilter(QObject *, QEvent *ev) {
+bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
     switch (ev->type()) {
+#if QT_VERSION < 0x050100
+    case QEvent::ToolTip: {
+        auto menu = qobject_cast<QMenu*>(o);
+        if(!menu)
+            break;
+        QHelpEvent* he = static_cast<QHelpEvent*>(ev);
+        QAction* act = menu->actionAt(he->pos());
+        if (act) {
+            QString tooltip = act->toolTip();
+            if (tooltip.size()) {
+                QToolTip::showText(he->globalPos(), act->toolTip(), menu);
+                return false;
+            }
+        }
+        QToolTip::hideText();
+        break;
+    }
+#endif
     case QEvent::KeyPress:
     case QEvent::KeyRelease: {
         QKeyEvent *ke = static_cast<QKeyEvent *>(ev);
