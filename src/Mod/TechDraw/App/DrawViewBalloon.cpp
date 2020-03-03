@@ -64,10 +64,13 @@ using namespace TechDraw;
 //===========================================================================
 // DrawViewBalloon
 //===========================================================================
-//
+// Balloon coordinates are relative to the position of the SourceView
 // X,Y is the center of the balloon bubble
 // OriginX, OriginY is the tip of the arrow
-// these are in ???? coordinates
+// these are in unscaled SourceView coordinates
+// Note that if the SourceView coordinate system changes
+// (ie location changes or additional items added to the View
+// the location of the balloon may also change.
 
 PROPERTY_SOURCE(TechDraw::DrawViewBalloon, TechDraw::DrawView)
 
@@ -108,7 +111,6 @@ const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
 DrawViewBalloon::DrawViewBalloon(void)
 {
     ADD_PROPERTY_TYPE(Text ,     (""),"",App::Prop_None,"The text to be displayed");
-//    ADD_PROPERTY_TYPE(SourceView,(0),"",(App::PropertyType)(App::Prop_None),"Source view for balloon");
     ADD_PROPERTY_TYPE(SourceView,(0),"",(App::PropertyType)(App::Prop_None),"Source view for balloon");
     ADD_PROPERTY_TYPE(OriginX,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin x");
     ADD_PROPERTY_TYPE(OriginY,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin y");
@@ -261,6 +263,14 @@ App::DocumentObjectExecReturn *DrawViewBalloon::execute(void)
     return App::DocumentObject::execute();
 }
 
+void DrawViewBalloon::setOrigin(Base::Vector3d newOrigin)
+{
+    //suspend onChanged/recompute?
+    OriginX.setValue(newOrigin.x);
+    OriginY.setValue(newOrigin.y);
+    origin = QPointF(newOrigin.x, newOrigin.y);
+}
+
 double DrawViewBalloon::prefKinkLength(void) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
@@ -285,6 +295,18 @@ int DrawViewBalloon::prefEnd(void) const
                                          GetGroup("Mod/TechDraw/Decorations");
     int end = hGrp->GetInt("BalloonArrow", 0);
     return end;
+}
+
+Base::Vector3d DrawViewBalloon::getOriginOffset() const
+{
+    double x = X.getValue();
+    double y = Y.getValue();
+    Base::Vector3d pos(x, y, 0.0);
+    double ox = OriginX.getValue();
+    double oy = OriginY.getValue();
+    Base::Vector3d org(ox, oy, 0.0);
+    Base::Vector3d offset = pos - org;
+    return  offset;
 }
 
 /*
