@@ -27,13 +27,17 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM element geometry 1D object
 
+from . import FemConstraint
 
-class _FemElementGeometry1D:
+
+class _FemElementGeometry1D(FemConstraint.Proxy):
     "The FemElementGeometry1D object"
 
+    Type = "Fem::ElementGeometry1D"
     known_beam_types = ["Rectangular", "Circular", "Pipe"]
 
     def __init__(self, obj):
+        super(_FemElementGeometry1D, self).__init__(obj)
         obj.addProperty(
             "App::PropertyLength",
             "RectWidth",
@@ -78,8 +82,3 @@ class _FemElementGeometry1D:
         )
         obj.SectionType = _FemElementGeometry1D.known_beam_types
         obj.SectionType = "Rectangular"
-        obj.Proxy = self
-        self.Type = "Fem::ElementGeometry1D"
-
-    def execute(self, obj):
-        return
