@@ -1896,11 +1896,10 @@ void ViewProviderPartExt::updateVisual()
         FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());
     }
 
-#   ifdef FC_DEBUG
-        // printing some information
-        Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
-        Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
-#   endif
+    // printing some information
+    FC_TRACE("ViewProvider update time: " << Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
+    FC_TRACE("Shape tria info: Faces:" << numFaces << " Edges:" << numEdges 
+             << "Nodes:" << numNodes << " Triangles:" << numTriangles << " IdxVec:" << numLines);
     VisualTouched = false;
 
     // The material has to be checked again (#0001736)
