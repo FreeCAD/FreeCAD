@@ -54,7 +54,11 @@ public:
     /// Face to extrude up to
     App::PropertyLinkSub UpToFace;
 
+    App::PropertyBool AllowMultiFace;
+
     short mustExecute() const;
+
+    void setupObject();
 
     /** calculates and updates the Placement property based on the features
      * this one is made from: either from Base, if there is one, or from sketch,
@@ -98,6 +102,8 @@ public:
     const TopoDS_Face getSupportFace() const;
     
     Base::Vector3d getProfileNormal() const;
+
+    Part::TopoShape getProfileShape() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;    
