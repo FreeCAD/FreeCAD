@@ -56,7 +56,11 @@ public:
     /// Force claim linked profile as children
     App::PropertyBool    ClaimChildren;
 
+    App::PropertyBool AllowMultiFace;
+
     short mustExecute() const;
+
+    void setupObject();
 
     /** calculates and updates the Placement property based on the features
      * this one is made from: either from Base, if there is one, or from sketch,

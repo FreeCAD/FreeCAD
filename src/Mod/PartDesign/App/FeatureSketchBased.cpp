@@ -95,7 +95,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Face where feature will end");
-
+    ADD_PROPERTY_TYPE(AllowMultiFace,(false),"SketchBased", App::Prop_None, "Allow multiple faces in profile");
 }
 
 short ProfileBased::mustExecute() const
@@ -106,6 +106,11 @@ short ProfileBased::mustExecute() const
         UpToFace.isTouched())
         return 1;
     return PartDesign::FeatureAddSub::mustExecute();
+}
+
+void ProfileBased::setupObject()
+{
+    AllowMultiFace.setValue(true);
 }
 
 void ProfileBased::positionByPrevious(void)
@@ -184,13 +189,20 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
         throw Base::ValueError("No profile linked");
     }
     try {
-        std::string sub;
-        if(!obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-            const auto &subs = Profile.getSubValues(true);
-            if(!subs.empty())
-                sub = subs[0];
+        TopoShape shape;
+        if(AllowMultiFace.getValue()) {
+            shape = getProfileShape();
+        } else {
+            std::string sub;
+            if(!obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+                const auto &subs = Profile.getSubValues(true);
+                if(!subs.empty())
+                    sub = subs[0];
+            }
+            shape = Part::Feature::getTopoShape(obj,sub.c_str(),!sub.empty());
         }
-        auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),!sub.empty());
+        if(shape.isNull())
+            throw Base::CADKernelError("Linked shape object is empty");
         if(!shape.hasSubShape(TopAbs_FACE)) {
             if(!shape.hasSubShape(TopAbs_WIRE))
                 shape = shape.makEWires();
@@ -206,7 +218,7 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
             throw Base::CADKernelError("Cannot make face from profile");
         }
         if(count>1) {
-            if(allowMultiSolid())
+            if(AllowMultiFace.getValue() || allowMultiSolid())
                 return shape;
             FC_WARN("Found more than one face from profile");
         }
@@ -222,9 +234,35 @@ TopoDS_Shape ProfileBased::getVerifiedFaceOld(bool silent) const {
 
     App::DocumentObject* result = Profile.getValue();
     const char* err = nullptr;
+    std::string _err;
 
     if (!result) {
         err = "No profile linked";
+    } else if (AllowMultiFace.getValue()) {
+        try {
+            auto shape = getProfileShape();
+            if(shape.isNull())
+                err = "Linked shape object is empty";
+            else {
+                auto faces = shape.getSubTopoShapes(TopAbs_FACE);
+                if(faces.empty()) {
+                    if(!shape.hasSubShape(TopAbs_WIRE))
+                        shape = shape.makEWires();
+                    if(shape.hasSubShape(TopAbs_WIRE)) 
+                        shape = shape.makEFace(0,"Part::FaceMakerCheese");
+                    else
+                        err = "Cannot make face from profile";
+                } else if (faces.size() == 1)
+                    shape = faces.front();
+                else
+                    shape = TopoShape().makECompound(faces);
+            }
+            if(!err)
+                return shape.getShape();
+        }catch (Standard_Failure &e) {
+            _err = e.GetMessageString();
+            err = _err.c_str();
+        }
     } else {
         if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
 
