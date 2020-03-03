@@ -121,6 +121,8 @@ private:
     bool binding;
     bool checkDocument;
 
+    int transactionID = 0;
+
     QColor groupColor;
     QBrush background;
 

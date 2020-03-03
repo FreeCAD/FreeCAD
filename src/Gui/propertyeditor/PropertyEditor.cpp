@@ -230,7 +230,7 @@ void PropertyEditor::setupTransaction(const QModelIndex &index) {
     str << prop->getName();
     if(items.size()>1)
         str << "...";
-    app.setActiveTransaction(str.str().c_str());
+    transactionID = app.setActiveTransaction(str.str().c_str());
     FC_LOG("editor transaction " << app.getActiveTransaction());
 }
 
@@ -254,8 +254,11 @@ void PropertyEditor::closeTransaction()
                     doc->recompute();
             }
         }
-        App::GetApplication().closeActiveTransaction();
     }
+
+    int tid = 0;
+    if(App::GetApplication().getActiveTransaction(&tid) && tid == transactionID)
+        App::GetApplication().closeActiveTransaction();
 }
 
 void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
@@ -332,8 +335,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList &&props, bool _checkDoc
         return;
     }
 
-    if(this->state() == EditingState)
-        closeTransaction();
+    closeTransaction();
 
     QModelIndex index = this->currentIndex();
     QStringList propertyPath = propertyModel->propertyPathFromIndex(index);
