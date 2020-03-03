@@ -718,7 +718,7 @@ DocumentObject *LinkBaseExtension::getTrueLinkedObject(
     if(!ret) return 0;
     bool transform = linkTransform();
     const char *subname = getSubName();
-    if(subname) {
+    if(subname || (mat && transform)) {
         ret = ret->getSubObject(subname,0,mat,transform,depth+1);
         transform = false;
     }
