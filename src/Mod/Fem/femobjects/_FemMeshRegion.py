@@ -27,10 +27,16 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshRegion
 
+from . import FemConstraint
 
-class _FemMeshRegion:
+
+class _FemMeshRegion(FemConstraint.Proxy):
     "The FemMeshRegion object"
+
+    Type = "Fem::FemMeshRegion"
+
     def __init__(self, obj):
+        super(_FemMeshRegion, self).__init__(obj)
         obj.addProperty(
             "App::PropertyLength",
             "CharacteristicLength",
@@ -43,8 +49,3 @@ class _FemMeshRegion:
             "MeshRegionShapes",
             "List of FEM mesh region shapes"
         )
-        obj.Proxy = self
-        self.Type = "Fem::FemMeshRegion"
-
-    def execute(self, obj):
-        return
