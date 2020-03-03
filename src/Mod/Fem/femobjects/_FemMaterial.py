@@ -27,10 +27,16 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FEM material
 
+from . import FemConstraint
 
-class _FemMaterial:
+
+class _FemMaterial(FemConstraint.Proxy):
     "The FEM Material object"
+
+    Type = "Fem::Material"
+
     def __init__(self, obj):
+        super(_FemMaterial, self).__init__(obj)
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",
@@ -44,8 +50,3 @@ class _FemMaterial:
             "Material type: fluid or solid"
         )
         obj.Category = ["Solid", "Fluid"]  # used in TaskPanel
-        obj.Proxy = self
-        self.Type = "Fem::Material"
-
-    def execute(self, obj):
-        return
