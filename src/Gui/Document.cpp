@@ -1381,6 +1381,21 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
 {
     if (d->_pcDocument != &doc)
         return;
+
+    // Refresh ViewProviderDocumentObject isShowable status. Since it is
+    // calculated based on parent status, so must call it reverse dependency
+    // order.
+    const auto &objs = doc.getObjects();
+    auto sorted = doc.getDependencyList(objs,App::Document::DepSort);
+    for (auto rit=sorted.rbegin(); rit!=sorted.rend(); ++rit) {
+        auto obj = *rit;
+        if(obj->getDocument() != &doc)
+            continue;
+        auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(getViewProvider(*rit));
+        if(vpd)
+            vpd->isShowable(true);
+    }
+
     d->connectActObjectBlocker.unblock();
     App::DocumentObject* act = doc.getActiveObject();
     if (act) {

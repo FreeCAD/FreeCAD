@@ -889,7 +889,7 @@ SoGroup *ViewProviderDocumentObject::getChildrenGroup() const {
 }
 
 bool ViewProviderDocumentObject::isShowable(bool refresh) {
-    if(!refresh)
+    if(!refresh || isRestoring())
         return _Showable;
 
     auto obj = getObject();
