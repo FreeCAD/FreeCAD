@@ -27,11 +27,16 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM element rotation 1D object
 
+from . import FemConstraint
 
-class _FemElementRotation1D:
+
+class _FemElementRotation1D(FemConstraint.Proxy):
     "The FemElementRotation1D object"
 
+    Type = "Fem::ElementRotation1D"
+
     def __init__(self, obj):
+        super(_FemElementRotation1D, self).__init__(obj)
         obj.addProperty(
             "App::PropertyAngle",
             "Rotation",
@@ -44,8 +49,3 @@ class _FemElementRotation1D:
             "BeamRotation",
             "List of beam rotation shapes"
         )
-        obj.Proxy = self
-        self.Type = "Fem::ElementRotation1D"
-
-    def execute(self, obj):
-        return
