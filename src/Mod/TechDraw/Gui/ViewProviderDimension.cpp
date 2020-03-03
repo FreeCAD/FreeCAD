@@ -221,3 +221,11 @@ void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, c
         LineWidth.setValue(LineWidthProperty.getValue());
     }
 }
+
+bool ViewProviderDimension::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of dimension objects don't destroy anything
+    // thus we can pass this action
+    Q_UNUSED(obj)
+    return true;
+}

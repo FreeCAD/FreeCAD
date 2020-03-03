@@ -60,6 +60,7 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
+    virtual bool canDelete(App::DocumentObject* obj) const;
 
     virtual TechDraw::DrawViewBalloon* getViewObject() const;
 
