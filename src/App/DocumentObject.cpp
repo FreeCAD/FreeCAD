@@ -1027,7 +1027,15 @@ int DocumentObject::isElementVisibleEx(const char *subname, int reason) const {
     auto sobj = getSubObject(sub.c_str());
     if(!sobj || !sobj->getNameInDocument())
         return -1;
-    return sobj->isElementVisibleEx(dot+1,reason);
+    ++dot;
+    res = sobj->isElementVisibleEx(dot,reason);
+    if(res >= 0)
+        return res;
+    subname = dot;
+    dot = strchr(subname, '.');
+    if(!dot || Data::ComplexGeoData::isMappedElement(subname))
+        res = isElementVisible(sobj->getNameInDocument());
+    return res;
 }
 
 bool DocumentObject::hasChildElement() const {
