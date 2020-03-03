@@ -64,6 +64,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
                  << "Reen_ViewTriangulation";
     *reen << reconstruct;
 
+    Gui::MenuItem *segm = new Gui::MenuItem();
+    segm->setCommand("Segmentation");
+    *segm << "Mesh_RemeshGmsh"
+          << "Mesh_VertexCurvature"
+          << "Mesh_CurvatureInfo"
+          << "Separator"
+          << "Reen_Segmentation"
+          << "Reen_MeshBoundary";
+    *reen << segm;
+
     return root;
 }
 

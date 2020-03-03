@@ -25,6 +25,9 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QMessageBox>
+# include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_MakePolygon.hxx>
+# include <TopoDS_Compound.hxx>
 #endif
 
 #include <sstream>
@@ -34,7 +37,9 @@
 #include <Mod/Points/App/Structured.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
+#include <Mod/Mesh/App/Core/Algorithm.h>
 
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -47,6 +52,7 @@
 #include "../App/ApproxSurface.h"
 #include "FitBSplineSurface.h"
 #include "Poisson.h"
+#include "Segmentation.h"
 
 using namespace std;
 
@@ -186,6 +192,89 @@ bool CmdApproxPlane::isActive(void)
     return false;
 }
 
+DEF_STD_CMD_A(CmdSegmentation)
+
+CmdSegmentation::CmdSegmentation()
+  : Command("Reen_Segmentation")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("Create mesh segments...");
+    sToolTipText    = QT_TR_NOOP("Create mesh segments");
+    sWhatsThis      = "Reen_Segmentation";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdSegmentation::activated(int)
+{
+    std::vector<Mesh::Feature*> objs = Gui::Selection().getObjectsOfType<Mesh::Feature>();
+    Mesh::Feature* mesh = static_cast<Mesh::Feature*>(objs.front());
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        dlg = new ReverseEngineeringGui::TaskSegmentation(mesh);
+    }
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdSegmentation::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+    return Gui::Selection().countObjectsOfType
+        (Mesh::Feature::getClassTypeId()) == 1;
+}
+
+DEF_STD_CMD_A(CmdMeshBoundary)
+
+CmdMeshBoundary::CmdMeshBoundary()
+  : Command("Reen_MeshBoundary")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("Wire from mesh...");
+    sToolTipText    = QT_TR_NOOP("Create wire from mesh");
+    sWhatsThis      = "Reen_Segmentation";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdMeshBoundary::activated(int)
+{
+    std::vector<Mesh::Feature*> objs = Gui::Selection().getObjectsOfType<Mesh::Feature>();
+    App::Document* document = App::GetApplication().getActiveDocument();
+    document->openTransaction("Wire from mesh");
+    for (auto it : objs) {
+        const Mesh::MeshObject& mesh = it->Mesh.getValue();
+        std::list<std::vector<Base::Vector3f> > bounds;
+        MeshCore::MeshAlgorithm algo(mesh.getKernel());
+        algo.GetMeshBorders(bounds);
+
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+
+        for (auto bt = bounds.begin(); bt != bounds.end(); ++bt) {
+            BRepBuilderAPI_MakePolygon mkPoly;
+            for (std::vector<Base::Vector3f>::reverse_iterator it = bt->rbegin(); it != bt->rend(); ++it) {
+                mkPoly.Add(gp_Pnt(it->x,it->y,it->z));
+            }
+            if (mkPoly.IsDone()) {
+                builder.Add(compound, mkPoly.Wire());
+            }
+        }
+
+        Part::Feature* shapeFea = static_cast<Part::Feature*>(document->addObject("Part::Feature", "Wires from mesh"));
+        shapeFea->Shape.setValue(compound);
+
+    }
+    document->commitTransaction();
+}
+
+bool CmdMeshBoundary::isActive(void)
+{
+    return Gui::Selection().countObjectsOfType
+        (Mesh::Feature::getClassTypeId()) > 0;
+}
+
 DEF_STD_CMD_A(CmdPoissonReconstruction)
 
 CmdPoissonReconstruction::CmdPoissonReconstruction()
@@ -277,6 +366,8 @@ void CreateReverseEngineeringCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdApproxSurface());
     rcCmdMgr.addCommand(new CmdApproxPlane());
+    rcCmdMgr.addCommand(new CmdSegmentation());
+    rcCmdMgr.addCommand(new CmdMeshBoundary());
     rcCmdMgr.addCommand(new CmdPoissonReconstruction());
     rcCmdMgr.addCommand(new CmdViewTriangulation());
 }
