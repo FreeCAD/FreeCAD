@@ -27,10 +27,16 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshGroup
 
+from . import FemConstraint
 
-class _FemMeshGroup:
+
+class _FemMeshGroup(FemConstraint.Proxy):
     "The FemMeshGroup object"
+
+    Type = "Fem::FemMeshGroup"
+
     def __init__(self, obj):
+        super(_FemMeshGroup, self).__init__(obj)
         obj.addProperty(
             "App::PropertyBool",
             "UseLabel",
@@ -43,8 +49,3 @@ class _FemMeshGroup:
             "MeshGroupShapes",
             "List of FEM mesh group shapes"
         )
-        obj.Proxy = self
-        self.Type = "Fem::FemMeshGroup"
-
-    def execute(self, obj):
-        return
