@@ -34,6 +34,7 @@ that is, previews, of the real objects that will be created on the 3D view.
 
 import math
 from pivy import coin
+import re
 
 import FreeCAD
 import FreeCADGui
@@ -76,12 +77,16 @@ class Tracker:
         ToDo.delay(self._insertSwitch, self.switch)
 
     def finalize(self):
+        """Finish the command by removing the switch."""
         ToDo.delay(self._removeSwitch, self.switch)
         self.switch = None
 
     def _insertSwitch(self, switch):
-        '''insert self.switch into the scene graph.  Must not be called
-        from an event handler (or other scene graph traversal).'''
+        """Insert self.switch into the scene graph.
+
+        Must not be called
+        from an event handler (or other scene graph traversal).
+        """
         sg = Draft.get3DView().getSceneGraph()
         if self.ontop:
             sg.insertChild(switch, 0)
@@ -89,31 +94,40 @@ class Tracker:
             sg.addChild(switch)
 
     def _removeSwitch(self, switch):
-        '''remove self.switch from the scene graph.  As with _insertSwitch,
-        must not be called during scene graph traversal).'''
+        """Remove self.switch from the scene graph.
+
+        As with _insertSwitch,
+        must not be called during scene graph traversal).
+        """
         sg = Draft.get3DView().getSceneGraph()
         if sg.findChild(switch) >= 0:
             sg.removeChild(switch)
 
     def on(self):
+        """Set the visibility to True."""
         self.switch.whichChild = 0
         self.Visible = True
 
     def off(self):
+        """Set the visibility to False."""
         self.switch.whichChild = -1
         self.Visible = False
 
     def lowerTracker(self):
-        '''lowers the tracker to the bottom of the scenegraph, so
-        it doesn't obscure the other objects'''
+        """Lower the tracker to the bottom of the scenegraph.
+
+        So it doesn't obscure the other objects.
+        """
         if self.switch:
             sg = Draft.get3DView().getSceneGraph()
             sg.removeChild(self.switch)
             sg.addChild(self.switch)
 
     def raiseTracker(self):
-        '''raises the tracker to the top of the scenegraph, so
-        it obscures the other objects'''
+        """Raise the tracker to the top of the scenegraph.
+
+        So it obscures the other objects.
+        """
         if self.switch:
             sg = Draft.get3DView().getSceneGraph()
             sg.removeChild(self.switch)
@@ -126,100 +140,120 @@ class snapTracker(Tracker):
     def __init__(self):
         color = coin.SoBaseColor()
         color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
-        self.marker = coin.SoMarkerSet() # this is the marker symbol
+        self.marker = coin.SoMarkerSet()  # this is the marker symbol
         self.marker.markerIndex = FreeCADGui.getMarkerIndex("", 9)
-        self.coords = coin.SoCoordinate3() # this is the coordinate
-        self.coords.point.setValue((0,0,0))
+        self.coords = coin.SoCoordinate3()  # this is the coordinate
+        self.coords.point.setValue((0, 0, 0))
         node = coin.SoAnnotation()
         node.addChild(self.coords)
         node.addChild(color)
         node.addChild(self.marker)
-        Tracker.__init__(self,children=[node],name="snapTracker")
+        Tracker.__init__(self, children=[node], name="snapTracker")
 
-    def setMarker(self,style):
+    def setMarker(self, style):
+        """Set the marker index."""
         self.marker.markerIndex = FreeCADGui.getMarkerIndex(style, 9)
 
-    def setCoords(self,point):
-        self.coords.point.setValue((point.x,point.y,point.z))
-        
-    def addCoords(self,point):
+    def setCoords(self, point):
+        """Set the coordinates to the point."""
+        self.coords.point.setValue((point.x, point.y, point.z))
+
+    def addCoords(self, point):
+        """Add the point to the current point."""
         l = self.coords.point.getValues()
-        l.append(coin.SbVec3f(point.x,point.y,point.z))
+        l.append(coin.SbVec3f(point.x, point.y, point.z))
         self.coords.point.setValues(l)
-        
+
     def clear(self):
+        """Delete the values of the point."""
         self.coords.point.deleteValues(0)
-        
+
 
 class lineTracker(Tracker):
     """A Line tracker, used by the tools that need to draw temporary lines"""
-    def __init__(self,dotted=False,scolor=None,swidth=None,ontop=False):
+
+    def __init__(self, dotted=False, scolor=None, swidth=None, ontop=False):
         line = coin.SoLineSet()
         line.numVertices.setValue(2)
-        self.coords = coin.SoCoordinate3() # this is the coordinate
-        self.coords.point.setValues(0,2,[[0,0,0],[1,0,0]])
-        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line],ontop,name="lineTracker")
+        self.coords = coin.SoCoordinate3()  # this is the coordinate
+        self.coords.point.setValues(0, 2, [[0, 0, 0], [1, 0, 0]])
+        Tracker.__init__(self, dotted, scolor, swidth,
+                         [self.coords, line],
+                         ontop, name="lineTracker")
 
-    def p1(self,point=None):
-        """sets or gets the first point of the line"""
+    def p1(self, point=None):
+        """Set or get the first point of the line."""
         if point:
             if self.coords.point.getValues()[0].getValue() != tuple(point):
-                self.coords.point.set1Value(0,point.x,point.y,point.z)
+                self.coords.point.set1Value(0, point.x, point.y, point.z)
         else:
             return Vector(self.coords.point.getValues()[0].getValue())
 
-    def p2(self,point=None):
-        """sets or gets the second point of the line"""
+    def p2(self, point=None):
+        """Set or get the second point of the line."""
         if point:
             if self.coords.point.getValues()[-1].getValue() != tuple(point):
-                self.coords.point.set1Value(1,point.x,point.y,point.z)
+                self.coords.point.set1Value(1, point.x, point.y, point.z)
         else:
             return Vector(self.coords.point.getValues()[-1].getValue())
-                        
+
     def getLength(self):
-        """returns the length of the line"""
+        """Return the length of the line."""
         p1 = Vector(self.coords.point.getValues()[0].getValue())
         p2 = Vector(self.coords.point.getValues()[-1].getValue())
         return (p2.sub(p1)).Length
 
+
 class rectangleTracker(Tracker):
-    """A Rectangle tracker, used by the rectangle tool"""
-    def __init__(self,dotted=False,scolor=None,swidth=None,face=False):
-        self.origin = Vector(0,0,0)
+    """A Rectangle tracker, used by the rectangle tool."""
+
+    def __init__(self, dotted=False, scolor=None, swidth=None, face=False):
+        self.origin = Vector(0, 0, 0)
         line = coin.SoLineSet()
         line.numVertices.setValue(5)
-        self.coords = coin.SoCoordinate3() # this is the coordinate
-        self.coords.point.setValues(0,50,[[0,0,0],[2,0,0],[2,2,0],[0,2,0],[0,0,0]])
+        self.coords = coin.SoCoordinate3()  # this is the coordinate
+        self.coords.point.setValues(0, 50, [[0, 0, 0],
+                                            [2, 0, 0],
+                                            [2, 2, 0],
+                                            [0, 2, 0],
+                                            [0, 0, 0]])
         if face:
             m1 = coin.SoMaterial()
             m1.transparency.setValue(0.5)
-            m1.diffuseColor.setValue([0.5,0.5,1.0])
+            m1.diffuseColor.setValue([0.5, 0.5, 1.0])
             f = coin.SoIndexedFaceSet()
-            f.coordIndex.setValues([0,1,2,3])
-            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line,m1,f],name="rectangleTracker")
+            f.coordIndex.setValues([0, 1, 2, 3])
+            Tracker.__init__(self, dotted, scolor, swidth,
+                             [self.coords, line, m1, f],
+                             name="rectangleTracker")
         else:
-            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line],name="rectangleTracker")
+            Tracker.__init__(self, dotted, scolor, swidth,
+                             [self.coords, line],
+                             name="rectangleTracker")
         self.u = FreeCAD.DraftWorkingPlane.u
         self.v = FreeCAD.DraftWorkingPlane.v
 
-    def setorigin(self,point):
-        """sets the base point of the rectangle"""
-        self.coords.point.set1Value(0,point.x,point.y,point.z)
-        self.coords.point.set1Value(4,point.x,point.y,point.z)
+    def setorigin(self, point):
+        """Set the base point of the rectangle."""
+        self.coords.point.set1Value(0, point.x, point.y, point.z)
+        self.coords.point.set1Value(4, point.x, point.y, point.z)
         self.origin = point
 
-    def update(self,point):
-        """sets the opposite (diagonal) point of the rectangle"""
+    def update(self, point):
+        """Set the opposite (diagonal) point of the rectangle."""
         diagonal = point.sub(self.origin)
-        inpoint1 = self.origin.add(DraftVecUtils.project(diagonal,self.v))
-        inpoint2 = self.origin.add(DraftVecUtils.project(diagonal,self.u))
-        self.coords.point.set1Value(1,inpoint1.x,inpoint1.y,inpoint1.z)
-        self.coords.point.set1Value(2,point.x,point.y,point.z)
-        self.coords.point.set1Value(3,inpoint2.x,inpoint2.y,inpoint2.z)
+        inpoint1 = self.origin.add(DraftVecUtils.project(diagonal, self.v))
+        inpoint2 = self.origin.add(DraftVecUtils.project(diagonal, self.u))
+        self.coords.point.set1Value(1, inpoint1.x, inpoint1.y, inpoint1.z)
+        self.coords.point.set1Value(2, point.x, point.y, point.z)
+        self.coords.point.set1Value(3, inpoint2.x, inpoint2.y, inpoint2.z)
 
-    def setPlane(self,u,v=None):
-        '''sets given (u,v) vectors as working plane. You can give only u
-        and v will be deduced automatically given current workplane'''
+    def setPlane(self, u, v=None):
+        """Set given (u,v) vectors as working plane.
+
+        You can give only `u` and `v` will be deduced automatically
+        given the current working plane.
+        """
         self.u = u
         if v:
             self.v = v
@@ -227,64 +261,73 @@ class rectangleTracker(Tracker):
             norm = FreeCAD.DraftWorkingPlane.u.cross(FreeCAD.DraftWorkingPlane.v)
             self.v = self.u.cross(norm)
 
-    def p1(self,point=None):
-        """sets or gets the base point of the rectangle"""
+    def p1(self, point=None):
+        """Set or get the base point of the rectangle."""
         if point:
             self.setorigin(point)
         else:
             return Vector(self.coords.point.getValues()[0].getValue())
 
     def p2(self):
-        """gets the second point (on u axis) of the rectangle"""
+        """Get the second point (on u axis) of the rectangle."""
         return Vector(self.coords.point.getValues()[3].getValue())
 
-    def p3(self,point=None):
-        """sets or gets the opposite (diagonal) point of the rectangle"""
+    def p3(self, point=None):
+        """Set or get the opposite (diagonal) point of the rectangle."""
         if point:
             self.update(point)
         else:
             return Vector(self.coords.point.getValues()[2].getValue())
 
     def p4(self):
-        """gets the fourth point (on v axis) of the rectangle"""
+        """Get the fourth point (on v axis) of the rectangle."""
         return Vector(self.coords.point.getValues()[1].getValue())
-                
+
     def getSize(self):
-        """returns (length,width) of the rectangle"""
+        """Return (length, width) of the rectangle."""
         p1 = Vector(self.coords.point.getValues()[0].getValue())
         p2 = Vector(self.coords.point.getValues()[2].getValue())
         diag = p2.sub(p1)
-        return ((DraftVecUtils.project(diag,self.u)).Length,(DraftVecUtils.project(diag,self.v)).Length)
+        return ((DraftVecUtils.project(diag, self.u)).Length,
+                (DraftVecUtils.project(diag, self.v)).Length)
 
     def getNormal(self):
-        """returns the normal of the rectangle"""
+        """Return the normal of the rectangle."""
         return (self.u.cross(self.v)).normalize()
-        
-    def isInside(self,point):
-        """returns True if the given point is inside the rectangle"""
+
+    def isInside(self, point):
+        """Return True if the given point is inside the rectangle."""
         vp = point.sub(self.p1())
         uv = self.p2().sub(self.p1())
         vv = self.p4().sub(self.p1())
-        uvp = DraftVecUtils.project(vp,uv)
-        vvp = DraftVecUtils.project(vp,vv)
+        uvp = DraftVecUtils.project(vp, uv)
+        vvp = DraftVecUtils.project(vp, vv)
         if uvp.getAngle(uv) < 1:
             if vvp.getAngle(vv) < 1:
                 if uvp.Length <= uv.Length:
                     if vvp.Length <= vv.Length:
                         return True
         return False
-                
+
+
 class dimTracker(Tracker):
-    """A Dimension tracker, used by the dimension tool"""
-    def __init__(self,dotted=False,scolor=None,swidth=None):
+    """A Dimension tracker, used by the dimension tool."""
+
+    def __init__(self, dotted=False, scolor=None, swidth=None):
         line = coin.SoLineSet()
         line.numVertices.setValue(4)
-        self.coords = coin.SoCoordinate3() # this is the coordinate
-        self.coords.point.setValues(0,4,[[0,0,0],[0,0,0],[0,0,0],[0,0,0]])
-        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line],name="dimTracker")
+        self.coords = coin.SoCoordinate3()  # this is the coordinate
+        self.coords.point.setValues(0, 4,
+                                    [[0, 0, 0],
+                                     [0, 0, 0],
+                                     [0, 0, 0],
+                                     [0, 0, 0]])
+        Tracker.__init__(self, dotted, scolor, swidth,
+                         [self.coords, line], name="dimTracker")
         self.p1 = self.p2 = self.p3 = None
 
-    def update(self,pts):
+    def update(self, pts):
+        """Update the points and calculate."""
         if not pts:
             return
         elif len(pts) == 1:
@@ -295,50 +338,62 @@ class dimTracker(Tracker):
             if len(pts) > 2:
                 self.p3 = pts[2]
         self.calc()
-        
+
     def calc(self):
+        """Calculate the new points from p1 and p2."""
         import Part
-        if (self.p1 != None) and (self.p2 != None):
-            points = [DraftVecUtils.tup(self.p1,True),DraftVecUtils.tup(self.p2,True),\
-                          DraftVecUtils.tup(self.p1,True),DraftVecUtils.tup(self.p2,True)]
-            if self.p3 != None:
+        if (self.p1 is not None) and (self.p2 is not None):
+            points = [DraftVecUtils.tup(self.p1, True),
+                      DraftVecUtils.tup(self.p2, True),
+                      DraftVecUtils.tup(self.p1, True),
+                      DraftVecUtils.tup(self.p2, True)]
+            if self.p3 is not None:
                 p1 = self.p1
                 p4 = self.p2
-                if DraftVecUtils.equals(p1,p4):
+                if DraftVecUtils.equals(p1, p4):
                     proj = None
                 else:
-                    base = Part.LineSegment(p1,p4).toShape()
-                    proj = DraftGeomUtils.findDistance(self.p3,base)
+                    base = Part.LineSegment(p1, p4).toShape()
+                    proj = DraftGeomUtils.findDistance(self.p3, base)
                 if not proj:
                     p2 = p1
                     p3 = p4
                 else:
                     p2 = p1.add(proj.negative())
                     p3 = p4.add(proj.negative())
-                points = [DraftVecUtils.tup(p1),DraftVecUtils.tup(p2),DraftVecUtils.tup(p3),DraftVecUtils.tup(p4)]
-            self.coords.point.setValues(0,4,points)
+                points = [DraftVecUtils.tup(p1),
+                          DraftVecUtils.tup(p2),
+                          DraftVecUtils.tup(p3),
+                          DraftVecUtils.tup(p4)]
+            self.coords.point.setValues(0, 4, points)
+
 
 class bsplineTracker(Tracker):
-    """A bspline tracker"""
-    def __init__(self,dotted=False,scolor=None,swidth=None,points = []):
+    """A bspline tracker."""
+
+    def __init__(self, dotted=False, scolor=None, swidth=None, points=[]):
         self.bspline = None
         self.points = points
         self.trans = coin.SoTransform()
         self.sep = coin.SoSeparator()
         self.recompute()
-        Tracker.__init__(self,dotted,scolor,swidth,[self.trans,self.sep],name="bsplineTracker")
-        
+        Tracker.__init__(self, dotted, scolor, swidth,
+                         [self.trans, self.sep], name="bsplineTracker")
+
     def update(self, points):
+        """Update the points and recompute."""
         self.points = points
         self.recompute()
-            
+
     def recompute(self):
-        if (len(self.points) >= 2):
-            if self.bspline: self.sep.removeChild(self.bspline)
+        """Recompute the tracker."""
+        if len(self.points) >= 2:
+            if self.bspline:
+                self.sep.removeChild(self.bspline)
             self.bspline = None
             c =  Part.BSplineCurve()
             # DNC: allows to close the curve by placing ends close to each other
-            if ( len(self.points) >= 3 ) and ( (self.points[0] - self.points[-1]).Length < Draft.tolerance() ):
+            if len(self.points) >= 3 and ( (self.points[0] - self.points[-1]).Length < Draft.tolerance() ):
                 # YVH: Added a try to bypass some hazardous situations
                 try:
                     c.interpolate(self.points[:-1], True)
@@ -350,26 +405,25 @@ class bsplineTracker(Tracker):
                 except Part.OCCError:
                     pass
             c = c.toShape()
-            buf=c.writeInventor(2,0.01)
-            #fp=open("spline.iv","w")
-            #fp.write(buf)
-            #fp.close()
+            buf = c.writeInventor(2, 0.01)
+            # fp = open("spline.iv", "w")
+            # fp.write(buf)
+            # fp.close()
             try:
                 ivin = coin.SoInput()
                 ivin.setBuffer(buf)
                 ivob = coin.SoDB.readAll(ivin)
-            except:
+            except Exception:
                 # workaround for pivy SoInput.setBuffer() bug
-                import re
-                buf = buf.replace("\n","")
-                pts = re.findall("point \[(.*?)\]",buf)[0]
+                buf = buf.replace("\n", "")
+                pts = re.findall("point \[(.*?)\]", buf)[0]
                 pts = pts.split(",")
                 pc = []
                 for p in pts:
                     v = p.strip().split()
-                    pc.append([float(v[0]),float(v[1]),float(v[2])])
+                    pc.append([float(v[0]), float(v[1]), float(v[2])])
                 coords = coin.SoCoordinate3()
-                coords.point.setValues(0,len(pc),pc)
+                coords.point.setValues(0, len(pc), pc)
                 line = coin.SoLineSet()
                 line.numVertices.setValue(-1)
                 self.bspline = coin.SoSeparator()
@@ -384,73 +438,70 @@ class bsplineTracker(Tracker):
                     self.sep.addChild(self.bspline)
                 else:
                     FreeCAD.Console.PrintWarning("bsplineTracker.recompute() failed to read-in Inventor string\n")
-#######################################
+
+
 class bezcurveTracker(Tracker):
-    """A bezcurve tracker"""
-    def __init__(self,dotted=False,scolor=None,swidth=None,points = []):
+    """A bezcurve tracker."""
+
+    def __init__(self, dotted=False, scolor=None, swidth=None, points=[]):
         self.bezcurve = None
         self.points = points
         self.degree = None
         self.trans = coin.SoTransform()
         self.sep = coin.SoSeparator()
         self.recompute()
-        Tracker.__init__(self,dotted,scolor,swidth,[self.trans,self.sep],name="bezcurveTracker")
-        
+        Tracker.__init__(self, dotted, scolor, swidth,
+                         [self.trans, self.sep], name="bezcurveTracker")
+
     def update(self, points, degree=None):
+        """Update the points and recompute."""
         self.points = points
         if degree:
             self.degree = degree
         self.recompute()
-            
+
     def recompute(self):
-        
+        """Recompute the tracker."""
         if self.bezcurve:
             for seg in self.bezcurve:
                 self.sep.removeChild(seg)
                 seg = None
-        
+
         self.bezcurve = []
-        
+
         if (len(self.points) >= 2):
-
             if self.degree:
-          
-                poles=self.points[1:]
-
+                poles = self.points[1:]
                 segpoleslst = [poles[x:x+self.degree] for x in range(0, len(poles), (self.degree or 1))]
             else:
                 segpoleslst = [self.points]
-            
-            startpoint=self.points[0]
+            startpoint = self.points[0]
 
-                
             for segpoles in segpoleslst:
-                c = Part.BezierCurve() #last segment may have lower degree
+                c = Part.BezierCurve()  # last segment may have lower degree
                 c.increase(len(segpoles))
-                c.setPoles([startpoint]+segpoles)
+                c.setPoles([startpoint] + segpoles)
                 c = c.toShape()
                 startpoint = segpoles[-1]
-            
-                buf=c.writeInventor(2,0.01)
-            #fp=open("spline.iv","w")
-            #fp.write(buf)
-            #fp.close()
+                buf = c.writeInventor(2, 0.01)
+            # fp=open("spline.iv", "w")
+            # fp.write(buf)
+            # fp.close()
                 try:
                     ivin = coin.SoInput()
                     ivin.setBuffer(buf)
                     ivob = coin.SoDB.readAll(ivin)
-                except:
+                except Exception:
                     # workaround for pivy SoInput.setBuffer() bug
-                    import re
                     buf = buf.replace("\n","")
-                    pts = re.findall("point \[(.*?)\]",buf)[0]
+                    pts = re.findall("point \[(.*?)\]", buf)[0]
                     pts = pts.split(",")
                     pc = []
                     for p in pts:
                         v = p.strip().split()
-                        pc.append([float(v[0]),float(v[1]),float(v[2])])
+                        pc.append([float(v[0]), float(v[1]), float(v[2])])
                     coords = coin.SoCoordinate3()
-                    coords.point.setValues(0,len(pc),pc)
+                    coords.point.setValues(0, len(pc), pc)
                     line = coin.SoLineSet()
                     line.numVertices.setValue(-1)
                     bezcurveseg = coin.SoSeparator()
