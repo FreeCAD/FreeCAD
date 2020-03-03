@@ -27,18 +27,20 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM constraint tie object
 
+from . import FemConstraint
 
-class _FemConstraintTie:
+
+class _FemConstraintTie(FemConstraint.Proxy):
     "The FemConstraintTie object"
+
+    Type = "Fem::ConstraintTie"
+
     def __init__(self, obj):
+        super(_FemConstraintTie, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyLength",
             "Tolerance",
             "Geometry",
             "set max gap between tied faces"
         )
-        obj.Proxy = self
-        self.Type = "Fem::ConstraintTie"
-
-    def execute(self, obj):
-        return
