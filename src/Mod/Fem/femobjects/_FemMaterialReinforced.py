@@ -27,32 +27,39 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMaterialReinforced
 
+from . import FemConstraint
 
-class _FemMaterialReinforced:
-    "The FemMaterialReinforced object"
+
+class _FemMaterialReinforced(FemConstraint.Proxy):
+    """
+    The FemMaterialReinforced object
+    """
+
+    Type = "Fem::MaterialReinforced"
+
     def __init__(self, obj):
+        super(_FemMaterialReinforced, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",
             "Material",
             "List of material shapes"
         )
+
         obj.addProperty(
             "App::PropertyMap",
             "Reinforcement",
             "Composites",
             "Reinforcement material properties"
         )
+
         obj.addProperty(
             "App::PropertyEnumeration",
             "Category",
             "Material",
             "Matrix material properties"
         )
+
         obj.Category = ["Solid"]
         obj.Category = "Solid"
-        obj.Proxy = self
-        self.Type = "Fem::MaterialReinforced"
-
-    def execute(self, obj):
-        return

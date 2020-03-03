@@ -2,6 +2,7 @@
 #***************************************************************************
 #*   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 #*   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
+#*   Copyright (c) 2019, 2020 Carlo Pavan <carlopav@gmail.com>             *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -1118,17 +1119,19 @@ class Edit():
             return
         if Draft.getType(obj) in ["BezCurve"]:
             pts = self.recomputePointsBezier(obj,pts,nodeIndex,v,obj.Degree,moveTrackers=False)
-        # check that the new point lies on the plane of the wire
-        import DraftGeomUtils, DraftVecUtils
+            
         if obj.Closed:
-            n = DraftGeomUtils.getNormal(obj.Shape)
-            dv = editPnt.sub(pts[nodeIndex])
-            rn = DraftVecUtils.project(dv,n)
-            if dv.Length:
-                editPnt = editPnt.add(rn.negative())
+            # check that the new point lies on the plane of the wire
+            if hasattr(obj.Shape,"normalAt"):
+                normal = obj.Shape.normalAt(0,0)
+                point_on_plane = obj.Shape.Vertexes[0].Point
+                print(v)
+                v.projectToPlane(point_on_plane, normal)
+                print(v)
+                editPnt = obj.getGlobalPlacement().inverse().multVec(v)
         pts[nodeIndex] = editPnt
         obj.Points = pts
-        #self.trackers[obj.Name][nodeIndex].set(v)
+        self.trackers[obj.Name][nodeIndex].set(v)
 
 
     def recomputePointsBezier(self,obj,pts,idx,v,degree,moveTrackers=True):

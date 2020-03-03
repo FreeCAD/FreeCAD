@@ -4489,7 +4489,8 @@ class WireToBSpline(Modifier):
                             if (Draft.getType(self.obj) == 'Wire'):
                                 n = Draft.makeBSpline(self.Points, self.closed, self.pl)
                             elif (Draft.getType(self.obj) == 'BSpline'):
-                                n = Draft.makeWire(self.Points, self.closed, self.pl)
+                                self.bs2wire = True
+                                n = Draft.makeWire(self.Points, self.closed, self.pl, None, None, self.bs2wire)
                             if n:
                                 Draft.formatObject(n,self.obj)
                                 self.doc.recompute()

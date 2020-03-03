@@ -38,7 +38,7 @@ def create(doc, name="Elasticity"):
 
 class Proxy(linear.Proxy, equationbase.ElasticityProxy):
 
-    Type = "Fem::FemEquationElmerElasticity"
+    Type = "Fem::EquationElmerElasticity"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)

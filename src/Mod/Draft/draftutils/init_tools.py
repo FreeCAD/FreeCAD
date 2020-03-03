@@ -54,11 +54,7 @@ def get_draft_annotation_commands():
 
 def get_draft_array_commands():
     """Return the array commands list."""
-    # After the array commands are grouped, return this
-    # return ["Draft_ArrayTools"]
-    return ["Draft_Array", "Draft_LinkArray",
-            "Draft_PolarArray", "Draft_CircularArray",
-            "Draft_PathArray", "Draft_PathLinkArray", "Draft_PointArray"]
+    return ["Draft_ArrayTools"]
 
 
 def get_draft_modification_commands():

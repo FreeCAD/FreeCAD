@@ -185,6 +185,14 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
 
+        # Skip inactive operations
+        if hasattr(obj, 'Active'): 
+            if not obj.Active:
+                continue
+        if hasattr(obj, 'Base') and hasattr(obj.Base, 'Active'):
+            if not obj.Base.Active:
+                continue
+
         # fetch machine details
         job = PathUtils.findParentJob(obj)
 
@@ -210,16 +218,22 @@ def export(objectslist, filename, argstring):
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
+        # get coolant mode
+        coolantMode = 'None'
+        if hasattr(obj, "CoolantMode") or hasattr(obj, 'Base') and  hasattr(obj.Base, "CoolantMode"):
+            if hasattr(obj, "CoolantMode"):
+                coolantMode = obj.CoolantMode
+            else:
+                coolantMode = obj.Base.CoolantMode
+
         # turn coolant on if required
-        if hasattr(obj, "CoolantMode"):
-            coolantMode = obj.CoolantMode
-            if OUTPUT_COMMENTS:
-                if not coolantMode == 'None':
-                    gcode += linenumber() + '(Coolant On:' + coolantMode + ')\n'
-            if coolantMode == 'Flood':
-                gcode  += linenumber() + 'M8' + '\n'
-            if coolantMode == 'Mist':
-                gcode += linenumber() + 'M7' + '\n'
+        if OUTPUT_COMMENTS:
+            if not coolantMode == 'None':
+                gcode += linenumber() + '(Coolant On:' + coolantMode + ')\n'
+        if coolantMode == 'Flood':
+            gcode  += linenumber() + 'M8' + '\n'
+        if coolantMode == 'Mist':
+            gcode += linenumber() + 'M7' + '\n'
 
         # process the operation gcode
         gcode += parse(obj)
@@ -231,12 +245,10 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # turn coolant off if required
-        if hasattr(obj, "CoolantMode"):
-            coolantMode = obj.CoolantMode
-            if not coolantMode == 'None':
-                if OUTPUT_COMMENTS:
-                    gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'    
-                gcode  += linenumber() +'M9' + '\n'
+        if not coolantMode == 'None':
+            if OUTPUT_COMMENTS:
+                gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'    
+            gcode  += linenumber() +'M9' + '\n'
 
     # do the post_amble
     if OUTPUT_COMMENTS:
@@ -354,8 +366,8 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command == 'M6':
-                # if OUTPUT_COMMENTS:
-                #     out += linenumber() + "(begin toolchange)\n"
+                # stop the spindle
+                out += linenumber() + "M5\n"
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
 

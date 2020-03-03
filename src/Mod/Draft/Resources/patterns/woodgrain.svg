@@ -1,99 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64px"
-   height="64px"
-   id="svg3137"
    version="1.1"
-   inkscape:version="0.92.1 r15371"
-   sodipodi:docname="woodgrain.svg">
+   id="svg3137"
+   height="64px"
+   width="64px">
   <defs
      id="defs3139">
     <pattern
-       patternUnits="userSpaceOnUse"
-       width="64"
-       height="64"
+       id="woodgrain"
        patternTransform="translate(-0.125,-0.5)"
-       id="woodgrain">
+       height="64"
+       width="64"
+       patternUnits="userSpaceOnUse">
       <g
-         id="g3339"
-         transform="translate(0.125,0.5) scale(0.03,0.03)">
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 4,0 8,24 4,44 v 20"
-       id="path4854"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 16,0 -4,8 v 28 l 4,16 v 12"
-       id="path4855"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 20,0 v 16 l -4,12 4,8 v 28"
-       id="path4856"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 24,64 28,44 24,28 28,12 V 0"
-       id="path4857"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 36,0 c 0,0 0,16 0,16 l 4,4 v 8 l -8,4 v 8 l 4,12 v 12"
-       id="path4858"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 44,0 v 36 l -4,4 v 4 l 4,20"
-       id="path4859"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 48,0 4,20 v 8 l -4,12 v 8 l 4,16"
-       id="path4860"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 56,0 4,16 v 16 l -8,4 v 8 l 4,8 v 12"
-       id="path4861"
-       inkscape:connector-curvature="0" />
+         transform="translate(0.125,0.5) scale(0.03,0.03)"
+         id="g3339">
+        <path
+           id="path4854"
+           d="M 4,0 8,24 4,44 v 20"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           id="path4855"
+           d="m 16,0 -4,8 v 28 l 4,16 v 12"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           id="path4856"
+           d="m 20,0 v 16 l -4,12 4,8 v 28"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           id="path4857"
+           d="M 24,64 28,44 24,28 28,12 V 0"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           id="path4858"
+           d="m 36,0 c 0,0 0,16 0,16 l 4,4 v 8 l -8,4 v 8 l 4,12 v 12"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           id="path4859"
+           d="m 44,0 v 36 l -4,4 v 4 l 4,20"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           id="path4860"
+           d="m 48,0 4,20 v 8 l -4,12 v 8 l 4,16"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           id="path4861"
+           d="m 56,0 4,16 v 16 l -8,4 v 8 l 4,8 v 12"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       </g>
     </pattern>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="11"
-     inkscape:cx="34.158522"
-     inkscape:cy="30.990764"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:document-units="px"
-     inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1051"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1">
-    <inkscape:grid
-       type="xygrid"
-       id="grid4837"
-       spacingx="4"
-       spacingy="4" />
-  </sodipodi:namedview>
   <metadata
      id="metadata3142">
     <rdf:RDF>
@@ -107,48 +68,38 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
+     id="layer1">
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 4,0 8,24 4,44 v 20"
        id="path4839"
-       inkscape:connector-curvature="0" />
+       d="M 4,0 8,24 4,44 v 20"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 16,0 -4,8 v 28 l 4,16 v 12"
        id="path4841"
-       inkscape:connector-curvature="0" />
+       d="m 16,0 -4,8 v 28 l 4,16 v 12"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 20,0 v 16 l -4,12 4,8 v 28"
        id="path4843"
-       inkscape:connector-curvature="0" />
+       d="m 20,0 v 16 l -4,12 4,8 v 28"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 24,64 28,44 24,28 28,12 V 0"
        id="path4845"
-       inkscape:connector-curvature="0" />
+       d="M 24,64 28,44 24,28 28,12 V 0"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 36,0 c 0,0 0,16 0,16 l 4,4 v 8 l -8,4 v 8 l 4,12 v 12"
        id="path4847"
-       inkscape:connector-curvature="0" />
+       d="m 36,0 c 0,0 0,16 0,16 l 4,4 v 8 l -8,4 v 8 l 4,12 v 12"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 44,0 v 36 l -4,4 v 4 l 4,20"
        id="path4849"
-       inkscape:connector-curvature="0" />
+       d="m 44,0 v 36 l -4,4 v 4 l 4,20"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 48,0 4,20 v 8 l -4,12 v 8 l 4,16"
        id="path4851"
-       inkscape:connector-curvature="0" />
+       d="m 48,0 4,20 v 8 l -4,12 v 8 l 4,16"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 56,0 4,16 v 16 l -8,4 v 8 l 4,8 v 12"
        id="path4853"
-       inkscape:connector-curvature="0" />
+       d="m 56,0 4,16 v 16 l -8,4 v 8 l 4,8 v 12"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   </g>
 </svg>

@@ -260,6 +260,8 @@ protected:
     //QGICMark* centerMark
     double m_lineWidth;
 
+    void arrowPositionsToFeature(const Base::Vector2d positions[]) const;
+
 private:
     static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }
     static inline Base::BoundBox2d fromQtGui(const QRectF &r)

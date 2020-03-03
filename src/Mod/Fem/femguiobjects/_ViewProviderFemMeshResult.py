@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -28,27 +27,13 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMeshResult
 
+from . import ViewProviderFemConstraint
 
-class _ViewProviderFemMeshResult:
-    "A View Provider for the FemMeshResult object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
+
+class _ViewProviderFemMeshResult(ViewProviderFemConstraint.ViewProxy):
+    """
+    A View Provider for the FemMeshResult object
+    """
 
     def getIcon(self):
         return ":/icons/fem-femmesh-result.svg"
-
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None

@@ -669,14 +669,14 @@ class _Structure(ArchComponent.Component):
                 else:
                     pli = pla[-1].copy()
                 shi.Placement = pli.multiply(shi.Placement)
-                extv = pla[0].Rotation.multVec(evi)
-                if obj.Tool:
+                if not isinstance(evi, FreeCAD.Vector):
                     try:
-                        shi = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
+                        shi = evi.makePipe(shi)
                     except Part.OCCError:
                         FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
                         return
                 else:
+                    extv = pla[0].Rotation.multVec(evi)
                     shi = shi.extrude(extv)
                 base.append(shi)
             if len(base) == 1:
@@ -807,23 +807,31 @@ class _Structure(ArchComponent.Component):
             baseface = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
             base,placement = self.rebase(baseface)
         if base and placement:
-            if obj.Normal.Length:
-                normal = Vector(obj.Normal)
-                if isinstance(placement,list):
-                    normal = placement[0].inverse().Rotation.multVec(normal)
-                else:
-                    normal = placement.inverse().Rotation.multVec(normal)
-            if not normal:
-                normal = Vector(0,0,1)
-            if not normal.Length:
-                normal = Vector(0,0,1)
-            extrusion = normal
-            if (length > height) and (IfcType != "Slab"):
-                if length:
-                    extrusion = normal.multiply(length)
+            if obj.Tool:
+                if obj.Tool.Shape:
+                    edges = obj.Tool.Shape.Edges
+                    if len(edges) == 1 and DraftGeomUtils.geomType(edges[0]) == "Line":
+                        extrusion = DraftGeomUtils.vec(edges[0])
+                    else:
+                        extrusion = obj.Tool.Shape.copy()
             else:
-                if height:
-                    extrusion = normal.multiply(height)
+                if obj.Normal.Length:
+                    normal = Vector(obj.Normal)
+                    if isinstance(placement,list):
+                        normal = placement[0].inverse().Rotation.multVec(normal)
+                    else:
+                        normal = placement.inverse().Rotation.multVec(normal)
+                if not normal:
+                    normal = Vector(0,0,1)
+                if not normal.Length:
+                    normal = Vector(0,0,1)
+                extrusion = normal
+                if (length > height) and (IfcType != "Slab"):
+                    if length:
+                        extrusion = normal.multiply(length)
+                else:
+                    if height:
+                        extrusion = normal.multiply(height)
             return (base,extrusion,placement)
         return None
 

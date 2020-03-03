@@ -1804,7 +1804,7 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
         return segm;
 
     MeshCore::MeshSegmentAlgorithm finder(this->_kernel);
-    std::unique_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
+    std::shared_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
     switch (type) {
     case PLANE:
         //surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
@@ -1824,8 +1824,8 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
     }
 
     if (surf.get()) {
-        std::vector<MeshCore::MeshSurfaceSegment*> surfaces;
-        surfaces.push_back(surf.get());
+        std::vector<MeshCore::MeshSurfaceSegmentPtr> surfaces;
+        surfaces.push_back(surf);
         finder.FindSegments(surfaces);
 
         const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();

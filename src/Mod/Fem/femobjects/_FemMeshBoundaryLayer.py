@@ -27,13 +27,18 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FEM mesh boundary layer object
 
+from . import FemConstraint
 
-class _FemMeshBoundaryLayer:
-    "The FemMeshBoundaryLayer object"
+
+class _FemMeshBoundaryLayer(FemConstraint.Proxy):
+    """
+    The FemMeshBoundaryLayer object
+    """
+
+    Type = "Fem::FemMeshBoundaryLayer"
+
     def __init__(self, obj):
-        self.Type = "Fem::FemMeshBoundaryLayer"
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to this object
+        super(_FemMeshBoundaryLayer, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyInteger",
@@ -41,7 +46,6 @@ class _FemMeshBoundaryLayer:
             "MeshBoundaryLayerProperties",
             "set number of inflation layers for this boundary"
         )
-
         obj.NumberOfLayers = 3
 
         obj.addProperty(
@@ -58,7 +62,6 @@ class _FemMeshBoundaryLayer:
             "MeshBoundaryLayerProperties",
             "set growth rate of inflation layers for smooth transition"
         )
-
         obj.GrowthRate = 1.5
 
         obj.addProperty(
@@ -67,13 +70,3 @@ class _FemMeshBoundaryLayer:
             "MeshBoundaryLayerShapes",
             "List of FEM mesh region shapes"
         )
-
-    def execute(self, obj):
-        return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state

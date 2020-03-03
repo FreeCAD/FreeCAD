@@ -30,14 +30,17 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from femsolver.calculix.solver import ANALYSIS_TYPES
 
+from . import FemConstraint
 
-class _FemSolverCalculix():
+
+class _FemSolverCalculix(FemConstraint.Proxy):
     """The Fem::FemSolver's Proxy python type, add solver specific properties
     """
+
+    Type = "Fem::FemSolverCalculixCcxTools"
+
     def __init__(self, obj):
-        self.Type = "Fem::FemSolverCalculixCcxTools"
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
-        obj.Proxy = self  # link between App::DocumentObject to  this object
+        super(_FemSolverCalculix, self).__init__(obj)
 
         # not needed ATM
         # fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
@@ -273,13 +276,3 @@ class _FemSolverCalculix():
         )
         dimout = ccx_prefs.GetBool("BeamShellOutput", False)
         obj.BeamShellResultOutput3D = dimout
-
-    def execute(self, obj):
-        return
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self, state):
-        if state:
-            self.Type = state

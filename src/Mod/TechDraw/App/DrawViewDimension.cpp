@@ -1093,7 +1093,20 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
     return result;
 }
 
-//are there non-blank references?
+void DrawViewDimension::saveArrowPositions(const Base::Vector2d positions[])
+{
+    double scale = getViewPart()->getScale();
+    m_arrowPositions.first = Base::Vector3d(positions[0].x, positions[0].y, 0.0) / scale;
+    m_arrowPositions.second = Base::Vector3d(positions[1].x, positions[1].y, 0.0) / scale;
+}
+
+//return position within parent view of dimension arrow heads/dimline endpoints
+//note positions are in apparent coord (inverted y).
+pointPair DrawViewDimension::getArrowPositions(void)
+{
+    return m_arrowPositions;
+}
+
 bool DrawViewDimension::has2DReferences(void) const
 {
 //    Base::Console().Message("DVD::has2DReferences() - %s\n",getNameInDocument());

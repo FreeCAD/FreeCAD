@@ -1176,6 +1176,8 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
     const int arrowCount = 2;
     QGIArrow *arrows[arrowCount] = { aHead1, aHead2 };
 
+    arrowPositionsToFeature(positions);
+
     for (int i = 0; i < arrowCount; ++i) {
         QGIArrow *arrow = arrows[i];
 
@@ -1196,6 +1198,15 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
         arrow->draw();
         arrow->show();
     }
+}
+
+void QGIViewDimension::arrowPositionsToFeature(const Base::Vector2d positions[]) const
+{
+    auto dim( dynamic_cast<TechDraw::DrawViewDimension*>(getViewObject()) );
+    if( dim == nullptr )
+        return;
+
+    dim->saveArrowPositions(positions);
 }
 
 void QGIViewDimension::drawSingleLine(QPainterPath &painterPath, const Base::Vector2d &lineOrigin, double lineAngle,

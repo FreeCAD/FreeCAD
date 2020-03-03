@@ -60,12 +60,14 @@ SET(Draft_utilities
 SET(Draft_objects
     draftobjects/__init__.py
     draftobjects/circulararray.py
+    draftobjects/orthoarray.py
     draftobjects/polararray.py
 )
 
 SET(Draft_view_providers
     draftviewproviders/__init__.py
     draftviewproviders/view_circulararray.py
+    draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
 )
 
@@ -73,12 +75,15 @@ SET(Draft_GUI_tools
     draftguitools/__init__.py
     draftguitools/gui_base.py
     draftguitools/gui_circulararray.py
+    draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
+    draftguitools/gui_arrays.py
 )
 
 SET(Draft_task_panels
     drafttaskpanels/__init__.py
     drafttaskpanels/task_circulararray.py
+    drafttaskpanels/task_orthoarray.py
     drafttaskpanels/task_polararray.py
 )
 

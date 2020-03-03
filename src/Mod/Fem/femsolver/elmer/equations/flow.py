@@ -38,7 +38,7 @@ def create(doc, name="Flow"):
 
 class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
 
-    Type = "Fem::FemEquationElmerFlow"
+    Type = "Fem::EquationElmerFlow"
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
