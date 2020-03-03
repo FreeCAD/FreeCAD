@@ -80,7 +80,6 @@ public:
     double prefFontSize() const;
     double prefWeight() const;
     int prefStandardAndStyle() const;
-    virtual bool canDelete(App::DocumentObject* obj) const;
 
 protected:
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property * prop);

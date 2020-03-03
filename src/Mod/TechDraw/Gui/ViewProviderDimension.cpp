@@ -221,12 +221,3 @@ void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, c
         LineWidth.setValue(LineWidthProperty.getValue());
     }
 }
-
-bool ViewProviderDimension::canDelete(App::DocumentObject *obj) const
-{
-    // deletions of objects from a ProjGroupItem don't necesarily destroy anything
-    // thus we can pass this action
-    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
-    Q_UNUSED(obj)
-        return true;
-}
