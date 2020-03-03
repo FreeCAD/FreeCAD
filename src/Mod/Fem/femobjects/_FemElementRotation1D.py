@@ -45,7 +45,7 @@ class _FemElementRotation1D:
             "List of beam rotation shapes"
         )
         obj.Proxy = self
-        self.Type = "Fem::FemElementRotation1D"
+        self.Type = "Fem::ElementRotation1D"
 
     def execute(self, obj):
         return

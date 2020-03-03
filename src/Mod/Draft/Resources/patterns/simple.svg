@@ -5,14 +5,10 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   id="svg2985"
-   version="1.1"
-   inkscape:version="0.48.3.1 r9886"
-   width="64"
    height="64"
-   sodipodi:docname="simple.svg">
+   width="64"
+   version="1.1"
+   id="svg2985">
   <metadata
      id="metadata2994">
     <rdf:RDF>
@@ -25,87 +21,50 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     id="namedview2992"
-     showgrid="true"
-     inkscape:zoom="10.148731"
-     inkscape:cx="33.765913"
-     inkscape:cy="28.771693"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2985">
-    <inkscape:grid
-       type="xygrid"
-       id="grid2996"
-       empspacing="5"
-       visible="true"
-       enabled="true"
-       snapvisiblegridlinesonly="true"
-       spacingx="8px"
-       spacingy="8px" />
-  </sodipodi:namedview>
   <defs
      id="defs2987">
     <pattern
-       id="simple"
-       patternUnits="userSpaceOnUse"
-       x="0"
-       y="0"
+       height=".1"
        width=".1"
-       height=".1">
+       y="0"
+       x="0"
+       patternUnits="userSpaceOnUse"
+       id="simple">
       <g
-         style="fill:none; stroke:#000000; stroke-width:.005"
-         id="g3377">
+         id="g3377"
+         style="fill:none; stroke:#000000; stroke-width:.005">
         <path
-           d="M0,0 l.12,.12"
-           id="path3379" />
+           id="path3379"
+           d="M0,0 l.12,.12" />
       </g>
     </pattern>
   </defs>
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 64,0 0,64"
      id="path2998"
-     inkscape:connector-curvature="0" />
+     d="M 64,0 0,64"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 48,0 0,48"
      id="path3000"
-     inkscape:connector-curvature="0" />
+     d="M 48,0 0,48"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 16,64 64,16"
      id="path3002"
-     inkscape:connector-curvature="0" />
+     d="M 16,64 64,16"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 32,0 0,32"
      id="path3004"
-     inkscape:connector-curvature="0" />
+     d="M 32,0 0,32"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 16,0 0,16"
      id="path3006"
-     inkscape:connector-curvature="0" />
+     d="M 16,0 0,16"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 64,32 32,64"
      id="path3008"
-     inkscape:connector-curvature="0" />
+     d="M 64,32 32,64"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="M 64,48 48,64"
      id="path3010"
-     inkscape:connector-curvature="0" />
+     d="M 64,48 48,64"
+     style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
 </svg>
