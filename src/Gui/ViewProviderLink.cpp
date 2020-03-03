@@ -3430,7 +3430,7 @@ Base::BoundBox3d ViewProviderLink::_getBoundingBox(
             return bbox;
         vp = Application::Instance->getViewProvider(sobj);
     } else {
-        auto linked = obj->getLinkedObject(true,&smat,transform,depth);
+        auto linked = obj->getLinkedObject(false,&smat,transform,depth);
         if(!linked || linked==obj)
             return bbox;
         vp = Application::Instance->getViewProvider(linked);

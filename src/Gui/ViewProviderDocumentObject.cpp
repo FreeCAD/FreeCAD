@@ -719,18 +719,14 @@ Base::BoundBox3d ViewProviderDocumentObject::_getBoundingBox(
                     Base::Matrix4D smat;
                     if(mat)
                         smat = *mat;
-                    App::DocumentObject *parent = 0;
-                    std::string childName;
-                    auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
-                    if(!sobj) 
-                        continue;
-                    int vis;
-                    if(!parent || (vis=parent->isElementVisible(childName.c_str()))<0)
-                        vis = sobj->Visibility.getValue()?1:0;
+                    int vis = obj->isElementVisibleEx(sub.c_str(), App::DocumentObject::GS_SELECT);
                     if(!vis)
                         continue;
+                    auto sobj = obj->getSubObject(sub.c_str(),0,&smat,transform,depth+1);
                     auto vp = Application::Instance->getViewProvider(sobj);
                     if(!vp)
+                        continue;
+                    if(vis < 0 && !sobj->Visibility.getValue())
                         continue;
                     auto sbox = vp->getBoundingBox(0,&smat,false,viewer,depth+1);
                     if(sbox.IsValid())
