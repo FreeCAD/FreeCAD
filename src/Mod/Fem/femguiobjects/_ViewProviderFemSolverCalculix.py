@@ -30,7 +30,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-import FemGui
+from . import ViewProviderFemConstraint
 
 # for the panel
 from PySide import QtCore
@@ -45,50 +45,20 @@ if sys.version_info.major >= 3:
         return str(text)
 
 
-class _ViewProviderFemSolverCalculix:
+class _ViewProviderFemSolverCalculix(ViewProviderFemConstraint.ViewProxy):
     "A View Provider for the FemSolverCalculix object"
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
 
     def getIcon(self):
         return ":/icons/fem-solver-standard.svg"
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
     def setEdit(self, vobj, mode=0):
-        taskd = _TaskPanelFemSolverCalculix(self.Object)
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return True
-
-    def doubleClicked(self, vobj):
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
-        else:
-            from PySide.QtGui import QMessageBox
-            message = "Active Task Dialog found! Please close this one before opening  a new one!"
-            QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + "\n")
-        return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanelFemSolverCalculix,
+            hide_mesh=False
+        )
 
 
 class _TaskPanelFemSolverCalculix:
