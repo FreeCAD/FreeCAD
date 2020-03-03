@@ -27,10 +27,17 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM constraint self weight object
 
+from . import FemConstraint
 
-class _FemConstraintSelfWeight:
+
+class _FemConstraintSelfWeight(FemConstraint.Proxy):
     "The FemConstraintSelfWeight object"
+
+    Type = "Fem::ConstraintSelfWeight"
+
     def __init__(self, obj):
+        super(_FemConstraintSelfWeight, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyFloat",
             "Gravity_x",
@@ -52,8 +59,3 @@ class _FemConstraintSelfWeight:
         obj.Gravity_x = 0.0
         obj.Gravity_y = 0.0
         obj.Gravity_z = -1.0
-        obj.Proxy = self
-        self.Type = "Fem::ConstraintSelfWeight"
-
-    def execute(self, obj):
-        return
