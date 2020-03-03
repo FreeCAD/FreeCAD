@@ -49,7 +49,6 @@
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 
-#include "DrawGuiUtil.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
 #include "QGVPage.h"
