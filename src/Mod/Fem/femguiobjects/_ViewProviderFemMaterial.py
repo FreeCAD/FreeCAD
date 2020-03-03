@@ -28,16 +28,17 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMaterial
 
-import FreeCAD
-import FreeCADGui
-from . import ViewProviderFemConstraint
+import sys
 
-# for the panel
-from FreeCAD import Units
-from . import FemSelectionWidgets
 from PySide import QtCore
 from PySide import QtGui
-import sys
+
+import FreeCAD
+import FreeCADGui
+from FreeCAD import Units
+
+from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
 
 
 if sys.version_info.major >= 3:
@@ -45,7 +46,9 @@ if sys.version_info.major >= 3:
 
 
 class _ViewProviderFemMaterial(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemMaterial object"
+    """
+    A View Provider for the FemMaterial object
+    """
 
     def getIcon(self):
         return ":/icons/fem-material.svg"
@@ -55,12 +58,14 @@ class _ViewProviderFemMaterial(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemMaterial
+            _TaskPanel
         )
 
 
-class _TaskPanelFemMaterial:
-    """The editmode TaskPanel for FemMaterial objects"""
+class _TaskPanel:
+    """
+    The editmode TaskPanel for FemMaterial objects
+    """
 
     def __init__(self, obj):
 

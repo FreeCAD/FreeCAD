@@ -31,7 +31,9 @@ from . import FemConstraint
 
 
 class _FemMeshBoundaryLayer(FemConstraint.Proxy):
-    "The FemMeshBoundaryLayer object"
+    """
+    The FemMeshBoundaryLayer object
+    """
 
     Type = "Fem::FemMeshBoundaryLayer"
 
@@ -44,7 +46,6 @@ class _FemMeshBoundaryLayer(FemConstraint.Proxy):
             "MeshBoundaryLayerProperties",
             "set number of inflation layers for this boundary"
         )
-
         obj.NumberOfLayers = 3
 
         obj.addProperty(
@@ -61,7 +62,6 @@ class _FemMeshBoundaryLayer(FemConstraint.Proxy):
             "MeshBoundaryLayerProperties",
             "set growth rate of inflation layers for smooth transition"
         )
-
         obj.GrowthRate = 1.5
 
         obj.addProperty(

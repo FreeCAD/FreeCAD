@@ -31,54 +31,64 @@ from . import FemConstraint
 
 
 class _FemElementGeometry1D(FemConstraint.Proxy):
-    "The FemElementGeometry1D object"
+    """
+    The FemElementGeometry1D object
+    """
 
     Type = "Fem::ElementGeometry1D"
     known_beam_types = ["Rectangular", "Circular", "Pipe"]
 
     def __init__(self, obj):
         super(_FemElementGeometry1D, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyLength",
             "RectWidth",
             "RectBeamSection",
             "set width of the rectangular beam elements"
         )
+
         obj.addProperty(
             "App::PropertyLength",
             "RectHeight",
             "RectBeamSection",
             "set height of therectangular beam elements"
         )
+
         obj.addProperty(
             "App::PropertyLength",
             "CircDiameter",
             "CircBeamSection",
             "set diameter of the circular beam elements"
         )
+
         obj.addProperty(
             "App::PropertyLength",
             "PipeDiameter",
             "PipeBeamSection",
             "set outer diameter of the pipe beam elements"
         )
+
         obj.addProperty(
             "App::PropertyLength",
             "PipeThickness",
             "PipeBeamSection",
             "set thickness of the pipe beam elements"
         )
+
         obj.addProperty(
             "App::PropertyEnumeration",
             "SectionType",
             "BeamSection",
             "select beam section type"
         )
+
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",
             "BeamSection",
             "List of beam section shapes"
         )
+
         obj.SectionType = _FemElementGeometry1D.known_beam_types
         obj.SectionType = "Rectangular"

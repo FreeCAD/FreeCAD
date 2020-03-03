@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -28,17 +27,19 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMeshGroup
 
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
-from . import ViewProviderFemConstraint
 
-# for the panel
-from PySide import QtCore
 from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
 
 
 class _ViewProviderFemMeshGroup(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemMeshGroup object"
+    """
+    A View Provider for the FemMeshGroup object
+    """
 
     def getIcon(self):
         return ":/icons/fem-femmesh-from-shape.svg"
@@ -48,12 +49,14 @@ class _ViewProviderFemMeshGroup(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemMeshGroup
+            _TaskPanel
         )
 
 
-class _TaskPanelFemMeshGroup:
-    """The TaskPanel for editing References property of FemMeshGroup objects"""
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of FemMeshGroup objects
+    """
 
     def __init__(self, obj):
 

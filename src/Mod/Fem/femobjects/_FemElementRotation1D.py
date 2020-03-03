@@ -31,18 +31,22 @@ from . import FemConstraint
 
 
 class _FemElementRotation1D(FemConstraint.Proxy):
-    "The FemElementRotation1D object"
+    """
+    The FemElementRotation1D object
+    """
 
     Type = "Fem::ElementRotation1D"
 
     def __init__(self, obj):
         super(_FemElementRotation1D, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyAngle",
             "Rotation",
             "BeamRotation",
             "Set the rotation of beam elements"
         )
+
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",

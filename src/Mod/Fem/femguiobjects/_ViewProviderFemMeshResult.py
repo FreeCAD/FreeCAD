@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -32,7 +31,9 @@ from . import ViewProviderFemConstraint
 
 
 class _ViewProviderFemMeshResult(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemMeshResult object"
+    """
+    A View Provider for the FemMeshResult object
+    """
 
     def getIcon(self):
         return ":/icons/fem-femmesh-result.svg"

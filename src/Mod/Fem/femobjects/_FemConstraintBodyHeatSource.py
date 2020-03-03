@@ -36,6 +36,7 @@ class Proxy(FemConstraint.Proxy):
 
     def __init__(self, obj):
         super(Proxy, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyFloat",
             "HeatSource",

@@ -31,7 +31,8 @@ from . import FemConstraint
 
 
 class _FemMeshResult(FemConstraint.Proxy):
-    """The Fem::FemMeshObject's Proxy python type, add Result specific object type
+    """
+    The Fem::FemMeshObject's Proxy python type, add Result specific object type
     """
 
     Type = "Fem::FemMeshResult"

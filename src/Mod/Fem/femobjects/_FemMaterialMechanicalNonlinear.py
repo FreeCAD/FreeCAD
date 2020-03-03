@@ -31,7 +31,9 @@ from . import FemConstraint
 
 
 class _FemMaterialMechanicalNonlinear(FemConstraint.Proxy):
-    "The FemMaterialMechanicalNonlinear object"
+    """
+    The FemMaterialMechanicalNonlinear object
+    """
 
     Type = "Fem::MaterialMechanicalNonlinear"
 

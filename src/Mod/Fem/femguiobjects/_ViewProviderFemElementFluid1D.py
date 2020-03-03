@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Ofentse Kgoa <kgoaot@eskom.co.za>                  *
 # *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Based on the FemElementGeometry1D by Bernd Hahnebach                  *
@@ -32,17 +31,19 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-from . import ViewProviderFemConstraint
 
-# for the panel
-from femobjects import _FemElementFluid1D
 from PySide import QtCore
 from PySide import QtGui
+
 from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
+from femobjects import _FemElementFluid1D
 
 
 class _ViewProviderFemElementFluid1D(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemElementFluid1D object"
+    """
+    A View Provider for the FemElementFluid1D object
+    """
 
     def getIcon(self):
         return ":/icons/fem-element-fluid-1d.svg"
@@ -52,12 +53,14 @@ class _ViewProviderFemElementFluid1D(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemElementFluid1D
+            _TaskPanel
         )
 
 
-class _TaskPanelFemElementFluid1D:
-    """The TaskPanel for editing References property of FemElementFluid1D objects"""
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of FemElementFluid1D objects
+    """
 
     def __init__(self, obj):
 

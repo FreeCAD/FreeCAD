@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -31,15 +30,16 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 
-from . import ViewProviderFemConstraint
-
-# for the panel
 from PySide import QtCore
+
 from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
 
 
 class _ViewProviderFemElementGeometry2D(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemElementGeometry2D object"
+    """
+    A View Provider for the FemElementGeometry2D object
+    """
 
     def getIcon(self):
         return ":/icons/fem-element-geometry-2d.svg"
@@ -49,12 +49,14 @@ class _ViewProviderFemElementGeometry2D(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemElementGeometry2D
+            _TaskPanel
         )
 
 
-class _TaskPanelFemElementGeometry2D:
-    """The TaskPanel for editing References property of FemElementGeometry2D objects"""
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of FemElementGeometry2D objects
+    """
 
     def __init__(self, obj):
 

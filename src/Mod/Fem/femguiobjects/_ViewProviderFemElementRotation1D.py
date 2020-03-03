@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -30,15 +29,17 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-from . import ViewProviderFemConstraint
 
-# for the panel
 from PySide import QtCore
+
 from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
 
 
 class _ViewProviderFemElementRotation1D(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemElementRotation1D object"
+    """
+    A View Provider for the FemElementRotation1D object
+    """
 
     def getIcon(self):
         return ":/icons/fem-element-rotation-1d.svg"
@@ -50,13 +51,16 @@ class _ViewProviderFemElementRotation1D(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemElementRotation1D
+            _TaskPanel
         )
     """
 
 
-class _TaskPanelFemElementRotation1D:
-    """The TaskPanel for editing References property of FemElementRotation1D objects"""
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of FemElementRotation1D objects
+    """
+
     def __init__(self, obj):
 
         self.obj = obj

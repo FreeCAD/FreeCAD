@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -28,25 +27,30 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemSolverCalculix
 
-import FreeCAD
-import FreeCADGui
-from . import ViewProviderFemConstraint
+import os
+import sys
+import time
 
-# for the panel
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
-import os
-import time
-import sys
+
+import FreeCAD
+import FreeCADGui
+
+import FemGui
+from . import ViewProviderFemConstraint
+
 if sys.version_info.major >= 3:
     def unicode(text, *args):
         return str(text)
 
 
 class _ViewProviderFemSolverCalculix(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemSolverCalculix object"
+    """
+    A View Provider for the FemSolverCalculix object
+    """
 
     def getIcon(self):
         return ":/icons/fem-solver-standard.svg"
@@ -56,13 +60,15 @@ class _ViewProviderFemSolverCalculix(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemSolverCalculix,
+            _TaskPanel,
             hide_mesh=False
         )
 
 
-class _TaskPanelFemSolverCalculix:
-    """The TaskPanel for CalculiX ccx tools solver object"""
+class _TaskPanel:
+    """
+    The TaskPanel for CalculiX ccx tools solver object
+    """
 
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(

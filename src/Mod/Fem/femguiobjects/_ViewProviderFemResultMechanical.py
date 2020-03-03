@@ -1,6 +1,6 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2015 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,22 +28,25 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD ViewProvider for mechanical ResultObjectPython in FEM workbench
 
-import FreeCAD
-import FreeCADGui
-from . import ViewProviderFemConstraint
+import matplotlib.pyplot as plt
+import numpy as np
 
-# for the panel
-import femresult.resulttools as resulttools
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
-import numpy as np
-import matplotlib.pyplot as plt
+
+import FreeCAD
+import FreeCADGui
+
+from . import ViewProviderFemConstraint
+import femresult.resulttools as resulttools
 
 
 class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemResultObject Python derived FemResult class"
+    """
+    A View Provider for the FemResultObject Python derived FemResult class
+    """
 
     def getIcon(self):
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
@@ -54,7 +57,7 @@ class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemResultShow,
+            _TaskPanel,
         )
 
     # overwrite unsetEdit, because the mesh result obj needs to be hided on task panel exit
@@ -78,8 +81,10 @@ class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
         return True
 
 
-class _TaskPanelFemResultShow:
-    """The task panel for the post-processing"""
+class _TaskPanel:
+    """
+    The task panel for the post-processing
+    """
 
     def __init__(self, obj):
         self.result_obj = obj
@@ -671,13 +676,6 @@ class _TaskPanelFemResultShow:
 
 
 # helper
-def hide_femmeshes_postpiplines():
-    # hide all visible FEM mesh objects and VTK FemPostPipeline objects
-    for o in FreeCAD.ActiveDocument.Objects:
-        if o.isDerivedFrom("Fem::FemMeshObject") or o.isDerivedFrom("Fem::FemPostPipeline"):
-            o.ViewObject.hide()
-
-
 def hide_parts_constraints():
     from FemGui import getActiveAnalysis
     fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")

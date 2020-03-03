@@ -1,5 +1,5 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -31,7 +31,9 @@ from . import FemConstraint
 
 
 class _FemConstraintTie(FemConstraint.Proxy):
-    "The FemConstraintTie object"
+    """
+    The FemConstraintTie object
+    """
 
     Type = "Fem::ConstraintTie"
 

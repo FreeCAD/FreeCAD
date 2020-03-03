@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *                                                                         *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -28,17 +27,19 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMeshBoundaryLayer
 
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
-from . import ViewProviderFemConstraint
 
-# for the panel
-from PySide import QtCore
 from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
 
 
 class _ViewProviderFemMeshBoundaryLayer(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemMeshBoundaryLayer object"
+    """
+    A View Provider for the FemMeshBoundaryLayer object
+    """
 
     def getIcon(self):
         return ":/icons/fem-femmesh-boundary-layer.svg"
@@ -48,12 +49,14 @@ class _ViewProviderFemMeshBoundaryLayer(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemMeshBoundaryLayer
+            _TaskPanel
         )
 
 
-class _TaskPanelFemMeshBoundaryLayer:
-    """The TaskPanel for editing References property of FemMeshBoundaryLayer objects"""
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of FemMeshBoundaryLayer objects
+    """
 
     def __init__(self, obj):
 

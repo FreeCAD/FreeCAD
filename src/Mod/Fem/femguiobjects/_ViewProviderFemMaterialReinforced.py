@@ -27,16 +27,15 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMaterialReinforced
 
+import sys
+
 import FreeCAD
 import FreeCADGui
-from . import ViewProviderFemConstraint
 
-
-# task panel
-# from . import FemSelectionWidgets
 from PySide import QtCore
 from PySide import QtGui
-import sys
+
+from . import ViewProviderFemConstraint
 
 
 if sys.version_info.major >= 3:
@@ -44,7 +43,9 @@ if sys.version_info.major >= 3:
 
 
 class _ViewProviderFemMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemMaterialReinfocement object"
+    """
+    A View Provider for the FemMaterialReinfocement object
+    """
 
     def getIcon(self):
         return ":/icons/fem-material-reinforced.svg"
@@ -54,12 +55,14 @@ class _ViewProviderFemMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemMaterialReinforced
+            _TaskPanel
         )
 
 
-class _TaskPanelFemMaterialReinforced:
-    """The editmode TaskPanel for FemMaterialReinforced objects"""
+class _TaskPanel:
+    """
+    The editmode TaskPanel for FemMaterialReinforced objects
+    """
 
     if sys.version_info.major >= 3:
         unicode = str

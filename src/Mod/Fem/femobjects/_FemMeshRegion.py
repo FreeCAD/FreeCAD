@@ -31,18 +31,22 @@ from . import FemConstraint
 
 
 class _FemMeshRegion(FemConstraint.Proxy):
-    "The FemMeshRegion object"
+    """
+    The FemMeshRegion object
+    """
 
     Type = "Fem::FemMeshRegion"
 
     def __init__(self, obj):
         super(_FemMeshRegion, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyLength",
             "CharacteristicLength",
             "MeshRegionProperties",
             "set characteristic length of FEM elements for this region"
         )
+
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",

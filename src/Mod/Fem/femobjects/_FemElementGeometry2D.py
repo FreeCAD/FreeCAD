@@ -31,7 +31,9 @@ from . import FemConstraint
 
 
 class _FemElementGeometry2D(FemConstraint.Proxy):
-    "The FemElementGeometry2D object"
+    """
+    The FemElementGeometry2D object
+    """
 
     Type = "Fem::ElementGeometry2D"
 
@@ -44,6 +46,7 @@ class _FemElementGeometry2D(FemConstraint.Proxy):
             "ShellThickness",
             "set thickness of the shell elements"
         )
+
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",

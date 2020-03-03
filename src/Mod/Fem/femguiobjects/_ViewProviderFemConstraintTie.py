@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -30,15 +29,18 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-from . import ViewProviderFemConstraint
 
-# for the panel
-from PySide import QtCore, QtGui
+from PySide import QtCore
+from PySide import QtGui
+
 from . import FemSelectionWidgets
+from . import ViewProviderFemConstraint
 
 
 class _ViewProviderFemConstraintTie(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemConstraintTie object"
+    """
+    A View Provider for the FemConstraintTie object
+    """
 
     def getIcon(self):
         return ":/icons/fem-constraint-tie.svg"
@@ -48,12 +50,14 @@ class _ViewProviderFemConstraintTie(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemConstraintTie
+            _TaskPanel
         )
 
 
-class _TaskPanelFemConstraintTie:
-    """The TaskPanel for editing References property of FemConstraintTie objects"""
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of FemConstraintTie objects
+    """
 
     def __init__(self, obj):
 
