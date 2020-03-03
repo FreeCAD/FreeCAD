@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-import FemGui  # needed to display the icons in TreeView
+from . import ViewProviderFemConstraint
 
 
 # task panel
@@ -38,76 +38,24 @@ from PySide import QtCore
 from PySide import QtGui
 import sys
 
-False if False else FemGui.__name__  # flake8, dummy FemGui usage, returns "FemGui"
 
 if sys.version_info.major >= 3:
     unicode = str
 
 
-class _ViewProviderFemMaterialReinforced:
+class _ViewProviderFemMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
     "A View Provider for the FemMaterialReinfocement object"
-    def __init__(self, vobj):
-        vobj.Proxy = self
 
     def getIcon(self):
         return ":/icons/fem-material-reinforced.svg"
 
-    def attach(self, vobj):
-        from pivy import coin
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-        self.standard = coin.SoGroup()
-        vobj.addDisplayMode(self.standard, "Default")
-
-    def getDisplayModes(self, obj):
-        return ["Default"]
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
     def setEdit(self, vobj, mode=0):
-        # hide all meshes
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
-                o.ViewObject.hide()
-        # hide all meshes
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
-                o.ViewObject.hide()
-        # show task panel
-        taskd = _TaskPanelFemMaterialReinforced(self.Object)
-        taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return True
-
-    def doubleClicked(self, vobj):
-        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode
-        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
-        if not guidoc.getInEdit():
-            guidoc.setEdit(vobj.Object.Name)
-        else:
-            from PySide.QtGui import QMessageBox
-            message = (
-                "Active Task Dialog found! "
-                "Please close this one before opening  a new one!"
-            )
-            QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + "\n")
-        return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanelFemMaterialReinforced
+        )
 
 
 class _TaskPanelFemMaterialReinforced:
