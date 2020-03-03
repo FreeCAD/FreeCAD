@@ -27,6 +27,8 @@
 # endif
 # include <QAction>
 # include <QMenu>
+# include <QMessageBox>
+# include <QTextStream>
 #endif
 
 #include <Base/Console.h>
@@ -47,7 +49,6 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
-
 
 #include "TaskProjGroup.h"
 #include "ViewProviderProjGroup.h"
@@ -143,6 +144,45 @@ void ViewProviderProjGroup::unsetEdit(int ModNum)
 bool ViewProviderProjGroup::doubleClicked(void)
 {
     setEdit(0);
+    return true;
+}
+
+bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
+{
+    // warn the user if the ProjGroup is not empty
+
+    // check if there are items in the group
+    auto objs = claimChildren();
+
+    if (!objs.empty())
+    {
+        // generate dialog
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "The projection group is not empty, therefore\n the following referencing objects might be lost.\n\n"
+            "Are you sure you want to continue?\n");
+        for (auto ObjIterator : objs)
+            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        // show and evaluate dialog
+        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Yes, QMessageBox::No);
+        if (DialogResult == QMessageBox::Yes)
+            return true;
+        else
+            return false;
+    }
+    else
+        return true;
+}
+
+bool ViewProviderProjGroup::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of views from a ProjGroup don't necesarily destroy anything
+    // thus we can pass this action
+    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
+    Q_UNUSED(obj)
     return true;
 }
 
