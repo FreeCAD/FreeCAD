@@ -61,7 +61,7 @@ namespace Base
      * @param len: input length
      * @return The character count written to output.
      */
-	std::size_t BaseExport base64_encode(char *out, void const *in , std::size_t len);
+	BaseExport std::size_t base64_encode(char *out, void const *in , std::size_t len);
 
     /** Return the internal base64 decoding table
      * 
@@ -70,7 +70,7 @@ namespace Base
      * data. White space (space, tab, vtab, CR and LF) charachters are mapped
      * to -2. Other invalid characters are mapped to -1.
      */
-    const char *BaseExport base64_decode_table();
+    BaseExport const char *base64_decode_table();
 
     /** Decode the input base64 string into binary data
      * @param out: output buffer with minimum size of base64_encode(len)
@@ -80,7 +80,7 @@ namespace Base
      * @return Return a pair of output size and input read size. Compare the
      * read size to input size to check for error.
      */
-	std::pair<std::size_t, std::size_t> BaseExport base64_decode(
+	BaseExport std::pair<std::size_t, std::size_t> base64_decode(
             void *out, char const *, std::size_t len);
 
     /** Encode input binary into base64 string
