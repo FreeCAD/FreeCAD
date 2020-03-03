@@ -413,6 +413,27 @@ int FeaturePythonImp::isElementVisible(const char *element) const {
     }
 }
 
+int FeaturePythonImp::isElementVisibleEx(const char *subname, int reason) const {
+    _FC_PY_CALL_CHECK(isElementVisibleEx,return(-2));
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(3);
+        args.setItem(0, Py::Object(object->getPyObject(), true));
+        args.setItem(1,Py::String(subname?subname:""));
+        args.setItem(2,Py::Int(reason));
+        return Py::Int(Base::pyCall(py_isElementVisibleEx.ptr(),args.ptr()));
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return -2;
+        }
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+        return -1;
+    }
+}
+
 int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
     _FC_PY_CALL_CHECK(setElementVisible,return(-2));
     Base::PyGILStateLocker lock;
