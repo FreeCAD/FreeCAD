@@ -1439,6 +1439,7 @@ void SelectionSingleton::setVisible(VisibleState vis, const std::vector<App::Sub
             else
                 vis = !vp->isShow();
 
+            SelectionNoTopParentCheck guard;
             if(vis) {
                 vp->show();
                 if(ViewParams::instance()->getUpdateSelectionVisual())

@@ -219,9 +219,12 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 void ViewProviderDocumentObject::hide(void)
 {
     auto obj = getObject();
-    if(obj && obj->getDocument() && obj->getNameInDocument())
+    if(obj && obj->getDocument() && obj->getNameInDocument() 
+           && !SelectionNoTopParentCheck::enabled())
+    {
         Gui::Selection().updateSelection(
                 false, obj->getDocument()->getName(), obj->getNameInDocument(),0);
+    }
 
     ViewProvider::hide();
 
@@ -242,7 +245,9 @@ void ViewProviderDocumentObject::show(void)
 {
     ViewProvider::show();
 
-    if(ViewParams::instance()->getUpdateSelectionVisual()) {
+    if(ViewParams::instance()->getUpdateSelectionVisual()
+           && !SelectionNoTopParentCheck::enabled())
+    {
         auto obj = getObject();
         if(obj && obj->getDocument() && obj->getNameInDocument())
             Gui::Selection().updateSelection(
