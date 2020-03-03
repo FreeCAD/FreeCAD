@@ -27,6 +27,8 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QMenu>
+# include <QMessageBox>
+# include <QTextStream>
 # include <QTimer>
 #include <QList>
 #include <QPointer>
@@ -191,11 +193,37 @@ void ViewProviderPage::updateData(const App::Property* prop)
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
+bool ViewProviderPage::onDelete(const std::vector<std::string> &)
 {
-    bool rc = ViewProviderDocumentObject::onDelete(items);
-    removeMDIView();
-    return rc;
+    // warn the user if the Page is not empty
+
+    // check if there are items in the group
+    auto objs = claimChildren();
+
+    if (!objs.empty())
+    {
+        // generate dialog
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "The page is not empty, therefore the\n following referencing objects might be lost.\n\n"
+            "Are you sure you want to continue?\n");
+        for (auto ObjIterator : objs)
+            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        // show and evaluate the dialog
+        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Yes, QMessageBox::No);
+        if (DialogResult == QMessageBox::Yes) {
+            removeMDIView(); 
+            return true;
+        } else
+            return false;
+    }
+    else {
+        removeMDIView();
+        return true;
+    }
 }
 
 void ViewProviderPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -419,6 +447,16 @@ void ViewProviderPage::setTemplateMarkers(bool state)
 void ViewProviderPage::setGraphicsView(QGVPage* gv)
 {
     m_graphicsView = gv;
+}
+
+bool ViewProviderPage::canDelete(App::DocumentObject *obj) const
+{
+    // deletions from a page don't necesarily destroy anything
+    // thus we can pass this action
+    // if an object could break something, like e.g. the template object
+    // its ViewProvider handles this in the onDelete() function
+    Q_UNUSED(obj)
+    return true;
 }
 
 //! Redo the whole visual page
