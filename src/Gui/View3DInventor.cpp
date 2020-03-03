@@ -534,7 +534,7 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if(strcmp("ViewSelection",pMsg) == 0) {
-        _viewer->viewSelection(ViewParams::instance()->getViewSelectionExtend());
+        _viewer->viewSelection();
         return true;
     }
     else if(strcmp("ViewSelectionExtend",pMsg) == 0) {

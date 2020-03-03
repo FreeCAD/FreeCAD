@@ -3347,8 +3347,8 @@ void View3DInventorViewer::viewSelection(bool extend)
             SbBox3f sbox(center-size, center+size);
 
             int cullbits = 7;
-            sbox.outside(vv.getMatrix(),cullbits);
-            if(!cullbits) // test if the scaled box is fully in view
+            // test if the scaled box is completely outside of view
+            if(!sbox.outside(vv.getMatrix(),cullbits))
                 return;
 
             float vx,vy,vz;
@@ -3362,22 +3362,8 @@ void View3DInventorViewer::viewSelection(bool extend)
             // sphere to surround the bounding box for easy calculation.
             SbBox3f vbox(vx-radius,vy-radius,vz-radius,vx+radius,vy+radius,vz+radius);
 
-            float minx, miny, minz, maxx, maxy, maxz;
-            vbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
-
-            float minx2, miny2, minz2, maxx2, maxy2, maxz2;
-            box.getBounds(minx2, miny2, minz2, maxx2, maxy2, maxz2);
-
-            // FIXME: Extend to bearly include the selection. We do this instead of
-            // extendBy() because SoCamera tends to over compensate in its
-            // viewBoundingBox(), (or maybe it's because our vbox estimation is
-            // not right?)
-            if(minx > maxx2) minx = maxx2;
-            if(miny > maxy2) miny = maxy2;
-            if(minz > maxz2) minz = maxz2;
-            if(maxx < minx2) maxx = minx2;
-            if(maxy < miny2) maxy = miny2;
-            if(maxz < minz2) maxz = minz2;
+            // extend the view box to include the selection
+            vbox.extendBy(box);
 
             // obtain the entire scene bounding box
             SbBox3f scenebox;
@@ -3386,7 +3372,11 @@ void View3DInventorViewer::viewSelection(bool extend)
             // extend to include the selection, just to be sure
             scenebox.extendBy(box);
 
+            float minx, miny, minz, maxx, maxy, maxz;
+            vbox.getBounds(minx, miny, minz, maxx, maxy, maxz);
+
             // clip the extended current view box to the scene box
+            float minx2, miny2, minz2, maxx2, maxy2, maxz2;
             scenebox.getBounds(minx2, miny2, minz2, maxx2, maxy2, maxz2);
             if(minx < minx2) minx = minx2;
             if(miny < miny2) miny = miny2;

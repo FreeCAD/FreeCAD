@@ -90,7 +90,6 @@ public:
     FC_VIEW_PARAM(PreSelectionDelay,double,Float,0.1) \
     FC_VIEW_PARAM(SelectionPickThreshold,int,Int,50) \
     FC_VIEW_PARAM(UseNewRayPick,bool,Bool,true) \
-    FC_VIEW_PARAM(ViewSelectionExtend,bool,Bool,true) \
     FC_VIEW_PARAM(ViewSelectionExtendFactor,double,Float,0.5) \
     FC_VIEW_PARAM(UseTightBoundingBox,bool,Bool,true) \
     FC_VIEW_PARAM(UseBoundingBoxCache,bool,Bool,true) \
