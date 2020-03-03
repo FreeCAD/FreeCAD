@@ -33,6 +33,7 @@ defined by `gui_trackers.gridTracker`.
 #  everything that goes with it (toolbar buttons, cursor icons, etc.).
 
 import collections as coll
+import inspect
 import itertools
 import math
 from pivy import coin
@@ -731,175 +732,188 @@ class Snapper:
                     snaps.append([mp, 'midpoint', self.toWP(mp)])
         return snaps
 
-    def snapToPerpendicular(self,shape,last):
-        "returns a list of perpendicular snap locations"
+    def snapToPerpendicular(self, shape, last):
+        """Return a list of perpendicular snap locations."""
         snaps = []
         if self.isEnabled("perpendicular"):
             if last:
-                if isinstance(shape,Part.Edge):
+                if isinstance(shape, Part.Edge):
                     if DraftGeomUtils.geomType(shape) == "Line":
-                        np = self.getPerpendicular(shape,last)
+                        np = self.getPerpendicular(shape, last)
                     elif DraftGeomUtils.geomType(shape) == "Circle":
                         dv = last.sub(shape.Curve.Center)
-                        dv = DraftVecUtils.scaleTo(dv,shape.Curve.Radius)
+                        dv = DraftVecUtils.scaleTo(dv, shape.Curve.Radius)
                         np = (shape.Curve.Center).add(dv)
                     elif DraftGeomUtils.geomType(shape) == "BSplineCurve":
                         try:
                             pr = shape.Curve.parameter(last)
                             np = shape.Curve.value(pr)
-                        except:
+                        except Exception:
                             return snaps
                     else:
                         return snaps
-                    snaps.append([np,'perpendicular',self.toWP(np)])
+                    snaps.append([np, 'perpendicular', self.toWP(np)])
         return snaps
 
-    def snapToOrtho(self,shape,last,constrain):
-        "returns a list of ortho snap locations"
+    def snapToOrtho(self, shape, last, constrain):
+        """Return a list of ortho snap locations."""
         snaps = []
         if self.isEnabled("ortho"):
             if constrain:
-                if isinstance(shape,Part.Edge):
+                if isinstance(shape, Part.Edge):
                     if last:
                         if DraftGeomUtils.geomType(shape) == "Line":
                             if self.constraintAxis:
-                                tmpEdge = Part.LineSegment(last,last.add(self.constraintAxis)).toShape()
+                                tmpEdge = Part.LineSegment(last, last.add(self.constraintAxis)).toShape()
                                 # get the intersection points
-                                pt = DraftGeomUtils.findIntersection(tmpEdge,shape,True,True)
+                                pt = DraftGeomUtils.findIntersection(tmpEdge, shape, True, True)
                                 if pt:
                                     for p in pt:
-                                        snaps.append([p,'ortho',self.toWP(p)])
+                                        snaps.append([p, 'ortho', self.toWP(p)])
         return snaps
 
-    def snapToExtOrtho(self,last,constrain,eline):
-        "returns an ortho X extension snap location"
+    def snapToExtOrtho(self, last, constrain, eline):
+        """Return an ortho X extension snap location."""
         if self.isEnabled("extension") and self.isEnabled("ortho"):
             if constrain and last and self.constraintAxis and self.extLine:
-                tmpEdge1 = Part.LineSegment(last,last.add(self.constraintAxis)).toShape()
-                tmpEdge2 = Part.LineSegment(self.extLine.p1(),self.extLine.p2()).toShape()
+                tmpEdge1 = Part.LineSegment(last, last.add(self.constraintAxis)).toShape()
+                tmpEdge2 = Part.LineSegment(self.extLine.p1(), self.extLine.p2()).toShape()
                 # get the intersection points
-                pt = DraftGeomUtils.findIntersection(tmpEdge1,tmpEdge2,True,True)
+                pt = DraftGeomUtils.findIntersection(tmpEdge1, tmpEdge2, True, True)
                 if pt:
-                    return [pt[0],'ortho',pt[0]]
+                    return [pt[0], 'ortho', pt[0]]
             if eline:
                 try:
-                    tmpEdge2 = Part.LineSegment(self.extLine.p1(),self.extLine.p2()).toShape()
+                    tmpEdge2 = Part.LineSegment(self.extLine.p1(), self.extLine.p2()).toShape()
                     # get the intersection points
-                    pt = DraftGeomUtils.findIntersection(eline,tmpEdge2,True,True)
+                    pt = DraftGeomUtils.findIntersection(eline, tmpEdge2, True, True)
                     if pt:
-                        return [pt[0],'ortho',pt[0]]
-                except:
+                        return [pt[0], 'ortho', pt[0]]
+                except Exception:
                     return None
         return None
 
-    def snapToHold(self,point):
-        "returns a snap location that is orthogonal to hold points or, if possible, at crossings"
+    def snapToHold(self, point):
+        """Return a snap location that is orthogonal to hold points.
+
+        Or if possible at crossings.
+        """
         if not self.holdPoints:
             return None
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
+        if hasattr(FreeCAD, "DraftWorkingPlane"):
             u = FreeCAD.DraftWorkingPlane.u
             v = FreeCAD.DraftWorkingPlane.v
         else:
-            u = FreeCAD.Vector(1,0,0)
-            v = FreeCAD.Vector(0,1,0)
+            u = FreeCAD.Vector(1, 0, 0)
+            v = FreeCAD.Vector(0, 1, 0)
         if len(self.holdPoints) > 1:
             # first try mid points
             if self.isEnabled("midpoint"):
                 l = list(self.holdPoints)
-                for p1,p2 in itertools.combinations(l,2):
+                for p1, p2 in itertools.combinations(l, 2):
                     p3 = p1.add((p2.sub(p1)).multiply(0.5))
                     if (p3.sub(point)).Length < self.radius:
-                        return [p1,'midpoint',p3]
+                        return [p1, 'midpoint', p3]
             # then try int points
             ipoints = []
             l = list(self.holdPoints)
             while len(l) > 1:
                 p1 = l.pop()
                 for p2 in l:
-                    i1 = DraftGeomUtils.findIntersection(p1,p1.add(u),p2,p2.add(v),True,True)
+                    i1 = DraftGeomUtils.findIntersection(p1, p1.add(u), p2, p2.add(v), True, True)
                     if i1:
-                        ipoints.append([p1,i1[0]])
-                    i2 = DraftGeomUtils.findIntersection(p1,p1.add(v),p2,p2.add(u),True,True)
+                        ipoints.append([p1, i1[0]])
+                    i2 = DraftGeomUtils.findIntersection(p1, p1.add(v), p2, p2.add(u), True, True)
                     if i2:
-                        ipoints.append([p1,i2[0]])
+                        ipoints.append([p1, i2[0]])
             for p in ipoints:
                 if (p[1].sub(point)).Length < self.radius:
-                    return [p[0],'ortho',p[1]]
+                    return [p[0], 'ortho', p[1]]
         # then try to stick to a line
         for p in self.holdPoints:
-            d = DraftGeomUtils.findDistance(point,[p,p.add(u)])
+            d = DraftGeomUtils.findDistance(point, [p, p.add(u)])
             if d:
                 if d.Length < self.radius:
                     fp = point.add(d)
-                    return [p,'extension',fp]
-            d = DraftGeomUtils.findDistance(point,[p,p.add(v)])
+                    return [p, 'extension', fp]
+            d = DraftGeomUtils.findDistance(point, [p, p.add(v)])
             if d:
                 if d.Length < self.radius:
                     fp = point.add(d)
-                    return [p,'extension',fp]
+                    return [p, 'extension', fp]
         return None
 
-    def snapToExtPerpendicular(self,last):
-        "returns a perpendicular X extension snap location"
+    def snapToExtPerpendicular(self, last):
+        """Return a perpendicular X extension snap location."""
         if self.isEnabled("extension") and self.isEnabled("perpendicular"):
             if last and self.extLine:
                 if self.extLine.p1() != self.extLine.p2():
-                    tmpEdge = Part.LineSegment(self.extLine.p1(),self.extLine.p2()).toShape()
-                    np = self.getPerpendicular(tmpEdge,last)
-                    return [np,'perpendicular',np]
+                    tmpEdge = Part.LineSegment(self.extLine.p1(), self.extLine.p2()).toShape()
+                    np = self.getPerpendicular(tmpEdge, last)
+                    return [np, 'perpendicular', np]
         return None
 
-    def snapToElines(self,e1,e2):
-        "returns a snap location at the infinite intersection of the given edges"
+    def snapToElines(self, e1, e2):
+        """Return a snap at the infinite intersection of the given edges."""
         snaps = []
         if self.isEnabled("intersection") and self.isEnabled("extension"):
             if e1 and e2:
                 # get the intersection points
-                pts = DraftGeomUtils.findIntersection(e1,e2,True,True)
+                pts = DraftGeomUtils.findIntersection(e1, e2, True, True)
                 if pts:
                     for p in pts:
-                        snaps.append([p,'intersection',self.toWP(p)])
+                        snaps.append([p, 'intersection', self.toWP(p)])
         return snaps
 
-    def snapToAngles(self,shape):
-        "returns a list of angle snap locations"
+    def snapToAngles(self, shape):
+        """Return a list of angle snap locations."""
         snaps = []
         if self.isEnabled("angle"):
             rad = shape.Curve.Radius
             pos = shape.Curve.Center
-            for i in [0,30,45,60,90,120,135,150,180,210,225,240,270,300,315,330]:
+            for i in (0, 30, 45, 60, 90,
+                      120, 135, 150, 180,
+                      210, 225, 240, 270,
+                      300, 315, 330):
                 ang = math.radians(i)
-                cur = Vector(math.sin(ang)*rad+pos.x,math.cos(ang)*rad+pos.y,pos.z)
-                snaps.append([cur,'angle',self.toWP(cur)])
+                cur = Vector(math.sin(ang) * rad + pos.x,
+                             math.cos(ang) * rad + pos.y,
+                             pos.z)
+                snaps.append([cur, 'angle', self.toWP(cur)])
         return snaps
 
-    def snapToCenter(self,shape):
-        "returns a list of center snap locations"
+    def snapToCenter(self, shape):
+        """Return a list of center snap locations."""
         snaps = []
         if self.isEnabled("center"):
             pos = shape.Curve.Center
             c = self.toWP(pos)
-            if hasattr(shape.Curve,"Radius"):
+            if hasattr(shape.Curve, "Radius"):
                 rad = shape.Curve.Radius
-                for i in [15,37.5,52.5,75,105,127.5,142.5,165,195,217.5,232.5,255,285,307.5,322.5,345]:
+                for i in (15, 37.5, 52.5, 75,
+                          105, 127.5, 142.5, 165,
+                          195, 217.5, 232.5, 255,
+                          285, 307.5, 322.5, 345):
                     ang = math.radians(i)
-                    cur = Vector(math.sin(ang)*rad+pos.x,math.cos(ang)*rad+pos.y,pos.z)
-                    snaps.append([cur,'center',c])
+                    cur = Vector(math.sin(ang) * rad + pos.x,
+                                 math.cos(ang) * rad + pos.y,
+                                 pos.z)
+                    snaps.append([cur, 'center', c])
             else:
-                snaps.append([c,'center',c])
+                snaps.append([c, 'center', c])
         return snaps
 
-    def snapToFace(self,shape):
-        "returns a face center snap location"
+    def snapToFace(self, shape):
+        """Return a face center snap location."""
         snaps = []
         if self.isEnabled("center"):
             pos = shape.CenterOfMass
             c = self.toWP(pos)
-            snaps.append([pos,'center',c])
+            snaps.append([pos, 'center', c])
         return snaps
 
-    def snapToIntersection(self,shape):
-        "returns a list of intersection snap locations"
+    def snapToIntersection(self, shape):
+        """Return a list of intersection snap locations."""
         snaps = []
         if self.isEnabled("intersection"):
             # get the stored objects to calculate intersections
@@ -918,45 +932,47 @@ class Snapper:
                                         p2 = self.toWP(e.Vertexes[-1].Point)
                                         p3 = self.toWP(shape.Vertexes[0].Point)
                                         p4 = self.toWP(shape.Vertexes[-1].Point)
-                                        pt = DraftGeomUtils.findIntersection(p1,p2,p3,p4,True,True)
+                                        pt = DraftGeomUtils.findIntersection(p1, p2, p3, p4, True, True)
                                     else:
-                                        pt = DraftGeomUtils.findIntersection(e,shape)
+                                        pt = DraftGeomUtils.findIntersection(e, shape)
                                     if pt:
                                         for p in pt:
-                                            snaps.append([p,'intersection',self.toWP(p)])
+                                            snaps.append([p, 'intersection', self.toWP(p)])
                                 except:
                                     pass
-                                    # some curve types yield an error when trying to read their types...
+                                    # some curve types yield an error
+                                    # when trying to read their types
         return snaps
 
-    def snapToPolygon(self,obj):
-        "returns a list of polygon center snap locations"
+    def snapToPolygon(self, obj):
+        """Return a list of polygon center snap locations."""
         snaps = []
         if self.isEnabled("center"):
             c = obj.Placement.Base
             for edge in obj.Shape.Edges:
                 p1 = edge.Vertexes[0].Point
                 p2 = edge.Vertexes[-1].Point
-                v1 = p1.add((p2-p1).scale(.25,.25,.25))
-                v2 = p1.add((p2-p1).scale(.75,.75,.75))
-                snaps.append([v1,'center',self.toWP(c)])
-                snaps.append([v2,'center',self.toWP(c)])
+                v1 = p1.add((p2 - p1).scale(0.25, 0.25, 0.25))
+                v2 = p1.add((p2 - p1).scale(0.75, 0.75, 0.75))
+                snaps.append([v1, 'center', self.toWP(c)])
+                snaps.append([v2, 'center', self.toWP(c)])
         return snaps
 
-    def snapToVertex(self,info,active=False):
-        p = Vector(info['x'],info['y'],info['z'])
+    def snapToVertex(self, info, active=False):
+        """Return a vertex snap location."""
+        p = Vector(info['x'], info['y'], info['z'])
         if active:
             if self.isEnabled("passive"):
-                return [p,'endpoint',self.toWP(p)]
+                return [p, 'endpoint', self.toWP(p)]
             else:
                 return []
         elif self.isEnabled("passive"):
-            return [p,'passive',p]
+            return [p, 'passive', p]
         else:
             return []
 
-    def snapToSpecials(self,obj,lastpoint=None,eline=None):
-        "returns special snap locations, if any"
+    def snapToSpecials(self, obj, lastpoint=None, eline=None):
+        """Return special snap locations, if any."""
         snaps = []
         if self.isEnabled("special"):
 
@@ -965,48 +981,48 @@ class Snapper:
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
                         for v in obj.Base.Shape.Vertexes:
-                            snaps.append([v.Point,'special',self.toWP(v.Point)])
+                            snaps.append([v.Point, 'special', self.toWP(v.Point)])
 
             elif (Draft.getType(obj) == "Structure"):
                 # special snapping for struct: only to its base point
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
                         for v in obj.Base.Shape.Vertexes:
-                            snaps.append([v.Point,'special',self.toWP(v.Point)])
+                            snaps.append([v.Point, 'special', self.toWP(v.Point)])
                 else:
                     b = obj.Placement.Base
-                    snaps.append([b,'special',self.toWP(b)])
+                    snaps.append([b, 'special', self.toWP(b)])
                 if obj.ViewObject.ShowNodes:
                     for edge in obj.Proxy.getNodeEdges(obj):
                         snaps.extend(self.snapToEndpoints(edge))
                         snaps.extend(self.snapToMidpoint(edge))
-                        snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                        snaps.extend(self.snapToPerpendicular(edge, lastpoint))
                         snaps.extend(self.snapToIntersection(edge))
-                        snaps.extend(self.snapToElines(edge,eline))
+                        snaps.extend(self.snapToElines(edge, eline))
 
-            elif hasattr(obj,"SnapPoints"):
+            elif hasattr(obj, "SnapPoints"):
                 for p in obj.SnapPoints:
                     p2 = obj.Placement.multVec(p)
-                    snaps.append([p2,'special',p2])
+                    snaps.append([p2, 'special', p2])
 
         return snaps
 
-    def getScreenDist(self,dist,cursor):
-        "returns a distance in 3D space from a screen pixels distance"
+    def getScreenDist(self, dist, cursor):
+        """Return a distance in 3D space from a screen pixels distance."""
         view = Draft.get3DView()
         p1 = view.getPoint(cursor)
-        p2 = view.getPoint((cursor[0]+dist,cursor[1]))
+        p2 = view.getPoint((cursor[0] + dist, cursor[1]))
         return (p2.sub(p1)).Length
 
-    def getPerpendicular(self,edge,pt):
-        "returns a point on an edge, perpendicular to the given point"
+    def getPerpendicular(self, edge, pt):
+        """Return a point on an edge, perpendicular to the given point."""
         dv = pt.sub(edge.Vertexes[0].Point)
-        nv = DraftVecUtils.project(dv,DraftGeomUtils.vec(edge))
+        nv = DraftVecUtils.project(dv, DraftGeomUtils.vec(edge))
         np = (edge.Vertexes[0].Point).add(nv)
         return np
 
-    def setArchDims(self,p1,p2):
-        "show arch dimensions between 2 points"
+    def setArchDims(self, p1, p2):
+        """Show arc dimensions between 2 points."""
         if self.isEnabled("Dimensions"):
             if not self.dim1:
                 self.dim1 = trackers.archDimTracker(mode=2)
@@ -1021,8 +1037,8 @@ class Snapper:
             if self.dim2.Distance:
                 self.dim2.on()
 
-    def setCursor(self,mode=None):
-        "setCursor(self,mode=None): sets or resets the cursor to the given mode or resets"
+    def setCursor(self, mode=None):
+        """Set or reset the cursor to the given mode or resets."""
         if self.selectMode:
             mw = FreeCADGui.getMainWindow()
             for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
@@ -1038,16 +1054,16 @@ class Snapper:
         else:
             if mode != self.cursorMode:
                 baseicon = QtGui.QPixmap(":/icons/Draft_Cursor.svg")
-                newicon = QtGui.QPixmap(32,24)
+                newicon = QtGui.QPixmap(32, 24)
                 newicon.fill(QtCore.Qt.transparent)
                 qp = QtGui.QPainter()
                 qp.begin(newicon)
-                qp.drawPixmap(0,0,baseicon)
+                qp.drawPixmap(0, 0, baseicon)
                 if not (mode == 'passive'):
                     tp = QtGui.QPixmap(self.cursors[mode]).scaledToWidth(16)
-                    qp.drawPixmap(QtCore.QPoint(16, 8), tp);
+                    qp.drawPixmap(QtCore.QPoint(16, 8), tp)
                 qp.end()
-                cur = QtGui.QCursor(newicon,8,8)
+                cur = QtGui.QCursor(newicon, 8, 8)
                 mw = FreeCADGui.getMainWindow()
                 for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
                     if w.metaObject().className() == "SIM::Coin3D::Quarter::QuarterWidget":
@@ -1055,11 +1071,12 @@ class Snapper:
                 self.cursorMode = mode
 
     def restack(self):
+        """Lower the grid tracker so it doesn't obscure other objects."""
         if self.grid:
             self.grid.lowerTracker()
 
     def off(self, hideSnapBar=False):
-        "finishes snapping"
+        """Finish snapping."""
         if self.tracker:
             self.tracker.off()
         if self.trackLine:
@@ -1075,7 +1092,7 @@ class Snapper:
         if self.dim2:
             self.dim2.off()
         if self.grid:
-            if not Draft.getParam("alwaysShowGrid",True):
+            if not Draft.getParam("alwaysShowGrid", True):
                 self.grid.off()
         if self.holdTracker:
             self.holdTracker.clear()
@@ -1083,16 +1100,16 @@ class Snapper:
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if hideSnapBar or Draft.getParam("hideSnapBar",False):
-            if hasattr(self,"toolbar") and self.toolbar:
+        if hideSnapBar or Draft.getParam("hideSnapBar", False):
+            if hasattr(self, "toolbar") and self.toolbar:
                 self.toolbar.hide()
         self.mask = None
         self.selectMode = False
         self.running = False
         self.holdPoints = []
 
-    def setSelectMode(self,mode):
-        "sets the snapper into select mode (hides snapping temporarily)"
+    def setSelectMode(self, mode):
+        """Set the snapper into select mode (hides snapping temporarily)."""
         self.selectMode = mode
         if not mode:
             self.setCursor()
@@ -1100,26 +1117,28 @@ class Snapper:
             if self.trackLine:
                 self.trackLine.off()
 
-    def setAngle(self,delta=None):
-        "keeps the current angle"
+    def setAngle(self, delta=None):
+        """Keep the current angle."""
         if delta:
             self.mask = delta
-        elif isinstance(self.mask,FreeCAD.Vector):
+        elif isinstance(self.mask, FreeCAD.Vector):
             self.mask = None
         elif self.trackLine:
             if self.trackLine.Visible:
                 self.mask = self.trackLine.p2().sub(self.trackLine.p1())
 
-    def constrain(self,point,basepoint=None,axis=None):
-        '''constrain(point,basepoint=None,axis=None: Returns a
+    def constrain(self, point, basepoint=None, axis=None):
+        """Return a constrained point.
+
+        constrain(point,basepoint=None,axis=None: Returns a
         constrained point. Axis can be "x","y" or "z" or a custom vector. If None,
         the closest working plane axis will be picked.
         Basepoint is the base point used to figure out from where the point
         must be constrained. If no basepoint is given, the current point is
-        used as basepoint.'''
-
+        used as basepoint.
+        """
         # without the Draft module fully loaded, no axes system!"
-        if not hasattr(FreeCAD,"DraftWorkingPlane"):
+        if not hasattr(FreeCAD, "DraftWorkingPlane"):
             return point
 
         point = Vector(point)
@@ -1144,7 +1163,7 @@ class Snapper:
             self.affinity = self.mask
         if not self.affinity:
             self.affinity = FreeCAD.DraftWorkingPlane.getClosestAxis(delta)
-        if isinstance(axis,FreeCAD.Vector):
+        if isinstance(axis, FreeCAD.Vector):
             self.constraintAxis = axis
         elif axis == "x":
             self.constraintAxis = FreeCAD.DraftWorkingPlane.u
@@ -1159,7 +1178,7 @@ class Snapper:
                 self.constraintAxis = FreeCAD.DraftWorkingPlane.v
             elif self.affinity == "z":
                 self.constraintAxis = FreeCAD.DraftWorkingPlane.axis
-            elif isinstance(self.affinity,FreeCAD.Vector):
+            elif isinstance(self.affinity, FreeCAD.Vector):
                 self.constraintAxis = self.affinity
             else:
                 self.constraintAxis = None
@@ -1168,7 +1187,7 @@ class Snapper:
             return point
 
         # calculating constrained point
-        cdelta = DraftVecUtils.project(delta,self.constraintAxis)
+        cdelta = DraftVecUtils.project(delta, self.constraintAxis)
         npoint = self.basepoint.add(cdelta)
 
         # setting constrain line
@@ -1183,22 +1202,26 @@ class Snapper:
         return npoint
 
     def unconstrain(self):
+        """Unset the basepoint and the constrain line."""
         self.basepoint = None
         self.affinity = None
         if self.constrainLine:
             self.constrainLine.off()
 
-    def getPoint(self,last=None,callback=None,movecallback=None,extradlg=None,title=None,mode="point"):
+    def getPoint(self, last=None, callback=None, movecallback=None,
+                 extradlg=None, title=None, mode="point"):
+        """Get a 3D point from the screen.
 
-        """
-        getPoint([last],[callback],[movecallback],[extradlg],[title]) : gets a 3D point
-        from the screen. You can provide an existing point, in that case additional
-        snap options and a tracker are available.
+        getPoint([last],[callback],[movecallback],[extradlg],[title]):
+        gets a 3D point from the screen. You can provide an existing point,
+        in that case additional snap options and a tracker are available.
         You can also pass a function as callback, which will get called
-        with the resulting point as argument, when a point is clicked, and optionally
-        another callback which gets called when the mouse is moved.
+        with the resulting point as argument, when a point is clicked,
+        and optionally another callback which gets called when
+        the mouse is moved.
 
-        If the operation gets cancelled (the user pressed Escape), no point is returned.
+        If the operation gets cancelled (the user pressed Escape),
+        no point is returned.
 
         Example:
 
@@ -1208,17 +1231,15 @@ class Snapper:
 
         FreeCADGui.Snapper.getPoint(callback=cb)
 
-        If the callback function accepts more than one argument, it will also receive
-        the last snapped object. Finally, a qt widget can be passed as an extra taskbox.
-        title is the title of the point task box
-        mode is the dialog box you want (default is point, you can also use wire and line)
+        If the callback function accepts more than one argument,
+        it will also receive the last snapped object. Finally, a qt widget
+        can be passed as an extra taskbox.
+        title is the title of the point task box mode is the dialog box
+        you want (default is point, you can also use wire and line)
 
-        If getPoint() is invoked without any argument, nothing is done but the callbacks
-        are removed, so it can be used as a cancel function.
+        If getPoint() is invoked without any argument, nothing is done
+        but the callbacks are removed, so it can be used as a cancel function.
         """
-
-        import inspect
-
         self.pt = None
         self.lastSnappedObject = None
         self.holdPoints = []
@@ -1227,9 +1248,9 @@ class Snapper:
 
         # remove any previous leftover callbacks
         if self.callbackClick:
-            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+            self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
         if self.callbackMove:
-            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+            self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
         self.callbackClick = None
         self.callbackMove = None
 
@@ -1238,15 +1259,19 @@ class Snapper:
             mousepos = event.getPosition()
             ctrl = event.wasCtrlDown()
             shift = event.wasShiftDown()
-            self.pt = FreeCADGui.Snapper.snap(mousepos,lastpoint=last,active=ctrl,constrain=shift)
-            if hasattr(FreeCAD,"DraftWorkingPlane"):
-                self.ui.displayPoint(self.pt,last,plane=FreeCAD.DraftWorkingPlane,mask=FreeCADGui.Snapper.affinity)
+            self.pt = FreeCADGui.Snapper.snap(mousepos, lastpoint=last,
+                                              active=ctrl, constrain=shift)
+            if hasattr(FreeCAD, "DraftWorkingPlane"):
+                self.ui.displayPoint(self.pt, last,
+                                     plane=FreeCAD.DraftWorkingPlane,
+                                     mask=FreeCADGui.Snapper.affinity)
             if movecallback:
-                movecallback(self.pt,self.snapInfo)
+                movecallback(self.pt, self.snapInfo)
 
-        def getcoords(point,relative=False):
+        def getcoords(point, relative=False):
+            """Get the global coordinates from a point."""
             self.pt = point
-            if relative and last and hasattr(FreeCAD,"DraftWorkingPlane"):
+            if relative and last and hasattr(FreeCAD, "DraftWorkingPlane"):
                 v = FreeCAD.DraftWorkingPlane.getGlobalCoords(point)
                 self.pt = last.add(v)
             accept()
@@ -1259,9 +1284,9 @@ class Snapper:
 
         def accept():
             if self.callbackClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
             if self.callbackMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
             self.callbackClick = None
             self.callbackMove = None
             obj = FreeCADGui.Snapper.lastSnappedObject
@@ -1269,23 +1294,23 @@ class Snapper:
             self.ui.offUi()
             if callback:
                 if len(inspect.getargspec(callback).args) > 1:
-                    callback(self.pt,obj)
+                    callback(self.pt, obj)
                 else:
                     callback(self.pt)
             self.pt = None
 
         def cancel():
             if self.callbackClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),self.callbackClick)
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
             if self.callbackMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),self.callbackMove)
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
             self.callbackClick = None
             self.callbackMove = None
             FreeCADGui.Snapper.off()
             self.ui.offUi()
             if callback:
                 if len(inspect.getargspec(callback).args) > 1:
-                    callback(None,None)
+                    callback(None, None)
                 else:
                     callback(None)
 
@@ -1298,111 +1323,121 @@ class Snapper:
             interface = self.ui.pointUi
         if callback:
             if title:
-                interface(title=title,cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
+                interface(title=title, cancel=cancel, getcoords=getcoords,
+                          extra=extradlg, rel=bool(last))
             else:
                 interface(cancel=cancel,getcoords=getcoords,extra=extradlg,rel=bool(last))
             self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(),click)
             self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(),move)
 
     def makeSnapToolBar(self):
-        "builds the Snap toolbar"
+        """Build the Snap toolbar."""
         mw = FreeCADGui.getMainWindow()
         self.toolbar = QtGui.QToolBar(mw)
         mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
+
         # grid button
         self.gridbutton = QtGui.QAction(mw)
         self.gridbutton.setIcon(QtGui.QIcon.fromTheme("Draft_Grid", QtGui.QIcon(":/icons/Draft_Grid.svg")))
-        self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
-        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid On/Off"))
+        self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid", "Grid"))
+        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid", "Toggles the Draft grid On/Off"))
         self.gridbutton.setObjectName("GridButton")
         self.gridbutton.setWhatsThis("Draft_ToggleGrid")
-        QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
+        QtCore.QObject.connect(self.gridbutton, QtCore.SIGNAL("triggered()"), self.toggleGrid)
         self.toolbar.addAction(self.gridbutton)
+
         # master button
         self.masterbutton = QtGui.QAction(mw)
         self.masterbutton.setIcon(QtGui.QIcon.fromTheme("Snap_Lock", QtGui.QIcon(":/icons/Snap_Lock.svg")))
-        self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Lock"))
-        self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
+        self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock", "Lock"))
+        self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock", "Toggle On/Off"))
         self.masterbutton.setObjectName("SnapButtonMain")
         self.masterbutton.setWhatsThis("Draft_ToggleSnap")
         self.masterbutton.setCheckable(True)
         self.masterbutton.setChecked(True)
-        QtCore.QObject.connect(self.masterbutton,QtCore.SIGNAL("toggled(bool)"),self.toggle)
+        QtCore.QObject.connect(self.masterbutton,
+                               QtCore.SIGNAL("toggled(bool)"), self.toggle)
         self.toolbar.addAction(self.masterbutton)
         for c,i in self.cursors.items():
             if i:
                 b = QtGui.QAction(mw)
                 b.setIcon(QtGui.QIcon.fromTheme(i.replace(':/icons/', '').replace('.svg', ''), QtGui.QIcon(i)))
                 if c == "passive":
-                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
-                    b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
+                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_Near", "Nearest"))
+                    b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Near", "Nearest"))
                 else:
-                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
-                    b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
-                b.setObjectName("SnapButton"+c)
-                b.setWhatsThis("Draft_"+c.capitalize())
+                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(), c.capitalize()))
+                    b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(), c.capitalize()))
+                b.setObjectName("SnapButton" + c)
+                b.setWhatsThis("Draft_" + c.capitalize())
                 b.setCheckable(True)
                 b.setChecked(True)
                 self.toolbar.addAction(b)
                 self.toolbarButtons.append(b)
-                QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
+                QtCore.QObject.connect(b, QtCore.SIGNAL("toggled(bool)"),
+                                       self.saveSnapModes)
+
         # adding non-snap button
-        for n in ["Dimensions","WorkingPlane"]:
+        for n in ("Dimensions", "WorkingPlane"):
             b = QtGui.QAction(mw)
             b.setIcon(QtGui.QIcon.fromTheme("Snap_" + n, QtGui.QIcon(":/icons/Snap_"+n+".svg")))
-            b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
-            b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
-            b.setObjectName("SnapButton"+n)
-            b.setWhatsThis("Draft_"+n)
+            b.setText(QtCore.QCoreApplication.translate("Draft_Snap_" + n,n))
+            b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_" + n,n))
+            b.setObjectName("SnapButton" + n)
+            b.setWhatsThis("Draft_" + n)
             b.setCheckable(True)
             b.setChecked(True)
             self.toolbar.addAction(b)
-            QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
+            QtCore.QObject.connect(b, QtCore.SIGNAL("toggled(bool)"),
+                                   self.saveSnapModes)
             self.toolbarButtons.append(b)
+
         # set status tip where needed
         for b in self.toolbar.actions():
             if len(b.statusTip()) == 0:
                 b.setStatusTip(b.toolTip())
+
         # restoring states
-        t = Draft.getParam("snapModes","111111111101111")
+        t = Draft.getParam("snapModes", "111111111101111")
         if t:
             c = 0
-            for b in [self.masterbutton]+self.toolbarButtons:
+            for b in [self.masterbutton] + self.toolbarButtons:
                 if len(t) > c:
                     state = bool(int(t[c]))
                     b.setChecked(state)
                     if state:
-                        b.setToolTip(b.toolTip()+" (ON)")
+                        b.setToolTip(b.toolTip() + " (ON)")
                     else:
-                        b.setToolTip(b.toolTip()+" (OFF)")
+                        b.setToolTip(b.toolTip() + " (OFF)")
                     c += 1
-        if not Draft.getParam("showSnapBar",True):
+        if not Draft.getParam("showSnapBar", True):
             self.toolbar.hide()
 
     def toggleGrid(self):
+        """Run Draft_ToggleGrid."""
         FreeCADGui.runCommand("Draft_ToggleGrid")
 
     def saveSnapModes(self):
-        "saves the snap modes for next sessions"
+        """Save the snap modes for next sessions."""
         t = ''
-        for b in [self.masterbutton]+self.toolbarButtons:
+        for b in [self.masterbutton] + self.toolbarButtons:
             t += str(int(b.isChecked()))
             if b.isChecked():
-                b.setToolTip(b.toolTip().replace("OFF","ON"))
+                b.setToolTip(b.toolTip().replace("OFF", "ON"))
             else:
-                b.setToolTip(b.toolTip().replace("ON","OFF"))
-        Draft.setParam("snapModes",t)
+                b.setToolTip(b.toolTip().replace("ON", "OFF"))
+        Draft.setParam("snapModes", t)
 
-    def toggle(self,checked=None):
-        "toggles the snap mode"
-        if hasattr(self,"toolbarButtons"):
+    def toggle(self, checked=None):
+        """Toggle the snap mode."""
+        if hasattr(self, "toolbarButtons"):
             if checked is None:
                 self.masterbutton.toggle()
             elif checked:
-                if hasattr(self,"savedButtonStates"):
+                if hasattr(self, "savedButtonStates"):
                     for i in range(len(self.toolbarButtons)):
                         self.toolbarButtons[i].setEnabled(True)
                         self.toolbarButtons[i].setChecked(self.savedButtonStates[i])
@@ -1414,25 +1449,26 @@ class Snapper:
         self.saveSnapModes()
 
     def showradius(self):
-        "shows the snap radius indicator"
-        self.radius =  self.getScreenDist(Draft.getParam("snapRange", 8),(400,300))
+        """Show the snap radius indicator."""
+        self.radius = self.getScreenDist(Draft.getParam("snapRange", 8),
+                                         (400, 300))
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.on()
 
-    def isEnabled(self,but):
-        "returns true if the given button is turned on"
+    def isEnabled(self, but):
+        """Return true if the given button is turned on."""
         for b in self.toolbarButtons:
             if str(b.objectName()) == "SnapButton" + but:
                 return (b.isEnabled() and b.isChecked())
         return False
 
     def show(self):
-        "shows the toolbar and the grid"
-        if not hasattr(self,"toolbar"):
+        """Show the toolbar and the grid."""
+        if not hasattr(self, "toolbar"):
             self.makeSnapToolBar()
         mw = FreeCADGui.getMainWindow()
-        bt = mw.findChild(QtGui.QToolBar,"Draft Snap")
+        bt = mw.findChild(QtGui.QToolBar, "Draft Snap")
         if not bt:
             mw.addToolBar(self.toolbar)
             self.toolbar.setParent(mw)
@@ -1451,18 +1487,20 @@ class Snapper:
                                 c.height.setValue(h)
 
     def hide(self):
-        if hasattr(self,"toolbar"):
+        """Hide the toolbar."""
+        if hasattr(self, "toolbar"):
             self.toolbar.hide()
             self.toolbar.toggleViewAction().setVisible(True)
 
     def setGrid(self):
-        "sets the grid, if visible"
+        """Set the grid, if visible."""
         self.setTrackers()
         if self.grid and (not self.forceGridOff):
             if self.grid.Visible:
                 self.grid.set()
 
     def setTrackers(self):
+        """Set the trackers."""
         v = Draft.get3DView()
         if v != self.activeview:
             if v in self.trackers[0]:
@@ -1477,7 +1515,7 @@ class Snapper:
                 self.extLine2 = self.trackers[8][i]
                 self.holdTracker = self.trackers[9][i]
             else:
-                if Draft.getParam("grid",True):
+                if Draft.getParam("grid", True):
                     self.grid = trackers.gridTracker()
                     self.grid.on()
                 else:
@@ -1487,7 +1525,7 @@ class Snapper:
                 if self.snapStyle:
                     c = FreeCADGui.draftToolBar.getDefaultColor("snap")
                     self.extLine = trackers.lineTracker(scolor=c)
-                    self.extLine2 = trackers.lineTracker(scolor = c)
+                    self.extLine2 = trackers.lineTracker(scolor=c)
                 else:
                     self.extLine = trackers.lineTracker(dotted=True)
                     self.extLine2 = trackers.lineTracker(dotted=True)
@@ -1512,7 +1550,8 @@ class Snapper:
             self.grid.set()
 
     def addHoldPoint(self):
-        if self.spoint and not(self.spoint in self.holdPoints):
+        """Add hold snap point to list of hold points."""
+        if self.spoint and self.spoint not in self.holdPoints:
             if self.holdTracker:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()
