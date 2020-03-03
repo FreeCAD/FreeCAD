@@ -27,6 +27,7 @@
 #include "Curvature.h"
 #include "Visitor.h"
 #include <vector>
+#include <memory>
 
 namespace MeshCore {
 
@@ -55,6 +56,7 @@ protected:
     std::vector<MeshSegment> segments;
     unsigned long minFacets;
 };
+typedef std::shared_ptr<MeshSurfaceSegment> MeshSurfaceSegmentPtr;
 
 // --------------------------------------------------------
 
@@ -263,7 +265,7 @@ class MeshExport MeshSegmentAlgorithm
 {
 public:
     MeshSegmentAlgorithm(const MeshKernel& kernel) : myKernel(kernel) {}
-    void FindSegments(std::vector<MeshSurfaceSegment*>&);
+    void FindSegments(std::vector<MeshSurfaceSegmentPtr>&);
 
 private:
     const MeshKernel& myKernel;
