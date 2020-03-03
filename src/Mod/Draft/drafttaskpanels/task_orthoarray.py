@@ -242,9 +242,9 @@ class TaskPanelOrthoArray:
                               _Quantity(v_Y_y_str).Value,
                               _Quantity(v_Y_z_str).Value)
 
-        v_Z_x_str = self.form.input_X_x.text()
-        v_Z_y_str = self.form.input_X_y.text()
-        v_Z_z_str = self.form.input_X_z.text()
+        v_Z_x_str = self.form.input_Z_x.text()
+        v_Z_y_str = self.form.input_Z_y.text()
+        v_Z_z_str = self.form.input_Z_z.text()
         self.v_Z = App.Vector(_Quantity(v_Z_x_str).Value,
                               _Quantity(v_Z_y_str).Value,
                               _Quantity(v_Z_z_str).Value)
