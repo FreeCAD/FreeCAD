@@ -171,6 +171,21 @@ float PlaneSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
         return fitter->GetDistanceToPlane(pnt);
 }
 
+Base::Vector3f PlaneSurfaceFit::Project(const Base::Vector3f& pt) const
+{
+    Base::Vector3f prj(pt);
+    if (!fitter) {
+        prj.ProjectToPlane(basepoint, normal);
+    }
+    else {
+        Base::Vector3f base = fitter->GetBase();
+        Base::Vector3f norm = fitter->GetNormal();
+        prj.ProjectToPlane(base, norm);
+    }
+
+    return prj;
+}
+
 // --------------------------------------------------------
 
 CylinderSurfaceFit::CylinderSurfaceFit()
@@ -257,6 +272,12 @@ float CylinderSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
     return (dist - radius);
 }
 
+Base::Vector3f CylinderSurfaceFit::Project(const Base::Vector3f& pt) const
+{
+    //TODO
+    return pt;
+}
+
 // --------------------------------------------------------
 
 SphereSurfaceFit::SphereSurfaceFit()
@@ -332,6 +353,12 @@ float SphereSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
     return (dist - radius);
 }
 
+Base::Vector3f SphereSurfaceFit::Project(const Base::Vector3f& pt) const
+{
+    //TODO
+    return pt;
+}
+
 // --------------------------------------------------------
 
 MeshDistanceGenericSurfaceFitSegment::MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit* fit,
@@ -381,6 +408,17 @@ void MeshDistanceGenericSurfaceFitSegment::AddFacet(const MeshFacet& face)
 {
     MeshGeomFacet triangle = kernel.GetFacet(face);
     fitter->AddTriangle(triangle);
+}
+
+std::vector<Base::Vector3f> MeshDistanceGenericSurfaceFitSegment::Project(const std::vector<Base::Vector3f>& pts) const
+{
+    std::vector<Base::Vector3f> prj;
+    prj.reserve(pts.size());
+    for (const auto it : pts) {
+        prj.push_back(fitter->Project(it));
+    }
+
+    return prj;
 }
 
 // --------------------------------------------------------
