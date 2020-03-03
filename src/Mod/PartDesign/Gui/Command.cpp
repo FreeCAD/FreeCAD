@@ -1013,7 +1013,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
 void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const std::string& which,
                         boost::function<void (Part::Feature*, App::DocumentObject*)> func)
 {
-    auto base_worker = [=](App::DocumentObject* feature, std::string sub) {
+    auto base_worker = [=](App::DocumentObject* feature, const std::vector<string> &subs) {
 
         if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
             return;
@@ -1032,11 +1032,14 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
         
         auto objCmd = Gui::Command::getObjectCmd(feature);
-        if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty()) {
             FCMD_OBJ_CMD(Feat,"Profile = " << objCmd);
         }
         else {
-            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", ['" << sub << "'])");   
+            std::ostringstream ss;
+            for(auto &s : subs)
+                ss << "'" << s << "',";
+            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");   
         }         
 
         func(static_cast<Part::Feature*>(feature), Feat);
@@ -1044,8 +1047,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
     //if a profile is selected we can make our life easy and fast
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (!selection.empty() && selection.front().hasSubNames()) {
-        base_worker(selection.front().getObject(), selection.front().getSubNames().front());
+    if (!selection.empty()) {
+        base_worker(selection.front().getObject(), selection.front().getSubNames());
         return;
     }
 
@@ -1079,7 +1082,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
     };
 
     auto sketch_worker = [&, base_worker](std::vector<App::DocumentObject*> features) {
-        base_worker(features.front(), "");
+        base_worker(features.front(), {});
     };
 
     //if there is a sketch selected which is from another body or part we need to bring up the
