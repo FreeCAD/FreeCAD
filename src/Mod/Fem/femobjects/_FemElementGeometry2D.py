@@ -27,10 +27,17 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM element geometry 2D object
 
+from . import FemConstraint
 
-class _FemElementGeometry2D:
+
+class _FemElementGeometry2D(FemConstraint.Proxy):
     "The FemElementGeometry2D object"
+
+    Type = "Fem::ElementGeometry2D"
+
     def __init__(self, obj):
+        super(_FemElementGeometry2D, self).__init__(obj)
+
         obj.addProperty(
             "App::PropertyLength",
             "Thickness",
@@ -43,8 +50,3 @@ class _FemElementGeometry2D:
             "ShellThickness",
             "List of shell thickness shapes"
         )
-        obj.Proxy = self
-        self.Type = "Fem::ElementGeometry2D"
-
-    def execute(self, obj):
-        return
