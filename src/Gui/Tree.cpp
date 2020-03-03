@@ -359,7 +359,7 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(true,0), contextItem(0)
     , searchObject(0), searchDoc(0), searchContextDoc(0)
-    , editingItem(0), currentDocItem(0)
+    , editingItem(0), hiddenItem(0), currentDocItem(0)
     , myName(name)
 {
     Instances.insert(this);
@@ -2472,7 +2472,14 @@ void TreeWidget::onUpdateStatus(void)
 
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 {
-    // object item selected
+    if(hiddenItem == item) {
+        TREE_MSG("skip hidden item " << item);
+        return;
+    } else if (hiddenItem) {
+        TREE_MSG("reset hidden item " << hiddenItem);
+        hiddenItem = nullptr;
+    }
+
     if (item && item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* objItem = static_cast<DocumentObjectItem*>(item);
         objItem->displayStatusInfo();
@@ -2830,6 +2837,17 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
 {
     switch (msg.Type)
     {
+    case SelectionChanges::HideSelection: {
+        auto docItem = getDocumentItem(
+                Application::Instance->getDocument(msg.Object.getDocument()));
+        if(!docItem) 
+            break;
+        hiddenItem = docItem->findItemByObject(
+                false, msg.Object.getObject(),msg.pSubName);
+        TREE_MSG("hidden item " << hiddenItem << ' '
+                << msg.pObjectName << '.' << msg.pSubName);
+        break;
+    }
     case SelectionChanges::ClrSelection: 
         for(auto item : selectedItems()) {
             if(item->type() == ObjectType)
@@ -3996,11 +4014,13 @@ App::DocumentObject *DocumentItem::getTopParent(
 DocumentObjectItem *DocumentItem::findItemByObject(
         bool sync, App::DocumentObject *obj, const char *subname, bool select) 
 {
+    DocumentObjectItem *item = 0;
+    if(!obj)
+        return item;
     if(!subname)
         subname = "";
 
     std::string sub(subname);
-    DocumentObjectItem *item = 0;
     getTopParent(obj,sub,&item);
     if(item)
         item = findItem(sync,item,subname,select);

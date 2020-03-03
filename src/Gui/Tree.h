@@ -222,6 +222,7 @@ private:
     Gui::Document *searchDoc;
     Gui::Document *searchContextDoc;
     DocumentObjectItem *editingItem;
+    DocumentObjectItem *hiddenItem;
     DocumentItem *currentDocItem;
     QTreeWidgetItem* rootItem;
     QTimer* statusTimer;
