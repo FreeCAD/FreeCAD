@@ -28,10 +28,13 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemElementFluid1D
 
+from . import FemConstraint
 
-class _FemElementFluid1D:
+
+class _FemElementFluid1D(FemConstraint.Proxy):
     "The FemElementFluid1D object"
 
+    Type = "Fem::ElementFluid1D"
     known_fluid_types = ["Liquid"]
     # "Gas", "Open Channel" are not implemented in ccx writer
     # known_fluid_types = ["Liquid", "Gas", "Open Channel"]
@@ -52,6 +55,7 @@ class _FemElementFluid1D:
     known_channel_types = ["NONE"]
 
     def __init__(self, obj):
+        super(_FemElementFluid1D, self).__init__(obj)
         obj.addProperty(
             "App::PropertyLinkSubList",
             "References",
@@ -309,8 +313,3 @@ class _FemElementFluid1D:
         obj.OutletPressureActive = True
         obj.InletFlowRateActive = False
         obj.OutletFlowRateActive = False
-        obj.Proxy = self
-        self.Type = "Fem::ElementFluid1D"
-
-    def execute(self, obj):
-        return
