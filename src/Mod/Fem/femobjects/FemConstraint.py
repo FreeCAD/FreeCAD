@@ -32,6 +32,6 @@ class Proxy(object):
     BaseType = "Fem::ConstraintPython"
 
     def __init__(self, obj):
-        obj.Proxy = self
+        obj.Proxy = self  # link between App::DocumentObject to this object
 
 ##  @}

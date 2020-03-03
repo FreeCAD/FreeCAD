@@ -27,12 +27,18 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FEM nonlinear mechanical material object
 
+from . import FemConstraint
 
-class _FemMaterialMechanicalNonlinear:
-    "The FemMaterialMechanicalNonlinear object"
+
+class _FemMaterialMechanicalNonlinear(FemConstraint.Proxy):
+    """
+    The FemMaterialMechanicalNonlinear object
+    """
+
+    Type = "Fem::MaterialMechanicalNonlinear"
+
     def __init__(self, obj):
-        obj.Proxy = self
-        self.Type = "Fem::MaterialMechanicalNonlinear"
+        super(_FemMaterialMechanicalNonlinear, self).__init__(obj)
 
         obj.addProperty(
             "App::PropertyLink",
@@ -74,6 +80,3 @@ class _FemMaterialMechanicalNonlinear:
             "Set stress and strain for yield point three, separated by a comma."
         )
         obj.YieldPoint3 = ""
-
-    def execute(self, obj):
-        return
