@@ -30,6 +30,7 @@
 #endif
 
 #include "Approximation.h"
+#include "Elements.h"
 #include "Utilities.h"
 
 #include <Base/BoundBox.h>
@@ -92,6 +93,12 @@ void Approximation::AddPoints(const std::set<Base::Vector3f> &points)
 }
 
 void Approximation::AddPoints(const std::list<Base::Vector3f> &points)
+{
+    std::copy(points.begin(), points.end(), std::back_inserter(_vPoints));
+    _bIsFitted = false;
+}
+
+void Approximation::AddPoints(const MeshPointArray &points)
 {
     std::copy(points.begin(), points.end(), std::back_inserter(_vPoints));
     _bIsFitted = false;

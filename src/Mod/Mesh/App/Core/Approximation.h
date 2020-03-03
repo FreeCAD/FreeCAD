@@ -94,6 +94,7 @@ protected:
 }
 
 namespace MeshCore {
+class MeshPointArray;
 
 /**
  * Abstract base class for approximation of a geometry to a given set of points.
@@ -125,6 +126,10 @@ public:
      * Add points for the fit algorithm.
      */
     void AddPoints(const std::list<Base::Vector3f> &rsPointList);
+    /**
+     * Add points for the fit algorithm.
+     */
+    void AddPoints(const MeshPointArray &points);
     /**
      * Get all added points.
      */

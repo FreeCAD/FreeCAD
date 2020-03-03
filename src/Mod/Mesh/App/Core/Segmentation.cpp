@@ -471,7 +471,7 @@ bool MeshSurfaceVisitor::Visit (const MeshFacet & face, const MeshFacet &,
 
 // --------------------------------------------------------
 
-void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegment*>& segm)
+void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegmentPtr>& segm)
 {
     // reset VISIT flags
     unsigned long startFacet;
@@ -487,7 +487,7 @@ void MeshSegmentAlgorithm::FindSegments(std::vector<MeshSurfaceSegment*>& segm)
     cAlgo.CountFacetFlag(MeshCore::MeshFacet::VISIT);
     std::vector<unsigned long> resetVisited;
 
-    for (std::vector<MeshSurfaceSegment*>::iterator it = segm.begin(); it != segm.end(); ++it) {
+    for (std::vector<MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
         cAlgo.ResetFacetsFlag(resetVisited, MeshCore::MeshFacet::VISIT);
         resetVisited.clear();
 
