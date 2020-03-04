@@ -714,7 +714,7 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Arra
         _Array(obj)
     obj.Base = baseobject
     if arg6:
-        if isinstance(arg1, (int, float)):
+        if isinstance(arg1, (int, float, FreeCAD.Units.Quantity)):
             obj.ArrayType = "circular"
             obj.RadialDistance = arg1
             obj.TangentialDistance = arg2
