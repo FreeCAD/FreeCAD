@@ -433,9 +433,9 @@ class DraftModification(unittest.TestCase):
         _msg("  Array")
         _msg("  radial_distance={0}, "
              "tangential_distance={1}".format(rad_distance, tan_distance))
+        _msg("  number={0}, symmetry={1}".format(number, symmetry))
         _msg("  axis={}".format(axis))
         _msg("  center={}".format(center))
-        _msg("  number={0}, symmetry={1}".format(number, symmetry))
         obj = Draft.makeArray(rect,
                               rad_distance, tan_distance,
                               axis, center,
