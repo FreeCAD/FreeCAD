@@ -2,6 +2,8 @@
 # *   Copyright (c) 2015 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -60,7 +62,7 @@ class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
             _TaskPanel,
         )
 
-    # overwrite unsetEdit, because the mesh result obj needs to be hided on task panel exit
+    # overwrite unsetEdit, hide result mesh object on task panel exit
     def unsetEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
         # hide the mesh after result viewing is finished, but do not reset the coloring

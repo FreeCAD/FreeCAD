@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -28,22 +30,25 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD FEM _ViewProviderFemMeshGmsh
 
 import sys
-import FreeCAD
-import FreeCADGui
-import FemGui
-from . import ViewProviderFemConstraint
+import time
 
-# for the panel
-from femobjects import _FemMeshGmsh
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
 from PySide.QtGui import QApplication
-import time
+
+import FreeCAD
+import FreeCADGui
+
+import FemGui
+from . import ViewProviderFemConstraint
+from femobjects import _FemMeshGmsh
 
 
 class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
-    "A View Provider for the FemMeshGmsh object"
+    """
+    A View Provider for the FemMeshGmsh object
+    """
 
     def getIcon(self):
         return ":/icons/fem-femmesh-from-shape.svg"
@@ -53,13 +58,13 @@ class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
             self,
             vobj,
             mode,
-            _TaskPanelFemMeshGmsh
+            _TaskPanel
         )
 
-    # overwrite unsetEdit, because the mesh should to be hided on task panel exit
+    # overwrite unsetEdit, hide mesh object on task panel exit
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
-        self.ViewObject.hide()  # hide the mesh after edit is finished
+        self.ViewObject.hide()
         return True
 
     def doubleClicked(self, vobj):
@@ -222,9 +227,11 @@ class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
         FreeCAD.ActiveDocument.recompute()
 
 
-class _TaskPanelFemMeshGmsh:
-    """The TaskPanel for editing References property of
-    FemMeshGmsh objects and creation of new FEM mesh"""
+class _TaskPanel:
+    """
+    The TaskPanel for editing References property of
+    FemMeshGmsh objects and creation of new FEM mesh
+    """
 
     def __init__(self, obj):
         self.mesh_obj = obj
