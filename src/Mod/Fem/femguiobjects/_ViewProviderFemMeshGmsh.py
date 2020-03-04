@@ -31,6 +31,7 @@ import sys
 import FreeCAD
 import FreeCADGui
 import FemGui
+from . import ViewProviderFemConstraint
 
 # for the panel
 from femobjects import _FemMeshGmsh
@@ -41,38 +42,21 @@ from PySide.QtGui import QApplication
 import time
 
 
-class _ViewProviderFemMeshGmsh:
+class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
     "A View Provider for the FemMeshGmsh object"
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
 
     def getIcon(self):
         return ":/icons/fem-femmesh-from-shape.svg"
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
+    def setEdit(self, vobj, mode=0):
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanelFemMeshGmsh
+        )
 
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def setEdit(self, vobj, mode):
-        # hide all meshes
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
-                o.ViewObject.hide()
-        # show the mesh we like to edit
-        self.ViewObject.show()
-        # show task panel
-        taskd = _TaskPanelFemMeshGmsh(self.Object)
-        taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
+    # overwrite unsetEdit, because the mesh should to be hided on task panel exit
     def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
         self.ViewObject.hide()  # hide the mesh after edit is finished
@@ -165,12 +149,6 @@ class _ViewProviderFemMeshGmsh:
             QMessageBox.critical(None, "Error in tree view", message)
             FreeCAD.Console.PrintError(message + "\n")
         return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
 
     def claimChildren(self):
         reg_childs = self.Object.MeshRegionList
