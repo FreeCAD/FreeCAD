@@ -276,9 +276,8 @@ PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 
 SubShapeBinder::SubShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_Hidden|App::Prop_None),
-            "Support of the geometry");
-    Support.setStatus(App::Property::Immutable,true);
+    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
+    Support.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
