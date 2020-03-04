@@ -279,17 +279,24 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_Hidden|App::Prop_None),
             "Support of the geometry");
     Support.setStatus(App::Property::Immutable,true);
-    ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fused linked solid shapes");
-    ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face for linked wires");
+    ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
+    ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
-    ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object linking");
-    ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, "Binding mode");
-    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::Prop_None, "Enable partial loading");
+    ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object binding");
+    ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, 
+            "Synchronized: auto update binder shape on changed of bound object.\n"
+            "Frozen: disable auto update, but can be updated manually using context menu.\n"
+            "Detached: copy the shape of bound object and then remove the binding immediately.");
+    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::Prop_None,
+            "Enable partial loading, which disables auto loading of external document for"
+            "external bound object.");
     PartialLoad.setStatus(App::Property::PartialTrigger,true);
     static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
 
-    ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden, "Enable partial loading");
+    ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden,
+            "Stores the context of this binder. It is used for monitoring and auto updating\n"
+            "the relative placement of the bound shape");
     Context.setScope(App::LinkScope::Hidden);
 
     ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
