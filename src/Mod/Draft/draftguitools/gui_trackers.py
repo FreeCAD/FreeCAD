@@ -42,6 +42,7 @@ import Draft
 import DraftVecUtils
 from FreeCAD import Vector
 from draftutils.todo import ToDo
+from draftutils.messages import _msg
 
 __title__ = "FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
@@ -518,16 +519,17 @@ class bezcurveTracker(Tracker):
                         FreeCAD.Console.PrintWarning("bezcurveTracker.recompute() failed to read-in Inventor string\n")
                 self.bezcurve.append(bezcurveseg)
 
-                        
-#######################################
+
 class arcTracker(Tracker):
-    """An arc tracker"""
-    def __init__(self,dotted=False,scolor=None,swidth=None,start=0,end=math.pi*2,normal=None):
+    """An arc tracker."""
+
+    def __init__(self, dotted=False, scolor=None, swidth=None,
+                 start=0, end=math.pi*2, normal=None):
         self.circle = None
         self.startangle = math.degrees(start)
         self.endangle = math.degrees(end)
         self.trans = coin.SoTransform()
-        self.trans.translation.setValue([0,0,0])
+        self.trans.translation.setValue([0, 0, 0])
         self.sep = coin.SoSeparator()
         self.autoinvert = True
         if normal:
@@ -536,72 +538,74 @@ class arcTracker(Tracker):
             self.normal = FreeCAD.DraftWorkingPlane.axis
         self.basevector = self.getDeviation()
         self.recompute()
-        Tracker.__init__(self,dotted,scolor,swidth,[self.trans, self.sep],name="arcTracker")
-        
+        Tracker.__init__(self, dotted, scolor, swidth,
+                         [self.trans, self.sep], name="arcTracker")
+
     def getDeviation(self):
-        """returns a deviation vector that represents the base of the circle"""
+        """Return a deviation vector that represents the base of the circle."""
         import Part
-        c = Part.makeCircle(1,Vector(0,0,0),self.normal)
+        c = Part.makeCircle(1, Vector(0, 0, 0), self.normal)
         return c.Vertexes[0].Point
 
-    def setCenter(self,cen):
-        """sets the center point"""
-        self.trans.translation.setValue([cen.x,cen.y,cen.z])
+    def setCenter(self, cen):
+        """Set the center point."""
+        self.trans.translation.setValue([cen.x, cen.y, cen.z])
 
-    def setRadius(self,rad):
-        """sets the radius"""
-        self.trans.scaleFactor.setValue([rad,rad,rad])
+    def setRadius(self, rad):
+        """Set the radius."""
+        self.trans.scaleFactor.setValue([rad, rad, rad])
 
     def getRadius(self):
-        """returns the current radius"""
+        """Return the current radius."""
         return self.trans.scaleFactor.getValue()[0]
 
-    def setStartAngle(self,ang):
-        """sets the start angle"""
+    def setStartAngle(self, ang):
+        """Set the start angle."""
         self.startangle = math.degrees(ang)
         self.recompute()
 
-    def setEndAngle(self,ang):
-        """sets the end angle"""
+    def setEndAngle(self, ang):
+        """Set the end angle."""
         self.endangle = math.degrees(ang)
         self.recompute()
 
-    def getAngle(self,pt):
-        """returns the angle of a given vector in radians"""
+    def getAngle(self, pt):
+        """Return the angle of a given vector in radians."""
         c = self.trans.translation.getValue()
-        center = Vector(c[0],c[1],c[2])
+        center = Vector(c[0], c[1], c[2])
         rad = pt.sub(center)
-        a = DraftVecUtils.angle(rad,self.basevector,self.normal)
-        #print(a)
-        return(a)
+        a = DraftVecUtils.angle(rad, self.basevector, self.normal)
+        # print(a)
+        return a
 
     def getAngles(self):
-        """returns the start and end angles in degrees"""
-        return(self.startangle,self.endangle)
-                
-    def setStartPoint(self,pt):
-        """sets the start angle from a point"""
+        """Return the start and end angles in degrees."""
+        return(self.startangle, self.endangle)
+
+    def setStartPoint(self, pt):
+        """Set the start angle from a point."""
         self.setStartAngle(-self.getAngle(pt))
 
-    def setEndPoint(self,pt):
-        """sets the end angle from a point"""
+    def setEndPoint(self, pt):
+        """Set the end angle from a point."""
         self.setEndAngle(-self.getAngle(pt))
-                
-    def setApertureAngle(self,ang):
-        """sets the end angle by giving the aperture angle"""
+
+    def setApertureAngle(self, ang):
+        """Set the end angle by giving the aperture angle."""
         ap = math.degrees(ang)
         self.endangle = self.startangle + ap
         self.recompute()
 
-    def setBy3Points(self,p1,p2,p3):
-        """sets the arc by three points"""
+    def setBy3Points(self, p1, p2, p3):
+        """Set the arc by three points."""
         import Part
         try:
-            arc=Part.ArcOfCircle(p1,p2,p3)
-        except: return
-        e=arc.toShape()
+            arc = Part.ArcOfCircle(p1, p2, p3)
+        except Exception:
+            return
+        e = arc.toShape()
         self.autoinvert = False
-        self.normal = e.Curve.Axis.negative() # axis is always in wrong direction
+        self.normal = e.Curve.Axis.negative()  # axis is always in wrong direction
         self.basevector = self.getDeviation()
         self.setCenter(e.Curve.Center)
         self.setRadius(e.Curve.Radius)
@@ -609,30 +613,33 @@ class arcTracker(Tracker):
         self.setEndPoint(p3)
 
     def recompute(self):
-        import Part,re
-        if self.circle: 
+        """Recompute the tracker."""
+        import Part
+        if self.circle:
             self.sep.removeChild(self.circle)
         self.circle = None
         if (self.endangle < self.startangle) or not self.autoinvert:
-            c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.endangle,self.startangle)
+            c = Part.makeCircle(1, Vector(0, 0, 0),
+                                self.normal, self.endangle, self.startangle)
         else:
-            c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.startangle,self.endangle)
-        buf=c.writeInventor(2,0.01)
+            c = Part.makeCircle(1, Vector(0, 0, 0),
+                                self.normal, self.startangle, self.endangle)
+        buf = c.writeInventor(2, 0.01)
         try:
             ivin = coin.SoInput()
             ivin.setBuffer(buf)
             ivob = coin.SoDB.readAll(ivin)
-        except:
+        except Exception:
             # workaround for pivy SoInput.setBuffer() bug
-            buf = buf.replace("\n","")
-            pts = re.findall("point \[(.*?)\]",buf)[0]
+            buf = buf.replace("\n", "")
+            pts = re.findall("point \[(.*?)\]", buf)[0]
             pts = pts.split(",")
             pc = []
             for p in pts:
                 v = p.strip().split()
-                pc.append([float(v[0]),float(v[1]),float(v[2])])
+                pc.append([float(v[0]), float(v[1]), float(v[2])])
             coords = coin.SoCoordinate3()
-            coords.point.setValues(0,len(pc),pc)
+            coords.point.setValues(0, len(pc), pc)
             line = coin.SoLineSet()
             line.numVertices.setValue(-1)
             self.circle = coin.SoSeparator()
@@ -650,14 +657,17 @@ class arcTracker(Tracker):
 
 
 class ghostTracker(Tracker):
-    '''A Ghost tracker, that allows to copy whole object representations.
-    You can pass it an object or a list of objects, or a shape.'''
-    def __init__(self,sel,dotted=False,scolor=None,swidth=None):
+    """A Ghost tracker, that allows to copy whole object representations.
+
+    You can pass it an object or a list of objects, or a shape.
+    """
+
+    def __init__(self, sel, dotted=False, scolor=None, swidth=None):
         self.trans = coin.SoTransform()
-        self.trans.translation.setValue([0,0,0])
+        self.trans.translation.setValue([0, 0, 0])
         self.children = [self.trans]
         rootsep = coin.SoSeparator()
-        if not isinstance(sel,list):
+        if not isinstance(sel, list):
             sel = [sel]
         for obj in sel:
             import Part
@@ -665,10 +675,10 @@ class ghostTracker(Tracker):
                 rootsep.addChild(self.getNode(obj))
             else:
                 self.coords = coin.SoCoordinate3()
-                self.coords.point.setValue((obj.X,obj.Y,obj.Z))
+                self.coords.point.setValue((obj.X, obj.Y, obj.Z))
                 color = coin.SoBaseColor()
                 color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
-                self.marker = coin.SoMarkerSet() # this is the marker symbol
+                self.marker = coin.SoMarkerSet()  # this is the marker symbol
                 self.marker.markerIndex = FreeCADGui.getMarkerIndex("quad", 9)
                 node = coin.SoAnnotation()
                 selnode = coin.SoSeparator()
@@ -677,63 +687,67 @@ class ghostTracker(Tracker):
                 selnode.addChild(self.marker)
                 node.addChild(selnode)
                 rootsep.addChild(node)
-        self.children.append(rootsep)        
-        Tracker.__init__(self,dotted,scolor,swidth,children=self.children,name="ghostTracker")
+        self.children.append(rootsep)
+        Tracker.__init__(self, dotted, scolor, swidth,
+                         children=self.children, name="ghostTracker")
 
-    def update(self,obj):
-        """recreates the ghost from a new object"""
+    def update(self, obj):
+        """Recreate the ghost from a new object."""
         obj.ViewObject.show()
         self.finalize()
         sep = self.getNode(obj)
-        Tracker.__init__(self,children=[self.sep])
+        Tracker.__init__(self, children=[self.sep])
         self.on()
         obj.ViewObject.hide()
 
-    def move(self,delta):
-        """moves the ghost to a given position, relative from its start position"""
-        self.trans.translation.setValue([delta.x,delta.y,delta.z])
+    def move(self, delta):
+        """Move the ghost to a given position.
 
-    def rotate(self,axis,angle):
-        """rotates the ghost of a given angle"""
-        self.trans.rotation.setValue(coin.SbVec3f(DraftVecUtils.tup(axis)),angle)
+        Relative from its start position.
+        """
+        self.trans.translation.setValue([delta.x, delta.y, delta.z])
 
-    def center(self,point):
-        """sets the rotation/scale center of the ghost"""
-        self.trans.center.setValue(point.x,point.y,point.z)
+    def rotate(self, axis, angle):
+        """Rotate the ghost of a given angle."""
+        self.trans.rotation.setValue(coin.SbVec3f(DraftVecUtils.tup(axis)), angle)
 
-    def scale(self,delta):
-        """scales the ghost by the given factor"""
-        self.trans.scaleFactor.setValue([delta.x,delta.y,delta.z])
+    def center(self, point):
+        """Set the rotation/scale center of the ghost."""
+        self.trans.center.setValue(point.x, point.y, point.z)
 
-    def getNode(self,obj):
-        """returns a coin node representing the given object"""
+    def scale(self, delta):
+        """Scale the ghost by the given factor."""
+        self.trans.scaleFactor.setValue([delta.x, delta.y, delta.z])
+
+    def getNode(self, obj):
+        """Return a coin node representing the given object."""
         import Part
-        if isinstance(obj,Part.Shape):
+        if isinstance(obj, Part.Shape):
             return self.getNodeLight(obj)
         elif obj.isDerivedFrom("Part::Feature"):
             return self.getNodeFull(obj)
         else:
             return self.getNodeFull(obj)
 
-    def getNodeFull(self,obj):
-        """gets a coin node which is a full copy of the current representation"""
+    def getNodeFull(self, obj):
+        """Get a coin node which is a copy of the current representation."""
         sep = coin.SoSeparator()
         try:
             sep.addChild(obj.ViewObject.RootNode.copy())
             # add Part container offset
-            if hasattr(obj,"getGlobalPlacement"):
+            if hasattr(obj, "getGlobalPlacement"):
                 if obj.Placement != obj.getGlobalPlacement():
                     if sep.getChild(0).getNumChildren() > 0:
                         if isinstance(sep.getChild(0).getChild(0),coin.SoTransform):
                             gpl = obj.getGlobalPlacement()
                             sep.getChild(0).getChild(0).translation.setValue(tuple(gpl.Base))
                             sep.getChild(0).getChild(0).rotation.setValue(gpl.Rotation.Q)
-        except:
-            print("ghostTracker: Error retrieving coin node (full)")
+        except Exception:
+            _msg("ghostTracker: Error retrieving coin node (full)")
         return sep
 
-    def getNodeLight(self,shape):
-        """extract a lighter version directly from a shape"""
+    def getNodeLight(self, shape):
+        """Extract a lighter version directly from a shape."""
         # error-prone
         sep = coin.SoSeparator()
         try:
@@ -743,43 +757,48 @@ class ghostTracker(Tracker):
             # only add wireframe or full node?
             sep.addChild(coinobj.getChildren()[1])
             # sep.addChild(coinobj)
-        except:
-            print("ghostTracker: Error retrieving coin node (light)")
+        except Exception:
+            _msg("ghostTracker: Error retrieving coin node (light)")
         return sep
-        
+
     def getMatrix(self):
+        """Get matrix of the active view."""
         r = FreeCADGui.ActiveDocument.ActiveView.getViewer().getSoRenderManager().getViewportRegion()
         v = coin.SoGetMatrixAction(r)
         m = self.trans.getMatrix(v)
         if m:
             m = m.getValue()
-            return FreeCAD.Matrix(m[0][0],m[0][1],m[0][2],m[0][3],
-                                  m[1][0],m[1][1],m[1][2],m[1][3],
-                                  m[2][0],m[2][1],m[2][2],m[2][3],
-                                  m[3][0],m[3][1],m[3][2],m[3][3])
+            return FreeCAD.Matrix(m[0][0], m[0][1], m[0][2], m[0][3],
+                                  m[1][0], m[1][1], m[1][2], m[1][3],
+                                  m[2][0], m[2][1], m[2][2], m[2][3],
+                                  m[3][0], m[3][1], m[3][2], m[3][3])
         else:
             return FreeCAD.Matrix()
-        
-    def setMatrix(self,matrix):
-        m = coin.SbMatrix(matrix.A11,matrix.A12,matrix.A13,matrix.A14,
-                          matrix.A21,matrix.A22,matrix.A23,matrix.A24,
-                          matrix.A31,matrix.A32,matrix.A33,matrix.A34,
-                          matrix.A41,matrix.A42,matrix.A43,matrix.A44)
+
+    def setMatrix(self, matrix):
+        """Set the transformation matrix."""
+        m = coin.SbMatrix(matrix.A11, matrix.A12, matrix.A13, matrix.A14,
+                          matrix.A21, matrix.A22, matrix.A23, matrix.A24,
+                          matrix.A31, matrix.A32, matrix.A33, matrix.A34,
+                          matrix.A41, matrix.A42, matrix.A43, matrix.A44)
         self.trans.setMatrix(m)
 
+
 class editTracker(Tracker):
-    """A node edit tracker"""
-    def __init__(self,pos=Vector(0,0,0),name=None,idx=0,objcol=None,\
-            marker=FreeCADGui.getMarkerIndex("quad", 9),inactive=False):
+    """A node edit tracker."""
+
+    def __init__(self, pos=Vector(0, 0, 0), name=None, idx=0, objcol=None,
+                 marker=FreeCADGui.getMarkerIndex("quad", 9),
+                 inactive=False):
         self.color = coin.SoBaseColor()
         if objcol:
             self.color.rgb = objcol[:3]
         else:
             self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
-        self.marker = coin.SoMarkerSet() # this is the marker symbol
+        self.marker = coin.SoMarkerSet()  # this is the marker symbol
         self.marker.markerIndex = marker
-        self.coords = coin.SoCoordinate3() # this is the coordinate
-        self.coords.point.setValue((pos.x,pos.y,pos.z))
+        self.coords = coin.SoCoordinate3()  # this is the coordinate
+        self.coords.point.setValue((pos.x, pos.y, pos.z))
         if inactive:
             self.selnode = coin.SoSeparator()
         else:
@@ -788,72 +807,89 @@ class editTracker(Tracker):
                 self.selnode.useNewSelection = False
                 self.selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
                 self.selnode.objectName.setValue(name)
-                self.selnode.subElementName.setValue("EditNode"+str(idx))
+                self.selnode.subElementName.setValue("EditNode" + str(idx))
         node = coin.SoAnnotation()
         self.selnode.addChild(self.coords)
         self.selnode.addChild(self.color)
         self.selnode.addChild(self.marker)
         node.addChild(self.selnode)
         ontop = not inactive
-        Tracker.__init__(self,children=[node],ontop=ontop,name="editTracker")
+        Tracker.__init__(self, children=[node],
+                         ontop=ontop, name="editTracker")
         self.on()
 
-    def set(self,pos):
-        self.coords.point.setValue((pos.x,pos.y,pos.z))
+    def set(self, pos):
+        """Set the point to the position."""
+        self.coords.point.setValue((pos.x, pos.y, pos.z))
 
     def get(self):
+        """Get a vector from the point."""
         p = self.coords.point.getValues()[0]
-        return Vector(p[0],p[1],p[2])
+        return Vector(p[0], p[1], p[2])
 
     def get_doc_name(self):
+        """Get the document name."""
         return str(self.selnode.documentName.getValue())
 
     def get_obj_name(self):
+        """Get the object name."""
         return str(self.selnode.objectName.getValue())
 
     def get_subelement_name(self):
+        """Get the subelement name."""
         return str(self.selnode.subElementName.getValue())
 
     def get_subelement_index(self):
+        """Get the subelement index."""
         subElement = self.get_subelement_name()
         idx = int(subElement[8:])
         return idx
 
-    def move(self,delta):
+    def move(self, delta):
+        """Get the point and add a delta, and set the new point."""
         self.set(self.get().add(delta))
 
-    def setColor(self,color):
+    def setColor(self, color):
+        """Set the color."""
         if color:
             self.color.rgb = color
         else:
             self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
 
+
 class PlaneTracker(Tracker):
-    """A working plane tracker"""
+    """A working plane tracker."""
+
     def __init__(self):
         # getting screen distance
-        p1 = Draft.get3DView().getPoint((100,100))
-        p2 = Draft.get3DView().getPoint((110,100))
-        bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange", 8)/2)
+        p1 = Draft.get3DView().getPoint((100, 100))
+        p2 = Draft.get3DView().getPoint((110, 100))
+        bl = (p2.sub(p1)).Length * (Draft.getParam("snapRange", 8)/2.0)
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
         self.trans = coin.SoTransform()
-        self.trans.translation.setValue([0,0,0])
+        self.trans.translation.setValue([0, 0, 0])
         m1 = coin.SoMaterial()
         m1.transparency.setValue(0.8)
-        m1.diffuseColor.setValue([0.4,0.4,0.6])
+        m1.diffuseColor.setValue([0.4, 0.4, 0.6])
         c1 = coin.SoCoordinate3()
-        c1.point.setValues([[-bl,-bl,0],[bl,-bl,0],[bl,bl,0],[-bl,bl,0]])
+        c1.point.setValues([[-bl, -bl, 0],
+                            [bl, -bl, 0],
+                            [bl, bl, 0],
+                            [-bl, bl, 0]])
         f = coin.SoIndexedFaceSet()
-        f.coordIndex.setValues([0,1,2,3])
+        f.coordIndex.setValues([0, 1, 2, 3])
         m2 = coin.SoMaterial()
         m2.transparency.setValue(0.7)
-        m2.diffuseColor.setValue([0.2,0.2,0.3])
+        m2.diffuseColor.setValue([0.2, 0.2, 0.3])
         c2 = coin.SoCoordinate3()
-        c2.point.setValues([[0,bl,0],[0,0,0],[bl,0,0],[-.05*bl,.95*bl,0],[0,bl,0],
-                            [.05*bl,.95*bl,0],[.95*bl,.05*bl,0],[bl,0,0],[.95*bl,-.05*bl,0]])
+        c2.point.setValues([[0, bl, 0], [0, 0, 0],
+                            [bl, 0, 0], [-0.05*bl, 0.95*bl, 0],
+                            [0, bl, 0], [0.05*bl, 0.95*bl, 0],
+                            [0.95*bl, 0.05*bl, 0], [bl, 0, 0],
+                            [0.95*bl, -0.05*bl, 0]])
         l = coin.SoLineSet()
-        l.numVertices.setValues([3,3,3])
+        l.numVertices.setValues([3, 3, 3])
         s = coin.SoSeparator()
         s.addChild(pick)
         s.addChild(self.trans)
@@ -863,21 +899,24 @@ class PlaneTracker(Tracker):
         s.addChild(m2)
         s.addChild(c2)
         s.addChild(l)
-        Tracker.__init__(self,children=[s],name="planeTracker")
+        Tracker.__init__(self, children=[s], name="planeTracker")
 
-    def set(self,pos=None):
-        if pos:                        
+    def set(self, pos=None):
+        """Set the translation to the position."""
+        if pos:
             Q = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
         else:
             plm = FreeCAD.DraftWorkingPlane.getPlacement()
             Q = plm.Rotation.Q
             pos = plm.Base
-        self.trans.translation.setValue([pos.x,pos.y,pos.z])
-        self.trans.rotation.setValue([Q[0],Q[1],Q[2],Q[3]])
+        self.trans.translation.setValue([pos.x, pos.y, pos.z])
+        self.trans.rotation.setValue([Q[0], Q[1], Q[2], Q[3]])
         self.on()
-                        
-class wireTracker(Tracker):                
-    """A wire tracker"""
+
+
+class wireTracker(Tracker):
+    """A wire tracker."""
+
     def __init__(self,wire):
         self.line = coin.SoLineSet()
         self.closed = DraftGeomUtils.isReallyClosed(wire)
