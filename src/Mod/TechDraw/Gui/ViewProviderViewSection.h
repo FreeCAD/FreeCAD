@@ -65,8 +65,7 @@ public:
 
     void updateGraphic(void);
     void getParameters(void);
-
-
+    virtual bool canDelete(App::DocumentObject* obj) const;
 
     virtual TechDraw::DrawViewSection* getViewObject() const;
 };
