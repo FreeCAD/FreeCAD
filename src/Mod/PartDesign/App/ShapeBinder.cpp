@@ -301,6 +301,44 @@ void SubShapeBinder::setupObject() {
     checkPropertyStatus();
 }
 
+App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject **pyObj,
+        Base::Matrix4D *mat, bool transform, int depth) const
+{
+    auto sobj = Part::Feature::getSubObject(subname,pyObj,mat,transform,depth);
+    if(sobj)
+        return sobj;
+    if(Data::ComplexGeoData::findElementName(subname)==subname)
+        return nullptr;
+
+    const char *dot = strchr(subname, '.');
+    if(!dot)
+        return nullptr;
+
+    App::GetApplication().checkLinkDepth(depth);
+    std::string name(subname,dot-subname);
+    for(auto &l : Support.getSubListValues()) {
+        auto obj = l.getValue();
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        for(auto &sub : l.getSubValues()) {
+            auto sobj = obj->getSubObject(sub.c_str());
+            if(!sobj || !sobj->getNameInDocument())
+                continue;
+            if(subname[0] == '$') {
+                if(sobj->Label.getStrValue() != name.c_str()+1)
+                    continue;
+            } else if(!boost::equals(sobj->getNameInDocument(), name))
+                continue;
+            name = Data::ComplexGeoData::noElementName(sub.c_str());
+            name += dot+1;
+            if(mat && transform)
+                *mat *= Placement.getValue().toMatrix();
+            return obj->getSubObject(name.c_str(),pyObj,mat,true,depth+1);
+        }
+    }
+    return nullptr;
+}
+
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
     std::vector<Part ::TopoShape> shapes;
