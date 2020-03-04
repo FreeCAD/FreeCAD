@@ -27,6 +27,8 @@
 # include <sstream>
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
+# include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <Geom_Plane.hxx>
 # include <Standard_Failure.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Wire.hxx>
@@ -94,6 +96,7 @@ void Segmentation::accept()
     MeshCore::MeshCurvature meshCurv(kernel);
     meshCurv.ComputePerVertex();
 
+    // First create segments by curavture to get the surface type
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     if (ui->groupBoxPln->isChecked()) {
         segm.emplace_back(new MeshCore::MeshCurvaturePlanarSegment
@@ -101,20 +104,23 @@ void Segmentation::accept()
     }
     finder.FindSegments(segm);
 
-    // For each planar segment compute a plane and use this then for a more accurate 2nd segmentation
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segmSurf;
     for (std::vector<MeshCore::MeshSurfaceSegmentPtr>::iterator it = segm.begin(); it != segm.end(); ++it) {
         const std::vector<MeshCore::MeshSegment>& data = (*it)->GetSegments();
-        for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
-            std::vector<unsigned long> indexes = kernel.GetFacetPoints(*jt);
-            MeshCore::PlaneFit fit;
-            fit.AddPoints(kernel.GetPoints(indexes));
-            if (fit.Fit() < FLOAT_MAX) {
-                Base::Vector3f base = fit.GetBase();
-                Base::Vector3f axis = fit.GetNormal();
-                MeshCore::AbstractSurfaceFit* fitter = new MeshCore::PlaneSurfaceFit(base, axis);
-                segmSurf.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
-                    (fitter, kernel, ui->numPln->value(), ui->distToPln->value()));
+
+        // For each planar segment compute a plane and use this then for a more accurate 2nd segmentation
+        if (strcmp((*it)->GetType(), "Plane") == 0) {
+            for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
+                std::vector<unsigned long> indexes = kernel.GetFacetPoints(*jt);
+                MeshCore::PlaneFit fit;
+                fit.AddPoints(kernel.GetPoints(indexes));
+                if (fit.Fit() < FLOAT_MAX) {
+                    Base::Vector3f base = fit.GetBase();
+                    Base::Vector3f axis = fit.GetNormal();
+                    MeshCore::AbstractSurfaceFit* fitter = new MeshCore::PlaneSurfaceFit(base, axis);
+                    segmSurf.emplace_back(new MeshCore::MeshDistanceGenericSurfaceFitSegment
+                        (fitter, kernel, ui->numPln->value(), ui->distToPln->value()));
+                }
             }
         }
     }
@@ -140,6 +146,7 @@ void Segmentation::accept()
         std::shared_ptr<MeshCore::MeshDistanceGenericSurfaceFitSegment> genSegm = std::dynamic_pointer_cast
                 <MeshCore::MeshDistanceGenericSurfaceFitSegment>(*it);
 
+        bool isPlanar = (strcmp(genSegm->GetType(), "Plane") == 0);
         for (std::vector<MeshCore::MeshSegment>::const_iterator jt = data.begin(); jt != data.end(); ++jt) {
             // reset flag for facets of segment
             algo.ResetFacetsFlag(*jt, MeshCore::MeshFacet::TMP0);
@@ -159,32 +166,46 @@ void Segmentation::accept()
                 std::list<std::vector<Base::Vector3f> > bounds;
                 algo.GetFacetBorders(*jt, bounds);
 
-                std::vector<TopoDS_Wire> wires;
-                for (auto bt = bounds.begin(); bt != bounds.end(); ++bt) {
-                    // project the points onto the surface
-                    auto prj = genSegm->Project(*bt);
-                    BRepBuilderAPI_MakePolygon mkPoly;
-                    for (std::vector<Base::Vector3f>::reverse_iterator it = prj.rbegin(); it != prj.rend(); ++it) {
-                        mkPoly.Add(gp_Pnt(it->x,it->y,it->z));
-                    }
-                    if (mkPoly.IsDone()) {
-                        wires.push_back(mkPoly.Wire());
-                    }
-                }
+                // Handle planar segments
+                if (isPlanar) {
+                    std::vector<float> par = genSegm->Parameters();
+                    gp_Pnt loc(par.at(0), par.at(1), par.at(2));
+                    gp_Dir dir(par.at(3), par.at(4), par.at(5));
 
-                try {
-                    TopoDS_Shape shape = Part::FaceMakerCheese::makeFace(wires);
-                    if (!shape.IsNull()) {
-                        builder.Add(compound, shape);
+                    Handle(Geom_Plane) hPlane(new Geom_Plane(loc, dir));
+
+                    std::vector<TopoDS_Wire> wires;
+                    for (auto bt = bounds.begin(); bt != bounds.end(); ++bt) {
+                        // project the points onto the surface
+                        std::vector<gp_Pnt> polygon;
+                        std::transform(bt->begin(), bt->end(), std::back_inserter(polygon), [&hPlane](const Base::Vector3f v) {
+                            gp_Pnt p(v.x, v.y, v.z);
+                            return GeomAPI_ProjectPointOnSurf(p, hPlane).NearestPoint();
+                        });
+
+                        BRepBuilderAPI_MakePolygon mkPoly;
+                        for (std::vector<gp_Pnt>::reverse_iterator it = polygon.rbegin(); it != polygon.rend(); ++it) {
+                            mkPoly.Add(*it);
+                        }
+                        if (mkPoly.IsDone()) {
+                            wires.push_back(mkPoly.Wire());
+                        }
                     }
-                    else {
+
+                    try {
+                        TopoDS_Shape shape = Part::FaceMakerCheese::makeFace(wires);
+                        if (!shape.IsNull()) {
+                            builder.Add(compound, shape);
+                        }
+                        else {
+                            failures.push_back(feaSegm);
+                            Base::Console().Warning("Failed to create face from %s\n", feaSegm->Label.getValue());
+                        }
+                    }
+                    catch (Standard_Failure&) {
                         failures.push_back(feaSegm);
-                        Base::Console().Warning("Failed to create face from %s\n", feaSegm->Label.getValue());
+                        Base::Console().Error("Fatal failure to create face from %s\n", feaSegm->Label.getValue());
                     }
-                }
-                catch (Standard_Failure&) {
-                    failures.push_back(feaSegm);
-                    Base::Console().Error("Fatal failure to create face from %s\n", feaSegm->Label.getValue());
                 }
             }
         }

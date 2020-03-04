@@ -54,9 +54,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* item = root->findItem("&Windows");
     Gui::MenuItem* reen = new Gui::MenuItem;
     root->insertItem(item, reen);
-    reen->setCommand("&REEN");
-    *reen << "Reen_ApproxPlane"
-          << "Reen_ApproxSurface";
+    reen->setCommand("&Reverse Engineering");
 
     Gui::MenuItem *reconstruct = new Gui::MenuItem();
     reconstruct->setCommand("Surface reconstruction");
@@ -73,6 +71,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Reen_Segmentation"
           << "Reen_MeshBoundary";
     *reen << segm;
+
+    Gui::MenuItem *approx = new Gui::MenuItem();
+    approx->setCommand("Approximation");
+    *approx << "Reen_ApproxPlane"
+            << "Reen_ApproxCylinder"
+            << "Reen_ApproxSphere"
+            << "Separator"
+            << "Reen_ApproxSurface";
+    *reen   << approx;
 
     return root;
 }
