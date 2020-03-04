@@ -149,7 +149,10 @@ bool ViewProviderProjGroupItem::doubleClicked(void)
 bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
 {
     // we cannot delete the anchor view, thus check if the item is the front item
+    // we also cannot delete if the item has a section or detail view
 
+    QString bodyMessage;
+    QTextStream bodyMessageStream(&bodyMessage);
     bool isAnchor = false;
 
     // get the item and group
@@ -162,22 +165,40 @@ bool ViewProviderProjGroupItem::onDelete(const std::vector<std::string> &)
         && (dpg->getAnchor() == dpgi))
         isAnchor = true;
 
+    // get child views
+    auto viewSection = getObject()->getSectionRefs();
+    auto viewDetail = getObject()->getDetailRefs();
+
    if (isAnchor)
    {
        // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
-            "You cannot delete the anchor view of a projection group!");
+            "You cannot delete the anchor view of a projection group.");
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);
         // don't allow to delete
         return false;
-    }
-    else {
+   }
+   else if (!viewSection.empty()) {
+       bodyMessageStream << qApp->translate("Std_Delete",
+           "You cannot delete this view because it has a section view that would become broken.");
+       QMessageBox::warning(Gui::getMainWindow(),
+           qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+           QMessageBox::Ok);
+       return false;
+   }
+   else if (!viewDetail.empty()) {
+       bodyMessageStream << qApp->translate("Std_Delete",
+           "You cannot delete this view because it has a detail view that would become broken.");
+       QMessageBox::warning(Gui::getMainWindow(),
+           qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+           QMessageBox::Ok);
+       return false;
+   }
+   else {
         return true;
-    }
+   }
 }
 
 bool ViewProviderProjGroupItem::canDelete(App::DocumentObject *obj) const
