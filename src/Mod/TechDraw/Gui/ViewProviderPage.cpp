@@ -196,11 +196,23 @@ void ViewProviderPage::updateData(const App::Property* prop)
 bool ViewProviderPage::onDelete(const std::vector<std::string> &)
 {
     // warn the user if the Page is not empty
+    // but don't do this if there is just the template
 
     // check if there are items in the group
     auto objs = claimChildren();
 
-    if (!objs.empty())
+    // check if there is just a template
+    // if there are several objects, the template is never the last one
+    // the ExportName of a template begines always with "Template"
+    bool isTemplate = false;
+    for (auto objsIterator : objs) {
+        if (objsIterator->getExportName().substr(0, 8).compare(std::string("Template")) == 0)
+            isTemplate = true;
+        else
+            isTemplate = false;
+    }
+
+    if (!objs.empty() && !isTemplate)
     {
         // generate dialog
         QString bodyMessage;
