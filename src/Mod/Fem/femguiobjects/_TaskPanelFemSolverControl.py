@@ -32,8 +32,9 @@ from PySide import QtCore
 from PySide import QtGui
 
 import FreeCADGui as Gui
-import femsolver.run
+
 import femsolver.report
+import femsolver.run
 
 
 _UPDATE_INTERVAL = 50

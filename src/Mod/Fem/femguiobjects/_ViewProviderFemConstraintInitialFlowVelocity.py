@@ -31,12 +31,11 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-from . import ViewProviderFemConstraint
+from FreeCAD import Units
 
-# for the panel
+from . import ViewProviderFemConstraint
 from femtools import femutils
 from femtools import membertools
-from FreeCAD import Units
 
 
 class ViewProxy(ViewProviderFemConstraint.ViewProxy):
