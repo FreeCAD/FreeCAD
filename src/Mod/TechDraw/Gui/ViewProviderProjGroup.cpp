@@ -49,6 +49,8 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawViewDetail.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
 
 #include "TaskProjGroup.h"
 #include "ViewProviderProjGroup.h"
@@ -151,14 +153,50 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
 {
     // warn the user if the ProjGroup is not empty
 
-    // check if there are items in the group
+    QString bodyMessage;
+    QTextStream bodyMessageStream(&bodyMessage);
+    TechDraw::DrawProjGroupItem* Item = nullptr;
+    std::vector<std::string> ViewList;
+
+    // get the items in the group
     auto objs = claimChildren();
+    
+    // iterate over all item to check which ones have a section or detail view
+    for (auto ObjectIterator : objs) {
+        // get item
+        Item = static_cast<TechDraw::DrawProjGroupItem*>(ObjectIterator);
+        // get its section views
+        auto viewSection = Item->getSectionRefs();
+        // add names to a list
+        if (!viewSection.empty()) {
+            for (auto SecIterator : viewSection) {
+                ViewList.push_back(SecIterator->Label.getValue());
+            }
+        }
+        // get its detail views
+        auto viewDetail = Item->getDetailRefs();
+        if (!viewDetail.empty()) {
+            for (auto DetIterator : viewDetail) {
+                ViewList.push_back(DetIterator->Label.getValue());
+            }
+        }
+    }
+
+    // if there are section or detail views we cannot delete because this would break them
+    if (!ViewList.empty()) {
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "The group cannot be deleted because its items have the\n following section and detail views that would get broken:\n");
+        for (auto ListIterator : ViewList)
+            bodyMessageStream << '\n' << QString::fromUtf8(ListIterator.c_str());
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
 
     if (!objs.empty())
     {
         // generate dialog
-        QString bodyMessage;
-        QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
             "The projection group is not empty, therefore\n the following referencing objects might be lost.\n\n"
             "Are you sure you want to continue?\n");
