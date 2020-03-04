@@ -329,7 +329,7 @@ SubShapeBinder::~SubShapeBinder() {
 }
 
 void SubShapeBinder::setupObject() {
-    _Version.setValue(2);
+    _Version.setValue(3);
     checkPropertyStatus();
 }
 
@@ -389,6 +389,9 @@ void SubShapeBinder::clearCopiedObjects() {
 
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     Part::TopoShape result;
+    if(_Version.getValue()>2 && getDocument())
+        result = Part::TopoShape(getID(), getDocument()->getStringHasher());
+
     std::vector<Part ::TopoShape> shapes;
     std::vector<const Base::Matrix4D*> shapeMats;
 
