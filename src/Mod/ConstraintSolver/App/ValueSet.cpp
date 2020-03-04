@@ -77,7 +77,9 @@ HValueSet ValueSet::make(HParameterSubset subset, const Eigen::VectorXd& vals, b
 HValueSet ValueSet::makeTrivial(HParameterStore store)
 {
     HParameterSubset s = ParameterSubset::make(store);
-    return make(s);
+    HValueSet vs = make(s);
+    vs->_passthru = true;
+    return vs;
 }
 
 HValueSet ValueSet::makeFrom(HParameterSubset subset, const ValueSet& other)
@@ -99,6 +101,7 @@ HValueSet ValueSet::copy() const
     cpy->_values = this->_values;
     cpy->_duals = this->_duals;
     cpy->_scales = this->_scales;
+    cpy->_passthru = this->_passthru;
     return cpy;
 }
 
@@ -209,9 +212,36 @@ void ValueSet::resetDerivatives()
     _duals.assign(size(), 0.0);
 }
 
-void ValueSet::setDual(const ParameterRef& param, double val)
+void ValueSet::setDual_solver(const ParameterRef& param, double val)
 {
     _duals[subset().indexOf(param)] = val;
+}
+
+void ValueSet::setDual(const ParameterRef& param, double val)
+{
+    int i = subset().indexOf(param);
+    _duals[i] = val / _scales[i];
+}
+
+void ValueSet::setReal(const ParameterRef& param, double val)
+{
+    if (_passthru){
+        param.savedValue() = val;
+    } else {
+        int i = subset().has(param) ? subset().indexOf(param) : -1;
+        if (i == -1){
+            throw Py::KeyError("Paramater " + param.repr() + " is not in this value set.");
+        } else {
+            _values[i] = val / _scales[i];
+        }
+    }
+}
+
+void ValueSet::set(const ParameterRef& param, Base::DualNumber val)
+{
+    setReal(param, val.re);
+    if (! _passthru)
+        setDual(param, val.du);
 }
 
 Base::DualNumber ValueSet::operator[](const ParameterRef& param) const

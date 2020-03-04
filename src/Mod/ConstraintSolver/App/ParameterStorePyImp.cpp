@@ -6,6 +6,8 @@
 #include "ParameterStorePy.h"
 #include "ParameterStorePy.cpp"
 
+#include "ValueSet.h"
+
 #include "PyUtils.h"
 
 PyObject* ParameterStorePy::PyMake(struct _typeobject *, PyObject* , PyObject* )  // Python wrapper
@@ -87,6 +89,13 @@ PyObject* ParameterStorePy::copy(PyObject* args)
     if (! PyArg_ParseTuple(args, ""))
         return nullptr;
     return Py::new_reference_to(getParameterStorePtr()->copy());
+}
+
+PyObject* ParameterStorePy::asValueSet(PyObject* args)
+{
+    if (! PyArg_ParseTuple(args, ""))
+        return nullptr;
+    return Py::new_reference_to(getParameterStorePtr()->asValueSet().self());
 }
 
 PyObject* ParameterStorePy::constrainEqual(PyObject* args)

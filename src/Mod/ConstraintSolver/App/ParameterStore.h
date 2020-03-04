@@ -124,7 +124,8 @@ public:
     PyObject* getPyObject() override;
     HParameterStore self() const;
 
-    const ValueSet& savedValues();
+    ///for use in methods that require a valueset objects. Returns a pass-through valueset, that writes directly to parameters.
+    const ValueSet& asValueSet();
 
 public: //for range-based for looping.
     class const_iterator

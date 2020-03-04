@@ -7,6 +7,7 @@
 #include "ParameterRef.h"
 #include "ParameterRefPy.h"
 #include "PyUtils.h"
+#include <Base/DualNumberPy.h>
 
 #include "ValueSetPy.h"
 #include "ValueSetPy.cpp"
@@ -45,7 +46,10 @@ int ValueSetPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 // returns a string which represents the object e.g. when printed in python
 std::string ValueSetPy::representation(void) const
 {
-    return std::string("<ValueSet object>");
+    if (getValueSetPtr()->isPassThrough())
+        return std::string("<pass-through ValueSet object>");
+    else
+        return std::string("<ValueSet object>");
 }
 
 PyObject* ValueSetPy::copy(PyObject* args)
@@ -146,11 +150,35 @@ PyObject*  ValueSetPy::mapping_subscript(PyObject* self, PyObject* key)
     return nullptr;
 }
 
-int ValueSetPy::sequence_ass_item(PyObject* , Py_ssize_t, PyObject* )
+int ValueSetPy::mapping_ass_subscript(PyObject* self, PyObject* key, PyObject* value)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return -1;
+    PY_TRY{
+        HValueSet myself(self, /*new_reference = */false);
+        auto setParam = [&](ParameterRef param){
+            myself->set(param, asDualNumber(value));
+        };
+        if (PyIndex_Check(key)) {
+            Py_ssize_t i = PyNumber_AsSsize_t(key, PyExc_IndexError);
+            if (i == -1 && PyErr_Occurred())
+                throw Py::Exception();
+            if (i < 0)
+                i += sequence_length(self);
+            if (i < 0 || i >= sequence_length(self))
+                throw Py::IndexError("index out of range");
+            setParam(myself->subset()[i]);
+            return 0;
+        } else if (PySlice_Check(key)) {
+            throw Py::TypeError("Slicing not supported");
+        } else if (PyObject_TypeCheck(key, &ParameterRefPy::Type)) {
+            HParameterRef hp(key, false);
+            setParam(*hp);
+            return 0;
+        } else {
+            throw Py::TypeError("subscript must be an integer, or a ParameterRef");
+        }
+    } _PY_CATCH(return(-1));
 }
+
 
 int ValueSetPy::sequence_contains(PyObject* self, PyObject* pcItem)
 {

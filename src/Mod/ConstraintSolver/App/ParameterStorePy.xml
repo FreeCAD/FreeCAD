@@ -54,7 +54,12 @@
 		<UserDocu>copy(): returns a deep copy.</UserDocu>
 	  </Documentation>
 	</Methode>
-	<Methode Name="constrainEqual">
+    <Methode Name="asValueSet">
+      <Documentation>
+        <UserDocu>asValueSet(): returns a pass-through ValueSet object. Writing to the returned ValueSet is equivalent to directly changing the parameters.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="constrainEqual">
 	  <Documentation>
 		<UserDocu>constrainEqual(param1, param2, mean_out = True): makes the parameters equal by
 		creating a redirection. The constraining is done by changing MasterIndex of

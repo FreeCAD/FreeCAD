@@ -294,7 +294,7 @@ HParameterStore ParameterStore::self() const {
     return HParameterStore(_twin, /*new_reference = */false);
 }
 
-const ValueSet& ParameterStore::savedValues()
+const ValueSet& ParameterStore::asValueSet()
 {
     if (_trivialValueSet.isNone())
         _trivialValueSet = ValueSet::makeTrivial(self());

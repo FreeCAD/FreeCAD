@@ -94,6 +94,10 @@ PyObject* pyTryCatch(std::function<Py::Object ()> body, PyObject* errorreturn = 
 ///imports a python module
 Py::Module import(std::string modname);
 
+///makes a dual number from a py dual number, a float, or an integer
+Base::DualNumber asDualNumber(PyObject* ob);
+inline Base::DualNumber asDualNumber(Py::Object ob) {return asDualNumber(ob.ptr());}
+
 } //namespace
 
 #endif

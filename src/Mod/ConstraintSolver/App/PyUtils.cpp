@@ -3,6 +3,8 @@
 #include <Base/PyObjectBase.h>
 #include "PyUtils.h"
 
+#include <Base/DualNumberPy.h>
+
 using namespace FCS;
 
 PyObject* FCS::pyTryCatch(std::function<Py::Object()> body, PyObject* errorreturn)
@@ -56,4 +58,20 @@ Py::Module FCS::import(std::string modname)
     if (pcmod == nullptr)
         throw Py::Exception();
     return Py::Module(pcmod);
+}
+
+Base::DualNumber FCS::asDualNumber(PyObject* ob)
+{
+    if (PyObject_TypeCheck(ob, &Base::DualNumberPy::Type)) {
+        return static_cast<Base::DualNumberPy*>(ob)->value;
+    }
+    else if (PyLong_Check(ob)) {
+        return PyLong_AsDouble(ob);
+    }
+    else if (PyFloat_Check(ob)) {
+        return PyFloat_AsDouble(ob);
+    }
+    else {
+        throw Py::TypeError(Py::Object(ob).type().as_string() + " object can't be converted to a dual number");
+    }
 }

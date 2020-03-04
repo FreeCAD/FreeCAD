@@ -61,7 +61,7 @@ void SubSystem::calcJacobi(ValueSet& vals, HParameterSubset params, Eigen::Matri
             //assert(ip != -1); //#FIXME: if the assert is never hit, remove the following "if".
             if (ip != -1){ //same as "if vals->subset().has(p)"
                 // set dual part of parameter to 1 for deriv computation
-                vals.setDual(p, 1.0);
+                vals.setDual_solver(p, 1.0);
                 //compute error. Derivatives are in dual parts, error values are discarded.
                 constr.error(vals, buf.data());
                 //write results to matrix
@@ -71,7 +71,7 @@ void SubSystem::calcJacobi(ValueSet& vals, HParameterSubset params, Eigen::Matri
                     output(ir+ie, ip) = buf[ie].du * constr.scale;
                 }
                 //reset back, to make sure all duals are zero again as we move on to next parameter
-                vals.setDual(p, 0.0);
+                vals.setDual_solver(p, 0.0);
             }
         }
     }

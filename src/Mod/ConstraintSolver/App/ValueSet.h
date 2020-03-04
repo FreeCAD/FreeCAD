@@ -48,6 +48,7 @@ protected://data
     std::vector<double> _duals;
     std::vector<double> _scales;
     HParameterSubset _subset;
+    bool _passthru = false; //a flag that this set is a passthrough to parameter store
     PyObject* _twin = nullptr;
 protected://methods
     ValueSet(HParameterSubset subset);
@@ -96,10 +97,33 @@ public:
     ///set up duals for computing derivatives along a direction
     void setForDerivative(const Eigen::VectorXd& dir);
     void resetDerivatives();
-    ///assumes the parameter is in the set!
-    void setDual(const ParameterRef& param, double val);
 
-    ///accepts any parameter from store.
+    /**
+     * @brief setDual_solver: write a dual part of the value to this valueset
+     * @param param: the parameter to set. UNSAFE (assumes param is in subset; if not -> crash).
+     * @param val: the dual value to set, scaled for solver.
+     */
+    void setDual_solver(const ParameterRef& param, double val);
+    /**
+     * @brief setDual:
+     * @param param: the parameter to set. UNSAFE (assumes param is in subset; if not -> crash).
+     * @param val: the dual value to set, scaled for life
+     */
+    void setDual(const ParameterRef& param, double val);
+    /**
+     * @brief setReal: sets real part of the parameter
+     * @param param: the parameter. SAFE (throws if parameter is not in subset)
+     * @param val: value, scaled for life
+     */
+    void setReal(const ParameterRef& param, double val);
+    /**
+     * @brief set: sets real and dual part of a parameter to this valueset
+     * @param param: the parameter. SAFE (throws if parameter is not in subset)
+     * @param val: value, scaled for life.
+     */
+    void set(const ParameterRef& param, Base::DualNumber val);
+
+    ///accepts any parameter from store. Returns value scaled for life.
     Base::DualNumber operator[](const ParameterRef& param) const;
     Base::DualNumber operator[](int index) const;
     ///with checks against parameters from different stores
@@ -107,6 +131,7 @@ public:
 
 
     HValueSet self() const;
+    bool isPassThrough() const {return _passthru;}
 public://operators
     operator Eigen::VectorXd&() {return _values;}
     operator const Eigen::VectorXd&() const {return _values;}

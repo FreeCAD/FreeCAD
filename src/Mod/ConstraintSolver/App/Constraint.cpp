@@ -58,7 +58,7 @@ double Constraint::netError() const
     if (parameters().size() == 0)
         throw Base::RuntimeError("constraint is not initialized or updated");
 
-    return netError(parameters()[0].host()->savedValues()).re;
+    return netError(parameters()[0].host()->asValueSet()).re;
 }
 
 HParaObject Constraint::copy() const
