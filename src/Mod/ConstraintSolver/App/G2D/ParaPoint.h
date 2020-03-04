@@ -50,6 +50,7 @@ public://methods
 
     Position value(const ValueSet& vals) const;
     Position operator()(const ValueSet& vals) const{return value(vals);}
+    void setValue(ValueSet& vals, Position newValue);
 
 public: //friends
     friend class ParaPointPy;

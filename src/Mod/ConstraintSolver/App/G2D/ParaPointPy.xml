@@ -24,6 +24,11 @@
 	  </Documentation>
 	</Methode>	
 
+    <Methode Name="setValue">
+	  <Documentation>
+		<UserDocu>setValue(valueset, new_value): takes an App.Vector, G2D.Vector or tuple of two numbers, and writes the values to the valueset.</UserDocu>
+	  </Documentation>
+	</Methode>	
     
   </PythonExport>
 </GenerateModel>

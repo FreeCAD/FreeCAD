@@ -13,6 +13,12 @@ Position ParaPoint::value(const ValueSet& vals) const
     return Position(vals[x], vals[y]);
 }
 
+void ParaPoint::setValue(ValueSet& vals, Position newValue)
+{
+    vals.set(x, newValue.x);
+    vals.set(y, newValue.y);
+}
+
 ParaPoint::ParaPoint()
 {
     initAttrs();

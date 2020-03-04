@@ -6,6 +6,11 @@
 #include "ParameterStorePy.h"
 #include "ParameterRefPy.h"
 #include "ValueSetPy.h"
+#include "PyUtils.h"
+#include "G2D/VectorPy.h"
+
+#include <Base/Vector3D.h>
+#include <Base/VectorPy.h>
 
 using namespace FCS;
 
@@ -83,6 +88,32 @@ PyObject* ParaPointPy::value(PyObject *args)
     return getParaPointPtr()->value(*HValueSet(pcvs, false)).getPyObject();
 }
 
+PyObject* ParaPointPy::setValue(PyObject *args)
+{
+    PyObject* pcvs = nullptr;
+    PyObject* pcval = nullptr;
+    if (!PyArg_ParseTuple(args, "O!O",&(ValueSetPy::Type), &pcvs, &pcval))
+        return nullptr;
+    Position pos;
+    if (PyObject_TypeCheck(pcval, &VectorPy::Type)) {
+        pos = Position(static_cast<VectorPy*>(pcval)->value);
+    }
+    else if (PyObject_TypeCheck(pcval, &Base::VectorPy::Type)) {
+        Base::Vector3d v = *(static_cast<Base::VectorPy*>(pcval)->getVectorPtr());
+        pos = Position(v.x, v.y);
+    }
+    else if (PySequence_Check(pcval)){
+        Py::Sequence seq(pcval);
+        if (seq.size() != 2)
+            throw Py::ValueError("value is a sequence but not of two values");
+        pos = Position(asDualNumber(seq[0]), asDualNumber(seq[1]));
+    }
+    else {
+        throw Py::ValueError("new_value must be a tuple, an App.Vector or a G2D.Vector; got object of type '" + Py::Object(pcval).type().as_string() + "' instead");
+    }
+    getParaPointPtr()->setValue(*HValueSet(pcvs, false), pos);
+    return Py::new_reference_to(Py::None());
+}
 
 PyObject *ParaPointPy::getCustomAttributes(const char* attr) const
 {
