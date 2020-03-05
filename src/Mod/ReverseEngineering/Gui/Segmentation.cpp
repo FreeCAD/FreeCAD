@@ -178,7 +178,7 @@ void Segmentation::accept()
                     for (auto bt = bounds.begin(); bt != bounds.end(); ++bt) {
                         // project the points onto the surface
                         std::vector<gp_Pnt> polygon;
-                        std::transform(bt->begin(), bt->end(), std::back_inserter(polygon), [&hPlane](const Base::Vector3f v) {
+                        std::transform(bt->begin(), bt->end(), std::back_inserter(polygon), [&hPlane](const Base::Vector3f& v) {
                             gp_Pnt p(v.x, v.y, v.z);
                             return GeomAPI_ProjectPointOnSurf(p, hPlane).NearestPoint();
                         });

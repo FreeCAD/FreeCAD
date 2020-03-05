@@ -81,9 +81,9 @@ public:
     Module() : Py::ExtensionModule<Module>("ReverseEngineering")
     {
         add_keyword_method("approxSurface",&Module::approxSurface,
-            "approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True)\n"
+            "approxSurface(Points=,UDegree=3,VDegree=3,NbUPoles=6,NbVPoles=6,Smooth=True,\n"
             "Weight=0.1,Grad=1.0,Bend=0.0,\n"
-            "Iterations=5,Correction=True,PatchFactor=1.0"
+            "Iterations=5,Correction=True,PatchFactor=1.0)"
         );
 #if defined(HAVE_PCL_SURFACE)
         add_keyword_method("triangulate",&Module::triangulate,
@@ -212,6 +212,11 @@ private:
                 Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(o);
                 Points::PointKernel* points = pPoints->getPointKernelPtr();
                 pts = points->getBasicPoints();
+            }
+            else if (PyObject_TypeCheck(o, &(Mesh::MeshPy::Type))) {
+                const Mesh::MeshObject* mesh = static_cast<Mesh::MeshPy*>(o)->getMeshObjectPtr();
+                const MeshCore::MeshPointArray& points = mesh->getKernel().GetPoints();
+                pts.insert(pts.begin(), points.begin(), points.end());
             }
             else {
                 Py::Sequence l(o);

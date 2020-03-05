@@ -78,11 +78,12 @@ CmdApproxSurface::CmdApproxSurface()
 void CmdApproxSurface::activated(int)
 {
     App::DocumentObjectT objT;
-    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
-    if (obj.size() != 1) {
+    std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
+    if (obj.size() != 1 || !(obj.at(0)->isDerivedFrom(Points::Feature::getClassTypeId()) ||
+                             obj.at(0)->isDerivedFrom(Mesh::Feature::getClassTypeId()))) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Reen_ApproxSurface", "Wrong selection"),
-            qApp->translate("Reen_ApproxSurface", "Please select a single point cloud.")
+            qApp->translate("Reen_ApproxSurface", "Please select a point cloud or mesh.")
         );
         return;
     }
