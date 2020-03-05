@@ -217,6 +217,7 @@ void QGIDatumLabel::paint(QPainter *painter, const QStyleOptionGraphicsItem *opt
 
 void QGIDatumLabel::setPosFromCenter(const double &xCenter, const double &yCenter)
 {
+    prepareGeometryChange();
     QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
     if( qgivd == nullptr ) {
         return;                  //tarfu
@@ -266,6 +267,7 @@ void QGIDatumLabel::setLabelCenter()
 
 void QGIDatumLabel::setFont(QFont f)
 {
+    prepareGeometryChange();
     m_dimText->setFont(f);
     m_unitText->setFont(f);
     QFont tFont(f);
@@ -679,6 +681,7 @@ QString QGIViewDimension::getLabelText(void)
 
 void QGIViewDimension::draw()
 {
+    prepareGeometryChange();
     if (!isVisible()) {
         return;
     }

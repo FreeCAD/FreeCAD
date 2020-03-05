@@ -122,6 +122,7 @@ public:
     static const double DefaultFontSizeInMM;
 
     MDIViewPage* getMDIViewPage(void) const;
+    virtual void removeChild(QGIView* child);
 
     // Mouse handling
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

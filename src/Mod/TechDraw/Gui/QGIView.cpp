@@ -627,6 +627,16 @@ MDIViewPage* QGIView::getMDIViewPage(void) const
     return MDIViewPage::getFromScene(scene());
 }
 
+//remove a child of this from scene while keeping scene indexes valid
+void QGIView::removeChild(QGIView* child)
+{
+    if ( (child != nullptr) &&
+         (child->parentItem() == this) ) {
+        prepareGeometryChange();
+        scene()->removeItem(child);
+    }
+}
+
 bool QGIView::getFrameState(void)
 {
 //    Base::Console().Message("QGIV::getFrameState() - %s\n",getViewName());

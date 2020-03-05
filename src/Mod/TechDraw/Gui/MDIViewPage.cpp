@@ -123,6 +123,10 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
     setMouseTracking(true);
     m_scene = new QGraphicsScene(this);
+    m_scene->setItemIndexMethod(QGraphicsScene::NoIndex); //this prevents crash when deleting dims.
+                                                          //scene(view?) indices of dirty regions gets
+                                                          //out of sync.  missing prepareGeometryChange
+                                                          //somewhere???? QTBUG-18021???
     m_view = new QGVPage(pageVp,m_scene,this);
 
     m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
@@ -398,9 +402,11 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
     //if this page has a QView for this obj, delete it.
+    blockSelection(true);
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         (void) m_view->removeQViewByName(obj.getNameInDocument());
     }
+    blockSelection(false);
 }
 
 void MDIViewPage::onTimer() {
