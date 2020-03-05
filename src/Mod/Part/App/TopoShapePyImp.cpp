@@ -111,19 +111,25 @@ using namespace Part;
     #define M_PI_2  1.57079632679489661923 /* pi/2 */
 #endif
 
+#if PY_MAJOR_VERSION < 3
+typedef long Py_hash_t;
+#endif
+
+static Py_hash_t _TopoShapeHash(PyObject *self) {
+    if (!self) {
+        PyErr_SetString(PyExc_TypeError, "descriptor 'hash' of 'Part.TopoShape' object needs an argument");
+        return 0;
+    }
+    if (!static_cast<Base::PyObjectBase*>(self)->isValid()) {
+        PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
+        return 0;
+    }
+    return static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape().HashCode(INT_MAX);
+}
+
 struct TopoShapePyInit {
     TopoShapePyInit() {
-        TopoShapePy::Type.tp_hash = [](PyObject *self) -> long {
-            if (!self) {
-                PyErr_SetString(PyExc_TypeError, "descriptor 'hash' of 'Part.TopoShape' object needs an argument");
-                return 0;
-            }
-            if (!static_cast<Base::PyObjectBase*>(self)->isValid()) {
-                PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
-                return 0;
-            }
-            return static_cast<TopoShapePy*>(self)->getTopoShapePtr()->getShape().HashCode(INT_MAX);
-        };
+        TopoShapePy::Type.tp_hash = _TopoShapeHash;
     }
 } _TopoShapePyInit;
 

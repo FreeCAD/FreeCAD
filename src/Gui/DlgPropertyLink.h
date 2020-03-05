@@ -40,7 +40,7 @@ class QTreeWidget;
 namespace Gui { namespace Dialog {
 
 class Ui_DlgPropertyLink;
-class DlgPropertyLink : public QWidget
+class GuiExport DlgPropertyLink : public QWidget
 {
     Q_OBJECT
 

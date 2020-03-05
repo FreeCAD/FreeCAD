@@ -368,25 +368,6 @@ protected:
 };
 
 /**
-  * Class implementing a boolean expression.
-  *
-  */
-
-class AppExport BooleanExpression : public NumberExpression {
-    EXPR_TYPESYSTEM_HEADER();
-public:
-    static ExpressionPtr create(const App::DocumentObject *owner, bool value);
-
-protected:
-    BooleanExpression(const App::DocumentObject *_owner, const Base::Quantity &q)
-        :NumberExpression(_owner,q)
-    {}
-    virtual Py::Object _getPyValue(int *jumpCode=0) const;
-    virtual ExpressionPtr _copy() const;
-};
-
-
-/**
   * Class implementing an infix expression.
   *
   */

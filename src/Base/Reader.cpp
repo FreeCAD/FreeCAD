@@ -637,7 +637,7 @@ Base::Reader::Reader(std::istream &str, const std::string& name, Base::XMLReader
 }
 
 Base::Reader::Reader(const std::string& name, Base::XMLReader *parent)
-  : _name(name), _parent(parent)
+  : std::istream(nullptr), _name(name), _parent(parent)
 {
 }
 
