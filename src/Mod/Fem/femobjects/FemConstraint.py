@@ -37,4 +37,10 @@ class Proxy(object):
         self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to this object
 
+    # a few objects had this method in their class before the move to this base class
+    # these objects will give a setAttr failed error on document loading without this method
+    def __setstate__(self, state):
+        if state:
+            self.Type = state
+
 ##  @}

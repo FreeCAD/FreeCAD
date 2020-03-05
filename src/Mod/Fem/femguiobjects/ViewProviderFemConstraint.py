@@ -97,8 +97,7 @@ class ViewProxy(object):
             FreeCAD.Console.PrintError(message + "\n")
         return True
 
-    def __getstate__(self):
-        return None
-
+    # a few objects had this method in their class before the move to this base class
+    # these objects will give a setAttr failed error on document loading without this method
     def __setstate__(self, state):
         return None
