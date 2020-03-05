@@ -1816,7 +1816,7 @@ void StdViewScreenShot::activated(int iMsg)
 
             QString comment = opt->comment();
             if (!comment.isEmpty()) {
-                // Replace newline escape sequence trough '\\n' string to build one big string,
+                // Replace newline escape sequence through '\\n' string to build one big string,
                 // otherwise Python would interpret it as an invalid command.
                 // Python does the decoding for us.
                 QStringList lines = comment.split(QLatin1String("\n"), QString::KeepEmptyParts );

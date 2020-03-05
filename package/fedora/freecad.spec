@@ -142,7 +142,7 @@ Recommends:	python3-pysolar
 FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
 directly at mechanical engineering and product design but also fits a wider
 range of uses in engineering, such as architecture or other engineering
-specialties. It is a feature-based parametric modeler with a modular software
+specialities. It is a feature-based parametric modeler with a modular software
 architecture which makes it easy to provide additional functionality without
 modifying the core system.
 

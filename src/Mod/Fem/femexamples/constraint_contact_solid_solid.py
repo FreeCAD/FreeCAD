@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 
-# connstraint contact for solid to solid mesh
+# constraint contact for solid to solid mesh
 # https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
 # to run the example use:
 """
