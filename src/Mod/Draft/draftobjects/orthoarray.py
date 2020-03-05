@@ -124,7 +124,7 @@ def make_ortho_array(obj,
 
     See Also
     --------
-    make_ortho_array2d
+    make_ortho_array2d, make_rect_array, make_rect_array2d
     """
     _name = "make_ortho_array"
     utils.print_header(_name, _tr("Orthogonal array"))
@@ -228,7 +228,7 @@ def make_ortho_array2d(obj,
 
     See Also
     --------
-    make_ortho_array
+    make_ortho_array, make_rect_array, make_rect_array2d
     """
     _name = "make_ortho_array2d"
     utils.print_header(_name, _tr("Orthogonal array 2D"))
@@ -277,4 +277,138 @@ def make_ortho_array2d(obj,
                               arg1=v_x, arg2=v_y,
                               arg3=n_x, arg4=n_y,
                               use_link=use_link)
+    return new_obj
+
+
+def make_rect_array(obj,
+                    d_x=10,
+                    d_y=10,
+                    d_z=10,
+                    n_x=2,
+                    n_y=2,
+                    n_z=1,
+                    use_link=True):
+    """Create a rectangular array from the given object.
+
+    This function wraps around `make_ortho_array`
+    to produce strictly rectangular arrays, in which
+    the displacement vectors `v_x`, `v_y`, and `v_z`
+    only have their respective components in X, Y, and Z.
+
+    Parameters
+    ----------
+    obj: Part::Feature
+        Any type of object that has a `Part::TopoShape`
+        that can be duplicated.
+        This means most 2D and 3D objects produced
+        with any workbench.
+
+    d_x, d_y, d_z: Base::Vector3, optional
+        Displacement of elements in the corresponding X, Y, and Z directions.
+
+    n_x, n_y, n_z: int, optional
+        Number of elements in the corresponding X, Y, and Z directions.
+
+    use_link: bool, optional
+        If it is `True`, create `App::Link` array.
+        See `make_ortho_array`.
+
+    Returns
+    -------
+    Part::FeaturePython
+        A scripted object with `Proxy.Type='Array'`.
+        Its `Shape` is a compound of the copies of the original object.
+
+    See Also
+    --------
+    make_ortho_array, make_ortho_array2d, make_rect_array2d
+    """
+    _name = "make_rect_array"
+    utils.print_header(_name, _tr("Rectangular array"))
+
+    _msg("d_x: {}".format(d_x))
+    _msg("d_y: {}".format(d_y))
+    _msg("d_z: {}".format(d_z))
+
+    try:
+        utils.type_check([(d_x, (int, float)),
+                          (d_y, (int, float)),
+                          (d_z, (int, float))],
+                         name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a number."))
+        return None
+
+    new_obj = make_ortho_array(obj,
+                               v_x=App.Vector(d_x, 0, 0),
+                               v_y=App.Vector(0, d_y, 0),
+                               v_z=App.Vector(0, 0, d_z),
+                               n_x=n_x,
+                               n_y=n_y,
+                               n_z=n_z,
+                               use_link=use_link)
+    return new_obj
+
+
+def make_rect_array2d(obj,
+                      d_x=10,
+                      d_y=10,
+                      n_x=2,
+                      n_y=2,
+                      use_link=True):
+    """Create a 2D rectangular array from the given object.
+
+    This function wraps around `make_ortho_array2d`
+    to produce strictly rectangular arrays, in which
+    the displacement vectors `v_x` and `v_y`
+    only have their respective components in X and Y.
+
+    Parameters
+    ----------
+    obj: Part::Feature
+        Any type of object that has a `Part::TopoShape`
+        that can be duplicated.
+        This means most 2D and 3D objects produced
+        with any workbench.
+
+    d_x, d_y: Base::Vector3, optional
+        Displacement of elements in the corresponding X and Y directions.
+
+    n_x, n_y: int, optional
+        Number of elements in the corresponding X and Y directions.
+
+    use_link: bool, optional
+        If it is `True`, create `App::Link` array.
+        See `make_ortho_array`.
+
+    Returns
+    -------
+    Part::FeaturePython
+        A scripted object with `Proxy.Type='Array'`.
+        Its `Shape` is a compound of the copies of the original object.
+
+    See Also
+    --------
+    make_ortho_array, make_ortho_array2d, make_rect_array
+    """
+    _name = "make_rect_array2d"
+    utils.print_header(_name, _tr("Rectangular array 2D"))
+
+    _msg("d_x: {}".format(d_x))
+    _msg("d_y: {}".format(d_y))
+
+    try:
+        utils.type_check([(d_x, (int, float)),
+                          (d_y, (int, float))],
+                         name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a number."))
+        return None
+
+    new_obj = make_ortho_array2d(obj,
+                                 v_x=App.Vector(d_x, 0, 0),
+                                 v_y=App.Vector(0, d_y, 0),
+                                 n_x=n_x,
+                                 n_y=n_y,
+                                 use_link=use_link)
     return new_obj
