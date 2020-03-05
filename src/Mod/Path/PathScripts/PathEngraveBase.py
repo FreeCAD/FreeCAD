@@ -59,7 +59,7 @@ class ObjectOp(PathOp.ObjectOp):
         zValues.append(obj.FinalDepth.Value)
         return zValues
 
-    def buildpathocc(self, obj, wires, zValues, relZ=False, forward=True):
+    def buildpathocc(self, obj, wires, zValues, relZ=False, forward=True, start_idx=0):
         '''buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands.'''
         PathLog.track(obj.Label, len(wires), zValues)
 
@@ -78,6 +78,10 @@ class ObjectOp(PathOp.ObjectOp):
                     self.appendCommand(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z}), z, relZ, self.vertFeed)
 
                 first = True
+                if start_idx > len(edges)-1:
+                    start_idx = len(edges)-1
+                
+                edges = edges[start_idx:] + edges[:start_idx]
                 for edge in edges:
                     if first and (not last or not wire.isClosed()):
                         # we set the first move to our first point

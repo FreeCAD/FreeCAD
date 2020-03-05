@@ -78,6 +78,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.Direction = ['CW', 'CCW']
         obj.addProperty('App::PropertyEnumeration', 'Side',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Side of Operation'))
         obj.Side = ['Outside', 'Inside']
+        obj.addProperty('App::PropertyInteger', 'EntryPoint',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Select the segment, there the operations starts'))
 
     def opOnDocumentRestored(self, obj):
         obj.setEditorMode('Join', 2)  # hide for now
@@ -129,9 +130,12 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 zValues.append(z)
         zValues.append(depth)
         PathLog.track(obj.Label, depth, zValues)
-
+        
+        if obj.EntryPoint < 0:
+            obj.EntryPoint = 0;
+        
         self.wires = wires # pylint: disable=attribute-defined-outside-init
-        self.buildpathocc(obj, wires, zValues, True, forward)
+        self.buildpathocc(obj, wires, zValues, True, forward, obj.EntryPoint)
 
         # the last command is a move to clearance, which is automatically added by PathOp
         if self.commandlist:
@@ -150,6 +154,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.StepDown = '0 mm'
         obj.Direction = 'CW'
         obj.Side = "Outside"
+        obj.EntryPoint = 0;
 
 
 def SetupProperties():
