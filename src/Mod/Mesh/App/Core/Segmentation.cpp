@@ -171,19 +171,23 @@ float PlaneSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
         return fitter->GetDistanceToPlane(pnt);
 }
 
-Base::Vector3f PlaneSurfaceFit::Project(const Base::Vector3f& pt) const
+std::vector<float> PlaneSurfaceFit::Parameters() const
 {
-    Base::Vector3f prj(pt);
-    if (!fitter) {
-        prj.ProjectToPlane(basepoint, normal);
-    }
-    else {
-        Base::Vector3f base = fitter->GetBase();
-        Base::Vector3f norm = fitter->GetNormal();
-        prj.ProjectToPlane(base, norm);
+    Base::Vector3f base = basepoint;
+    Base::Vector3f norm = normal;
+    if (fitter) {
+        base = fitter->GetBase();
+        norm = fitter->GetNormal();
     }
 
-    return prj;
+    std::vector<float> c;
+    c.push_back(base.x);
+    c.push_back(base.y);
+    c.push_back(base.z);
+    c.push_back(norm.x);
+    c.push_back(norm.y);
+    c.push_back(norm.z);
+    return c;
 }
 
 // --------------------------------------------------------
@@ -272,10 +276,26 @@ float CylinderSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
     return (dist - radius);
 }
 
-Base::Vector3f CylinderSurfaceFit::Project(const Base::Vector3f& pt) const
+std::vector<float> CylinderSurfaceFit::Parameters() const
 {
-    //TODO
-    return pt;
+    Base::Vector3f base = basepoint;
+    Base::Vector3f norm = axis;
+    float radval = radius;
+    if (fitter) {
+        base = fitter->GetBase();
+        norm = fitter->GetAxis();
+        radval = fitter->GetRadius();
+    }
+
+    std::vector<float> c;
+    c.push_back(base.x);
+    c.push_back(base.y);
+    c.push_back(base.z);
+    c.push_back(norm.x);
+    c.push_back(norm.y);
+    c.push_back(norm.z);
+    c.push_back(radval);
+    return c;
 }
 
 // --------------------------------------------------------
@@ -353,10 +373,21 @@ float SphereSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
     return (dist - radius);
 }
 
-Base::Vector3f SphereSurfaceFit::Project(const Base::Vector3f& pt) const
+std::vector<float> SphereSurfaceFit::Parameters() const
 {
-    //TODO
-    return pt;
+    Base::Vector3f base = center;
+    float radval = radius;
+    if (fitter) {
+        base = fitter->GetCenter();
+        radval = fitter->GetRadius();
+    }
+
+    std::vector<float> c;
+    c.push_back(base.x);
+    c.push_back(base.y);
+    c.push_back(base.z);
+    c.push_back(radval);
+    return c;
 }
 
 // --------------------------------------------------------
@@ -410,15 +441,9 @@ void MeshDistanceGenericSurfaceFitSegment::AddFacet(const MeshFacet& face)
     fitter->AddTriangle(triangle);
 }
 
-std::vector<Base::Vector3f> MeshDistanceGenericSurfaceFitSegment::Project(const std::vector<Base::Vector3f>& pts) const
+std::vector<float> MeshDistanceGenericSurfaceFitSegment::Parameters() const
 {
-    std::vector<Base::Vector3f> prj;
-    prj.reserve(pts.size());
-    for (const auto it : pts) {
-        prj.push_back(fitter->Project(it));
-    }
-
-    return prj;
+    return fitter->Parameters();
 }
 
 // --------------------------------------------------------

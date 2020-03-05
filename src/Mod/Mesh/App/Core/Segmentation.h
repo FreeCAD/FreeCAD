@@ -99,7 +99,7 @@ public:
     virtual bool Done() const = 0;
     virtual float Fit() = 0;
     virtual float GetDistanceToSurface(const Base::Vector3f&) const = 0;
-    virtual Base::Vector3f Project(const Base::Vector3f&) const = 0;
+    virtual std::vector<float> Parameters() const = 0;
 };
 
 class MeshExport PlaneSurfaceFit : public AbstractSurfaceFit
@@ -115,7 +115,7 @@ public:
     bool Done() const;
     float Fit();
     float GetDistanceToSurface(const Base::Vector3f&) const;
-    Base::Vector3f Project(const Base::Vector3f&) const;
+    std::vector<float> Parameters() const;
 
 private:
     Base::Vector3f basepoint;
@@ -136,7 +136,7 @@ public:
     bool Done() const;
     float Fit();
     float GetDistanceToSurface(const Base::Vector3f&) const;
-    Base::Vector3f Project(const Base::Vector3f&) const;
+    std::vector<float> Parameters() const;
 
 private:
     Base::Vector3f basepoint;
@@ -158,7 +158,7 @@ public:
     bool Done() const;
     float Fit();
     float GetDistanceToSurface(const Base::Vector3f&) const;
-    Base::Vector3f Project(const Base::Vector3f&) const;
+    std::vector<float> Parameters() const;
 
 private:
     Base::Vector3f center;
@@ -177,7 +177,7 @@ public:
     void Initialize(unsigned long);
     bool TestInitialFacet(unsigned long) const;
     void AddFacet(const MeshFacet& rclFacet);
-    std::vector<Base::Vector3f> Project(const std::vector<Base::Vector3f>&) const;
+    std::vector<float> Parameters() const;
 
 protected:
     AbstractSurfaceFit* fitter;

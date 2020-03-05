@@ -41,5 +41,5 @@ def make_circular_array(obj,
     obj = Draft.makeArray(obj,
                           arg1=r_distance, arg2=tan_distance,
                           arg3=axis, arg4=center, arg5=number, arg6=symmetry,
-                          useLink=use_link)
+                          use_link=use_link)
     return obj

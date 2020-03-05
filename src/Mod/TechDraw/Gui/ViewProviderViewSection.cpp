@@ -187,6 +187,14 @@ void ViewProviderViewSection::getParameters(void)
     WeightPattern.setValue(lineWeight);
 }
 
+bool ViewProviderViewSection::canDelete(App::DocumentObject *obj) const
+{
+    // a section view can be deleted
+    // that its base view cannot be deleted is handled in its the onDelete() function
+    Q_UNUSED(obj)
+    return true;
+}
+
 TechDraw::DrawViewSection* ViewProviderViewSection::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawViewSection*>(pcObject);

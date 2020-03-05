@@ -34,11 +34,13 @@
 
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Points/App/Structured.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -98,7 +100,7 @@ CmdApproxPlane::CmdApproxPlane()
 {
     sAppModule      = "Reen";
     sGroup          = QT_TR_NOOP("Reverse Engineering");
-    sMenuText       = QT_TR_NOOP("Approximate plane...");
+    sMenuText       = QT_TR_NOOP("Plane...");
     sToolTipText    = QT_TR_NOOP("Approximate a plane");
     sWhatsThis      = "Reen_ApproxPlane";
     sStatusTip      = sToolTipText;
@@ -192,6 +194,104 @@ bool CmdApproxPlane::isActive(void)
     return false;
 }
 
+DEF_STD_CMD_A(CmdApproxCylinder)
+
+CmdApproxCylinder::CmdApproxCylinder()
+  : Command("Reen_ApproxCylinder")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("Cylinder");
+    sToolTipText    = QT_TR_NOOP("Approximate a cylinder");
+    sWhatsThis      = "Reen_ApproxCylinder";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdApproxCylinder::activated(int)
+{
+    std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
+    openCommand("Fit cylinder");
+    for (auto it : sel) {
+        const Mesh::MeshObject& mesh = it->Mesh.getValue();
+        const MeshCore::MeshKernel& kernel = mesh.getKernel();
+        MeshCore::CylinderFit fit;
+        fit.AddPoints(kernel.GetPoints());
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::Vector3f base = fit.GetBase();
+            Base::Rotation rot;
+            rot.setValue(Base::Vector3d(0,0,1), Base::convertTo<Base::Vector3d>(fit.GetAxis()));
+            double q0, q1, q2, q3;
+            rot.getValue(q0, q1, q2, q3);
+
+            std::stringstream str;
+            str << "from FreeCAD import Base" << std::endl;
+            str << "App.ActiveDocument.addObject('Part::Cylinder','Cylinder_fit')" << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Radius = " << fit.GetRadius() << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement("
+                << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
+                << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))" << std::endl;
+
+            runCommand(Gui::Command::Doc, str.str().c_str());
+        }
+    }
+    commitCommand();
+    updateActive();
+}
+
+bool CmdApproxCylinder::isActive(void)
+{
+    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)
+        return true;
+    return false;
+}
+
+DEF_STD_CMD_A(CmdApproxSphere)
+
+CmdApproxSphere::CmdApproxSphere()
+  : Command("Reen_ApproxSphere")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("Sphere");
+    sToolTipText    = QT_TR_NOOP("Approximate a sphere");
+    sWhatsThis      = "Reen_ApproxSphere";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdApproxSphere::activated(int)
+{
+    std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
+    openCommand("Fit sphere");
+    for (auto it : sel) {
+        const Mesh::MeshObject& mesh = it->Mesh.getValue();
+        const MeshCore::MeshKernel& kernel = mesh.getKernel();
+        MeshCore::SphereFit fit;
+        fit.AddPoints(kernel.GetPoints());
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::Vector3f base = fit.GetCenter();
+
+            std::stringstream str;
+            str << "from FreeCAD import Base" << std::endl;
+            str << "App.ActiveDocument.addObject('Part::Sphere','Sphere_fit')" << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Radius = " << fit.GetRadius() << std::endl;
+            str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement("
+                << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
+                << "Base.Rotation(" << 1 << "," << 0 << "," << 0 << "," << 0 << "))" << std::endl;
+
+            runCommand(Gui::Command::Doc, str.str().c_str());
+        }
+    }
+    commitCommand();
+    updateActive();
+}
+
+bool CmdApproxSphere::isActive(void)
+{
+    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)
+        return true;
+    return false;
+}
+
 DEF_STD_CMD_A(CmdSegmentation)
 
 CmdSegmentation::CmdSegmentation()
@@ -199,7 +299,7 @@ CmdSegmentation::CmdSegmentation()
 {
     sAppModule      = "Reen";
     sGroup          = QT_TR_NOOP("Reverse Engineering");
-    sMenuText       = QT_TR_NOOP("Create mesh segments...");
+    sMenuText       = QT_TR_NOOP("Mesh segmentation...");
     sToolTipText    = QT_TR_NOOP("Create mesh segments");
     sWhatsThis      = "Reen_Segmentation";
     sStatusTip      = sToolTipText;
@@ -231,8 +331,8 @@ CmdMeshBoundary::CmdMeshBoundary()
 {
     sAppModule      = "Reen";
     sGroup          = QT_TR_NOOP("Reverse Engineering");
-    sMenuText       = QT_TR_NOOP("Wire from mesh...");
-    sToolTipText    = QT_TR_NOOP("Create wire from mesh");
+    sMenuText       = QT_TR_NOOP("Wire from mesh boundary...");
+    sToolTipText    = QT_TR_NOOP("Create wire from mesh boundaries");
     sWhatsThis      = "Reen_Segmentation";
     sStatusTip      = sToolTipText;
 }
@@ -252,6 +352,9 @@ void CmdMeshBoundary::activated(int)
         TopoDS_Compound compound;
         builder.MakeCompound(compound);
 
+        TopoDS_Shape shape;
+        std::vector<TopoDS_Wire> wires;
+
         for (auto bt = bounds.begin(); bt != bounds.end(); ++bt) {
             BRepBuilderAPI_MakePolygon mkPoly;
             for (std::vector<Base::Vector3f>::reverse_iterator it = bt->rbegin(); it != bt->rend(); ++it) {
@@ -259,12 +362,24 @@ void CmdMeshBoundary::activated(int)
             }
             if (mkPoly.IsDone()) {
                 builder.Add(compound, mkPoly.Wire());
+                wires.push_back(mkPoly.Wire());
             }
         }
 
-        Part::Feature* shapeFea = static_cast<Part::Feature*>(document->addObject("Part::Feature", "Wires from mesh"));
-        shapeFea->Shape.setValue(compound);
+        try {
+            shape = Part::FaceMakerCheese::makeFace(wires);
+        }
+        catch (...) {
+        }
 
+        if (!shape.IsNull()) {
+            Part::Feature* shapeFea = static_cast<Part::Feature*>(document->addObject("Part::Feature", "Face from mesh"));
+            shapeFea->Shape.setValue(shape);
+        }
+        else {
+            Part::Feature* shapeFea = static_cast<Part::Feature*>(document->addObject("Part::Feature", "Wire from mesh"));
+            shapeFea->Shape.setValue(compound);
+        }
     }
     document->commitTransaction();
 }
@@ -366,6 +481,8 @@ void CreateReverseEngineeringCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdApproxSurface());
     rcCmdMgr.addCommand(new CmdApproxPlane());
+    rcCmdMgr.addCommand(new CmdApproxCylinder());
+    rcCmdMgr.addCommand(new CmdApproxSphere());
     rcCmdMgr.addCommand(new CmdSegmentation());
     rcCmdMgr.addCommand(new CmdMeshBoundary());
     rcCmdMgr.addCommand(new CmdPoissonReconstruction());

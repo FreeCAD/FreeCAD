@@ -4635,9 +4635,9 @@ class Draft2Sketch(Modifier):
 class Array(Modifier):
     """The Shape2DView FreeCAD command definition"""
 
-    def __init__(self,useLink=False):
+    def __init__(self,use_link=False):
         Modifier.__init__(self)
-        self.useLink = useLink
+        self.use_link = use_link
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Array',
@@ -4661,7 +4661,7 @@ class Array(Modifier):
             obj = FreeCADGui.Selection.getSelection()[0]
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Array"),
-                        ['obj = Draft.makeArray(FreeCAD.ActiveDocument.{},FreeCAD.Vector(1,0,0),FreeCAD.Vector(0,1,0),2,2,useLink={})'.format(obj.Name,self.useLink),
+                        ['obj = Draft.makeArray(FreeCAD.ActiveDocument.{},FreeCAD.Vector(1,0,0),FreeCAD.Vector(0,1,0),2,2,use_link={})'.format(obj.Name,self.use_link),
                          'Draft.autogroup(obj)',
                          'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
@@ -4680,9 +4680,9 @@ class LinkArray(Array):
 class PathArray(Modifier):
     """The PathArray FreeCAD command definition"""
 
-    def __init__(self,useLink=False):
+    def __init__(self,use_link=False):
         Modifier.__init__(self)
-        self.useLink = useLink
+        self.use_link = use_link
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_PathArray',
@@ -4712,7 +4712,7 @@ class PathArray(Modifier):
             defCount = 4
             defAlign = False
             FreeCAD.ActiveDocument.openTransaction("PathArray")
-            Draft.makePathArray(base,path,defCount,defXlate,defAlign,pathsubs,useLink=self.useLink)
+            Draft.makePathArray(base,path,defCount,defXlate,defAlign,pathsubs,use_link=self.use_link)
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()                                  # feature won't appear until recompute.
         self.finish()
@@ -5424,19 +5424,15 @@ class Draft_Arc_3Points:
                 self.tracker.on()
             FreeCADGui.Snapper.getPoint(last=self.points[-1],callback=self.getPoint,movecallback=self.drawArc)
         else:
-            import Part
-            e = Part.Arc(self.points[0],self.points[1],self.points[2]).toShape()
+            import draftobjects.arc_3points as arc3
             if Draft.getParam("UsePartPrimitives",False):
-                o = FreeCAD.ActiveDocument.addObject("Part::Feature","Arc")
-                o.Shape = e
+                arc3.make_arc_3points([self.points[0],
+                                       self.points[1],
+                                       self.points[2]], primitive=True)
             else:
-                radius = e.Curve.Radius
-                rot = FreeCAD.Rotation(e.Curve.XAxis,e.Curve.YAxis,e.Curve.Axis,"ZXY")
-                placement = FreeCAD.Placement(e.Curve.Center,rot)
-                start = e.FirstParameter
-                end = e.LastParameter/math.pi*180
-                c = Draft.makeCircle(radius,placement,startangle=start,endangle=end)
-                Draft.autogroup(c)
+                arc3.make_arc_3points([self.points[0],
+                                       self.points[1],
+                                       self.points[2]], primitive=False)
             self.tracker.off()
             FreeCAD.ActiveDocument.recompute()
 

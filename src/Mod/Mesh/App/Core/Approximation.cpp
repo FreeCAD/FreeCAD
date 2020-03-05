@@ -906,7 +906,7 @@ float CylinderFit::Fit()
         return FLOAT_MAX;
     _bIsFitted = true;
 
-#if 0
+#if 1
     std::vector<Wm4::Vector3d> input;
     std::transform(_vPoints.begin(), _vPoints.end(), std::back_inserter(input),
                    [](const Base::Vector3f& v) { return Wm4::Vector3d(v.x, v.y, v.z); });

@@ -40,6 +40,21 @@ Computes the tangent of parameter (u,v) on this geometry</UserDocu>
 Computes the normal of parameter (u,v) on this geometry</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="projectPoint" Const="true" Keyword="true">
+            <Documentation>
+                <UserDocu>
+Computes the projection of a point on the surface
+
+projectPoint(Point=Vector,[Method=\"NearestPoint\"])
+projectPoint(Vector,\"NearestPoint\") -> Vector
+projectPoint(Vector,\"LowerDistance\") -> float
+projectPoint(Vector,\"LowerDistanceParameters\") -> tuple of floats (u,v)
+projectPoint(Vector,\"Distance\") -> list of floats
+projectPoint(Vector,\"Parameters\") -> list of tuples of floats
+projectPoint(Vector,\"Point\") -> list of points
+</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="isUmbillic" Const="true">
             <Documentation>
                 <UserDocu>isUmbillic(u,v) -> bool

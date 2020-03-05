@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <QMessageBox>
+#include <QTextStream>
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -35,6 +37,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/MainWindow.h>
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
@@ -245,4 +248,44 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
         ExtraWidthProperty.Restore(reader);
         ExtraWidth.setValue(ExtraWidthProperty.getValue());
     }
+}
+
+bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
+{
+    // we cannot delete if the view has a section or detail view
+
+    QString bodyMessage;
+    QTextStream bodyMessageStream(&bodyMessage);
+
+    // get child views
+    auto viewSection = getViewObject()->getSectionRefs();
+    auto viewDetail = getViewObject()->getDetailRefs();
+    
+    if (!viewSection.empty()) {
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "You cannot delete this view because it has a section view that would become broken.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
+    else if (!viewDetail.empty()) {
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "You cannot delete this view because it has a detail view that would become broken.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of part objects (detail view, View etc.) are valid
+    // that it cannot be deleted if it has a child view is handled in the onDelete() function
+    Q_UNUSED(obj)
+    return true;
 }
