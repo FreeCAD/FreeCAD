@@ -84,6 +84,16 @@ void ViewProviderTile::updateData(const App::Property* prop)
 //    return dynamic_cast<TechDraw::DrawTile*>(pcObject);
 //}
 
+bool ViewProviderTile::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of Tile objects don't destroy anything
+    // thus we can pass this action
+    // that the deletion of its parent weld symbol is not possible
+    // is done in its onDelete() function
+    Q_UNUSED(obj)
+    return true;
+}
+
 TechDraw::DrawTile* ViewProviderTile::getFeature() const
 {
     return dynamic_cast<TechDraw::DrawTile*>(pcObject);

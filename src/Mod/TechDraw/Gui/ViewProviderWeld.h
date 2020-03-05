@@ -67,7 +67,8 @@ public:
     std::string prefFontName(void);
     double prefFontSize(void);
     double prefTileTextAdjust(void);
-
+    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool canDelete(App::DocumentObject* obj) const;
     
 };
 
