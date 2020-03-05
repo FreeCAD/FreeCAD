@@ -38,7 +38,7 @@ from PySide import QtCore
 
 import FreeCAD
 import Draft_rc
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _log
 from draftutils.translate import _tr
 
 App = FreeCAD
@@ -1019,3 +1019,29 @@ def utf8_decode(text):
         return text.decode("utf-8")
     except AttributeError:
         return text
+
+
+def print_header(name, description, debug=True):
+    """Print a line to the console when something is called, and log it.
+
+    Parameters
+    ----------
+    name: str
+        The name of the function or class that is being called.
+        This `name` will be logged in the log file, so if there are problems
+        the log file can be investigated for clues.
+
+    description: str
+        Arbitrary text that will be printed to the console
+        when the function or class is called.
+
+    debug: bool, optional
+        It defaults to `True`.
+        If it is `False` the `description` will not be printed
+        to the console.
+        On the other hand the `name` will always be logged.
+    """
+    _log(name)
+    if debug:
+        _msg(16 * "-")
+        _msg(description)
