@@ -132,11 +132,13 @@ class ObjectDressup:
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
         toolnummer = tc.ToolNumber
+
         # set the correct twist command
         if self.getDirectionOfPath(obj) == 'left':
             arcdir = "G3"
         else:
             arcdir = "G2"
+
         R = obj.Length.Value  # Radius of roll or length
         if queue[1].Name == "G1":  # line
             p0 = queue[0].Placement.Base
@@ -148,6 +150,7 @@ class ObjectDressup:
             p1 = queue[1].Placement.Base
             # PathLog.notice(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
             v = self.normalize(p1.sub(p0))
+
         if self.getDirectionOfPath(obj) == 'right':
             off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
         else:
@@ -157,6 +160,7 @@ class ObjectDressup:
             leadstart = (p0.add(off_v)).sub(offsetvector)  # Rmode
         else:
             leadstart = p0.add(off_v)  # Dmode
+
         if action == 'start':
             extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": op.ClearanceHeight.Value})
             results.append(extendcommand)

@@ -76,6 +76,8 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.setEditorMode('Join', 2)  # hide for now
         obj.addProperty('App::PropertyEnumeration', 'Direction',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Direction of Operation'))
         obj.Direction = ['CW', 'CCW']
+        obj.addProperty('App::PropertyEnumeration', 'Side',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Side of Operation'))
+        obj.Side = ['Outside', 'Inside']
 
     def opOnDocumentRestored(self, obj):
         obj.setEditorMode('Join', 2)  # hide for now
@@ -104,12 +106,16 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 basewires.append(Part.Wire(edgelist))
 
             self.basewires.extend(basewires)
-
+            
+            side = ["Outside"]
             for w in basewires:
                 self.adjusted_basewires.append(w)
-                wire = PathOpTools.offsetWire(w, base.Shape, offset, True)
+                wire = PathOpTools.offsetWire(w, base.Shape, offset, True, side)
                 if wire:
                     wires.append(wire)
+        
+        # Outside or Inside
+        obj.Side = side[0]
 
         forward = True
         if obj.Direction == 'CCW':
@@ -143,6 +149,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.setExpression('StepDown', '0 mm')
         obj.StepDown = '0 mm'
         obj.Direction = 'CW'
+        obj.Side = "Outside"
 
 
 def SetupProperties():

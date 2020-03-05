@@ -86,7 +86,7 @@ class ObjectOp(PathOp.ObjectOp):
                         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
                         self.commandlist.append(Path.Command('G0', {'X': last.x, 'Y': last.y, 'F': self.horizRapid}))
                         self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                        self.appendCommand(Path.Command('G1', {'Z': last.z}), z, relZ, self.vertFeed)
+                        self.appendCommand(Path.Command('G1', {'X': last.x, 'Y': last.y, 'Z': last.z}), z, relZ, self.vertFeed)
                     first = False
 
                     if PathGeom.pointsCoincide(last, edge.Vertexes[0].Point):
