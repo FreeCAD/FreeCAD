@@ -119,7 +119,7 @@ void FitBSplineSurfaceWidget::on_makePlacement_clicked()
             const App::PropertyComplexGeoData* geom = geo->getPropertyOfGeometry();
             if (geom) {
                 std::vector<Base::Vector3d> points, normals;
-                geom->getComplexData()->getPoints(points, normals, 0.001);
+                geom->getComplexData()->getPoints(points, normals, 0.001f);
 
                 std::vector<Base::Vector3f> data;
                 std::transform(points.begin(), points.end(), std::back_inserter(data), [](const Base::Vector3d& v) {
