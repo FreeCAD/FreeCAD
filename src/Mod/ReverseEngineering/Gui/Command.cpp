@@ -36,12 +36,14 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Points/App/Structured.h>
+#include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -55,6 +57,7 @@
 #include "FitBSplineSurface.h"
 #include "Poisson.h"
 #include "Segmentation.h"
+#include "SegmentationManual.h"
 
 using namespace std;
 
@@ -324,6 +327,85 @@ bool CmdSegmentation::isActive(void)
         (Mesh::Feature::getClassTypeId()) == 1;
 }
 
+DEF_STD_CMD_A(CmdSegmentationManual)
+
+CmdSegmentationManual::CmdSegmentationManual()
+  : Command("Reen_SegmentationManual")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("Manual segmentation...");
+    sToolTipText    = QT_TR_NOOP("Create mesh segments manually");
+    sWhatsThis      = "Reen_SegmentationManual";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdSegmentationManual::activated(int)
+{
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        dlg = new ReverseEngineeringGui::TaskSegmentationManual();
+    }
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdSegmentationManual::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdSegmentationFromComponents)
+
+CmdSegmentationFromComponents::CmdSegmentationFromComponents()
+  : Command("Reen_SegmentationFromComponents")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("From components");
+    sToolTipText    = QT_TR_NOOP("Create mesh segments from components");
+    sWhatsThis      = "Reen_SegmentationFromComponents";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdSegmentationFromComponents::activated(int)
+{
+    std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    doc->openTransaction("Segmentation");
+
+    for (auto it : sel) {
+        std::string internalname = "Segments_";
+        internalname += it->getNameInDocument();
+        App::DocumentObjectGroup* group = static_cast<App::DocumentObjectGroup*>(doc->addObject
+            ("App::DocumentObjectGroup", internalname.c_str()));
+        std::string labelname = "Segments ";
+        labelname += it->Label.getValue();
+        group->Label.setValue(labelname);
+
+        const Mesh::MeshObject& mesh = it->Mesh.getValue();
+        std::vector<std::vector<unsigned long> > comps = mesh.getComponents();
+        for (auto jt : comps) {
+            std::unique_ptr<Mesh::MeshObject> segment(mesh.meshFromSegment(jt));
+            Mesh::Feature* feaSegm = static_cast<Mesh::Feature*>(group->addObject("Mesh::Feature", "Segment"));
+            Mesh::MeshObject* feaMesh = feaSegm->Mesh.startEditing();
+            feaMesh->swap(*segment);
+            feaSegm->Mesh.finishEditing();
+        }
+    }
+
+    doc->commitTransaction();
+    doc->recompute();
+}
+
+bool CmdSegmentationFromComponents::isActive(void)
+{
+    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)
+        return true;
+    return false;
+}
+
 DEF_STD_CMD_A(CmdMeshBoundary)
 
 CmdMeshBoundary::CmdMeshBoundary()
@@ -484,6 +566,8 @@ void CreateReverseEngineeringCommands(void)
     rcCmdMgr.addCommand(new CmdApproxCylinder());
     rcCmdMgr.addCommand(new CmdApproxSphere());
     rcCmdMgr.addCommand(new CmdSegmentation());
+    rcCmdMgr.addCommand(new CmdSegmentationManual());
+    rcCmdMgr.addCommand(new CmdSegmentationFromComponents());
     rcCmdMgr.addCommand(new CmdMeshBoundary());
     rcCmdMgr.addCommand(new CmdPoissonReconstruction());
     rcCmdMgr.addCommand(new CmdViewTriangulation());

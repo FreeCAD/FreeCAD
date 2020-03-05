@@ -69,6 +69,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_CurvatureInfo"
           << "Separator"
           << "Reen_Segmentation"
+          << "Reen_SegmentationManual"
+          << "Reen_SegmentationFromComponents"
           << "Reen_MeshBoundary";
     *reen << segm;
 

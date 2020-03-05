@@ -19,7 +19,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(ReenGui_LIBS
     ReverseEngineering
-    FreeCADGui
+    MeshGui
 )
 
 if(BUILD_QT5)
@@ -32,6 +32,7 @@ set(ReenGui_MOC_HDRS
     FitBSplineSurface.h
     Poisson.h
     Segmentation.h
+    SegmentationManual.h
 )
 fc_wrap_cpp(ReenGui_MOC_SRCS ${ReenGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${ReenGui_MOC_SRCS})
@@ -40,6 +41,7 @@ set(Dialogs_UIC_SRCS
     FitBSplineSurface.ui
     Poisson.ui
     Segmentation.ui
+    SegmentationManual.ui
 )
 
 if(BUILD_QT5)
@@ -57,6 +59,8 @@ SET(Dialogs_SRCS
     Poisson.h
     Segmentation.cpp
     Segmentation.h
+    SegmentationManual.cpp
+    SegmentationManual.h
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
