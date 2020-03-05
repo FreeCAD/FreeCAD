@@ -25,6 +25,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
+# include <QTextStream>
 #endif
 
 #include <QMessageBox>
@@ -230,3 +232,34 @@ void ViewProviderLeader::handleChangedPropertyType(Base::XMLReader &reader, cons
     }
 }
 
+bool ViewProviderLeader::onDelete(const std::vector<std::string> &)
+{
+    // a leader line cannot be deleted if it has a child weld symbol
+
+    // get childs
+    auto childs = claimChildren();
+
+    if (!childs.empty()) {
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage); 
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "You cannot delete this leader line because\n it has a weld symbol that would become broken.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool ViewProviderLeader::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of Leader line objects don't destroy anything
+    // thus we can pass this action
+    // that the parent view cannot be deleted is handled
+    // in its onDelete() function
+    Q_UNUSED(obj)
+    return true;
+}

@@ -260,6 +260,7 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
     // get child views
     auto viewSection = getViewObject()->getSectionRefs();
     auto viewDetail = getViewObject()->getDetailRefs();
+    auto viewLeader = getViewObject()->getLeaders();
     
     if (!viewSection.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
@@ -272,6 +273,14 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
     else if (!viewDetail.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
             "You cannot delete this view because it has a detail view that would become broken.");
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Ok);
+        return false;
+    }
+    else if (!viewLeader.empty()) {
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "You cannot delete this view because it has a leader line that would become broken.");
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
             QMessageBox::Ok);

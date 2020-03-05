@@ -61,6 +61,8 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
+    virtual bool onDelete(const std::vector<std::string> &);
+    virtual bool canDelete(App::DocumentObject* obj) const;
 
     std::vector<App::DocumentObject*> claimChildren(void) const;
 

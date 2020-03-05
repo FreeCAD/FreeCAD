@@ -221,3 +221,12 @@ void ViewProviderRichAnno::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 }
 
+bool ViewProviderRichAnno::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of RichAnno objects don't destroy anything
+    // thus we can pass this action
+    // only for information: RichAnnos that have a parent
+    // view will get the page as new parent if the view is deleted
+    Q_UNUSED(obj)
+    return true;
+}
