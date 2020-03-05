@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 
-# connstraint tie, bond tow surfaces together (solid mesh only)
+# constraint tie, bond two surfaces together (solid mesh only)
 # https://forum.freecadweb.org/viewtopic.php?f=18&t=42783
 # to run the example use:
 """

@@ -2867,7 +2867,7 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
             # @todo Create 3 lines from the inner and 4 from the outer h. center.
             # @todo Calc. the 4 inversion poles of these lines for each circle.
             # @todo Calc. the radical center of the 3 circles.
-            # @todo Calc. the intersection points (max. 8) of 4 lines (trough each inversion pole and the radical center) with the circle.
+            # @todo Calc. the intersection points (max. 8) of 4 lines (through each inversion pole and the radical center) with the circle.
             #       This gives us all the tangent points.
         else:
             # Some circles are inside each other or an error has occurred.

@@ -111,7 +111,7 @@ public:
     std::vector<std::string> getDisplayModes() const;
 
     //creates the widget used in the task dalogs, either for the function itself or for
-    //the fiter using it
+    //the filter using it
     virtual FunctionWidget* createControlWidget() {return NULL;}
 
 protected:

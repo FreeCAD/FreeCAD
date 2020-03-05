@@ -198,7 +198,7 @@
          <item>
           <widget class="QPushButton" name="toolEnumerate">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Assigne numbers to each Tool Bit according to its current position in the library. The first Tool Bit is assigned the ID 1.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Assigned numbers to each Tool Bit according to its current position in the library. The first Tool Bit is assigned the ID 1.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>Enumerate</string>

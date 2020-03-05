@@ -939,7 +939,7 @@ class ObjectTagDressup:
                 PathLog.debug("previousTag = %d [%s]" % (i, prev))
             else:
                 disabled.append(i)
-            tag.nr = i  # assigne final nr
+            tag.nr = i  # assign final nr
             tags.append(tag)
             positions.append(tag.originAt(self.pathData.minZ))
         return (tags, positions, disabled)

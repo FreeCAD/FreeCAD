@@ -3941,7 +3941,7 @@ def getViewBlock(geom, view, blockcount):
     If the global variable `dxfExportBlocks` exists, it will create
     the appropriate strings for `BLOCK` and `INSERT` sections,
     and increment the `blockcount`.
-    Otherwise, it will just creaate an insert by changing the layer,
+    Otherwise, it will just create an insert by changing the layer,
     and setting a handle.
 
     Parameters
@@ -4020,7 +4020,7 @@ def getViewDXF(view, blocks=True):
     and if the global variable `dxfExportBlocks` exists, it will create
     the appropriate strings for `BLOCK` and `INSERT` sections,
     and increment the `blockcount`.
-    Otherwise, it will just creaate an insert by changing the layer,
+    Otherwise, it will just create an insert by changing the layer,
     and setting a handle
 
     Parameters

@@ -212,7 +212,7 @@ def offsetWire(wire, base, offset, forward):
     # Of the remaining edges we take the longest wire to be the engraving side
     # Looking for a circle with the start vertex as center marks and end
     #  starting from there follow the edges until a circle with the end vertex as center is found
-    #  if the traversed edges include any oof the remainig from above, all those edges are remaining
+    #  if the traversed edges include any of the remaining from above, all those edges are remaining
     #  this is to also include edges which might partially be inside shape
     #  if they need to be discarded, split, that should happen in a post process
     # Depending on the Axis of the circle, and which side remains we know if the wire needs to be flipped
