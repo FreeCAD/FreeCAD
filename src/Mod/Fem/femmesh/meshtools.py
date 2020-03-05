@@ -1349,7 +1349,7 @@ def get_ref_facenodes_areas(
             node_area_table.append((face_table[mf][5], middle_node_area))
 
         elif femmesh_facetype == 8:  # 8 node femmesh face quad
-            # corner_node_area = -mesh_face_area / 12.0  (negativ!)
+            # corner_node_area = -mesh_face_area / 12.0  (negative!)
             # mid-side nodes = mesh_face_area / 3.0
             #  P4_________P7________P3
             #    |      / |  \      |

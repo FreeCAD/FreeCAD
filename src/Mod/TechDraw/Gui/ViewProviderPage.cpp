@@ -463,7 +463,7 @@ void ViewProviderPage::setGraphicsView(QGVPage* gv)
 
 bool ViewProviderPage::canDelete(App::DocumentObject *obj) const
 {
-    // deletions from a page don't necesarily destroy anything
+    // deletions from a page don't necessarily destroy anything
     // thus we can pass this action
     // if an object could break something, like e.g. the template object
     // its ViewProvider handles this in the onDelete() function

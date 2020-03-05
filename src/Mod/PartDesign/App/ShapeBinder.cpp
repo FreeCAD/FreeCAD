@@ -507,7 +507,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         Shape.setValue(result);
     }
 
-    // collect transformation matrix cache entires
+    // collect transformation matrix cache entries
     std::unordered_set<std::string> caches;
     for(const auto &name : getDynamicPropertyNames()) {
         if(boost::starts_with(name,"Cache_"))

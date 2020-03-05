@@ -173,7 +173,7 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
 
     // assure the fillets are shown
     showObject();
-    // remove any highlights andd selections
+    // remove any highlights and selections
     DressUpView->highlightReferences(false);
     Gui::Selection().clearSelection();
 

@@ -4,7 +4,7 @@ JtReader    export-ignore
 # ****************************************************************************
 # line endings
 
-# to surpress line ending changes in github, add ?w=1 at link end of a diff
+# to suppress line ending changes in github, add ?w=1 at link end of a diff
 
 # for more information see forum topic and a specific pull request
 # https://forum.freecadweb.org/viewtopic.php?f=17&t=41117

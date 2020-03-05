@@ -83,7 +83,7 @@ dxfColorMap = None
 dxfLibrary = None
 
 # Save the native open function to avoid collisions
-# with the function declated here
+# with the function declared here
 if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 

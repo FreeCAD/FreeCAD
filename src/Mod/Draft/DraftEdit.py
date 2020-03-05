@@ -75,7 +75,7 @@ class Edit():
         self._mouseMovedCB      -> self._mouseMovedCB
         if self._mousePressedCB -> self.mousePressed
         when trackers are displayed for selected objects,
-        theese callbacks capture user events and forward 
+        these callbacks capture user events and forward 
         them to related functions
 
 
@@ -133,7 +133,7 @@ class Edit():
         populates the menu with custom actions
     
     evaluate_menu_action
-        evaluate user choosen action and launch corresponding
+        evaluate user chosen action and launch corresponding
         function.
 
 
@@ -160,7 +160,7 @@ class Edit():
         self.pl, self.invpl.
         Due to multiple object editing, i'm planning to keep
         just self.trackers. Any other object will be identified
-        and processed starting from editTracker informations.
+        and processed starting from editTracker information.
     
     editing : Int
         Index of the editTracker that has been clicked by the 
@@ -363,7 +363,7 @@ class Edit():
 
     def unregister_selection_callback(self):
         """
-        remove selection callback if it exhists
+        remove selection callback if it exists
         """
         if self.selection_callback:
             self.view.removeEventCallback("SoEvent",self.selection_callback)
@@ -389,7 +389,7 @@ class Edit():
 
     def unregister_editing_callbacks(self):
         """
-        remove callbacks used during editing if they exhist
+        remove callbacks used during editing if they exist
         """
         view = Gui.ActiveDocument.ActiveView
         if self._keyPressedCB:

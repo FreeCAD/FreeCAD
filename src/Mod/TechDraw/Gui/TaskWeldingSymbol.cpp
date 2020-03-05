@@ -86,7 +86,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     m_arrowDirty(false),
     m_otherDirty(false)
 {
-//TODO: why does DWS nedd DLL as parent?
+//TODO: why does DWS need DLL as parent?
 //    Base::Console().Message("TWS::TWS() - create mode\n");
     if  (m_leadFeat == nullptr)  {
         //should be caught in CMD caller
