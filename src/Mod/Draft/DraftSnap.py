@@ -667,7 +667,7 @@ class Snapper:
         return point
 
     def snapToEndpoints(self,shape):
-        "returns a list of enpoints snap locations"
+        "returns a list of endpoints snap locations"
         snaps = []
         if self.isEnabled("endpoint"):
             if hasattr(shape,"Vertexes"):

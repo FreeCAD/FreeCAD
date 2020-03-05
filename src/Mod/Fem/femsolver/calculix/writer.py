@@ -1160,7 +1160,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f.write("*DLOAD\n")
             for ref_shape in femobj["PressureFaces"]:
                 # the loop is needed for compatibility reason
-                # in depretiated method get_pressure_obj_faces_depreciated
+                # in depreciated method get_pressure_obj_faces_depreciated
                 # the face ids where per ref_shape
                 f.write("** " + ref_shape[0] + "\n")
                 for face, fno in ref_shape[1]:

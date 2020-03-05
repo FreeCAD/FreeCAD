@@ -1,7 +1,7 @@
 """Provides lists of commands for the Draft Workbench.
 
 This module returns lists of commands, so that the toolbars
-can be initilized by Draft, and by other workbenches.
+can be initialized by Draft, and by other workbenches.
 These commands should be defined in `DraftTools`, and in the individual
 modules in `draftguitools`.
 """

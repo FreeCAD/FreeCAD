@@ -707,8 +707,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     std::vector<Document*> docs;
     docs.reserve(newDocs.size());
     for (auto &v : newDocs) {
-        // Notify ProeprtyXLink to attach newly opened documents and restore
-        // relavant external links
+        // Notify PropertyXLink to attach newly opened documents and restore
+        // relevant external links
         PropertyXLink::restoreDocument(*v.first);
         docs.push_back(v.first);
     }

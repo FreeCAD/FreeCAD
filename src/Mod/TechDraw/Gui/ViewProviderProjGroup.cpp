@@ -217,7 +217,7 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
 
 bool ViewProviderProjGroup::canDelete(App::DocumentObject *obj) const
 {
-    // deletions of views from a ProjGroup don't necesarily destroy anything
+    // deletions of views from a ProjGroup don't necessarily destroy anything
     // thus we can pass this action
     // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
     Q_UNUSED(obj)

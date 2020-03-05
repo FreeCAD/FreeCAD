@@ -135,7 +135,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="toolTip">
-           <string>Show Hard and Outline Edges (alway shown)</string>
+           <string>Show Hard and Outline Edges (always shown)</string>
           </property>
           <property name="text">
            <string>Show Hard Lines</string>

@@ -532,7 +532,7 @@ class ViewProviderBuildingPart:
 
         # inventor saving
         if not "SaveInventor" in pl:
-            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other file sin lightweight mode."))
+            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
         if not "SavedInventor" in pl:
             vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the inventor representation of this object, if enabled"))
             vobj.setEditorMode("SavedInventor",2)

@@ -120,7 +120,7 @@ def is_derived_from(obj, t):
 def get_pref_working_dir(solver_obj):
     """ Return working directory for solver honoring user settings.
 
-    :throws femtools.erros.MustSaveError:
+    :throws femtools.errors.MustSaveError:
      If user setting is set to BESIDE and the document isn't saved.
 
     :note:

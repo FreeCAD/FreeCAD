@@ -6637,10 +6637,10 @@ namespace SketcherGui {
                         this->notAllowedReason = QT_TR_NOOP("This object is in another document.");
                         break;
                     case Sketcher::SketchObject::rlOtherBody:
-                        this->notAllowedReason = QT_TR_NOOP("This object belongs to another body. Hold Ctrl to allow crossreferences.");
+                        this->notAllowedReason = QT_TR_NOOP("This object belongs to another body. Hold Ctrl to allow cross-references.");
                         break;
                     case Sketcher::SketchObject::rlOtherBodyWithLinks:
-                        this->notAllowedReason = QT_TR_NOOP("This object belongs to another body and it contains external geometry. Crossreference not allowed.");
+                        this->notAllowedReason = QT_TR_NOOP("This object belongs to another body and it contains external geometry. Cross-reference not allowed.");
                         break;
                     case Sketcher::SketchObject::rlOtherPart:
                         this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
