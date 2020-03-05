@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ca" sourcelanguage="en">
+<TS version="2.1" language="ca" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation>Adjuntament</translation>
+      <translation>Adjunt</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
@@ -94,6 +94,11 @@
       <translation>Error: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Separacio del Arxiu Adjunt:</translation>
@@ -101,7 +106,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Attachment Offset (inactiu - no adjunts):</translation>
+      <translation>Òfset adjunt (inactiu - no adjunts):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
@@ -132,11 +137,6 @@
       <translation>Primer, seleccioneu una forma composta! El segon element seleccionat ( opcional) es tractarà com una plantilla.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Selecció no vàlida</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -148,6 +148,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {err}
 
 Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Selecció no vàlida</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -209,7 +227,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Fusiona un objecte en un altre i preservar els espais buits.</translation>
     </message>
   </context>
   <context>
@@ -258,7 +276,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="59"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Crea un lloc</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
@@ -299,7 +317,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
       <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
+      <translation>Divideix els objectes on s'interseccionen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -1725,7 +1743,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../Command.cpp" line="1440"/>
       <source>Chamfer...</source>
-      <translation type="unfinished">Chamfer...</translation>
+      <translation>Xamfrà...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
@@ -1761,12 +1779,12 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
+      <translation>Eines compostes</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
+      <translation>Eines compostes: treballant amb llistes de formes.</translation>
     </message>
   </context>
   <context>
@@ -1927,12 +1945,12 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
+      <translation>Suprimir la funcionalitat</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
+      <translation>Elimina les característiques d'una forma</translation>
     </message>
   </context>
   <context>
@@ -2076,7 +2094,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <translation>Crea una cara a partir d'un conjunt de filferro (p ex. d'un esbós)</translation>
     </message>
   </context>
   <context>
@@ -2130,7 +2148,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <translation>Utilitat per a Offset ò separar en 3D</translation>
     </message>
   </context>
   <context>
@@ -2148,7 +2166,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Utilitat per a separar les formes d'un pla</translation>
     </message>
   </context>
   <context>
@@ -2676,7 +2694,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1038"/>
       <source>Chamfer Edges</source>
-      <translation type="unfinished">Chamfer Edges</translation>
+      <translation>Arestes del xamfrà</translation>
     </message>
   </context>
   <context>
@@ -2851,7 +2869,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
+      <translation>L'enllaç de la direcció de l'extrusió no és vàlid.
 
 %1</translation>
     </message>
@@ -2968,7 +2986,7 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>Xamfranar Arestes</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -3852,7 +3870,7 @@ Please check one or more edge entities first.</source>
       <source>Maximum angular deflection</source>
       <translation>Deflecció màxima angular</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation>°</translation>
@@ -3979,7 +3997,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>Posar color aleatori</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4198,7 +4216,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>Selecciona les arestes adjacents</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
@@ -4408,7 +4426,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Attachment Offset (inactiu - no adjunts):</translation>
+      <translation>Òfset adjunt (inactiu - no adjunts):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>
@@ -4474,7 +4492,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <translation>Comprova la geometria</translation>
     </message>
   </context>
   <context>
@@ -4662,7 +4680,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Filferro d'arestes</translation>
     </message>
   </context>
   <context>

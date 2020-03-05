@@ -32,12 +32,12 @@
     <message>
       <location filename="../../PlotGui.py" line="109"/>
       <source>Show/Hide grid</source>
-      <translation>Raster weergeven/verbergen</translation>
+      <translation>Toon/Verberg raster</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="112"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation>Weergeven/verbergen raster geselecteerde plot</translation>
+      <translation>Toon/Verberg raster op geselecteerde plot</translation>
     </message>
   </context>
   <context>
@@ -58,12 +58,12 @@
     <message>
       <location filename="../../PlotGui.py" line="135"/>
       <source>Show/Hide legend</source>
-      <translation>Legenda weergeven/verbergen</translation>
+      <translation>Toon/Verberg legende</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="138"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation>Weergeven/verbergen legende geselecteerde plot</translation>
+      <translation>Toon/Verberg legenda op geselecteerde plot</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="../../PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation>De plot als een imagebestand opslaan</translation>
+      <translation>De plot als een afbeeldingsbestand opslaan</translation>
     </message>
   </context>
   <context>

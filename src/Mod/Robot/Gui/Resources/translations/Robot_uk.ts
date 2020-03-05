@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="uk" sourcelanguage="en">
+<TS version="2.1" language="uk" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -875,27 +875,27 @@
       <source>World</source>
       <translation>Світ</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50мм / 5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20мм / 2°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10мм / 1°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5мм / 0.5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1мм / 0.1°</translation>

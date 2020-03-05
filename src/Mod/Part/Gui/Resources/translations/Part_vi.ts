@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="vi" sourcelanguage="en">
+<TS version="2.1" language="vi" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
-      <translation type="unfinished">No object named {name}</translation>
+      <translation>Không có đối tượng mang tên {name}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
@@ -26,7 +26,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>Đính kèm</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
       <source>Reference{i}</source>
-      <translation type="unfinished">Reference{i}</translation>
+      <translation>Tham chiếu{i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
       <source>Failed to resolve links. {err}</source>
-      <translation type="unfinished">Failed to resolve links. {err}</translation>
+      <translation>Gặp lỗi khi phân giải liên kết. {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
@@ -86,12 +86,17 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation type="unfinished">Attached with mode {mode}</translation>
+      <translation>Được đính kèm với chế độ {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Error: {err}</source>
-      <translation type="unfinished">Error: {err}</translation>
+      <translation>Lỗi: {err}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
@@ -106,12 +111,12 @@
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Đính kèm...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>Sửa đính kèm của đối tượng đã chọn.</translation>
     </message>
   </context>
   <context>
@@ -132,11 +137,6 @@
       <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -146,6 +146,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Computing the result failed with an error: 
 
 {err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Lựa chọn sai</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -170,7 +188,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Lựa chọn sai</translation>
     </message>
   </context>
   <context>
@@ -178,7 +196,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Kết nối các đối tượng</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
@@ -204,7 +222,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Đối tượng được nhúng</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
@@ -230,7 +248,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Lựa chọn sai</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
@@ -258,12 +276,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="59"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Tạo ống</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Tạo ra một ống</translation>
     </message>
   </context>
   <context>
@@ -284,7 +302,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Lựa chọn sai</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
@@ -334,12 +352,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>XOR lôgíc</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
-      <translation type="unfinished">Remove intersection fragments</translation>
+      <translation>Bỏ các phần giao nhau</translation>
     </message>
   </context>
   <context>
@@ -1725,7 +1743,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1440"/>
       <source>Chamfer...</source>
-      <translation type="unfinished">Chamfer...</translation>
+      <translation>Vát mép...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
@@ -2972,7 +2990,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>Cạnh cần vát</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -3862,7 +3880,7 @@ Hãy kiểm tra một hoặc nhiều thực thể cạnh trước.</translation>
       <source>Maximum angular deflection</source>
       <translation>Độ lệch góc tối đa</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -4484,7 +4502,7 @@ Hãy kiểm tra một hoặc nhiều thực thể cạnh trước.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <translation>Kiểm tra hình học</translation>
     </message>
   </context>
   <context>
@@ -5272,7 +5290,7 @@ Bạn có muốn tiếp tục?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation type="unfinished">Join</translation>
+      <translation>Nối</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

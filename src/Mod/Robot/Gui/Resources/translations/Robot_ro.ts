@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ro" sourcelanguage="en">
+<TS version="2.1" language="ro" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Definește orientarea implicită pentru comenzile subsecvente pentru punctul de trecere</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Definește valorile implicite pentru viteză, accelerație și continuitatea ale comenzilor subsecvente pentru crearea punctului de trecere</translation>
     </message>
   </context>
   <context>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="231"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>Aveți nevoie de cel puțin două puncte de trecere pentru a defini traiectoria de simulat.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="88"/>
@@ -441,7 +441,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="268"/>
       <source>Set default speed</source>
-      <translation type="unfinished">Set default speed</translation>
+      <translation>Definește viteza implicită</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="269"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set default continuity</source>
-      <translation type="unfinished">Set default continuity</translation>
+      <translation>Definește continuitatea implicită</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="285"/>
       <source>Set default acceleration</source>
-      <translation type="unfinished">Set default acceleration</translation>
+      <translation>Definiți accelerația implicită</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="286"/>
@@ -875,27 +875,27 @@
       <source>World</source>
       <translation>Lumea</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50mm / 5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20mm / 2°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10mm / 1°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5mm / 0.5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1mm / 0.1°</translation>

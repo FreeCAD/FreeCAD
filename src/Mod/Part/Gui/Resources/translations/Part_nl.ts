@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl" sourcelanguage="en">
+<TS version="2.1" language="nl" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation>Fout: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>De verschuiving van de bijlage:</translation>
@@ -132,22 +137,35 @@
       <translation>Selecteer eerst een vorm die is samengesteld! Het tweede geselecteerde item (optioneel) zal worden behandeld als een stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Foute selectie</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Het resultaat berekenen is mislukt met een fout: 
+      <translation>De berekenen van het resultaat is mislukt met een fout: 
 
 {err}
 
-Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.</translation>
+Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annuleren.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Foute selectie</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -221,11 +239,11 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Het resultaat berekenen is mislukt met een fout: 
+      <translation>De berekening van het resultaat is mislukt met een fout: 
 
 {err}
 
-Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.</translation>
+Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annuleren.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
@@ -275,11 +293,11 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Het resultaat berekenen is mislukt met een fout: 
+      <translation>De berekenen van het resultaat is mislukt met een fout: 
 
 {err}
 
-Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.</translation>
+Klik op 'Doorgaan' om de functie toch te maken, of op 'Afbreken' als u wilt annuleren.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
@@ -426,7 +444,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
-      <translation>Draaien</translation>
+      <translation>Wentelen</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="328"/>
@@ -456,7 +474,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="333"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Solid</translation>
+      <translation>Volumemodel</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="334"/>
@@ -489,7 +507,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="273"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Het punt wordt op de Plaatsing.Positie van het object gezet. Werkt op objecten met plaatsingen en elliptische/parabool-/hyperboolranden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="275"/>
@@ -579,25 +597,25 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Nabijheid punt 1</translation>
+      <translation>Nabijheidspunt 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="297"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
+      <translation>Punt op de eerste referentie dat het dichtst bij de tweede referentie ligt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="299"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 2</translation>
+      <translation>Nabijheidspunt 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="300"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
+      <translation>Punt op de tweede referentie dat het dichtst bij de tweede referentie ligt.</translation>
     </message>
   </context>
   <context>
@@ -625,7 +643,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Lijn is uitgelijnd langs de lokale X-as van het object. Werkt op objecten met plaatsingen en elliptische/parabool-/hyperboolranden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="206"/>
@@ -637,7 +655,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="207"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Lijn is uitgelijnd langs de lokale Y-as van het object. Werkt op objecten met plaatsingen en elliptische/parabool-/hyperboolranden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
@@ -655,31 +673,31 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="213"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+      <translation>Lijn die een as is van een raakcirkel aan een gebogen rand. Een optioneel eindpunt definieert waar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix1</translation>
+      <translation>Richtlijn1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="216"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
+      <translation>Richtlijn voor ellips, parabool, hyperbool.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix2</translation>
+      <translation>Richtlijn2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
+      <translation>Tweede richtlijn voor ellips en hyperbool.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="221"/>
@@ -715,7 +733,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="228"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+      <translation>Lijn raakt aan een rand. Optionele eindpuntsverbinding definieert de plaats.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="230"/>
@@ -727,19 +745,19 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Lijn uit aan de n-vector van het Frenet-Serret coördinaatsysteem van een gebogen rand. Optionele eindpuntsverbinding bepaalt plaats er van.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Binormaal</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="234"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Lijn uit aan de b-vector van het Frenet-Serret coördinaatsysteem van een gebogen rand. Optionele eindpuntsverbinding bepaalt plaats er van.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
@@ -917,7 +935,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Vlak is uitgelijnd om met oppervlakte samen te vallen.</translation>
+      <translation>Vlak is uitgelijnd om met het planaire vlak samen te vallen.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="143"/>
@@ -947,7 +965,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet NB</translation>
+      <translation>Frenet NB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="150"/>
@@ -961,85 +979,85 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="152"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TN</translation>
+      <translation>Frenet TN</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="155"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TB</translation>
+      <translation>Frenet TB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Concentrisch</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>Lijn uit met het vlak met de raakcirkel van een rand. De oorsprong wordt uitgelijnd met het krommingspunt. Optionele eindpuntverbinding definieert waar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Wentelsectie</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="162"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>Het vlak staat loodrecht op de rand en de Y-as is afgestemd op de as van de raakcirkel. Optionele eindpuntverbinding definieert waar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane by 3 points</translation>
+      <translation>Vlak langs 3 punten</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="165"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align plane to pass through three vertices.</translation>
+      <translation>Lijn het vlak uit om door drie eindpunten te gaan.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to 3 points</translation>
+      <translation>Normaal tot 3 punten</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="168"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+      <translation>Het vlak zal door de eerste twee eindpunten gaan, en loodrecht op het vlak dat door drie eindpunten gaat.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Vouwing</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="171"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+      <translation>Gespecialiseerde modus voor het vouwen van veelvlakken. Selecteer 4 randen in volgorde: vouwbare rand, vouwlijn, andere vouwlijn, andere vouwlijn, andere vouwbare rand. Het vlak wordt uitgelijnd met de vouwing van de eerste rand.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Inertia 2-3</translation>
+      <translation>Inertie 2-3</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="174"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
+      <translation>Vlak gebouwd op de tweede en derde hoofdas van inertie (gaat door het massamiddelpunt).</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1096,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="57"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+      <translation>Plaatsing is gelijk gemaakt aan de Plaatsing van een gekoppeld object.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -1090,7 +1108,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="60"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
+      <translation>X', Y', Z' assen worden respectievelijk afgestemd op de lokale X, Z, -Y van het object.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
@@ -1102,49 +1120,49 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="63"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
+      <translation>X', Y', Z' assen worden respectievelijk afgestemd op de lokale Y, Z, X, van het object.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY on plane</translation>
+      <translation>XY op het vlak</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="66"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is aligned to coincide planar face.</translation>
+      <translation>X' Y'-vlak is zodanig uitgelijnd dat het vlak samenvalt met het planaire vlak.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY tangent to surface</translation>
+      <translation>XY-raaklijn aan het oppervlak</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="69"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
+      <translation>X' Y'-vlak raakt aan het oppervlak bij het eindpunt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Z tangent to edge</translation>
+      <translation>Z-raaklijn aan de rand</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="72"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
+      <translation>De Z-as is zodanig uitgelijnd dat deze de rand raakt. Optionele eindpuntverbinding definieert waar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet NBT</translation>
+      <translation>Frenet NBT</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="75"/>
@@ -1158,109 +1176,109 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="77"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TNB</translation>
+      <translation>Frenet TNB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="80"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TBN</translation>
+      <translation>Frenet TBN</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Concentrisch</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Lijn het XY-vlak uit met de raakcirkel van een rand. Optionele eindpuntverbinding definieert waar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Wentelsectie</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="87"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Lijn de Y'-as uit om deze in overeenstemming te brengen met de as van de raakcirkel van een rand. Optionele eindpuntverbinding definieert waar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY plane by 3 points</translation>
+      <translation>XY-vlak langs 3 punten</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="90"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
+      <translation>Lijn het XY-vlak uit om door drie eindpunten te gaan.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ plane by 3 points</translation>
+      <translation>XZ-vlak langs 3 punten</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="93"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
+      <translation>Lijn het XZ-vlak uit om door 3 punten te gaan; de X-as zal door twee eerste punten gaan.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="95"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Vouwing</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="96"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
+      <translation>Gespecialiseerde modus voor het vouwen van veelvlakken. Selecteer 4 randen in volgorde: vouwbare rand, vouwlijn, andere vouwlijn, andere vouwlijn, andere vouwbare rand. Het XY-vlak wordt uitgelijnd met de vouwing van de eerste rand.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Inertial CS</translation>
+      <translation>Traagheidscoördinatensysteem</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="99"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
+      <translation>Traagheidscoördinatensysteem, gebouwd op de hoofdassen van de traagheid en het massamiddelpunt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>O-Z-X uitlijnen</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de Z'- en X'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>O-Z-Y uitlijnen</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="105"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de Z'- en Y'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="107"/>
@@ -1273,7 +1291,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="108"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de X'- en Y'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="110"/>
@@ -1285,7 +1303,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de X'- en Z'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="113"/>
@@ -1297,7 +1315,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="114"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de Y'- en Z'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="116"/>
@@ -1310,7 +1328,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="117"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de Y'- en X'-assen uit in de richting van het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="176"/>
@@ -1322,7 +1340,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="177"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de normale en horizontale vlakke as uit naar het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
@@ -1334,13 +1352,13 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de normale en verticale vlakke as uit naar het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="183"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de horizontale en verticale vlakke assen uit naar het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
@@ -1352,7 +1370,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="186"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de horizontale vlakke as en de normale uit naar het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="188"/>
@@ -1364,13 +1382,13 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de verticale vlakke as en de normale uit in de richting van het eindpunt/langs de lijn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="192"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>Stem de oorsprong af op het eerste eindpunt. Lijn de verticale horizontale vlakke assen uit in de richting van het eindpunt/langs de lijn.</translation>
     </message>
   </context>
   <context>
@@ -1564,7 +1582,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../Command.cpp" line="2234"/>
       <location filename="../../Command.cpp" line="2235"/>
       <source>Clear All</source>
-      <translation>Alles &amp;Leegmaken</translation>
+      <translation>Alles wissen</translation>
     </message>
   </context>
   <context>
@@ -1761,12 +1779,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
+      <translation>Samenstellingsgereedschappen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
+      <translation>Samenstellingsgereedschappen: werken met lijsten van vormen.</translation>
     </message>
   </context>
   <context>
@@ -1784,7 +1802,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="556"/>
       <source>Join walled objects</source>
-      <translation type="unfinished">Join walled objects</translation>
+      <translation>Objecten met wanden toevoegen</translation>
     </message>
   </context>
   <context>
@@ -1802,7 +1820,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
+      <translation>Gereedschap om vormen te verschuiven (bouw parallelle vormen)</translation>
     </message>
   </context>
   <context>
@@ -1820,7 +1838,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
+      <translation>Vormsplitsingsgereedschappen. Gereedschappen voor het maken van Compsolid. OCC 6.9.0 of nieuwer is vereist.</translation>
     </message>
   </context>
   <context>
@@ -1838,7 +1856,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Make a compound of several shapes</source>
-      <translation type="unfinished">Make a compound of several shapes</translation>
+      <translation>Maak een samenstelling van meerdere vormen</translation>
     </message>
   </context>
   <context>
@@ -1858,7 +1876,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Create a cone solid</source>
-      <translation>Een kegel volumemodel maken</translation>
+      <translation>Maak een kegelvormig volumemodel</translation>
     </message>
   </context>
   <context>
@@ -1927,12 +1945,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
+      <translation>Onttakeling</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
+      <translation>Verwijder kenmerk uit een vorm</translation>
     </message>
   </context>
   <context>
@@ -2053,12 +2071,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>Loft...</source>
-      <translation type="unfinished">Loft...</translation>
+      <translation>Loft...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Utility to loft</source>
-      <translation type="unfinished">Utility to loft</translation>
+      <translation>Gereedschap voor loft</translation>
     </message>
   </context>
   <context>
@@ -2071,12 +2089,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Make face from wires</source>
-      <translation type="unfinished">Make face from wires</translation>
+      <translation>Maak vlak vanuit draden</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <translation>Maak een vlak vanuit een draadset (bijv. vanuit een schets)</translation>
     </message>
   </context>
   <context>
@@ -2130,7 +2148,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <translation>Gereedschap om te verschuiven in 3D</translation>
     </message>
   </context>
   <context>
@@ -2143,12 +2161,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset...</source>
-      <translation type="unfinished">2D Offset...</translation>
+      <translation>2D-verschuiving...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Gereedschap om planaire vormen te verschuiven</translation>
     </message>
   </context>
   <context>
@@ -2197,12 +2215,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../CommandSimple.cpp" line="219"/>
       <source>Refine shape</source>
-      <translation type="unfinished">Refine shape</translation>
+      <translation>Verfijn vorm</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="220"/>
       <source>Refine the copy of a shape</source>
-      <translation type="unfinished">Refine the copy of a shape</translation>
+      <translation>Verfijn de kopie van een vorm</translation>
     </message>
   </context>
   <context>
@@ -2233,12 +2251,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Revolve...</source>
-      <translation>Draaien...</translation>
+      <translation>Wentelen...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Revolve a selected shape</source>
-      <translation>Een geselecteerde vorm draaien</translation>
+      <translation>Een geselecteerde vorm wentelen</translation>
     </message>
   </context>
   <context>
@@ -2251,12 +2269,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1989"/>
       <source>Create ruled surface</source>
-      <translation type="unfinished">Create ruled surface</translation>
+      <translation>Maak een geregeerd oppervlak aan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation type="unfinished">Create a ruled surface from either two Edges or two wires</translation>
+      <translation>Maak een geregeerd oppervlak vanuit twee randen of twee draden</translation>
     </message>
   </context>
   <context>
@@ -2348,7 +2366,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../CommandParametric.cpp" line="130"/>
       <source>Create a sphere solid</source>
-      <translation>Maak een bol volumemodel</translation>
+      <translation>Maak een bolvormig volumemodel</translation>
     </message>
   </context>
   <context>
@@ -2361,12 +2379,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1594"/>
       <source>Sweep...</source>
-      <translation type="unfinished">Sweep...</translation>
+      <translation>Sweep...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
       <source>Utility to sweep</source>
-      <translation type="unfinished">Utility to sweep</translation>
+      <translation>Sweepgereedschap</translation>
     </message>
   </context>
   <context>
@@ -2400,7 +2418,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../Command.cpp" line="1848"/>
       <source>Selected shape is not a solid</source>
-      <translation>Geselecteerde vorm is geen solid</translation>
+      <translation>Geselecteerde vorm is geen volumemodel</translation>
     </message>
   </context>
   <context>
@@ -2420,7 +2438,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../CommandParametric.cpp" line="212"/>
       <source>Create a torus solid</source>
-      <translation>Een torus volumemodel maken</translation>
+      <translation>Maak een torsisch volumemodel</translation>
     </message>
   </context>
   <context>
@@ -2433,7 +2451,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>Selectie aanvaard</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
@@ -2458,12 +2476,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Bijlagemodus:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+      <translation>BijlageVerschuivingseigenschap. De plaatsing wordt uitgedrukt in de lokale ruimte van het object dat wordt toegevoegd.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
@@ -2503,7 +2521,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Zijden spiegelen</translation>
     </message>
   </context>
   <context>
@@ -2516,7 +2534,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation type="unfinished">Guiding plane</translation>
+      <translation>Gidsvlak</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -2600,7 +2618,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../DlgBooleanOperation.ui" line="81"/>
       <location filename="../../DlgBooleanOperation.ui" line="119"/>
       <source>Solids</source>
-      <translation>Volumemodel</translation>
+      <translation>Volumemodellen</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
@@ -2628,7 +2646,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="155"/>
       <source>Swap selection</source>
-      <translation>Wissel selectie</translation>
+      <translation>Wissel selectie om</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="378"/>
@@ -2658,17 +2676,17 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="415"/>
       <source>Performing union on non-solids is not possible</source>
-      <translation type="unfinished">Performing union on non-solids is not possible</translation>
+      <translation>De vereniging van non-volumemodellen is niet mogelijk</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="424"/>
       <source>Performing intersection on non-solids is not possible</source>
-      <translation type="unfinished">Performing intersection on non-solids is not possible</translation>
+      <translation>De intersectie van non-volumemodellen is niet mogelijk</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="433"/>
       <source>Performing difference on non-solids is not possible</source>
-      <translation type="unfinished">Performing difference on non-solids is not possible</translation>
+      <translation>De Aftrekking van non-volumemodellen is niet mogelijk</translation>
     </message>
   </context>
   <context>
@@ -2676,7 +2694,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1038"/>
       <source>Chamfer Edges</source>
-      <translation>Afschuinen Randen</translation>
+      <translation>Randen afschuinen</translation>
     </message>
   </context>
   <context>
@@ -2694,7 +2712,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgExtrusion.ui" line="32"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation type="unfinished">If checked, direction of extrusion is reversed.</translation>
+      <translation>Indien aangevinkt, wordt de richting van de extrusie omgekeerd.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="35"/>
@@ -2704,7 +2722,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgExtrusion.ui" line="42"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
+      <translation>Geef richting handmatig aan met behulp van X,Y,Z-waarden.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
@@ -2714,7 +2732,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgExtrusion.ui" line="52"/>
       <source>Extrude perpendicularly to plane of input shape.</source>
-      <translation type="unfinished">Extrude perpendicularly to plane of input shape.</translation>
+      <translation>Extrudeer loodrecht aan het vlak van de inputvorm.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
@@ -2724,7 +2742,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgExtrusion.ui" line="65"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+      <translation>Klik om te beginnen met het selecteren van een rand in 3d-weergave.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
@@ -2735,12 +2753,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
+      <translation>Stel de richting in die overeenkomt met de richting van de rechte rand. Tip: om ook rekening te houden met de lengte van de rand, moet u beide lengtes op nul zetten.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
       <source>Along edge:</source>
-      <translation type="unfinished">Along edge:</translation>
+      <translation>Langs de rand:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
@@ -2770,7 +2788,7 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
-      <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
+      <translation>Lengte om langs richting te extruderen (kan negatief zijn). Als beide lengten nul zijn, wordt de richtingsomvang gebruikt.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="223"/>
@@ -2780,12 +2798,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
     <message>
       <location filename="../../DlgExtrusion.ui" line="242"/>
       <source>Length to extrude against direction (can be negative).</source>
-      <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
+      <translation>Lengte om tegen richting uit te extruderen (kan negatief zijn).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="261"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
+      <translation>Verspreid de lengte van de extrusie evenzeer aan beide zijden.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="264"/>
@@ -2801,12 +2819,12 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
+      <translation>Pas helling (schets) toe op geëxtrudeerde zijvlakken.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation type="unfinished">If checked, extruding closed wires will give solids, not shells.</translation>
+      <translation>Indien aangevinkt, zullen de geëxtrudeerde gesloten draden volumemodellen geven, niet schillen.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="338"/>
@@ -2834,52 +2852,52 @@ Klik 'Doorgaan' om de functie toch te maken, of 'Afbreken' als u wilt annuleren.
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation type="unfinished">Creating Extrusion failed.
+      <translation>Het creëren van de extrusie is mislukt.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Object niet gevonden: %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="604"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation type="unfinished">No shapes selected for extrusion. Select some, first.</translation>
+      <translation>Geen vormen geselecteerd voor de extrusie. Selecteer eerst een aantal.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="625"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
+      <translation>Extrusierichtingskoppeling is ongeldig.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
+      <translation>Richtingsmodus is bedoeld om een rand te gebruiken, maar geen rand is gekoppeld.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="650"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <translation>Kan de normale vector van de te extruderen vorm niet bepalen. Gelieve een andere modus te gebruiken. 
 
 (%1)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
+      <translation>Extrusierichting is nul-lengte. Deze moet niet gelijk zijn aan nul.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation type="unfinished">Total extrusion length is zero (length1 == -length2). It must be nonzero.</translation>
+      <translation>Totale extrusielengte is nul (length1 == -lengte2). Het moet niet gelijk aan nul zijn.</translation>
     </message>
   </context>
   <context>
@@ -3076,17 +3094,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Write solids and shells as</source>
-      <translation type="unfinished">Write solids and shells as</translation>
+      <translation>Schrijf volumemodellen en schillen als</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
+      <translation>Groepen van getrimde oppervlakken (type 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="81"/>
       <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-      <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
+      <translation>Volumemodellen (type 186) en schillen (type 514) / B-REP-modus</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="94"/>
@@ -3179,7 +3197,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation type="unfinished">Write out curves in parametric space of surface</translation>
+      <translation>Schrijf de curven uit in de parametrische oppervlakruimte</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3189,12 +3207,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="159"/>
       <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
-      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
+      <translation>Indien aangevinkt, zal geen samenvoeging van samenstellingen plaatsvinden tijdens het lezen van bestanden (langzamer, maar hogere details).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="162"/>
       <source>Enable STEP Compound merge</source>
-      <translation type="unfinished">Enable STEP Compound merge</translation>
+      <translation>STEP-samenstelling samenvoegen inschakelen</translation>
     </message>
   </context>
   <context>
@@ -3632,12 +3650,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1590"/>
       <source>Major radius:</source>
-      <translation>Grote straal:</translation>
+      <translation>Hoofdstraal:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1597"/>
       <source>Minor radius:</source>
-      <translation>Kleine straal:</translation>
+      <translation>Substraal:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1679"/>
@@ -3698,17 +3716,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Draaien</translation>
+      <translation>Wentelen</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="32"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
+      <translation>Indien aangevinkt, zullen de wentelende draden volumemodellen produceren. Zo niet, levert de wentelende draad een schil op.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="35"/>
       <source>Create Solid</source>
-      <translation>Creëer Solid</translation>
+      <translation>Maak een volumemodel</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="52"/>
@@ -3723,7 +3741,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="111"/>
       <source>Revolution axis</source>
-      <translation type="unfinished">Revolution axis</translation>
+      <translation>Omwentelingsas</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
@@ -3744,22 +3762,22 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <location filename="../../DlgRevolution.ui" line="201"/>
       <location filename="../../DlgRevolution.ui" line="242"/>
       <source>Click to set this as axis</source>
-      <translation type="unfinished">Click to set this as axis</translation>
+      <translation>Klik om deze as in te stellen</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
       <source>Dir. X:</source>
-      <translation type="unfinished">Dir. X:</translation>
+      <translation>Richting X:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="245"/>
       <source>Dir. Y:</source>
-      <translation type="unfinished">Dir. Y:</translation>
+      <translation>Richting Y:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="283"/>
       <source>Dir. Z:</source>
-      <translation type="unfinished">Dir. Z:</translation>
+      <translation>Richting Z:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
@@ -3770,7 +3788,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation type="unfinished">If checked, revolution will extend forwards and backwards by half the angle.</translation>
+      <translation>Indien aangevinkt, zal de omwenteling zich voorover en achterover uitbreiden met de helft van de hoek.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
@@ -3780,7 +3798,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
       <source>Object not found: %1</source>
-      <translation type="unfinished">Object not found: %1</translation>
+      <translation>Object niet gevonden: %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="254"/>
@@ -3794,19 +3812,19 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>De omwentelingsaskoppeling is ongeldig.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
+      <translation>De richting van de omwentelingsas is nul-lengte. Het moet niet gelijk zijn aan nul.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
+      <translation>De omwentelingshoek is nul. Het moet niet gelijk zijn aan nul.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="428"/>
@@ -3814,7 +3832,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation type="unfinished">Creating Revolve failed.
+      <translation>Het creëren van de omwenteling is mislukt.
 
 %1</translation>
     </message>
@@ -3844,7 +3862,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation type="unfinished">Defines the deviation of tessellation to the actual surface</translation>
+      <translation>Definieert de afwijking van de tessellatie naar het werkelijke oppervlak</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
@@ -3854,14 +3872,14 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation type="unfinished">Maximum deviation depending on the model bounding box</translation>
+      <translation>Maximale afwijking afhankelijk van het model begrenzingsdoos</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="100"/>
       <source>Maximum angular deflection</source>
-      <translation type="unfinished">Maximum angular deflection</translation>
+      <translation>Maximale hoekdeflectie</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation>°</translation>
@@ -3935,7 +3953,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
       <source>Bounding box color</source>
-      <translation>Selectiekader kleur</translation>
+      <translation>Begrenzingsdooskleur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="60"/>
@@ -3968,7 +3986,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>De kleur van de selectiekaders in het 3D weergave</translation>
+      <translation>De kleur van de begrenzingsdoos in de 3D-weergave</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
@@ -3988,7 +4006,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>Willekeurige vormkleur</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4037,12 +4055,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="80"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Beschikbare profielen</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="81"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Geselecteerde profielen</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
@@ -4052,7 +4070,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
+      <translation>Minstens twee eindpunten, randen, draden of vlakken zijn vereist.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4062,12 +4080,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+      <translation>Eindpunt/Rand/Draad/Vlak</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
-      <translation type="unfinished">Loft</translation>
+      <translation>Loft</translation>
     </message>
   </context>
   <context>
@@ -4207,7 +4225,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>Selecteer aangrenzende randen</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
@@ -4235,24 +4253,24 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="136"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Beschikbare profielen</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Geselecteerde profielen</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>Sweep path</source>
-      <translation type="unfinished">Sweep path</translation>
+      <translation>Sweeppad</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
+      <translation>Selecteer een of meer aangesloten randen waar u langs wilt vegen.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
@@ -4262,7 +4280,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
       <source>At least one edge or wire is required.</source>
-      <translation type="unfinished">At least one edge or wire is required.</translation>
+      <translation>Minstens één rand of draad is vereist.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
@@ -4272,7 +4290,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation type="unfinished">'%1' cannot be used as profile and path.</translation>
+      <translation>'%1' kan niet gebruikt worden als profiel en pad.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="355"/>
@@ -4287,13 +4305,13 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3d view and press 'Done'</translation>
+      <translation>Selecteer een of meer verbonden randen in de 3d-weergave en druk op 'Klaar'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>The selected sweep path is invalid.</source>
-      <translation type="unfinished">The selected sweep path is invalid.</translation>
+      <translation>Het geselecteerde sweeppad is ongeldig.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="434"/>
@@ -4303,7 +4321,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="435"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>Sweep</translation>
     </message>
   </context>
   <context>
@@ -4316,7 +4334,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>Selectie aanvaard</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
@@ -4341,12 +4359,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Bijlagemodus:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+      <translation>BijlageVerschuivingseigenschap. De plaatsing wordt uitgedrukt in de lokale ruimte van het object dat wordt toegevoegd.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
@@ -4387,7 +4405,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Zijden spiegelen</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
@@ -4483,7 +4501,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <translation>Controleer geometrie</translation>
     </message>
   </context>
   <context>
@@ -4527,7 +4545,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation type="unfinished">Loft</translation>
+      <translation>Loft</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -4537,7 +4555,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
       <source>Ruled surface</source>
-      <translation>Aan de oppervlakte aangepast</translation>
+      <translation>Geregeerd oppervlak</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="50"/>
@@ -4576,7 +4594,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
       <source>Join type</source>
-      <translation type="unfinished">Join type</translation>
+      <translation>Type aansluiting</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
@@ -4597,7 +4615,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
       <source>Self-intersection</source>
-      <translation type="unfinished">Self-intersection</translation>
+      <translation>Zelfintersectie</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
@@ -4631,7 +4649,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
       <source>Shell from faces</source>
-      <translation>Schil van oppervlakten</translation>
+      <translation>Schil van oppervlakken</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="40"/>
@@ -4646,17 +4664,17 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="54"/>
       <source>Solid from shell</source>
-      <translation type="unfinished">Solid from shell</translation>
+      <translation>Volumemodel vanuit schil</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="68"/>
       <source>Planar</source>
-      <translation type="unfinished">Planar</translation>
+      <translation>Planair</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="75"/>
       <source>Refine shape</source>
-      <translation type="unfinished">Refine shape</translation>
+      <translation>Verfijn vorm</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="85"/>
@@ -4671,7 +4689,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Draad vanuit randen</translation>
     </message>
   </context>
   <context>
@@ -4679,12 +4697,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>Sweep</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation type="unfinished">Sweep Path</translation>
+      <translation>Sweeppad</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="50"/>
@@ -4694,7 +4712,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="57"/>
       <source>Frenet</source>
-      <translation type="unfinished">Frenet</translation>
+      <translation>Frenet</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="464"/>
@@ -4716,7 +4734,7 @@ in de 3D-weergave voor het veegpad.</translation>
     <message>
       <location filename="../../TaskThickness.cpp" line="159"/>
       <source>Select faces of the source object and press 'Done'</source>
-      <translation>Selecteer de oppervlakten van het bronobject en druk op 'Gereed'</translation>
+      <translation>Selecteer de oppervlakken van het bronobject en druk op 'Gereed'</translation>
     </message>
     <message>
       <location filename="../../TaskThickness.cpp" line="162"/>
@@ -4739,37 +4757,37 @@ in de 3D-weergave voor het veegpad.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
+      <translation>Maakt een afzonderlijk planair vlak vanuit elke draad. Geen ondersteuning voor gaten; de draden kunnen zich op verschillende vlakken bevinden.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="69"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>Bull's-eye vlakkengenerator</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands.</translation>
+      <translation>Ondersteunt het maken van planaire vlakken met gaten met eilanden.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="248"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>Cheese vlakkengenerator</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="253"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
+      <translation>Ondersteunt het maken van planaire vlakken met gaten, maar zonder eilanden binnen de gaten.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>Vlakkengenerator voor geëxtrudeerde onderdelen</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
+      <translation>Ondersteunt het maken van vlakken met gaten, ondersteunt nestingen niet.</translation>
     </message>
   </context>
   <context>
@@ -4826,12 +4844,12 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+      <translation>Gelieve twee of meer vormen te kiezen. Of, selecteer één samenstelling met twee of meer vormen om gemeenschappelijke tussen de twee of meer vormen te berekenen.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Gelieve twee of meer vormen te kiezen. Of, selecteer één samenstelling met twee of meer vormen die samengevoegd moeten worden.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="903"/>
@@ -4856,12 +4874,12 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="120"/>
       <source>Sewing Tolerance</source>
-      <translation type="unfinished">Sewing Tolerance</translation>
+      <translation>Naaitolerantie</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="121"/>
       <source>Enter tolerance for sewing shape:</source>
-      <translation type="unfinished">Enter tolerance for sewing shape:</translation>
+      <translation>Voer tolerantie in voor het naaien van vorm:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="71"/>
@@ -4895,12 +4913,12 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound Solid</source>
-      <translation type="unfinished">Compound Solid</translation>
+      <translation>Samengesteld volumemodel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
-      <translation>Solid</translation>
+      <translation>Volumemodel</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
@@ -4970,17 +4988,17 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>Invalid Same Range Flag</source>
-      <translation type="unfinished">Invalid Same Range Flag</translation>
+      <translation>Ongeldige zelfde bereikvlag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid Same Parameter Flag</source>
-      <translation type="unfinished">Invalid Same Parameter Flag</translation>
+      <translation>Ongeldige zelfde parametervlag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="113"/>
       <source>Invalid Degenerated Flag</source>
-      <translation type="unfinished">Invalid Degenerated Flag</translation>
+      <translation>Ongeldige gedegenereerde vlag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
@@ -4990,7 +5008,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid MultiConnexity</source>
-      <translation type="unfinished">Invalid MultiConnexity</translation>
+      <translation>Ongeldige meervoudige connectiviteit</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
@@ -5035,7 +5053,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Invalid Imbrication Of Wires</source>
-      <translation type="unfinished">Invalid Imbrication Of Wires</translation>
+      <translation>Ongeldige imbricatie van de draden</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
@@ -5075,12 +5093,12 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Bad Orientation Of Sub Shape</source>
-      <translation type="unfinished">Bad Orientation Of Sub Shape</translation>
+      <translation>Slechte oriëntatie van de subvorm</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Invalid Tolerance Value</source>
-      <translation type="unfinished">Invalid Tolerance Value</translation>
+      <translation>Ongeldige Tolerantiewaarde</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="134"/>
@@ -5095,67 +5113,67 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>Out Of Enum Range: </source>
-      <translation type="unfinished">Out Of Enum Range: </translation>
+      <translation>Buiten het opsommingsbereik: </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation type="unfinished">BOPAlgo CheckUnknown</translation>
+      <translation>BOPAlgo CheckUnknown</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>BOPAlgo BadType</source>
-      <translation type="unfinished">BOPAlgo BadType</translation>
+      <translation>BOPAlgo BadType</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>BOPAlgo SelfIntersect</source>
-      <translation type="unfinished">BOPAlgo SelfIntersect</translation>
+      <translation>BOPAlgo SelfIntersect</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>BOPAlgo TooSmallEdge</source>
-      <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
+      <translation>BOPAlgo TooSmallEdge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>BOPAlgo NonRecoverableFace</source>
-      <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
+      <translation>BOPAlgo NonRecoverableFace</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
+      <translation>BOPAlgo IncompatibilityOfVertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
+      <translation>BOPAlgo IncompatibilityOfEdge</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
+      <translation>BOPAlgo IncompatibilityOfFace</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>BOPAlgo OperationAborted</source>
-      <translation type="unfinished">BOPAlgo OperationAborted</translation>
+      <translation>BOPAlgo OperationAborted</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>BOPAlgo GeomAbs_C0</source>
-      <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+      <translation>BOPAlgo GeomAbs_C0</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation>BOPAlgo_InvalidCurveOnSurface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="171"/>
       <source>BOPAlgo NotValid</source>
-      <translation type="unfinished">BOPAlgo NotValid</translation>
+      <translation>BOPAlgo NotValid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="463"/>
@@ -5178,7 +5196,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1340"/>
       <source>Reset Dialog</source>
-      <translation type="unfinished">Reset Dialog</translation>
+      <translation>Dialoog opnieuw instellen</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1344"/>
@@ -5193,7 +5211,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1354"/>
       <source>Clear All</source>
-      <translation>Alles &amp;Leegmaken</translation>
+      <translation>Alles wissen</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="847"/>
@@ -5228,7 +5246,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="81"/>
       <source>Show control points</source>
-      <translation>Toon Controlle Punten</translation>
+      <translation>Toon controlepunten</translation>
     </message>
   </context>
   <context>
@@ -5251,7 +5269,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>Solids</source>
-      <translation>Volumemodel</translation>
+      <translation>Volumemodellen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5271,7 +5289,7 @@ Wilt u doorgaan?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation type="unfinished">Join</translation>
+      <translation>Samenvoegen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

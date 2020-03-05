@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja" sourcelanguage="en">
+<TS version="2.1" language="ja" sourcelanguage="en">
   <context>
     <name>Dialog</name>
     <message>
@@ -11,32 +11,32 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
       <source>Distance [mm]</source>
-      <translation type="unfinished">Distance [mm]</translation>
+      <translation>距離 [mm]</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
       <source>Select first point</source>
-      <translation type="unfinished">Select first point</translation>
+      <translation>第1点の選択</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
       <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;距離を入力&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
       <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
+      <translation>&lt;font color='red'&gt;イメージ・パネルを選択&lt;/font&gt;</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
       <source>Select second point</source>
-      <translation type="unfinished">Select second point</translation>
+      <translation>第２点の選択</translation>
     </message>
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
       <source>Select Image Plane and type distance</source>
-      <translation type="unfinished">Select Image Plane and type distance</translation>
+      <translation>画像平面を選択し、距離を入力</translation>
     </message>
   </context>
   <context>
@@ -49,7 +49,7 @@
     <message>
       <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation type="unfinished">Scales an image plane by defining a distance between two points</translation>
+      <translation>２点間の距離を定義することにより、イメージ平面を大きさ調整(Scales) できます</translation>
     </message>
   </context>
   <context>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../InitGui.py" line="67"/>
       <source>Weights</source>
-      <translation>Pesos</translation>
+      <translation>Pesas</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="44"/>

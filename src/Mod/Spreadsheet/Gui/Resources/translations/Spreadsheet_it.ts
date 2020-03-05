@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="it" sourcelanguage="en">
+<TS version="2.1" language="it" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -331,10 +331,6 @@
       <translation>Esporta file</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Contenuto della cella</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Visualizza il foglio di calcolo</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Imposta il colore di sfondo delle celle del foglio di calcolo</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Foglio di calcolo</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>

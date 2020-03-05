@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="1403"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1404"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="1303"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1304"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="91"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -78,17 +78,17 @@
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>국부 좌표계 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>새 국부 좌표계 생성</translation>
     </message>
   </context>
   <context>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
@@ -114,12 +114,12 @@
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>복제하기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="1664"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1665"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="632"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="1607"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1608"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="1235"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1236"/>
@@ -204,17 +204,17 @@
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1130"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>구멍</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1131"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>선택한 스케치에 구멍 생성</translation>
     </message>
   </context>
   <context>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="1941"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1942"/>
@@ -258,12 +258,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="338"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="339"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>이전하기</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../Command.cpp" line="1877"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1878"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1879"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>대칭 복사</translation>
     </message>
   </context>
   <context>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="688"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="689"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="851"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="852"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="552"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="553"/>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../Command.cpp" line="2114"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2115"/>
@@ -366,7 +366,7 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../Command.cpp" line="1031"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1032"/>
@@ -402,7 +402,7 @@
     <message>
       <location filename="../../Command.cpp" line="158"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="159"/>
@@ -420,7 +420,7 @@
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1083"/>
@@ -438,7 +438,7 @@
     <message>
       <location filename="../../Command.cpp" line="214"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="215"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="../../Command.cpp" line="2007"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2008"/>
@@ -474,7 +474,7 @@
     <message>
       <location filename="../../Command.cpp" line="1175"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1176"/>
@@ -492,7 +492,7 @@
     <message>
       <location filename="../../Command.cpp" line="2074"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2075"/>
@@ -510,7 +510,7 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
@@ -528,7 +528,7 @@
     <message>
       <location filename="../../Command.cpp" line="1453"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1454"/>
@@ -546,7 +546,7 @@
     <message>
       <location filename="../../Command.cpp" line="1353"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1354"/>
@@ -564,7 +564,7 @@
     <message>
       <location filename="../../Command.cpp" line="1721"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1722"/>
@@ -582,7 +582,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="68"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="69"/>
@@ -636,7 +636,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="235"/>
       <source>PartDesign</source>
-      <translation>단품설계</translation>
+      <translation>부품설계</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="236"/>
@@ -1091,12 +1091,12 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
-      <translation>바디(Body) 추가</translation>
+      <translation>몸체 추가</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="32"/>
       <source>Remove body</source>
-      <translation>바디(Body) 제거</translation>
+      <translation>몸체 제거</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
@@ -1178,7 +1178,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="327"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>비어 있는 몸체 목록</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="328"/>
@@ -1336,7 +1336,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="69"/>
       <source>Belongs to another body</source>
-      <translation type="unfinished">Belongs to another body</translation>
+      <translation>다른 몸체에 귀속</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
@@ -1346,7 +1346,7 @@
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="71"/>
       <source>Doesn't belong to any body</source>
-      <translation type="unfinished">Doesn't belong to any body</translation>
+      <translation>어느 몸체에도 귀속되지 않음</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="72"/>
@@ -1397,7 +1397,7 @@
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="48"/>
       <source>Hole parameters</source>
-      <translation type="unfinished">Hole parameters</translation>
+      <translation>구멍 매개 변수</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="69"/>
@@ -1518,12 +1518,12 @@
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>단면 추가</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>단면 제거</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="113"/>
@@ -1809,12 +1809,12 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="117"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>모서리 추가</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="136"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>모서리 제거</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="158"/>
@@ -1873,7 +1873,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right Corner</source>
-      <translation type="unfinished">Right Corner</translation>
+      <translation>오른쪽 꼭지점</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
@@ -1888,12 +1888,12 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>모서리 추가</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>모서리 제거</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="74"/>
@@ -1916,22 +1916,22 @@
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>상수</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation type="unfinished">Multisection</translation>
+      <translation>다중 단면</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>단면 추가</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>단면 제거</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="617"/>
@@ -2750,7 +2750,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="368"/>
       <source>Nothing to migrate</source>
-      <translation type="unfinished">Nothing to migrate</translation>
+      <translation>결합할 것이 없습니다.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
@@ -3145,7 +3145,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location filename="../../../FeatureHole/TaskHole.ui" line="368"/>
       <location filename="../../../FeatureHole/TaskHole.ui" line="474"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>직경</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
@@ -3211,7 +3211,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location filename="../../TaskHoleParameters.ui" line="40"/>
       <location filename="../../TaskHoleParameters.ui" line="316"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>직경</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="47"/>
@@ -3262,12 +3262,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="220"/>
       <source>Right hand</source>
-      <translation type="unfinished">Right hand</translation>
+      <translation>오른손</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="227"/>
       <source>Left hand</source>
-      <translation type="unfinished">Left hand</translation>
+      <translation>왼손</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="240"/>

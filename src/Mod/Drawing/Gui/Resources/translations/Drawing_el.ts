@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="el" sourcelanguage="en">
+<TS version="2.1" language="el" sourcelanguage="en">
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="481"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>&amp;Annotation</source>
       <translation>Περιγρ&amp;αφή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="485"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>Εισάγει μια προβολή Περιγραφής στο ενεργό σχέδιο</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>&amp;Clip</source>
       <translation>Αποκοπή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="531"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>Εισάγει μια ομάδα αποκοπής στο ενεργό σχέδιο</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="723"/>
+      <location filename="../../Command.cpp" line="728"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="729"/>
       <source>&amp;Draft View</source>
       <translation>Προβολή Προσχε&amp;δίου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
-      <location filename="../../Command.cpp" line="727"/>
+      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="732"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>Εισάγει μια προβολή Προσχεδίου του επιλεγμένου αντικειμένου(ων) στο ενεργό σχέδιο</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="635"/>
       <source>File</source>
       <translation>Αρχείο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="636"/>
       <source>&amp;Export page...</source>
       <translation>&amp;Εξαγάγετε σελίδα...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="633"/>
-      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../Command.cpp" line="637"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Export a page to an SVG file</source>
       <translation>Εξαγάγετε μια σελίδα σε ένα αρχείο SVG</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Insert new A3 landscape drawing</source>
       <translation>Εισαγωγή νέου σχεδίου A3 landscape</translation>
     </message>
@@ -94,13 +94,13 @@
   <context>
     <name>CmdDrawingNewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="96"/>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Insert new drawing</source>
       <translation>Εισαγάγετε νέο σχέδιο</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Insert view in drawing</source>
       <translation>Εισαγάγετε προβολή στο σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>Εισαγάγετε μια νέα Προβολή ενός Εξαρτήματος στο ενεργό σχέδιο</translation>
     </message>
@@ -126,17 +126,17 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Open SVG...</source>
       <translation>Ανοίξτε SVG...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="62"/>
       <source>Open a scalable vector graphic</source>
       <translation>Ανοίξτε ένα αρχείο κλιμακωτών διανυσματικών γραφικών</translation>
     </message>
@@ -144,18 +144,18 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="443"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="444"/>
       <source>Open &amp;browser view</source>
       <translation>Ανοίξτε την προβολή περιηγητή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="445"/>
+      <location filename="../../Command.cpp" line="447"/>
       <source>Opens the selected page in a browser view</source>
       <translation>Ανοίγει την επιλεγμένη σελίδα σε προβολή περιηγητή</translation>
     </message>
@@ -163,17 +163,17 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="393"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="394"/>
       <source>Insert orthographic views</source>
       <translation>Εισαγάγετε ορθογραφικές προβολές</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="392"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>Εισαγάγετε μια ορθογραφική προβολή ενός εξαρτήματος στο ενεργό σχέδιο</translation>
     </message>
@@ -181,18 +181,18 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
+      <location filename="../../Command.cpp" line="692"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="688"/>
+      <location filename="../../Command.cpp" line="693"/>
       <source>Project shape...</source>
       <translation>Προβάλετε σχήμα...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="689"/>
-      <location filename="../../Command.cpp" line="690"/>
+      <location filename="../../Command.cpp" line="694"/>
+      <location filename="../../Command.cpp" line="695"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>Προβάλετε σχήμα πάνω σε επίπεδο που ορίζεται από τον χρήστη</translation>
     </message>
@@ -200,18 +200,18 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="759"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="760"/>
       <source>&amp;Spreadsheet View</source>
       <translation>Προβολή Υπολογι&amp;στικού φύλλου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
-      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>Εισάγει μια προβολή ενός επιλεγμένου υπολογιστικού φύλλου στο ενεργό σχέδιο</translation>
     </message>
@@ -219,18 +219,18 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>&amp;Symbol</source>
       <translation>&amp;Σύμβολο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
-      <location filename="../../Command.cpp" line="575"/>
+      <location filename="../../Command.cpp" line="576"/>
+      <location filename="../../Command.cpp" line="578"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
       <translation>Εισάγει ένα σύμβολο από ένα αρχείο svg στο ενεργό σχέδιο</translation>
     </message>
@@ -510,7 +510,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="667"/>
       <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
+      <translation>Δείτε την προβολή</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="674"/>
@@ -635,32 +635,32 @@ Do you want to continue?</source>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="220"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Landscape</source>
       <translation>Τοπίο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="225"/>
       <source>Portrait</source>
       <translation>Πορτρέτο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="229"/>
       <source>%1%2 %3</source>
       <translation>%1%2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="231"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>Εισαγάγετε νέο %1%2%3 σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>Εισαγάγετε νέο %1%2 %3 (%4) σχέδιο</translation>
     </message>
@@ -668,93 +668,93 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="595"/>
       <source>Choose an SVG file to open</source>
       <translation>Επιλέξτε ένα αρχείο SVG για άνοιγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
-      <location filename="../../Command.cpp" line="593"/>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="654"/>
       <source>Scalable Vector Graphic</source>
       <translation>Αρχείο Κλιμακωτών Διανυσματικών Γραφικών</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="403"/>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="644"/>
-      <location filename="../../Command.cpp" line="767"/>
+      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Wrong selection</source>
       <translation>Λάθος επιλογή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="328"/>
       <source>Select a Part object.</source>
       <translation>Επιλέξτε ένα Εξάρτημα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="412"/>
-      <location filename="../../Command.cpp" line="493"/>
-      <location filename="../../Command.cpp" line="541"/>
-      <location filename="../../Command.cpp" line="586"/>
-      <location filename="../../Command.cpp" line="773"/>
+      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="496"/>
+      <location filename="../../Command.cpp" line="544"/>
+      <location filename="../../Command.cpp" line="589"/>
+      <location filename="../../Command.cpp" line="778"/>
       <source>No page found</source>
       <translation>Δεν βρέθηκε σελίδα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="334"/>
-      <location filename="../../Command.cpp" line="413"/>
-      <location filename="../../Command.cpp" line="494"/>
-      <location filename="../../Command.cpp" line="542"/>
-      <location filename="../../Command.cpp" line="587"/>
-      <location filename="../../Command.cpp" line="774"/>
+      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="545"/>
+      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>Create a page first.</source>
       <translation>Δημιουργήστε πρώτα μια σελίδα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Select exactly one Part object.</source>
       <translation>Επιλέξτε ακριβώς ένα Εξάρτημα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="649"/>
       <source>Select one Page object.</source>
       <translation>Επιλέξτε μια Σελίδα.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="655"/>
       <source>All Files</source>
       <translation>Όλα τα Αρχεία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="653"/>
+      <location filename="../../Command.cpp" line="657"/>
       <source>Export page</source>
       <translation>Εξαγάγετε σελίδα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="768"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Επιλέξτε ακριβώς ένα Υπολογιστικό Φύλλο.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="979"/>
+      <location filename="../../TaskOrthoViews.cpp" line="53"/>
+      <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make axonometric...</source>
       <translation>Κάντε αξονομετρική...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="980"/>
+      <location filename="../../TaskOrthoViews.cpp" line="54"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Edit axonometric settings...</source>
       <translation>Επεξεργαστείτε τις αξονομετρικές ρυθμίσεις...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="55"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Make orthographic</source>
       <translation>Κάντε ορθογραφική</translation>
     </message>

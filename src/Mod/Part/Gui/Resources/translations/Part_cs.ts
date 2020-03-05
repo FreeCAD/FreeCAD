@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="cs" sourcelanguage="en">
+<TS version="2.1" language="cs" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation>Chyba: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Odsazení připojení:</translation>
@@ -132,11 +137,6 @@
       <translation>Vyberte nejprve tvar, který je složeninou! Pak vyberte (volitelně) jednotku, která bude použita jako šablona.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Špatný výběr</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -148,6 +148,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {err}
 
 Klikněte 'Pokračovat' chcete-li přesto prvek vytvořit, nebo "Přerušit" pro ukončení.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Špatný výběr</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -3860,7 +3878,7 @@ Please check one or more edge entities first.</source>
       <source>Maximum angular deflection</source>
       <translation>Maximální úhlová odchylka</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja" sourcelanguage="en">
+<TS version="2.1" language="ja" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -106,17 +106,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>&lt;a href="http://forum.freecadweb.org"&gt;FreeCAD フォーラム&lt;/a&gt; は他の FreeCAD ユーザーや開発者から手助けを得られるすばらしい場所です。フォーラムはさまざまな種類の問題や議題を扱うたくさんのセクションがあります。もしどこに投稿すればいいかわからなければ一般的な話題を扱う &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;FreeCAD 使用時のヘルプ&lt;/a&gt; に投稿してください。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>初めてフォーラムに投稿する場合は最初に&lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;ガイドラインを読んで&lt;/a&gt;確認してください。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>FreeCAD には公開&lt;a href="https://www.freecadweb.org/tracker"&gt;バグトラッカー&lt;/a&gt;も用意されていて、誰でもバグや新しい機能の提案を投稿することができます。余分な作業を発生させず、見つけたバグを解決できる可能性を上げるために、投稿する前には必ず&lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;バグ報告ガイドライン&lt;/a&gt;を読んでください。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
@@ -126,17 +126,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation type="unfinished">Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</translation>
+      <translation>以下はインストールしたFreeCADに追加して利用できる追加ワークベンチのリストです。メニューの [ツール] - [Addon manager] で表示とインストールを行なってください。以下のリンクをクリックするとそれぞれのワークベンチについてさらに詳しく知ることができます。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
+      <translation>もしドキュメントのバンドルされていないFreeCADバージョンであるならば、FreeCADドキュメントパッケージをドキュメンテーション・ハブよりインストールすることで、ワークベンチのヘルプや各コマンドのドキュメントをインターネット接続なしでも利用できます。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
+      <translation>GitHubから情報をフェッチできませんでした。 &lt;a href="EnableDownload.py"&gt;FreeCADに、インターネットへアクセスできる権限を与える&lt;/a&gt; そして開始ページを再読み込みをして下さい。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>以下のは、最新の改良が加えられた&lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCADのソースコード&lt;/a&gt;です。これらの改良は、あなたが現在実行しているFreeCADのバージョンにはまだ反映されていない場合があります。 開発版の入手をご希望の場合は &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;利用可能なオプション&lt;/a&gt;より確認して下さい。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>メニュー「編集-&gt; プレファレンス -&gt; 開始-&gt; 追加フォルダの表示」にて、表示するカスタムフォルダを構成できます。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation type="unfinished">To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</translation>
+      <translation>上記のリンクをデスクトップのブラウザーで開きたい場合は、「右クリック-&gt;外部ブラウザーで開く」の手順で開けます</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
@@ -233,7 +233,7 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Displays the start page in a browser view</source>
-      <translation type="unfinished">Displays the start page in a browser view</translation>
+      <translation>ブラウザービューでスタートページを表示</translation>
     </message>
   </context>
   <context>
@@ -241,17 +241,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation type="unfinished">Start page options</translation>
+      <translation>スタートページのオプション</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Start page template</source>
-      <translation type="unfinished">Start page template</translation>
+      <translation>スタートページのテンプレート</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>オプションのHTMLテンプレートを、既定の開始ページの代替えとして用います。</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -276,17 +276,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
       <source>If you want the examples to show on the first page</source>
-      <translation type="unfinished">If you want the examples to show on the first page</translation>
+      <translation>最初のページにて、作例を表示させたい</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation type="unfinished">If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</translation>
+      <translation>ここにチェックを入れると、FreeCADフォーラムからの最新の投稿が現在のタブに表示されます</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page</translation>
+      <translation>オプションのカスタムフォルダを最初のページで表示させます</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</translation>
+      <translation>ファイルのサムネイルの隣にメモ帳を表示させて、FreeCAD セッションの全般においてメモを保存できます。</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="167"/>
       <source>The background of the main start page area</source>
-      <translation type="unfinished">The background of the main start page area</translation>
+      <translation>メインスタートページ領域の背景</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="187"/>
@@ -316,17 +316,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="199"/>
       <source>in FreeCAD</source>
-      <translation type="unfinished">in FreeCAD</translation>
+      <translation>FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="218"/>
       <source>In external browser</source>
-      <translation type="unfinished">In external browser</translation>
+      <translation>外部ブラウザー</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
       <source>Background color gradient down</source>
-      <translation type="unfinished">Background color gradient down</translation>
+      <translation>下向きグラデーション背景色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
@@ -346,7 +346,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
       <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>ここをチェックすると、一般プレファレンスで指定されているスタイルシートが使用されて、以後から上書きされます。</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
@@ -376,22 +376,22 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
       <source>The background color of the boxes inside the pages</source>
-      <translation type="unfinished">The background color of the boxes inside the pages</translation>
+      <translation>ページ内におけるボックスの背景色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="407"/>
       <source>Box background color</source>
-      <translation type="unfinished">Box background color</translation>
+      <translation>ボックスの背景色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
       <source>The background color behind the panels</source>
-      <translation type="unfinished">The background color behind the panels</translation>
+      <translation>パネルの背景色</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
       <source>The down gradient for the background color (currently unsupported)</source>
-      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
+      <translation>背景色用の下向きグラデーション (現在はサポートされていません)</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
@@ -416,17 +416,17 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
+      <translation>スタートページに用いるフォントファミリー。フォント名またはコンマで区切られた一連の代替えフォントにします</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
       <source>Arial,Helvetica,sans</source>
-      <translation type="unfinished">Arial,Helvetica,sans</translation>
+      <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+      <translation>開始ページのテキスト全てに使用する基本フォントサイズ</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="524"/>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="542"/>
       <source>Use gradient for New File icon</source>
-      <translation type="unfinished">Use gradient for New File icon</translation>
+      <translation>新規フォイルのアイコンにグラデーションを用いる</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="568"/>
@@ -446,7 +446,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="577"/>
       <source>Should the start page be closed after loading?</source>
-      <translation type="unfinished">Should the start page be closed after loading?</translation>
+      <translation>読み込み後に、スタートページを閉じたいですか？</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>
       <source>Close &amp; switch on file open</source>
-      <translation type="unfinished">Close &amp; switch on file open</translation>
+      <translation>閉じて、ファイルを開く</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>

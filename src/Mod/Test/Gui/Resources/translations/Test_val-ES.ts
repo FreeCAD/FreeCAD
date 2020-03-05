@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="val-ES" sourcelanguage="en">
+<TS version="2.1" language="val-ES" sourcelanguage="en">
   <context>
     <name>TestGui::UnitTest</name>
     <message>
@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Help</source>
       <translation>Ajuda</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -115,12 +115,12 @@ Double click on an error in the tree view to see more information about it, incl
       <translation>Introduïu el nom d'un objecte rescatable, quan es cride retornarà un TestCase. Feu clic a 'Comença' i s'executarà el test d'aquest procediment. Feu doble clic en un error en la vista en arbre per a veure'n més informació, incloent-hi el rastreig de pila.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Quant al FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

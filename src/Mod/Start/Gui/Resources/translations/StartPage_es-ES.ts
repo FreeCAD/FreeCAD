@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="es-ES" sourcelanguage="en">
+<TS version="2.1" language="es-ES" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation>Addons disponibles</translation>
+      <translation>Complementos disponibles</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>

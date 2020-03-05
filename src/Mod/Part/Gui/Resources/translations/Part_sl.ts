@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sl" sourcelanguage="en">
+<TS version="2.1" language="sl" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation>Napaka: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Odmik pripetka:</translation>
@@ -132,11 +137,6 @@
       <translation>Najprej izberite obliko, ki je sestav! Drugi izbrani kos bo (neobvezno) obravnavan kot vzorec.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Neveljaven izbor</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -148,6 +148,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {err}
 
 Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za preklic.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Neveljaven izbor</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -1407,7 +1425,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
       <location filename="../../DlgBlock.ui" line="65"/>
       <location filename="../../DlgBlock.ui" line="229"/>
       <source>Dimension</source>
-      <translation>Kota</translation>
+      <translation>Mera</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="70"/>
@@ -1658,7 +1676,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../CommandParametric.cpp" line="89"/>
       <source>Create a cube solid</source>
-      <translation>Ustvari telo kocke</translation>
+      <translation>Ustvari kocko</translation>
     </message>
   </context>
   <context>
@@ -1676,7 +1694,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../Command.cpp" line="137"/>
       <source>Create a box solid without dialog</source>
-      <translation>Ustvari telo kvadra brez pogovornega okna</translation>
+      <translation>Ustvari kvader brez opravilnega okna</translation>
     </message>
   </context>
   <context>
@@ -1694,7 +1712,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Create a box solid without dialog</source>
-      <translation>Ustvari telo kvadra brez pogovornega okna</translation>
+      <translation>Ustvari kvader brez opravilnega okna</translation>
     </message>
   </context>
   <context>
@@ -1858,7 +1876,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../CommandParametric.cpp" line="171"/>
       <source>Create a cone solid</source>
-      <translation>Ustvari stožčasto telo</translation>
+      <translation>Ustvari stožec</translation>
     </message>
   </context>
   <context>
@@ -2053,12 +2071,12 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>Loft...</source>
-      <translation>Navleci …</translation>
+      <translation>Ostreši...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Utility to loft</source>
-      <translation>Pripomoček za navlačenje</translation>
+      <translation>Pripomoček za ostrešenje</translation>
     </message>
   </context>
   <context>
@@ -2348,7 +2366,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../CommandParametric.cpp" line="130"/>
       <source>Create a sphere solid</source>
-      <translation>Ustvari telo krogle</translation>
+      <translation>Ustvari kroglo</translation>
     </message>
   </context>
   <context>
@@ -2361,12 +2379,12 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../Command.cpp" line="1594"/>
       <source>Sweep...</source>
-      <translation>Vzdolži …</translation>
+      <translation>Povleči...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
       <source>Utility to sweep</source>
-      <translation>Pripomoček za vzdolženje</translation>
+      <translation>Pripomoček za vlečenje</translation>
     </message>
   </context>
   <context>
@@ -2420,7 +2438,7 @@ Kliknite "Nadaljuj", če želite vseeno ustvariti značilnost, ali "Prekini", za
     <message>
       <location filename="../../CommandParametric.cpp" line="212"/>
       <source>Create a torus solid</source>
-      <translation>Ustvari telo svitka</translation>
+      <translation>Ustvari svitek</translation>
     </message>
   </context>
   <context>
@@ -3862,7 +3880,7 @@ Najprej označite eno ali več robnih enot.</translation>
       <source>Maximum angular deflection</source>
       <translation>Največji odklon kota</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -4063,12 +4081,12 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Oglišče/rob/črtovje/ploskev</translation>
+      <translation>Oglišče/Rob/Črtovje/Ploskev</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
-      <translation>Navleci</translation>
+      <translation>Ostreši</translation>
     </message>
   </context>
   <context>
@@ -4248,12 +4266,12 @@ Najprej označite eno ali več robnih enot.</translation>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>Sweep path</source>
-      <translation>Pot vzdolženja</translation>
+      <translation>Pot vlečenja</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation>Izberite enega ali več povezanih robov, vzdolž katerih želite vzdolžiti.</translation>
+      <translation>Izberite enega ali več povezanih robov, vzdolž katerih želite vleči.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
@@ -4273,7 +4291,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation>Predmeta '%1' ni mogoče uporabiti kot prerez in pot.</translation>
+      <translation>'%1' ne more biti uporabljen kot prerez in pot.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="355"/>
@@ -4288,13 +4306,13 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation>Izberite enega ali več povezanih robov v pogledu 3D in pritisnite 'Končano'</translation>
+      <translation>Izberi enega ali več povezanih robov v pogledu 3D in pritisnite 'Končano'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>The selected sweep path is invalid.</source>
-      <translation>Izbrana pot vzdolženja je neveljavna.</translation>
+      <translation>Izbrana pot vlečenja je neveljavna.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="434"/>
@@ -4304,7 +4322,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="435"/>
       <source>Sweep</source>
-      <translation>Vzdolži</translation>
+      <translation>Povleči</translation>
     </message>
   </context>
   <context>
@@ -4528,7 +4546,7 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Navleci</translation>
+      <translation>Ostreši</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -4680,12 +4698,12 @@ Najprej označite eno ali več robnih enot.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Vzdolži</translation>
+      <translation>Povleči</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Pot vzdolženja</translation>
+      <translation>Pot vlečenja</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="50"/>
@@ -4702,7 +4720,7 @@ Najprej označite eno ali več robnih enot.</translation>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Izberite enega ali več prerezov in rob ali črtovje
-v 3D pogledu za pot vzdolženja.</translation>
+v 3D pogledu za pot vlečenja.</translation>
     </message>
   </context>
   <context>

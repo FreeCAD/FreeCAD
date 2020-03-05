@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja" sourcelanguage="en">
+<TS version="2.1" language="ja" sourcelanguage="en">
   <context>
     <name>CmdWebBrowserBack</name>
     <message>
@@ -129,12 +129,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="686"/>
+      <location filename="../../BrowserView.cpp" line="718"/>
       <source>Browser</source>
       <translation>ブラウザー</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="529"/>
+      <location filename="../../BrowserView.cpp" line="547"/>
       <source>File does not exist!</source>
       <translation>ファイルが存在しません!</translation>
     </message>
@@ -142,18 +142,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="520"/>
-      <location filename="../../BrowserView.cpp" line="525"/>
+      <location filename="../../BrowserView.cpp" line="538"/>
+      <location filename="../../BrowserView.cpp" line="543"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="525"/>
+      <location filename="../../BrowserView.cpp" line="543"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>ファイルの読み込み中にエラーが発生しました。一部のデータが変更、または完全に復元されていない可能性があります。関連するオブジェクトのより詳細な情報についてはレポートビューを確認してください。</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="657"/>
+      <location filename="../../BrowserView.cpp" line="689"/>
       <source>Loading %1...</source>
       <translation>%1 を読み込み中・・・</translation>
     </message>
@@ -161,17 +161,17 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="299"/>
+      <location filename="../../BrowserView.cpp" line="300"/>
       <source>Open in External Browser</source>
       <translation>外部ブラウザーで開く</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="303"/>
+      <location filename="../../BrowserView.cpp" line="304"/>
       <source>Open in new window</source>
       <translation>新規ウィンドウで開く</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="335"/>
+      <location filename="../../BrowserView.cpp" line="336"/>
       <source>View source</source>
       <translation>ソース表示</translation>
     </message>

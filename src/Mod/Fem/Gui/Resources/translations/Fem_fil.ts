@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fil" sourcelanguage="en">
+<TS version="2.1" language="fil" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -12,6 +12,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
       <translation>Sa pagdagdag ng mga pagtukoy pilian sila sa 3D na pagtanaw at pagkatapos pindutin ang "Add".</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
+      <source>To add references: select them in the 3D view  and click "Add".</source>
+      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
     </message>
   </context>
   <context>
@@ -162,6 +167,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_ConstraintTie</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="261"/>
+      <source>Constraint tie</source>
+      <translation type="unfinished">Constraint tie</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="266"/>
+      <source>Creates a FEM constraint tie</source>
+      <translation type="unfinished">Creates a FEM constraint tie</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_ElementFluid1D</name>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
@@ -172,6 +190,11 @@
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
       <translation>Gumawa ng seksyon FEM na likido para sa daloy ng 1D</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="287"/>
+      <source>Creates a FEM fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
     </message>
   </context>
   <context>
@@ -273,9 +296,9 @@
       <translation type="unfinished">Fluxsolver heat</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="530"/>
-      <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <location filename="../../../femcommands/commands.py" line="450"/>
+      <source>Creates a FEM equation for heat</source>
+      <translation type="unfinished">Creates a FEM equation for heat</translation>
     </message>
   </context>
   <context>
@@ -299,9 +322,9 @@
       <translation type="unfinished">Material for fluid</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
-      <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <location filename="../../../femcommands/commands.py" line="495"/>
+      <source>Creates a FEM material for fluid</source>
+      <translation type="unfinished">Creates a FEM material for fluid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -326,11 +349,6 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Lumilikha ng mga hindi tuwid na mekanikal na materyales</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="618"/>
-      <source>Creates a nonlinear mechanical material</source>
-      <translation>Lumilikha ng mga hindi tuwid na mekanikal na materyales</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
@@ -338,6 +356,11 @@
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
       <translation type="unfinished">Reinforced material (concrete)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="595"/>
+      <source>Creates a material for reinforced matrix material such as concrete</source>
+      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
     </message>
   </context>
   <context>
@@ -348,9 +371,9 @@
       <translation type="unfinished">Material for solid</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <location filename="../../../femcommands/commands.py" line="616"/>
+      <source>Creates a FEM material for solid</source>
+      <translation type="unfinished">Creates a FEM material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -436,9 +459,9 @@
       <translation>Ang FEM mesh mula sa mga hugis ng Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="957"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation>Ang FEM mesh mula sa mga hugis ng Netgen</translation>
+      <location filename="../../../femcommands/commands.py" line="838"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Lumilikha ng dami ng FEM mesh mula sa solido o anyo ng mukha galing sa loob ng Netgen mesher</translation>
     </message>
   </context>
   <context>
@@ -537,9 +560,9 @@
       <translation type="unfinished">Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1174"/>
-      <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
+      <source>Creates a FEM solver Elmer</source>
+      <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -634,6 +657,11 @@
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
       <translation>Pumili ng mga elementong kasama sa solid na pwedeng idagdag sa listahan. Sa pag-add ng solid pindutin ang "Add".</translation>
     </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+    </message>
   </context>
   <context>
     <name>_Selector</name>
@@ -641,11 +669,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
       <translation>Magdugtong</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Ihiwalay</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>

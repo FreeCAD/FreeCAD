@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr" sourcelanguage="en">
+<TS version="2.1" language="tr" sourcelanguage="en">
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="481"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="479"/>
+      <location filename="../../Command.cpp" line="482"/>
       <source>&amp;Annotation</source>
       <translation>&amp;Açıklayıcı notlar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="480"/>
-      <location filename="../../Command.cpp" line="482"/>
+      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../Command.cpp" line="485"/>
       <source>Inserts an Annotation view in the active drawing</source>
       <translation>Etkin çizime açıklayıcı bir not ekler</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdDrawingClip</name>
     <message>
-      <location filename="../../Command.cpp" line="526"/>
+      <location filename="../../Command.cpp" line="529"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="530"/>
       <source>&amp;Clip</source>
       <translation>&amp;Kırpmak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="531"/>
+      <location filename="../../Command.cpp" line="533"/>
       <source>Inserts a clip group in the active drawing</source>
       <translation>Etkin çizimine kırpma grubu ekler</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="723"/>
+      <location filename="../../Command.cpp" line="728"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="729"/>
       <source>&amp;Draft View</source>
       <translation>&amp;Taslak Görünümü</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
-      <location filename="../../Command.cpp" line="727"/>
+      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="732"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
       <translation>Seçili nesnelerin taslak görünümünü etkin çizime ekler</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location filename="../../Command.cpp" line="631"/>
+      <location filename="../../Command.cpp" line="635"/>
       <source>File</source>
       <translation>Dosya</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="632"/>
+      <location filename="../../Command.cpp" line="636"/>
       <source>&amp;Export page...</source>
       <translation>&amp;Sayfayı dışa aktar...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="633"/>
-      <location filename="../../Command.cpp" line="635"/>
+      <location filename="../../Command.cpp" line="637"/>
+      <location filename="../../Command.cpp" line="639"/>
       <source>Export a page to an SVG file</source>
       <translation>Sayfayı, SVG dosyası olarak dışarı aktar</translation>
     </message>
@@ -80,13 +80,13 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location filename="../../Command.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="277"/>
       <source>Insert new A3 landscape drawing</source>
       <translation>Yeni yatay A3 boyutlu çizim ekle</translation>
     </message>
@@ -94,13 +94,13 @@
   <context>
     <name>CmdDrawingNewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="95"/>
+      <location filename="../../Command.cpp" line="97"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="96"/>
-      <location filename="../../Command.cpp" line="97"/>
+      <location filename="../../Command.cpp" line="98"/>
+      <location filename="../../Command.cpp" line="99"/>
       <source>Insert new drawing</source>
       <translation>Yeni Çizim Ekle</translation>
     </message>
@@ -108,17 +108,17 @@
   <context>
     <name>CmdDrawingNewView</name>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
+      <location filename="../../Command.cpp" line="315"/>
       <source>Insert view in drawing</source>
       <translation>Çizime görünüm ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="316"/>
       <source>Insert a new View of a Part in the active drawing</source>
       <translation>Etkin çizimde bir parçanın yeni görünümünü ekle</translation>
     </message>
@@ -126,17 +126,17 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="59"/>
+      <location filename="../../Command.cpp" line="60"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="60"/>
+      <location filename="../../Command.cpp" line="61"/>
       <source>Open SVG...</source>
       <translation>SVG Aç...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="61"/>
+      <location filename="../../Command.cpp" line="62"/>
       <source>Open a scalable vector graphic</source>
       <translation>Boyutlandırılabilir bir vektörel çizim seçin</translation>
     </message>
@@ -144,18 +144,18 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
+      <location filename="../../Command.cpp" line="443"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="441"/>
+      <location filename="../../Command.cpp" line="444"/>
       <source>Open &amp;browser view</source>
       <translation>&amp;tarayıcı görünümü aç</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="442"/>
-      <location filename="../../Command.cpp" line="444"/>
+      <location filename="../../Command.cpp" line="445"/>
+      <location filename="../../Command.cpp" line="447"/>
       <source>Opens the selected page in a browser view</source>
       <translation>Seçili sayfayı tarayıcı görünümünde açar</translation>
     </message>
@@ -163,17 +163,17 @@
   <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-      <location filename="../../Command.cpp" line="390"/>
+      <location filename="../../Command.cpp" line="393"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="394"/>
       <source>Insert orthographic views</source>
       <translation>Ortografik görünümleri ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="392"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
       <translation>Bir parçanın ortografik izdüşümünü etkin çizime ekle</translation>
     </message>
@@ -181,18 +181,18 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
+      <location filename="../../Command.cpp" line="692"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="688"/>
+      <location filename="../../Command.cpp" line="693"/>
       <source>Project shape...</source>
       <translation>Proje şekilleri...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="689"/>
-      <location filename="../../Command.cpp" line="690"/>
+      <location filename="../../Command.cpp" line="694"/>
+      <location filename="../../Command.cpp" line="695"/>
       <source>Project shape onto a user-defined plane</source>
       <translation>Kullanıcının tanımladığı bir düzleme şekli yansıt</translation>
     </message>
@@ -200,18 +200,18 @@
   <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="754"/>
+      <location filename="../../Command.cpp" line="759"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="755"/>
+      <location filename="../../Command.cpp" line="760"/>
       <source>&amp;Spreadsheet View</source>
       <translation>He&amp;sapTablosu Görünümü</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="756"/>
-      <location filename="../../Command.cpp" line="758"/>
+      <location filename="../../Command.cpp" line="761"/>
+      <location filename="../../Command.cpp" line="763"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
       <translation>Seçili hesap tablolarının bir görünümünü etkin çizime ekler</translation>
     </message>
@@ -219,18 +219,18 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="571"/>
+      <location filename="../../Command.cpp" line="574"/>
       <source>Drawing</source>
       <translation>Çizim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="572"/>
+      <location filename="../../Command.cpp" line="575"/>
       <source>&amp;Symbol</source>
       <translation>&amp;Sembol</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="573"/>
-      <location filename="../../Command.cpp" line="575"/>
+      <location filename="../../Command.cpp" line="576"/>
+      <location filename="../../Command.cpp" line="578"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
       <translation>Etkin çizimde bir svg dosyasından bir simge ekler</translation>
     </message>
@@ -425,7 +425,7 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="561"/>
       <source>Show hidden lines</source>
-      <translation>Gizli dosyaları göster</translation>
+      <translation>Gizli çizgileri göster</translation>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="568"/>
@@ -594,12 +594,12 @@ Devam etmek istiyor musun?</translation>
     <message>
       <location filename="../../TaskDialog.cpp" line="58"/>
       <source>Hidden sewn edges</source>
-      <translation>Gizli dikilir kenarlar</translation>
+      <translation>Gizli dikili kenarlar</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="59"/>
       <source>Hidden outline edges</source>
-      <translation>Gizli anahat kenarlar</translation>
+      <translation>Gizli kenar konturları</translation>
     </message>
     <message>
       <location filename="../../TaskDialog.cpp" line="60"/>
@@ -635,32 +635,32 @@ Devam etmek istiyor musun?</translation>
   <context>
     <name>Drawing_NewPage</name>
     <message>
-      <location filename="../../Command.cpp" line="220"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Landscape</source>
       <translation>Manzara</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="225"/>
       <source>Portrait</source>
       <translation>Dikey</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
+      <location filename="../../Command.cpp" line="229"/>
       <source>%1%2 %3</source>
       <translation>%1%2 %3</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="231"/>
+      <location filename="../../Command.cpp" line="234"/>
       <source>Insert new %1%2 %3 drawing</source>
       <translation>Yeni% 1% 2% 3 çizim ekle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>%1%2 %3 (%4)</source>
       <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="247"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
       <translation>Yeni %1%2 %3 çizimi Ekle</translation>
     </message>
@@ -668,93 +668,93 @@ Devam etmek istiyor musun?</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="71"/>
-      <location filename="../../Command.cpp" line="592"/>
+      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="595"/>
       <source>Choose an SVG file to open</source>
       <translation>Açmak için bir SVG dosyası seçin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
-      <location filename="../../Command.cpp" line="593"/>
-      <location filename="../../Command.cpp" line="650"/>
+      <location filename="../../Command.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="596"/>
+      <location filename="../../Command.cpp" line="654"/>
       <source>Scalable Vector Graphic</source>
       <translation>Ölçeklenebilir Vektör Grafiği</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="403"/>
-      <location filename="../../Command.cpp" line="453"/>
-      <location filename="../../Command.cpp" line="644"/>
-      <location filename="../../Command.cpp" line="767"/>
+      <location filename="../../Command.cpp" line="327"/>
+      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="772"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="325"/>
+      <location filename="../../Command.cpp" line="328"/>
       <source>Select a Part object.</source>
       <translation>Parça nesnesi seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
-      <location filename="../../Command.cpp" line="412"/>
-      <location filename="../../Command.cpp" line="493"/>
-      <location filename="../../Command.cpp" line="541"/>
-      <location filename="../../Command.cpp" line="586"/>
-      <location filename="../../Command.cpp" line="773"/>
+      <location filename="../../Command.cpp" line="336"/>
+      <location filename="../../Command.cpp" line="415"/>
+      <location filename="../../Command.cpp" line="496"/>
+      <location filename="../../Command.cpp" line="544"/>
+      <location filename="../../Command.cpp" line="589"/>
+      <location filename="../../Command.cpp" line="778"/>
       <source>No page found</source>
       <translation>Sayfa bulunamadı</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="334"/>
-      <location filename="../../Command.cpp" line="413"/>
-      <location filename="../../Command.cpp" line="494"/>
-      <location filename="../../Command.cpp" line="542"/>
-      <location filename="../../Command.cpp" line="587"/>
-      <location filename="../../Command.cpp" line="774"/>
+      <location filename="../../Command.cpp" line="337"/>
+      <location filename="../../Command.cpp" line="416"/>
+      <location filename="../../Command.cpp" line="497"/>
+      <location filename="../../Command.cpp" line="545"/>
+      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="779"/>
       <source>Create a page first.</source>
       <translation>Önce bir sayfa oluşturun.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="407"/>
       <source>Select exactly one Part object.</source>
       <translation>Tek bir bölüm nesnesi seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
-      <location filename="../../Command.cpp" line="645"/>
+      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="649"/>
       <source>Select one Page object.</source>
       <translation>Bir sayfa nesnesi seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="655"/>
       <source>All Files</source>
       <translation>Tüm Dosyalar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="653"/>
+      <location filename="../../Command.cpp" line="657"/>
       <source>Export page</source>
       <translation>Sayfayı dışarı aktar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="768"/>
+      <location filename="../../Command.cpp" line="773"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Tam olarak bir Hesap Tablosu nesnesi seçin.</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="51"/>
-      <location filename="../../TaskOrthoViews.cpp" line="979"/>
+      <location filename="../../TaskOrthoViews.cpp" line="53"/>
+      <location filename="../../TaskOrthoViews.cpp" line="981"/>
       <source>Make axonometric...</source>
       <translation>Aksonometrik yap...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="52"/>
-      <location filename="../../TaskOrthoViews.cpp" line="980"/>
+      <location filename="../../TaskOrthoViews.cpp" line="54"/>
+      <location filename="../../TaskOrthoViews.cpp" line="982"/>
       <source>Edit axonometric settings...</source>
       <translation>Aksonometrik ayarlarını düzenle...</translation>
     </message>
     <message>
-      <location filename="../../TaskOrthoViews.cpp" line="53"/>
-      <location filename="../../TaskOrthoViews.cpp" line="981"/>
+      <location filename="../../TaskOrthoViews.cpp" line="55"/>
+      <location filename="../../TaskOrthoViews.cpp" line="983"/>
       <source>Make orthographic</source>
       <translation>Ortografik yap</translation>
     </message>

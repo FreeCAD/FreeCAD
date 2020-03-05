@@ -4,102 +4,102 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../ArchAxis.py" line="208"/>
+      <location filename="../../ArchAxis.py" line="206"/>
       <source>The intervals between axes</source>
       <translation>De intervallen tussen de assen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="210"/>
+      <location filename="../../ArchAxis.py" line="208"/>
       <source>The angles of each axis</source>
       <translation>De hoeken van elke as</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="216"/>
+      <location filename="../../ArchAxis.py" line="214"/>
       <source>The length of the axes</source>
       <translation>De lengte van de assen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="303"/>
+      <location filename="../../ArchAxis.py" line="301"/>
       <source>The size of the axis bubbles</source>
       <translation>De grootte van de asballonnetjes</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="306"/>
+      <location filename="../../ArchAxis.py" line="304"/>
       <source>The numbering style</source>
       <translation>De nummeringsstijl</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="254"/>
+      <location filename="../../ArchBuildingPart.py" line="262"/>
       <source>The type of this building</source>
       <translation>Het type van dit gebouw</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="155"/>
+      <location filename="../../ArchComponent.py" line="151"/>
       <source>The base object this component is built upon</source>
       <translation>Het basis object is gebaseerd op</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="157"/>
+      <location filename="../../ArchComponent.py" line="153"/>
       <source>The object this component is cloning</source>
       <translation>Het object dit van dit onderdeel klonen</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="502"/>
+      <location filename="../../ArchSite.py" line="563"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Andere vormen die gehecht zijn aan dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="504"/>
+      <location filename="../../ArchSite.py" line="565"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Andere vormen die afgetrokken zijn van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="163"/>
+      <location filename="../../ArchComponent.py" line="159"/>
       <source>An optional description for this component</source>
       <translation>Een optionele omschrijving voor dit onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="165"/>
+      <location filename="../../ArchComponent.py" line="161"/>
       <source>An optional tag for this component</source>
       <translation>Een optionele tag voor dit onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="169"/>
+      <location filename="../../ArchComponent.py" line="165"/>
       <source>A material for this object</source>
       <translation>Een materiaal voor dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="178"/>
+      <location filename="../../ArchComponent.py" line="174"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>Geeft aan of dit object samen met de gastheer (host) moet worden verplaatst</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="181"/>
+      <location filename="../../ArchComponent.py" line="177"/>
       <source>The area of all vertical faces of this object</source>
       <translation>Het gebied van alle verticale vlakken van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="506"/>
+      <location filename="../../ArchSite.py" line="567"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Het gebied van de projectie van dit object op het XY-vlak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="187"/>
+      <location filename="../../ArchComponent.py" line="183"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>De omtrek lengte van het horizontale gebied</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="288"/>
+      <location filename="../../ArchEquipment.py" line="284"/>
       <source>The model description of this equipment</source>
       <translation>De beschrijving van het model van deze apparatuur</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="294"/>
+      <location filename="../../ArchEquipment.py" line="290"/>
       <source>Additional snap points for this equipment</source>
       <translation>Extra snap punten voor deze apparatuur</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="296"/>
+      <location filename="../../ArchEquipment.py" line="292"/>
       <source>The electric power needed by this equipment in Watts</source>
       <translation>De elektrische stroom die nodig is voor dit gebruiksvoorwerp in Watt</translation>
     </message>
@@ -114,1655 +114,1730 @@
       <translation>De berekende oppervlakte van deze vloer</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="501"/>
+      <location filename="../../ArchSectionPlane.py" line="856"/>
       <source>The placement of this object</source>
       <translation>De plaatsing van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="115"/>
+      <location filename="../../ArchFrame.py" line="113"/>
       <source>The profile used to build this frame</source>
       <translation>Het gebruikte profiel om dit geraamte te bouwen</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="117"/>
+      <location filename="../../ArchFrame.py" line="115"/>
       <source>Specifies if the profile must be aligned with the extrusion wires</source>
       <translation>Geeft aan of het profiel moet worden uitgelijnd met de extrusiedraden</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="120"/>
+      <location filename="../../ArchFrame.py" line="118"/>
       <source>An offset vector between the base sketch and the frame</source>
       <translation>Een offset vector tussen de basis schets en het frame</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="122"/>
+      <location filename="../../ArchFrame.py" line="120"/>
       <source>Crossing point of the path on the profile.</source>
       <translation>Kruispunt van het pad met het profiel.</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="126"/>
+      <location filename="../../ArchFrame.py" line="124"/>
       <source>The rotation of the profile around its extrusion axis</source>
       <translation>De rotatie van het profiel om de extrusie as</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="617"/>
+      <location filename="../../ArchStructure.py" line="614"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>De lengte van dit element, indien niet gebaseerd op een profiel</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="619"/>
+      <location filename="../../ArchStructure.py" line="616"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>De breedte van dit element, indien niet gebaseerd op een profiel</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="410"/>
+      <location filename="../../ArchPanel.py" line="408"/>
       <source>The thickness or extrusion depth of this element</source>
       <translation>De dikte of extrusie diepte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="412"/>
+      <location filename="../../ArchPanel.py" line="410"/>
       <source>The number of sheets to use</source>
       <translation>Het aantal platen te gebruiken</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="415"/>
+      <location filename="../../ArchPanel.py" line="413"/>
       <source>The offset between this panel and its baseline</source>
       <translation>De offset tussen dit paneel en de basislijn</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="417"/>
+      <location filename="../../ArchPanel.py" line="415"/>
       <source>The length of waves for corrugated elements</source>
       <translation>De golflengte van gerimpelde elementen</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="419"/>
+      <location filename="../../ArchPanel.py" line="417"/>
       <source>The height of waves for corrugated elements</source>
       <translation>De amplitude van gerimpelde elementen</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="423"/>
+      <location filename="../../ArchPanel.py" line="421"/>
       <source>The direction of waves for corrugated elements</source>
       <translation>De golfrichting van gerimpelde elementen</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="425"/>
+      <location filename="../../ArchPanel.py" line="423"/>
       <source>The type of waves for corrugated elements</source>
       <translation>Het type golf voor gerimpelde elementen</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="430"/>
+      <location filename="../../ArchPanel.py" line="428"/>
       <source>The area of this panel</source>
       <translation>Het gebied van dit venster</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="631"/>
+      <location filename="../../ArchStructure.py" line="628"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Het type facemaker dat moet worden gebruikt om het profiel van dit object te maken</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="539"/>
+      <location filename="../../ArchWall.py" line="552"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>De normale extrusierichting van dit opject (houd (0,0,0) voor automatische normaal)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="791"/>
+      <location filename="../../ArchSectionPlane.py" line="1159"/>
       <source>The linked object</source>
       <translation>Het gekoppelde object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="801"/>
+      <location filename="../../ArchSectionPlane.py" line="1169"/>
       <source>The line width of the rendered objects</source>
       <translation>De lijndikte van de weergegeven objecten</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="838"/>
+      <location filename="../../ArchPanel.py" line="844"/>
       <source>The color of the panel outline</source>
       <translation>De kleur van de paneelrand</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1213"/>
+      <location filename="../../ArchPanel.py" line="1221"/>
       <source>The size of the tag text</source>
       <translation>De grootte van de label tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="843"/>
+      <location filename="../../ArchPanel.py" line="849"/>
       <source>The color of the tag text</source>
       <translation>De kleur van de tag tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="846"/>
+      <location filename="../../ArchPanel.py" line="852"/>
       <source>The X offset of the tag text</source>
       <translation>De X offset van de tag tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="849"/>
+      <location filename="../../ArchPanel.py" line="855"/>
       <source>The Y offset of the tag text</source>
       <translation>De Y offset van de tag tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1220"/>
+      <location filename="../../ArchPanel.py" line="1228"/>
       <source>The font of the tag text</source>
       <translation>De font van de tag tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="935"/>
+      <location filename="../../ArchPanel.py" line="943"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
       <translation>De tekst om weer te gegeven. Kan %tag%, %label% of %description% zijn om het tag- of labelvenster weer te geven</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1216"/>
+      <location filename="../../ArchPanel.py" line="1224"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
       <translation>De positie van de tag tekst. (0,0,0) aanhouden voor middenpositie</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1218"/>
+      <location filename="../../ArchPanel.py" line="1226"/>
       <source>The rotation of the tag text</source>
       <translation>De rotatie van de tag tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1384"/>
+      <location filename="../../ArchPanel.py" line="1392"/>
       <source>A margin inside the boundary</source>
       <translation>Een marge binnen de grens</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1386"/>
+      <location filename="../../ArchPanel.py" line="1394"/>
       <source>Turns the display of the margin on/off</source>
       <translation>Schakelt de weergave van de marge aan/uit</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1209"/>
+      <location filename="../../ArchPanel.py" line="1217"/>
       <source>The linked Panel cuts</source>
       <translation>De gekoppelde paneeluitsnijdingen</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1211"/>
+      <location filename="../../ArchPanel.py" line="1219"/>
       <source>The tag text to display</source>
       <translation>Het tag tekst weer te geven</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1223"/>
+      <location filename="../../ArchPanel.py" line="1231"/>
       <source>The width of the sheet</source>
       <translation>De breedte van de plaat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1226"/>
+      <location filename="../../ArchPanel.py" line="1234"/>
       <source>The height of the sheet</source>
       <translation>De hoogte van de plaat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1229"/>
+      <location filename="../../ArchPanel.py" line="1237"/>
       <source>The fill ratio of this sheet</source>
       <translation>De opvulling verhouding van de plaat</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="194"/>
+      <location filename="../../ArchPipe.py" line="193"/>
       <source>The diameter of this pipe, if not based on a profile</source>
       <translation>De breedte van deze buis, indien niet gebaseerd op een profiel</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="196"/>
+      <location filename="../../ArchPipe.py" line="195"/>
       <source>The length of this pipe, if not based on an edge</source>
       <translation>De lengte van deze buis, indien niet gebaseerd op een rand</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="198"/>
+      <location filename="../../ArchPipe.py" line="197"/>
       <source>An optional closed profile to base this pipe on</source>
       <translation>Een optionele gesloten profiel om de buis op te baseren</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="200"/>
+      <location filename="../../ArchPipe.py" line="199"/>
       <source>Offset from the start point</source>
       <translation>De afstand van het beginpunt</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="202"/>
+      <location filename="../../ArchPipe.py" line="201"/>
       <source>Offset from the end point</source>
       <translation>De afstand van het eindpunt</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="323"/>
+      <location filename="../../ArchPipe.py" line="326"/>
       <source>The curvature radius of this connector</source>
       <translation>De krommingsstraal van deze verbinding</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="325"/>
+      <location filename="../../ArchPipe.py" line="328"/>
       <source>The pipes linked by this connector</source>
       <translation>De buizen die verbonden zijn door deze verbinding</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="327"/>
+      <location filename="../../ArchPipe.py" line="330"/>
       <source>The type of this connector</source>
       <translation>De type van deze verbinding</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="65"/>
+      <location filename="../../ArchPrecast.py" line="64"/>
       <source>The length of this element</source>
       <translation>De lengte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="67"/>
+      <location filename="../../ArchPrecast.py" line="66"/>
       <source>The width of this element</source>
       <translation>De breedte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="69"/>
+      <location filename="../../ArchPrecast.py" line="68"/>
       <source>The height of this element</source>
       <translation>De hoogte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="625"/>
+      <location filename="../../ArchStructure.py" line="622"/>
       <source>The structural nodes of this element</source>
       <translation>De structuur knooppunten van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="419"/>
+      <location filename="../../ArchPrecast.py" line="418"/>
       <source>The size of the chamfer of this element</source>
-      <translation>De grootte van de Afschuining van dit element</translation>
+      <translation>Afschuiningsgrootte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="101"/>
+      <location filename="../../ArchPrecast.py" line="100"/>
       <source>The dent length of this element</source>
       <translation>De deuk lengte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="423"/>
+      <location filename="../../ArchPrecast.py" line="422"/>
       <source>The dent height of this element</source>
       <translation>De deuk hoogte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="291"/>
+      <location filename="../../ArchPrecast.py" line="290"/>
       <source>The dents of this element</source>
       <translation>De deuken van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="218"/>
+      <location filename="../../ArchPrecast.py" line="217"/>
       <source>The chamfer length of this element</source>
-      <translation>De afschuining van dit element</translation>
+      <translation>De afschuiningslengte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="220"/>
+      <location filename="../../ArchPrecast.py" line="219"/>
       <source>The base length of this element</source>
       <translation>De basis lengte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="283"/>
+      <location filename="../../ArchPrecast.py" line="282"/>
       <source>The groove depth of this element</source>
       <translation>De groef diepte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="285"/>
+      <location filename="../../ArchPrecast.py" line="284"/>
       <source>The groove height of this element</source>
       <translation>De groef hoogte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="287"/>
+      <location filename="../../ArchPrecast.py" line="286"/>
       <source>The spacing between the grooves of this element</source>
       <translation>De afstand tussen de groeven van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="289"/>
+      <location filename="../../ArchPrecast.py" line="288"/>
       <source>The number of grooves of this element</source>
       <translation>Het aantal groeven van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="421"/>
+      <location filename="../../ArchPrecast.py" line="420"/>
       <source>The dent width of this element</source>
       <translation>De deuk breedte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="527"/>
+      <location filename="../../ArchPrecast.py" line="526"/>
       <source>The type of this slab</source>
       <translation>Het type van deze plaat</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="530"/>
+      <location filename="../../ArchPrecast.py" line="529"/>
       <source>The size of the base of this element</source>
       <translation>De grootte van de basis van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="532"/>
+      <location filename="../../ArchPrecast.py" line="531"/>
       <source>The number of holes in this element</source>
       <translation>Het aantal gaten in dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="534"/>
+      <location filename="../../ArchPrecast.py" line="533"/>
       <source>The major radius of the holes of this element</source>
-      <translation>De grootste straal van de gaten van dit element</translation>
+      <translation>De hoofdstraal van de gaten van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="536"/>
+      <location filename="../../ArchPrecast.py" line="535"/>
       <source>The minor radius of the holes of this element</source>
-      <translation>De kleinste straal van de gaten van dit element</translation>
+      <translation>De substraal van de gaten van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="538"/>
+      <location filename="../../ArchPrecast.py" line="537"/>
       <source>The spacing between the holes of this element</source>
       <translation>De afstand tussen de gaten van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="636"/>
+      <location filename="../../ArchPrecast.py" line="635"/>
       <source>The length of the down floor of this element</source>
       <translation>De lengte van de ondervloer van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="638"/>
+      <location filename="../../ArchPrecast.py" line="637"/>
       <source>The number of risers in this element</source>
-      <translation>Het aantal verhogingen in dit element</translation>
+      <translation>Het aantal optreden in dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="640"/>
+      <location filename="../../ArchPrecast.py" line="639"/>
       <source>The riser height of this element</source>
       <translation>De hoogte van de verhoging in dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="642"/>
+      <location filename="../../ArchPrecast.py" line="641"/>
       <source>The tread depth of this element</source>
       <translation>De spoed diepte van dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="125"/>
+      <location filename="../../ArchProfile.py" line="123"/>
       <source>Outside Diameter</source>
       <translation>Buitendiameter</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="126"/>
+      <location filename="../../ArchProfile.py" line="124"/>
       <source>Wall thickness</source>
       <translation>Wanddikte</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="237"/>
+      <location filename="../../ArchProfile.py" line="235"/>
       <source>Width of the beam</source>
       <translation>Breedte van de balk</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="238"/>
+      <location filename="../../ArchProfile.py" line="236"/>
       <source>Height of the beam</source>
       <translation>Hoogte van de balk</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="151"/>
+      <location filename="../../ArchProfile.py" line="149"/>
       <source>Thickness of the web</source>
       <translation>Dichtheid van het web</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="152"/>
+      <location filename="../../ArchProfile.py" line="150"/>
       <source>Thickness of the flanges</source>
       <translation>Dikte van de flenzen</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="207"/>
+      <location filename="../../ArchProfile.py" line="205"/>
       <source>Thickness of the sides</source>
       <translation>Dikte van de zijkanten</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="239"/>
+      <location filename="../../ArchProfile.py" line="237"/>
       <source>Thickness of the webs</source>
       <translation>Dikte van de webs</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="240"/>
+      <location filename="../../ArchProfile.py" line="238"/>
       <source>Thickness of the flange</source>
       <translation>Dikte van de flens</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="175"/>
+      <location filename="../../ArchRebar.py" line="173"/>
       <source>The diameter of the bar</source>
       <translation>De diameter van de staaf</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="177"/>
+      <location filename="../../ArchRebar.py" line="175"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
       <translation>De afstand tussen de rand van de balk en de eerste staaf (betondekking).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="179"/>
+      <location filename="../../ArchRebar.py" line="177"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
       <translation>De afstand tussen de grens van de balk en de laatste staaf (beton dekking).</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="181"/>
+      <location filename="../../ArchRebar.py" line="179"/>
       <source>The amount of bars</source>
       <translation>De hoeveelheid staven</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="183"/>
+      <location filename="../../ArchRebar.py" line="181"/>
       <source>The spacing between the bars</source>
       <translation>De tussenruimte tussen de staven</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="188"/>
+      <location filename="../../ArchRebar.py" line="186"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
       <translation>De richting om de staven te verspreiden. Houdt (0,0,0) voor automatische richting.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="190"/>
+      <location filename="../../ArchRebar.py" line="188"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
       <translation>De toe te passen hoek van het basisprofiel. Deze waarde wordt vermenigvuldigd met de staafdiameter.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="193"/>
+      <location filename="../../ArchRoof.py" line="191"/>
       <source>A list of angles for each roof pane</source>
       <translation>Een lijst met hoeken voor elk venster</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="195"/>
+      <location filename="../../ArchRoof.py" line="193"/>
       <source>A list of horizontal length projections for each roof pane</source>
       <translation>Een lijst van de horizontale lengte projecties voor elk venster</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="197"/>
+      <location filename="../../ArchRoof.py" line="195"/>
       <source>A list of IDs of relative profiles for each roof pane</source>
       <translation>Een lijst met ID's voor de relatieve profielen van elk venster</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="199"/>
+      <location filename="../../ArchRoof.py" line="197"/>
       <source>A list of thicknesses for each roof pane</source>
       <translation>Een lijst met diktes voor elk venster</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="201"/>
+      <location filename="../../ArchRoof.py" line="199"/>
       <source>A list of overhangs for each roof pane</source>
       <translation>Een lijst met uitsteeksels voor elk venster</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="203"/>
+      <location filename="../../ArchRoof.py" line="201"/>
       <source>A list of calculated heights for each roof pane</source>
       <translation>Een lijst met berekende hoogtes voor iedere dakpan</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="205"/>
+      <location filename="../../ArchRoof.py" line="203"/>
       <source>The face number of the base object used to build this roof</source>
       <translation>Het nummer van de face van het basis object dat wordt gebruikt om dit dak te maken</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="207"/>
+      <location filename="../../ArchRoof.py" line="205"/>
       <source>The total length of ridges and hips of this roof</source>
       <translation>De totale lengte van de rok en hoekgording van dit dak</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="210"/>
+      <location filename="../../ArchRoof.py" line="208"/>
       <source>The total length of borders of this roof</source>
       <translation>De totale lengte van de randen van dit dak</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="81"/>
+      <location filename="../../ArchSchedule.py" line="97"/>
       <source>The description column</source>
       <translation>De kolom met beschrijvingen</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="82"/>
+      <location filename="../../ArchSchedule.py" line="99"/>
       <source>The values column</source>
       <translation>De kolom met waarden</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="83"/>
+      <location filename="../../ArchSchedule.py" line="101"/>
       <source>The units column</source>
       <translation>De eenhedenkolom</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="84"/>
+      <location filename="../../ArchSchedule.py" line="103"/>
       <source>The objects column</source>
       <translation>De objectenkolom</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="85"/>
+      <location filename="../../ArchSchedule.py" line="105"/>
       <source>The filter column</source>
       <translation>De filterkolom</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="86"/>
+      <location filename="../../ArchSchedule.py" line="109"/>
       <source>The spreadsheet to print the results to</source>
       <translation>Het werkblad om de resultaten van af te drukken</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="507"/>
+      <location filename="../../ArchSectionPlane.py" line="862"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation>Wanneer onwaar, dan zullen de niet-massieven ook geknipt worden met mogelijke onjuiste resultaten.</translation>
+      <translation>Wanneer onwaar, dan zullen de non-volumemodellen ook geknipt worden met mogelijke onjuiste resultaten.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="577"/>
+      <location filename="../../ArchSectionPlane.py" line="932"/>
       <source>The display length of this section plane</source>
       <translation>De weergavelengte van dit sectievlak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="583"/>
+      <location filename="../../ArchSectionPlane.py" line="938"/>
       <source>The display height of this section plane</source>
       <translation>De weergavehoogte van dit sectievlak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="589"/>
+      <location filename="../../ArchSectionPlane.py" line="944"/>
       <source>The size of the arrows of this section plane</source>
       <translation>De grootte van de pijlen van dit sectievlak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="603"/>
+      <location filename="../../ArchSectionPlane.py" line="958"/>
       <source>Show the cut in the 3D view</source>
       <translation>Toon de snede in 3D-weergave</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="793"/>
+      <location filename="../../ArchSectionPlane.py" line="1161"/>
       <source>The rendering mode to use</source>
       <translation>De rendermethode te gebruiken</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="797"/>
+      <location filename="../../ArchSectionPlane.py" line="1165"/>
       <source>If cut geometry is shown or not</source>
       <translation>Na het knippen zal de geometrie wel of niet worden weergegeven</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="799"/>
+      <location filename="../../ArchSectionPlane.py" line="1167"/>
       <source>If cut geometry is filled or not</source>
       <translation>Na het knippen zal de geometrie wel of niet worden weergegeven</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="804"/>
+      <location filename="../../ArchSectionPlane.py" line="1172"/>
       <source>The size of the texts inside this object</source>
       <translation>De grootte van de teksten binnen dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="807"/>
+      <location filename="../../ArchSectionPlane.py" line="1175"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Indien aangevinkt, worden bronobjecten weergegeven ongeacht de zichtbaarheid in het 3D-model</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="477"/>
+      <location filename="../../ArchSite.py" line="538"/>
       <source>The base terrain of this site</source>
       <translation>Het basis terrein van deze plaats</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="481"/>
+      <location filename="../../ArchSite.py" line="542"/>
       <source>The postal or zip code of this site</source>
       <translation>De postcode van deze site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="483"/>
+      <location filename="../../ArchSite.py" line="544"/>
       <source>The city of this site</source>
       <translation>De stad van deze site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="487"/>
+      <location filename="../../ArchSite.py" line="548"/>
       <source>The country of this site</source>
       <translation>Het land van deze site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="491"/>
+      <location filename="../../ArchSite.py" line="552"/>
       <source>The latitude of this site</source>
       <translation>De breedtegraad van deze site</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="493"/>
+      <location filename="../../ArchSite.py" line="554"/>
       <source>Angle between the true North and the North direction in this document</source>
       <translation>Hoek tussen het ware noorden en de noordrichting van dit project</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="498"/>
+      <location filename="../../ArchSite.py" line="559"/>
       <source>The elevation of level 0 of this site</source>
       <translation>De peilhoogte van level 0 van dit terrein</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="508"/>
+      <location filename="../../ArchSite.py" line="569"/>
       <source>The perimeter length of this terrain</source>
       <translation>De lengte van de omtrek van dit terrein</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="510"/>
+      <location filename="../../ArchSite.py" line="571"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation>Het volume aan grond dat wordt toegevoegd aan dit terrein</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="512"/>
+      <location filename="../../ArchSite.py" line="573"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation>Het volume aan grond dat wordt verwijderd van dit terrein</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="514"/>
+      <location filename="../../ArchSite.py" line="575"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation>Een extrusie vector gebruiken bij het uitvoeren van booleaanse operatie</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="517"/>
+      <location filename="../../ArchSite.py" line="578"/>
       <source>Remove splitters from the resulting shape</source>
       <translation>Splitters uit de resulterende vorm verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="665"/>
+      <location filename="../../ArchSite.py" line="728"/>
       <source>Show solar diagram or not</source>
       <translation>Zonnediagram tonen of niet</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="667"/>
+      <location filename="../../ArchSite.py" line="730"/>
       <source>The scale of the solar diagram</source>
       <translation>Schaal van het zonnediagram</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="670"/>
+      <location filename="../../ArchSite.py" line="733"/>
       <source>The position of the solar diagram</source>
       <translation>Positie van het zonnediagram</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="672"/>
+      <location filename="../../ArchSite.py" line="735"/>
       <source>The color of the solar diagram</source>
       <translation>Kleur van het zonnediagram</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="273"/>
+      <location filename="../../ArchSpace.py" line="271"/>
       <source>The objects that make the boundaries of this space object</source>
       <translation>De objecten die de grens vormen van dit ruimteobject</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="275"/>
+      <location filename="../../ArchSpace.py" line="273"/>
       <source>The computed floor area of this space</source>
       <translation>De berekende oppervlakte van deze ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="277"/>
+      <location filename="../../ArchSpace.py" line="275"/>
       <source>The finishing of the floor of this space</source>
       <translation>De afwerking van de vloer in deze ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="279"/>
+      <location filename="../../ArchSpace.py" line="277"/>
       <source>The finishing of the walls of this space</source>
       <translation>De afwerking van de wanden in deze ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="281"/>
+      <location filename="../../ArchSpace.py" line="279"/>
       <source>The finishing of the ceiling of this space</source>
       <translation>De afwerking van het plafond in deze ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="283"/>
+      <location filename="../../ArchSpace.py" line="281"/>
       <source>Objects that are included inside this space, such as furniture</source>
       <translation>Objecten die zich in deze ruimte bevinden, zoals bijvoorbeeld meubels</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="285"/>
+      <location filename="../../ArchSpace.py" line="283"/>
       <source>The type of this space</source>
       <translation>Het type van deze ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="288"/>
+      <location filename="../../ArchSpace.py" line="286"/>
       <source>The thickness of the floor finish</source>
       <translation>De dikte van de afwerkvloer</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="290"/>
+      <location filename="../../ArchSpace.py" line="288"/>
       <source>The number of people who typically occupy this space</source>
       <translation>Het aantal mensen dat meestal deze ruimte bezetten</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="292"/>
+      <location filename="../../ArchSpace.py" line="290"/>
       <source>The electric power needed to light this space in Watts</source>
       <translation>Het benodigde elektrisch vermogen om deze ruimte te verlichten in Watt</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="294"/>
+      <location filename="../../ArchSpace.py" line="292"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
       <translation>Het elektrisch vermogen van de apparaten in deze ruimte in Watt</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="296"/>
+      <location filename="../../ArchSpace.py" line="294"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
       <translation>Wanneer waar, dan wordt het vermogen van de apparatuur automatisch gevuld door de apparatuur die aanwezig is in in deze ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="298"/>
+      <location filename="../../ArchSpace.py" line="296"/>
       <source>The type of air conditioning of this space</source>
       <translation>Het type airconditioning in deze ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="495"/>
+      <location filename="../../ArchSpace.py" line="493"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>De tekst weergeven. Gebruik $area, $label, $tag, $floor, $walls, $ceiling om de betrokken gegevens in te voegen</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="498"/>
+      <location filename="../../ArchSpace.py" line="496"/>
       <source>The name of the font</source>
       <translation>De naam van het lettertype</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="501"/>
+      <location filename="../../ArchSpace.py" line="499"/>
       <source>The color of the area text</source>
       <translation>De kleur van het gebied tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="504"/>
+      <location filename="../../ArchSpace.py" line="502"/>
       <source>The size of the text font</source>
       <translation>De grootte van het lettertype</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="507"/>
+      <location filename="../../ArchSpace.py" line="505"/>
       <source>The size of the first line of text</source>
       <translation>De grootte van de eerste regel tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="510"/>
+      <location filename="../../ArchSpace.py" line="508"/>
       <source>The space between the lines of text</source>
       <translation>De ruimte tussen de lijnen tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="513"/>
+      <location filename="../../ArchSpace.py" line="511"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>De positie van de tekst. (0,0,0) behouden voor automatisch positioneren</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="515"/>
+      <location filename="../../ArchSpace.py" line="513"/>
       <source>The justification of the text</source>
       <translation>De uitvulling van de tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="519"/>
+      <location filename="../../ArchSpace.py" line="517"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Het aantal te gebruiken decimalen voor berekende tekst</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="522"/>
+      <location filename="../../ArchSpace.py" line="520"/>
       <source>Show the unit suffix</source>
       <translation>Eenheid-achtervoegsel tonen</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="276"/>
+      <location filename="../../ArchStairs.py" line="273"/>
       <source>The length of these stairs, if no baseline is defined</source>
       <translation>De lengte van deze trap, als er geen basislijn is</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="278"/>
+      <location filename="../../ArchStairs.py" line="275"/>
       <source>The width of these stairs</source>
       <translation>De breedte van deze trap</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="280"/>
+      <location filename="../../ArchStairs.py" line="277"/>
       <source>The total height of these stairs</source>
       <translation>De totale hoogte van deze trap</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="282"/>
+      <location filename="../../ArchStairs.py" line="279"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
       <translation>De richting van deze trap op zijn basislijn, indien beschikbaar</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="292"/>
+      <location filename="../../ArchStairs.py" line="289"/>
       <source>The number of risers in these stairs</source>
-      <translation>Het aantal tegentreden van de trap</translation>
+      <translation>Het aantal optreden van de trap</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="294"/>
+      <location filename="../../ArchStairs.py" line="291"/>
       <source>The depth of the treads of these stairs</source>
       <translation>Diepte van de treden</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="297"/>
+      <location filename="../../ArchStairs.py" line="294"/>
       <source>The height of the risers of these stairs</source>
       <translation>De hoogte van de optreden van deze trap</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="300"/>
+      <location filename="../../ArchStairs.py" line="297"/>
       <source>The size of the nosing</source>
       <translation>De breedte van de wel</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="302"/>
+      <location filename="../../ArchStairs.py" line="299"/>
       <source>The thickness of the treads</source>
       <translation>Dikte van de treden</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="398"/>
+      <location filename="../../ArchStairs.py" line="395"/>
       <source>The type of landings of these stairs</source>
       <translation>Het soort plateau van deze trap</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="401"/>
+      <location filename="../../ArchStairs.py" line="398"/>
       <source>The type of winders in these stairs</source>
       <translation>De soort draaïng van deze trap</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="404"/>
+      <location filename="../../ArchStairs.py" line="401"/>
       <source>The type of structure of these stairs</source>
       <translation>Het structuur type van deze trap</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="407"/>
+      <location filename="../../ArchStairs.py" line="404"/>
       <source>The thickness of the massive structure or of the stringers</source>
       <translation>De dikte van de massieve constructie of de trapboom</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="409"/>
+      <location filename="../../ArchStairs.py" line="406"/>
       <source>The width of the stringers</source>
       <translation>De breedte van de trapbomen</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="411"/>
+      <location filename="../../ArchStairs.py" line="408"/>
       <source>The offset between the border of the stairs and the structure</source>
       <translation>De afstand tussen de rand van de trap en de structuur</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="615"/>
+      <location filename="../../ArchStructure.py" line="612"/>
       <source>An optional extrusion path for this element</source>
       <translation>Een optionele 3D route voor dit element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="621"/>
+      <location filename="../../ArchStructure.py" line="618"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
       <translation>De hoogte of 3D-diepte van dit element. Houd 0 voor automatisch</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="627"/>
+      <location filename="../../ArchStructure.py" line="624"/>
       <source>A description of the standard profile this element is based upon</source>
       <translation>Een beschrijving van het standaardprofiel waar dit element op gebaseerd is</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="629"/>
+      <location filename="../../ArchStructure.py" line="626"/>
       <source>Offset distance between the centerline and the nodes line</source>
       <translation>De afstand tussen de middellijn en de knooppunten-lijn</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="907"/>
+      <location filename="../../ArchStructure.py" line="914"/>
       <source>If the nodes are visible or not</source>
       <translation>Als de nodes zichtbaar zijn of niet</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="909"/>
+      <location filename="../../ArchStructure.py" line="916"/>
       <source>The width of the nodes line</source>
       <translation>De breedte van de lijn van het knooppunt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="911"/>
+      <location filename="../../ArchStructure.py" line="918"/>
       <source>The size of the node points</source>
       <translation>De omvang van het knooppunt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="914"/>
+      <location filename="../../ArchStructure.py" line="921"/>
       <source>The color of the nodes line</source>
       <translation>De kleur van de nodes lijn</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="917"/>
+      <location filename="../../ArchStructure.py" line="924"/>
       <source>The type of structural node</source>
       <translation>Het soort structurele knooppunt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1204"/>
+      <location filename="../../ArchStructure.py" line="1211"/>
       <source>Axes systems this structure is built on</source>
       <translation>Assenstelsel waarop deze structuur gebouwd is</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1205"/>
+      <location filename="../../ArchStructure.py" line="1212"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Het aantal elementen dat wordt uitgesloten wanneer deze structuur gebaseerd is op assen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1206"/>
+      <location filename="../../ArchStructure.py" line="1213"/>
       <source>If true the element are aligned with axes</source>
       <translation>Wanneer waar, dan wordt het element uigelijnd met de assen</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="530"/>
+      <location filename="../../ArchWall.py" line="532"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
       <translation>De lengte van deze muur. Dit wordt niet gebruikt als deze muur is gebaseerd op een onderliggend object</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="532"/>
+      <location filename="../../ArchWall.py" line="534"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
       <translation>De breedte van deze muur. Ongebruikt wanneer deze muur is gebaseerd op een onderliggend object</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="534"/>
+      <location filename="../../ArchWall.py" line="544"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
-      <translation>De hoogte van deze muur. Gebruik 0 voor automatisch. Ongebruikt als deze muur is gebaseerd op een massief object</translation>
+      <translation>De hoogte van deze muur. Gebruik 0 voor automatisch. Ongebruikt als deze muur is gebaseerd op een volumemodel</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="536"/>
+      <location filename="../../ArchWall.py" line="549"/>
       <source>The alignment of this wall on its base object, if applicable</source>
       <translation>De richting van deze muur ten opzichte van zijn basisobject, indien toepasbaar</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="541"/>
+      <location filename="../../ArchWall.py" line="554"/>
       <source>The face number of the base object used to build this wall</source>
       <translation>Het vlaknummer van het basisobject dat wordt gebruikt om deze muur op te bouwen</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="543"/>
+      <location filename="../../ArchWall.py" line="556"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
       <translation>De tussenafstand tussen deze muur en zijn basislijn (alleen voor links en rechtse uitlijningen)</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="973"/>
+      <location filename="../../ArchWindow.py" line="969"/>
       <source>The normal direction of this window</source>
       <translation>De normale richting van dit venster</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="982"/>
+      <location filename="../../ArchWindow.py" line="978"/>
       <source>The area of this window</source>
       <translation>Het gebied van dit venster</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="190"/>
+      <location filename="../../ArchComponent.py" line="186"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>Een optionele hogere resolutie gaas of vorm voor dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="124"/>
+      <location filename="../../ArchFrame.py" line="122"/>
       <source>An optional additional placement to add to the profile before extruding it</source>
       <translation>Een optionele extra plaatsing toevoegen aan het profiel voor het verdikken</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="988"/>
+      <location filename="../../ArchWindow.py" line="984"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>Opent de subonderdelen die een scharnier gedefinieerd hebben</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="257"/>
+      <location filename="../../ArchMaterial.py" line="272"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
       <translation>Een standaard code (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="612"/>
+      <location filename="../../ArchMaterial.py" line="666"/>
       <source>A description for this material</source>
       <translation>Een beschrijving van dit materiaal</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="259"/>
+      <location filename="../../ArchMaterial.py" line="274"/>
       <source>The transparency value of this material</source>
       <translation>De transparantiewaarde van dit materiaal</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="260"/>
+      <location filename="../../ArchMaterial.py" line="275"/>
       <source>The color of this material</source>
       <translation>De kleur van dit materiaal</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="613"/>
+      <location filename="../../ArchMaterial.py" line="667"/>
       <source>The list of layer names</source>
       <translation>De lijst met namen van lagen</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="614"/>
+      <location filename="../../ArchMaterial.py" line="668"/>
       <source>The list of layer materials</source>
       <translation>De lijst met materialen van lagen</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="615"/>
+      <location filename="../../ArchMaterial.py" line="669"/>
       <source>The list of layer thicknesses</source>
       <translation>De lijst met diktes van lagen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="809"/>
+      <location filename="../../ArchSectionPlane.py" line="1177"/>
       <source>The line color of the projected objects</source>
       <translation>De lijnkleur van de geprojecteerde objecten</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="811"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>De kleur van de oppervlaktes van de doorsnede (indien ingeschakeld)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="1112"/>
+      <location filename="../../ArchStairs.py" line="1109"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>De wel van de trede</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1709"/>
+      <location filename="../../ArchWindow.py" line="1724"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Het nummer van de draad die het gat definieert. Een waarde van 0 betekent automatisch</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="212"/>
+      <location filename="../../ArchAxis.py" line="210"/>
       <source>The label of each axis</source>
       <translation>Het label van elke as</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="332"/>
+      <location filename="../../ArchAxis.py" line="330"/>
       <source>If true, show the labels</source>
       <translation>Wanneer correct, laat de labels zien</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="334"/>
+      <location filename="../../ArchAxis.py" line="332"/>
       <source>A transformation to apply to each label</source>
       <translation>Een verandering aanbrengen op elk etiket</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="809"/>
+      <location filename="../../ArchAxis.py" line="804"/>
       <source>The axes this system is made of</source>
       <translation>De assen waar dit systeem uit bestaat</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="192"/>
+      <location filename="../../ArchComponent.py" line="188"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>Een optionele as of as-systeem waarop dit object moet worden gedupliceerd</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="128"/>
+      <location filename="../../ArchFrame.py" line="126"/>
       <source>The type of edges to consider</source>
       <translation>Het type randen te overwegen</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="131"/>
+      <location filename="../../ArchFrame.py" line="129"/>
       <source>If true, geometry is fused, otherwise a compound</source>
       <translation>Wanneer waar dan wordt de geometrie versmolten, anders een mengsel</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1232"/>
+      <location filename="../../ArchPanel.py" line="1240"/>
       <source>If True, the object is rendered as a face, if possible.</source>
       <translation>Wanneer waar, dan wordt het object weergegeven als een vlak, indien mogelijk.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="950"/>
+      <location filename="../../ArchPanel.py" line="958"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
       <translation>De toegestane hoeken waarom dit object kan worden gedraaid wanneer geplaatst op blad</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1234"/>
+      <location filename="../../ArchPanel.py" line="1242"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
       <translation>Specifiteert een hoek voor de houtnerf (Met de klok mee, 0 is Noord)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1236"/>
+      <location filename="../../ArchPanel.py" line="1244"/>
       <source>Specifies the scale applied to each panel view.</source>
       <translation>Specificeerd de schaal welke wordt toegepast op elke weergave van het Configuratiescherm.</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1239"/>
+      <location filename="../../ArchPanel.py" line="1247"/>
       <source>A list of possible rotations for the nester</source>
       <translation>Een lijst van mogelijke rotaties voor de nester</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1388"/>
+      <location filename="../../ArchPanel.py" line="1396"/>
       <source>Turns the display of the wood grain texture on/off</source>
       <translation>Schakelt de weergave van de houtnerf-structuur in of uit</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="186"/>
+      <location filename="../../ArchRebar.py" line="184"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
       <translation>De totale overspanning van de rails. 0 om automtisch de de grootte van de basisvorm te gebruiken.</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="192"/>
+      <location filename="../../ArchRebar.py" line="190"/>
       <source>List of placement of all the bars</source>
       <translation>Lijst van plaatsing van alle balken</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="194"/>
+      <location filename="../../ArchRebar.py" line="192"/>
       <source>The structure object that hosts this rebar</source>
       <translation>De object-structuur waar deze wapening op rust</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="196"/>
+      <location filename="../../ArchRebar.py" line="194"/>
       <source>The custom spacing of rebar</source>
       <translation>De aangepaste afstand van de wapening</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="455"/>
+      <location filename="../../ArchRebar.py" line="460"/>
       <source>Shape of rebar</source>
       <translation>Vorm van de wapening</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="213"/>
+      <location filename="../../ArchRoof.py" line="211"/>
       <source>Flip the roof direction if going the wrong way</source>
       <translation>Draai de richting van het dak wanneer de richting onruist is</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="992"/>
+      <location filename="../../ArchWindow.py" line="988"/>
       <source>Shows plan opening symbols if available</source>
       <translation>Toont openings plan van symbolen indien beschikbaar</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="994"/>
+      <location filename="../../ArchWindow.py" line="990"/>
       <source>Show elevation opening symbols if available</source>
       <translation>Toon verhoogde openings symbolen indien beschikbaar</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="960"/>
+      <location filename="../../ArchWindow.py" line="956"/>
       <source>The objects that host this window</source>
       <translation>De objecten die dit venster verzorgen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="214"/>
+      <location filename="../../ArchAxis.py" line="212"/>
       <source>An optional custom bubble number</source>
       <translation>Een optionele aangepaste bel nummer</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="310"/>
+      <location filename="../../ArchAxis.py" line="308"/>
       <source>The type of line to draw this axis</source>
       <translation>Het type lijn om deze as te tekenen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="314"/>
+      <location filename="../../ArchAxis.py" line="312"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation>Waar aan deze as bellen toe te voegen: Begin, eind, beide of geen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="317"/>
+      <location filename="../../ArchAxis.py" line="315"/>
       <source>The line width to draw this axis</source>
       <translation>De lijnbreedte van de te tekenen as</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="320"/>
+      <location filename="../../ArchAxis.py" line="318"/>
       <source>The color of this axis</source>
       <translation>De kleur van deze as</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="323"/>
+      <location filename="../../ArchAxis.py" line="321"/>
       <source>The number of the first axis</source>
       <translation>Het nummer van de eerste as</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="326"/>
+      <location filename="../../ArchAxis.py" line="324"/>
       <source>The font to use for texts</source>
       <translation>Het lettertype dat wordt gebruikt voor teksten</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="329"/>
+      <location filename="../../ArchAxis.py" line="327"/>
       <source>The font size</source>
       <translation>De groote van het lettertype</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="811"/>
+      <location filename="../../ArchAxis.py" line="806"/>
       <source>The placement of this axis system</source>
       <translation>De plaatsing van dit as-systeem</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="329"/>
+      <location filename="../../ArchBuildingPart.py" line="341"/>
       <source>The level of the (0,0,0) point of this level</source>
       <translation>Het niveau van het (0,0,0) punt van dit niveau</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="503"/>
+      <location filename="../../ArchSectionPlane.py" line="858"/>
       <source>The shape of this object</source>
       <translation>De vorm van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="595"/>
+      <location filename="../../ArchSectionPlane.py" line="950"/>
       <source>The line width of this object</source>
       <translation>De lijnbreedte van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="471"/>
+      <location filename="../../ArchBuildingPart.py" line="496"/>
       <source>An optional unit to express levels</source>
       <translation>Een optionele eenheid om niveaus in uit te drukken</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="473"/>
+      <location filename="../../ArchBuildingPart.py" line="498"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Een transformatie om toe te passen op de niveau markering</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="476"/>
+      <location filename="../../ArchBuildingPart.py" line="501"/>
       <source>If true, show the level</source>
       <translation>Wanneer waar, toon het niveau</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="479"/>
+      <location filename="../../ArchBuildingPart.py" line="504"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Wanneer waar, toon de eenheid op de niveau markering</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="481"/>
+      <location filename="../../ArchBuildingPart.py" line="521"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Wanneer waar, als geactiveerd, dan zal het werkvlak zich automatisch aanpassen aan dit niveau</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="484"/>
-      <source>If true, when activated, Display offset will affect the origin mark too</source>
-      <translation>Wanneer waar, als geactiveerd, dan zal de weergave verschuiving de beginpuntmarkering beïnvloeden</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="486"/>
-      <source>If true, when activated, the object's label is displayed</source>
-      <translation>Wanneer waar, als geactiveerd, dan zal de label van het object worden weergegeven</translation>
-    </message>
-    <message>
-      <location filename="../../ArchBuildingPart.py" line="489"/>
+      <location filename="../../ArchBuildingPart.py" line="511"/>
       <source>The font to be used for texts</source>
       <translation>Het lettertype dat wordt gebruikt voor teksten</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="492"/>
+      <location filename="../../ArchBuildingPart.py" line="514"/>
       <source>The font size of texts</source>
       <translation>De tekengrootte van teksten</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="495"/>
+      <location filename="../../ArchBuildingPart.py" line="526"/>
       <source>Camera position data associated with this object</source>
       <translation>Camera positiegegevens geassioceerd met dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="497"/>
+      <location filename="../../ArchBuildingPart.py" line="529"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Wanneer geactiveerd dan zal de weergave welke is opgeslagen in dit object hersteld worden bij een dubbelklik</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="499"/>
+      <location filename="../../ArchBuildingPart.py" line="517"/>
       <source>The individual face colors</source>
       <translation>De individuele kleuren van de aanzichten</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="501"/>
+      <location filename="../../ArchBuildingPart.py" line="524"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Wanneer ingesteld als Waar, dan blijft het werkvlak in de Automatische stand</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="167"/>
+      <location filename="../../ArchComponent.py" line="163"/>
       <source>An optional standard (OmniClass, etc...) code for this component</source>
       <translation>Een optioneel standaard (OmniClass, etc...) code voor dit onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="290"/>
+      <location filename="../../ArchEquipment.py" line="286"/>
       <source>The URL of the product page of this equipment</source>
       <translation>De URL van de productpagina van deze apparatuur</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="258"/>
+      <location filename="../../ArchMaterial.py" line="273"/>
       <source>A URL where to find information about this material</source>
       <translation>Een URL waar informatie over dit materiaal te vinden is</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="421"/>
+      <location filename="../../ArchPanel.py" line="419"/>
       <source>The horizontal offset of waves for corrugated elements</source>
       <translation>De hotizontale offset van de golven voor gerimpelde elementen</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="428"/>
+      <location filename="../../ArchPanel.py" line="426"/>
       <source>If the wave also affects the bottom side or not</source>
       <translation>Of de golf de onderkant wel of niet beïnvloed</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1221"/>
+      <location filename="../../ArchPanel.py" line="1229"/>
       <source>The font file</source>
       <translation>Het lettertype bestand</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="953"/>
+      <location filename="../../ArchPanel.py" line="961"/>
       <source>An offset value to move the cut plane from the center point</source>
       <translation>Een offset waarde om het geknipte vlak te verplaatsen vanuit het middelpunt</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="198"/>
+      <location filename="../../ArchRebar.py" line="196"/>
       <source>Length of a single rebar</source>
       <translation>Betonijzer lengte</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="201"/>
+      <location filename="../../ArchRebar.py" line="199"/>
       <source>Total length of all rebars</source>
       <translation>Totale lengte van alle wapening</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="91"/>
+      <location filename="../../ArchReference.py" line="94"/>
       <source>The base file this component is built upon</source>
       <translation>Het basisbestand waar dit component op gebouwd is</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="93"/>
+      <location filename="../../ArchReference.py" line="96"/>
       <source>The part to use from the base file</source>
       <translation>Het deel wat van het basisbestand gebruikt moet worden</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="95"/>
-      <source>If True, the shape will be discarded when turning visibility off, resulting in a lighter file, but with an additional loading time when turning the object back on</source>
-      <translation>Als waar, zal de onzichtbare vorm worden weggegooid, wat resulteert in een lichter bestand, maar met een extra laadtijd wanneer het object zichtbaar wordt gemaakt</translation>
-    </message>
-    <message>
-      <location filename="../../ArchReference.py" line="287"/>
+      <location filename="../../ArchReference.py" line="326"/>
       <source>The latest time stamp of the linked file</source>
       <translation>De meest recente tijdsmarkering van het gekoppelde bestand</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="290"/>
+      <location filename="../../ArchReference.py" line="329"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Wanneer waar, dan worden de kleuren van het gelinkte bestand up-to-date gehouden</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="505"/>
+      <location filename="../../ArchSectionPlane.py" line="860"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>De objecten die door dit sectievlak moeten worden overwogen. Leeg betekent het hele document.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="592"/>
+      <location filename="../../ArchSectionPlane.py" line="947"/>
       <source>The transparency of this object</source>
       <translation>De mate van doorzichtigheid van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="600"/>
+      <location filename="../../ArchSectionPlane.py" line="955"/>
       <source>The color of this object</source>
       <translation>De kleur van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="605"/>
+      <location filename="../../ArchSectionPlane.py" line="960"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>De afstand tussen te knippen vlak en de werkelijke weergegeven knip (Houd dit een zeer lage waarde maar niet nul)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="479"/>
+      <location filename="../../ArchSite.py" line="540"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
       <translation>De straat en huisnummer van deze plek met brievenbus of appartementnummer indien benodigd</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="485"/>
+      <location filename="../../ArchSite.py" line="546"/>
       <source>The region, province or county of this site</source>
       <translation>De regio, provincie of het land van deze plek</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="500"/>
+      <location filename="../../ArchSite.py" line="561"/>
       <source>A url that shows this site in a mapping website</source>
-      <translation>Een url die deze plek weergeeft op eek kaarten website</translation>
+      <translation>Een url die deze bouwterrein weergeeft in een mappingwebsite</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="519"/>
+      <location filename="../../ArchSite.py" line="580"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
       <translation>Een optionele offset tussen de oorsprong van het model (0,0,0) en het punt aangegeven door de geo-coördinaten</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="301"/>
+      <location filename="../../ArchSpace.py" line="299"/>
       <source>Specifies if this space is internal or external</source>
       <translation>Geeft aan of deze ruimte intern of extern is</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="287"/>
+      <location filename="../../ArchStairs.py" line="284"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
       <translation>De breedte van een Landing (Tweede rand en daarna - De eerste rand volgt de breedte eigenschap)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="304"/>
+      <location filename="../../ArchStairs.py" line="301"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
       <translation>De verhouding van Blondel geeft een comfortabele trap aan en moet tussen de 62 en 64 cm of 24,5 en 25,5 inch zijn</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="311"/>
+      <location filename="../../ArchStairs.py" line="308"/>
       <source>The depth of the landing of these stairs</source>
       <translation>De diepte van de overloop van deze trap</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="314"/>
+      <location filename="../../ArchStairs.py" line="311"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
       <translation>Traptrede diepte van deze trap - aanhouden ongeacht lengte of rand-lengte</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="316"/>
+      <location filename="../../ArchStairs.py" line="313"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
-      <translation>De hoogte van de traptreden van deze trap - Blijven gehandhaafd ongeacht de hoogte of de randhoogte</translation>
+      <translation>De hoogte van de optreden van deze trap - Blijven gehandhaafd ongeacht de hoogte of de randhoogte</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="319"/>
+      <location filename="../../ArchStairs.py" line="316"/>
       <source>The direction of flight after landing</source>
       <translation>De richting van van vlucht na de landing</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="326"/>
+      <location filename="../../ArchStairs.py" line="323"/>
       <source>The 'absolute' top level of a flight of stairs leads to </source>
       <translation>Het 'absolute' hoogste niveau van een vlucht van de trap leidt tot </translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="332"/>
+      <location filename="../../ArchStairs.py" line="329"/>
       <source>The 'left outline' of stairs </source>
       <translation>De 'linker contour' van de trap </translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="369"/>
+      <location filename="../../ArchStairs.py" line="366"/>
       <source>The 'left outline' of all segments of stairs </source>
       <translation>De 'linker contour' van alle segmenten van de trap </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="546"/>
+      <location filename="../../ArchWall.py" line="565"/>
       <source>Enable this to make the wall generate blocks</source>
       <translation>Activeer dit om de muur blokken te laten genereren</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="548"/>
+      <location filename="../../ArchWall.py" line="567"/>
       <source>The length of each block</source>
       <translation>De lengte van ieder blok</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="550"/>
+      <location filename="../../ArchWall.py" line="569"/>
       <source>The height of each block</source>
       <translation>De lengte van ieder blok</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="552"/>
+      <location filename="../../ArchWall.py" line="571"/>
       <source>The horizontal offset of the first line of blocks</source>
       <translation>De horizontale compensatie van de eerste regel van blokken</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="554"/>
+      <location filename="../../ArchWall.py" line="573"/>
       <source>The horizontal offset of the second line of blocks</source>
       <translation>De horizontale compensatie van de tweede regel van blokken</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="556"/>
+      <location filename="../../ArchWall.py" line="575"/>
       <source>The size of the joints between each block</source>
       <translation>De grootte van de verbindingen tussen elk blok</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="558"/>
+      <location filename="../../ArchWall.py" line="577"/>
       <source>The number of entire blocks</source>
       <translation>Het aantal hele blokken</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="561"/>
+      <location filename="../../ArchWall.py" line="580"/>
       <source>The number of broken blocks</source>
       <translation>Het aantal gebroken blokken</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="962"/>
+      <location filename="../../ArchWindow.py" line="958"/>
       <source>The components of this window</source>
       <translation>De componenten van dit raam</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="965"/>
+      <location filename="../../ArchWindow.py" line="961"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
       <translation>De diepte van het gat dat dit raam maakt in zijn host-object. Wanneer deze 0 is dan wordt de waarde automatisch berekend.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="967"/>
+      <location filename="../../ArchWindow.py" line="963"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>Een optioneel object dat een van de hosts van dit venster af te trekken volume definieert</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="969"/>
+      <location filename="../../ArchWindow.py" line="965"/>
       <source>The width of this window</source>
       <translation>Breedte van dit kozijn</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="971"/>
+      <location filename="../../ArchWindow.py" line="967"/>
       <source>The height of this window</source>
       <translation>Hoogte van dit kozijn</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="975"/>
+      <location filename="../../ArchWindow.py" line="971"/>
       <source>The preset number this window is based on</source>
       <translation>Het voorkeuzenummer waar dit venster op gebaseerd is</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="978"/>
+      <location filename="../../ArchWindow.py" line="974"/>
       <source>The frame size of this window</source>
       <translation>De grootte van het frame van dit raam</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="980"/>
+      <location filename="../../ArchWindow.py" line="976"/>
       <source>The offset size of this window</source>
       <translation>De compensatie grootte van dit raam</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="984"/>
+      <location filename="../../ArchWindow.py" line="980"/>
       <source>The width of louvre elements</source>
       <translation>De breedte van de lamellen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="986"/>
+      <location filename="../../ArchWindow.py" line="982"/>
       <source>The space between louvre elements</source>
       <translation>De ruimte tussen de lamellen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="990"/>
+      <location filename="../../ArchWindow.py" line="986"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
       <translation>Het nummer van de draad die het gat definieert. Wanneer deze op 0 staat dan wordt de waarde automatisch berekend</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="175"/>
+      <location filename="../../ArchComponent.py" line="171"/>
       <source>Specifies if moving this object moves its base instead</source>
-      <translation type="unfinished">Specifies if moving this object moves its base instead</translation>
+      <translation>Specificeert als het verplaatsen van dit object zijn basis verplaatst</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="38"/>
       <source>A single section of the fence</source>
-      <translation type="unfinished">A single section of the fence</translation>
+      <translation>Een enkele sectie van de hek</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="42"/>
       <source>A single fence post</source>
-      <translation type="unfinished">A single fence post</translation>
+      <translation>Een enkele hek post</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="46"/>
       <source>The Path the fence should follow</source>
-      <translation type="unfinished">The Path the fence should follow</translation>
+      <translation>Het pad dat de hek moet volgen</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="50"/>
       <source>The number of sections the fence is built of</source>
-      <translation type="unfinished">The number of sections the fence is built of</translation>
+      <translation>Het aantal secties waaruit het hek is opgebouwd</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="55"/>
       <source>The number of posts used to build the fence</source>
-      <translation type="unfinished">The number of posts used to build the fence</translation>
+      <translation>Het aantal palen dat gebruikt wordt om de hek te bouwen</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="523"/>
+      <location filename="../../ArchSite.py" line="584"/>
       <source>The type of this object</source>
-      <translation type="unfinished">The type of this object</translation>
+      <translation>Het type van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="23"/>
+      <location filename="../../ArchIFC.py" line="18"/>
       <source>IFC data</source>
-      <translation type="unfinished">IFC data</translation>
+      <translation>IFC-gegevens</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="26"/>
+      <location filename="../../ArchIFC.py" line="25"/>
       <source>IFC properties of this object</source>
-      <translation type="unfinished">IFC properties of this object</translation>
+      <translation>IFC eigenschappen van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="100"/>
+      <location filename="../../ArchIFC.py" line="105"/>
       <source>Description of IFC attributes are not yet implemented</source>
-      <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
+      <translation>De beschrijving van IFC-attributen zijn nog niet geïmplementeerd</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="510"/>
+      <location filename="../../ArchSectionPlane.py" line="865"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
-      <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
+      <translation>Indien waar, zullen de resulterende weergaven worden afgeknipt naar het gebied van de sectievlak.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="512"/>
+      <location filename="../../ArchSectionPlane.py" line="867"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
-      <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
+      <translation>Indien waar, zal de kleur van het objectmateriaal gebruikt worden om snijgebieden te vullen.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="675"/>
+      <location filename="../../ArchSite.py" line="738"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
-      <translation type="unfinished">When set to 'True North' the whole geometry will be rotated to match the true north of this site</translation>
+      <translation>Wanneer ingesteld op 'Echte Noorde' wordt de hele geometrie gedraaid die overeenkomt met het ware noorden van dit bouwterrein</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="680"/>
+      <location filename="../../ArchSite.py" line="743"/>
       <source>Show compass or not</source>
-      <translation type="unfinished">Show compass or not</translation>
+      <translation>Toon kompas of niet</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="682"/>
+      <location filename="../../ArchSite.py" line="745"/>
       <source>The rotation of the Compass relative to the Site</source>
-      <translation type="unfinished">The rotation of the Compass relative to the Site</translation>
+      <translation>De rotatie van het kompas ten opzichte van het bouwterrein</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="684"/>
+      <location filename="../../ArchSite.py" line="747"/>
       <source>The position of the Compass relative to the Site placement</source>
-      <translation type="unfinished">The position of the Compass relative to the Site placement</translation>
+      <translation>De positie van het kompas ten opzichte van de plaatsing van het bouwterrein</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="686"/>
+      <location filename="../../ArchSite.py" line="749"/>
       <source>Update the Declination value based on the compass rotation</source>
-      <translation type="unfinished">Update the Declination value based on the compass rotation</translation>
+      <translation>Update de declinatiewaarde op basis van de kompasrotatie</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="308"/>
+      <location filename="../../ArchStairs.py" line="305"/>
       <source>The thickness of the risers</source>
-      <translation type="unfinished">The thickness of the risers</translation>
+      <translation>De dikte van de optreden</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="372"/>
+      <location filename="../../ArchStairs.py" line="369"/>
       <source>The 'right outline' of all segments of stairs </source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs </translation>
+      <translation>De 'juiste omlijning' van alle trapsegmenten </translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="503"/>
+      <location filename="../../ArchBuildingPart.py" line="542"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
-      <translation type="unfinished">If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</translation>
+      <translation>Indien waar, toon de objecten in dit gebouwonderdeel vervat die deze lijn-, kleur- en transparantie-instellingen zullen aannemen</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="505"/>
+      <location filename="../../ArchBuildingPart.py" line="544"/>
       <source>The line width of child objects</source>
-      <translation type="unfinished">The line width of child objects</translation>
+      <translation>De lijnbreedte van kinderobjecten</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="547"/>
+      <source>The line color of child objects</source>
+      <translation>De lijnkleur van kinderobjecten</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="551"/>
+      <source>The shape color of child objects</source>
+      <translation>De kleur van de vorm van kinderobjecten</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="555"/>
+      <source>The transparency of child objects</source>
+      <translation>De transparantie van kinderobjecten</translation>
+    </message>
+    <message>
+      <location filename="../../ArchFence.py" line="243"/>
+      <source>When true, the fence will be colored like the original post and section.</source>
+      <translation>Wanneer waar, zal het hek gekleurd worden zoals de originele paal en sectie.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="338"/>
+      <source>If true, the height value propagates to contained objects</source>
+      <translation type="unfinished">If true, the height value propagates to contained objects</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="351"/>
+      <source>This property stores an inventor representation for this object</source>
+      <translation type="unfinished">This property stores an inventor representation for this object</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="506"/>
+      <source>If true, display offset will affect the origin mark too</source>
+      <translation type="unfinished">If true, display offset will affect the origin mark too</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="508"/>
-      <source>The line color of child objects</source>
-      <translation type="unfinished">The line color of child objects</translation>
+      <source>If true, the object's label is displayed</source>
+      <translation type="unfinished">If true, the object's label is displayed</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="512"/>
-      <source>The shape color of child objects</source>
-      <translation type="unfinished">The shape color of child objects</translation>
+      <location filename="../../ArchBuildingPart.py" line="531"/>
+      <source>If True, double-clicking this object in the tree turns it active</source>
+      <translation type="unfinished">If True, double-clicking this object in the tree turns it active</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="516"/>
-      <source>The transparency of child objects</source>
-      <translation type="unfinished">The transparency of child objects</translation>
+      <location filename="../../ArchBuildingPart.py" line="535"/>
+      <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other file sin lightweight mode.</source>
+      <translation type="unfinished">If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other file sin lightweight mode.</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="238"/>
-      <source>When true, the fence will be colored like the original post and section.</source>
-      <translation type="unfinished">When true, the fence will be colored like the original post and section.</translation>
+      <location filename="../../ArchBuildingPart.py" line="537"/>
+      <source>A slot to save the inventor representation of this object, if enabled</source>
+      <translation type="unfinished">A slot to save the inventor representation of this object, if enabled</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="559"/>
+      <source>Cut the view above this level</source>
+      <translation type="unfinished">Cut the view above this level</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="561"/>
+      <source>The distance between the level plane and the cut line</source>
+      <translation type="unfinished">The distance between the level plane and the cut line</translation>
+    </message>
+    <message>
+      <location filename="../../ArchBuildingPart.py" line="564"/>
+      <source>Turn cutting on when activating this level</source>
+      <translation type="unfinished">Turn cutting on when activating this level</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="756"/>
+      <source>Use the material color as this object's shape color, if available</source>
+      <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
+    </message>
+    <message>
+      <location filename="../../ArchReference.py" line="98"/>
+      <source>The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</source>
+      <translation type="unfinished">The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="107"/>
+      <source>If True, a spreadsheet containing the results is recreated when needed</source>
+      <translation type="unfinished">If True, a spreadsheet containing the results is recreated when needed</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="111"/>
+      <source>If True, additional lines with each individual object are added to the results</source>
+      <translation type="unfinished">If True, additional lines with each individual object are added to the results</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSite.py" line="588"/>
+      <source>The time zone where this site is located</source>
+      <translation type="unfinished">The time zone where this site is located</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="538"/>
+      <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
+      <translation type="unfinished">This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="541"/>
+      <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
+      <translation type="unfinished">This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="546"/>
+      <source>The area of this wall as a simple Height * Length calculation</source>
+      <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
     </message>
   </context>
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1950"/>
+      <location filename="../../ArchWindow.py" line="1967"/>
       <source>Components</source>
       <translation>Componenten</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1216"/>
+      <location filename="../../ArchComponent.py" line="1234"/>
       <source>Components of this object</source>
       <translation>Onderdelen van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1221"/>
+      <location filename="../../ArchComponent.py" line="1239"/>
       <source>Axes</source>
       <translation>Assen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="125"/>
+      <location filename="../../ArchAxis.py" line="123"/>
       <source>Create Axis</source>
       <translation>Maak as</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1944"/>
+      <location filename="../../ArchWindow.py" line="1961"/>
       <source>Remove</source>
       <translation>Verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1945"/>
+      <location filename="../../ArchWindow.py" line="1962"/>
       <source>Add</source>
       <translation>Toevoegen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="790"/>
+      <location filename="../../ArchAxis.py" line="785"/>
       <source>Axis</source>
       <translation>As</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="790"/>
+      <location filename="../../ArchAxis.py" line="785"/>
       <source>Distance</source>
       <translation>Afstand</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="790"/>
+      <location filename="../../ArchAxis.py" line="785"/>
       <source>Angle</source>
       <translation>Hoek</translation>
     </message>
@@ -1789,335 +1864,335 @@
     <message>
       <location filename="../../ArchCommands.py" line="716"/>
       <source>contains faces that are not part of any solid</source>
-      <translation>bevat faces die niet deel uitmaken van een solid</translation>
+      <translation>bevat vlakken die niet deel uitmaken van een volumemodel</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1326"/>
+      <location filename="../../ArchCommands.py" line="1329"/>
       <source>Grouping</source>
       <translation>Groeperen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1358"/>
+      <location filename="../../ArchCommands.py" line="1361"/>
       <source>Ungrouping</source>
       <translation>Degroeperen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1389"/>
+      <location filename="../../ArchCommands.py" line="1392"/>
       <source>Split Mesh</source>
       <translation>Net splitten</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1429"/>
+      <location filename="../../ArchCommands.py" line="1432"/>
       <source>Mesh to Shape</source>
       <translation>Net naar Vorm</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1217"/>
+      <location filename="../../ArchComponent.py" line="1235"/>
       <source>Base component</source>
       <translation>Basiscomponent</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1218"/>
+      <location filename="../../ArchComponent.py" line="1236"/>
       <source>Additions</source>
       <translation>Toevoegingen</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1219"/>
+      <location filename="../../ArchComponent.py" line="1237"/>
       <source>Subtractions</source>
       <translation>Aftrekken</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1220"/>
+      <location filename="../../ArchComponent.py" line="1238"/>
       <source>Objects</source>
       <translation>Objecten</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="865"/>
+      <location filename="../../ArchRoof.py" line="863"/>
       <source>Roof</source>
       <translation>Dak</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="161"/>
+      <location filename="../../ArchRoof.py" line="159"/>
       <source>Create Roof</source>
       <translation>Maak dak</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="667"/>
+      <location filename="../../ArchRoof.py" line="665"/>
       <source>Unable to create a roof</source>
       <translation>Onmogelijk om een dak te maken</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="105"/>
+      <location filename="../../ArchPanel.py" line="103"/>
       <source>Page</source>
       <translation>Pagina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="95"/>
+      <location filename="../../ArchSectionPlane.py" line="106"/>
       <source>View of</source>
       <translation>Weergave van</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="480"/>
+      <location filename="../../ArchSectionPlane.py" line="835"/>
       <source>Create Section Plane</source>
       <translation>Sectievlak maken</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="450"/>
+      <location filename="../../ArchSite.py" line="512"/>
       <source>Create Site</source>
       <translation>Ondergrond maken</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="283"/>
+      <location filename="../../ArchStructure.py" line="281"/>
       <source>Create Structure</source>
       <translation>Structuur aanmaken</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="456"/>
+      <location filename="../../ArchWall.py" line="458"/>
       <source>Create Wall</source>
       <translation>Muur maken</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="359"/>
+      <location filename="../../ArchWall.py" line="361"/>
       <source>Width</source>
       <translation>Breedte</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="365"/>
+      <location filename="../../ArchWall.py" line="367"/>
       <source>Height</source>
       <translation>Hoogte</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="705"/>
+      <location filename="../../ArchWall.py" line="741"/>
       <source>Error: Invalid base object</source>
       <translation>Fout: ongeldig basisvoorwerp</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="702"/>
+      <location filename="../../ArchWall.py" line="738"/>
       <source>This mesh is an invalid solid</source>
-      <translation>Dit net vormt een ongeldige solid</translation>
+      <translation>Dit net vormt een ongeldig volumemodel</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="680"/>
+      <location filename="../../ArchWindow.py" line="677"/>
       <source>Create Window</source>
       <translation>Maak venster</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1946"/>
+      <location filename="../../ArchWindow.py" line="1963"/>
       <source>Edit</source>
       <translation>Bewerken</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1947"/>
+      <location filename="../../ArchWindow.py" line="1964"/>
       <source>Create/update component</source>
       <translation>Component maken of bijwerken</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1948"/>
+      <location filename="../../ArchWindow.py" line="1965"/>
       <source>Base 2D object</source>
       <translation>2D basisobject</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1954"/>
+      <location filename="../../ArchWindow.py" line="1971"/>
       <source>Wires</source>
       <translation>Draden</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1951"/>
+      <location filename="../../ArchWindow.py" line="1968"/>
       <source>Create new component</source>
       <translation>Maak nieuw component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1952"/>
+      <location filename="../../ArchWindow.py" line="1969"/>
       <source>Name</source>
       <translation>Naam</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1953"/>
+      <location filename="../../ArchWindow.py" line="1970"/>
       <source>Type</source>
       <translation>Type</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1955"/>
+      <location filename="../../ArchWindow.py" line="1972"/>
       <source>Thickness</source>
       <translation>Dikte</translation>
     </message>
     <message>
-      <location filename="../../importSH3D.py" line="71"/>
+      <location filename="../../importSH3D.py" line="70"/>
       <source>Error: Couldn't determine character encoding</source>
       <translation>Fout: Kan de tekencodering niet bepalen</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="329"/>
+      <location filename="../../importDAE.py" line="327"/>
       <source>file %s successfully created.</source>
       <translation>bestand %s met succes aangemaakt.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1322"/>
+      <location filename="../../ArchCommands.py" line="1325"/>
       <source>Add space boundary</source>
       <translation>Ruimtegrens toevoegen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1354"/>
+      <location filename="../../ArchCommands.py" line="1357"/>
       <source>Remove space boundary</source>
       <translation>Ruimtegrens verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="253"/>
+      <location filename="../../ArchSpace.py" line="251"/>
       <source>Please select a base object</source>
       <translation>Selecteer een basisobject</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1223"/>
+      <location filename="../../ArchComponent.py" line="1241"/>
       <source>Fixtures</source>
       <translation>Bevestigingen</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="52"/>
+      <location filename="../../ArchFrame.py" line="50"/>
       <source>Frame</source>
       <translation>Frame</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="93"/>
+      <location filename="../../ArchFrame.py" line="91"/>
       <source>Create Frame</source>
       <translation>Frame maken</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="147"/>
+      <location filename="../../ArchRebar.py" line="145"/>
       <source>Create Rebar</source>
       <translation>Wapening maken</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="239"/>
+      <location filename="../../ArchSpace.py" line="237"/>
       <source>Create Space</source>
       <translation>Ruimte maken</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="229"/>
+      <location filename="../../ArchStairs.py" line="227"/>
       <source>Create Stairs</source>
       <translation>Trap maken</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="353"/>
+      <location filename="../../ArchWall.py" line="355"/>
       <source>Length</source>
       <translation>Lengte</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="680"/>
+      <location filename="../../ArchStructure.py" line="676"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
       <translation>Fout: De basis vorm kon niet worden verdreven langszij dit werktuig object</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1257"/>
+      <location filename="../../ArchStructure.py" line="1264"/>
       <source>Couldn't compute a shape</source>
       <translation>Kon geen vorm berekenen</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="494"/>
+      <location filename="../../ArchWall.py" line="496"/>
       <source>Merge Wall</source>
       <translation>Muren samenvoegen</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="507"/>
+      <location filename="../../ArchWall.py" line="509"/>
       <source>Please select only wall objects</source>
       <translation>Selecteer alleen muur objecten</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="509"/>
+      <location filename="../../ArchWall.py" line="511"/>
       <source>Merge Walls</source>
       <translation>Wanden samenvoegen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="789"/>
+      <location filename="../../ArchAxis.py" line="784"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Afstanden (mm) en hoeken (graden) tussen assen</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="587"/>
+      <location filename="../../ArchComponent.py" line="594"/>
       <source>Error computing the shape of this object</source>
-      <translation>Fout tijdens het berekenen van de vorm van dit object</translation>
+      <translation>Fout tijdens de berekening van de vorm van dit object</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="227"/>
+      <location filename="../../ArchStructure.py" line="225"/>
       <source>Create Structural System</source>
       <translation>Creëer Structureel Systeem</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1147"/>
+      <location filename="../../ArchCommands.py" line="1148"/>
       <source>Object doesn't have settable IFC Attributes</source>
       <translation>Object heeft geen instelbare IFC Attributen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1153"/>
+      <location filename="../../ArchCommands.py" line="1154"/>
       <source>Disabling Brep force flag of object</source>
       <translation>Zet de Brep forceer stand van het object uit</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1159"/>
+      <location filename="../../ArchCommands.py" line="1160"/>
       <source>Enabling Brep force flag of object</source>
       <translation>Zet de Brep forceer stand van het object aan</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="608"/>
+      <location filename="../../ArchComponent.py" line="615"/>
       <source>has no solid</source>
-      <translation>Heeft geen solid</translation>
+      <translation>heeft geen volumemodel</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="615"/>
+      <location filename="../../ArchComponent.py" line="622"/>
       <source>has an invalid shape</source>
       <translation>heeft een ongeldige vorm</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="617"/>
+      <location filename="../../ArchComponent.py" line="624"/>
       <source>has a null shape</source>
       <translation>heeft een null vorm</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="114"/>
+      <location filename="../../ArchCutPlane.py" line="152"/>
       <source>Cutting</source>
       <translation>Snijden</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="207"/>
+      <location filename="../../ArchEquipment.py" line="203"/>
       <source>Create Equipment</source>
       <translation>Creëer Uitrusting</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="242"/>
+      <location filename="../../ArchEquipment.py" line="238"/>
       <source>You must select exactly one base object</source>
       <translation>U moet precies één basisobject selecteren</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="246"/>
+      <location filename="../../ArchEquipment.py" line="242"/>
       <source>The selected object must be a mesh</source>
       <translation>Het geselecteerde object moet een maas zijn</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="250"/>
+      <location filename="../../ArchEquipment.py" line="246"/>
       <source>This mesh has more than 1000 facets.</source>
       <translation>Deze maas heeft meer dan 1000 facetten.</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="251"/>
+      <location filename="../../ArchEquipment.py" line="247"/>
       <source>This operation can take a long time. Proceed?</source>
       <translation>Deze bewerking kan erg lang duren. Doorgaan?</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="258"/>
+      <location filename="../../ArchEquipment.py" line="254"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
       <translation>De maas heeft meer dan 500 facetten. Dit gaat een aantal minuten duren...</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="259"/>
+      <location filename="../../ArchEquipment.py" line="255"/>
       <source>Create 3 views</source>
       <translation>Creëer 3 aanzichten</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="201"/>
+      <location filename="../../ArchPanel.py" line="199"/>
       <source>Create Panel</source>
       <translation>Creëer paneel</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="866"/>
+      <location filename="../../ArchRoof.py" line="864"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -2142,622 +2217,622 @@ Als Hoek = 0 dan is de hoek zo berekend dat de hoogte hetzelfde is als die van h
 Als uitvoering = 0 dan is de uitvoering zo berekend dat de hoogte hetzelfde is als die van het relatieve profiel.</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="867"/>
+      <location filename="../../ArchRoof.py" line="865"/>
       <source>Id</source>
       <translation>Id</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="867"/>
+      <location filename="../../ArchRoof.py" line="865"/>
       <source>IdRel</source>
       <translation>IdRel</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="145"/>
+      <location filename="../../ArchCutPlane.py" line="186"/>
       <source>Cut Plane</source>
       <translation>Knip Vlak</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="146"/>
+      <location filename="../../ArchCutPlane.py" line="187"/>
       <source>Cut Plane options</source>
       <translation>Knip Vlak opties</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="148"/>
+      <location filename="../../ArchCutPlane.py" line="189"/>
       <source>Behind</source>
       <translation>Achter</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="148"/>
+      <location filename="../../ArchCutPlane.py" line="189"/>
       <source>Front</source>
       <translation>Voorkant</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="867"/>
+      <location filename="../../ArchRoof.py" line="865"/>
       <source>Angle (deg)</source>
       <translation>Hoek (graden)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="867"/>
+      <location filename="../../ArchRoof.py" line="865"/>
       <source>Run (mm)</source>
       <translation>Uitvoering (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="867"/>
+      <location filename="../../ArchRoof.py" line="865"/>
       <source>Thickness (mm)</source>
       <translation>Dikte (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="867"/>
+      <location filename="../../ArchRoof.py" line="865"/>
       <source>Overhang (mm)</source>
       <translation>Overhang (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="867"/>
+      <location filename="../../ArchRoof.py" line="865"/>
       <source>Height (mm)</source>
       <translation>Hoogte (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1587"/>
+      <location filename="../../ArchCommands.py" line="1590"/>
       <source>Create Component</source>
       <translation>Creëer Component</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="117"/>
+      <location filename="../../ArchMaterial.py" line="116"/>
       <source>Create material</source>
       <translation>Creëer materiaal</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="74"/>
+      <location filename="../../ArchWall.py" line="72"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>Wanden kunnen alleen worden gebaseerd op geheel of gedeeltelijk Maas objecten</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="762"/>
+      <location filename="../../ArchSpace.py" line="760"/>
       <source>Set text position</source>
       <translation>Positie van de tekst instellen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="383"/>
+      <location filename="../../ArchStructure.py" line="380"/>
       <source>Category</source>
       <translation>Categorie</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1608"/>
+      <location filename="../../ArchCommands.py" line="1611"/>
       <source>Key</source>
       <translation>Sleutel</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1264"/>
+      <location filename="../../ArchSchedule.py" line="599"/>
       <source>Value</source>
       <translation>Waarde</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1611"/>
+      <location filename="../../ArchSchedule.py" line="599"/>
       <source>Unit</source>
       <translation>Eenheid</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1636"/>
+      <location filename="../../ArchCommands.py" line="1639"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>IFC eigenschappen werkblad maken</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="256"/>
+      <location filename="../../ArchBuilding.py" line="254"/>
       <source>Create Building</source>
       <translation>Creëer gebouw</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1224"/>
+      <location filename="../../ArchComponent.py" line="1242"/>
       <source>Group</source>
       <translation>Groep</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="115"/>
+      <location filename="../../ArchFloor.py" line="114"/>
       <source>Create Floor</source>
       <translation>Maak vloer</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="348"/>
+      <location filename="../../ArchPanel.py" line="346"/>
       <source>Create Panel Cut</source>
       <translation>Creëer een panneel knip</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="374"/>
+      <location filename="../../ArchPanel.py" line="372"/>
       <source>Create Panel Sheet</source>
       <translation>Maak een paneel plaat</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="770"/>
+      <location filename="../../ArchStructure.py" line="764"/>
       <source>Facemaker returned an error</source>
       <translation>Facemaker gaf een foutmelding</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1487"/>
+      <location filename="../../ArchPanel.py" line="1495"/>
       <source>Tools</source>
       <translation>Gereedschap</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1491"/>
+      <location filename="../../ArchPanel.py" line="1499"/>
       <source>Edit views positions</source>
       <translation>Positie weergaven bewerken</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="131"/>
+      <location filename="../../ArchPipe.py" line="130"/>
       <source>Create Pipe</source>
       <translation>Creëer buis</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="170"/>
+      <location filename="../../ArchPipe.py" line="169"/>
       <source>Create Connector</source>
       <translation>Creëer verbinding</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="990"/>
+      <location filename="../../ArchPrecast.py" line="989"/>
       <source>Precast elements</source>
       <translation>Prefab elementen</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="991"/>
+      <location filename="../../ArchPrecast.py" line="990"/>
       <source>Slab type</source>
       <translation>Soort flap</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="992"/>
+      <location filename="../../ArchPrecast.py" line="991"/>
       <source>Chamfer</source>
       <translation>Afschuining</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="993"/>
+      <location filename="../../ArchPrecast.py" line="992"/>
       <source>Dent length</source>
       <translation>Deuklengte</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="994"/>
+      <location filename="../../ArchPrecast.py" line="993"/>
       <source>Dent width</source>
       <translation>Deukbreedte</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="995"/>
+      <location filename="../../ArchPrecast.py" line="994"/>
       <source>Dent height</source>
       <translation>Deukhoogte</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="996"/>
+      <location filename="../../ArchPrecast.py" line="995"/>
       <source>Slab base</source>
       <translation>Falp basis</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="997"/>
+      <location filename="../../ArchPrecast.py" line="996"/>
       <source>Number of holes</source>
       <translation>Aantal gaten</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="998"/>
+      <location filename="../../ArchPrecast.py" line="997"/>
       <source>Major diameter of holes</source>
       <translation>Grote diameter van de gaten</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="999"/>
+      <location filename="../../ArchPrecast.py" line="998"/>
       <source>Minor diameter of holes</source>
       <translation>Kleine diameter van de gaten</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1000"/>
+      <location filename="../../ArchPrecast.py" line="999"/>
       <source>Spacing between holes</source>
       <translation>Afstand tussen de gaten</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1001"/>
+      <location filename="../../ArchPrecast.py" line="1000"/>
       <source>Number of grooves</source>
       <translation>Aantal groeven</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1002"/>
+      <location filename="../../ArchPrecast.py" line="1001"/>
       <source>Depth of grooves</source>
       <translation>Diepte van de groeven</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1003"/>
+      <location filename="../../ArchPrecast.py" line="1002"/>
       <source>Height of grooves</source>
       <translation>Hoogte van de groeven</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1004"/>
+      <location filename="../../ArchPrecast.py" line="1003"/>
       <source>Spacing between grooves</source>
       <translation>Afstand tussen de groeven</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1005"/>
+      <location filename="../../ArchPrecast.py" line="1004"/>
       <source>Number of risers</source>
-      <translation>Aantal opstanden</translation>
+      <translation>Aantal optreden</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1006"/>
+      <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Length of down floor</source>
       <translation>Lengte van de ondervloer</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1007"/>
+      <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Height of risers</source>
-      <translation>Hoogte van de opstanden</translation>
+      <translation>Hoogte van de optreden</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1008"/>
+      <location filename="../../ArchPrecast.py" line="1007"/>
       <source>Depth of treads</source>
       <translation>Diepte van de aantrede</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1393"/>
+      <location filename="../../ArchPrecast.py" line="1392"/>
       <source>Precast options</source>
       <translation>Prefab opties</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1394"/>
+      <location filename="../../ArchPrecast.py" line="1393"/>
       <source>Dents list</source>
       <translation>Deuken lijst</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1395"/>
+      <location filename="../../ArchPrecast.py" line="1394"/>
       <source>Add dent</source>
       <translation>Deuk toevoegen</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1396"/>
+      <location filename="../../ArchPrecast.py" line="1395"/>
       <source>Remove dent</source>
       <translation>Deuk verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1400"/>
+      <location filename="../../ArchPrecast.py" line="1399"/>
       <source>Slant</source>
       <translation>Schuinte</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1401"/>
+      <location filename="../../ArchPrecast.py" line="1400"/>
       <source>Level</source>
       <translation>Niveau</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1402"/>
+      <location filename="../../ArchPrecast.py" line="1401"/>
       <source>Rotation</source>
       <translation>Rotatie</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1956"/>
+      <location filename="../../ArchWindow.py" line="1973"/>
       <source>Offset</source>
       <translation>Verschuiving</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="202"/>
+      <location filename="../../ArchSchedule.py" line="294"/>
       <source>Unable to retrieve value from object</source>
       <translation>Het bepalen van de waarde van het object is niet mogelijk</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="329"/>
+      <location filename="../../ArchSchedule.py" line="505"/>
       <source>Import CSV File</source>
       <translation>Importeer CSV bestand</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="348"/>
+      <location filename="../../ArchSchedule.py" line="539"/>
       <source>Export CSV File</source>
       <translation>Exporteren als CSV bestand</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="381"/>
+      <location filename="../../ArchSchedule.py" line="658"/>
       <source>Schedule</source>
       <translation>Planning</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="442"/>
+      <location filename="../../ArchSite.py" line="504"/>
       <source>There is no valid object in the selection.
 Site creation aborted.</source>
       <translation>Er bestaat geen geldige object in de selectie.
 Plaats creatie afgebroken.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1043"/>
+      <location filename="../../ArchStructure.py" line="1050"/>
       <source>Node Tools</source>
       <translation>Knooppunt gereedschap</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1048"/>
+      <location filename="../../ArchStructure.py" line="1055"/>
       <source>Reset nodes</source>
       <translation>Reset knooppunten</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1055"/>
+      <location filename="../../ArchStructure.py" line="1062"/>
       <source>Edit nodes</source>
       <translation>Bewerk knooppunten</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1061"/>
+      <location filename="../../ArchStructure.py" line="1068"/>
       <source>Extend nodes</source>
       <translation>Knooppunten uitbreiden</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1062"/>
+      <location filename="../../ArchStructure.py" line="1069"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Breidt de knooppunten van dit element uit om de knooppunten van een ander element te bereiken</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1068"/>
+      <location filename="../../ArchStructure.py" line="1075"/>
       <source>Connect nodes</source>
       <translation>Knooppunten verbinden</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1069"/>
+      <location filename="../../ArchStructure.py" line="1076"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Verbindt knooppunten van dit element met het knooppunt van een ander element</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1075"/>
+      <location filename="../../ArchStructure.py" line="1082"/>
       <source>Toggle all nodes</source>
       <translation>Alle knooppunten in-/ uitschakelen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1076"/>
+      <location filename="../../ArchStructure.py" line="1083"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Alle structurele knooppunten van het document in-/ uitschakelen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1120"/>
+      <location filename="../../ArchStructure.py" line="1127"/>
       <source>Intersection found.
 </source>
       <translation>Kruispunt gevonden.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="575"/>
+      <location filename="../../ArchWindow.py" line="572"/>
       <source>Door</source>
       <translation>Deur</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1957"/>
+      <location filename="../../ArchWindow.py" line="1974"/>
       <source>Hinge</source>
       <translation>Scharnier</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1958"/>
+      <location filename="../../ArchWindow.py" line="1975"/>
       <source>Opening mode</source>
       <translation>Openings mode</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1963"/>
+      <location filename="../../ArchWindow.py" line="1980"/>
       <source>Get selected edge</source>
       <translation>Krijg de geselcteerde rand</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1964"/>
+      <location filename="../../ArchWindow.py" line="1981"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Druk om de geselecteerde rand terug te halen</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="147"/>
+      <location filename="../../ArchCutPlane.py" line="188"/>
       <source>Which side to cut</source>
       <translation>Welke kant te knippen</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="185"/>
+      <location filename="../../ArchEquipment.py" line="183"/>
       <source>You must select a base shape object and optionally a mesh object</source>
       <translation>U moet een basis vormobject en een optioneel netobject selecteren</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="151"/>
+      <location filename="../../ArchMaterial.py" line="150"/>
       <source>Create multi-material</source>
       <translation>Creëer multi-materiaal</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="737"/>
+      <location filename="../../ArchMaterial.py" line="793"/>
       <source>Material</source>
       <translation>Materiaal</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="765"/>
+      <location filename="../../ArchMaterial.py" line="825"/>
       <source>New layer</source>
       <translation>Nieuwe laag</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="338"/>
+      <location filename="../../ArchWall.py" line="340"/>
       <source>Wall Presets...</source>
       <translation>Voorinstellingen muur...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1941"/>
+      <location filename="../../ArchWindow.py" line="1958"/>
       <source>Hole wire</source>
       <translation>Draad gat</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1943"/>
+      <location filename="../../ArchWindow.py" line="1960"/>
       <source>Pick selected</source>
       <translation>Neem geselecteerde</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="158"/>
+      <location filename="../../ArchAxis.py" line="156"/>
       <source>Create Axis System</source>
       <translation>Creëer as-systeem</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="183"/>
+      <location filename="../../ArchAxis.py" line="181"/>
       <source>Create Grid</source>
       <translation>Creëer grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="790"/>
+      <location filename="../../ArchAxis.py" line="785"/>
       <source>Label</source>
       <translation>Label</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1056"/>
+      <location filename="../../ArchAxis.py" line="1051"/>
       <source>Axis system components</source>
       <translation>Onderdelen van het as-systeem</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1382"/>
+      <location filename="../../ArchAxis.py" line="1377"/>
       <source>Grid</source>
       <translation>Raster</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1383"/>
+      <location filename="../../ArchAxis.py" line="1378"/>
       <source>Total width</source>
       <translation>Totale breedte</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1384"/>
+      <location filename="../../ArchAxis.py" line="1379"/>
       <source>Total height</source>
       <translation>Totale hoogte</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1385"/>
+      <location filename="../../ArchAxis.py" line="1380"/>
       <source>Add row</source>
       <translation>Rij toevoegen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1386"/>
+      <location filename="../../ArchAxis.py" line="1381"/>
       <source>Del row</source>
       <translation>Rij verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1387"/>
+      <location filename="../../ArchAxis.py" line="1382"/>
       <source>Add col</source>
       <translation>Kolom toevoegen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1388"/>
+      <location filename="../../ArchAxis.py" line="1383"/>
       <source>Del col</source>
       <translation>Kolom verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1389"/>
+      <location filename="../../ArchAxis.py" line="1384"/>
       <source>Create span</source>
       <translation>Maak overspanning</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1390"/>
+      <location filename="../../ArchAxis.py" line="1385"/>
       <source>Remove span</source>
       <translation>Verwijder overspanning</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1391"/>
+      <location filename="../../ArchAxis.py" line="1386"/>
       <source>Rows</source>
       <translation>Rijen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1391"/>
+      <location filename="../../ArchAxis.py" line="1386"/>
       <source>Columns</source>
       <translation>Kolommen</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1581"/>
+      <location filename="../../ArchPanel.py" line="1589"/>
       <source>This object has no face</source>
       <translation>Dit object heeft geen oppervlak</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="766"/>
+      <location filename="../../ArchSpace.py" line="764"/>
       <source>Space boundaries</source>
       <translation>Begrensde ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="762"/>
+      <location filename="../../ArchWall.py" line="803"/>
       <source>Error: Unable to modify the base object of this wall</source>
       <translation>Fout: Veranderen van de basis van deze muur is niet mogelijk</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1940"/>
+      <location filename="../../ArchWindow.py" line="1957"/>
       <source>Window elements</source>
       <translation>Venster elementen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1008"/>
+      <location filename="../../ArchCommands.py" line="1009"/>
       <source>Survey</source>
       <translation>Enquête</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1009"/>
+      <location filename="../../ArchCommands.py" line="1010"/>
       <source>Set description</source>
       <translation>Vul omschrijving in</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1010"/>
+      <location filename="../../ArchCommands.py" line="1011"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1011"/>
+      <location filename="../../ArchCommands.py" line="1012"/>
       <source>Copy Length</source>
       <translation>Lengte kopiëren</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1012"/>
+      <location filename="../../ArchCommands.py" line="1013"/>
       <source>Copy Area</source>
       <translation>Kopieer gebied</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1013"/>
+      <location filename="../../ArchCommands.py" line="1014"/>
       <source>Export CSV</source>
       <translation>Exporteer CSV</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1014"/>
+      <location filename="../../ArchSchedule.py" line="599"/>
       <source>Description</source>
       <translation>Omschrijving</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1014"/>
+      <location filename="../../ArchCommands.py" line="1015"/>
       <source>Area</source>
       <translation>Oppervlakte</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1063"/>
+      <location filename="../../ArchCommands.py" line="1064"/>
       <source>Total</source>
       <translation>Totaal</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1225"/>
+      <location filename="../../ArchComponent.py" line="1243"/>
       <source>Hosts</source>
       <translation>Gastheer</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="154"/>
+      <location filename="../../ArchAxis.py" line="152"/>
       <source>Only axes must be selected</source>
       <translation>Alleen de assen moeten worden geselecteerd</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="163"/>
+      <location filename="../../ArchAxis.py" line="161"/>
       <source>Please select at least one axis</source>
       <translation>Selecteer alstublieft minimaal 1 as</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1118"/>
+      <location filename="../../ArchAxis.py" line="1113"/>
       <source>Auto height is larger than height</source>
       <translation>Automatisch geselecteerde hoogte is groter dan object hoogte</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1127"/>
+      <location filename="../../ArchAxis.py" line="1122"/>
       <source>Total row size is larger than height</source>
       <translation>Totale rij maat is groter dan de object hoogte</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1149"/>
+      <location filename="../../ArchAxis.py" line="1144"/>
       <source>Auto width is larger than width</source>
       <translation>Automatische breedte is groter dan object breedte</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1158"/>
+      <location filename="../../ArchAxis.py" line="1153"/>
       <source>Total column size is larger than width</source>
       <translation>Totale kolommaat is groter dan object breedte</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="248"/>
+      <location filename="../../ArchBuilding.py" line="246"/>
       <source>There is no valid object in the selection.
 Building creation aborted.</source>
       <translation>Er is geen geldig object geselecteerd.
 Er wordt geen Gebouw gemaakt.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="203"/>
+      <location filename="../../ArchBuildingPart.py" line="208"/>
       <source>BuildingPart</source>
       <translation>Gebouwonderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="300"/>
+      <location filename="../../ArchBuildingPart.py" line="308"/>
       <source>Create BuildingPart</source>
       <translation>Maak een gebouwonderdeel</translation>
     </message>
@@ -2767,235 +2842,230 @@ Er wordt geen Gebouw gemaakt.</translation>
       <translation>Ongeldig snijvlak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1510"/>
+      <location filename="../../ArchCommands.py" line="1513"/>
       <source>All good! No problems found</source>
       <translation>Alle goed! Geen problemen gevonden</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1618"/>
+      <location filename="../../ArchCommands.py" line="1621"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Het object heeft geen IndustriesFoundationClassesProperties. Spreadsheet annuleren voor:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="935"/>
+      <location filename="../../ArchComponent.py" line="953"/>
       <source>Toggle subcomponents</source>
       <translation>Wissel tussen sub-onderdelen</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1000"/>
+      <location filename="../../ArchComponent.py" line="1018"/>
       <source>Closing Sketch edit</source>
       <translation>Schetsbewerking sluiten</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1213"/>
+      <location filename="../../ArchComponent.py" line="1231"/>
       <source>Component</source>
       <translation>Onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1226"/>
+      <location filename="../../ArchComponent.py" line="1244"/>
       <source>Edit IFC properties</source>
-      <translation>Bewerken IndustriesFoundationClasses kenmerken</translation>
+      <translation>Bewerk de IFC-eigenschappen</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1227"/>
+      <location filename="../../ArchComponent.py" line="1245"/>
       <source>Edit standard code</source>
       <translation>Wijzig standaard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1264"/>
+      <location filename="../../ArchComponent.py" line="1282"/>
       <source>Property</source>
       <translation>Eigenschap</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1268"/>
+      <location filename="../../ArchComponent.py" line="1286"/>
       <source>Add property...</source>
       <translation>Voeg eigenschap toe...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1269"/>
+      <location filename="../../ArchComponent.py" line="1287"/>
       <source>Add property set...</source>
-      <translation>Voeg kenmerk groep toe...</translation>
+      <translation>Voeg eigenschapset toe...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1269"/>
+      <location filename="../../ArchComponent.py" line="1287"/>
       <source>New...</source>
       <translation>Nieuw...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1368"/>
+      <location filename="../../ArchComponent.py" line="1386"/>
       <source>New property</source>
-      <translation>Nieuw kenmerk</translation>
+      <translation>Nieuwe eigenschap</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1389"/>
+      <location filename="../../ArchComponent.py" line="1407"/>
       <source>New property set</source>
-      <translation>Nieuwe kenmerk groep</translation>
+      <translation>Nieuwe eigenschapset</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="101"/>
+      <location filename="../../ArchFloor.py" line="100"/>
       <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
 Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
-Floor object is not allowed to accept Site, Building, or Floor objects.
-Site, Building, and Floor objects will be removed from the selection.
-You can change that in the preferences.</translation>
+      <translation>Je kan van alles in een vloerobject plaatsen, behalve: een bouwterrein, een gebouw en een vloer.
+Een vloerobject mag geen bouwterrein, gebouw of vloerobjecten aanvaarden.
+Een bouwterrein, gebouw en vloerobjecten zullen uit de selectie verwijderd worden.
+Dat kan veranderd worden in de voorkeuren.</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="107"/>
+      <location filename="../../ArchFloor.py" line="106"/>
       <source>There is no valid object in the selection.
 Floor creation aborted.</source>
       <translation>Er is geen geldig object geselecteerd.
 Vloer object wordt niet gemaakt.</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="220"/>
+      <location filename="../../ArchFrame.py" line="218"/>
       <source>Crossing point not found in profile.</source>
       <translation>Geen kruispunt gevonden in profiel.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="742"/>
       <source>Error computing shape of</source>
-      <translation>Fout bij het berekenen van de vorm van</translation>
+      <translation>Fout bij de berekening van de vorm van</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="161"/>
+      <location filename="../../ArchPipe.py" line="160"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
       <translation>Selecteer 2 of 3 leiding objecten</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="166"/>
+      <location filename="../../ArchPipe.py" line="165"/>
       <source>Please select only Pipe objects</source>
       <translation>Selecteer alleen Leiding objecten</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="216"/>
+      <location filename="../../ArchPipe.py" line="215"/>
       <source>Unable to build the base path</source>
       <translation>Het bouwen van een basispad niet mogelijk</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="232"/>
+      <location filename="../../ArchPipe.py" line="231"/>
       <source>Unable to build the profile</source>
       <translation>Profiel bouwen niet mogelijk</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="244"/>
+      <location filename="../../ArchPipe.py" line="247"/>
       <source>Unable to build the pipe</source>
       <translation>Leiding object bouwen niet mogelijk</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="257"/>
+      <location filename="../../ArchPipe.py" line="260"/>
       <source>The base object is not a Part</source>
       <translation>Het basis object is geen Onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="260"/>
+      <location filename="../../ArchPipe.py" line="263"/>
       <source>Too many wires in the base shape</source>
       <translation>Teveel draden in de basis vorm</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="263"/>
+      <location filename="../../ArchPipe.py" line="266"/>
       <source>The base wire is closed</source>
       <translation>De basis draad is gesloten</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="277"/>
+      <location filename="../../ArchPipe.py" line="280"/>
       <source>The profile is not a 2D Part</source>
       <translation>Het profiel is geen 2D Onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="280"/>
+      <location filename="../../ArchPipe.py" line="283"/>
       <source>Too many wires in the profile</source>
       <translation>Er zijn teveel draden in het profiel</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="283"/>
+      <location filename="../../ArchPipe.py" line="286"/>
       <source>The profile is not closed</source>
       <translation>Het profiel is niet gesloten</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="346"/>
+      <location filename="../../ArchPipe.py" line="349"/>
       <source>Only the 3 first wires will be connected</source>
       <translation>Alleen de 3 eerste draden worden verbonden</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="410"/>
+      <location filename="../../ArchPipe.py" line="413"/>
       <source>Common vertex not found</source>
       <translation>Gemeenschappelijk hoeksnijpunt niet gevonden</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="382"/>
+      <location filename="../../ArchPipe.py" line="385"/>
       <source>Pipes are already aligned</source>
       <translation>Buizen zijn al parallel</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="422"/>
+      <location filename="../../ArchPipe.py" line="425"/>
       <source>At least 2 pipes must align</source>
       <translation>Tenminste 2 buizen moeten parallel lopen</translation>
     </message>
     <message>
-      <location filename="../../ArchProfile.py" line="383"/>
+      <location filename="../../ArchProfile.py" line="381"/>
       <source>Profile</source>
       <translation>Profiel</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="154"/>
+      <location filename="../../ArchRebar.py" line="152"/>
       <source>Please select a base face on a structural object</source>
       <translation>Selecteer een basis vlak op een structueel object</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="534"/>
+      <location filename="../../ArchReference.py" line="689"/>
       <source>Create external reference</source>
       <translation>Maak externe verwijzing</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="101"/>
-      <source>No spreadsheet attached to this schedule</source>
-      <translation>Geen werkblad gekoppeld aan dit schema</translation>
-    </message>
-    <message>
-      <location filename="../../ArchSectionPlane.py" line="1049"/>
+      <location filename="../../ArchSectionPlane.py" line="1416"/>
       <source>Section plane settings</source>
       <translation>Doorsnede instellingen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1054"/>
+      <location filename="../../ArchSectionPlane.py" line="1421"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objecten zichtbaar in deze doorsnede:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1055"/>
+      <location filename="../../ArchSectionPlane.py" line="1422"/>
       <source>Section plane placement:</source>
       <translation>Plaats doorsnede:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1056"/>
+      <location filename="../../ArchSectionPlane.py" line="1423"/>
       <source>Rotate X</source>
       <translation>Rotatie X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1058"/>
+      <location filename="../../ArchSectionPlane.py" line="1425"/>
       <source>Rotate Y</source>
       <translation>Rotatie Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1060"/>
+      <location filename="../../ArchSectionPlane.py" line="1427"/>
       <source>Rotate Z</source>
       <translation>Rotatie Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1062"/>
+      <location filename="../../ArchSectionPlane.py" line="1429"/>
       <source>Resize</source>
       <translation>Grootte aanpassen</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="373"/>
+      <location filename="../../ArchWall.py" line="375"/>
       <source>Center</source>
       <translation>Middelpunt</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="436"/>
+      <location filename="../../ArchSite.py" line="498"/>
       <source>Please either select only Building objects or nothing at all!
 Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
@@ -3006,295 +3076,325 @@ Andere objecten worden verwijderd uit de selectie.
 Opmerking: U kunt dat veranderen in de voorkeuren.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1131"/>
+      <location filename="../../ArchStructure.py" line="1138"/>
       <source>Choose another Structure object:</source>
       <translation>Kies een andere Structuur-object:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1136"/>
+      <location filename="../../ArchStructure.py" line="1143"/>
       <source>The chosen object is not a Structure</source>
       <translation>Het gekozen object is geen Structuur-object</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1139"/>
+      <location filename="../../ArchStructure.py" line="1146"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Het gekozen object heeft geen structurele knooppunten</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1142"/>
+      <location filename="../../ArchStructure.py" line="1149"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Een van deze objecten heeft meer dan 2 knooppunten</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1149"/>
+      <location filename="../../ArchStructure.py" line="1156"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Kan geen geschikte snijpunt vinden</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1152"/>
+      <location filename="../../ArchStructure.py" line="1159"/>
       <source>Intersection found.</source>
       <translation>Snijpunt gevonden.</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="500"/>
+      <location filename="../../ArchWall.py" line="502"/>
       <source>The selected wall contains no subwall to merge</source>
       <translation>De geselecteerde muur bevat geen submuur om mee samen te voegen</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="693"/>
+      <location filename="../../ArchWall.py" line="729"/>
       <source>Cannot compute blocks for wall</source>
       <translation>Kan geen blokken voor muur berekenen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="665"/>
+      <location filename="../../ArchWindow.py" line="662"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>Kies een vlak op een bestaand object of selecteer een voorinstelling</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1902"/>
+      <location filename="../../ArchWindow.py" line="1919"/>
       <source>Unable to create component</source>
       <translation>Er kan geen component gemaakt worden</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1942"/>
+      <location filename="../../ArchWindow.py" line="1959"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Het nummer van de draad, die een gat in het gastheer-object, definieert. Een waarde van nul zal automatisch de grootste draad aannemen</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1961"/>
+      <location filename="../../ArchWindow.py" line="1978"/>
       <source>+ default</source>
       <translation>+ standaard</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1960"/>
+      <location filename="../../ArchWindow.py" line="1977"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Als u dit selectievakje aanvinkt, zal de standaard Frame-waarde van dit venster worden toegevoegd aan de waarde die u hier invoert</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1962"/>
+      <location filename="../../ArchWindow.py" line="1979"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Als u dit selectievakje aanvinkt, zal de standaard Frame-waarde van dit venster worden toegevoegd aan de waarde die u hier invoert</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="60"/>
+      <location filename="../../importDAE.py" line="58"/>
       <source>pycollada not found, collada support is disabled.</source>
       <translation>pycollada niet gevonden, collada ondersteuning wordt uitgeschakeld.</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="51"/>
+      <location filename="../../importGBXML.py" line="49"/>
       <source>This exporter can currently only export one site object</source>
       <translation>Deze exporteur kan momenteel slechts één siteobject exporteren</translation>
     </message>
     <message>
-      <location filename="../../importGBXML.py" line="92"/>
+      <location filename="../../importGBXML.py" line="90"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
       <translation>Fout: Ruimte '%s' heeft geen Zone. Handeling wordt afgebroken.</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="115"/>
+      <location filename="../../importIFClegacy.py" line="113"/>
       <source>Couldn't locate IfcOpenShell</source>
       <translation>Kon geen IfcOpenShell vinden</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="392"/>
+      <location filename="../../importIFClegacy.py" line="390"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
       <translation>IfcOpenShell niet gevonden of uitgeschakeld, vallen terug op interne parser.</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="398"/>
+      <location filename="../../importIFClegacy.py" line="396"/>
       <source>IFC Schema not found, IFC import disabled.</source>
       <translation>IFC Schema niet gevonden, IFC import is uitgeschakeld.</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="945"/>
+      <location filename="../../importIFClegacy.py" line="943"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation>Fout: IfcOpenShell is niet geïnstalleerd</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="952"/>
+      <location filename="../../importIFClegacy.py" line="950"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation>Fout: uw IfcOpenShell versie is te oud</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="244"/>
+      <location filename="../../importOBJ.py" line="261"/>
       <source>Successfully written</source>
       <translation>Met succes geschreven</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="78"/>
+      <location filename="../../importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>Een shape met bochten gevonden, berekenen gestart</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="322"/>
+      <location filename="../../importOBJ.py" line="339"/>
       <source>Successfully imported</source>
       <translation>Succesvol geïmporteerd</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="242"/>
+      <location filename="../../ArchBuilding.py" line="240"/>
       <source>You can put anything but Site and Building objects in a Building object.
 Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
-Building object is not allowed to accept Site and Building objects.
-Site and Building objects will be removed from the selection.
-You can change that in the preferences.</translation>
+      <translation>Je kan alles in een gebouwobject plaatsen, behalve: een bouwterrein en gebouwobjecten.
+Een gebouwobject mag geen bouwterrein en gebouwobjecten aanvaarden.
+Een bouwterrein en gebouwobjecten zullen uit de selectie verwijderd worden.
+Dat kan veranderd worden in de voorkeuren.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1051"/>
+      <location filename="../../ArchSectionPlane.py" line="1418"/>
       <source>Remove highlighted objects from the list above</source>
-      <translation type="unfinished">Remove highlighted objects from the list above</translation>
+      <translation>Verwijder de gemarkeerde objecten uit de bovenstaande lijst</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1052"/>
+      <location filename="../../ArchSectionPlane.py" line="1419"/>
       <source>Add selected</source>
       <translation>Voeg geselecteerde toe</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1053"/>
+      <location filename="../../ArchSectionPlane.py" line="1420"/>
       <source>Add selected object(s) to the scope of this section plane</source>
-      <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
+      <translation>Voeg het(de) geselecteerde object(en) toe aan het bereik van dit sectievlak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1057"/>
+      <location filename="../../ArchSectionPlane.py" line="1424"/>
       <source>Rotates the plane along the X axis</source>
-      <translation type="unfinished">Rotates the plane along the X axis</translation>
+      <translation>Draait het vlak langs de X-as</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1059"/>
+      <location filename="../../ArchSectionPlane.py" line="1426"/>
       <source>Rotates the plane along the Y axis</source>
-      <translation type="unfinished">Rotates the plane along the Y axis</translation>
+      <translation>Draait het vlak langs de Y-as</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1061"/>
+      <location filename="../../ArchSectionPlane.py" line="1428"/>
       <source>Rotates the plane along the Z axis</source>
-      <translation type="unfinished">Rotates the plane along the Z axis</translation>
+      <translation>Draait het vlak langs de Z-as</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1063"/>
+      <location filename="../../ArchSectionPlane.py" line="1430"/>
       <source>Resizes the plane to fit the objects in the list above</source>
-      <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
+      <translation>Past de grootte van het vlak aan om te passen aan de objecten in de bovenstaande lijst</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1065"/>
+      <location filename="../../ArchSectionPlane.py" line="1432"/>
       <source>Centers the plane on the objects in the list above</source>
-      <translation type="unfinished">Centers the plane on the objects in the list above</translation>
+      <translation>Centreert het vlak op de objecten in de bovenstaande lijst</translation>
+    </message>
+    <message>
+      <location filename="../../ArchStructure.py" line="262"/>
+      <source>First point of the beam</source>
+      <translation>Eerste punt van de balk</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="264"/>
-      <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
-    </message>
-    <message>
-      <location filename="../../ArchStructure.py" line="266"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Basispunt van de kolom</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="256"/>
+      <location filename="../../ArchWall.py" line="258"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>Volgend punt</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="367"/>
+      <location filename="../../ArchStructure.py" line="364"/>
       <source>Structure options</source>
-      <translation type="unfinished">Structure options</translation>
+      <translation>Structuuropties</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="371"/>
+      <location filename="../../ArchStructure.py" line="368"/>
       <source>Drawing mode</source>
-      <translation type="unfinished">Drawing mode</translation>
+      <translation>Tekenmodus</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="372"/>
+      <location filename="../../ArchStructure.py" line="369"/>
       <source>Beam</source>
-      <translation type="unfinished">Beam</translation>
+      <translation>Balk</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="373"/>
+      <location filename="../../ArchStructure.py" line="370"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Kolom</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="792"/>
+      <location filename="../../ArchWindow.py" line="788"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Voorinstelling</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="426"/>
+      <location filename="../../ArchStructure.py" line="423"/>
       <source>Switch L/H</source>
-      <translation type="unfinished">Switch L/H</translation>
+      <translation>Wissel L/H om</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="428"/>
+      <location filename="../../ArchStructure.py" line="425"/>
       <source>Switch L/W</source>
-      <translation type="unfinished">Switch L/W</translation>
+      <translation>Wissel L/B om</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="379"/>
+      <location filename="../../ArchWall.py" line="381"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>Verder&amp;gaan</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="238"/>
+      <location filename="../../ArchWall.py" line="240"/>
       <source>First point of wall</source>
-      <translation type="unfinished">First point of wall</translation>
+      <translation>Eerste punt van de muur</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="334"/>
+      <location filename="../../ArchWall.py" line="336"/>
       <source>Wall options</source>
-      <translation type="unfinished">Wall options</translation>
+      <translation>Muuropties</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="339"/>
+      <location filename="../../ArchWall.py" line="341"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
-      <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWall.py" line="371"/>
-      <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>Deze lijst toont alle MultiMaterialen objecten van dit document. Maak er enkele aan om de wandtypen te definiëren.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="373"/>
+      <source>Alignment</source>
+      <translation>Uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../ArchWall.py" line="375"/>
       <source>Left</source>
       <translation>Links</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="373"/>
+      <location filename="../../ArchWall.py" line="375"/>
       <source>Right</source>
       <translation>Rechts</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="390"/>
+      <location filename="../../ArchWall.py" line="392"/>
       <source>Use sketches</source>
       <translation>Gebruik schetsen</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="76"/>
+      <location filename="../../ArchStructure.py" line="74"/>
       <source>Structure</source>
       <translation>Structuur</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="78"/>
+      <location filename="../../ArchWindow.py" line="76"/>
       <source>Window</source>
       <translation>Venster</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="757"/>
+      <location filename="../../ArchWindow.py" line="753"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>Vensteropties</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="761"/>
+      <location filename="../../ArchWindow.py" line="757"/>
       <source>Auto include in host object</source>
-      <translation type="unfinished">Auto include in host object</translation>
+      <translation>Automatisch opnemen in het gastheer-object</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="767"/>
+      <location filename="../../ArchWindow.py" line="763"/>
       <source>Sill height</source>
-      <translation type="unfinished">Sill height</translation>
+      <translation>Dorpelhoogte</translation>
+    </message>
+    <message>
+      <location filename="../../ArchMaterial.py" line="862"/>
+      <source>Total thickness</source>
+      <translation type="unfinished">Total thickness</translation>
+    </message>
+    <message>
+      <location filename="../../ArchMaterial.py" line="876"/>
+      <source>depends on the object</source>
+      <translation type="unfinished">depends on the object</translation>
+    </message>
+    <message>
+      <location filename="../../ArchProject.py" line="88"/>
+      <source>Create Project</source>
+      <translation>Project aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../../ArchSchedule.py" line="556"/>
+      <source>Unable to recognize that file type</source>
+      <translation type="unfinished">Unable to recognize that file type</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="140"/>
+      <source>Arch</source>
+      <translation type="unfinished">Arch</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="91"/>
+      <source>Rebar tools</source>
+      <translation type="unfinished">Rebar tools</translation>
     </message>
   </context>
   <context>
@@ -3403,12 +3503,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_3Views</name>
     <message>
-      <location filename="../../ArchEquipment.py" line="231"/>
+      <location filename="../../ArchEquipment.py" line="227"/>
       <source>3 views from mesh</source>
       <translation>3 aanzichten van mesh</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="232"/>
+      <location filename="../../ArchEquipment.py" line="228"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
       <translation>Maakt 3 aanzichten (bovenkant, voorkant, zijkant) van een mesh-gebaseerd object</translation>
     </message>
@@ -3416,12 +3516,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1313"/>
+      <location filename="../../ArchCommands.py" line="1316"/>
       <source>Add component</source>
       <translation>Voeg component toe</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1314"/>
+      <location filename="../../ArchCommands.py" line="1317"/>
       <source>Adds the selected components to the active object</source>
       <translation>De geselecteerde onderdelen toevoegen aan het actieve object</translation>
     </message>
@@ -3429,22 +3529,22 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Axis</name>
     <message>
-      <location filename="../../ArchAxis.py" line="119"/>
+      <location filename="../../ArchAxis.py" line="117"/>
       <source>Axis</source>
       <translation>As</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="177"/>
+      <location filename="../../ArchAxis.py" line="175"/>
       <source>Grid</source>
       <translation>Raster</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="179"/>
+      <location filename="../../ArchAxis.py" line="177"/>
       <source>Creates a customizable grid object</source>
       <translation>Maakt een aanpasbaar grid object</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="121"/>
+      <location filename="../../ArchAxis.py" line="119"/>
       <source>Creates a set of axes</source>
       <translation>Maakt een verzameling assen</translation>
     </message>
@@ -3452,12 +3552,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_AxisSystem</name>
     <message>
-      <location filename="../../ArchAxis.py" line="143"/>
+      <location filename="../../ArchAxis.py" line="141"/>
       <source>Axis System</source>
       <translation>Assen systeem</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="145"/>
+      <location filename="../../ArchAxis.py" line="143"/>
       <source>Creates an axis system from a set of axes</source>
       <translation>Maakt een assen systeem van een 2 assen</translation>
     </message>
@@ -3465,7 +3565,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1556"/>
+      <location filename="../../ArchAxis.py" line="1551"/>
       <source>Axis tools</source>
       <translation>Assen gereedschap</translation>
     </message>
@@ -3473,12 +3573,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Building</name>
     <message>
-      <location filename="../../ArchBuilding.py" line="218"/>
+      <location filename="../../ArchBuilding.py" line="216"/>
       <source>Building</source>
       <translation>Gebouw</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="220"/>
+      <location filename="../../ArchBuilding.py" line="218"/>
       <source>Creates a building object including selected objects.</source>
       <translation>Maakt een gebouwobject inclusief geselecteerde objecten.</translation>
     </message>
@@ -3486,12 +3586,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_BuildingPart</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="285"/>
+      <location filename="../../ArchBuildingPart.py" line="293"/>
       <source>BuildingPart</source>
       <translation>Gebouwonderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="287"/>
+      <location filename="../../ArchBuildingPart.py" line="295"/>
       <source>Creates a BuildingPart object including selected objects</source>
       <translation>Maak een Gebouwonderdeel object inclusief geselecteerde objecten</translation>
     </message>
@@ -3499,12 +3599,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1501"/>
+      <location filename="../../ArchCommands.py" line="1504"/>
       <source>Check</source>
       <translation>Controleer</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1502"/>
+      <location filename="../../ArchCommands.py" line="1505"/>
       <source>Checks the selected objects for problems</source>
       <translation>Controleer de geselecteerde objecten op problemen</translation>
     </message>
@@ -3512,12 +3612,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1577"/>
+      <location filename="../../ArchCommands.py" line="1580"/>
       <source>Clone component</source>
       <translation>Kloon onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1579"/>
+      <location filename="../../ArchCommands.py" line="1582"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Kloont een object als een niet-gedefinieerde architectonisch onderdeel</translation>
     </message>
@@ -3525,25 +3625,25 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1484"/>
+      <location filename="../../ArchCommands.py" line="1487"/>
       <source>Close holes</source>
       <translation>Sluit gaten</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1485"/>
+      <location filename="../../ArchCommands.py" line="1488"/>
       <source>Closes holes in open shapes, turning them solids</source>
-      <translation>Kloont gaten in open vormen, maakt er massieve vormen van</translation>
+      <translation>Kloont gaten in open vormen, maakt er volumemodellen van</translation>
     </message>
   </context>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1552"/>
+      <location filename="../../ArchCommands.py" line="1555"/>
       <source>Component</source>
       <translation>Onderdeel</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1554"/>
+      <location filename="../../ArchCommands.py" line="1557"/>
       <source>Creates an undefined architectural component</source>
       <translation>Maakt een ongedefineert architectonisch onderdeel</translation>
     </message>
@@ -3551,25 +3651,35 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_CutPlane</name>
     <message>
-      <location filename="../../ArchCutPlane.py" line="70"/>
+      <location filename="../../ArchCutPlane.py" line="101"/>
       <source>Cut with plane</source>
       <translation>Snij met vlak</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="71"/>
+      <location filename="../../ArchCutPlane.py" line="102"/>
       <source>Cut an object with a plane</source>
       <translation>Snij een object met een vlak</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCutPlane.py" line="80"/>
+      <source>Cut with a line</source>
+      <translation type="unfinished">Cut with a line</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCutPlane.py" line="81"/>
+      <source>Cut an object with a line with normal workplane</source>
+      <translation type="unfinished">Cut an object with a line with normal workplane</translation>
     </message>
   </context>
   <context>
     <name>Arch_Equipment</name>
     <message>
-      <location filename="../../ArchEquipment.py" line="173"/>
+      <location filename="../../ArchEquipment.py" line="171"/>
       <source>Equipment</source>
       <translation>Uitrusting</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="175"/>
+      <location filename="../../ArchEquipment.py" line="173"/>
       <source>Creates an equipment object from a selected object (Part or Mesh)</source>
       <translation>Maakt een apparatuur-object van een geselecteerd object (geheel of gedeeltelijk Mesh)</translation>
     </message>
@@ -3577,38 +3687,38 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="356"/>
+      <location filename="../../ArchFence.py" line="363"/>
       <source>Fence</source>
-      <translation type="unfinished">Fence</translation>
+      <translation>Hek</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="357"/>
+      <location filename="../../ArchFence.py" line="364"/>
       <source>Creates a fence object from a selected section, post and path</source>
-      <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
+      <translation>Maakt een hekobject aan vanaf een geselecteerde sectie, paal en traject</translation>
     </message>
   </context>
   <context>
     <name>Arch_Floor</name>
     <message>
-      <location filename="../../ArchFloor.py" line="77"/>
-      <source>Floor</source>
-      <translation>Verdieping</translation>
+      <location filename="../../ArchFloor.py" line="76"/>
+      <source>Level</source>
+      <translation>Niveau</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="79"/>
-      <source>Creates a floor object including selected objects</source>
-      <translation>Maakt een vloer object vanuit geselecteerde objecten</translation>
+      <location filename="../../ArchFloor.py" line="78"/>
+      <source>Creates a Building Part object that represents a level, including selected objects</source>
+      <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
     </message>
   </context>
   <context>
     <name>Arch_Frame</name>
     <message>
-      <location filename="../../ArchFrame.py" line="81"/>
+      <location filename="../../ArchFrame.py" line="79"/>
       <source>Frame</source>
       <translation>Frame</translation>
     </message>
     <message>
-      <location filename="../../ArchFrame.py" line="83"/>
+      <location filename="../../ArchFrame.py" line="81"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
       <translation>Hiermee maakt u een frame-object van een platte 2D-object (de extrusie-pad(en)) en een profiel. Zorg ervoor dat objecten zijn geselecteerd in die volgorde.</translation>
     </message>
@@ -3616,62 +3726,62 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1072"/>
+      <location filename="../../ArchAxis.py" line="1067"/>
       <source>The number of rows</source>
       <translation>Aantal rijen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1074"/>
+      <location filename="../../ArchAxis.py" line="1069"/>
       <source>The number of columns</source>
       <translation>Aantal kolommen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1076"/>
+      <location filename="../../ArchAxis.py" line="1071"/>
       <source>The sizes for rows</source>
       <translation>De grootte van rijen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1078"/>
+      <location filename="../../ArchAxis.py" line="1073"/>
       <source>The sizes of columns</source>
       <translation>De grootte van kolommen</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1080"/>
+      <location filename="../../ArchAxis.py" line="1075"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Het bereik van cellen die zijn samengevoegd</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1082"/>
+      <location filename="../../ArchAxis.py" line="1077"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Het type van 3D-punten geproduceerd door dit grid object</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1085"/>
+      <location filename="../../ArchAxis.py" line="1080"/>
       <source>The total width of this grid</source>
       <translation>De totale breedte van dit grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1087"/>
+      <location filename="../../ArchAxis.py" line="1082"/>
       <source>The total height of this grid</source>
       <translation>De totale hoogte van dit grid</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1089"/>
+      <location filename="../../ArchAxis.py" line="1084"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Verdeel de kolombreedte automatisch (stel in op 0 om niet te gebruiken)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1091"/>
+      <location filename="../../ArchAxis.py" line="1086"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Verdeelt automatische rij divisies (ingesteld op 0 om onbruikbaar te maken)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1093"/>
+      <location filename="../../ArchAxis.py" line="1088"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Wanneer in de rand middelpunt modus, als dit raster moet de onderliggende onderdelen heroriënteren langs de rand normalen of niet</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1095"/>
+      <location filename="../../ArchAxis.py" line="1090"/>
       <source>The indices of faces to hide</source>
       <translation>De indexcijfers van de te verbergen vlakken</translation>
     </message>
@@ -3679,12 +3789,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1627"/>
+      <location filename="../../ArchCommands.py" line="1630"/>
       <source>Create IFC spreadsheet...</source>
       <translation>IFC rekenblad aanmaken...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1629"/>
+      <location filename="../../ArchCommands.py" line="1632"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Maakt een rekenblad voor het bewaren van IFC eigenschappen van een object.</translation>
     </message>
@@ -3692,12 +3802,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Material</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="112"/>
+      <location filename="../../ArchMaterial.py" line="111"/>
       <source>Creates or edits the material definition of a selected object.</source>
       <translation>Maakt of bewerkt de materiële definitie van een geselecteerd object.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="110"/>
+      <location filename="../../ArchMaterial.py" line="109"/>
       <source>Material</source>
       <translation>Materiaal</translation>
     </message>
@@ -3705,7 +3815,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="842"/>
+      <location filename="../../ArchMaterial.py" line="932"/>
       <source>Material tools</source>
       <translation>Materiële hulpmiddelen</translation>
     </message>
@@ -3713,12 +3823,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_MergeWalls</name>
     <message>
-      <location filename="../../ArchWall.py" line="475"/>
+      <location filename="../../ArchWall.py" line="477"/>
       <source>Merge Walls</source>
       <translation>Wanden samenvoegen</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="476"/>
+      <location filename="../../ArchWall.py" line="478"/>
       <source>Merges the selected walls, if possible</source>
       <translation>Voegt de geselecteerde wanden samen, indien mogelijk</translation>
     </message>
@@ -3726,12 +3836,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1405"/>
+      <location filename="../../ArchCommands.py" line="1408"/>
       <source>Mesh to Shape</source>
       <translation>Net naar Vorm</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1406"/>
+      <location filename="../../ArchCommands.py" line="1409"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>De geselecteerde meshes worden verandert in Onderdeel Vorm objecten</translation>
     </message>
@@ -3739,12 +3849,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_MultiMaterial</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="144"/>
+      <location filename="../../ArchMaterial.py" line="143"/>
       <source>Multi-Material</source>
       <translation>Meerdere materialen</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="146"/>
+      <location filename="../../ArchMaterial.py" line="145"/>
       <source>Creates or edits multi-materials</source>
       <translation>Maakt of bewerkt meerdere materialen</translation>
     </message>
@@ -3752,12 +3862,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Nest</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1510"/>
+      <location filename="../../ArchPanel.py" line="1518"/>
       <source>Nest</source>
       <translation>Nest</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="1512"/>
+      <location filename="../../ArchPanel.py" line="1520"/>
       <source>Nests a series of selected shapes in a container</source>
       <translation>Een aantal geselecteerde vormen worden in een container genest</translation>
     </message>
@@ -3765,20 +3875,20 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Panel</name>
     <message>
-      <location filename="../../ArchPanel.py" line="150"/>
+      <location filename="../../ArchPanel.py" line="148"/>
       <source>Panel</source>
       <translation>Deelvenster</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="152"/>
+      <location filename="../../ArchPanel.py" line="150"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Maakt een Paneel object vanaf niets of van een geselecteerd object (Schets, Draad, Vlak of Massief)</translation>
+      <translation>Maakt een Paneel object vanaf niets of van een geselecteerd object (schets, draad, vlak of volumemodel)</translation>
     </message>
   </context>
   <context>
     <name>Arch_PanelTools</name>
     <message>
-      <location filename="../../ArchPanel.py" line="1677"/>
+      <location filename="../../ArchPanel.py" line="1685"/>
       <source>Panel tools</source>
       <translation>Vlak gereedschappen</translation>
     </message>
@@ -3786,7 +3896,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Panel_Cut</name>
     <message>
-      <location filename="../../ArchPanel.py" line="337"/>
+      <location filename="../../ArchPanel.py" line="335"/>
       <source>Panel Cut</source>
       <translation>Paneel snede</translation>
     </message>
@@ -3794,17 +3904,17 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Panel_Sheet</name>
     <message>
-      <location filename="../../ArchPanel.py" line="339"/>
+      <location filename="../../ArchPanel.py" line="337"/>
       <source>Creates 2D views of selected panels</source>
       <translation>Maakt 2D aanzichten van geselecteerde panelen</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="364"/>
+      <location filename="../../ArchPanel.py" line="362"/>
       <source>Panel Sheet</source>
       <translation>Paneel plaat</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="366"/>
+      <location filename="../../ArchPanel.py" line="364"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
       <translation>Maakt een 2D blad dat opgeknipte panelen kan bevatten</translation>
     </message>
@@ -3812,17 +3922,17 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Pipe</name>
     <message>
-      <location filename="../../ArchPipe.py" line="109"/>
+      <location filename="../../ArchPipe.py" line="108"/>
       <source>Pipe</source>
       <translation>Pijp</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="111"/>
+      <location filename="../../ArchPipe.py" line="110"/>
       <source>Creates a pipe object from a given Wire or Line</source>
       <translation>Maakt u een buis-object van een bepaalde draad of lijn</translation>
     </message>
     <message>
-      <location filename="../../ArchPipe.py" line="150"/>
+      <location filename="../../ArchPipe.py" line="149"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
       <translation>Hiermee maakt u een verbindingslijn tussen 2 of 3 geselecteerde buizen</translation>
     </message>
@@ -3830,7 +3940,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_PipeConnector</name>
     <message>
-      <location filename="../../ArchPipe.py" line="148"/>
+      <location filename="../../ArchPipe.py" line="147"/>
       <source>Connector</source>
       <translation>Connector</translation>
     </message>
@@ -3838,20 +3948,33 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_PipeTools</name>
     <message>
-      <location filename="../../ArchPipe.py" line="478"/>
+      <location filename="../../ArchPipe.py" line="481"/>
       <source>Pipe tools</source>
       <translation>Buis gereedschappen</translation>
     </message>
   </context>
   <context>
+    <name>Arch_Project</name>
+    <message>
+      <location filename="../../ArchProject.py" line="69"/>
+      <source>Project</source>
+      <translation>Project</translation>
+    </message>
+    <message>
+      <location filename="../../ArchProject.py" line="71"/>
+      <source>Creates a project entity aggregating the selected sites.</source>
+      <translation type="unfinished">Creates a project entity aggregating the selected sites.</translation>
+    </message>
+  </context>
+  <context>
     <name>Arch_Rebar</name>
     <message>
-      <location filename="../../ArchRebar.py" line="109"/>
+      <location filename="../../ArchRebar.py" line="107"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Maakt een Wapeningsstaaf van het geselecteerde vlak bij een constructief-object</translation>
     </message>
     <message>
-      <location filename="../../ArchRebar.py" line="107"/>
+      <location filename="../../ArchRebar.py" line="105"/>
       <source>Custom Rebar</source>
       <translation>Aangepaste betonstaal</translation>
     </message>
@@ -3859,12 +3982,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="523"/>
+      <location filename="../../ArchReference.py" line="678"/>
       <source>External reference</source>
       <translation>Externe verwijzing</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="525"/>
+      <location filename="../../ArchReference.py" line="680"/>
       <source>Creates an external reference object</source>
       <translation>Maakt een extern referentie-object</translation>
     </message>
@@ -3872,12 +3995,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1345"/>
+      <location filename="../../ArchCommands.py" line="1348"/>
       <source>Remove component</source>
       <translation>Verwijderen component</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1346"/>
+      <location filename="../../ArchCommands.py" line="1349"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Verwijder de geselecteerde onderdelen van hun ouders, of maak een gat in een component</translation>
     </message>
@@ -3885,12 +4008,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1469"/>
+      <location filename="../../ArchCommands.py" line="1472"/>
       <source>Remove Shape from Arch</source>
       <translation>Vorm verwijderen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1470"/>
+      <location filename="../../ArchCommands.py" line="1473"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Verwijdert kubieke vormen uit Arch-componenten</translation>
     </message>
@@ -3898,12 +4021,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Roof</name>
     <message>
-      <location filename="../../ArchRoof.py" line="133"/>
+      <location filename="../../ArchRoof.py" line="131"/>
       <source>Roof</source>
       <translation>Dak</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="135"/>
+      <location filename="../../ArchRoof.py" line="133"/>
       <source>Creates a roof object from the selected wire.</source>
       <translation>Maakt een dak-object van de geselecteerde draad.</translation>
     </message>
@@ -3911,12 +4034,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Schedule</name>
     <message>
-      <location filename="../../ArchSchedule.py" line="62"/>
+      <location filename="../../ArchSchedule.py" line="63"/>
       <source>Schedule</source>
       <translation>Planning</translation>
     </message>
     <message>
-      <location filename="../../ArchSchedule.py" line="63"/>
+      <location filename="../../ArchSchedule.py" line="64"/>
       <source>Creates a schedule to collect data from the model</source>
       <translation>Maakt een schema om gegevens te verzamelen van het model</translation>
     </message>
@@ -3924,12 +4047,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="464"/>
+      <location filename="../../ArchSectionPlane.py" line="819"/>
       <source>Section Plane</source>
       <translation>Sectieplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="465"/>
+      <location filename="../../ArchSectionPlane.py" line="820"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Maakt een sectie vlak object, inclusief de geselecteerde objecten</translation>
     </message>
@@ -3937,12 +4060,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1440"/>
+      <location filename="../../ArchCommands.py" line="1443"/>
       <source>Select non-manifold meshes</source>
       <translation>Niet-manifold netten selecteren</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1441"/>
+      <location filename="../../ArchCommands.py" line="1444"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Selecteert alle niet-manifold netten van het document of van de geselecteerde groepen</translation>
     </message>
@@ -3950,12 +4073,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../ArchSite.py" line="412"/>
+      <location filename="../../ArchSite.py" line="474"/>
       <source>Site</source>
       <translation>Zijde</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="414"/>
+      <location filename="../../ArchSite.py" line="476"/>
       <source>Creates a site object including selected objects.</source>
       <translation>Maakt een bouwterrein object met geselecteerde objecten inbegrepen.</translation>
     </message>
@@ -3963,17 +4086,17 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Space</name>
     <message>
-      <location filename="../../ArchSpace.py" line="229"/>
+      <location filename="../../ArchSpace.py" line="227"/>
       <source>Space</source>
       <translation>Ruimte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="231"/>
+      <location filename="../../ArchSpace.py" line="229"/>
       <source>Creates a space object from selected boundary objects</source>
       <translation>Maakt u een ruimte-object van de geselecteerde grens objecten</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="220"/>
+      <location filename="../../ArchStairs.py" line="218"/>
       <source>Creates a stairs object</source>
       <translation>Maakt een trap</translation>
     </message>
@@ -3981,12 +4104,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1380"/>
+      <location filename="../../ArchCommands.py" line="1383"/>
       <source>Split Mesh</source>
       <translation>Net splitten</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1381"/>
+      <location filename="../../ArchCommands.py" line="1384"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Splits geselecteerde netten in onafhankelijke componenten</translation>
     </message>
@@ -3994,7 +4117,7 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Stairs</name>
     <message>
-      <location filename="../../ArchStairs.py" line="218"/>
+      <location filename="../../ArchStairs.py" line="216"/>
       <source>Stairs</source>
       <translation>Trap</translation>
     </message>
@@ -4002,25 +4125,25 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Structure</name>
     <message>
-      <location filename="../../ArchStructure.py" line="199"/>
+      <location filename="../../ArchStructure.py" line="197"/>
       <source>Structure</source>
       <translation>Structuur</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="201"/>
+      <location filename="../../ArchStructure.py" line="199"/>
       <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Maak een structuurobject vanaf nul of van een geselecteerd object (schets, draad, vlak of volume)</translation>
+      <translation>Maak een structuurobject vanaf nul of van een geselecteerd object (schets, draad, vlak of volumemodel)</translation>
     </message>
   </context>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1522"/>
+      <location filename="../../ArchCommands.py" line="1525"/>
       <source>Survey</source>
       <translation>Enquête</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1523"/>
+      <location filename="../../ArchCommands.py" line="1526"/>
       <source>Starts survey</source>
       <translation>Start enquête</translation>
     </message>
@@ -4028,12 +4151,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1537"/>
+      <location filename="../../ArchCommands.py" line="1540"/>
       <source>Toggle IFC Brep flag</source>
       <translation>IFC Brep vlag in-/ uitschakelen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1538"/>
+      <location filename="../../ArchCommands.py" line="1541"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Dwing een object geëxporteerd te worden als Brep of niet</translation>
     </message>
@@ -4041,12 +4164,12 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1653"/>
+      <location filename="../../ArchCommands.py" line="1656"/>
       <source>Toggle subcomponents</source>
       <translation>Wissel tussen sub-onderdelen</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1654"/>
+      <location filename="../../ArchCommands.py" line="1657"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Toont of verbergt de subonderdelen voor dit object</translation>
     </message>
@@ -4054,25 +4177,25 @@ You can change that in the preferences.</translation>
   <context>
     <name>Arch_Wall</name>
     <message>
-      <location filename="../../ArchWall.py" line="183"/>
+      <location filename="../../ArchWall.py" line="185"/>
       <source>Wall</source>
       <translation>Muur</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="185"/>
+      <location filename="../../ArchWall.py" line="187"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
-      <translation>Maak een muurobject vanaf nul of van een geselecteerd object (draad, vlak of volume)</translation>
+      <translation>Maak een muurobject vanaf nul of van een geselecteerd object (draad, vlak of volumemodel)</translation>
     </message>
   </context>
   <context>
     <name>Arch_Window</name>
     <message>
-      <location filename="../../ArchWindow.py" line="594"/>
+      <location filename="../../ArchWindow.py" line="591"/>
       <source>Window</source>
       <translation>Venster</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="596"/>
+      <location filename="../../ArchWindow.py" line="593"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
       <translation>Maakt een raam-object van een geselecteerd object (draad, rechthoek of schets)</translation>
     </message>
@@ -4163,107 +4286,67 @@ You can change that in the preferences.</translation>
       <translation>Schema definitie</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="36"/>
+      <location filename="../ui/ArchSchedule.ui" line="56"/>
       <source>Description</source>
       <translation>Omschrijving</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="39"/>
+      <location filename="../ui/ArchSchedule.ui" line="59"/>
       <source>A description for this operation</source>
       <translation>Een beschrijving voor deze operatie</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="44"/>
-      <source>Value</source>
-      <translation>Waarde</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="47"/>
-      <source>The value to retrieve for each object. Can be "count" to count the objects, or object.Shape.Volume to retrieve a certain property.</source>
-      <translation>De waarde ophalen voor elk object. Kan zijn "Count" voor het tellen van de objecten, of object.Shape.Volume voor het verkrijgen van een bepaalde eigenschap.</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="52"/>
+      <location filename="../ui/ArchSchedule.ui" line="75"/>
       <source>Unit</source>
       <translation>Eenheid</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="55"/>
-      <source>An optional unit to express the resulting value. Ex: m^3</source>
-      <translation>Een optionele eenheid om resulterende waarde weer te geven. Ex: m ^ 3</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="60"/>
+      <location filename="../ui/ArchSchedule.ui" line="83"/>
       <source>Objects</source>
       <translation>Objecten</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="63"/>
-      <source>An optional semicolon (;) separated list of object names to be considered by this operation. If the list contains groups, children will be added</source>
-      <translation>Een optionele puntkomma (;) gescheiden lijst met de namen van de objecten worden gebruikt door deze bewerking. Als de lijst groepen bevat, worden onderliggende objecten toegevoegd</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="68"/>
+      <location filename="../ui/ArchSchedule.ui" line="91"/>
       <source>Filter</source>
       <translation>Filter</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="71"/>
-      <source>A semicolon (;) separated list of type:value filters (see documentation for filters syntax)</source>
-      <translation>Een puntkomma (;) gescheiden lijst van type:value filters (zie documentatie voor de syntaxis van de filters)</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="81"/>
+      <location filename="../ui/ArchSchedule.ui" line="128"/>
       <source>Adds a line below the selected line/cell</source>
       <translation>Voegt een regel onder de geselecteerde lijn/cel</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="84"/>
-      <source>Add</source>
-      <translation>Toevoegen</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="96"/>
+      <location filename="../ui/ArchSchedule.ui" line="143"/>
       <source>Deletes the selected line</source>
       <translation>Verwijder de geselecteerde lijn</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="99"/>
-      <source>Del</source>
-      <translation>Verwijder</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="111"/>
+      <location filename="../ui/ArchSchedule.ui" line="158"/>
       <source>Clears the whole list</source>
       <translation>Hiermee wist u de hele lijst</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="114"/>
+      <location filename="../ui/ArchSchedule.ui" line="161"/>
       <source>Clear</source>
       <translation>Wissen</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="130"/>
+      <location filename="../ui/ArchSchedule.ui" line="177"/>
       <source>Put selected objects into the "Objects" column of the selected row</source>
       <translation>Zet geselecteerde objecten in de kolom "Objecten" van de geselecteerde rij</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="133"/>
-      <source>Selection</source>
-      <translation>Selectie</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="140"/>
+      <location filename="../ui/ArchSchedule.ui" line="187"/>
       <source>Imports the contents of a CSV file</source>
       <translation>Hiermee importeert u de inhoud van een CSV-bestand</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="143"/>
+      <location filename="../ui/ArchSchedule.ui" line="190"/>
       <source>Import</source>
       <translation>Importeren</translation>
     </message>
     <message>
-      <location filename="../ui/ArchSchedule.ui" line="159"/>
+      <location filename="../ui/ArchSchedule.ui" line="205"/>
       <source>Export</source>
       <translation>Exporteren</translation>
     </message>
@@ -4286,13 +4369,6 @@ You can change that in the preferences.</translation>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialoog</translation>
-    </message>
-    <message>
-      <location filename="../ui/ArchSchedule.ui" line="155"/>
-      <source>This exports the contents of the "Result" spreadsheet to a CSV file. In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&gt; New sheet -&gt; From file -&gt; Link
-        Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&gt; Insert Sheet... -&gt; From file -&gt; Browse...</source>
-      <translation>Deze methode exporteert de inhoud van het 'Resultaat' werkblad naar een CSV-bestand. In Libreoffice, kun je dit CSV-bestand gekoppeld houden door met de rechtermuisknop op de tabbalk van de vellen-&gt; nieuw blad-&gt; uit bestand-&gt; Link
-        Opmerking: vanaf LibreOffice v5.4.5.1 is nu het juiste pad: bladen tabbalk-&gt; invoegen vel...-&gt; uit bestand-&gt; Bladeren...</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
@@ -4339,13 +4415,114 @@ You can change that in the preferences.</translation>
       <source>Force export full FreeCAD parametric data</source>
       <translation>Exporteer volledige FreeCAD parametrische gegevens</translation>
     </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="22"/>
+      <source>Schedule name:</source>
+      <translation type="unfinished">Schedule name:</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="64"/>
+      <source>Property</source>
+      <translation>Eigenschap</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="67"/>
+      <source>The property to retrieve from each object.
+Can be "count" to count the objects, or property names
+like "Length" or "Shape.Volume" to retrieve
+a certain property.</source>
+      <translation type="unfinished">The property to retrieve from each object.
+Can be "count" to count the objects, or property names
+like "Length" or "Shape.Volume" to retrieve
+a certain property.</translation>
+    </message>
+    <message encoding="UTF-8">
+      <location filename="../ui/ArchSchedule.ui" line="78"/>
+      <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
+      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="86"/>
+      <source>An optional semicolon (;) separated list of object names internal names, not labels) to be considered by this operation. If the list contains groups, children will be added. Leave blank to use all objects from the document</source>
+      <translation type="unfinished">An optional semicolon (;) separated list of object names internal names, not labels) to be considered by this operation. If the list contains groups, children will be added. Leave blank to use all objects from the document</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="94"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter. Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Descriptionl:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DON't have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter. Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Descriptionl:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DON't have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="104"/>
+      <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
+      <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="107"/>
+      <source>Associate spreadsheet</source>
+      <translation type="unfinished">Associate spreadsheet</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="114"/>
+      <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
+      <translation type="unfinished">If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="117"/>
+      <source>Detailed results</source>
+      <translation type="unfinished">Detailed results</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="131"/>
+      <source>Add row</source>
+      <translation>Rij toevoegen</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="146"/>
+      <source>Del row</source>
+      <translation>Rij verwijderen</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="180"/>
+      <source>Add selection</source>
+      <translation type="unfinished">Add selection</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchSchedule.ui" line="202"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="746"/>
+      <location filename="../../ArchBuildingPart.py" line="848"/>
       <source>Writing camera position</source>
       <translation>Camerapositie schrijven</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="110"/>
+      <source>Draft creation tools</source>
+      <translation type="unfinished">Draft creation tools</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="111"/>
+      <source>Draft annotation tools</source>
+      <translation type="unfinished">Draft annotation tools</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="112"/>
+      <source>Draft modification tools</source>
+      <translation type="unfinished">Draft modification tools</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="146"/>
+      <source>Draft</source>
+      <translation>Schets</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="183"/>
+      <source>Import-Export</source>
+      <translation>Importeren-Exporteren</translation>
     </message>
   </context>
   <context>
@@ -4436,22 +4613,22 @@ You can change that in the preferences.</translation>
       <translation>Samenstelling:</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMultiMaterial.ui" line="61"/>
+      <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
       <source>Add</source>
       <translation>Toevoegen</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
+      <location filename="../ui/ArchMultiMaterial.ui" line="75"/>
       <source>Up</source>
       <translation>Omhoog</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMultiMaterial.ui" line="75"/>
+      <location filename="../ui/ArchMultiMaterial.ui" line="82"/>
       <source>Down</source>
       <translation>Naar beneden</translation>
     </message>
     <message>
-      <location filename="../ui/ArchMultiMaterial.ui" line="82"/>
+      <location filename="../ui/ArchMultiMaterial.ui" line="89"/>
       <source>Del</source>
       <translation>Verwijder</translation>
     </message>
@@ -4550,6 +4727,16 @@ You can change that in the preferences.</translation>
       <source>Preview</source>
       <translation>Voorbeeldweergave</translation>
     </message>
+    <message>
+      <location filename="../ui/ArchMultiMaterial.ui" line="59"/>
+      <source>Total thickness</source>
+      <translation type="unfinished">Total thickness</translation>
+    </message>
+    <message>
+      <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
+      <source>Invert</source>
+      <translation>Omkeren</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsArch</name>
@@ -4569,27 +4756,27 @@ You can change that in the preferences.</translation>
       <translation>Dit is de standaardkleur voor nieuwe structuur objecten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="393"/>
+      <location filename="../ui/preferences-arch.ui" line="412"/>
       <source>2D rendering</source>
       <translation>2D rendering</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="401"/>
+      <location filename="../ui/preferences-arch.ui" line="420"/>
       <source>Show debug information during 2D rendering</source>
       <translation>Toon debug-informatie tijdens de 2D weergave</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="404"/>
+      <location filename="../ui/preferences-arch.ui" line="423"/>
       <source>Show renderer debug messages</source>
       <translation>Toon debugberichten van de renderer</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="437"/>
+      <location filename="../ui/preferences-arch.ui" line="456"/>
       <source>Cut areas line thickness ratio</source>
       <translation>Snijd gebiedslijn dikte naar ratio</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="457"/>
+      <location filename="../ui/preferences-arch.ui" line="476"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
       <translation>Geeft aan hoeveel keer de bekeken lijndikte moet worden toegepast om lijnen te snijden</translation>
     </message>
@@ -4669,74 +4856,59 @@ You can change that in the preferences.</translation>
       <translation>Voeg indien mogelijk basisschetsen van de wanden samen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="289"/>
+      <location filename="../ui/preferences-arch.ui" line="308"/>
       <source>Mesh to Shape Conversion</source>
       <translation>Mesh naar Shape Conversie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="297"/>
+      <location filename="../ui/preferences-arch.ui" line="316"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
       <translation>Als dit aangevinkt is, is de conversie sneller, maar het resultaat kan nog steeds driehoekige gezichten bevatten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="300"/>
+      <location filename="../ui/preferences-arch.ui" line="319"/>
       <source>Fast conversion</source>
       <translation>Snelle omzetting</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="316"/>
+      <location filename="../ui/preferences-arch.ui" line="335"/>
       <source>Tolerance:</source>
       <translation>Tolerantie:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="349"/>
+      <location filename="../ui/preferences-arch.ui" line="368"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
       <translation>Als dit aangevinkt wordt, worden vlakke groepen gezichten geforceerd platgedrukt, wat resulteert in mogelijke gaten en niet-solide resultaten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="352"/>
+      <location filename="../ui/preferences-arch.ui" line="371"/>
       <source>Force flat faces</source>
       <translation>Forceer platte vlaken</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="369"/>
+      <location filename="../ui/preferences-arch.ui" line="388"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
       <translation>Als dit aangevinkt wordt, worden de gaten in de gezichten met behulp van aftrekking uitgevoerd in plaats van met behulp van draden</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="372"/>
+      <location filename="../ui/preferences-arch.ui" line="391"/>
       <source>Cut method</source>
       <translation>Knip methode</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="48"/>
+      <location filename="../ui/preferences-ifc.ui" line="49"/>
       <source>Show debug messages</source>
       <translation>Foutopsporingsberichten weergeven</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="206"/>
-      <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
-      <translation>Als dit selectievakje is ingeschakeld, openingen worden dan als de substractions geïmporteerd, anders zullen wandshapes zal al hun openingen afgetrokken</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="209"/>
+      <location filename="../ui/preferences-ifc.ui" line="216"/>
       <source>Separate openings</source>
       <translation>Aparte openingen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="254"/>
-      <source>If this is checked, object names will be prefixed with the IFC ID number</source>
-      <translation>Als dit aangevinkt wordt, worden de objectnamen voorafgegaan door het IFC-ID-nummer</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="257"/>
+      <location filename="../ui/preferences-ifc.ui" line="265"/>
       <source>Prefix names with ID number</source>
       <translation>Voorvoegsel namen met id-nummer</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="311"/>
-      <source>A comma-separated list of Ifc entities to exclude from import</source>
-      <translation>Een door komma's gescheiden lijst van Ifc-entiteiten die van de invoer uitgesloten moeten worden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="34"/>
@@ -4779,17 +4951,7 @@ You can change that in the preferences.</translation>
       <translation>Transparantie:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="370"/>
-      <source>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
-      <translation>Sommige IFC-kijkers houden niet van objecten die als extrusies geëxporteerd worden. Gebruik dit om alle objecten te forceren om geëxporteerd te worden als BREP geometrie.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="566"/>
-      <source>This is the SVG stroke-dasharray property to apply to projections of hidden objects.</source>
-      <translation>Dit is de eigenschap van de SVG stroke-dasharray om toe te passen op projecties van verborgen voorwerpen.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="569"/>
+      <location filename="../ui/preferences-arch.ui" line="589"/>
       <source>30, 10</source>
       <translation>30, 10</translation>
     </message>
@@ -4819,27 +4981,22 @@ You can change that in the preferences.</translation>
       <translation>Dikte</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="373"/>
+      <location filename="../ui/preferences-ifc.ui" line="404"/>
       <source>Force export as Brep</source>
       <translation>Force export as Brep</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="652"/>
+      <location filename="../ui/preferences-arch.ui" line="673"/>
       <source>Bim server</source>
       <translation>Bim Server</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="660"/>
+      <location filename="../ui/preferences-arch.ui" line="681"/>
       <source>Address</source>
       <translation>Adres</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="667"/>
-      <source>The URL of a bim server instance (www.bimserver.org)  to connect to.</source>
-      <translation>De URL van een bim server instantie (www.bimserver.org) waarmee verbinding kan worden gemaakt.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="670"/>
+      <location filename="../ui/preferences-arch.ui" line="691"/>
       <source>http://localhost:8082</source>
       <translation>http://localhost:8082</translation>
     </message>
@@ -4849,7 +5006,7 @@ You can change that in the preferences.</translation>
       <translation>DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="364"/>
+      <location filename="../ui/preferences-ifc.ui" line="394"/>
       <source>Export options</source>
       <translation>Exportopties</translation>
     </message>
@@ -4864,217 +5021,152 @@ You can change that in the preferences.</translation>
       <translation>Algemene opties</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="45"/>
-      <source>Show verbose information during import and export of IFC files</source>
-      <translation>Toon uitgebreide informatie tijdens de import en export van IFC-bestanden</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="80"/>
+      <location filename="../ui/preferences-ifc.ui" line="85"/>
       <source>Import options</source>
       <translation>Importeeropties</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="88"/>
+      <location filename="../ui/preferences-ifc.ui" line="93"/>
       <source>Import arch IFC objects as</source>
       <translation>IFC-objecten importeren als</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="144"/>
+      <location filename="../ui/preferences-ifc.ui" line="149"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Geeft aan wat voor soort objecten gemaakt zullen worden in FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="105"/>
+      <location filename="../ui/preferences-ifc.ui" line="110"/>
       <source>Parametric Arch objects</source>
       <translation>Parametrische Arch-objecten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="154"/>
+      <location filename="../ui/preferences-ifc.ui" line="159"/>
       <source>Non-parametric Arch objects</source>
       <translation>Niet-parametrische Arch-objecten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="159"/>
+      <location filename="../ui/preferences-ifc.ui" line="164"/>
       <source>Simple Part shapes</source>
       <translation>Eenvoudige deelvormen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="120"/>
+      <location filename="../ui/preferences-ifc.ui" line="125"/>
       <source>One compound per floor</source>
       <translation>Een samenstelling per verdieping</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="125"/>
+      <location filename="../ui/preferences-ifc.ui" line="130"/>
       <source>Do not import Arch objects</source>
       <translation>Arch-objecten niet importeren</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="137"/>
+      <location filename="../ui/preferences-ifc.ui" line="142"/>
       <source>Import struct IFC objects as</source>
       <translation>Structurele IFC-objecten importeren als</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="164"/>
+      <location filename="../ui/preferences-ifc.ui" line="169"/>
       <source>One compound for all</source>
       <translation>Een samenstelling voor alles</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="169"/>
+      <location filename="../ui/preferences-ifc.ui" line="174"/>
       <source>Do not import structural objects</source>
       <translation>Structurele objecten niet importeren</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="181"/>
+      <location filename="../ui/preferences-ifc.ui" line="186"/>
       <source>Root element:</source>
       <translation>Hoofdelement:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="188"/>
-      <source>Only subtypes of this element will be imported. Keep value as "IfcProduct" to import all building elements.</source>
-      <translation>Alleen subtypen van dit element zullen worden geïmporteerd. Bewaar waarde als "IfcProduct" om alle bouwelementen te importeren.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="222"/>
-      <source>If this is checked, the importer will try to detect extrusions. This might slow things down...</source>
-      <translation>Als dit aangevinkt is, zal de importeur proberen extrusies op te sporen. Dit kan de zaken vertragen...</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="225"/>
+      <location filename="../ui/preferences-ifc.ui" line="233"/>
       <source>Detect extrusions</source>
       <translation>Extrusies detecteren</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="270"/>
-      <source>If several materials with the same name are found in the IFC file, they will be treated as one.</source>
-      <translation>Als er meerdere materialen met dezelfde naam in het IFC-bestand gevonden worden, zullen deze als één behandeld worden.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="273"/>
-      <source>Merge materials with same name</source>
-      <translation>Materialen met dezelfde naam samenvoegen</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dae.ui" line="64"/>
+      <location filename="../ui/preferences-dae.ui" line="67"/>
       <source>Mesher</source>
       <translation>Mesher</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="71"/>
-      <source>The mesher to use. If using netgen, make sure netgen is enabled in the Mesh module</source>
-      <translation>De mesher om te gebruiken. Als u netgen gebruikt, zorg ervoor dat netgen ingeschakeld is in de Mesh module</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dae.ui" line="81"/>
+      <location filename="../ui/preferences-dae.ui" line="85"/>
       <source>Builtin</source>
       <translation>Ingebouwd</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="86"/>
+      <location filename="../ui/preferences-dae.ui" line="90"/>
       <source>Mefisto</source>
       <translation>Mefisto</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="91"/>
+      <location filename="../ui/preferences-dae.ui" line="95"/>
       <source>Netgen</source>
       <translation>Netgen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="104"/>
+      <location filename="../ui/preferences-dae.ui" line="108"/>
       <source>Builtin and mefisto mesher options</source>
       <translation>Ingebouwde en mefisto mesher-opties</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="112"/>
+      <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
       <translation>Mozaïekwerk</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="119"/>
-      <source>The tessellation value to use with the builtin and mefisto meshers</source>
-      <translation>De te gebruiken tessellatiewaarde met de ingebouwde en mefisto-meshers</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dae.ui" line="143"/>
+      <location filename="../ui/preferences-dae.ui" line="147"/>
       <source>Netgen mesher options</source>
       <translation>Netgen mesher-opties</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="151"/>
+      <location filename="../ui/preferences-dae.ui" line="155"/>
       <source>Grading</source>
       <translation>Gradering</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="158"/>
-      <source>The grading value to use for netgen meshing</source>
-      <translation>De graderingswaarde die gebruikt moet worden voor de netgen meshing</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dae.ui" line="181"/>
+      <location filename="../ui/preferences-dae.ui" line="187"/>
       <source>Segments per edge</source>
       <translation>Segmenten per rand</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="188"/>
-      <source>The maximum number of segments per edge</source>
-      <translation>Het maximum aantal segmenten per rand</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dae.ui" line="211"/>
+      <location filename="../ui/preferences-dae.ui" line="217"/>
       <source>Segments per radius</source>
       <translation>Segmenten per straal</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="218"/>
-      <source>The number of segments per radius</source>
-      <translation>Het aantal segmenten per straal</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dae.ui" line="241"/>
-      <source>Allow second order</source>
-      <translation>Tweede volgorde toestaan</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dae.ui" line="244"/>
+      <location filename="../ui/preferences-dae.ui" line="250"/>
       <source>Second order</source>
       <translation>Tweede orde</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="261"/>
+      <location filename="../ui/preferences-dae.ui" line="267"/>
       <source>Allows optimization</source>
       <translation>Optimalisatie toestaan</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="264"/>
+      <location filename="../ui/preferences-dae.ui" line="270"/>
       <source>Optimize</source>
       <translation>Optimaliseren</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dae.ui" line="284"/>
-      <source>Allow quad faces</source>
-      <translation>Vierhoekige vlakken toestaan</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dae.ui" line="287"/>
+      <location filename="../ui/preferences-dae.ui" line="293"/>
       <source>Allow quads</source>
       <translation>Vierhoeken toestaan</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="386"/>
+      <location filename="../ui/preferences-ifc.ui" line="417"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>Gebruik triangulatieopties die in de DAE-optiespagina ingesteld zijn</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="389"/>
+      <location filename="../ui/preferences-ifc.ui" line="420"/>
       <source>Use DAE triangulation options</source>
       <translation>Gebruik DAE-triangulatieopties</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="402"/>
-      <source>Curved shapes that cannot be represented as curves in IFC are decomposed into flat facets. If this is checked, some additional calculation is done to join coplanar facets.</source>
-      <translation>Gebogen vormen die niet als curven in IFC kunnen worden weergegeven, worden afgebroken tot platte facetten. Als dit is aangevinkt, wordt een extra berekening gemaakt om de coplanaire facetten aan elkaar te verbinden.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="405"/>
+      <location filename="../ui/preferences-ifc.ui" line="438"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>Coplanaire facetten verbinden bij het trianguleren</translation>
     </message>
@@ -5094,7 +5186,7 @@ You can change that in the preferences.</translation>
       <translation>Externe geometrie van basisschetsen verwijderen indien nodig</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="61"/>
+      <location filename="../ui/preferences-ifc.ui" line="66"/>
       <source>Create clones when objects have shared geometry</source>
       <translation>Klonen maken wanneer objecten een gedeelde geometrie hebben</translation>
     </message>
@@ -5102,26 +5194,6 @@ You can change that in the preferences.</translation>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>Show this dialog when importing and exporting</source>
       <translation>Toon dit dialoogvenster bij het importeren en exporteren</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="286"/>
-      <source>If checked each object will have their Ifc Properties stored in a spreadsheet object.</source>
-      <translation>Indien aangevinkt, worden de Ifc-eigenschappen van elk object opgeslagen in een rekenbladobject.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="289"/>
-      <source>Import Ifc Properties in spreadsheet</source>
-      <translation>Importeer Ifc eigenschappen in werkblad</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="418"/>
-      <source>When exporting objects without UID, the generated UID will be stored inside the FreeCAD object for reuse next time that object is exported, which gives smaller diffs between versions</source>
-      <translation>Bij het exporteren van objecten zonder UID wordt de gegenereerde UID opgeslagen in het FreeCAD-object voor hergebruik bij de volgende keer dat het object wordt geëxporteerd, wat kleinere verschillen tussen versies geeft</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="421"/>
-      <source>Store IFC universal ID in FreeCAD objects</source>
-      <translation>IFC universal ID opslaan in FreeCAD-objecten</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="80"/>
@@ -5134,37 +5206,32 @@ You can change that in the preferences.</translation>
       <translation>Conceptconstructiestijl toepassen op subcomponenten</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="493"/>
+      <location filename="../ui/preferences-arch.ui" line="512"/>
       <source>Symbol line thickness ratio</source>
       <translation>Lijndikte-verhouding van het symbool</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="605"/>
+      <location filename="../ui/preferences-arch.ui" line="625"/>
       <source>Pattern scale</source>
       <translation>Patroonschaal</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="625"/>
-      <source>Scaling factor for patterns used by object that have a Footprint display mode</source>
-      <translation>Schaalfactor voor patronen die gebruikt worden door objecten met een Footprint-weergavemodus</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-arch.ui" line="690"/>
+      <location filename="../ui/preferences-arch.ui" line="713"/>
       <source>Open in external browser</source>
       <translation>Openen in externe browser</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="708"/>
+      <location filename="../ui/preferences-arch.ui" line="731"/>
       <source>Survey</source>
       <translation>Enquête</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="716"/>
+      <location filename="../ui/preferences-arch.ui" line="739"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
       <translation>Indien aangevinkt, zal de tekst die in het klembord wordt geplaatst de eenheid bevatten. Anders zal het een eenvoudig getal zijn, uitgedrukt in interne eenheden (millimeters)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="719"/>
+      <location filename="../ui/preferences-arch.ui" line="742"/>
       <source>Include unit when sending measurements to clipboard</source>
       <translation>Eenheid opnemen bij het verzenden van metingen naar het klembord</translation>
     </message>
@@ -5179,57 +5246,42 @@ You can change that in the preferences.</translation>
       <translation>Diameter:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="238"/>
+      <location filename="../ui/preferences-ifc.ui" line="246"/>
       <source>Split walls made of multiple layers</source>
       <translation>Splits wanden bestaande uit meerdere lagen</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="241"/>
+      <location filename="../ui/preferences-ifc.ui" line="249"/>
       <source>Split multilayer walls</source>
       <translation>Splits meerlaagse wanden</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="437"/>
-      <source>Warning, experimental feature!</source>
-      <translation>Waarschuwing, experimentele functie!</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="440"/>
+      <location filename="../ui/preferences-ifc.ui" line="478"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>IfcOpenShell serializer gebruiken indien beschikbaar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="453"/>
+      <location filename="../ui/preferences-ifc.ui" line="494"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>2D-objecten exporteren als IfcAnnotations</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="546"/>
+      <location filename="../ui/preferences-arch.ui" line="565"/>
       <source>Hidden geometry pattern</source>
       <translation>Verborgen geometriepatroon</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="326"/>
+      <location filename="../ui/preferences-arch.ui" line="345"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
       <translation>Tolerantiewaarde te gebruiken bij het controleren of 2 aangrenzende vlakken als plat zijn</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="332"/>
-      <source>Fit view during import on the imported objects. This will slow down the import, but one can watch the import.</source>
-      <translation>Weergave aanpassen tijdens het importeren van de geïmporteerde objecten. Dit zal het importeren vertragen, maar men kan er wel naar kijken.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="335"/>
+      <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>Fit view while importing</source>
       <translation>Weergave aanpassen tijdens het importeren</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="469"/>
-      <source>If this is checked, all FreeCAD object properties will be stored inside the exported objects, allowing to recreate a full parametric model on reimport.</source>
-      <translation>Indien aangevinkt, worden alle eigenschappen van FreeCAD-objecten opgeslagen in de geëxporteerde objecten, waardoor een volledig parametrisch model kan worden aangemaakt bij het opnieuw importeren.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="472"/>
+      <location filename="../ui/preferences-ifc.ui" line="514"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>Exporteer het volledige FreeCAD parametrische model</translation>
     </message>
@@ -5264,11 +5316,6 @@ You can change that in the preferences.</translation>
       <translation>Stel de eigenschap "Verplaatsen met host" standaard in op Waar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="687"/>
-      <source>If this is checked, the "Open BimServer in browser" button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</source>
-      <translation>Indien aangevinkt, opent de knop "Open BimServer in browser" de Bim-Server interface in een externe browser in plaats van de FreeCAD webwerkbank</translation>
-    </message>
-    <message>
       <location filename="../ui/preferences-archdefaults.ui" line="103"/>
       <source>Use sketches</source>
       <translation>Gebruik schetsen</translation>
@@ -5279,84 +5326,74 @@ You can change that in the preferences.</translation>
       <translation>Helpers (rasters, assen, enz...)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="304"/>
+      <location filename="../ui/preferences-ifc.ui" line="329"/>
       <source>Exclude list:</source>
       <translation>Lijst uitsluiten:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="485"/>
-      <source>If this is checked, when possible, similar entities will be used only once in the file. This can reduce the file size a lot, but will make it less easily readable by humans</source>
-      <translation>Als dit aangevinkt is, zullen, indien mogelijk, soortgelijke entiteiten slechts eenmaal in het bestand worden gebruikt. Dit kan de bestandsgrootte veel kleiner maken, maar zal het minder goed leesbaar maken voor mensen</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="488"/>
+      <location filename="../ui/preferences-ifc.ui" line="531"/>
       <source>Reuse similar entities</source>
       <translation>Gelijkaardige entiteiten hergebruiken</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="504"/>
-      <source>When possible, IFC objects that are extruded rectangles are exported as IfcRectangleProfileDef. However, some other applications notoriously have problems importing that entity. If this is your case, you can disable this here (all profiles will be exported as IfcArbitraryClosedProfileDef).</source>
-      <translation>Indien mogelijk worden IFC-objecten, die geëxtrudeerde rechthoeken zijn, als IfcRectangleProfileDef geëxporteerd. Sommige andere toepassingen hebben echter beruchte problemen met het importeren van die entiteit. Als dit uw geval is, kunt u dit hier uitschakelen (alle profielen worden geëxporteerd als IfcArbitraryClosedProfileDef).</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="507"/>
+      <location filename="../ui/preferences-ifc.ui" line="553"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation>IfcRectangleProfileDef uitschakelen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
       <source>Set "Move base" property to True by default</source>
-      <translation type="unfinished">Set "Move base" property to True by default</translation>
+      <translation>Stel de eigenschap "Verplaats basis" standaard in op Waar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="241"/>
+      <location filename="../ui/preferences-arch.ui" line="260"/>
       <source>IFC version</source>
-      <translation type="unfinished">IFC version</translation>
+      <translation>IFC-versie</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="261"/>
+      <location filename="../ui/preferences-arch.ui" line="280"/>
       <source>The IFC version will change which attributes and products are supported</source>
-      <translation type="unfinished">The IFC version will change which attributes and products are supported</translation>
+      <translation>De IFC-versie zal veranderen welke attributen en producten worden ondersteund</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="271"/>
+      <location filename="../ui/preferences-arch.ui" line="290"/>
       <source>IFC4</source>
-      <translation type="unfinished">IFC4</translation>
+      <translation>IFC4</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-arch.ui" line="276"/>
+      <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>IFC2X3</source>
-      <translation type="unfinished">IFC2X3</translation>
+      <translation>IFC2X3</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1071"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>Ruimtes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1118"/>
       <source>Line style:</source>
-      <translation type="unfinished">Line style:</translation>
+      <translation>Lijnstijl:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1135"/>
       <source>Solid</source>
-      <translation>Solid</translation>
+      <translation>Volumemodel</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1140"/>
       <source>Dashed</source>
-      <translation type="unfinished">Dashed</translation>
+      <translation>Gestreept</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1145"/>
       <source>Dotted</source>
-      <translation type="unfinished">Dotted</translation>
+      <translation>Gestippeld</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1150"/>
       <source>Dashdot</source>
-      <translation type="unfinished">Dashdot</translation>
+      <translation>Streep-stip</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="1158"/>
@@ -5364,90 +5401,370 @@ You can change that in the preferences.</translation>
       <translation>Lijnkleur</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="520"/>
-      <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects as standard cases when the necessary conditions are met.</source>
-      <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects as standard cases when the necessary conditions are met.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc.ui" line="348"/>
+      <location filename="../ui/preferences-ifc.ui" line="378"/>
       <source>Import full FreeCAD parametric definitions if available</source>
-      <translation type="unfinished">Import full FreeCAD parametric definitions if available</translation>
+      <translation>Importeer de volledige FreeCAD parametrische definities indien beschikbaar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="523"/>
+      <location filename="../ui/preferences-ifc.ui" line="572"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation type="unfinished">Auto-detect and export as standard cases when applicable</translation>
+      <translation>Automatisch detecteren en exporteren als standaardgevallen indien van toepassing</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="536"/>
-      <source>When exporting an IFC  file, if no site if found in the FreeCAD document, a default one will be added. A site is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</source>
-      <translation type="unfinished">When exporting an IFC  file, if no site if found in the FreeCAD document, a default one will be added. A site is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</translation>
+      <location filename="../ui/preferences-arch.ui" line="223"/>
+      <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
+      <translation type="unfinished">If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="539"/>
-      <source>Add default site if none is found in the document</source>
-      <translation type="unfinished">Add default site if none is found in the document</translation>
+      <location filename="../ui/preferences-arch.ui" line="226"/>
+      <source>Use material color as shape color</source>
+      <translation type="unfinished">Use material color as shape color</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="552"/>
-      <source>When exporting an IFC file, if no building if found in the FreeCAD document, a default one will be added.&lt;br/&gt;&lt;b&gt;Warning&lt;/b&gt;: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file. However, at FreeCAD, we believe having a building should not be mandatory, and this option is there so we have a chance to show our point of view to the world and try to convince others.</source>
-      <translation type="unfinished">When exporting an IFC file, if no building if found in the FreeCAD document, a default one will be added.&lt;br/&gt;&lt;b&gt;Warning&lt;/b&gt;: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file. However, at FreeCAD, we believe having a building should not be mandatory, and this option is there so we have a chance to show our point of view to the world and try to convince others.</translation>
+      <location filename="../ui/preferences-arch.ui" line="585"/>
+      <source>This is the SVG stroke-dasharray property to apply
+to projections of hidden objects.</source>
+      <translation type="unfinished">This is the SVG stroke-dasharray property to apply
+to projections of hidden objects.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="555"/>
-      <source>Add default building if no ne is found in the document (no standard)</source>
-      <translation type="unfinished">Add default building if no ne is found in the document (no standard)</translation>
+      <location filename="../ui/preferences-arch.ui" line="645"/>
+      <source>Scaling factor for patterns used by object that have
+a Footprint display mode</source>
+      <translation type="unfinished">Scaling factor for patterns used by object that have
+a Footprint display mode</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="571"/>
-      <source>When exporting an IFC  file, if no building storey if found in the FreeCAD document, a default one will be added. A building storey is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</source>
-      <translation type="unfinished">When exporting an IFC  file, if no building storey if found in the FreeCAD document, a default one will be added. A building storey is not mandatory by the IFC standard, but it is a common practice to always have at least one in the file.</translation>
+      <location filename="../ui/preferences-arch.ui" line="688"/>
+      <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
+      <translation type="unfinished">The URL of a bim server instance (www.bimserver.org) to connect to.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="574"/>
-      <source>Add default building storey if none is found in the document</source>
-      <translation type="unfinished">Add default building storey if none is found in the document</translation>
+      <location filename="../ui/preferences-arch.ui" line="708"/>
+      <source>If this is selected, the "Open BimServer in browser"
+button will open the Bim Server interface in an external browser
+instead of the FreeCAD web workbench</source>
+      <translation type="unfinished">If this is selected, the "Open BimServer in browser"
+button will open the Bim Server interface in an external browser
+instead of the FreeCAD web workbench</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dae.ui" line="41"/>
+      <source>All dimensions in the file will be scaled with this factor</source>
+      <translation type="unfinished">All dimensions in the file will be scaled with this factor</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dae.ui" line="74"/>
+      <source>Meshing program that should be used.
+If using Netgen, make sure that it is available.</source>
+      <translation type="unfinished">Meshing program that should be used.
+If using Netgen, make sure that it is available.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dae.ui" line="123"/>
+      <source>Tessellation value to use with the Builtin and the Mefisto meshing program.</source>
+      <translation type="unfinished">Tessellation value to use with the Builtin and the Mefisto meshing program.</translation>
+    </message>
+    <message encoding="UTF-8">
+      <location filename="../ui/preferences-dae.ui" line="162"/>
+      <source>Grading value to use for meshing using Netgen.
+This value describes how fast the mesh size decreases.
+The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
+      <translation type="unfinished">Grading value to use for meshing using Netgen.
+This value describes how fast the mesh size decreases.
+The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dae.ui" line="194"/>
+      <source>Maximum number of segments per edge</source>
+      <translation type="unfinished">Maximum number of segments per edge</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dae.ui" line="224"/>
+      <source>Number of segments per radius</source>
+      <translation type="unfinished">Number of segments per radius</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dae.ui" line="247"/>
+      <source>Allow a second order mesh</source>
+      <translation type="unfinished">Allow a second order mesh</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dae.ui" line="290"/>
+      <source>Allow quadrilateral faces</source>
+      <translation type="unfinished">Allow quadrilateral faces</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="45"/>
+      <source>Shows verbose debug messages during import and export
+of IFC files in the Report view panel</source>
+      <translation type="unfinished">Shows verbose debug messages during import and export
+of IFC files in the Report view panel</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="62"/>
+      <source>Clones are used when objects have shared geometry
+One object is the base object, the others are clones.</source>
+      <translation type="unfinished">Clones are used when objects have shared geometry
+One object is the base object, the others are clones.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="193"/>
+      <source>Only subtypes of the specified element will be imported.
+Keep the element IfcProduct to import all building elements.</source>
+      <translation type="unfinished">Only subtypes of the specified element will be imported.
+Keep the element IfcProduct to import all building elements.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="212"/>
+      <source>Openings will be imported as subtractions, otherwise wall shapes
+will already have their openings subtracted</source>
+      <translation type="unfinished">Openings will be imported as subtractions, otherwise wall shapes
+will already have their openings subtracted</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="229"/>
+      <source>The importer will try to detect extrusions.
+Note that this might slow things down.</source>
+      <translation type="unfinished">The importer will try to detect extrusions.
+Note that this might slow things down.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="262"/>
+      <source>Object names will be prefixed with the IFC ID number</source>
+      <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="278"/>
+      <source>If several materials with the same name and color are found in the IFC file,
+they will be treated as one.</source>
+      <translation type="unfinished">If several materials with the same name and color are found in the IFC file,
+they will be treated as one.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="282"/>
+      <source>Merge materials with same name and same color</source>
+      <translation type="unfinished">Merge materials with same name and same color</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="295"/>
+      <source>Each object will have their IFC properties stored in a spreadsheet object</source>
+      <translation type="unfinished">Each object will have their IFC properties stored in a spreadsheet object</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="298"/>
+      <source>Import IFC properties in spreadsheet</source>
+      <translation type="unfinished">Import IFC properties in spreadsheet</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="311"/>
+      <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
+      <translation type="unfinished">IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="314"/>
+      <source>Allow invalid shapes</source>
+      <translation type="unfinished">Allow invalid shapes</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="336"/>
+      <source>Comma-separated list of IFC entities to be excluded from imports</source>
+      <translation type="unfinished">Comma-separated list of IFC entities to be excluded from imports</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="357"/>
+      <source>Fit view during import on the imported objects.
+This will slow down the import, but one can watch the import.</source>
+      <translation type="unfinished">Fit view during import on the imported objects.
+This will slow down the import, but one can watch the import.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="374"/>
+      <source>Creates a full parametric model on import using stored
+FreeCAD object properties</source>
+      <translation type="unfinished">Creates a full parametric model on import using stored
+FreeCAD object properties</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="400"/>
+      <source>Some IFC viewers don't like objects exported as extrusions.
+Use this to force all objects to be exported as BREP geometry.</source>
+      <translation type="unfinished">Some IFC viewers don't like objects exported as extrusions.
+Use this to force all objects to be exported as BREP geometry.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="433"/>
+      <source>Curved shapes that cannot be represented as curves in IFC
+are decomposed into flat facets.
+If this is checked, additional calculation is done to join coplanar facets.</source>
+      <translation type="unfinished">Curved shapes that cannot be represented as curves in IFC
+are decomposed into flat facets.
+If this is checked, additional calculation is done to join coplanar facets.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="451"/>
+      <source>When exporting objects without unique ID (UID), the generated UID
+will be stored inside the FreeCAD object for reuse next time that object
+is exported. This leads to smaller differences between file versions.</source>
+      <translation type="unfinished">When exporting objects without unique ID (UID), the generated UID
+will be stored inside the FreeCAD object for reuse next time that object
+is exported. This leads to smaller differences between file versions.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="456"/>
+      <source>Store IFC unique ID in FreeCAD objects</source>
+      <translation type="unfinished">Store IFC unique ID in FreeCAD objects</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="472"/>
+      <source>IFCOpenShell is a library that allows to import IFC files.
+Its serializer functionality allows to give it an OCC shape and it will
+produce adequate IFC geometry: NURBS, faceted, or anything else.
+Note: The serializer is still an experimental feature!</source>
+      <translation type="unfinished">IFCOpenShell is a library that allows to import IFC files.
+Its serializer functionality allows to give it an OCC shape and it will
+produce adequate IFC geometry: NURBS, faceted, or anything else.
+Note: The serializer is still an experimental feature!</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="491"/>
+      <source>2D objects will be exported as IfcAnnotation</source>
+      <translation type="unfinished">2D objects will be exported as IfcAnnotation</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="510"/>
+      <source>All FreeCAD object properties will be stored inside the exported objects,
+allowing to recreate a full parametric model on reimport.</source>
+      <translation type="unfinished">All FreeCAD object properties will be stored inside the exported objects,
+allowing to recreate a full parametric model on reimport.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="527"/>
+      <source>When possible, similar entities will be used only once in the file if possible.
+This can reduce the file size a lot, but will make it less easily readable.</source>
+      <translation type="unfinished">When possible, similar entities will be used only once in the file if possible.
+This can reduce the file size a lot, but will make it less easily readable.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="547"/>
+      <source>When possible, IFC objects that are extruded rectangles will be
+exported as IfcRectangleProfileDef.
+However, some other applications might have problems importing that entity.
+If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</source>
+      <translation type="unfinished">When possible, IFC objects that are extruded rectangles will be
+exported as IfcRectangleProfileDef.
+However, some other applications might have problems importing that entity.
+If this is your case, you can disable this and then all profiles will be exported as IfcArbitraryClosedProfileDef.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="566"/>
+      <source>Some IFC types such as IfcWall or IfcBeam have special standard versions
+like IfcWallStandardCase or IfcBeamStandardCase.
+If this option is turned on, FreeCAD will automatically export such objects
+as standard cases when the necessary conditions are met.</source>
+      <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions
+like IfcWallStandardCase or IfcBeamStandardCase.
+If this option is turned on, FreeCAD will automatically export such objects
+as standard cases when the necessary conditions are met.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="585"/>
+      <source>If no site is found in the FreeCAD document, a default one will be added.
+A site is not mandatory but a common practice is to have at least one in the file.</source>
+      <translation type="unfinished">If no site is found in the FreeCAD document, a default one will be added.
+A site is not mandatory but a common practice is to have at least one in the file.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="589"/>
+      <source>Add default site if one is not found in the document</source>
+      <translation type="unfinished">Add default site if one is not found in the document</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="602"/>
+      <source>If no building is found in the FreeCAD document, a default one will be added.
+Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
+However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</source>
+      <translation type="unfinished">If no building is found in the FreeCAD document, a default one will be added.
+Warning: The IFC standard asks for at least one building in each file. By turning this option off, you will produce a non-standard IFC file.
+However, at FreeCAD, we believe having a building should not be mandatory, and this option is there to have a chance to demonstrate our point of view.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="607"/>
+      <source>Add default building if one is not found in the document (no standard)</source>
+      <translation type="unfinished">Add default building if one is not found in the document (no standard)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="623"/>
+      <source>If no building storey is found in the FreeCAD document, a default one will be added.
+A building storey is not mandatory but a common practice to have at least one in the file.</source>
+      <translation type="unfinished">If no building storey is found in the FreeCAD document, a default one will be added.
+A building storey is not mandatory but a common practice to have at least one in the file.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="627"/>
+      <source>Add default building storey if one is not found in the document</source>
+      <translation type="unfinished">Add default building storey if one is not found in the document</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="642"/>
+      <source>IFC file units</source>
+      <translation type="unfinished">IFC file units</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="649"/>
+      <source>The units you want your IFC file to be exported to. Note that IFC file are ALWAYS written in metric units. Imperial units are only a conversion applied on top of it. But some BIM applications will use this to choose which unit to work with when opening the file.</source>
+      <translation type="unfinished">The units you want your IFC file to be exported to. Note that IFC file are ALWAYS written in metric units. Imperial units are only a conversion applied on top of it. But some BIM applications will use this to choose which unit to work with when opening the file.</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="659"/>
+      <source>Metric</source>
+      <translation type="unfinished">Metric</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-ifc.ui" line="664"/>
+      <source>Imperial</source>
+      <translation type="unfinished">Imperial</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="92"/>
+      <location filename="../../InitGui.py" line="109"/>
       <source>Arch tools</source>
       <translation>Arch-gereedschappen</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="93"/>
-      <source>Draft tools</source>
-      <translation>Ontwerpgereedschappen</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="94"/>
-      <source>Draft mod tools</source>
-      <translation>Ontwerpmoduleringsgereedschappen</translation>
     </message>
   </context>
   <context>
     <name>arch</name>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
+      <location filename="../../InitGui.py" line="129"/>
       <source>&amp;Draft</source>
       <translation>&amp;Schets</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="98"/>
+      <location filename="../../InitGui.py" line="129"/>
       <source>Utilities</source>
       <translation>Hulpmiddelen</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="99"/>
-      <source>Snapping</source>
-      <translation>Magnetisch uitlijnen</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="96"/>
+      <location filename="../../InitGui.py" line="118"/>
       <source>&amp;Arch</source>
       <translation>&amp;Arch</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="120"/>
+      <source>Creation</source>
+      <translation type="unfinished">Creation</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="123"/>
+      <source>Annotation</source>
+      <translation>Aantekening</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="126"/>
+      <source>Modification</source>
+      <translation type="unfinished">Modification</translation>
     </message>
   </context>
 </TS>

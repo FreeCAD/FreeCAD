@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sr" sourcelanguage="en">
+<TS version="2.1" language="sr" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation type="unfinished">Error: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation type="unfinished">Attachment Offset:</translation>
@@ -132,11 +137,6 @@
       <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -146,6 +146,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Computing the result failed with an error: 
 
 {err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -378,7 +396,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="318"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Curve</translation>
+      <translation>Крива</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="319"/>
@@ -402,13 +420,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="322"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Parabola</translation>
+      <translation>Парабола</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="323"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Hyperbola</translation>
+      <translation>Хипербола</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="325"/>
@@ -543,7 +561,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="287"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Center of mass</translation>
+      <translation>Центар масе</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="288"/>
@@ -618,7 +636,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="203"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's X</translation>
+      <translation>X координата објекта</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="204"/>
@@ -631,7 +649,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="206"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Y</translation>
+      <translation>Y координата објекта</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="207"/>
@@ -643,7 +661,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Object's Z</translation>
+      <translation>Z координата објекта</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="212"/>
@@ -836,13 +854,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Нормално на површ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Линија нормална на површ у тачки.</translation>
     </message>
   </context>
   <context>
@@ -3860,7 +3878,7 @@ Please check one or more edge entities first.</source>
       <source>Maximum angular deflection</source>
       <translation type="unfinished">Maximum angular deflection</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -4084,7 +4102,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../Mirroring.ui" line="41"/>
       <source>Mirror plane:</source>
-      <translation type="unfinished">Mirror plane:</translation>
+      <translation>Раван пресликавања:</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="49"/>
@@ -4396,7 +4414,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="304"/>
       <source>unknown error</source>
-      <translation type="unfinished">unknown error</translation>
+      <translation>непозната грешка</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
@@ -4923,7 +4941,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>Invalid Point On Curve</source>
-      <translation type="unfinished">Invalid Point On Curve</translation>
+      <translation>Неважећа тачка на криви</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="103"/>
@@ -4933,7 +4951,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
       <source>Invalid Point On Surface</source>
-      <translation type="unfinished">Invalid Point On Surface</translation>
+      <translation>Неважећа тачка на површи</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="105"/>
@@ -4953,7 +4971,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No Curve On Surface</source>
-      <translation type="unfinished">No Curve On Surface</translation>
+      <translation>Површ без криве</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
@@ -5201,7 +5219,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="79"/>
       <source>Edit mirror plane</source>
-      <translation type="unfinished">Edit mirror plane</translation>
+      <translation>Измени раван пресликавања</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="276"/>

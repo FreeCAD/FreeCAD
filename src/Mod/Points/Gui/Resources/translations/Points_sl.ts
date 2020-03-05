@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sl" sourcelanguage="en">
+<TS version="2.1" language="sl" sourcelanguage="en">
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="188"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Points</source>
       <translation>Točke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Convert to points...</source>
       <translation>Pretvori v točke …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="191"/>
+      <location filename="../../Command.cpp" line="193"/>
       <source>Convert to points</source>
       <translation>Pretvori v točke</translation>
     </message>
@@ -42,18 +42,18 @@
   <context>
     <name>CmdPointsImport</name>
     <message>
-      <location filename="../../Command.cpp" line="65"/>
+      <location filename="../../Command.cpp" line="67"/>
       <source>Points</source>
       <translation>Točke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="66"/>
+      <location filename="../../Command.cpp" line="68"/>
       <source>Import points...</source>
       <translation>Uvozi točke …</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="67"/>
       <location filename="../../Command.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="71"/>
       <source>Imports a point cloud</source>
       <translation>Uvozi točkovni oblak</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="319"/>
       <source>Points</source>
       <translation>Točke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>Merge point clouds</source>
       <translation>Združi oblake točk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
-      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="321"/>
+      <location filename="../../Command.cpp" line="323"/>
       <source>Merge several point clouds into one</source>
       <translation>Združi več oblakov točk v enega</translation>
     </message>
@@ -80,37 +80,56 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Points</source>
       <translation>Točke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="274"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Cut point cloud</source>
       <translation>Izreži točkovni oblak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="275"/>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="276"/>
+      <location filename="../../Command.cpp" line="278"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Izreži točkovni oblak z izbranim mnogokotnikom</translation>
     </message>
   </context>
   <context>
-    <name>CmdPointsTransform</name>
+    <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="151"/>
+      <location filename="../../Command.cpp" line="361"/>
       <source>Points</source>
       <translation>Točke</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="362"/>
+      <source>Structured point cloud</source>
+      <translation type="unfinished">Structured point cloud</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="363"/>
+      <location filename="../../Command.cpp" line="365"/>
+      <source>Convert points to structured point cloud</source>
+      <translation type="unfinished">Convert points to structured point cloud</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdPointsTransform</name>
+    <message>
       <location filename="../../Command.cpp" line="152"/>
+      <source>Points</source>
+      <translation>Točke</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="153"/>
       <source>Transform Points</source>
       <translation>Preoblikuj točke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
-      <location filename="../../Command.cpp" line="155"/>
+      <location filename="../../Command.cpp" line="154"/>
+      <location filename="../../Command.cpp" line="156"/>
       <source>Test to transform a point cloud</source>
       <translation>Preizkusite za preoblikovanje točkovnega oblaka</translation>
     </message>
@@ -263,24 +282,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="79"/>
+      <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>Point formats</source>
       <translation>Formati točk</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="79"/>
+      <location filename="../../Command.cpp" line="81"/>
       <location filename="../../Command.cpp" line="129"/>
       <source>All Files</source>
       <translation>Vse datoteke</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="200"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="201"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Enter maximum distance:</source>
       <translation>Vnesite največjo razdaljo:</translation>
     </message>

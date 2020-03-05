@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="de" sourcelanguage="en">
+<TS version="2.1" language="de" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation>Fehler: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation>Befestigungsversatz:</translation>
@@ -132,11 +137,6 @@
       <translation>Wählen Sie zuerst eine Form aus, die ein Verbund ist! Das zweite ausgewählte Element (optional) wird als Schablone behandelt.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Ungültige Auswahl</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -148,6 +148,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 {err}
 
 klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen", um abzubrechen.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Ungültige Auswahl</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
   </context>
   <context>
@@ -1784,7 +1802,7 @@ klicken Sie auf "Weiter", um das Element trotzdem zu erstellen, oder "Abbrechen"
     <message>
       <location filename="../../Command.cpp" line="556"/>
       <source>Join walled objects</source>
-      <translation>Verbinden von Mauer-Elementen</translation>
+      <translation>Verbinden von Wandungen</translation>
     </message>
   </context>
   <context>
@@ -3857,7 +3875,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kantenelemente.</translation>
       <source>Maximum angular deflection</source>
       <translation>Maximale Winkelabweichung</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -4884,7 +4902,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
-      <translation>Flächenverbund</translation>
+      <translation>Verbund</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
@@ -5275,7 +5293,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Compound</source>
-      <translation>Flächenverbund</translation>
+      <translation>Verbund</translation>
     </message>
   </context>
 </TS>

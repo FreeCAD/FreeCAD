@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="kab" sourcelanguage="en">
+<TS version="2.1" language="kab" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -876,27 +876,27 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
       <source>World</source>
       <translation>Monde</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50mm / 5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20mm / 2°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10mm / 1°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5mm / 0,5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1mm / 0,1°</translation>

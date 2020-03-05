@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fi" sourcelanguage="en">
+<TS version="2.1" language="fi" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
       <source>Documents</source>
-      <translation type="unfinished">Documents</translation>
+      <translation>Asiakirjat</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Tip</source>
-      <translation type="unfinished">Tip</translation>
+      <translation>Vinkki</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Esimerkki</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Käsikirja</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation type="unfinished">Available addons</translation>
+      <translation>Saatavilla olevat lisäosat</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
       <source>version</source>
-      <translation type="unfinished">version</translation>
+      <translation>Versio</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation type="unfinished">Create new...</translation>
+      <translation>Luo uusi "...</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
@@ -196,17 +196,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
       <source>Creation date</source>
-      <translation type="unfinished">Creation date</translation>
+      <translation>Luontipäivä</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>Last modification</source>
-      <translation type="unfinished">Last modification</translation>
+      <translation>Viimeksi muokattu</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Muistiinpanot</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
-      <translation type="unfinished">Start page</translation>
+      <translation>Aloitus sivu</translation>
     </message>
   </context>
   <context>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>Sisältö</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>

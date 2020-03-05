@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="nl" sourcelanguage="en">
+<TS version="2.1" language="nl" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>General documentation</source>
-      <translation>Algemene documentatie</translation>
+      <translation>Gebruikersdocumentatie</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Dit gedeelte bevat documentatie die nuttig is voor FreeCAD gebruikers het algemeen: een lijst van alle de werkbanken, gedetailleerde instructies over het gebruik en de installatie van FreeCAD, zelfstudies, en alles wat je nodig hebt om te beginnen.</translation>
+      <translation>Deze sectie bevat documentatie die nuttig is voor FreeCAD-gebruikers in het algemeen: een lijst van alle werkbanken, gedetailleerde instructies over het installeren en gebruiken van de FreeCAD applicatie, tutorials, en alles wat je nodig hebt om te beginnen.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation>Beschikbare addons</translation>
+      <translation>Beschikbare uitbreidingen</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>Om een op maat gemaakte map hier weer te laten geven kunt u dat in het volgende menu instellen: Bewerken-&gt; Voorkeuren-&gt; Start-&gt; Custom map configureren</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation>Een optioneel HTML-sjabloon die wordt gebruikt in plaats van de standaard start-pagina.</translation>
+      <translation>Een optioneel HTML-sjabloon die wordt gebruikt in plaats van de standaard startpagina.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
       <source>Show notepad</source>
-      <translation>Kladblok weergeven</translation>
+      <translation>Toon notitieblok</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation>De lettertypefamilie die gebruikt moet worden op de startpagina. Kan een lettertypenaam zijn of een door komma's gescheiden reeks fallback-lettertypen</translation>
+      <translation>De lettertypefamilie die gebruikt moet worden op de startpagina. Kan een lettertypenaam zijn of een door komma's gescheiden reeks reservelettertypen</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>

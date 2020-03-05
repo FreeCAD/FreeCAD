@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="it" sourcelanguage="en">
+<TS version="2.1" language="it" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="63"/>
       <source>Create trajectory</source>
-      <translation>Crea traiettoria</translation>
+      <translation>Crea una traiettoria</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="64"/>
@@ -65,7 +65,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="321"/>
       <source>Edge to Trajectory...</source>
-      <translation>Da bordo a traiettoria...</translation>
+      <translation>Crea una traiettoria da un bordo...</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="322"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="96"/>
       <source>Insert in trajectory</source>
-      <translation>Inserisci in traiettoria</translation>
+      <translation>Inserisci un punto nella traiettoria</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="97"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="153"/>
       <source>Insert in trajectory</source>
-      <translation>Inserisci in traiettoria</translation>
+      <translation>Inserisci un punto nella traiettoria</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="154"/>
@@ -875,27 +875,27 @@
       <source>World</source>
       <translation>Globale</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50mm / 5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20mm / 2°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10mm / 1°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5mm / 0.5°</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1mm / 0.1°</translation>

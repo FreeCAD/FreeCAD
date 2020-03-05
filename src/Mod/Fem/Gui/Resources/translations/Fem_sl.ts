@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sl" sourcelanguage="en">
+<TS version="2.1" language="sl" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
@@ -12,6 +12,11 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
       <translation>Če želite dodati sklice, jih izberite v pogledu 3D in kliknite "Dodaj".</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
+      <source>To add references: select them in the 3D view  and click "Add".</source>
+      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
     </message>
   </context>
   <context>
@@ -106,7 +111,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation>Ustvari MKE robni pogoj izvor telesne toplote</translation>
+      <translation>Ustvari MKE pogoj volumskega izvora toplote</translation>
     </message>
   </context>
   <context>
@@ -162,6 +167,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_ConstraintTie</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="261"/>
+      <source>Constraint tie</source>
+      <translation type="unfinished">Constraint tie</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="266"/>
+      <source>Creates a FEM constraint tie</source>
+      <translation type="unfinished">Creates a FEM constraint tie</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_ElementFluid1D</name>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
@@ -172,6 +190,11 @@
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
       <translation>Ustvari razdelek MKE Tekočine 1D toka</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="287"/>
+      <source>Creates a FEM fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
     </message>
   </context>
   <context>
@@ -197,7 +220,7 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Ustvari MKE debelino stene profila</translation>
+      <translation>Ustvari debelino MKE lupine</translation>
     </message>
   </context>
   <context>
@@ -210,7 +233,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a FEM beam rotation</source>
-      <translation>Ustvari sukanje nosilca za MKE</translation>
+      <translation>Ustvari vrtenje nosilca za MKE</translation>
     </message>
   </context>
   <context>
@@ -273,9 +296,9 @@
       <translation>Fluxsolver toplota</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="530"/>
-      <source>Fluxsolver heat</source>
-      <translation>Fluxsolver toplota</translation>
+      <location filename="../../../femcommands/commands.py" line="450"/>
+      <source>Creates a FEM equation for heat</source>
+      <translation type="unfinished">Creates a FEM equation for heat</translation>
     </message>
   </context>
   <context>
@@ -299,9 +322,9 @@
       <translation>Snov za tekočino</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
-      <source>Material for fluid</source>
-      <translation>Snov za tekočino</translation>
+      <location filename="../../../femcommands/commands.py" line="495"/>
+      <source>Creates a FEM material for fluid</source>
+      <translation type="unfinished">Creates a FEM material for fluid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -326,18 +349,18 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Ustvari nelinearen material</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="618"/>
-      <source>Creates a nonlinear mechanical material</source>
-      <translation>Ustvari nelinearen material</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Armirana snov (beton)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="595"/>
+      <source>Creates a material for reinforced matrix material such as concrete</source>
+      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
     </message>
   </context>
   <context>
@@ -348,14 +371,14 @@
       <translation>Snov za trdnino</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Material for solid</source>
-      <translation>Snov za trdnino</translation>
+      <location filename="../../../femcommands/commands.py" line="616"/>
+      <source>Creates a FEM material for solid</source>
+      <translation type="unfinished">Creates a FEM material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
       <source>FEM material for solid</source>
-      <translation>MKE material za trdnine</translation>
+      <translation>MKE material za trdnino</translation>
     </message>
   </context>
   <context>
@@ -436,9 +459,9 @@
       <translation>Ploskovje MKE iz Netgenove oblike</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="957"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation>Ploskovje MKE iz Netgenove oblike</translation>
+      <location filename="../../../femcommands/commands.py" line="838"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Ustvari MKE prostorninsko pslokovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
     </message>
   </context>
   <context>
@@ -537,9 +560,9 @@
       <translation>Reševalnik Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1174"/>
-      <source>Solver Elmer</source>
-      <translation>Reševalnik Elmer</translation>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
+      <source>Creates a FEM solver Elmer</source>
+      <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -634,6 +657,11 @@
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
       <translation>Izberi elemente telesa, ki bojo dodani na seznam. Za dodajanje telesa klikni "Dodaj".</translation>
     </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+    </message>
   </context>
   <context>
     <name>_Selector</name>
@@ -641,11 +669,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
       <translation>Dodaj</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Odstrani</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
@@ -710,7 +733,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Ustvari MKE debelino stene profila</translation>
+      <translation>Ustvari debelino MKE lupine</translation>
     </message>
   </context>
   <context>
@@ -844,7 +867,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation>Ustvari in uredi določilo mehanskega materiala.</translation>
+      <translation>Ustvari ali uredi opredelitev materiala.</translation>
     </message>
   </context>
   <context>
@@ -935,7 +958,7 @@
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Ustvari MKE debelino stene profila</translation>
+      <translation>Ustvari debelino MKE lupine</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
@@ -1077,7 +1100,7 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation>Ustvari in uredi določilo mehanskega materiala.</translation>
+      <translation>Ustvari ali uredi opredelitev materiala.</translation>
     </message>
   </context>
   <context>

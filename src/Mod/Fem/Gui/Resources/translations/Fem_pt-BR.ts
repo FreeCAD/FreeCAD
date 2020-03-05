@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pt-BR" sourcelanguage="en">
+<TS version="2.1" language="pt-BR" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation>Selecione Faces/Arestas/Vertexes</translation>
+      <translation>Selecione Faces/Arestas/Vertices</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation>Para acrescentar referências, selecione elas na vista 3D e clique "Acrescentar".</translation>
+      <translation>Para acrescentar referências, selecione-as na vista 3D e clique "Acrescentar".</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
+      <source>To add references: select them in the 3D view  and click "Add".</source>
+      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
     </message>
   </context>
   <context>
@@ -158,7 +163,20 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation>Cria uma ação FEM de peso próprio</translation>
+      <translation>Cria uma restrição de peso próprio</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintTie</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="261"/>
+      <source>Constraint tie</source>
+      <translation type="unfinished">Constraint tie</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="266"/>
+      <source>Creates a FEM constraint tie</source>
+      <translation type="unfinished">Creates a FEM constraint tie</translation>
     </message>
   </context>
   <context>
@@ -172,6 +190,11 @@
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
       <translation>Cria uma seção de fluido FEM para fluxo 1D</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="287"/>
+      <source>Creates a FEM fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
     </message>
   </context>
   <context>
@@ -205,12 +228,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="278"/>
       <source>Beam rotation</source>
-      <translation>Rotação do viga</translation>
+      <translation>Rotação de viga</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a FEM beam rotation</source>
-      <translation>Cria uma rotação do viga FEM</translation>
+      <translation>Cria uma rotação de viga FEM</translation>
     </message>
   </context>
   <context>
@@ -270,12 +293,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="365"/>
       <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <translation>Fluxsolver calor</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="530"/>
-      <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <location filename="../../../femcommands/commands.py" line="450"/>
+      <source>Creates a FEM equation for heat</source>
+      <translation type="unfinished">Creates a FEM equation for heat</translation>
     </message>
   </context>
   <context>
@@ -299,9 +322,9 @@
       <translation>Material para fluido</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
-      <source>Material for fluid</source>
-      <translation>Material para fluido</translation>
+      <location filename="../../../femcommands/commands.py" line="495"/>
+      <source>Creates a FEM material for fluid</source>
+      <translation type="unfinished">Creates a FEM material for fluid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
@@ -326,18 +349,18 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation>Cria um material mecânico não-linear</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="618"/>
-      <source>Creates a nonlinear mechanical material</source>
-      <translation>Cria um material mecânico não-linear</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Material reforçado (concreto)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="595"/>
+      <source>Creates a material for reinforced matrix material such as concrete</source>
+      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
     </message>
   </context>
   <context>
@@ -348,9 +371,9 @@
       <translation>Material para sólido</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Material for solid</source>
-      <translation>Material para sólido</translation>
+      <location filename="../../../femcommands/commands.py" line="616"/>
+      <source>Creates a FEM material for solid</source>
+      <translation type="unfinished">Creates a FEM material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -436,9 +459,9 @@
       <translation>Forma para malha FEM usando Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="957"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation>Forma para malha FEM usando Netgen</translation>
+      <location filename="../../../femcommands/commands.py" line="838"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Criar uma malha de volume FEM a partir de um sólido ou uma face usando Netgen</translation>
     </message>
   </context>
   <context>
@@ -537,9 +560,9 @@
       <translation>Elmo Solver</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1174"/>
-      <source>Solver Elmer</source>
-      <translation>Elmo Solver</translation>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
+      <source>Creates a FEM solver Elmer</source>
+      <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -634,6 +657,11 @@
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
       <translation>Selecione elementos do sólido que devem ser adicionado à lista. Para adicionar o sólido clique em "Adicionar".</translation>
     </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
+    </message>
   </context>
   <context>
     <name>_Selector</name>
@@ -641,11 +669,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
       <translation>Adicionar</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Remover</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pt-BR" sourcelanguage="en">
+<TS version="2.1" language="pt-BR" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation>Esta seção contém documentação útil para os usuários do FreeCAD em geral: uma lista de todas as bancadas, instruções detalhadas sobre como instalar e usar o aplicativo FreeCAD, tutoriais e tudo o que você precisa para começar.</translation>
+      <translation>Esta seção contém documentação útil para os usuários do FreeCAD em geral: uma lista de todos os menus, instruções detalhadas sobre como instalar e usar o aplicativo FreeCAD, tutoriais e tudo o que você precisa para começar.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation>Documentação de workbenche</translation>
+      <translation>Documentação de bancadas de trabalho</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>

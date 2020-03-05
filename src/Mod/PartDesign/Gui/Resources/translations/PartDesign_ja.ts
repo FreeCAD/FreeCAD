@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>選択したスケッチを、パスやプロファイルに沿ってスイープ</translation>
+      <translation>選択したスケッチを、パスや他のプロファイルに沿ってスイープ</translation>
     </message>
   </context>
   <context>
@@ -797,7 +797,7 @@
   â¢ the selected sketch does not belong to the active Body.</source>
       <translation>要求されたフィーチャーを作成できません。原因は以下である可能性があります。
 
-・ アクティブなボディーにベースシェイプが無いので削除するマテリアルが存在しない。
+・ アクティブなボディーにベースシェイプが無くて、それらは削除されているのでマテリアルが存在しないのでしょう。
 ・ 選択されたスケッチがアクティブなボディーに属していない。</translation>
     </message>
   </context>
@@ -812,7 +812,7 @@
   â¢ the selected sketch does not belong to the active Body.</source>
       <translation>要求されたフィーチャーを作成できません。原因は以下である可能性があります。
 
-・ アクティブなボディーにベースシェイプが無いので削除するマテリアルが存在しない。
+・ アクティブなボディーにベースシェイプが無くて、それらは削除されているのでマテリアルが存在しないのでしょう。
 ・ 選択されたスケッチがアクティブなボディーに属していない。</translation>
     </message>
   </context>
@@ -827,7 +827,7 @@
   â¢ the selected sketch does not belong to the active Body.</source>
       <translation>要求されたフィーチャーを作成できません。原因は以下である可能性があります。
 
-・ アクティブなボディーにベースシェイプが無いので削除するマテリアルが存在しない。
+・ アクティブなボディーにベースシェイプが無くて、それらは削除されているのでマテリアルが存在しないのでしょう。
 ・ 選択されたスケッチがアクティブなボディーに属していない。</translation>
     </message>
   </context>

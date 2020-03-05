@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="1405"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>Potiahnúť vybraný profil cez iné profily prierezov</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Vytvoriť lokálny súradnicový systém</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Vytvoriť nový lokálny súradnicový systém</translation>
     </message>
   </context>
   <context>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="340"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Vytvoriť klon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="341"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="1665"/>
       <source>Draft</source>
-      <translation type="unfinished">Draft</translation>
+      <translation>Ponor</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1666"/>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="1131"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>Vytvoriť dieru s vybratou skicou</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Migrovať dokument na moderný postup PartDesign</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1879"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>Vytvoriť zrkadlový prvok</translation>
     </message>
   </context>
   <context>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="853"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation type="unfinished">Moves the selected object and insert it after another object</translation>
+      <translation>Posunúť vybratý objekt a vložiť ho za iný objekt</translation>
     </message>
   </context>
   <context>
@@ -353,12 +353,12 @@
     <message>
       <location filename="../../Command.cpp" line="2115"/>
       <source>Create MultiTransform</source>
-      <translation type="unfinished">Create MultiTransform</translation>
+      <translation>Vytvoriť multi transformáciu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2116"/>
       <source>Create a multitransform feature</source>
-      <translation type="unfinished">Create a multitransform feature</translation>
+      <translation>Vytvoriť prvok multi transformácie</translation>
     </message>
   </context>
   <context>
@@ -430,7 +430,7 @@
     <message>
       <location filename="../../Command.cpp" line="1084"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation type="unfinished">Create a pocket with the selected sketch</translation>
+      <translation>Vytvoriť kapsu s vybratou skicou</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@
     <message>
       <location filename="../../Command.cpp" line="2009"/>
       <source>Create a polar pattern feature</source>
-      <translation type="unfinished">Create a polar pattern feature</translation>
+      <translation>Vytvoriť prvok polárneho vzoru</translation>
     </message>
   </context>
   <context>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../Command.cpp" line="2076"/>
       <source>Create a scaled feature</source>
-      <translation type="unfinished">Create a scaled feature</translation>
+      <translation>Vytvoriť prvok úpravy mierky</translation>
     </message>
   </context>
   <context>
@@ -515,12 +515,12 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>Vytvoriť naviazaný tvar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>Vytvoriť nový naviazaný tvar</translation>
     </message>
   </context>
   <context>
@@ -533,12 +533,12 @@
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>Odoberací loft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>Potiahnúť vybratý profil cez iné profily prierezov a odstrániť ho z telesa</translation>
     </message>
   </context>
   <context>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Subtractive pipe</source>
-      <translation type="unfinished">Subtractive pipe</translation>
+      <translation>Subtraktívna rúra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>

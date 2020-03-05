@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="eu" sourcelanguage="en">
+<TS version="2.1" language="eu" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -331,10 +331,6 @@
       <translation>Esportatu fitxategia</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>Gelaxka-edukiak</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>Erakutsi kalkulu-orria</translation>
     </message>
@@ -353,6 +349,20 @@
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
       <translation>Kalkulu-orriko gelaxk(ar)en atzeko planoaren kolorea ezartzen du</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>Kalkulu-orria</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>

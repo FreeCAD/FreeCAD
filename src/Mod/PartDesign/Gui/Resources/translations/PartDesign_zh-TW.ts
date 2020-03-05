@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>建立局部座標系統</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>建立一個新的局部座標系統</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1078,7 @@
     <message>
       <location filename="../../ReferenceSelection.cpp" line="183"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation type="unfinished">Selecting this will cause circular dependency.</translation>
+      <translation>挑選這個可能導致循環依賴</translation>
     </message>
   </context>
   <context>
@@ -1116,7 +1116,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="55"/>
       <source>Boolean parameters</source>
-      <translation type="unfinished">Boolean parameters</translation>
+      <translation>布林運算參數</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="81"/>
@@ -1147,12 +1147,12 @@
     <message>
       <location filename="../../TaskChamferParameters.ui" line="22"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>新增參照</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="32"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>移除參照</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="50"/>
@@ -1170,7 +1170,7 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="73"/>
       <source> parameters</source>
-      <translation type="unfinished"> parameters</translation>
+      <translation> 參數</translation>
     </message>
   </context>
   <context>
@@ -1183,7 +1183,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="328"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>物體列表不能空白</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="339"/>
@@ -1374,12 +1374,12 @@
     <message>
       <location filename="../../TaskFilletParameters.ui" line="22"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>新增參照</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="32"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>移除參照</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="49"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="uk" sourcelanguage="en">
+<TS version="2.1" language="uk" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation type="unfinished">Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</translation>
+      <translation>Налаштувати кількість останніх файлів, які будуть показані тут, можна в меню Редагування -&gt; Налаштування -&gt; Загальні -&gt; Розмір списку останніх файлів</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation type="unfinished">This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
+      <translation>Цей розділ містить документацію, корисну для користувачів FreeCAD загалом: перелік усіх робочих столів, детальні інструкції для встановлення та використання додатку FreeCAD, навчальні посібники та все, що вам потрібно для початку.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation type="unfinished">This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</translation>
+      <translation>У цьому розділі зібрана документація для досвідчених користувачів і людей, зацікавлених в написанні скриптів python. Ви також знайдете там сховище макросів, інструкції щодо їх встановлення, використання та додаткову інформацію про налаштування FreeCAD під ваші конкретні потреби.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
@@ -246,12 +246,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Start page template</source>
-      <translation type="unfinished">Start page template</translation>
+      <translation>Шаблон початкової сторінки</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>Додатковий HTML-шаблон, який буде використовуватися замість стартової сторінки за замовчуванням.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>

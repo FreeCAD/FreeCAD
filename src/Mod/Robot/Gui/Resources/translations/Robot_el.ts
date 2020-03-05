@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="el" sourcelanguage="en">
+<TS version="2.1" language="el" sourcelanguage="en">
   <context>
     <name>CmdRobotAddToolShape</name>
     <message>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="218"/>
       <source>Set the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Ορισμός του προεπιλεγμένου προσανατολισμού για μεταγενέστερες εντολές δημιουργίας σημείου διέλευσης</translation>
     </message>
   </context>
   <context>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="256"/>
       <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Ορισμός προεπιλεγμένων τιμών ταχύτητας, επιτάχυνσης και συνέχειας για μεταγενέστερες εντολές δημιουργίας σημείου διέλευσης</translation>
     </message>
   </context>
   <context>
@@ -397,7 +397,7 @@
     <message>
       <location filename="../../Command.cpp" line="231"/>
       <source>You need at least two waypoints in a trajectory to simulate.</source>
-      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+      <translation>Απαιτούνται τουλάχιστον δύο σημεία της τροχιά για προσομοίωση.</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="88"/>
@@ -441,7 +441,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="268"/>
       <source>Set default speed</source>
-      <translation type="unfinished">Set default speed</translation>
+      <translation>Ορισμός προεπιλεγμένης τιμής ταχύτητας</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="269"/>
@@ -451,7 +451,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="278"/>
       <source>Set default continuity</source>
-      <translation type="unfinished">Set default continuity</translation>
+      <translation>Ορισμός προεπιλεγμένης τιμής συνέχειας</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="279"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="285"/>
       <source>Set default acceleration</source>
-      <translation type="unfinished">Set default acceleration</translation>
+      <translation>Ορισμός προεπιλεγμένης τιμής επιτάχυνσης</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="286"/>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../../ViewProviderTrajectory.cpp" line="164"/>
       <source>Modify</source>
-      <translation type="unfinished">Modify</translation>
+      <translation>Τροποποίηση</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
@@ -875,27 +875,27 @@
       <source>World</source>
       <translation>Κόσμος</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="287"/>
       <source>50mm / 5°</source>
       <translation>50 χιλιοστά / 5 μοίρες</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="292"/>
       <source>20mm / 2°</source>
       <translation>20 χιλιοστά / 2 μοίρες</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="297"/>
       <source>10mm / 1°</source>
       <translation>10 χιλιοστά / 1 μοίρα</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="302"/>
       <source>5mm / 0.5°</source>
       <translation>5 χιλιοστά / 0.5 μοίρες</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../TaskRobotControl.ui" line="307"/>
       <source>1mm / 0.1°</source>
       <translation>1 χιλιοστό / 0.1 μοίρες</translation>

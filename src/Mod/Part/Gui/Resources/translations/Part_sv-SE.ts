@@ -1,117 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sv-SE" sourcelanguage="en">
+<TS version="2.1" language="sv-SE" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="94"/>
       <source>No object named {name}</source>
-      <translation type="unfinished">No object named {name}</translation>
+      <translation>Inget namn på objekt {name}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="98"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>Misslyckades att tolka länk (mer än ett kolon påträffades)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {name} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>Objekt {name} är varken flyttbart eller kopplingsbart, kan inte redigera koppling</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{obj} är inte kopplingsbar. Du kan fortfarande använda kopplingsredigeringsdialogen för att justera objektet, men kopplingen kommer inte vara parametrisk.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>Koppling</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsätt</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
       <source>Edit attachment of {feat}</source>
-      <translation type="unfinished">Edit attachment of {feat}</translation>
+      <translation>Redigera koppling för {feat}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="349"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>Ignorerat. Kan inte koppla objekt till sig självt!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{obj1} depends on object being attached, can't use it for attachment</translation>
+      <translation>{obj1} har ett beroende till objektet som kopplas, kan inte använda det till koppling</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="497"/>
       <source>{mode} (add {morerefs})</source>
-      <translation type="unfinished">{mode} (add {morerefs})</translation>
+      <translation>{mode} (lägg till {morerefs})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="500"/>
       <source>{mode} (add more references)</source>
-      <translation type="unfinished">{mode} (add more references)</translation>
+      <translation>{mode} (lägg till fler referenser)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Referenskombinationer:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
       <source>Reference{i}</source>
-      <translation type="unfinished">Reference{i}</translation>
+      <translation>Referens{i}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="551"/>
       <source>Selecting...</source>
-      <translation>Väljer...</translation>
+      <translation>Markerar...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
       <source>Failed to resolve links. {err}</source>
-      <translation type="unfinished">Failed to resolve links. {err}</translation>
+      <translation>Misslyckades att följa länkar. {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
       <source>Not attached</source>
-      <translation>Inte ansluten</translation>
+      <translation>Inte kopplad</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation type="unfinished">Attached with mode {mode}</translation>
+      <translation>Kopplad i läge {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Error: {err}</source>
-      <translation type="unfinished">Error: {err}</translation>
+      <translation>Fel: {err}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Kopplingsförskjutning:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Kopplingsförskjutning (inaktiv - inte kopplad):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation type="unfinished">Attachment...</translation>
+      <translation>Koppling...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
       <source>Edit attachment of selected object.</source>
-      <translation type="unfinished">Edit attachment of selected object.</translation>
+      <translation>Redigera koppling(ar) för markerat objekt.</translation>
     </message>
   </context>
   <context>
@@ -119,22 +124,17 @@
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="58"/>
       <source>Compound Filter</source>
-      <translation type="unfinished">Compound Filter</translation>
+      <translation>Kompositionsfilter</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation type="unfinished">Compound Filter: remove some childs from a compound</translation>
+      <translation>Kompositionsfilter: ta bort några underformer från en komposition</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
-      <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
-    </message>
-    <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Markera en form som är komposition, först! Det andra markerade föremålet (valbart) kommer behandlas som en stencil.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
@@ -143,9 +143,27 @@
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Beräkning av resultatet misslyckades med ett fel:
 
 {err}
+
+Klicka på 'Fortsätt' för att skapa funktionen ändå, eller 'Avbryt' för att avbryta.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Felaktig markering</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -155,22 +173,22 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>Dela upp komposition</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
       <source>Explode compound: split up a list of shapes into separate objects</source>
-      <translation type="unfinished">Explode compound: split up a list of shapes into separate objects</translation>
+      <translation>Dela upp komposition: dela upp en lista med former till separata objekt</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
-      <translation type="unfinished">Select a shape that is a compound, first!</translation>
+      <translation>Markera en form som är en komposition, först!</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Felaktig markering</translation>
     </message>
   </context>
   <context>
@@ -178,12 +196,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
       <source>Connect objects</source>
-      <translation type="unfinished">Connect objects</translation>
+      <translation>Anslut objekt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>Förenar objekt, och bevarar tomrum.</translation>
     </message>
   </context>
   <context>
@@ -191,12 +209,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>Utklipp för objekt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>Skapar ett utklipp i ett objekt passande ett annat objekt.</translation>
     </message>
   </context>
   <context>
@@ -204,12 +222,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
-      <translation type="unfinished">Embed object</translation>
+      <translation>Omge objekt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Förenar ett objekt med ett annat, och bevarar tomrum.</translation>
     </message>
   </context>
   <context>
@@ -221,36 +239,36 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Beräkning av resultatet misslyckades med ett fel:
 
 {err}
 
- Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Klicka på 'Fortsätt' för att skapa funktionen ändå, eller 'Avbryt' för att avbryta.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Felaktig markering</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="89"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsätt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds, first!</translation>
+      <translation>Markera minst två objekt eller en eller flera kompositioner, först!</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
       <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation type="unfinished">Select base object, then the object to embed, and invoke this tool.</translation>
+      <translation>Välj grundobjekt, sen objektet som ska omges, och använd sedan detta verktyg.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</translation>
+      <translation>Välj objektet att göra ett utklipp i, sedan objektet som ska passa i utklippet, och använd sedan detta verktyg.</translation>
     </message>
   </context>
   <context>
@@ -258,12 +276,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="59"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Skapa tub</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Skapar en tub</translation>
     </message>
   </context>
   <context>
@@ -275,71 +293,71 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Computing the result failed with an error: 
+      <translation>Beräkning av resultatet misslyckades med ett fel:
 
 {err}
 
-Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+Klicka på 'Fortsätt' för att skapa funktionen ändå, eller 'Avbryt' för att avbryta.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="479"/>
       <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
+      <translation>Felaktig markering</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Fortsätt</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
       <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
+      <translation>Booleska fragment</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
       <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
+      <translation>Dela objekt där de skär varandra</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Välj minst två objekt eller en eller fler kompositioner, först! Om enbart en komposition är vald kommer underformerna att delas där dom skär varandra (annars är kompositioner där underformer skär varandra ogiltiga).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Delning till komposition</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation type="unfinished">Split object by intersections with other objects, and pack the pieces into a compound.</translation>
+      <translation>Dela ett objekt där det skär andra objekt, och gör bitarna till en komposition.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Välj minst två objekt, först! Det första är objektet som ska delas; resten är objekt som det ska skäras mot.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>Dela isär</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
       <source>Split object by intersections with other objects.</source>
-      <translation type="unfinished">Split object by intersections with other objects.</translation>
+      <translation>Dela ett objekt där det skär andra objekt.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>Boolesk XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
-      <translation type="unfinished">Remove intersection fragments</translation>
+      <translation>Ta bort skärningsfragment</translation>
     </message>
   </context>
   <context>
@@ -348,7 +366,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="312"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation>Någon</translation>
+      <translation>Vilken som</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="313"/>
@@ -390,7 +408,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="320"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
-      <translation>Koniska</translation>
+      <translation>Konisk</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="321"/>
@@ -471,43 +489,43 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Avaktiverad</translation>
+      <translation>Deaktiverad</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Fastsättning är inaktiverad. Punkt kan flyttas genom att redigera placeringsegenskaper.</translation>
+      <translation>Koppling är inaktiverad. Punkt kan flyttas genom att redigera placeringsegenskaper.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Objektets ursprung</translation>
+      <translation>Objekts origo</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="273"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkten placeras på objektets Placement.Position. Fungerar för objekt med placeringar och ellips/parabel/hyperbel-kanter.</translation>
+      <translation>Punkt placeras på objekts placeringsposition. Fungerar för objekt med placeringar och ellips-/parabel-/hyperbelkanter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="275"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Fokus1</translation>
+      <translation>Fokus 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="276"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Fokus för ellips, parabel, hyperbel.</translation>
+      <translation>Fokus för ellips, parabel och hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="278"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Fokus2</translation>
+      <translation>Fokus 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="279"/>
@@ -519,25 +537,25 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>På kanten</translation>
+      <translation>På kant</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="282"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</translation>
+      <translation>Punkt placeras på kant, parametern MapPathParameter anger vart. Dessutom, hörnpunkt kan länkas in för att skapa en projicering.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="284"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Centrum för krökning</translation>
+      <translation>Centrum för böjning</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="285"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Centrum för en kants oskulerande cirkel. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="287"/>
@@ -549,7 +567,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="288"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
+      <translation>Masscentrum för alla referenser (lika densiteter antas).</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="290"/>
@@ -573,31 +591,31 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="294"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
+      <translation>Sätt datumpunkt sammanfallande med en annan hörnpunkt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 1</translation>
+      <translation>Närhetspunkt 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="297"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on first reference that is closest to second reference.</translation>
+      <translation>Punkt på första referens som är närmast andra referens.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="299"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Proximity point 2</translation>
+      <translation>Närhetspunkt 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="300"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point on second reference that is closest to first reference.</translation>
+      <translation>Punkt på andra referens som är närmast första referens.</translation>
     </message>
   </context>
   <context>
@@ -606,86 +624,86 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Avaktiverad</translation>
+      <translation>Deaktiverad</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="201"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Line can be moved by editing Placement property.</translation>
+      <translation>Koppling är deaktiverad. Linje kan flyttas genom att redigera placeringsegenskap.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="203"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Objektets X</translation>
+      <translation>Objekts X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="204"/>
       <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Linjen justeras längs objektets lokala X-axel. Fungerar på objekt med placering och ellips-/parabel-/hyperbelkanter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="206"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Objektets Y</translation>
+      <translation>Objekts Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="207"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Linjen justeras längs objektets lokala Y-axel. Fungerar på objekt med placering och ellips-/parabel-/hyperbelkanter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Objektets Z</translation>
+      <translation>Objekts Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="212"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Krökningsaxel</translation>
+      <translation>Böjningsaxel</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="213"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+      <translation>Linje som är en axel till böjd kants oskulerande cirkel. Valbar hörnpunkt definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="215"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix1</translation>
+      <translation>Ledlinje 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="216"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Directrix line for ellipse, parabola, hyperbola.</translation>
+      <translation>Ledlinje för ellips/parabel/hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Directrix2</translation>
+      <translation>Ledlinje 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Second directrix line for ellipse and hyperbola.</translation>
+      <translation>Andra ledlinje för ellips/hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="221"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Asymptot1</translation>
+      <translation>Asymptot 1</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="222"/>
@@ -697,13 +715,13 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="224"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Asymptot2</translation>
+      <translation>Asymptot 2</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="225"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Andra asymptoten för hyperbel.</translation>
+      <translation>Andra asymptot för hyperbel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="227"/>
@@ -715,19 +733,19 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="228"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+      <translation>Linjetangent till en kant. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Normal till kanten</translation>
+      <translation>Normal till kant</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Justera till N-vektor i Frenet-Serret-koordinatsystem för böjd kurva. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
@@ -739,26 +757,26 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="234"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Justera till B-vektor i Frenet-Serret-koordinatsystem för böjd kurva. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (U)</translation>
+      <translation>Tangent till yta (U)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="237"/>
       <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
+      <translation>Tangent till yta, längs parameter U. Hörnpunkt definierar vart.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Tangent to surface (V)</translation>
+      <translation>Tangent till yta (V)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="242"/>
@@ -770,7 +788,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="243"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linje som passerar genom två punkter.</translation>
+      <translation>Linje som passerar genom två hörnpunkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="245"/>
@@ -782,67 +800,67 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="246"/>
       <source>Not implemented.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Not implemented.</translation>
+      <translation>Ej implementerat.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Proximity line</translation>
+      <translation>Närhetslinje</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
+      <translation>Linje för det kortaste avståndet mellan former.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Första huvudaxeln</translation>
+      <translation>Första huvudaxel</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="252"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linjen följer första tröghetsaxeln.</translation>
+      <translation>Linje följer första huvudsakliga tröghetsaxel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Andra huvudaxeln</translation>
+      <translation>Andra huvudaxel</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="255"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linjen följer andra tröghetsaxeln.</translation>
+      <translation>Linje följer andra huvudsakliga tröghetsaxel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Tredje huvudaxeln</translation>
+      <translation>Tredje huvudaxel</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="258"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Linjen följer tredje tröghetsaxeln.</translation>
+      <translation>Linje följer tredje huvudsakliga tröghetsaxel.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation type="unfinished">Normal to surface</translation>
+      <translation>Normal för yta</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="261"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Linje som är vinkelrät mot yta vid punkt angiven av hörnpunkt.</translation>
     </message>
   </context>
   <context>
@@ -851,25 +869,25 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="125"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Avaktiverad</translation>
+      <translation>Deaktiverad</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="126"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Koppling är inaktiverad. Objekt kan flyttas genom att redigera placeringsegenskap.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Ursprung för förflyttning</translation>
+      <translation>Origo för förflyttning</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="129"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Origo är justerad att matcha hörnpunkt. Riktning kontrolleras av placeringsegenskap.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="131"/>
@@ -881,7 +899,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="132"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet är anpassad till lokala XY-planet för länkade objekt.</translation>
+      <translation>Planet är justerat till lokala XY-planet för länkade objekt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="134"/>
@@ -893,7 +911,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="135"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet är anpassad till lokala XZ-planet för länkade objekt.</translation>
+      <translation>Planet är justerat till lokala XZ-planet för länkade objekt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="137"/>
@@ -905,43 +923,43 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="138"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Planet är anpassad till lokala YZ-planet för länkade objekt.</translation>
+      <translation>Planet är justerat till lokala YZ-planet för länkade objekt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Plan sida</translation>
+      <translation>Planyta</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="141"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+      <translation>Plan är justerat att sammanfalla med planär yta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Tangenten till ytan</translation>
+      <translation>Tangent till yta</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="144"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+      <translation>Plan görs tangent till yta vid hörnpunkt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normal till kanten</translation>
+      <translation>Normal till kant</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="147"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Plan görs till tangent till kant. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="149"/>
@@ -955,7 +973,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="156"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Justera till Frenet-Serret-koordinatsystem för böjd kurva. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="152"/>
@@ -973,49 +991,49 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Koncentriska</translation>
+      <translation>Koncentrisk</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>Justera till plan för en kants oskulerande cirkel. Origo justeras till böjningspunkt. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Omloppssektion</translation>
+      <translation>Revolveringssnitt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="162"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>Plan görs vinkelrät mot kant, och Y-axel matchas med axel för oskulerande cirkel. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Plan genom 3 punkter</translation>
+      <translation>Plan utifrån tre punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="165"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align plane to pass through three vertices.</translation>
+      <translation>Justera plan att skära igenom tre hörnpunkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="167"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normal till 3 punkter</translation>
+      <translation>Normal till tre punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="168"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+      <translation>Planet kommer skära genom de två första hörnpunkterna, och vinkelrätt mot planet som skär genom tre hörnpunkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="170"/>
@@ -1033,7 +1051,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="173"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Inertia 2-3</translation>
+      <translation>Tröghet 2-3</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="174"/>
@@ -1048,61 +1066,61 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="50"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Avaktiverad</translation>
+      <translation>Deaktiverad</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="51"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Koppling är inaktiverad. Objekt kan flyttas genom att redigera placeringsegenskap.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Ursprung för förflyttning</translation>
+      <translation>Origo för förflyttning</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="54"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Origo är justerad att matcha hörnpunkt. Riktning kontrolleras av placeringsegenskap.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
       <source>Object's  X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Objektets X Y Z</translation>
+      <translation>Objekts X Y Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="57"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Placering görs lika med placeringen av länkade objekt.</translation>
+      <translation>Placering görs lika som placering av länkat objekt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
       <source>Object's  X Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Objektets X Z -Y</translation>
+      <translation>Objekts X Z -Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="60"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X', Y', Z' axlarna matchas med objektets lokala X, Z, -Y axlar.</translation>
+      <translation>X-, Y- och Z-axlarna matchas med objekts respektive lokala X-, Z- och -Y-axlar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
       <source>Object's  Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Objektets Y Z X</translation>
+      <translation>Objekts Y Z X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="63"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X', Y', Z' axlarna matchas med objektets lokala Y, Z, X axlar.</translation>
+      <translation>X-, Y- och Z-axlarna matchas med objekts respektive lokala Y-, Z- och X-axlar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
@@ -1114,31 +1132,31 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="66"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>X' Y' planet är justerad för att sammanfalla med plan sida.</translation>
+      <translation>XY-plan justeras till att sammanfalla med plan yta.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY tangent till ytan</translation>
+      <translation>XY-tangent till yta</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="69"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
+      <translation>XY-plan justeras till tangens för yta vid hörnpunkt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="71"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Z tangent till kant</translation>
+      <translation>Z-tangent till kant</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="72"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Z' axel är anpassad för att vara tangent till kanten. Valfri vertexlänk definierar var.</translation>
+      <translation>Z-axel justeras till att vara tangent till kant. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
@@ -1152,7 +1170,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="81"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Justera till Frenet-Serret-koordinatsystem för böjd kurva. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="77"/>
@@ -1170,49 +1188,49 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Koncentriska</translation>
+      <translation>Koncentrisk</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Justera XY-plan till en kants oskulerande cirkel. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="86"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Omloppssektion</translation>
+      <translation>Revolveringssnitt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="87"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Justera Y-axel till att matcha axel för en kants oskulerande cirkel. Valbar hörnpunktslänk definierar var.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="89"/>
       <source>XY plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY plane by 3 points</translation>
+      <translation>XY-plan utifrån tre punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="90"/>
       <source>Align XY plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
+      <translation>Justera XY-planet till att skära genom tre hörnpunkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>XZ plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ plane by 3 points</translation>
+      <translation>XZ-plan utifrån tre punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="93"/>
       <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
+      <translation>Justera XZ-planet till att skära genom tre punkter; X-axeln kommer passera genom de två första punkterna.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="95"/>
@@ -1230,147 +1248,147 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../AttacherTexts.cpp" line="98"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Inertial CS</translation>
+      <translation>Tröghets-KS</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="99"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
+      <translation>Koordinatsystem för tröghet, konstruerad på huvudaxlar för tröghet och masscentrum.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-X</translation>
+      <translation>Justera O-Z-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera Z- och X-axlar mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="104"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Z-Y</translation>
+      <translation>Justera O-Z-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="105"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera Z- och Y-axlar mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="107"/>
       <location filename="../../AttacherTexts.cpp" line="182"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Y</translation>
+      <translation>Justera O-X-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="108"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera X- och Y-axlar mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="110"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-Z</translation>
+      <translation>Justera O-X-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera X- och Z-axlar mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="113"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-Z</translation>
+      <translation>Justera O-Y-Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="114"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera Y- och Z-axlar mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="116"/>
       <location filename="../../AttacherTexts.cpp" line="191"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-X</translation>
+      <translation>Justera O-Y-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="117"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera Y- och X-axlar mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="176"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-X</translation>
+      <translation>Justera O-N-X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="177"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera normal och horisontell planaxel mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-N-Y</translation>
+      <translation>Justera O-N-Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera normal och vertikal planaxel mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="183"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera horisontell och vertikal planaxel mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="185"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-X-N</translation>
+      <translation>Justera O-X-N</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="186"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera horisontell planaxel och normal mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="188"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Align O-Y-N</translation>
+      <translation>Justera O-Y-N</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera vertikal planaxel och normal mot hörnpunkt/längs linje.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="192"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</translation>
+      <translation>Matcha origo med första hörnpunkt. Justera horisontell och vertikal planaxel mot hörnpunkt/längs linje.</translation>
     </message>
   </context>
   <context>
@@ -1578,7 +1596,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../Command.cpp" line="2176"/>
       <location filename="../../Command.cpp" line="2177"/>
       <source>Measure Linear</source>
-      <translation>Mäta linjärt</translation>
+      <translation>Mät linjärt</translation>
     </message>
   </context>
   <context>
@@ -1592,7 +1610,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../Command.cpp" line="2298"/>
       <location filename="../../Command.cpp" line="2299"/>
       <source>Toggle 3d</source>
-      <translation>Växla 3d</translation>
+      <translation>Växla 3D</translation>
     </message>
   </context>
   <context>
@@ -1620,7 +1638,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../Command.cpp" line="2327"/>
       <location filename="../../Command.cpp" line="2328"/>
       <source>Toggle Delta</source>
-      <translation>Växla Delta</translation>
+      <translation>Växla delta</translation>
     </message>
   </context>
   <context>
@@ -1761,12 +1779,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
+      <translation>Kompositionsverktyg</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
+      <translation>Kompositionsverktyg: arbeta med formlistor.</translation>
     </message>
   </context>
   <context>
@@ -1802,7 +1820,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1722"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
+      <translation>Verktyg för göra förskjutning av former (konstruera parallella former)</translation>
     </message>
   </context>
   <context>
@@ -1820,7 +1838,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="662"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation type="unfinished">Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</translation>
+      <translation>Verktyg för att dela former. Verktyg för att skapa kompositionsolider. OCC 6.9.0 eller senare krävs.</translation>
     </message>
   </context>
   <context>
@@ -1833,12 +1851,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="890"/>
       <source>Make compound</source>
-      <translation>Förena</translation>
+      <translation>Skapa komposition</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Make a compound of several shapes</source>
-      <translation>Förena flera former</translation>
+      <translation>Skapa en komposition av flera former</translation>
     </message>
   </context>
   <context>
@@ -1927,12 +1945,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
+      <translation>Avfunktionering</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
+      <translation>Ta bort funktion från en form</translation>
     </message>
   </context>
   <context>
@@ -2058,7 +2076,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Utility to loft</source>
-      <translation>Verktyg för loftning</translation>
+      <translation>Verktyg för svepning</translation>
     </message>
   </context>
   <context>
@@ -2071,12 +2089,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1334"/>
       <source>Make face from wires</source>
-      <translation>Gör sida från trådar</translation>
+      <translation>Skapa yta från trådar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <translation>Skapa yta från från en uppsättning trådar (t.ex. från en skiss)</translation>
     </message>
   </context>
   <context>
@@ -2125,12 +2143,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1623"/>
       <source>3D Offset...</source>
-      <translation>3D Förskjutning...</translation>
+      <translation>3D-förskjutning...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <translation>Verktyg för att göra en förskjutning i 3D</translation>
     </message>
   </context>
   <context>
@@ -2143,12 +2161,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1673"/>
       <source>2D Offset...</source>
-      <translation>2D Förskjutning...</translation>
+      <translation>2D-förskjutning...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Verktyg för att göra en förskjutning av planära former</translation>
     </message>
   </context>
   <context>
@@ -2256,7 +2274,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1990"/>
       <source>Create a ruled surface from either two Edges or two wires</source>
-      <translation type="unfinished">Create a ruled surface from either two Edges or two wires</translation>
+      <translation>Skapa en linjebyggd yta från antingen två kanter eller två trådar</translation>
     </message>
   </context>
   <context>
@@ -2361,12 +2379,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../Command.cpp" line="1594"/>
       <source>Sweep...</source>
-      <translation>Svepa...</translation>
+      <translation>Svep...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1595"/>
       <source>Utility to sweep</source>
-      <translation>svepverktyg</translation>
+      <translation>Verktyg för svepning</translation>
     </message>
   </context>
   <context>
@@ -2433,7 +2451,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Val accepterat</translation>
+      <translation>Markering accepterad</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
@@ -2458,17 +2476,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Anslutningsläge:</translation>
+      <translation>Kopplingsläge:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+      <translation>Kopplingsförskjutningsegenskap. Placeringen uttrycks i lokal rymd för objekt som kopplas.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Kopplingsförskjutning:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
@@ -2694,7 +2712,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="32"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation>Om markerad, vänds riktningen på extruderingen.</translation>
+      <translation>Om detta är ikryssat vänds riktningen på extruderingen.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="35"/>
@@ -2704,17 +2722,17 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="42"/>
       <source>Specify direction manually using X,Y,Z values.</source>
-      <translation type="unfinished">Specify direction manually using X,Y,Z values.</translation>
+      <translation>Ange riktning manuellt med X-, Y- och Z-värden.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="45"/>
       <source>Custom direction:</source>
-      <translation>Egen vald riktning:</translation>
+      <translation>Anpassad riktning:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="52"/>
       <source>Extrude perpendicularly to plane of input shape.</source>
-      <translation type="unfinished">Extrude perpendicularly to plane of input shape.</translation>
+      <translation>Extrudera vinkelrätt mot formens plan.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
@@ -2724,7 +2742,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="65"/>
       <source>Click to start selecting an edge in 3d view.</source>
-      <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+      <translation>Klicka för att börja markera en kant i 3D-vyn.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
@@ -2735,12 +2753,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
+      <translation>Ange riktning till att matcha en rak kants riktning. Tips: för att använda kantens längd, ange båda längderna till noll.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
       <source>Along edge:</source>
-      <translation>Längs kanten:</translation>
+      <translation>Längs kant:</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
@@ -2770,7 +2788,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
       <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
-      <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
+      <translation>Längd att extrudera längs riktning (kan vara negativ). Om båda längderna är noll, används riktningens längd.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="223"/>
@@ -2780,12 +2798,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="242"/>
       <source>Length to extrude against direction (can be negative).</source>
-      <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
+      <translation>Längd att extrudera längs motsatt riktning (kan vara negativ).</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="261"/>
       <source>Distribute extrusion length equally to both sides.</source>
-      <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
+      <translation>Distribuera extruderingslängd jämnt på båda sidor.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="264"/>
@@ -2795,18 +2813,18 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.ui" line="276"/>
       <source>Taper outward angle</source>
-      <translation>Släppvinkel</translation>
+      <translation>Vinkel på sidoytor</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation type="unfinished">Apply slope (draft) to extrusion side faces.</translation>
+      <translation>Applicera lutning på extruderingens sidoytor.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation type="unfinished">If checked, extruding closed wires will give solids, not shells.</translation>
+      <translation>Om detta är ikryssat kommer extruderade slutna trådar skapa solider, inte skal.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="338"/>
@@ -2821,7 +2839,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgExtrusion.cpp" line="181"/>
       <source>Selecting...</source>
-      <translation>Väljer...</translation>
+      <translation>Markerar...</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="422"/>
@@ -2834,50 +2852,52 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation>Det gick inte att skapa extrudering. %1</translation>
+      <translation>Misslyckades med att skapa extrudering.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="542"/>
       <source>Object not found: %1</source>
-      <translation>Det gick inte att hitta objektet: %1</translation>
+      <translation>Objekt hittadesinte: %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="604"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation type="unfinished">No shapes selected for extrusion. Select some, first.</translation>
+      <translation>Inga former markerade för extrudering. Markera några först.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="625"/>
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
+      <translation>Extruderingsriktningslänk är felaktig.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
       <source>Direction mode is to use an edge, but no edge is linked.</source>
-      <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
+      <translation>Riktningsläge måste ha en kant, men ingen kant är länkad.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="650"/>
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation type="unfinished">Can't determine normal vector of shape to be extruded. Please use other mode. 
+      <translation>Kan inte bestämma normalvektor för formen som ska extruderas. Vänligen välj annat läge.
 
 (%1)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="660"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Extrusion direction is zero-length. It must be non-zero.</translation>
+      <translation>Extruderingsriktning är nollängd. Den måste vara icke-noll.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="671"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation type="unfinished">Total extrusion length is zero (length1 == -length2). It must be nonzero.</translation>
+      <translation>Total extruderingslängd är noll (längd1 == -längd2). Den måste vara icke-noll.</translation>
     </message>
   </context>
   <context>
@@ -2915,12 +2935,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
       <source>Select edges</source>
-      <translation>Välj kanter</translation>
+      <translation>Markera kanter</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="73"/>
       <source>Select faces</source>
-      <translation>Välj ytor</translation>
+      <translation>Markera ytor</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
@@ -2976,12 +2996,12 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <location filename="../../DlgFilletEdges.cpp" line="835"/>
       <source>Start length</source>
-      <translation>Starta längd</translation>
+      <translation>Startlängd</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="271"/>
       <source>End length</source>
-      <translation>Avsluta längd</translation>
+      <translation>Slutlängd</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="274"/>
@@ -3054,7 +3074,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
       <source>Units for export of IGES</source>
-      <translation>Enheter för export av IGES</translation>
+      <translation>Enheter för exportering av IGES</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="47"/>
@@ -3074,12 +3094,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Write solids and shells as</source>
-      <translation>Skriva solider och skal som</translation>
+      <translation>Skriv solider och skal som</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation>Grupper av putsade ytor (typ 144)</translation>
+      <translation>Grupper av trimmade ytor (typ 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="81"/>
@@ -3094,7 +3114,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
       <source>Skip blank entities</source>
-      <translation>Hoppa över tomma enheter</translation>
+      <translation>Hoppa över tomma entiteter</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="110"/>
@@ -3114,7 +3134,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="139"/>
       <source>Author</source>
-      <translation>Författare</translation>
+      <translation>Upphovsman</translation>
     </message>
   </context>
   <context>
@@ -3137,7 +3157,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="36"/>
       <source>Author</source>
-      <translation>Författare</translation>
+      <translation>Upphovsman</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="46"/>
@@ -3167,17 +3187,17 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="97"/>
       <source>Units for export of STEP</source>
-      <translation>Enheter för export av STEP</translation>
+      <translation>Enheter för exportering av STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="104"/>
       <source>Scheme</source>
-      <translation type="unfinished">Scheme</translation>
+      <translation>Schema</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation type="unfinished">Write out curves in parametric space of surface</translation>
+      <translation>Skriv kurvor i parametrisk rymd från yta</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3187,12 +3207,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="159"/>
       <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
-      <translation type="unfinished">If this is checked, no Compound merge will be done during file reading (slower but higher details).</translation>
+      <translation>Om detta är ikryssat kommer inga kompositioner att sammanfogas vid läsning av fil (långsammare men mer detaljerat).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="162"/>
       <source>Enable STEP Compound merge</source>
-      <translation type="unfinished">Enable STEP Compound merge</translation>
+      <translation>Aktivera kompositionssammanfogning för STEP</translation>
     </message>
   </context>
   <context>
@@ -3520,12 +3540,12 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgPrimitives.ui" line="624"/>
       <location filename="../../DlgPrimitives.ui" line="815"/>
       <source>U parameter:</source>
-      <translation>U parameter:</translation>
+      <translation>U-parameter:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="631"/>
       <source>V parameters:</source>
-      <translation>V parametrar:</translation>
+      <translation>V-parametrar:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="768"/>
@@ -3536,12 +3556,12 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgPrimitives.ui" line="838"/>
       <location filename="../../DlgPrimitives.ui" line="928"/>
       <source>V parameter:</source>
-      <translation>U parameter:</translation>
+      <translation>V-parameter:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="905"/>
       <source>U Parameter:</source>
-      <translation>U parameter:</translation>
+      <translation>U-parameter:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1055"/>
@@ -3553,7 +3573,7 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgPrimitives.ui" line="1075"/>
       <location filename="../../DlgPrimitives.ui" line="1957"/>
       <source>Circumradius:</source>
-      <translation type="unfinished">Circumradius:</translation>
+      <translation>Radie för omskriven cirkel:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1126"/>
@@ -3701,7 +3721,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="32"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation type="unfinished">If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</translation>
+      <translation>Om detta är ikryssat kommer revolverade trådar att skapa solider. Annars kommer de skapa ett skal.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="35"/>
@@ -3721,7 +3741,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="111"/>
       <source>Revolution axis</source>
-      <translation>Rotationsaxel</translation>
+      <translation>Roteringsaxel</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
@@ -3742,7 +3762,7 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgRevolution.ui" line="201"/>
       <location filename="../../DlgRevolution.ui" line="242"/>
       <source>Click to set this as axis</source>
-      <translation>Klicka för att ställa in denna som axel</translation>
+      <translation>Klicka för att ange denna som axel</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
@@ -3763,12 +3783,12 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgRevolution.ui" line="305"/>
       <location filename="../../DlgRevolution.cpp" line="448"/>
       <source>Select reference</source>
-      <translation>Välj referens</translation>
+      <translation>Markera referens</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation type="unfinished">If checked, revolution will extend forwards and backwards by half the angle.</translation>
+      <translation>Om detta är ikryssat kommer rotering att ske bakåt och framåt med halv vinkeln var.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
@@ -3778,7 +3798,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="173"/>
       <source>Object not found: %1</source>
-      <translation>Det gick inte att hitta objektet: %1</translation>
+      <translation>Objekt hittadesinte: %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="254"/>
@@ -3792,19 +3812,19 @@ Välj en eller fler kanter först.</translation>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation type="unfinished">Revolution axis link is invalid.
+      <translation>Länk för roteringsaxel för felaktig.
 
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="289"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
+      <translation>Riktning för roteringsaxel är nollängd. Den måste vara icke-noll.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="299"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
+      <translation>Spann för roteringsvinkel är noll. Det måste vara icke-noll.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="428"/>
@@ -3812,12 +3832,14 @@ Välj en eller fler kanter först.</translation>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>Skapandet av revolvering misslyckades. %1</translation>
+      <translation>Misslyckades med att skapa revolvering.
+
+%1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="444"/>
       <source>Selecting... (line or arc)</source>
-      <translation>Väljer... (linje eller båge)</translation>
+      <translation>Markerar... (linje eller båge)</translation>
     </message>
   </context>
   <context>
@@ -3845,7 +3867,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tesselering&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Anger den maximala avvikelsen för det tesselerade nätet mot ytan. Ju mindre värdet är desto långsammare rendering vilket ger högre detaljering/upplösning.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -3855,9 +3877,9 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="100"/>
       <source>Maximum angular deflection</source>
-      <translation>Största vinkelavvikelse</translation>
+      <translation>Maximal vinkelavvikelse</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -3898,7 +3920,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="52"/>
       <source>Automatically refine model after sketch-based operation</source>
-      <translation>Automatiskt förfina modell efter skissbaserad operation</translation>
+      <translation>Förfina automatiskt modell efter skissbaserad operation</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="68"/>
@@ -3908,7 +3930,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Add name of base object</source>
-      <translation>Lägg till namn på basobjektet</translation>
+      <translation>Lägg till namn på basobjekt</translation>
     </message>
   </context>
   <context>
@@ -3916,33 +3938,33 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="14"/>
       <source>Part colors</source>
-      <translation>Färger för detaljer</translation>
+      <translation>Komponentfärger</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Part colors</source>
-      <translation>Standardfärger för detaljer</translation>
+      <translation>Standardfärger för komponenter</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Default vertex color</source>
-      <translation>Standard vertexfärg</translation>
+      <translation>Standardfärg för hörnpunkt</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="47"/>
       <source>Bounding box color</source>
-      <translation>Färg på beränsningsboxen</translation>
+      <translation>Färg på beränsningsbox</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="60"/>
       <source>Default shape color</source>
-      <translation>Standard formfärg</translation>
+      <translation>Standardfärg för former</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="210"/>
       <source>The default line color for new shapes</source>
-      <translation>Standard linjefärg för nya former</translation>
+      <translation>Standardfärgen för nya formers linjer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="87"/>
@@ -3953,7 +3975,7 @@ Välj en eller fler kanter först.</translation>
       <location filename="../../DlgSettingsObjectColor.ui" line="107"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="129"/>
       <source>The default line thickness for new shapes</source>
-      <translation>Standard linjetjocklek för nya former</translation>
+      <translation>Standardtjockleken för nya formers linjer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="110"/>
@@ -3964,17 +3986,17 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation>Färgen på begränsningsboxen i 3D-vyn</translation>
+      <translation>Färgen på begränsningsboxar i 3D-vyn</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="177"/>
       <source>Default vertex size</source>
-      <translation>Standard vertexstorlek</translation>
+      <translation>Standardstorlek för hörnpunkt</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="190"/>
       <source>Default line width</source>
-      <translation>Standardlinjebredd</translation>
+      <translation>Standardlinjetjocklek</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
@@ -3984,17 +4006,17 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>Slumpmässig formfärg</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
       <source>Annotations</source>
-      <translation>Noteringar</translation>
+      <translation>Annoteringar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="275"/>
       <source>Default text color</source>
-      <translation>Standardtextfärg</translation>
+      <translation>Standardfärg för text</translation>
     </message>
   </context>
   <context>
@@ -4033,12 +4055,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="80"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Tillgängliga profiler</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="81"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Valda profiler</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
@@ -4048,7 +4070,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="180"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
+      <translation>Minst två hörnpunkter, kanter, trådar eller ytor krävs.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="214"/>
@@ -4058,7 +4080,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="243"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Vertex/kant/tråd/sida</translation>
+      <translation>Hörnpunkt/kant/tråd/yta</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
@@ -4183,7 +4205,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="296"/>
       <source>Select three or more vertices</source>
-      <translation>Välj tre eller flera hörn</translation>
+      <translation>Markera tre eller fler hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="400"/>
@@ -4203,12 +4225,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>Markera angränsande kanter</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
       <source>Select a list of vertices</source>
-      <translation>Välj en lista av hörn</translation>
+      <translation>Markera en lista av hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="536"/>
@@ -4231,12 +4253,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="136"/>
       <source>Available profiles</source>
-      <translation type="unfinished">Available profiles</translation>
+      <translation>Tillgängliga profiler</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Selected profiles</source>
-      <translation type="unfinished">Selected profiles</translation>
+      <translation>Valda profiler</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
@@ -4248,7 +4270,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="282"/>
       <source>Select one or more connected edges you want to sweep along.</source>
-      <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
+      <translation>Markera en eller fler anslutna kanter du vill svepa längs.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="310"/>
@@ -4268,7 +4290,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="317"/>
       <source>'%1' cannot be used as profile and path.</source>
-      <translation type="unfinished">'%1' cannot be used as profile and path.</translation>
+      <translation>'%1' kan inte användas som profil och bana.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="355"/>
@@ -4283,13 +4305,13 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="390"/>
       <source>Select one or more connected edges in the 3d view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3d view and press 'Done'</translation>
+      <translation>Markera en eller fler anslutna kanter i 3D-vyn och tryck på 'Klar'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="414"/>
       <location filename="../../TaskSweep.cpp" line="422"/>
       <source>The selected sweep path is invalid.</source>
-      <translation type="unfinished">The selected sweep path is invalid.</translation>
+      <translation>Den valda svepbanan är felaktig.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="434"/>
@@ -4312,7 +4334,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Val accepterat</translation>
+      <translation>Markering accepterad</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
@@ -4337,18 +4359,18 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Anslutningsläge:</translation>
+      <translation>Kopplingsläge:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">AttachmentOffset property. The placement is expressed in local space of object being attached.</translation>
+      <translation>Kopplingsförskjutningsegenskap. Placeringen uttrycks i lokal rymd för objekt som kopplas.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset:</source>
-      <translation type="unfinished">Attachment Offset:</translation>
+      <translation>Kopplingsförskjutning:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -4388,7 +4410,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>OCC error: %1</source>
-      <translation>OCC fel: %1</translation>
+      <translation>OCC-fel: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="304"/>
@@ -4398,22 +4420,22 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="307"/>
       <source>Attachment mode failed: %1</source>
-      <translation type="unfinished">Attachment mode failed: %1</translation>
+      <translation>Kopplingsläge misslyckades: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="311"/>
       <source>Not attached</source>
-      <translation>Inte ansluten</translation>
+      <translation>Inte kopplad</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="315"/>
       <source>Attached with mode %1</source>
-      <translation type="unfinished">Attached with mode %1</translation>
+      <translation>Kopplad med läge %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="319"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Kopplingsförskjutning (inaktiv - inte kopplad):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="618"/>
@@ -4433,7 +4455,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="690"/>
       <source>Selecting...</source>
-      <translation>Väljer...</translation>
+      <translation>Markerar...</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="694"/>
@@ -4443,12 +4465,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="740"/>
       <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation part of AttachmentOffset is bound by expressions.</translation>
+      <translation>Inte redigerbar för att rotationsdel av kopplingsförskjutning är bunden till uttryck.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="804"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Referenskombinationer:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>
@@ -4479,7 +4501,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <translation>Kontrollera geometri</translation>
     </message>
   </context>
   <context>
@@ -4487,7 +4509,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1057"/>
       <source>Datum dialog: Input error</source>
-      <translation type="unfinished">Datum dialog: Input error</translation>
+      <translation>Datumdialog: Inmatningsfel</translation>
     </message>
   </context>
   <context>
@@ -4567,7 +4589,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>RectoVerso</source>
-      <translation type="unfinished">RectoVerso</translation>
+      <translation>Bakåt-framåt</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
@@ -4593,7 +4615,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="93"/>
       <source>Self-intersection</source>
-      <translation>Självskärning</translation>
+      <translation>Självkorsning</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
@@ -4622,7 +4644,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
       <source>Face from vertices</source>
-      <translation>Sida från hörn</translation>
+      <translation>Yta från hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
@@ -4667,7 +4689,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Tråd från kanter</translation>
     </message>
   </context>
   <context>
@@ -4680,7 +4702,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
       <source>Sweep Path</source>
-      <translation>Sveplinje</translation>
+      <translation>Svepbana</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="50"/>
@@ -4734,37 +4756,37 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Skapar plana sidor från varje tråd separat. Inget stöd för hål; trådar kan vara i olika plan.</translation>
+      <translation>Skapar plana ytor från varje tråd separat. Inget stöd för hål; trådar kan vara i olika plan.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="69"/>
       <source>Bull's-eye facemaker</source>
-      <translation>Bull's-eye sidgörare</translation>
+      <translation>Ytskapare mitt-i-prick</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="74"/>
       <source>Supports making planar faces with holes with islands.</source>
-      <translation>Stödjer skapandet av plana sidor med hål med öar.</translation>
+      <translation>Stöder skapande av plana ytor med hål med öar.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="248"/>
       <source>Cheese facemaker</source>
-      <translation>Ost sidgörare</translation>
+      <translation>Ytskapare schweizerost</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="253"/>
       <source>Supports making planar faces with holes, but no islands inside holes.</source>
-      <translation>Stödjer plana sidor med hål, men inga öar i hålen.</translation>
+      <translation>Stöder plana ytor med hål, men inga öar i hålen.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="515"/>
       <source>Part Extrude facemaker</source>
-      <translation>Delextruderings-sidgörare</translation>
+      <translation>Ytskapare för komponentextrudering</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="520"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
+      <translation>Stöder skapande av ytor med hål, stöder inte packning.</translation>
     </message>
   </context>
   <context>
@@ -4807,7 +4829,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="397"/>
       <location filename="../../Command.cpp" line="499"/>
       <source>Non-solids selected</source>
-      <translation>Inga solider valda</translation>
+      <translation>Icke-solider markerade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="296"/>
@@ -4815,22 +4837,23 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="500"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-      <translation>Användandet av icke-solider för booleanska operationer kan leda till oväntade resultat. Vill du fortsätta?</translation>
+      <translation>Användandet av icke-solider för booleska operationer kan leda till oväntade resultat.
+Vill du fortsätta?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+      <translation>Vänligen markera två eller fler former. Eller välj en komposition som innehåller minst två former att beräkna korsning emellan.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="484"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Välj två eller fler former. Eller välj en sammansättning som inehåller minst två former.</translation>
+      <translation>Vänligen markera två eller fler former. Eller välj en komposition som innehåller minst två former att förena.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="903"/>
       <source>Select one shape or more, please.</source>
-      <translation>Välj en form eller fler.</translation>
+      <translation>Vänligen välj en eller fler former.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
@@ -4861,7 +4884,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="71"/>
       <location filename="../../TaskAttacher.cpp" line="104"/>
       <source>No reference selected</source>
-      <translation>Ingen referens vald</translation>
+      <translation>Ingen referens markerad</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="80"/>
@@ -5044,7 +5067,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Unorientable Shape</source>
-      <translation type="unfinished">Unorientable Shape</translation>
+      <translation>Oriktningsbar form</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
@@ -5089,67 +5112,67 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>Out Of Enum Range: </source>
-      <translation type="unfinished">Out Of Enum Range: </translation>
+      <translation>Utanför enum-intervall: </translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="160"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation type="unfinished">BOPAlgo CheckUnknown</translation>
+      <translation>Boolesk funktionsalgoritm okänd testning</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="161"/>
       <source>BOPAlgo BadType</source>
-      <translation type="unfinished">BOPAlgo BadType</translation>
+      <translation>Boolesk funktionsalgoritm felaktig typ</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>BOPAlgo SelfIntersect</source>
-      <translation type="unfinished">BOPAlgo SelfIntersect</translation>
+      <translation>Boolesk funktionsalgoritm självkorsande</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>BOPAlgo TooSmallEdge</source>
-      <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
+      <translation>Boolesk funktionsalgoritm för liten kant</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>BOPAlgo NonRecoverableFace</source>
-      <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
+      <translation>Boolesk funktionsalgoritm ej återhämtningsbar yta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
+      <translation>Boolesk funktionsalgoritm inkompatibilitet för hörnpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
+      <translation>Boolesk funktionsalgoritm inkompatibilitet för kant</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
+      <translation>Boolesk funktionsalgoritm inkompatibilitet för yta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
       <source>BOPAlgo OperationAborted</source>
-      <translation type="unfinished">BOPAlgo OperationAborted</translation>
+      <translation>Boolesk funktionsalgoritm avbruten</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>BOPAlgo GeomAbs_C0</source>
-      <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+      <translation>Boolesk funktionsalgoritm "GeomAbs_C0"</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="170"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation>Boolesk funktionsalgoritm felaktig kurva på yta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="171"/>
       <source>BOPAlgo NotValid</source>
-      <translation type="unfinished">BOPAlgo NotValid</translation>
+      <translation>Boolesk funktionsalgoritm felaktig</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="463"/>
@@ -5161,7 +5184,7 @@ Do you want to continue?</source>
       <location filename="../../TaskDimension.cpp" line="556"/>
       <location filename="../../TaskDimension.cpp" line="1602"/>
       <source>Selections</source>
-      <translation>Val</translation>
+      <translation>Markeringar</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="563"/>
@@ -5172,17 +5195,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1340"/>
       <source>Reset Dialog</source>
-      <translation>Återställ dialogrutan</translation>
+      <translation>Dialogruta återställ</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1344"/>
       <source>Toggle 3d</source>
-      <translation>Växla 3d</translation>
+      <translation>Växla 3D</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1349"/>
       <source>Toggle Delta</source>
-      <translation>Växla Delta</translation>
+      <translation>Växla delta</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1354"/>
@@ -5270,7 +5293,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Dela</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

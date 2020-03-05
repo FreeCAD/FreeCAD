@@ -86,7 +86,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>未定义</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>

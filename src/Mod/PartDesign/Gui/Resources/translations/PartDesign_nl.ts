@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="243"/>
       <source>Create a local coordinate system</source>
-      <translation type="unfinished">Create a local coordinate system</translation>
+      <translation>Creeer een lokaal coördinaatsysteem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Create a new local coordinate system</source>
-      <translation type="unfinished">Create a new local coordinate system</translation>
+      <translation>Creeer een nieuw lokaal coördinaatsysteem</translation>
     </message>
   </context>
   <context>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../Command.cpp" line="2076"/>
       <source>Create a scaled feature</source>
-      <translation>Schaal onderdeel</translation>
+      <translation>Maak een geschaalde kenmerk</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location filename="../../Command.cpp" line="1723"/>
       <source>Make a thick solid</source>
-      <translation>Maak dikwandig lichaam</translation>
+      <translation>Maak een dikwandig volumemodel</translation>
     </message>
   </context>
   <context>
@@ -795,11 +795,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>De gevraagde functie kan niet worden aangemaakt. De reden kan zijn dat:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â❤ Het actieve lichaam geen basisvorm bevat, dus er is geen
+  materiaal om verwijderd te worden;
+  â❤De geselcteerde schets behoort niet tot het actieve lichaam.</translation>
     </message>
   </context>
   <context>
@@ -811,11 +811,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>De gevraagde functie kan niet worden aangemaakt. De reden kan zijn dat:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â❤ Het actieve lichaam geen basisvorm bevat, dus er is geen
+  materiaal om verwijderd te worden;
+  â❤De geselcteerde schets behoort niet tot het actieve lichaam.</translation>
     </message>
   </context>
   <context>
@@ -827,11 +827,11 @@
   â¢ the active Body does not contain a base shape, so there is no
   material to be removed;
   â¢ the selected sketch does not belong to the active Body.</source>
-      <translation type="unfinished">The requested feature cannot be created. The reason may be that:
+      <translation>De gevraagde functie kan niet worden aangemaakt. De reden kan zijn dat:
 
-  â¢ the active Body does not contain a base shape, so there is no
-  material to be removed;
-  â¢ the selected sketch does not belong to the active Body.</translation>
+  â❤ Het actieve lichaam geen basisvorm bevat, dus er is geen
+  materiaal om verwijderd te worden;
+  â❤De geselcteerde schets behoort niet tot het actieve lichaam.</translation>
     </message>
   </context>
   <context>
@@ -1006,12 +1006,12 @@
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1421"/>
       <source>Major radius:</source>
-      <translation>Grote straal:</translation>
+      <translation>Hoofdstraal:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1428"/>
       <source>Minor radius:</source>
-      <translation>Kleine straal:</translation>
+      <translation>Substraal:</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1510"/>
@@ -1196,7 +1196,7 @@
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="121"/>
       <source>Incompatible reference set</source>
-      <translation>Referentie set incomatibel</translation>
+      <translation>Incompatibele referentieset</translation>
     </message>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="122"/>
@@ -1291,7 +1291,7 @@
     <message>
       <location filename="../../TaskFeaturePick.ui" line="42"/>
       <source>From other bodies of the same part</source>
-      <translation type="unfinished">From other bodies of the same part</translation>
+      <translation>Van andere lichamen van hetzelfde onderdeel</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="49"/>
@@ -1498,7 +1498,7 @@
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
-      <translation>Aan de oppervlakte aangepast</translation>
+      <translation>Geregeerd oppervlak</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="27"/>
@@ -1774,12 +1774,12 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Gefixeerd</translation>
+      <translation>Vast</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
       <source>Frenet</source>
-      <translation type="unfinished">Frenet</translation>
+      <translation>Frenet</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
@@ -1789,7 +1789,7 @@
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Binormaal</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
@@ -1883,7 +1883,7 @@
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
       <source>Path to sweep along</source>
-      <translation type="unfinished">Path to sweep along</translation>
+      <translation>Route om langs te vegen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
@@ -2158,7 +2158,7 @@
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="61"/>
       <source>Revolution parameters</source>
-      <translation>Rotatieparameters</translation>
+      <translation>Wentelparameters</translation>
     </message>
   </context>
   <context>
@@ -2713,7 +2713,7 @@
       <location filename="../../CommandBody.cpp" line="167"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>De geselecteerde vorm bestaat uit meerdere delen.
+      <translation>De geselecteerde vorm bestaat uit meerdere volumemodellen.
 Dit kan tot onverwachte resultaten leiden.</translation>
     </message>
     <message>
@@ -2734,7 +2734,7 @@ Dit kan tot onverwachte resultaten leiden.</translation>
       <location filename="../../CommandBody.cpp" line="179"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>De geselecteerde vorm bestaat uit meerdere massieve of schaaldelen.
+      <translation>De geselecteerde vorm bestaat uit meerdere volumemodellen of schaaldelen.
 Dit kan tot onverwachte resultaten leiden.</translation>
     </message>
     <message>
@@ -2755,7 +2755,7 @@ Dit kan tot onverwachte resultaten leiden.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="369"/>
       <source>No PartDesign features found that don't belong to a body.Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body.Nothing to migrate.</translation>
+      <translation>Geen PartDesign functies gevonden die tot het lichaam behoren. Niets om te migreren.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="517"/>
@@ -2774,7 +2774,7 @@ Dit kan tot onverwachte resultaten leiden.</translation>
       <location filename="../../CommandBody.cpp" line="878"/>
       <location filename="../../CommandBody.cpp" line="885"/>
       <source>Selection error</source>
-      <translation>Selectie fout</translation>
+      <translation>Selectiefout</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="581"/>
@@ -2880,9 +2880,9 @@ Dit kan tot onverwachte resultaten leiden.</translation>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Om PartDesign te gebruiken heb je een actief Lichaam-object in het document nodig. Maak één actief (Dubbelklik) of maak er een.
 
-If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</translation>
+Als u een ouder document met PartDesign objecten zonder een lichaam hebt, gebruik dan de overdrachtsfunctie in PartDesign om hen in een lichaam te zetten.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="104"/>
@@ -3008,7 +3008,7 @@ Deze functie is defect en kan niet worden gewijzigd.</translation>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="51"/>
       <source>Edit revolution</source>
-      <translation>Rotatie bewerken</translation>
+      <translation>Omwenteling bewerken</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="184"/>
@@ -3055,9 +3055,8 @@ Deze functie is defect en kan niet worden gewijzigd.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Let op: Als je kiest voor migratie is het niet mogelijk het bestand te openen in oudere FreeCAD versies. Als je niet migreert zijn sommige PartDesign functies niet mogelijk, zoals Lichamen en onderdelen. Dit heeft tot gevolg dat het niet mogelijk is om uw onderdelen te gebruiken in de Assembly workbench. 
+Het is echter altijd nog mogelijk om later te migreren via 'Part Design-&gt; Migreren...'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="165"/>

@@ -56,7 +56,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Ρυθμίσεις</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or H key.</source>
-      <translation type="unfinished">Middle mouse button or H key.</translation>
+      <translation>Μεσαίο πλήκτρο του ποντικιού ή πλήκτρο H.</translation>
     </message>
   </context>
 </TS>

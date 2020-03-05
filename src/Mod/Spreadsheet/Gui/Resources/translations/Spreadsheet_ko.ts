@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ko" sourcelanguage="en">
+<TS version="2.1" language="ko" sourcelanguage="en">
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
@@ -103,7 +103,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>선택한 셀의 내용을 중앙 정렬</translation>
     </message>
   </context>
   <context>
@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Merge selected cells</source>
-      <translation type="unfinished">Merge selected cells</translation>
+      <translation>선택한 셀 병합</translation>
     </message>
   </context>
   <context>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation type="unfinished">Set alias</translation>
+      <translation>별칭 설정</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation type="unfinished">Set alias for selected cell</translation>
+      <translation>선택한 셀의 별칭 설정</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Split previously merged cells</source>
-      <translation type="unfinished">Split previously merged cells</translation>
+      <translation>이전에 병합된 셀 분할</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set text in selected cells bold</source>
-      <translation type="unfinished">Set text in selected cells bold</translation>
+      <translation>선택한 셀의 텍스트를 굵게 설정</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     </message>
     <message>
       <source>Set text in selected cells italic</source>
-      <translation type="unfinished">Set text in selected cells italic</translation>
+      <translation>선택한 셀의 텍스트를 기울임 꼴로 설정</translation>
     </message>
   </context>
   <context>
@@ -223,14 +223,14 @@
     </message>
     <message>
       <source>Underline text in selected cells</source>
-      <translation type="unfinished">Underline text in selected cells</translation>
+      <translation>선택한 셀의 텍스트에 밑줄 적용</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>사용자 지정 색상</translation>
     </message>
   </context>
   <context>
@@ -257,7 +257,7 @@
     </message>
     <message>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>가로</translation>
     </message>
     <message>
       <source>Left</source>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>세로</translation>
     </message>
     <message>
       <source>Top</source>
@@ -331,28 +331,38 @@
       <translation>파일로 내보내기</translation>
     </message>
     <message>
-      <source>Cell contents</source>
-      <translation>셀 내용</translation>
-    </message>
-    <message>
       <source>Show spreadsheet</source>
       <translation>스프레드시트 표시</translation>
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>셀 전경색 설정</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>스프레드 시트의 셀 전경색 설정</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>셀 배경색 설정</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>스프레드 시트의 셀 배경색 설정</translation>
+    </message>
+    <message>
+      <source>Spreadsheet</source>
+      <translation>스프레드시트</translation>
+    </message>
+    <message>
+      <source>Spreadsheet does not support range selection when pasting.
+Please select one cell only.</source>
+      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
+Please select one cell only.</translation>
+    </message>
+    <message>
+      <source>Copy &amp; Paste failed</source>
+      <translation type="unfinished">Copy &amp; Paste failed</translation>
     </message>
   </context>
   <context>
@@ -427,7 +437,7 @@
     </message>
     <message>
       <source>Custom Color</source>
-      <translation type="unfinished">Custom Color</translation>
+      <translation>사용자 지정 색상</translation>
     </message>
   </context>
   <context>

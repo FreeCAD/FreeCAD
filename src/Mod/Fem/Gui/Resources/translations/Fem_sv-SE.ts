@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="sv-SE" sourcelanguage="en">
+<TS version="2.1" language="sv-SE" sourcelanguage="en">
   <context>
     <name>BoundarySelector</name>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Markera ytor/kanter/hörnpunkter</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation type="unfinished">To add references select them in the 3D view and then click "Add".</translation>
+      <translation>För att lägga till referenser markera dom i 3D-vyn och klicka på "Lägg till".</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="133"/>
+      <source>To add references: select them in the 3D view  and click "Add".</source>
+      <translation type="unfinished">To add references: select them in the 3D view  and click "Add".</translation>
     </message>
   </context>
   <context>
@@ -24,12 +29,12 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Arbetskatalog</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Skriv</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
@@ -39,22 +44,22 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Förfluten tid:</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Kör</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Skriv om</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Kör om</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
@@ -67,12 +72,12 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation>Analys behållare</translation>
+      <translation>Analysbehållare</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Skapa en analysbehållare med standardlösare CalculiX</translation>
     </message>
   </context>
   <context>
@@ -80,12 +85,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="60"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Beskärningsplan på yta</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Lägg till ett beskärningsplan på en markerad yta</translation>
     </message>
   </context>
   <context>
@@ -93,7 +98,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="96"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Ta bort alla beskärningsplan</translation>
     </message>
   </context>
   <context>
@@ -101,12 +106,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>Begränsa kroppvärmekälla</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>Skapa en FEM-begränsad kroppvärmekälla</translation>
     </message>
   </context>
   <context>
@@ -114,12 +119,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Begränsa elektrostatisk potential</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Skapa en FEM-begränsad elektrostatisk potential</translation>
     </message>
   </context>
   <context>
@@ -127,12 +132,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Begränsa flödeshastighet</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Skapa en FEM-begränsad flödeshastighet</translation>
     </message>
   </context>
   <context>
@@ -162,6 +167,19 @@
     </message>
   </context>
   <context>
+    <name>FEM_ConstraintTie</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="261"/>
+      <source>Constraint tie</source>
+      <translation type="unfinished">Constraint tie</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="266"/>
+      <source>Creates a FEM constraint tie</source>
+      <translation type="unfinished">Creates a FEM constraint tie</translation>
+    </message>
+  </context>
+  <context>
     <name>FEM_ElementFluid1D</name>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
@@ -172,6 +190,11 @@
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
       <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="287"/>
+      <source>Creates a FEM fluid section for 1D flow</source>
+      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
     </message>
   </context>
   <context>
@@ -244,12 +267,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="331"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Flödesekvation</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="332"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Skapar en FEM-ekvation för flöde</translation>
     </message>
   </context>
   <context>
@@ -273,9 +296,9 @@
       <translation type="unfinished">Fluxsolver heat</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="530"/>
-      <source>Fluxsolver heat</source>
-      <translation type="unfinished">Fluxsolver heat</translation>
+      <location filename="../../../femcommands/commands.py" line="450"/>
+      <source>Creates a FEM equation for heat</source>
+      <translation type="unfinished">Creates a FEM equation for heat</translation>
     </message>
   </context>
   <context>
@@ -296,22 +319,22 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="397"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Material för vätska</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
-      <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <location filename="../../../femcommands/commands.py" line="495"/>
+      <source>Creates a FEM material for fluid</source>
+      <translation type="unfinished">Creates a FEM material for fluid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
       <source>FEM material for Fluid</source>
-      <translation type="unfinished">FEM material for Fluid</translation>
+      <translation>FEM-material för vätska</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="44"/>
       <source>Creates a FEM material for Fluid</source>
-      <translation type="unfinished">Creates a FEM material for Fluid</translation>
+      <translation>Skapar ett FEM-material för vätska</translation>
     </message>
   </context>
   <context>
@@ -326,18 +349,18 @@
       <source>Creates a nonlinear mechanical material</source>
       <translation type="unfinished">Creates a nonlinear mechanical material</translation>
     </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="618"/>
-      <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
-    </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="674"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Förstärkt material (betong)</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="595"/>
+      <source>Creates a material for reinforced matrix material such as concrete</source>
+      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
     </message>
   </context>
   <context>
@@ -345,17 +368,17 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="452"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Material för solid</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <location filename="../../../femcommands/commands.py" line="616"/>
+      <source>Creates a FEM material for solid</source>
+      <translation type="unfinished">Creates a FEM material for solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
       <source>FEM material for solid</source>
-      <translation type="unfinished">FEM material for solid</translation>
+      <translation>FEM-material för solid</translation>
     </message>
   </context>
   <context>
@@ -436,9 +459,9 @@
       <translation type="unfinished">FEM mesh from shape by Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="957"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <location filename="../../../femcommands/commands.py" line="838"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
     </message>
   </context>
   <context>
@@ -472,7 +495,7 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="41"/>
       <source>Purge results</source>
-      <translation>Rensa resultaten</translation>
+      <translation>Rensa resultat</translation>
     </message>
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
@@ -537,9 +560,9 @@
       <translation type="unfinished">Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1174"/>
-      <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <location filename="../../../femcommands/commands.py" line="1041"/>
+      <source>Creates a FEM solver Elmer</source>
+      <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
   </context>
   <context>
@@ -601,7 +624,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Markeringsläge</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
@@ -614,12 +637,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Materialredigerare</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Öppnar FreeCAD-materialredigeraren</translation>
     </message>
   </context>
   <context>
@@ -627,12 +650,17 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Markera solider</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
       <translation type="unfinished">Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="152"/>
+      <source>Select elements part of the solid that shall be added to the list. To add the solid click "Add".</source>
+      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To add the solid click "Add".</translation>
     </message>
   </context>
   <context>
@@ -641,11 +669,6 @@
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
       <translation>Lägg till</translation>
-    </message>
-    <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
-      <source>Remove</source>
-      <translation>Ta bort</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
@@ -718,7 +741,7 @@
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation>Analys behållare</translation>
+      <translation>Analysbehållare</translation>
     </message>
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
@@ -834,17 +857,17 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Mekaniskt material...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates a mechanical material</source>
-      <translation type="unfinished">Creates a mechanical material</translation>
+      <translation>Skapar ett mekaniskt material</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Skapar eller redigerar definitionen för mekaniskt material.</translation>
     </message>
   </context>
   <context>
@@ -899,7 +922,7 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="40"/>
       <source>Purge results</source>
-      <translation>Rensa resultaten</translation>
+      <translation>Rensa resultat</translation>
     </message>
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
@@ -1072,12 +1095,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Mekaniskt material...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Skapar eller redigerar definitionen för mekaniskt material.</translation>
     </message>
   </context>
   <context>
@@ -1104,7 +1127,7 @@
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="167"/>
       <source>Add a part to the Analysis</source>
-      <translation>Lägg till en detalj till analysen</translation>
+      <translation>Lägg till en komponent till analysen</translation>
     </message>
   </context>
   <context>
@@ -1320,7 +1343,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
       <source>External editor:</source>
-      <translation type="unfinished">External editor:</translation>
+      <translation>Extern redigerare:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
@@ -1381,7 +1404,7 @@
       <location filename="../../DlgSettingsFem.ui" line="335"/>
       <location filename="../../DlgSettingsFem.ui" line="342"/>
       <source>Hz</source>
-      <translation type="unfinished">Hz</translation>
+      <translation>Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="354"/>
@@ -1620,12 +1643,12 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Blandade formtyper är inte möjliga. Använd ett andra villkor istället</translation>
+      <translation>Blandade formtyper är inte möjliga. Använd en andra begränsning istället</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation>Endast ytor, kanter och hörn kan väljas</translation>
+      <translation>Endast ytor, kanter och hörnpunkter kan väljas</translation>
     </message>
   </context>
   <context>
@@ -1638,7 +1661,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="142"/>
       <source>Point load</source>
-      <translation>Punkt belastning</translation>
+      <translation>Punktbelastning</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
@@ -1662,12 +1685,12 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Blandade formtyper är inte möjliga. Använd ett andra villkor istället</translation>
+      <translation>Blandade formtyper är inte möjliga. Använd en andra begränsning istället</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation>Endast ytor, kanter och hörn kan väljas</translation>
+      <translation>Endast ytor, kanter och hörnpunkter kan väljas</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
@@ -1733,7 +1756,7 @@
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="94"/>
       <source>Pulley diameter</source>
-      <translation>Trissdiameter</translation>
+      <translation>Diameter på talja</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
@@ -2579,7 +2602,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation>Noden räkna: </translation>
+      <translation>Nodantal: </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>

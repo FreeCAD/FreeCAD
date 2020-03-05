@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="lt" sourcelanguage="en">
+<TS version="2.1" language="lt" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -94,6 +94,11 @@
       <translation type="unfinished">Error: {err}</translation>
     </message>
     <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+    </message>
+    <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
       <translation type="unfinished">Attachment Offset:</translation>
@@ -132,11 +137,6 @@
       <translation type="unfinished">Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation type="unfinished">Bad selection</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -146,6 +146,24 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
       <translation type="unfinished">Computing the result failed with an error: 
 
 {err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation type="unfinished">Bad selection</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
     </message>
@@ -3092,7 +3110,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="94"/>
       <source>Import</source>
-      <translation>Importuoti</translation>
+      <translation>Įkelti</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
@@ -3185,7 +3203,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
       <source>Import</source>
-      <translation>Importuoti</translation>
+      <translation>Įkelti</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="159"/>
@@ -3850,7 +3868,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Išklotinė&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Apibrėžia didžiausią tinklo išklotinės ant paviršiaus nuokrypį. Mažesnė vertė sulėtina atvaizdavimo greitį, bet padidina detalumą/skyrą.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -3862,7 +3880,7 @@ Please check one or more edge entities first.</translation>
       <source>Maximum angular deflection</source>
       <translation type="unfinished">Maximum angular deflection</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -3883,7 +3901,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="14"/>
       <source>General</source>
-      <translation>Bendri</translation>
+      <translation>Bendrosios</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="20"/>
@@ -3964,7 +3982,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../DlgSettingsObjectColor.ui" line="110"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="132"/>
       <source>px</source>
-      <translation>tšk</translation>
+      <translation> tšk.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
@@ -5276,7 +5294,7 @@ Ar vistiek norite tęsti?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Skelti</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>

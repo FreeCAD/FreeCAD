@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="lt" sourcelanguage="en">
+<TS version="2.1" language="lt" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
       <source>Documents</source>
-      <translation type="unfinished">Documents</translation>
+      <translation>Dokumentai</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Activity</source>
-      <translation type="unfinished">Activity</translation>
+      <translation>Veiklų srautas</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
@@ -31,77 +31,77 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Tip</source>
-      <translation type="unfinished">Tip</translation>
+      <translation>Patarimas</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation type="unfinished">Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</translation>
+      <translation>Keiskite čia rodomų paskiausių rinkmenų skaičių pasirinkę Taisa -&gt; Nuostatos -&gt; Bendrosios -&gt; Paskiausiai naudotų rinkmenų sąrašo ilgis</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Examples</source>
-      <translation type="unfinished">Examples</translation>
+      <translation>Pavyzdžiai</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>General documentation</source>
-      <translation type="unfinished">General documentation</translation>
+      <translation>Pagrindinė dokumentacija</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation type="unfinished">User hub</translation>
+      <translation>Vartotojų centras</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation type="unfinished">This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
+      <translation>Šiame skyriuje talpinama „FreeCad“ vartotojams bendrai naudingos žinios: visų darbastalių sąrašas, išsamūs nurodymai, kaip įdiegti ir naudoti „FreeCAD“ programą, pamokymus ir visa kita, ko jums prireiktų pradedant.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation type="unfinished">Power users hub</translation>
+      <translation>Pažengusių vartotojų centras</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation type="unfinished">This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</translation>
+      <translation>Šiame skyriuje surinktos žinios pažengusiems vartotojams ir tiems, kuriuos domina „python“ kalba rašytos programėlės. Čia taip pat rasite makrokomandų talpyklą, paaiškinimus, kaip jas įsidiegti ir naudoti bei dar daug gerų patarimų, kaip pritaikyti „FreeCAD“ prie jūsų ypatingų poreikių.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>Developers hub</source>
-      <translation type="unfinished">Developers hub</translation>
+      <translation>Kūrėjų centras</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation>Šis skyrius skirtas kūrėjams: Čia galima rasti, kaip pačiam sukompiliuoti „FreeCAD“, kaip sudarytas programos kodas ir kaip jį žvalgyti, kaip sukurti naujus darbastalius ir/arba įterpti juos į jūsų nuosavą programą.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Vartotojo vadovas</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
+      <translation>„FreeCAD“ vartotojo vadovas yra kitas, nuosekliu būdu pateikiantis žinias, kurios sudaro šį wiki žinyną. Jis parašytas skaitymui, panašiam į įprastinės knygos skaitymą ir sklandžiai supažindins su daugeliu kitų puslapių, pateikiamų vartotojų centruose. Taip pat pasiekiama ir &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;angliška el. knyga&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation type="unfinished">Workbenches documentation</translation>
+      <translation>Darbastalių vadovai</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation type="unfinished">These are the help pages of all the workbenches currently installed on this computer.</translation>
+      <translation>Čia yra visų šiuo metu kompiuteryje įdiegtų darbastalių žinynai.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation type="unfinished">Getting help from the community</translation>
+      <translation>Gauti pagalbos iš bendruomenės</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
@@ -141,7 +141,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
       <source>Recent commits</source>
-      <translation type="unfinished">Recent commits</translation>
+      <translation>Paskiausi keitimai</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
@@ -151,7 +151,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation type="unfinished">See all commits on github</translation>
+      <translation>Žiūrėti visas programos laidas „github“ svetainėje</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -161,22 +161,22 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
       <source>version</source>
-      <translation type="unfinished">version</translation>
+      <translation>laida</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
       <source>build</source>
-      <translation type="unfinished">build</translation>
+      <translation>sukurti</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
       <source>Create new...</source>
-      <translation type="unfinished">Create new...</translation>
+      <translation>Sukurti naują...</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
       <source>Unknown</source>
-      <translation type="unfinished">Unknown</translation>
+      <translation>Nežinoma</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
@@ -196,17 +196,17 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
       <source>Creation date</source>
-      <translation type="unfinished">Creation date</translation>
+      <translation>Sukūrimo data</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
       <source>Last modification</source>
-      <translation type="unfinished">Last modification</translation>
+      <translation>Paskutinis pakeitimas</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Pastabos</translation>
     </message>
   </context>
   <context>
@@ -215,7 +215,7 @@
       <location filename="../../Command.cpp" line="58"/>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
-      <translation type="unfinished">Start page</translation>
+      <translation>Pradžios puslapis</translation>
     </message>
   </context>
   <context>
@@ -228,12 +228,12 @@
     <message>
       <location filename="../../Command.cpp" line="45"/>
       <source>Start Page</source>
-      <translation type="unfinished">Start Page</translation>
+      <translation>Pradžios puslapis</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Displays the start page in a browser view</source>
-      <translation type="unfinished">Displays the start page in a browser view</translation>
+      <translation>Atvaizduoja pradžios puslapį naršyklės rodinyje</translation>
     </message>
   </context>
   <context>
@@ -241,12 +241,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="14"/>
       <source>Start page options</source>
-      <translation type="unfinished">Start page options</translation>
+      <translation>Pradžios puslapio parinktys</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Start page template</source>
-      <translation type="unfinished">Start page template</translation>
+      <translation>Pradžios puslapio šablonas</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
@@ -256,22 +256,22 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
       <source>Contents</source>
-      <translation type="unfinished">Contents</translation>
+      <translation>Turinys</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="48"/>
       <source>Show forum</source>
-      <translation type="unfinished">Show forum</translation>
+      <translation>Rodyti forumą</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="55"/>
       <source>Show examples folder contents</source>
-      <translation type="unfinished">Show examples folder contents</translation>
+      <translation>Rodyti pavyzdžių aplankų turinį</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="62"/>
       <source>Show additional folder</source>
-      <translation type="unfinished">Show additional folder</translation>
+      <translation>Rodyti papildomą aplanką</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="69"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="126"/>
       <source>Show notepad</source>
-      <translation type="unfinished">Show notepad</translation>
+      <translation>Rodyti užrašinę</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="133"/>
@@ -301,47 +301,47 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="155"/>
       <source>Fonts and colors</source>
-      <translation type="unfinished">Fonts and colors</translation>
+      <translation>Šriftai ir spalvos</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="167"/>
       <source>The background of the main start page area</source>
-      <translation type="unfinished">The background of the main start page area</translation>
+      <translation>Pagrindinio pradžios puslapio srities pagrindo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="187"/>
       <source>Background color</source>
-      <translation>Fono spalva</translation>
+      <translation>Pagrindo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="199"/>
       <source>in FreeCAD</source>
-      <translation type="unfinished">in FreeCAD</translation>
+      <translation>„FreeCAD“ programoje</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="218"/>
       <source>In external browser</source>
-      <translation type="unfinished">In external browser</translation>
+      <translation>Išorinėje naršyklėje</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="236"/>
       <source>Background color gradient down</source>
-      <translation type="unfinished">Background color gradient down</translation>
+      <translation>Pagrindo apačios spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="249"/>
       <source>The color of the version text</source>
-      <translation type="unfinished">The color of the version text</translation>
+      <translation>Laidos aprašo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="269"/>
       <source>Link color</source>
-      <translation type="unfinished">Link color</translation>
+      <translation>Nuorodos spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="276"/>
       <source>An optional image to display as background</source>
-      <translation type="unfinished">An optional image to display as background</translation>
+      <translation>Pasirinktinis paveikslas, atvaizduotinas kaip pagrindo vaizdas</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="289"/>
@@ -351,62 +351,62 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="308"/>
       <source>Page background color</source>
-      <translation type="unfinished">Page background color</translation>
+      <translation>Puslapio pagrindo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="321"/>
       <source>The color of the text on the main pages</source>
-      <translation type="unfinished">The color of the text on the main pages</translation>
+      <translation>Pagrindinių puslapių rašto spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="341"/>
       <source>Background image</source>
-      <translation type="unfinished">Background image</translation>
+      <translation>Pagrindo paveikslėlis</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="348"/>
       <source>Page text color</source>
-      <translation type="unfinished">Page text color</translation>
+      <translation>Puslapio rašto spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="361"/>
       <source>The color of the links</source>
-      <translation type="unfinished">The color of the links</translation>
+      <translation>Nuorodų spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="387"/>
       <source>The background color of the boxes inside the pages</source>
-      <translation type="unfinished">The background color of the boxes inside the pages</translation>
+      <translation>Langų puslapių viduje pagrindo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="407"/>
       <source>Box background color</source>
-      <translation type="unfinished">Box background color</translation>
+      <translation>Lango pagrindo spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="420"/>
       <source>The background color behind the panels</source>
-      <translation type="unfinished">The background color behind the panels</translation>
+      <translation>Pagrindo spalva už skydelių</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="449"/>
       <source>The down gradient for the background color (currently unsupported)</source>
-      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
+      <translation>Apatinė pagrindo spalvokaitos spalva (kol kas nepalaikoma)</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="472"/>
       <source>Open links</source>
-      <translation type="unfinished">Open links</translation>
+      <translation>Atverti saitus</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>Background text color</source>
-      <translation type="unfinished">Background text color</translation>
+      <translation>Pagrindo rašto spalva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="486"/>
       <source>Use FreeCAD style sheet</source>
-      <translation type="unfinished">Use FreeCAD style sheet</translation>
+      <translation>Naudoti „FreeCAD“ išvaizdos stilių</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="493"/>
@@ -416,27 +416,27 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
+      <translation>Šriftų šeima, naudojama pradžios puslapyje. Gali būti nurodytas vieno šrifto pavadinimas arba nurodyti keli kableliais atskirti pakaitiniais šriftai</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="508"/>
       <source>Arial,Helvetica,sans</source>
-      <translation type="unfinished">Arial,Helvetica,sans</translation>
+      <translation>Arial,Helvetica,sans</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="521"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+      <translation>Pagrindinio šrifto dydis pradžios puslapio rašto rodymui</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="524"/>
       <source>px</source>
-      <translation>tšk</translation>
+      <translation> tšk.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="542"/>
       <source>Use gradient for New File icon</source>
-      <translation type="unfinished">Use gradient for New File icon</translation>
+      <translation>Naudoti pereinamas spalvas Naujos rinkmenos paveikslėliui</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="568"/>
@@ -446,27 +446,27 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="577"/>
       <source>Should the start page be closed after loading?</source>
-      <translation type="unfinished">Should the start page be closed after loading?</translation>
+      <translation>Ar pradžios puslapis turi būti užvertas po programos paleidimo?</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
       <source>Switch workbench after loading</source>
-      <translation type="unfinished">Switch workbench after loading</translation>
+      <translation>Po paleidimo persijungti į darbastalį</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>
       <source>Close start page after loading</source>
-      <translation type="unfinished">Close start page after loading</translation>
+      <translation>Po paleidimo užverti pradžios puslapį</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="610"/>
       <source>Close &amp; switch on file open</source>
-      <translation type="unfinished">Close &amp; switch on file open</translation>
+      <translation>Užverti ir persijungti, kai atveriama rinkmena</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="617"/>
       <source>If FreeCAD is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If FreeCAD is started by opening a file, apply the two settings above</translation>
+      <translation>Jei „FreeCAD“ yra paleidžiama atveriant rinkmeną, pasirinkite dvi aukščiau esančias parinktis</translation>
     </message>
   </context>
 </TS>

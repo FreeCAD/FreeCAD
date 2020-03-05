@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ro" sourcelanguage="en">
+<TS version="2.1" language="ro" sourcelanguage="en">
   <context>
     <name>AttachmentEditor</name>
     <message>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="212"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{obj} nu este atașabil. Puteți utiliza în continuare editorul de atașamente pentru alinierea obiectului, dar atașamentul nu va fi parametric.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="229"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Combinaţii de referinţă:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
@@ -92,6 +92,11 @@
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
       <source>Error: {err}</source>
       <translation>Eroare: {err}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="594"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
@@ -132,11 +137,6 @@
       <translation>Selectați o formă care este un compus, în primul rând! Al doilea element selectat (opţional) vor fi tratate ca o matriță.</translation>
     </message>
     <message>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
-      <source>Bad selection</source>
-      <translation>Selecţia Incorectă</translation>
-    </message>
-    <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
       <source>Computing the result failed with an error: 
 
@@ -149,23 +149,41 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' pentru a anula.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
+      <source>Bad selection</source>
+      <translation>Selecţia Incorectă</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="106"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation type="unfinished">Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+    </message>
   </context>
   <context>
     <name>Part_ExplodeCompound</name>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
       <source>Explode compound</source>
-      <translation type="unfinished">Explode compound</translation>
+      <translation>Gruparea în explozie</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
       <source>Explode compound: split up a list of shapes into separate objects</source>
-      <translation type="unfinished">Explode compound: split up a list of shapes into separate objects</translation>
+      <translation>Separă forma compusă: separă o listă de forme în obiecte diferite</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
       <source>Select a shape that is a compound, first!</source>
-      <translation type="unfinished">Select a shape that is a compound, first!</translation>
+      <translation>Întâi selectează forma compusă!</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
@@ -183,7 +201,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
       <source>Fuses objects, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses objects, taking care to preserve voids.</translation>
+      <translation>Unește obiectele, având grijă pentru a păstra cavitățile.</translation>
     </message>
   </context>
   <context>
@@ -209,7 +227,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
       <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation type="unfinished">Fuses one object into another, taking care to preserve voids.</translation>
+      <translation>Lipește obiect la altul, având grijă să păstreze cavitățile.</translation>
     </message>
   </context>
   <context>
@@ -258,12 +276,12 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="59"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Creare tub</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/Shapes.py" line="62"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Creați un tub</translation>
     </message>
   </context>
   <context>
@@ -299,7 +317,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
       <source>Split objects where they intersect</source>
-      <translation type="unfinished">Split objects where they intersect</translation>
+      <translation>Separă obiectele acolo unde se intersectează</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
@@ -309,12 +327,12 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Slice to compound</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
       <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
-      <translation type="unfinished">Split object by intersections with other objects, and pack the pieces into a compound.</translation>
+      <translation>Separă obiectul la intersecția cu alte obiecte și adună toate forme rezultate într-o formă compusă.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
@@ -324,12 +342,12 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
       <source>Slice apart</source>
-      <translation type="unfinished">Slice apart</translation>
+      <translation>Separare</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
       <source>Split object by intersections with other objects.</source>
-      <translation type="unfinished">Split object by intersections with other objects.</translation>
+      <translation>Part_Slice: secționează obiectul prin intersecție cu alte obiecte.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
@@ -339,7 +357,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
       <source>Remove intersection fragments</source>
-      <translation type="unfinished">Remove intersection fragments</translation>
+      <translation>Suprimați fragmentele de itnersecție</translation>
     </message>
   </context>
   <context>
@@ -1725,7 +1743,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../Command.cpp" line="1440"/>
       <source>Chamfer...</source>
-      <translation type="unfinished">Chamfer...</translation>
+      <translation>Teșitură...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1441"/>
@@ -1761,12 +1779,12 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../Command.cpp" line="783"/>
       <source>Counpound tools</source>
-      <translation type="unfinished">Counpound tools</translation>
+      <translation>Obiecte compuse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="784"/>
       <source>Compound tools: working with lists of shapes.</source>
-      <translation type="unfinished">Compound tools: working with lists of shapes.</translation>
+      <translation>Instrumente de compunere: lucrul cu liste de forme.</translation>
     </message>
   </context>
   <context>
@@ -1927,12 +1945,12 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../CommandSimple.cpp" line="272"/>
       <source>Defeaturing</source>
-      <translation type="unfinished">Defeaturing</translation>
+      <translation>Suprimare funcții</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="273"/>
       <source>Remove feature from a shape</source>
-      <translation type="unfinished">Remove feature from a shape</translation>
+      <translation>Eliminați caracteristica/funcția dintr-o formă</translation>
     </message>
   </context>
   <context>
@@ -2076,7 +2094,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../Command.cpp" line="1335"/>
       <source>Make face from set of wires (e.g. from a sketch)</source>
-      <translation type="unfinished">Make face from set of wires (e.g. from a sketch)</translation>
+      <translation>Part_MakeFace : Creează o fațetă plecând de la un ansamblu de fire (de exemplul, plecând de la schiță)</translation>
     </message>
   </context>
   <context>
@@ -2130,7 +2148,8 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../Command.cpp" line="1624"/>
       <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <translation>Utility to offset in 3D
+Inchideti utilizarea 3D</translation>
     </message>
   </context>
   <context>
@@ -2148,7 +2167,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../Command.cpp" line="1674"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Utilitara pentru decalarea formelor planare</translation>
     </message>
   </context>
   <context>
@@ -2676,7 +2695,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1038"/>
       <source>Chamfer Edges</source>
-      <translation type="unfinished">Chamfer Edges</translation>
+      <translation>Teșirea muchiilor</translation>
     </message>
   </context>
   <context>
@@ -2853,9 +2872,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
       <source>Extrusion direction link is invalid.
 
 %1</source>
-      <translation type="unfinished">Extrusion direction link is invalid.
-
-%1</translation>
+      <translation>Legătura direcției de extrudarea este invalidă</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="627"/>
@@ -2970,7 +2987,7 @@ faceţi clic pe "Continuaţi" pentru a crea funcţia oricum, sau 'Abandonați' p
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="269"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>Margini teșite</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
@@ -3846,7 +3863,7 @@ Selectati mai intai una sau mai multe margini.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="90"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Definescdeviația maximă a mozaicării plasei la suprafață. Cu cât este mai mică valoarea cu atât mai încetul se randează ceea ce rezultă în creșterea detaliilor/rezoluție.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="93"/>
@@ -3858,7 +3875,7 @@ Selectati mai intai una sau mai multe margini.</translation>
       <source>Maximum angular deflection</source>
       <translation>Deformare unghiulară maximă</translation>
     </message>
-    <message utf8="true">
+    <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="107"/>
       <source> °</source>
       <translation> °</translation>
@@ -3985,7 +4002,7 @@ Selectati mai intai una sau mai multe margini.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="230"/>
       <source>Random shape color</source>
-      <translation type="unfinished">Random shape color</translation>
+      <translation>Culoarea formei aleatoare</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="261"/>
@@ -4204,7 +4221,7 @@ Selectati mai intai una sau mai multe margini.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="522"/>
       <source>Select adjacent edges</source>
-      <translation type="unfinished">Select adjacent edges</translation>
+      <translation>Selectați unghiurile adiacente</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="529"/>
@@ -4449,7 +4466,7 @@ Selectati mai intai una sau mai multe margini.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="804"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Combinaţii de referinţă:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="821"/>
@@ -4480,7 +4497,7 @@ Selectati mai intai una sau mai multe margini.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="421"/>
       <source>Check geometry</source>
-      <translation type="unfinished">Check geometry</translation>
+      <translation>Verificați geometria</translation>
     </message>
   </context>
   <context>
@@ -4668,7 +4685,7 @@ Selectati mai intai una sau mai multe margini.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="116"/>
       <source>Wire from edges</source>
-      <translation type="unfinished">Wire from edges</translation>
+      <translation>Filamente pornind de la margini</translation>
     </message>
   </context>
   <context>
@@ -5268,7 +5285,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Join</source>
-      <translation type="unfinished">Join</translation>
+      <translation>Join</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>

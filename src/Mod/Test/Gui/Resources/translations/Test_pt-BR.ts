@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pt-BR" sourcelanguage="en">
+<TS version="2.1" language="pt-BR" sourcelanguage="en">
   <context>
     <name>TestGui::UnitTest</name>
     <message>
@@ -102,12 +102,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Help</source>
       <translation>Ajuda</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="162"/>
+      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -118,12 +118,12 @@ Clique em "Iniciar" e o teste produzido será executado.
 Clique duas vezes em um erro na exibição em árvore para ver mais informações sobre ele, incluindo o rastreamento de pilha.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Sobre o teste de unidade do FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="174"/>
+      <location filename="../../UnitTestImp.cpp" line="176"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

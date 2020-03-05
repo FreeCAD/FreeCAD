@@ -155,7 +155,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="633"/>
       <source>Duplicate selected object</source>
-      <translation>Duplicar los objetos seleccionados</translation>
+      <translation>Duplicar el objeto seleccionado</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="634"/>
@@ -1055,7 +1055,7 @@ material para ser eliminado;
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation>Se habían seleccionado geometrías que no son parte del cuerpo activo. Por favor defina cómo manejar esas selecciones. Si no desea esas referencias cancele el comando.</translation>
+      <translation>has Seleccionado geometrías que no son parte del cuerpo activo. Define cómo manejar esas selecciones. Si no deseas esas referencias, cancela el comando.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>

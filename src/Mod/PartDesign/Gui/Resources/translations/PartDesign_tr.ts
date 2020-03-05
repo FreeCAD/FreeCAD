@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="2237"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation>İki ya da daha fazla gövdeli Boolean işlem uygula</translation>
+      <translation>İki veya daha fazla gövdeye sahip Mantıksal işlem</translation>
     </message>
   </context>
   <context>
@@ -1101,7 +1101,7 @@
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation>Sigorta</translation>
+      <translation>Birleştir</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
@@ -2922,7 +2922,7 @@ Gövdeye sahip olmayan nesneler içeren eski bir belgeniz varsa, bunları bir g�
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="68"/>
       <source>Edit boolean</source>
-      <translation>Boolean değerini düzenle</translation>
+      <translation>Mantıksal işlemi düzenle</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="121"/>

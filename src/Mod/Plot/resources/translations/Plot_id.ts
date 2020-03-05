@@ -45,7 +45,7 @@
     <message>
       <location filename="../../PlotGui.py" line="152"/>
       <source>Set labels</source>
-      <translation>Tetapkan label</translation>
+      <translation>Atur label</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="155"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="135"/>
       <source>Set labels</source>
-      <translation>Tetapkan label</translation>
+      <translation>Atur label</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="139"/>
