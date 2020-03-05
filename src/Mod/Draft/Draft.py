@@ -3480,60 +3480,60 @@ class _ViewProviderDimension(_ViewProviderDraft):
     
     """
     def __init__(self, obj): 
-        # general properties
+        # annotation properties
         obj.addProperty("App::PropertyFloat","ScaleMultiplier",
                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
                         "Dimension size overall multiplier"))
-        obj.addProperty("App::PropertyFloat","LineWidth",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
-        obj.addProperty("App::PropertyColor","LineColor",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))                
         # text properties
         obj.addProperty("App::PropertyFont","FontName",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Font name"))
+                        "Text",QT_TRANSLATE_NOOP("App::Property","Font name"))
         obj.addProperty("App::PropertyLength","FontSize",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
+                        "Text",QT_TRANSLATE_NOOP("App::Property","Font size"))
         obj.addProperty("App::PropertyLength","TextSpacing",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text",QT_TRANSLATE_NOOP("App::Property",
                         "The spacing between the text and the dimension line"))
         obj.addProperty("App::PropertyBool","FlipText",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text",QT_TRANSLATE_NOOP("App::Property",
                         "Rotate the dimension text 180 degrees"))
         obj.addProperty("App::PropertyVectorDistance","TextPosition",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text",QT_TRANSLATE_NOOP("App::Property",
                         "The position of the text. Leave (0,0,0) for automatic position"))
         obj.addProperty("App::PropertyString","Override",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text",QT_TRANSLATE_NOOP("App::Property",
                         "Text override. Use $dim to insert the dimension length"))
         # units properties
         obj.addProperty("App::PropertyInteger","Decimals",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Units",QT_TRANSLATE_NOOP("App::Property",
                         "The number of decimals to show"))
         obj.addProperty("App::PropertyBool","ShowUnit",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Units",QT_TRANSLATE_NOOP("App::Property",
                         "Show the unit suffix"))
         obj.addProperty("App::PropertyString","UnitOverride",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Units",QT_TRANSLATE_NOOP("App::Property",
                         "A unit to express the measurement. Leave blank for system default"))
         # graphics properties
+        obj.addProperty("App::PropertyFloat","LineWidth",
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property","Line width"))
+        obj.addProperty("App::PropertyColor","LineColor",
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property","Line color"))                
         obj.addProperty("App::PropertyLength","ArrowSize",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
         obj.addProperty("App::PropertyEnumeration","ArrowType",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
         obj.addProperty("App::PropertyBool","FlipArrows",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property",
                         "Rotate the dimension arrows 180 degrees"))        
         obj.addProperty("App::PropertyDistance","DimOvershoot",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property",
                         "The distance the dimension line is extended past the extension lines"))        
         obj.addProperty("App::PropertyDistance","ExtLines",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property",
                         "Length of the extension lines"))
         obj.addProperty("App::PropertyDistance","ExtOvershoot",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property",
                         "Length of the extension line above the dimension line"))
         obj.addProperty("App::PropertyBool","ShowLine",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property",
                         "Shows the dimension line and arrows"))
         
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -4038,34 +4038,34 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
                         "Dimension size overall multiplier"))
         obj.addProperty("App::PropertyLength","FontSize",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
+                        "Text",QT_TRANSLATE_NOOP("App::Property","Font size"))
         obj.addProperty("App::PropertyInteger","Decimals",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Units",QT_TRANSLATE_NOOP("App::Property",
                         "The number of decimals to show"))
         obj.addProperty("App::PropertyFont","FontName",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Font name"))
+                        "Text",QT_TRANSLATE_NOOP("App::Property","Font name"))
         obj.addProperty("App::PropertyLength","ArrowSize",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
         obj.addProperty("App::PropertyLength","TextSpacing",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text",QT_TRANSLATE_NOOP("App::Property",
                         "The spacing between the text and the dimension line"))
         obj.addProperty("App::PropertyEnumeration","ArrowType",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
         obj.addProperty("App::PropertyFloat","LineWidth",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property","Line width"))
         obj.addProperty("App::PropertyColor","LineColor",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property","Line color"))
         obj.addProperty("App::PropertyBool","FlipArrows",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Graphics",QT_TRANSLATE_NOOP("App::Property",
                         "Rotate the dimension arrows 180 degrees"))
         obj.addProperty("App::PropertyBool","ShowUnit",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Units",QT_TRANSLATE_NOOP("App::Property",
                         "Show the unit suffix"))
         obj.addProperty("App::PropertyVectorDistance","TextPosition",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text",QT_TRANSLATE_NOOP("App::Property",
                         "The position of the text. Leave (0,0,0) for automatic position"))
         obj.addProperty("App::PropertyString","Override",
-                        "Draft",QT_TRANSLATE_NOOP("App::Property",
+                        "Text",QT_TRANSLATE_NOOP("App::Property",
                         "Text override. Use 'dim' to insert the dimension length"))
         
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -6476,42 +6476,47 @@ class ViewProviderDraftLabel:
     """A View Provider for the Draft Label"""
 
     def __init__(self,vobj):
+        # Annotation properties
         vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
                          "Annotation",QT_TRANSLATE_NOOP("App::Property",
                          "Dimension size overall multiplier"))
+        # Text properties
         vobj.addProperty("App::PropertyLength","TextSize",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The size of the text"))
         vobj.addProperty("App::PropertyFont","TextFont",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The font of the text"))
-        vobj.addProperty("App::PropertyLength","ArrowSize",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
-                         "The size of the arrow"))
         vobj.addProperty("App::PropertyEnumeration","TextAlignment",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The vertical alignment of the text"))
-        vobj.addProperty("App::PropertyEnumeration","ArrowType",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
-                         "The type of arrow of this label"))
-        vobj.addProperty("App::PropertyEnumeration","Frame",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
-                         "The type of frame around the text of this object"))
-        vobj.addProperty("App::PropertyBool","Line",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
-                         "Display a leader line or not"))
-        vobj.addProperty("App::PropertyFloat","LineWidth",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
-                         "Line width"))
-        vobj.addProperty("App::PropertyColor","LineColor",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
-                         "Line color"))
         vobj.addProperty("App::PropertyColor","TextColor",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "Text color"))
         vobj.addProperty("App::PropertyInteger","MaxChars",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The maximum number of characters on each line of the text box"))
+        # Graphics properties
+        vobj.addProperty("App::PropertyLength","ArrowSize",
+                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
+                         "The size of the arrow"))
+        vobj.addProperty("App::PropertyEnumeration","ArrowType",
+                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
+                         "The type of arrow of this label"))
+        vobj.addProperty("App::PropertyEnumeration","Frame",
+                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
+                         "The type of frame around the text of this object"))
+        vobj.addProperty("App::PropertyBool","Line",
+                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
+                         "Display a leader line or not"))
+        vobj.addProperty("App::PropertyFloat","LineWidth",
+                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
+                         "Line width"))
+        vobj.addProperty("App::PropertyColor","LineColor",
+                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
+                         "Line color")
+                         )
+
         vobj.Proxy = self
         self.Object = vobj.Object
         vobj.TextAlignment = ["Top","Middle","Bottom"]
@@ -6761,19 +6766,19 @@ class ViewProviderDraftText:
                          "Annotation",QT_TRANSLATE_NOOP("App::Property",
                          "Dimension size overall multiplier"))
         vobj.addProperty("App::PropertyLength","FontSize",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The size of the text"))
         vobj.addProperty("App::PropertyFont","FontName",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The font of the text"))
         vobj.addProperty("App::PropertyEnumeration","Justification",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "The vertical alignment of the text"))
         vobj.addProperty("App::PropertyColor","TextColor",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "Text color"))
         vobj.addProperty("App::PropertyFloat","LineSpacing",
-                         "Base",QT_TRANSLATE_NOOP("App::Property",
+                         "Text",QT_TRANSLATE_NOOP("App::Property",
                          "Line spacing (relative to font size)"))
         vobj.Proxy = self
         self.Object = vobj.Object

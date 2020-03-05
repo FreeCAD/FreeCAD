@@ -2,7 +2,7 @@
 
 This module provide the code for the Draft Statusbar, activated by initGui
 """
-## @package init_tools
+## @package init_draft_statusbar
 # \ingroup DRAFT
 # \brief This module provides the code for the Draft Statusbar.
 
@@ -44,9 +44,10 @@ def scale_to_label(scale):
     """
     transform a float number into a 1:X or X:1 scale and return it as label
     """
-    f = scale.as_integer_ratio()
-    if f[0] == 1 or f[0] == 1:
-        label = str(f[0]) + ":" + str(f[1])
+    f = 1/scale
+    f = f.as_integer_ratio()
+    if f[1] == 1 or f[0] == 1:
+        label = str(f[1]) + ":" + str(f[0])
         return label
     else:
         return str(scale)
