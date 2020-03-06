@@ -1,8 +1,3 @@
-"""Provide message utility functions for the Draft Workbench."""
-## @package messages
-# \ingroup DRAFT
-# \brief Provide message utility functions for the Draft Workbench.
-
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -25,6 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provide message utility functions for the Draft Workbench.
+
+The Console module has long function names, so we define some shorthands
+that are suitable for use in every workbench. These shorthands also include
+a newline character at the end of the string, so it doesn't have to be
+added manually.
+"""
+## @package messages
+# \ingroup DRAFT
+# \brief Provide message utility functions for the Draft Workbench.
 
 import FreeCAD as App
 
