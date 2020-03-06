@@ -878,7 +878,7 @@ class _MeshRegion(CommandManager):
     def __init__(self):
         super(_MeshRegion, self).__init__()
         self.resources = {
-            "Pixmap": "fem-femmesh-region",
+            "Pixmap": "FEM_MeshRegion",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MeshRegion",
                 "FEM mesh region"

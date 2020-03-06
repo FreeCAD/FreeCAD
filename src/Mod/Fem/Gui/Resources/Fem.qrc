@@ -43,7 +43,7 @@
         <file>icons/FEM_MeshGmshFromShape.svg</file>
         <file>icons/FEM_MeshNetgenFromShape.svg</file>
         <file>icons/FEM_MeshDisplayInfo.svg</file>
-        <file>icons/fem-femmesh-region.svg</file>
+        <file>icons/FEM_MeshRegion.svg</file>
         <file>icons/fem-femmesh-result.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
         <file>icons/fem-material-fluid.svg</file>

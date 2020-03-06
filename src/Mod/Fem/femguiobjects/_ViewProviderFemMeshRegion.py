@@ -44,7 +44,7 @@ class _ViewProviderFemMeshRegion(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-femmesh-region.svg"
+        return ":/icons/FEM_MeshRegion.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
