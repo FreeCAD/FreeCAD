@@ -44,7 +44,7 @@ class _ViewProviderFemElementRotation1D(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-element-rotation-1d.svg"
+        return ":/icons/FEM_ElementRotation1D.svg"
 
     """
     # do not activate the task panel, since rotation with reference shapes is not yet supported

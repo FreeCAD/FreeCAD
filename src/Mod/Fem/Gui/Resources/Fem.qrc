@@ -30,7 +30,7 @@
         <file>icons/FEM_ElementFluid1D.svg</file>
         <file>icons/FEM_ElementGeometry1D.svg</file>
         <file>icons/FEM_ElementGeometry2D.svg</file>
-        <file>icons/fem-element-rotation-1d.svg</file>
+        <file>icons/FEM_ElementRotation1D.svg</file>
         <file>icons/fem-equation-elasticity.svg</file>
         <file>icons/fem-equation-electrostatic.svg</file>
         <file>icons/fem-equation-flow.svg</file>

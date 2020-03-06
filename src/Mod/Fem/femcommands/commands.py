@@ -341,7 +341,7 @@ class _ElementRotation1D(CommandManager):
     def __init__(self):
         super(_ElementRotation1D, self).__init__()
         self.resources = {
-            "Pixmap": "fem-element-rotation-1d",
+            "Pixmap": "FEM_ElementRotation1D",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ElementRotation1D",
                 "Beam rotation"
