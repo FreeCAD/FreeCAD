@@ -30,7 +30,6 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-#from PathScripts.PathUtils import waiting_effects
 from PySide import QtCore
 
 __title__ = "Path Probing Operation"
@@ -81,25 +80,26 @@ class ObjectProbing(PathOp.ObjectOp):
 
         openstring = '(PROBEOPEN {})'.format(obj.OutputFileName)
         self.commandlist.append(Path.Command(openstring))
-        self.commandlist.append(Path.Command("G0", {"Z":obj.ClearanceHeight.Value}))
+        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         for y in self.nextpoint(bb.YMin, bb.YMax, obj.PointCountY):
             for x in self.nextpoint(bb.XMin, bb.XMax, obj.PointCountX):
-                self.commandlist.append(Path.Command("G0", {"X":x + obj.Xoffset.Value, "Y":y + obj.Yoffset.Value,  "Z":obj.SafeHeight.Value}))
-                self.commandlist.append(Path.Command("G38.2",{"Z":obj.FinalDepth.Value, "F":obj.ToolController.VertFeed.Value}))
-                self.commandlist.append(Path.Command("G0", {"Z":obj.SafeHeight.Value}))
+                self.commandlist.append(Path.Command("G0", {"X": x + obj.Xoffset.Value, "Y": y + obj.Yoffset.Value,  "Z": obj.SafeHeight.Value}))
+                self.commandlist.append(Path.Command("G38.2", {"Z": obj.FinalDepth.Value, "F": obj.ToolController.VertFeed.Value}))
+                self.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
 
         self.commandlist.append(Path.Command("(PROBECLOSE)"))
 
-
     def opSetDefaultValues(self, obj, job):
         '''opSetDefaultValues(obj, job) ... set default value for RetractHeight'''
+
 
 def SetupProperties():
     setup = ['Xoffset', 'Yoffset', 'PointCountX', 'PointCountY', 'OutputFileName']
     return setup
 
-def Create(name, obj = None):
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Probing operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)

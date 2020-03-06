@@ -35,9 +35,11 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Probing operation page controller and command implementation."
 
+
 # Qt tanslation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     '''Page controller class for the Probing operation.'''
@@ -73,7 +75,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.OutputFileName.editingFinished)
         signals.append(self.form.Xoffset.valueChanged)
         signals.append(self.form.Yoffset.valueChanged)
-        #signals.append(self.form.SetOutputFileName.clicked)
         self.form.SetOutputFileName.clicked.connect(self.SetOutputFileName)
         return signals
 
@@ -83,13 +84,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.obj.OutputFileName = str(filename[0])
             self.setFields(self.obj)
 
-Command = PathOpGui.SetupOperation('Probe',
-        PathProbe.Create,
-        TaskPanelOpPage,
-        'Path-Probe',
-        QtCore.QT_TRANSLATE_NOOP("Probe", "Probe"),
-        QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"),
-        PathProbe.SetupProperties)
+
+Command = PathOpGui.SetupOperation('Probe', PathProbe.Create, TaskPanelOpPage,
+                'Path-Probe',
+                QtCore.QT_TRANSLATE_NOOP("Probe", "Probe"),
+                QtCore.QT_TRANSLATE_NOOP("Probe", "Create a Probing Grid from a job stock"),
+                PathProbe.SetupProperties)
 
 FreeCAD.Console.PrintLog("Loading PathProbeGui... done\n")
-

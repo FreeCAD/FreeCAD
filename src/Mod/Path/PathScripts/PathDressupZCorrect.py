@@ -32,7 +32,6 @@ import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
-#from bisect import bisect_left
 
 from PySide import QtCore, QtGui
 
@@ -41,7 +40,7 @@ from PySide import QtCore, QtGui
 
 LOG_MODULE = PathLog.thisModule()
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
     PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 else:
@@ -52,9 +51,11 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+
 movecommands = ['G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 rapidcommands = ['G0', 'G00']
 arccommands = ['G2', 'G3', 'G02', 'G03']
+
 
 class ObjectDressup:
 
@@ -68,6 +69,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyDistance", "SegInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrectp", "break segments into smaller segments of this length."))
         obj.ArcInterpolate = 0.1
         obj.SegInterpolate = 1.0
+
     def __getstate__(self):
         return None
 
@@ -91,7 +93,7 @@ class ObjectDressup:
         if filename == "":
             return
 
-	f1 = open(filename, 'r')
+        f1 = open(filename, 'r')
 
         try:
             pointlist = []
@@ -101,7 +103,7 @@ class ObjectDressup:
                 yval = round(float(w[1]), 2)
                 zval = round(float(w[2]), 2)
 
-                pointlist.append([xval, yval,zval])
+                pointlist.append([xval, yval, zval])
             PathLog.debug(pointlist)
 
             cols = list(zip(*pointlist))
@@ -114,23 +116,22 @@ class ObjectDressup:
                 points = sorted([p for p in pointlist if p[1] == y])
                 inner = []
                 for p in points:
-                    inner.append(FreeCAD.Vector(p[0],p[1],p[2]))
+                    inner.append(FreeCAD.Vector(p[0], p[1], p[2]))
                 array.append(inner)
 
             intSurf = Part.BSplineSurface()
             intSurf.interpolate(array)
 
             obj.interpSurface = intSurf.toShape()
-        except:
+        except Exception:
             raise ValueError("File does not contain appropriate point data")
-
 
     def execute(self, obj):
 
         sampleD = obj.SegInterpolate.Value
         curveD = obj.ArcInterpolate.Value
 
-        if obj.interpSurface.isNull(): #No valid probe data.  return unchanged path
+        if obj.interpSurface.isNull():  # No valid probe data.  return unchanged path
             obj.Path = obj.Base.Path
             return
 
@@ -143,9 +144,9 @@ class ObjectDressup:
                         pathlist = obj.Base.Path.Commands
 
                         newcommandlist = []
-                        currLocation = {'X':0,'Y':0,'Z':0, 'F': 0}
+                        currLocation = {'X': 0, 'Y': 0, 'Z': 0, 'F': 0}
 
-                        for c in pathlist: #obj.Base.Path.Commands:
+                        for c in pathlist:
                             PathLog.debug(c)
                             PathLog.debug("     curLoc:{}".format(currLocation))
                             newparams = dict(c.Parameters)
@@ -156,12 +157,16 @@ class ObjectDressup:
                                 if arcwire is None:
                                     continue
                                 if c.Name in arccommands:
-                                    pointlist =  arcwire.discretize(Deflection=curveD)
+                                    pointlist = arcwire.discretize(Deflection=curveD)
                                 else:
-                                    pointlist = arcwire.discretize(Number=int(arcwire.Length / sampleD))
+                                    disc_number = int(arcwire.Length / sampleD)
+                                    if disc_number > 1:
+                                        pointlist = arcwire.discretize(Number=int(arcwire.Length / sampleD))
+                                    else:
+                                        pointlist = [v.Point for v in arcwire.Vertexes]
                                 for point in pointlist:
                                     offset = self._bilinearInterpolate(surface, point.x, point.y)
-                                    newcommand = Path.Command("G1", {'X':point.x, 'Y':point.y, 'Z':point.z + offset})
+                                    newcommand = Path.Command("G1", {'X': point.x, 'Y': point.y, 'Z': point.z + offset})
                                     newcommandlist.append(newcommand)
                                     currLocation.update(newcommand.Parameters)
                                     currLocation['Z'] = zval
@@ -173,6 +178,7 @@ class ObjectDressup:
                         path = Path.Path(newcommandlist)
                         obj.Path = path
 
+
 class TaskPanel:
 
     def __init__(self, obj):
@@ -182,10 +188,11 @@ class TaskPanel:
         self.interpshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "InterpolationSurface")
         self.interpshape.Shape = obj.interpSurface
         self.interpshape.ViewObject.Transparency = 60
-        self.interpshape.ViewObject.ShapeColor = (1.00000,1.00000,0.01961)
+        self.interpshape.ViewObject.ShapeColor = (1.00000, 1.00000, 0.01961)
         self.interpshape.ViewObject.Selectable = False
         stock = PathUtils.findParentJob(obj).Stock
         self.interpshape.Placement.Base.z = stock.Shape.BoundBox.ZMax
+
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Control.closeDialog()
@@ -202,7 +209,6 @@ class TaskPanel:
 
     def getFields(self):
         self.obj.Proxy.execute(self.obj)
-
 
     def updateUI(self):
 
@@ -231,6 +237,7 @@ class TaskPanel:
 
     def open(self):
         pass
+
     def setupUi(self):
         self.setFields()
         # now that the form is filled, setup the signal handlers
@@ -284,6 +291,7 @@ class ViewProviderDressup:
         job.Proxy.addOperation(arg1.Object.Base)
         arg1.Object.Base = None
         return True
+
 
 class CommandPathDressup:
 
