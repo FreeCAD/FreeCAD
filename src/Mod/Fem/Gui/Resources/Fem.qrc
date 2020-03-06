@@ -38,7 +38,7 @@
         <file>icons/FEM_EquationHeat.svg</file>
         <file>icons/FEM_MeshBoundaryLayer.svg</file>
         <file>icons/FEM_MeshClear.svg</file>
-        <file>icons/fem-femmesh-create-node-by-poly.svg</file>
+        <file>icons/FEM_CreateNodesSet.svg</file>
         <file>icons/fem-femmesh-from-shape.svg</file>
         <file>icons/FEM_MeshGmshFromShape.svg</file>
         <file>icons/FEM_MeshNetgenFromShape.svg</file>
