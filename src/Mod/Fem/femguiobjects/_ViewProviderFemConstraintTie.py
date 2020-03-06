@@ -45,7 +45,7 @@ class _ViewProviderFemConstraintTie(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-constraint-tie.svg"
+        return ":/icons/FEM_ConstraintTie.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

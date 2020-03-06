@@ -257,7 +257,7 @@ class _ConstraintTie(CommandManager):
     def __init__(self):
         super(_ConstraintTie, self).__init__()
         self.resources = {
-            "Pixmap": "fem-constraint-tie",
+            "Pixmap": "FEM_ConstraintTie",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintTie",
                 "Constraint tie"

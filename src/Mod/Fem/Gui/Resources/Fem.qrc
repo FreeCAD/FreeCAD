@@ -25,7 +25,7 @@
         <file>icons/FEM_ConstraintPulley.svg</file>
         <file>icons/FEM_ConstraintSelfWeight.svg</file>
         <file>icons/FEM_ConstraintTemperature.svg</file>
-        <file>icons/fem-constraint-tie.svg</file>
+        <file>icons/FEM_ConstraintTie.svg</file>
         <file>icons/FEM_ConstraintTransform.svg</file>
         <file>icons/fem-element-fluid-1d.svg</file>
         <file>icons/fem-element-geometry-1d.svg</file>
