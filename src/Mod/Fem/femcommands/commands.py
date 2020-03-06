@@ -922,7 +922,7 @@ class _ResultsPurge(CommandManager):
     def __init__(self):
         super(_ResultsPurge, self).__init__()
         self.resources = {
-            "Pixmap": "fem-post-results-purge",
+            "Pixmap": "FEM_ResultsPurge",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ResultsPurge",
                 "Purge results"
