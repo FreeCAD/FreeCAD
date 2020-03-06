@@ -49,7 +49,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPulley, FemGui::ViewProviderFem
 
 ViewProviderFemConstraintPulley::ViewProviderFemConstraintPulley()
 {
-    sPixmap = "fem-constraint-pulley";
+    sPixmap = "FEM_ConstraintPulley";
 }
 
 ViewProviderFemConstraintPulley::~ViewProviderFemConstraintPulley()
