@@ -40,7 +40,7 @@
         <file>icons/FEM_MeshClear.svg</file>
         <file>icons/fem-femmesh-create-node-by-poly.svg</file>
         <file>icons/fem-femmesh-from-shape.svg</file>
-        <file>icons/fem-femmesh-gmsh-from-shape.svg</file>
+        <file>icons/FEM_MeshGmshFromShape.svg</file>
         <file>icons/fem-femmesh-netgen-from-shape.svg</file>
         <file>icons/fem-femmesh-print-info.svg</file>
         <file>icons/fem-femmesh-region.svg</file>

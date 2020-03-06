@@ -761,7 +761,7 @@ class _MeshGmshFromShape(CommandManager):
     def __init__(self):
         super(_MeshGmshFromShape, self).__init__()
         self.resources = {
-            "Pixmap": "fem-femmesh-gmsh-from-shape",
+            "Pixmap": "FEM_MeshGmshFromShape",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MeshGmshFromShape",
                 "FEM mesh from shape by Gmsh"

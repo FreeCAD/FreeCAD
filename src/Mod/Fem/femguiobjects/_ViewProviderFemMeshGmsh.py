@@ -51,7 +51,7 @@ class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-femmesh-from-shape.svg"
+        return ":/icons/FEM_MeshGmshFromShape.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
