@@ -278,7 +278,7 @@ class _ElementFluid1D(CommandManager):
     def __init__(self):
         super(_ElementFluid1D, self).__init__()
         self.resources = {
-            "Pixmap": "fem-element-fluid-1d",
+            "Pixmap": "FEM_ElementFluid1D",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ElementFluid1D",
                 "Fluid section for 1D flow"
