@@ -1388,13 +1388,13 @@ bool CmdFemPostScalarClipFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostWarpVectorFilter)
 
 CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
-  : Command("FEM_PostCreateWarpVectorFilter")
+  : Command("FEM_PostFilterWarp")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Warp filter");
     sToolTipText    = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
-    sWhatsThis      = "FEM_PostCreateWarpVectorFilter";
+    sWhatsThis      = "FEM_PostFilterWarp";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-post-filter-warp";
 }
