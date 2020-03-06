@@ -55,7 +55,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAlongLine, FemGui::ViewProviderFe
 
 ViewProviderFemPostDataAlongLine::ViewProviderFemPostDataAlongLine() {
 
-    sPixmap = "fem-post-filter-data-along-line";
+    sPixmap = "FEM_PostFilterDataAlongLine";
 }
 
 ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine() {
