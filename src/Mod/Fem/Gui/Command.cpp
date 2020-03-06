@@ -1608,7 +1608,7 @@ CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
     sToolTipText    = QT_TR_NOOP("Creates a post processing pipeline from a result object");
     sWhatsThis      = "FEM_PostPipelineFromResult";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-data-pipline";
+    sPixmap         = "FEM_PostPipelineFromResult";
 }
 
 void CmdFemPostPipelineFromResult::activated(int)
