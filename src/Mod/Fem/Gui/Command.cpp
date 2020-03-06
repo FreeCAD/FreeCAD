@@ -684,7 +684,7 @@ CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for plane rotation face");
     sWhatsThis      = "FEM_ConstraintPlaneRotation";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-planerotation";
+    sPixmap         = "FEM_ConstraintPlaneRotation";
 }
 
 void CmdFemConstraintPlaneRotation::activated(int)
