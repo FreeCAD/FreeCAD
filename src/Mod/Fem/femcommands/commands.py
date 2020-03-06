@@ -236,7 +236,7 @@ class _ConstraintSelfWeight(CommandManager):
     def __init__(self):
         super(_ConstraintSelfWeight, self).__init__()
         self.resources = {
-            "Pixmap": "fem-constraint-selfweight",
+            "Pixmap": "FEM_ConstraintSelfWeight",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintSelfWeight",
                 "Constraint self weight"

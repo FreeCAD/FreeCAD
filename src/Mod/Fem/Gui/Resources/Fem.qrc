@@ -23,7 +23,7 @@
         <file>icons/FEM_ConstraintPlaneRotation.svg</file>
         <file>icons/FEM_ConstraintPressure.svg</file>
         <file>icons/FEM_ConstraintPulley.svg</file>
-        <file>icons/fem-constraint-selfweight.svg</file>
+        <file>icons/FEM_ConstraintSelfWeight.svg</file>
         <file>icons/fem-constraint-temperature.svg</file>
         <file>icons/fem-constraint-tie.svg</file>
         <file>icons/fem-constraint-transform.svg</file>
