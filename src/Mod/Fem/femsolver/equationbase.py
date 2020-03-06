@@ -116,6 +116,6 @@ class FlowProxy(BaseProxy):
 class FlowViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-equation-flow.svg"
+        return ":/icons/FEM_EquationFlow.svg"
 
 ##  @}

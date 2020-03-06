@@ -402,7 +402,7 @@ class _EquationFlow(CommandManager):
     def __init__(self):
         super(_EquationFlow, self).__init__()
         self.resources = {
-            "Pixmap": "fem-equation-flow",
+            "Pixmap": "FEM_EquationFlow",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_EquationFlow",
                 "Flow equation"
