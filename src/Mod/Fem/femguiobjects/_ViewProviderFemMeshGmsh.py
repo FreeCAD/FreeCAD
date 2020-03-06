@@ -50,9 +50,6 @@ class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
     A View Provider for the FemMeshGmsh object
     """
 
-    def getIcon(self):
-        return ":/icons/FEM_MeshGmshFromShape.svg"
-
     def setEdit(self, vobj, mode):
         # hide all meshes
         for o in FreeCAD.ActiveDocument.Objects:

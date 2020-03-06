@@ -37,5 +37,4 @@ class _ViewProviderFemConstraintSelfWeight(ViewProviderFemConstraint.ViewProxy):
     A View Provider for the FemConstraintSelfWeight object"
     """
 
-    def getIcon(self):
-        return ":/icons/FEM_ConstraintSelfWeight.svg"
+    pass

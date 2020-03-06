@@ -43,9 +43,6 @@ class _ViewProviderFemElementRotation1D(ViewProviderFemConstraint.ViewProxy):
     A View Provider for the FemElementRotation1D object
     """
 
-    def getIcon(self):
-        return ":/icons/FEM_ElementRotation1D.svg"
-
     """
     # do not activate the task panel, since rotation with reference shapes is not yet supported
     def setEdit(self, vobj, mode=0):

@@ -47,9 +47,6 @@ class _ViewProviderFemElementFluid1D(ViewProviderFemConstraint.ViewProxy):
     A View Provider for the FemElementFluid1D object
     """
 
-    def getIcon(self):
-        return ":/icons/FEM_ElementFluid1D.svg"
-
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
             self,

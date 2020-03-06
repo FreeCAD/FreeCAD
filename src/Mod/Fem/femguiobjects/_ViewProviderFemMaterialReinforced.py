@@ -49,9 +49,6 @@ class _ViewProviderFemMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
     A View Provider for the FemMaterialReinfocement object
     """
 
-    def getIcon(self):
-        return ":/icons/FEM_MaterialReinforced.svg"
-
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
             self,

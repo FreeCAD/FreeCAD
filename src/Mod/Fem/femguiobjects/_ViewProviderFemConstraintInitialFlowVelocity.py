@@ -40,9 +40,6 @@ from femtools import membertools
 
 class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
-    def getIcon(self):
-        return ":/icons/FEM_ConstraintInitialFlowVelocity.svg"
-
     def setEdit(self, vobj, mode=0):
         # hide all meshes
         for o in FreeCAD.ActiveDocument.Objects:
