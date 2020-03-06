@@ -69,7 +69,7 @@
         <file>icons/fem-solver-analysis-static.svg</file>
         <file>icons/fem-solver-analysis-thermomechanical.svg</file>
         <file>icons/fem-solver-control.svg</file>
-        <file>icons/fem-solver-elmer.svg</file>
+        <file>icons/FEM_SolverElmer.svg</file>
         <file>icons/fem-solver-inp-editor.svg</file>
         <file>icons/FEM_SolverRun.svg</file>
         <file>icons/fem-solver-standard.svg</file>

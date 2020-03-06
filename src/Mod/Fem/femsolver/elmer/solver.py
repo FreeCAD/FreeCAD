@@ -95,6 +95,6 @@ class ViewProxy(solverbase.ViewProxy):
     """Proxy for FemSolverElmers View Provider."""
 
     def getIcon(self):
-        return ":/icons/fem-solver-elmer.svg"
+        return ":/icons/FEM_SolverElmer.svg"
 
 ##  @}

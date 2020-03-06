@@ -1032,7 +1032,7 @@ class _SolverElmer(CommandManager):
     def __init__(self):
         super(_SolverElmer, self).__init__()
         self.resources = {
-            "Pixmap": "fem-solver-elmer",
+            "Pixmap": "FEM_SolverElmer",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_SolverElmer",
                 "Solver Elmer"
