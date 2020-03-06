@@ -216,7 +216,7 @@ class _ConstraintInitialFlowVelocity(CommandManager):
     def __init__(self):
         super(_ConstraintInitialFlowVelocity, self).__init__()
         self.resources = {
-            "Pixmap": "fem-constraint-initial-flow-velocity",
+            "Pixmap": "FEM_ConstraintInitialFlowVelocity",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintInitialFlowVelocity",
                 "Constraint initial flow velocity"
