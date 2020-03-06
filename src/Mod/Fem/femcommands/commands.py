@@ -607,7 +607,7 @@ class _MaterialSolid(CommandManager):
     def __init__(self):
         super(_MaterialSolid, self).__init__()
         self.resources = {
-            "Pixmap": "fem-material",
+            "Pixmap": "FEM_MaterialSolid",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MaterialSolid",
                 "Material for solid"

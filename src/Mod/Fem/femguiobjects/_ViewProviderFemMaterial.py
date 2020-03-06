@@ -53,7 +53,7 @@ class _ViewProviderFemMaterial(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-material.svg"
+        return ":/icons/FEM_MaterialSolid.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

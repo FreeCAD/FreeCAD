@@ -49,7 +49,7 @@
         <file>icons/FEM_MaterialFluid.svg</file>
         <file>icons/FEM_MaterialMechanicalNonlinear.svg</file>
         <file>icons/FEM_MaterialReinforced.svg</file>
-        <file>icons/fem-material.svg</file>
+        <file>icons/FEM_MaterialSolid.svg</file>
         <file>icons/fem-post-data-pipline.svg</file>
         <file>icons/fem-post-filter-clip-region.svg</file>
         <file>icons/fem-post-filter-clip-scalar.svg</file>
