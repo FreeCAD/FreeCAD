@@ -97,50 +97,56 @@ def autogroup(obj):
     obj : App::DocumentObject
         Any type of object that will be stored in the group.
     """
-    if FreeCAD.GuiUp:
-        # look for active Arch container
-        active_arch_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-        if hasattr(FreeCADGui,"draftToolBar"):
-            if (hasattr(FreeCADGui.draftToolBar,"autogroup") 
-                and not FreeCADGui.draftToolBar.isConstructionMode()
-                ):
-                if FreeCADGui.draftToolBar.autogroup is not None:
-                    active_group = FreeCAD.ActiveDocument.getObject(FreeCADGui.draftToolBar.autogroup)
-                    if active_group:
-                        found = False
-                        for o in active_group.Group:
-                            if o.Name == obj.Name:
-                                found = True
-                        if not found:
-                            gr = active_group.Group
-                            gr.append(obj)
-                            active_group.Group = gr
-                elif active_arch_obj:
-                    active_arch_obj.addObject(obj)
-                elif FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
-                    # add object to active part and change it's placement accordingly
-                    # so object does not jump to different position, works with App::Link
-                    # if not scaled. Modified accordingly to realthunder suggestions
-                    p, parent, sub = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("part", False)
-                    matrix = parent.getSubObject(sub, retType=4)
-                    if matrix.hasScale() == 1:
-                        FreeCAD.Console.PrintMessage(translate("Draft",
-                                                               "Unable to insert new object into "
-                                                               "a scaled part")
-                                                    )
-                        return
-                    inverse_placement = FreeCAD.Placement(matrix.inverse())
-                    if get_type(obj) == 'Point':
-                        # point vector have a kind of placement, so should be
-                        # processed before generic object with placement
-                        point_vector = FreeCAD.Vector(obj.X, obj.Y, obj.Z)
-                        real_point = inverse_placement.multVec(point_vector)
-                        obj.X = real_point.x
-                        obj.Y = real_point.y
-                        obj.Z = real_point.z
-                    elif hasattr(obj,"Placement"):
-                        obj.Placement = FreeCAD.Placement(inverse_placement.multiply(obj.Placement))
-                    p.addObject(obj)
+    if not FreeCAD.GuiUp:
+        return
+
+    Gui = FreeCADGui
+    doc = FreeCAD.ActiveDocument
+    view = FreeCADGui.ActiveDocument.ActiveView
+
+    # Look for active Arch container
+    active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
+    if hasattr(FreeCADGui, "draftToolBar"):
+        if (hasattr(FreeCADGui.draftToolBar, "autogroup")
+                and not FreeCADGui.draftToolBar.isConstructionMode()):
+            if FreeCADGui.draftToolBar.autogroup is not None:
+                active_group = doc.getObject(FreeCADGui.draftToolBar.autogroup)
+                if active_group:
+                    found = False
+                    for o in active_group.Group:
+                        if o.Name == obj.Name:
+                            found = True
+                    if not found:
+                        gr = active_group.Group
+                        gr.append(obj)
+                        active_group.Group = gr
+            elif active_arch_obj:
+                active_arch_obj.addObject(obj)
+            elif view.getActiveObject("part", False) is not None:
+                # Add object to active part and change its placement
+                # accordingly so the object does not jump
+                # to a different position, works with App::Link if not scaled.
+                # Modified accordingly to realthunder suggestions
+                p, parent, sub = view.getActiveObject("part", False)
+                matrix = parent.getSubObject(sub, retType=4)
+                if matrix.hasScale() == 1:
+                    _msg(translate("Draft",
+                                   "Unable to insert new object into "
+                                   "a scaled part"))
+                    return
+                inverse_placement = FreeCAD.Placement(matrix.inverse())
+                if get_type(obj) == 'Point':
+                    # point vector have a kind of placement, so should be
+                    # processed before generic object with placement
+                    point_vector = FreeCAD.Vector(obj.X, obj.Y, obj.Z)
+                    real_point = inverse_placement.multVec(point_vector)
+                    obj.X = real_point.x
+                    obj.Y = real_point.y
+                    obj.Z = real_point.z
+                elif hasattr(obj, "Placement"):
+                    place = inverse_placement.multiply(obj.Placement)
+                    obj.Placement = FreeCAD.Placement(place)
+                p.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
