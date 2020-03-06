@@ -320,7 +320,7 @@ class _ElementGeometry2D(CommandManager):
     def __init__(self):
         super(_ElementGeometry2D, self).__init__()
         self.resources = {
-            "Pixmap": "fem-element-geometry-2d",
+            "Pixmap": "FEM_ElementGeometry2D",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ElementGeometry2D",
                 "Shell plate thickness"
