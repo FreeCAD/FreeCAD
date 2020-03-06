@@ -830,7 +830,7 @@ class _MeshNetgenFromShape(CommandManager):
     def __init__(self):
         super(_MeshNetgenFromShape, self).__init__()
         self.resources = {
-            "Pixmap": "fem-femmesh-netgen-from-shape",
+            "Pixmap": "FEM_MeshNetgenFromShape",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MeshNetgenFromShape",
                 "FEM mesh from shape by Netgen"
