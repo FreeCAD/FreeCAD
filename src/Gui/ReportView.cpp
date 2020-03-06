@@ -242,30 +242,45 @@ ReportOutputObserver::ReportOutputObserver(ReportOutput *report)
     this->reportView = report;
 }
 
+void ReportOutputObserver::showReportView(){
+    // get the QDockWidget parent of the report view
+    QDockWidget* dw = nullptr;
+    QWidget* par = reportView->parentWidget();
+    while (par) {
+        dw = qobject_cast<QDockWidget*>(par);
+        if (dw)
+            break;
+        par = par->parentWidget();
+    }
+
+    if (dw && !dw->toggleViewAction()->isChecked()) {
+        dw->toggleViewAction()->activate(QAction::Trigger);
+    }
+}
+
 bool ReportOutputObserver::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::User && obj == reportView.data()) {
         CustomReportEvent* cr = dynamic_cast<CustomReportEvent*>(event);
         if (cr) {
+            ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
             ReportHighlighter::Paragraph msgType = cr->messageType();
-            if (msgType == ReportHighlighter::Error || msgType == ReportHighlighter::Warning){
-                ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-                        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
-
-                if (group->GetBool("checkShowReportViewOnWarningOrError", true)) {
-                    // get the QDockWidget parent of the report view
-                    QDockWidget* dw = nullptr;
-                    QWidget* par = reportView->parentWidget();
-                    while (par) {
-                        dw = qobject_cast<QDockWidget*>(par);
-                        if (dw)
-                            break;
-                        par = par->parentWidget();
-                    }
-
-                    if (dw && !dw->toggleViewAction()->isChecked()) {
-                        dw->toggleViewAction()->activate(QAction::Trigger);
-                    }
+            if (msgType == ReportHighlighter::Warning){
+                if (group->GetBool("checkShowReportViewOnWarning", true)) {
+                    showReportView();
+                }
+            } else if (msgType == ReportHighlighter::Error){
+                if (group->GetBool("checkShowReportViewOnError", true)) {
+                    showReportView();
+                }
+            } else if (msgType == ReportHighlighter::Message){
+                if (group->GetBool("checkShowReportViewOnNormalMessage", false)) {
+                    showReportView();
+                }
+            } else if (msgType == ReportHighlighter::LogText){
+                if (group->GetBool("checkShowReportViewOnLogMessage", false)) {
+                    showReportView();
                 }
             }
         }
@@ -530,10 +545,26 @@ void ReportOutput::onToggleError()
     getWindowParameter()->SetBool( "checkError", bErr );
 }
 
-void ReportOutput::onToggleShowReportViewOnWarningOrError(){
-    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarningOrError", true);
-    getWindowParameter()->SetBool("checkShowReportViewOnWarningOrError", !show);
+void ReportOutput::onToggleShowReportViewOnWarning(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnWarning", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnWarning", !show);
 }
+
+void ReportOutput::onToggleShowReportViewOnError(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnError", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnError", !show);
+}
+
+void ReportOutput::onToggleShowReportViewOnNormalMessage(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnNormalMessage", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnNormalMessage", !show);
+}
+
+void ReportOutput::onToggleShowReportViewOnLogMessage(){
+    bool show = getWindowParameter()->GetBool("checkShowReportViewOnLogMessage", true);
+    getWindowParameter()->SetBool("checkShowReportViewOnLogMessage", !show);
+}
+
 void ReportOutput::onToggleWarning()
 {
     bWrn = bWrn ? false : true;
