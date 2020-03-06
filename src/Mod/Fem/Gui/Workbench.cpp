@@ -178,7 +178,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
               << "FEM_PostFilterClipRegion"
               << "FEM_PostFilterDataAlongLine"
               << "FEM_PostCreateLinearizedStressesFilter"
-              << "FEM_PostCreateDataAtPointFilter"
+              << "FEM_PostFilterDataAtPoint"
               << "Separator"
               << "FEM_PostCreateFunctions";
 #endif
@@ -308,7 +308,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "FEM_PostFilterClipRegion"
              << "FEM_PostFilterDataAlongLine"
              << "FEM_PostCreateLinearizedStressesFilter"
-             << "FEM_PostCreateDataAtPointFilter"
+             << "FEM_PostFilterDataAtPoint"
              << "Separator"
              << "FEM_PostCreateFunctions";
 #endif
