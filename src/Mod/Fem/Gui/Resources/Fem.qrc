@@ -13,7 +13,7 @@
         <file>icons/FEM_ConstraintDisplacement.svg</file>
         <file>icons/FEM_ConstraintElectrostaticPotential.svg</file>
         <file>icons/FEM_ConstraintFixed.svg</file>
-        <file>icons/fem-constraint-flow-velocity.svg</file>
+        <file>icons/FEM_ConstraintFlowVelocity.svg</file>
         <file>icons/fem-constraint-fluid-boundary.svg</file>
         <file>icons/FEM_ConstraintForce.svg</file>
         <file>icons/FEM_ConstraintGear.svg</file>
