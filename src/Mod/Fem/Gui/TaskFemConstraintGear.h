@@ -40,7 +40,7 @@ class TaskFemConstraintGear : public TaskFemConstraintBearing
 
 public:
     TaskFemConstraintGear(ViewProviderFemConstraint *ConstraintView,QWidget *parent = 0,
-                          const char* pixmapname = "fem-constraint-gear");
+                          const char* pixmapname = "FEM_ConstraintGear");
 
     double getDiameter(void) const;
     double getForce(void) const;
