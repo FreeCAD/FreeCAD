@@ -596,7 +596,7 @@ CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a heatflux acting on a face");
     sWhatsThis      = "FEM_ConstraintHeatflux";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-heatflux";
+    sPixmap         = "FEM_ConstraintHeatflux";
 }
 
 void CmdFemConstraintHeatflux::activated(int)

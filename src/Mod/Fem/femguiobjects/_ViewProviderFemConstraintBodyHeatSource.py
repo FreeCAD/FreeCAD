@@ -34,6 +34,6 @@ from . import ViewProviderFemConstraint
 class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-constraint-heatflux.svg"
+        return ":/icons/FEM_ConstraintHeatflux.svg"
 
 ##  @}

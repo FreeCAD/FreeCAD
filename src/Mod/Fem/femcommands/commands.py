@@ -156,7 +156,7 @@ class _ConstraintBodyHeatSource(CommandManager):
     def __init__(self):
         super(_ConstraintBodyHeatSource, self).__init__()
         self.resources = {
-            "Pixmap": "fem-constraint-heatflux",  # the heatflux icon is used
+            "Pixmap": "FEM_ConstraintHeatflux",  # the heatflux icon is used
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintBodyHeatSource",
                 "Constraint body heat source"
