@@ -338,7 +338,7 @@ CmdFemConstraintContact::CmdFemConstraintContact()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for contact between faces");
     sWhatsThis      = "FEM_ConstraintContact";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-contact";
+    sPixmap         = "FEM_ConstraintContact";
 }
 
 void CmdFemConstraintContact::activated(int)

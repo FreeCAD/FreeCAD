@@ -59,7 +59,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintContact */
 
 TaskFemConstraintContact::TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-contact")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintContact")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintContact();
