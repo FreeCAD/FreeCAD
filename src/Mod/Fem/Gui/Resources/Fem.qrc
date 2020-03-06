@@ -7,7 +7,7 @@
         <file>icons/fem-add-part.svg</file>
         <file>icons/FEM_Analysis.svg</file>
         <file>icons/FEM_ClippingPlaneAdd.svg</file>
-        <file>icons/fem-clipping-plane-remove-all.svg</file>
+        <file>icons/FEM_ClippingPlaneRemoveAll.svg</file>
         <file>icons/FEM_ConstraintBearing.svg</file>
         <file>icons/FEM_ConstraintContact.svg</file>
         <file>icons/FEM_ConstraintDisplacement.svg</file>

@@ -127,7 +127,7 @@ class _ClippingPlaneRemoveAll(CommandManager):
     def __init__(self):
         super(_ClippingPlaneRemoveAll, self).__init__()
         self.resources = {
-            "Pixmap": "fem-clipping-plane-remove-all",
+            "Pixmap": "FEM_ClippingPlaneRemoveAll",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ClippingPlaneRemoveAll",
                 "Remove all clipping planes"
