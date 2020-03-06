@@ -346,7 +346,7 @@ class _TaskPanel:
 
     def run_gmsh(self):
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        part = self.obj.Part
+        part = self.mesh_obj.Part
         if self.mesh_obj.MeshRegionList:
             #  other part obj might not have a Proxy, thus an exception would be raised
             if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):
@@ -376,7 +376,7 @@ class _TaskPanel:
         self.console_log("We are going to start ...")
         self.get_active_analysis()
         from femmesh import gmshtools
-        gmsh_mesh = gmshtools.GmshTools(self.obj, self.analysis)
+        gmsh_mesh = gmshtools.GmshTools(self.mesh_obj, self.analysis)
         self.console_log("Start Gmsh ...")
         error = ""
         try:
