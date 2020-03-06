@@ -33,6 +33,7 @@ import FreeCADGui
 import Draft
 import Draft_rc
 import DraftVecUtils
+import drafttaskpanels.task_selectplane as task_selectplane
 from draftutils.todo import todo
 from draftutils.messages import _msg
 from draftutils.translate import translate
@@ -91,7 +92,7 @@ class Draft_SelectPlane:
 
         # Create task panel
         FreeCADGui.Control.closeDialog()
-        self.taskd = SelectPlane_TaskPanel()
+        self.taskd = task_selectplane.SelectPlaneTaskPanel()
 
         # Fill values
         self.taskd.form.checkCenter.setChecked(self.param.GetBool("CenterPlaneOnView", False))
@@ -491,17 +492,6 @@ class Draft_SelectPlane:
         p = FreeCAD.DraftWorkingPlane
         self.states.append([p.u, p.v, p.axis, p.position])
         FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
-
-
-class SelectPlane_TaskPanel:
-    """The task panel definition of the Draft_SelectPlane command."""
-
-    def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(":/ui/TaskSelectPlane.ui")
-
-    def getStandardButtons(self):
-        """Execute to set the standard buttons."""
-        return 2097152  # int(QtGui.QDialogButtonBox.Close)
 
 
 class Draft_SetWorkingPlaneProxy:
