@@ -1225,13 +1225,13 @@ bool CmdFemPostClipFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostCutFilter)
 
 CmdFemPostCutFilter::CmdFemPostCutFilter()
-  : Command("FEM_PostCreateCutFilter")
+  : Command("FEM_PostFilterCutFunction")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Function cut filter");
     sToolTipText    = QT_TR_NOOP("Cut the data along an implicit function");
-    sWhatsThis      = "FEM_PostCreateCutFilter";
+    sWhatsThis      = "FEM_PostFilterCutFunction";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-post-filter-cut-function";
 }
