@@ -53,6 +53,20 @@ class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
     def getIcon(self):
         return ":/icons/FEM_MeshGmshFromShape.svg"
 
+    def setEdit(self, vobj, mode):
+        # hide all meshes
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Fem::FemMeshObject"):
+                o.ViewObject.hide()
+        # show the mesh we like to edit
+        self.ViewObject.show()
+        # show task panel
+        taskd = _TaskPanel(self.Object)
+        # taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    """
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
             self,
@@ -60,6 +74,7 @@ class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
             mode,
             _TaskPanel
         )
+    """
 
     # overwrite unsetEdit, hide mesh object on task panel exit
     def unsetEdit(self, vobj, mode):
