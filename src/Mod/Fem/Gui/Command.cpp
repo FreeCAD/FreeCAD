@@ -1362,13 +1362,13 @@ bool CmdFemPostLinearizedStressesFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostScalarClipFilter)
 
 CmdFemPostScalarClipFilter::CmdFemPostScalarClipFilter()
-  : Command("FEM_PostCreateScalarClipFilter")
+  : Command("FEM_PostFilterClipScalar")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Scalar clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
-    sWhatsThis      = "FEM_PostCreateScalarClipFilter";
+    sWhatsThis      = "FEM_PostFilterClipScalar";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-post-filter-clip-scalar";
 }
