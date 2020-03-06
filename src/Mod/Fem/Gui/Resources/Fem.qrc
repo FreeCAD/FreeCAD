@@ -19,7 +19,7 @@
         <file>icons/FEM_ConstraintGear.svg</file>
         <file>icons/FEM_ConstraintHeatflux.svg</file>
         <file>icons/FEM_ConstraintInitialFlowVelocity.svg</file>
-        <file>icons/fem-constraint-initial-temperature.svg</file>
+        <file>icons/FEM_ConstraintInitialTemperature.svg</file>
         <file>icons/fem-constraint-planerotation.svg</file>
         <file>icons/fem-constraint-pressure.svg</file>
         <file>icons/fem-constraint-pulley.svg</file>
