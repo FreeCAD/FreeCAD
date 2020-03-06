@@ -316,6 +316,7 @@ void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
             ext->getName() == geo->getName()){
             ext = std::move(geo);
             hasext = true;
+            break;
         }
     }
 
