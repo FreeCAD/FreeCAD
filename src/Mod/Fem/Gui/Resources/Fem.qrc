@@ -46,7 +46,7 @@
         <file>icons/FEM_MeshRegion.svg</file>
         <file>icons/fem-femmesh-result.svg</file>
         <file>icons/FEM_FEMMesh2Mesh.svg</file>
-        <file>icons/fem-material-fluid.svg</file>
+        <file>icons/FEM_MaterialFluid.svg</file>
         <file>icons/fem-material-nonlinear.svg</file>
         <file>icons/fem-material-reinforced.svg</file>
         <file>icons/fem-material.svg</file>
