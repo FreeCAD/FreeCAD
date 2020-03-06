@@ -621,7 +621,7 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a5->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
     a5->setShortcut(QKeySequence(QString::fromUtf8("V,6")));
     QAction* a6 = pcAction->addAction(QString());
-    a1->setCheckable(true);
+    a6->setCheckable(true);
     a6->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     a6->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
     a6->setShortcut(QKeySequence(QString::fromUtf8("V,7")));
