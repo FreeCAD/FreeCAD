@@ -422,7 +422,7 @@ class _EquationFluxsolver(CommandManager):
     def __init__(self):
         super(_EquationFluxsolver, self).__init__()
         self.resources = {
-            "Pixmap": "fem-equation-fluxsolver",
+            "Pixmap": "FEM_EquationFluxsolver",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_EquationFluxsolver",
                 "Fluxsolver equation"

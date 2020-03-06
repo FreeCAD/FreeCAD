@@ -102,7 +102,7 @@ class ElectrostaticProxy(BaseProxy):
 class FluxsolverViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-equation-fluxsolver.svg"
+        return ":/icons/FEM_EquationFluxsolver.svg"
 
 
 class FluxsolverProxy(BaseProxy):
