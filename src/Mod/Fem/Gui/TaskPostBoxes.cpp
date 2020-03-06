@@ -1035,7 +1035,7 @@ void TaskPostScalarClip::on_InsideOut_toggled(bool val) {
 // spinbox min, slider, spinbox max
 // spinbox warp factor
 TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget* parent) :
-    TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-filter-warp"), tr("Warp options"), parent) {
+    TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterWarp"), tr("Warp options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostWarpVector::getClassTypeId()));
 

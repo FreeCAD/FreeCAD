@@ -57,7 +57,7 @@
         <file>icons/FEM_PostFilterDataAlongLine.svg</file>
         <file>icons/FEM_PostFilterDataAtPoint.svg</file>
         <file>icons/FEM_PostFilterLinearizedStresses.svg</file>
-        <file>icons/fem-post-filter-warp.svg</file>
+        <file>icons/FEM_PostFilterWarp.svg</file>
         <file>icons/fem-post-geo-box.svg</file>
         <file>icons/fem-post-geo-cylinder.svg</file>
         <file>icons/fem-post-geo-isosurface.svg</file>
