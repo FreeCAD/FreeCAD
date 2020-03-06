@@ -57,4 +57,4 @@ class _FemSolverCalculix(FemConstraint.Proxy):
         # only used if the preferences working directory is left blank
 
         # add attributes from framework calculix solver
-        add_attributes(obj)
+        add_attributes(obj, ccx_prefs)
