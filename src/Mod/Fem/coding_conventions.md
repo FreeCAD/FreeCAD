@@ -96,3 +96,8 @@ Python style is preferred over Doxygen style
 - slashes
     - Do not use to many slashes in a row. This could cause trouble with Doxygen.
     - see [PR with comment](https://github.com/FreeCAD/FreeCAD/pull/2757#discussion_r355218913)
+
+## Icons
+### Naming plicy
+- Command icons use the command name.
+- see [Forum topic] (https://forum.freecadweb.org/viewtopic.php?f=18&t=43379)
