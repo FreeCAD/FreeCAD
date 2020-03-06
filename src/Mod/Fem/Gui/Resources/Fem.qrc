@@ -8,7 +8,7 @@
         <file>icons/FEM_Analysis.svg</file>
         <file>icons/fem-clipping-plane-add.svg</file>
         <file>icons/fem-clipping-plane-remove-all.svg</file>
-        <file>icons/fem-constraint-bearing.svg</file>
+        <file>icons/FEM_ConstraintBearing.svg</file>
         <file>icons/fem-constraint-contact.svg</file>
         <file>icons/fem-constraint-displacement.svg</file>
         <file>icons/fem-constraint-electrostatic-potential.svg</file>
