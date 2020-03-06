@@ -80,6 +80,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_circulararray.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
+    draftguitools/gui_planeproxy.py
     draftguitools/gui_selectplane.py
     draftguitools/gui_arrays.py
     draftguitools/gui_snaps.py
