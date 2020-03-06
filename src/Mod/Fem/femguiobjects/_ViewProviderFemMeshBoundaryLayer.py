@@ -44,7 +44,7 @@ class _ViewProviderFemMeshBoundaryLayer(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-femmesh-boundary-layer.svg"
+        return ":/icons/FEM_MeshBoundaryLayer.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

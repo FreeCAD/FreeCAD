@@ -678,7 +678,7 @@ class _MeshBoundaryLayer(CommandManager):
     def __init__(self):
         super(_MeshBoundaryLayer, self).__init__()
         self.resources = {
-            "Pixmap": "fem-femmesh-boundary-layer",
+            "Pixmap": "FEM_MeshBoundaryLayer",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MeshBoundaryLayer",
                 "FEM mesh boundary layer"
