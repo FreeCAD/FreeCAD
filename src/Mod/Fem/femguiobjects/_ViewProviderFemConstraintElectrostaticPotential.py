@@ -42,7 +42,7 @@ from femtools import membertools
 class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-constraint-electrostatic-potential.svg"
+        return ":/icons/FEM_ConstraintElectrostaticPotential.svg"
 
     def setEdit(self, vobj, mode=0):
         # hide all meshes

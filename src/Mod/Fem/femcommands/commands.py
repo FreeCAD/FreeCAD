@@ -176,7 +176,7 @@ class _ConstraintElectrostaticPotential(CommandManager):
     def __init__(self):
         super(_ConstraintElectrostaticPotential, self).__init__()
         self.resources = {
-            "Pixmap": "fem-constraint-electrostatic-potential",
+            "Pixmap": "FEM_ConstraintElectrostaticPotential",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ConstraintElectrostaticPotential",
                 "Constraint electrostatic potential"
