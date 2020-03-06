@@ -50,7 +50,7 @@ class _ViewProviderFemMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-material-reinforced.svg"
+        return ":/icons/FEM_MaterialReinforced.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

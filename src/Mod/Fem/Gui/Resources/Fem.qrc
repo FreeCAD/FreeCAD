@@ -48,7 +48,7 @@
         <file>icons/FEM_FEMMesh2Mesh.svg</file>
         <file>icons/FEM_MaterialFluid.svg</file>
         <file>icons/FEM_MaterialMechanicalNonlinear.svg</file>
-        <file>icons/fem-material-reinforced.svg</file>
+        <file>icons/FEM_MaterialReinforced.svg</file>
         <file>icons/fem-material.svg</file>
         <file>icons/fem-post-data-pipline.svg</file>
         <file>icons/fem-post-filter-clip-region.svg</file>
