@@ -494,14 +494,18 @@ class Draft_SelectPlane:
         FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
 
 
-class Draft_SetWorkingPlaneProxy:
-    """The Draft_SetWorkingPlaneProxy FreeCAD command definition."""
+class Draft_WorkingPlaneProxy:
+    """The Draft_WorkingPlaneProxy command definition."""
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _menu = "Create Working Plane Proxy"
-        _tip = "Creates a proxy object from the current working plane"
-        d = {'Pixmap': 'Draft_SelectPlane',
+        _menu = "Create working plane proxy"
+        _tip = ("Creates a proxy object from the current working plane.\n"
+                "Once the object is created double click it in the tree view "
+                "to restore the camera position and objects' visibilities.\n"
+                "Then you can use it to save a different camera position "
+                "and objects' states any time you need.")
+        d = {'Pixmap': 'Draft_PlaneProxy',
              'MenuText': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy",
                                            _menu),
              'ToolTip': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy",
@@ -524,10 +528,10 @@ class Draft_SetWorkingPlaneProxy:
             _cmd += "FreeCAD.DraftWorkingPlane.getPlacement()"
             _cmd += ")"
             FreeCADGui.doCommand(_cmd)
-            FreeCAD.ActiveDocument.recompute()
             FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
 
 
 FreeCADGui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
-FreeCADGui.addCommand('Draft_SetWorkingPlaneProxy',
-                      Draft_SetWorkingPlaneProxy())
+FreeCADGui.addCommand('Draft_WorkingPlaneProxy',
+                      Draft_WorkingPlaneProxy())
