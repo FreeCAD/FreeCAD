@@ -108,6 +108,7 @@ std::string gethideMeshShowPartStr(std::string showConstr="")
 // commands Part, Analysis, Solver
 
 //================================================================================================
+/* ATM no gui command implemented in workbench.cpp, user does it in single steps
 DEF_STD_CMD_A(CmdFemAddPart)
 
 CmdFemAddPart::CmdFemAddPart()
@@ -168,7 +169,7 @@ bool CmdFemAddPart::isActive(void)
     Base::Type type = Base::Type::fromName("Part::Feature");
     return Gui::Selection().countObjectsOfType(type) > 0;
 }
-
+*/
 
 //================================================================================================
 // analysis
