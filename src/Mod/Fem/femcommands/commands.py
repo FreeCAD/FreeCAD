@@ -699,7 +699,7 @@ class _MeshClear(CommandManager):
     def __init__(self):
         super(_MeshClear, self).__init__()
         self.resources = {
-            "Pixmap": "fem-femmesh-clear-mesh",
+            "Pixmap": "FEM_MeshClear",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MeshClear",
                 "Clear FEM mesh"
