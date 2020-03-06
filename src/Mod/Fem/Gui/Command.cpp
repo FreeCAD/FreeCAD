@@ -1208,7 +1208,7 @@ CmdFemPostClipFilter::CmdFemPostClipFilter()
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
     sWhatsThis      = "FEM_PostFilterClipRegion";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-clip-region";
+    sPixmap         = "FEM_PostFilterClipRegion";
 }
 
 void CmdFemPostClipFilter::activated(int)

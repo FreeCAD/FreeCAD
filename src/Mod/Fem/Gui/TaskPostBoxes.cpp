@@ -424,7 +424,7 @@ void TaskPostFunction::applyPythonCode() {
 // ***************************************************************************
 // region clip filter
 TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-post-filter-clip-region"), tr("Clip region, choose implicit function"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"), tr("Clip region, choose implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostClip::getClassTypeId()));
     assert(function);

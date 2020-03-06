@@ -34,7 +34,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostClip, FemGui::ViewProviderFemPostObje
 
 ViewProviderFemPostClip::ViewProviderFemPostClip() {
 
-    sPixmap = "fem-post-filter-clip-region";
+    sPixmap = "FEM_PostFilterClipRegion";
 }
 
 ViewProviderFemPostClip::~ViewProviderFemPostClip() {
