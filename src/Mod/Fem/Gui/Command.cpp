@@ -1251,13 +1251,13 @@ bool CmdFemPostCutFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostDataAlongLineFilter)
 
 CmdFemPostDataAlongLineFilter::CmdFemPostDataAlongLineFilter()
-  : Command("FEM_PostCreateDataAlongLineFilter")
+  : Command("FEM_PostFilterDataAlongLine")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Line clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
-    sWhatsThis      = "FEM_PostCreateDataAlongLineFilter";
+    sWhatsThis      = "FEM_PostFilterDataAlongLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-post-filter-data-along-line";
 }
