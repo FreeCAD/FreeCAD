@@ -167,8 +167,14 @@ public Q_SLOTS:
     void onToggleWarning();
     /** Toggles the report of log messages. */
     void onToggleLogging();
-    /** Toggles whether to show report view on warnings or errors */
-    void onToggleShowReportViewOnWarningOrError();
+    /** Toggles whether to show report view on warnings*/
+    void onToggleShowReportViewOnWarning();
+    /** Toggles whether to show report view on errors*/
+    void onToggleShowReportViewOnError();
+    /** Toggles whether to show report view on normal messages*/
+    void onToggleShowReportViewOnNormalMessage();
+    /** Toggles whether to show report view on log messages*/
+    void onToggleShowReportViewOnLogMessage();
     /** Toggles the redirection of Python stdout. */
     void onToggleRedirectPythonStdout();
     /** Toggles the redirection of Python stderr. */
@@ -200,6 +206,7 @@ public:
 
 protected:
     QPointer <ReportOutput> reportView;
+    void showReportView(void);
 };
 
 } // namespace DockWnd
