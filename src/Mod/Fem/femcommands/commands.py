@@ -628,7 +628,7 @@ class _Mesh2Mesh(CommandManager):
     def __init__(self):
         super(_Mesh2Mesh, self).__init__()
         self.resources = {
-            "Pixmap": "fem-femmesh-to-mesh",
+            "Pixmap": "FEM_FEMMesh2Mesh",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_FEMMesh2Mesh",
                 "FEM mesh to mesh"
