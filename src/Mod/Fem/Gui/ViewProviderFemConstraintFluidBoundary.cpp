@@ -50,7 +50,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintFluidBoundary, FemGui::ViewProv
 
 ViewProviderFemConstraintFluidBoundary::ViewProviderFemConstraintFluidBoundary()
 {
-    sPixmap = "fem-constraint-fluid-boundary";
+    sPixmap = "FEM_ConstraintFluidBoundary";
 }
 
 ViewProviderFemConstraintFluidBoundary::~ViewProviderFemConstraintFluidBoundary()

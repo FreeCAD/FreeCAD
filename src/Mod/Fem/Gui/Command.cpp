@@ -468,7 +468,7 @@ CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
     sToolTipText    = QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
     sWhatsThis      = "FEM_ConstraintFluidBoundary";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-fluid-boundary";
+    sPixmap         = "FEM_ConstraintFluidBoundary";
 }
 
 void CmdFemConstraintFluidBoundary::activated(int)
