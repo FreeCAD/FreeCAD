@@ -1053,7 +1053,7 @@ class _SolverRun(CommandManager):
     def __init__(self):
         super(_SolverRun, self).__init__()
         self.resources = {
-            "Pixmap": "fem-solver-run",
+            "Pixmap": "FEM_SolverRun",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_SolverRun",
                 "Run solver calculations"
