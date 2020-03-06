@@ -400,36 +400,26 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         pcActiveBody = PartDesignGui::getBody(false,true,true,&binderParent,&binderSub);
         FeatName = getUniqueObjectName("Binder",pcActiveBody);
     }
-    Base::Matrix4D mat;
-    if(values.size()==1 && binderParent && binderParent!=binder) {
-        App::DocumentObject *obj = values.begin()->first;
-        auto subs = values.begin()->second;
-        App::DocumentObject *sobj = 0;
-        App::DocumentObject *parent = 0;
-        std::string parentSub = binderSub;
-        for(auto &sub : subs) {
-            auto link = obj;
-            auto linkSub = binderSub;
-            auto res = binderParent->resolveRelativeLink(linkSub,link,sub);
-            if(!sobj) {
-                sobj = link;
-                parent = res;
-                parentSub = linkSub;
-            }else if(sobj!=link || parent!=res) {
-                QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
-                        QObject::tr("Cannot link to more than one object"));
-                return;
+    if(binderParent && binderParent!=binder) {
+        decltype(values) links;
+        for(auto &v : values) {
+            App::DocumentObject *obj = v.first;
+            if(obj == pcActiveBody)
+                continue;
+            if(obj != binderParent) {
+                auto &subs = links[obj];
+                subs.insert(subs.end(),v.second.begin(),v.second.end());
+                continue;
+            }
+            for(auto &sub : v.second) {
+                auto link = obj;
+                auto linkSub = binderSub;
+                binderParent->resolveRelativeLink(linkSub,link,sub);
+                if(link && link != pcActiveBody)
+                    links[link].push_back(sub);
             }
         }
-        if(sobj) {
-            values.clear();
-            values[sobj] = std::move(subs);
-        }
-        if(parent) {
-            binderParent = parent;
-            binderSub = parentSub;
-            binderParent->getSubObject(binderSub.c_str(),0,&mat);
-        }
+        values = std::move(links);
     }
         
     try {
