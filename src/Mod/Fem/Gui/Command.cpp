@@ -1305,13 +1305,13 @@ bool CmdFemPostDataAtPointFilter::isActive(void)
 DEF_STD_CMD_A(CmdFemPostLinearizedStressesFilter)
 
 CmdFemPostLinearizedStressesFilter::CmdFemPostLinearizedStressesFilter()
-  : Command("FEM_PostCreateLinearizedStressesFilter")
+  : Command("FEM_PostFilterLinearizedStresses")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Stress linearization plot");
     sToolTipText    = QT_TR_NOOP("Define/create stress linearization plots");
-    sWhatsThis      = "FEM_PostCreateLinearizedStressesFilter";
+    sWhatsThis      = "FEM_PostFilterLinearizedStresses";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-post-filter-linearized-stresses";
 }
