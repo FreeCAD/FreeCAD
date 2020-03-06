@@ -52,7 +52,7 @@
         <file>icons/FEM_MaterialSolid.svg</file>
         <file>icons/fem-post-data-pipline.svg</file>
         <file>icons/FEM_PostFilterClipRegion.svg</file>
-        <file>icons/fem-post-filter-clip-scalar.svg</file>
+        <file>icons/FEM_PostFilterClipScalar.svg</file>
         <file>icons/fem-post-filter-cut-function.svg</file>
         <file>icons/fem-post-filter-data-along-line.svg</file>
         <file>icons/fem-post-filter-data-at-point.svg</file>
