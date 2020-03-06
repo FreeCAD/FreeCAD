@@ -133,7 +133,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostCut, FemGui::ViewProviderFemPostObjec
 
 ViewProviderFemPostCut::ViewProviderFemPostCut() {
 
-    sPixmap = "fem-post-filter-cut-function";
+    sPixmap = "FEM_PostFilterCutFunction";
 }
 
 ViewProviderFemPostCut::~ViewProviderFemPostCut() {
