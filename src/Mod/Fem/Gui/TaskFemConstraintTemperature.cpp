@@ -61,7 +61,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintTemperature */
 
 TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-temperature")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintTemperature")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintTemperature();
