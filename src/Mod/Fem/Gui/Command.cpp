@@ -511,7 +511,7 @@ CmdFemConstraintForce::CmdFemConstraintForce()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a force acting on a geometric entity");
     sWhatsThis      = "FEM_ConstraintForce";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-force";
+    sPixmap         = "FEM_ConstraintForce";
 }
 
 void CmdFemConstraintForce::activated(int)
