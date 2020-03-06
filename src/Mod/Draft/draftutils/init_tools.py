@@ -74,7 +74,8 @@ def get_draft_modification_commands():
             "Separator",
             "Draft_WireToBSpline", "Draft_Draft2Sketch",
             "Separator",
-            "Draft_Shape2DView", "Draft_Drawing"]
+            "Draft_Shape2DView", "Draft_Drawing",
+            "Draft_WorkingPlaneProxy"]
     return lst
 
 
@@ -97,7 +98,7 @@ def get_draft_utility_commands():
     return ["Draft_Layer", "Draft_Heal", "Draft_FlipDimension",
             "Draft_ToggleConstructionMode",
             "Draft_ToggleContinueMode", "Draft_Edit",
-            "Draft_Slope", "Draft_SetWorkingPlaneProxy",
+            "Draft_Slope", "Draft_WorkingPlaneProxy",
             "Draft_AddConstruction"]
 
 
