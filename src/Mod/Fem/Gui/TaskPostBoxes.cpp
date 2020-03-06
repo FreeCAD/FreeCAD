@@ -763,7 +763,7 @@ plt.show()\n";
 // ***************************************************************************
 // data at point
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("fem-post-filter-data-at-point"), tr("Data at point options"), parent) {
+    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"), tr("Data at point options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostDataAtPoint::getClassTypeId()));
 

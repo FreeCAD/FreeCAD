@@ -73,7 +73,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAtPoint, FemGui::ViewProviderFemP
 
 ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint() {
 
-    sPixmap = "fem-post-filter-data-at-point";
+    sPixmap = "FEM_PostFilterDataAtPoint";
 }
 
 ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() {
