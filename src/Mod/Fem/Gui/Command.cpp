@@ -726,7 +726,7 @@ CmdFemConstraintPressure::CmdFemConstraintPressure()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a pressure acting on a face");
     sWhatsThis      = "FEM_ConstraintPressure";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-pressure";
+    sPixmap         = "FEM_ConstraintPressure";
 }
 
 void CmdFemConstraintPressure::activated(int)
