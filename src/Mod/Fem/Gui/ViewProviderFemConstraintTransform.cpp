@@ -64,7 +64,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTransform, FemGui::ViewProvider
 
 ViewProviderFemConstraintTransform::ViewProviderFemConstraintTransform()
 {
-    sPixmap = "fem-constraint-transform";
+    sPixmap = "FEM_ConstraintTransform";
     //
     //ADD_PROPERTY(FaceColor,(0.0f,0.2f,0.8f));
 }

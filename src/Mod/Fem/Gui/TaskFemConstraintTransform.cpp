@@ -66,7 +66,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintTransform */
 
 TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-transform")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintTransform")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintTransform();

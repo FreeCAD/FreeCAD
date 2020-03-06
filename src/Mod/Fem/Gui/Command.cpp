@@ -860,7 +860,7 @@ CmdFemConstraintTransform::CmdFemConstraintTransform()
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for transforming a face");
     sWhatsThis      = "FEM_ConstraintTransform";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-transform";
+    sPixmap         = "FEM_ConstraintTransform";
 }
 
 void CmdFemConstraintTransform::activated(int)
