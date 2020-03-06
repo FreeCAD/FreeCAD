@@ -507,7 +507,7 @@ class _MaterialMechanicalNonlinear(CommandManager):
     def __init__(self):
         super(_MaterialMechanicalNonlinear, self).__init__()
         self.resources = {
-            "Pixmap": "fem-material-nonlinear",
+            "Pixmap": "FEM_MaterialMechanicalNonlinear",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MaterialMechanicalNonlinear",
                 "Nonlinear mechanical material"
