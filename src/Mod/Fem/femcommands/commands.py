@@ -946,7 +946,7 @@ class _SolverCxxtools(CommandManager):
     def __init__(self):
         super(_SolverCxxtools, self).__init__()
         self.resources = {
-            "Pixmap": "fem-solver-standard",
+            "Pixmap": "FEM_SolverStandard",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_SolverCalculix",
                 "Solver CalculiX Standard"
@@ -989,7 +989,7 @@ class _SolverCalculix(CommandManager):
     def __init__(self):
         super(_SolverCalculix, self).__init__()
         self.resources = {
-            "Pixmap": "fem-solver-standard",
+            "Pixmap": "FEM_SolverStandard",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_SolverCalculiX", "Solver CalculiX (experimental)"
             ),
@@ -1079,7 +1079,7 @@ class _SolverZ88(CommandManager):
     def __init__(self):
         super(_SolverZ88, self).__init__()
         self.resources = {
-            "Pixmap": "fem-solver-standard",
+            "Pixmap": "FEM_SolverStandard",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_SolverZ88",
                 "Solver Z88"

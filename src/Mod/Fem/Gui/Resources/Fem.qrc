@@ -72,7 +72,7 @@
         <file>icons/FEM_SolverElmer.svg</file>
         <file>icons/fem-solver-inp-editor.svg</file>
         <file>icons/FEM_SolverRun.svg</file>
-        <file>icons/fem-solver-standard.svg</file>
+        <file>icons/FEM_SolverStandard.svg</file>
         <file>icons/preferences-fem.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_ar.qm</file>
