@@ -4856,7 +4856,8 @@ class ToggleGrid():
         return {'Pixmap'  : 'Draft_Grid',
                 'Accel' : "G,R",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off")}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off"),
+                'CmdType' : 'ForEdit'}
 
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
