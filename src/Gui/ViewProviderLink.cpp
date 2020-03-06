@@ -2421,7 +2421,7 @@ std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
         ext->setLink(-1,obj,0,subElements);
     else
         ext->setLink(-1,obj,0);
-    return std::string();
+    return std::string(".");
 }
 
 bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {

@@ -283,7 +283,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, A
         const char *subname, const std::vector<std::string> &elements)
 {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
-    if(!self) return std::string();
+    if(!self) return std::string(".");
     std::map<App::DocumentObject *, std::vector<std::string> > values;
     if(!subname) subname = "";
     std::string sub(subname);
@@ -303,7 +303,7 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, A
     self->setLinks(std::move(values),QApplication::keyboardModifiers()==Qt::ControlModifier);
     if(self->Relative.getValue())
         updatePlacement(false);
-    return std::string();
+    return std::string(".");
 }
 
 

@@ -1869,8 +1869,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
                         ss << "'" << sub << "',";
                     ss << "])";
                     dropName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
-                    if(dropName.size())
-                        dropName = targetSubname.str() + dropName;
+                    if(dropName.size()) {
+                        if(dropName == ".")
+                            dropName = targetSubname.str();
+                        else
+                            dropName = targetSubname.str() + dropName;
+                    }
                 }
 
                 if(manager->getLines() == lines)
