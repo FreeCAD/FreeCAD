@@ -45,7 +45,7 @@ class _ViewProviderFemElementGeometry1D(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-element-geometry-1d.svg"
+        return ":/icons/FEM_ElementGeometry1D.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

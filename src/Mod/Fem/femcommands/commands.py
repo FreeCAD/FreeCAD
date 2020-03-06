@@ -299,7 +299,7 @@ class _ElementGeometry1D(CommandManager):
     def __init__(self):
         super(_ElementGeometry1D, self).__init__()
         self.resources = {
-            "Pixmap": "fem-element-geometry-1d",
+            "Pixmap": "FEM_ElementGeometry1D",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ElementGeometry1D",
                 "Beam cross section"
