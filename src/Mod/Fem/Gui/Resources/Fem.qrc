@@ -35,7 +35,7 @@
         <file>icons/FEM_EquationElectrostatic.svg</file>
         <file>icons/FEM_EquationFlow.svg</file>
         <file>icons/FEM_EquationFluxsolver.svg</file>
-        <file>icons/fem-equation-heat.svg</file>
+        <file>icons/FEM_EquationHeat.svg</file>
         <file>icons/fem-femmesh-boundary-layer.svg</file>
         <file>icons/fem-femmesh-clear-mesh.svg</file>
         <file>icons/fem-femmesh-create-node-by-poly.svg</file>

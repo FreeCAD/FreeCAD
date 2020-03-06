@@ -76,7 +76,7 @@ class HeatProxy(BaseProxy):
 class HeatViewProxy(BaseViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-equation-heat.svg"
+        return ":/icons/FEM_EquationHeat.svg"
 
 
 class ElasticityProxy(BaseProxy):
