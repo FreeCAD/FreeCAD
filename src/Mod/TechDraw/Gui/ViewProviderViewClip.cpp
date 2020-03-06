@@ -122,6 +122,14 @@ bool ViewProviderViewClip::isShow(void) const
     return Visibility.getValue();
 }
 
+bool ViewProviderViewClip::canDelete(App::DocumentObject *obj) const
+{
+    // deletions of Clip objects don't destroy anything
+    // thus we can pass this action
+    Q_UNUSED(obj)
+    return true;
+}
+
 TechDraw::DrawViewClip* ViewProviderViewClip::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawViewClip*>(pcObject);

@@ -41,7 +41,6 @@ public:
     /// destructor
     virtual ~ViewProviderViewClip();
 
-
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     virtual bool useNewSelectionModel(void) const {return false;}
@@ -59,8 +58,9 @@ public:
     virtual bool isShow(void) const;
     std::vector<App::DocumentObject*> claimChildren(void) const;
 
+    virtual bool canDelete(App::DocumentObject* obj) const;
+
 };
 } // namespace TechDrawGui
-
 
 #endif // DRAWINGGUI_VIEWPROVIDERCLIP_H
