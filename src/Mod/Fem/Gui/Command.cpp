@@ -1199,13 +1199,13 @@ plt.show()\n";
 DEF_STD_CMD_A(CmdFemPostClipFilter)
 
 CmdFemPostClipFilter::CmdFemPostClipFilter()
-  : Command("FEM_PostCreateClipFilter")
+  : Command("FEM_PostFilterClipRegion")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Region clip filter");
     sToolTipText    = QT_TR_NOOP("Define/create a clip filter which uses functions to define the cliped region");
-    sWhatsThis      = "FEM_PostCreateClipFilter";
+    sWhatsThis      = "FEM_PostFilterClipRegion";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-post-filter-clip-region";
 }
