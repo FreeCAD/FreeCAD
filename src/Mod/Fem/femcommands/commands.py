@@ -728,7 +728,7 @@ class _MeshDisplayInfo(CommandManager):
     def __init__(self):
         super(_MeshDisplayInfo, self).__init__()
         self.resources = {
-            "Pixmap": "fem-femmesh-print-info",
+            "Pixmap": "FEM_MeshDisplayInfo",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_MeshDisplayInfo",
                 "Display FEM mesh info"
