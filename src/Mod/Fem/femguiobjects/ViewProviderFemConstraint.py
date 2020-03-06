@@ -45,6 +45,12 @@ class ViewProxy(object):
     def __init__(self, vobj):
         vobj.Proxy = self
 
+    # needs to be overwritten, if no standard icon name is used
+    def getIcon(self):
+        """after load from FCStd file, self.icon does not exist, return constant path instead"""
+        file_name = self.Object.Proxy.Type.replace("Fem::", "FEM_")
+        return ":/icons/{}.svg".format(file_name)
+
     def attach(self, vobj):
         default = coin.SoGroup()
         vobj.addDisplayMode(default, "Default")
