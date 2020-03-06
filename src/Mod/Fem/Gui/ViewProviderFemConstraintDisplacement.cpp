@@ -48,7 +48,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintDisplacement, FemGui::ViewProvi
 
 ViewProviderFemConstraintDisplacement::ViewProviderFemConstraintDisplacement()
 {
-    sPixmap = "fem-constraint-displacement";
+    sPixmap = "FEM_ConstraintDisplacement";
     ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
 }
 

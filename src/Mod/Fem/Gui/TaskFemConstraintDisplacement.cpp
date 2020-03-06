@@ -62,7 +62,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintDisplacement */
 
 TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-displacement")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintDisplacement")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintDisplacement();

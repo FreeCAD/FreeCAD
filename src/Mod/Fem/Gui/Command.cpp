@@ -383,7 +383,7 @@ CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
     sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a displacement acting on a geometric entity");
     sWhatsThis      = "FEM_ConstraintDisplacement";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-constraint-displacement";
+    sPixmap         = "FEM_ConstraintDisplacement";
 }
 
 void CmdFemConstraintDisplacement::activated(int)

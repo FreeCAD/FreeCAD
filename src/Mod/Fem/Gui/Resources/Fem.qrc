@@ -10,7 +10,7 @@
         <file>icons/fem-clipping-plane-remove-all.svg</file>
         <file>icons/FEM_ConstraintBearing.svg</file>
         <file>icons/FEM_ConstraintContact.svg</file>
-        <file>icons/fem-constraint-displacement.svg</file>
+        <file>icons/FEM_ConstraintDisplacement.svg</file>
         <file>icons/fem-constraint-electrostatic-potential.svg</file>
         <file>icons/fem-constraint-fixed.svg</file>
         <file>icons/fem-constraint-flow-velocity.svg</file>
