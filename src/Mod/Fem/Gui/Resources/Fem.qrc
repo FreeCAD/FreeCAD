@@ -63,7 +63,7 @@
         <file>icons/fem-post-geo-isosurface.svg</file>
         <file>icons/fem-post-geo-plane.svg</file>
         <file>icons/fem-post-geo-sphere.svg</file>
-        <file>icons/fem-post-result-show.svg</file>
+        <file>icons/FEM_ResultShow.svg</file>
         <file>icons/fem-post-results-purge.svg</file>
         <file>icons/fem-solver-analysis-frequency.svg</file>
         <file>icons/fem-solver-analysis-static.svg</file>

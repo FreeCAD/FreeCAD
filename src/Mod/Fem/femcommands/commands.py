@@ -899,7 +899,7 @@ class _ResultShow(CommandManager):
     def __init__(self):
         super(_ResultShow, self).__init__()
         self.resources = {
-            "Pixmap": "fem-post-result-show",
+            "Pixmap": "FEM_ResultShow",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_ResultShow",
                 "Show result"

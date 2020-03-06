@@ -52,7 +52,7 @@ class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
 
     def getIcon(self):
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
-        return ":/icons/fem-post-result-show.svg"
+        return ":/icons/FEM_ResultShow.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
