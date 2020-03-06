@@ -1,9 +1,3 @@
-"""This module provides the task panel for the Draft CircularArray tool.
-"""
-## @package task_circulararray
-# \ingroup DRAFT
-# \brief This module provides the task panel code for the CircularArray tool.
-
 # ***************************************************************************
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -26,183 +20,256 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides the task panel code for the Draft CircularArray tool."""
+## @package task_circulararray
+# \ingroup DRAFT
+# \brief This module provides the task panel code for the CircularArray tool.
+
+import PySide.QtGui as QtGui
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-# import Draft
-import Draft_rc
+import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
+from draftutils.messages import _msg, _wrn, _err, _log
+from draftutils.translate import _tr
+from FreeCAD import Units as U
 
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
-from PySide.QtCore import QT_TRANSLATE_NOOP
-# import DraftTools
-from DraftGui import translate
-# from DraftGui import displayExternal
-
-_Quantity = App.Units.Quantity
-
-
-def _Msg(text, end="\n"):
-    """Print message with newline"""
-    App.Console.PrintMessage(text + end)
-
-
-def _Wrn(text, end="\n"):
-    """Print warning with newline"""
-    App.Console.PrintWarning(text + end)
-
-
-def _tr(text):
-    """Function to translate with the context set"""
-    return translate("Draft", text)
-
-
-# So the resource file doesn't trigger errors from code checkers (flake8)
-True if Draft_rc.__name__ else False
+# The module is used to prevent complaints from code checkers (flake8)
+bool(Draft_rc.__name__)
 
 
 class TaskPanelCircularArray:
     """TaskPanel code for the CircularArray command.
 
     The names of the widgets are defined in the `.ui` file.
-    In this class all those widgets are automatically created
-    under the name `self.form.<name>`
+    This `.ui` file `must` be loaded into an attribute
+    called `self.form` so that it is loaded into the task panel correctly.
+
+    In this class all widgets are automatically created
+    as `self.form.<widget_name>`.
 
     The `.ui` file may use special FreeCAD widgets such as
     `Gui::InputField` (based on `QLineEdit`) and
     `Gui::QuantitySpinBox` (based on `QAbstractSpinBox`).
     See the Doxygen documentation of the corresponding files in `src/Gui/`,
     for example, `InputField.h` and `QuantitySpinBox.h`.
+
+    Attributes
+    ----------
+    source_command: gui_base.GuiCommandBase
+        This attribute holds a reference to the calling class
+        of this task panel.
+        This parent class, which is derived from `gui_base.GuiCommandBase`,
+        is responsible for calling this task panel, for installing
+        certain callbacks, and for removing them.
+
+        It also delays the execution of the internal creation commands
+        by using the `draftutils.todo.ToDo` class.
+
+    See Also
+    --------
+    * https://forum.freecadweb.org/viewtopic.php?f=10&t=40007
+    * https://forum.freecadweb.org/viewtopic.php?t=5374#p43038
     """
 
     def __init__(self):
+        self.name = "Circular array"
+        _log(_tr("Task panel:") + "{}".format(_tr(self.name)))
+
+        # The .ui file must be loaded into an attribute
+        # called `self.form` so that it is displayed in the task panel.
         ui_file = ":/ui/TaskPanel_CircularArray.ui"
         self.form = Gui.PySideUic.loadUi(ui_file)
-        self.name = self.form.windowTitle()
 
         icon_name = "Draft_CircularArray"
         svg = ":/icons/" + icon_name
         pix = QtGui.QPixmap(svg)
         icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
         self.form.setWindowIcon(icon)
+        self.form.setWindowTitle(_tr(self.name))
+
         self.form.label_icon.setPixmap(pix.scaled(32, 32))
 
-        start_distance = _Quantity(1000.0, App.Units.Length)
-        distance_unit = start_distance.getUserPreferred()[2]
-        self.form.spinbox_r_distance.setProperty('rawValue',
-                                                 2 * start_distance.Value)
-        self.form.spinbox_r_distance.setProperty('unit', distance_unit)
-        self.form.spinbox_tan_distance.setProperty('rawValue',
-                                                   start_distance.Value)
-        self.form.spinbox_tan_distance.setProperty('unit', distance_unit)
+        # -------------------------------------------------------------------
+        # Default values for the internal function,
+        # and for the task panel interface
+        start_distance = U.Quantity(50.0, App.Units.Length)
+        length_unit = start_distance.getUserPreferred()[2]
 
         self.r_distance = 2 * start_distance.Value
         self.tan_distance = start_distance.Value
 
-        self.form.spinbox_number.setValue(3)
-        self.form.spinbox_symmetry.setValue(1)
+        self.form.spinbox_r_distance.setProperty('rawValue',
+                                                 self.r_distance)
+        self.form.spinbox_r_distance.setProperty('unit', length_unit)
+        self.form.spinbox_tan_distance.setProperty('rawValue',
+                                                   self.tan_distance)
+        self.form.spinbox_tan_distance.setProperty('unit', length_unit)
 
-        self.number = self.form.spinbox_number.value()
-        self.symmetry = self.form.spinbox_symmetry.value()
+        self.number = 3
+        self.symmetry = 1
 
+        self.form.spinbox_number.setValue(self.number)
+        self.form.spinbox_symmetry.setValue(self.symmetry)
+
+        # TODO: the axis is currently fixed, it should be editable
+        # or selectable from the task panel
         self.axis = App.Vector(0, 0, 1)
 
-        start_point = _Quantity(0.0, App.Units.Length)
+        start_point = U.Quantity(0.0, App.Units.Length)
         length_unit = start_point.getUserPreferred()[2]
-        self.form.input_c_x.setProperty('rawValue', start_point.Value)
+
+        self.center = App.Vector(start_point.Value,
+                                 start_point.Value,
+                                 start_point.Value)
+
+        self.form.input_c_x.setProperty('rawValue', self.center.x)
         self.form.input_c_x.setProperty('unit', length_unit)
-        self.form.input_c_y.setProperty('rawValue', start_point.Value)
+        self.form.input_c_y.setProperty('rawValue', self.center.y)
         self.form.input_c_y.setProperty('unit', length_unit)
-        self.form.input_c_z.setProperty('rawValue', start_point.Value)
+        self.form.input_c_z.setProperty('rawValue', self.center.z)
         self.form.input_c_z.setProperty('unit', length_unit)
-        self.valid_input = True
 
-        self.c_x_str = ""
-        self.c_y_str = ""
-        self.c_z_str = ""
-        self.center = App.Vector(0, 0, 0)
+        self.fuse = False
+        self.use_link = True
 
-        # Old style for Qt4
-        # QtCore.QObject.connect(self.form.button_reset,
-        #                        QtCore.SIGNAL("clicked()"),
-        #                        self.reset_point)
-        # New style for Qt5
-        self.form.button_reset.clicked.connect(self.reset_point)
+        self.form.checkbox_fuse.setChecked(self.fuse)
+        self.form.checkbox_link.setChecked(self.use_link)
+        # -------------------------------------------------------------------
+
+        # Some objects need to be selected before we can execute the function.
+        self.selection = None
+
+        # This is used to test the input of the internal function.
+        # It should be changed to True before we can execute the function.
+        self.valid_input = False
+
+        self.set_widget_callbacks()
+
+        self.tr_true = QT_TRANSLATE_NOOP("Draft", "True")
+        self.tr_false = QT_TRANSLATE_NOOP("Draft", "False")
 
         # The mask is not used at the moment, but could be used in the future
         # by a callback to restrict the coordinates of the pointer.
         self.mask = ""
 
-        # When the checkbox changes, change the fuse value
-        self.fuse = False
-        QtCore.QObject.connect(self.form.checkbox_fuse,
-                               QtCore.SIGNAL("stateChanged(int)"),
-                               self.set_fuse)
+    def set_widget_callbacks(self):
+        """Set up the callbacks (slots) for the widget signals."""
+        # New style for Qt5
+        self.form.button_reset.clicked.connect(self.reset_point)
 
-        self.use_link = False
-        QtCore.QObject.connect(self.form.checkbox_link,
-                               QtCore.SIGNAL("stateChanged(int)"),
-                               self.set_link)
+        # When the checkbox changes, change the internal value
+        self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
+        self.form.checkbox_link.stateChanged.connect(self.set_link)
+
+        # Old style for Qt4, avoid!
+        # QtCore.QObject.connect(self.form.button_reset,
+        #                        QtCore.SIGNAL("clicked()"),
+        #                        self.reset_point)
+        # QtCore.QObject.connect(self.form.checkbox_fuse,
+        #                        QtCore.SIGNAL("stateChanged(int)"),
+        #                        self.set_fuse)
+        # QtCore.QObject.connect(self.form.checkbox_link,
+        #                        QtCore.SIGNAL("stateChanged(int)"),
+        #                        self.set_link)
 
     def accept(self):
-        """Function that executes when clicking the OK button"""
-        selection = Gui.Selection.getSelection()
-        self.number = self.form.spinbox_number.value()
+        """Execute when clicking the OK button or Enter key."""
+        self.selection = Gui.Selection.getSelection()
 
-        tan_d_str = self.form.spinbox_tan_distance.text()
-        self.tan_distance = _Quantity(tan_d_str).Value
-        self.valid_input = self.validate_input(selection,
+        (self.r_distance,
+         self.tan_distance) = self.get_distances()
+
+        (self.number,
+         self.symmetry) = self.get_number_symmetry()
+
+        self.axis = self.get_axis()
+        self.center = self.get_center()
+
+        self.valid_input = self.validate_input(self.selection,
+                                               self.r_distance,
+                                               self.tan_distance,
                                                self.number,
-                                               self.tan_distance)
+                                               self.symmetry,
+                                               self.axis,
+                                               self.center)
         if self.valid_input:
-            self.create_object(selection)
-            self.print_messages(selection)
+            self.create_object()
+            self.print_messages()
             self.finish()
 
-    def validate_input(self, selection, number, tan_distance):
-        """Check that the input is valid"""
+    def validate_input(self, selection,
+                       r_distance, tan_distance,
+                       number, symmetry,
+                       axis, center):
+        """Check that the input is valid.
+
+        Some values may not need to be checked because
+        the interface may not allow to input wrong data.
+        """
         if not selection:
-            _Wrn(_tr("At least one element must be selected"))
+            _err(_tr("At least one element must be selected."))
             return False
+
         if number < 2:
-            _Wrn(_tr("Number of elements must be at least 2"))
+            _err(_tr("Number of layers must be at least 2."))
             return False
-        # Todo: each of the elements of the selection could be tested,
-        # not only the first one.
-        if selection[0].isDerivedFrom("App::FeaturePython"):
-            _Wrn(_tr("Selection is not suitable for array"))
-            _Wrn(_tr("Object:") + " {}".format(selection[0].Label))
+
+        # TODO: this should handle multiple objects.
+        # Each of the elements of the selection should be tested.
+        obj = selection[0]
+        if obj.isDerivedFrom("App::FeaturePython"):
+            _err(_tr("Selection is not suitable for array."))
+            _err(_tr("Object:") + " {}".format(selection[0].Label))
             return False
+
+        if r_distance == 0:
+            _wrn(_tr("Radial distance is zero. "
+                     "Resulting array may not look correct."))
+        elif r_distance < 0:
+            _wrn(_tr("Radial distance is negative. "
+                     "It is made positive to proceed."))
+            self.r_distance = abs(r_distance)
+
         if tan_distance == 0:
-            _Wrn(_tr("Tangential distance cannot be zero"))
+            _err(_tr("Tangential distance cannot be zero."))
             return False
-        return True
+        elif tan_distance < 0:
+            _wrn(_tr("Tangential distance is negative. "
+                     "It is made positive to proceed."))
+            self.tan_distance = abs(tan_distance)
 
-    def create_object(self, selection):
-        """Create the actual object"""
-        r_d_str = self.form.spinbox_r_distance.text()
-        tan_d_str = self.form.spinbox_tan_distance.text()
-        self.r_distance = _Quantity(r_d_str).Value
-        self.tan_distance = _Quantity(tan_d_str).Value
-
-        self.number = self.form.spinbox_number.value()
-        self.symmetry = self.form.spinbox_symmetry.value()
-        self.center = self.set_point()
-
-        if len(selection) == 1:
-            sel_obj = selection[0]
-        else:
-            # This can be changed so a compound of multiple
-            # selected objects is produced
-            sel_obj = selection[0]
+        # The other arguments are not tested but they should be present.
+        if symmetry and axis and center:
+            pass
 
         self.fuse = self.form.checkbox_fuse.isChecked()
         self.use_link = self.form.checkbox_link.isChecked()
+        return True
+
+    def create_object(self):
+        """Create the new object.
+
+        At this stage we already tested that the input is correct
+        so the necessary attributes are already set.
+        Then we proceed with the internal function to create the new object.
+        """
+        if len(self.selection) == 1:
+            sel_obj = self.selection[0]
+        else:
+            # TODO: this should handle multiple objects.
+            # For example, it could take the shapes of all objects,
+            # make a compound and then use it as input for the array function.
+            sel_obj = self.selection[0]
 
         # This creates the object immediately
         # obj = Draft.makeArray(sel_obj,
-        #                       self.center, self.angle, self.number)
+        #                       self.r_distance, self.tan_distance,
+        #                       self.axis, self.center,
+        #                       self.number, self.symmetry,
+        #                       self.use_link)
         # if obj:
         #     obj.Fuse = self.fuse
 
@@ -210,96 +277,120 @@ class TaskPanelCircularArray:
         # of this class, the GuiCommand.
         # This is needed to schedule geometry manipulation
         # that would crash Coin3D if done in the event callback.
-        _cmd = "obj = Draft.makeArray("
-        _cmd += "FreeCAD.ActiveDocument." + sel_obj.Name + ", "
-        _cmd += "arg1=" + str(self.r_distance) + ", "
-        _cmd += "arg2=" + str(self.tan_distance) + ", "
-        _cmd += "arg3=" + DraftVecUtils.toString(self.axis) + ", "
-        _cmd += "arg4=" + DraftVecUtils.toString(self.center) + ", "
-        _cmd += "arg5=" + str(self.number) + ", "
-        _cmd += "arg6=" + str(self.symmetry) + ", "
+        _cmd = "draftobjects.circulararray.make_circular_array"
+        _cmd += "("
+        _cmd += "App.ActiveDocument." + sel_obj.Name + ", "
+        _cmd += "r_distance=" + str(self.r_distance) + ", "
+        _cmd += "tan_distance=" + str(self.tan_distance) + ", "
+        _cmd += "number=" + str(self.number) + ", "
+        _cmd += "symmetry=" + str(self.symmetry) + ", "
+        _cmd += "axis=" + DraftVecUtils.toString(self.axis) + ", "
+        _cmd += "center=" + DraftVecUtils.toString(self.center) + ", "
         _cmd += "use_link=" + str(self.use_link)
         _cmd += ")"
 
-        _cmd_list = ["FreeCADGui.addModule('Draft')",
-                     _cmd,
+        _cmd_list = ["Gui.addModule('Draft')",
+                     "Gui.addModule('draftobjects.circulararray')",
+                     "obj = " + _cmd,
                      "obj.Fuse = " + str(self.fuse),
                      "Draft.autogroup(obj)",
-                     "FreeCAD.ActiveDocument.recompute()"]
-        self.source_command.commit("Circular array", _cmd_list)
+                     "App.ActiveDocument.recompute()"]
 
-    def set_point(self):
-        """Assign the values to the center"""
-        self.c_x_str = self.form.input_c_x.text()
-        self.c_y_str = self.form.input_c_y.text()
-        self.c_z_str = self.form.input_c_z.text()
-        center = App.Vector(_Quantity(self.c_x_str).Value,
-                            _Quantity(self.c_y_str).Value,
-                            _Quantity(self.c_z_str).Value)
+        # We commit the command list through the parent command
+        self.source_command.commit(_tr(self.name), _cmd_list)
+
+    def get_distances(self):
+        """Get the distance parameters from the widgets."""
+        r_d_str = self.form.spinbox_r_distance.text()
+        tan_d_str = self.form.spinbox_tan_distance.text()
+        return (U.Quantity(r_d_str).Value,
+                U.Quantity(tan_d_str).Value)
+
+    def get_number_symmetry(self):
+        """Get the number and symmetry parameters from the widgets."""
+        number = self.form.spinbox_number.value()
+        symmetry = self.form.spinbox_symmetry.value()
+        return number, symmetry
+
+    def get_center(self):
+        """Get the value of the center from the widgets."""
+        c_x_str = self.form.input_c_x.text()
+        c_y_str = self.form.input_c_y.text()
+        c_z_str = self.form.input_c_z.text()
+        center = App.Vector(U.Quantity(c_x_str).Value,
+                            U.Quantity(c_y_str).Value,
+                            U.Quantity(c_z_str).Value)
         return center
 
+    def get_axis(self):
+        """Get the axis that will be used for the array. NOT IMPLEMENTED.
+
+        It should consider a second selection of an edge or wire to use
+        as an axis.
+        """
+        return self.axis
+
     def reset_point(self):
-        """Reset the point to the original distance"""
+        """Reset the center point to the original distance."""
         self.form.input_c_x.setProperty('rawValue', 0)
         self.form.input_c_y.setProperty('rawValue', 0)
         self.form.input_c_z.setProperty('rawValue', 0)
 
-        self.center = self.set_point()
-        _Msg(_tr("Center reset:")
+        self.center = self.get_center()
+        _msg(_tr("Center reset:")
              + " ({0}, {1}, {2})".format(self.center.x,
                                          self.center.y,
                                          self.center.z))
 
-    def print_fuse_state(self):
-        """Print the state translated"""
-        if self.fuse:
-            translated_state = QT_TRANSLATE_NOOP("Draft", "True")
+    def print_fuse_state(self, fuse):
+        """Print the fuse state translated."""
+        if fuse:
+            state = self.tr_true
         else:
-            translated_state = QT_TRANSLATE_NOOP("Draft", "False")
-        _Msg(_tr("Fuse:") + " {}".format(translated_state))
+            state = self.tr_false
+        _msg(_tr("Fuse:") + " {}".format(state))
 
     def set_fuse(self):
-        """This function is called when the fuse checkbox changes"""
+        """Execute as a callback when the fuse checkbox changes."""
         self.fuse = self.form.checkbox_fuse.isChecked()
-        self.print_fuse_state()
+        self.print_fuse_state(self.fuse)
 
-    def print_link_state(self):
-        """Print the state translated"""
-        if self.use_link:
-            translated_state = QT_TRANSLATE_NOOP("Draft", "True")
+    def print_link_state(self, use_link):
+        """Print the link state translated."""
+        if use_link:
+            state = self.tr_true
         else:
-            translated_state = QT_TRANSLATE_NOOP("Draft", "False")
-        _Msg(_tr("Use Link object:") + " {}".format(translated_state))
+            state = self.tr_false
+        _msg(_tr("Create Link array:") + " {}".format(state))
 
     def set_link(self):
-        """This function is called when the fuse checkbox changes"""
+        """Execute as a callback when the link checkbox changes."""
         self.use_link = self.form.checkbox_link.isChecked()
-        self.print_link_state()
+        self.print_link_state(self.use_link)
 
-    def print_messages(self, selection):
-        """Print messages about the operation"""
-        if len(selection) == 1:
-            sel_obj = selection[0]
+    def print_messages(self):
+        """Print messages about the operation."""
+        if len(self.selection) == 1:
+            sel_obj = self.selection[0]
         else:
-            # This can be changed so a compound of multiple
-            # selected objects is produced
-            sel_obj = selection[0]
-        _Msg("{}".format(16*"-"))
-        _Msg("{}".format(self.name))
-        _Msg(_tr("Object:") + " {}".format(sel_obj.Label))
-        _Msg(_tr("Radial distance:") + " {}".format(self.r_distance))
-        _Msg(_tr("Tangential distance:") + " {}".format(self.tan_distance))
-        _Msg(_tr("Number of circular layers:") + " {}".format(self.number))
-        _Msg(_tr("Symmetry parameter:") + " {}".format(self.symmetry))
-        _Msg(_tr("Center of rotation:")
+            # TODO: this should handle multiple objects.
+            # For example, it could take the shapes of all objects,
+            # make a compound and then use it as input for the array function.
+            sel_obj = self.selection[0]
+        _msg(_tr("Object:") + " {}".format(sel_obj.Label))
+        _msg(_tr("Radial distance:") + " {}".format(self.r_distance))
+        _msg(_tr("Tangential distance:") + " {}".format(self.tan_distance))
+        _msg(_tr("Number of circular layers:") + " {}".format(self.number))
+        _msg(_tr("Symmetry parameter:") + " {}".format(self.symmetry))
+        _msg(_tr("Center of rotation:")
              + " ({0}, {1}, {2})".format(self.center.x,
                                          self.center.y,
                                          self.center.z))
-        self.print_fuse_state()
-        self.print_link_state()
+        self.print_fuse_state(self.fuse)
+        self.print_link_state(self.use_link)
 
     def display_point(self, point=None, plane=None, mask=None):
-        """Displays the coordinates in the x, y, and z widgets.
+        """Display the coordinates in the x, y, and z widgets.
 
         This function should be used in a Coin callback so that
         the coordinate values are automatically updated when the
@@ -307,21 +398,21 @@ class TaskPanelCircularArray:
         This was copied from `DraftGui.py` but needs to be improved
         for this particular command.
 
-        point :
+        point: Base::Vector3
             is a vector that arrives by the callback.
-        plane :
+        plane: WorkingPlane
             is a `WorkingPlane` instance, for example,
             `App.DraftWorkingPlane`. It is not used at the moment,
             but could be used to set up the grid.
-        mask :
+        mask: str
             is a string that specifies which coordinate is being
             edited. It is used to restrict edition of a single coordinate.
             It is not used at the moment but could be used with a callback.
         """
         # Get the coordinates to display
-        dp = None
+        d_p = None
         if point:
-            dp = point
+            d_p = point
 
         # Set the widgets to the value of the mouse pointer.
         #
@@ -336,25 +427,28 @@ class TaskPanelCircularArray:
         # sbx = self.form.spinbox_c_x
         # sby = self.form.spinbox_c_y
         # sbz = self.form.spinbox_c_z
-        if dp:
+        if d_p:
             if self.mask in ('y', 'z'):
-                # sbx.setText(displayExternal(dp.x, None, 'Length'))
-                self.form.input_c_x.setProperty('rawValue', dp.x)
+                # sbx.setText(displayExternal(d_p.x, None, 'Length'))
+                self.form.input_c_x.setProperty('rawValue', d_p.x)
             else:
-                # sbx.setText(displayExternal(dp.x, None, 'Length'))
-                self.form.input_c_x.setProperty('rawValue', dp.x)
+                # sbx.setText(displayExternal(d_p.x, None, 'Length'))
+                self.form.input_c_x.setProperty('rawValue', d_p.x)
             if self.mask in ('x', 'z'):
-                # sby.setText(displayExternal(dp.y, None, 'Length'))
-                self.form.input_c_y.setProperty('rawValue', dp.y)
+                # sby.setText(displayExternal(d_p.y, None, 'Length'))
+                self.form.input_c_y.setProperty('rawValue', d_p.y)
             else:
-                # sby.setText(displayExternal(dp.y, None, 'Length'))
-                self.form.input_c_y.setProperty('rawValue', dp.y)
+                # sby.setText(displayExternal(d_p.y, None, 'Length'))
+                self.form.input_c_y.setProperty('rawValue', d_p.y)
             if self.mask in ('x', 'y'):
-                # sbz.setText(displayExternal(dp.z, None, 'Length'))
-                self.form.input_c_z.setProperty('rawValue', dp.z)
+                # sbz.setText(displayExternal(d_p.z, None, 'Length'))
+                self.form.input_c_z.setProperty('rawValue', d_p.z)
             else:
-                # sbz.setText(displayExternal(dp.z, None, 'Length'))
-                self.form.input_c_z.setProperty('rawValue', dp.z)
+                # sbz.setText(displayExternal(d_p.z, None, 'Length'))
+                self.form.input_c_z.setProperty('rawValue', d_p.z)
+
+        if plane:
+            pass
 
         # Set masks
         if (mask == "x") or (self.mask == "x"):
@@ -379,7 +473,7 @@ class TaskPanelCircularArray:
             self.set_focus()
 
     def set_focus(self, key=None):
-        """Set the focus on the widget that receives the key signal"""
+        """Set the focus on the widget that receives the key signal."""
         if key is None or key == "x":
             self.form.input_c_x.setFocus()
             self.form.input_c_x.selectAll()
@@ -391,12 +485,16 @@ class TaskPanelCircularArray:
             self.form.input_c_z.selectAll()
 
     def reject(self):
-        """Function that executes when clicking the Cancel button"""
-        _Msg(_tr("Aborted:") + " {}".format(self.name))
+        """Execute when clicking the Cancel button or pressing Escape."""
+        _msg(_tr("Aborted:") + " {}".format(_tr(self.name)))
         self.finish()
 
     def finish(self):
-        """Function that runs at the end after OK or Cancel"""
+        """Finish the command, after accept or reject.
+
+        It finally calls the parent class to execute
+        the delayed functions, and perform cleanup.
+        """
         # App.ActiveDocument.commitTransaction()
         Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
