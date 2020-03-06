@@ -1314,7 +1314,7 @@ CmdFemPostLinearizedStressesFilter::CmdFemPostLinearizedStressesFilter()
     sToolTipText    = QT_TR_NOOP("Define/create stress linearization plots");
     sWhatsThis      = "FEM_PostFilterLinearizedStresses";
     sStatusTip      = sToolTipText;
-    sPixmap         = "fem-post-filter-linearized-stresses";
+    sPixmap         = "FEM_PostFilterLinearizedStresses";
 }
 
 void CmdFemPostLinearizedStressesFilter::activated(int)
