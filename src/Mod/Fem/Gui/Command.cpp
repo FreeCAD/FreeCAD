@@ -1668,7 +1668,7 @@ void CreateFemCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     // part, analysis, solver
-    //rcCmdMgr.addCommand(new CmdFemAddPart()); // not implemented as GUI menue or click icon
+    //rcCmdMgr.addCommand(new CmdFemAddPart()); // not implemented as GUI menu or click icon
     //rcCmdMgr.addCommand(new CmdFemCreateAnalysis()); // Analysis is created in python
     //rcCmdMgr.addCommand(new CmdFemCreateSolver());  // Solver will be extended and created in python
 
