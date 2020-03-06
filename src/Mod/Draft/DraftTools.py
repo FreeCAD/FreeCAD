@@ -76,6 +76,7 @@ if not hasattr(FreeCAD, "DraftWorkingPlane"):
 # ---------------------------------------------------------------------------
 import draftguitools.gui_edit
 import draftguitools.gui_selectplane
+import draftguitools.gui_planeproxy
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
