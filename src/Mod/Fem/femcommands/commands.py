@@ -1009,7 +1009,7 @@ class _SolverControl(CommandManager):
     def __init__(self):
         super(_SolverControl, self).__init__()
         self.resources = {
-            "Pixmap": "fem-solver-control",
+            "Pixmap": "FEM_SolverControl",
             "MenuText": QtCore.QT_TRANSLATE_NOOP(
                 "FEM_SolverControl",
                 "Solver job control"
