@@ -37,7 +37,7 @@ class StringID;
 typedef Base::Reference<StringID> StringIDRef;
 
 class AppExport StringID: public Base::BaseClass, public Base::Handled {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     enum Flag {
         Binary,
@@ -82,7 +82,7 @@ private:
 /// A String table to map string from/to a unique integer
 class AppExport StringHasher: public Base::Persistence, public Base::Handled {
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     StringHasher();
@@ -133,7 +133,7 @@ public:
     /// Return the number of hashes that are used by others
     size_t count() const;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     void setSaveAll(bool enable);
     bool getSaveAll() const;

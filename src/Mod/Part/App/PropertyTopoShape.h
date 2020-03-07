@@ -41,7 +41,7 @@ namespace Part
  */
 class PartExport PropertyPartShape : public App::PropertyComplexGeoData
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     PropertyPartShape();
@@ -56,42 +56,42 @@ public:
     /// get the part shape
     const TopoDS_Shape& getValue(void) const;
     const TopoShape& getShape() const;
-    const Data::ComplexGeoData* getComplexData() const;
+    virtual const Data::ComplexGeoData* getComplexData() const override;
     //@}
 
     /** @name Modification */
     //@{
     /// Transform the real shape data
-    void transformGeometry(const Base::Matrix4D &rclMat);
+    virtual void transformGeometry(const Base::Matrix4D &rclMat) override;
     //@}
 
     /** @name Getting basic geometric entities */
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
-    Base::BoundBox3d getBoundingBox() const;
+    virtual Base::BoundBox3d getBoundingBox() const override;
     //@}
 
     /** @name Python interface */
     //@{
-    PyObject* getPyObject(void);
-    void setPyObject(PyObject *value);
+    virtual PyObject* getPyObject(void) override;
+    virtual void setPyObject(PyObject *value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const;
-    void Restore(Base::XMLReader &reader);
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
 
-    void SaveDocFile (Base::Writer &writer) const;
-    void RestoreDocFile(Base::Reader &reader);
+    virtual void SaveDocFile (Base::Writer &writer) const override;
+    virtual void RestoreDocFile(Base::Reader &reader) override;
 
-    App::Property *Copy(void) const;
-    void Paste(const App::Property &from);
-    unsigned int getMemSize (void) const;
+    virtual App::Property *Copy(void) const override;
+    virtual void Paste(const App::Property &from) override;
+    virtual unsigned int getMemSize (void) const override;
     //@}
 
     /// Get valid paths for this property; used by auto completer
-    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const override;
 
     virtual std::string getElementMapVersion(bool restored=false) const override;
     void resetElementMapVersion() {_Ver.clear();}
@@ -197,7 +197,7 @@ struct PartExport FilletElement {
 
 class PartExport PropertyFilletEdges : public App::PropertyListsT<FilletElement>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
     typedef PropertyListsT<FilletElement> inherited;
 
@@ -210,10 +210,10 @@ public:
     void setValue(int id, double r1, double r2);
     using inherited::setValue;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
 protected:
     virtual FilletElement getPyValue(PyObject *item) const override;
@@ -227,7 +227,7 @@ protected:
 
 
 class PartExport PropertyShapeCache: public App::Property {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     virtual App::Property *Copy(void) const override;
 

@@ -628,7 +628,7 @@ public:
      */
     virtual ~PropertyFloatList();
     
-    virtual const char* getEditorName(void) const
+    virtual const char* getEditorName(void) const override
     { return "Gui::PropertyEditor::PropertyFloatListItem"; }
 
     virtual PyObject *getPyObject(void) override;
@@ -654,10 +654,10 @@ protected:
 class AppExport _PropertyFloatList: public PropertyListsT<float>
 {
 public:
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
+    virtual Property *Copy(void) const override;
+    virtual void Paste(const Property &from) override;
 
 protected:
     virtual float getPyValue(PyObject *item) const override;

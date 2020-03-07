@@ -64,7 +64,7 @@ public:
       * the given edge, which must be linear.
       * If Reversed is true, the direction of rotation will be opposite.
       */
-    virtual std::list<gp_Trsf> getTransformations(const std::vector<Part::TopoShape> &) override;
+    virtual std::list<gp_Trsf> getTransformations(const std::vector<Part::TopoShape> &);
 };
 
 } //namespace PartDesign

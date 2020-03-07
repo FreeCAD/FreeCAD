@@ -504,7 +504,7 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
         if(std::abs(l)<=INT_MAX)
             return Py::Int(int(l));
 #endif
-        return Py::Long(cast<long>(value));
+        return Py::Long(l);
     } else if (is_type(value,typeid(bool)))
         return Py::Boolean(cast<bool>(value));
     else if (is_type(value,typeid(std::string)))

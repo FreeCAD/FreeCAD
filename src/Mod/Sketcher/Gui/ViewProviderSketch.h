@@ -248,7 +248,7 @@ public:
     /// signals if the elements list has changed
     boost::signals2::signal<void ()> signalElementsChanged;
         
-    virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
+    virtual std::vector<App::DocumentObject*> claimChildren(void) const;
     void selectElement(const char *element) const;
 
 protected:
@@ -451,7 +451,7 @@ public:
     typedef PartGui::ViewProvider2DObject inherited;
 
     ViewProviderSketchExport();
-    virtual bool doubleClicked(void) override;
+    virtual bool doubleClicked(void);
 };
 
 } // namespace PartGui

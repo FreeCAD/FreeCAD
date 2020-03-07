@@ -136,7 +136,7 @@ protected:
 
 class FilletBase : public Part::Feature
 {
-    PROPERTY_HEADER(Part::FilletBase);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::FilletBase);
 
 public:
     FilletBase();
@@ -145,7 +145,7 @@ public:
     PropertyFilletEdges Edges;
     App::PropertyLinkSub   EdgeLinks;
 
-    short mustExecute() const;
+    virtual short mustExecute() const override;
     virtual void onUpdateElementReference(const App::Property *prop) override;
 
 protected:

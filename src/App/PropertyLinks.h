@@ -882,7 +882,6 @@ protected:
     std::vector<std::string> _cSubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
-    bool _restoreLabel;
 };
 
 /** The general Link Property with Child scope
@@ -1026,7 +1025,6 @@ private:
     std::vector<std::string>     _lSubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
-    bool _restoreLabel;
 };
 
 /** The general Link Property with Child scope

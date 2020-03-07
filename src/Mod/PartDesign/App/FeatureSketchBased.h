@@ -116,7 +116,7 @@ public:
     
     //backwards compatibility: profile property was renamed and has different type now
     virtual void handleChangedPropertyName(
-        Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
+        Base::XMLReader &reader, const char * TypeName, const char *PropName);
     
 protected:
     void remapSupportShape(const TopoDS_Shape&);

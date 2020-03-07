@@ -52,7 +52,7 @@ protected:
             Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
     void handleChangedPropertyName(
             Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
-    void onChanged (const App::Property* prop);
+    void onChanged (const App::Property* prop) override;
 };
 
 class PartExport Vertex : public Part::Primitive

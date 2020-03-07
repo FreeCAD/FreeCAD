@@ -244,7 +244,7 @@ public:
 
     bool adjustLinks(const std::set<App::DocumentObject*> &inList);
 
-    virtual ExpressionPtr simplify() const { return std::move(copy()); }
+    virtual ExpressionPtr simplify() const { return copy(); }
 
     void visit(ExpressionVisitor & v);
 

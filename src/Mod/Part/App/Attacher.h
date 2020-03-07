@@ -433,7 +433,7 @@ public:
     virtual Base::Placement _calculateAttachedPlacement(
             const std::vector<App::DocumentObject*> &objs,
             const std::vector<std::string> &subs,
-            const Base::Placement &origPlacement) const override;
+            const Base::Placement &origPlacement) const;
 private:
     double calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp_Vec edB) const;
 };

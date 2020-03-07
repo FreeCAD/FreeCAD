@@ -396,7 +396,7 @@ public:
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
 
     virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
-            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
+            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
 
     std::vector<std::string> checkSubNames(const std::vector<std::string> &) const;
     std::string checkSubName(const char *) const;
@@ -422,7 +422,7 @@ public:
     int getGeoHistoryLevel() const {return geoHistoryLevel;}
 
     virtual std::pair<std::string,std::string> getElementName(
-            const char *name, ElementNameType type) const override;
+            const char *name, ElementNameType type) const;
 
 public:
     // Analyser functions
@@ -484,7 +484,7 @@ protected:
 
     void initExternalGeo();
 
-    virtual void onUpdateElementReference(const App::Property *) override;
+    virtual void onUpdateElementReference(const App::Property *);
 
     void delExternalPrivate(const std::set<long> &ids, bool removeReference);
 

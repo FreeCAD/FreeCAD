@@ -87,8 +87,8 @@ public:
     short mustExecute() const;
     //@}
 
-    virtual void onDocumentRestored() override;
-    virtual void onChanged(const App::Property *) override;
+    virtual void onDocumentRestored();
+    virtual void onChanged(const App::Property *);
 
     /** returns a list of the transformations that where rejected during the last execute
       * because they did not overlap with the support
@@ -98,13 +98,13 @@ public:
 
 protected:
     virtual void handleChangedPropertyType(
-        Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop);
     virtual void positionBySupport(void);
     TopoShape refineShapeIfActive(const TopoShape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
 		     TopoDS_Compound &compoundOut) const; 
 
-    virtual void setupObject () override;
+    virtual void setupObject ();
 
     rejectedMap rejected;
 };

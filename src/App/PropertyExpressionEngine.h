@@ -177,7 +177,7 @@ private:
     typedef boost::adjacency_list< boost::listS, boost::vecS, boost::directedS > DiGraph;
     typedef std::pair<int, int> Edge;
     // Note: use std::map instead of unordered_map to keep the binding order stable
-    typedef std::map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
+    typedef std::map<App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
 
     std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
 

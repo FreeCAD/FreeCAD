@@ -55,7 +55,7 @@ public:
       * by the Transformations property. Subfeatures can be Mirrored, LinearPattern, PolarPattern and
       * Scaled.
       */
-    virtual std::list<gp_Trsf> getTransformations(const std::vector<Part::TopoShape> &) override;
+    virtual std::list<gp_Trsf> getTransformations(const std::vector<Part::TopoShape> &);
 
 protected:
     virtual void positionBySupport(void);

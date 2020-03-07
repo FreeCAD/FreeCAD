@@ -613,12 +613,12 @@ public:
     bool getRelatedElementsCached(const char *name, bool sameType,
             std::vector<std::pair<std::string,std::string> > &names) const;
 
-    virtual std::string getElementMapVersion() const override;
+    virtual std::string getElementMapVersion() const;
 
     const char *setElementComboName(const char *element, 
             const std::vector<std::string> &names, const char *marker=0, const char *op=0);
 
-    virtual void reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix=0) override;
+    virtual void reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix=0);
     //@}
 
 

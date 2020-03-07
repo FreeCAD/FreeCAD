@@ -80,7 +80,7 @@ class MeshExport PropertyCurvatureList: public App::PropertyListsT<CurvatureInfo
 {
     typedef PropertyListsT<CurvatureInfo> inherited;
 
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum { 
@@ -99,10 +99,10 @@ public:
 
     void transformGeometry(const Base::Matrix4D &rclMat);
 
-    PyObject* getPyObject(void);
+    virtual PyObject* getPyObject(void) override;
 
-    App::Property *Copy(void) const;
-    void Paste(const App::Property &from);
+    virtual App::Property *Copy(void) const override;
+    virtual void Paste(const App::Property &from) override;
 
 protected:
     virtual CurvatureInfo getPyValue(PyObject *) const override;

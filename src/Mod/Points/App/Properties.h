@@ -96,7 +96,7 @@ struct PointsExport CurvatureInfo
 class PointsExport PropertyCurvatureList: public App::PropertyListsT<CurvatureInfo>
 {
     typedef PropertyListsT<CurvatureInfo> inherited;
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum { 
@@ -113,14 +113,14 @@ public:
 
     std::vector<float> getCurvature( int tMode) const;
 
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject(void) override;
 
     /** @name Undo/Redo */
     //@{
     /// returns a new copy of the property (mainly for Undo/Redo and transactions)
-    App::Property *Copy(void) const;
+    virtual App::Property *Copy(void) const override;
     /// paste the value from the property (mainly for Undo/Redo and transactions)
-    void Paste(const App::Property &from);
+    virtual void Paste(const App::Property &from) override;
     //@}
 
     /** @name Modify */
@@ -130,7 +130,7 @@ public:
     //@}
 
 protected:
-    CurvatureInfo getPyValue(PyObject *) const override;
+    virtual CurvatureInfo getPyValue(PyObject *) const override;
 
     virtual void restoreXML(Base::XMLReader &) override;
     virtual bool saveXML(Base::Writer &) const override;
