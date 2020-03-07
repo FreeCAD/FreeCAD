@@ -35,6 +35,8 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/Tools.h>
 #include <Mod/Points/App/Structured.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
@@ -50,6 +52,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
+#include <Base/Builder3D.h>
 #include <Base/CoordinateSystem.h>
 #include <Base/Converter.h>
 
@@ -290,6 +293,61 @@ void CmdApproxSphere::activated(int)
 }
 
 bool CmdApproxSphere::isActive(void)
+{
+    if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)
+        return true;
+    return false;
+}
+
+DEF_STD_CMD_A(CmdApproxPolynomial)
+
+CmdApproxPolynomial::CmdApproxPolynomial()
+  : Command("Reen_ApproxPolynomial")
+{
+    sAppModule      = "Reen";
+    sGroup          = QT_TR_NOOP("Reverse Engineering");
+    sMenuText       = QT_TR_NOOP("Polynomial surface");
+    sToolTipText    = QT_TR_NOOP("Approximate a polynomial surface");
+    sWhatsThis      = "Reen_ApproxPolynomial";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdApproxPolynomial::activated(int)
+{
+    std::vector<Mesh::Feature*> sel = getSelection().getObjectsOfType<Mesh::Feature>();
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    openCommand("Fit polynomial surface");
+    for (auto it : sel) {
+        const Mesh::MeshObject& mesh = it->Mesh.getValue();
+        const MeshCore::MeshKernel& kernel = mesh.getKernel();
+        MeshCore::SurfaceFit fit;
+        fit.AddPoints(kernel.GetPoints());
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::BoundBox3f bbox = fit.GetBoundings();
+            std::vector<Base::Vector3d> poles = fit.toBezier(bbox.MinX, bbox.MaxX, bbox.MinY, bbox.MaxY);
+            fit.Transform(poles);
+
+            TColgp_Array2OfPnt grid(1, 3, 1, 3);
+            grid.SetValue(1, 1, Base::convertTo<gp_Pnt>(poles.at(0)));
+            grid.SetValue(2, 1, Base::convertTo<gp_Pnt>(poles.at(1)));
+            grid.SetValue(3, 1, Base::convertTo<gp_Pnt>(poles.at(2)));
+            grid.SetValue(1, 2, Base::convertTo<gp_Pnt>(poles.at(3)));
+            grid.SetValue(2, 2, Base::convertTo<gp_Pnt>(poles.at(4)));
+            grid.SetValue(3, 2, Base::convertTo<gp_Pnt>(poles.at(5)));
+            grid.SetValue(1, 3, Base::convertTo<gp_Pnt>(poles.at(6)));
+            grid.SetValue(2, 3, Base::convertTo<gp_Pnt>(poles.at(7)));
+            grid.SetValue(3, 3, Base::convertTo<gp_Pnt>(poles.at(8)));
+
+            Handle(Geom_BezierSurface) bezier(new Geom_BezierSurface(grid));
+            Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Spline", "Bezier"));
+            part->Shape.setValue(Part::GeomBezierSurface(bezier).toShape());
+        }
+    }
+    commitCommand();
+    updateActive();
+}
+
+bool CmdApproxPolynomial::isActive(void)
 {
     if (getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) > 0)
         return true;
@@ -566,6 +624,7 @@ void CreateReverseEngineeringCommands(void)
     rcCmdMgr.addCommand(new CmdApproxPlane());
     rcCmdMgr.addCommand(new CmdApproxCylinder());
     rcCmdMgr.addCommand(new CmdApproxSphere());
+    rcCmdMgr.addCommand(new CmdApproxPolynomial());
     rcCmdMgr.addCommand(new CmdSegmentation());
     rcCmdMgr.addCommand(new CmdSegmentationManual());
     rcCmdMgr.addCommand(new CmdSegmentationFromComponents());

@@ -79,6 +79,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *approx << "Reen_ApproxPlane"
             << "Reen_ApproxCylinder"
             << "Reen_ApproxSphere"
+            << "Reen_ApproxPolynomial"
             << "Separator"
             << "Reen_ApproxSurface";
     *reen   << approx;
