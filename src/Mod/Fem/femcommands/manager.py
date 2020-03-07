@@ -39,13 +39,14 @@ if FreeCAD.GuiUp:
 class CommandManager(object):
 
     def __init__(self):
-        self.resources = {
-            "Pixmap": "FemWorkbench",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command MenuText"),
-            "Accel": "",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP("Fem_Command", "Default Fem Command ToolTip")
-        }
-        # FIXME add option description
+
+        self.command = "FEM" + self.__class__.__name__
+        self.pixmap = self.command
+        self.menuetext = self.__class__.__name__.lstrip("_")
+        self.accel = ""
+        self.tooltip = "Creates a {}".format(self.menuetext)
+        self.resources = None
+
         self.is_active = None
         self.do_activated = None
         self.selobj = None
@@ -53,6 +54,13 @@ class CommandManager(object):
         self.active_analysis = None
 
     def GetResources(self):
+        if self.resources is None:
+            self.resources = {
+                "Pixmap": self.pixmap,
+                "MenuText": QtCore.QT_TRANSLATE_NOOP(self.command, self.menuetext),
+                "Accel": self.accel,
+                "ToolTip": QtCore.QT_TRANSLATE_NOOP(self.command, self.tooltip)
+            }
         return self.resources
 
     def IsActive(self):
