@@ -999,7 +999,8 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
         tmpPath.append(pcGroupOnTopSwitch);
         tmpPath.append(pcGroup);
         tmpPath.append(info.node);
-        tmpPath.append(info.node->getPath());
+        if(path)
+            tmpPath.append(path);
 
         if(pcGroup == pcGroupOnTopSel) {
             selAction->setElement(det);
@@ -1149,13 +1150,11 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                 selAction->apply(&tmpPath);
                 selAction->setElement(0);
             } else if (det) {
-                info.node->setDetail(true);
-                selAction->setSecondary(true);
-                selAction->setElement(det);
-                selAction->setType(SoSelectionElementAction::Append);
-                selAction->apply(&tmpPath);
-                selAction->setElement(0);
-
+                // We are preselecting some element. In this case, we do not
+                // use PreSelGroup for highlighting, but instead rely on
+                // OnTopGroup. Becasue we want SoBrepFaceSet to pick the proper
+                // highlight color, in case it conflicts with the selection or
+                // the object's original color.
                 auto &selInfo = objectsOnTopSel[key];
                 if(!selInfo.node) {
                     selInfo.node = new SoFCPathAnnotation(vp,subname,this);
@@ -1164,6 +1163,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                     selInfo.node->setDetail(true);
                     pcGroupOnTopSel->addChild(selInfo.node);
                 }
+                info.node->setPath(0);
             } else {
                 // NOTE: assuming preselect is only applicable to one single
                 // object(or sub-element) at a time. If in the future we shall
