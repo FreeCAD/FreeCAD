@@ -149,12 +149,15 @@ protected:
     bool event(QEvent *e) override;
     void keyPressEvent(QKeyEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent * event) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mousePressEvent(QMouseEvent *) override;
 
 protected:
     void showEvent(QShowEvent *) override;
     void hideEvent(QHideEvent *) override;
     void leaveEvent(QEvent *) override;
     void _updateStatus(bool delay=true);
+    void _dragMoveEvent(QDragMoveEvent *event);
 
 protected Q_SLOTS:
     void onCreateGroup();

@@ -88,7 +88,10 @@ std::set<TreeWidget *> TreeWidget::Instances;
 static TreeWidget *_LastSelectedTreeWidget;
 const int TreeWidget::DocumentType = 1000;
 const int TreeWidget::ObjectType = 1001;
-bool _DragEventFilter;
+static bool _DragEventFilter;
+static bool _DraggingActive;
+static Qt::DropActions _DropActions;
+
 
 TreeParams::TreeParams() {
     handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -610,7 +613,6 @@ void TreeWidget::itemSearch(const QString &text, bool select) {
         return;
     }
     std::string txt(text.toUtf8().constData());
-    FC_MSG(txt);
     try {
         if(txt.empty())
             return;
@@ -1183,6 +1185,7 @@ bool TreeWidget::event(QEvent *e)
 }
 
 bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
+    (void)o;
     switch (ev->type()) {
 #if QT_VERSION < 0x050100
     case QEvent::ToolTip: {
@@ -1205,13 +1208,78 @@ bool TreeWidget::eventFilter(QObject *o, QEvent *ev) {
     case QEvent::KeyPress:
     case QEvent::KeyRelease: {
         QKeyEvent *ke = static_cast<QKeyEvent *>(ev);
-        if (ke->key() != Qt::Key_Escape) {
-            // Qt 5 only recheck key modifier on mouse move, so generate a fake
-            // event to trigger drag cursor change
-            QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseMove, 
-                    mapFromGlobal(QCursor::pos()), QCursor::pos(), Qt::NoButton, 
-                    QApplication::mouseButtons(), QApplication::queryKeyboardModifiers());
-            QApplication::postEvent(this,mouseEvent);
+        QPoint cpos = QCursor::pos();
+        if (ke->key() == Qt::Key_Escape) {
+            if (_DraggingActive) {
+                qApp->removeEventFilter(this);
+                _DraggingActive = false;
+                qApp->restoreOverrideCursor();
+                return true;
+            }
+        } else {
+            for(auto tree : Instances) {
+                QPoint pos = tree->mapFromGlobal(cpos);
+                if(pos.x() < 0 || pos.y() < 0
+                        || pos.x() >= tree->width()
+                        || pos.y() >= tree->height())
+                    continue;
+                // Qt 5 only recheck key modifier on mouse move, so generate a fake
+                // event to trigger drag cursor change
+                QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseMove, 
+                        tree->mapFromGlobal(cpos), cpos,
+                        Qt::NoButton, QApplication::mouseButtons(),
+                        QApplication::queryKeyboardModifiers());
+                if(_DraggingActive) {
+                    tree->mouseMoveEvent(mouseEvent);
+                    delete mouseEvent;
+                    return true;
+                } else
+                    QApplication::postEvent(tree,mouseEvent);
+                break;
+            }
+        }
+        break;
+    }
+    case QEvent::MouseButtonPress: 
+        if(_DraggingActive)
+            return true;
+        break;
+    case QEvent::MouseMove: {
+        if(_DraggingActive) {
+            QMouseEvent *me = static_cast<QMouseEvent*>(ev);
+            for(auto tree : Instances) {
+                QPoint pos = tree->mapFromGlobal(me->globalPos());
+                if(pos.x() >= 0 && pos.y() >= 0
+                        && pos.x() < tree->width()
+                        && pos.y() < tree->height())
+                    return false;
+            }
+            qApp->changeOverrideCursor(QCursor(Qt::ForbiddenCursor));
+            return true;
+        }
+        break;
+    }
+    case QEvent::MouseButtonRelease: {
+        if(_DraggingActive) {
+            QMouseEvent *me = static_cast<QMouseEvent*>(ev);
+            _DraggingActive = false;
+            qApp->removeEventFilter(this);
+            qApp->restoreOverrideCursor();
+
+            if(me->button() == Qt::LeftButton) {
+                for(auto tree : Instances) {
+                    QPoint pos = tree->mapFromGlobal(me->globalPos());
+                    if(pos.x() < 0 || pos.y() < 0
+                            || pos.x() >= tree->width()
+                            || pos.y() >= tree->height())
+                        continue;
+                    QDropEvent de(tree->viewport()->mapFromGlobal(me->globalPos()),
+                        _DropActions, nullptr, me->buttons(), me->modifiers());
+                    tree->dropEvent(&de);
+                    break;
+                }
+            }
+            return true;
         }
         break;
     }
@@ -1296,14 +1364,56 @@ void TreeWidget::mouseDoubleClickEvent (QMouseEvent * event)
     }
 }
 
+void TreeWidget::mouseMoveEvent(QMouseEvent *event) {
+    if(_DraggingActive) {
+        auto pos = viewport()->mapFromGlobal(event->globalPos());
+        QDragMoveEvent de(pos, _DropActions,
+                nullptr, event->buttons(), event->modifiers());
+        _dragMoveEvent(&de);
+        Qt::CursorShape cursor;
+        if(!de.isAccepted()) {
+            cursor = Qt::ForbiddenCursor;
+        } else {
+            switch(de.dropAction()) {
+            case Qt::CopyAction:
+                cursor = Qt::DragCopyCursor;
+                break;
+            case Qt::LinkAction:
+                cursor = Qt::DragLinkCursor;
+                break;
+            case Qt::IgnoreAction:
+                cursor = Qt::ForbiddenCursor;
+                break;
+            default:
+                cursor = Qt::DragMoveCursor;
+                break;
+            }
+        }
+        qApp->changeOverrideCursor(QCursor(cursor));
+        return;
+    }
+    QTreeWidget::mouseMoveEvent(event);
+}
+
+void TreeWidget::mousePressEvent(QMouseEvent *event) {
+    QTreeWidget::mousePressEvent(event);
+}
+
 void TreeWidget::startDragging() {
     if(state() != NoState)
         return;
     if(selectedItems().empty())
         return;
 
+#if 1
+    _DropActions = model()->supportedDragActions();
+    _DraggingActive = true;
+    qApp->installEventFilter(this);
+    qApp->setOverrideCursor(QCursor(Qt::DragMoveCursor));
+#else
     setState(DraggingState);
     startDrag(model()->supportedDragActions());
+#endif
 }
 
 void TreeWidget::startDrag(Qt::DropActions supportedActions)
@@ -1379,8 +1489,15 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     if (!event->isAccepted())
         return;
 
+    _dragMoveEvent(event);
+}
+
+void TreeWidget::_dragMoveEvent(QDragMoveEvent *event)
+{
     auto modifier = QApplication::queryKeyboardModifiers();
     QTreeWidgetItem* targetItem = itemAt(event->pos());
+    event->setDropAction(Qt::MoveAction);
+    event->accept();
     if (!targetItem || this->isItemSelected(targetItem)) {
         leaveEvent(0);
         event->ignore();
@@ -2500,10 +2617,10 @@ void TreeWidget::onUpdateStatus(void)
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 {
     if(hiddenItem == item) {
-        TREE_MSG("skip hidden item " << item);
+        TREE_LOG("skip hidden item " << item);
         return;
     } else if (hiddenItem) {
-        TREE_MSG("reset hidden item " << hiddenItem);
+        TREE_LOG("reset hidden item " << hiddenItem);
         hiddenItem = nullptr;
     }
 
@@ -2871,7 +2988,7 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
             break;
         hiddenItem = docItem->findItemByObject(
                 false, msg.Object.getObject(),msg.pSubName);
-        TREE_MSG("hidden item " << hiddenItem << ' '
+        TREE_LOG("hidden item " << hiddenItem << ' '
                 << msg.pObjectName << '.' << msg.pSubName);
         break;
     }
