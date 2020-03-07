@@ -181,7 +181,6 @@ void ViewProviderGeomHatch::updateGraphic(void)
    }
 }
 
-
 void ViewProviderGeomHatch::getParameters(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -196,6 +195,14 @@ void ViewProviderGeomHatch::getParameters(void)
     double weight = lg->getWeight("Graphic");
     delete lg;                                                    //Coverity CID 174667
     WeightPattern.setValue(weight);
+}
+
+bool ViewProviderGeomHatch::canDelete(App::DocumentObject *obj) const
+{
+    // deletion of hatches don't destroy anything
+    // thus we can pass this action
+    Q_UNUSED(obj)
+    return true;
 }
 
 TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
