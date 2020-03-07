@@ -113,6 +113,7 @@ void ViewProviderHatch::onChanged(const App::Property* prop)
         }
     }
 }
+
 void ViewProviderHatch::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObject::updateData(prop);
@@ -123,6 +124,14 @@ TechDraw::DrawHatch* ViewProviderHatch::getViewObject() const
     return dynamic_cast<TechDraw::DrawHatch*>(pcObject);
 }
 
+bool ViewProviderHatch::canDelete(App::DocumentObject *obj) const
+{
+    // deletion of hatches don't destroy anything
+    // thus we can pass this action
+    Q_UNUSED(obj)
+    return true;
+}
+
 Gui::MDIView *ViewProviderHatch::getMDIView() const
 {
     auto obj = getViewObject();
@@ -131,4 +140,3 @@ Gui::MDIView *ViewProviderHatch::getMDIView() const
     if(!vp) return 0;
     return vp->getMDIView();
 }
-
