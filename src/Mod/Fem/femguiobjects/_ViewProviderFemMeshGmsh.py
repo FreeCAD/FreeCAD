@@ -41,14 +41,31 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
-from . import ViewProviderFemConstraint
+# from . import ViewProviderFemConstraint
 from femobjects import _FemMeshGmsh
 
 
-class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
+# class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
+class _ViewProviderFemMeshGmsh:
     """
     A View Provider for the FemMeshGmsh object
     """
+
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def getIcon(self):
+        return ":/icons/fem-femmesh-from-shape.svg"
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+
+    def updateData(self, obj, prop):
+        return
+
+    def onChanged(self, vobj, prop):
+        return
 
     def setEdit(self, vobj, mode):
         # hide all meshes
@@ -166,6 +183,12 @@ class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
             QMessageBox.critical(None, "Error in tree view", message)
             FreeCAD.Console.PrintError(message + "\n")
         return True
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
 
     def claimChildren(self):
         reg_childs = self.Object.MeshRegionList
