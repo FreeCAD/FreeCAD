@@ -415,6 +415,8 @@ public:
             assert(getModel());
         }
 
+        virtual ~ModelData() {}
+
         const ExpressionCompleterModel *getModel() const {
             return static_cast<const ExpressionCompleterModel*>(mindex.model());
         }
