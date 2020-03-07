@@ -40,11 +40,61 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 # SCALE WIDGET FUNCTIONS
 #----------------------------------------------------------------------------
 
+draft_scales_metrics =  ["1:1000", "1:500", "1:250", "1:200", "1:100", 
+                         "1:50", "1:25","1:20", "1:10", "1:5","1:2",
+                         "1:1",
+                         "2:1", "5:1", "10:1", "20:1",                 
+                         QT_TRANSLATE_NOOP("draft","custom"),                 
+                        ]
+
+draft_scales_arch_imperial =  ["1/16in=1ft", "3/32in=1ft", "1/8in=1ft",
+                               "3/16in=1ft", "1/4in=1ft","3/8in=1ft", 
+                               "1/2in=1ft", "3/4in=1ft", "1in=1ft", 
+                               "1.5in=1ft", "3in=1ft",    
+                               QT_TRANSLATE_NOOP("draft","custom"),
+                              ]
+
+draft_scales_eng_imperial =  ["1in=10ft", "1in=20ft", "1in=30ft",
+                              "1in=40ft", "1in=50ft", "1in=60ft", 
+                              "1in=70ft", "1in=80ft", "1in=90ft", 
+                              "1in=100ft",    
+                              QT_TRANSLATE_NOOP("draft","custom"),
+                             ]
+
+def get_scales(unit_system = 0):
+    """
+    returns the list of preset scales accordin to unit system.
+    
+    Parameters:
+    unit_system =   0 : default from user preferences
+                    1 : metrics
+                    2 : imperial architectural
+                    3 : imperial engineering
+    """
+
+    if unit_system == 0:
+        param = App.ParamGet("User parameter:BaseApp/Preferences/Units")
+        scale_units_system = param.GetInt("UserSchema", 0)
+        if scale_units_system in [0, 1, 4, 6]:
+            return draft_scales_metrics
+        elif scale_units_system in [2, 3, 5]:
+            return draft_scales_arch_imperial
+        elif scale_units_system in [7]:
+            return draft_scales_eng_imperial
+    elif unit_system == 1:
+        return draft_scales_metrics
+    elif unit_system == 2:
+        return draft_scales_arch_imperial
+    elif unit_system == 3:
+        return draft_scales_eng_imperial
+
+
 def scale_to_label(scale):
     """
     transform a float number into a 1:X or X:1 scale and return it as label
     """
     f = 1/scale
+    f = round(f,2)
     f = f.as_integer_ratio()
     if f[1] == 1 or f[0] == 1:
         label = str(f[1]) + ":" + str(f[0])
@@ -60,22 +110,21 @@ def label_to_scale(label):
         scale = float(label)
         return scale
     except :
-        err = QT_TRANSLATE_NOOP("draft",
-                                "Unable to convert input into a scale factor")
         if ":" in label:
             f = label.split(":")
+        elif "=" in label:
+            f = label.split("=")
+        else:
+            return
+        if len(f) == 2:
             try:
-                scale = float(f[0])/float(f[1])
+                num = App.Units.Quantity(f[0]).Value
+                den = App.Units.Quantity(f[1]).Value
+                scale = num/den
                 return scale
             except:
-                App.Console.PrintWarning(err)
-                return None
-        if "/" in label:
-            f = label.split("/")
-            try:
-                scale = float(f[0])/float(f[1])
-                return scale
-            except:
+                err = QT_TRANSLATE_NOOP("draft",
+                                        "Unable to convert input into a scale factor")
                 App.Console.PrintWarning(err)
                 return None
 
@@ -90,7 +139,10 @@ def _set_scale(action):
     sb = mw.statusBar()
     statuswidget = sb.findChild(QtGui.QToolBar,"draft_status_widget")
     if action.text() == QT_TRANSLATE_NOOP("draft","custom"):
-        custom_scale = QtGui.QInputDialog.getText(None, "Custom scale", "")
+        dialog_text = QT_TRANSLATE_NOOP("draft",
+                                        "Set custom annotation scale in format x:x, x=x"
+                                       )
+        custom_scale = QtGui.QInputDialog.getText(None, "Set custom scale", dialog_text)
         if custom_scale[1]:
             print(custom_scale[0])
             scale = label_to_scale(custom_scale[0])
@@ -113,20 +165,19 @@ def init_draft_statusbar(sb):
     this function initializes draft statusbar
     """
     
-    draft_scales =  ["1:1000", "1:500", "1:250", "1:200", "1:100", 
-                     "1:50", "1:25","1:20", "1:10", "1:5","1:2",
-                     "1:1",
-                     "2:1", "5:1", "10:1", "20:1",                 
-                     QT_TRANSLATE_NOOP("draft","custom"),                 
-                    ]
-    
-    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    draft_annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-    
     statuswidget = QtGui.QToolBar()
     statuswidget.setObjectName("draft_status_widget")
    
     # SCALE TOOL -------------------------------------------------------------
+    
+    # get scales list according to system units
+    draft_scales = get_scales()
+
+    # get draft annotation scale
+    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    draft_annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
+
+    # initializes scale widget
     statuswidget.draft_scales = draft_scales
     scaleLabel = QtGui.QPushButton("Scale")
     scaleLabel.setObjectName("ScaleLabel")
@@ -139,8 +190,6 @@ def init_draft_statusbar(sb):
         menu.addAction(a)
     scaleLabel.setMenu(menu)
     gUnits.triggered.connect(_set_scale)
-    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    draft_annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
     scale_label = scale_to_label(draft_annotation_scale)
     scaleLabel.setText(scale_label)
     tooltip = "Set the scale used by draft annotation tools"
