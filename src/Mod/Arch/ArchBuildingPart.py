@@ -645,8 +645,8 @@ class ViewProviderBuildingPart:
 
         colors = []
         for child in Draft.getGroupContents(obj):
-            if hasattr(child,'Shape'):
-                if len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
+            if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
+                if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
                     colors.extend(child.ViewObject.DiffuseColor)
                 else:
                     c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
