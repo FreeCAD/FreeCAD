@@ -268,6 +268,7 @@ AboutDialog::AboutDialog(bool showLic, QWidget* parent)
     ui->tabWidget->setCurrentIndex(0); // always start on the About tab
     setupLabels();
     showLicenseInformation();
+    showCollectionInformation();
 }
 
 /**
@@ -693,6 +694,23 @@ void AboutDialog::showLicenseInformation()
     textField->setHtml(html);
 
     connect(textField, SIGNAL(anchorClicked(QUrl)), this, SLOT(linkActivated(QUrl)));
+}
+
+void AboutDialog::showCollectionInformation()
+{
+    QString doc = QString::fromUtf8(App::Application::getHelpDir().c_str());
+    QString path = doc + QLatin1String("Collection.html");
+    if (!QFile::exists(path))
+        return;
+
+    QWidget *tab_collection = new QWidget();
+    tab_collection->setObjectName(QString::fromLatin1("tab_collection"));
+    ui->tabWidget->addTab(tab_collection, tr("Collection"));
+    QVBoxLayout* hlayout = new QVBoxLayout(tab_collection);
+    QTextBrowser* textField = new QTextBrowser(tab_collection);
+    textField->setOpenExternalLinks(true);
+    hlayout->addWidget(textField);
+    textField->setSource(path);
 }
 
 void AboutDialog::linkActivated(const QUrl& link)
