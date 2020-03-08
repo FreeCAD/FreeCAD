@@ -235,7 +235,7 @@ public:
      */
     std::vector<Base::Vector3f> GetLocalPoints() const;
     /**
-     * Returns the local bounding box of the transformed points releative to the
+     * Returns the local bounding box of the transformed points relative to the
      * coordinate system of the plane. If this method is called before the plane is
      *  computed an invalid bounding box is returned.
      */

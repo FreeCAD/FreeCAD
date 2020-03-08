@@ -279,7 +279,7 @@ class FemInputWriter():
         # it applies here too. Mhh it applies to all constraints ...
 
         """
-        # depreciated version
+        # deprecated version
         # get the faces and face numbers
         for femobj in self.pressure_objects:
             # femobj --> dict, FreeCAD document object is femobj["Object"]
@@ -308,9 +308,9 @@ class FemInputWriter():
                 self.femelement_table,
                 self.femnodes_ele_table, femobj
             )
-            # the data model is for compatibility reason with depreciated version
+            # the data model is for compatibility reason with deprecated version
             # get_pressure_obj_faces_depreciated returns the face ids in a tuple per ref_shape
-            # some_string was the reference_shape_element_string in depreciated method
+            # some_string was the reference_shape_element_string in deprecated method
             # [(some_string, [ele_id, ele_face_id], [ele_id, ele_face_id], ...])]
             some_string = "{}: face load".format(femobj["Object"].Name)
             femobj["PressureFaces"] = [(some_string, pressure_faces)]

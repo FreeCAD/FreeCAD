@@ -203,7 +203,7 @@ bool ViewProviderPage::onDelete(const std::vector<std::string> &)
 
     // check if there is just a template
     // if there are several objects, the template is never the last one
-    // the ExportName of a template begines always with "Template"
+    // the ExportName of a template always begins with "Template"
     bool isTemplate = false;
     for (auto objsIterator : objs) {
         if (objsIterator->getExportName().substr(0, 8).compare(std::string("Template")) == 0)

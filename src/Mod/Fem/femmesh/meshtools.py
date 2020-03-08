@@ -1626,7 +1626,7 @@ def get_pressure_obj_faces(
     return pressure_faces
 
 
-# ***** depreciated method for retrieving pressure faces *****************************************
+# ***** deprecated method for retrieving pressure faces *****************************************
 # for constraint pressure and finite solid element mesh
 # it was switched to the method get_ccxelement_faces_from_binary_search
 # because of performance and the support of all solid elements
