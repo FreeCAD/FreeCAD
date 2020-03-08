@@ -461,7 +461,7 @@ class PathSimulation:
     def onAccuracyBarChange(self):
         form = self.taskForm.form
         self.accuracy = 1.1 - 0.1 * form.sliderAccuracy.value()
-        form.labelAccuracy.setText(str(self.accuracy) + "%")
+        form.labelAccuracy.setText(str(round(self.accuracy, 1)) + "%")
 
     def GuiBusy(self, isBusy):
         form = self.taskForm.form
