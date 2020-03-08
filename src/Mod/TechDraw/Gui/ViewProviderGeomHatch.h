@@ -62,7 +62,7 @@ public:
     virtual std::vector<std::string> getDisplayModes(void) const override;
     void updateGraphic(void);
     void getParameters(void);
-    virtual bool canDelete(App::DocumentObject* obj) const;
+    virtual bool canDelete(App::DocumentObject* obj) const override;
 
     TechDraw::DrawGeomHatch* getViewObject() const;
 
