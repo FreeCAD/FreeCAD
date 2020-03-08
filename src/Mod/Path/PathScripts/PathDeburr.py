@@ -78,6 +78,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.Direction = ['CW', 'CCW']
         obj.addProperty('App::PropertyEnumeration', 'Side',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Side of Operation'))
         obj.Side = ['Outside', 'Inside']
+        obj.setEditorMode('Side', 2) # Hide property, it's always outside
         obj.addProperty('App::PropertyInteger', 'EntryPoint',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Select the segment, there the operations starts'))
 
     def opOnDocumentRestored(self, obj):
