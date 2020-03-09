@@ -34,7 +34,7 @@ from . import ViewProviderFemConstraint
 
 class _ViewProviderFemConstraintSelfWeight(ViewProviderFemConstraint.ViewProxy):
     """
-    A View Provider for the FemConstraintSelfWeight object"
+    A View Provider for the FemConstraintSelfWeight object
     """
 
     pass
