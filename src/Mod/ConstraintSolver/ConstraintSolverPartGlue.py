@@ -114,7 +114,8 @@ def toPartGeom_G2D_Circle(cs_geom, valueset, part_geom):
     part_geom.Location = cs_geom.center.value(valueset).re
     part_geom.Axis = App.Vector(0,0,1)
     part_geom.XAxis = App.Vector(1,0,0)
-    part_geom.setParameterRange(valueset[cs_geom.u0].re, valueset[cs_geom.u1].re)
+    if not cs_geom.IsFull:
+        part_geom.setParameterRange(valueset[cs_geom.u0].re, valueset[cs_geom.u1].re)
     part_geom.Radius = valueset[cs_geom.radius].re
     return part_geom
 
@@ -128,11 +129,12 @@ def fromPartGeom_G2D_Circle (part_geom, cs_geom, valueset, store):
     if cs_geom is None:
         cs_geom = FCS.G2D.ParaCircle(is_full, store= store)
     cs_geom.center.setValue(valueset, part_geom.Location)
-    cs_geom.p0.setValue(valueset, part_geom.StartPoint)
-    cs_geom.p1.setValue(valueset, part_geom.EndPoint)
     valueset[cs_geom.radius] = part_geom.Radius
     
     if not is_full:
+        p0 = part_geom.StartPoint
+        p1 = part_geom.EndPoint
+        
         #compute u0,u1, taking rotation and possible reversal of arc's LCS
         zax = part_geom.Axis
         xax = part_geom.XAxis
@@ -142,7 +144,9 @@ def fromPartGeom_G2D_Circle (part_geom, cs_geom, valueset, store):
         rot = atan2(xax.y, xax.x)
         u0 = part_geom.FirstParameter * orimult
         u1 = part_geom.LastParameter * orimult
-        if orimult < 0: u0,u1 = u1,u0
+        if orimult < 0: # reversed, -> swap endpoints
+            u0,u1 = u1,u0
+            p0,p1 = p1,p0
         u0 = u0 + rot
         u1 = u1 + rot
         
@@ -152,5 +156,8 @@ def fromPartGeom_G2D_Circle (part_geom, cs_geom, valueset, store):
         unrot = floor((u0 + 1e-9) / turn) * turn 
         valueset[cs_geom.u0] = u0 - unrot
         valueset[cs_geom.u1] = u1 - unrot
-    
+        
+        cs_geom.p0.setValue(valueset, p0)
+        cs_geom.p1.setValue(valueset, p1)
+        
     return cs_geom
