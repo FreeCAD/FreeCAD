@@ -239,6 +239,7 @@ void ValueSet::setReal(const ParameterRef& param, double val)
 
 void ValueSet::set(const ParameterRef& param, Base::DualNumber val)
 {
+    param.throwNull();
     setReal(param, val.re);
     if (! _passthru)
         setDual(param, val.du);
