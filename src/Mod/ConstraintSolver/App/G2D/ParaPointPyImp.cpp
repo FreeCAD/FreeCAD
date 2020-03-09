@@ -20,26 +20,8 @@ PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
     {
         if (PyArg_ParseTuple(args, "")){
             HParaPoint p = (new ParaPoint)->self();
-            return Py::new_reference_to(p);
-        }
-        PyErr_Clear();
-    }
-    {
-        PyObject* store;
-        if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
-            HParaPoint p = (new ParaPoint)->self();
-            p->makeParameters(HParameterStore(store, false));
-            return Py::new_reference_to(p);
-        }
-        PyErr_Clear();
-    }
-    {
-        PyObject* store;
-        const char* label;
-        if (PyArg_ParseTuple(args, "sO!", &label, &(ParameterStorePy::Type), &store)){
-            HParaPoint p = (new ParaPoint)->self();
-            p->label = label;
-            p->makeParameters(HParameterStore(store, false));
+            if (kwd && kwd != Py_None)
+                p->initFromDict(Py::Dict(kwd));
             return Py::new_reference_to(p);
         }
         PyErr_Clear();
@@ -49,6 +31,8 @@ PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
         PyObject* y;
         if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
             HParaPoint p = (new ParaPoint(*HParameterRef(x,false), *HParameterRef(y,false)))->self();
+            if (kwd && kwd != Py_None)
+                p->initFromDict(Py::Dict(kwd));
             return Py::new_reference_to(p);
         }
         PyErr_Clear();
@@ -58,9 +42,8 @@ PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
         "Wrong argument count or type."
         "\n\nsupported signatures:"
         "\n() - all parameters set to null references"
-        "\n(<ParameterStore object>) - creates new parameters into the store"
-        "\n(label, <ParameterStore object>) - assigns the label (string), and creates new parameters into the store"
-        "\n(<ParameterRef object>, <ParameterRef object>) - assigns x and y parameter refs"
+        "\n(<ParameterRef object>, <ParameterRef object>, **keyword_args = {}) - assigns x and y parameter refs"
+        "\n(**keyword_args) - assigns attributes."
     );
 
     return nullptr;
@@ -85,6 +68,7 @@ PyObject* ParaPointPy::value(PyObject *args)
     PyObject* pcvs = nullptr;
     if (!PyArg_ParseTuple(args, "O!",&(ValueSetPy::Type), &pcvs))
         return nullptr;
+    getParaPointPtr()->throwIfIncomplete();
     return getParaPointPtr()->value(*HValueSet(pcvs, false)).getPyObject();
 }
 
