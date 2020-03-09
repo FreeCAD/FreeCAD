@@ -22,9 +22,10 @@ PyObject *ParaCirclePy::PyMake(struct _typeobject *, PyObject* args, PyObject* k
             PyErr_Clear();
         }
         {
-            int isFull = false;
-            if (PyArg_ParseTuple(args, "p", &isFull)){
-                HParaCircle p = new ParaCircle(bool(isFull));
+            PyObject* pcIsFull = nullptr;
+            if (PyArg_ParseTuple(args, "O!", &PyBool_Type, &pcIsFull)){
+                bool isFull = pcIsFull == Py_True;
+                HParaCircle p = new ParaCircle(isFull);
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
                 return p;
@@ -35,6 +36,7 @@ PyObject *ParaCirclePy::PyMake(struct _typeobject *, PyObject* args, PyObject* k
             "Wrong argument count or type."
             "\n\nsupported signatures:"
             "\n() - all references set to None"
+            "\n(isFull, **keyword_args = {}) - isFull is True to make a *full* circle, and False to make an arc."
             "\n(**keyword_args) - assigns attributes."
         );
     });
