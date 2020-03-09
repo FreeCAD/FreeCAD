@@ -229,7 +229,11 @@ void ViewProviderBody::updateData(const App::Property* prop)
 
 
 void ViewProviderBody::updateOriginSize () {
-    if(App::GetApplication().isRestoring())
+    if(App::GetApplication().isRestoring()
+            || !getObject()
+            || !getObject()->getDocument()
+            || getObject()->testStatus(App::ObjectStatus::Remove)
+            || getObject()->getDocument()->isPerformingTransaction())
         return;
 
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );

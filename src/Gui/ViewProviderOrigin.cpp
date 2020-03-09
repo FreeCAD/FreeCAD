@@ -178,7 +178,8 @@ void ViewProviderOrigin::updateData(const App::Property *prop) {
     App::Origin* origin = static_cast<App::Origin*> ( getObject() );
     if(origin) {
         if(prop == &origin->OriginFeatures && origin->OriginFeatures.getSize()
-                && !origin->getDocument()->isPerformingTransaction())
+                && !origin->getDocument()->isPerformingTransaction()
+                && !origin->testStatus(App::ObjectStatus::Remove))
         {
             Size.touch();
         }
