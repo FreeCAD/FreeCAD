@@ -15,6 +15,7 @@ Position ParaPoint::value(const ValueSet& vals) const
 
 void ParaPoint::setValue(ValueSet& vals, Position newValue)
 {
+    throwIfIncomplete();
     vals.set(x, newValue.x);
     vals.set(y, newValue.y);
 }
