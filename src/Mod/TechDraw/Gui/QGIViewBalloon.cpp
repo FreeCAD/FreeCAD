@@ -701,7 +701,7 @@ void QGIViewBalloon::draw()
     double arrowAdj = QGIArrow::getOverlapAdjust(endType,
                                                  QGIArrow::getPrefArrowSize());
 
-    if (endTypeString == "NONE") {
+    if (endTypeString == "None") {
         arrow->hide();
     } else {
         arrow->setStyle(endType);

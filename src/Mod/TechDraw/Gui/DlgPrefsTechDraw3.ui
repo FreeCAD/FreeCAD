@@ -218,6 +218,15 @@
             </iconset>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>7 - None</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/none.svg</normaloff>:/icons/none.svg</iconset>
+           </property>
+          </item>
          </widget>
         </item>
         <item row="3" column="0">
@@ -284,7 +293,7 @@
          </widget>
         </item>
         <item row="5" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_FontSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -294,7 +303,7 @@
           <property name="toolTip">
            <string>Dimension font size</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -306,7 +315,7 @@
          </widget>
         </item>
         <item row="8" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_ArrowSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -316,7 +325,7 @@
           <property name="toolTip">
            <string>Dimension arrowhead size</string>
           </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -640,42 +649,74 @@
           </property>
           <item>
            <property name="text">
-            <string>Filled Triangle</string>
+            <string>0 - Filled Triangle</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrowfilled.svg</normaloff>:/icons/arrowfilled.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Open Arrow</string>
+            <string>1 - Open Arrowhead</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrowopen.svg</normaloff>:/icons/arrowopen.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Hash Mark</string>
+            <string>2 - Tick</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrowtick.svg</normaloff>:/icons/arrowtick.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Dot</string>
+            <string>3 - Dot</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrowdot.svg</normaloff>:/icons/arrowdot.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Open Circle</string>
+            <string>4 - Open Circle</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Fork</string>
+            <string>5 - Fork</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Pyramid</string>
+            <string>6 - Pyramid</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrowpyramid.svg</normaloff>:/icons/arrowpyramid.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>None</string>
+            <string>7 - None</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/none.svg</normaloff>:/icons/none.svg</iconset>
            </property>
           </item>
          </widget>

@@ -96,7 +96,7 @@ void QGIArrow::draw() {
         } else {
             path = makePyramid(m_size,isFlipped());
         }
-    }else {
+    } else {
         path = makeFilledTriangle(m_size,m_size/6.0,isFlipped());     //sb a question mark or ???
     }
     setPath(path);

@@ -85,14 +85,14 @@ PROPERTY_SOURCE(TechDraw::DrawViewBalloon, TechDraw::DrawView)
 //        PYRAMID
 //    };
 
-const char* DrawViewBalloon::endTypeEnums[]= { "FILLED_TRIANGLE",
-                                               "OPEN_ARROW",
-                                               "HASH_MARK",
-                                               "DOT",
-                                               "OPEN_CIRCLE",
-                                               "FORK",
-                                               "PYRAMID",
-                                               "NONE",
+const char* DrawViewBalloon::endTypeEnums[]= { "Filled Triangle",
+                                               "Open Arrowhead",
+                                               "Tick",
+                                               "Dot",
+                                               "Open Circle",
+                                               "Fork",
+                                               "Pyramid",
+                                               "None",
                                                NULL};
 
 //const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
@@ -124,7 +124,7 @@ DrawViewBalloon::DrawViewBalloon(void)
 
     ADD_PROPERTY_TYPE(SymbolScale,(1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
 
-    ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
+    ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
 
     ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
                                   "Distance from symbol to leader kink");
