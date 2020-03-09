@@ -60,9 +60,13 @@ void ParaObject::update()
     };
 
     for(auto& v : this->_attrs){
+        if (!v.required && v.value->isNull())
+            continue;
         add(*(v.value));
     };
     for(auto& v : this->_children){
+        if (v.value->isNone())
+            continue;
         ParaObject& child = *HParaObject(*(v.value));
         if (child._touched)
             child.update();
@@ -71,6 +75,8 @@ void ParaObject::update()
         };
     };
     forEachShape([&](const ShapeRef& v){
+        if (v.value->isNone())
+            return;
         ParaObject& sh = *HParaObject(*(v.value));
         if (sh._touched)
             sh.update();
