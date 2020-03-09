@@ -654,7 +654,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             std::vector<TopoDS_Shape> solids;
             Part::TopoShape solid;
             for(auto &s : result.getSubTopoShapes(TopAbs_SOLID)) {
-                if(!solid.isNull())
+                if(solid.isNull())
                     solid = s;
                 else 
                     solids.push_back(s.getShape());
