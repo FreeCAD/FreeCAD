@@ -59,7 +59,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
         '''initPocketOp(obj) ... create facing specific properties'''
         obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Shape to use for calculating Boundary"))
         obj.BoundaryShape = ['Perimeter', 'Boundbox', 'Stock']
-        obj.addProperty("App::PropertyBool", "ClearEdges", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Clear edges"))
+        obj.addProperty("App::PropertyBool", "ClearEdges", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Clear edges of surface (Only applicable to BoundBox)"))
 
         if not hasattr(obj, 'ExcludeRaisedAreas'):
             obj.addProperty("App::PropertyBool", "ExcludeRaisedAreas", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property", "Exclude milling raised areas inside the face."))
