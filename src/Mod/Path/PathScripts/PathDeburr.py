@@ -78,7 +78,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.Direction = ['CW', 'CCW']
         obj.addProperty('App::PropertyEnumeration', 'Side',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Side of Operation'))
         obj.Side = ['Outside', 'Inside']
-        obj.setEditorMode('Side', 2) # Hide property, it's always outside
+        obj.setEditorMode('Side', 2) # Hide property, it's calculated by op
         obj.addProperty('App::PropertyInteger', 'EntryPoint',  'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'Select the segment, there the operations starts'))
 
     def opOnDocumentRestored(self, obj):
@@ -109,16 +109,19 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
             self.basewires.extend(basewires)
             
+            # Set default value
             side = ["Outside"]
+            
             for w in basewires:
                 self.adjusted_basewires.append(w)
                 wire = PathOpTools.offsetWire(w, base.Shape, offset, True, side)
                 if wire:
                     wires.append(wire)
         
-        # Outside or Inside
+        # Save Outside or Inside
         obj.Side = side[0]
-
+        
+        # Set direction of op
         forward = True
         if obj.Direction == 'CCW':
             forward = False
@@ -149,7 +152,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
     def opSetDefaultValues(self, obj, job):
         PathLog.track(obj.Label, job.Label)
         obj.Width = '1 mm'
-        obj.ExtraDepth = '0.1 mm'
+        obj.ExtraDepth = '0.5 mm'
         obj.Join = 'Round'
         obj.setExpression('StepDown', '0 mm')
         obj.StepDown = '0 mm'
