@@ -34,7 +34,7 @@ class Proxy(object):
     BaseType = "Fem::ConstraintPython"
 
     def __init__(self, obj):
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
+        # self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to this object
 
     # a few objects had this method in their class before the move to this base class

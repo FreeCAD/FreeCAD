@@ -48,14 +48,15 @@ class ViewProxy(object):
     # needs to be overwritten, if no standard icon name is used
     def getIcon(self):
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
-        file_name = self.Object.Proxy.Type.replace("Fem::", "FEM_")
-        return ":/icons/{}.svg".format(file_name)
+        # file_name = self.Object.Proxy.Type.replace("Fem::", "FEM_")
+        # return ":/icons/{}.svg".format(file_name)
+        return ""
 
     def attach(self, vobj):
         default = coin.SoGroup()
         vobj.addDisplayMode(default, "Default")
-        self.Object = vobj.Object
-        self.ViewObject = vobj
+        # self.Object = vobj.Object
+        # self.ViewObject = vobj
 
     def getDisplayModes(self, obj):
         "Return a list of display modes."
