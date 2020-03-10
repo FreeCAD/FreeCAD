@@ -67,7 +67,6 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
         analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
         analysis.addObject(ObjectsFem.makeConstraintContact(doc))
-        analysis.addObject(ObjectsFem.makeConstraintTie(doc))
         analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
         analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
         analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
@@ -83,6 +82,7 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
         analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
         analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
+        analysis.addObject(ObjectsFem.makeConstraintTie(doc))
         analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
 
         analysis.addObject(ObjectsFem.makeElementFluid1D(doc))
