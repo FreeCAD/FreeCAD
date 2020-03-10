@@ -52,6 +52,7 @@ generate_from_xml(G2D/ParaBSplineBasePy)
 generate_from_xml(G2D/ConstraintCurvePosPy)
 generate_from_xml(G2D/ConstraintDistancePy)
 generate_from_xml(G2D/ConstraintPlacementRulesPy)
+generate_from_xml(G2D/ConstraintPointCoincidentPy)
 
 SET(ConstraintSolver_G2D
     G2D/Vector.h
@@ -122,6 +123,10 @@ SET(ConstraintSolver_G2D
     G2D/ConstraintPlacementRules.cpp
     G2D/ConstraintPlacementRulesPy.xml
     G2D/ConstraintPlacementRulesPyImp.cpp
+    G2D/ConstraintPointCoincident.cpp
+    G2D/ConstraintPointCoincident.h
+    G2D/ConstraintPointCoincidentPy.xml
+    G2D/ConstraintPointCoincidentPyImp.cpp
 )
 
 SET(ConstraintSolver_Utils_SRCS
