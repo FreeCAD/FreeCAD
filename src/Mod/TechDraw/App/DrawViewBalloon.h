@@ -49,12 +49,11 @@ public:
     DrawViewBalloon();
     virtual ~DrawViewBalloon();
 
-/*    App::PropertyLink        sourceView;*/
     App::PropertyLink        SourceView;
     App::PropertyString      Text;
     App::PropertyEnumeration EndType;
     App::PropertyEnumeration Symbol;
-    App::PropertyFloat       SymbolScale;
+    App::PropertyFloatConstraint SymbolScale;
     App::PropertyDistance    OriginX;
     App::PropertyDistance    OriginY;
     App::PropertyBool        OriginIsSet;
@@ -76,8 +75,6 @@ public:
     }
 
     static const char* balloonTypeEnums[];
-/*    static const char* endTypeEnums[];*/
-    static const char* ArrowTypeEnums[];
 
     void handleXYLock(void) override;
 
@@ -98,10 +95,7 @@ protected:
                                            const char *PropName) override;
 
 private:
-/*    static const char* ArrowTypeEnums[];*/
-/*    static const int   ArrowCount;*/
-/*    static const std::vector<std::string> ArrowTypeIcons;*/
-
+    static App::PropertyFloatConstraint::Constraints SymbolScaleRange;
 
 };
 

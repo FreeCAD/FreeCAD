@@ -62,6 +62,10 @@
 
 using namespace TechDraw;
 
+App::PropertyFloatConstraint::Constraints DrawViewBalloon::SymbolScaleRange = { Precision::Confusion(),
+                                                                  std::numeric_limits<double>::max(),
+                                                                  (1.0) };
+
 //===========================================================================
 // DrawViewBalloon
 //===========================================================================
@@ -74,30 +78,6 @@ using namespace TechDraw;
 // the location of the balloon may also change.
 
 PROPERTY_SOURCE(TechDraw::DrawViewBalloon, TechDraw::DrawView)
-
-//const char* DrawViewBalloon::ArrowTypeEnums[]= { "NONE",
-//                               "FILLED_ARROW",
-//                               "OPEN_ARROW",
-//                               "TICK",
-//                               "DOT",
-//                               "OPEN_CIRCLE",
-//                               "FORK",
-//                               "FILLED_TRIANGLE",
-//                               NULL};
-
-//const char* DrawViewBalloon::endTypeEnums[]= { "FILLED_TRIANGLE",
-//                                               "OPEN_ARROW",
-//                                               "HASH_MARK",
-//                                               "DOT",
-//                                               "OPEN_CIRCLE",
-//                                               "FORK",
-//                                               "PYRAMID",
-//                                               "NONE",
-//                                               NULL};
-
-////const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
-////                                              "Dot",
-////                                               NULL};
 
 const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
                                                   "None",
@@ -116,14 +96,14 @@ DrawViewBalloon::DrawViewBalloon(void)
     ADD_PROPERTY_TYPE(OriginY,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin y");
     ADD_PROPERTY_TYPE(OriginIsSet, (false), "",(App::PropertyType)(App::Prop_None),"Balloon origin is set");
 
-//    EndType.setEnums(endTypeEnums);
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndType,(prefEnd()));
 
     Symbol.setEnums(balloonTypeEnums);
     ADD_PROPERTY(Symbol,(prefShape()));
 
-    ADD_PROPERTY_TYPE(SymbolScale,(1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
+    ADD_PROPERTY_TYPE(SymbolScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
+    SymbolScale.setConstraints(&SymbolScaleRange);
 
     ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
 
@@ -203,7 +183,6 @@ void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const c
         OriginY.setValue(OriginYProperty.getValue());
     }
 }
-
 
 short DrawViewBalloon::mustExecute() const
 {
