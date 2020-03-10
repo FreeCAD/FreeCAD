@@ -55,8 +55,8 @@ class ViewProxy(object):
     def attach(self, vobj):
         default = coin.SoGroup()
         vobj.addDisplayMode(default, "Default")
-        # self.Object = vobj.Object
-        # self.ViewObject = vobj
+        self.Object = vobj.Object  # used on various places, claim childreens, get icon, etc.
+        # self.ViewObject = vobj  # not used ATM
 
     def getDisplayModes(self, obj):
         "Return a list of display modes."
@@ -104,7 +104,9 @@ class ViewProxy(object):
             FreeCAD.Console.PrintError(message + "\n")
         return True
 
-    # a few objects had this method in their class before the move to this base class
-    # these objects will give a setAttr failed error on document loading without this method
+    # they are needed, see https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
+    def __getstate__(self):
+        return None
+
     def __setstate__(self, state):
         return None
