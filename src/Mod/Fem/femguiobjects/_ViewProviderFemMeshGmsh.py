@@ -217,7 +217,7 @@ class _ViewProviderFemMeshGmsh:
                 and dragged_object.Proxy.Type == "Fem::MeshBoundaryLayer":
             return True
         elif hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+                and dragged_object.Proxy.Type == "Fem::MeshGroup":
             return True
         elif hasattr(dragged_object, "Proxy") \
                 and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
@@ -234,7 +234,7 @@ class _ViewProviderFemMeshGmsh:
             objs = self.Object.MeshBoundaryLayerList
             objs.remove(dragged_object)
             self.Object.MeshBoundaryLayerList = objs
-        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::MeshGroup":
             objs = self.Object.MeshGroupList
             objs.remove(dragged_object)
             self.Object.MeshGroupList = objs
@@ -250,7 +250,7 @@ class _ViewProviderFemMeshGmsh:
             objs.append(incoming_object)
             self.Object.MeshBoundaryLayerList = objs
         elif hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::FemMeshGroup":
+                and incoming_object.Proxy.Type == "Fem::MeshGroup":
             objs = self.Object.MeshGroupList
             objs.append(incoming_object)
             self.Object.MeshGroupList = objs

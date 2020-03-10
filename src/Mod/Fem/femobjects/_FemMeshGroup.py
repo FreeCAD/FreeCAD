@@ -37,7 +37,7 @@ class _FemMeshGroup(FemConstraint.Proxy):
     The FemMeshGroup object
     """
 
-    Type = "Fem::FemMeshGroup"
+    Type = "Fem::MeshGroup"
 
     def __init__(self, obj):
         super(_FemMeshGroup, self).__init__(obj)
