@@ -212,6 +212,7 @@ class _ViewProviderFemMeshGmsh:
     def canDropObjects(self):
         return True
 
+    # TODO use femutils module methods for type checking
     def canDragObject(self, dragged_object):
         if hasattr(dragged_object, "Proxy") \
                 and dragged_object.Proxy.Type == "Fem::MeshBoundaryLayer":
