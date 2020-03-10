@@ -173,76 +173,8 @@ You can pick further points to get line segments.</string>
           <item row="1" column="1">
            <widget class="QComboBox" name="cboxStartSym">
             <property name="currentIndex">
-             <number>0</number>
+             <number>-1</number>
             </property>
-            <item>
-             <property name="text">
-              <string>No Symbol</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Filled Triangle</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowfilled.svg</normaloff>:/icons/arrowfilled.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Open Triangle</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowopen.svg</normaloff>:/icons/arrowopen.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Tick</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowtick.svg</normaloff>:/icons/arrowtick.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Dot</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowdot.svg</normaloff>:/icons/arrowdot.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Open Circle</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Fork</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Pyramid</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowpyramid.svg</normaloff>:/icons/arrowpyramid.svg</iconset>
-             </property>
-            </item>
            </widget>
           </item>
           <item row="2" column="0">
@@ -253,76 +185,7 @@ You can pick further points to get line segments.</string>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QComboBox" name="cboxEndSym">
-            <item>
-             <property name="text">
-              <string>No Symbol</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Filled Triangle</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowfilled.svg</normaloff>:/icons/arrowfilled.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Open Triangle</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowopen.svg</normaloff>:/icons/arrowopen.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Tick</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowtick.svg</normaloff>:/icons/arrowtick.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Dot</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowdot.svg</normaloff>:/icons/arrowdot.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Open Circle</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Fork</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Pyramid</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowpyramid.svg</normaloff>:/icons/arrowpyramid.svg</iconset>
-             </property>
-            </item>
-           </widget>
+           <widget class="QComboBox" name="cboxEndSym"/>
           </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label">
@@ -336,7 +199,7 @@ You can pick further points to get line segments.</string>
             <property name="toolTip">
              <string>Line color</string>
             </property>
-            <property name="color" stdset="0">
+            <property name="color">
              <color>
               <red>0</red>
               <green>0</green>
@@ -353,17 +216,17 @@ You can pick further points to get line segments.</string>
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="Gui::QuantitySpinBox" name="dsbWeight" native="true">
+           <widget class="Gui::QuantitySpinBox" name="dsbWeight">
             <property name="enabled">
              <bool>true</bool>
             </property>
             <property name="toolTip">
              <string>Line width</string>
             </property>
-            <property name="singleStep" stdset="0">
+            <property name="singleStep">
              <double>0.100000000000000</double>
             </property>
-            <property name="value" stdset="0">
+            <property name="value">
              <double>0.500000000000000</double>
             </property>
            </widget>
@@ -442,14 +305,14 @@ You can pick further points to get line segments.</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
   </customwidget>
  </customwidgets>
  <resources>

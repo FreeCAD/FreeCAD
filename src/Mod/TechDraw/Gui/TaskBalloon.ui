@@ -28,76 +28,7 @@
         <item>
          <layout class="QGridLayout" name="gridLayout">
           <item row="3" column="1">
-           <widget class="QComboBox" name="comboEndType">
-            <item>
-             <property name="text">
-              <string>FILLED_TRIANGLE</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowfilled.svg</normaloff>:/icons/arrowfilled.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>OPEN_ARROW</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowopen.svg</normaloff>:/icons/arrowopen.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>HASH_MARK</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowtick.svg</normaloff>:/icons/arrowtick.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>DOT</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowdot.svg</normaloff>:/icons/arrowdot.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>OPEN_CIRCLE</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowopendot.svg</normaloff>:/icons/arrowopendot.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>FORK</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowfork.svg</normaloff>:/icons/arrowfork.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>PYRAMID</string>
-             </property>
-             <property name="icon">
-              <iconset resource="Resources/TechDraw.qrc">
-               <normaloff>:/icons/arrowpyramid.svg</normaloff>:/icons/arrowpyramid.svg</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>NONE</string>
-             </property>
-            </item>
-           </widget>
+           <widget class="QComboBox" name="comboEndType"/>
           </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label_4">
