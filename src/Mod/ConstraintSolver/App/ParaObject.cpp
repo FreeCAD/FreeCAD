@@ -330,6 +330,7 @@ void ParaObject::initFromDict(Py::Dict dict)
     }
 }
 
+void ParaObject::initAttrs() {}
 
 void ParaObject::tieAttr_Parameter(ParameterRef& ref, std::string name, bool make, bool required, double defvalue)
 {

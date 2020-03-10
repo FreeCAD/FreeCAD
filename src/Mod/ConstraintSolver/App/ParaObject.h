@@ -131,7 +131,7 @@ public: //methods
     virtual void initFromDict(Py::Dict dict);
 
 protected: //methods
-    virtual void initAttrs() = 0 {}
+    virtual void initAttrs() = 0;
     void tieAttr_Parameter(ParameterRef& ref, std::string name, bool make = true, bool required = true, double defvalue = 0.0);
     void tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyTypeObject* type, bool make = false, bool required = true, bool writeOnce = false);
     void tieAttr_Shape(Base::PyHandleBase& ref, std::string name, Base::Type type);
