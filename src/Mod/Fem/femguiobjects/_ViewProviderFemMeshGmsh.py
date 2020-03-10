@@ -214,7 +214,7 @@ class _ViewProviderFemMeshGmsh:
 
     def canDragObject(self, dragged_object):
         if hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+                and dragged_object.Proxy.Type == "Fem::MeshBoundaryLayer":
             return True
         elif hasattr(dragged_object, "Proxy") \
                 and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
@@ -230,7 +230,7 @@ class _ViewProviderFemMeshGmsh:
 
     def dragObject(self, selfvp, dragged_object):
         if hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+                and dragged_object.Proxy.Type == "Fem::MeshBoundaryLayer":
             objs = self.Object.MeshBoundaryLayerList
             objs.remove(dragged_object)
             self.Object.MeshBoundaryLayerList = objs
@@ -245,7 +245,7 @@ class _ViewProviderFemMeshGmsh:
 
     def dropObject(self, selfvp, incoming_object):
         if hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+                and incoming_object.Proxy.Type == "Fem::MeshBoundaryLayer":
             objs = self.Object.MeshBoundaryLayerList
             objs.append(incoming_object)
             self.Object.MeshBoundaryLayerList = objs
