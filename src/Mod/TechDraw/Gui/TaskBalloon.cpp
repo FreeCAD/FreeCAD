@@ -46,9 +46,11 @@
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
 
+#include "DrawGuiUtil.h"
 #include "QGIViewBalloon.h"
 #include "TaskBalloon.h"
 
@@ -74,19 +76,18 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent) :
     ui->inputValue->selectAll();
     QTimer::singleShot(0, ui->inputValue, SLOT(setFocus()));
 
+    DrawGuiUtil::loadArrowBox(ui->comboEndType);
     i = parent->dvBalloon->EndType.getValue();
     ui->comboEndType->setCurrentIndex(i);
 
     i = parent->dvBalloon->Symbol.getValue();
     ui->comboSymbol->setCurrentIndex(i);
-
 }
 
 TaskBalloon::~TaskBalloon()
 {
     delete ui;
 }
-
 
 bool TaskBalloon::accept()
 {

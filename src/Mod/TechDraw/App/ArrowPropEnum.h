@@ -1,7 +1,5 @@
- /**************************************************************************
- *   Copyright (c) 2015 FreeCAD Developers                                 *
- *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw3Imp.cpp                     *
+/***************************************************************************
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,34 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef _ARROWENUMS_H_
+#define _ARROWENUMS_H_
+#include <cstddef>
+#include <cstdlib>
+#include <vector>
+#include <string>
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw3.h>
-#include <Gui/PropertyPage.h>
-
-namespace TechDrawGui {
-
-class DlgPrefsTechDraw3Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw3Imp
+namespace TechDraw
 {
-    Q_OBJECT
 
-public:
-    DlgPrefsTechDraw3Imp( QWidget* parent = 0 );
-    ~DlgPrefsTechDraw3Imp();
+//common definitions for line ends / arrows
+enum ArrowType { NONE = 0,
+                 FILLED_ARROW,
+                 OPEN_ARROW,
+                 TICK,
+                 DOT,
+                 OPEN_CIRCLE,
+                 FORK,
+                 FILLED_TRIANGLE };
 
-protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
+class TechDrawExport ArrowPropEnum {
+    public:
     
-    int prefBalloonArrow(void) const;
-    int prefArrowStyle(void) const;
+        static const char* ArrowTypeEnums[];
+        static const int   ArrowCount;
+        static const std::vector<std::string> ArrowTypeIcons;
 
+private:
 
 };
 
-} // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
+} //end namespace TechDraw
+#endif
