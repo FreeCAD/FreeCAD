@@ -42,8 +42,8 @@ void SubSystem::calcJacobi(ValueSet& vals, HParameterSubset params, Eigen::Matri
     std::vector<DualNumber> buf (_maxConstraintRank); //buffer that receives constraint error values
     //indexes:
     // * ic: index of (multidimensional) constraint, into _constraints
-    // * ie: index of error value in error vector if _constraints[ic]
-    // * ic + ie: index of subconstraint, aka row index
+    // * ie: index of error value in error vector of _constraints[ic]
+    // * ir + ie: index of subconstraint, aka row index
     // * ip: index of parameter in params
     for(int ic = 0; ic < _constraints.size(); ++ic){
         Constraint& constr = *(_constraints[ic]);
@@ -102,7 +102,7 @@ void SubSystem::calcGrad(HValueSet vals, Eigen::VectorXd& output)
     //indexes:
     // * ic: index of (multidimensional) constraint, into _constraints
     // * ie: index of error value in error vector of _constraints[ic]
-    // * ic + ie: index of subconstraint, aka row index
+    // * ir + ie: index of subconstraint, aka row index
     // * ip: index of parameter in vals
     for(int ic = 0; ic < _constraints.size(); ++ic){
         Constraint& constr = *(_constraints[ic]);
