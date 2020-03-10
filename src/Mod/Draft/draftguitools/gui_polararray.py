@@ -20,7 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the Draft PolarArray tool."""
+"""Provides the Draft PolarArray GuiCommand."""
 ## @package gui_polararray
 # \ingroup DRAFT
 # \brief This module provides the Draft PolarArray tool.
@@ -31,13 +31,15 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft
-import Draft_rc
+import Draft_rc  # include resources, icons, ui files
+from draftutils.messages import _msg, _log
+from draftutils.translate import _tr
 from draftguitools import gui_base
 from drafttaskpanels import task_polararray
 import draftutils.todo as todo
 
 # The module is used to prevent complaints from code checkers (flake8)
-True if Draft_rc.__name__ else False
+bool(Draft_rc.__name__)
 
 
 class GuiCommandPolarArray(gui_base.GuiCommandBase):
@@ -45,7 +47,7 @@ class GuiCommandPolarArray(gui_base.GuiCommandBase):
 
     def __init__(self):
         super().__init__()
-        self.command_name = "PolarArray"
+        self.command_name = "Polar array"
         self.location = None
         self.mouse_event = None
         self.view = None
@@ -56,14 +58,15 @@ class GuiCommandPolarArray(gui_base.GuiCommandBase):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _msg = ("Creates copies of a selected object, "
+        _tip = ("Creates copies of a selected object, "
                 "and places the copies in a polar pattern.\n"
                 "The properties of the array can be further modified after "
                 "the new object is created, including turning it into "
                 "a different type of array.")
+
         d = {'Pixmap': 'Draft_PolarArray',
              'MenuText': QT_TRANSLATE_NOOP("Draft", "Polar array"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft", _msg)}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft", _tip)}
         return d
 
     def Activated(self):
@@ -72,6 +75,10 @@ class GuiCommandPolarArray(gui_base.GuiCommandBase):
         We add callbacks that connect the 3D view with
         the widgets of the task panel.
         """
+        _log("GuiCommand: {}".format(_tr(self.command_name)))
+        _msg("{}".format(16*"-"))
+        _msg("GuiCommand: {}".format(_tr(self.command_name)))
+
         self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
         self.view = Draft.get3DView()
