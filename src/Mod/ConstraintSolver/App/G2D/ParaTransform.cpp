@@ -247,8 +247,8 @@ int ParaTransform::simplifyTransformsOfConstraint(ParaObject& constraint, bool c
         ParaShapeBase& sh = static_cast<ParaShapeBase&>(*paraobj);
         trs.push_back(sh.placement->copy());
     });
-    int ret = simplifyTransforms(trs);
-    if (ret > 0){
+    int ret = simplifyTransforms(trs, compute_not_change);
+    if (ret > 0 && compute_not_change){
         int i = 0;
         constraint.forEachShape([&](const ParaObject::ShapeRef& it){
             ParaShapeBase& sh = *HParaShapeBase(*it.value);
