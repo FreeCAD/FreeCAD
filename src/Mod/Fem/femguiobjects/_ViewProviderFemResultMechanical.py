@@ -85,6 +85,12 @@ class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
                 FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
         return True
 
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, data):
+        return None
+
 
 class _TaskPanel:
     """
