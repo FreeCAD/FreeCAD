@@ -165,6 +165,7 @@ public:
     virtual unsigned long countSubElements(const char* Type) const;
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
+    virtual Data::Segment* getSubElementByName(const char* Name) const;
     /** Get lines from segment */
     virtual void getLinesFromSubelement(
         const Data::Segment*,

@@ -333,6 +333,11 @@ Data::Segment* TopoShape::getSubElement(const char* Type, unsigned long n) const
     return new ShapeSegment(getSubShape(temp.c_str()));
 }
 
+Data::Segment* TopoShape::getSubElementByName(const char* name) const
+{
+    return new ShapeSegment(getSubShape(name));
+}
+
 TopoDS_Shape TopoShape::getSubShape(const char* Type, bool silent) const {
     TopoShape s(*this);
     s.Tag = 0;
