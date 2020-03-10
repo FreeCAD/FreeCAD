@@ -26,7 +26,7 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
-
+#include <QCoreApplication>
 
 namespace TechDraw
 {
@@ -42,8 +42,9 @@ enum ArrowType { NONE = 0,
                  FILLED_TRIANGLE };
 
 class TechDrawExport ArrowPropEnum {
+    Q_DECLARE_TR_FUNCTIONS(TechDraw::ArrowPropEnum)
+
     public:
-    
         static const char* ArrowTypeEnums[];
         static const int   ArrowCount;
         static const std::vector<std::string> ArrowTypeIcons;

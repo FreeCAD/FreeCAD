@@ -24,6 +24,7 @@
 #define _DrawGuiUtil_h_
 
 #include <string>
+#include <QCoreApplication>
 #include <QRectF>
 #include <QPointF>
 #include <QComboBox>
@@ -47,6 +48,7 @@ namespace TechDrawGui
 
 /// Convenient utility functions for TechDraw Gui Module
 class TechDrawGuiExport DrawGuiUtil {
+    Q_DECLARE_TR_FUNCTIONS(TechDrawGui::DrawGuiUtil)
     public:
     static TechDraw::DrawPage* findPage(Gui::Command* cmd);
     static bool needPage(Gui::Command* cmd);
