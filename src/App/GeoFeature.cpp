@@ -31,6 +31,7 @@
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include <App/GeoFeaturePy.h>
+#include <App/Link.h>
 
 FC_LOG_LEVEL_INIT("GeoFeature",true,true);
 
@@ -149,11 +150,16 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
         return 0;
-    obj = sobj->getLinkedObject(true);
-    auto geo = dynamic_cast<GeoFeature*>(obj);
+    auto linked = sobj->getLinkedObject(true);
+    auto geo = Base::freecad_dynamic_cast<GeoFeature>(linked);
+    if(!geo && linked) {
+        auto ext = linked->getExtensionByType<LinkBaseExtension>(true);
+        if(ext) 
+            geo = Base::freecad_dynamic_cast<GeoFeature>(ext->getTrueLinkedObject(true));
+    }
     if(geoFeature) 
         *geoFeature = geo;
-    if(!obj || (filter && obj!=filter))
+    if(filter && geo!=filter)
         return 0;
     if(!element || !element[0]) {
         if(append) 

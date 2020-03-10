@@ -233,16 +233,16 @@ void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::
         _updateElementReference(0,obj,sub,shadow,false);
         return;
     }
-    const char *element=0;
-    auto sobj = obj->resolve(sub.c_str(),0,0,&element);
-    if(!sobj || !element || !element[0])
+    GeoFeature *geo = 0;
+    const char *element = 0;
+    std::pair<std::string, std::string> elementName;
+    GeoFeature::resolveElement(obj,sub.c_str(), elementName,true,
+                GeoFeature::ElementNameType::Export,0,&element,&geo);
+    if(!geo || !element || !element[0])
         return;
 
-    sobj = sobj->getLinkedObject(true);
-    if(sobj && sobj->isDerivedFrom(GeoFeature::getClassTypeId())) {
-        if(_ElementRefs.insert(sobj).second)
-            _ElementRefMap[sobj].insert(this);
-    }
+    if(_ElementRefs.insert(geo).second)
+        _ElementRefMap[geo].insert(this);
 }
 
 class StringGuard {

@@ -184,13 +184,21 @@ non-object sub-element name if any.
         <Methode Name="resolveSubElement" Const="true">
             <Documentation>
                 <UserDocu>
-resolveSubElement(subname,append,type) -- resolve both new and old style sub element
+resolveSubElement(subname,append=False, type=0, geo=False) 
+
+resolve both new and old style sub element
 
 subname: subname reference containing object hierarchy
-append: Whether to append object hierarchy prefix inside subname to returned element name
+
+append: Whether to append object hierarchy prefix inside subname
+        to returned element name
+
 type: 0: normal, 1: for import, 2: for export
 
-Return tuple(obj,newElementName,oldElementName)
+geo: Whether to return the GeoFeature that owns the sub element
+
+Return tuple(obj,newElementName,oldElementName) if geo is False,
+or else tuple(obj, newElementName, oldElementName, geoFeature).
                 </UserDocu>
             </Documentation>
         </Methode>

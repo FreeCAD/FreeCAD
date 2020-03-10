@@ -840,18 +840,22 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
 {
     const char *subname;
     PyObject *append = Py_False;
+    PyObject *geo = Py_False;
     int type = 0;
-    if (!PyArg_ParseTuple(args, "s|Oi",&subname,&append,&type))
+    if (!PyArg_ParseTuple(args, "s|OiO",&subname,&append,&type,&geo))
         return NULL;                             // NULL triggers exception 
 
     PY_TRY {
         std::pair<std::string,std::string> elementName;
+        GeoFeature *geoFeature = 0;
         auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
-                PyObject_IsTrue(append),(GeoFeature::ElementNameType)type);
-        Py::Tuple ret(3);
+                PyObject_IsTrue(append),(GeoFeature::ElementNameType)type,0,0,&geoFeature);
+        Py::Tuple ret(PyObject_IsTrue(geo)?4:3);
         ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
         ret.setItem(1,Py::String(elementName.first));
         ret.setItem(2,Py::String(elementName.second));
+        if(PyObject_IsTrue(geo) && geoFeature)
+            ret.setItem(3,Py::asObject(geoFeature->getPyObject()));
         return Py::new_reference_to(ret);
     } PY_CATCH;
 
