@@ -324,6 +324,11 @@ void SheetView::resizeRow(int col, int newSize)
 
 void SheetView::editingFinished()
 {
+    if (ui->cellContent->completerActive()) {
+        ui->cellContent->hideCompleter();
+        return;
+    }
+
     if (ui->cellAlias->completerActive()) {
         ui->cellAlias->hideCompleter();
         return;
