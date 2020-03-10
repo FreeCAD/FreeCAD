@@ -46,6 +46,7 @@ class ViewProxy(object):
         vobj.Proxy = self
 
     # needs to be overwritten, if no standard icon name is used
+    # see constraint body heat source as an example
     def getIcon(self):
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
