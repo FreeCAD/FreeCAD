@@ -48,9 +48,11 @@ class ViewProxy(object):
     # needs to be overwritten, if no standard icon name is used
     def getIcon(self):
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
-        # file_name = self.Object.Proxy.Type.replace("Fem::", "FEM_")
-        # return ":/icons/{}.svg".format(file_name)
-        return ""
+        # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
+        if hasattr(self.Object.Proxy, "Type") and self.Object.Proxy.Type.startswith("Fem::"):
+            return ":/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))
+        else:
+            return ""
 
     def attach(self, vobj):
         default = coin.SoGroup()
