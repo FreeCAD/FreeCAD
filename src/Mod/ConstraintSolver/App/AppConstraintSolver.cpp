@@ -91,6 +91,8 @@
 #include "G2D/ConstraintDistancePy.h"
 #include "G2D/ConstraintPlacementRules.h"
 #include "G2D/ConstraintPlacementRulesPy.h"
+#include "G2D/ConstraintPointSymmetry.h"
+#include "G2D/ConstraintPointSymmetryPy.h"
 #include "G2D/ConstraintPointCoincident.h"
 #include "G2D/ConstraintPointCoincidentPy.h"
 
@@ -211,6 +213,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintCurvePosPy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintCurvePos"       ;
     FCS::G2D::ConstraintDistancePy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistance"       ;
     FCS::G2D::ConstraintPlacementRulesPy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintPlacementRules" ;
+    FCS::G2D::ConstraintPointSymmetryPy  ::Type.tp_name = "ConstraintSolver.G2D.ConstraintPointSymmetry"  ;
     FCS::G2D::ConstraintPointCoincidentPy::Type.tp_name = "ConstraintSolver.G2D.ConstraintPointCoincident";
 
     Base::Interpreter().addType(&FCS::G2D::VectorPy                   ::Type, submodG2D.ptr(), "Vector"                   );
@@ -229,6 +232,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::G2D::ConstraintCurvePosPy       ::Type, submodG2D.ptr(), "ConstraintCurvePos"       );
     Base::Interpreter().addType(&FCS::G2D::ConstraintDistancePy       ::Type, submodG2D.ptr(), "ConstraintDistance"       );
     Base::Interpreter().addType(&FCS::G2D::ConstraintPlacementRulesPy ::Type, submodG2D.ptr(), "ConstraintPlacementRules" );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintPointSymmetryPy  ::Type, submodG2D.ptr(), "ConstraintPointSymmetry"  );
     Base::Interpreter().addType(&FCS::G2D::ConstraintPointCoincidentPy::Type, submodG2D.ptr(), "ConstraintPointCoincident");
   //Base::Interpreter().addType(&FCS::G2D::                           ::Type, submodG2D.ptr(), ""                         );
 
@@ -261,6 +265,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintCurvePos       ::init();
     FCS::G2D::ConstraintDistance       ::init();
     FCS::G2D::ConstraintPlacementRules ::init();
+    FCS::G2D::ConstraintPointSymmetry  ::init();
     FCS::G2D::ConstraintPointCoincident::init();
 
 
