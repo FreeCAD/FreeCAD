@@ -95,10 +95,6 @@ const char* DrawViewBalloon::endTypeEnums[]= { "Filled Triangle",
                                                "None",
                                                NULL};
 
-//const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
-//                                              "Dot",
-//                                               NULL};
-
 const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
                                                   "None",
                                                   "Triangle",
@@ -107,6 +103,10 @@ const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
                                                   "Square",
                                                   "Rectangle",
                                                   NULL};
+
+App::PropertyFloatConstraint::Constraints DrawViewBalloon::SymbolScaleRange = { Precision::Confusion(),
+                                                                  std::numeric_limits<double>::max(),
+                                                                  (0.1) }; // increment by 0.1
 
 DrawViewBalloon::DrawViewBalloon(void)
 {
@@ -122,7 +122,8 @@ DrawViewBalloon::DrawViewBalloon(void)
     Symbol.setEnums(balloonTypeEnums);
     ADD_PROPERTY(Symbol,(prefShape()));
 
-    ADD_PROPERTY_TYPE(SymbolScale,(1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
+    ADD_PROPERTY_TYPE(SymbolScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
+    SymbolScale.setConstraints(&SymbolScaleRange);
 
     ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
 
@@ -200,6 +201,20 @@ void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const c
         // restore the PropertyLength to be able to set its value
         OriginYProperty.Restore(reader);
         OriginY.setValue(OriginYProperty.getValue());
+    // property SymbolScale had the App::PropertyFloat and was changed to App::PropertyFloatConstraint
+    } else if (prop == &SymbolScale) {
+        App::PropertyFloat ScaleTmp;
+        if (strcmp(ScaleTmp.getTypeId().getName(), TypeName) == 0) {
+            ScaleTmp.setContainer(this);
+            ScaleTmp.Restore(reader);
+            double tmpValue = ScaleTmp.getValue();
+            if (tmpValue > 0.0) {
+                SymbolScale.setValue(tmpValue);
+            }
+            else {
+                SymbolScale.setValue(1.0);
+            }
+        }
     }
 }
 

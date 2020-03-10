@@ -54,7 +54,7 @@ public:
     App::PropertyString      Text;
     App::PropertyEnumeration EndType;
     App::PropertyEnumeration Symbol;
-    App::PropertyFloat       SymbolScale;
+    App::PropertyFloatConstraint SymbolScale;
     App::PropertyDistance    OriginX;
     App::PropertyDistance    OriginY;
     App::PropertyBool        OriginIsSet;
@@ -97,6 +97,7 @@ protected:
                                            const char *PropName) override;
 
 private:
+    static App::PropertyFloatConstraint::Constraints SymbolScaleRange;
 };
 
 } //namespace TechDraw
