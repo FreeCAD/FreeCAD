@@ -16,37 +16,37 @@ using namespace FCS;
 
 PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kwd)  // Python wrapper
 {
-
-    {
-        if (PyArg_ParseTuple(args, "")){
-            HParaPoint p = (new ParaPoint)->self();
-            if (kwd && kwd != Py_None)
-                p->initFromDict(Py::Dict(kwd));
-            return Py::new_reference_to(p);
+    return pyTryCatch([&]()->Py::Object{
+        {
+            if (PyArg_ParseTuple(args, "")){
+                HParaPoint p = (new ParaPoint)->self();
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
+                return p;
+            }
+            PyErr_Clear();
         }
-        PyErr_Clear();
-    }
-    {
-        PyObject* x;
-        PyObject* y;
-        if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
-            HParaPoint p = (new ParaPoint(*HParameterRef(x,false), *HParameterRef(y,false)))->self();
-            if (kwd && kwd != Py_None)
-                p->initFromDict(Py::Dict(kwd));
-            return Py::new_reference_to(p);
+        {
+            PyObject* x;
+            PyObject* y;
+            if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
+                HParaPoint p = (new ParaPoint(*HParameterRef(x,false), *HParameterRef(y,false)))->self();
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
+                return p;
+            }
+            PyErr_Clear();
         }
-        PyErr_Clear();
-    }
 
-    PyErr_SetString(PyExc_TypeError,
-        "Wrong argument count or type."
-        "\n\nsupported signatures:"
-        "\n() - all parameters set to null references"
-        "\n(<ParameterRef object>, <ParameterRef object>, **keyword_args = {}) - assigns x and y parameter refs"
-        "\n(**keyword_args) - assigns attributes."
-    );
+        throw Py::TypeError(
+            "Wrong argument count or type."
+            "\n\nsupported signatures:"
+            "\n() - all parameters set to null references"
+            "\n(<ParameterRef object>, <ParameterRef object>, **keyword_args = {}) - assigns x and y parameter refs"
+            "\n(**keyword_args) - assigns attributes."
+        );
 
-    return nullptr;
+    });
 }
 
 // constructor method

@@ -6,58 +6,44 @@
 #include "ParameterStorePy.h"
 #include "ParameterRefPy.h"
 
+#include "PyUtils.h"
+
 using namespace FCS;
 
 PyObject *ParaVectorPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kwd)  // Python wrapper
 {
+    return pyTryCatch([&]()->Py::Object{
 
-    {
-        if (PyArg_ParseTuple(args, "")){
-            HParaVector p = (new ParaVector)->self();
-            return Py::new_reference_to(p);
+        {
+            if (PyArg_ParseTuple(args, "")){
+                HParaVector p = (new ParaVector)->self();
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
+                return p;
+            }
+            PyErr_Clear();
         }
-        PyErr_Clear();
-    }
-    {
-        PyObject* store;
-        if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
-            HParaVector p = (new ParaVector)->self();
-            p->makeParameters(HParameterStore(store, false));
-            return Py::new_reference_to(p);
+        {
+            PyObject* x;
+            PyObject* y;
+            if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
+                HParaVector p = (new ParaVector(*HParameterRef(x,false), *HParameterRef(y,false)))->self();
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
+                return p;
+            }
+            PyErr_Clear();
         }
-        PyErr_Clear();
-    }
-    {
-        PyObject* store;
-        const char* label;
-        if (PyArg_ParseTuple(args, "sO!", &label, &(ParameterStorePy::Type), &store)){
-            HParaVector p = (new ParaVector)->self();
-            p->label = label;
-            p->makeParameters(HParameterStore(store, false));
-            return Py::new_reference_to(p);
-        }
-        PyErr_Clear();
-    }
-    {
-        PyObject* x;
-        PyObject* y;
-        if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
-            HParaVector p = (new ParaVector(*HParameterRef(x,false), *HParameterRef(y,false)))->self();
-            return Py::new_reference_to(p);
-        }
-        PyErr_Clear();
-    }
 
-    PyErr_SetString(PyExc_TypeError,
-        "Wrong argument count or type."
-        "\n\nsupported signatures:"
-        "\n() - all parameters set to null references"
-        "\n(<ParameterStore object>) - creates new parameters into the store"
-        "\n(label, <ParameterStore object>) - assigns the label (string), and creates new parameters into the store"
-        "\n(<ParameterRef object>, <ParameterRef object>) - assigns x and y parameter refs"
-    );
+        throw Py::TypeError(
+            "Wrong argument count or type."
+            "\n\nsupported signatures:"
+            "\n() - all parameters set to null references"
+            "\n(<ParameterRef object>, <ParameterRef object>, **keyword_args = {}) - assigns x and y parameter refs"
+            "\n(**keyword_args) - assigns attributes."
+        );
 
-    return nullptr;
+    });
 }
 
 // constructor method

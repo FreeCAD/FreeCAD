@@ -16,6 +16,8 @@ PyObject* ParaTransformPy::PyMake(struct _typeobject *, PyObject* args, PyObject
         {
             if (PyArg_ParseTuple(args, "")){
                 HParaTransform p = new ParaTransform();
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
                 return p;
             }
             PyErr_Clear();
@@ -43,6 +45,8 @@ PyObject* ParaTransformPy::PyMake(struct _typeobject *, PyObject* args, PyObject
                 }
 
                 HParaTransform p = new ParaTransform(fwvec, revvec);
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
                 return p;
             }
             PyErr_Clear();
@@ -52,7 +56,8 @@ PyObject* ParaTransformPy::PyMake(struct _typeobject *, PyObject* args, PyObject
             "Wrong argument count or type."
             "\n\nsupported signatures:"
             "\n() - trivial transform"
-            "\n(list_of_ParaPlacements, list_of_ParaPlacements) - trivial transform"
+            "\n(list_of_ParaPlacements, list_of_ParaPlacements, **keyword_args = {}) - trivial transform"
+            "\n(**keyword_args) - assigns attributes."
         );
     });
 }

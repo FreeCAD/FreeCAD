@@ -16,6 +16,8 @@ PyObject *ParaShapePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
         {
             if (PyArg_ParseTuple(args, "")){
                 HParaShapeBase p = (new ParaShapeBase)->self();
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
                 return p;
             }
             PyErr_Clear();
@@ -25,6 +27,8 @@ PyObject *ParaShapePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
             PyObject* transform = Py_None;
             if (PyArg_ParseTuple(args, "O!|O!",&(ParaGeometryPy::Type), &tshape, &(ParaTransformPy::Type), &transform)){
                 HParaShapeBase p = new ParaShapeBase(HParaGeometry(tshape,false), HParaTransform(transform,false));
+                if (kwd && kwd != Py_None)
+                    p->initFromDict(Py::Dict(kwd));
                 return p;
             }
             PyErr_Clear();
@@ -34,7 +38,8 @@ PyObject *ParaShapePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
             "Wrong argument count or type."
             "\n\nsupported signatures:"
             "\n() - null shape"
-            "\n(<ParaGeometry>, <ParaTransform> = None) - creates new shape with given (or empty) transform"
+            "\n(<ParaGeometry>, <ParaTransform> = None, **keyword_args = {}) - creates new shape with given (or empty) transform"
+            "\n(**keyword_args) - assigns attributes."
         );
     });
 }
