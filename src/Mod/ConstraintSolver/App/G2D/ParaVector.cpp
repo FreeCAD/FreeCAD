@@ -27,6 +27,8 @@ ParaVector::ParaVector(ParameterRef x, ParameterRef y)
 
 void FCS::G2D::ParaVector::initAttrs()
 {
+    ParaObject::initAttrs();
+
     tieAttr_Parameter(x, "x", true, true, 0.0);
     tieAttr_Parameter(y, "y", true, true, 0.0);
 }
