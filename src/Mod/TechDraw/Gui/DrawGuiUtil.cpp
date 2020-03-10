@@ -73,6 +73,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include "QGVPage.h"
 #include "MDIViewPage.h"
@@ -81,6 +82,18 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+
+void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
+{
+    qcb->clear();
+    int i = 0;
+    for (; i < ArrowPropEnum::ArrowCount; i++) {
+        qcb->addItem(QString::fromUtf8(ArrowPropEnum::ArrowTypeEnums[i]));
+        QIcon itemIcon(QString::fromUtf8(ArrowPropEnum::ArrowTypeIcons[i].c_str()));
+        qcb->setItemIcon(i, itemIcon);
+    }
+}
+
 
 //===========================================================================
 // validate helper routines

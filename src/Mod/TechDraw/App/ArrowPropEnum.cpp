@@ -1,7 +1,5 @@
- /**************************************************************************
- *   Copyright (c) 2015 FreeCAD Developers                                 *
- *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw3Imp.cpp                     *
+/***************************************************************************
+ *   Copyright (c) 2020 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,34 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
+#ifndef _PreComp_
+#endif
 
-#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw3.h>
-#include <Gui/PropertyPage.h>
+#include "ArrowPropEnum.h"
 
-namespace TechDrawGui {
+namespace TechDraw {
 
-class DlgPrefsTechDraw3Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw3Imp
-{
-    Q_OBJECT
+const int   ArrowPropEnum::ArrowCount = 8;
+const char* ArrowPropEnum::ArrowTypeEnums[]= { "NONE",
+                               "FILLED_ARROW",
+                               "OPEN_ARROW",
+                               "TICK",
+                               "DOT",
+                               "OPEN_CIRCLE",
+                               "FORK",
+                               "FILLED_TRIANGLE",
+                               NULL};
 
-public:
-    DlgPrefsTechDraw3Imp( QWidget* parent = 0 );
-    ~DlgPrefsTechDraw3Imp();
+const std::vector<std::string> ArrowPropEnum::ArrowTypeIcons = { ":icons/arrownone.svg",
+                                            ":icons/arrowfilled.svg",
+                                            ":icons/arrowopen.svg",
+                                            ":icons/arrowtick.svg",
+                                            ":icons/arrowdot.svg",
+                                            ":icons/arrowopendot.svg",
+                                            ":icons/arrowfork.svg",
+                                            ":icons/arrowpyramid.svg"};
 
-protected:
-    void saveSettings();
-    void loadSettings();
-    void changeEvent(QEvent *e);
-    
-    int prefBalloonArrow(void) const;
-    int prefArrowStyle(void) const;
-
-
-};
-
-} // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMP3_H
+}

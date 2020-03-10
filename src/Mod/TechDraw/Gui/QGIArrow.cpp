@@ -36,10 +36,13 @@
 #include <Base/Parameter.h>
 #include <Base/Console.h>
 
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
+
 #include "Rez.h"
 #include "QGIArrow.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIArrow::QGIArrow() :
     m_fill(Qt::SolidPattern),
@@ -62,35 +65,35 @@ QGIArrow::QGIArrow() :
 
 void QGIArrow::draw() {
     QPainterPath path;
-    if (m_style == FILLED_TRIANGLE) {
+    if (m_style == ArrowType::FILLED_ARROW) {
         if (m_dirMode) {
             path = makeFilledTriangle(getDirection(), m_size,m_size/6.0);
         } else {
             path = makeFilledTriangle(m_size,m_size/6.0,isFlipped());     //"arrow l/w sb 3/1" ??
         }
-    } else if (m_style == OPEN_ARROW) {
+    } else if (m_style == ArrowType::OPEN_ARROW) {
         if (m_dirMode) {
             path = makeOpenArrow(getDirection(), m_size,m_size/3.0);          //broad arrow?
         } else {
             path = makeOpenArrow(m_size,m_size/3.0,isFlipped());
         }
-    } else if (m_style == HASH_MARK) {
+    } else if (m_style == ArrowType::TICK) {
         if (m_dirMode) {
             path = makeHashMark(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
         } else {
             path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped());       //big enough?
         }
-    } else if (m_style == DOT) {
+    } else if (m_style == ArrowType::DOT) {
         path = makeDot(m_size/2.0,m_size/2.0,isFlipped());
-    } else if (m_style == OPEN_CIRCLE) {
+    } else if (m_style == ArrowType::OPEN_CIRCLE) {
         path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped());
-    } else if (m_style == FORK) {
+    } else if (m_style == ArrowType::FORK) {
         if (m_dirMode) {
             path = makeForkArrow(getDirection(), m_size/2.0,m_size/2.0);       //big enough?
         } else {
             path = makeForkArrow(m_size/2.0,m_size/2.0,isFlipped());       //big enough?
         }
-    } else if (m_style == PYRAMID){
+    } else if (m_style == ArrowType::FILLED_TRIANGLE){
         if (m_dirMode) {
             path = makePyramid(getDirection(), m_size);
         } else {
@@ -331,13 +334,13 @@ double QGIArrow::getOverlapAdjust(int style, double size)
 //    Base::Console().Message("QGIA::getOverlapAdjust(%d, %.3f) \n",style, size);
     double result = 1.0;
     switch(style) {
-        case FILLED_TRIANGLE:
+        case FILLED_ARROW:
             result = 0.50 * size;
             break;
         case OPEN_ARROW:
             result = 0.10 * size;
             break;
-        case HASH_MARK:
+        case TICK:
             result = 0.0;
             break;
         case DOT:
@@ -350,7 +353,7 @@ double QGIArrow::getOverlapAdjust(int style, double size)
         case FORK:
             result = 0.0;
             break;
-        case PYRAMID:
+        case FILLED_TRIANGLE:
             result = size;
             break;
         case NONE:

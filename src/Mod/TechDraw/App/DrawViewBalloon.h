@@ -76,7 +76,8 @@ public:
     }
 
     static const char* balloonTypeEnums[];
-    static const char* endTypeEnums[];
+/*    static const char* endTypeEnums[];*/
+    static const char* ArrowTypeEnums[];
 
     void handleXYLock(void) override;
 
@@ -97,6 +98,11 @@ protected:
                                            const char *PropName) override;
 
 private:
+/*    static const char* ArrowTypeEnums[];*/
+/*    static const int   ArrowCount;*/
+/*    static const std::vector<std::string> ArrowTypeIcons;*/
+
+
 };
 
 } //namespace TechDraw

@@ -55,6 +55,7 @@
 #include "DrawViewBalloon.h"
 #include "DrawUtil.h"
 #include "LineGroup.h"
+#include "ArrowPropEnum.h"
 
 
 //#include <Mod/TechDraw/App/DrawViewBalloonPy.h>  // generated from DrawViewBalloonPy.xml
@@ -74,30 +75,29 @@ using namespace TechDraw;
 
 PROPERTY_SOURCE(TechDraw::DrawViewBalloon, TechDraw::DrawView)
 
-//from Gui/QGIArrow.h
-//enum ArrowType {
-//        FILLED_TRIANGLE = 0,
-//        OPEN_ARROW,
-//        HASH_MARK,
-//        DOT,
-//        OPEN_CIRCLE,
-//        FORK,
-//        PYRAMID
-//    };
+//const char* DrawViewBalloon::ArrowTypeEnums[]= { "NONE",
+//                               "FILLED_ARROW",
+//                               "OPEN_ARROW",
+//                               "TICK",
+//                               "DOT",
+//                               "OPEN_CIRCLE",
+//                               "FORK",
+//                               "FILLED_TRIANGLE",
+//                               NULL};
 
-const char* DrawViewBalloon::endTypeEnums[]= { "FILLED_TRIANGLE",
-                                               "OPEN_ARROW",
-                                               "HASH_MARK",
-                                               "DOT",
-                                               "OPEN_CIRCLE",
-                                               "FORK",
-                                               "PYRAMID",
-                                               "NONE",
-                                               NULL};
-
-//const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
-//                                              "Dot",
+//const char* DrawViewBalloon::endTypeEnums[]= { "FILLED_TRIANGLE",
+//                                               "OPEN_ARROW",
+//                                               "HASH_MARK",
+//                                               "DOT",
+//                                               "OPEN_CIRCLE",
+//                                               "FORK",
+//                                               "PYRAMID",
+//                                               "NONE",
 //                                               NULL};
+
+////const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
+////                                              "Dot",
+////                                               NULL};
 
 const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
                                                   "None",
@@ -116,7 +116,8 @@ DrawViewBalloon::DrawViewBalloon(void)
     ADD_PROPERTY_TYPE(OriginY,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin y");
     ADD_PROPERTY_TYPE(OriginIsSet, (false), "",(App::PropertyType)(App::Prop_None),"Balloon origin is set");
 
-    EndType.setEnums(endTypeEnums);
+//    EndType.setEnums(endTypeEnums);
+    EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndType,(prefEnd()));
 
     Symbol.setEnums(balloonTypeEnums);

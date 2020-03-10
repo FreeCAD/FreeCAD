@@ -262,8 +262,12 @@ void TaskLeaderLine::setUiPrimary()
         ui->pbCancelEdit->setEnabled(false);
     }
 
-    int aSize = getPrefArrowStyle() + 1;
-    ui->cboxStartSym->setCurrentIndex(aSize);
+    DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
+    int aStyle = getPrefArrowStyle();
+    ui->cboxStartSym->setCurrentIndex(aStyle);
+
+    DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
+    ui->cboxEndSym->setCurrentIndex(0);
 
     ui->dsbWeight->setUnit(Base::Unit::Length);
     ui->dsbWeight->setMinimum(0);
@@ -290,8 +294,12 @@ void TaskLeaderLine::setUiEdit()
     if (m_lineFeat != nullptr) {
         std::string baseName = m_lineFeat->LeaderParent.getValue()->getNameInDocument();
         ui->tbBaseView->setText(Base::Tools::fromStdString(baseName));
-        ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue() + 1);
-        ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue() + 1);
+
+        DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
+        ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue());
+        DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
+        ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue());
+
         ui->pbTracker->setText(QString::fromUtf8("Edit points"));
         if (m_haveMdi) {
             ui->pbTracker->setEnabled(true);
@@ -391,8 +399,8 @@ void TaskLeaderLine::updateLeaderFeature(void)
 
 void TaskLeaderLine::commonFeatureUpdate(void)
 {
-    int start = ui->cboxStartSym->currentIndex() - 1;
-    int end   = ui->cboxEndSym->currentIndex() - 1;
+    int start = ui->cboxStartSym->currentIndex();
+    int end   = ui->cboxEndSym->currentIndex();
     m_lineFeat->StartSymbol.setValue(start);
     m_lineFeat->EndSymbol.setValue(end);
 }
@@ -719,7 +727,7 @@ int TaskLeaderLine::getPrefArrowStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    int style = hGrp->GetInt("ArrowStyle", 0);
+    int style = hGrp->GetInt("ArrowStyle", 1);
     return style;
 }
 
