@@ -53,7 +53,16 @@ class _ViewProviderFemMaterial(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/FEM_MaterialSolid.svg"
+        if hasattr(self.Object, "Category"):
+            if self.Object.Category == "Solid":
+                return ":/icons/FEM_MaterialSolid.svg"
+            elif self.Object.Category == "Fluid":
+                return ":/icons/FEM_MaterialFluid.svg"
+            else:
+                return ""
+        else:
+            FreeCAD.Console.Error("Document object does not have Category property")
+            return ""
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

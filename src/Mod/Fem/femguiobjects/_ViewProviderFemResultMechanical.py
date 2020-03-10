@@ -33,7 +33,6 @@ __url__ = "http://www.freecadweb.org"
 import matplotlib.pyplot as plt
 import numpy as np
 
-from pivy import coin
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
@@ -50,12 +49,6 @@ class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
     """
     A View Provider for the FemResultObject Python derived FemResult class
     """
-
-    def attach(self, vobj):
-        default = coin.SoGroup()
-        vobj.addDisplayMode(default, "Default")
-        self.Object = vobj.Object
-        self.ViewObject = vobj
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

@@ -418,6 +418,12 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
         return;
     }
 
+    const TechDraw::DrawViewPart *refObj = balloon->getViewPart();
+    if (refObj == nullptr) {
+        return;
+    }
+
+
     QFont font = balloonLabel->getFont();
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
@@ -438,7 +444,10 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     }
 
     balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
-    balloonLabel->setPosFromCenter(balloonLabel->X(),balloonLabel->Y());
+
+    float x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
+    float y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
+    balloonLabel->setPosFromCenter(x, -y);
 }
 
 void QGIViewBalloon::balloonLabelDragged(bool ctrl)
@@ -511,7 +520,7 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
         return;
     }
 
-    
+
     QGIView* qgivParent = nullptr;
     QPointF viewPos;
     Gui::ViewProvider* objVp = QGIView::getViewProvider(balloonParent);
@@ -586,7 +595,7 @@ void QGIViewBalloon::draw()
     float x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
     float y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
     Base::Vector3d lblCenter(x, -y, 0.0);
-
+ 
     float arrowTipX = Rez::guiX(balloon->OriginX.getValue() * refObj->getScale());
     float arrowTipY = - Rez::guiX(balloon->OriginY.getValue() * refObj->getScale());
 

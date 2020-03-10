@@ -55,7 +55,7 @@ class _ViewProviderFemMeshGmsh:
         vobj.Proxy = self
 
     def getIcon(self):
-        return ":/icons/fem-femmesh-from-shape.svg"
+        return ":/icons/FEM_MeshGmshFromShape.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -212,15 +212,16 @@ class _ViewProviderFemMeshGmsh:
     def canDropObjects(self):
         return True
 
+    # TODO use femutils module methods for type checking
     def canDragObject(self, dragged_object):
         if hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+                and dragged_object.Proxy.Type == "Fem::MeshBoundaryLayer":
             return True
         elif hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+                and dragged_object.Proxy.Type == "Fem::MeshGroup":
             return True
         elif hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
+                and dragged_object.Proxy.Type == "Fem::MeshRegion":
             return True
         else:
             return False
@@ -230,32 +231,32 @@ class _ViewProviderFemMeshGmsh:
 
     def dragObject(self, selfvp, dragged_object):
         if hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+                and dragged_object.Proxy.Type == "Fem::MeshBoundaryLayer":
             objs = self.Object.MeshBoundaryLayerList
             objs.remove(dragged_object)
             self.Object.MeshBoundaryLayerList = objs
-        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshGroup":
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::MeshGroup":
             objs = self.Object.MeshGroupList
             objs.remove(dragged_object)
             self.Object.MeshGroupList = objs
-        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::FemMeshRegion":
+        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::MeshRegion":
             objs = self.Object.MeshRegionList
             objs.remove(dragged_object)
             self.Object.MeshRegionList = objs
 
     def dropObject(self, selfvp, incoming_object):
         if hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::FemMeshBoundaryLayer":
+                and incoming_object.Proxy.Type == "Fem::MeshBoundaryLayer":
             objs = self.Object.MeshBoundaryLayerList
             objs.append(incoming_object)
             self.Object.MeshBoundaryLayerList = objs
         elif hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::FemMeshGroup":
+                and incoming_object.Proxy.Type == "Fem::MeshGroup":
             objs = self.Object.MeshGroupList
             objs.append(incoming_object)
             self.Object.MeshGroupList = objs
         elif hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::FemMeshRegion":
+                and incoming_object.Proxy.Type == "Fem::MeshRegion":
             objs = self.Object.MeshRegionList
             objs.append(incoming_object)
             self.Object.MeshRegionList = objs
