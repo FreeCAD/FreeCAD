@@ -107,7 +107,7 @@ void SubSystem::calcGrad(HValueSet vals, Eigen::VectorXd& output)
     for(int ic = 0; ic < _constraints.size(); ++ic){
         Constraint& constr = *(_constraints[ic]);
         int rank = constr.rank();
-        int ir = _constraint1stRow[ic];
+        //int ir = _constraint1stRow[ic]; //unused
         for(const ParameterRef& p : constr.parameters()){
             //calculate derivatives of this constraint error function
             //on parameter p
