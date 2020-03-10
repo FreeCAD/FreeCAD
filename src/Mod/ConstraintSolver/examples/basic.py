@@ -1,7 +1,7 @@
 import ConstraintSolver as CS
 ps = CS.ParameterStore()
-p1 = CS.G2D.ParaPoint(ps)
-p2 = CS.G2D.ParaPoint(ps)
+p1 = CS.G2D.ParaPoint(store= ps)
+p2 = CS.G2D.ParaPoint(store= ps)
 p2.x.Value = 3
 p2.y.Value = 4
 
