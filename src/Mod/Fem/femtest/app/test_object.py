@@ -313,7 +313,7 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeMeshGroup(doc, mesh))
         )
         self.assertEqual(
-            "Fem::FemMeshRegion",
+            "Fem::MeshRegion",
             type_of_obj(ObjectsFem.makeMeshRegion(doc, mesh))
         )
         self.assertEqual(
@@ -513,7 +513,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMeshRegion(doc, mesh),
-            "Fem::FemMeshRegion"
+            "Fem::MeshRegion"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMeshNetgen(doc),
@@ -1070,7 +1070,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             mesh_region,
-            "Fem::FemMeshRegion"
+            "Fem::MeshRegion"
         ))
 
         # FemMeshShapeNetgenObject
