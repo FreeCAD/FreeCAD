@@ -88,7 +88,7 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
     qcb->clear();
     int i = 0;
     for (; i < ArrowPropEnum::ArrowCount; i++) {
-        qcb->addItem(QString::fromUtf8(ArrowPropEnum::ArrowTypeEnums[i]));
+        qcb->addItem(tr(ArrowPropEnum::ArrowTypeEnums[i]));
         QIcon itemIcon(QString::fromUtf8(ArrowPropEnum::ArrowTypeIcons[i].c_str()));
         qcb->setItemIcon(i, itemIcon);
     }
