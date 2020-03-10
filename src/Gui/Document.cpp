@@ -1131,7 +1131,7 @@ void Document::saveAll() {
     }catch(Base::Exception &e) {
         e.ReportException();
         int ret = QMessageBox::critical(getMainWindow(), QObject::tr("Failed to save document"),
-                QObject::tr("Documents contains cyclic dependices. Do you still want to save them?"),
+                QObject::tr("Documents contains cyclic dependencies. Do you still want to save them?"),
                 QMessageBox::Yes,QMessageBox::No);
         if(ret!=QMessageBox::Yes)
             return;
