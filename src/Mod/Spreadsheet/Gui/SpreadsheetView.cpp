@@ -50,6 +50,7 @@
 #include <Mod/Spreadsheet/App/Utils.h>
 #include "qtcolorpicker.h"
 #include <LineEdit.h>
+#include <Base/Tools.h>
 
 #include "ui_Sheet.h"
 
@@ -95,6 +96,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
             this, SLOT(rowResized(int, int, int)));
 
     connect(ui->cellContent, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
+    connect(ui->cellAlias, SIGNAL(returnPressed()), this, SLOT( editingFinished() ));
 
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, _1, _2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, _1, _2));
@@ -116,6 +118,7 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
 
     // Set document object to create auto completer
     ui->cellContent->setDocumentObject(sheet);
+    ui->cellAlias->setDocumentObject(sheet);
 }
 
 SheetView::~SheetView()
@@ -205,6 +208,7 @@ void SheetView::setCurrentCell(QString str)
 {
     Q_UNUSED(str);
     updateContentLine();
+    updateAliasLine();
 }
 
 void SheetView::keyPressEvent(QKeyEvent *event)
@@ -240,6 +244,25 @@ void SheetView::updateContentLine()
     }
 }
 
+void SheetView::updateAliasLine()
+{
+    QModelIndex i = ui->cells->currentIndex();
+
+    if (i.isValid()) {
+        std::string str;
+        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
+
+        if (cell)
+            cell->getAlias(str);
+        ui->cellAlias->setText(QString::fromUtf8(str.c_str()));
+        ui->cellAlias->setIndex(i);
+        ui->cellAlias->setEnabled(true);
+
+        // Update completer model; for the time being, we do this by setting the document object of the input line.
+        ui->cellAlias->setDocumentObject(sheet);
+    }
+}
+
 void SheetView::columnResizeFinished()
 {
     if (newColumnSizes.size() == 0)
@@ -272,6 +295,7 @@ void SheetView::modelUpdated(const QModelIndex &topLeft, const QModelIndex &bott
         return;
 
     updateContentLine();
+    updateAliasLine();
 }
 
 void SheetView::columnResized(int col, int oldSize, int newSize)
@@ -300,18 +324,31 @@ void SheetView::resizeRow(int col, int newSize)
 
 void SheetView::editingFinished()
 {
-    if (ui->cellContent->completerActive()) {
-        ui->cellContent->hideCompleter();
+    if (ui->cellAlias->completerActive()) {
+        ui->cellAlias->hideCompleter();
         return;
     }
 
     QModelIndex i = ui->cells->currentIndex();
 
-    // Update data in cell
-    ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+    if (i.isValid()) {
+        QString str = ui->cellAlias->text();
 
-    ui->cells->setCurrentIndex(ui->cellContent->next());
-    ui->cells->setFocus();
+        if (str.length()!= 0 && !sheet->isValidAlias(Base::Tools::toStdString(str))){
+            Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
+        }
+
+        ui->cellAlias->setDocumentObject(sheet);
+        ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
+
+
+        Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
+        if (cell){
+            cell->setAlias(str.toStdString());
+        }
+        ui->cells->setCurrentIndex(ui->cellContent->next());
+        ui->cells->setFocus();
+    }
 }
 
 void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex & previous  )
@@ -319,6 +356,7 @@ void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex 
     Q_UNUSED(current);
     Q_UNUSED(previous);
     updateContentLine();
+    updateAliasLine();
 }
 
 void SheetView::updateCell(const App::Property *prop)
@@ -333,8 +371,10 @@ void SheetView::updateCell(const App::Property *prop)
         if(!sheet->getCellAddress(prop, address))
             return;
 
-        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() )
+        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() ){
             updateContentLine();
+            updateAliasLine();
+        }
     }
     catch (...) {
         // Property is not a cell

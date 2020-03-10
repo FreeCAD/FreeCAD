@@ -91,6 +91,7 @@ protected Q_SLOTS:
     void modelUpdated(const QModelIndex & topLeft, const QModelIndex & bottomRight);
 protected:
     void updateContentLine();
+    void updateAliasLine();
     void setCurrentCell(QString str);
     void keyPressEvent(QKeyEvent *event);
     void resizeColumn(int col, int newSize);
