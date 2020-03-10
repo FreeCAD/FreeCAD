@@ -27,10 +27,8 @@ ParaVector::ParaVector(ParameterRef x, ParameterRef y)
 
 void FCS::G2D::ParaVector::initAttrs()
 {
-    _attrs = {
-        {&x, "x", true, 0.0},
-        {&y, "y", true, 0.0},
-    };
+    tieAttr_Parameter(x, "x", true, true, 0.0);
+    tieAttr_Parameter(y, "y", true, true, 0.0);
 }
 
 PyObject* ParaVector::getPyObject()
