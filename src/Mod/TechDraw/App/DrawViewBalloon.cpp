@@ -105,7 +105,7 @@ DrawViewBalloon::DrawViewBalloon(void)
     ADD_PROPERTY_TYPE(SymbolScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
     SymbolScale.setConstraints(&SymbolScaleRange);
 
-    ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
+    ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
 
     ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
                                   "Distance from symbol to leader kink");
