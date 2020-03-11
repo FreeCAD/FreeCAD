@@ -26,6 +26,7 @@
 
 #include <vector>
 #include <QUiLoader>
+#include <QGraphicsItem>
 
 #include <Base/Factory.h>
 #include <Base/PyObjectBase.h>
@@ -49,6 +50,7 @@ public:
 
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
+    QGraphicsItem* toQGraphicsItem(PyObject* ptr);
     Py::Object fromQWidget(QWidget*, const char* className=0);
     const char* getWrapperName(QObject*) const;
     /*!
