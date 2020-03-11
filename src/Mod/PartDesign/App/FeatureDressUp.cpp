@@ -191,19 +191,23 @@ void DressUp::onChanged(const App::Property* prop)
                     s = getBaseShape();
                 else
                     s = Shape.getShape();
+                s.setPlacement(Base::Placement());
             } else if (!SupportTransform.getValue()) {
                 addSubType = base->getAddSubType();
                 s = base->AddSubShape.getShape();
             } else {
                 addSubType = base->getAddSubType();
                 Part::TopoShape baseShape = base->getBaseTopoShape(true);
+                baseShape.setPlacement(Base::Placement());
+                Part::TopoShape shape = Shape.getShape();
+                shape.setPlacement(Base::Placement());
                 if (baseShape.isNull() || !baseShape.hasSubShape(TopAbs_SOLID)) {
-                    s = Shape.getShape();
+                    s = shape;
                     addSubType = Additive;
                 } else if (addSubType == Additive)
-                    s = Shape.getShape().cut(baseShape.getShape());
+                    s = shape.cut(baseShape.getShape());
                 else
-                    s = baseShape.cut(Shape.getValue());
+                    s = baseShape.cut(shape.getShape());
             }
             AddSubShape.setValue(s);
         }
