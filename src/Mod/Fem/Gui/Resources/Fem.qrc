@@ -64,7 +64,7 @@
 
         <!-- object icons without gui command -->
         <file>icons/fem-femmesh-from-shape.svg</file>
-        <file>icons/fem-femmesh-result.svg</file>
+        <file>icons/FEM_MeshResult.svg</file>
         <file>icons/fem-post-geo-box.svg</file>
         <file>icons/fem-post-geo-cylinder.svg</file>
         <file>icons/fem-post-geo-isosurface.svg</file>

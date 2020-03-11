@@ -38,4 +38,4 @@ class _ViewProviderFemMeshResult(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-femmesh-result.svg"
+        return ":/icons/FEM_MeshResult.svg"
