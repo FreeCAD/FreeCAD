@@ -338,17 +338,18 @@ void SheetView::editingFinished()
 
     if (i.isValid()) {
         QString str = ui->cellAlias->text();
+        bool aliasOkay = true;
 
         if (str.length()!= 0 && !sheet->isValidAlias(Base::Tools::toStdString(str))){
             Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
+            aliasOkay = false;
         }
 
         ui->cellAlias->setDocumentObject(sheet);
         ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
 
-
         Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-        if (cell){
+        if (cell && aliasOkay){
             cell->setAlias(str.toStdString());
         }
         ui->cells->setCurrentIndex(ui->cellContent->next());
