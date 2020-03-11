@@ -3,6 +3,8 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -38,14 +40,9 @@ __title__ = "Path Pocket Shape Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
-__contributors__ = "russ4262 (Russell Johnson)"
-__created__ = "2017"
-__scriptVersion__ = "2i"
-__lastModified__ = "2020-02-13 17:01 CST"
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
-
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -513,7 +510,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 if len(self.vert) > 0:
                     vFinDep = self.vert[0].BoundBox.ZMin
                     for vFace in self.vert:
-                        print("vFinDep: {}".format(vFinDep))
+                        #print("vFinDep: {}".format(vFinDep))
                         if vFace.BoundBox.ZMin > vFinDep:
                             vFinDep = vFace.BoundBox.ZMin
                     # Determine if vertical faces for a loop: Extract planar loop wire as new horizontal face.
@@ -549,11 +546,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 for f in self.horiz:
                     if obj.EnableRotation == 'Off':
                         finDep = obj.FinalDepth.Value  # max(obj.FinalDepth.Value, f.BoundBox.ZMin)
-                        print("NO_ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
+                        #print("NO_ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
                         f.translate(FreeCAD.Vector(0, 0, finDep-f.BoundBox.ZMin))
                     else:
                         finDep = max(obj.FinalDepth.Value, f.BoundBox.ZMin)
-                        print("ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
+                        #print("ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
                         f.translate(FreeCAD.Vector(0, 0, finDep))
                         obj.FinalDepth.Value = finDep
                 
@@ -574,8 +571,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 fD = obj.FinalDepth.Value
                 extent = FreeCAD.Vector(0, 0, sD - fD)
                 for face in self.horizontal:
-                    self.removalshapes.append((face.removeSplitter().extrude(extent),
-                                                False, 'pathPocketShape', angle, axis, sD, fD))
+                    self.removalshapes.append((face.removeSplitter().extrude(extent), False, 'pathPocketShape', angle, axis, sD, fD))
                     PathLog.debug("Extent depths are str: {}, and fin: {}".format(sD, fD))
                 # Efor face
             # Efor

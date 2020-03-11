@@ -129,7 +129,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             params.update(cmdParams)
             if obj.EnableRotation != 'Off':
                 angle = p['angle']
-                print("X: {}, Y: {}, Z: {}, Angle: {}".format(p['x'], p['y'], p['trgtDep'], angle))
                 axis = p['axis']
                 # Rotate model to index for hole
                 if axis == 'X':
