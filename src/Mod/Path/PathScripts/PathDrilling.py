@@ -205,6 +205,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.InverseAngle = False
         obj.B_AxisErrorOverride = False
         obj.AttemptInverseAngle = False
+        obj.ExtraOffset = "None"
 
         # Initial setting for EnableRotation is taken from Job SetupSheet
         # User may override on per-operation basis as needed.
@@ -222,7 +223,7 @@ def SetupProperties():
     setup.append("DwellEnabled")
     setup.append("AddTipLength")
     setup.append("ReturnLevel")
-    setup.append("ExtraDepth")
+    setup.append("ExtraOffset")
     setup.append("RetractHeight")
     setup.append("EnableRotation")
     setup.append("ReverseDirection")
