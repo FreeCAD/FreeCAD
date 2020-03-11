@@ -42,12 +42,13 @@ def get_draft_drawing_commands():
             "Draft_ArcTools",
             "Draft_Circle", "Draft_Ellipse", "Draft_Rectangle",
             "Draft_Polygon", "Draft_BSpline", "Draft_BezierTools",
-            "Draft_Point", "Draft_Facebinder"]
+            "Draft_Point", "Draft_Facebinder",
+            "Draft_ShapeString"]
 
 
 def get_draft_annotation_commands():
     """Return the annotation commands list."""
-    return ["Draft_Text", "Draft_ShapeString", "Draft_Dimension",
+    return ["Draft_Text", "Draft_Dimension",
             "Draft_Label"]
 
 
