@@ -386,6 +386,31 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
     return 0;
 }
 
+QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    PyTypeObject* type = getPyTypeObjectForTypeName<QObject>();
+    if (type) {
+        if (Shiboken::Object::checkType(pyPtr)) {
+            SbkObject* sbkobject = reinterpret_cast<SbkObject*>(pyPtr);
+            void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
+            return reinterpret_cast<QGraphicsItem*>(cppobject);
+        }
+    }
+#elif QT_VERSION >= 0x050000
+    // Access shiboken2/PySide2 via Python
+    //
+    void* ptr = qt_getCppPointer(Py::asObject(pyPtr), "shiboken2", "getCppPointer");
+    return reinterpret_cast<QGraphicsItem*>(ptr);
+#else
+    // Access shiboken/PySide via Python
+    //
+    void* ptr = qt_getCppPointer(Py::asObject(pyPtr), "shiboken", "getCppPointer");
+    return reinterpret_cast<QGraphicsItem*>(ptr);
+#endif
+    return nullptr;
+}
+
 Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
