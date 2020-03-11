@@ -2237,14 +2237,22 @@ class Dimension(Creator):
             if not self.cont:
                 self.finish()
 
+
 class ShapeString(Creator):
-    """This class creates a shapestring feature."""
+    """The Draft_ShapeString FreeCAD command definition."""
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_ShapeString',
-                'Accel' : "S, S",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text..."),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates text string in shapes.")}
+        """Set icon, menu and tooltip."""
+        _menu = "Shape from text"
+        _tooltip = ("Creates a shape from a text string by choosing "
+                    "a specific font and a placement.\n"
+                    "The closed shapes can be used for extrusions "
+                    "and boolean operations.")
+        d = {'Pixmap': 'Draft_ShapeString',
+             'Accel': "S, S",
+             'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", _menu),
+             'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ShapeString", _tooltip)}
+        return d
 
     def Activated(self):
         name = translate("draft","ShapeString")
