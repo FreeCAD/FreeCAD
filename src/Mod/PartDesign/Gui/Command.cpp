@@ -553,7 +553,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         return;
     }
 
-    Gui::SelectionFilter SketchFilter("SELECT Sketcher::SketchObject COUNT 1");
+    // Hint:
+    // The behaviour of this command has changed with respect to a selected sketch:
+    // It doesn't try any more to edit a selected sketch but always tries to create
+    // a new sketch.
+    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=44070
+
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
     Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1");
@@ -561,12 +566,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     if (PlaneFilter2.match())
         PlaneFilter = PlaneFilter2;
 
-    if (SketchFilter.match()) {
-        Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(SketchFilter.Result[0][0].getObject());
-        // openCommand("Edit Sketch");
-        PartDesignGui::setEdit(Sketch,pcActiveBody);
-    }
-    else if ( FaceFilter.match() || PlaneFilter.match() ) {
+    if ( FaceFilter.match() || PlaneFilter.match() ) {
         if (!pcActiveBody) {
             // We shouldn't make a new Body in this case, because that means
             // the source shape of the face/plane would be outside the Body.
