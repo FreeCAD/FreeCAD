@@ -77,6 +77,9 @@ if not hasattr(FreeCAD, "DraftWorkingPlane"):
 import draftguitools.gui_edit
 import draftguitools.gui_selectplane
 import draftguitools.gui_planeproxy
+from draftguitools.gui_lineops import FinishLine
+from draftguitools.gui_lineops import CloseLine
+from draftguitools.gui_lineops import UndoLine
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -978,66 +981,6 @@ class CubicBezCurve(Line):
         if self.ui:
             if self.ui.continueMode:
                 self.Activated()
-
-
-class FinishLine:
-    """a FreeCAD command to finish any running Line drawing operation"""
-
-    def Activated(self):
-        if (FreeCAD.activeDraftCommand != None):
-            if (FreeCAD.activeDraftCommand.featureName == "Line"):
-                FreeCAD.activeDraftCommand.finish(False)
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Finish',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FinishLine", "Finish line"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_FinishLine", "Finishes a line without closing it")}
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
-
-
-class CloseLine:
-    """a FreeCAD command to close any running Line drawing operation"""
-
-    def Activated(self):
-        if (FreeCAD.activeDraftCommand != None):
-            if (FreeCAD.activeDraftCommand.featureName == "Line"):
-                FreeCAD.activeDraftCommand.finish(True)
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Lock',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_CloseLine", "Close Line"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_CloseLine", "Closes the line being drawn")}
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
-
-
-class UndoLine:
-    """a FreeCAD command to undo last drawn segment of a line"""
-
-    def Activated(self):
-        if (FreeCAD.activeDraftCommand != None):
-            if (FreeCAD.activeDraftCommand.featureName == "Line"):
-                FreeCAD.activeDraftCommand.undolast()
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Rotate',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_UndoLine", "Undo last segment"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_UndoLine", "Undoes the last drawn segment of the line being drawn")}
-
-    def IsActive(self):
-        if FreeCADGui.ActiveDocument:
-            return True
-        else:
-            return False
 
 
 class Rectangle(Creator):
@@ -5501,9 +5444,6 @@ FreeCADGui.addCommand('Draft_Slope',Draft_Slope())
 FreeCADGui.addCommand('Draft_Stretch',Stretch())
 
 # context commands
-FreeCADGui.addCommand('Draft_FinishLine',FinishLine())
-FreeCADGui.addCommand('Draft_CloseLine',CloseLine())
-FreeCADGui.addCommand('Draft_UndoLine',UndoLine())
 FreeCADGui.addCommand('Draft_ToggleConstructionMode',ToggleConstructionMode())
 FreeCADGui.addCommand('Draft_ToggleContinueMode',ToggleContinueMode())
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
