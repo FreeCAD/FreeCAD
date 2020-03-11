@@ -41,7 +41,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 # Qt translation handling
@@ -473,7 +473,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                             PathLog.info(translate("Path", "Consider toggling the InverseAngle property and recomputing the operation."))
                                     else:
                                         PathLog.debug("Face appears to be oriented correctly.")
-
+                                    
+                                    if angle < -180:
+                                        angle += 360
                                     tup = clnBase, [sub], angle, axis, clnStock
                                 else:
                                     if self.warnDisabledAxis(obj, axis) is False:
@@ -485,6 +487,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                 # Eif
                                 allTuples.append(tup)
                                 baseSubsTuples.append(tup)
+
                             else:
                                 ignoreSub = base.Name + '.' + sub
                                 PathLog.error(translate('Path', "Selected feature is not a Face. Ignoring: {}".format(ignoreSub)))
@@ -546,12 +549,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 for f in self.horiz:
                     if obj.EnableRotation == 'Off':
                         finDep = obj.FinalDepth.Value  # max(obj.FinalDepth.Value, f.BoundBox.ZMin)
-                        #print("NO_ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
+                        print("NO_ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
                         f.translate(FreeCAD.Vector(0, 0, finDep-f.BoundBox.ZMin))
                     else:
-                        finDep = max(obj.FinalDepth.Value, f.BoundBox.ZMin)
-                        #print("ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
-                        f.translate(FreeCAD.Vector(0, 0, finDep))
+                        finDep = f.BoundBox.ZMin
+                        print("ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
+                        f.translate(FreeCAD.Vector(0, 0, 0))
                         obj.FinalDepth.Value = finDep
                 
                 # check all faces and see if they are touching/overlapping and combine those into a compound
@@ -563,6 +566,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         wire = TechDraw.findShapeOutline(shape, 1, FreeCAD.Vector(0, 0, 1))
                         wire.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - wire.BoundBox.ZMin))
                         self.horizontal.append(Part.Face(wire))
+                        print("2: FinDep: {}, WireBB: {}, Sub: {}".format(obj.FinalDepth.Value, wire.BoundBox.ZMin, obj.FinalDepth.Value - wire.BoundBox.ZMin))
                     else:
                         self.horizontal.append(shape)
 
