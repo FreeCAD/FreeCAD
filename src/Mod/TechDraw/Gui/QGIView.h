@@ -124,6 +124,8 @@ public:
     MDIViewPage* getMDIViewPage(void) const;
     virtual void removeChild(QGIView* child);
 
+    virtual void addArbitraryItem(QGraphicsItem* qgi);
+
     // Mouse handling
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
@@ -174,7 +176,7 @@ protected:
     double m_lockWidth;
     double m_lockHeight;
 
-/*    int m_selectState;*/
+//    std::vector<QGraphicsItem*> m_randomItems;
 };
 
 } // namespace
