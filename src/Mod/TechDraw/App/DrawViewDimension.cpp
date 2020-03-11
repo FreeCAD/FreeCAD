@@ -1095,9 +1095,14 @@ bool DrawViewDimension::leaderIntersectsArc(Base::Vector3d s, Base::Vector3d poi
 
 void DrawViewDimension::saveArrowPositions(const Base::Vector2d positions[])
 {
-    double scale = getViewPart()->getScale();
-    m_arrowPositions.first = Base::Vector3d(positions[0].x, positions[0].y, 0.0) / scale;
-    m_arrowPositions.second = Base::Vector3d(positions[1].x, positions[1].y, 0.0) / scale;
+    if (positions == nullptr) {
+        m_arrowPositions.first = Base::Vector3d(0.0, 0.0, 0.0);
+        m_arrowPositions.second = Base::Vector3d(0.0, 0.0, 0.0);
+    } else {
+        double scale = getViewPart()->getScale();
+        m_arrowPositions.first = Base::Vector3d(positions[0].x, positions[0].y, 0.0) / scale;
+        m_arrowPositions.second = Base::Vector3d(positions[1].x, positions[1].y, 0.0) / scale;
+    }
 }
 
 //return position within parent view of dimension arrow heads/dimline endpoints
