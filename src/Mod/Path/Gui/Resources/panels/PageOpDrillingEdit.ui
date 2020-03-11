@@ -131,7 +131,7 @@
       <item row="7" column="4">
        <widget class="QLabel" name="Offsetlabel">
         <property name="text">
-         <string>Extra Offset</string>
+         <string>Extend Depth</string>
         </property>
        </widget>
       </item>
@@ -144,12 +144,12 @@
         </item>
         <item>
          <property name="text">
-          <string>Tip Length</string>
+          <string>Drill Tip</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>2x Tip Length</string>
+          <string>2x Drill Tip</string>
          </property>
         </item>
        </widget>

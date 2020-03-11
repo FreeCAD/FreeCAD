@@ -76,7 +76,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.ReturnLevel = ['G99', 'G98']  # Canned Cycle Return Level
         obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished while in a peck operation"))
         obj.addProperty("App::PropertyEnumeration", "ExtraOffset", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "How far the drill depth is extended"))
-        obj.ExtraOffset = ['None', 'Tip Length', '2x Tip Length']  # Canned Cycle Return Level
+        obj.ExtraOffset = ['None', 'Drill Tip', '2x Drill Tip']  # Canned Cycle Return Level
 
         # Rotation related properties
         if not hasattr(obj, 'EnableRotation'):
@@ -105,9 +105,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         tiplength = 0.0
-        if obj.ExtraOffset == 'Tip Length':
+        if obj.ExtraOffset == 'Drill Tip':
             tiplength = PathUtils.drillTipLength(self.tool)
-        elif obj.ExtraOffset == '2x Tip Length':
+        elif obj.ExtraOffset == '2x Drill Tip':
             tiplength = PathUtils.drillTipLength(self.tool) * 2
 
         holes = PathUtils.sort_jobs(holes, ['x', 'y'])
