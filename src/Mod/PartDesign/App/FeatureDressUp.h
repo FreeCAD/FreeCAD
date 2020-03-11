@@ -62,6 +62,7 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
+    virtual void setupObject();
 };
 
 } //namespace PartDesign

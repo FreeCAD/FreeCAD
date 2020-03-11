@@ -50,7 +50,7 @@ DressUp::DressUp()
     ADD_PROPERTY(Base,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY_TYPE(SupportTransform,(true),"Base", App::Prop_None,
+    ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,
             "Enable support for transformed patterns");
 
     addSubType = Additive;
@@ -63,6 +63,11 @@ short DressUp::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
+void DressUp::setupObject()
+{
+    SupportTransform.setValue(true);
+    Feature::setupObject();
+}
 
 void DressUp::positionByBaseFeature(void)
 {
