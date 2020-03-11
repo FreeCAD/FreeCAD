@@ -3,6 +3,8 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2019 russ4262 (Russell Johnson, russ4262@gmail.com)     *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -35,13 +37,9 @@ import numpy
 from PySide import QtCore
 
 __title__ = "Path Profile Faces Operation"
-__author__ = "sliptonic (Brad Collette)"
+__author__ = "sliptonic (Brad Collette), russ4262, Schildkroet"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Profile operation based on faces."
-__contributors__ = "russ4262 (Russell Johnson, russ4262@gmail.com)"
-__created__ = "2014"
-__scriptVersion__ = "2j usable"
-__lastModified__ = "2019-07-25 14:48 CST"
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
@@ -183,6 +181,8 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
                 # Raise FinalDepth to lowest face in list on Inside profile ops
                 finDep = obj.FinalDepth.Value
+                if obj.EnableRotation != 'Off':
+                    finDep = faceDepths[0]
 
                 strDep = obj.StartDepth.Value
                 if strDep > stock.Shape.BoundBox.ZMax:

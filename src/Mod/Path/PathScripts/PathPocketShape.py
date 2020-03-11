@@ -43,7 +43,7 @@ __created__ = "2017"
 __scriptVersion__ = "2i"
 __lastModified__ = "2020-02-13 17:01 CST"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 
@@ -513,6 +513,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 if len(self.vert) > 0:
                     vFinDep = self.vert[0].BoundBox.ZMin
                     for vFace in self.vert:
+                        print("vFinDep: {}".format(vFinDep))
                         if vFace.BoundBox.ZMin > vFinDep:
                             vFinDep = vFace.BoundBox.ZMin
                     # Determine if vertical faces for a loop: Extract planar loop wire as new horizontal face.
@@ -546,9 +547,16 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                 # move all horizontal faces to FinalDepth
                 for f in self.horiz:
-                    finDep = obj.FinalDepth.Value  # max(obj.FinalDepth.Value, f.BoundBox.ZMin)
-                    f.translate(FreeCAD.Vector(0, 0, finDep - f.BoundBox.ZMin))
-
+                    if obj.EnableRotation == 'Off':
+                        finDep = obj.FinalDepth.Value  # max(obj.FinalDepth.Value, f.BoundBox.ZMin)
+                        print("NO_ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
+                        f.translate(FreeCAD.Vector(0, 0, finDep-f.BoundBox.ZMin))
+                    else:
+                        finDep = max(obj.FinalDepth.Value, f.BoundBox.ZMin)
+                        print("ROT: ObjDep: {}, FinDep: {}, BBmin: {}".format(obj.FinalDepth.Value, finDep, f.BoundBox.ZMin))
+                        f.translate(FreeCAD.Vector(0, 0, finDep))
+                        obj.FinalDepth.Value = finDep
+                
                 # check all faces and see if they are touching/overlapping and combine those into a compound
                 self.horizontal = [] # pylint: disable=attribute-defined-outside-init
                 for shape in PathGeom.combineConnectedShapes(self.horiz):

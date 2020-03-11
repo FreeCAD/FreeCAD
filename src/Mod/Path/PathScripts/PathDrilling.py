@@ -129,6 +129,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             params.update(cmdParams)
             if obj.EnableRotation != 'Off':
                 angle = p['angle']
+                print("X: {}, Y: {}, Z: {}, Angle: {}".format(p['x'], p['y'], p['trgtDep'], angle))
                 axis = p['axis']
                 # Rotate model to index for hole
                 if axis == 'X':
@@ -160,8 +161,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 self.commandlist.append(Path.Command('G0', {'X': p['x'], 'Y': p['y'], 'F': self.horizRapid}))
                 self.commandlist.append(Path.Command('G1', {'Z': p['stkTop'], 'F': self.vertFeed}))
             
-            # Perform and cancel canned drilling cycle
+            # Perform canned drilling cycle
             self.commandlist.append(Path.Command(cmd, params))
+            
+            # cancel canned drilling cycle
             self.commandlist.append(Path.Command('G80'))
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value}))
             

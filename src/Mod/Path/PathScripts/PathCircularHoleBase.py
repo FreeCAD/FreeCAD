@@ -333,6 +333,7 @@ class ObjectOp(PathOp.ObjectOp):
                             msg = translate("Path", "Final Depth setting is below the hole bottom for {}.".format(sub)) + '  '
                             msg += translate("Path", "{} depth is calculated at {} mm".format(sub, round(holeBtm, 4)))
                             PathLog.warning(msg)
+                            finDep = holeBtm
 
                         holes.append({'x': pos.x, 'y': pos.y, 'r': self.holeDiameter(obj, base, sub),
                                      'angle': angle, 'axis': axis, 'trgtDep': finDep,
@@ -440,7 +441,7 @@ class ObjectOp(PathOp.ObjectOp):
         zlim = 0.0
         xRotRad = 0.01
         yRotRad = 0.01
-        xRotRad = 0.01
+        #xRotRad = 0.01
 
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(self.stockBB.ZMin) > math.fabs(self.stockBB.ZMax):

@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,7 +29,7 @@ import PathScripts.PathLog as PathLog
 from PySide import QtCore
 
 __title__ = "Base Path Profile Operation"
-__author__ = "sliptonic (Brad Collette)"
+__author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path profile operations."
 

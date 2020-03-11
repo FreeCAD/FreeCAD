@@ -482,14 +482,15 @@ class ObjectOp(PathOp.ObjectOp):
                         axisOfRot = 'C'
                     else:
                         axisOfRot = 'A'
+                    
                     # Rotate Model to correct angle
-                    ppCmds.insert(0, Path.Command('G1', {axisOfRot: angle, 'F': self.axialFeed}))
-                    ppCmds.insert(0, Path.Command('N100', {}))
+                    ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialFeed}))
+                    #ppCmds.insert(0, Path.Command('N100', {}))
 
                     # Raise cutter to safe depth and return index to starting position
-                    ppCmds.append(Path.Command('N200', {}))
+                    #ppCmds.append(Path.Command('N200', {}))
                     ppCmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                    if axis != nextAxis:
+                    if 'L' != nextAxis:
                         ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
                 # Eif
 
