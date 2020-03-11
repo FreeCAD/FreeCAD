@@ -37,5 +37,4 @@ class _ViewProviderFemMeshResult(ViewProviderFemConstraint.ViewProxy):
     A View Provider for the FemMeshResult object
     """
 
-    def getIcon(self):
-        return ":/icons/FEM_MeshResult.svg"
+    pass
