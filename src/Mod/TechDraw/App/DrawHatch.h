@@ -50,6 +50,8 @@ public:
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderHatch";
     }
+    virtual void unsetupObject(void) override;
+
     //return PyObject as DrawHatchPy
     virtual PyObject *getPyObject(void) override;
 
