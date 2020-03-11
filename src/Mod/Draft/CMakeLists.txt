@@ -17,6 +17,7 @@ SET(Draft_SRCS_base
     WorkingPlane.py
     getSVG.py
     TestDraft.py
+    TestDraftGui.py
 )
 
 SET(Draft_import
