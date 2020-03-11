@@ -596,6 +596,7 @@ void DrawGeomHatch::setupPatIncluded(void)
     }
 }
 
+//TODO: replace with FileInfo copy
 //copy whole text file from inSpec to outSpec
 void DrawGeomHatch::copyFile(std::string inSpec, std::string outSpec)
 {
@@ -608,6 +609,18 @@ void DrawGeomHatch::copyFile(std::string inSpec, std::string outSpec)
         dst << src.rdbuf();
     }
 }
+
+void DrawGeomHatch::unsetupObject(void)
+{
+//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+    App::DocumentObject* source = Source.getValue();
+    DrawView* dv = dynamic_cast<DrawView*>(source);
+    if (dv != nullptr) {
+        dv->requestPaint();
+    }
+    App::DocumentObject::unsetupObject();
+}
+
 
 
 // Python Drawing feature ---------------------------------------------------------

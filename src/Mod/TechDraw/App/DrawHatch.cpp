@@ -280,6 +280,17 @@ void DrawHatch::copyFile(std::string inSpec, std::string outSpec)
     }
 }
 
+void DrawHatch::unsetupObject(void)
+{
+//    Base::Console().Message("DH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+    App::DocumentObject* source = Source.getValue();
+    DrawView* dv = dynamic_cast<DrawView*>(source);
+    if (dv != nullptr) {
+        dv->requestPaint();
+    }
+    App::DocumentObject::unsetupObject();
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 

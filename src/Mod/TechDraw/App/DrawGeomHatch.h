@@ -65,6 +65,8 @@ public:
         return "TechDrawGui::ViewProviderGeomHatch";
     }
     virtual PyObject *getPyObject(void) override;
+    virtual void unsetupObject(void) override;
+
 
     DrawViewPart* getSourceView(void) const;
 
