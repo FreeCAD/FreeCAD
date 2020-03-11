@@ -656,6 +656,15 @@ bool QGIView::getFrameState(void)
     return result;
 }
 
+void QGIView::addArbitraryItem(QGraphicsItem* qgi)
+{
+    if (qgi != nullptr) {
+//        m_randomItems.push_back(qgi); 
+        addToGroup(qgi);
+        qgi->show();
+    }
+}
+
 //TODO: change name to prefNormalColor()
 QColor QGIView::getNormalColor()
 {
