@@ -142,6 +142,8 @@ DrawViewPart::DrawViewPart(void) :
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
     Source.setScope(App::LinkScope::Global);
+    Source.setAllowExternal(true);
+
     ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
                       group,App::Prop_None,"Projection Plane normal. The direction you are looking from.");
     ADD_PROPERTY_TYPE(XDirection ,(0.0,0.0,0.0),
@@ -244,6 +246,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         }
         return App::DocumentObject::StdReturn;
     }
+    std::vector<App::DocumentObject*> sources = Source.getValues();
 
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
