@@ -53,11 +53,13 @@ Position ParaConic::value(const ValueSet& vals, DualNumber u)
 
 Vector ParaConic::tangent(const ValueSet& vals, DualNumber u)
 {
+    (void)u;
     return p1->value(vals) - p0->value(vals);
 }
 
 Vector ParaConic::tangentAtXY(const ValueSet& vals, Position p)
 {
+    (void)p;
     return tangent(vals, 0.0);
 }
 

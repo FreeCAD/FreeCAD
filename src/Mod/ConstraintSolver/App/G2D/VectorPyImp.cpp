@@ -76,6 +76,7 @@ PyObject *VectorPy::PyMake(struct _typeobject *, PyObject* args, PyObject *)  //
 // constructor method
 int VectorPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    (void)args;
     return 0;
 }
 
@@ -102,18 +103,21 @@ std::string VectorPy::representation(void) const
 
 PyObject* VectorPy::dot(PyObject *args)
 {
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
 
 PyObject* VectorPy::cross(PyObject *args)
 {
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
 
 PyObject* VectorPy::normalized(PyObject *args)
 {
+    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
@@ -257,6 +261,9 @@ int VectorPy::sequence_ass_item(PyObject *, Py_ssize_t, PyObject *)
 
 PyObject* VectorPy::richCompare(PyObject *v, PyObject *w, int op)
 {
+    (void)v;
+    (void)w;
+    (void)op;
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
@@ -274,6 +281,7 @@ Py::Object VectorPy::getx(void) const
 
 void  VectorPy::setx(Py::Object arg)
 {
+    (void)arg;
     throw Py::AttributeError("Not yet implemented");
 }
 
@@ -284,6 +292,7 @@ Py::Object VectorPy::gety(void) const
 
 void  VectorPy::sety(Py::Object arg)
 {
+    (void)arg;
     throw Py::AttributeError("Not yet implemented");
 }
 

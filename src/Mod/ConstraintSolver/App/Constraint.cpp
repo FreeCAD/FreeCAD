@@ -6,7 +6,7 @@ using DualNumber = Base::DualNumber;
 
 TYPESYSTEM_SOURCE_ABSTRACT(FCS::Constraint, FCS::ParaObject);
 
-double Constraint::maxStep(const ValueSet& vals, const ValueSet& /*dir*/) const
+double Constraint::maxStep(const ValueSet& /*vals*/, const ValueSet& /*dir*/) const
 {
     return 1e12;
 }

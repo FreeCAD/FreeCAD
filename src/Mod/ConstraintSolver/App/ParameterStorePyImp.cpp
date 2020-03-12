@@ -206,6 +206,7 @@ Py::List ParameterStorePy::getScales(void) const
 
 void  ParameterStorePy::setScales(Py::List arg)
 {
+    (void)arg;
     throw Py::AttributeError("Not yet implemented");
 }
 
