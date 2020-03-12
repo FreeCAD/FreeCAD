@@ -160,7 +160,7 @@ void ParaTransform::add(HParaTransform plm)
 
 int ParaTransform::simplify()
 {
-    int i;
+    size_t i;
     for (i = 0; i < std::min(_fwchain.size(), _revchain.size()); ++i) {
         if (! _fwchain[i].is(_revchain[i]))
             break;
@@ -208,6 +208,7 @@ int ParaTransform::simplifyTransforms(std::vector<HParaTransform> transforms, bo
     }
     //find common start in full transform chain, and cut it off
     //the full chain begins from inverse placements, so we start with them.
+    //FIXME: using a negative signed int causes unexpected behaviour when comparing with an unsigned int!!!
     int idif = -1; //first position where transforms are unequal
     for (int i = 0; i < minlen; ++i) {
         HParaPlacement plm = (*transforms[0])[idif];

@@ -105,7 +105,7 @@ public://methods
     ///returns i'th placement of the full chain
     HParaPlacement operator[](int index);
     ///is the i'th placement of the full chain inverse?
-    bool isInverse(int index){return index >= _revchain.size();}
+    bool isInverse(int index){return index >= static_cast<int>(_revchain.size());}
     int numInverses() const {return _revchain.size();}
     int size() const {return _revchain.size() + _fwchain.size();}
     /// @}

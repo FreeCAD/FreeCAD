@@ -102,17 +102,17 @@ HParaObject ParaObject::copy() const
         );
 
     //copy parameter references
-    for(int i = 0; i < _attrs.size(); ++i){
+    for(size_t i = 0; i < _attrs.size(); ++i){
         assert(cpy->_attrs[i].name == _attrs[i].name);
         *(cpy->_attrs[i].value) = *(_attrs[i].value);
     };
     //copy references to children
-    for(int i = 0; i < _children.size(); ++i){
+    for(size_t i = 0; i < _children.size(); ++i){
         assert(cpy->_children[i].name == _children[i].name);
         *(cpy->_children[i].value) = *(_children[i].value);
     };
     //copy references to shapes
-    for(int i = 0; i < _shapes.size(); ++i){
+    for(size_t i = 0; i < _shapes.size(); ++i){
         assert(cpy->_shapes[i].name == _shapes[i].name);
         *(cpy->_shapes[i].value) = *(_shapes[i].value);
     };

@@ -40,7 +40,7 @@ inline Py::List asPyObjectList(Vec& vec){ //vec is usually not changed... unless
 template<class Vec, class PyCxxConstruct>
 inline Py::List asPyList(Vec& vec){ //vec is usually not changed... unless getPyObject changes the object, which does happen to some
     Py::List ret(vec.size());
-    for (int i = 0; i < vec.size(); ++i) {
+    for (decltype(vec.size()) i = 0; i < vec.size(); ++i) {
         ret[i] = PyCxxConstruct(vec[i]);
     }
     return ret;

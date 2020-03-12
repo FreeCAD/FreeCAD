@@ -53,7 +53,7 @@ PyObject* ConstraintPy::errorVec(PyObject* args)
     getConstraintPtr()->error(*vals, errvec.data());
 
     Py::List ret(errvec.size());
-    for(int i = 0; i < errvec.size(); ++i){
+    for(size_t i = 0; i < errvec.size(); ++i){
         ret[i] = Py::asObject(errvec[i].getPyObject());
     }
     return Py::new_reference_to(ret);
