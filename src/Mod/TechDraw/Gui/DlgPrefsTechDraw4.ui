@@ -42,7 +42,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Change the shape of ends of edges.  Used for 1:1 scale stencil making.</string>
+           <string>Change shape of edge ends. Used for 1:1 scale stencil making.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>EdgeCapStyle</cstring>
@@ -89,7 +89,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dump intermediate results during Detail processing</string>
+           <string>Dump intermediate results during Detail view processing</string>
           </property>
           <property name="text">
            <string>Debug Detail</string>
@@ -169,7 +169,7 @@ when hatching a face with a PAT pattern</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Perform a fuse operation on the input shape(s) before Section processing</string>
+           <string>Perform a fuse operation on input shape(s) before Section view processing</string>
           </property>
           <property name="text">
            <string>Fuse Before Section</string>
@@ -213,7 +213,7 @@ when hatching a face with a PAT pattern</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dump intermediate results during Section processing</string>
+           <string>Dump intermediate results during Section view processing</string>
           </property>
           <property name="text">
            <string>Debug Section</string>
