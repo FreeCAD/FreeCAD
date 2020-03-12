@@ -858,7 +858,7 @@ public:
         }
 
         virtual QModelIndex childIndex(int row) {
-            if(getModel()->searchingUnit || row >= childCountWithoutUnit())
+            if(getModel()->searchingUnit || mindex.row() >= childCountWithoutUnit())
                 return QModelIndex();
 
             App::Document *doc = nullptr;
