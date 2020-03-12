@@ -26,10 +26,12 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
-import FreeCAD
-from femtools import femutils
 import numpy as np
 from math import isnan
+
+import FreeCAD
+
+from femtools.femutils import is_of_type
 
 
 def purge_results(analysis):
@@ -42,10 +44,8 @@ def purge_results(analysis):
     """
 
     for m in analysis.Group:
-        if (m.isDerivedFrom("Fem::FemResultObject")):
-            if m.Mesh \
-                    and hasattr(m.Mesh, "Proxy") \
-                    and m.Mesh.Proxy.Type == "Fem::FemMeshResult":
+        if m.isDerivedFrom("Fem::FemResultObject"):
+            if m.Mesh and is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 analysis.Document.removeObject(m.Mesh.Name)
             analysis.Document.removeObject(m.Name)
     FreeCAD.ActiveDocument.recompute()
@@ -54,7 +54,7 @@ def purge_results(analysis):
     # we could run into trouble in one loop because
     # we will delete objects and try to access them later
     for m in analysis.Group:
-        if femutils.is_of_type(m, "Fem::FemMeshResult"):
+        if is_of_type(m, "Fem::FemMeshResult"):
             analysis.Document.removeObject(m.Name)
     FreeCAD.ActiveDocument.recompute()
 
@@ -418,7 +418,7 @@ def get_concrete_nodes(res_obj):
 
     for obj in res_obj.getParentGroup().Group:
         if obj.isDerivedFrom("App::MaterialObjectPython") \
-                and femutils.is_of_type(obj, "Fem::MaterialReinforced"):
+                and is_of_type(obj, "Fem::MaterialReinforced"):
             FreeCAD.Console.PrintMessage("ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -430,7 +430,7 @@ def get_concrete_nodes(res_obj):
                     for cn in concrete_nodes:
                         ic[cn - 1] = 1
         elif obj.isDerivedFrom("App::MaterialObjectPython") \
-                and femutils.is_of_type(obj, "Fem::Material"):
+                and is_of_type(obj, "Fem::Material"):
             FreeCAD.Console.PrintMessage("No ReinforcedMaterial\n")
             if obj.References == []:
                 for iic in range(nsr):
@@ -472,7 +472,7 @@ def add_principal_stress_reinforced(res_obj):
 
     # material parameter
     for obj in res_obj.getParentGroup().Group:
-        if femutils.is_of_type(obj, "Fem::MaterialReinforced"):
+        if is_of_type(obj, "Fem::MaterialReinforced"):
             matrix_af = float(
                 FreeCAD.Units.Quantity(obj.Material["AngleOfFriction"]).getValueAs("rad")
             )

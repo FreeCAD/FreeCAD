@@ -43,6 +43,7 @@ import FreeCADGui
 import FemGui
 # from . import ViewProviderFemConstraint
 from femobjects import _FemMeshGmsh
+from femtools.femutils import is_of_type
 
 
 # class _ViewProviderFemMeshGmsh(ViewProviderFemConstraint.ViewProxy):
@@ -212,16 +213,12 @@ class _ViewProviderFemMeshGmsh:
     def canDropObjects(self):
         return True
 
-    # TODO use femutils module methods for type checking
     def canDragObject(self, dragged_object):
-        if hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::MeshBoundaryLayer":
-            return True
-        elif hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::MeshGroup":
-            return True
-        elif hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::MeshRegion":
+        if (
+            is_of_type(dragged_object, "Fem::MeshBoundaryLayer")
+            or is_of_type(dragged_object, "Fem::MeshGroup")
+            or is_of_type(dragged_object, "Fem::MeshRegion")
+        ):
             return True
         else:
             return False
@@ -230,33 +227,29 @@ class _ViewProviderFemMeshGmsh:
         return True
 
     def dragObject(self, selfvp, dragged_object):
-        if hasattr(dragged_object, "Proxy") \
-                and dragged_object.Proxy.Type == "Fem::MeshBoundaryLayer":
+        if is_of_type(dragged_object, "Fem::MeshBoundaryLayer"):
             objs = self.Object.MeshBoundaryLayerList
             objs.remove(dragged_object)
             self.Object.MeshBoundaryLayerList = objs
-        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::MeshGroup":
+        elif is_of_type(dragged_object, "Fem::MeshGroup"):
             objs = self.Object.MeshGroupList
             objs.remove(dragged_object)
             self.Object.MeshGroupList = objs
-        elif hasattr(dragged_object, "Proxy") and dragged_object.Proxy.Type == "Fem::MeshRegion":
+        elif is_of_type(dragged_object, "Fem::MeshRegion"):
             objs = self.Object.MeshRegionList
             objs.remove(dragged_object)
             self.Object.MeshRegionList = objs
 
     def dropObject(self, selfvp, incoming_object):
-        if hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::MeshBoundaryLayer":
+        if is_of_type(incoming_object, "Fem::MeshBoundaryLayer"):
             objs = self.Object.MeshBoundaryLayerList
             objs.append(incoming_object)
             self.Object.MeshBoundaryLayerList = objs
-        elif hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::MeshGroup":
+        elif is_of_type(incoming_object, "Fem::MeshGroup"):
             objs = self.Object.MeshGroupList
             objs.append(incoming_object)
             self.Object.MeshGroupList = objs
-        elif hasattr(incoming_object, "Proxy") \
-                and incoming_object.Proxy.Type == "Fem::MeshRegion":
+        elif is_of_type(incoming_object, "Fem::MeshRegion"):
             objs = self.Object.MeshRegionList
             objs.append(incoming_object)
             self.Object.MeshRegionList = objs
@@ -383,28 +376,30 @@ class _TaskPanel:
     def run_gmsh(self):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         part = self.mesh_obj.Part
-        if self.mesh_obj.MeshRegionList:
-            #  other part obj might not have a Proxy, thus an exception would be raised
-            if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):
-                if part.Proxy.Type == "FeatureBooleanFragments" \
-                        or part.Proxy.Type == "FeatureSlice" \
-                        or part.Proxy.Type == "FeatureXOR":
-                    error_message = (
-                        "The shape to mesh is a boolean split tools Compound "
-                        "and the mesh has mesh region list. "
-                        "Gmsh could return unexpected meshes in such circumstances. "
-                        "It is strongly recommended to extract the shape "
-                        "to mesh from the Compound and use this one."
-                    )
-                    qtbox_title = (
-                        "Shape to mesh is a BooleanFragmentsCompound "
-                        "and mesh regions are defined"
-                    )
-                    QtGui.QMessageBox.critical(
-                        None,
-                        qtbox_title,
-                        error_message
-                    )
+        if (
+            self.mesh_obj.MeshRegionList and part.Shape.ShapeType == "Compound"
+            and (
+                is_of_type(part, "FeatureBooleanFragments")
+                or is_of_type(part, "FeatureSlice")
+                or is_of_type(part, "FeatureXOR")
+            )
+        ):
+            error_message = (
+                "The shape to mesh is a boolean split tools Compound "
+                "and the mesh has mesh region list. "
+                "Gmsh could return unexpected meshes in such circumstances. "
+                "It is strongly recommended to extract the shape "
+                "to mesh from the Compound and use this one."
+            )
+            qtbox_title = (
+                "Shape to mesh is a BooleanFragmentsCompound "
+                "and mesh regions are defined"
+            )
+            QtGui.QMessageBox.critical(
+                None,
+                qtbox_title,
+                error_message
+            )
         self.Start = time.time()
         self.form.l_time.setText("Time: {0:4.1f}: ".format(time.time() - self.Start))
         self.console_message_gmsh = ""

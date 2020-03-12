@@ -28,12 +28,13 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
-from femtools import femutils
+
+from femtools.femutils import is_of_type
 
 if FreeCAD.GuiUp:
+    from PySide import QtCore
     import FreeCADGui
     import FemGui
-    from PySide import QtCore
 
 
 class CommandManager(object):
@@ -162,7 +163,7 @@ class CommandManager(object):
         result_mesh = False
         analysis_members = FemGui.getActiveAnalysis().Group
         for o in analysis_members:
-            if femutils.is_of_type(o, "Fem::FemMeshResult"):
+            if is_of_type(o, "Fem::FemMeshResult"):
                 result_mesh = True
         return result_mesh
 
@@ -193,11 +194,7 @@ class CommandManager(object):
 
     def gmsh_femmesh_selected(self):
         sel = FreeCADGui.Selection.getSelection()
-        if (
-            len(sel) == 1
-            and hasattr(sel[0], "Proxy")
-            and sel[0].Proxy.Type == "Fem::FemMeshGmsh"
-        ):
+        if len(sel) == 1 and is_of_type(sel[0], "Fem::FemMeshGmsh"):
             self.selobj = sel[0]
             return True
         else:
@@ -266,11 +263,7 @@ class CommandManager(object):
 
     def solver_elmer_selected(self):
         sel = FreeCADGui.Selection.getSelection()
-        if (
-            len(sel) == 1
-            and hasattr(sel[0], "Proxy")
-            and sel[0].Proxy.Type == "Fem::FemSolverObjectElmer"
-        ):
+        if len(sel) == 1 and is_of_type(sel[0], "Fem::FemSolverObjectElmer"):
             self.selobj = sel[0]
             return True
         else:

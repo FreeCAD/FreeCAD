@@ -22,7 +22,9 @@
 
 import FreeCAD
 import FreeCADGui
+
 from .manager import CommandManager
+from femtools.femutils import is_of_type
 
 
 # Python command definitions
@@ -68,8 +70,11 @@ class _ClippingPlaneAdd(CommandManager):
         self.is_active = "with_document"
 
     def Activated(self):
-        from femtools import femutils
-        overalboundbox = femutils.getBoundBoxOfAllDocumentShapes(FreeCAD.ActiveDocument)
+        from pivy import coin
+        from femtools.femutils import getBoundBoxOfAllDocumentShapes
+        from femtools.femutils import getSelectedFace
+
+        overalboundbox = getBoundBoxOfAllDocumentShapes(FreeCAD.ActiveDocument)
         # print(overalboundbox)
         min_bb_length = (min(set([
             overalboundbox.XLength,
@@ -78,7 +83,7 @@ class _ClippingPlaneAdd(CommandManager):
         ])))
         dbox = min_bb_length * 0.2
 
-        aFace = femutils.getSelectedFace(FreeCADGui.Selection.getSelectionEx())
+        aFace = getSelectedFace(FreeCADGui.Selection.getSelectionEx())
         if aFace:
             f_CoM = aFace.CenterOfMass
             f_uvCoM = aFace.Surface.parameter(f_CoM)  # u,v at CoM for normalAt calculation
@@ -87,7 +92,6 @@ class _ClippingPlaneAdd(CommandManager):
             f_CoM = FreeCAD.Vector(0, 0, 0)
             f_normal = FreeCAD.Vector(0, 0, 1)
 
-        from pivy import coin
         coin_normal_vector = coin.SbVec3f(-f_normal.x, -f_normal.y, -f_normal.z)
         coin_bound_box = coin.SbBox3f(
             f_CoM.x - dbox, f_CoM.y - dbox,
@@ -333,10 +337,7 @@ class _MaterialMechanicalNonlinear(CommandManager):
         # test if there is a nonlinear material which has the selected material as base material
         for o in self.selobj.Document.Objects:
             if (
-                hasattr(o, "Proxy")
-                and o.Proxy is not None
-                and hasattr(o.Proxy, "Type")
-                and o.Proxy.Type == "Fem::MaterialMechanicalNonlinear"
+                is_of_type(o, "Fem::MaterialMechanicalNonlinear")
                 and o.LinearBaseMaterial == self.selobj
             ):
                 FreeCAD.Console.PrintError(
@@ -373,12 +374,10 @@ class _MaterialMechanicalNonlinear(CommandManager):
                     break
         # set solver attribute for nonlinearity for ccxtools
         # CalculiX solver or new frame work CalculiX solver
-        if solver_object \
-                and hasattr(solver_object, "Proxy") \
-                and (
-                    solver_object.Proxy.Type == "Fem::FemSolverCalculixCcxTools"
-                    or solver_object.Proxy.Type == "Fem::FemSolverObjectCalculix"
-                ):
+        if solver_object and (
+            is_of_type(solver_object, "Fem::FemSolverCalculixCcxTools")
+            or is_of_type(solver_object, "Fem::FemSolverObjectCalculix")
+        ):
             FreeCAD.Console.PrintMessage(
                 "Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for {}\n"
                 .format(solver_object.Label)
@@ -654,7 +653,7 @@ class _SolverCxxtools(CommandManager):
     def Activated(self):
         has_nonlinear_material_obj = False
         for m in self.active_analysis.Group:
-            if hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
+            if is_of_type(m, "Fem::MaterialMechanicalNonlinear"):
                 has_nonlinear_material_obj = True
         FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
         FreeCADGui.addModule("ObjectsFem")
