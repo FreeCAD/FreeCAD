@@ -24,6 +24,8 @@
 #ifndef PART_FEATURE_H
 #define PART_FEATURE_H
 
+#include <boost/container/map.hpp>
+
 #include "TopoShape.h"
 #include "PropertyTopoShape.h"
 #include <App/GeoFeature.h>
@@ -126,12 +128,21 @@ public:
         return owner && owner->isDerivedFrom(getClassTypeId());
     }
 
+    virtual const std::vector<std::string>& searchElementCache(const std::string &element,
+                                                               bool checkGeometry = true,
+                                                               double tol = 1e-7,
+                                                               double atol = 1e-10) const;
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute() override;
     /// recalculate the feature
     virtual App::DocumentObjectExecReturn *execute() override;
+    virtual void onBeforeChange(const App::Property* prop) override;
     virtual void onChanged(const App::Property* prop) override;
+
+private:
+    struct ElementCache;
+    boost::container::map<std::string, ElementCache> _elementCache;
 };
 
 class FilletBase : public Part::Feature

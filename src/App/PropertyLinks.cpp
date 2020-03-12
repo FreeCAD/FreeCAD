@@ -201,6 +201,18 @@ static std::string propertyName(const Property *prop) {
     return prop->getFullName();
 }
 
+const std::unordered_set<PropertyLinkBase*>&
+PropertyLinkBase::getElementReferences(DocumentObject *feature)
+{
+    static std::unordered_set<PropertyLinkBase*> none;
+
+    auto it = _ElementRefMap.find(feature);
+    if(it == _ElementRefMap.end())
+        return none;
+
+    return it->second;
+}
+
 void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {
     if(!feature || !feature->getNameInDocument())
         return;
@@ -336,35 +348,81 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     if(shadow==elementName)
         return false;
 
-    if(GeoFeature::hasMissingElement(elementName.second.c_str())) {
-        if(reverse && shadow.first.size()) {
-            // reverse means we are trying to either generate the element name for
-            // the first time, or upgrade to a new map version. In case of
-            // upgrading, we still consult the original mapped name in first
-            // try. Here means the first try failed, so we try the non-mapped name
-            ShadowSub shadowCopy;
-            shadowCopy.second = shadow.second;
-            bool res = _updateElementReference(feature,obj,sub,shadowCopy,reverse,notify);
-            if(shadowCopy.first.size()) 
-                shadow.swap(shadowCopy);
-            else
-                shadow.second.swap(shadowCopy.second);
-            return res;
+    if(shadow.first.empty() && !elementName.first.empty()) {
+        // This means, we are generating the element name for the first time.
+        // The user may recomputing a model using a newer OCC version, which
+        // may cause topo name changes that cannot be handled by the new topo
+        // naming algorithm (because the name is not there yet). We shall
+        // perform a geometry search instead.
+        const auto &names = geo->searchElementCache(element);
+        if(!names.empty() && std::find(names.begin(), names.end(), element) == names.end()) {
+            std::string newsub(subname, strlen(subname) - strlen(element));
+            newsub += names.front();
+            GeoFeature::resolveElement(obj, newsub.c_str(), elementName,true,
+                    GeoFeature::ElementNameType::Export,feature);
+            FC_WARN(propertyName(this) 
+                    << " auto change element reference " << ret->getFullName() << " "
+                    << shadow.second << " -> " << elementName.second);
         }
-        if(notify)
-            aboutToSetValue();
-        FC_WARN(propertyName(this) 
+    }
+
+    bool missing = GeoFeature::hasMissingElement(elementName.second.c_str());
+    if(missing) {
+        const char *oldElement = Data::ComplexGeoData::findElementName(shadow.second.c_str());
+        // If old style element name is missing, try search by geometry
+        if(!Data::ComplexGeoData::hasMissingElement(oldElement)) {
+            const auto &names = geo->searchElementCache(oldElement);
+            if(names.size()) {
+                missing = false;
+                std::string newsub(subname, strlen(subname) - strlen(element));
+                newsub += names.front();
+                GeoFeature::resolveElement(obj, newsub.c_str(), elementName,true,
+                        GeoFeature::ElementNameType::Export,feature);
+                FC_WARN(propertyName(this) 
+                        << " auto change element reference " << ret->getFullName() << " "
+                        << (shadow.first.size()?shadow.first:shadow.second) << " -> "
+                        << (elementName.first.size()?elementName.first:elementName.second));
+            } else if (reverse && shadow.first.size()) {
+                // reverse means we are trying to either generate the element
+                // name for the first time, or upgrade to a new map version. In
+                // case of upgrading, we still consult the original mapped name
+                // in first try. Here means the first try failed, and the
+                // geometry search cannot find any match, so we try the
+                // non-mapped name as a last resort.
+                // 
+                // WARNING! We are assuming the recomputation is done with no
+                // actual property change, and the resulting geometry remains
+                // the same. If this condition is not met, the result may be
+                // undesirable. TODO: find a way to ensure this condition.
+
+                GeoFeature::resolveElement(obj, shadow.second.c_str(), elementName, true,
+                        GeoFeature::ElementNameType::Export,feature);
+                if(!elementName.second.empty()) {
+                    missing = Data::ComplexGeoData::hasMissingElement(elementName.second.c_str());
+                    if (!missing) {
+                        FC_WARN(propertyName(this) 
+                            << " element reference changed " << ret->getFullName() << " "
+                            << shadow.first << " -> " << elementName.first);
+                    }
+                }
+            }
+        }
+    }
+
+    if(notify)
+        aboutToSetValue();
+    if(missing) {
+        FC_ERR(propertyName(this) 
                 << " missing element reference " << ret->getFullName() << " "
                 << (elementName.first.size()?elementName.first:elementName.second));
         shadow.second.swap(elementName.second);
-    }else{
-        if(notify)
-            aboutToSetValue();
+    } else {
         FC_LOG(propertyName(this) 
                 << " element reference shadow update " << ret->getFullName() << " "
                 << shadow.first << " -> " << elementName.first);
         shadow.swap(elementName);
     }
+
     if(reverse) {
         if(shadow.first.size() && Data::ComplexGeoData::hasMappedElementName(sub.c_str()))
             sub = shadow.first;

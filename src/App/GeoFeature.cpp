@@ -218,8 +218,11 @@ void GeoFeature::updateElementReference() {
 
 void GeoFeature::onChanged(const Property *prop) {
     if(prop==getPropertyOfGeometry()) {
-        if(!isRestoring() && getDocument() && !getDocument()->isPerformingTransaction())
+        if(getDocument() && !getDocument()->testStatus(Document::Restoring)
+                         && !getDocument()->isPerformingTransaction())
+        {
             updateElementReference();
+        }
     }
     DocumentObject::onChanged(prop);
 }
@@ -228,4 +231,18 @@ void GeoFeature::onDocumentRestored() {
     if(!getDocument()->testStatus(Document::Status::Importing))
         _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(),true));
     DocumentObject::onDocumentRestored();
+}
+
+const std::vector<std::string>&
+GeoFeature::searchElementCache(const std::string &element,
+                               bool checkGeometry,
+                               double tol,
+                               double atol) const
+{
+    static std::vector<std::string> none;
+    (void)element;
+    (void)checkGeometry;
+    (void)tol;
+    (void)atol;
+    return none;
 }

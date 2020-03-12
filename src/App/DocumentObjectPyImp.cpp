@@ -896,3 +896,21 @@ Py::Boolean DocumentObjectPy::getNoTouch() const {
 void DocumentObjectPy::setNoTouch(Py::Boolean value) {
     getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch,value.isTrue());
 }
+
+Py::Dict DocumentObjectPy::getElementReferences() const {
+    Py::Dict dict;
+    std::map<App::PropertyContainer*, PyObject*> map;
+    for(auto prop : PropertyLinkBase::getElementReferences(getDocumentObjectPtr())) {
+        auto container = prop->getContainer();
+        if(!container)
+            continue;
+        auto &pyobj = map[container];
+        if(!pyobj) {
+            pyobj = PyList_New(0);
+            dict.setItem(Py::asObject(container->getPyObject()), Py::asObject(pyobj));
+        }
+        if(PyList_Append(pyobj, Py::String(prop->getName()).ptr())<0)
+            throw Py::Exception();
+    }
+    return dict;
+}

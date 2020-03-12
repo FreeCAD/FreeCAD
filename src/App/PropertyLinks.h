@@ -33,6 +33,7 @@
 #include <string>
 #include <memory>
 #include <cinttypes>
+#include <unordered_set>
 #include "Property.h"
 
 namespace Base {
@@ -43,6 +44,7 @@ namespace App
 {
 class DocumentObject;
 class Document;
+class GeoFeature;
 
 class DocInfo;
 typedef std::shared_ptr<DocInfo> DocInfoPtr;
@@ -365,6 +367,8 @@ public:
     /// Update all element references in all link properties of \a feature
     static void updateElementReferences(DocumentObject *feature, bool reverse=false);
 
+    /// Obtain link properties that contain element references to a given object
+    static const std::unordered_set<PropertyLinkBase*>& getElementReferences(DocumentObject *);
 
     /** Helper function for update individual element reference
      *

@@ -24,6 +24,7 @@
 #ifndef APP_GEOFEATURE_H
 #define APP_GEOFEATURE_H
 
+#include <memory>
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
 
@@ -134,6 +135,26 @@ public:
      * @return Base::Placement The transformation from the global reference coordinate system
      */
     Base::Placement globalPlacement() const;
+
+    /** Search sub element using internal cached geometry
+     *
+     * @param element: element name
+     * @param checkGeometry: search element by comparing geometry
+     * @param tol: coordinate tolerance
+     * @param atol: angle tolerance
+     *
+     * @return Returns a list of found element reference to the new goemetry.
+     * The returned value will be invalidated when the geometry is changed.
+     *
+     * Before changing the property of geometry, GeoFeature will internally
+     * make a snapshot of all referenced element geometry. After change, user
+     * code may call this function to search for the new element name that
+     * reference to the same geometry of the old element.
+     */
+    virtual const std::vector<std::string>& searchElementCache(const std::string &element,
+                                                               bool checkGeometry = true,
+                                                               double tol = 1e-7,
+                                                               double atol = 1e-10) const;
 
 protected:
     virtual void onChanged(const Property* prop);

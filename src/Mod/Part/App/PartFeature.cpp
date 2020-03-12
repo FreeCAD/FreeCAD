@@ -687,6 +687,44 @@ App::DocumentObject *Feature::getShapeOwner(const App::DocumentObject *obj, cons
     return owner;
 }
 
+struct Feature::ElementCache {
+    TopoShape shape;
+    mutable std::vector<std::string> names;
+    mutable bool searched;
+};
+
+void Feature::onBeforeChange(const App::Property *prop) {
+    if(prop == &Shape) {
+        _elementCache.clear();
+        if(getDocument() && !getDocument()->testStatus(App::Document::Restoring)
+                         && !getDocument()->isPerformingTransaction())
+        {
+            std::vector<App::DocumentObject *> objs;
+            std::vector<std::string> subs;
+            for(auto prop : App::PropertyLinkBase::getElementReferences(this)) {
+                if(!prop->getContainer())
+                    continue;
+                objs.clear();
+                subs.clear();
+                prop->getLinks(objs, true, &subs, false);
+                for(auto &sub : subs) {
+                    auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+                    if(!element || !element[0]
+                                || Data::ComplexGeoData::hasMissingElement(element))
+                        continue;
+                    auto res = _elementCache.insert(
+                            std::make_pair(std::string(element), ElementCache()));
+                    if(res.second) {
+                        res.first->second.searched = false;
+                        res.first->second.shape = Shape.getShape().getSubTopoShape(element);
+                    }
+                }
+            }
+        }
+    }
+    GeoFeature::onBeforeChange(prop);
+}
+
 void Feature::onChanged(const App::Property* prop)
 {
     // if the placement has changed apply the change to the point data as well
@@ -712,6 +750,26 @@ void Feature::onChanged(const App::Property* prop)
     }
 
     GeoFeature::onChanged(prop);
+}
+
+const std::vector<std::string> &
+Feature::searchElementCache(const std::string &element,
+                            bool checkGeometry,
+                            double tol,
+                            double atol) const
+{
+    static std::vector<std::string> none;
+    if(element.empty())
+        return none;
+    auto it = _elementCache.find(element);
+    if(it == _elementCache.end() || it->second.shape.isNull())
+        return none;
+    if(!it->second.searched) {
+        it->second.searched = true;
+        Shape.getShape().searchSubShape(
+                it->second.shape, &it->second.names, checkGeometry, tol, atol);
+    }
+    return it->second.names;
 }
 
 TopLoc_Location Feature::getLocation() const

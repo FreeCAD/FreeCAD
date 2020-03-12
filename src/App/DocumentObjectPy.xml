@@ -306,5 +306,11 @@ or None if the GUI is not up</UserDocu>
             </Documentation>
 			<Parameter Name="NoTouch" Type="Boolean"/>
         </Attribute>
+        <Attribute Name="ElementReferences" ReadOnly="true">
+            <Documentation>
+                <UserDocu>A dictionary mapping object to its properties that reference some geometry element of this object</UserDocu>
+            </Documentation>
+			<Parameter Name="ElementReferences" Type="Dict"/>
+        </Attribute>
 	</PythonExport>
 </GenerateModel>
