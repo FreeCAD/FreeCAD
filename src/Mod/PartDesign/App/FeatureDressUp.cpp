@@ -69,6 +69,7 @@ short DressUp::mustExecute() const
 
 void DressUp::setupObject() {
     SupportTransform.setValue(true);
+    Feature::setupObject();
 }
 
 void DressUp::positionByBaseFeature(void)
@@ -199,7 +200,9 @@ void DressUp::onChanged(const App::Property* prop)
             BaseFeature.setValue (Base.getValue());
         }
     } else if (prop == &Shape || prop == &SupportTransform) {
-        if (!isRestoring() && !getDocument()->isPerformingTransaction()) {
+        if (!getDocument()->testStatus(App::Document::Restoring)
+                && !getDocument()->isPerformingTransaction())
+        {
             Part::TopoShape s(0,getDocument()->getStringHasher());
             auto base = Base::freecad_dynamic_cast<FeatureAddSub>(getBaseObject(true));
             if(!base) {
@@ -208,19 +211,23 @@ void DressUp::onChanged(const App::Property* prop)
                     s = getBaseShape();
                 else
                     s = Shape.getShape();
+                s.setPlacement(Base::Placement());
             } else if (!SupportTransform.getValue()) {
                 addSubType = base->getAddSubType();
                 s = base->AddSubShape.getShape();
             } else {
                 addSubType = base->getAddSubType();
                 Part::TopoShape baseShape = base->getBaseShape(true);
+                baseShape.setPlacement(Base::Placement());
+                Part::TopoShape shape = Shape.getShape();
+                shape.setPlacement(Base::Placement());
                 if (baseShape.isNull() || !baseShape.hasSubShape(TopAbs_SOLID)) {
-                    s = Shape.getShape();
+                    s = shape;
                     addSubType = Additive;
                 } else if (addSubType == Additive)
-                    s.makECut({Shape.getShape(),baseShape});
+                    s.makECut({shape,baseShape});
                 else
-                    s.makECut({baseShape,Shape.getShape()});
+                    s.makECut({baseShape,shape});
             }
             AddSubShape.setValue(s);
         }
