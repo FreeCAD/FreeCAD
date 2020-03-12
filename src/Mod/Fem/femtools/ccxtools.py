@@ -100,7 +100,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     raise Exception("FEM: No solver found!")
         else:
             if solver:
-                # solver given, searche for the analysis
+                # solver given, search for the analysis
                 self.solver = solver
                 self.find_solver_analysis()
                 if not self.analysis:
