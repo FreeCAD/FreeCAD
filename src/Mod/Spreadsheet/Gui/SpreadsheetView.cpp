@@ -341,7 +341,6 @@ void SheetView::editingFinished()
         bool aliasOkay = true;
 
         if (str.length()!= 0 && !sheet->isValidAlias(Base::Tools::toStdString(str))){
-            Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
             aliasOkay = false;
         }
 
@@ -349,8 +348,17 @@ void SheetView::editingFinished()
         ui->cells->model()->setData(i, QVariant(ui->cellContent->text()), Qt::EditRole);
 
         Cell * cell = sheet->getCell(CellAddress(i.row(), i.column()));
-        if (cell && aliasOkay){
-            cell->setAlias(str.toStdString());
+        if (cell){
+            if (!aliasOkay){
+                //do not show error message if failure to set new alias is because it is already the same string
+                std::string current_alias;
+                cell->getAlias(current_alias);
+                if (str != QString::fromUtf8(current_alias.c_str())){
+                    Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
+                }
+            } else {
+                cell->setAlias(str.toStdString());
+            }
         }
         ui->cells->setCurrentIndex(ui->cellContent->next());
         ui->cells->setFocus();
