@@ -80,6 +80,8 @@ import draftguitools.gui_planeproxy
 from draftguitools.gui_lineops import FinishLine
 from draftguitools.gui_lineops import CloseLine
 from draftguitools.gui_lineops import UndoLine
+from draftguitools.gui_togglemodes import ToggleConstructionMode
+from draftguitools.gui_togglemodes import ToggleContinueMode
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -4124,30 +4126,6 @@ class Scale(Modifier):
         for ghost in self.ghosts:
             ghost.finalize()
 
-class ToggleConstructionMode():
-    """The Draft_ToggleConstructionMode FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Construction',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle Construction Mode"),
-                'Accel' : "C, M",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggles the Construction Mode for next objects.")}
-
-    def Activated(self):
-        FreeCADGui.draftToolBar.constrButton.toggle()
-
-
-class ToggleContinueMode():
-    """The Draft_ToggleContinueMode FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Rotate',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleContinueMode", "Toggle Continue Mode"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleContinueMode", "Toggles the Continue Mode for next commands.")}
-
-    def Activated(self):
-        FreeCADGui.draftToolBar.toggleContinue()
-
 
 class Drawing(Modifier):
     """The Draft Drawing command definition"""
@@ -5443,8 +5421,6 @@ FreeCADGui.addCommand('Draft_Slope',Draft_Slope())
 FreeCADGui.addCommand('Draft_Stretch',Stretch())
 
 # context commands
-FreeCADGui.addCommand('Draft_ToggleConstructionMode',ToggleConstructionMode())
-FreeCADGui.addCommand('Draft_ToggleContinueMode',ToggleContinueMode())
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
 FreeCADGui.addCommand('Draft_ToggleDisplayMode',ToggleDisplayMode())
 FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
