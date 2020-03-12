@@ -82,6 +82,7 @@ from draftguitools.gui_lineops import CloseLine
 from draftguitools.gui_lineops import UndoLine
 from draftguitools.gui_togglemodes import ToggleConstructionMode
 from draftguitools.gui_togglemodes import ToggleContinueMode
+from draftguitools.gui_togglemodes import ToggleDisplayMode
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -4198,30 +4199,6 @@ class Drawing(Modifier):
         return page
 
 
-class ToggleDisplayMode():
-    """The ToggleDisplayMode FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_SwitchMode',
-                'Accel' : "Shift+Space",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode", "Toggle display mode"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode", "Swaps display mode of selected objects between wireframe and flatlines")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        for obj in FreeCADGui.Selection.getSelection():
-            if obj.ViewObject.DisplayMode == "Flat Lines":
-                if "Wireframe" in obj.ViewObject.listDisplayModes():
-                    obj.ViewObject.DisplayMode = "Wireframe"
-            elif obj.ViewObject.DisplayMode == "Wireframe":
-                if "Flat Lines" in obj.ViewObject.listDisplayModes():
-                    obj.ViewObject.DisplayMode = "Flat Lines"
-
 class SubelementHighlight(Modifier):
     """The Draft_SubelementHighlight FreeCAD command definition"""
 
@@ -5422,7 +5399,6 @@ FreeCADGui.addCommand('Draft_Stretch',Stretch())
 
 # context commands
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
-FreeCADGui.addCommand('Draft_ToggleDisplayMode',ToggleDisplayMode())
 FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
 FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
