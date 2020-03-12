@@ -28,6 +28,7 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitGui as PathToolBitGui
+import PathScripts.PathToolBitEdit as PathToolBitEdit
 import PySide
 import json
 import os
@@ -255,6 +256,21 @@ class ToolBitLibrary(object):
     def libraryNew(self):
         self.libraryLoad(None)
 
+    def createToolBit(self):
+        tool = PathToolBit.ToolBitFactory().Create()
+
+        self.dialog = PySide.QtGui.QDialog(self.form)
+        layout = PySide.QtGui.QVBoxLayout(self.dialog)
+        self.editor = PathToolBitEdit.ToolBitEditor(tool, self.dialog)
+        self.editor.setupUI()
+        self.buttons = PySide.QtGui.QDialogButtonBox(
+                PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel,
+                PySide.QtCore.Qt.Horizontal, self.dialog)
+        layout.addWidget(self.buttons)
+        #self.buttons.accepted.connect(accept)
+        #self.buttons.rejected.connect(reject)
+        print(self.dialog.exec_())
+
     def librarySave(self):
         library = {}
         tools = []
@@ -295,11 +311,13 @@ class ToolBitLibrary(object):
         self.form.toolAdd.clicked.connect(self.toolAdd)
         self.form.toolDelete.clicked.connect(self.toolDelete)
         self.form.toolEnumerate.clicked.connect(self.toolEnumerate)
+        self.form.createToolBit.clicked.connect(self.createToolBit)
 
-        self.form.libraryNew.clicked.connect(self.libraryNew)
+        #self.form.libraryNew.clicked.connect(self.libraryNew)
         self.form.libraryOpen.clicked.connect(self.libraryOpen)
         self.form.librarySave.clicked.connect(self.librarySave)
         self.form.librarySaveAs.clicked.connect(self.librarySaveAs)
+        #self.form.libraryCancel.clicked.connect(self.cancel)
 
         self.toolSelect([], [])
         self.updateToolbar()
