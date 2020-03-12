@@ -97,6 +97,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_trackers.py
     draftguitools/gui_edit.py
     draftguitools/gui_lineops.py
+    draftguitools/gui_togglemodes.py
     draftguitools/README.md
 )
 
