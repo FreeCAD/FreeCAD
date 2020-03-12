@@ -90,18 +90,24 @@ Py::Float DualNumberPy::getdu(void) const
 
 PyObject* DualNumberPy::number_add_handler(PyObject* self, PyObject* other)
 {
+    (void)self;
+    (void)other;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
 
 PyObject* DualNumberPy::number_subtract_handler(PyObject* self, PyObject* other)
 {
+    (void)self;
+    (void)other;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
 
 PyObject* DualNumberPy::number_multiply_handler(PyObject* self, PyObject* other)
 {
+    (void)self;
+    (void)other;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
@@ -109,6 +115,9 @@ PyObject* DualNumberPy::number_multiply_handler(PyObject* self, PyObject* other)
 
 PyObject* DualNumberPy::richCompare(PyObject* v, PyObject* w, int op)
 {
+    (void)v;
+    (void)w;
+    (void)op;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
@@ -125,42 +134,53 @@ int DualNumberPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 
 PyObject*  DualNumberPy::number_divide_handler (PyObject* self, PyObject* other)
 {
+    (void)self;
+    (void)other;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
 
 PyObject*  DualNumberPy::number_remainder_handler (PyObject* self, PyObject* other)
 {
+    (void)self;
+    (void)other;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
 
 PyObject*  DualNumberPy::number_divmod_handler (PyObject* self, PyObject* other)
 {
+    (void)self;
+    (void)other;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
 
 PyObject*  DualNumberPy::number_power_handler (PyObject* self, PyObject* other, PyObject* /*arg*/)
 {
+    (void)self;
+    (void)other;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
 
 PyObject*  DualNumberPy::number_negative_handler (PyObject* self)
 {
+    (void)self;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
 
 PyObject*  DualNumberPy::number_positive_handler (PyObject* self)
 {
+    (void)self;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
 
 PyObject*  DualNumberPy::number_absolute_handler (PyObject* self)
 {
+    (void)self;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
@@ -172,6 +192,7 @@ int DualNumberPy::number_nonzero_handler (PyObject* /*self*/)
 
 PyObject*  DualNumberPy::number_invert_handler (PyObject* self)
 {
+    (void)self;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
@@ -220,6 +241,7 @@ int DualNumberPy::number_coerce_handler (PyObject* * /*self*/, PyObject* * /*oth
 
 PyObject*  DualNumberPy::number_int_handler (PyObject* self)
 {
+    (void)self;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
@@ -227,6 +249,7 @@ PyObject*  DualNumberPy::number_int_handler (PyObject* self)
 #if PY_MAJOR_VERSION < 3
 PyObject*  DualNumberPy::number_long_handler (PyObject* self)
 {
+    (void)self;
     PyErr_Format(PyExc_TypeError, "long() argument must be a string or a number, not '%s'",
                  Py_TYPE(self)->tp_name);
     return 0;
@@ -235,6 +258,7 @@ PyObject*  DualNumberPy::number_long_handler (PyObject* self)
 
 PyObject*  DualNumberPy::number_float_handler (PyObject* self)
 {
+    (void)self;
     PyErr_SetString(PyExc_NotImplementedError, "not yet implemented");
     return nullptr;
 }
