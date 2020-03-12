@@ -89,18 +89,6 @@ public:
    virtual ~BooleanException() throw() {}
 };
 
-class PartExport ShapeSegment : public Data::Segment
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    ShapeSegment(const TopoDS_Shape &ShapeIn):Shape(ShapeIn){}
-    ShapeSegment(){}
-    virtual std::string getName() const;
-
-    TopoDS_Shape Shape;
-};
-
 /** The representation for a CAD Shape
  */
 class PartExport TopoShape : public Data::ComplexGeoData
@@ -165,6 +153,7 @@ public:
     virtual unsigned long countSubElements(const char* Type) const;
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
+    /// get the subelement by name
     virtual Data::Segment* getSubElementByName(const char* Name) const;
     /** Get lines from segment */
     virtual void getLinesFromSubelement(
@@ -724,6 +713,18 @@ struct PartExport ShapeMapper: TopoShape::Mapper {
     typedef std::unordered_map<TopoDS_Shape, ShapeValue> ShapeMap;
     ShapeMap _generated;
     ShapeMap _modified;
+};
+
+class PartExport ShapeSegment : public Data::Segment
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    ShapeSegment(const TopoShape &ShapeIn):Shape(ShapeIn){}
+    ShapeSegment(){}
+    virtual std::string getName() const;
+
+    TopoShape Shape;
 };
 
 } // namespace Part

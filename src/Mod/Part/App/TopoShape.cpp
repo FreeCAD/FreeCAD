@@ -330,12 +330,12 @@ Data::Segment* TopoShape::getSubElement(const char* Type, unsigned long n) const
     std::stringstream str;
     str << Type << n;
     std::string temp = str.str();
-    return new ShapeSegment(getSubShape(temp.c_str()));
+    return new ShapeSegment(getSubTopoShape(temp.c_str()));
 }
 
 Data::Segment* TopoShape::getSubElementByName(const char* name) const
 {
-    return new ShapeSegment(getSubShape(name));
+    return new ShapeSegment(getSubTopoShape(name));
 }
 
 TopoDS_Shape TopoShape::getSubShape(const char* Type, bool silent) const {
@@ -3482,16 +3482,16 @@ void TopoShape::getLinesFromSubelement(const Data::Segment* element,
                                        std::vector<Line> &lines) const
 {
     if (element->getTypeId() == ShapeSegment::getClassTypeId()) {
-        const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
-        if (shape.IsNull())
+        const TopoShape& shape = static_cast<const ShapeSegment*>(element)->Shape.getShape();
+        if (shape.isNull())
             return;
-        if(shape.ShapeType() == TopAbs_VERTEX) {
-            auto pnt = BRep_Tool::Pnt(TopoDS::Vertex(shape));
+        if(shape.shapeType() == TopAbs_VERTEX) {
+            auto pnt = BRep_Tool::Pnt(TopoDS::Vertex(shape.getShape()));
             vertices.emplace_back(pnt.X(),pnt.Y(),pnt.Z());
             return;
         }
 
-        for(TopExp_Explorer exp(shape,TopAbs_EDGE);exp.More();exp.Next()) {
+        for(TopExp_Explorer exp(shape.getShape(),TopAbs_EDGE);exp.More();exp.Next()) {
 
             TopoDS_Edge aEdge = TopoDS::Edge(exp.Current());
             TopLoc_Location aLoc;
@@ -3570,13 +3570,13 @@ void TopoShape::getFacesFromSubelement(const Data::Segment* element,
                                        std::vector<Facet> &faces) const
 {
     if (element->getTypeId() == ShapeSegment::getClassTypeId()) {
-        const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
-        if (shape.IsNull() || shape.ShapeType() != TopAbs_FACE)
+        const TopoShape& shape = static_cast<const ShapeSegment*>(element)->Shape;
+        if (shape.isNull() || shape.shapeType() != TopAbs_FACE)
             return;
 
         // get the meshes of all faces and then merge them
         std::vector<Domain> domains;
-        TopoShape(shape).getDomains(domains);
+        shape.getDomains(domains);
 
         std::set<MeshVertex> vertices;
         Standard_Real x1, y1, z1;
