@@ -50,6 +50,7 @@ class FemInputWriter():
         self.solver_obj = solver_obj
         self.analysis_type = self.solver_obj.AnalysisType
         self.mesh_object = mesh_obj
+        self.document = self.analysis.Document
         # materials
         self.material_objects = member.mats_linear
         self.material_nonlinear_objects = member.mats_nonlinear
