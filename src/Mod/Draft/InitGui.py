@@ -152,8 +152,15 @@ class DraftWorkbench(FreeCADGui.Workbench):
                 else:
                     self.appendContextMenu("Draft", self.drawing_commands)
             else:
-                if FreeCAD.activeDraftCommand.featureName == translate("draft","Line"):
-                    # BUG: line subcommands are not usable while another command is active
+                if FreeCAD.activeDraftCommand.featureName in (translate("draft", "Line"),
+                                                              translate("draft", "Wire"),
+                                                              translate("draft", "Polyline"),
+                                                              translate("draft", "BSpline"),
+                                                              translate("draft", "BezCurve"),
+                                                              translate("draft", "CubicBezCurve")):
+                    # BUG: the line subcommands are in fact listed
+                    # in the context menu, but they are de-activated
+                    # so they don't work.
                     self.appendContextMenu("", self.line_commands)
         else:
             if FreeCADGui.Selection.getSelection():
