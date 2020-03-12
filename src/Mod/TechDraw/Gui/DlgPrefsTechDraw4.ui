@@ -191,7 +191,7 @@ when hatching a face with a PAT pattern</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Highlights the border of the section cut in section views</string>
+           <string>Highlights border of section cut in section views</string>
           </property>
           <property name="text">
            <string>Show Section Edges</string>
@@ -289,7 +289,7 @@ can be a performance penalty in complex models.</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Include edges with unexpected geometry (zero length etc) to be included in results.</string>
+           <string>Include edges with unexpected geometry (zero length etc.) in results</string>
           </property>
           <property name="text">
            <string>Allow Crazy Edges</string>
@@ -305,7 +305,7 @@ can be a performance penalty in complex models.</string>
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="cbShowLoose">
           <property name="toolTip">
-           <string>Include 2d Objects in projection</string>
+           <string>Include 2D Objects in projection</string>
           </property>
           <property name="text">
            <string>Show Loose 2D Geom</string>
