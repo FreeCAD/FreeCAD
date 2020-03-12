@@ -20,7 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef FCSExport
 #define FCSExport        //temporary!
+#endif
 #include <FCConfig.h>    //
 
 #ifndef FREECAD_CONSTRAINTSOLVER_UTILS_H
