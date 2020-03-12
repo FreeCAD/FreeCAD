@@ -24,7 +24,8 @@
 # ***************************************************************************
 """Provides tools to control the mode of other tools in the Draft Workbench.
 
-For example, a construction mode, and a continue mode to repeat commands.
+For example, a construction mode, a continue mode to repeat commands,
+and to toggle the appearance of certain shapes to wireframe.
 """
 ## @package gui_togglemodes
 # \ingroup DRAFT
@@ -151,3 +152,56 @@ class ToggleContinueMode(BaseMode):
 
 
 Gui.addCommand('Draft_ToggleContinueMode', ToggleContinueMode())
+
+
+class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
+    """GuiCommand for the Draft_ToggleDisplayMode tool.
+
+    Switches the display mode of selected objects from flatlines
+    to wireframe and back.
+
+    It inherits `GuiCommandNeedsSelection` to only be availbale
+    when there is a document and a selection.
+    See this class for more information.
+    """
+
+    def __init__(self):
+        super().__init__(name=_tr("Toggle display mode"))
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _menu = "Toggle normal/wireframe display"
+        _tip = ("Switches the display mode of selected objects "
+                "from flatlines to wireframe and back.\n"
+                "This is helpful to quickly visualize objects "
+                "that are hidden by other objects.\n"
+                "This is intended to be used with closed shapes "
+                "and solids, and doesn't affect open wires.")
+
+        d = {'Pixmap': 'Draft_SwitchMode',
+             'Accel': "Shift+Space",
+             'MenuText': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode",
+                                           _menu),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_ToggleDisplayMode",
+                                          _tip)}
+        return d
+
+    def Activated(self):
+        """Execute when the command is called.
+
+        It tests the view provider of the selected objects
+        and changes their `DisplayMode` from `'Wireframe'`
+        to `'Flat Lines'`, and the other way around, if possible.
+        """
+        super().Activated()
+
+        for obj in Gui.Selection.getSelection():
+            if obj.ViewObject.DisplayMode == "Flat Lines":
+                if "Wireframe" in obj.ViewObject.listDisplayModes():
+                    obj.ViewObject.DisplayMode = "Wireframe"
+            elif obj.ViewObject.DisplayMode == "Wireframe":
+                if "Flat Lines" in obj.ViewObject.listDisplayModes():
+                    obj.ViewObject.DisplayMode = "Flat Lines"
+
+
+Gui.addCommand('Draft_ToggleDisplayMode', ToggleDisplayMode())
