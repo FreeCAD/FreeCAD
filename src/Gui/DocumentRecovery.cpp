@@ -229,10 +229,9 @@ QString DocumentRecovery::createProjectFile(const QString& documentXml)
 
 void DocumentRecovery::closeEvent(QCloseEvent* e)
 {
-    Q_D(DocumentRecovery);
-
-    if (!d->recoveryInfo.isEmpty())
-        e->ignore();
+    // Do not disable the X button in the title bar
+    // #0004281: Close Documant Recovery
+    e->accept();
 }
 
 void DocumentRecovery::accept()
