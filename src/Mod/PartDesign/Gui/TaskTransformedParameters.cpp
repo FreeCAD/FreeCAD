@@ -201,6 +201,7 @@ void TaskTransformedParameters::setupUI() {
             boost::bind(&TaskTransformedParameters::slotDiagnosis, this,_1));
     labelMessage = new QLabel(this);
     labelMessage->hide();
+    labelMessage->setWordWrap(true);
 
     linkEditor = new DlgPropertyLink(this, DlgPropertyLink::NoButton
                                           |DlgPropertyLink::NoSearchBox

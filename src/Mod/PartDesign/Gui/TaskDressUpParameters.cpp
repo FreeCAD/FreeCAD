@@ -132,6 +132,7 @@ void TaskDressUpParameters::setup(QLabel *label, QListWidget *widget, QPushButto
 
     messageLabel = label;
     messageLabel->hide();
+    messageLabel->setWordWrap(true);
 
     btnAdd = _btnAdd;
     connect(btnAdd, SIGNAL(toggled(bool)), this, SLOT(onButtonRefAdd(bool)));
