@@ -48,6 +48,10 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+       <string>Refer to cell by alias, for example\n Spreadsheet.my_alias_name instead of Spreadsheet.B1
+       </string>
+       </property>
       </widget>
      </item>
     </layout>
