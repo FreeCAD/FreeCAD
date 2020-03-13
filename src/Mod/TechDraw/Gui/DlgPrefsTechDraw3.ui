@@ -406,7 +406,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Shape of balloon &quot;bubble&quot;.</string>
+           <string>Shape of balloon annotations</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>BalloonShape</cstring>
@@ -500,7 +500,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Line type for centerlines</string>
+           <string>Type for centerlines</string>
           </property>
           <property name="currentIndex">
            <number>2</number>
@@ -551,7 +551,7 @@
            </font>
           </property>
           <property name="text">
-           <string>Balloon Leader Arrow</string>
+           <string>Balloon Leader End</string>
           </property>
          </widget>
         </item>
@@ -564,7 +564,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Type of arrowhead on leader</string>
+           <string>Style for balloon leader line ends</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>BalloonArrow</cstring>
@@ -583,7 +583,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Name of entry in LineGroup CSV file</string>
+           <string>Default name in LineGroup CSV file</string>
           </property>
           <property name="text">
            <string notr="true">FC 0.70mm</string>
@@ -606,6 +606,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Style for section lines</string>
           </property>
           <property name="currentIndex">
            <number>2</number>
@@ -668,6 +671,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="toolTip">
+           <string>Length of balloon leader line kink</string>
+          </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
@@ -691,10 +697,10 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Keep pyramid leader line end in vertical or horizontal position.</string>
+           <string>Keep pyramid leader line end in vertical or horizontal position</string>
           </property>
           <property name="text">
-           <string>Balloon Pyramid Ortho</string>
+           <string>Balloon Pyramid Vertical</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -714,6 +720,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Standard to be used to draw section lines</string>
           </property>
           <property name="currentIndex">
            <number>1</number>
@@ -758,7 +767,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Round or Square outline in Detail view</string>
+           <string>Outline shape for detail views</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>MattingStyle</cstring>
@@ -828,7 +837,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Show arc center marks in Views.</string>
+           <string>Show arc center marks in views</string>
           </property>
           <property name="text">
            <string>Show Center Marks</string>
@@ -850,7 +859,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Show arc centers on printed output</string>
+           <string>Show arc centers in printed output</string>
           </property>
           <property name="text">
            <string>Print Center Marks</string>
@@ -916,7 +925,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Projection Group &quot;Angle&quot;</string>
+           <string>Projection Group Angle</string>
           </property>
          </widget>
         </item>
@@ -929,7 +938,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Use First or Third Angle mutli-view convention.</string>
+           <string>Use first- or third-angle mutliview projection convention</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ProjectionAngle</cstring>
@@ -965,7 +974,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Style for hidden lines.</string>
+           <string>Style for hidden lines</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>HiddenLine</cstring>
