@@ -1159,7 +1159,7 @@ bool DrawViewDimension::showUnits() const
     bool result = false;
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    result = hGrp->GetBool("ShowUnits", true);
+    result = hGrp->GetBool("ShowUnits", false);
     return result;
 }
 

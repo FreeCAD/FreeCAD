@@ -1462,7 +1462,7 @@ bool DrawViewPart::prefIsoViz(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("IsoViz", true); 
+    bool result = hGrp->GetBool("IsoViz", false); 
     return result;
 }
 
@@ -1470,7 +1470,7 @@ bool DrawViewPart::prefHardHid(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("HardHid", true); 
+    bool result = hGrp->GetBool("HardHid",  false); 
     return result;
 }
 
@@ -1478,7 +1478,7 @@ bool DrawViewPart::prefSeamHid(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SeamHid", true); 
+    bool result = hGrp->GetBool("SeamHid", false); 
     return result;
 }
 
@@ -1486,7 +1486,7 @@ bool DrawViewPart::prefSmoothHid(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SmoothHid", true); 
+    bool result = hGrp->GetBool("SmoothHid", false); 
     return result;
 }
 
@@ -1494,7 +1494,7 @@ bool DrawViewPart::prefIsoHid(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("IsoHid", true); 
+    bool result = hGrp->GetBool("IsoHid", false); 
     return result;
 }
 
