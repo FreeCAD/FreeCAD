@@ -48,7 +48,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Character to use to indicate Diameter dimension</string>
+           <string>Character used to indicate diameter dimensions</string>
           </property>
           <property name="text">
            <string>⌀</string>
@@ -66,6 +66,9 @@
         </item>
         <item row="3" column="2">
          <widget class="Gui::PrefSpinBox" name="sbAltDecimals">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -73,7 +76,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Number of decimal places if not using Global Decimals</string>
+           <string>Number of decimals if 'Use Global Decimals' is not used</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -98,7 +101,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Use system setting for decimal places.</string>
+           <string>Use system setting for number of decimals</string>
           </property>
           <property name="text">
            <string>Use Global Decimals</string>
@@ -135,7 +138,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Preferred arrowhead style</string>
+           <string>Arrowhead style</string>
           </property>
           <property name="currentIndex">
            <number>-1</number>
@@ -157,6 +160,9 @@
         </item>
         <item row="4" column="2">
          <widget class="Gui::PrefLineEdit" name="leformatSpec">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -164,7 +170,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Custom format for Dimension text</string>
+           <string>Custom format for dimension text</string>
           </property>
           <property name="text">
            <string>%.2f</string>
@@ -220,7 +226,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dimension font size</string>
+           <string>Dimension text font size</string>
           </property>
           <property name="value" stdset="0">
            <double>4.000000000000000</double>
@@ -242,7 +248,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dimension arrowhead size</string>
+           <string>Arrowhead size</string>
           </property>
           <property name="value" stdset="0">
            <double>5.000000000000000</double>
@@ -276,7 +282,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Preferred standard and style of drawing dimensional values</string>
+           <string>Standard to be used for dimensional values</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>StandardAndStyle</cstring>
@@ -335,7 +341,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Append unit to Dimension text</string>
+           <string>Append unit to dimension values</string>
           </property>
           <property name="text">
            <string>Show Units</string>
@@ -1058,5 +1064,22 @@
  <resources>
   <include location="Resources/TechDraw.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cbGlobalDecimals</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sbAltDecimals</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>108</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>338</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
