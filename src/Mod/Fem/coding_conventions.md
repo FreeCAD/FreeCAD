@@ -24,7 +24,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
     - a .gitattributes file has been added to ensure line endings of text files are LF
     - use `?w=1` in link address to suppress line ending changes on github
 - never use mixed line endings on one file
-- 4 Spaces for indent
+- 4 Spaces for indent (in this file too ;-))
 - no trailing white spaces
 
 
@@ -78,15 +78,23 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
 
 ### Coding
 - print() vs. FreeCAD.Console.PrintMessage()
-  - `FreeCAD.Console.PrintMessage()` or Log or Error should be used
-  - `print()` should be used for debugging only
-  - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=39110) 
-  - BTW: Console prints need a new line where as print does not need one
+    - `FreeCAD.Console.PrintMessage()` or Log or Error should be used
+    - `print()` should be used for debugging only
+    - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=39110) 
+    - BTW: Console prints need a new line where as print does not need one
+- type checking:
+    - do not use hasattr(obj, "Proxy") and obj.Proxy.Type
+    - use method is_of_typ(obj, "TypeString") from module femtool.femutils
+- ActiveDocument
+    - do not use App.ActiveDocument or FreeCAD.ActiveDocument, if possible
+    - use some_obj.Document instead
+    - do not use Gui.ActiveDocument or FreeCADGui.ActiveDocument, if possible
+    - use some_obj.ViewObject.Document or some_view_obj.Document
 
 ### Documenting
 Python style is preferred over Doxygen style
-  - see `ccx` tools module in fem tools package
-  - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
+    - see `ccx` tools module in fem tools package
+    - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
 
 ## C++
 ### Naming policy
