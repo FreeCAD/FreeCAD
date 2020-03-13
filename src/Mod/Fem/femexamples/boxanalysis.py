@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # to run the example use:
 """
 from femexamples import boxanalysis as box
@@ -34,8 +33,9 @@ box.setup_frequency()
 
 
 import FreeCAD
-import ObjectsFem
+
 import Fem
+import ObjectsFem
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -52,14 +52,14 @@ def setup_base(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # part
-    box_obj = doc.addObject("Part::Box", "Box")
-    box_obj.Height = box_obj.Width = box_obj.Length = 10
+    # geometry object
+    geom_obj = doc.addObject("Part::Box", "Box")
+    geom_obj.Height = geom_obj.Width = geom_obj.Length = 10
     doc.recompute()
 
     if FreeCAD.GuiUp:
         import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
@@ -98,7 +98,7 @@ def setup_static(doc=None, solvertype="ccxtools"):
     # setup box static, add a fixed, force and a pressure constraint
 
     doc = setup_base(doc, solvertype)
-    box_obj = doc.Box
+    geom_obj = doc.Box
     analysis = doc.Analysis
 
     # solver
@@ -127,22 +127,22 @@ def setup_static(doc=None, solvertype="ccxtools"):
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, name="FemConstraintFixed")
     )[0]
-    fixed_constraint.References = [(box_obj, "Face1")]
+    fixed_constraint.References = [(geom_obj, "Face1")]
 
     # force_constraint
     force_constraint = analysis.addObject(
         ObjectsFem.makeConstraintForce(doc, name="FemConstraintForce")
     )[0]
-    force_constraint.References = [(box_obj, "Face6")]
+    force_constraint.References = [(geom_obj, "Face6")]
     force_constraint.Force = 40000.0
-    force_constraint.Direction = (box_obj, ["Edge5"])
+    force_constraint.Direction = (geom_obj, ["Edge5"])
     force_constraint.Reversed = True
 
     # pressure_constraint
     pressure_constraint = analysis.addObject(
         ObjectsFem.makeConstraintPressure(doc, name="FemConstraintPressure")
     )[0]
-    pressure_constraint.References = [(box_obj, "Face2")]
+    pressure_constraint.References = [(geom_obj, "Face2")]
     pressure_constraint.Pressure = 1000.0
     pressure_constraint.Reversed = False
 

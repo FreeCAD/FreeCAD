@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # to run the example use:
 """
 from femexamples.thermomech_flow1d import setup
@@ -31,8 +30,11 @@ setup()
 
 
 import FreeCAD
-import ObjectsFem
+from FreeCAD import Vector as vec
+
 import Fem
+import ObjectsFem
+from Draft import makeWire
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -49,40 +51,40 @@ def setup(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    p1 = FreeCAD.Vector(0, 0, 50)
-    p2 = FreeCAD.Vector(0, 0, -50)
-    p3 = FreeCAD.Vector(0, 0, -4300)
-    p4 = FreeCAD.Vector(4950, 0, -4300)
-    p5 = FreeCAD.Vector(5000, 0, -4300)
-    p6 = FreeCAD.Vector(8535.53, 0, -7835.53)
-    p7 = FreeCAD.Vector(8569.88, 0, -7870.88)
-    p8 = FreeCAD.Vector(12105.41, 0, -11406.41)
-    p9 = FreeCAD.Vector(12140.76, 0, -11441.76)
-    p10 = FreeCAD.Vector(13908.53, 0, -13209.53)
-    p11 = FreeCAD.Vector(13943.88, 0, -13244.88)
-    p12 = FreeCAD.Vector(15046.97, 0, -14347.97)
-    p13 = FreeCAD.Vector(15046.97, 0, -7947.97)
-    p14 = FreeCAD.Vector(15046.97, 0, -7847.97)
-    p15 = FreeCAD.Vector(0, 0, 0)
-    p16 = FreeCAD.Vector(0, 0, -2175)
-    p17 = FreeCAD.Vector(2475, 0, -4300)
-    p18 = FreeCAD.Vector(4975, 0, -4300)
-    p19 = FreeCAD.Vector(6767.765, 0, -6067.765)
-    p20 = FreeCAD.Vector(8552.705, 0, -7853.205)
-    p21 = FreeCAD.Vector(10337.645, 0, -9638.645)
-    p22 = FreeCAD.Vector(12123.085, 0, -11424.085)
-    p23 = FreeCAD.Vector(13024.645, 0, -12325.645)
-    p24 = FreeCAD.Vector(13926.205, 0, -13227.205)
-    p25 = FreeCAD.Vector(14495.425, 0, -13796.425)
-    p26 = FreeCAD.Vector(15046.97, 0, -11147.97)
-    p27 = FreeCAD.Vector(15046.97, 0, -7897.97)
+    # geometry objects
+    p1 = vec(0, 0, 50)
+    p2 = vec(0, 0, -50)
+    p3 = vec(0, 0, -4300)
+    p4 = vec(4950, 0, -4300)
+    p5 = vec(5000, 0, -4300)
+    p6 = vec(8535.53, 0, -7835.53)
+    p7 = vec(8569.88, 0, -7870.88)
+    p8 = vec(12105.41, 0, -11406.41)
+    p9 = vec(12140.76, 0, -11441.76)
+    p10 = vec(13908.53, 0, -13209.53)
+    p11 = vec(13943.88, 0, -13244.88)
+    p12 = vec(15046.97, 0, -14347.97)
+    p13 = vec(15046.97, 0, -7947.97)
+    p14 = vec(15046.97, 0, -7847.97)
+    p15 = vec(0, 0, 0)
+    p16 = vec(0, 0, -2175)
+    p17 = vec(2475, 0, -4300)
+    p18 = vec(4975, 0, -4300)
+    p19 = vec(6767.765, 0, -6067.765)
+    p20 = vec(8552.705, 0, -7853.205)
+    p21 = vec(10337.645, 0, -9638.645)
+    p22 = vec(12123.085, 0, -11424.085)
+    p23 = vec(13024.645, 0, -12325.645)
+    p24 = vec(13926.205, 0, -13227.205)
+    p25 = vec(14495.425, 0, -13796.425)
+    p26 = vec(15046.97, 0, -11147.97)
+    p27 = vec(15046.97, 0, -7897.97)
     points = [
         p1, p2, p3, p4, p5, p6, p7, p8, p9, p10,
         p11, p12, p13, p14, p15, p16, p17, p18, p19, p20,
         p21, p22, p23, p24, p25, p26, p27
     ]
-    from Draft import makeWire
-    line = makeWire(
+    geom_obj = makeWire(
         points,
         closed=False,
         face=False,
@@ -92,7 +94,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     if FreeCAD.GuiUp:
         import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
@@ -136,7 +138,7 @@ def setup(doc=None, solvertype="ccxtools"):
     inlet.SectionType = "Liquid"
     inlet.LiquidSectionType = "PIPE INLET"
     inlet.InletPressure = 0.1
-    inlet.References = [(line, "Edge1")]
+    inlet.References = [(geom_obj, "Edge1")]
 
     entrance = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -145,7 +147,7 @@ def setup(doc=None, solvertype="ccxtools"):
     entrance.LiquidSectionType = "PIPE ENTRANCE"
     entrance.EntrancePipeArea = 31416.00
     entrance.EntranceArea = 25133.00
-    entrance.References = [(line, "Edge2")]
+    entrance.References = [(geom_obj, "Edge2")]
 
     manning1 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -155,7 +157,7 @@ def setup(doc=None, solvertype="ccxtools"):
     manning1.ManningArea = 31416
     manning1.ManningRadius = 50
     manning1.ManningCoefficient = 0.002
-    manning1.References = [(line, "Edge3"), (line, "Edge5")]
+    manning1.References = [(geom_obj, "Edge3"), (geom_obj, "Edge5")]
 
     bend = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -166,7 +168,7 @@ def setup(doc=None, solvertype="ccxtools"):
     bend.BendRadiusDiameter = 1.5
     bend.BendAngle = 45
     bend.BendLossCoefficient = 0.4
-    bend.References = [(line, "Edge4")]
+    bend.References = [(geom_obj, "Edge4")]
 
     enlargement1 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -175,7 +177,7 @@ def setup(doc=None, solvertype="ccxtools"):
     enlargement1.LiquidSectionType = "PIPE ENLARGEMENT"
     enlargement1.EnlargeArea1 = 31416.00
     enlargement1.EnlargeArea2 = 70686.00
-    enlargement1.References = [(line, "Edge6")]
+    enlargement1.References = [(geom_obj, "Edge6")]
 
     manning2 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -185,7 +187,7 @@ def setup(doc=None, solvertype="ccxtools"):
     manning2.ManningArea = 70686.00
     manning2.ManningRadius = 75
     manning2.ManningCoefficient = 0.002
-    manning2.References = [(line, "Edge7")]
+    manning2.References = [(geom_obj, "Edge7")]
 
     contraction = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -194,7 +196,7 @@ def setup(doc=None, solvertype="ccxtools"):
     contraction.LiquidSectionType = "PIPE CONTRACTION"
     contraction.ContractArea1 = 70686
     contraction.ContractArea2 = 17671
-    contraction.References = [(line, "Edge8")]
+    contraction.References = [(geom_obj, "Edge8")]
 
     manning3 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -204,7 +206,7 @@ def setup(doc=None, solvertype="ccxtools"):
     manning3.ManningArea = 17671.00
     manning3.ManningRadius = 37.5
     manning3.ManningCoefficient = 0.002
-    manning3.References = [(line, "Edge11"), (line, "Edge9")]
+    manning3.References = [(geom_obj, "Edge11"), (geom_obj, "Edge9")]
 
     gate_valve = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -213,7 +215,7 @@ def setup(doc=None, solvertype="ccxtools"):
     gate_valve.LiquidSectionType = "PIPE GATE VALVE"
     gate_valve.GateValvePipeArea = 17671
     gate_valve.GateValveClosingCoeff = 0.5
-    gate_valve.References = [(line, "Edge10")]
+    gate_valve.References = [(geom_obj, "Edge10")]
 
     enlargement2 = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -222,7 +224,7 @@ def setup(doc=None, solvertype="ccxtools"):
     enlargement2.LiquidSectionType = "PIPE ENLARGEMENT"
     enlargement2.EnlargeArea1 = 17671
     enlargement2.EnlargeArea2 = 1e12
-    enlargement2.References = [(line, "Edge12")]
+    enlargement2.References = [(geom_obj, "Edge12")]
 
     outlet = analysis.addObject(
         ObjectsFem.makeElementFluid1D(doc, "ElementFluid1D")
@@ -230,7 +232,7 @@ def setup(doc=None, solvertype="ccxtools"):
     outlet.SectionType = "Liquid"
     outlet.LiquidSectionType = "PIPE OUTLET"
     outlet.OutletPressure = 0.1
-    outlet.References = [(line, "Edge13")]
+    outlet.References = [(geom_obj, "Edge13")]
 
     self_weight = analysis.addObject(
         ObjectsFem.makeConstraintSelfWeight(doc, "ConstraintSelfWeight")

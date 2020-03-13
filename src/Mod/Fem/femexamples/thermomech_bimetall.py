@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # thermomechanical bimetall
 # https://forum.freecadweb.org/viewtopic.php?f=18&t=43040&start=10#p366664
 # analytical solution 7.05 mm deflection in the invar material direction
@@ -34,13 +33,13 @@ setup()
 
 """
 
-
 import FreeCAD
-import ObjectsFem
-import Fem
-from FreeCAD import Vector, Rotation
-import BOPTools.SplitFeatures
+from FreeCAD import Rotation
+from FreeCAD import Vector
 
+import Fem
+import ObjectsFem
+from BOPTools import SplitFeatures
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -57,7 +56,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # parts
+    # geom objects
     # bottom box
     bottom_box_obj = doc.addObject("Part::Box", "BottomBox")
     bottom_box_obj.Length = 100
@@ -77,8 +76,8 @@ def setup(doc=None, solvertype="ccxtools"):
     doc.recompute()
 
     # all geom boolean fragment
-    all_geom_boolfrag_obj = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
-    all_geom_boolfrag_obj.Objects = [bottom_box_obj, top_box_obj]
+    geom_obj = SplitFeatures.makeBooleanFragments(name='BooleanFragments')
+    geom_obj.Objects = [bottom_box_obj, top_box_obj]
     if FreeCAD.GuiUp:
         bottom_box_obj.ViewObject.hide()
         top_box_obj.ViewObject.hide()
@@ -86,7 +85,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     if FreeCAD.GuiUp:
         import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
@@ -124,7 +123,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["ThermalConductivity"] = "200 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.00002 m/m/K"
     material_obj_bottom.Material = mat
-    material_obj_bottom.References = [(all_geom_boolfrag_obj, "Solid1")]
+    material_obj_bottom.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj_bottom)
 
     material_obj_top = analysis.addObject(
@@ -138,7 +137,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["ThermalConductivity"] = "13 W/m/K"
     mat["ThermalExpansionCoefficient"] = "0.0000012 m/m/K"
     material_obj_top.Material = mat
-    material_obj_top.References = [(all_geom_boolfrag_obj, "Solid2")]
+    material_obj_top.References = [(geom_obj, "Solid2")]
     analysis.addObject(material_obj_top)
 
     # constraint fixed
@@ -146,8 +145,8 @@ def setup(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
     con_fixed.References = [
-        (all_geom_boolfrag_obj, "Face1"),
-        (all_geom_boolfrag_obj, "Face7"),
+        (geom_obj, "Face1"),
+        (geom_obj, "Face7"),
     ]
 
     # constraint initial temperature
@@ -161,16 +160,16 @@ def setup(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperature")
     )[0]
     constraint_temperature.References = [
-        (all_geom_boolfrag_obj, "Face1"),
-        (all_geom_boolfrag_obj, "Face2"),
-        (all_geom_boolfrag_obj, "Face3"),
-        (all_geom_boolfrag_obj, "Face4"),
-        (all_geom_boolfrag_obj, "Face5"),
-        (all_geom_boolfrag_obj, "Face7"),
-        (all_geom_boolfrag_obj, "Face8"),
-        (all_geom_boolfrag_obj, "Face9"),
-        (all_geom_boolfrag_obj, "Face10"),
-        (all_geom_boolfrag_obj, "Face11"),
+        (geom_obj, "Face1"),
+        (geom_obj, "Face2"),
+        (geom_obj, "Face3"),
+        (geom_obj, "Face4"),
+        (geom_obj, "Face5"),
+        (geom_obj, "Face7"),
+        (geom_obj, "Face8"),
+        (geom_obj, "Face9"),
+        (geom_obj, "Face10"),
+        (geom_obj, "Face11"),
     ]
     constraint_temperature.Temperature = 373.0
     constraint_temperature.CFlux = 0.0

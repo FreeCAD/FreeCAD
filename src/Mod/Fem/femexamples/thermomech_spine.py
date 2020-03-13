@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # to run the example use:
 """
 from femexamples.thermomech_spine import setup
@@ -29,10 +28,10 @@ setup()
 
 """
 
-
 import FreeCAD
-import ObjectsFem
+
 import Fem
+import ObjectsFem
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -49,16 +48,16 @@ def setup(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # part
-    box_obj = doc.addObject("Part::Box", "Box")
-    box_obj.Height = 25.4
-    box_obj.Width = 25.4
-    box_obj.Length = 203.2
+    # geometry object
+    geom_obj = doc.addObject("Part::Box", "Box")
+    geom_obj.Height = 25.4
+    geom_obj.Width = 25.4
+    geom_obj.Length = 203.2
     doc.recompute()
 
     if FreeCAD.GuiUp:
         import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
@@ -104,7 +103,7 @@ def setup(doc=None, solvertype="ccxtools"):
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, "FemConstraintFixed")
     )[0]
-    fixed_constraint.References = [(box_obj, "Face1")]
+    fixed_constraint.References = [(geom_obj, "Face1")]
 
     # initialtemperature_constraint
     initialtemperature_constraint = analysis.addObject(
@@ -116,7 +115,7 @@ def setup(doc=None, solvertype="ccxtools"):
     temperature_constraint = analysis.addObject(
         ObjectsFem.makeConstraintTemperature(doc, "FemConstraintTemperature")
     )[0]
-    temperature_constraint.References = [(box_obj, "Face1")]
+    temperature_constraint.References = [(geom_obj, "Face1")]
     temperature_constraint.Temperature = 310.93
 
     # heatflux_constraint
@@ -124,10 +123,10 @@ def setup(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeConstraintHeatflux(doc, "FemConstraintHeatflux")
     )[0]
     heatflux_constraint.References = [
-        (box_obj, "Face3"),
-        (box_obj, "Face4"),
-        (box_obj, "Face5"),
-        (box_obj, "Face6")
+        (geom_obj, "Face3"),
+        (geom_obj, "Face4"),
+        (geom_obj, "Face5"),
+        (geom_obj, "Face6")
     ]
     heatflux_constraint.AmbientTemp = 255.3722
     heatflux_constraint.FilmCoef = 5.678

@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # contact example shell to shell elements
 # https://forum.freecadweb.org/viewtopic.php?f=18&t=42228
 # based on https://forum.freecadweb.org/viewtopic.php?f=18&t=42228#p359488
@@ -34,10 +33,11 @@ setup()
 
 
 import FreeCAD
-import ObjectsFem
+
 import Fem
+import ObjectsFem
 import Part
-import BOPTools.SplitFeatures
+from BOPTools import SplitFeatures
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -54,10 +54,11 @@ def setup(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # parts
+    # geometry objects
     # TODO turn circle of upper tube to have the line on the other side
     # make a boolean fragment of them to be sure there is a mesh point on remesh
     # but as long as we do not remesh it works without the boolean fragment too
+
     # tubes
     tube_radius = 25
     tube_length = 500
@@ -87,13 +88,15 @@ def setup(doc=None, solvertype="ccxtools"):
         force_point.ViewObject.PointSize = 10.0
         force_point.ViewObject.PointColor = (1.0, 0.0, 0.0)
 
-    BooleanFrag = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
-    BooleanFrag.Objects = [upper_tube, force_point]
+    # boolean fragment of upper tubo and force point
+    boolfrag = SplitFeatures.makeBooleanFragments(name='BooleanFragments')
+    boolfrag.Objects = [upper_tube, force_point]
     if FreeCAD.GuiUp:
         upper_tube.ViewObject.hide()
 
-    compound = doc.addObject("Part::Compound", "Compound")
-    compound.Links = [BooleanFrag, lower_tube]
+    # compound out of bool frag and lower tube
+    goem_obj = doc.addObject("Part::Compound", "AllGeomCompound")
+    goem_obj.Links = [boolfrag, lower_tube]
 
     # line for load direction
     sh_load_line = Part.makeLine(v_force_pt, FreeCAD.Vector(0, 150, 475))
@@ -107,7 +110,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     if FreeCAD.GuiUp:
         import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        goem_obj.ViewObject.Document.activeView().viewAxonometric()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis

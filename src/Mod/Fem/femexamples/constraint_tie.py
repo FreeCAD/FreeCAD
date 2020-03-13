@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # constraint tie, bond two surfaces together (solid mesh only)
 # https://forum.freecadweb.org/viewtopic.php?f=18&t=42783
 # to run the example use:
@@ -33,12 +32,12 @@ setup()
 
 
 import FreeCAD
-import ObjectsFem
-import Fem
-import Part
-import BOPTools.SplitFeatures
 from FreeCAD import Vector
 
+import Fem
+import ObjectsFem
+import Part
+from BOPTools import SplitFeatures
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -55,7 +54,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # parts
+    # geometry objects
     # cones cut
     cone_outer_sh = Part.makeCone(1100, 1235, 1005, Vector(0, 0, 0), Vector(0, 0, 1), 359)
     cone_inner_sh = Part.makeCone(1050, 1185, 1005, Vector(0, 0, 0), Vector(0, 0, 1), 359)
@@ -71,8 +70,8 @@ def setup(doc=None, solvertype="ccxtools"):
     line_force_obj = doc.addObject("Part::Feature", "Line_Force")
     line_force_obj.Shape = line_force_sh
 
-    geom_all_obj = BOPTools.SplitFeatures.makeBooleanFragments(name='BooleanFragments')
-    geom_all_obj.Objects = [cone_cut_obj, line_fix_obj, line_force_obj]
+    geom_obj = SplitFeatures.makeBooleanFragments(name='BooleanFragments')
+    geom_obj.Objects = [cone_cut_obj, line_fix_obj, line_force_obj]
     if FreeCAD.GuiUp:
         cone_cut_obj.ViewObject.hide()
         line_fix_obj.ViewObject.hide()
@@ -82,7 +81,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     if FreeCAD.GuiUp:
         import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
@@ -121,15 +120,15 @@ def setup(doc=None, solvertype="ccxtools"):
     con_fixed = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
-    con_fixed.References = [(geom_all_obj, "Edge1")]
+    con_fixed.References = [(geom_obj, "Edge1")]
 
     # constraint force
     con_force = doc.Analysis.addObject(
         ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
     )[0]
-    con_force.References = [(geom_all_obj, "Edge2")]
+    con_force.References = [(geom_obj, "Edge2")]
     con_force.Force = 10000.0  # 10000 N = 10 kN
-    con_force.Direction = (geom_all_obj, ["Edge2"])
+    con_force.Direction = (geom_obj, ["Edge2"])
     con_force.Reversed = False
 
     # constraint tie
@@ -137,8 +136,8 @@ def setup(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeConstraintTie(doc, name="ConstraintTie")
     )[0]
     con_tie.References = [
-        (geom_all_obj, "Face5"),
-        (geom_all_obj, "Face7"),
+        (geom_obj, "Face5"),
+        (geom_obj, "Face7"),
     ]
     con_tie.Tolerance = 25.0
 

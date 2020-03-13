@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # to run the example use:
 """
 from femexamples.rc_wall_2d import setup
@@ -31,8 +30,12 @@ setup()
 
 
 import FreeCAD
-import ObjectsFem
+from FreeCAD import Vector as vec
+
 import Fem
+import ObjectsFem
+import Part
+from Part import makeLine as ln
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -49,10 +52,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # part
-    from FreeCAD import Vector as vec
-    import Part
-    from Part import makeLine as ln
+    # geom objects
 
     v1 = vec(0, -2000, 0)
     v2 = vec(500, -2000, 0)
@@ -70,13 +70,13 @@ def setup(doc=None, solvertype="ccxtools"):
     l6 = ln(v6, v7)
     l7 = ln(v7, v8)
     l8 = ln(v8, v1)
-    rcwall = doc.addObject("Part::Feature", "FIB_Wall")
-    rcwall.Shape = Part.Face(Part.Wire([l1, l2, l3, l4, l5, l6, l7, l8]))
+    geom_obj = doc.addObject("Part::Feature", "FIB_Wall")
+    geom_obj.Shape = Part.Face(Part.Wire([l1, l2, l3, l4, l5, l6, l7, l8]))
     doc.recompute()
 
     if FreeCAD.GuiUp:
         import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
@@ -130,22 +130,22 @@ def setup(doc=None, solvertype="ccxtools"):
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(rcwall, "Edge1"), (rcwall, "Edge5")]
+    fixed_constraint.References = [(geom_obj, "Edge1"), (geom_obj, "Edge5")]
 
     # force constraint
     force_constraint = doc.Analysis.addObject(
         ObjectsFem.makeConstraintForce(doc, name="ConstraintForce")
     )[0]
-    force_constraint.References = [(rcwall, "Edge7")]
+    force_constraint.References = [(geom_obj, "Edge7")]
     force_constraint.Force = 1000000.0
-    force_constraint.Direction = (rcwall, ["Edge8"])
+    force_constraint.Direction = (geom_obj, ["Edge8"])
     force_constraint.Reversed = False
 
     # displacement_constraint
     displacement_constraint = doc.Analysis.addObject(
         ObjectsFem.makeConstraintDisplacement(doc, name="ConstraintDisplacmentPrescribed")
     )[0]
-    displacement_constraint.References = [(rcwall, "Face1")]
+    displacement_constraint.References = [(geom_obj, "Face1")]
     displacement_constraint.zFix = True
 
     # mesh

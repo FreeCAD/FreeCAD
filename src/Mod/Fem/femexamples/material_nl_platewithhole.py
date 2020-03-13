@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # to run the example use:
 """
 from femexamples.material_nl_platewithhole import setup
@@ -31,9 +30,13 @@ setup()
 
 
 import FreeCAD
-import ObjectsFem
-import Fem
+from FreeCAD import Vector as vec
 
+import Fem
+import ObjectsFem
+import Part
+from Part import makeCircle as ci
+from Part import makeLine as ln
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -64,11 +67,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # part
-    import Part
-    from FreeCAD import Vector as vec
-    from Part import makeLine as ln
-    from Part import makeCircle as ci
+    # geometry objects
 
     v1 = vec(-200, -100, 0)
     v2 = vec(200, -100, 0)
@@ -81,13 +80,13 @@ def setup(doc=None, solvertype="ccxtools"):
     v5 = vec(0, 0, 0)
     c1 = ci(50, v5)
     face = Part.makeFace([Part.Wire([l1, l2, l3, l4]), c1], "Part::FaceMakerBullseye")
-    partfem = doc.addObject("Part::Feature", "Hole_Plate")
-    partfem.Shape = face.extrude(vec(0, 0, 10))
+    geom_obj = doc.addObject("Part::Feature", "Hole_Plate")
+    geom_obj.Shape = face.extrude(vec(0, 0, 10))
     doc.recompute()
 
     if FreeCAD.GuiUp:
         import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 
     # analysis
@@ -136,13 +135,13 @@ def setup(doc=None, solvertype="ccxtools"):
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(partfem, "Face4")]
+    fixed_constraint.References = [(geom_obj, "Face4")]
 
     # force constraint
     pressure_constraint = doc.Analysis.addObject(
         ObjectsFem.makeConstraintPressure(doc, "ConstraintPressure")
     )[0]
-    pressure_constraint.References = [(partfem, "Face2")]
+    pressure_constraint.References = [(geom_obj, "Face2")]
     pressure_constraint.Pressure = 130.0
     pressure_constraint.Reversed = True
 
