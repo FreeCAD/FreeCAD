@@ -124,9 +124,10 @@ class ObjectDressup:
         x = Vector.x
         y = Vector.y
         length = math.sqrt(x*x + y*y)
+        #print("Len: {}".format(length))
         if((math.fabs(length)) > 0.0000000000001):
-            vx = round(x / length, 0)
-            vy = round(y / length, 0)
+            vx = round(x / length, 2)
+            vy = round(y / length, 2)
         return FreeCAD.Vector(vx, vy, 0)
     
     def invert(self,  Vector):
@@ -146,7 +147,7 @@ class ObjectDressup:
         c = math.cos(math.radians(angle))
         xnew = Vector.x * c - Vector.y * s;
         ynew = Vector.x * s + Vector.y * c;
-        print("X{} Y{}; X{} Y{}".format(Vector.x,  Vector.y,  xnew,  ynew))
+        #print("X{} Y{}; X{} Y{}".format(Vector.x,  Vector.y,  xnew,  ynew))
         return FreeCAD.Vector(xnew, ynew, Vector.z)
 
     def getLeadStart(self, obj, queue, action):
@@ -203,6 +204,7 @@ class ObjectDressup:
             else:
                 vec_rot = self.rotate(ve,  -90)
             
+            #print("vro{} vro{}".format(vec_rot.x,  vec_rot.y))
             vec_n = self.normalize(vec_rot)
             v = self.invert(vec_n)
             
@@ -223,6 +225,7 @@ class ObjectDressup:
             leadstart = p0.add(off_v)  # Dmode
 
         if action == 'start':
+            #print("Start")
             extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": op.ClearanceHeight.Value})
             results.append(extendcommand)
             extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": op.ClearanceHeight.Value})
@@ -231,6 +234,7 @@ class ObjectDressup:
             results.append(extendcommand)
         
         if action == 'layer':
+            #print("Layer")
             if not obj.KeepToolDown:
                 extendcommand = Path.Command('G0', {"Z": op.SafeHeight.Value})
                 results.append(extendcommand)
