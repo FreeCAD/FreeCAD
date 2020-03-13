@@ -42,7 +42,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Change shape of edge ends. Used for 1:1 scale stencil making.</string>
+           <string>Shape of line end caps. Only change unless you know what you are doing!</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>EdgeCapStyle</cstring>
@@ -262,7 +262,7 @@ can be a performance penalty in complex models.</string>
            </font>
           </property>
           <property name="text">
-           <string>Edge End Cap</string>
+           <string>Line End Cap Shape</string>
           </property>
          </widget>
         </item>
