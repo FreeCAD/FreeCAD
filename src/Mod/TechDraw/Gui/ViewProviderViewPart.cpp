@@ -89,7 +89,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
 
-    double defScale = hGrp->GetFloat("CenterMarkScale",2.0);
+    double defScale = hGrp->GetFloat("CenterMarkScale",0.50);
     bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
     
     //decorations

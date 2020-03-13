@@ -904,7 +904,7 @@ void DrawViewSection::getParameters()
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
 
-    bool fuseFirst = hGrp->GetBool("SectionFuseFirst",true);
+    bool fuseFirst = hGrp->GetBool("SectionFuseFirst", false);
     FuseBeforeCut.setValue(fuseFirst);
 }
 
