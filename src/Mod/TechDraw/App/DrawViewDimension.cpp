@@ -655,6 +655,7 @@ std::string  DrawViewDimension::getFormatedValue(int partial)
         QChar dp = QChar::fromLatin1('.');
         if (loc.decimalPoint() != dp) {
             specStr.replace(dp,loc.decimalPoint());
+            specVal.replace(dp,loc.decimalPoint());
         }
         //Remove space between dimension and degree sign
         if ((Type.isValue("Angle")) || (Type.isValue("Angle3Pt"))) {
