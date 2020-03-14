@@ -259,7 +259,9 @@ void PropertyView::slotChangePropertyEditor(const App::Document &, const App::Pr
 void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
     if(propertyEditorData->propOwners.count(doc.getDocument())) {
         propertyEditorView->buildUp();
+        propertyEditorData->setAutomaticDocumentUpdate(false);
         propertyEditorData->buildUp();
+        propertyEditorData->setAutomaticDocumentUpdate(true);
         clearPropertyItemSelection();
         timer->start(50);
     }
@@ -268,7 +270,9 @@ void PropertyView::slotDeleteDocument(const Gui::Document &doc) {
 void PropertyView::slotDeletedViewObject(const Gui::ViewProvider &vp) {
     if(propertyEditorView->propOwners.count(&vp)) {
         propertyEditorView->buildUp();
+        propertyEditorData->setAutomaticDocumentUpdate(false);
         propertyEditorData->buildUp();
+        propertyEditorData->setAutomaticDocumentUpdate(true);
         clearPropertyItemSelection();
         timer->start(50);
     }
@@ -277,7 +281,9 @@ void PropertyView::slotDeletedViewObject(const Gui::ViewProvider &vp) {
 void PropertyView::slotDeletedObject(const App::DocumentObject &obj) {
     if(propertyEditorData->propOwners.count(&obj)) {
         propertyEditorView->buildUp();
+        propertyEditorData->setAutomaticDocumentUpdate(false);
         propertyEditorData->buildUp();
+        propertyEditorData->setAutomaticDocumentUpdate(true);
         clearPropertyItemSelection();
         timer->start(50);
     }
