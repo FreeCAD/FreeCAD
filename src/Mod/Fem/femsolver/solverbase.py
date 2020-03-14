@@ -115,7 +115,7 @@ class ViewProxy(object):
     def doubleClicked(self, vobj):
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
-        Gui.ActiveDocument.setEdit(vobj.Object.Name)
+        vobj.Document.setEdit(vobj.Object.Name)
         return True
 
     def attach(self, vobj):

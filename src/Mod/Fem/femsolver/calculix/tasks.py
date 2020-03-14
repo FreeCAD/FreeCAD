@@ -118,7 +118,7 @@ class Results(run.Results):
             if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
-        FreeCAD.ActiveDocument.recompute()
+        self.analysis.Document.recompute()
 
     def load_results_ccxfrd(self):
         frd_result_file = os.path.join(

@@ -81,7 +81,7 @@ class FemInputWriter():
                 "Error: FemInputWriter has no working_dir --> "
                 "we are going to make a temporary one!\n"
             )
-            self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace(
+            self.dir_name = self.document.TransientDir.replace(
                 "\\", "/"
             ) + "/FemAnl_" + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):
