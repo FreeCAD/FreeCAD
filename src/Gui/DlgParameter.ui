@@ -48,7 +48,7 @@
         <string>Type in a group name to find it</string>
        </property>
        <property name="placeholderText">
-        <string>Search Group</string>
+        <string/>
        </property>
       </widget>
      </item>
