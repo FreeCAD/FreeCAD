@@ -1355,9 +1355,9 @@ class Snapper:
                 state = bool(int(snap_modes[c]))
                 button.setChecked(state)
                 if state:
-                    b.setToolTip(b.toolTip()+" (ON)")
+                    button.setToolTip(button.toolTip()+" (ON)")
                 else:
-                    b.setToolTip(b.toolTip()+" (OFF)")
+                    button.setToolTip(button.toolTip()+" (OFF)")
                 c += 1
 
     def toggleGrid(self):
