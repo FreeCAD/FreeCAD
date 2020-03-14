@@ -3372,27 +3372,75 @@ class _Dimension(_DraftObject):
     """The Draft Dimension object"""
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Dimension")
-        obj.addProperty("App::PropertyVectorDistance","Start","Draft",QT_TRANSLATE_NOOP("App::Property","Startpoint of dimension"))
-        obj.addProperty("App::PropertyVectorDistance","End","Draft",QT_TRANSLATE_NOOP("App::Property","Endpoint of dimension"))
-        obj.addProperty("App::PropertyVector","Normal","Draft",QT_TRANSLATE_NOOP("App::Property","The normal direction of this dimension"))
-        obj.addProperty("App::PropertyVector","Direction","Draft",QT_TRANSLATE_NOOP("App::Property","The normal direction of this dimension"))
-        obj.addProperty("App::PropertyVectorDistance","Dimline","Draft",QT_TRANSLATE_NOOP("App::Property","Point through which the dimension line passes"))
-        obj.addProperty("App::PropertyLink","Support","Draft",QT_TRANSLATE_NOOP("App::Property","The object measured by this dimension"))
-        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft",QT_TRANSLATE_NOOP("App::Property","The geometry this dimension is linked to"))
-        obj.addProperty("App::PropertyLength","Distance","Draft",QT_TRANSLATE_NOOP("App::Property","The measurement of this dimension"))
-        obj.addProperty("App::PropertyBool","Diameter","Draft",QT_TRANSLATE_NOOP("App::Property","For arc/circle measurements, false = radius, true = diameter"))
+        
+        # Annotation
+        obj.addProperty("App::PropertyLink","DimensionStyle",
+                        "Annotation",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Link dimension style"))
+
+        # Draft
+        obj.addProperty("App::PropertyVectorDistance","Start",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Startpoint of dimension"))
+
+        obj.addProperty("App::PropertyVectorDistance","End",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Endpoint of dimension"))
+
+        obj.addProperty("App::PropertyVector","Normal",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The normal direction of this dimension"))
+
+        obj.addProperty("App::PropertyVector","Direction",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The normal direction of this dimension"))
+
+        obj.addProperty("App::PropertyVectorDistance","Dimline",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Point through which the dimension line passes"))
+
+        obj.addProperty("App::PropertyLink","Support",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The object measured by this dimension"))
+
+        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The geometry this dimension is linked to"))
+
+        obj.addProperty("App::PropertyLength","Distance",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The measurement of this dimension"))
+
+        obj.addProperty("App::PropertyBool","Diameter",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "For arc/circle measurements, false = radius, true = diameter"))
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
         obj.Normal = FreeCAD.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
-        if hasattr(obj,"Distance"):
-            obj.setEditorMode('Distance',1)
+        if hasattr(obj, "Distance"):
+            obj.setEditorMode('Distance', 1)
         #if hasattr(obj,"Normal"):
-        #    obj.setEditorMode('Normal',2)
-        if hasattr(obj,"Support"):
-            obj.setEditorMode('Support',2)
+        #    obj.setEditorMode('Normal', 2)
+        if hasattr(obj, "Support"):
+            obj.setEditorMode('Support', 2)
+        if prop == "DimensionStyle":
+            if hasattr(obj, "DimensionStyle"):
+                from draftutils import gui_utils
+                gui_utils.format_object(target = obj, origin = obj.DimensionStyle)
+
 
     def execute(self, obj):
         import DraftGeomUtils
@@ -3503,6 +3551,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyFloat","ScaleMultiplier",
                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
                         "Dimension size overall multiplier"))
+
         # text properties
         obj.addProperty("App::PropertyFont","FontName",
                         "Text",QT_TRANSLATE_NOOP("App::Property","Font name"))
