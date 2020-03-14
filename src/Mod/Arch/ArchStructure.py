@@ -712,9 +712,7 @@ class _Structure(ArchComponent.Component):
         self.applyShape(obj,base,pl)
 
     def getExtrusionData(self,obj):
-
-        """returns (shape,extrusion vector,placement) or None"""
-
+        """returns (shape,extrusion vector or path,placement) or None"""
         if hasattr(obj,"IfcType"):
             IfcType = obj.IfcType
         else:
@@ -728,11 +726,11 @@ class _Structure(ArchComponent.Component):
         length  = obj.Length.Value
         width = obj.Width.Value
         height = obj.Height.Value
-        normal = None
         if not height:
             height = self.getParentHeight(obj)
-        base = None
-        placement = None
+        baseface = None
+        extrusion = None
+        normal = None
         if obj.Base:
             if hasattr(obj.Base,'Shape'):
                 if obj.Base.Shape:
@@ -742,22 +740,8 @@ class _Structure(ArchComponent.Component):
                         if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tolerance=0.01):
                             return None
                         else:
-                            base,placement = self.rebase(obj.Base.Shape)
-                            normal = obj.Base.Shape.Faces[0].normalAt(0,0)
-                            normal = placement.inverse().Rotation.multVec(normal)
-                            if (len(obj.Shape.Solids) > 1) and (len(obj.Shape.Solids) == len(obj.Base.Shape.Faces)):
-                                # multiple extrusions
-                                b = []
-                                p = []
-                                hint = obj.Base.Shape.Faces[0].normalAt(0,0)
-                                for f in obj.Base.Shape.Faces:
-                                    bf,pf = self.rebase(f,hint)
-                                    b.append(bf)
-                                    p.append(pf)
-                                base = b
-                                placement = p
+                            baseface = obj.Base.Shape.copy()
                     elif obj.Base.Shape.Wires:
-                        baseface = None
                         if hasattr(obj,"FaceMaker"):
                             if obj.FaceMaker != "None":
                                 try:
@@ -765,9 +749,6 @@ class _Structure(ArchComponent.Component):
                                 except:
                                     FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
                                     return None
-                                if len(baseface.Faces) > 1:
-                                    baseface = baseface.Faces[0]
-                                normal = baseface.normalAt(0,0)
                         if not baseface:
                             for w in obj.Base.Shape.Wires:
                                 if not w.isClosed():
@@ -781,15 +762,7 @@ class _Structure(ArchComponent.Component):
                                 if baseface:
                                     baseface = baseface.fuse(f)
                                 else:
-                                    baseface = f
-                                    normal = f.normalAt(0,0)
-                        base,placement = self.rebase(baseface)
-                        normal = placement.inverse().Rotation.multVec(normal)
-                    elif (len(obj.Base.Shape.Edges) == 1) and (len(obj.Base.Shape.Vertexes) == 1):
-                        # closed edge
-                        w = Part.Wire(obj.Base.Shape.Edges[0])
-                        baseface = Part.Face(w)
-                        base,placement = self.rebase(baseface)
+                                    baseface = f.copy()
         elif length and width and height:
             if (length > height) and (IfcType != "Slab"):
                 h2 = height/2 or 0.5
@@ -807,8 +780,7 @@ class _Structure(ArchComponent.Component):
                 v4 = Vector(-l2,w2,0)
             import Part
             baseface = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
-            base,placement = self.rebase(baseface)
-        if base and placement:
+        if baseface:
             if obj.Tool:
                 if obj.Tool.Shape:
                     edges = obj.Tool.Shape.Edges
@@ -819,10 +791,28 @@ class _Structure(ArchComponent.Component):
             else:
                 if obj.Normal.Length:
                     normal = Vector(obj.Normal).normalize()
-                    if isinstance(placement,list):
-                        normal = placement[0].inverse().Rotation.multVec(normal)
-                    else:
-                        normal = placement.inverse().Rotation.multVec(normal)
+                else:
+                    normal = baseface.Faces[0].normalAt(0, 0)
+            base = None
+            placement = None
+            inverse_placement = None
+            if len(baseface.Faces) > 1:
+                base = []
+                placement = []
+                hint = baseface.Faces[0].normalAt(0, 0)
+                for f in baseface.Faces:
+                    bf, pf = self.rebase(f, hint)
+                    base.append(bf)
+                    placement.append(pf)
+                inverse_placement = placement[0].inverse()
+            else:
+                base, placement = self.rebase(baseface)
+                inverse_placement = placement.inverse()
+            if extrusion:
+                if isinstance(extrusion, FreeCAD.Vector):
+                    extrusion = inverse_placement.Rotation.multVec(extrusion)
+            elif normal:
+                normal = inverse_placement.Rotation.multVec(normal)
                 if not normal:
                     normal = Vector(0,0,1)
                 if not normal.Length:
@@ -834,7 +824,8 @@ class _Structure(ArchComponent.Component):
                 else:
                     if height:
                         extrusion = normal.multiply(height)
-            return (base,extrusion,placement)
+            if extrusion:
+                return (base, extrusion, placement)
         return None
 
     def onChanged(self,obj,prop):
