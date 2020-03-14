@@ -491,7 +491,8 @@ int LinkBaseExtension::_getElementCountValue() const {
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
-    if(_getElementListValue().size() || _getElementCountValue())
+    if(_getElementListValue().size() 
+            || (_getElementCountValue() && _getShowElementValue()))
         return true;
     DocumentObject *linked = getTrueLinkedObject(false);
     if(linked) {
