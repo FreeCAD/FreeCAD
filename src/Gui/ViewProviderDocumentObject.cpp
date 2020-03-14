@@ -776,8 +776,13 @@ void ViewProviderDocumentObject::beforeDelete() {
     for(auto child : childSet) {
         auto vpd = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
                 Application::Instance->getViewProvider(child));
-        if(vpd)
-            vpd->parentSet.erase(getObject());
+        if(vpd && vpd->parentSet.erase(getObject())) {
+            if(getObject() && vpd->getObject()
+                    && getObject()->getDocument() == vpd->getObject()->getDocument())
+            {
+                vpd->isShowable(true);
+            }
+        }
     }
     claimedChildren.clear();
     childSet.clear();
