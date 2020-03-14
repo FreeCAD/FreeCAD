@@ -57,7 +57,7 @@ public:
     void setupTransaction();
 
     /// Apply the changes made to the object to it
-    virtual void apply() {};
+    virtual void apply() {}
 
     int getTransactionID() const {
         return transactionID;

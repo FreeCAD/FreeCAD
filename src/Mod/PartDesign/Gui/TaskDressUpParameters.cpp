@@ -81,19 +81,20 @@ TaskDressUpParameters::~TaskDressUpParameters()
     Gui::Selection().rmvSelectionGate();
 }
 
-void TaskDressUpParameters::setupTransaction() {
-    if(!DressUpView)
+void TaskDressUpParameters::setupTransaction()
+{
+    if (!DressUpView)
         return;
 
     int tid = 0;
-    const char *name = App::GetApplication().getActiveTransaction(&tid);
-    if(tid && tid == transactionID)
+    App::GetApplication().getActiveTransaction(&tid);
+    if (tid && tid == transactionID)
         return;
 
+    // open a transaction if none is active
     std::string n("Edit ");
-    n += DressUpView->getObject()->getNameInDocument();
-    if(!name || n != name)
-        App::GetApplication().setActiveTransaction(n.c_str());
+    n += DressUpView->getObject()->Label.getValue();
+    transactionID = App::GetApplication().setActiveTransaction(n.c_str());
 }
 
 bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
@@ -361,11 +362,6 @@ bool TaskDlgDressUpParameters::accept()
 bool TaskDlgDressUpParameters::reject()
 {
     getDressUpView()->highlightReferences(false);
-
-    auto editDoc = Gui::Application::Instance->editDocument();
-    if(editDoc && parameter->getTransactionID())
-        editDoc->getDocument()->undo(parameter->getTransactionID());
-
     return TaskDlgFeatureParameters::reject();
 }
 
