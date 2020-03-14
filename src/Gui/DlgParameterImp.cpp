@@ -117,6 +117,15 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     connect(paramGroup, SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)), 
             this, SLOT(onGroupSelected(QTreeWidgetItem*)));
     onGroupSelected(paramGroup->currentItem());
+
+    connect(ui->findGroupLE, SIGNAL(textChanged(QString)),
+        this, SLOT(on_findGroup_changed(QString)));
+
+    // setup for function on_findGroup_changed:
+    // store the current font properties
+    // because we don't know what style sheet the user uses for FC
+    defaultFont = paramGroup->font();
+    defaultColor = paramGroup->topLevelItem(0)->foreground(0);
 }
 
 /** 
@@ -133,6 +142,64 @@ void DlgParameterImp::on_buttonFind_clicked()
     if (finder.isNull())
         finder = new DlgParameterFind(this);
     finder->show();
+}
+
+void DlgParameterImp::on_findGroup_changed(const QString &SearchStr)
+{
+    // search for group tree items and highlight found results
+    // if SearchStr not empty
+
+    QTreeWidgetItem* ExpandItem;
+
+    // at first reset all items to the default font and nesting
+    if (foundList.size() > 0) {
+        for (QTreeWidgetItem* item : foundList) {
+            item->setFont(0, defaultFont);
+            item->setForeground(0, defaultColor);
+            ExpandItem = item;
+            // a group can be nested down to several levels
+            while (true) {
+                if (!ExpandItem->parent())
+                    break;
+                else {
+                    ExpandItem->setExpanded(false);
+                    ExpandItem = ExpandItem->parent();
+                }
+            }
+        }
+    }
+    // expand the top level entries to get the initial tree state
+    for (int i = 0; i < paramGroup->topLevelItemCount(); ++i) {
+        paramGroup->topLevelItem(i)->setExpanded(true);
+    }
+
+    // don't perform a search if the search is empty
+    if (SearchStr.isEmpty())
+        return;
+
+    // search the tree widget
+    foundList = paramGroup->findItems(SearchStr, Qt::MatchContains | Qt::MatchRecursive);
+    if (foundList.size() > 0) {
+        for (QTreeWidgetItem* item : foundList) {
+            item->setFont(0, boldFont);
+            item->setForeground(0, Qt::red);
+            // expand its parent to see the item
+            // a group can be nested down to several levels
+            ExpandItem = item;
+            while (true) {
+                if (!ExpandItem->parent())
+                    break;
+                else {
+                    ExpandItem->setExpanded(true);
+                    ExpandItem = ExpandItem->parent();
+                }
+            }
+            // if there is only one found item, scrollt o it
+            if (foundList.size() == 1) {
+                paramGroup->scrollToItem(foundList[0], QAbstractItemView::PositionAtCenter);
+            }
+        }
+    }
 }
 
 /**
