@@ -5406,6 +5406,26 @@ def get_snap_toolbar():
             return toolbar
     return None
 
+def sync_snap_toolbar_button(button, status):
+    snap_toolbar = get_snap_toolbar()
+    if snap_toolbar:
+        for a in snap_toolbar.actions():
+            if a.objectName() == button:
+                a.setChecked(status)
+                if a.isChecked():
+                    a.setToolTip(a.toolTip().replace("OFF","ON"))
+                else:
+                    a.setToolTip(a.toolTip().replace("ON","OFF"))
+
+def sync_snap_statusbar_button(button, status):
+    mw = FreeCADGui.getMainWindow()
+    if mw:
+        sb = mw.statusBar()
+        if sb:
+            ortho_button = sb.findChild(QtGui.QAction,button)
+            if ortho_button:
+                ortho_button.setChecked(status)
+
 class Draft_Snap_Lock():
     def GetResources(self):
         return {'Pixmap'  : 'Snap_Lock',
@@ -5415,8 +5435,9 @@ class Draft_Snap_Lock():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('master')
+            status = FreeCADGui.Snapper.toggle_snap('Lock')
             # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Lock"+"_Button", status)
             snap_toolbar = get_snap_toolbar()
             if snap_toolbar:
                 snap_toolbar.actions()[0].setChecked(status)
@@ -5431,13 +5452,10 @@ class Draft_Snap_Near():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('passive')
+            status = FreeCADGui.Snapper.toggle_snap('Near')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Near"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Near"+"_Button", status)
+
 
 class Draft_Snap_Midpoint():
     def GetResources(self):
@@ -5447,13 +5465,9 @@ class Draft_Snap_Midpoint():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('midpoint')
+            status = FreeCADGui.Snapper.toggle_snap('Midpoint')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Midpoint"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Midpoint"+"_Button", status)
 
 class Draft_Snap_Perpendicular():
     def GetResources(self):
@@ -5463,13 +5477,9 @@ class Draft_Snap_Perpendicular():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('perpendicular')
+            status = FreeCADGui.Snapper.toggle_snap('Perpendicular')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Perpendicular"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Perpendicular"+"_Button", status)
 
 class Draft_Snap_Grid():
     def GetResources(self):
@@ -5479,13 +5489,9 @@ class Draft_Snap_Grid():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('grid')
+            status = FreeCADGui.Snapper.toggle_snap('Grid')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Grid"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Grid"+"_Button", status)
 
 class Draft_Snap_Intersection():
     def GetResources(self):
@@ -5495,13 +5501,9 @@ class Draft_Snap_Intersection():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('intersection')
+            status = FreeCADGui.Snapper.toggle_snap('Intersection')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Intersection"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Intersection"+"_Button", status)
 
 class Draft_Snap_Parallel():
     def GetResources(self):
@@ -5511,13 +5513,9 @@ class Draft_Snap_Parallel():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('parallel')
+            status = FreeCADGui.Snapper.toggle_snap('Parallel')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Parallel"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Parallel"+"_Button", status)
 
 class Draft_Snap_Endpoint():
     def GetResources(self):
@@ -5527,13 +5525,9 @@ class Draft_Snap_Endpoint():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('endpoint')
+            status = FreeCADGui.Snapper.toggle_snap('Endpoint')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Endpoint"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Endpoint"+"_Button", status)
 
 class Draft_Snap_Angle():
     def GetResources(self):
@@ -5543,13 +5537,9 @@ class Draft_Snap_Angle():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('angle')
+            status = FreeCADGui.Snapper.toggle_snap('Angle')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Angle"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Angle"+"_Button", status)
 
 class Draft_Snap_Center():
     def GetResources(self):
@@ -5559,13 +5549,9 @@ class Draft_Snap_Center():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('center')
+            status = FreeCADGui.Snapper.toggle_snap('Center')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Center"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Center"+"_Button", status)
 
 class Draft_Snap_Extension():
     def GetResources(self):
@@ -5575,13 +5561,9 @@ class Draft_Snap_Extension():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('extension')
+            status = FreeCADGui.Snapper.toggle_snap('Extension')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Extension"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Extension"+"_Button", status)
 
 class Draft_Snap_Ortho():
     """
@@ -5595,22 +5577,10 @@ class Draft_Snap_Ortho():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('ortho')
+            status = FreeCADGui.Snapper.toggle_snap('Ortho')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Ortho"+"_Button":
-                        a.setChecked(status)
-            '''
-            # toggle consistently the snap statusbar button
-            mw = FreeCADGui.getMainWindow()
-            if mw:
-                sb = mw.statusBar()
-                if sb:
-                    ortho_button = sb.findChild(QtGui.QAction,"OrthoButton")
-                    if ortho_button:
-                        ortho_button.setChecked(status)'''
+            sync_snap_toolbar_button("Draft_Snap_Ortho"+"_Button", status)
+            sync_snap_statusbar_button("OrthoButton", status)
 
 class Draft_Snap_Special():
     def GetResources(self):
@@ -5620,13 +5590,9 @@ class Draft_Snap_Special():
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
-            status = FreeCADGui.Snapper.toggle_snap('special')
+            status = FreeCADGui.Snapper.toggle_snap('Special')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Special"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Special"+"_Button", status)
 
 class Draft_Snap_Dimensions():
     def GetResources(self):
@@ -5638,11 +5604,8 @@ class Draft_Snap_Dimensions():
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
             status = FreeCADGui.Snapper.toggle_snap('Dimensions')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_Dimensions"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_Dimensions"+"_Button", status)
+            sync_snap_statusbar_button("DimButton", status)
 
 class Draft_Snap_WorkingPlane():
     def GetResources(self):
@@ -5654,11 +5617,7 @@ class Draft_Snap_WorkingPlane():
             # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
             status = FreeCADGui.Snapper.toggle_snap('WorkingPlane')
             # change interface consistently
-            snap_toolbar = get_snap_toolbar()
-            if snap_toolbar:
-                for a in snap_toolbar.actions():
-                    if a.objectName() == "Draft_Snap_WorkingPlane"+"_Button":
-                        a.setChecked(status)
+            sync_snap_toolbar_button("Draft_Snap_WorkingPlane"+"_Button", status)
 
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
