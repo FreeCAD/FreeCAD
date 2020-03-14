@@ -48,7 +48,7 @@ def purge_results(analysis):
             if m.Mesh and is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 analysis.Document.removeObject(m.Mesh.Name)
             analysis.Document.removeObject(m.Name)
-    FreeCAD.ActiveDocument.recompute()
+    analysis.Document.recompute()
     # if analysis typ check is used result mesh
     # without result obj is created in the analysis
     # we could run into trouble in one loop because
@@ -56,7 +56,7 @@ def purge_results(analysis):
     for m in analysis.Group:
         if is_of_type(m, "Fem::FemMeshResult"):
             analysis.Document.removeObject(m.Name)
-    FreeCAD.ActiveDocument.recompute()
+    analysis.Document.recompute()
 
 
 def reset_mesh_deformation(resultobj):
