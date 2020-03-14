@@ -34,7 +34,8 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path profile operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -75,9 +76,22 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             else:
                 obj.setEditorMode('MiterLimit', 2)
 
+        self.extraOpOnChanged(obj, prop)
+
+    def extraOpOnChanged(self, obj, prop):
+        '''otherOpOnChanged(obj, porp) ... overwrite to process onChange() events.
+        Can safely be overwritten by subclasses.'''
+        pass # pylint: disable=unnecessary-pass
+
+    def setOpEditorProperties(self, obj):
+        '''setOpEditorProperties(obj, porp) ... overwrite to process operation specific changes to properties.
+        Can safely be overwritten by subclasses.'''
+        pass # pylint: disable=unnecessary-pass
+
     def areaOpOnDocumentRestored(self, obj):
         for prop in ['UseComp', 'JoinType']:
             self.areaOpOnChanged(obj, prop)
+        self.setOpEditorProperties(obj)
 
     def areaOpAreaParams(self, obj, isHole):
         '''areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
@@ -140,6 +154,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.UseComp = True
         obj.JoinType = "Round"
         obj.MiterLimit = 0.1
+
 
 def SetupProperties():
     setup = []
