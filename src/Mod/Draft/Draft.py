@@ -3299,6 +3299,8 @@ class _ViewProviderDraft:
             return ":/icons/Draft_N-Polygon.svg"
         elif tp in ('Circle', 'Ellipse', 'BSpline', 'BezCurve', 'Fillet'):
             return ":/icons/Draft_N-Curve.svg"
+        elif tp in ("ShapeString"):
+            return ":/icons/Draft_ShapeString_tree.svg"
         else:
             return ":/icons/Draft_Draft.svg"
 
