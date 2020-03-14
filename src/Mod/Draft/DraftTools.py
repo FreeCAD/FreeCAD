@@ -5397,6 +5397,15 @@ class Draft_Arc_3Points:
 # Snap tools
 #---------------------------------------------------------------------------
 
+def get_snap_toolbar():
+    from PySide import QtGui
+    mw = FreeCADGui.getMainWindow()
+    if mw:
+        toolbar = mw.findChild(QtGui.QToolBar,"Draft Snap")
+        if toolbar:
+            return toolbar
+    return None
+
 class Draft_Snap_Lock():
     def GetResources(self):
         return {'Pixmap'  : 'Snap_Lock',
@@ -5405,116 +5414,14 @@ class Draft_Snap_Lock():
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Activates/deactivates all snap tools at once")}
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"masterbutton"):
-                FreeCADGui.Snapper.masterbutton.toggle()
-
-class Draft_Snap_Midpoint():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Midpoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Midpoint"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Snaps to midpoints of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonmidpoint":
-                        b.toggle()
-
-class Draft_Snap_Perpendicular():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Perpendicular',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Perpendicular"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Snaps to perpendicular points on edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonperpendicular":
-                        b.toggle()
-
-class Draft_Snap_Grid():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Grid',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snaps to grid points")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtongrid":
-                        b.toggle()
-
-class Draft_Snap_Intersection():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Intersection',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Intersection"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snaps to edges intersections")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonintersection":
-                        b.toggle()
-
-class Draft_Snap_Parallel():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Parallel',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Parallel"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Snaps to parallel directions of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonparallel":
-                        b.toggle()
-
-class Draft_Snap_Endpoint():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Endpoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Endpoint"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Snaps to endpoints of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonendpoint":
-                        b.toggle()
-
-class Draft_Snap_Angle():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Angle',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Angles"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Snaps to 45 and 90 degrees points on arcs and circles")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonangle":
-                        b.toggle()
-
-class Draft_Snap_Center():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Center',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Center", "Center"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Center", "Snaps to center of circles and arcs")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtoncenter":
-                        b.toggle()
-
-class Draft_Snap_Extension():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Extension',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Extension"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Snaps to extension of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonextension":
-                        b.toggle()
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('master')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                snap_toolbar.actions()[0].setChecked(status)
+                for a in snap_toolbar.actions()[1:]:
+                    a.setEnabled(status)
 
 class Draft_Snap_Near():
     def GetResources(self):
@@ -5523,22 +5430,187 @@ class Draft_Snap_Near():
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Near", "Snaps to nearest point on edges")}
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonpassive":
-                        b.toggle()
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('passive')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Near"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Midpoint():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Midpoint',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Midpoint"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Snaps to midpoints of edges")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('midpoint')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Midpoint"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Perpendicular():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Perpendicular',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Perpendicular"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Snaps to perpendicular points on edges")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('perpendicular')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Perpendicular"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Grid():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Grid',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Grid"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snaps to grid points")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('grid')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Grid"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Intersection():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Intersection',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Intersection"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snaps to edges intersections")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('intersection')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Intersection"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Parallel():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Parallel',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Parallel"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Snaps to parallel directions of edges")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('parallel')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Parallel"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Endpoint():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Endpoint',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Endpoint"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Snaps to endpoints of edges")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('endpoint')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Endpoint"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Angle():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Angle',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Angles"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Snaps to 45 and 90 degrees points on arcs and circles")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('angle')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Angle"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Center():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Center',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Center", "Center"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Center", "Snaps to center of circles and arcs")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('center')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Center"+"_Button":
+                        a.setChecked(status)
+
+class Draft_Snap_Extension():
+    def GetResources(self):
+        return {'Pixmap'  : 'Snap_Extension',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Extension"),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Snaps to extension of edges")}
+    def Activated(self):
+        if hasattr(FreeCADGui,"Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('extension')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Extension"+"_Button":
+                        a.setChecked(status)
 
 class Draft_Snap_Ortho():
+    """
+    Toggle Snap Ortho (snap_index = 10)
+    """
     def GetResources(self):
         return {'Pixmap'  : 'Snap_Ortho',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Ortho"),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snaps to orthogonal and 45 degrees directions")}
+    
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonortho":
-                        b.toggle()
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('ortho')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Ortho"+"_Button":
+                        a.setChecked(status)
+            '''
+            # toggle consistently the snap statusbar button
+            mw = FreeCADGui.getMainWindow()
+            if mw:
+                sb = mw.statusBar()
+                if sb:
+                    ortho_button = sb.findChild(QtGui.QAction,"OrthoButton")
+                    if ortho_button:
+                        ortho_button.setChecked(status)'''
 
 class Draft_Snap_Special():
     def GetResources(self):
@@ -5547,10 +5619,14 @@ class Draft_Snap_Special():
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Special", "Snaps to special locations of objects")}
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonspecial":
-                        b.toggle()
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('special')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Special"+"_Button":
+                        a.setChecked(status)
 
 class Draft_Snap_Dimensions():
     def GetResources(self):
@@ -5559,10 +5635,14 @@ class Draft_Snap_Dimensions():
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Dimensions", "Shows temporary dimensions when snapping to Arch objects")}
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonDimensions":
-                        b.toggle()
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('Dimensions')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_Dimensions"+"_Button":
+                        a.setChecked(status)
 
 class Draft_Snap_WorkingPlane():
     def GetResources(self):
@@ -5571,10 +5651,14 @@ class Draft_Snap_WorkingPlane():
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_WorkingPlane", "Restricts the snapped point to the current working plane")}
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonWorkingPlane":
-                        b.toggle()
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = FreeCADGui.Snapper.toggle_snap('WorkingPlane')
+            # change interface consistently
+            snap_toolbar = get_snap_toolbar()
+            if snap_toolbar:
+                for a in snap_toolbar.actions():
+                    if a.objectName() == "Draft_Snap_WorkingPlane"+"_Button":
+                        a.setChecked(status)
 
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults

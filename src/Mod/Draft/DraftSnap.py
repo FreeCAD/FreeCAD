@@ -31,7 +31,7 @@ __url__ = "https://www.freecadweb.org"
 #  everything that goes with it (toolbar buttons, cursor icons, etc)
 
 
-import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils, itertools
+import FreeCAD, FreeCADGui, math, Draft, DraftTrackers, DraftVecUtils, itertools
 from collections import OrderedDict
 from FreeCAD import Vector
 from pivy import coin
@@ -96,6 +96,25 @@ class Snapper:
         self.callbackClick = None
         self.callbackMove = None
         self.snapObjectIndex = 0
+
+        # snap keys, it's important tha they are in this order for
+        # saving in preferences and for properly restore the toolbar
+        self.snaps = ['master',         # 0 
+                      'passive',        # 1 used by Near Snap
+                      'extension',      # 2
+                      'parallel',       # 3
+                      'grid',           # 4
+                      "endpoint",       # 5
+                      'midpoint',       # 6
+                      'perpendicular',  # 7
+                      'angle',          # 8
+                      'center',         # 9
+                      'ortho',          # 10
+                      'intersection',   # 11
+                      'special',        # 12
+                      'Dimensions',     # 13 TODO change to lowercase
+                      'WorkingPlane'    # 14 TODO change to lowercase
+                     ]  
 
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
@@ -667,7 +686,7 @@ class Snapper:
         return point
 
     def snapToEndpoints(self,shape):
-        "returns a list of endpoints snap locations"
+        "returns a list of enpoints snap locations"
         snaps = []
         if self.isEnabled("endpoint"):
             if hasattr(shape,"Vertexes"):
@@ -1269,81 +1288,65 @@ class Snapper:
 
     def makeSnapToolBar(self):
         "builds the Snap toolbar"
+        import DraftTools
         mw = FreeCADGui.getMainWindow()
         self.toolbar = QtGui.QToolBar(mw)
         mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
-        # grid button
-        self.gridbutton = QtGui.QAction(mw)
-        self.gridbutton.setIcon(QtGui.QIcon.fromTheme("Draft_Grid", QtGui.QIcon(":/icons/Draft_Grid.svg")))
-        self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
-        self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid On/Off"))
-        self.gridbutton.setObjectName("GridButton")
-        self.gridbutton.setWhatsThis("Draft_ToggleGrid")
-        QtCore.QObject.connect(self.gridbutton,QtCore.SIGNAL("triggered()"),self.toggleGrid)
-        self.toolbar.addAction(self.gridbutton)
-        # master button
-        self.masterbutton = QtGui.QAction(mw)
-        self.masterbutton.setIcon(QtGui.QIcon.fromTheme("Snap_Lock", QtGui.QIcon(":/icons/Snap_Lock.svg")))
-        self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Lock"))
-        self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
-        self.masterbutton.setObjectName("SnapButtonMain")
-        self.masterbutton.setWhatsThis("Draft_ToggleSnap")
-        self.masterbutton.setCheckable(True)
-        self.masterbutton.setChecked(True)
-        QtCore.QObject.connect(self.masterbutton,QtCore.SIGNAL("toggled(bool)"),self.toggle)
-        self.toolbar.addAction(self.masterbutton)
-        for c,i in self.cursors.items():
-            if i:
-                b = QtGui.QAction(mw)
-                b.setIcon(QtGui.QIcon.fromTheme(i.replace(':/icons/', '').replace('.svg', ''), QtGui.QIcon(i)))
-                if c == "passive":
-                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
-                    b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
-                else:
-                    b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
-                    b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+c.capitalize(),c.capitalize()))
-                b.setObjectName("SnapButton"+c)
-                b.setWhatsThis("Draft_"+c.capitalize())
-                b.setCheckable(True)
-                b.setChecked(True)
-                self.toolbar.addAction(b)
-                self.toolbarButtons.append(b)
-                QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
-        # adding non-snap button
-        for n in ["Dimensions","WorkingPlane"]:
+
+        from draftutils.init_tools import get_draft_snap_commands
+        draft_gui_commands = get_draft_snap_commands()
+
+        for gc in draft_gui_commands:
+            # setup toolbar buttons accordin to the name of the command they will call
+            command = 'Gui.runCommand("' + gc + '")'
             b = QtGui.QAction(mw)
-            b.setIcon(QtGui.QIcon.fromTheme("Snap_" + n, QtGui.QIcon(":/icons/Snap_"+n+".svg")))
-            b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
-            b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
-            b.setObjectName("SnapButton"+n)
-            b.setWhatsThis("Draft_"+n)
+            b.setIcon(QtGui.QIcon(':/icons/' + gc[6:] + '.svg'))
+            b.setText(QtCore.QCoreApplication.translate("Draft_Snap", "Snap" + gc[11:]))
+            b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap", "Snap" + gc[11:]))
+            b.setObjectName(gc + "_Button")
+            b.setWhatsThis("Draft_"+gc[11:].capitalize())
             b.setCheckable(True)
             b.setChecked(True)
             self.toolbar.addAction(b)
-            QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
-            self.toolbarButtons.append(b)
+            self.toolbarButtons.append(b) 
+            QtCore.QObject.connect(b,QtCore.SIGNAL("triggered()"),lambda f=FreeCADGui.doCommand, arg=command:f(arg))
+
+        self.restore_toolbar_buttons_state()
+
+        for b in self.toolbar.actions():
+            if len(b.statusTip()) == 0:
+                b.setStatusTip(b.toolTip())
+
+        if not Draft.getParam("showSnapBar",True):
+            self.toolbar.hide()
+
+    def restore_toolbar_buttons_state(self):
+        """
+        Restore toolbar button's checked state accordin to saved preference "snapModes"
+        """
         # set status tip where needed
         for b in self.toolbar.actions():
             if len(b.statusTip()) == 0:
                 b.setStatusTip(b.toolTip())
+
         # restoring states
-        t = Draft.getParam("snapModes","111111111101111")
-        if t:
+        snap_modes = Draft.getParam("snapModes","111111111101111")
+        if snap_modes:
             c = 0
-            for b in [self.masterbutton]+self.toolbarButtons:
-                if len(t) > c:
-                    state = bool(int(t[c]))
+            for b in self.toolbarButtons:
+                if len(snap_modes) > c:
+                    state = bool(int(snap_modes[c]))
                     b.setChecked(state)
                     if state:
                         b.setToolTip(b.toolTip()+" (ON)")
                     else:
                         b.setToolTip(b.toolTip()+" (OFF)")
                     c += 1
-        if not Draft.getParam("showSnapBar",True):
-            self.toolbar.hide()
+
+
 
     def toggleGrid(self):
         FreeCADGui.runCommand("Draft_ToggleGrid")
@@ -1359,23 +1362,6 @@ class Snapper:
                 b.setToolTip(b.toolTip().replace("ON","OFF"))
         Draft.setParam("snapModes",t)
 
-    def toggle(self,checked=None):
-        "toggles the snap mode"
-        if hasattr(self,"toolbarButtons"):
-            if checked is None:
-                self.masterbutton.toggle()
-            elif checked:
-                if hasattr(self,"savedButtonStates"):
-                    for i in range(len(self.toolbarButtons)):
-                        self.toolbarButtons[i].setEnabled(True)
-                        self.toolbarButtons[i].setChecked(self.savedButtonStates[i])
-            else:
-                self.savedButtonStates = []
-                for i in range(len(self.toolbarButtons)):
-                    self.savedButtonStates.append(self.toolbarButtons[i].isChecked())
-                    self.toolbarButtons[i].setEnabled(False)
-        self.saveSnapModes()
-
     def showradius(self):
         "shows the snap radius indicator"
         self.radius =  self.getScreenDist(Draft.getParam("snapRange", 8),(400,300))
@@ -1383,12 +1369,38 @@ class Snapper:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.on()
 
-    def isEnabled(self,but):
-        "returns true if the given button is turned on"
-        for b in self.toolbarButtons:
-            if str(b.objectName()) == "SnapButton" + but:
-                return (b.isEnabled() and b.isChecked())
-        return False
+    def isEnabled(self, snap):
+        "returns true if the given snap on"
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        snap_modes = param.GetString("snapModes")
+        snap_index = self.snaps.index(snap)
+        if snap_modes[0] == "0" or snap_modes[snap_index] == "0":
+            return False
+        else:
+            return True
+
+    def toggle_snap(self, snap, set_to = None):
+        "sets the given snap on/off according to the given parameter"
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        snap_modes = param.GetString("snapModes", "100000000000000")
+        snap_index = self.snaps.index(snap)
+        if snap_modes:
+            if set_to: # set mode
+                if set_to is True:
+                    snap_modes = snap_modes[:snap_index] + "1" + snap_modes[snap_index + 1:]
+                    status = True
+                if set_to is False:
+                    snap_modes = snap_modes[:snap_index] + "0" + snap_modes[snap_index + 1:]
+                    status = False
+            else: # toggle mode
+                if snap_modes[snap_index] == "0":
+                    snap_modes = snap_modes[:snap_index] + "1" + snap_modes[snap_index + 1:]
+                    status = True
+                elif snap_modes[snap_index] == "1":
+                    snap_modes = snap_modes[:snap_index] + "0" + snap_modes[snap_index + 1:]
+                    status = False
+            param.SetString("snapModes",snap_modes)
+            return status
 
     def show(self):
         "shows the toolbar and the grid"
@@ -1480,11 +1492,12 @@ class Snapper:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
+        
 
 if not hasattr(FreeCADGui,"Snapper"):
     FreeCADGui.Snapper = Snapper()
 if not hasattr(FreeCAD,"DraftWorkingPlane"):
-    import WorkingPlane, Draft_rc
+    import WorkingPlane
     FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
     #print(FreeCAD.DraftWorkingPlane)
     FreeCADGui.addIconPath(":/icons")
