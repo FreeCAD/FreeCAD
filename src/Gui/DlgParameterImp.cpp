@@ -122,13 +122,13 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
         this, SLOT(on_findGroup_changed(QString)));
 
     // setup for function on_findGroup_changed:
-    // store the current font properties
-    // because we don't know what style sheet the user uses for FC
+    // store the current font properties because
+    // we don't know what style sheet the user uses for FC
     defaultFont = paramGroup->font();
     defaultColor = paramGroup->topLevelItem(0)->foreground(0);
 
     // set a placeholder text to inform the user
-    // (QTextEdit has no placeholderText property in Qt4)
+    // (QLineEdit has no placeholderText property in Qt4)
 #if QT_VERSION >= 0x050200
     ui->findGroupLE->setPlaceholderText(tr("Search Group"));
 #endif
@@ -153,11 +153,10 @@ void DlgParameterImp::on_buttonFind_clicked()
 void DlgParameterImp::on_findGroup_changed(const QString &SearchStr)
 {
     // search for group tree items and highlight found results
-    // if SearchStr not empty
 
     QTreeWidgetItem* ExpandItem;
 
-    // at first reset all items to the default font and nesting
+    // at first reset all items to the default font and expand state
     if (foundList.size() > 0) {
         for (QTreeWidgetItem* item : foundList) {
             item->setFont(0, defaultFont);
@@ -179,7 +178,7 @@ void DlgParameterImp::on_findGroup_changed(const QString &SearchStr)
         paramGroup->topLevelItem(i)->setExpanded(true);
     }
 
-    // don't perform a search if the search is empty
+    // don't perform a search if the string is empty
     if (SearchStr.isEmpty())
         return;
 
@@ -200,7 +199,7 @@ void DlgParameterImp::on_findGroup_changed(const QString &SearchStr)
                     ExpandItem = ExpandItem->parent();
                 }
             }
-            // if there is only one found item, scrollt o it
+            // if there is only one item found, scroll to it
             if (foundList.size() == 1) {
                 paramGroup->scrollToItem(foundList[0], QAbstractItemView::PositionAtCenter);
             }
