@@ -126,6 +126,12 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     // because we don't know what style sheet the user uses for FC
     defaultFont = paramGroup->font();
     defaultColor = paramGroup->topLevelItem(0)->foreground(0);
+
+    // set a placeholder text to inform the user
+    // (QTextEdit has no placeholderText property in Qt4)
+#if QT_VERSION >= 0x050200
+    ui->findGroupLE->setPlaceholderText(tr("Search Group"));
+#endif
 }
 
 /** 
