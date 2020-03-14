@@ -515,30 +515,54 @@
            <property name="text">
             <string>NeverShow</string>
            </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/arrownone.svg</normaloff>:/icons/arrownone.svg</iconset>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>Continuous</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/continuous-line.svg</normaloff>:/icons/continuous-line.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
             <string>Dash</string>
            </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/dash-line.svg</normaloff>:/icons/dash-line.svg</iconset>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>Dot</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/dot-line.svg</normaloff>:/icons/dot-line.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
             <string>DashDot</string>
            </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/dashDot-line.svg</normaloff>:/icons/dashDot-line.svg</iconset>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>DashDotDot</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/dashDotDot-line.svg</normaloff>:/icons/dashDotDot-line.svg</iconset>
            </property>
           </item>
          </widget>
@@ -986,10 +1010,18 @@
            <property name="text">
             <string>Continuous</string>
            </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/continuous-line.svg</normaloff>:/icons/continuous-line.svg</iconset>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>Dashed</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/dash-line.svg</normaloff>:/icons/dash-line.svg</iconset>
            </property>
           </item>
          </widget>

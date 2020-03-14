@@ -91,6 +91,11 @@
         <file>icons/arrow-down.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
+        <file>icons/continuous-line.svg</file>
+        <file>icons/dot-line.svg</file>
+        <file>icons/dashDot-line.svg</file>
+        <file>icons/dashDotDot-line.svg</file>
+        <file>icons/dash-line.svg</file>
         <file>icons/techdraw-lock.png</file>
         <file>icons/cursor-balloon.png</file>
         <file>icons/none.svg</file>

@@ -42,7 +42,8 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Shape of line end caps. Only change unless you know what you are doing!</string>
+           <string>Shape of line end caps.
+Only change unless you know what you are doing!</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>EdgeCapStyle</cstring>
