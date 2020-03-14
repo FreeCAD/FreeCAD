@@ -174,7 +174,7 @@
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="Gui::QuantitySpinBox" name="qsbVertShift">
+           <widget class="Gui::QuantitySpinBox" name="qsbVertShift" native="true">
             <property name="toolTip">
              <string>Move line +Up or -Down</string>
             </property>
@@ -184,7 +184,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="Gui::QuantitySpinBox" name="qsbHorizShift">
+           <widget class="Gui::QuantitySpinBox" name="qsbHorizShift" native="true">
             <property name="toolTip">
              <string>Move line -Left or +Right</string>
             </property>
@@ -216,7 +216,7 @@
           </item>
           <item row="2" column="1">
            <widget class="Gui::ColorButton" name="cpLineColor">
-            <property name="color">
+            <property name="color" stdset="0">
              <color>
               <red>0</red>
               <green>0</green>
@@ -258,25 +258,45 @@
              <property name="text">
               <string>Continuous</string>
              </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/continuous-line.svg</normaloff>:/icons/continuous-line.svg</iconset>
+             </property>
             </item>
             <item>
              <property name="text">
               <string>Dash</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/dash-line.svg</normaloff>:/icons/dash-line.svg</iconset>
              </property>
             </item>
             <item>
              <property name="text">
               <string>Dot</string>
              </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/dot-line.svg</normaloff>:/icons/dot-line.svg</iconset>
+             </property>
             </item>
             <item>
              <property name="text">
               <string>DashDot</string>
              </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/dashDot-line.svg</normaloff>:/icons/dashDot-line.svg</iconset>
+             </property>
             </item>
             <item>
              <property name="text">
               <string>DashDotDot</string>
+             </property>
+             <property name="icon">
+              <iconset resource="Resources/TechDraw.qrc">
+               <normaloff>:/icons/dashDotDot-line.svg</normaloff>:/icons/dashDotDot-line.svg</iconset>
              </property>
             </item>
            </widget>
@@ -289,14 +309,14 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="Gui::QuantitySpinBox" name="qsbExtend">
+           <widget class="Gui::QuantitySpinBox" name="qsbExtend" native="true">
             <property name="toolTip">
              <string>Make the line a little longer.</string>
             </property>
             <property name="unit" stdset="0">
              <string>mm</string>
             </property>
-            <property name="value">
+            <property name="value" stdset="0">
              <double>3.000000000000000</double>
             </property>
            </widget>
