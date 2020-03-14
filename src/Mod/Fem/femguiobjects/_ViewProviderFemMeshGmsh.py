@@ -69,9 +69,12 @@ class _ViewProviderFemMeshGmsh:
         return
 
     def setEdit(self, vobj, mode):
-        # hide all meshes
+        # hide all FEM meshes and VTK FemPostPipeline objects
         for o in vobj.Object.Document.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
+            if (
+                o.isDerivedFrom("Fem::FemMeshObject")
+                or o.isDerivedFrom("Fem::FemPostPipeline")
+            ):
                 o.ViewObject.hide()
         # show the mesh we like to edit
         self.ViewObject.show()
