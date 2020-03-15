@@ -34,11 +34,13 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class and implementation for Path pocket operations."
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+# PathLog.trackModule(PathLog.thisModule())
+
 
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
+
 
 class ObjectPocket(PathAreaOp.ObjectOp):
     '''Base class for proxy objects of all pocket operations.'''
@@ -129,6 +131,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             params['sort_mode'] = 3
             params['threshold'] = self.radius * 2
         return params
+
 
 def SetupProperties():
     setup = []

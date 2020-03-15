@@ -3,7 +3,6 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2019 russ4262 (Russell Johnson, russ4262@gmail.com)     *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -37,7 +36,7 @@ import numpy
 from PySide import QtCore
 
 __title__ = "Path Profile Faces Operation"
-__author__ = "sliptonic (Brad Collette), russ4262, Schildkroet"
+__author__ = "sliptonic (Brad Collette), Schildkroet"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Profile operation based on faces."
 
@@ -69,20 +68,41 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         obj.addProperty("App::PropertyBool", "processPerimeter", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile the outline"))
         obj.addProperty("App::PropertyBool", "processCircles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Profile round holes"))
 
-        if not hasattr(obj, 'ReverseDirection'):
-            obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Reverse direction of pocket operation.'))
-        if not hasattr(obj, 'InverseAngle'):
-            obj.addProperty('App::PropertyBool', 'InverseAngle', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Inverse the angle. Example: -22.5 -> 22.5 degrees.'))
-        if not hasattr(obj, 'B_AxisErrorOverride'):
-            obj.addProperty('App::PropertyBool', 'B_AxisErrorOverride', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Match B rotations to model (error in FreeCAD rendering).'))
-        if not hasattr(obj, 'AttemptInverseAngle'):
-            obj.addProperty('App::PropertyBool', 'AttemptInverseAngle', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Attempt the inverse angle for face access if original rotation fails.'))
-
         if not hasattr(obj, 'HandleMultipleFeatures'):
             obj.addProperty('App::PropertyEnumeration', 'HandleMultipleFeatures', 'Profile', QtCore.QT_TRANSLATE_NOOP('PathPocket', 'Choose how to process multiple Base Geometry features.'))
         obj.HandleMultipleFeatures = ['Collectively', 'Individually']
 
+        self.initRotationOp(obj)
         self.baseObject().initAreaOp(obj)
+        self.setOpEditorProperties(obj)
+
+    def initRotationOp(self, obj):
+        '''initRotationOp(obj) ... setup receiver for rotation'''
+        if not hasattr(obj, 'ReverseDirection'):
+            obj.addProperty('App::PropertyBool', 'ReverseDirection', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Reverse direction of pocket operation.'))
+        if not hasattr(obj, 'InverseAngle'):
+            obj.addProperty('App::PropertyBool', 'InverseAngle', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Inverse the angle. Example: -22.5 -> 22.5 degrees.'))
+        if not hasattr(obj, 'AttemptInverseAngle'):
+            obj.addProperty('App::PropertyBool', 'AttemptInverseAngle', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Attempt the inverse angle for face access if original rotation fails.'))
+        if not hasattr(obj, 'LimitDepthToFace'):
+            obj.addProperty('App::PropertyBool', 'LimitDepthToFace', 'Rotation', QtCore.QT_TRANSLATE_NOOP('App::Property', 'Enforce the Z-depth of the selected face as the lowest value for final depth. Higher user values will be observed.'))
+
+    def extraOpOnChanged(self, obj, prop):
+        '''extraOpOnChanged(obj, porp) ... process operation specific changes to properties.'''
+        if prop == 'EnableRotation':
+            self.setOpEditorProperties(obj)
+
+    def setOpEditorProperties(self, obj):
+        if obj.EnableRotation == 'Off':
+            obj.setEditorMode('ReverseDirection', 2)
+            obj.setEditorMode('InverseAngle', 2)
+            obj.setEditorMode('AttemptInverseAngle', 2)
+            obj.setEditorMode('LimitDepthToFace', 2)
+        else:
+            obj.setEditorMode('ReverseDirection', 0)
+            obj.setEditorMode('InverseAngle', 0)
+            obj.setEditorMode('AttemptInverseAngle', 0)
+            obj.setEditorMode('LimitDepthToFace', 0)
 
     def areaOpShapes(self, obj):
         '''areaOpShapes(obj) ... returns envelope for all base shapes or wires for Arch.Panels.'''
@@ -179,25 +199,14 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         PathLog.error(msg)
                         FreeCAD.Console.PrintWarning(msg)
 
-                # Raise FinalDepth to lowest face in list on Inside profile ops
-                finDep = obj.FinalDepth.Value
-                if obj.EnableRotation != 'Off':
-                    finDep = faceDepths[0]
 
+                # Set initial Start and Final Depths and recalculate depthparams
+                finDep = obj.FinalDepth.Value
                 strDep = obj.StartDepth.Value
                 if strDep > stock.Shape.BoundBox.ZMax:
                     strDep = stock.Shape.BoundBox.ZMax
                 startDepths.append(strDep)
-
-                # Recalculate depthparams
-                self.depthparams = PathUtils.depth_params( # pylint: disable=attribute-defined-outside-init
-                    clearance_height=obj.ClearanceHeight.Value,
-                    safe_height=obj.SafeHeight.Value,
-                    start_depth=strDep,  # obj.StartDepth.Value,
-                    step_down=obj.StepDown.Value,
-                    z_finish_step=finish_step,
-                    final_depth=finDep,  # obj.FinalDepth.Value,
-                    user_depths=None)
+                self.depthparams = self._customDepthParams(obj, strDep, finDep)
 
                 for shape, wire in holes:
                     f = Part.makeFace(wire, 'Part::FaceMakerSimple')
@@ -213,8 +222,13 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
                 if obj.processPerimeter:
                     if obj.HandleMultipleFeatures == 'Collectively':
+                        custDepthparams = self.depthparams
+                        if obj.LimitDepthToFace is True and obj.EnableRotation != 'Off':
+                            if profileshape.BoundBox.ZMin > obj.FinalDepth.Value:
+                                finDep = profileshape.BoundBox.ZMin
+                                custDepthparams = self._customDepthParams(obj, strDep, finDep - 0.5)  # only an envelope
                         try:
-                            env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=self.depthparams)
+                            env = PathUtils.getEnvelope(base.Shape, subshape=profileshape, depthparams=custDepthparams)
                         except Exception: # pylint: disable=broad-except
                             # PathUtils.getEnvelope() failed to return an object.
                             PathLog.error(translate('Path', 'Unable to create path for face(s).'))
@@ -230,14 +244,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                 if finalDep < shape.BoundBox.ZMin:
                                     # Recalculate depthparams
                                     finalDep = shape.BoundBox.ZMin
-                                    custDepthparams = PathUtils.depth_params(
-                                        clearance_height=obj.ClearanceHeight.Value,
-                                        safe_height=obj.SafeHeight.Value,
-                                        start_depth=strDep,  # obj.StartDepth.Value,
-                                        step_down=obj.StepDown.Value,
-                                        z_finish_step=finish_step,
-                                        final_depth=finalDep,  # obj.FinalDepth.Value,
-                                        user_depths=None)
+                                    custDepthparams = self._customDepthParams(obj, strDep, finalDep - 0.5)
                             env = PathUtils.getEnvelope(base.Shape, subshape=profShape, depthparams=custDepthparams)
                             tup = env, False, 'pathProfileFaces', angle, axis, strDep, finalDep
                             shapes.append(tup)
@@ -284,7 +291,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         obj.ReverseDirection = False
         obj.InverseAngle = False
         obj.AttemptInverseAngle = True
-        obj.B_AxisErrorOverride = False
+        obj.LimitDepthToFace = True
         obj.HandleMultipleFeatures = 'Collectively'
 
 
@@ -295,7 +302,6 @@ def SetupProperties():
     setup.append("processCircles")
     setup.append("ReverseDirection")
     setup.append("InverseAngle")
-    setup.append("B_AxisErrorOverride")
     setup.append("AttemptInverseAngle")
     setup.append("HandleMultipleFeatures")
     return setup
