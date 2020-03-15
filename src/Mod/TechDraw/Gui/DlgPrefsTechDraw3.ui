@@ -418,35 +418,63 @@
            <property name="text">
             <string>Circular</string>
            </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/circular.svg</normaloff>:/icons/circular.svg</iconset>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>None</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/none.svg</normaloff>:/icons/none.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
             <string>Triangle</string>
            </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/triangle.svg</normaloff>:/icons/triangle.svg</iconset>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>Inspection</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/inspection.svg</normaloff>:/icons/inspection.svg</iconset>
            </property>
           </item>
           <item>
            <property name="text">
             <string>Hexagon</string>
            </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/hexagon.svg</normaloff>:/icons/hexagon.svg</iconset>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>Square</string>
            </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/square.svg</normaloff>:/icons/square.svg</iconset>
+           </property>
           </item>
           <item>
            <property name="text">
             <string>Rectangle</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Resources/TechDraw.qrc">
+             <normaloff>:/icons/rectangle.svg</normaloff>:/icons/rectangle.svg</iconset>
            </property>
           </item>
          </widget>
@@ -688,7 +716,7 @@
          </widget>
         </item>
         <item row="7" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbBalloonKink">
+         <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>

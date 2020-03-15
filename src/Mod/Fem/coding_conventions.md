@@ -86,11 +86,16 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
     - do not use hasattr(obj, "Proxy") and obj.Proxy.Type
     - use method is_of_typ(obj, "TypeString") from module femtool.femutils
 - ActiveDocument
-    - do not use App.ActiveDocument or FreeCAD.ActiveDocument, if possible
-    - use some_obj.Document instead
-    - do not use Gui.ActiveDocument or FreeCADGui.ActiveDocument, if possible
-    - use some_obj.ViewObject.Document or some_view_obj.Document
-
+    - try to avoid the use of App.ActiveDocument or FreeCAD.ActiveDocument
+    - instead try to use some_obj.Document instead
+    - try to avoid the use of Gui.ActiveDocument or FreeCADGui.ActiveDocument
+    - instead try to use some_obj.ViewObject.Document or some_view_obj.Document
+    - activeDocument() is more robust than ActiveDocument
+    - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=44133)
+    - FreeCAD Python console
+        - in code examples which will be copied in FreeCAD Python console
+        - it is common to use App.ActiveDocument.some_obj or method
+    
 ### Documenting
 Python style is preferred over Doxygen style
     - see `ccx` tools module in fem tools package

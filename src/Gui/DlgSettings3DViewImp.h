@@ -50,39 +50,14 @@ public:
     void loadSettings();
 
 private Q_SLOTS:
-    void on_mouseButton_clicked();
     void onAliasingChanged(int);
-    void onNewDocViewChanged(int);
 
 protected:
     void changeEvent(QEvent *e);
-    void retranslate();
 
 private:
     std::unique_ptr<Ui_DlgSettings3DView> ui;
     static bool showMsg;
-    double q0, q1, q2, q3;
-};
-
-class CameraDialog : public QDialog
-{
-    Q_OBJECT
-
-public:
-    CameraDialog(QWidget* parent=0);
-    ~CameraDialog();
-    void setValues(double q0, double q1, double q2, double q3);
-    void getValues(double& q0, double& q1, double& q2, double& q3) const;
-
-
-private Q_SLOTS:
-    void on_currentView_clicked();
-
-private:
-    QDoubleSpinBox* sb0;
-    QDoubleSpinBox* sb1;
-    QDoubleSpinBox* sb2;
-    QDoubleSpinBox* sb3;
 };
 
 } // namespace Dialog

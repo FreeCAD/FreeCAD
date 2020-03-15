@@ -21,37 +21,69 @@
  ***************************************************************************/
 
 
-#ifndef RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
-#define RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
+#ifndef GUI_DIALOG_DLGSETTINGSNAVIGATION_H
+#define GUI_DIALOG_DLGSETTINGSNAVIGATION_H
 
-#include <Gui/PropertyPage.h>
+#include "PropertyPage.h"
 #include <memory>
 
-namespace RaytracingGui {
-class Ui_DlgSettingsRay;
+class QDoubleSpinBox;
+
+namespace Gui {
+namespace Dialog {
+class Ui_DlgSettingsNavigation;
 
 /**
- * The DlgSettingsRayImp class implements a preference page to change settings
+ * The Ui_DlgSettingsNavigation class implements a preference page to change settings
  * for the Inventor viewer.
- * \author Jürgen Riegel
+ * \author Werner Mayer
  */
-class DlgSettingsRayImp : public Gui::Dialog::PreferencePage
+class DlgSettingsNavigation : public PreferencePage
 {
     Q_OBJECT
 
 public:
-    DlgSettingsRayImp( QWidget* parent = 0 );
-    ~DlgSettingsRayImp();
+    DlgSettingsNavigation(QWidget* parent = nullptr);
+    ~DlgSettingsNavigation();
 
-protected:
     void saveSettings();
     void loadSettings();
+
+private Q_SLOTS:
+    void on_mouseButton_clicked();
+    void onNewDocViewChanged(int);
+
+protected:
     void changeEvent(QEvent *e);
+    void retranslate();
 
 private:
-    std::unique_ptr<Ui_DlgSettingsRay> ui;
+    std::unique_ptr<Ui_DlgSettingsNavigation> ui;
+    double q0, q1, q2, q3;
 };
 
-} // namespace RaytracingGui
+class CameraDialog : public QDialog
+{
+    Q_OBJECT
 
-#endif // RAYTRACINGGUI_DLGSETTINGSRAYIMP_H
+public:
+    CameraDialog(QWidget* parent=0);
+    ~CameraDialog();
+    void setValues(double q0, double q1, double q2, double q3);
+    void getValues(double& q0, double& q1, double& q2, double& q3) const;
+
+
+private Q_SLOTS:
+    void on_currentView_clicked();
+
+private:
+    QDoubleSpinBox* sb0;
+    QDoubleSpinBox* sb1;
+    QDoubleSpinBox* sb2;
+    QDoubleSpinBox* sb3;
+};
+
+} // namespace Dialog
+} // namespace Gui
+
+#endif // GUI_DIALOG_DLGSETTINGSNAVIGATION_H

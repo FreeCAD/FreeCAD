@@ -1381,7 +1381,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             time.ctime()
         ))
         f.write("**   file name     --> {}\n".format(
-            os.path.basename(FreeCAD.ActiveDocument.FileName)
+            os.path.basename(self.document.FileName)
         ))
         f.write("**   analysis name --> {}\n".format(
             self.analysis.Name

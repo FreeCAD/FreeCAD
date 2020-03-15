@@ -120,6 +120,15 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 if not self.solver:
                     raise Exception("FEM: No solver found!")
 
+        if self.analysis.Document is not self.solver.Document:
+            raise Exception(
+                "FEM: The analysis and solver are not in the same document!"
+            )
+        if self.solver not in self.analysis.Group:
+            raise Exception(
+                "FEM: The solver is not part of the analysis Group!"
+            )
+
         # print(self.solver)
         # print(self.analysis)
         if self.analysis and self.solver:
@@ -169,7 +178,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.analysis:
             return
         found_analysis = False
-        for m in FreeCAD.ActiveDocument.Objects:
+        # search in the active document
+        for m in FreeCAD.activeDocument().Objects:
             if femutils.is_of_type(m, "Fem::FemAnalysis"):
                 if not found_analysis:
                     self.analysis = m

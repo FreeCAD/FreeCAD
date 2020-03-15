@@ -50,6 +50,7 @@ class FemInputWriter():
         self.solver_obj = solver_obj
         self.analysis_type = self.solver_obj.AnalysisType
         self.mesh_object = mesh_obj
+        self.document = self.analysis.Document
         # materials
         self.material_objects = member.mats_linear
         self.material_nonlinear_objects = member.mats_nonlinear
@@ -80,7 +81,7 @@ class FemInputWriter():
                 "Error: FemInputWriter has no working_dir --> "
                 "we are going to make a temporary one!\n"
             )
-            self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace(
+            self.dir_name = self.document.TransientDir.replace(
                 "\\", "/"
             ) + "/FemAnl_" + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):

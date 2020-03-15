@@ -44,6 +44,7 @@ DlgPrefsTechDraw3Imp::DlgPrefsTechDraw3Imp( QWidget* parent )
     this->setupUi(this);
     plsb_FontSize->setUnit(Base::Unit::Length);
     plsb_ArrowSize->setUnit(Base::Unit::Length);
+    pdsbBalloonKink->setUnit(Base::Unit::Length);
 }
 
 DlgPrefsTechDraw3Imp::~DlgPrefsTechDraw3Imp()

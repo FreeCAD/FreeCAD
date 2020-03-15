@@ -909,7 +909,7 @@ def get_force_obj_edge_nodeload_table(
         FreeCAD.Console.PrintMessage("{}\n".format(len(bad_refedge_nodes)))
         FreeCAD.Console.PrintMessage("{}\n".format(bad_refedge_nodes))
         # import FreeCADGui
-        # FreeCADGui.ActiveDocument.Compound_Mesh.HighlightedNodes = bad_refedge_nodes
+        # frc_obj.Document.Compound_Mesh.HighlightedNodes = bad_refedge_nodes
 
         FreeCAD.Console.PrintMessage("bad_edge_table\n")
         # bad_edge_table:
@@ -926,7 +926,7 @@ def get_force_obj_edge_nodeload_table(
         # should be == bad_refedge_nodes
         FreeCAD.Console.PrintMessage("{}\n".format(sorted(bad_edge_table_nodes)))
         # import FreeCADGui
-        # FreeCADGui.ActiveDocument.Compound_Mesh.HighlightedNodes = bad_edge_table_nodes
+        # frc_obj.Document.Compound_Mesh.HighlightedNodes = bad_edge_table_nodes
         # bad_node_length_table:
         #     [ (nodeID, length), ... , (nodeID, length) ]
         # some nodes will have more than one entry

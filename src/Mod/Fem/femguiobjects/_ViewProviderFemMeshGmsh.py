@@ -69,9 +69,12 @@ class _ViewProviderFemMeshGmsh:
         return
 
     def setEdit(self, vobj, mode):
-        # hide all meshes
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
+        # hide all FEM meshes and VTK FemPostPipeline objects
+        for o in vobj.Object.Document.Objects:
+            if (
+                o.isDerivedFrom("Fem::FemMeshObject")
+                or o.isDerivedFrom("Fem::FemPostPipeline")
+            ):
                 o.ViewObject.hide()
         # show the mesh we like to edit
         self.ViewObject.show()
@@ -253,7 +256,7 @@ class _ViewProviderFemMeshGmsh:
             objs = self.Object.MeshRegionList
             objs.append(incoming_object)
             self.Object.MeshRegionList = objs
-        FreeCAD.ActiveDocument.recompute()
+        incoming_object.Document.recompute()
 
 
 class _TaskPanel:
@@ -313,13 +316,13 @@ class _TaskPanel:
 
     def accept(self):
         self.set_mesh_params()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCAD.ActiveDocument.recompute()
+        self.mesh_obj.ViewObject.Document.resetEdit()
+        self.mesh_obj.Document.recompute()
         return True
 
     def reject(self):
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCAD.ActiveDocument.recompute()
+        self.mesh_obj.ViewObject.Document.resetEdit()
+        self.mesh_obj.Document.recompute()
         return True
 
     def clicked(self, button):
