@@ -77,6 +77,7 @@ SET(FemInOut_SRCS
     feminout/importYamlJsonMesh.py
     feminout/importZ88Mesh.py
     feminout/importZ88O2Results.py
+    feminout/importOpenSeesMesh.py
     feminout/readFenicsXDMF.py
     feminout/readFenicsXML.py
     feminout/writeFenicsXDMF.py
