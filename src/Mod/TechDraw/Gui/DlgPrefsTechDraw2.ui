@@ -638,7 +638,7 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="pdsbTemplateMark" native="true">
+         <widget class="Gui::PrefUnitSpinBox" name="pdsbTemplateMark">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -653,6 +653,9 @@
           </property>
           <property name="toolTip">
            <string>Size of template field click handles</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
           </property>
           <property name="value" stdset="0">
            <double>3.000000000000000</double>

@@ -120,8 +120,8 @@ can override the global 'Update With 3D' parameter</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Update pages as scheduled or skip updates.
-Checked is the default for new pages.</string>
+           <string>Keep drawing pages in sync with changes of 3D model in real time.
+This can slow down the response time.</string>
           </property>
           <property name="text">
            <string>Keep Page Up To Date</string>
@@ -196,8 +196,8 @@ for ProjectionGroups</string>
      <property name="title">
       <string>Colors</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_Normal">
@@ -366,34 +366,22 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="2" column="3">
-         <widget class="QLabel" name="label_5">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
+         <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Section Hatch</string>
+           <string>Section Line</string>
           </property>
          </widget>
         </item>
         <item row="2" column="4">
-         <widget class="Gui::PrefColorButton" name="pcb_Hatch">
+         <widget class="Gui::PrefColorButton" name="pcbSectionLine">
           <property name="toolTip">
-           <string>Section face hatch color</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
+           <string>Section line color</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>Hatch</cstring>
+           <cstring>SectionColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
+           <cstring>/Mod/TechDraw/Decorations</cstring>
           </property>
          </widget>
         </item>
@@ -412,7 +400,7 @@ for ProjectionGroups</string>
         <item row="3" column="1">
          <widget class="Gui::PrefColorButton" name="pcb_Background">
           <property name="toolTip">
-           <string>Window background color</string>
+           <string>Background color around pages</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -430,21 +418,21 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="3" column="3">
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="label_5">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
           <property name="text">
-           <string>Geometric Hatch</string>
+           <string>Hatch</string>
           </property>
          </widget>
         </item>
         <item row="3" column="4">
-         <widget class="Gui::PrefColorButton" name="pcb_GeomHatch">
+         <widget class="Gui::PrefColorButton" name="pcb_Hatch">
           <property name="toolTip">
-           <string>Geometric hatch color</string>
+           <string>Hatch image color</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -454,7 +442,7 @@ for ProjectionGroups</string>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>GeomHatch</cstring>
+           <cstring>Hatch</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/Colors</cstring>
@@ -471,7 +459,7 @@ for ProjectionGroups</string>
         <item row="4" column="1">
          <widget class="Gui::PrefColorButton" name="pcbDimColor">
           <property name="toolTip">
-           <string>Color of Dimension lines and text.</string>
+           <string>Color of dimension lines and text.</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -489,31 +477,49 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="4" column="3">
-         <widget class="QLabel" name="label_14">
+         <widget class="QLabel" name="label_7">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
           <property name="text">
-           <string>Section Line</string>
+           <string>Geometric Hatch</string>
           </property>
          </widget>
         </item>
         <item row="4" column="4">
-         <widget class="Gui::PrefColorButton" name="pcbSectionLine">
+         <widget class="Gui::PrefColorButton" name="pcb_GeomHatch">
+          <property name="toolTip">
+           <string>Geometric hatch pattern color</string>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
           <property name="prefEntry" stdset="0">
-           <cstring>SectionColor</cstring>
+           <cstring>GeomHatch</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Decorations</cstring>
+           <cstring>/Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
         <item row="5" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Center Line</string>
+           <string>Centerline</string>
           </property>
          </widget>
         </item>
         <item row="5" column="1">
          <widget class="Gui::PrefColorButton" name="pcbCenterColor">
+          <property name="toolTip">
+           <string>Centerline color</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>CenterColor</cstring>
           </property>
@@ -531,6 +537,9 @@ for ProjectionGroups</string>
         </item>
         <item row="5" column="4">
          <widget class="Gui::PrefColorButton" name="pcbVertexColor">
+          <property name="toolTip">
+           <string>Color of vertices in views</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>VertexColor</cstring>
           </property>
@@ -547,7 +556,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Transparent faces if checked</string>
+           <string>Object faces will be transparent</string>
           </property>
           <property name="text">
            <string>Transparent Faces</string>
@@ -588,14 +597,14 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Markups</string>
+           <string>Leaderline</string>
           </property>
          </widget>
         </item>
         <item row="6" column="4">
          <widget class="Gui::PrefColorButton" name="pcbMarkup">
           <property name="toolTip">
-           <string>Default color for annotations </string>
+           <string>Default color for leader lines </string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -802,7 +811,7 @@ for ProjectionGroups</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>191</width>
             <height>0</height>
            </size>
           </property>
@@ -847,7 +856,7 @@ for ProjectionGroups</string>
          <widget class="Gui::PrefFileChooser" name="pfc_DefDir" native="true">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>191</width>
             <height>0</height>
            </size>
           </property>
@@ -879,7 +888,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>SVG Hatch Pattern</string>
+           <string>Hatch Pattern File</string>
           </property>
          </widget>
         </item>
@@ -887,7 +896,7 @@ for ProjectionGroups</string>
          <widget class="Gui::PrefFileChooser" name="pfc_HatchFile" native="true">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>191</width>
             <height>0</height>
            </size>
           </property>
@@ -924,7 +933,7 @@ for ProjectionGroups</string>
          <widget class="Gui::PrefFileChooser" name="pfc_LineGroup" native="true">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>191</width>
             <height>0</height>
            </size>
           </property>
@@ -961,7 +970,7 @@ for ProjectionGroups</string>
          <widget class="Gui::PrefFileChooser" name="pfc_Welding" native="true">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>191</width>
             <height>0</height>
            </size>
           </property>
@@ -1001,7 +1010,7 @@ for ProjectionGroups</string>
          <widget class="Gui::PrefFileChooser" name="pfc_FilePattern" native="true">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>191</width>
             <height>0</height>
            </size>
           </property>
@@ -1044,7 +1053,7 @@ for ProjectionGroups</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>191</width>
             <height>22</height>
            </size>
           </property>

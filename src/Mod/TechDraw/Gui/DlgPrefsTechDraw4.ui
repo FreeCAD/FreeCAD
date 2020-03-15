@@ -119,6 +119,9 @@ Then you need to increase the tile limit.</string>
           <property name="singleStep">
            <number>100</number>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
+          </property>
           <property name="value">
            <number>10000</number>
           </property>
@@ -144,6 +147,9 @@ when hatching a face with a PAT pattern</string>
           </property>
           <property name="singleStep">
            <number>100</number>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
           </property>
           <property name="value">
            <number>10000</number>
