@@ -716,7 +716,7 @@
          </widget>
         </item>
         <item row="7" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="pdsbBalloonKink">
+         <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
