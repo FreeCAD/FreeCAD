@@ -231,7 +231,7 @@ def init_draft_statusbar(sb):
     snap_widget.addAction(orthobutton)
 
     # add snap widget to the statusbar
-    sb.addPermanentWidget(snap_widget)
+    sb.insertPermanentWidget(2, snap_widget)
     snap_widget.show()
 
 
@@ -267,7 +267,7 @@ def init_draft_statusbar(sb):
     scale_widget.scaleLabel = scaleLabel
     
     # add scale widget to the statusbar
-    sb.addPermanentWidget(scale_widget)
+    sb.insertPermanentWidget(3, scale_widget)
     scale_widget.show()
 
 def show_draft_statusbar():
