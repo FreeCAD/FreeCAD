@@ -32,8 +32,10 @@ modules in `draftguitools`.
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD as App
+import FreeCADGui as Gui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
+from PySide import QtCore, QtGui
 # Comment out commands that aren't ready to be used
 
 
@@ -156,3 +158,58 @@ def init_draft_menus(workbench):
     workbench.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Utilities"),
                          get_draft_utility_commands()
                          + get_draft_context_commands())
+
+def init_draft_snap_toolbar(commands, context, button_suffix):
+    """
+    Init Draft Snap toolbar.
+
+    Parameters:
+    commands        Snap command list,
+                    use: get_draft_snap_commands():
+    context         The toolbar or action group the buttons have 
+                    to be added to    
+    button_suffix   The suffix applied to the command name to 
+                    define the button name
+    """
+    for gc in commands:
+        # setup toolbar buttons accordin to the name of the command they will call
+        command = 'Gui.runCommand("' + gc + '")'
+        b = QtGui.QAction(context)
+        b.setIcon(QtGui.QIcon(':/icons/' + gc[6:] + '.svg'))
+        b.setText(QT_TRANSLATE_NOOP("Draft_Snap", "Snap " + gc[11:]))
+        b.setToolTip(QT_TRANSLATE_NOOP("Draft_Snap", "Snap " + gc[11:]))
+        b.setObjectName(gc + button_suffix)
+        b.setWhatsThis("Draft_"+gc[11:].capitalize())
+        b.setCheckable(True)
+        b.setChecked(True)
+        context.addAction(b)
+        QtCore.QObject.connect(b,QtCore.SIGNAL("triggered()"),lambda f=Gui.doCommand, arg=command:f(arg))
+
+    for b in context.actions():
+        if len(b.statusTip()) == 0:
+            b.setStatusTip(b.toolTip())
+
+def restore_snap_toolbar_buttons_state(toolbar, button_suffix):
+    """
+    Restore toolbar button's checked state accordin to saved preference "snapModes"
+    """
+    # set status tip where needed
+    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    snap_modes = param.GetString("snapModes")
+
+    for b in toolbar.actions():
+        if len(b.statusTip()) == 0:
+            b.setStatusTip(b.toolTip())
+
+    # restore toolbar buttons state
+    if snap_modes:
+        for a in toolbar.findChildren(QtGui.QAction):
+            snap = a.objectName()[11:].replace(button_suffix,"")
+            if snap in Gui.Snapper.snaps:
+                i = Gui.Snapper.snaps.index(snap)
+                state = bool(int(snap_modes[i]))
+                a.setChecked(state)
+                if state:
+                    a.setToolTip(a.toolTip()+" (ON)")
+                else:
+                    a.setToolTip(a.toolTip()+" (OFF)")

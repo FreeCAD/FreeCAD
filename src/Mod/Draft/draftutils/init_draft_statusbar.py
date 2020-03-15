@@ -34,7 +34,9 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
+from draftutils.init_tools import (get_draft_snap_commands, 
+                                   init_draft_snap_toolbar, 
+                                   restore_snap_toolbar_buttons_state)
 
 #----------------------------------------------------------------------------
 # SCALE WIDGET FUNCTIONS
@@ -176,37 +178,68 @@ def init_draft_statusbar(sb):
     """
     param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
-    # SNAP TOOLS -------------------------------------------------------------
+    # SNAP WIDGET - init ----------------------------------------------------
     
     snap_widget = QtGui.QToolBar()
     snap_widget.setObjectName("draft_snap_widget")
     snap_widget.setIconSize(QtCore.QSize(16,16))
     
-    # toggle grid button
+    # GRID BUTTON - init
     gridbutton = QtGui.QAction(sb)
-    gridbutton.setIcon(QtGui.QIcon.fromTheme("Draft_Grid",
+    gridbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
                                              QtGui.QIcon(":/icons/"
                                                          "Draft_Grid.svg")))
     gridbutton.setText(QT_TRANSLATE_NOOP("Draft","Grid"))
     gridbutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
-                                            "Toggles the Draft grid On/Off"))
-    gridbutton.setObjectName("GridButton")
+                                            "Toggles Grid On/Off"))
+    gridbutton.setObjectName("Grid_Statusbutton")
     gridbutton.setWhatsThis("Draft_ToggleGrid")
     QtCore.QObject.connect(gridbutton,QtCore.SIGNAL("triggered()"),
                            lambda f=Gui.doCommand, 
                            arg='Gui.runCommand("Draft_ToggleGrid")':f(arg))
     snap_widget.addAction(gridbutton)
 
-    # toggle dimensions button
+    # SNAP BUTTON - init
+    snappref = param.GetString("snapModes","111111111101111")[0]
+    snapbutton = QtGui.QPushButton(sb)
+    snapbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
+                                              QtGui.QIcon(":/icons/"
+                                                          "Snap_Lock.svg")))
+    snapbutton.setObjectName("Snap_Statusbutton")
+    snapbutton.setWhatsThis("Draft_ToggleLockSnap")
+    snapbutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
+                                          "Object snapping"))
+    snapbutton.setCheckable(True)
+    snapbutton.setChecked(bool(int(snappref)))
+    snapbutton.setFlat(True)
+    QtCore.QObject.connect(snapbutton,QtCore.SIGNAL("triggered()"),
+                           lambda f=Gui.doCommand, 
+                           arg='Gui.runCommand("Draft_Snap_Lock")':f(arg))
+
+    snaps_menu = QtGui.QMenu(snapbutton)
+    snaps_menu.setObjectName("draft_statusbar_snap_toolbar")
+    
+    snap_gui_commands = get_draft_snap_commands()
+    snap_gui_commands.remove('Draft_Snap_Ortho')
+    snap_gui_commands.remove('Draft_Snap_WorkingPlane')
+    snap_gui_commands.remove('Draft_Snap_Dimensions')
+    init_draft_snap_toolbar(snap_gui_commands,snaps_menu, "_Statusbutton")
+    restore_snap_toolbar_buttons_state(snaps_menu, "_Statusbutton")
+
+    snapbutton.setMenu(snaps_menu)
+    snap_widget.addWidget(snapbutton)
+
+
+    # DIMENSION BUTTON - init
     dimpref = param.GetString("snapModes","111111111101111")[13]
     dimbutton = QtGui.QAction(sb)
-    dimbutton.setIcon(QtGui.QIcon.fromTheme("Draft_Grid",
+    dimbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
                                             QtGui.QIcon(":/icons/"
                                                         "Snap_Dimensions.svg")))
     dimbutton.setText(QT_TRANSLATE_NOOP("Draft_Snap","Toggle Dimensions"))
-    dimbutton.setToolTip(QT_TRANSLATE_NOOP("Draft_ToggleGrid",
-                                           "Toggles the Draft grid On/Off"))
-    dimbutton.setObjectName("DimButton")
+    dimbutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
+                                           "Toggles Visual Aid Dimensions On/Off"))
+    dimbutton.setObjectName("Dimensions_Statusbutton")
     dimbutton.setWhatsThis("Draft_ToggleDimensions")
     dimbutton.setCheckable(True)
     dimbutton.setChecked(bool(int(dimpref)))
@@ -215,14 +248,16 @@ def init_draft_statusbar(sb):
                            arg='Gui.runCommand("Draft_Snap_Dimensions")':f(arg))
     snap_widget.addAction(dimbutton)
 
-    # toggle ortho button
+    # ORTHO BUTTON - init
     ortopref = param.GetString("snapModes","111111111101111")[10]
     orthobutton = QtGui.QAction(sb)
-    orthobutton.setIcon(QtGui.QIcon.fromTheme("Draft_Grid",
+    orthobutton.setIcon(QtGui.QIcon.fromTheme("Draft",
                                               QtGui.QIcon(":/icons/"
                                                           "Snap_Ortho.svg")))
-    orthobutton.setObjectName("OrthoButton")
+    orthobutton.setObjectName("Ortho_Statusbutton")
     orthobutton.setWhatsThis("Draft_ToggleOrtho")
+    orthobutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
+                                             "Toggles Ortho On/Off"))
     orthobutton.setCheckable(True)
     orthobutton.setChecked(bool(int(ortopref)))
     QtCore.QObject.connect(orthobutton,QtCore.SIGNAL("triggered()"),
@@ -230,13 +265,29 @@ def init_draft_statusbar(sb):
                            arg='Gui.runCommand("Draft_Snap_Ortho")':f(arg))
     snap_widget.addAction(orthobutton)
 
+    # WORKINGPLANE BUTTON - init
+    wppref = param.GetString("snapModes","111111111101111")[14]
+    wpbutton = QtGui.QAction(sb)
+    wpbutton.setIcon(QtGui.QIcon.fromTheme("Draft",
+                                              QtGui.QIcon(":/icons/"
+                                                          "Snap_WorkingPlane.svg")))
+    wpbutton.setObjectName("WorkingPlane_Statusbutton")
+    wpbutton.setWhatsThis("Draft_ToggleWorkingPlaneSnap")
+    wpbutton.setToolTip(QT_TRANSLATE_NOOP("Draft",
+                                          "Toggles Constrain to Working Plane On/Off"))
+    wpbutton.setCheckable(True)
+    wpbutton.setChecked(bool(int(wppref)))
+    QtCore.QObject.connect(wpbutton,QtCore.SIGNAL("triggered()"),
+                           lambda f=Gui.doCommand, 
+                           arg='Gui.runCommand("Draft_Snap_WorkingPlane")':f(arg))
+    snap_widget.addAction(wpbutton)
+
     # add snap widget to the statusbar
     sb.insertPermanentWidget(2, snap_widget)
     snap_widget.show()
 
-
    
-    # SCALE TOOL -------------------------------------------------------------
+    # SCALE WIDGET ----------------------------------------------------------
     scale_widget = QtGui.QToolBar()
     scale_widget.setObjectName("draft_status_scale_widget")
     

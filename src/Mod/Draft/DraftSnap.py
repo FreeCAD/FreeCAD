@@ -36,7 +36,9 @@ from collections import OrderedDict
 from FreeCAD import Vector
 from pivy import coin
 from PySide import QtCore,QtGui
-from draftutils.init_tools import get_draft_snap_commands
+from draftutils.init_tools import (get_draft_snap_commands, 
+                                   init_draft_snap_toolbar, 
+                                   restore_snap_toolbar_buttons_state)
 
 
 class Snapper:
@@ -1313,53 +1315,12 @@ class Snapper:
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
 
         snap_gui_commands = get_draft_snap_commands()
-
-        for gc in snap_gui_commands:
-            # setup toolbar buttons accordin to the name of the command they will call
-            command = 'Gui.runCommand("' + gc + '")'
-            b = QtGui.QAction(mw)
-            b.setIcon(QtGui.QIcon(':/icons/' + gc[6:] + '.svg'))
-            b.setText(QtCore.QCoreApplication.translate("Draft_Snap", "Snap" + gc[11:]))
-            b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap", "Snap" + gc[11:]))
-            b.setObjectName(gc + "_Button")
-            b.setWhatsThis("Draft_"+gc[11:].capitalize())
-            b.setCheckable(True)
-            b.setChecked(True)
-            self.toolbar.addAction(b)
-            QtCore.QObject.connect(b,QtCore.SIGNAL("triggered()"),lambda f=FreeCADGui.doCommand, arg=command:f(arg))
-
-        self.restore_toolbar_buttons_state()
-
-        for b in self.toolbar.actions():
-            if len(b.statusTip()) == 0:
-                b.setStatusTip(b.toolTip())
+        init_draft_snap_toolbar(snap_gui_commands,self.toolbar,"_Button")
+        restore_snap_toolbar_buttons_state(self.toolbar,"_Button")
 
         if not Draft.getParam("showSnapBar",True):
             self.toolbar.hide()
 
-    def restore_toolbar_buttons_state(self):
-        """
-        Restore toolbar button's checked state accordin to saved preference "snapModes"
-        """
-        # set status tip where needed
-        for b in self.toolbar.actions():
-            if len(b.statusTip()) == 0:
-                b.setStatusTip(b.toolTip())
-
-        # restore toolbar buttons state
-        snap_modes = Draft.get_param("snapModes","111111111101111")
-        if snap_modes:
-            c = 0
-            mw = FreeCADGui.getMainWindow()
-            for snap in self.snaps:
-                button = mw.findChild(QtGui.QAction, "Draft_Snap_" + snap + "_Button")
-                state = bool(int(snap_modes[c]))
-                button.setChecked(state)
-                if state:
-                    button.setToolTip(button.toolTip()+" (ON)")
-                else:
-                    button.setToolTip(button.toolTip()+" (OFF)")
-                c += 1
 
     def toggleGrid(self):
         FreeCADGui.runCommand("Draft_ToggleGrid")

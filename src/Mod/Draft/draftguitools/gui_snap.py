@@ -84,6 +84,17 @@ class Draft_Snap_Lock():
                 snap_toolbar.actions()[0].setChecked(status)
                 for a in snap_toolbar.actions()[1:]:
                     a.setEnabled(status)
+            mw = Gui.getMainWindow()
+            if mw:
+                sb=mw.statusBar()
+                if sb:
+                    b = sb.findChild(QtGui.QPushButton,"Snap_Statusbutton")
+                    if b:
+                        b.setChecked(status)
+                        menu = b.menu()
+                        menu.actions()[0].setChecked(status)
+                        for a in menu.actions()[1:]:
+                            a.setEnabled(status)
 
 class Draft_Snap_Near():
     def GetResources(self):
@@ -96,6 +107,7 @@ class Draft_Snap_Near():
             status = Gui.Snapper.toggle_snap('Near')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Near"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Near_Statusbutton", status)
 
 
 class Draft_Snap_Midpoint():
@@ -109,6 +121,7 @@ class Draft_Snap_Midpoint():
             status = Gui.Snapper.toggle_snap('Midpoint')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Midpoint"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Midpoint_Statusbutton", status)
 
 class Draft_Snap_Perpendicular():
     def GetResources(self):
@@ -121,6 +134,7 @@ class Draft_Snap_Perpendicular():
             status = Gui.Snapper.toggle_snap('Perpendicular')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Perpendicular"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Perpendicular_Statusbutton", status)
 
 class Draft_Snap_Grid():
     def GetResources(self):
@@ -133,6 +147,7 @@ class Draft_Snap_Grid():
             status = Gui.Snapper.toggle_snap('Grid')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Grid"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Grid_Statusbutton", status)
 
 class Draft_Snap_Intersection():
     def GetResources(self):
@@ -145,6 +160,7 @@ class Draft_Snap_Intersection():
             status = Gui.Snapper.toggle_snap('Intersection')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Intersection"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Intersection_Statusbutton", status)
 
 class Draft_Snap_Parallel():
     def GetResources(self):
@@ -157,6 +173,7 @@ class Draft_Snap_Parallel():
             status = Gui.Snapper.toggle_snap('Parallel')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Parallel"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Parallel_Statusbutton", status)
 
 class Draft_Snap_Endpoint():
     def GetResources(self):
@@ -169,6 +186,7 @@ class Draft_Snap_Endpoint():
             status = Gui.Snapper.toggle_snap('Endpoint')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Endpoint"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Endpoint_Statusbutton", status)
 
 class Draft_Snap_Angle():
     def GetResources(self):
@@ -181,6 +199,7 @@ class Draft_Snap_Angle():
             status = Gui.Snapper.toggle_snap('Angle')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Angle"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Angle_Statusbutton", status)
 
 class Draft_Snap_Center():
     def GetResources(self):
@@ -193,6 +212,7 @@ class Draft_Snap_Center():
             status = Gui.Snapper.toggle_snap('Center')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Center"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Center_Statusbutton", status)
 
 class Draft_Snap_Extension():
     def GetResources(self):
@@ -205,6 +225,7 @@ class Draft_Snap_Extension():
             status = Gui.Snapper.toggle_snap('Extension')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Extension"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Extension_Statusbutton", status)
 
 class Draft_Snap_Ortho():
     """
@@ -221,7 +242,7 @@ class Draft_Snap_Ortho():
             status = Gui.Snapper.toggle_snap('Ortho')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Ortho"+"_Button", status)
-            sync_snap_statusbar_button("StatusbarOrthoButton", status)
+            sync_snap_statusbar_button("Ortho_Statusbutton", status)
 
 class Draft_Snap_Special():
     def GetResources(self):
@@ -234,6 +255,8 @@ class Draft_Snap_Special():
             status = Gui.Snapper.toggle_snap('Special')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Special"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Special_Statusbutton", status)
+
 
 class Draft_Snap_Dimensions():
     def GetResources(self):
@@ -246,7 +269,7 @@ class Draft_Snap_Dimensions():
             status = Gui.Snapper.toggle_snap('Dimensions')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Dimensions"+"_Button", status)
-            sync_snap_statusbar_button("StatusbarDimButton", status)
+            sync_snap_statusbar_button("Dimensions_Statusbutton", status)
 
 class Draft_Snap_WorkingPlane():
     def GetResources(self):
@@ -259,7 +282,7 @@ class Draft_Snap_WorkingPlane():
             status = Gui.Snapper.toggle_snap('WorkingPlane')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_WorkingPlane"+"_Button", status)
-            sync_snap_statusbar_button("StatusbarWpButton", status)
+            sync_snap_statusbar_button("WorkingPlane_Statusbutton", status)
 
 
 # REGISTER SNAP GUI COMMANDS ------------------------------------------------
