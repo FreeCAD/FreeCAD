@@ -301,7 +301,7 @@ class CommandPathPost:
                 # Now generate the gcode
                 for obj in job.Operations.Group:
                     tc = PathUtil.toolControllerForOp(obj)
-                    if tc is not None and obj.Active:
+                    if tc is not None and PathUtil.opProperty(obj, 'Active'):
                         if tc.ToolNumber != currTool:
                             sublist.append(tc)
                             PathLog.debug("Appending TC: {}".format(tc.Name))
@@ -331,14 +331,18 @@ class CommandPathPost:
             sublist = []  # list of ops for output splitting
 
             for idx, obj in enumerate(job.Operations.Group):
+
+                # check if the operation is active
+                active =  PathUtil.opProperty(obj, 'Active')
+
                 tc = PathUtil.toolControllerForOp(obj)
-                if tc is None or tc.ToolNumber == currTool or not obj.Active:
+                if tc is None or tc.ToolNumber == currTool and active:
                     curlist.append(obj)
-                elif tc.ToolNumber != currTool and currTool is None and obj.Active:  # first TC
+                elif tc.ToolNumber != currTool and currTool is None and active:  # first TC
                     sublist.append(tc)
                     curlist.append(obj)
                     currTool = tc.ToolNumber
-                elif tc.ToolNumber != currTool and currTool is not None and obj.Active:  # TC
+                elif tc.ToolNumber != currTool and currTool is not None and active:  # TC
                     for fixture in fixturelist:
                         sublist.append(fixture)
                         sublist.extend(curlist)
@@ -362,7 +366,7 @@ class CommandPathPost:
 
             # Now generate the gcode
             for obj in job.Operations.Group:
-                if obj.Active:
+                if PathUtil.opProperty(obj, 'Active'):
                     sublist = []
                     PathLog.debug("obj: {}".format(obj.Name))
                     for f in wcslist:
