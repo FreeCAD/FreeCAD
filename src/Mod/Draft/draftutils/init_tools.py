@@ -62,7 +62,8 @@ def get_draft_small_commands():
     return ["Draft_Layer",
             "Draft_WorkingPlaneProxy",
             "Draft_ToggleDisplayMode",
-            "Draft_AddToGroup"]
+            "Draft_AddToGroup",
+            "Draft_SelectGroup"]
 
 
 def get_draft_modification_commands():

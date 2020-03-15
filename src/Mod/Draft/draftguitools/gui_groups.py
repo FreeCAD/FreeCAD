@@ -24,7 +24,7 @@
 # ***************************************************************************
 """Provides tools to do various operations with groups.
 
-For example, add objects to groups.
+For example, add objects to groups, and select objects inside groups.
 """
 ## @package gui_groups
 # \ingroup DRAFT
@@ -126,3 +126,106 @@ class AddToGroup(gui_base.GuiCommandNeedsSelection):
 
 
 Gui.addCommand('Draft_AddToGroup', AddToGroup())
+
+
+class SelectGroup(gui_base.GuiCommandNeedsSelection):
+    """GuiCommand for the Draft_SelectGroup tool.
+
+    If the selection is a group, it selects all objects
+    with the same "parents" as this object. This means all objects
+    that are inside this group, including those in nested sub-groups.
+
+    If the selection is a simple object inside a group,
+    it will select the "brother" objects, that is, those objects that are
+    at the same level as this object, including the upper group
+    that contains them all.
+
+    NOTE: the second functionality is a bit strange, as it produces results
+    that are not very intuitive. Maybe we should change it and restrict
+    this command to only groups (`App::DocumentObjectGroup`) because
+    in this case it works in an intuitive manner, selecting
+    only the objects under the group.
+
+    It inherits `GuiCommandNeedsSelection` to only be availbale
+    when there is a document and a selection.
+    See this class for more information.
+    """
+
+    def __init__(self):
+        super().__init__(name=_tr("Select group"))
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _tooltip = ("If the selection is a group, it selects all objects "
+                    "that are inside this group, including those in "
+                    "nested sub-groups.\n"
+                    "\n"
+                    "If the selection is a simple object inside a group, "
+                    'it will select the "brother" objects, that is,\n'
+                    "those that are at the same level as this object, "
+                    "including the upper group that contains them all.")
+
+        d = {'Pixmap': 'Draft_SelectGroup',
+             'MenuText': QT_TRANSLATE_NOOP("Draft_SelectGroup",
+                                           "Select group"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_SelectGroup",
+                                          _tooltip)}
+        return d
+
+    def Activated(self):
+        """Execute when the command is called.
+
+        If the selection is a single group, it selects all objects
+        inside this group.
+
+        In other cases it selects all objects (children)
+        in the OutList of this object, and also all objects (parents)
+        in the InList of this object.
+        For all parents, it also selects the children of these.
+        """
+        super().Activated()
+
+        sel = Gui.Selection.getSelection()
+        if len(sel) == 1:
+            if sel[0].isDerivedFrom("App::DocumentObjectGroup"):
+                cts = utils.get_group_contents(Gui.Selection.getSelection())
+                for o in cts:
+                    Gui.Selection.addSelection(o)
+                return
+        for obj in sel:
+            # This selects the objects in the `OutList`
+            # which are actually `parents` but appear below in the tree.
+            # Regular objects usually have an empty `OutList`
+            # so this is skipped.
+            # But for groups, it selects the objects
+            # that it contains under it.
+            for child in obj.OutList:
+                Gui.Selection.addSelection(child)
+
+            # This selects the upper group that contains `obj`.
+            # Then for this group, it selects the objects in its `OutList`,
+            # which are at the same level as `obj` (brothers).
+            for parent in obj.InList:
+                Gui.Selection.addSelection(parent)
+                for child in parent.OutList:
+                    Gui.Selection.addSelection(child)
+        # -------------------------------------------------------------------
+        # NOTE: the terminology here may be confusing.
+        # Those in the `InList` are actually `children` (dependents)
+        # but appear above in the tree view,
+        # and this is the reason they are called `parents`.
+        #
+        # Those in the `OutList` are actually `parents` (suppliers)
+        # but appear below in the tree, and this is the reason
+        # they are called `children`.
+        #
+        # InList
+        #  |
+        #  - object
+        #     |
+        #     - OutList
+        #
+        # -------------------------------------------------------------------
+
+
+Gui.addCommand('Draft_SelectGroup', SelectGroup())
