@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>476</width>
-    <height>395</height>
+    <height>336</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Default shape color</string>
+           <string>Shape color</string>
           </property>
          </widget>
         </item>
@@ -57,8 +57,11 @@
         </item>
         <item row="0" column="2">
          <widget class="Gui::PrefCheckBox" name="checkRandomColor">
+          <property name="toolTip">
+           <string>Use random color instead</string>
+          </property>
           <property name="text">
-           <string>Random shape color</string>
+           <string>Random</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>RandomColor</cstring>
@@ -77,7 +80,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Default line color</string>
+           <string>Line color</string>
           </property>
          </widget>
         </item>
@@ -110,7 +113,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Default line width</string>
+           <string>Line width</string>
           </property>
          </widget>
         </item>
@@ -145,7 +148,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Default vertex color</string>
+           <string>Vertex color</string>
           </property>
          </widget>
         </item>
@@ -178,7 +181,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Default vertex size</string>
+           <string>Vertex size</string>
           </property>
          </widget>
         </item>
@@ -237,7 +240,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0" colspan="3">
+        <item row="6" column="0">
          <widget class="Gui::PrefCheckBox" name="twosideRendering">
           <property name="minimumSize">
            <size>
@@ -277,7 +280,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Annotations</string>
+      <string>Default Annotation color</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
@@ -291,7 +294,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Default text color</string>
+           <string>Text color</string>
           </property>
          </widget>
         </item>
@@ -314,7 +317,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>28</width>
           <height>20</height>
          </size>
         </property>
