@@ -30,9 +30,7 @@
 # \ingroup DRAFT
 # \brief This module provides the Draft Snap Gui commands.
 
-import FreeCAD as App
 import FreeCADGui as Gui
-import DraftGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtGui
 

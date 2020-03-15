@@ -36,6 +36,8 @@ from collections import OrderedDict
 from FreeCAD import Vector
 from pivy import coin
 from PySide import QtCore,QtGui
+from draftutils.init_tools import get_draft_snap_commands
+
 
 class Snapper:
     """The Snapper objects contains all the functionality used by draft
@@ -100,7 +102,7 @@ class Snapper:
         # snap keys, it's important tha they are in this order for
         # saving in preferences and for properly restore the toolbar
         self.snaps = ['Lock',           # 0 
-                      'Near',           # 1 used by Near Snap
+                      'Near',           # 1 former "passive" snap
                       'Extension',      # 2
                       'Parallel',       # 3
                       'Grid',           # 4
@@ -112,8 +114,8 @@ class Snapper:
                       'Ortho',          # 10
                       'Intersection',   # 11
                       'Special',        # 12
-                      'Dimensions',     # 13 TODO change to lowercase
-                      'WorkingPlane'    # 14 TODO change to lowercase
+                      'Dimensions',     # 13
+                      'WorkingPlane'    # 14
                      ]
 
         self.init_active_snaps()
@@ -315,7 +317,7 @@ class Snapper:
             parent = obj
             subname = self.snapInfo['Component']
         if not obj:
-            self.spoint = cstr(point) # BUG: cstr is not defined ??
+            self.spoint = cstr(point)
             self.running = False
             return self.spoint
 
@@ -391,7 +393,7 @@ class Snapper:
                         snaps.append(self.snapToVertex(self.snapInfo,active=True))
                     else:
                         # all other cases (face, etc...) default to near snap
-                        snapArray = [self.snapToVertex(self.snapInfo)] # BUG: snapArray is defined but not used
+                        snapArray = [self.snapToVertex(self.snapInfo)]
 
             elif Draft.getType(obj) == "Dimension":
                 # for dimensions we snap to their 2 points:
@@ -1040,7 +1042,7 @@ class Snapper:
                 qp = QtGui.QPainter()
                 qp.begin(newicon)
                 qp.drawPixmap(0,0,baseicon)
-                if not (mode == 'near'):
+                if mode != 'near':
                     tp = QtGui.QPixmap(self.cursors[mode]).scaledToWidth(16)
                     qp.drawPixmap(QtCore.QPoint(16, 8), tp);
                 qp.end()
@@ -1310,10 +1312,9 @@ class Snapper:
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
 
-        from draftutils.init_tools import get_draft_snap_commands
-        draft_gui_commands = get_draft_snap_commands()
+        snap_gui_commands = get_draft_snap_commands()
 
-        for gc in draft_gui_commands:
+        for gc in snap_gui_commands:
             # setup toolbar buttons accordin to the name of the command they will call
             command = 'Gui.runCommand("' + gc + '")'
             b = QtGui.QAction(mw)
@@ -1505,12 +1506,3 @@ class Snapper:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
-        
-
-if not hasattr(FreeCADGui,"Snapper"):
-    FreeCADGui.Snapper = Snapper()
-if not hasattr(FreeCAD,"DraftWorkingPlane"):
-    import WorkingPlane
-    FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
-    #print(FreeCAD.DraftWorkingPlane)
-    FreeCADGui.addIconPath(":/icons")

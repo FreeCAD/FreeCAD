@@ -109,7 +109,7 @@ def get_draft_snap_commands():
             'Draft_Snap_Near',     
             'Draft_Snap_Ortho',       
             'Draft_Snap_Grid',          
-            'Draft_Snap_WorkingPlane'
+            'Draft_Snap_WorkingPlane',
             'Draft_Snap_Dimensions',
             ]
 
