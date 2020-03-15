@@ -28,221 +28,197 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import FreeCAD
 import time
 from .. import writerbase as FemInputWriter
+from femmesh import meshtools as FemMeshTools
+from feminout import importOpenSeesMesh
+
+from .heading import Heading
+from .nodes import Nodes
+# from elements import Elements
+# from sets import Sets
+# from bcs import BCs
+# from materials import Materials
+# from steps import Steps
 
 
-class FemInputWriterOpenSees(FemInputWriter.FemInputWriter):
-    def __init__(
-        self,
-        analysis_obj,
-        solver_obj,
-        mesh_obj,
-        member,
-        dir_name=None
-    ):
-        FemInputWriter.FemInputWriter.__init__(
-            self,
-            analysis_obj,
-            solver_obj,
-            mesh_obj,
-            member,
-            dir_name
-        )
-        # working dir and input file
-        from os.path import join
-        # self.main_file_name = self.mesh_object.Name + ".in"
-        self.main_file_name = "opensees_example.tcl"
-        self.file_name = join(self.dir_name, self.main_file_name)
-        FreeCAD.Console.PrintLog(
-            "FemInputWriterCcx --> self.dir_name  -->  " + self.dir_name + "\n"
-        )
-        FreeCAD.Console.PrintLog(
-            "FemInputWriterCcx --> self.main_file_name  -->  " + self.main_file_name + "\n"
-        )
-        FreeCAD.Console.PrintMessage(
-            "FemInputWriterCcx --> self.file_name  -->  " + self.file_name + "\n"
-        )
+__all__ = [
+    'FemInputWriterOpenSees',
+]
+
+
+comments = {
+    'abaqus': '**',
+    'opensees': '#',
+    'sofistik': '$',
+    'ansys': '!',
+}
+
+
+class FemInputWriterOpenSees(FemInputWriter.FemInputWriter,
+                             # Steps, Materials, BCs, Sets, Elements,
+                             Nodes,
+                             Heading):
+
+    """ Initialises base file writer.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    """
+
+    def __init__(self,
+                 analysis_obj,
+                 solver_obj,
+                 mesh_obj,
+                 member,
+                 dir_name=None,
+                 structure=None,
+                 software='opensees',
+                 filename='/home/ebi/freecad_opensees.tcl',
+                 fields=None,
+                 ndof=6,
+                 ):
+        FemInputWriter.FemInputWriter.__init__(self,
+                                               analysis_obj,
+                                               solver_obj,
+                                               mesh_obj,
+                                               member,
+                                               dir_name,
+                                               )
+
+        self.comment = comments[software]
+        self.filename = filename
+        self.file_name = filename
+        self.member = member
+        self.ndof = ndof
+        self.software = software
+        self.structure = structure
+        self.fields = fields
+        self.spacer = {'abaqus': ', ', 'opensees': ' ', 'ansys': ' '}
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        if not self.femelement_table:
+            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+            self.element_count = len(self.femelement_table)
+
+        print(f'self.femelement_table = {self.femelement_table}')
+        print(f'self.element_count = {self.element_count}')
 
     def write_opensees_input_file(self):
 
-        timestart = time.clock()
+        input_generate(self.analysis,
+                       self.solver_obj,
+                       self.mesh_object,
+                       self.member,
+                       self.structure,
+                       self.fields,
+                       self.ndof,
+                       self.filename,
+                       )
 
-        inpfile = open(self.file_name, "w")
+        # timestart = time.clock()
 
-        inpfile.write(example_input_file)
-        inpfile.close()
-        writing_time_string = (
-            "Writing time input file: {} seconds"
-            .format(round((time.clock() - timestart), 2))
-        )
-        FreeCAD.Console.PrintMessage(writing_time_string + " \n\n")
+        # inpfile = open(self.file_name, "w")
+
+        # inpfile.write(example_input_file)
+        # inpfile.close()
+        # writing_time_string = (
+        #     "Writing time input file: {} seconds"
+        #     .format(round((time.clock() - timestart), 2))
+        # )
+        # FreeCAD.Console.PrintMessage(writing_time_string + " \n\n")
         return self.file_name
 
+    def __enter__(self):
 
-example_input_file = """# ----------------------------
-# Start of model generation
-# ----------------------------
-# kgf-m
-# Create ModelBuilder with 3 dimensions and 6 DOF/node
-model basic -ndm 3 -ndf 3
+        self.file = open(self.filename, 'w')
+        return self
 
-#Basic units
-set m   1.0; # meter for length
-set sec 1.0; # second for time
-set kg  1.0; # Kilogram for mass
+    def __exit__(self, type, value, traceback):
 
-#Other units
-# angle
-#set rad 1.0;
-#set deg [expr $PI/180.0*$rad];
+        self.file.close()
 
-# length
-set cm  0.01;
-set in  0.0254;
-set ft [expr 12.0*$in];
+    def blank_line(self):
 
-# mass
-set lbs 0.4536;
-set kip [expr 1000.0*$lbs];
-set ton [expr 1000.0*$kg]
+        self.file.write('{0}\n'.format(self.comment))
 
-# force
-set N   [expr 0.1 * $kg * $m / ($sec * $sec)] ;
-set KN [expr 1000.0*$N];
-set MN [expr 1000.0*$KN];
+    def divider_line(self):
 
-# pressure
-set Pa  [expr 1.0*$N/pow($m, 2)];
-set KPa [expr 1000.0*$Pa];
-set GPa [expr 1000.0*$KPa];
-set pcf [expr $lbs/pow($ft,3)];	# pcf = #/cubic foot
-set ksi [expr $kip/pow($in,2)];
-set psi [expr $ksi/1000.];
+        self.file.write('{0}------------------------------------------------------------------\n'.format(self.comment))
+
+    def write_line(self, line):
+
+        self.file.write('{0}\n'.format(line))
+
+    def write_section(self, section):
+
+        self.divider_line()
+        self.write_line('{0} {1}'.format(self.comment, section))
+        self.divider_line()
+
+    def write_subsection(self, subsection):
+
+        self.write_line('{0} {1}'.format(self.comment, subsection))
+        self.write_line('{0}-{1}'.format(self.comment, '-' * len(subsection)))
+        self.blank_line()
 
 
-# create the material
-nDMaterial ElasticIsotropic   1   [expr 210*$GPa]   0.3  7900
+def input_generate(analysis_obj,
+                   solver_obj,
+                   mesh_obj,
+                   member,
+                   structure,
+                   fields,
+                   ndof,
+                   filename,
+                   ):
+    """ Creates the OpenSees .tcl file from the Structure object.
 
-# Define geometry
-# ---------------
+    Parameters
+    ----------
+    structure : obj
+        The Structure object to read from.
+    fields : list
+        Data field requests.
+    output : bool
+        Print terminal output.
+    ndof : int
+        Number of degrees-of-freedom in the model, 3 or 6.
 
-# define some  parameters
-set eleArgs "1"
+    Returns
+    -------
+    None
 
-#set element stdBrick
-set element bbarBrick
+    """
 
-set nz 2
-set nx 6
-set ny 2
+    # filename = '{0}{1}.tcl'.format(structure.path, structure.name)
 
-set nn [expr ($nz+1)*($nx+1)*($ny+1) ]
+    with FemInputWriterOpenSees(analysis_obj,
+                                solver_obj,
+                                mesh_obj,
+                                member,
+                                structure=structure,
+                                software='opensees',
+                                filename=filename,
+                                fields=fields,
+                                ndof=ndof) as writer:
 
-# mesh generation
-block3D $nx $ny $nz   8 1  $element  $eleArgs {
+        writer.write_heading()
+        writer.write_nodes()
+        # writer.write_boundary_conditions()
+        # writer.write_materials()
+        # writer.write_elements()
+        # writer.write_steps()
 
-    1   4 1 0
-    2   -4 1 0
-    3   -4 0 0
-    4   4 0 0
-    5   4 1 1
-    6   -4 1 1
-    7   -4 0 1
-    8   4 0 1
-}
-
-
-set load [expr 900*$N]
-
-# Constant point load
-pattern Plain 1 Linear {
-   load $nn  0  0 $load
-}
-
-# boundary conditions
-fixX 4   1 1 1  1 1 1
-
-# --------------------------------------------------------------------
-# Start of static analysis (creation of the analysis & analysis itself)
-# --------------------------------------------------------------------
-
-# Load control with variable load steps
-#                       init   Jd  min   max
-integrator LoadControl  1.0  1
-
-# Convergence test
-#                  tolerance maxIter displayCode
-test NormUnbalance     1.0e-10    20     0
-
-# Solution algorithm
-algorithm Newton
-
-# DOF numberer
-numberer RCM
-
-# Cosntraint handler
-constraints Plain
-
-# System of equations solver
-system ProfileSPD
-
-# Analysis for gravity load
-analysis Static
-
-# Perform the analysis
-analyze 5
-
-
-# --------------------------
-# End of static analysis
-# --------------------------
-
-# ----------------------------
-# Start of recorder generation
-# ----------------------------
-
-recorder Node -file Node.out -time -node $nn -dof 1 2 3 disp
-#recorder plot Node.out CenterNodeDisp 625 10 625 450 -columns 1 2
-
-recorder display ShakingBeam 0 0 300 300 -wipe
-prp -100 100 120.5
-vup 0 1 0
-display 1 4 1
-
-# --------------------------
-# End of recorder generation
-# --------------------------
-
-
-# ---------------------------------------
-# Create and Perform the dynamic analysis
-# ---------------------------------------
-
-# Remove the static analysis & reset the time to 0.0
-wipeAnalysis
-setTime 0.0
-
-# Now remove the loads and let the beam vibrate
-remove loadPattern 1
-
-# add some mass proportional damping
-rayleigh 0.01 0.0 0.0 0.0
-
-# Create the transient analysis
-test EnergyIncr     1.0e-10    20   0
-algorithm Newton
-numberer RCM
-constraints Plain
-integrator Newmark 0.5 0.25
-#integrator GeneralizedMidpoint 0.50
-analysis Transient
-
-
-# Perform the transient analysis (20 sec)
-#       numSteps  dt
-analyze 100 2.0
-"""
-
-##  @}
+    print('***** OpenSees input file generated: {0} *****\n'.format(filename))
