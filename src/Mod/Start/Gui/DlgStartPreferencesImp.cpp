@@ -32,7 +32,7 @@
 using namespace StartGui;
 
 /**
- *  Constructs a DlgSettings3DViewImp which is a child of 'parent' 
+ *  Constructs a DlgStartPreferencesImp which is a child of 'parent'
  */
 DlgStartPreferencesImp::DlgStartPreferencesImp( QWidget* parent )
   : PreferencePage( parent )

@@ -36,7 +36,7 @@ using namespace RaytracingGui;
 /* TRANSLATOR RaytracingGui::DlgSettingsRayImp */
 
 /**
- *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the 
+ *  Constructs a DlgSettingsRayImp which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f' 
  */
 DlgSettingsRayImp::DlgSettingsRayImp( QWidget* parent )
