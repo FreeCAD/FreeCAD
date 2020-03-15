@@ -725,24 +725,15 @@ class _SolverElmer(CommandManager):
 
 class _SolverOpenSees(CommandManager):
     "The FEM_SolverOpenSees command definition"
+
     def __init__(self):
         super(_SolverOpenSees, self).__init__()
-        self.resources = {
-            "Pixmap": "fem-solver-standard",
-            "MenuText": QtCore.QT_TRANSLATE_NOOP(
-                "FEM_SolverOpenSees",
-                "Solver OpenSees"
-            ),
-            "Accel": "S, S",
-            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
-                "FEM_SolverOpenSees",
-                "Creates a FEM solver OpenSees"
-            )
-        }
+        self.pixmap = "FEM_SolverStandard"
+        self.menuetext = "Solver OpenSees"
+        self.accel = "S, S"
+        self.tooltip = "Creates a FEM solver OpenSees"
         self.is_active = "with_analysis"
-
-    def Activated(self):
-        self.add_obj_on_gui_noset_edit(self.__class__.__name__.lstrip("_"))
+        self.do_activated = "add_obj_on_gui_noset_edit"
 
 
 class _SolverRun(CommandManager):
