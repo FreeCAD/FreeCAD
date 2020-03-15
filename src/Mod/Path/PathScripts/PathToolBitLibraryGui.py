@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 
+import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
@@ -40,6 +41,9 @@ import uuid as UUID
 
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
 _PathRole = PySide.QtCore.Qt.UserRole + 2
+
+def translate(context, text, disambig=None):
+    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
 class _TableView(PySide.QtGui.QTableView):
     '''Subclass of QTableView to support rearrange and copying of ToolBits'''
@@ -224,10 +228,14 @@ class ToolBitLibrary(object):
 
     def libraryOpen(self):
         PathLog.track()
-        foo = PySide.QtGui.QFileDialog.getOpenFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
-        if foo and foo[0]:
-            path = foo[0]
-            PathPreferences.setLastPathToolLibrary(os.path.dirname(path))
+        filename = PySide.QtGui.QFileDialog.getOpenFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
+        if filename and filename[0]:
+            path = filename[0]
+            PathPreferences.setLastPathToolLibrary(filename[0])
+
+            if not PathPreferences.toolsOpenLastLibrary():
+                path = os.path.dirname(path)
+
             self.libraryLoad(path)
 
     def libraryLoad(self, path):
@@ -259,9 +267,9 @@ class ToolBitLibrary(object):
     def createToolBit(self):
         tool = PathToolBit.ToolBitFactory().Create()
 
-        self.dialog = PySide.QtGui.QDialog(self.form)
-        layout = PySide.QtGui.QVBoxLayout(self.dialog)
-        self.editor = PathToolBitEdit.ToolBitEditor(tool, self.dialog)
+        #self.dialog = PySide.QtGui.QDialog(self.form)
+        #layout = PySide.QtGui.QVBoxLayout(self.dialog)
+        self.editor = PathToolBitEdit.ToolBitEditor(tool, self.form.toolTableGroup)
         self.editor.setupUI()
         self.buttons = PySide.QtGui.QDialogButtonBox(
                 PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel,
@@ -287,14 +295,80 @@ class ToolBitLibrary(object):
         with open(self.path, 'w') as fp:
             json.dump(library, fp, sort_keys=True, indent=2)
 
+    def libararySaveLinuxCNC(self, path):
+        with open(path, 'w') as fp:
+            fp.write(";\n")
+
+            for row in range(self.model.rowCount()):
+                toolNr   = self.model.data(self.model.index(row, 0), PySide.QtCore.Qt.EditRole)
+                toolPath = self.model.data(self.model.index(row, 0), _PathRole)
+
+                bit = PathToolBit.Factory.CreateFrom(toolPath)
+                if bit:
+                    PathLog.track(bit)
+
+                    pocket = bit.Pocket if hasattr(bit, "Pocket") else ""
+                    xoffset = bit.Xoffset if hasattr(bit, "Xoffset") else "0"
+                    yoffset = bit.Yoffset if hasattr(bit, "Yoffset") else "0"
+                    zoffset = bit.Zoffset if hasattr(bit, "Zoffset") else "0"
+                    aoffset = bit.Aoffset if hasattr(bit, "Aoffset") else "0"
+                    boffset = bit.Boffset if hasattr(bit, "Boffset") else "0"
+                    coffset = bit.Coffset if hasattr(bit, "Coffset") else "0"
+                    uoffset = bit.Uoffset if hasattr(bit, "Uoffset") else "0"
+                    voffset = bit.Voffset if hasattr(bit, "Voffset") else "0"
+                    woffset = bit.Woffset if hasattr(bit, "Woffset") else "0"
+
+                    diameter = bit.Diameter if hasattr(bit, "Diameter") else "0"
+                    frontangle = bit.FrontAngle if hasattr(bit, "FrontAngle") else "0"
+                    backangle = bit.BackAngle if hasattr(bit, "BackAngle") else "0"
+                    orientation = bit.Orientation if hasattr(bit, "Orientation") else "0"
+                    remark = bit.Label
+
+                    fp.write(f"T{toolNr} "\
+                            f"P{pocket} "\
+                            f"X{xoffset} "\
+                            f"Y{yoffset} "\
+                            f"Z{zoffset} "\
+                            f"A{aoffset} "\
+                            f"B{boffset} "\
+                            f"C{coffset} "\
+                            f"U{uoffset} "\
+                            f"V{voffset} "\
+                            f"W{woffset} "\
+                            f"D{diameter} "\
+                            f"I{frontangle} "\
+                            f"J{backangle} "\
+                            f"Q{orientation} ;"\
+                            f"{remark}\n")
+
+                    FreeCAD.ActiveDocument.removeObject(bit.Name)
+
+                else:
+                    PathLog.error("Could not find tool #{}: {}".format(nr, library['tools'][nr]))
+
     def librarySaveAs(self):
-        foo = PySide.QtGui.QFileDialog.getSaveFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
-        if foo and foo[0]:
-            path = foo[0] if foo[0].endswith('.fctl') else "{}.fctl".format(foo[0])
-            PathPreferences.setLastPathToolLibrary(os.path.dirname(path))
-            self.path = path
-            self.librarySave()
-            self.updateToolbar()
+        TooltableTypeJSON     = translate("PathToolLibraryManager", "Tooltable JSON (*.fctl)")
+        TooltableTypeLinuxCNC = translate("PathToolLibraryManager", "LinuxCNC tooltable (*.tbl)")
+
+        filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form, \
+                translate("TooltableEditor", "Save toolbit library", None), \
+                None, "{};;{}".format(TooltableTypeJSON, \
+                    TooltableTypeLinuxCNC))
+        # filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form, \
+        #        'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
+        if filename and filename[0]:
+            if filename[1] == TooltableTypeLinuxCNC:
+                path = filename[0] if filename[0].endswith('.tbl') else "{}.tbl".format(filename[0])
+                self.libararySaveLinuxCNC(path)
+            else:
+                path = filename[0] if filename[0].endswith('.fctl') else "{}.fctl".format(filename[0])
+                PathPreferences.setLastPathToolLibrary(os.path.dirname(path))
+                self.path = path
+                self.librarySave()
+                self.updateToolbar()
+
+    def libraryCancel(self):
+        self.form.close()
 
     def columnNames(self):
         return ['Nr', 'Tool', 'Shape', 'Diameter']
@@ -317,7 +391,7 @@ class ToolBitLibrary(object):
         self.form.libraryOpen.clicked.connect(self.libraryOpen)
         self.form.librarySave.clicked.connect(self.librarySave)
         self.form.librarySaveAs.clicked.connect(self.librarySaveAs)
-        #self.form.libraryCancel.clicked.connect(self.cancel)
+        self.form.libraryCancel.clicked.connect(self.libraryCancel)
 
         self.toolSelect([], [])
         self.updateToolbar()

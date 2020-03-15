@@ -158,10 +158,14 @@ def toolsReallyUseLegacyTools():
 def toolsStoreAbsolutePaths():
     return preferences().GetBool(UseAbsoluteToolPaths, False)
 
+def toolsOpenLastLibrary():
+    return preferences().GetBool(OpenLastLibrary, False)
+
 def setToolsSettings(legacy, relative):
     pref = preferences()
     pref.SetBool(UseLegacyTools, legacy)
     pref.SetBool(UseAbsoluteToolPaths, relative)
+    pref.SetBool(OpenLastLibrary, False)
 
 def defaultJobTemplate():
     template = preferences().GetString(DefaultJobTemplate)

@@ -6,18 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>958</width>
-    <height>508</height>
+    <width>954</width>
+    <height>587</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ToolBit Library</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="createToolBit">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create a New Toolbit and add it to the library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Create Toolbit</string>
        </property>
@@ -56,6 +59,19 @@
       </widget>
      </item>
      <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <widget class="QPushButton" name="toolEnumerate">
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Assigne numbers to each Tool Bit according to its current position in the library. The first Tool Bit is assigned the ID 1.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -71,15 +87,9 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QWidget" name="toolTableGroup" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QTableView" name="toolTable">
         <property name="acceptDrops">
@@ -108,28 +118,10 @@
         </attribute>
        </widget>
       </item>
-      <item>
-       <widget class="QWidget" name="widget_3" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-        </layout>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0">
     <widget class="QPushButton" name="addToolController">
      <property name="text">
       <string>Add Selected as Tool  Controllers in the Job</string>
@@ -140,8 +132,15 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -168,8 +167,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="libraryCancel">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Close the Tool Bit Library Editor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
-        <string>Cancel</string>
+        <string>Close</string>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -179,6 +181,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="librarySave">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Save</string>
        </property>
@@ -190,6 +195,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="librarySaveAs">
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the library to a new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
        <property name="text">
         <string>Save As...</string>
        </property>

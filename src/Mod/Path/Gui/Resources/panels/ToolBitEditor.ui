@@ -24,8 +24,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>559</width>
-        <height>626</height>
+        <width>571</width>
+        <height>670</height>
        </rect>
       </property>
       <attribute name="label">
@@ -61,7 +61,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Type</string>
+             <string>Shape File</string>
             </property>
            </widget>
           </item>
@@ -185,8 +185,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>559</width>
-        <height>626</height>
+        <width>571</width>
+        <height>670</height>
        </rect>
       </property>
       <attribute name="label">
