@@ -231,7 +231,7 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 /* Sketch commands =======================================================*/
 
 static const char cursor_crosshair_color_fmt[] = "+ c #%06lX";
-static char cursor_crosshair_color[12];
+char cursor_crosshair_color[12];
 
 void DrawSketchHandler::setCrosshairColor()
 {
