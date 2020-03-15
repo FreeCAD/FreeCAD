@@ -186,7 +186,7 @@ void ViewProviderGeomHatch::getParameters(void)
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Hatch", 0x00FF0000));
+    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000)); 
     ColorPattern.setValue(fcColor);
 
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");

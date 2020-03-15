@@ -869,7 +869,8 @@ int QGIViewBalloon::prefDefaultArrow() const
 bool QGIViewBalloon::prefOrthoPyramid() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                        GetGroup("Mod/TechDraw/Decorations");
     bool ortho = hGrp->GetBool("PyramidOrtho", true);
     return ortho;
 }
