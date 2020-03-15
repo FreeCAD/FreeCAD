@@ -27,7 +27,7 @@ void ParameterSubset::detach()
     if (host().isNone())
         return;
     _host->onDeletedSubset(this);
-    _host = Py::None();
+    _host.makeNone();
 }
 
 void ParameterSubset::onStoreExpand()
@@ -181,5 +181,5 @@ HParameterSubset ParameterSubset::self() const
 
 PyObject* ParameterSubset::getPyObject()
 {
-    return Py::new_reference_to(self());
+    return Py::new_reference_to(self().getHandledObject());
 }

@@ -309,7 +309,9 @@ void ValueSet::operator*=(double mult)
     _values *= mult;
 }
 
-HValueSet FCS::operator+(const HValueSet& a, const HValueSet& b)
+namespace FCS { // friends to be declared in the same namespace it removes the warnings too
+    
+HValueSet operator+(const HValueSet& a, const HValueSet& b)
 {
     a->checkSameSet(*b);
     HValueSet hret = ValueSet::make(a->_subset, Eigen::VectorXd(0), true);
@@ -317,7 +319,7 @@ HValueSet FCS::operator+(const HValueSet& a, const HValueSet& b)
     return hret;
 }
 
-HValueSet FCS::operator+(const HValueSet &a, const Eigen::VectorXd &b)
+HValueSet operator+(const HValueSet &a, const Eigen::VectorXd &b)
 {
     a->checkSameSize(b.size());
     HValueSet hret = ValueSet::make(a->_subset, Eigen::VectorXd(0), true);
@@ -325,12 +327,12 @@ HValueSet FCS::operator+(const HValueSet &a, const Eigen::VectorXd &b)
     return hret;
 }
 
-HValueSet FCS::operator+(const Eigen::VectorXd &a, const HValueSet &b)
+HValueSet operator+(const Eigen::VectorXd &a, const HValueSet &b)
 {
     return b+a;
 }
 
-HValueSet FCS::operator-(const HValueSet &a, const HValueSet &b)
+HValueSet operator-(const HValueSet &a, const HValueSet &b)
 {
     a->checkSameSet(*b);
     HValueSet hret = ValueSet::make(a->_subset, Eigen::VectorXd(0), true);
@@ -338,7 +340,7 @@ HValueSet FCS::operator-(const HValueSet &a, const HValueSet &b)
     return hret;
 }
 
-HValueSet FCS::operator-(const HValueSet &a, const Eigen::VectorXd &b)
+HValueSet operator-(const HValueSet &a, const Eigen::VectorXd &b)
 {
     a->checkSameSize(b.size());
     HValueSet hret = ValueSet::make(a->_subset, Eigen::VectorXd(0), true);
@@ -346,7 +348,7 @@ HValueSet FCS::operator-(const HValueSet &a, const Eigen::VectorXd &b)
     return hret;
 }
 
-HValueSet FCS::operator-(const Eigen::VectorXd &b, const HValueSet &a)
+HValueSet operator-(const Eigen::VectorXd &b, const HValueSet &a)
 {
     a->checkSameSize(b.size());
     HValueSet hret = ValueSet::make(a->_subset, Eigen::VectorXd(0), true);
@@ -354,21 +356,23 @@ HValueSet FCS::operator-(const Eigen::VectorXd &b, const HValueSet &a)
     return hret;
 }
 
-HValueSet FCS::operator*(const HValueSet &a, double b)
+HValueSet operator*(const HValueSet &a, double b)
 {
     HValueSet hret = ValueSet::make(a->_subset, Eigen::VectorXd(0), true);
     hret->_values = a->_values * b;
     return hret;
 }
 
-HValueSet FCS::operator*(double b, const HValueSet &a)
+HValueSet operator*(double b, const HValueSet &a)
 {
     return a*b;
 }
 
-HValueSet FCS::operator/(const HValueSet &a, double b)
+HValueSet operator/(const HValueSet &a, double b)
 {
     HValueSet hret = ValueSet::make(a->_subset, Eigen::VectorXd(0), true);
     hret->_values = a->_values / b;
     return hret;
 }
+
+} //namespace FCS

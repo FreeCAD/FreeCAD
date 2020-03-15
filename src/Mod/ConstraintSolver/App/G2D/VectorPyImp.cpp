@@ -15,7 +15,7 @@ PyObject *VectorPy::PyMake(struct _typeobject *, PyObject* args, PyObject *)  //
 
     {//no args
         if (PyArg_ParseTuple(args, "")){
-            return Py::new_reference_to(self);
+            return Py::new_reference_to(self.getHandledObject());
         }
         PyErr_Clear();
     }
@@ -26,7 +26,7 @@ PyObject *VectorPy::PyMake(struct _typeobject *, PyObject* args, PyObject *)  //
         if (PyArg_ParseTuple(args, "dd", &x, &y)){
             self->x = x;
             self->y = y;
-            return Py::new_reference_to(self);
+            return Py::new_reference_to(self.getHandledObject());
         }
         PyErr_Clear();
     }
@@ -37,7 +37,7 @@ PyObject *VectorPy::PyMake(struct _typeobject *, PyObject* args, PyObject *)  //
         if (PyArg_ParseTuple(args, "O!O!", &Base::DualNumberPy::Type, &pcx, &Base::DualNumberPy::Type, &pcy)){
             self->x = static_cast<Base::DualNumberPy*>(pcx)->value;
             self->y = static_cast<Base::DualNumberPy*>(pcy)->value;
-            return Py::new_reference_to(self);
+            return Py::new_reference_to(self.getHandledObject());
         }
         PyErr_Clear();
     }
@@ -56,7 +56,7 @@ PyObject *VectorPy::PyMake(struct _typeobject *, PyObject* args, PyObject *)  //
                 self->x.du = vec.x;
                 self->y.du = vec.y;
             }
-            return Py::new_reference_to(self);
+            return Py::new_reference_to(self.getHandledObject());
         }
         PyErr_Clear();
     }

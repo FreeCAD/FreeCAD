@@ -90,7 +90,7 @@ void ParaTransform::update()
 
 HParaObject ParaTransform::copy() const
 {
-    HParaTransform cpy = ParaObject::copy();
+    HParaTransform cpy = ParaObject::copy().downcast<ParaTransform>();
     cpy->_fwchain = _fwchain;
     cpy->_revchain = _revchain;
     return cpy;
@@ -134,7 +134,7 @@ void ParaTransform::initFromDict(Py::Dict dict)
         Py::Tuple tup(it);
         std::string key = Py::String(tup[0]);
         Py::Object val = tup[1];
-        FCS::setAttr(self(), key, val);
+        FCS::setAttr(self().getHandledObject(), key, val);
     }
 }
 
@@ -246,14 +246,14 @@ int ParaTransform::simplifyTransformsOfConstraint(ParaObject& constraint, bool c
         if (!paraobj->isDerivedFrom(ParaShapeBase::getClassTypeId()))
             throw Py::RuntimeError("Not a 2D shape");
         ParaShapeBase& sh = static_cast<ParaShapeBase&>(*paraobj);
-        trs.push_back(sh.placement->copy());
+        trs.push_back(sh.placement->copy().downcast<ParaTransform>());
     });
     int ret = simplifyTransforms(trs, compute_not_change);
     if (ret > 0 && compute_not_change){
         int i = 0;
         constraint.forEachShape([&](const ParaObject::ShapeRef& it){
-            ParaShapeBase& sh = *HParaShapeBase(*it.value);
-            HParaShapeBase shcpy = sh.copy();
+            ParaShapeBase& sh = static_cast<ParaShapeBase &>(*(*it.value));
+            HParaShapeBase shcpy = sh.copy().downcast<ParaShapeBase>();
             shcpy->placement = trs[i];
             ++i;
         });

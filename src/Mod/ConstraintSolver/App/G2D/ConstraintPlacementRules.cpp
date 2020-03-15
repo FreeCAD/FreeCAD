@@ -28,7 +28,7 @@ void ConstraintPlacementRules::initAttrs()
 {
     SimpleConstraint::initAttrs();
 
-    tieAttr_Child(placement, "placement", &ParaPlacementPy::Type);
+    tieAttr_Child(reinterpret_cast<HParaObject &>(placement), "placement", &ParaPlacementPy::Type);
 }
 
 Base::DualNumber ConstraintPlacementRules::error1(const ValueSet& vals) const

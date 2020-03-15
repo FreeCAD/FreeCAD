@@ -70,7 +70,7 @@ double Constraint::netError() const
 
 HParaObject Constraint::copy() const
 {
-    HConstraint ret = ParaObject::copy();
+    HConstraint ret = ParaObject::copy().downcast<Constraint>();
     ret->_weight = _weight;
     ret->_sz =  _sz;
     ret->_revers = _revers;

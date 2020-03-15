@@ -44,7 +44,7 @@ public://data
 
 public://methods
     ParaShapeBase();
-    ParaShapeBase(HParaGeometry tshape, HParaTransform placement = Py::None());
+    ParaShapeBase(HParaGeometry tshape, HParaTransform placement = HParaTransform(Py::None()));
     void initAttrs() override;
     virtual PyObject* getPyObject() override;
     virtual std::string repr() const override;

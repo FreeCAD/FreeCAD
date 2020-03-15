@@ -17,7 +17,7 @@ PyObject *ConstraintDirectionalDistancePy::PyMake(struct _typeobject *, PyObject
                 HConstraintDirectionalDistance p = new ConstraintDirectionalDistance;
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

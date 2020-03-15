@@ -39,7 +39,7 @@ void ConstraintLength::initAttrs()
 
 HParaObject ConstraintLength::copy() const
 {
-    HConstraintLength cpy = SimpleConstraint::copy();
+    HConstraintLength cpy = SimpleConstraint::copy().downcast<ConstraintLength>();
     cpy->_edges = this->_edges;
     return cpy;
 
@@ -51,7 +51,7 @@ void ConstraintLength::forEachShape(std::function<void (const ParaObject::ShapeR
     for (const HShape_Curve& crv : _edges){
         ParaObject::ShapeRef ref;
         ref.name = "Edges[" + std::to_string(i) + "]";
-        ref.value = const_cast<HShape_Curve*>(&crv); //FIXME: avoid const-cast somehow
+        ref.value = reinterpret_cast<HParaObject *>(const_cast<HShape_Curve*>(&crv)); //FIXME: avoid const-cast somehow
         ref.type = ParaCurve::getClassTypeId();
         callback(ref);
         ++i;

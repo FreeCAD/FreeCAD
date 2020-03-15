@@ -15,7 +15,7 @@ PyObject *ConstraintAngleAtXYPy::PyMake(struct _typeobject *, PyObject* args, Py
                 HConstraintAngleAtXY p = new ConstraintAngleAtXY;
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

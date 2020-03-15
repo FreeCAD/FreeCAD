@@ -16,7 +16,7 @@ PyObject* ParameterSubsetPy::PyMake(struct _typeobject*, PyObject* args, PyObjec
         PyObject* store;
         if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
             HParameterStore hstore (store, false);
-            return Py::new_reference_to(ParameterSubset::make(hstore));
+            return Py::new_reference_to(ParameterSubset::make(hstore).getHandledObject());
         }
         PyErr_Clear();
     }
@@ -28,7 +28,7 @@ PyObject* ParameterSubsetPy::PyMake(struct _typeobject*, PyObject* args, PyObjec
                 ParameterRef par = * pyTypeCheck<ParameterRefPy>(it.ptr())->getParameterRefPtr();
                 params.push_back(par);
             };
-            return Py::new_reference_to(ParameterSubset::make(params));
+            return Py::new_reference_to(ParameterSubset::make(params).getHandledObject());
         }
         PyErr_Clear();
     }
@@ -59,7 +59,7 @@ PyObject* ParameterSubsetPy::copy(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
-    return Py::new_reference_to(getParameterSubsetPtr()->copy());
+    return Py::new_reference_to(getParameterSubsetPtr()->copy().getHandledObject());
 }
 
 PyObject* ParameterSubsetPy::add(PyObject* args)
@@ -146,7 +146,7 @@ PyObject*  ParameterSubsetPy::sequence_item(PyObject* self, Py_ssize_t index)
         PyErr_SetString(PyExc_IndexError, "Index out of range");
         return nullptr;
     }
-    return Py::new_reference_to((*myself)[int(index)].getPyHandle());
+    return Py::new_reference_to((*myself)[int(index)].getPyHandle().getHandledObject());
 }
 
 PyObject*  ParameterSubsetPy::mapping_subscript(PyObject* , PyObject* )
@@ -174,7 +174,7 @@ int ParameterSubsetPy::sequence_contains(PyObject* self, PyObject* pcItem)
 
 Py::Object ParameterSubsetPy::getHost(void) const
 {
-    return getParameterSubsetPtr()->host();
+    return getParameterSubsetPtr()->host().getHandledObject();
 }
 
 Py::List ParameterSubsetPy::getParameters(void) const
@@ -182,7 +182,7 @@ Py::List ParameterSubsetPy::getParameters(void) const
     int sz = getParameterSubsetPtr()->size();
     Py::List ret(sz);
     for (int i = 0; i < sz; ++i){
-        ret[i] = (*getParameterSubsetPtr())[i].getPyHandle();
+        ret[i] = (*getParameterSubsetPtr())[i].getPyHandle().getHandledObject();
     }
     return ret;
 }

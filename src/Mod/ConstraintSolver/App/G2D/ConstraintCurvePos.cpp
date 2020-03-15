@@ -41,8 +41,8 @@ void ConstraintCurvePos::initAttrs()
 
     tieAttr_Parameter(u, "u", true, true, 0.0);
 
-    tieAttr_Shape(point, "point", ParaPoint::getClassTypeId());
-    tieAttr_Shape(curve, "curve", ParaCurve::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(point), "point", ParaPoint::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(curve), "curve", ParaCurve::getClassTypeId());
 }
 
 void ConstraintCurvePos::error(const ValueSet& vals, Base::DualNumber* returnbuf) const

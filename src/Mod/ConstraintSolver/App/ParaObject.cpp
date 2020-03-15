@@ -143,8 +143,8 @@ std::vector<ParameterRef> ParaObject::makeParameters(HParameterStore into)
         if (!v.make)
             continue;
         //create object (by calling the type object)
-        HParaObject child =
-            Py::Callable(reinterpret_cast<PyObject*>(v.type)).apply(Py::Tuple());
+        HParaObject child = HParaObject(
+            Py::Callable(reinterpret_cast<PyObject*>(v.type)).apply(Py::Tuple()));
         *v.value = child;
 
         child->label = this->label + "." + v.name;
@@ -200,15 +200,15 @@ Py::Object ParaObject::getAttr(const char* attrname)
 {
     for(auto& v : this->_attrs){
         if (v.name == attrname)
-            return v.value->getPyHandle();
+            return v.value->getPyHandle().getHandledObject();
     };
     for(auto& v : this->_children){
         if (v.name == attrname)
-            return *v.value;
+            return (*v.value).getHandledObject();
     };
     for(auto& v : this->_shapes){
         if (v.name == attrname)
-            return *v.value;
+            return (*v.value).getHandledObject();
     };
     std::stringstream ss;
     ss << repr() << " has no attribute "
@@ -243,7 +243,7 @@ void ParaObject::setAttr(std::string attrname, Py::Object val)
                 throw Py::TypeError(ss.str());
             }
             touch();
-            *(v.value) = val;
+            *(v.value) = HParaObject(val);;
             return;
         }
     };
@@ -252,7 +252,7 @@ void ParaObject::setAttr(std::string attrname, Py::Object val)
             throwIfLocked();
             if (PyObject_TypeCheck(val.ptr(), &ParaGeometryPy::Type)){
                 touch();
-                HParaGeometry g = val;
+                HParaGeometry g = HParaGeometry(val);
                 if (!g->isDerivedFrom(v.type)){
                     std::stringstream ss;
                     ss << "Geometry must be derived from " << v.type.getName()
@@ -264,7 +264,7 @@ void ParaObject::setAttr(std::string attrname, Py::Object val)
             }
             else if (PyObject_TypeCheck(val.ptr(), &ParaObjectPy::Type)){
                 touch();
-                HParaObject sh = val;
+                HParaObject sh = HParaObject(val);
                 if (sh->shapeType() == Base::Type::badType())
                     throw Py::TypeError(std::string("Object ") + sh->repr() + " is not a shape or geometry");
                 if (! sh->shapeType().isDerivedFrom(v.type)){
@@ -274,7 +274,7 @@ void ParaObject::setAttr(std::string attrname, Py::Object val)
                     throw Py::TypeError(ss.str());
                 }
 
-                *(v.value) = val;
+                *(v.value) = HParaObject(val);
                 return;
             }
 
@@ -284,7 +284,7 @@ void ParaObject::setAttr(std::string attrname, Py::Object val)
         }
     };
     std::stringstream ss;
-    ss << self().repr().as_std_string() << " has no attribute "
+    ss << self().getHandledObject().repr().as_std_string() << " has no attribute "
        << attrname;
     throw Py::AttributeError(ss.str());
 }
@@ -320,12 +320,12 @@ void ParaObject::initFromDict(Py::Dict dict)
         Py::Object val = tup[1];
         if (key == "store")
             continue;//process it last
-        FCS::setAttr(self(), key, val);
+        FCS::setAttr(self().getHandledObject(), key, val);
     }
     if (dict.hasKey("store")){
         HParameterStore store (dict["store"]);
         if (!PyObject_TypeCheck(store.ptr(), &ParameterStorePy::Type))
-            throw Py::TypeError("'store' must be ParameterStore, not "+store.type().as_string());
+            throw Py::TypeError("'store' must be ParameterStore, not "+store.getHandledObject().type().as_string());
         makeParameters(store);
     }
 }
@@ -343,7 +343,7 @@ void ParaObject::tieAttr_Parameter(ParameterRef& ref, std::string name, bool mak
     _attrs.push_back(tmp);
 }
 
-void ParaObject::tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyTypeObject* type, bool make, bool required, bool writeOnce)
+void ParaObject::tieAttr_Child(HParaObject& ref, std::string name, PyTypeObject* type, bool make, bool required, bool writeOnce)
 {
     ChildAttribute tmp;
     tmp.value = &ref;
@@ -355,7 +355,7 @@ void ParaObject::tieAttr_Child(Base::PyHandleBase& ref, std::string name, PyType
     _children.push_back(tmp);
 }
 
-void ParaObject::tieAttr_Shape(Base::PyHandleBase& ref, std::string name, Base::Type type)
+void ParaObject::tieAttr_Shape(HParaObject& ref, std::string name, Base::Type type)
 {
     ShapeRef tmp;
     tmp.value = &ref;

@@ -17,7 +17,7 @@ PyObject *ParaConicPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
                 HParaConic p = new ParaConic;
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

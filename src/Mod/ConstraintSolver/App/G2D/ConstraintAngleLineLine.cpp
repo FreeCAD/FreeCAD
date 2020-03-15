@@ -19,8 +19,8 @@ void ConstraintAngleLineLine::initAttrs()
 {
     ConstraintAngle::initAttrs();
 
-    tieAttr_Shape(line1, "line1", ParaCurve::getClassTypeId());
-    tieAttr_Shape(line2, "line2", ParaCurve::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(line1), "line1", ParaCurve::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(line2), "line2", ParaCurve::getClassTypeId());
 }
 
 PyObject* ConstraintAngleLineLine::getPyObject()

@@ -22,5 +22,5 @@ PyObject* ParaGeometry2D::getPyObject()
 
 HParaObject FCS::G2D::ParaGeometry2D::toShape()
 {
-    return new ParaShapeBase(self());
+    return new ParaShapeBase(self().downcast<ParaGeometry>());
 }

@@ -15,10 +15,10 @@ PyObject *ParaShapePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
     return pyTryCatch([&]()->Py::Object{
         {
             if (PyArg_ParseTuple(args, "")){
-                HParaShapeBase p = (new ParaShapeBase)->self();
+                HParaShapeBase p = (new ParaShapeBase)->self().downcast<ParaShapeBase>();
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
@@ -29,7 +29,7 @@ PyObject *ParaShapePy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
                 HParaShapeBase p = new ParaShapeBase(HParaGeometry(tshape,false), HParaTransform(transform,false));
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

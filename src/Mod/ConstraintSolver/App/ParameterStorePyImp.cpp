@@ -13,7 +13,7 @@
 PyObject* ParameterStorePy::PyMake(struct _typeobject *, PyObject* , PyObject* )  // Python wrapper
 {
     // create a new instance of ParameterStorePy and the Twin object
-    return Py::new_reference_to(ParameterStore::make());
+    return Py::new_reference_to(ParameterStore::make().getHandledObject());
 }
 
 // constructor method
@@ -44,7 +44,7 @@ PyObject* ParameterStorePy::addOne(PyObject* args, PyObject* kwd)
     if (!parsed)
         return nullptr;
     ParameterRef ref = getParameterStorePtr()->add(Parameter(label, value, scale, fixed == Py_True, tag));
-    return Py::new_reference_to(ref.getPyHandle());
+    return Py::new_reference_to(ref.getPyHandle().getHandledObject());
 }
 
 PyObject* ParameterStorePy::addN(PyObject* args)
@@ -88,14 +88,14 @@ PyObject* ParameterStorePy::copy(PyObject* args)
 {
     if (! PyArg_ParseTuple(args, ""))
         return nullptr;
-    return Py::new_reference_to(getParameterStorePtr()->copy());
+    return Py::new_reference_to(getParameterStorePtr()->copy().getHandledObject());
 }
 
 PyObject* ParameterStorePy::asValueSet(PyObject* args)
 {
     if (! PyArg_ParseTuple(args, ""))
         return nullptr;
-    return Py::new_reference_to(getParameterStorePtr()->asValueSet().self());
+    return Py::new_reference_to(getParameterStorePtr()->asValueSet().self().getHandledObject());
 }
 
 PyObject* ParameterStorePy::constrainEqual(PyObject* args)
@@ -229,7 +229,7 @@ PyObject* ParameterStorePy::sequence_item(PyObject* self, Py_ssize_t index)
         PyErr_SetString(PyExc_IndexError, "Index out of range");
         return nullptr;
     }
-    return Py::new_reference_to((*myself)[int(index)].getPyHandle());
+    return Py::new_reference_to((*myself)[int(index)].getPyHandle().getHandledObject());
 }
 
 PyObject* ParameterStorePy::mapping_subscript(PyObject* self, PyObject* item)
@@ -264,7 +264,7 @@ PyObject* ParameterStorePy::mapping_subscript(PyObject* self, PyObject* item)
 
             for (cur = start, i = 0; i < slicelength;
                  cur += step, i++) {
-                ret.setItem(i, (*myself)[cur].getPyHandle());
+                ret.setItem(i, (*myself)[cur].getPyHandle().getHandledObject());
             }
 
             return Py::new_reference_to(ret);

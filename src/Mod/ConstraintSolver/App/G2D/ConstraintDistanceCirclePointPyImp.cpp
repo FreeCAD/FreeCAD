@@ -15,7 +15,7 @@ PyObject *ConstraintDistanceCirclePointPy::PyMake(struct _typeobject *, PyObject
                 HConstraintDistanceCirclePoint p = new ConstraintDistanceCirclePoint;
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

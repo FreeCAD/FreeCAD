@@ -19,10 +19,10 @@ PyObject *ConstraintPointSymmetryPy::PyMake(struct _typeobject *, PyObject* args
             PyErr_SetString(PyExc_TypeError, "Only keyword arguments are supported");
             throw Py::Exception();
         }
-        HConstraintPointSymmetry p = (new ConstraintPointSymmetry)->self();
+        HConstraintPointSymmetry p = (new ConstraintPointSymmetry)->self().downcast<ConstraintPointSymmetry>();
         if (kwd && kwd != Py_None)
             p->initFromDict(Py::Dict(kwd));
-        return p;
+        return p.getHandledObject();
     });
 }
 

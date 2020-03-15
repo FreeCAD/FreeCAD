@@ -93,7 +93,7 @@ PyObject* ConstraintAngle::getPyObject()
 
 HParaObject ConstraintAngle::copy() const
 {
-    HConstraintAngle ret = SimpleConstraint::copy();
+    HConstraintAngle ret = SimpleConstraint::copy().downcast<ConstraintAngle>();
     ret->supplementAngle = supplementAngle;
     return ret;
 }

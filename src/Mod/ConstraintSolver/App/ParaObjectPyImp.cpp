@@ -44,7 +44,7 @@ PyObject* ParaObjectPy::copy(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
-    return Py::new_reference_to(getParaObjectPtr()->copy());
+    return Py::new_reference_to(getParaObjectPtr()->copy().getHandledObject());
 }
 
 PyObject* ParaObjectPy::makeParameters(PyObject* args)
@@ -98,7 +98,7 @@ Py::List ParaObjectPy::getNamedParameters(void) const
     for(int i = 0; i < params.size(); ++i){
         Py::Tuple tup(2);
         tup[0] = Py::String(params[i].name);
-        tup[1] = params[i].value->getPyHandle();
+        tup[1] = params[i].value->getPyHandle().getHandledObject();
         ret[i] = tup;
     }
     return ret;
@@ -111,7 +111,7 @@ Py::List ParaObjectPy::getNamedChildren(void) const
     for(int i = 0; i < params.size(); ++i){
         Py::Tuple tup(2);
         tup[0] = Py::String(params[i].name);
-        tup[1] = *(params[i].value);
+        tup[1] = (*(params[i].value)).getHandledObject();
         ret[i] = tup;
     }
     return ret;

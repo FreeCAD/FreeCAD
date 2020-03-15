@@ -15,7 +15,7 @@ PyObject* ParaGeometryPy::toShape(PyObject* args)
 {
     if (! PyArg_ParseTuple(args, ""))
         return nullptr;
-    return Py::new_reference_to(getParaGeometryPtr()->toShape());
+    return Py::new_reference_to(getParaGeometryPtr()->toShape().getHandledObject());
 }
 
 

@@ -19,10 +19,10 @@ PyObject *ConstraintTangentLineLinePy::PyMake(struct _typeobject *, PyObject* ar
             PyErr_SetString(PyExc_TypeError, "Only keyword arguments are supported");
             throw Py::Exception();
         }
-        HConstraintTangentLineLine p = (new ConstraintTangentLineLine)->self();
+        HConstraintTangentLineLine p = HConstraintTangentLineLine(new ConstraintTangentLineLine);
         if (kwd && kwd != Py_None)
             p->initFromDict(Py::Dict(kwd));
-        return p;
+        return p.getHandledObject();
     });
 }
 

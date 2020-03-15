@@ -51,7 +51,7 @@ PyObject* ParameterRefPy::fix(PyObject* args)
 
 Py::Object ParameterRefPy::getHost(void) const
 {
-    return this->getParameterRefPtr()->host();
+    return this->getParameterRefPtr()->host().getHandledObject();
 }
 
 Py::Long ParameterRefPy::getOwnIndex(void) const
@@ -69,7 +69,7 @@ Py::Long ParameterRefPy::getMasterIndex(void) const
 Py::Object ParameterRefPy::getMaster(void) const
 {
     getParameterRefPtr()->throwNull();
-    return this->getParameterRefPtr()->getPyHandle();
+    return this->getParameterRefPtr()->getPyHandle().getHandledObject();
 }
 
 Py::Float ParameterRefPy::getValue(void) const

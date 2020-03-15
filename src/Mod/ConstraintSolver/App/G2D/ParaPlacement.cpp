@@ -35,8 +35,8 @@ void FCS::G2D::ParaPlacement::initAttrs()
 {
     ParaObject::initAttrs();
 
-    tieAttr_Child(translation, "translation", &ParaPointPy::Type , true);
-    tieAttr_Child(rotation,    "rotation",    &ParaVectorPy::Type, true);
+    tieAttr_Child(reinterpret_cast<HParaObject &>(translation), "translation", &ParaPointPy::Type , true);
+    tieAttr_Child(reinterpret_cast<HParaObject &>(rotation),    "rotation",    &ParaVectorPy::Type, true);
 }
 
 PyObject* ParaPlacement::getPyObject()
@@ -53,6 +53,6 @@ PyObject* ParaPlacement::getPyObject()
 
 std::vector<HConstraint> ParaPlacement::makeRuleConstraints()
 {
-    return {(new ConstraintPlacementRules)->self()};
+    return {(new ConstraintPlacementRules)->self().downcast<Constraint>()};
 }
 

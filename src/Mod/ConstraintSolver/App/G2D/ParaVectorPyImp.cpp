@@ -16,10 +16,10 @@ PyObject *ParaVectorPy::PyMake(struct _typeobject *, PyObject* args, PyObject* k
 
         {
             if (PyArg_ParseTuple(args, "")){
-                HParaVector p = (new ParaVector)->self();
+                HParaVector p = (new ParaVector)->self().downcast<ParaVector>();
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
@@ -27,10 +27,10 @@ PyObject *ParaVectorPy::PyMake(struct _typeobject *, PyObject* args, PyObject* k
             PyObject* x;
             PyObject* y;
             if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
-                HParaVector p = (new ParaVector(*HParameterRef(x,false), *HParameterRef(y,false)))->self();
+                HParaVector p = (new ParaVector(*HParameterRef(x,false), *HParameterRef(y,false)))->self().downcast<ParaVector>();
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

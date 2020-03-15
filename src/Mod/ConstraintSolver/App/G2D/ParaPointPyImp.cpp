@@ -19,10 +19,10 @@ PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
     return pyTryCatch([&]()->Py::Object{
         {
             if (PyArg_ParseTuple(args, "")){
-                HParaPoint p = (new ParaPoint)->self();
+                HParaPoint p = (new ParaPoint)->self().downcast<ParaPoint>();
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
@@ -30,10 +30,10 @@ PyObject *ParaPointPy::PyMake(struct _typeobject *, PyObject* args, PyObject* kw
             PyObject* x;
             PyObject* y;
             if (PyArg_ParseTuple(args, "O!O!",&(ParameterRefPy::Type), &x, &(ParameterRefPy::Type), &y)){
-                HParaPoint p = (new ParaPoint(*HParameterRef(x,false), *HParameterRef(y,false)))->self();
+                HParaPoint p = (new ParaPoint(*HParameterRef(x,false), *HParameterRef(y,false)))->self().downcast<ParaPoint>();
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

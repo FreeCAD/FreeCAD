@@ -287,7 +287,7 @@ int ParameterStore::dofCount() const
 
 PyObject* ParameterStore::getPyObject()
 {
-    return Py::new_reference_to(self());
+    return Py::new_reference_to(self()->getPyObject());
 }
 
 HParameterStore ParameterStore::self() const {

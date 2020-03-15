@@ -20,7 +20,7 @@ PyObject *ConstraintPlacementRulesPy::PyMake(struct _typeobject *, PyObject* arg
                 HConstraintPlacementRules p = new ConstraintPlacementRules;
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
@@ -30,7 +30,7 @@ PyObject *ConstraintPlacementRulesPy::PyMake(struct _typeobject *, PyObject* arg
                 HConstraintPlacementRules p = new ConstraintPlacementRules(HParaPlacement(placement, false));
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

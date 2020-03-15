@@ -17,7 +17,7 @@ PyObject *ParaCirclePy::PyMake(struct _typeobject *, PyObject* args, PyObject* k
                 HParaCircle p = new ParaCircle;
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
@@ -28,7 +28,7 @@ PyObject *ParaCirclePy::PyMake(struct _typeobject *, PyObject* args, PyObject* k
                 HParaCircle p = new ParaCircle(isFull);
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

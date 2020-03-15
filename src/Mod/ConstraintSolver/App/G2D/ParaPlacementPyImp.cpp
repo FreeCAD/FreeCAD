@@ -18,7 +18,7 @@ PyObject *ParaPlacementPy::PyMake(struct _typeobject *, PyObject* args, PyObject
                 HParaPlacement p = new ParaPlacement;
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
@@ -27,7 +27,7 @@ PyObject *ParaPlacementPy::PyMake(struct _typeobject *, PyObject* args, PyObject
             if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
                 HParaPlacement p = new ParaPlacement;
                 p->makeParameters(HParameterStore(store, false));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }

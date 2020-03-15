@@ -31,7 +31,7 @@ template<class Vec>
 inline Py::List asPyObjectList(Vec& vec){ //vec is usually not changed... unless getPyObject changes the object, which does happen to some
     Py::List ret;
     for (auto &v : vec) {
-        ret.append(v);
+        ret.append(v.getHandledObject()); // Note: A better solution is needed here, as to define that this template is only enabled for pyhandled types
     }
     return ret;
 }

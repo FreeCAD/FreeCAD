@@ -28,8 +28,8 @@ ConstraintDistance::ConstraintDistance(HParaPoint p1, HParaPoint p2, FCS::Parame
 ConstraintDistance::ConstraintDistance(HParaPoint p1, HParaPoint p2, FCS::HParameterStore store)
     : ConstraintDistance()
 {
-    this->p1 = p1;
-    this->p2 = p2;
+    this->p1 = new ParaShape<ParaPoint>(new ParaTransform(), p1);
+    this->p2 = new ParaShape<ParaPoint>(new ParaTransform(), p2);
     this->makeParameters(store);
 }
 
@@ -39,8 +39,8 @@ void ConstraintDistance::initAttrs()
 
     tieAttr_Parameter(dist, "dist", true, true, 1.0);
 
-    tieAttr_Shape(p1, "p1", ParaPoint::getClassTypeId());
-    tieAttr_Shape(p2, "p2", ParaPoint::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(p1), "p1", ParaPoint::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(p2), "p2", ParaPoint::getClassTypeId());
 }
 
 void ConstraintDistance::setWeight(double weight)

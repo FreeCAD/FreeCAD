@@ -19,14 +19,14 @@ PyObject* ValueSetPy::PyMake(struct _typeobject*, PyObject* args, PyObject* /*??
     PyObject* store;
     if (PyArg_ParseTuple(args, "O!",&(ParameterStorePy::Type), &store)){
         HParameterStore hstore (store, false);
-        return Py::new_reference_to(ValueSet::makeTrivial(hstore));
+        return Py::new_reference_to(ValueSet::makeTrivial(hstore).getHandledObject());
     }
     PyErr_Clear();
 
     PyObject* subset;
     if (PyArg_ParseTuple(args, "O!",&(ParameterSubsetPy::Type), &subset)){
         HParameterSubset hsubset (subset, false);
-        return Py::new_reference_to(ValueSet::make(hsubset));
+        return Py::new_reference_to(ValueSet::make(hsubset).getHandledObject());
     }
 
     PyErr_SetString(PyExc_TypeError,
@@ -56,7 +56,7 @@ PyObject* ValueSetPy::copy(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
-    return Py::new_reference_to(getValueSetPtr()->copy());
+    return Py::new_reference_to(getValueSetPtr()->copy().getHandledObject());
 }
 
 PyObject* ValueSetPy::reset(PyObject* args)
@@ -193,12 +193,12 @@ int ValueSetPy::sequence_contains(PyObject* self, PyObject* pcItem)
 
 Py::Object ValueSetPy::getHost(void) const
 {
-    return getValueSetPtr()->subset().host();
+    return getValueSetPtr()->subset().host().getHandledObject();
 }
 
 Py::Object ValueSetPy::getSubset(void) const
 {
-    return getValueSetPtr()->subset().self();
+    return getValueSetPtr()->subset().self().getHandledObject();
 }
 
 Py::List ValueSetPy::getValues(void) const

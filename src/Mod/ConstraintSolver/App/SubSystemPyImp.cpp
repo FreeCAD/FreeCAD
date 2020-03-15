@@ -11,7 +11,7 @@
 PyObject *SubSystemPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of SubSystemPy and the Twin object
-    return Py::new_reference_to((new SubSystem)->self());
+    return Py::new_reference_to((new SubSystem)->self().getHandledObject());
 }
 
 // constructor method
@@ -49,7 +49,7 @@ PyObject* SubSystemPy::addUnknown(PyObject *args)
     {
         PyObject* arg;
         if (PyArg_ParseTuple(args, "O!", &ParameterRefPy::Type, &arg)){
-            getSubSystemPtr()->addUnknown(HParameterRef(arg, false));
+            getSubSystemPtr()->addUnknown(*HParameterRef(arg, false));
             return Py::new_reference_to(Py::None());
         }
         PyErr_Clear();
@@ -108,7 +108,7 @@ PyObject* SubSystemPy::addConstraint(PyObject *args)
 
 Py::Object SubSystemPy::getParameterSet(void) const
 {
-    return getSubSystemPtr()->params();
+    return getSubSystemPtr()->params().getHandledObject();
 }
 
 PyObject *SubSystemPy::getCustomAttributes(const char* /*attr*/) const

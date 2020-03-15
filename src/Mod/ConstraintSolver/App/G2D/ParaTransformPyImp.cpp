@@ -18,7 +18,7 @@ PyObject* ParaTransformPy::PyMake(struct _typeobject *, PyObject* args, PyObject
                 HParaTransform p = new ParaTransform();
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
@@ -47,7 +47,7 @@ PyObject* ParaTransformPy::PyMake(struct _typeobject *, PyObject* args, PyObject
                 HParaTransform p = new ParaTransform(fwvec, revvec);
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
@@ -130,7 +130,7 @@ PyObject* ParaTransformPy::simplifyTransforms(PyObject* args)
         for(Py::Object it : Py::Sequence(pclist)){
             if (!PyObject_TypeCheck(it.ptr(), &ParaTransformPy::Type))
                 throw Py::TypeError("Must be ParaTransform object, not " + it.type().repr().as_std_string());
-            trss.push_back(it);
+            trss.push_back(HParaTransform(it));
 
         }
         int ret = ParaTransform::simplifyTransforms(trss);

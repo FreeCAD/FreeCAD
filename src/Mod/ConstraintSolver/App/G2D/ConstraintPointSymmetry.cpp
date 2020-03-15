@@ -30,9 +30,9 @@ void ConstraintPointSymmetry::initAttrs()
 {
     Constraint::initAttrs();
 
-    tieAttr_Shape(p1, "p1", ParaPoint::getClassTypeId());
-    tieAttr_Shape(p2, "p2", ParaPoint::getClassTypeId());
-    tieAttr_Shape(pc, "pc", ParaPoint::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(p1), "p1", ParaPoint::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(p2), "p2", ParaPoint::getClassTypeId());
+    tieAttr_Shape(reinterpret_cast<HParaObject &>(pc), "pc", ParaPoint::getClassTypeId());
 }
 
 void ConstraintPointSymmetry::error(const ValueSet& vals, Base::DualNumber* returnbuf) const

@@ -15,7 +15,7 @@ PyObject *ConstraintDistanceLinePointPy::PyMake(struct _typeobject *, PyObject* 
                 HConstraintDistanceLinePoint p = new ConstraintDistanceLinePoint;
                 if (kwd && kwd != Py_None)
                     p->initFromDict(Py::Dict(kwd));
-                return p;
+                return p.getHandledObject();
             }
             PyErr_Clear();
         }
