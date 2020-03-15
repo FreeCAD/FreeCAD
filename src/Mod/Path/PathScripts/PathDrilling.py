@@ -75,6 +75,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.addProperty("App::PropertyEnumeration", "ReturnLevel", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool retracts Default=G99"))
         obj.ReturnLevel = ['G99', 'G98']  # Canned Cycle Return Level
         obj.addProperty("App::PropertyDistance", "RetractHeight", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "The height where feed starts and height during retract tool when path is finished while in a peck operation"))
+        obj.addProperty("App::PropertyEnumeration", "ExtraOffset", "Drill", QtCore.QT_TRANSLATE_NOOP("App::Property", "How far the drill depth is extended"))
+        obj.ExtraOffset = ['None', 'Drill Tip', '2x Drill Tip']  # Canned Cycle Return Level
 
         # Rotation related properties
         if not hasattr(obj, 'EnableRotation'):
@@ -103,8 +105,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
 
         tiplength = 0.0
-        if obj.AddTipLength:
+        if obj.ExtraOffset == 'Drill Tip':
             tiplength = PathUtils.drillTipLength(self.tool)
+        elif obj.ExtraOffset == '2x Drill Tip':
+            tiplength = PathUtils.drillTipLength(self.tool) * 2
 
         holes = PathUtils.sort_jobs(holes, ['x', 'y'])
         self.commandlist.append(Path.Command('G90'))
@@ -201,6 +205,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.InverseAngle = False
         obj.B_AxisErrorOverride = False
         obj.AttemptInverseAngle = False
+        obj.ExtraOffset = "None"
 
         # Initial setting for EnableRotation is taken from Job SetupSheet
         # User may override on per-operation basis as needed.
@@ -218,6 +223,7 @@ def SetupProperties():
     setup.append("DwellEnabled")
     setup.append("AddTipLength")
     setup.append("ReturnLevel")
+    setup.append("ExtraOffset")
     setup.append("RetractHeight")
     setup.append("EnableRotation")
     setup.append("ReverseDirection")

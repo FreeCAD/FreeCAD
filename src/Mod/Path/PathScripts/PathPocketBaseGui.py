@@ -62,6 +62,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if not FeatureFacing & self.pocketFeatures():
             form.facingWidget.hide()
+            form.clearEdges.hide()
 
         if FeaturePocket & self.pocketFeatures():
             form.extraOffsetLabel.setText(translate("PathPocket", "Pass Extension"))
@@ -121,6 +122,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if FeatureFacing & self.pocketFeatures():
             if obj.BoundaryShape != str(self.form.boundaryShape.currentText()):
                 obj.BoundaryShape = str(self.form.boundaryShape.currentText())
+            if obj.ClearEdges != self.form.clearEdges.isChecked():
+                obj.ClearEdges = self.form.clearEdges.isChecked()
 
     def setFields(self, obj):
         '''setFields(obj) ... transfers obj's property values to UI'''
@@ -143,6 +146,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if FeatureFacing & self.pocketFeatures():
             self.selectInComboBox(obj.BoundaryShape, self.form.boundaryShape)
+            self.form.clearEdges.setChecked(obj.ClearEdges)
 
     def getSignalsForUpdate(self, obj):
         '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
@@ -161,5 +165,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         if FeatureFacing & self.pocketFeatures():
             signals.append(self.form.boundaryShape.currentIndexChanged)
+            signals.append(self.form.clearEdges.clicked)
 
         return signals

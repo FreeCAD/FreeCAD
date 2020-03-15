@@ -255,6 +255,13 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="clearEdges">
+        <property name="text">
+         <string>Clear Edges</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
