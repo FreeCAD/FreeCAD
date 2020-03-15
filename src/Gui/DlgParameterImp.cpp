@@ -210,7 +210,7 @@ void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
         // Set red background to indicate no matching
         QString styleSheet = QString::fromLatin1(
             " QLineEdit {\n"
-            "     background-color: rgb(255,170,255);\n"
+            "     background-color: rgb(221,144,161);\n"
             " }\n"
         );
         ui->findGroupLE->setStyleSheet(styleSheet);
