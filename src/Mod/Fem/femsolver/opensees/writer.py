@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2020 Raeyat Roknabadi Ebrahim <ebe79442114@gmail.com>   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -22,7 +23,7 @@
 # ***************************************************************************
 
 __title__ = "OpenSees Writer"
-__author__ = "Bernd Hahnebach"
+__author__ = "Bernd Hahnebach, Raeyat Roknabadi Ebrahim"
 __url__ = "http://www.freecadweb.org"
 
 ## \addtogroup FEM
