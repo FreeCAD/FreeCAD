@@ -39,6 +39,9 @@ public:
     DlgPrefsTechDraw2Imp( QWidget* parent = 0 );
     ~DlgPrefsTechDraw2Imp();
 
+protected Q_SLOTS:
+    void onScaleTypeChanged(int index);
+
 protected:
     void saveSettings();
     void loadSettings();

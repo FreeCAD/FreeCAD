@@ -34,13 +34,25 @@ DlgPrefsTechDraw2Imp::DlgPrefsTechDraw2Imp( QWidget* parent )
   : PreferencePage( parent )
 {
     this->setupUi(this);
-//    pdsbTemplateMark->setUnit(Base::Unit::Length);
 
+    this->pdsbTemplateMark->setUnit(Base::Unit::Length);
+    connect(this->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
+        this, SLOT(onScaleTypeChanged(int)));
 }
 
 DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+
+void DlgPrefsTechDraw2Imp::onScaleTypeChanged(int index)
+{
+    // disable custom scale if the scale type is not custom
+
+    if (index == 2) // if custom
+        this->pdsbViewScale->setEnabled(true);
+    else
+        this->pdsbViewScale->setEnabled(false);
 }
 
 void DlgPrefsTechDraw2Imp::saveSettings()
