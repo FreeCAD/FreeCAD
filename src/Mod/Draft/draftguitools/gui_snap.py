@@ -221,7 +221,7 @@ class Draft_Snap_Ortho():
             status = Gui.Snapper.toggle_snap('Ortho')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Ortho"+"_Button", status)
-            sync_snap_statusbar_button("OrthoButton", status)
+            sync_snap_statusbar_button("StatusbarOrthoButton", status)
 
 class Draft_Snap_Special():
     def GetResources(self):
@@ -246,7 +246,7 @@ class Draft_Snap_Dimensions():
             status = Gui.Snapper.toggle_snap('Dimensions')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Dimensions"+"_Button", status)
-            sync_snap_statusbar_button("DimButton", status)
+            sync_snap_statusbar_button("StatusbarDimButton", status)
 
 class Draft_Snap_WorkingPlane():
     def GetResources(self):
@@ -259,6 +259,7 @@ class Draft_Snap_WorkingPlane():
             status = Gui.Snapper.toggle_snap('WorkingPlane')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_WorkingPlane"+"_Button", status)
+            sync_snap_statusbar_button("StatusbarWpButton", status)
 
 
 # REGISTER SNAP GUI COMMANDS ------------------------------------------------
