@@ -61,7 +61,8 @@ def get_draft_small_commands():
     """Return a list with only some utilities."""
     return ["Draft_Layer",
             "Draft_WorkingPlaneProxy",
-            "Draft_ToggleDisplayMode"]
+            "Draft_ToggleDisplayMode",
+            "Draft_AddToGroup"]
 
 
 def get_draft_modification_commands():
