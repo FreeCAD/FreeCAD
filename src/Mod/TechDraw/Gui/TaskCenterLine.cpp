@@ -341,7 +341,7 @@ QColor TaskCenterLine::getCenterColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CosmoCLColor", 0x00000000));
+    App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CenterColor", 0x00000000));
     return fcColor.asValue<QColor>();
 }
 

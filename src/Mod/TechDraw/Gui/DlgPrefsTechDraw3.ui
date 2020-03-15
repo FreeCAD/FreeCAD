@@ -749,10 +749,10 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Keep pyramid leader line end in vertical or horizontal position</string>
+           <string>Restrict Filled Triangle line end to vertical or horizontal directions</string>
           </property>
           <property name="text">
-           <string>Balloon Pyramid Vertical</string>
+           <string>Balloon Ortho Triangle</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1117,11 +1117,6 @@
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
