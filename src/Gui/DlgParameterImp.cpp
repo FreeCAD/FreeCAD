@@ -118,9 +118,6 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
             this, SLOT(onGroupSelected(QTreeWidgetItem*)));
     onGroupSelected(paramGroup->currentItem());
 
-    connect(ui->findGroupLE, SIGNAL(textChanged(QString)),
-        this, SLOT(on_findGroup_changed(QString)));
-
     // setup for function on_findGroup_changed:
     // store the current font properties because
     // we don't know what style sheet the user uses for FC
@@ -150,7 +147,7 @@ void DlgParameterImp::on_buttonFind_clicked()
     finder->show();
 }
 
-void DlgParameterImp::on_findGroup_changed(const QString &SearchStr)
+void DlgParameterImp::on_findGroupLE_textChanged(const QString &SearchStr)
 {
     // search for group tree items and highlight found results
 
@@ -163,7 +160,8 @@ void DlgParameterImp::on_findGroup_changed(const QString &SearchStr)
             item->setForeground(0, defaultColor);
             ExpandItem = item;
             // a group can be nested down to several levels
-            while (true) {
+            // do not collapse if the search string is empty
+            while (!SearchStr.isEmpty()) {
                 if (!ExpandItem->parent())
                     break;
                 else {
@@ -185,6 +183,9 @@ void DlgParameterImp::on_findGroup_changed(const QString &SearchStr)
     // search the tree widget
     foundList = paramGroup->findItems(SearchStr, Qt::MatchContains | Qt::MatchRecursive);
     if (foundList.size() > 0) {
+        // reset background style sheet
+        if (!ui->findGroupLE->styleSheet().isEmpty())
+            ui->findGroupLE->setStyleSheet(QString());
         for (QTreeWidgetItem* item : foundList) {
             item->setFont(0, boldFont);
             item->setForeground(0, Qt::red);
@@ -204,6 +205,15 @@ void DlgParameterImp::on_findGroup_changed(const QString &SearchStr)
                 paramGroup->scrollToItem(foundList[0], QAbstractItemView::PositionAtCenter);
             }
         }
+    }
+    else {
+        // Set red background to indicate no matching
+        QString styleSheet = QString::fromLatin1(
+            " QLineEdit {\n"
+            "     background-color: rgb(255,170,255);\n"
+            " }\n"
+        );
+        ui->findGroupLE->setStyleSheet(styleSheet);
     }
 }
 

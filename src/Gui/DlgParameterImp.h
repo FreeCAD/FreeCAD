@@ -57,7 +57,7 @@ public:
 protected Q_SLOTS:
     void onChangeParameterSet(int);
     void on_buttonFind_clicked();
-    void on_findGroup_changed(const QString &SearchStr);
+    void on_findGroupLE_textChanged(const QString &SearchStr);
     void on_buttonSaveToDisk_clicked();
 
     void onGroupSelected(QTreeWidgetItem *);
