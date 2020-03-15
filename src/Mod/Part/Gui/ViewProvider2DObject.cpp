@@ -121,10 +121,10 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
         MaY = std::max<float>(MaY,(float)exp(ceil(log(std::abs(0.1f*yMin)))));
     }
     //Round the values otherwise grid is not aligned with center
-    MiX = floor(MiX / Step) * Step;
-    MaX = ceil(MaX / Step) * Step;
-    MiY = floor(MiY / Step) * Step;
-    MaY = ceil(MaY / Step) * Step;
+    MiX = (floor(MiX / Step)-0.5) * Step;
+    MaX = (ceil(MaX / Step)+0.5) * Step;
+    MiY = (floor(MiY / Step)-0.5) * Step;
+    MaY = (ceil(MaY / Step)+0.5) * Step;
 
     double zGrid = 0.0;                     // carpet-grid separation
 
