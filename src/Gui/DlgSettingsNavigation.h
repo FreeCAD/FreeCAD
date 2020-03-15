@@ -61,7 +61,7 @@ private:
     std::unique_ptr<Ui_DlgSettingsNavigation> ui;
     double q0, q1, q2, q3;
 };
-#if 0
+
 class CameraDialog : public QDialog
 {
     Q_OBJECT
@@ -82,7 +82,7 @@ private:
     QDoubleSpinBox* sb2;
     QDoubleSpinBox* sb3;
 };
-#endif
+
 } // namespace Dialog
 } // namespace Gui
 

@@ -219,7 +219,6 @@ void DlgSettingsNavigation::retranslate()
     }
 }
 
-#include "DlgSettings3DViewImp.h"
 void DlgSettingsNavigation::onNewDocViewChanged(int index)
 {
     QVariant camera = ui->comboNewDocView->itemData(index, Qt::UserRole);
@@ -233,7 +232,7 @@ void DlgSettingsNavigation::onNewDocViewChanged(int index)
 }
 
 // ----------------------------------------------------------------------------
-#if 0
+
 CameraDialog::CameraDialog(QWidget* parent)
     : QDialog(parent)
 {
@@ -339,7 +338,6 @@ void CameraDialog::on_currentView_clicked()
         sb3->setValue(q[3]);
     }
 }
-#endif
 
 #include "moc_DlgSettingsNavigation.cpp"
 
