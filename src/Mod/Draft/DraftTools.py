@@ -83,6 +83,7 @@ from draftguitools.gui_lineops import UndoLine
 from draftguitools.gui_togglemodes import ToggleConstructionMode
 from draftguitools.gui_togglemodes import ToggleContinueMode
 from draftguitools.gui_togglemodes import ToggleDisplayMode
+from draftguitools.gui_groups import AddToGroup
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -4288,49 +4289,6 @@ class SubelementHighlight(Modifier):
                 # This can occur if objects have had graph changing operations
                 pass
 
-class AddToGroup():
-    """The AddToGroup FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_AddToGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Move to group..."),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AddToGroup", "Moves the selected object(s) to an existing group")}
-
-    def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-
-    def Activated(self):
-        self.groups = ["Ungroup"]
-        self.groups.extend(Draft.getGroupNames())
-        self.labels = ["Ungroup"]
-        for g in self.groups:
-            o = FreeCAD.ActiveDocument.getObject(g)
-            if o: self.labels.append(o.Label)
-        self.ui = FreeCADGui.draftToolBar
-        self.ui.sourceCmd = self
-        self.ui.popupMenu(self.labels)
-
-    def proceed(self,labelname):
-        self.ui.sourceCmd = None
-        if labelname == "Ungroup":
-            for obj in FreeCADGui.Selection.getSelection():
-                try:
-                    Draft.ungroup(obj)
-                except:
-                    pass
-        else:
-            if labelname in self.labels:
-                i = self.labels.index(labelname)
-                g = FreeCAD.ActiveDocument.getObject(self.groups[i])
-                for obj in FreeCADGui.Selection.getSelection():
-                    try:
-                        g.addObject(obj)
-                    except:
-                        pass
-
 
 class WireToBSpline(Modifier):
     """The Draft_Wire2BSpline FreeCAD command definition"""
@@ -5399,7 +5357,6 @@ FreeCADGui.addCommand('Draft_Stretch',Stretch())
 
 # context commands
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
-FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
 FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
 FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
