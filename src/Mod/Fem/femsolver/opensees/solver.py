@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -26,25 +28,25 @@ __url__ = "http://www.freecadweb.org"
 ## @package SolverOpenSees
 #  \ingroup FEM
 
-import os
 import glob
+import os
 
 import FreeCAD
-import femtools.femutils as FemUtils
 
+from . import tasks
 from .. import run
 from .. import solverbase
-from . import tasks
-
+from femtools import femutils
 
 if FreeCAD.GuiUp:
     import FemGui
+
 
 ANALYSIS_TYPES = ["static"]
 
 
 def create(doc, name="SolverOpenSees"):
-    return FemUtils.createObject(
+    return femutils.createObject(
         doc, name, Proxy, ViewProxy)
 
 
