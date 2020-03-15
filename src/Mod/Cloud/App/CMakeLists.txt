@@ -13,7 +13,7 @@ set(Cloud_LIBS
     FreeCADApp
     ${OPENSSL_LIBRARIES}
     ${CURL_LIBRARIES}
-    ${XercesC_LIBRARIES}
+    optimized ${XercesC_LIBRARIES} debug ${XercesC_LIBRARIE_DEBUG}
     ${Boost_LIBRARIES}
     ${ZLIB_LIBRARIES}
 )
