@@ -156,7 +156,7 @@ def write_opensees_mesh_to_file(
     for node in femnodes_mesh:
         vec = femnodes_mesh[node]
         f.write(
-            "node {0} {1:.6f}, {2:.6f}, {3:.6f}\n"
+            "node {0} {1:.6f} {2:.6f} {3:.6f}\n"
             .format(node, vec.x, vec.y, vec.z)
         )
     # elements
