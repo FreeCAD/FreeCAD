@@ -1063,6 +1063,25 @@ void DrawUtil::findCircularArcRectangleIntersections(const Base::Vector2d &circl
                       rectangle, intersections);
 }
 
+//copy whole text file from inSpec to outSpec
+//create empty outSpec file if inSpec
+void DrawUtil::copyFile(std::string inSpec, std::string outSpec)
+{
+//    Base::Console().Message("DU::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
+    if (inSpec.empty()) {
+        std::ofstream output(outSpec);
+        return;
+    }
+    Base::FileInfo fi(inSpec);
+    if (fi.isReadable()) {
+        bool rc = fi.copyTo(outSpec.c_str());
+        if (!rc) {
+            Base::Console().Message("DU::copyFile - failed - in: %s out:%s\n", inSpec.c_str(), outSpec.c_str());
+        }
+    }
+}
+
+
 //============================
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)

@@ -78,13 +78,14 @@ public:
     static TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
     static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
+    static std::string prefGeomHatchFile(void);
+    static std::string prefGeomHatchName();
 
 protected:
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;
     void setupPatIncluded(void);
     void replacePatIncluded(std::string newPatFile);
-    void copyFile(std::string inSpec, std::string outSpec);
 
     void makeLineSets(void);
 

@@ -87,6 +87,7 @@
 #include "DrawProjGroupItem.h"
 #include "DrawProjectSplit.h"
 #include "DrawGeomHatch.h"
+#include "DrawHatch.h"
 #include "DrawViewSection.h"
 
 using namespace TechDraw;
@@ -128,13 +129,16 @@ DrawViewSection::DrawViewSection()
 
     CutSurfaceDisplay.setEnums(CutSurfaceEnums);
     ADD_PROPERTY_TYPE(CutSurfaceDisplay,((long)2),fgroup, App::Prop_None, "Appearance of Cut Surface");
-    ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
-    ADD_PROPERTY_TYPE(FileGeomPattern ,(""),fgroup,App::Prop_None,"The PAT pattern file for geometric hatching");
+
+//initialize these to defaults
+    ADD_PROPERTY_TYPE(FileHatchPattern ,(DrawHatch::prefSvgHatch()),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
+    ADD_PROPERTY_TYPE(FileGeomPattern ,(DrawGeomHatch::prefGeomHatchFile()),fgroup,App::Prop_None,"The PAT pattern file for geometric hatching");
+
     ADD_PROPERTY_TYPE(SvgIncluded ,(""),fgroup,App::Prop_None,
                                             "Embedded Svg hatch file. System use only.");   // n/a to end users
     ADD_PROPERTY_TYPE(PatIncluded ,(""),fgroup,App::Prop_None,
                                             "Embedded Pat pattern file. System use only."); // n/a to end users
-    ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
+    ADD_PROPERTY_TYPE(NameGeomPattern ,(DrawGeomHatch::prefGeomHatchName()),fgroup,App::Prop_None,"The pattern name for geometric hatching");
     ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
 
     getParameters();
@@ -254,7 +258,7 @@ void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
         setupSvgIncluded();
     } else {
         std::string tempName = SvgIncluded.getExchangeTempFile();
-        copyFile(newSvgFile, tempName);
+        DrawUtil::copyFile(newSvgFile, tempName);
         SvgIncluded.setValue(tempName.c_str());
     }
 }
@@ -266,7 +270,7 @@ void DrawViewSection::replacePatIncluded(std::string newPatFile)
         setupPatIncluded();
     } else {
         std::string tempName = PatIncluded.getExchangeTempFile();
-        copyFile(newPatFile, tempName);
+        DrawUtil::copyFile(newPatFile, tempName);
         PatIncluded.setValue(tempName.c_str());
     }
 }
@@ -863,45 +867,10 @@ TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI() const
     return baseDPGI;
 }
 
-//copy whole text file from inSpec to outSpec
-void DrawViewSection::copyFile(std::string inSpec, std::string outSpec)
-{
-//    Base::Console().Message("DVS::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
-    if (inSpec.empty()) {
-        std::ofstream  dst(outSpec);   //make an empty file
-    } else {
-        std::ifstream  src(inSpec);
-        std::ofstream  dst(outSpec);
-        dst << src.rdbuf();
-    }
-}
-
 void DrawViewSection::getParameters()
 {
 //    Base::Console().Message("DVS::getParameters()\n");
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
-    std::string defaultFileName = defaultDir + "simple.svg";
-    std::string patternFileName = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
-    Base::FileInfo tfi(patternFileName);
-    if (tfi.isReadable()) {
-        FileHatchPattern.setValue(patternFileName);
-    }
-
-    defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
-    defaultFileName = defaultDir + "FCPAT.pat";
-    patternFileName = hGrp->GetASCII("FilePattern",defaultFileName.c_str());
-    Base::FileInfo tfi2(patternFileName);
-    if (tfi2.isReadable()) {
-        FileGeomPattern.setValue(patternFileName);
-    }
-
-    std::string patternName = hGrp->GetASCII("PatternName","Diamond");
-    NameGeomPattern.setValue(patternName);
-
-    hGrp = App::GetApplication().GetUserParameter()
+    Base::Reference<ParameterGrp>hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
 
     bool fuseFirst = hGrp->GetBool("SectionFuseFirst", false);
@@ -960,15 +929,18 @@ void DrawViewSection::setupSvgIncluded(void)
     special += "SvgHatch.svg";
     std::string dir = doc->TransientDir.getValue();
     std::string svgName = dir + special;
-
-    if (SvgIncluded.isEmpty()) {
-        copyFile(std::string(), svgName);
+    
+    //first time
+    std::string svgInclude = SvgIncluded.getValue();
+    if (svgInclude.empty()) {
+        DrawUtil::copyFile(std::string(), svgName);
         SvgIncluded.setValue(svgName.c_str());
     }
 
-    if (!FileHatchPattern.isEmpty()) {
+    std::string svgFile = FileHatchPattern.getValue();
+    if (!svgFile.empty()) {
         std::string exchName = SvgIncluded.getExchangeTempFile();
-        copyFile(FileHatchPattern.getValue(), exchName);
+        DrawUtil::copyFile(svgFile, exchName);
         SvgIncluded.setValue(exchName.c_str(), special.c_str());
     }
 }
@@ -981,14 +953,15 @@ void DrawViewSection::setupPatIncluded(void)
     special += "PatHatch.pat";
     std::string dir = doc->TransientDir.getValue();
     std::string patName = dir + special;
-    if (PatIncluded.isEmpty()) {
-        copyFile(std::string(), patName);
+    std::string patProp = PatIncluded.getValue();
+    if (patProp.empty()) {
+        DrawUtil::copyFile(std::string(), patName);
         PatIncluded.setValue(patName.c_str());
     }
 
     if (!FileGeomPattern.isEmpty()) {
         std::string exchName = PatIncluded.getExchangeTempFile();
-        copyFile(FileGeomPattern.getValue(), exchName);
+        DrawUtil::copyFile(FileGeomPattern.getValue(), exchName);
         PatIncluded.setValue(exchName.c_str(), special.c_str());
     }
 }

@@ -133,9 +133,6 @@ protected:
 
     TopoDS_Shape m_cutShape;
 
-    void copyFile(std::string inSpec, std::string outSpec);
-
-
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;
     void setupSvgIncluded(void);
