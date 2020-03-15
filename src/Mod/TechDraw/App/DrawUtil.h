@@ -156,6 +156,7 @@ class TechDrawExport DrawUtil {
                                                           double arcBaseAngle, double arcRotation,
                                                           const Base::BoundBox2d &rectangle,
                                                           std::vector<Base::Vector2d> &intersections);
+        static void copyFile(std::string inSpec, std::string outSpec);
 
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);

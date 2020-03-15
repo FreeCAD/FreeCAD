@@ -61,7 +61,7 @@ public:
     bool removeSub(int i);
     bool empty(void);
     static bool faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs);
-
+    static std::string prefSvgHatch(void);
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -69,7 +69,6 @@ protected:
     virtual void setupObject() override;
     void setupSvgIncluded(void);
     void replaceSvgIncluded(std::string newSvgFile);
-    void copyFile(std::string inSpec, std::string outSpec);
 
 private:
 
