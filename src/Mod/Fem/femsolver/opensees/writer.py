@@ -33,11 +33,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import FreeCAD
 import time
-from .. import writerbase as FemInputWriter
-from femmesh import meshtools as FemMeshTools
-from feminout import importOpenSeesMesh
+
+import FreeCAD
 
 from .heading import Heading
 from .nodes import Nodes
@@ -46,6 +44,9 @@ from .nodes import Nodes
 # from bcs import BCs
 # from materials import Materials
 # from steps import Steps
+from .. import writerbase as FemInputWriter
+from feminout import importOpenSeesMesh
+from femmesh import meshtools
 
 
 __all__ = [
@@ -110,7 +111,7 @@ class FemInputWriterOpenSees(FemInputWriter.FemInputWriter,
         if not self.femnodes_mesh:
             self.femnodes_mesh = self.femmesh.Nodes
         if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+            self.femelement_table = meshtools.get_femelement_table(self.femmesh)
             self.element_count = len(self.femelement_table)
 
         print(f'self.femelement_table = {self.femelement_table}')
