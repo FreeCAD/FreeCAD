@@ -147,7 +147,6 @@ class ObjectDressup:
         c = math.cos(math.radians(angle))
         xnew = Vector.x * c - Vector.y * s;
         ynew = Vector.x * s + Vector.y * c;
-        #print("X{} Y{}; X{} Y{}".format(Vector.x,  Vector.y,  xnew,  ynew))
         return FreeCAD.Vector(xnew, ynew, Vector.z)
 
     def getLeadStart(self, obj, queue, action):
@@ -171,7 +170,7 @@ class ObjectDressup:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-            # PathLog.notice(" CURRENT_IN  : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
+            # PathLog.notice(" CURRENT_IN : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
         else:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
@@ -213,9 +212,9 @@ class ObjectDressup:
             else:
                 off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
             
+            vec_off = self.multiply(vec_rot,  obj.ExtendLeadIn)
             #print("vnx{} vny{}, vxi {} vyi {}".format(vec_n.x,  vec_n.y,  v.x,  v.y))
             #print("vxo{} vyo{}".format(off_v.x,  off_v.y))
-            vec_off = self.multiply(vec_rot,  obj.ExtendLeadIn)
             #print("vxo{} vyo{}".format(vec_off.x,  vec_off.y))
         
         offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0)  # IJ
@@ -292,15 +291,57 @@ class ObjectDressup:
         else:
             off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
         
-        offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0.0)
+        # Check if we leave at line or arc command
+        if queue[1].Name in movecommands and queue[1].Name not in arccommands:
+            # We have a line move
+            vec = p1.sub(p0)
+            vec_n = self.normalize(vec)
+            vec_inv = self.invert(vec_n)
+            vec_off = self.multiply(vec_inv,  obj.ExtendLeadOut)
+            #print("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
+        else:
+            # We have an arc move
+            #print("Arc0 X{} Y{} P {}".format(p0.x,  p0.y, queue[0].Parameters))
+            #print("Arc1 X{} Y{} P {}".format(p1.x,  p1.y, queue[1].Parameters))
+            pij = copy.deepcopy(p0)
+            pij.x += queue[1].Parameters['I']
+            pij.y += queue[1].Parameters['J']
+            ve = pij.sub(p1)
+           # print("I{} J{}, vx {} vy {}".format(pij.x,  pij.y,  ve.x,  ve.y))
+            if arcdir == "G2":
+                vec_rot = self.rotate(ve,  -90)
+            else:
+                vec_rot = self.rotate(ve,  90)
+            
+            #print("vro{} vro{}".format(vec_rot.x,  vec_rot.y))
+            vec_n = self.normalize(vec_rot)
+            v = vec_n
+            
+            if arcdir == "G3":
+                off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+            else:
+                off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
+            
+            vec_off = self.multiply(self.invert(vec_rot),  obj.ExtendLeadOut)
+            #print("vnx{} vny{}, vxi {} vyi {}".format(vec_n.x,  vec_n.y,  v.x,  v.y))
+            #print("vxo{} vyo{}".format(off_v.x,  off_v.y))
+            #print("vxo{} vyo{}".format(vec_off.x,  vec_off.y))
+        
+        #print("Arc0 X{} Y{} P {}".format(p0.x,  p0.y, queue[0].Parameters))
+        offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0.0)
         if obj.RadiusCenter == 'Radius':
             leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
+            #print("End: X {}, Y{}".format(leadend.x,  leadend.y))
         else:
             leadend = p1.add(off_v)  # Dmode
         
         IJ = off_v  # .negative()
+        print("IJ: X {}, Y{}".format(IJ.x,  IJ.y))
         #results.append(queue[1])
         if obj.StyleOff == 'Arc':
+            if obj.ExtendLeadOut != 0:
+                extendcommand = Path.Command('G1', {"X": p1.x-vec_off.x, "Y": p1.y-vec_off.y, "F": horizFeed})
+                results.append(extendcommand)
             arcmove = Path.Command(arcdir, {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed})  # add G2/G3 move
             results.append(arcmove)
         elif obj.StyleOff == 'Tangent':
