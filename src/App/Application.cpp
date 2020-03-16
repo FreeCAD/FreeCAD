@@ -2625,7 +2625,7 @@ void Application::ParseOptions(int ac, char ** av)
     }
 
     if (vm.count("run-test")) {
-       string testCase = vm["run-test"].as<string>();
+        string testCase = vm["run-test"].as<string>();
         if ( "0" == testCase) {
             testCase = "TestApp.All";
         }
