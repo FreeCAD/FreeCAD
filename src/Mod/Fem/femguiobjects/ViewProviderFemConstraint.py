@@ -86,11 +86,20 @@ class ViewProxy(object):
             # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
             return False
         if hide_mesh is True:
-            # hide all FEM meshes and VTK FemPostPipeline objects
+            # hide all FEM meshes and VTK FemPost* objects
             for o in vobj.Object.Document.Objects:
                 if (
                     o.isDerivedFrom("Fem::FemMeshObject")
                     or o.isDerivedFrom("Fem::FemPostPipeline")
+                    or o.isDerivedFrom("Fem::FemPostClipFilter")
+                    or o.isDerivedFrom("Fem::FemPostScalarClipFilter")
+                    or o.isDerivedFrom("Fem::FemPostWarpVectorFilter")
+                    or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
+                    or o.isDerivedFrom("Fem::FemPostDataAtPointFilter")
+                    or o.isDerivedFrom("Fem::FemPostCutFilter")
+                    or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
+                    or o.isDerivedFrom("Fem::FemPostPlaneFunction")
+                    or o.isDerivedFrom("Fem::FemPostSphereFunction")
                 ):
                     o.ViewObject.hide()
         # show task panel
