@@ -25,9 +25,11 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PySide import QtCore
+from copy import copy
 
 __doc__ = """Path Custom object and FreeCAD command"""
 
+movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -39,6 +41,8 @@ class ObjectCustom:
     def __init__(self,obj):
         obj.addProperty("App::PropertyStringList", "Gcode", "Path", QtCore.QT_TRANSLATE_NOOP("PathCustom", "The gcode to be inserted"))
         obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("PathCustom", "The tool controller that will be used to calculate the path"))
+        obj.addProperty("App::PropertyBool", "OperationPlacement", "Path", "Use operation placement")
+        obj.OperationPlacement = False
         obj.Proxy = self
 
     def __getstate__(self):
@@ -54,6 +58,20 @@ class ObjectCustom:
                 s += str(l)
             if s:
                 path = Path.Path(s)
+                if obj.OperationPlacement:
+                    for x in range(len(path.Commands)):
+                        if path.Commands[x].Name in movecommands:
+                            base = copy(obj.Placement.Base)
+                            new = path.Commands[x]
+                            if 'X' not in path.Commands[x].Parameters:
+                                base[0] = 0.0
+                            if 'Y' not in path.Commands[x].Parameters:
+                                base[1] = 0.0
+                            if 'Z' not in path.Commands[x].Parameters:
+                                base[2] = 0.0
+                            new.Placement.translate(base)
+                            path.deleteCommand(x)
+                            path.insertCommand(new, x)
                 obj.Path = path
 
 
