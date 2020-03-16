@@ -30,11 +30,13 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD _Base ViewProvider for FEM workbench
 
+from pivy import coin
+
 import FreeCAD
 import FreeCADGui
+
 import FemGui  # needed to display the icons in TreeView
 
-from pivy import coin
 
 False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
