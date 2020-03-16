@@ -207,7 +207,12 @@ def adaptiveselect():
     FreeCAD.Console.PrintWarning("Adaptive Select Mode\n")
 
 def surfaceselect():
-    FreeCADGui.Selection.addSelectionGate(MESHGate())
+    if(MESHGate() is True or PROFILEGate() is True):
+        FreeCADGui.Selection.addSelectionGate(True)
+    else:
+        FreeCADGui.Selection.addSelectionGate(False)
+    # FreeCADGui.Selection.addSelectionGate(MESHGate())
+    # FreeCADGui.Selection.addSelectionGate(PROFILEGate())  # Added for face selection
     FreeCAD.Console.PrintWarning("Surfacing Select Mode\n")
 
 def select(op):
