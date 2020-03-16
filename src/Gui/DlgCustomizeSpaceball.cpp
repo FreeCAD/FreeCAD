@@ -181,6 +181,7 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
    catch (const std::exception& e)
    {
       // We don't mind not finding the file to be opened
+      Base::Console().Warning("%s\n", e.what());
    }
 }
     
