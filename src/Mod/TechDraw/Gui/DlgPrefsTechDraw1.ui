@@ -752,6 +752,9 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Label size</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
+          </property>
           <property name="value">
            <double>8.000000000000000</double>
           </property>
