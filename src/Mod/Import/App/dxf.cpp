@@ -11,7 +11,7 @@
 
 #include <iomanip>
 
-#include <Build/Version.h>
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
@@ -98,7 +98,12 @@ void CDxfWrite::endRun(void)
 void CDxfWrite::writeHeaderSection(void)
 {
     std::stringstream ss;
-    ss << "FreeCAD v" << FCVersionMajor << "." << FCVersionMinor << " " << FCRevision; 
+    ss << "FreeCAD v"
+        << App::Application::Config()["BuildVersionMajor"]
+        << "."
+        << App::Application::Config()["BuildVersionMinor"]
+        << " "
+        << App::Application::Config()["BuildRevision"];
 
     //header & version
     (*m_ofs) << "999"      << endl;
