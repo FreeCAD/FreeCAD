@@ -1155,6 +1155,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                 // OnTopGroup. Becasue we want SoBrepFaceSet to pick the proper
                 // highlight color, in case it conflicts with the selection or
                 // the object's original color.
+
+                info.node->setPath(0);
+
                 auto &selInfo = objectsOnTopSel[key];
                 if(!selInfo.node) {
                     selInfo.node = new SoFCPathAnnotation(vp,subname,this);
@@ -1163,7 +1166,18 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                     selInfo.node->setDetail(true);
                     pcGroupOnTopSel->addChild(selInfo.node);
                 }
-                info.node->setPath(0);
+
+                SoTempPath tmpPath2(path.getLength()+3);
+                tmpPath2.ref();
+                tmpPath2.append(pcGroupOnTopSwitch);
+                tmpPath2.append(pcGroupOnTopSel);
+                tmpPath2.append(selInfo.node);
+                tmpPath2.append(&path);
+                preselAction->setHighlighted(true);
+                preselAction->setElement(det);
+                preselAction->apply(&tmpPath2);
+                preselAction->setElement(0);
+                tmpPath2.unrefNoDelete();
             } else {
                 // NOTE: assuming preselect is only applicable to one single
                 // object(or sub-element) at a time. If in the future we shall
