@@ -1,6 +1,8 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
 # *   as published by the Free Software Foundation; either version 2 of     *
@@ -19,6 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "FreeCAD FEM command definitions"
+__author__ = "Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
+
+## @package commands
+#  \ingroup FEM
+#  \brief FreeCAD FEM command definitions
 
 import FreeCAD
 import FreeCADGui

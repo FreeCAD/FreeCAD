@@ -1,6 +1,8 @@
 # ***************************************************************************
-# *   Copyright (c) 2015 FreeCAD Developers                                 *
 # *   Copyright (c) 2015 Przemo Fiszt <przemo@firszt.eu>                    *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Fem Commands"
-__author__ = "Przemo Firszt"
+__title__ = "FreeCAD FEM command base class"
+__author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
+## @package manager
+#  \ingroup FEM
+#  \brief FreeCAD FEM command base class
 
 import FreeCAD
 
@@ -364,6 +367,3 @@ class CommandManager(object):
         )
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
-
-
-##  @}
