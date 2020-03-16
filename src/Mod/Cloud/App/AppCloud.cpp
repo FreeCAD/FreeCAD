@@ -291,6 +291,7 @@ struct Cloud::AmzData *Cloud::ComputeDigestAmzS3v2(char *operation, char *data_t
         time(&rawtime);
         tm = localtime(&rawtime);
 #else
+        struct timeval tv;
         setenv("TZ","GMT",1);
         gettimeofday(&tv, NULL);
         tm = localtime(&tv.tv_sec);
