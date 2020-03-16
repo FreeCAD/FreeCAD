@@ -4441,9 +4441,16 @@ class Draft2Sketch(Modifier):
 
 
 class Array(Modifier):
-    """The Shape2DView FreeCAD command definition"""
+    """GuiCommand for the Draft_Array tool.
 
-    def __init__(self,use_link=False):
+    Parameters
+    ----------
+    use_link: bool, optional
+        It defaults to `False`. If it is `True`, the created object
+        will be a `Link array`.
+    """
+
+    def __init__(self, use_link=False):
         Modifier.__init__(self)
         self.use_link = use_link
 
@@ -4474,11 +4481,12 @@ class Array(Modifier):
                          'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
 
+
 class LinkArray(Array):
-    "The Shape2DView FreeCAD command definition"
+    """GuiCommand for the Draft_LinkArray tool."""
 
     def __init__(self):
-        Array.__init__(self,True)
+        Array.__init__(self, use_link=True)
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_LinkArray',
