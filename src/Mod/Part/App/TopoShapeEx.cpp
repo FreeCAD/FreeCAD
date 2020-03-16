@@ -253,9 +253,14 @@ void ShapeMapper::populate(bool generated, const TopoShape &src, const std::vect
 struct ShapeRelationKey {
     std::string name;
     bool sameType;
-    ShapeRelationKey(const char *name, bool sameType)
-        :name(name),sameType(sameType)
-    {}
+    ShapeRelationKey(const char *_name, bool sameType)
+        :sameType(sameType)
+    {
+        if(!boost::starts_with(_name,TopoShape::elementMapPrefix()))
+            name = _name;
+        else 
+            name = _name + TopoShape::elementMapPrefix().size();
+    }
 
     bool operator<(const ShapeRelationKey &other) const {
         if(sameType != other.sameType)
@@ -3159,11 +3164,7 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
 
     std::vector<App::StringIDRef> sids;
     std::vector<std::pair<std::string,std::string> > ret;
-    std::string name;
-    if(!boost::starts_with(_name,elementMapPrefix()))
-        name = _name;
-    else 
-        name = _name + elementMapPrefix().size();
+    const std::string &name = key.name;
     long tag;
     size_t len;
     std::string postfix;
@@ -3227,6 +3228,52 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     }
     _Cache->relations[key] = ret;
     return ret;
+}
+
+bool TopoShape::isElementGenerated(const char *_name) const
+{
+    long tag = 0;
+    size_t len = 0;
+    std::string name;
+    auto mapped = isMappedElement(_name);
+    if(mapped)
+        _name = mapped;
+    auto dot = strchr(_name,'.');
+    if(dot)
+        name = std::string(_name,dot-_name);
+    else
+        name = _name;
+    auto pos = findTagInElementName(name,&tag,&len);
+    if(pos == std::string::npos)
+        return false;
+
+    if(boost::starts_with(name.c_str()+len, genPostfix()))
+        return true;
+
+    std::string tmp;
+    bool first = true;
+    while(1) {
+        if(!len || len>pos)
+            return false;
+        if(first) {
+            first = false;
+            size_t offset = 0;
+            if(boost::starts_with(name,elementMapPrefix()))
+                offset = elementMapPrefix().size();
+            tmp = name.substr(offset,len);
+        }else
+            tmp = tmp.substr(0,len);
+        tmp = dehashElementName(tmp.c_str());
+        long tag2 = 0;
+        pos = findTagInElementName(tmp,&tag2,&len);
+        if(pos==std::string::npos || (tag2!=tag && tag!=Tag))
+            return false;
+        if(boost::starts_with(tmp.c_str()+len, genPostfix()))
+            return true;
+        tag = tag2;
+    }
+
+    return false;
 }
 
 void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix) {
