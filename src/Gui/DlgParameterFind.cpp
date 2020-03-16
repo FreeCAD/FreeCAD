@@ -250,6 +250,13 @@ void DlgParameterFind::accept()
         while (!next && current) {
             // go to the parent item and try again for each sibling after the current item
             QTreeWidgetItem* parent = current->parent();
+            if (!parent) {
+                // switch from one top-level group to the next
+                QTreeWidgetItem* root = groupTree->invisibleRootItem();
+                if (root->indexOfChild(current) >= 0) {
+                    parent = root;
+                }
+            }
             if (parent) {
                 int index = parent->indexOfChild(current);
                 for (int i=index+1; i<parent->childCount(); i++) {
