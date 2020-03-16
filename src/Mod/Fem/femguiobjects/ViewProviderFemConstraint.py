@@ -31,6 +31,7 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD _Base ViewProvider for FEM workbench
 
 from pivy import coin
+from six import string_types
 
 import FreeCAD
 import FreeCADGui
@@ -50,9 +51,14 @@ class ViewProxy(object):
     # needs to be overwritten, if no standard icon name is used
     # see constraint body heat source as an example
     def getIcon(self):
+        print(self.Object.Name)
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
-        if hasattr(self.Object.Proxy, "Type") and self.Object.Proxy.Type.startswith("Fem::"):
+        if (
+            hasattr(self.Object.Proxy, "Type")
+            and isinstance(self.Object.Proxy.Type, string_types)
+            and self.Object.Proxy.Type.startswith("Fem::")
+        ):
             return ":/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))
         else:
             return ""
