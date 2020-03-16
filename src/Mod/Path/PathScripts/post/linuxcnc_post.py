@@ -29,6 +29,7 @@ import datetime
 import shlex
 from PathScripts import PostUtils
 from PathScripts import PathUtils
+import PathScripts.PathUtil as PathUtil
 
 TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
@@ -186,12 +187,8 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, 'Active'): 
-            if not obj.Active:
-                continue
-        if hasattr(obj, 'Base') and hasattr(obj.Base, 'Active'):
-            if not obj.Base.Active:
-                continue
+        if not PathUtil.opProperty(obj, 'Active'):
+            continue
 
         # fetch machine details
         job = PathUtils.findParentJob(obj)

@@ -911,25 +911,26 @@ protected:
     { return isCreateGeoActive(getActiveGuiDocument()); }
 };
 
+extern char cursor_crosshair_color[];
+
 /* XPM */
 static const char *cursor_genericconstraint[]={
-"32 32 3 1",
+"32 32 2 1",
 "  c None",
-". c #FFFFFF",
-"+ c #FF0000",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
+cursor_crosshair_color,
+"      +                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
 "                                ",
-".....   .....                   ",
+"+++++   +++++                   ",
 "                                ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
-"      .                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
+"      +                         ",
 "                                ",
 "                                ",
 "                                ",
@@ -970,6 +971,8 @@ public:
 
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(selFilterGate);
+
+        setCrosshairColor();
 
         // Constrain icon size in px
         int iconSize = 16;
