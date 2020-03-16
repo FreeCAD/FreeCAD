@@ -28,7 +28,8 @@
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
-#include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/nodes/SoSwitch.h>
+# include <Inventor/details/SoFaceDetail.h>
 #endif
 
 #include <Gui/Command.h>
@@ -37,7 +38,11 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/SoFCUnifiedSelection.h>
 #include <Base/Exception.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -181,8 +186,39 @@ void ViewProvider::unsetEdit(int ModNum)
 void ViewProvider::updateData(const App::Property* prop)
 {
     // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() &&
-        strcmp(prop->getName(),"AddSubShape") == 0) {
+    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+        if(strcmp(prop->getName(),"Shape") != 0)
+            return;
+
+        inherited::updateData(prop);
+
+        Part::TopoShape shape = static_cast<const Part::PropertyPartShape*>(prop)->getShape();
+        std::string element("Face");
+        std::vector<int> indices;
+        std::set<int> edgeSet;
+        std::vector<int> points;
+        for(unsigned i=1, count=shape.countSubShapes(TopAbs_FACE); i<=count; ++i) {
+            element.resize(4);
+            element += std::to_string(i);
+            auto mapped = shape.getElementName(element.c_str(),1);
+            if(mapped != element.c_str() && shape.isElementGenerated(mapped)) {
+                indices.push_back(i-1);
+                Part::TopoShape face = shape.getSubTopoShape(TopAbs_FACE, i);
+                for(auto &s : face.getSubShapes(TopAbs_EDGE)) {
+                    int idx = shape.findShape(s)-1;
+                    if(idx >= 0)
+                        edgeSet.insert(idx);
+                }
+                for(auto &s : face.getSubShapes(TopAbs_VERTEX)) {
+                    int idx = shape.findShape(s)-1;
+                    if(idx >= 0)
+                        points.push_back(idx);
+                }
+            }
+        }
+        lineset->setHighlightIndices(edgeSet);
+        nodeset->highlightIndices.setValues(0,points.size(),&points[0]);
+        faceset->highlightIndices.setValues(0,indices.size(),&indices[0]);
         return;
     }
 
