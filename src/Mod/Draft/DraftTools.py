@@ -4655,17 +4655,6 @@ class Point(Creator):
             if self.ui.continueMode:
                 self.Activated()
 
-class ShowSnapBar():
-    """The ShowSnapBar FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Show Snap Bar"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Shows Draft snap toolbar")}
-
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.show()
-
 
 class Draft_Clone(Modifier):
     """The Draft Clone command definition"""
@@ -5262,7 +5251,7 @@ class Draft_Arc_3Points:
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
-import draftguitools.gui_snaps
+from draftguitools.gui_snaps import ShowSnapBar
 
 #---------------------------------------------------------------------------
 # Adds the icons & commands to the FreeCAD command manager, and sets defaults
@@ -5336,7 +5325,6 @@ FreeCADGui.addCommand('Draft_Stretch',Stretch())
 # context commands
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
-FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
