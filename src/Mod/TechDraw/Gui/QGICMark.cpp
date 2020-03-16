@@ -106,7 +106,7 @@ QPainterPath QGICMark::shape() const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
-    double result = hGrp->GetFloat("MarkFuzz",20.0);
+    double result = hGrp->GetFloat("MarkFuzz",5.0);
     return result;
 }
 

@@ -47,6 +47,29 @@
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="quickSearch">
+       <property name="text" >
+        <string>Quick search</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="findGroupLE">
+       <property name="toolTip">
+        <string>Type in a group name to find it</string>
+       </property>
+       <property name="placeholderText">
+        <string>Search Group</string>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonFind" >
        <property name="text" >
         <string>Find...</string>

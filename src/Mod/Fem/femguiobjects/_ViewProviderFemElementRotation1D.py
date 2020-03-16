@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemElementRotation1D
 
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
-
-from PySide import QtCore
 
 from . import FemSelectionWidgets
 from . import ViewProviderFemConstraint

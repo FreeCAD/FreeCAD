@@ -656,7 +656,7 @@ bool  DrawUtil::isCrazy(TopoDS_Edge e)
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/debug");
-    bool crazyOK = hGrp->GetBool("allowCrazyEdge", true);
+    bool crazyOK = hGrp->GetBool("allowCrazyEdge", false);
     if (crazyOK) {
         return false;
     }

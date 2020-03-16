@@ -30,12 +30,11 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD FEM _ViewProviderFemMaterialReinforced
 
 import sys
+from PySide import QtCore
+from PySide import QtGui
 
 import FreeCAD
 import FreeCADGui
-
-from PySide import QtCore
-from PySide import QtGui
 
 from . import ViewProviderFemConstraint
 

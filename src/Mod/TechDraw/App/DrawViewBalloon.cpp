@@ -273,7 +273,7 @@ int DrawViewBalloon::prefEnd(void) const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Decorations");
-    int end = hGrp->GetInt("BalloonArrow", 0);
+    int end = hGrp->GetInt("BalloonArrow", 1);
     return end;
 }
 

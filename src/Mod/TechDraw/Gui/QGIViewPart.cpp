@@ -1288,6 +1288,6 @@ bool QGIViewPart::prefPrintCenters(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    bool   printCenters = hGrp->GetBool("PrintCenterMarks", true);   //true matches v0.18 behaviour
+    bool   printCenters = hGrp->GetBool("PrintCenterMarks", false);   //true matches v0.18 behaviour
     return printCenters;
 }

@@ -32,7 +32,6 @@ __url__ = "http://www.freecadweb.org"
 import os
 import sys
 import time
-
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt

@@ -20,8 +20,7 @@ include_directories(
 if(MSVC)
     set(FreeCADBase_LIBS
         ${Boost_LIBRARIES}
-        debug ${XercesC_DEBUG_LIBRARIES}
-        optimized ${XercesC_LIBRARIES}
+        ${XercesC_LIBRARIES}
         ${ZLIB_LIBRARIES}
         debug MSVCRTD.LIB
         debug MSVCPRTD.LIB

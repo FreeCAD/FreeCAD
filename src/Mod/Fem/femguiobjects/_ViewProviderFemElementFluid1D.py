@@ -31,11 +31,11 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD ViewProviderFemElementFluid1D
 
-import FreeCAD
-import FreeCADGui
-
 from PySide import QtCore
 from PySide import QtGui
+
+import FreeCAD
+import FreeCADGui
 
 from . import FemSelectionWidgets
 from . import ViewProviderFemConstraint

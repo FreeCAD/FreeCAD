@@ -30,11 +30,14 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD _Base ViewProvider for FEM workbench
 
+from pivy import coin
+from six import string_types
+
 import FreeCAD
 import FreeCADGui
+
 import FemGui  # needed to display the icons in TreeView
 
-from pivy import coin
 
 False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
@@ -48,9 +51,14 @@ class ViewProxy(object):
     # needs to be overwritten, if no standard icon name is used
     # see constraint body heat source as an example
     def getIcon(self):
+        print(self.Object.Name)
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
-        if hasattr(self.Object.Proxy, "Type") and self.Object.Proxy.Type.startswith("Fem::"):
+        if (
+            hasattr(self.Object.Proxy, "Type")
+            and isinstance(self.Object.Proxy.Type, string_types)
+            and self.Object.Proxy.Type.startswith("Fem::")
+        ):
             return ":/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))
         else:
             return ""
@@ -78,11 +86,20 @@ class ViewProxy(object):
             # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
             return False
         if hide_mesh is True:
-            # hide all FEM meshes and VTK FemPostPipeline objects
+            # hide all FEM meshes and VTK FemPost* objects
             for o in vobj.Object.Document.Objects:
                 if (
                     o.isDerivedFrom("Fem::FemMeshObject")
                     or o.isDerivedFrom("Fem::FemPostPipeline")
+                    or o.isDerivedFrom("Fem::FemPostClipFilter")
+                    or o.isDerivedFrom("Fem::FemPostScalarClipFilter")
+                    or o.isDerivedFrom("Fem::FemPostWarpVectorFilter")
+                    or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
+                    or o.isDerivedFrom("Fem::FemPostDataAtPointFilter")
+                    or o.isDerivedFrom("Fem::FemPostCutFilter")
+                    or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
+                    or o.isDerivedFrom("Fem::FemPostPlaneFunction")
+                    or o.isDerivedFrom("Fem::FemPostSphereFunction")
                 ):
                     o.ViewObject.hide()
         # show task panel
