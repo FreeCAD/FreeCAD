@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *

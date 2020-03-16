@@ -4,6 +4,7 @@
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2020 Schildkroet                                        *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -91,6 +92,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def areaOpOnDocumentRestored(self, obj):
         for prop in ['UseComp', 'JoinType']:
             self.areaOpOnChanged(obj, prop)
+        
         self.setOpEditorProperties(obj)
 
     def areaOpAreaParams(self, obj, isHole):
@@ -133,6 +135,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             params['orientation'] = 0
         else:
             params['orientation'] = 1
+        
         if not obj.UseComp:
             if direction == 'CCW':
                 params['orientation'] = 1

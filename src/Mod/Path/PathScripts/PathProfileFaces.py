@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -70,6 +71,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         if not hasattr(obj, 'HandleMultipleFeatures'):
             obj.addProperty('App::PropertyEnumeration', 'HandleMultipleFeatures', 'Profile', QtCore.QT_TRANSLATE_NOOP('PathPocket', 'Choose how to process multiple Base Geometry features.'))
+        
         obj.HandleMultipleFeatures = ['Collectively', 'Individually']
 
         self.initRotationOp(obj)
@@ -156,17 +158,21 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                 tag = base.Name + '_' + axis + str(angle).replace('.', '_')
                                 stock = PathUtils.findParentJob(obj).Stock
                                 tup = base, sub, tag, angle, axis, stock
+                            
                             allTuples.append(tup)
+                        
                 if subCount > 1:
                     msg = translate('Path', "Multiple faces in Base Geometry.") + "  "
                     msg += translate('Path', "Depth settings will be applied to all faces.")
                     PathLog.warning(msg)
+                
                 (Tags, Grps) = self.sortTuplesByIndex(allTuples, 2)  # return (TagList, GroupList)
                 subList = []
                 for o in range(0, len(Tags)):
                     subList = []
                     for (base, sub, tag, angle, axis, stock) in Grps[o]:
                         subList.append(sub)
+                    
                     pair = base, subList, angle, axis, stock
                     baseSubsTuples.append(pair)
                 # Efor
@@ -191,6 +197,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
                             for wire in shape.Wires[1:]:
                                 holes.append((base.Shape, wire))
+                            
                         # Add face depth to list
                         faceDepths.append(shape.BoundBox.ZMin)
                     else:
@@ -205,6 +212,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                 strDep = obj.StartDepth.Value
                 if strDep > stock.Shape.BoundBox.ZMax:
                     strDep = stock.Shape.BoundBox.ZMax
+                
                 startDepths.append(strDep)
                 self.depthparams = self._customDepthParams(obj, strDep, finDep)
 
@@ -235,6 +243,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                         else:
                             tup = env, False, 'pathProfileFaces', angle, axis, strDep, finDep
                             shapes.append(tup)
+                        
                     elif obj.HandleMultipleFeatures == 'Individually':
                         for shape in faces:
                             profShape = Part.makeCompound([shape])
@@ -245,6 +254,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                     # Recalculate depthparams
                                     finalDep = shape.BoundBox.ZMin
                                     custDepthparams = self._customDepthParams(obj, strDep, finalDep - 0.5)
+                                
                             env = PathUtils.getEnvelope(base.Shape, subshape=profShape, depthparams=custDepthparams)
                             tup = env, False, 'pathProfileFaces', angle, axis, strDep, finalDep
                             shapes.append(tup)
@@ -253,6 +263,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
             startDepth = max(startDepths)
             if obj.StartDepth.Value > startDepth:
                 obj.StartDepth.Value = startDepth
+            
         else:  # Try to build targets from the job base
             if 1 == len(self.model):
                 if hasattr(self.model[0], "Proxy"):
@@ -311,5 +322,6 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Profile based on faces operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    
     obj.Proxy = ObjectProfile(obj, name)
     return obj

@@ -3,6 +3,8 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
+# *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -43,8 +45,6 @@ __title__ = "Path Drilling Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Drilling operation."
-__contributors__ = "russ4262 (Russell Johnson), IMBack!"
-__created__ = "2014"
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
@@ -221,7 +221,9 @@ def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Drilling operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+    
     obj.Proxy = ObjectDrilling(obj, name)
     if obj.Proxy:
         obj.Proxy.findAllHoles(obj)
+    
     return obj

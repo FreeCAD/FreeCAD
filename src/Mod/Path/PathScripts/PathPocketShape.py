@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -41,7 +42,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 
@@ -61,11 +62,14 @@ def endPoints(edgeOrWire):
             cnt = len([p2 for p2 in pts if PathGeom.pointsCoincide(p, p2)])
             if 1 == cnt:
                 unique.append(p)
+            
         return unique
+    
     pfirst = edgeOrWire.valueAt(edgeOrWire.FirstParameter)
     plast = edgeOrWire.valueAt(edgeOrWire.LastParameter)
     if PathGeom.pointsCoincide(pfirst, plast):
         return None
+    
     return [pfirst, plast]
 
 
@@ -74,6 +78,7 @@ def includesPoint(p, pts):
     for pt in pts:
         if PathGeom.pointsCoincide(p, pt):
             return True
+        
     return False
 
 
@@ -84,8 +89,10 @@ def selectOffsetWire(feature, wires):
         dist = feature.distToShape(w)[0]
         if closest is None or dist > closest[0]:  # pylint: disable=unsubscriptable-object
             closest = (dist, w)
+        
     if closest is not None:
         return closest[1]
+    
     return None
 
 
@@ -112,6 +119,7 @@ def extendWire(feature, wire, length):
                     edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[0])))
                     edges.extend(offset.Edges)
                     edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[1])))
+                
                 return Part.Wire(edges)
     return None
 
@@ -146,6 +154,7 @@ class Extension(object):
             wire = Part.Wire([e0, e1, e2, e3])
             self.wire = wire
             return wire
+        
         return extendWire(feature, Part.Wire([e0]), self.length.Value)
 
     def _getEdgeNumbers(self):
@@ -153,6 +162,7 @@ class Extension(object):
             numbers = [nr for nr in self.sub[5:-1].split(',')]
         else:
             numbers = [self.sub[4:]]
+        
         PathLog.debug("_getEdgeNumbers() -> %s" % numbers)
         return numbers
 
@@ -167,8 +177,10 @@ class Extension(object):
         poffMinus = p0 - 0.01 * normal
         if not self.obj.Shape.isInside(poffPlus, 0.005, True):
             return normal
+        
         if not self.obj.Shape.isInside(poffMinus, 0.005, True):
             return normal.negative()
+        
         return None
 
     def _getDirection(self, wire):
@@ -179,6 +191,7 @@ class Extension(object):
         normal = tangent.cross(FreeCAD.Vector(0, 0, 1))
         if PathGeom.pointsCoincide(normal, FreeCAD.Vector(0, 0, 0)):
             return None
+        
         return self._getDirectedNormal(e0.valueAt(midparam), normal.normalize())
 
     def getWire(self):
@@ -207,6 +220,7 @@ class Extension(object):
                     r = circle.Radius - self.length.Value
                 else:
                     r = circle.Radius + self.length.Value
+                
                 # assuming the offset produces a valid circle - go for it
                 if r > 0:
                     e3 = Part.makeCircle(r, circle.Center, circle.Axis, edge.FirstParameter * 180 / math.pi, edge.LastParameter * 180 / math.pi)
@@ -215,7 +229,9 @@ class Extension(object):
                         e0 = Part.makeLine(edge.valueAt(edge.FirstParameter), e3.valueAt(e3.FirstParameter))
                         e2 = Part.makeLine(edge.valueAt(edge.LastParameter), e3.valueAt(e3.LastParameter))
                         return Part.Wire([e0, edge, e2, e3])
+                    
                     return Part.Wire([e3])
+                
                 # the extension is bigger than the hole - so let's just cover the whole hole
                 if endPoints(edge):
                     # if the resulting arc is smaller than the radius, create a pie slice
@@ -224,6 +240,7 @@ class Extension(object):
                     e0 = Part.makeLine(center, edge.valueAt(edge.FirstParameter))
                     e2 = Part.makeLine(edge.valueAt(edge.LastParameter), center)
                     return Part.Wire([e0, edge, e2])
+                
                 PathLog.track()
                 return Part.Wire([edge])
 
@@ -232,8 +249,10 @@ class Extension(object):
                 direction = self._getDirection(sub)
                 if direction is None:
                     return None
+                
             #    return self._extendEdge(feature, edge, direction)
             return self._extendEdge(feature, edges[0], direction)
+        
         return extendWire(feature, sub, self.length.Value)
 
 
@@ -315,6 +334,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     PathLog.debug('  -e.isClosed()')
                     clsd.append(edg)
                     planar = True
+                
             # Attempt to create planar faces and select that with smallest area for use as pocket base
             if planar is True:
                 planar = False
@@ -328,11 +348,14 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     else:
                         if trans is True:
                             mFF.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - mFF.BoundBox.ZMin))
+                        
                         if FreeCAD.ActiveDocument.getObject(fName):
                             FreeCAD.ActiveDocument.removeObject(fName)
+                        
                         tmpFace = FreeCAD.ActiveDocument.addObject('Part::Feature', fName).Shape = mFF
                         tmpFace = FreeCAD.ActiveDocument.getObject(fName)
                         tmpFace.purgeTouched()
+                        
                         if minArea == 0.0:
                             minArea = tmpFace.Shape.Face1.Area
                             useFace = fName
@@ -343,8 +366,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             useFace = fName
                         else:
                             FreeCAD.ActiveDocument.removeObject(fName)
+                        
             if useFace != 'useFaceName':
                 self.useTempJobClones(useFace)
+            
             return (planar, useFace)
 
         def clasifySub(self, bs, sub):
@@ -357,12 +382,15 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     # it's a flat horizontal face
                     self.horiz.append(face)
                     return True
+                
                 elif PathGeom.isHorizontal(face.Surface.Axis):
                     PathLog.debug('  -isHorizontal()')
                     self.vert.append(face)
                     return True
+                
                 else:
                     return False
+                
             elif type(face.Surface) == Part.Cylinder and PathGeom.isVertical(face.Surface.Axis):
                 PathLog.debug('type() == Part.Cylinder')
                 # vertical cylinder wall
@@ -374,11 +402,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     disk.translate(FreeCAD.Vector(0, 0, face.BoundBox.ZMin - disk.BoundBox.ZMin))
                     self.horiz.append(disk)
                     return True
+                
                 else:
                     PathLog.debug('  -none isClosed()')
                     # partial cylinder wall
                     self.vert.append(face)
                     return True
+                
             elif type(face.Surface) == Part.SurfaceOfExtrusion:
                 # extrusion wall
                 PathLog.debug('type() == Part.SurfaceOfExtrusion')
@@ -397,6 +427,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     # self.guiMessage(title, msg, False)
                 else:
                     PathLog.error(translate("Path", "Failed to create a planar face from edges in {}.".format(sub)))
+                
             else:
                 PathLog.debug('  -type(face.Surface): {}'.format(type(face.Surface)))
                 return False
@@ -417,6 +448,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     # First, check all subs collectively for loop of faces
                     if len(subsList) > 2:
                         (isLoop, norm, surf) = self.checkForFacesLoop(base, subsList)
+                    
                     if isLoop is True:
                         PathLog.info("Common Surface.Axis or normalAt() value found for loop faces.")
                         rtn = False
@@ -459,6 +491,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             stock = PathUtils.findParentJob(obj).Stock
                             tup = base, subsList, angle, axis, stock
                         # Eif
+                        
                         allTuples.append(tup)
                         baseSubsTuples.append(tup)
                     # Eif
@@ -612,6 +645,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         shpZMin = -1 * shpZMin
                     else:
                         face.translate(FreeCAD.Vector(0.0, 0.0, -1 * clrnc))
+                    
                     if obj.LimitDepthToFace is True and obj.EnableRotation != 'Off':
                         if shpZMin > obj.FinalDepth.Value:
                             afD = shpZMin
@@ -620,6 +654,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                 sD = afD + 1.0
                     else:
                         face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - shpZMin))
+                    
                     extent = FreeCAD.Vector(0, 0, sD - afD + clrnc)
                     extShp = face.removeSplitter().extrude(extent)
                     self.removalshapes.append((extShp, False, 'pathPocketShape', useAngle, axis, sD, afD))
