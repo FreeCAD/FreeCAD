@@ -242,6 +242,8 @@ SoBrepFaceSet::SoBrepFaceSet()
 {
     SO_NODE_CONSTRUCTOR(SoBrepFaceSet);
     SO_NODE_ADD_FIELD(partIndex, (-1));
+    SO_NODE_ADD_FIELD(highlightIndices, (-1));
+    highlightIndices.setNum(0);
 
     selContext = std::make_shared<SelContext>();
     selContext2 = std::make_shared<SelContext>();
@@ -459,6 +461,11 @@ void SoBrepFaceSet::setSiblings(std::vector<SoNode*> &&s) {
     siblings = std::move(s);
 }
 
+bool SoBrepFaceSet::isHighlightAll(const SelContextPtr &ctx)
+{
+    return !highlightIndices.getNum() && (ctx && ctx->isHighlightAll());
+}
+
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
     //SoBase::staticDataLock();
@@ -507,7 +514,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if(ctx && (!ctx->selectionIndex.size() && ctx->highlightIndex<0))
         ctx.reset();
 
-    if((!ctx2||ctx2->isSelectAll()) && ctx && ctx->isHighlightAll()) {
+    if((!ctx2||ctx2->isSelectAll()) && isHighlightAll(ctx)) {
         // Highlight (preselect) all is done in View3DInventerViewer with a
         // dedicated GroupOnTopPreSel. We shall only render edge and point.
         // But if we have partial rendering (ctx2), then edges and points are
@@ -588,7 +595,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         // Transparency complicates stuff even more, but not here. It will be
         // handled inside overrideMaterialBinding()
         //
-        if(ctx && ctx->isHighlightAll()) {
+        if(isHighlightAll(ctx)) {
             if(ctx2 && !ctx2->isSelectAll()) {
                 ctx2->selectionColor = ctx->highlightColor;
                 renderSelection(action,ctx2); 
@@ -628,7 +635,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if(Gui::ViewParams::instance()->getShowSelectionOnTop()
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2 || ctx2->isSelectAll())
-            && (!ctx || (!ctx->isHighlightAll() && (!ctx->isSelectAll()||!ctx->hasSelectionColor())))
+            && (!ctx || (!isHighlightAll(ctx) && (!ctx->isSelectAll()||!ctx->hasSelectionColor())))
             && action->isRenderingDelayedPaths())
     {
         // Perform a depth buffer only rendering so that we can draw the
@@ -881,7 +888,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         }
 
         int singleColor = 0;
-        if(ctx && ctx->isHighlightAll()) {
+        if(isHighlightAll(ctx)) {
             singleColor = 1;
             diffuseColor = highlightColor;
         }else if(ctx && ctx->isSelectAll() && selectionColor) {
@@ -985,11 +992,23 @@ bool SoBrepFaceSet::overrideMaterialBinding(
                 }
             }
         }
-        if(ctx && ctx->highlightIndex>=0 && ctx->highlightIndex<partIndex.getNum()) {
-            packedColors.push_back(highlightColor);
-            makeDistinctColor(packedColors.back(),
-                    packedColors.back(), packedColors[matIndex[ctx->highlightIndex]]);
-            matIndex[ctx->highlightIndex] = packedColors.size()-1;
+        if(ctx && ctx->isHighlighted()) {
+            if(ctx->highlightIndex>=0 && ctx->highlightIndex<partIndex.getNum()) {
+                packedColors.push_back(highlightColor);
+                makeDistinctColor(packedColors.back(),
+                        packedColors.back(), packedColors[matIndex[ctx->highlightIndex]]);
+                matIndex[ctx->highlightIndex] = packedColors.size()-1;
+            } else {
+                for(int i=0, count=highlightIndices.getNum(); i<count; ++i) {
+                    int idx = highlightIndices[i];
+                    if(idx >= 0 && idx <= partIndex.getNum()) {
+                        packedColors.push_back(highlightColor);
+                        makeDistinctColor(packedColors.back(),
+                                packedColors.back(), packedColors[matIndex[idx]]);
+                        matIndex[idx] = packedColors.size()-1;
+                    }
+                }
+            }
         }
 
         SbBool notify = enableNotify(FALSE);
@@ -1460,8 +1479,13 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
     SoTextureEnabledElement::set(state,this,false);
 
     int id = ctx->highlightIndex;
-    if(id == INT_MAX) {
+    if(ctx->isHighlightAll()) {
         RenderIndices.clear();
+        for(int i=0, count=highlightIndices.getNum(); i<count; ++i) {
+            int idx = highlightIndices[i];
+            if(idx>=0 && idx<partIndex.getNum())
+                RenderIndices.push_back(idx);
+        }
         renderShape(action, true);
     } else if(id < partIndex.getNum()) {
         RenderIndices.resize(1,id);

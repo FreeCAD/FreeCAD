@@ -89,6 +89,8 @@ SoBrepEdgeSet::SoBrepEdgeSet()
     ,selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
+    SO_NODE_ADD_FIELD(highlightIndices, (-1));
+    highlightIndices.setNum(0);
 }
 
 bool SoBrepEdgeSet::isSelected(SelContextPtr ctx) {
@@ -154,7 +156,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
     if(!action->isRenderingDelayedPaths())
         depthGuard.set(GL_LEQUAL);
 
-    if(ctx && ctx->isHighlightAll()) {
+    if(ctx && ctx->isHighlightAll() && !highlightIndices.getNum()) {
         if(ctx2 && !ctx2->isSelectAll()) {
             ctx2->selectionColor = ctx->highlightColor;
             renderSelection(action,ctx2); 
@@ -237,12 +239,9 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
         else
             inherited::GLRender(action);
 
-        // Workaround for #0000433
-//#if !defined(FC_OS_WIN32)
         if(ctx && ctx->isSelected() && ctx->hasSelectionColor())
             renderSelection(action,ctx);
         renderHighlight(action,ctx);
-//#endif
     }
 }
 
@@ -293,15 +292,20 @@ void SoBrepEdgeSet::renderShape(const SoGLCoordinateElement * const coords,
 {
 
     const SbVec3f * coords3d = coords->getArrayPtr3();
+    int num = coords->getNum();
 
     int32_t i;
     int previ;
     const int32_t *end = cindices + numindices;
     while (cindices < end) {
-        glBegin(GL_LINE_STRIP);
         previ = *cindices++;
+        if(previ < 0 || previ >= num)
+            continue;
         i = (cindices < end) ? *cindices++ : -1;
+        glBegin(GL_LINE_STRIP);
         while (i >= 0) {
+            if(i >= num)
+                break;
             glVertex3fv((const GLfloat*) (coords3d + previ));
             glVertex3fv((const GLfloat*) (coords3d + i));
             previ = i;
@@ -313,7 +317,7 @@ void SoBrepEdgeSet::renderShape(const SoGLCoordinateElement * const coords,
 
 void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 {
-    if(!ctx || ctx->highlightIndex<0)
+    if(!ctx || !ctx->isHighlighted())
         return;
 
     SoState * state = action->getState();
@@ -341,16 +345,15 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
     int num = (int)ctx->hl.size();
     if (num > 0) {
         if (ctx->hl[0] < 0) {
-            renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+            if(!highlightIndices.getNum())
+                renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+            else 
+                renderShape(static_cast<const SoGLCoordinateElement*>(coords),
+                        highlightIndices.getValues(0), highlightIndices.getNum());
         }
         else {
             const int32_t* id = &(ctx->hl[0]);
-            if (!validIndexes(coords, ctx->hl)) {
-                SoDebugError::postWarning("SoBrepEdgeSet::renderHighlight", "highlightIndex out of range");
-            }
-            else {
-                renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
-            }
+            renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
         }
     }
     state->pop();
@@ -389,12 +392,7 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         else {
             cindices = &(ctx->sl[0]);
             numcindices = (int)ctx->sl.size();
-            if (!validIndexes(coords, ctx->sl)) {
-                SoDebugError::postWarning("SoBrepEdgeSet::renderSelection", "selectionIndex out of range");
-            }
-            else {
-                renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
-            }
+            renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
         }
     }
     if(push) state->pop();
@@ -408,6 +406,29 @@ bool SoBrepEdgeSet::validIndexes(const SoCoordinateElement* coords, const std::v
         }
     }
     return true;
+}
+
+void SoBrepEdgeSet::setHighlightIndices(const std::set<int> &edgeSet)
+{
+    const int32_t* cindices = this->coordIndex.getValues(0);
+    int numcindices = this->coordIndex.getNum();
+
+    std::vector<int> indices;
+    if(edgeSet.size()) {
+        auto it = edgeSet.begin();
+        for(int section=0,i=0;i<numcindices;i++) {
+            if(section == *it)
+                indices.push_back(cindices[i]);
+            if(cindices[i] < 0) {
+                if(++section > *it) {
+                    if(++it == edgeSet.end())
+                        break;
+                }
+            }
+        }
+    }
+    highlightIndices.setValues(0,indices.size(),&indices[0]);
+    return;
 }
 
 void SoBrepEdgeSet::doAction(SoAction* action)

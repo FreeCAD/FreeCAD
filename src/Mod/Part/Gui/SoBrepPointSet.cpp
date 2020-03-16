@@ -84,6 +84,8 @@ SoBrepPointSet::SoBrepPointSet()
     ,selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepPointSet);
+    SO_NODE_ADD_FIELD(highlightIndices, (-1));
+    highlightIndices.setNum(0);
 }
 
 bool SoBrepPointSet::isSelected(SelContextPtr ctx) {
@@ -146,7 +148,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     if(!action->isRenderingDelayedPaths())
         depthGuard.set(GL_LEQUAL);
 
-    if(ctx && ctx->isHighlightAll()) {
+    if(!highlightIndices.getNum() && ctx && ctx->isHighlightAll()) {
         if(ctx2) {
             ctx2->selectionColor = ctx->highlightColor;
             renderSelection(action,ctx2); 
@@ -175,6 +177,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
                 renderSelection(action,ctx2); 
             }else
                 renderSelection(action,ctx); 
+
             renderHighlight(action,ctx);
             return;
         }
@@ -185,12 +188,10 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     else
         inherited::GLRender(action);
 
-    // Workaround for #0000433
-//#if !defined(FC_OS_WIN32)
     if(ctx && ctx->selectionIndex.size() && ctx->hasSelectionColor())
         renderSelection(action,ctx);
+
     renderHighlight(action,ctx);
-//#endif
 }
 
 void SoBrepPointSet::GLRenderBelowPath(SoGLRenderAction * action)
@@ -239,7 +240,7 @@ static inline void setupRendering(
 
 void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 {
-    if(!ctx || ctx->highlightIndex<0)
+    if(!ctx || !ctx->isHighlighted())
         return;
 
     SoState * state = action->getState();
@@ -259,19 +260,25 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx
     int id = ctx->highlightIndex;
     const SbVec3f * coords3d = coords->getArrayPtr3();
     if(coords3d) {
+        glBegin(GL_POINTS);
         if(id == INT_MAX) {
-            glBegin(GL_POINTS);
-            for(int idx=startIndex.getValue();idx<coords->getNum();++idx)
-                glVertex3fv((const GLfloat*) (coords3d + idx));
-            glEnd();
+            if(!highlightIndices.getNum()) {
+                for(int idx=startIndex.getValue();idx<coords->getNum();++idx)
+                    glVertex3fv((const GLfloat*) (coords3d + idx));
+            } else {
+                for(int i=0,num=highlightIndices.getNum();i<num;++i) {
+                    int idx = highlightIndices[i];
+                    if (idx >= startIndex.getValue() && idx < coords->getNum()) {
+                        glVertex3fv((const GLfloat*) (coords3d + idx));
+                    }
+                }
+            }
         }else if (id < this->startIndex.getValue() || id >= coords->getNum()) {
             SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
         }
-        else {
-            glBegin(GL_POINTS);
+        else 
             glVertex3fv((const GLfloat*) (coords3d + id));
-            glEnd();
-        }
+        glEnd();
     }
     state->pop();
 }

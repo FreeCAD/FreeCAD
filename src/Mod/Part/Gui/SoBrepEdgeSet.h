@@ -27,12 +27,14 @@
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSubField.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
 #include <memory>
+#include <set>
 #include <Gui/SoFCSelectionContext.h>
 
 class SoCoordinateElement;
@@ -47,10 +49,14 @@ class PartGuiExport SoBrepEdgeSet : public SoIndexedLineSet {
     SO_NODE_HEADER(SoBrepEdgeSet);
 
 public:
+    SoMFInt32 highlightIndices;
+
     static void initClass();
     SoBrepEdgeSet();
 
     void setSiblings(std::vector<SoNode*> &&);
+
+    void setHighlightIndices(const std::set<int> &edgeSet);
 
 protected:
     virtual ~SoBrepEdgeSet() {};
@@ -82,6 +88,7 @@ private:
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     std::vector<SoNode*> siblings;
+    std::vector<int> highlightCoordIndices;
 };
 
 } // namespace PartGui

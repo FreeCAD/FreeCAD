@@ -86,6 +86,7 @@ public:
     void setSiblings(std::vector<SoNode*> &&);
 
     SoMFInt32 partIndex;
+    SoMFInt32 highlightIndices;
 
 protected:
     virtual ~SoBrepFaceSet();
@@ -149,6 +150,7 @@ private:
     void buildPartBBoxes(SoState *state);
     void buildPartIndexCache();
     int getPartFromFace(int index);
+    bool isHighlightAll(const SelContextPtr &ctx);
 
     void generatePrimitivesRange(SoAction * action, int pstart, int fstart, int vstart, int vend);
 
