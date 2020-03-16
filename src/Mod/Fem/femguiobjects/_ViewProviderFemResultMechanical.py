@@ -90,6 +90,8 @@ class _TaskPanel:
         # task panel should be started by use of setEdit of view provider
         # in view provider checks: Mesh, active analysis and
         # if Mesh and result are in active analysis
+        # activate the result mesh object
+        self.mesh_obj.ViewObject.show()
 
         ui_path = FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/"
         self.result_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultShow.ui")
