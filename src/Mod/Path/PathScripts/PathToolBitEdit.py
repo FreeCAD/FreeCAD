@@ -88,6 +88,7 @@ class ToolBitEditor(object):
         self.model.setHorizontalHeaderLabels(['Set', 'Property', 'Value'])
 
         for i, name in enumerate(self.props):
+            print(f"propname: {name}")
             prop = self.proto.getProperty(name)
             isset = hasattr(tool, name)
             if isset:

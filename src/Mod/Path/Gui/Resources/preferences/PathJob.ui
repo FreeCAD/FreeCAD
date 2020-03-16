@@ -654,7 +654,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="toolsOpenLastLibrary">
          <property name="text">
           <string>Remember last library</string>
          </property>

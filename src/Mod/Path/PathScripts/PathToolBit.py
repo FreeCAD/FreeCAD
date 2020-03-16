@@ -195,6 +195,7 @@ class ToolBit(object):
     def onDelete(self, obj, arg2=None):
         PathLog.track(obj.Label)
         self.unloadBitBody(obj)
+        obj.Document.removeObject(obj.Name)
 
     def _updateBitShape(self, obj, properties=None):
         if not obj.BitBody is None:
@@ -230,6 +231,7 @@ class ToolBit(object):
         return (doc, docOpened)
 
     def _removeBitBody(self, obj):
+        print('in _removebitbody')
         if obj.BitBody:
             obj.BitBody.removeObjectsFromDocument()
             obj.Document.removeObject(obj.BitBody.Name)
@@ -326,6 +328,7 @@ class ToolBit(object):
         attrs['parameter'] = params
         params = {}
         for name in self.propertyNamesAttribute(obj):
+            print(f"shapeattr {name}")
             params[name] = PathUtil.getPropertyValueString(obj, name)
         attrs['attribute'] = params
         return attrs
@@ -343,6 +346,7 @@ class AttributePrototype(PathSetupSheetOpPrototype.OpPrototype):
         self.addProperty('App::PropertyDistance', 'LengthOffset', PropertyGroupAttribute, translate('PathToolBit', 'Length offset in Z direction'))
         self.addProperty('App::PropertyInteger',  'Flutes', PropertyGroupAttribute, translate('PathToolBit', 'The number of flutes'))
         self.addProperty('App::PropertyDistance', 'ChipLoad', PropertyGroupAttribute, translate('PathToolBit', 'Chipload as per manufacturer'))
+      #  self.addProperty('App::PropertyMap', 'UserAttributes', PropertyGroupAttribute, translate('PathTooolBit', 'User Defined Values'))
 
 
 class ToolBitFactory(object):
@@ -358,11 +362,21 @@ class ToolBitFactory(object):
         obj.Proxy.unloadBitBody(obj)
         params = attrs['attribute']
         proto = AttributePrototype()
+        uservals = {}
         for pname in params:
-            prop = proto.getProperty(pname)
-            val =  prop.valueFromString(params[pname])
+            try:
+                prop = proto.getProperty(pname)
+                val =  prop.valueFromString(params[pname])
+                prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
+            except:
+                prop = obj.addProperty('App::PropertyString', pname, "Attribute", translate('PathTooolBit', 'User Defined Value'))
+                setattr(obj, pname, params[pname])
+                #prop = proto.getProperty("UserAttributes")
+                #uservals.update({pname: params[pname]})
+                #prop = .setupPropertyobj, pname, "UserAttributes", prop.valueFromString(params[pname]))
+
             print("prop[%s] = %s (%s)" % (pname, params[pname], type(val)))
-            prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
+            #prop.setupProperty(obj, pname, PropertyGroupAttribute, prop.valueFromString(params[pname]))
         return obj
 
     def CreateFrom(self, path, name='ToolBit'):

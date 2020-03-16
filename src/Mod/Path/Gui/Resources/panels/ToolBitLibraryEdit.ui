@@ -17,26 +17,12 @@
    <item row="0" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="createToolBit">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Create a New Toolbit and add it to the library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Create Toolbit</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/document-new.svg</normaloff>:/icons/document-new.svg</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="toolAdd">
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add another Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Add Existing ...</string>
+        <string>Add Toolbit ...</string>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -121,23 +107,16 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="addToolController">
-     <property name="text">
-      <string>Add Selected as Tool  Controllers in the Job</string>
-     </property>
-     <property name="icon">
-      <iconset resource="../../../../../Gui/Icons/resource.qrc">
-       <normaloff>:/icons/edit-undo.svg</normaloff>:/icons/edit-undo.svg</iconset>
-     </property>
-    </widget>
-   </item>
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QDialogButtonBox" name="buttonBox">
-       <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <widget class="QPushButton" name="addToolController">
+       <property name="text">
+        <string>Add Selected as Tool  Controllers in the Job</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../Gui/Icons/resource.qrc">
+         <normaloff>:/icons/edit_OK.svg</normaloff>:/icons/edit_OK.svg</iconset>
        </property>
       </widget>
      </item>
@@ -155,27 +134,27 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="libraryOpen">
-       <property name="text">
-        <string>Open</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../../../../../Gui/Icons/resource.qrc">
-         <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="libraryCancel">
        <property name="toolTip">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Close the Tool Bit Library Editor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Close</string>
+        <string>Cancel</string>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">
          <normaloff>:/icons/button_invalid.svg</normaloff>:/icons/button_invalid.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="libraryOpen">
+       <property name="text">
+        <string>Open Table</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../Gui/Icons/resource.qrc">
+         <normaloff>:/icons/document-open.svg</normaloff>:/icons/document-open.svg</iconset>
        </property>
       </widget>
      </item>
@@ -185,7 +164,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Save</string>
+        <string>Save Table</string>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">
@@ -199,7 +178,7 @@
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the library to a new file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="text">
-        <string>Save As...</string>
+        <string>Save Table As...</string>
        </property>
        <property name="icon">
         <iconset resource="../../../../../Gui/Icons/resource.qrc">

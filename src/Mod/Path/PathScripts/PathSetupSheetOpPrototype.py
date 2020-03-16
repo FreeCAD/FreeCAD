@@ -142,6 +142,13 @@ class PropertyString(Property):
     def typeString(self):
         return "String"
 
+class PropertyMap(Property):
+    def typeString(self)
+        return "Map"
+
+    def displayString(self, value):
+        return str(value)
+
 class OpPrototype(object):
 
     PropertyType = {
@@ -159,6 +166,7 @@ class OpPrototype(object):
             'App::PropertyLink':                Property,
             'App::PropertyLinkList':            Property,
             'App::PropertyLinkSubListGlobal':   Property,
+            'App::PropertyMap':                 PropertyMap,
             'App::PropertyPercent':             PropertyPercent,
             'App::PropertyString':              PropertyString,
             'App::PropertyStringList':          Property,

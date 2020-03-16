@@ -30,6 +30,8 @@ import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolBitEdit as PathToolBitEdit
+import PathScripts.PathToolControllerGui as PathToolControllerGui
+import PathScripts.PathUtilsGui as PathUtilsGui
 import PySide
 import json
 import os
@@ -192,6 +194,17 @@ class ToolBitLibrary(object):
             tools.append((toolNr, PathToolBit.Factory.CreateFrom(toolPath)))
         return tools
 
+    def selectedOrAllToolControllers(self):
+        tools = self.selectedOrAllTools()
+
+        userinput = PathUtilsGui.PathUtilsUserInput()
+        job = userinput.chooseJob(PathUtilsGui.PathUtils.GetJobs())
+        for tool in tools:
+            print(tool)
+            tc = PathToolControllerGui.Create(tool[1].Label, tool[1], tool[0])
+            job.Proxy.addToolController(tc)
+            FreeCAD.ActiveDocument.recompute()
+
     def toolDelete(self):
         PathLog.track()
         selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
@@ -205,7 +218,17 @@ class ToolBitLibrary(object):
 
     def toolSelect(self, selected, deselected):
         # pylint: disable=unused-argument
-        self.form.toolDelete.setEnabled(len(self.toolTableView.selectedIndexes()) > 0)
+        sel = len(self.toolTableView.selectedIndexes()) > 0
+        self.form.toolDelete.setEnabled(sel)
+
+        addTCSelectedText   = translate("PathToolLibraryManager", "Add SELECTED as Tool Controllers in the Job")
+        addTCAllText        = translate("PathToolLibraryManager", "Add ALL as Tool Controllers in the Job")
+
+        if sel:
+            self.form.addToolController.setText(addTCSelectedText)
+        else:
+            self.form.addToolController.setText(addTCAllText)
+
 
     def open(self, path=None, dialog=False):
         '''open(path=None, dialog=False) ... load library stored in path and bring up ui.
@@ -230,11 +253,14 @@ class ToolBitLibrary(object):
         PathLog.track()
         filename = PySide.QtGui.QFileDialog.getOpenFileName(self.form, 'Tool Library', PathPreferences.lastPathToolLibrary(), '*.fctl')
         if filename and filename[0]:
+            print(filename)
+            print(filename[0])
             path = filename[0]
             PathPreferences.setLastPathToolLibrary(filename[0])
 
             if not PathPreferences.toolsOpenLastLibrary():
-                path = os.path.dirname(path)
+                PathPreferences.setLastPathToolLibrary(os.path.dirname(filename[0]))
+                #path = os.path.dirname(path)
 
             self.libraryLoad(path)
 
@@ -264,20 +290,20 @@ class ToolBitLibrary(object):
     def libraryNew(self):
         self.libraryLoad(None)
 
-    def createToolBit(self):
-        tool = PathToolBit.ToolBitFactory().Create()
+    #def createToolBit(self):
+    #    tool = PathToolBit.ToolBitFactory().Create()
 
-        #self.dialog = PySide.QtGui.QDialog(self.form)
-        #layout = PySide.QtGui.QVBoxLayout(self.dialog)
-        self.editor = PathToolBitEdit.ToolBitEditor(tool, self.form.toolTableGroup)
-        self.editor.setupUI()
-        self.buttons = PySide.QtGui.QDialogButtonBox(
-                PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel,
-                PySide.QtCore.Qt.Horizontal, self.dialog)
-        layout.addWidget(self.buttons)
-        #self.buttons.accepted.connect(accept)
-        #self.buttons.rejected.connect(reject)
-        print(self.dialog.exec_())
+    #    #self.dialog = PySide.QtGui.QDialog(self.form)
+    #    #layout = PySide.QtGui.QVBoxLayout(self.dialog)
+    #    self.editor = PathToolBitEdit.ToolBitEditor(tool, self.form.toolTableGroup)
+    #    self.editor.setupUI()
+    #    self.buttons = PySide.QtGui.QDialogButtonBox(
+    #            PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel,
+    #            PySide.QtCore.Qt.Horizontal, self.dialog)
+    #    layout.addWidget(self.buttons)
+    #    #self.buttons.accepted.connect(accept)
+    #    #self.buttons.rejected.connect(reject)
+    #    print(self.dialog.exec_())
 
     def librarySave(self):
         library = {}
@@ -367,11 +393,21 @@ class ToolBitLibrary(object):
                 self.librarySave()
                 self.updateToolbar()
 
+
+
     def libraryCancel(self):
         self.form.close()
 
     def columnNames(self):
         return ['Nr', 'Tool', 'Shape', 'Diameter']
+
+    def toolEdit(self, selected):
+        print('here')
+        print(selected)
+        if selected.column() == 0:
+            print('nope')
+        else:
+            print('yep')
 
     def setupUI(self):
         PathLog.track('+')
@@ -381,17 +417,20 @@ class ToolBitLibrary(object):
         self.toolTableView.setModel(self.model)
         self.toolTableView.resizeColumnsToContents()
         self.toolTableView.selectionModel().selectionChanged.connect(self.toolSelect)
+        self.toolTableView.doubleClicked.connect(self.toolEdit)
 
         self.form.toolAdd.clicked.connect(self.toolAdd)
         self.form.toolDelete.clicked.connect(self.toolDelete)
         self.form.toolEnumerate.clicked.connect(self.toolEnumerate)
-        self.form.createToolBit.clicked.connect(self.createToolBit)
+        # self.form.createToolBit.clicked.connect(self.createToolBit)
 
         #self.form.libraryNew.clicked.connect(self.libraryNew)
         self.form.libraryOpen.clicked.connect(self.libraryOpen)
         self.form.librarySave.clicked.connect(self.librarySave)
         self.form.librarySaveAs.clicked.connect(self.librarySaveAs)
         self.form.libraryCancel.clicked.connect(self.libraryCancel)
+
+        self.form.addToolController.clicked.connect(self.selectedOrAllToolControllers)
 
         self.toolSelect([], [])
         self.updateToolbar()
