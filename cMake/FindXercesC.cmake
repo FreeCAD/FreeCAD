@@ -30,18 +30,6 @@ FIND_LIBRARY(XercesC_LIBRARIES
     /usr/${LIB_DESTINATION}
 )
 
-FIND_LIBRARY(XercesC_LIBRARIE_DEBUG
-  NAMES
-    xerces-c_3d
-  PATHS
-    ${CMAKE_LIBRARY_PATH}
-    "[HKEY_CURRENT_USER\\software\\xerces-c\\lib]"
-    "[HKEY_CURRENT_USER\\xerces-c\\lib]"
-    $ENV{XERCESCROOT}/${LIB_DESTINATION}
-    /usr/local/${LIB_DESTINATION}
-    /usr/${LIB_DESTINATION}
-)
-
 # if the include a the library are found then we have it
 IF(XercesC_INCLUDE_DIRS AND XercesC_LIBRARIES)
   SET(XercesC_FOUND "YES" )
