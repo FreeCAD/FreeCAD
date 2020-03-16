@@ -377,3 +377,26 @@ class Draft_Snap_WorkingPlane:
 
 
 Gui.addCommand('Draft_Snap_WorkingPlane', Draft_Snap_WorkingPlane())
+
+
+class ShowSnapBar:
+    """GuiCommand for the Draft_ShowSnapBar tool.
+
+    Show the snap toolbar if it's hidden.
+    """
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        return {'Pixmap': 'Draft_Snap',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_ShowSnapBar",
+                                              "Show snap toolbar"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_ShowSnapBar",
+                                             "Shows Draft snap toolbar.")}
+
+    def Activated(self):
+        """Execute when the command is called."""
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.show()
+
+
+Gui.addCommand('Draft_ShowSnapBar', ShowSnapBar())
