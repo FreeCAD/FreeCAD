@@ -78,11 +78,11 @@ void ButtonView::goChangedCommand(const QString& commandName)
 
 ButtonModel::ButtonModel(QObject *parent) : QAbstractListModel(parent)
 {
-   Load3DConnexionButtons("SpacePilot Pro");
+   load3DConnexionButtons("SpacePilot Pro");
 }
 
 // Process the given Mapping tree to load in the Button mappings.
-void ButtonModel::Load3DConnexionButtonMapping(boost::property_tree::ptree ButtonMapTree)
+void ButtonModel::load3DConnexionButtonMapping(boost::property_tree::ptree ButtonMapTree)
 {
    spaceballButtonGroup()->Clear();
    
@@ -136,7 +136,7 @@ void ButtonModel::Load3DConnexionButtonMapping(boost::property_tree::ptree Butto
 
 // Optionally preload Button model with 3DConnexion configuration to match Solidworks
 // For now the Button mapping file (3DConnexion.xml) is held the same folder as the FreeCAD executable.
-void ButtonModel::Load3DConnexionButtons(const char *RequiredDeviceName)
+void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
 {
    try
    {
@@ -144,7 +144,9 @@ void ButtonModel::Load3DConnexionButtons(const char *RequiredDeviceName)
       boost::property_tree::ptree DeviceTree;
     
       // exception thrown if no file found
-      read_xml("3DConnexion.xml", tree);
+      std::string path = App::Application::getResourceDir();
+      path += "3Dconnexion/3DConnexion.xml";
+      read_xml(path.c_str(), tree);
 
       BOOST_FOREACH(const boost::property_tree::ptree::value_type &ButtonMap, tree.get_child(""))
       {
@@ -173,7 +175,7 @@ void ButtonModel::Load3DConnexionButtons(const char *RequiredDeviceName)
       // If we found the required devices ButtonMap
       if (!DeviceTree.empty())
       {
-         Load3DConnexionButtonMapping(DeviceTree);
+         load3DConnexionButtonMapping(DeviceTree);
       }
    }
    catch (const std::exception& e)

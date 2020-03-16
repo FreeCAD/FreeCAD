@@ -67,8 +67,8 @@ namespace Gui
             void goMacroRemoved(const QByteArray& macroName);
             void goClear();
         private:
-            void Load3DConnexionButtonMapping(boost::property_tree::ptree ButtonMapTree);
-            void Load3DConnexionButtons(const char *RequiredDeviceName);
+            void load3DConnexionButtonMapping(boost::property_tree::ptree ButtonMapTree);
+            void load3DConnexionButtons(const char *RequiredDeviceName);
             ParameterGrp::handle spaceballButtonGroup() const;
             QString getLabel(const int &number) const;
         };
