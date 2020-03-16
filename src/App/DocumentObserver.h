@@ -249,24 +249,39 @@ private:
 class AppExport DocumentObjectWeakPtrT
 {
 public:
-    DocumentObjectWeakPtrT(App::DocumentObject*) noexcept;
+    DocumentObjectWeakPtrT(App::DocumentObject*);
     ~DocumentObjectWeakPtrT();
 
     /*!
      * \brief reset
      * Releases the reference to the managed object. After the call *this manages no object.
      */
-    void reset() noexcept;
+    void reset();
     /*!
      * \brief expired
      * \return true if the managed object has already been deleted, false otherwise.
      */
     bool expired() const noexcept;
     /*!
+     * \brief operator =
+     * Assignment operator
+     */
+    DocumentObjectWeakPtrT& operator= (App::DocumentObject* p);
+    /*!
      * \brief operator ->
      * \return pointer to the document
      */
     App::DocumentObject* operator->() noexcept;
+    /*!
+     * \brief operator ==
+     * \return true if both objects are equal, false otherwise
+     */
+    bool operator== (const DocumentObjectWeakPtrT& p) const noexcept;
+    /*!
+     * \brief operator !=
+     * \return true if both objects are inequal, false otherwise
+     */
+    bool operator!= (const DocumentObjectWeakPtrT& p) const noexcept;
     /*! Get a pointer to the object or 0 if it doesn't exist any more or the type doesn't match. */
     template<typename T>
     inline T* get() const noexcept
@@ -283,6 +298,71 @@ private:
 private:
     class Private;
     std::unique_ptr<Private> d;
+};
+
+/**
+ * @brief The WeakPtrT class
+ */
+template <class T>
+class WeakPtrT
+{
+public:
+    WeakPtrT(T* t) : ptr(t) {
+    }
+    ~WeakPtrT() {
+    }
+
+    /*!
+     * \brief reset
+     * Releases the reference to the managed object. After the call *this manages no object.
+     */
+    void reset() {
+        ptr.reset();
+    }
+    /*!
+     * \brief expired
+     * \return true if the managed object has already been deleted, false otherwise.
+     */
+    bool expired() const {
+        return ptr.expired();
+    }
+    /*!
+     * \brief operator =
+     * Assignment operator
+     */
+    WeakPtrT<T>& operator= (T* p) {
+        ptr = p;
+        return *this;
+    }
+    /*!
+     * \brief operator ->
+     * \return pointer to the document
+     */
+    T* operator->() {
+        return ptr.get<T>();
+    }
+    /*!
+     * \brief operator ==
+     * \return true if both objects are equal, false otherwise
+     */
+    bool operator== (const WeakPtrT<T>& p) const {
+        return ptr == p.ptr;
+    }
+    /*!
+     * \brief operator !=
+     * \return true if both objects are inequal, false otherwise
+     */
+    bool operator!= (const WeakPtrT<T>& p) const {
+        return ptr != p.ptr;
+    }
+
+private:
+    // disable
+    WeakPtrT(const WeakPtrT&);
+    WeakPtrT& operator=(const WeakPtrT&);
+
+private:
+    DocumentObjectWeakPtrT ptr;
 };
 
 /**
