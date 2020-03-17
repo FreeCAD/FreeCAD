@@ -46,6 +46,7 @@
 #include "BitmapFactory.h"
 #include "FileDialog.h"
 #include "Macro.h"
+#include "MainWindow.h"
 #include "PythonDebugger.h"
 #include "PythonEditor.h"
 
@@ -63,6 +64,7 @@ public:
     QTimer*  activityTimer;
     uint timeStamp;
     bool lock;
+    bool aboutToClose;
     QStringList undos;
     QStringList redos;
 };
@@ -81,11 +83,18 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
 {
     d = new EditorViewP;
     d->lock = false;
+    d->aboutToClose = false;
     d->displayName = EditorView::FullName;
 
     // create the editor first
     d->textEdit = editor;
     d->textEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
+
+    // update editor actions on request
+    Gui::MainWindow* mw = Gui::getMainWindow();
+    connect(editor, SIGNAL(undoAvailable(bool)), mw, SLOT(updateEditorActions()));
+    connect(editor, SIGNAL(redoAvailable(bool)), mw, SLOT(updateEditorActions()));
+    connect(editor, SIGNAL(copyAvailable(bool)), mw, SLOT(updateEditorActions()));
 
     // Create the layout containing the workspace and a tab bar
     QFrame* hbox = new QFrame(this);
@@ -133,6 +142,28 @@ QPlainTextEdit* EditorView::getEditor() const
     return d->textEdit;
 }
 
+void EditorView::showEvent(QShowEvent* event)
+{
+    Gui::MainWindow* mw = Gui::getMainWindow();
+    mw->updateEditorActions();
+    MDIView::showEvent(event);
+}
+
+void EditorView::hideEvent(QHideEvent* event)
+{
+    MDIView::hideEvent(event);
+}
+
+void EditorView::closeEvent(QCloseEvent* event)
+{
+    MDIView::closeEvent(event);
+    if (event->isAccepted()) {
+        d->aboutToClose = true;
+        Gui::MainWindow* mw = Gui::getMainWindow();
+        mw->updateEditorActions();
+    }
+}
+
 void EditorView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)
 {
     Q_UNUSED(rCaller); 
@@ -170,28 +201,39 @@ void EditorView::checkTimestamp()
  */
 bool EditorView::onMsg(const char* pMsg,const char** /*ppReturn*/)
 {
-    if (strcmp(pMsg,"Save")==0){
+    // don't allow any actions if the editor is being closed
+    if (d->aboutToClose)
+        return false;
+
+    if (strcmp(pMsg, "Save") == 0) {
         saveFile();
         return true;
-    } else if (strcmp(pMsg,"SaveAs")==0){
+    }
+    else if (strcmp(pMsg, "SaveAs") == 0) {
         saveAs();
         return true;
-    } else if (strcmp(pMsg,"Cut")==0){
+    }
+    else if (strcmp(pMsg, "Cut") == 0) {
         cut();
         return true;
-    } else if (strcmp(pMsg,"Copy")==0){
+    }
+    else if (strcmp(pMsg, "Copy") == 0) {
         copy();
         return true;
-    } else if (strcmp(pMsg,"Paste")==0){
+    }
+    else if (strcmp(pMsg, "Paste") == 0) {
         paste();
         return true;
-    } else if (strcmp(pMsg,"Undo")==0){
+    }
+    else if (strcmp(pMsg, "Undo") == 0) {
         undo();
         return true;
-    } else if (strcmp(pMsg,"Redo")==0){
+    }
+    else if (strcmp(pMsg, "Redo") == 0) {
         redo();
         return true;
-    } else if (strcmp(pMsg,"ViewFit")==0){
+    }
+    else if (strcmp(pMsg, "ViewFit") == 0) {
         // just ignore this
         return true;
     }
@@ -205,21 +247,34 @@ bool EditorView::onMsg(const char* pMsg,const char** /*ppReturn*/)
  */
 bool EditorView::onHasMsg(const char* pMsg) const
 {
-    if (strcmp(pMsg,"Run")==0)  return true;
-    if (strcmp(pMsg,"DebugStart")==0)  return true;
-    if (strcmp(pMsg,"DebugStop")==0)  return true;
-    if (strcmp(pMsg,"SaveAs")==0)  return true;
-    if (strcmp(pMsg,"Print")==0) return true;
-    if (strcmp(pMsg,"PrintPreview")==0) return true;
-    if (strcmp(pMsg,"PrintPdf")==0) return true;
-    if (strcmp(pMsg,"Save")==0) { 
+    // don't allow any actions if the editor is being closed
+    if (d->aboutToClose)
+        return false;
+    if (strcmp(pMsg, "Run") == 0)
+        return true;
+    if (strcmp(pMsg, "DebugStart") == 0)
+        return true;
+    if (strcmp(pMsg, "DebugStop") == 0)
+        return true;
+    if (strcmp(pMsg, "SaveAs") == 0)
+        return true;
+    if (strcmp(pMsg, "Print") == 0)
+        return true;
+    if (strcmp(pMsg, "PrintPreview") == 0)
+        return true;
+    if (strcmp(pMsg, "PrintPdf") == 0)
+        return true;
+    if (strcmp(pMsg, "Save") == 0) {
         return d->textEdit->document()->isModified();
-    } else if (strcmp(pMsg,"Cut")==0) {
+    }
+    else if (strcmp(pMsg, "Cut") == 0) {
         bool canWrite = !d->textEdit->isReadOnly();
         return (canWrite && (d->textEdit->textCursor().hasSelection()));
-    } else if (strcmp(pMsg,"Copy")==0) {
+    }
+    else if (strcmp(pMsg, "Copy") == 0) {
         return ( d->textEdit->textCursor().hasSelection() );
-    } else if (strcmp(pMsg,"Paste")==0) {
+    }
+    else if (strcmp(pMsg, "Paste") == 0) {
         QClipboard *cb = QApplication::clipboard();
         QString text;
 
@@ -228,9 +283,11 @@ bool EditorView::onHasMsg(const char* pMsg) const
 
         bool canWrite = !d->textEdit->isReadOnly();
         return ( !text.isEmpty() && canWrite );
-    } else if (strcmp(pMsg,"Undo")==0) {
+    }
+    else if (strcmp(pMsg, "Undo") == 0) {
         return d->textEdit->document()->isUndoAvailable ();
-    } else if (strcmp(pMsg,"Redo")==0) {
+    }
+    else if (strcmp(pMsg, "Redo") == 0) {
         return d->textEdit->document()->isRedoAvailable ();
     }
 
