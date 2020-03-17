@@ -48,6 +48,7 @@ public:
     App::PropertyColor  CutSurfaceColor;
     App::PropertyBool   HatchCutSurface;       //obsolete - use CutSurfaceDisplay
     App::PropertyColor  HatchColor;
+    App::PropertyColor  GeomHatchColor;
     App::PropertyFloat  WeightPattern;
 
 

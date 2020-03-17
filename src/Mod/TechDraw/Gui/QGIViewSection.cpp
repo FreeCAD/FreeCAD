@@ -130,7 +130,7 @@ void QGIViewSection::drawSectionFace()
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
             newFace->isHatched(true);
             newFace->setFillMode(QGIFace::GeomHatchFill);
-            newFace->setHatchColor(sectionVp->HatchColor.getValue());
+            newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
             newFace->setLineWeight(sectionVp->WeightPattern.getValue());
             std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
