@@ -403,7 +403,7 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
        );
     QObject::connect(
         ui->comboBoxModeFilter, SIGNAL(currentIndexChanged(int)),
-        this                  , SLOT  (on_elementWidget_currentModeFilterChanged(int))
+        this                  , SLOT  (on_elementsWidget_currentModeFilterChanged(int))
         );
     QObject::connect(
         ui->autoSwitchBox, SIGNAL(stateChanged(int)),
