@@ -19,14 +19,18 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
 
+__title__ = "Material FEM unit tests"
+__author__ = "Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
+
+import unittest
+from os.path import join
 
 import FreeCAD
-import unittest
-from .support_utils import fcc_print
 
-from os.path import join
+from .support_utils import fcc_print
 
 
 class TestMaterialUnits(unittest.TestCase):
