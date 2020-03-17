@@ -31,6 +31,7 @@ import PathScripts.PostUtils as PostUtils
 import argparse
 import datetime
 import shlex
+import PathScripts.PathUtil as PathUtil
 
 
 TOOLTIP = '''
@@ -259,16 +260,9 @@ def export(objectslist, filename, argstring):
       print("The object " + obj.Name + " is not a path. Please select only path and Compounds.")
       return
     
-    isActive = True
-    if hasattr(obj, "Active") or hasattr(obj, 'Base') and  hasattr(obj.Base, "Active"):
-        if hasattr(obj, "Active"):
-            isActive = obj.Active
-        else:
-            isActive = obj.Base.Active
-            if isActive:
-                print("obj.Base.active true")
-            else:
-                print("obj.active false")
+    # Skip inactive operations
+    if not PathUtil.opProperty(obj, 'Active'):
+        continue
 
     # do the pre_op
     if OUTPUT_BCNC:
@@ -289,12 +283,12 @@ def export(objectslist, filename, argstring):
             coolantMode = obj.Base.CoolantMode
 
     # turn coolant on if required
-    if OUTPUT_COMMENTS and isActive:
+    if OUTPUT_COMMENTS:
         if not coolantMode == 'None':
             gcode += linenumber() + '(Coolant On:' + coolantMode + ')\n'
-    if coolantMode == 'Flood' and isActive:
+    if coolantMode == 'Flood':
         gcode  += linenumber() + 'M8' + '\n'
-    if coolantMode == 'Mist' and isActive:
+    if coolantMode == 'Mist':
         gcode += linenumber() + 'M7' + '\n'
 
     # Parse the op
@@ -308,10 +302,9 @@ def export(objectslist, filename, argstring):
 
     # turn coolant off if required
     if not coolantMode == 'None':
-        if OUTPUT_COMMENTS and isActive:
+        if OUTPUT_COMMENTS:
             gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'
-        if isActive:
-            gcode += linenumber() +'M9' + '\n'
+        gcode += linenumber() +'M9' + '\n'
 
   # do the post_amble
   if OUTPUT_BCNC:
