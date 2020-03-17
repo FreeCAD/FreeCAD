@@ -357,8 +357,17 @@ Fast, but result is a collection of short straight lines.</string>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="maximumSize">
+           <size>
+            <width>140</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Number of ISO lines per face edge</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>IsoCount</cstring>
