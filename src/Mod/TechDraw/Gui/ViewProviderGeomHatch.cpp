@@ -71,7 +71,8 @@ ViewProviderGeomHatch::ViewProviderGeomHatch()
 
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(ColorPattern,(0),vgroup,App::Prop_None,"Color of the pattern");
+    ADD_PROPERTY_TYPE(ColorPattern,(TechDraw::DrawGeomHatch::prefGeomHatchColor()),
+                        vgroup,App::Prop_None,"Color of the pattern");
     ADD_PROPERTY_TYPE(WeightPattern,(0),vgroup,App::Prop_None,"GeometricHatch pattern line thickness");
 
     getParameters();
@@ -183,13 +184,9 @@ void ViewProviderGeomHatch::updateGraphic(void)
 
 void ViewProviderGeomHatch::getParameters(void)
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000)); 
-    ColorPattern.setValue(fcColor);
-
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                        GetGroup("BaseApp")->GetGroup("Preferences")->
+                                        GetGroup("Mod/TechDraw/Decorations");
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Graphic");
