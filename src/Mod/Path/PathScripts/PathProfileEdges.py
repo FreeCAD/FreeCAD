@@ -297,10 +297,12 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
         # Determine with which set of intersection tags the model intersects
         (cmnIntArea, cmnExtArea) = self._checkTagIntersection(iTAG, eTAG, 'QRY', comFC)
         if cmnExtArea > cmnIntArea:
+            PathLog.debug('Cutting on Ext side.')
             self.cutSide = 'E'
             self.cutSideTags = eTAG.Shape
             tagCOM = begExt.CenterOfMass
         else:
+            PathLog.debug('Cutting on Int side.')
             self.cutSide = 'I'
             self.cutSideTags = iTAG.Shape
             tagCOM = begInt.CenterOfMass

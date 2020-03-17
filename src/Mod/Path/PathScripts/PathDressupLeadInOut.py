@@ -184,7 +184,6 @@ class ObjectDressup:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-            #arcdir = queue[1].Name
             # PathLog.debug(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
         
         # Calculate offset vector (will be overwritten for arcs)
@@ -213,31 +212,29 @@ class ObjectDressup:
             
             # Calculate vector circle start -> circle middle
             vec_circ = pij.sub(p0)
-            print("Vec:circ: {}".format(vec_circ))
+            
             # Rotate vector to get direction for lead in
             if arcdir == "G2":
                 vec_rot = self.rotate(vec_circ,  90)
             else:
                 vec_rot = self.rotate(vec_circ,  -90)
-            print("Vec:rot: {}".format(vec_rot))
+            
             # Normalize and invert vector
             vec_n = self.normalize(vec_rot)
             
             v = self.invert(vec_n)
-            #v = vec_n
-            print("Vec:inv: {}".format(v))
             
             # Calculate offset of lead in
             if arcdir == "G3":
                 off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
             else:
                 off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
-            print("Vec:off: {}".format(off_v))
+            
             # Multiply offset by LeadIn length
             vec_off = self.multiply(vec_n,  obj.ExtendLeadIn)
         
         offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0)  # IJ
-        print("off: {}".format(offsetvector))
+        
         if obj.RadiusCenter == 'Radius':
             leadstart = (p0.add(off_v)).sub(offsetvector)  # Rmode
             if arcs_identical:
@@ -385,81 +382,6 @@ class ObjectDressup:
             results.append(Path.Command('G40', {}))
         
         return results
-
-#    def generateLeadInOutCurve(self, obj):
-#        global currLocation # pylint: disable=global-statement
-#        firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
-#        currLocation.update(firstmove.Parameters)
-#        newpath = []
-#        queue = []
-#        action = 'start'
-#        
-#        
-#        for curCommand in obj.Base.Path.Commands:
-#            if len(queue) > 2:
-#                    queue.pop(0)
-#            
-#             # Don't worry about non-move commands, just add to output
-#            if curCommand.Name not in movecommands + rapidcommands:
-#                newpath.append(curCommand)
-#                continue
-#            
-#            # rapid retract triggers exit move, else just add to output
-#            if curCommand.Name in rapidcommands:
-#                
-#                currLocation.update(curCommand.Parameters)
-#            
-#            if curCommand.Name in movecommands:
-#                queue.append(curCommand)
-#                if action == 'start' and len(queue) < 2:
-#                    # Not enough data
-#                    continue
-#                
-#                if action == 'leave':
-#                    newpath.append(curCommand)
-#                
-#                # First lead in
-#                if obj.LeadIn and len(queue) >= 2 and action == 'start':
-#                    print("Calc lead in...")
-#                    temp = self.getLeadStart(obj, queue, action)
-#                    newpath.extend(temp)
-#                    newpath.append(curCommand)
-#                    print("Append: {}, P: {}".format(curCommand.Name,  curCommand.Parameters))
-#                    action = 'leave'
-#                    currLocation.update(curCommand.Parameters)
-#                    continue
-#                
-#                if curCommand.z != currLocation["Z"] and action == 'leave':
-#                    print("Calc lead out...")
-#                    if obj.LeadOut:  # fish cycle
-#                        if len(queue) > 2:
-#                            # Remove last cmd
-#                            queue.pop(len(queue)-1)
-#                        
-#                        temp = self.getLeadEnd(obj, queue, action)
-#                        newpath.extend(temp)
-#                    
-#                    action = 'layer'
-#                    if not obj.KeepToolDown:
-#                        newpath.append(curCommand)
-#                
-#                if action == 'layer':
-#                    print("layer")
-#                    while(len(queue)) > 2:
-#                        queue.pop(0)
-#                    
-#                    if obj.LeadIn:
-#                        temp = self.getLeadStart(obj, queue, action)
-#                        newpath.extend(temp)
-#                        #newpath.append(curCommand)
-#                        action = 'leave'
-#                        currLocation.update(curCommand.Parameters)
-#                    else:
-#                        newpath.append(curCommand)
-#                        #print("Append: {}, P: {}".format(curCommand.Name,  curCommand.Parameters))
-#            
-#            commands = newpath
-#        return Path.Path(commands)
 
     def generateLeadInOutCurve(self, obj):
         global currLocation # pylint: disable=global-statement
