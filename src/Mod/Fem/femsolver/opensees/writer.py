@@ -26,12 +26,8 @@ __title__ = "OpenSees Writer"
 __author__ = "Bernd Hahnebach, Raeyat Roknabadi Ebrahim"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
+# \addtogroup FEM
 #  @{
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 import time
 

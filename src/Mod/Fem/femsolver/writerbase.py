@@ -25,7 +25,7 @@ __title__ = "FreeCAD FEM solver writer base object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
+# \addtogroup FEM
 #  @{
 
 import os
@@ -278,7 +278,6 @@ class FemInputWriter():
     def get_constraints_pressure_faces(self):
         # TODO see comments in get_constraints_force_nodeloads()
         # it applies here too. Mhh it applies to all constraints ...
-
         """
         # deprecated version
         # get the faces and face numbers
@@ -506,4 +505,4 @@ def print_obj_info(obj, log=False):
             "    Type: {}, Name: {}\n".format(type_of_obj(obj), obj.Name)
         )
 
-##  @}
+# @}

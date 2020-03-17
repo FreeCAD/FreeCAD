@@ -146,6 +146,8 @@ SET(FemSolverOpenSees_SRCS
     femsolver/opensees/solver.py
     femsolver/opensees/tasks.py
     femsolver/opensees/writer.py
+    femsolver/opensees/heading.py
+    femsolver/opensees/nodes.py
 )
 
 SET(FemSolverZ88_SRCS

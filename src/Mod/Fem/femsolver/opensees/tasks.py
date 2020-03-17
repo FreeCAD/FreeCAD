@@ -26,7 +26,7 @@ __title__ = "OpenSees Tasks"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
+# \addtogroup FEM
 #  @{
 
 import os
@@ -61,7 +61,7 @@ class Prepare(run.Prepare):
         w = writer.FemInputWriterOpenSees(
             self.analysis,
             self.solver,
-            None, # membertools.get_mesh_to_solve(self.analysis)[0],
+            membertools.get_mesh_to_solve(self.analysis)[0],
             membertools.AnalysisMember(self.analysis),
             self.directory
         )
@@ -111,4 +111,4 @@ class Results(run.Results):
     def load_results_opensees(self):
         FreeCAD.Console.PrintMessage("OpenSees-info: reading output not yet implemented.\n")
 
-##  @}
+# @}
