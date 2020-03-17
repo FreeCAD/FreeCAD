@@ -498,7 +498,7 @@ void QGIViewPart::drawViewPart()
                         if (hatchScale > 0.0) {
                             newFace->setHatchScale(fGeom->ScalePattern.getValue());
                         }
-                        newFace->setHatchFile(fGeom->FilePattern.getValue());
+                        newFace->setHatchFile(fGeom->PatIncluded.getValue());
                         Gui::ViewProvider* gvp = QGIView::getViewProvider(fGeom);
                         ViewProviderGeomHatch* geomVp = dynamic_cast<ViewProviderGeomHatch*>(gvp);
                         if (geomVp != nullptr) {
@@ -517,7 +517,7 @@ void QGIViewPart::drawViewPart()
                         newFace->hideSvg(false);
                         newFace->isHatched(true);
                         newFace->setFillMode(QGIFace::FromFile);
-                        newFace->setHatchFile(fHatch->HatchPattern.getValue());
+                        newFace->setHatchFile(fHatch->SvgIncluded.getValue());
                         Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
                         ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
                         if (hatchVp != nullptr) {
