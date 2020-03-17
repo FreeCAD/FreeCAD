@@ -716,7 +716,7 @@ void Feature::onBeforeChange(const App::Property *prop) {
                             std::make_pair(std::string(element), ElementCache()));
                     if(res.second) {
                         res.first->second.searched = false;
-                        res.first->second.shape = Shape.getShape().getSubTopoShape(element);
+                        res.first->second.shape = Shape.getShape().getSubTopoShape(element, true);
                     }
                 }
             }
