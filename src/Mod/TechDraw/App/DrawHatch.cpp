@@ -261,7 +261,7 @@ void DrawHatch::unsetupObject(void)
     App::DocumentObject::unsetupObject();
 }
 
-//standard preference getter
+//standard preference getters
 std::string DrawHatch::prefSvgHatch(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -272,6 +272,16 @@ std::string DrawHatch::prefSvgHatch(void)
     std::string result = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
     return result;
 }
+
+App::Color DrawHatch::prefSvgHatchColor(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Hatch", 0x00FF0000));
+    return fcColor;
+}
+
 
 // Python Drawing feature ---------------------------------------------------------
 

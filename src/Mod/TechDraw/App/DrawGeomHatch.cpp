@@ -627,6 +627,15 @@ std::string DrawGeomHatch::prefGeomHatchName()
     return result;
 }
 
+App::Color DrawGeomHatch::prefGeomHatchColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00FF0000)); 
+    return fcColor;
+}
+
 
 
 // Python Drawing feature ---------------------------------------------------------

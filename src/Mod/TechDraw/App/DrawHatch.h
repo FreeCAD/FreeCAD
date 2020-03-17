@@ -23,9 +23,10 @@
 #ifndef _TechDraw_DrawHatch_h_
 #define _TechDraw_DrawHatch_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+#include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
+#include <App/Material.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
 
 namespace TechDraw
@@ -62,7 +63,8 @@ public:
     bool empty(void);
     static bool faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs);
     static std::string prefSvgHatch(void);
-
+    static App::Color prefSvgHatchColor(void);
+    
 protected:
     void onChanged(const App::Property* prop) override;
     virtual void onDocumentRestored() override;
