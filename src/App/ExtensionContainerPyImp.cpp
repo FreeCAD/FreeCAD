@@ -174,19 +174,21 @@ int ExtensionContainerPy::setCustomAttributes(const char* /*attr*/, PyObject * /
 PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 
     char *type;
-    if (!PyArg_ParseTuple(args, "s", &type)) 
+    PyObject *deriv = Py_True;
+    if (!PyArg_ParseTuple(args, "s|O", &type, &deriv))
         return NULL;                                         // NULL triggers exception 
 
     //get the extension type asked for
+    bool derived = PyObject_IsTrue(deriv);
     Base::Type extension =  Base::Type::fromName(type);
-    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
+    if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
         std::stringstream str;
         str << "No extension found of type '" << type << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
 
     bool val = false;
-    if (getExtensionContainerPtr()->hasExtension(extension)) {
+    if (getExtensionContainerPtr()->hasExtension(extension, derived)) {
         val = true;
     }
 
