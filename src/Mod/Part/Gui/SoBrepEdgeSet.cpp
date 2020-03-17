@@ -427,6 +427,7 @@ void SoBrepEdgeSet::setHighlightIndices(const std::set<int> &edgeSet)
             }
         }
     }
+    highlightIndices.setNum(indices.size());
     highlightIndices.setValues(0,indices.size(),&indices[0]);
     return;
 }

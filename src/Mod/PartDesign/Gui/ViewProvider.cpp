@@ -217,7 +217,9 @@ void ViewProvider::updateData(const App::Property* prop)
             }
         }
         lineset->setHighlightIndices(edgeSet);
+        nodeset->highlightIndices.setNum(points.size());
         nodeset->highlightIndices.setValues(0,points.size(),&points[0]);
+        faceset->highlightIndices.setNum(indices.size());
         faceset->highlightIndices.setValues(0,indices.size(),&indices[0]);
         return;
     }
