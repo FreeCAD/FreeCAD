@@ -83,6 +83,7 @@ def get_draft_modification_commands():
             "Draft_Upgrade", "Draft_Downgrade",
             "Separator",
             "Draft_WireToBSpline", "Draft_Draft2Sketch",
+            "Draft_FlipDimension",
             "Separator",
             "Draft_Shape2DView", "Draft_Drawing"]
     return lst
