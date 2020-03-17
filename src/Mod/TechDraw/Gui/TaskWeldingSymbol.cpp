@@ -526,7 +526,8 @@ void TaskWeldingSymbol::updateTiles(void)
             Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
                            tileName.c_str(), centerText.c_str());
             if (!m_arrowOut.symbolPath.empty()) {
-                m_arrowFeat->replaceSymbol(m_arrowOut.symbolPath);
+//                m_arrowFeat->replaceSymbol(m_arrowOut.symbolPath);
+                m_arrowFeat->SymbolFile.setValue(m_arrowOut.symbolPath);
             }
         }
     }
@@ -549,7 +550,8 @@ void TaskWeldingSymbol::updateTiles(void)
                                tileName.c_str(), rightText.c_str());
                 Command::doCommand(Command::Doc,"App.activeDocument().%s.CenterText = '%s'",
                                tileName.c_str(), centerText.c_str());
-                m_otherFeat->replaceSymbol(m_otherOut.symbolPath);
+//                m_otherFeat->replaceSymbol(m_otherOut.symbolPath);
+                m_otherFeat->SymbolFile.setValue(m_otherOut.symbolPath);
             }
         }
     }
