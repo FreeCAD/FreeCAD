@@ -122,6 +122,19 @@ void ViewProviderTextDocument::onChanged(const App::Property* prop)
     ViewProviderDocumentObject::onChanged(prop);
 }
 
+MDIView* ViewProviderTextDocument::getMDIView() const
+{
+    auto views = getDocument()->getMDIViewsOfType(
+            TextDocumentEditorView::getClassTypeId());
+    for (auto v : views) {
+        auto textView = static_cast<TextDocumentEditorView *>(v);
+        if (textView->getTextObject() == getObject()) {
+            return textView;
+        }
+    }
+    return nullptr;
+}
+
 bool ViewProviderTextDocument::activateView() const
 {
     auto views = getDocument()->getMDIViewsOfType(
