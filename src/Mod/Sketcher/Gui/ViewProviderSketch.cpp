@@ -1022,14 +1022,11 @@ void ViewProviderSketch::editDoubleClicked(void)
 
             // if its the right constraint
             if (Constr->isDimensional()) {
-
-                if(!Constr->isDriving) {
-                    Gui::cmdAppObjectArgs(getObject(), "setDriving(%i,%s)", id, "True");
-                }
-
                 // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
+                Gui::Command::openCommand("Modify sketch constraints");
                 EditDatumDialog *editDatumDialog = new EditDatumDialog(this, id);
-                QCoreApplication::postEvent(editDatumDialog, new QEvent(QEvent::User));
+                //QCoreApplication::postEvent(editDatumDialog, new QEvent(QEvent::User));
+                editDatumDialog->exec();
                 edit->editDatumDialog = true; // avoid to double handle "ESC"
             }
         }
