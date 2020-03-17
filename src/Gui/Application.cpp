@@ -2100,8 +2100,25 @@ void Application::runApplication(void)
             style = it->second;
     }
     if (!style.empty()) {
-        QFile f(QLatin1String(style.c_str()));
-        if (f.open(QFile::ReadOnly)) {
+        // Search for stylesheet in user, system and resources location
+        QString user = QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str());
+        QString system = QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str());
+        QString resources = QLatin1String(":/stylesheets/");
+
+        QFile f;
+        if (QFile::exists(user + QLatin1String(style.c_str()))) {
+            f.setFileName(user + QLatin1String(style.c_str()));
+        }
+        else if (QFile::exists(system + QLatin1String(style.c_str()))) {
+            f.setFileName(system + QLatin1String(style.c_str()));
+        }
+        else if (QFile::exists(resources + QLatin1String(style.c_str()))) {
+            f.setFileName(resources + QLatin1String(style.c_str()));
+        }
+        else {
+        }
+
+        if (f.open(QFile::ReadOnly | QFile::Text)) {
             mdi->setBackground(QBrush(Qt::NoBrush));
             QTextStream str(&f);
             qApp->setStyleSheet(str.readAll());

@@ -171,7 +171,24 @@ void DlgGeneralImp::saveSettings()
         hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
 
         if (!sheet.toString().isEmpty()) {
-            QFile f(sheet.toString());
+            // Search for stylesheet in user, system and resources location
+            QString user = QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str());
+            QString system = QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str());
+            QString resources = QLatin1String(":/stylesheets/");
+
+            QFile f;
+            if (QFile::exists(user + sheet.toString())) {
+                f.setFileName(user + sheet.toString());
+            }
+            else if (QFile::exists(system + sheet.toString())) {
+                f.setFileName(system + sheet.toString());
+            }
+            else if (QFile::exists(resources + sheet.toString())) {
+                f.setFileName(resources + sheet.toString());
+            }
+            else {
+            }
+
             if (f.open(QFile::ReadOnly)) {
                 mdi->setBackground(QBrush(Qt::NoBrush));
                 QTextStream str(&f);
@@ -307,7 +324,7 @@ void DlgGeneralImp::loadSettings()
         fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
         for (QFileInfoList::iterator jt = fileNames.begin(); jt != fileNames.end(); ++jt) {
             if (cssFiles.find(jt->baseName()) == cssFiles.end()) {
-                cssFiles[jt->baseName()] = jt->absoluteFilePath();
+                cssFiles[jt->baseName()] = jt->fileName();
             }
         }
     }
