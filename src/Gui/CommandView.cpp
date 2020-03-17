@@ -2958,9 +2958,7 @@ StdCmdTreeCollapse::StdCmdTreeCollapse()
 void StdCmdTreeCollapse::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    QList<TreeWidget*> tree = Gui::getMainWindow()->findChildren<TreeWidget*>();
-    for (QList<TreeWidget*>::iterator it = tree.begin(); it != tree.end(); ++it)
-        (*it)->expandSelectedItems(TreeItemMode::CollapseItem);
+    TreeWidget::expandSelectedItems(TreeItemMode::CollapseItem);
 }
 
 //===========================================================================
@@ -2983,9 +2981,7 @@ StdCmdTreeExpand::StdCmdTreeExpand()
 void StdCmdTreeExpand::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    QList<TreeWidget*> tree = Gui::getMainWindow()->findChildren<TreeWidget*>();
-    for (QList<TreeWidget*>::iterator it = tree.begin(); it != tree.end(); ++it)
-        (*it)->expandSelectedItems(TreeItemMode::ExpandItem);
+    TreeWidget::expandSelectedItems(TreeItemMode::ExpandItem);
 }
 
 //===========================================================================
@@ -3033,8 +3029,7 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
         return;
     Selection().selStackPush();
     Selection().clearCompleteSelection();
-    for(auto tree : getMainWindow()->findChildren<TreeWidget*>())
-        tree->selectAllInstances(*vpd);
+    TreeWidget::selectAllInstances(*vpd);
     Selection().selStackPush();
 }
 
@@ -3297,6 +3292,7 @@ void StdCmdSelBack::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     Selection().selStackGoBack();
+    TreeWidget::scrollItemToTop();
 }
 
 bool StdCmdSelBack::isActive(void)
@@ -3327,6 +3323,7 @@ void StdCmdSelForward::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     Selection().selStackGoForward();
+    TreeWidget::scrollItemToTop();
 }
 
 bool StdCmdSelForward::isActive(void)

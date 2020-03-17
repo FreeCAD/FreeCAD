@@ -1032,9 +1032,12 @@ DocumentItem *TreeWidget::getDocumentItem(const Gui::Document *doc) const {
 }
 
 void TreeWidget::selectAllInstances(const ViewProviderDocumentObject &vpd) {
-    if(!isConnectionAttached()) 
-        return;
+    auto tree = instance();
+    if(tree)
+        tree->_selectAllInstances(vpd);
+}
 
+void TreeWidget::_selectAllInstances(const ViewProviderDocumentObject &vpd) {
     if(selectTimer->isActive())
         onSelectTimer();
     else
@@ -1134,6 +1137,12 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document *doc)
 }
 
 void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
+    auto tree = instance();
+    if(tree)
+        tree->_selectAllLinks(obj);
+}
+
+void TreeWidget::_selectAllLinks(App::DocumentObject *obj) {
     if(!isConnectionAttached()) 
         return;
 
@@ -2718,7 +2727,10 @@ void TreeWidget::scrollItemToTop()
     auto tree = instance();
     if (tree && tree->isConnectionAttached() && !tree->isConnectionBlocked()) {
 
-        tree->_updateStatus(false);
+        if(tree->selectTimer->isActive())
+            tree->onSelectTimer();
+        else
+            tree->_updateStatus(false);
 
         if(doc && Gui::Selection().hasSelection(doc->getDocument()->getName(),false)) {
             auto it = tree->DocumentMap.find(doc);
@@ -2743,13 +2755,17 @@ void TreeWidget::scrollItemToTop()
             }
             tree->blockConnection(false);
         }
-        tree->selectTimer->stop();
-        tree->_updateStatus(false);
     }
 }
 
 void TreeWidget::expandSelectedItems(TreeItemMode mode)
 {
+    auto tree = instance();
+    if(tree)
+        tree->_expandSelectedItems(mode);
+}
+
+void TreeWidget::_expandSelectedItems(TreeItemMode mode) {
     if(!isConnectionAttached()) 
         return;
 
@@ -3143,6 +3159,12 @@ TreeDockWidget::~TreeDockWidget()
 }
 
 void TreeWidget::selectLinkedObject(App::DocumentObject *linked) { 
+    auto tree = instance();
+    if(tree)
+        tree->_selectLinkedObject(linked);
+}
+
+void TreeWidget::_selectLinkedObject(App::DocumentObject *linked) {
     if(!isConnectionAttached() || isConnectionBlocked()) 
         return;
 
@@ -3172,14 +3194,11 @@ void TreeWidget::selectLinkedObject(App::DocumentObject *linked) {
     if(!linkedItem) 
         linkedItem = *it->second->items.begin();
 
-    if(linkedDoc->showItem(linkedItem,true))
+    if(linkedDoc->showItem(linkedItem,true)) {
         scrollToItem(linkedItem);
-
-    if(linkedDoc->document()->getDocument() != App::GetApplication().getActiveDocument()) {
-        bool focus = hasFocus();
-        linkedDoc->document()->setActiveView(linkedItem->object());
-        if(focus)
-            setFocus();
+        currentDocItem = linkedItem->myOwner;
+        syncView(linkedVp);
+        currentDocItem = 0;
     }
 }
 
@@ -4333,15 +4352,14 @@ void DocumentItem::selectItems(SelectionReason reason) {
     if(sync) {
         if(!newSelect)
             newSelect = oldSelect;
-        else {
-            // Here the selection change is most likely trigger from some thing
-            // other than the tree widget. May be from 3d view, or python code,
-            // or whatever. And thus, We better not touch the view.
-            //
-            // getTree()->syncView(newSelect->object());
-        }
-        if(newSelect) 
+        if(newSelect) {
             getTree()->scrollToItem(newSelect);
+            if (reason == SR_FORCE_EXPAND) {
+                // If reason is not force expand, then the selection is most likely
+                // triggered from 3D view.
+                getTree()->syncView(newSelect->object());
+            }
+        }
     }
 }
 

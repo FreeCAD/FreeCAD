@@ -82,10 +82,10 @@ public:
     static void setupResizableColumn(TreeWidget *tree=0);
 
     static void scrollItemToTop();
-    void selectAllInstances(const ViewProviderDocumentObject &vpd);
-    void selectLinkedObject(App::DocumentObject *linked); 
-    void selectAllLinks(App::DocumentObject *obj); 
-    void expandSelectedItems(TreeItemMode mode);
+    static void selectAllInstances(const ViewProviderDocumentObject &vpd);
+    static void selectLinkedObject(App::DocumentObject *linked); 
+    static void selectAllLinks(App::DocumentObject *obj); 
+    static void expandSelectedItems(TreeItemMode mode);
 
     bool eventFilter(QObject *, QEvent *ev) override;
 
@@ -130,6 +130,11 @@ public:
     void itemSearch(const QString &text, bool select);
 
 protected:
+    void _selectAllInstances(const ViewProviderDocumentObject &vpd);
+    void _selectLinkedObject(App::DocumentObject *linked); 
+    void _selectAllLinks(App::DocumentObject *obj); 
+    void _expandSelectedItems(TreeItemMode mode);
+
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg) override;
     void contextMenuEvent (QContextMenuEvent * e) override;
