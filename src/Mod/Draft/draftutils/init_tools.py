@@ -63,7 +63,8 @@ def get_draft_small_commands():
             "Draft_WorkingPlaneProxy",
             "Draft_ToggleDisplayMode",
             "Draft_AddToGroup",
-            "Draft_SelectGroup"]
+            "Draft_SelectGroup",
+            "Draft_Heal"]
 
 
 def get_draft_modification_commands():
