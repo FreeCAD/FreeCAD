@@ -18,12 +18,6 @@ SubSystem::SubSystem()
 
 }
 
-SubSystem::SubSystem(HParameterStore store)
-    : _store(store), _params(Py::None()), _curvals(Py::None())
-{
-    _store = store;
-}
-
 SubSystem::SubSystem(HParameterSubset params, std::vector<HConstraint> constraints)
     : _store(params->host()), _params(params), _curvals(Py::None())
 {
