@@ -72,6 +72,7 @@ class ObjectDressup:
         obj.Proxy = self
         obj.addProperty("App::PropertyDistance", "ExtendLeadIn", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extends LeadIn distance"))
         obj.addProperty("App::PropertyDistance", "ExtendLeadOut", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extends LeadOut distance"))
+        obj.addProperty("App::PropertyBool", "RapidPlunge", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Perform plunges with G0"))
         
         self.wire = None
         self.rapids = None
@@ -94,6 +95,7 @@ class ObjectDressup:
         obj.RadiusCenter = 'Radius'
         obj.ExtendLeadIn = 0
         obj.ExtendLeadOut = 0
+        obj.RapidPlunge = False
 
     def execute(self, obj):
         if not obj.Base:
@@ -119,6 +121,13 @@ class ObjectDressup:
             if hasattr(op, 'Direction') and op.Direction == 'CW':
                 return 'right'
         return 'left'
+    
+    def getSideOfPath(self,  obj):
+        op = PathDressup.baseOp(obj.Base)
+        if hasattr(op, 'Side'):
+            return op.Side
+        
+        return ''
 
     def normalize(self, Vector):
         x = Vector.x
@@ -126,8 +135,8 @@ class ObjectDressup:
         length = math.sqrt(x*x + y*y)
         #print("Len: {}".format(length))
         if((math.fabs(length)) > 0.0000000000001):
-            vx = round(x / length, 2)
-            vy = round(y / length, 2)
+            vx = round(x / length, 3)
+            vy = round(y / length, 3)
         return FreeCAD.Vector(vx, vy, 0)
     
     def invert(self,  Vector):
@@ -152,14 +161,13 @@ class ObjectDressup:
     def getLeadStart(self, obj, queue, action):
         '''returns Lead In G-code.'''
         results = []
-        # zdepth = currLocation["Z"]
         op = PathDressup.baseOp(obj.Base)
         tc = PathDressup.toolController(obj.Base)
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
         toolnummer = tc.ToolNumber
 
-        # set the correct twist command
+        # Set the correct twist command
         if self.getDirectionOfPath(obj) == 'left':
             arcdir = "G3"
         else:
@@ -170,13 +178,14 @@ class ObjectDressup:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-            # PathLog.notice(" CURRENT_IN : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
+            # PathLog.debug(" CURRENT_IN : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
         else:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
-            # PathLog.notice(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
             v = self.normalize(p1.sub(p0))
-
+            # PathLog.debug(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
+        
+        # Calculate offset vector (will be overwritten for arcs)
         if self.getDirectionOfPath(obj) == 'right':
             off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
         else:
@@ -189,33 +198,36 @@ class ObjectDressup:
             vec_n = self.normalize(vec)
             vec_inv = self.invert(vec_n)
             vec_off = self.multiply(vec_inv,  obj.ExtendLeadIn)
-            #print("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
+            #PathLog.debug("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
         else:
             # We have an arc move
-            #print("Arc X{} Y{} P {}".format(p0.x,  p0.y, queue[0].Parameters))
+            # Calculate coordinates for middle of circle
             pij = copy.deepcopy(p0)
             pij.x += queue[1].Parameters['I']
             pij.y += queue[1].Parameters['J']
-            ve = pij.sub(p0)
-            #print("I{} J{}, vx {} vy {}".format(pij.x,  pij.y,  ve.x,  ve.y))
-            if arcdir == "G2":
-                vec_rot = self.rotate(ve,  90)
-            else:
-                vec_rot = self.rotate(ve,  -90)
             
-            #print("vro{} vro{}".format(vec_rot.x,  vec_rot.y))
+            # Calculate vector circle start -> circle middle
+            vec_circ = pij.sub(p0)
+            
+            # Rotate vector to get direction for lead in
+            if arcdir == "G2":
+                vec_rot = self.rotate(vec_circ,  90)
+            else:
+                vec_rot = self.rotate(vec_circ,  -90)
+            
+            # Normalize and invert vector
             vec_n = self.normalize(vec_rot)
+            
             v = self.invert(vec_n)
             
+            # Calculate offset of lead in
             if arcdir == "G3":
                 off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
             else:
                 off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
             
+            # Multiply offset by LeadIn length
             vec_off = self.multiply(vec_rot,  obj.ExtendLeadIn)
-            #print("vnx{} vny{}, vxi {} vyi {}".format(vec_n.x,  vec_n.y,  v.x,  v.y))
-            #print("vxo{} vyo{}".format(off_v.x,  off_v.y))
-            #print("vxo{} vyo{}".format(vec_off.x,  vec_off.y))
         
         offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0)  # IJ
         if obj.RadiusCenter == 'Radius':
@@ -224,16 +236,14 @@ class ObjectDressup:
             leadstart = p0.add(off_v)  # Dmode
 
         if action == 'start':
-            #print("Start")
-            extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": op.ClearanceHeight.Value})
-            results.append(extendcommand)
+            #extendcommand = Path.Command('G0', {"X": 0.0, "Y": 0.0, "Z": op.ClearanceHeight.Value})
+            #results.append(extendcommand)
             extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": op.ClearanceHeight.Value})
             results.append(extendcommand)
-            extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": op.SafeHeight.Value})
+            extendcommand = Path.Command('G0', {"Z": op.SafeHeight.Value})
             results.append(extendcommand)
         
         if action == 'layer':
-            #print("Layer")
             if not obj.KeepToolDown:
                 extendcommand = Path.Command('G0', {"Z": op.SafeHeight.Value})
                 results.append(extendcommand)
@@ -241,7 +251,10 @@ class ObjectDressup:
             extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y})
             results.append(extendcommand)
         
-        extendcommand = Path.Command('G1', {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z, "F": vertFeed})
+        if not obj.RapidPlunge:
+            extendcommand = Path.Command('G1', {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z, "F": vertFeed})
+        else:
+            extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z,})
         results.append(extendcommand)
         
         if obj.UseMachineCRC:
@@ -260,8 +273,11 @@ class ObjectDressup:
             extendcommand = Path.Command('G1', {"X": p0.x, "Y": p0.y, "F": horizFeed})
             results.append(extendcommand)
         else:
-            PathLog.notice(" CURRENT_IN Perp")
+            PathLog.debug(" CURRENT_IN Perp")
         
+        currLocation.update(results[-1].Parameters)
+        currLocation['Z'] = p1.z
+       
         return results
 
     def getLeadEnd(self, obj, queue, action):
@@ -298,22 +314,19 @@ class ObjectDressup:
             vec_n = self.normalize(vec)
             vec_inv = self.invert(vec_n)
             vec_off = self.multiply(vec_inv,  obj.ExtendLeadOut)
-            #print("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
+            #PathLog.debug("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
         else:
             # We have an arc move
-            #print("Arc0 X{} Y{} P {}".format(p0.x,  p0.y, queue[0].Parameters))
-            #print("Arc1 X{} Y{} P {}".format(p1.x,  p1.y, queue[1].Parameters))
             pij = copy.deepcopy(p0)
             pij.x += queue[1].Parameters['I']
             pij.y += queue[1].Parameters['J']
             ve = pij.sub(p1)
-           # print("I{} J{}, vx {} vy {}".format(pij.x,  pij.y,  ve.x,  ve.y))
+            
             if arcdir == "G2":
                 vec_rot = self.rotate(ve,  -90)
             else:
                 vec_rot = self.rotate(ve,  90)
             
-            #print("vro{} vro{}".format(vec_rot.x,  vec_rot.y))
             vec_n = self.normalize(vec_rot)
             v = vec_n
             
@@ -322,21 +335,17 @@ class ObjectDressup:
             else:
                 off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
             
-            vec_off = self.multiply(self.invert(vec_rot),  obj.ExtendLeadOut)
-            #print("vnx{} vny{}, vxi {} vyi {}".format(vec_n.x,  vec_n.y,  v.x,  v.y))
-            #print("vxo{} vyo{}".format(off_v.x,  off_v.y))
-            #print("vxo{} vyo{}".format(vec_off.x,  vec_off.y))
+            vec_inv = self.invert(vec_rot)
+            
+            vec_off = self.multiply(vec_inv,  obj.ExtendLeadOut)
         
-        #print("Arc0 X{} Y{} P {}".format(p0.x,  p0.y, queue[0].Parameters))
         offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0.0)
         if obj.RadiusCenter == 'Radius':
             leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
-            #print("End: X {}, Y{}".format(leadend.x,  leadend.y))
         else:
             leadend = p1.add(off_v)  # Dmode
         
         IJ = off_v  # .negative()
-        print("IJ: X {}, Y{}".format(IJ.x,  IJ.y))
         #results.append(queue[1])
         if obj.StyleOff == 'Arc':
             if obj.ExtendLeadOut != 0:
@@ -355,82 +364,160 @@ class ObjectDressup:
         
         return results
 
+#    def generateLeadInOutCurve(self, obj):
+#        global currLocation # pylint: disable=global-statement
+#        firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
+#        currLocation.update(firstmove.Parameters)
+#        newpath = []
+#        queue = []
+#        action = 'start'
+#        
+#        
+#        for curCommand in obj.Base.Path.Commands:
+#            if len(queue) > 2:
+#                    queue.pop(0)
+#            
+#             # Don't worry about non-move commands, just add to output
+#            if curCommand.Name not in movecommands + rapidcommands:
+#                newpath.append(curCommand)
+#                continue
+#            
+#            # rapid retract triggers exit move, else just add to output
+#            if curCommand.Name in rapidcommands:
+#                
+#                currLocation.update(curCommand.Parameters)
+#            
+#            if curCommand.Name in movecommands:
+#                queue.append(curCommand)
+#                if action == 'start' and len(queue) < 2:
+#                    # Not enough data
+#                    continue
+#                
+#                if action == 'leave':
+#                    newpath.append(curCommand)
+#                
+#                # First lead in
+#                if obj.LeadIn and len(queue) >= 2 and action == 'start':
+#                    print("Calc lead in...")
+#                    temp = self.getLeadStart(obj, queue, action)
+#                    newpath.extend(temp)
+#                    newpath.append(curCommand)
+#                    print("Append: {}, P: {}".format(curCommand.Name,  curCommand.Parameters))
+#                    action = 'leave'
+#                    currLocation.update(curCommand.Parameters)
+#                    continue
+#                
+#                if curCommand.z != currLocation["Z"] and action == 'leave':
+#                    print("Calc lead out...")
+#                    if obj.LeadOut:  # fish cycle
+#                        if len(queue) > 2:
+#                            # Remove last cmd
+#                            queue.pop(len(queue)-1)
+#                        
+#                        temp = self.getLeadEnd(obj, queue, action)
+#                        newpath.extend(temp)
+#                    
+#                    action = 'layer'
+#                    if not obj.KeepToolDown:
+#                        newpath.append(curCommand)
+#                
+#                if action == 'layer':
+#                    print("layer")
+#                    while(len(queue)) > 2:
+#                        queue.pop(0)
+#                    
+#                    if obj.LeadIn:
+#                        temp = self.getLeadStart(obj, queue, action)
+#                        newpath.extend(temp)
+#                        #newpath.append(curCommand)
+#                        action = 'leave'
+#                        currLocation.update(curCommand.Parameters)
+#                    else:
+#                        newpath.append(curCommand)
+#                        #print("Append: {}, P: {}".format(curCommand.Name,  curCommand.Parameters))
+#            
+#            commands = newpath
+#        return Path.Path(commands)
+
     def generateLeadInOutCurve(self, obj):
         global currLocation # pylint: disable=global-statement
         firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
+        op = PathDressup.baseOp(obj.Base)
         currLocation.update(firstmove.Parameters)
         newpath = []
         queue = []
         action = 'start'
+        prevCmd = ''
         
+        layers = []
+        
+        # Read in all commands
         for curCommand in obj.Base.Path.Commands:
-            # replace = None
-            # don't worry about non-move commands, just add to output
             if curCommand.Name not in movecommands + rapidcommands:
+                # Don't worry about non-move commands, just add to output
                 newpath.append(curCommand)
                 continue
-
-            # rapid retract triggers exit move, else just add to output
-            if curCommand.Name in rapidcommands:
-                # detect start position
-                if (curCommand.x is not None) or (curCommand.y is not None):
-                    firstmove = curCommand
-                currLocation.update(curCommand.Parameters)
-                if action != 'start':  # done move out
-                    if obj.LeadOut:
-                        temp = self.getLeadEnd(obj, queue, 'end')
-                        newpath.extend(temp)
-                        newpath.append(curCommand)  # Z clear DONE
-
-            if curCommand.Name in movecommands:
-                queue.append(curCommand)
-                if action == 'start' and len(queue) < 2:
-                    continue
-                
-                if action == 'layer':
-                    if len(queue) > 2:
-                        queue.pop(0)
-                    if obj.LeadIn:
-                        temp = self.getLeadStart(obj, queue, action)
-                        newpath.extend(temp)
-                        #newpath.append(curCommand)
-                        action = 'none'
-                        currLocation.update(curCommand.Parameters)
-                    else:
-                        newpath.append(curCommand)
-                    
-                if curCommand.z != currLocation["Z"] and action != 'start':  # vertical feeding to depth
-                    if obj.LeadOut:  # fish cycle
-                        if len(queue) > 2:
-                            queue.pop(len(queue)-1)
-                        
-                        temp = self.getLeadEnd(obj, queue, action)
-                        newpath.extend(temp)
-                        action = 'layer'
-                        
-                        if len(queue) > 2:
-                            queue.pop(0)
-                        
-                        continue
-                    else:
-                        newpath.append(curCommand)
-                if len(queue) > 2:
-                    queue.pop(0)
-                
-                if obj.LeadIn and len(queue) >= 2 and action == 'start':
-                    temp = self.getLeadStart(obj, queue, action)
-                    newpath.extend(temp)
-                    newpath.append(curCommand)
-                    action = 'none'
-                    currLocation.update(curCommand.Parameters)
-                else:
-                    newpath.append(curCommand)
-                
-                currLocation.update(curCommand.Parameters)
             
+            if curCommand.Name in rapidcommands:
+                # We don't care about rapid moves
+                prevCmd = curCommand
+                currLocation.update(curCommand.Parameters)
+                continue
+            
+            if curCommand.Name in movecommands:
+                if prevCmd.Name in rapidcommands and curCommand.Name in movecommands and len(queue) > 0:
+                    # Layer changed: Save current layer cmds prepare next layer
+                    layers.append(queue)
+                    queue = []
+                    #print("New layer: {}".format(layers))
+                
+                # Save all move commands
+                queue.append(curCommand)
+                #print("Append move: {}, P: {}".format(curCommand.Name,  curCommand.Parameters))
+            
+            currLocation.update(curCommand.Parameters)
+            prevCmd = curCommand
+        
+        # Add last layer
+        if len(queue) > 0:
+            layers.append(queue)
+            queue = []
+            #print("New layer: {}".format(layers))
+        
+        # Go through each layer and add leadIn/Out
+        idx = 0
+        for layer in layers:
+            #print("Layer {}".format(idx))
+            
+            if obj.LeadIn:
+                #print("Lead IN")
+                temp = self.getLeadStart(obj, layer, action)
+                newpath.extend(temp)
+            
+            for cmd in layer:
+                #print("CurLoc: {}, NewCmd: {}".format(currLocation,  cmd))
+                if currLocation['X'] == cmd.x and currLocation['Y'] == cmd.y and currLocation['Z'] == cmd.z and cmd.Name in ['G1',  'G01']:
+                    continue
+                newpath.append(cmd)
+            
+            if obj.LeadOut:
+                #print("Lead OUT")
+                tmp = []
+                tmp.append(layer[-2])
+                tmp.append(layer[-1])
+                temp = self.getLeadEnd(obj, tmp, action)
+                newpath.extend(temp)
+            
+            if not obj.KeepToolDown or idx == len(layers)-1:
+                extendcommand = Path.Command('G0', {"Z": op.ClearanceHeight.Value})
+                newpath.append(extendcommand)
+            else:
+                action = 'layer'
+            
+            idx += 1
+        
         commands = newpath
         return Path.Path(commands)
-
 
 class ViewProviderDressup:
 
