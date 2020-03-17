@@ -2229,6 +2229,7 @@ void ViewProviderLink::applyMaterial() {
 
 void ViewProviderLink::finishRestoring() {
     FC_TRACE("finish restoring");
+
     auto ext = getLinkExtension();
     if(!ext) return;
     linkView->setDrawStyle(DrawStyle.getValue(),LineWidth.getValue(),PointSize.getValue());
@@ -2246,11 +2247,10 @@ void ViewProviderLink::finishRestoring() {
     applyMaterial();
     applyColors();
 
-    // TODO: notify the tree. This is ugly, any other way?
-    getDocument()->signalChangedObject(*this,ext->_LinkTouched);
-
     if(childVp)
         childVp->finishRestoring();
+
+    inherited::finishRestoring();
 }
 
 bool ViewProviderLink::hasElements(const App::LinkBaseExtension *ext) const {

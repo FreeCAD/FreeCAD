@@ -117,6 +117,7 @@ void ViewProviderDocumentObject::startRestoring()
 void ViewProviderDocumentObject::finishRestoring()
 {
     callExtension(&ViewProviderExtension::extensionFinishRestoring);
+    updateChildren(false);
 }
 
 bool ViewProviderDocumentObject::isAttachedToDocument() const
@@ -340,8 +341,9 @@ void ViewProviderDocumentObject::update(const App::Property* prop)
             guard(App::Property::User1, &Visibility);
         ViewProvider::update(prop);
 
-        updateChildren(prop->testStatus(App::Property::Output)
-                        || prop->testStatus(App::Property::PropOutput));
+        if(!getObject()->getDocument()->testStatus(App::Document::Restoring))
+            updateChildren(prop->testStatus(App::Property::Output)
+                            || prop->testStatus(App::Property::PropOutput));
     }
 }
 
