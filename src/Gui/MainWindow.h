@@ -186,6 +186,10 @@ public:
 
 public Q_SLOTS:
     /**
+     * Updates the standard actions of a text editor such as Cut, Copy, Paste, Undo and Redo.
+     */
+    void updateEditorActions();
+    /**
      * Sets text to the pane in the status bar.
      */
     void setPaneText(int i, QString text);

@@ -347,6 +347,10 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->activityTimer->setSingleShot(false);
     d->activityTimer->start(150);
 
+    // update view-sensitive commands when clipboard has changed
+    QClipboard *clipbd = QApplication::clipboard();
+    connect(clipbd, SIGNAL(dataChanged()), this, SLOT(updateEditorActions()));
+
     // show main window timer
     d->visibleTimer = new QTimer(this);
     d->visibleTimer->setObjectName(QString::fromLatin1("visibleTimer"));
@@ -1334,6 +1338,27 @@ void MainWindow::_updateActions()
         Application::Instance->commandManager().testActive();
     }
     d->actionUpdateDelay = 0;
+}
+
+void MainWindow::updateEditorActions()
+{
+    Command* cmd = nullptr;
+    CommandManager& mgr = Application::Instance->commandManager();
+
+    cmd = mgr.getCommandByName("Std_Cut");
+    if (cmd) cmd->testActive();
+
+    cmd = mgr.getCommandByName("Std_Copy");
+    if (cmd) cmd->testActive();
+
+    cmd = mgr.getCommandByName("Std_Paste");
+    if (cmd) cmd->testActive();
+
+    cmd = mgr.getCommandByName("Std_Undo");
+    if (cmd) cmd->testActive();
+
+    cmd = mgr.getCommandByName("Std_Redo");
+    if (cmd) cmd->testActive();
 }
 
 void MainWindow::switchToTopLevelMode()
