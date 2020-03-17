@@ -78,7 +78,7 @@ protected:
 private:
     QFont defaultFont;
     QBrush defaultColor;
-    const QFont boldFont = QFont(QString(), -1, QFont::Bold);
+    QFont boldFont;
     QList<QTreeWidgetItem*> foundList;
 };
 

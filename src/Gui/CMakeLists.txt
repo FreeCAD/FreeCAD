@@ -1380,17 +1380,35 @@ set(FreeCADGui_Scripts
     RemoteDebugger.py
 )
 
+set(FreeCADGui_Configs
+    3Dconnexion/3DConnexion.xml
+)
+
 add_custom_target(FreeCADGui_Resources ALL
-    SOURCES ${FreeCADGui_Scripts}
+    SOURCES ${FreeCADGui_Scripts} ${FreeCADGui_Configs}
 )
 
 fc_copy_sources(FreeCADGui_Resources
     ${CMAKE_BINARY_DIR}/Ext/freecad/gui
-    ${FreeCADGui_Scripts})
+    ${FreeCADGui_Scripts}
+)
+
+fc_target_copy_resource(FreeCADGui_Resources
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}
+    ${FreeCADGui_Configs}
+)
 
 INSTALL(
     FILES
         ${FreeCADGui_Scripts}
     DESTINATION
         Ext/freecad/gui
+)
+
+INSTALL(
+    FILES
+        ${FreeCADGui_Configs}
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/3Dconnexion
 )

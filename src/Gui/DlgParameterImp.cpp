@@ -122,6 +122,8 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     // store the current font properties because
     // we don't know what style sheet the user uses for FC
     defaultFont = paramGroup->font();
+    boldFont = defaultFont;
+    boldFont.setBold(true);
     defaultColor = paramGroup->topLevelItem(0)->foreground(0);
 
     // set a placeholder text to inform the user

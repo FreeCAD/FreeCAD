@@ -29,7 +29,6 @@ import datetime
 import shlex
 from PathScripts import PostUtils
 from PathScripts import PathUtils
-import PathScripts.PathUtil as PathUtil
 
 TOOLTIP = '''
 This is a postprocessor file for the Path workbench. It is used to
@@ -154,7 +153,6 @@ def processArguments(argstring):
 
     return True
 
-
 def export(objectslist, filename, argstring):
     # pylint: disable=global-statement
     if not processArguments(argstring):
@@ -187,8 +185,12 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if not PathUtil.opProperty(obj, 'Active'):
-            continue
+        if hasattr(obj, 'Active'): 
+            if not obj.Active:
+                continue
+        if hasattr(obj, 'Base') and hasattr(obj.Base, 'Active'):
+            if not obj.Base.Active:
+                continue
 
         # fetch machine details
         job = PathUtils.findParentJob(obj)
