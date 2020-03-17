@@ -85,6 +85,7 @@ from draftguitools.gui_togglemodes import ToggleContinueMode
 from draftguitools.gui_togglemodes import ToggleDisplayMode
 from draftguitools.gui_groups import AddToGroup
 from draftguitools.gui_groups import SelectGroup
+from draftguitools.gui_grid import ToggleGrid
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -4704,27 +4705,6 @@ class Draft_Clone(Modifier):
             ToDo.delay(FreeCADGui.runCommand, "Draft_Move")
 
 
-class ToggleGrid():
-    """The Draft ToggleGrid command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Grid',
-                'Accel' : "G,R",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off"),
-                'CmdType' : 'ForEdit'}
-
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.setTrackers()
-            if FreeCADGui.Snapper.grid:
-                if FreeCADGui.Snapper.grid.Visible:
-                    FreeCADGui.Snapper.grid.off()
-                    FreeCADGui.Snapper.forceGridOff=True
-                else:
-                    FreeCADGui.Snapper.grid.on()
-                    FreeCADGui.Snapper.forceGridOff=False
-
 class Heal():
     """The Draft Heal command definition"""
 
@@ -5339,7 +5319,6 @@ FreeCADGui.addCommand('Draft_Stretch',Stretch())
 # context commands
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
-FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
 FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
