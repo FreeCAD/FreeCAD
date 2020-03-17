@@ -86,6 +86,7 @@ from draftguitools.gui_togglemodes import ToggleDisplayMode
 from draftguitools.gui_groups import AddToGroup
 from draftguitools.gui_groups import SelectGroup
 from draftguitools.gui_grid import ToggleGrid
+from draftguitools.gui_heal import Heal
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -4705,24 +4706,6 @@ class Draft_Clone(Modifier):
             ToDo.delay(FreeCADGui.runCommand, "Draft_Move")
 
 
-class Heal():
-    """The Draft Heal command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Heal',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal faulty Draft objects saved from an earlier FreeCAD version")}
-
-    def Activated(self):
-        s = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Heal")
-        if s:
-            Draft.heal(s)
-        else:
-            Draft.heal()
-        FreeCAD.ActiveDocument.commitTransaction()
-
-
 class Draft_Facebinder(Creator):
     """The Draft Facebinder command definition"""
 
@@ -5311,7 +5294,6 @@ FreeCADGui.addCommand('Draft_Clone',Draft_Clone())
 FreeCADGui.addCommand('Draft_PathArray',PathArray())
 FreeCADGui.addCommand('Draft_PathLinkArray',PathLinkArray())
 FreeCADGui.addCommand('Draft_PointArray',PointArray())
-FreeCADGui.addCommand('Draft_Heal',Heal())
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
 FreeCADGui.addCommand('Draft_Slope',Draft_Slope())
 FreeCADGui.addCommand('Draft_Stretch',Stretch())
