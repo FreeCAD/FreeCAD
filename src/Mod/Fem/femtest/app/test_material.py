@@ -37,15 +37,8 @@ class TestMaterialUnits(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        # setting up a document to hold the tests
         self.doc_name = self.__class__.__name__
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != self.doc_name:
-                FreeCAD.newDocument(self.doc_name)
-        else:
-            FreeCAD.newDocument(self.doc_name)
-        FreeCAD.setActiveDocument(self.doc_name)
-        self.active_doc = FreeCAD.ActiveDocument
+        self.document = FreeCAD.newDocument(self.doc_name)
 
     def test_00print(
         self

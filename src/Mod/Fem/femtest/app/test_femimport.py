@@ -84,15 +84,8 @@ class TestObjectExistance(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        # setting up a document to hold the tests
         self.doc_name = self.__class__.__name__
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != self.doc_name:
-                FreeCAD.newDocument(self.doc_name)
-        else:
-            FreeCAD.newDocument(self.doc_name)
-        FreeCAD.setActiveDocument(self.doc_name)
-        self.active_doc = FreeCAD.ActiveDocument
+        self.document = FreeCAD.newDocument(self.doc_name)
 
     def test_00print(
         self
@@ -167,7 +160,7 @@ class TestObjectExistance(unittest.TestCase):
         expected_len = len(expected_obj_types)
         expected_obj_types = sorted(expected_obj_types)
 
-        doc = self.active_doc
+        doc = self.document
 
         # get the supportedTypes for FEM module
 

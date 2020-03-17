@@ -40,15 +40,8 @@ class TestCcxTools(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        # setting up a document to hold the tests
         self.doc_name = self.__class__.__name__
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != self.doc_name:
-                FreeCAD.newDocument(self.doc_name)
-        else:
-            FreeCAD.newDocument(self.doc_name)
-        FreeCAD.setActiveDocument(self.doc_name)
-        self.active_doc = FreeCAD.ActiveDocument
+        self.document = FreeCAD.newDocument(self.doc_name)
 
         # more inits
         self.mesh_name = "Mesh"
@@ -73,7 +66,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.boxanalysis import setup_frequency as setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "frequency"
         base_name = "cube_frequency"
         res_obj_name = "CCX_Mode1_Results"
@@ -105,7 +98,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.boxanalysis import setup_static as setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "ccxtools static"
         base_name = "cube_static"
         res_obj_name = "CCX_Results"
@@ -137,14 +130,14 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.ccx_cantilever_std import setup_cantileverhexa20faceload as setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "canti ccx faceload hexa20"
         base_name = "canti_ccx_faceload_hexa20"
         analysis_dir = testtools.get_unit_test_tmp_dir(
             self.temp_dir,
             ("FEM_" + base_name),
         )
-        fcc_print(self.active_doc.Objects)
+        fcc_print(self.document.Objects)
         # test input file writing
         self.input_file_writing_test(
             test_name=test_name,
@@ -158,7 +151,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.constraint_contact_shell_shell import setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "constraint contact shell shell"
         base_name = "constraint_contact_shell_shell"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -179,7 +172,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.constraint_contact_solid_solid import setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "constraint contact solid solid"
         base_name = "constraint_contact_solid_solid"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -202,7 +195,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.constraint_tie import setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "constraint tie"
         base_name = "constraint_tie"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -223,7 +216,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.material_multiple_twoboxes import setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "multiple material"
         base_name = "mat_multiple"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -244,7 +237,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.material_nl_platewithhole import setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "nonlinear material"
         base_name = "mat_nonlinear"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -265,7 +258,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.thermomech_bimetall import setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "thermomech bimetall"
         base_name = "thermomech_bimetall"
         analysis_dir = testtools.get_unit_test_tmp_dir(
@@ -286,7 +279,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.thermomech_flow1d import setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "Flow1D"
         base_name = "Flow1D_thermomech"
         res_obj_name = "CCX_Time1_0_Results"
@@ -318,7 +311,7 @@ class TestCcxTools(unittest.TestCase):
     ):
         # set up
         from femexamples.thermomech_spine import setup
-        setup(self.active_doc, "ccxtools")
+        setup(self.document, "ccxtools")
         test_name = "thermomechanical"
         base_name = "spine_thermomech"
         res_obj_name = "CCX_Results"
@@ -359,8 +352,8 @@ class TestCcxTools(unittest.TestCase):
             .format(test_name)
         )
 
-        analysis = self.active_doc.Analysis
-        solver_object = self.active_doc.CalculiXccxTools
+        analysis = self.document.Analysis
+        solver_object = self.document.CalculiXccxTools
         fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
         fea.update_objects()
 
@@ -404,7 +397,7 @@ class TestCcxTools(unittest.TestCase):
             "Save FreeCAD file for {} to {}..."
             .format(test_name, save_fc_file)
         )
-        self.active_doc.saveAs(save_fc_file)
+        self.document.saveAs(save_fc_file)
 
         fcc_print(
             "\n--------------- "
@@ -481,7 +474,7 @@ class TestCcxTools(unittest.TestCase):
             "Save FreeCAD file for {} to {}..."
             .format(test_name, save_fc_file)
         )
-        self.active_doc.saveAs(save_fc_file)
+        self.document.saveAs(save_fc_file)
 
         fcc_print("--------------- End of {} -------------------".format(test_name))
 
