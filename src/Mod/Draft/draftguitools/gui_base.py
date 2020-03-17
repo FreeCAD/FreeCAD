@@ -33,7 +33,7 @@ import draftutils.todo as todo
 from draftutils.messages import _msg, _log
 
 
-class GuiCommandSimplest(object):
+class GuiCommandSimplest:
     """Simplest base class for GuiCommands.
 
     This class only sets up the command name and the document object
@@ -126,7 +126,7 @@ class GuiCommandNeedsSelection(GuiCommandSimplest):
             return False
 
 
-class GuiCommandBase(object):
+class GuiCommandBase:
     """Generic class that is the basis of all Gui commands.
 
     This class should eventually replace `DraftTools.DraftTool`,
