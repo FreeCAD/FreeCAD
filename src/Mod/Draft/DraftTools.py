@@ -5251,6 +5251,21 @@ class Draft_Arc_3Points:
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
+from draftguitools.gui_snaps import Draft_Snap_Lock
+from draftguitools.gui_snaps import Draft_Snap_Midpoint
+from draftguitools.gui_snaps import Draft_Snap_Perpendicular
+from draftguitools.gui_snaps import Draft_Snap_Grid
+from draftguitools.gui_snaps import Draft_Snap_Intersection
+from draftguitools.gui_snaps import Draft_Snap_Parallel
+from draftguitools.gui_snaps import Draft_Snap_Endpoint
+from draftguitools.gui_snaps import Draft_Snap_Angle
+from draftguitools.gui_snaps import Draft_Snap_Center
+from draftguitools.gui_snaps import Draft_Snap_Extension
+from draftguitools.gui_snaps import Draft_Snap_Near
+from draftguitools.gui_snaps import Draft_Snap_Ortho
+from draftguitools.gui_snaps import Draft_Snap_Special
+from draftguitools.gui_snaps import Draft_Snap_Dimensions
+from draftguitools.gui_snaps import Draft_Snap_WorkingPlane
 from draftguitools.gui_snaps import ShowSnapBar
 
 #---------------------------------------------------------------------------
