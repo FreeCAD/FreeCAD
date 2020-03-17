@@ -222,7 +222,7 @@ def compare_stats(
         loc_stat_types = stat_types
 
     # get stats from result obj which should be compared
-    obj = FreeCAD.ActiveDocument.getObject(res_obj_name)
+    obj = fea.analysis.Document.getObject(res_obj_name)
     # fcc_print(obj)
     if obj:
         # fcc_print(obj.Name)
