@@ -1245,6 +1245,7 @@ PyObject*  TopoShapePy::ancestorsOfType(PyObject *args)
                 list.append(shape2pyshape(model.getSubTopoShape(type,idx+1)));
             return Py::new_reference_to(list);
         }
+        PyErr_Clear();
 
         PyObject *type;
         if (!PyArg_ParseTuple(args, "O!O!", &(TopoShapePy::Type), &pcObj, &PyType_Type, &type))
