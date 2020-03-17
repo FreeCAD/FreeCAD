@@ -87,6 +87,7 @@ from draftguitools.gui_groups import AddToGroup
 from draftguitools.gui_groups import SelectGroup
 from draftguitools.gui_grid import ToggleGrid
 from draftguitools.gui_heal import Heal
+from draftguitools.gui_dimension_ops import Draft_FlipDimension
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -4739,20 +4740,6 @@ class Draft_Facebinder(Creator):
             FreeCAD.ActiveDocument.recompute()
         self.finish()
 
-class Draft_FlipDimension():
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_FlipDimension',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip Dimension"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip the normal direction of a dimension")}
-
-    def Activated(self):
-        for o in FreeCADGui.Selection.getSelection():
-            if Draft.getType(o) in ["Dimension","AngularDimension"]:
-                FreeCAD.ActiveDocument.openTransaction("Flip dimension")
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument."+o.Name+".Normal = FreeCAD.ActiveDocument."+o.Name+".Normal.negative()")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
-
 
 class Mirror(Modifier):
     """The Draft_Mirror FreeCAD command definition"""
@@ -5302,7 +5289,6 @@ FreeCADGui.addCommand('Draft_Stretch',Stretch())
 # context commands
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
-FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
 FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 
