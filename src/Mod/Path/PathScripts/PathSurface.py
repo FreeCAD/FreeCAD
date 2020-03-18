@@ -90,6 +90,9 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.addProperty("App::PropertyEnumeration", "LayerMode", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property", "The completion mode for the operation: single or multi-pass"))
         obj.addProperty("App::PropertyEnumeration", "ScanType", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property", "Planar: Flat, 3D surface scan.  Rotational: 4th-axis rotational scan."))
 
+        obj.addProperty("App::PropertyDistance", "AngularDeflection", "Mesh Conversion", QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot."))
+        obj.addProperty("App::PropertyDistance", "LinearDeflection", "Mesh Conversion", QtCore.QT_TRANSLATE_NOOP("App::Property", "Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much."))
+
         obj.addProperty("App::PropertyFloat", "CutterTilt", "Rotational", QtCore.QT_TRANSLATE_NOOP("App::Property", "Stop index(angle) for rotational scan"))
         obj.addProperty("App::PropertyEnumeration", "RotationAxis", "Rotational", QtCore.QT_TRANSLATE_NOOP("App::Property", "The model will be rotated around this axis."))
         obj.addProperty("App::PropertyFloat", "StartIndex", "Rotational", QtCore.QT_TRANSLATE_NOOP("App::Property", "Start index(angle) for rotational scan"))
@@ -253,6 +256,8 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.CircularCenterCustom.y = 0.0
         obj.CircularCenterCustom.z = 0.0
         obj.GapThreshold.Value = 0.005
+        obj.AngularDeflection.Value = 0.25
+        obj.LinearDeflection.Value = job.GeometryTolerance
         # For debugging
         obj.ShowTempObjects = False
 
@@ -442,7 +447,6 @@ class ObjectSurface(PathOp.ObjectOp):
         self.wpc = Part.makeCircle(2.0)
 
         # Set deflection values for mesh generation
-        self.angularDeflection = 0.05
         try:  # try/except is for Path Jobs created before GeometryTolerance
             self.deflection = JOB.GeometryTolerance.Value
         except AttributeError as ee:
@@ -573,7 +577,6 @@ class ObjectSurface(PathOp.ObjectOp):
         self.depthParams = None
         self.midDep = None
         self.wpc = None
-        self.angularDeflection = None
         self.deflection = None
         del self.modelSTLs
         del self.safeSTLs
@@ -586,7 +589,6 @@ class ObjectSurface(PathOp.ObjectOp):
         del self.depthParams
         del self.midDep
         del self.wpc
-        del self.angularDeflection
         del self.deflection
 
         execTime = time.time() - startTime
@@ -1351,6 +1353,8 @@ class ObjectSurface(PathOp.ObjectOp):
             if withExtrude is True:
                 ext = self._getExtrudedShape(csWire)
                 CS = self._getShapeSlice(ext)
+                if CS is False:
+                    return False
             else:
                 CS = Part.Face(csWire)
             CS.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - CS.BoundBox.ZMin))
@@ -1409,7 +1413,10 @@ class ObjectSurface(PathOp.ObjectOp):
             else:
                 # base.Shape.tessellate(0.05) # 0.5 original value
                 # mesh = MeshPart.meshFromShape(base.Shape, Deflection=self.deflection)
-                mesh = MeshPart.meshFromShape(Shape=M.Shape, LinearDeflection=self.deflection, AngularDeflection=self.angularDeflection, Relative=False)
+                mesh = MeshPart.meshFromShape(Shape=M.Shape,
+                                              LinearDeflection=obj.LinearDeflection.Value,
+                                              AngularDeflection=obj.AngularDeflection.Value,
+                                              Relative=False)
 
             if self.modelSTLs[m] is True:
                 stl = ocl.STLSurf()
@@ -1516,7 +1523,10 @@ class ObjectSurface(PathOp.ObjectOp):
             self.tempGroup.addObject(T)
 
         # Extract mesh from fusion
-        meshFuse = MeshPart.meshFromShape(Shape=fused, LinearDeflection=(self.deflection / 2.0), AngularDeflection=self.angularDeflection, Relative=False)
+        meshFuse = MeshPart.meshFromShape(Shape=fused,
+                                          LinearDeflection=obj.LinearDeflection.Value,
+                                          AngularDeflection=obj.AngularDeflection.Value,
+                                          Relative=False)
         time.sleep(0.2)
         stl = ocl.STLSurf()
         for f in meshFuse.Facets:
@@ -4191,6 +4201,8 @@ def SetupProperties():
     setup.append('StepOver')
     setup.append('StopIndex')
     setup.append('UseStartPoint')
+    setup.append('AngularDeflection')
+    setup.append('LinearDeflection')
     # For debugging
     setup.append('AreaParams')
     setup.append('ShowTempObjects')
