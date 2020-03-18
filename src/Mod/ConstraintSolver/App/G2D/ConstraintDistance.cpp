@@ -20,8 +20,8 @@ ConstraintDistance::ConstraintDistance()
 ConstraintDistance::ConstraintDistance(HParaPoint p1, HParaPoint p2, FCS::ParameterRef dist)
     :ConstraintDistance()
 {
-    this->p1 = p1;
-    this->p2 = p2;
+    this->p1 = new ParaShape<ParaPoint>(new ParaTransform(), p1);
+    this->p2 = new ParaShape<ParaPoint>(new ParaTransform(), p2);
     this->dist = dist;
 }
 
