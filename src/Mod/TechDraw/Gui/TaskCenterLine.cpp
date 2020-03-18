@@ -182,6 +182,10 @@ void TaskCenterLine::setUiPrimary()
     ui->qsbExtend->setValue(qVal);
     int precision = Base::UnitsApi::getDecimals();
     ui->dsbRotate->setDecimals(precision);
+    if (m_type == 0) // if face, then aligned is not possible
+        ui->rbAligned->setEnabled(false);
+    else
+        ui->rbAligned->setEnabled(true);
 }
 
 void TaskCenterLine::setUiEdit()
@@ -221,6 +225,10 @@ void TaskCenterLine::setUiEdit()
     ui->qsbHorizShift->setValue(qVal);
     qVal.setValue(m_cl->m_extendBy);
     ui->qsbExtend->setValue(qVal);
+    if (m_cl->m_type == 0) // if face, then aligned is not possible
+        ui->rbAligned->setEnabled(false);
+    else
+        ui->rbAligned->setEnabled(true);
 }
 
 //******************************************************************************
@@ -407,7 +415,7 @@ TaskCL2Lines::TaskCL2Lines(TechDrawGui::TaskCenterLine* tcl) :
 {
     ui->setupUi(this);
 
-    connect(ui->rbFlip, SIGNAL(toggled( bool )), this, SLOT(onFlipToggled( bool )));
+    connect(ui->cbFlip, SIGNAL(toggled( bool )), this, SLOT(onFlipToggled( bool )));
 
     initUi();
 }

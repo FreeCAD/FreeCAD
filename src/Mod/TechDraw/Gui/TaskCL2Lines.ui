@@ -23,7 +23,7 @@
    <item>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QRadioButton" name="rbFlip">
+      <widget class="QCheckBox" name="cbFlip">
        <property name="text">
         <string>Flip ends</string>
        </property>
