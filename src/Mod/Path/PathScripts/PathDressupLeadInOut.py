@@ -73,6 +73,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyDistance", "ExtendLeadIn", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extends LeadIn distance"))
         obj.addProperty("App::PropertyDistance", "ExtendLeadOut", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extends LeadOut distance"))
         obj.addProperty("App::PropertyBool", "RapidPlunge", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Perform plunges with G0"))
+        obj.addProperty("App::PropertyBool", "IncludeLayers", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Apply LeadInOut to layers within an operation"))
         
         self.wire = None
         self.rapids = None
@@ -96,6 +97,7 @@ class ObjectDressup:
         obj.ExtendLeadIn = 0
         obj.ExtendLeadOut = 0
         obj.RapidPlunge = False
+        obj.IncludeLayers = True
 
     def execute(self, obj):
         if not obj.Base:
@@ -133,7 +135,6 @@ class ObjectDressup:
         x = Vector.x
         y = Vector.y
         length = math.sqrt(x*x + y*y)
-        #print("Len: {}".format(length))
         if((math.fabs(length)) > 0.0000000000001):
             vx = round(x / length, 3)
             vy = round(y / length, 3)
@@ -207,6 +208,7 @@ class ObjectDressup:
             pij.x += queue[1].Parameters['I']
             pij.y += queue[1].Parameters['J']
             
+            # Check if lead in and operation go in same direction (usually for inner circles)
             if arcdir == queue[1].Name:
                 arcs_identical = True
             
@@ -298,7 +300,7 @@ class ObjectDressup:
         R = obj.Length.Value  # Radius of roll or length
         arcs_identical = False
         
-        # set the correct twist command
+        # Set the correct twist command
         if self.getDirectionOfPath(obj) == 'right':
             arcdir = "G2"
         else:
@@ -376,7 +378,7 @@ class ObjectDressup:
             extendcommand = Path.Command('G1', {"X": leadend.x, "Y": leadend.y, "F": horizFeed})
             results.append(extendcommand)
         else:
-            PathLog.notice(" CURRENT_IN Perp")
+            PathLog.debug(" CURRENT_IN Perp")
         
         if obj.UseMachineCRC:  # crc off
             results.append(Path.Command('G40', {}))
@@ -392,11 +394,11 @@ class ObjectDressup:
         queue = []
         action = 'start'
         prevCmd = ''
-        
         layers = []
         
         # Read in all commands
         for curCommand in obj.Base.Path.Commands:
+            #PathLog.debug("CurCMD: {}".format(curCommand))
             if curCommand.Name not in movecommands + rapidcommands:
                 # Don't worry about non-move commands, just add to output
                 newpath.append(curCommand)
@@ -410,14 +412,17 @@ class ObjectDressup:
             
             if curCommand.Name in movecommands:
                 if prevCmd.Name in rapidcommands and curCommand.Name in movecommands and len(queue) > 0:
-                    # Layer changed: Save current layer cmds prepare next layer
+                    # Layer changed: Save current layer cmds and prepare next layer
                     layers.append(queue)
                     queue = []
-                    #print("New layer: {}".format(layers))
+                if obj.IncludeLayers and curCommand.z < currLocation['Z'] and prevCmd.Name in movecommands:
+                    # Layer change within move cmds
+                    #PathLog.debug("Layer change in move: {}->{}".format(currLocation['Z'],  curCommand.z))
+                    layers.append(queue)
+                    queue = []
                 
                 # Save all move commands
                 queue.append(curCommand)
-                #print("Append move: {}, P: {}".format(curCommand.Name,  curCommand.Parameters))
             
             currLocation.update(curCommand.Parameters)
             prevCmd = curCommand
@@ -426,26 +431,23 @@ class ObjectDressup:
         if len(queue) > 0:
             layers.append(queue)
             queue = []
-            #print("New layer: {}".format(layers))
         
         # Go through each layer and add leadIn/Out
         idx = 0
         for layer in layers:
-            #print("Layer {}".format(idx))
+            #PathLog.debug("Layer {}".format(idx))
             
             if obj.LeadIn:
-                #print("Lead IN")
                 temp = self.getLeadStart(obj, layer, action)
                 newpath.extend(temp)
             
             for cmd in layer:
-                #print("CurLoc: {}, NewCmd: {}".format(currLocation,  cmd))
+                #PathLog.debug("CurLoc: {}, NewCmd: {}".format(currLocation,  cmd))
                 #if currLocation['X'] == cmd.x and currLocation['Y'] == cmd.y and currLocation['Z'] == cmd.z and cmd.Name in ['G1',  'G01']:
                     #continue
                 newpath.append(cmd)
             
             if obj.LeadOut:
-                #print("Lead OUT")
                 tmp = []
                 tmp.append(layer[-2])
                 tmp.append(layer[-1])
