@@ -25,8 +25,9 @@ __title__ = "FreeCAD FEM base constraint object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
+## @package _BaseObject
+#  \ingroup FEM
+#  \brief FreeCAD _Base Object for FEM workbench
 
 
 class Proxy(object):
@@ -41,12 +42,10 @@ class Proxy(object):
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
     def __getstate__(self):
-            return self.Type
+        return self.Type
 
     def __setstate__(self, state):
         # a few FEM objects had this attribut assignment before the move to this Python base obj class
         # these objects will give a setAttr failed error on document loading without this assignment
         if state:
             self.Type = state
-
-##  @}
