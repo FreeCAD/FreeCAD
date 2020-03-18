@@ -560,7 +560,6 @@ class _MeshGroup(CommandManager):
 
     def __init__(self):
         super(_MeshGroup, self).__init__()
-        self.pixmap = "fem-femmesh-from-shape"
         self.menuetext = "FEM mesh group"
         self.accel = "M, G"
         self.tooltip = "Creates a FEM mesh group"
