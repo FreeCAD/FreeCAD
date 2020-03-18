@@ -574,19 +574,23 @@ size_t ComplexGeoData::findTagInElementName(const std::string &name,
         return pos;
     size_t offset = pos + tagPostfix().size();
     std::istringstream iss(name.c_str()+offset);
-    long _tag = -1;
+    long _tag = 0;
     int _len = -1;
     char sep = 0;
     char sep2 = 0;
     char tp = 0;
     char eof = 0;
     iss >> _tag >>  sep >> _len >> sep2 >> tp >> eof;
-    if(_tag<0 || _len<0 || sep!=':' || sep2!=':' || eof!=0)
+    if(_tag==0 || _len<0 || sep!=':' || sep2!=':' || eof!=0)
         return std::string::npos;
     if(type)
         *type = tp;
-    if(tag)
-        *tag = _tag;
+    if(tag) {
+        if(_tag>0)
+            *tag = _tag;
+        else
+            *tag = -_tag;
+    }
     if(len)
         *len = (size_t)_len;
     if(postfix)
