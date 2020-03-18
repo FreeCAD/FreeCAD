@@ -67,7 +67,7 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent) :
 
     ui->setupUi(this);
 
-    QString qs = QString::number(parent->dvBalloon->SymbolScale.getValue(), 'f', 2);
+    QString qs = QString::number(parent->dvBalloon->ShapeScale.getValue(), 'f', 2);
     ui->inputScale->setText(qs);
 
     std::string value = parent->dvBalloon->Text.getValue();
@@ -80,7 +80,7 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent) :
     i = parent->dvBalloon->EndType.getValue();
     ui->comboEndType->setCurrentIndex(i);
 
-    i = parent->dvBalloon->Symbol.getValue();
+    i = parent->dvBalloon->Shape.getValue();
     ui->comboSymbol->setCurrentIndex(i);
 }
 
@@ -92,9 +92,9 @@ TaskBalloon::~TaskBalloon()
 bool TaskBalloon::accept()
 {
         m_parent->dvBalloon->Text.setValue(ui->inputValue->text().toUtf8().constData());
-        m_parent->dvBalloon->SymbolScale.setValue(ui->inputScale->text().toDouble());
+        m_parent->dvBalloon->ShapeScale.setValue(ui->inputScale->text().toDouble());
         m_parent->dvBalloon->EndType.setValue(ui->comboEndType->currentIndex());
-        m_parent->dvBalloon->Symbol.setValue(ui->comboSymbol->currentIndex());
+        m_parent->dvBalloon->Shape.setValue(ui->comboSymbol->currentIndex());
         m_parent->updateView(true);
 
     return true;
