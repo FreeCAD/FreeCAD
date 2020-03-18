@@ -99,11 +99,11 @@ DrawViewBalloon::DrawViewBalloon(void)
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndType,(prefEnd()));
 
-    Symbol.setEnums(balloonTypeEnums);
-    ADD_PROPERTY(Symbol,(prefShape()));
+    Shape.setEnums(balloonTypeEnums);
+    ADD_PROPERTY(Shape,(prefShape()));
 
-    ADD_PROPERTY_TYPE(SymbolScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
-    SymbolScale.setConstraints(&SymbolScaleRange);
+    ADD_PROPERTY_TYPE(ShapeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon shape scale");
+    ShapeScale.setConstraints(&SymbolScaleRange);
 
     ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
 
@@ -127,7 +127,7 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if ( (prop == &EndType) ||
-             (prop == &Symbol)  ||
+             (prop == &Shape)  ||
              (prop == &Text)    ||
              (prop == &KinkLength) ) {
             requestPaint();
