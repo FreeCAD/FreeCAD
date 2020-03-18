@@ -1095,26 +1095,36 @@ void CmdTechDrawDraftView::activated(int iMsg)
     if (!page) {
         return;
     }
+    std::string PageName = page->getNameInDocument();
 
-//TODO: shouldn't this be checking for a Draft object only?
-//      there is no obvious way of check for a Draft object.  Could be App::FeaturePython, Part::Part2DObject, ???
-    std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    std::vector<App::DocumentObject*> objects = getSelection().
+                                            getObjectsOfType(App::DocumentObject::getClassTypeId());
+
     if (objects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select at least one object."));
         return;
     }
-    std::string PageName = page->getNameInDocument();
 
+    int draftItemsFound = 0;
     for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
-        std::string FeatName = getUniqueObjectName("DraftView");
-        std::string SourceName = (*it)->getNameInDocument();
-        openCommand("Create DraftView");
-        doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDraft','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-        updateActive();
-        commitCommand();
+        if (DrawGuiUtil::isDraftObject((*it)))  {
+            draftItemsFound++;
+            std::string FeatName = getUniqueObjectName("DraftView");
+            std::string SourceName = (*it)->getNameInDocument();
+            openCommand("Create DraftView");
+            doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDraft','%s')",FeatName.c_str());
+            doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",
+                            FeatName.c_str(),SourceName.c_str());
+            doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
+                            PageName.c_str(),FeatName.c_str());
+            updateActive();
+            commitCommand();
+        }
+    }
+    if (draftItemsFound == 0) { 
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("There were no DraftWB objects in the selection."));
     }
 }
 
