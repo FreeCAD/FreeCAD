@@ -37,15 +37,16 @@ class Proxy(object):
         # self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to this object
 
-    # they are needed, see https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
+    # they are needed, see:
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
     def __getstate__(self):
-        return None
+            return self.Type
 
     def __setstate__(self, state):
         # a few FEM objects had this attribut assignment before the move to this Python base obj class
         # these objects will give a setAttr failed error on document loading without this assignment
         if state:
             self.Type = state
-        return None
 
 ##  @}
