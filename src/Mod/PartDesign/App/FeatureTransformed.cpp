@@ -222,11 +222,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(obj);
             auto shape = feature->AddSubShape.getShape();
             if (shape.isNull())
-                return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
+                return new App::DocumentObjectExecReturn("Shape of add/sub feature is empty");
             int count = shapeMap.Extent();
             if(shapeMap.Add(shape.getShape())<=count)
                 continue;
-            shape.Tag = -getID();
+            shape.Tag = -shape.Tag;
             auto trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
             originalShapes.push_back(shape.makETransform(trsf));
             originalSubs.push_back(feature->getFullName());
@@ -599,6 +599,14 @@ void Transformed::onChanged(const App::Property *prop) {
 
 void Transformed::setupObject () {
     CopyShape.setValue(false);
+}
+
+std::string Transformed::getElementMapVersion(const App::Property *prop, bool restored) const
+{
+    std::string res = Feature::getElementMapVersion(prop,restored);
+    if(!restored) 
+        res = std::string("PDT0.") + res;
+    return res;
 }
 
 }

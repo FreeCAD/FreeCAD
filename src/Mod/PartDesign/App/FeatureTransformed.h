@@ -90,6 +90,8 @@ public:
     virtual void onDocumentRestored();
     virtual void onChanged(const App::Property *);
 
+    virtual std::string getElementMapVersion(const App::Property *prop, bool restored=false) const;
+
     /** returns a list of the transformations that where rejected during the last execute
       * because they did not overlap with the support
       */
