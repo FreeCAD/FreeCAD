@@ -35,7 +35,6 @@ from . import support_utils as testtools
 from .support_utils import fcc_print
 
 
-
 class TestMeshCommon(unittest.TestCase):
     fcc_print("import TestMeshCommon")
 
