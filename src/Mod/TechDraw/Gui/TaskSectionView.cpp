@@ -129,6 +129,7 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
         return;
     }
 
+    m_doc = m_section->getDocument();
     m_sectionName = m_section->getNameInDocument();
     App::DocumentObject* newObj = m_section->BaseView.getValue();
     m_base = dynamic_cast<TechDraw::DrawViewPart*>(newObj);
