@@ -23,7 +23,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Additional modifications and contributions beginning 2019             *
-# *   by Russell Johnson  <russ4262@gmail.com>  2020-03-14 13:15 CST        *
+# *   by Russell Johnson  <russ4262@gmail.com>  2020-03-18 12:29 CST        *
 # *                                                                         *
 # ***************************************************************************
 
@@ -3032,10 +3032,14 @@ class ObjectSurface(PathOp.ObjectOp):
         PathLog.debug('Applying DepthOffset value: {}'.format(DepthOffset))
         lenScans = len(SCANDATA)
         for s in range(0, lenScans):
-            LN = SCANDATA[s]
-            numPts = len(LN)
-            for pt in range(0, numPts):
-                SCANDATA[s][pt].z += DepthOffset
+            SO = SCANDATA[s]  # StepOver
+            numParts = len(SO)
+            for prt in range(0, numParts):
+                PRT = SO[prt]
+                if PRT != 'BRK':
+                    numPts = len(PRT)
+                    for pt in range(0, numPts):
+                        SCANDATA[s][prt][pt].z += DepthOffset
 
     def _planarGetPDC(self, stl, finalDep, SampleInterval, useSafeCutter=False):
         pdc = ocl.PathDropCutter()   # create a pdc [PathDropCutter] object
