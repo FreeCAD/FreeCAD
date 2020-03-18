@@ -610,7 +610,7 @@ public:
 
     virtual void reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix=0);
 
-    bool isElementGenerated(const char *name) const;
+    bool isElementGenerated(const char *name, int depth=1) const;
     //@}
 
 

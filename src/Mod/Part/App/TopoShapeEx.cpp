@@ -3230,7 +3230,7 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     return ret;
 }
 
-bool TopoShape::isElementGenerated(const char *_name) const
+bool TopoShape::isElementGenerated(const char *_name, int depth) const
 {
     long tag = 0;
     size_t len = 0;
@@ -3247,7 +3247,7 @@ bool TopoShape::isElementGenerated(const char *_name) const
     if(pos == std::string::npos)
         return false;
 
-    if(boost::starts_with(name.c_str()+len, genPostfix()))
+    if(depth==1 && boost::starts_with(name.c_str()+len, genPostfix()))
         return true;
 
     std::string tmp;
@@ -3266,9 +3266,13 @@ bool TopoShape::isElementGenerated(const char *_name) const
         tmp = dehashElementName(tmp.c_str());
         long tag2 = 0;
         pos = findTagInElementName(tmp,&tag2,&len);
-        if(pos==std::string::npos || (tag2!=tag && tag!=Tag))
+        if(pos==std::string::npos)
             return false;
-        if(boost::starts_with(tmp.c_str()+len, genPostfix()))
+        if(tag2!=tag && tag!=Tag) {
+           if(--depth < 1)
+               return false;
+        }
+        if(depth==1 && boost::starts_with(tmp.c_str()+len, genPostfix()))
             return true;
         tag = tag2;
     }
