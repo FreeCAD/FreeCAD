@@ -197,11 +197,13 @@ void ViewProvider::updateData(const App::Property* prop)
         std::vector<int> indices;
         std::set<int> edgeSet;
         std::vector<int> points;
-        for(unsigned i=1, count=shape.countSubShapes(TopAbs_FACE); i<=count; ++i) {
+        int depth = generatedShapeDepth();
+        unsigned count = depth?shape.countSubShapes(TopAbs_FACE):0;
+        for(unsigned i=1; i<=count; ++i) {
             element.resize(4);
             element += std::to_string(i);
             auto mapped = shape.getElementName(element.c_str(),1);
-            if(mapped != element.c_str() && shape.isElementGenerated(mapped)) {
+            if(mapped != element.c_str() && shape.isElementGenerated(mapped, depth)) {
                 indices.push_back(i-1);
                 Part::TopoShape face = shape.getSubTopoShape(TopAbs_FACE, i);
                 for(auto &s : face.getSubShapes(TopAbs_EDGE)) {

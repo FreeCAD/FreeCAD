@@ -71,6 +71,10 @@ public:
     virtual PyObject* getPyObject(void) override;
 
 protected:
+
+    /// Return the shape history depth to look for generated shape highlight indices
+    virtual int generatedShapeDepth() {return 1;}
+
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
