@@ -28,6 +28,7 @@
 
 #include "Exception.h"
 #include "Console.h"
+#include "PyObjectBase.h"
 #include <CXX/Objects.hxx>
 
 FC_LOG_LEVEL_INIT("Exception", true, true)
@@ -146,6 +147,21 @@ void Exception::setPyObject( PyObject * pydict)
         if (edict.hasKey("breported"))
             _isReported = static_cast<bool>(Py::Boolean(edict.getItem("breported")));
     }
+}
+
+PyObject * Exception::getPyExceptionType() const
+{
+    return BaseExceptionFreeCADError;
+}
+
+void Exception::setPyException() const
+{
+    PyObject* exc = getPyExceptionType();
+    if (!exc) {
+        exc = BaseExceptionFreeCADError;
+    }
+
+    PyErr_SetString(exc, what());
 }
 
 // ---------------------------------------------------------

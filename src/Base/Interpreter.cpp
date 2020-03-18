@@ -146,6 +146,15 @@ void PyException::ReportException (void) const
     }
 }
 
+void PyException::setPyException() const
+{
+    std::stringstream str;
+    str << getStackTrace()
+        << getErrorType()
+        << ": " << what();
+    PyErr_SetString(getPyExceptionType(), str.str().c_str());
+}
+
 // ---------------------------------------------------------
 
 SystemExitException::SystemExitException()

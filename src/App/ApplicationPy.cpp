@@ -223,8 +223,8 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
         Py_Return;
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_IOError, e.what());
-        return 0;
+        e.setPyException();
+        return nullptr;
     }
     catch (const std::exception& e) {
         // might be subclass from zipios
