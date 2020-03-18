@@ -128,7 +128,10 @@
              <bool>true</bool>
             </property>
             <property name="toolTip">
-             <string>Option not implemented yet</string>
+             <string>centerline between
+- lines: in equal distance to the lines and with
+  half of the angle tghe lines have to each other
+- points: in equal distance to the points</string>
             </property>
             <property name="text">
              <string>Aligned</string>
@@ -252,7 +255,7 @@
           <item row="4" column="1">
            <widget class="QComboBox" name="cboxStyle">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <item>
              <property name="text">
