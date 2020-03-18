@@ -89,7 +89,7 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
         this->attachDocument(doc);
     }
 
-    onTopEnabled = Gui::ViewParams::instance()->getShowSelectionOnTop()?1:0;
+    onTopEnabled = Gui::ViewParams::instance()->getShowSelectionOnTop();
     if(!onTopEnabled)
         Gui::ViewParams::instance()->setShowSelectionOnTop(true);
 }
@@ -110,7 +110,7 @@ TaskTransformedParameters::~TaskTransformedParameters()
     // make sure to remove selection gate in all cases
     Gui::Selection().rmvSelectionGate();
 
-    if(onTopEnabled>0)
+    if(!onTopEnabled)
         Gui::ViewParams::instance()->setShowSelectionOnTop(false);
 }
 

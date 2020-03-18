@@ -239,7 +239,7 @@ protected:
     boost::signals2::scoped_connection connMessage;
 
     int transactionID = 0;
-    int onTopEnabled = -1;
+    bool onTopEnabled = true;
 };
 
 /// simulation dialog for the TaskView
