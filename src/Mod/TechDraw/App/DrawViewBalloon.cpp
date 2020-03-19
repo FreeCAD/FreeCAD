@@ -138,14 +138,22 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
 
 void DrawViewBalloon::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
 {
-    // was sourceView in the past, now is SourceView
     Base::Type type = Base::Type::fromName(TypeName);
-    if (SourceView.getClassTypeId() == type && strcmp(PropName, "sourceView") == 0) {
+    // was sourceView in the past, now is SourceView
+    if (SourceView.getClassTypeId() == type && strcmp(PropName, "sourceView") == 0)
         SourceView.Restore(reader);
-    }
-    else {
+    else
         DrawView::handleChangedPropertyName(reader, TypeName, PropName);
-    }
+    // was Symbol in the past, now is Shape
+    if (Shape.getClassTypeId() == type && strcmp(PropName, "Symbol") == 0)
+        Shape.Restore(reader);
+    else
+        DrawView::handleChangedPropertyName(reader, TypeName, PropName);
+    // was SymbolScale in the past, now is ShapeScale
+    if (ShapeScale.getClassTypeId() == type && strcmp(PropName, "SymbolScale") == 0)
+        ShapeScale.Restore(reader);
+    else
+        DrawView::handleChangedPropertyName(reader, TypeName, PropName);
 }
 
 void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
