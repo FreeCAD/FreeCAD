@@ -516,6 +516,7 @@ void TaskTransformedParameters::exitSelectionMode()
     try {
         selectionMode = none;
         Gui::Selection().rmvSelectionGate();
+        Gui::Selection().clearSelection();
         showObject();
     } catch(Base::Exception &e) {
         e.ReportException();
