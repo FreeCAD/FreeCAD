@@ -23,6 +23,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/SoDB.h>
+# include <Inventor/SoInput.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
 #endif
 
 #include <Base/Interpreter.h>
@@ -72,12 +76,43 @@ class Module : public Py::ExtensionModule<Module>
 public:
     Module() : Py::ExtensionModule<Module>("MeshGui")
     {
+        add_varargs_method("convertToSTL",&Module::convertToSTL,
+            "Convert a scene into an STL."
+        );
         initialize("This module is the MeshGui module."); // register with Python
     }
 
     virtual ~Module() {}
 
 private:
+    Py::Object convertToSTL(const Py::Tuple& args)
+    {
+        char* inname;
+        char* outname;
+        if (!PyArg_ParseTuple(args.ptr(), "etet","utf-8",&inname,"utf-8",&outname))
+            throw Py::Exception();
+        std::string inputName = std::string(inname);
+        PyMem_Free(inname);
+        std::string outputName = std::string(outname);
+        PyMem_Free(outname);
+
+        bool ok = false;
+        SoInput in;
+        if (in.openFile(inputName.c_str())) {
+            SoSeparator * node = SoDB::readAll(&in);
+            if (node) {
+                node->ref();
+                SoSTLFileKit* stlKit = new SoSTLFileKit();
+                stlKit->ref();
+                ok = stlKit->readScene(node);
+                stlKit->writeFile(outputName.c_str());
+                stlKit->unref();
+                node->unref();
+            }
+        }
+
+        return Py::Boolean(ok);
+    }
 };
 
 PyObject* initModule()

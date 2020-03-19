@@ -7,6 +7,8 @@
         <file>icons/FEM_Analysis.svg</file>
         <file>icons/FEM_ClippingPlaneAdd.svg</file>
         <file>icons/FEM_ClippingPlaneRemoveAll.svg</file>
+
+        <!-- gui command icons: constraints -->
         <file>icons/FEM_ConstraintBearing.svg</file>
         <file>icons/FEM_ConstraintContact.svg</file>
         <file>icons/FEM_ConstraintDisplacement.svg</file>
@@ -26,6 +28,8 @@
         <file>icons/FEM_ConstraintTemperature.svg</file>
         <file>icons/FEM_ConstraintTie.svg</file>
         <file>icons/FEM_ConstraintTransform.svg</file>
+
+        <!-- gui command icons: element geometries -->
         <file>icons/FEM_ElementFluid1D.svg</file>
         <file>icons/FEM_ElementGeometry1D.svg</file>
         <file>icons/FEM_ElementGeometry2D.svg</file>
@@ -35,18 +39,25 @@
         <file>icons/FEM_EquationFlow.svg</file>
         <file>icons/FEM_EquationFluxsolver.svg</file>
         <file>icons/FEM_EquationHeat.svg</file>
+
+        <!-- gui command icons: meshes -->
+        <file>icons/FEM_CreateNodesSet.svg</file>
+        <file>icons/FEM_FEMMesh2Mesh.svg</file>
         <file>icons/FEM_MeshBoundaryLayer.svg</file>
         <file>icons/FEM_MeshClear.svg</file>
-        <file>icons/FEM_CreateNodesSet.svg</file>
-        <file>icons/FEM_MeshGmshFromShape.svg</file>
-        <file>icons/FEM_MeshNetgenFromShape.svg</file>
         <file>icons/FEM_MeshDisplayInfo.svg</file>
+        <file>icons/FEM_MeshGmshFromShape.svg</file>
+        <file>icons/FEM_MeshGroup.svg</file>
+        <file>icons/FEM_MeshNetgenFromShape.svg</file>
         <file>icons/FEM_MeshRegion.svg</file>
-        <file>icons/FEM_FEMMesh2Mesh.svg</file>
+
+        <!-- gui command icons: materials -->
         <file>icons/FEM_MaterialFluid.svg</file>
         <file>icons/FEM_MaterialMechanicalNonlinear.svg</file>
         <file>icons/FEM_MaterialReinforced.svg</file>
         <file>icons/FEM_MaterialSolid.svg</file>
+
+        <!-- gui command icons: post processing -->
         <file>icons/FEM_PostPipelineFromResult.svg</file>
         <file>icons/FEM_PostFilterClipRegion.svg</file>
         <file>icons/FEM_PostFilterClipScalar.svg</file>
@@ -57,10 +68,13 @@
         <file>icons/FEM_PostFilterWarp.svg</file>
         <file>icons/FEM_ResultShow.svg</file>
         <file>icons/FEM_ResultsPurge.svg</file>
+
+        <!-- gui command icons: solver -->
         <file>icons/FEM_SolverControl.svg</file>
         <file>icons/FEM_SolverElmer.svg</file>
         <file>icons/FEM_SolverRun.svg</file>
         <file>icons/FEM_SolverStandard.svg</file>
+        <file>icons/FEM_SolverZ88.ico</file>
 
         <!-- object icons without gui command -->
         <file>icons/fem-femmesh-from-shape.svg</file>

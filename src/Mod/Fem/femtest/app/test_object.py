@@ -59,6 +59,8 @@ class TestObjectCreate(unittest.TestCase):
     def test_femobjects_make(
         self
     ):
+        # TODO return document, see Part
+        # https://github.com/FreeCAD/FreeCAD/blob/565bdbbb3e/src/Mod/Part/parttests/part_test_objects.py#L260
         doc = self.document
         analysis = ObjectsFem.makeAnalysis(doc)
 
