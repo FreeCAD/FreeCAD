@@ -169,7 +169,6 @@ SbVec2s ViewProviderSketch::newCursorPos;
 struct EditData {
     EditData():
     sketchHandler(0),
-    editDatumDialog(false),
     buttonPress(false),
     DragPoint(-1),
     DragCurve(-1),
@@ -202,7 +201,6 @@ struct EditData {
 
     // pointer to the active handler for new sketch objects
     DrawSketchHandler *sketchHandler;
-    bool editDatumDialog;
     bool buttonPress;
     bool handleEscapeButton;
 
@@ -447,10 +445,6 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
             if (edit && edit->sketchHandler) {
                 if (!pressed)
                     edit->sketchHandler->quit();
-                return true;
-            }
-            if (edit && edit->editDatumDialog) {
-                edit->editDatumDialog = false;
                 return true;
             }
             if (edit && (edit->DragConstraintSet.empty() == false)) {
@@ -1022,12 +1016,9 @@ void ViewProviderSketch::editDoubleClicked(void)
 
             // if its the right constraint
             if (Constr->isDimensional()) {
-                // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
                 Gui::Command::openCommand("Modify sketch constraints");
-                EditDatumDialog *editDatumDialog = new EditDatumDialog(this, id);
-                //QCoreApplication::postEvent(editDatumDialog, new QEvent(QEvent::User));
-                editDatumDialog->exec();
-                edit->editDatumDialog = true; // avoid to double handle "ESC"
+                EditDatumDialog editDatumDialog(this, id);
+                editDatumDialog.exec();
             }
         }
     }

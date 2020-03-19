@@ -109,8 +109,8 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch,
 
     // Ask for the value of the distance immediately
     if (show && isDriven) {
-        EditDatumDialog *editDatumDialog = new EditDatumDialog(sketch, ConStr.size() - 1);
-        editDatumDialog->exec();
+        EditDatumDialog editDatumDialog(sketch, ConStr.size() - 1);
+        editDatumDialog.exec();
     }
     else {
         // no dialog was shown so commit the command
