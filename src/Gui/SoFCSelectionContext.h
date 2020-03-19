@@ -49,7 +49,7 @@ typedef std::shared_ptr<SoFCSelectionContext> SoFCSelectionContextPtr;
 
 struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
 {
-    int highlightIndex = -1;
+    std::set<int> highlightIndex;
     std::set<int> selectionIndex;
     SbColor selectionColor;
     SbColor highlightColor;
@@ -76,19 +76,22 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     }
 
     bool isHighlighted() const {
-        return highlightIndex>=0;
+        return !highlightIndex.empty();
     }
 
     bool isHighlightAll() const{
-        return highlightIndex==INT_MAX && (selectionIndex.empty() || isSelectAll());
+        return highlightIndex.size()
+            && *highlightIndex.begin() < 0
+            && (!isSelected() || isSelectAll());
     }
 
     void highlightAll() {
-        highlightIndex = INT_MAX;
+        highlightIndex.clear();
+        highlightIndex.insert(-1);
     }
 
     void removeHighlight() {
-        highlightIndex = -1;
+        highlightIndex.clear();
     }
 
     bool removeIndex(int index);

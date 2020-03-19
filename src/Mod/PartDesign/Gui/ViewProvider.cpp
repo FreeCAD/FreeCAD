@@ -196,6 +196,8 @@ void ViewProvider::updateData(const App::Property* prop)
         std::string element("Face");
         std::vector<int> indices;
         std::set<int> edgeSet;
+        std::vector<int> edges;
+        std::set<int> pointSet;
         std::vector<int> points;
         int depth = generatedShapeDepth();
         unsigned count = depth?shape.countSubShapes(TopAbs_FACE):0;
@@ -208,17 +210,18 @@ void ViewProvider::updateData(const App::Property* prop)
                 Part::TopoShape face = shape.getSubTopoShape(TopAbs_FACE, i);
                 for(auto &s : face.getSubShapes(TopAbs_EDGE)) {
                     int idx = shape.findShape(s)-1;
-                    if(idx >= 0)
-                        edgeSet.insert(idx);
+                    if(idx >= 0 && edgeSet.insert(idx).second)
+                        edges.push_back(idx);
                 }
                 for(auto &s : face.getSubShapes(TopAbs_VERTEX)) {
                     int idx = shape.findShape(s)-1;
-                    if(idx >= 0)
+                    if(idx >= 0 && pointSet.insert(idx).second)
                         points.push_back(idx);
                 }
             }
         }
-        lineset->setHighlightIndices(edgeSet);
+        lineset->highlightIndices.setNum(edges.size());
+        lineset->highlightIndices.setValues(0,edges.size(),&edges[0]);
         nodeset->highlightIndices.setNum(points.size());
         nodeset->highlightIndices.setValues(0,points.size(),&points[0]);
         faceset->highlightIndices.setNum(indices.size());

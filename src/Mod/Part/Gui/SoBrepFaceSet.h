@@ -141,6 +141,7 @@ private:
 
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
+    void _renderSelection(SoGLRenderAction *action, SbColor color, bool push);
 
     bool overrideMaterialBinding(SoGLRenderAction *action,
             int selected, SelContextPtr ctx, SelContextPtr ctx2);

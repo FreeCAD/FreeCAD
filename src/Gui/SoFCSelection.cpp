@@ -176,14 +176,14 @@ void SoFCSelection::doAction(SoAction *action)
             if(!hlaction->isHighlighted()) {
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
                 if(ctx->isHighlighted()) {
-                    ctx->highlightIndex = -1;
+                    ctx->removeHighlight();
                     touch();
                 }
             }else{
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
                 ctx->highlightColor = hlaction->getColor();
                 if(!ctx->isHighlighted()) {
-                    ctx->highlightIndex = 0;
+                    ctx->highlightAll();
                     touch();
                 }
             }
@@ -688,7 +688,10 @@ SoFCSelection::GLRenderBelowPath(SoGLRenderAction * action)
             ctx->selectAll();
         else
             ctx->selectionIndex.clear();
-        ctx->highlightIndex = this->highlighted?0:-1;
+        if(!this->highlighted)
+            ctx->highlightAll();
+        else
+            ctx->removeHighlight();
     }
 
 #ifdef NO_FRONTBUFFER
@@ -734,7 +737,10 @@ void SoFCSelection::GLRender(SoGLRenderAction * action)
             ctx->selectAll();
         else
             ctx->selectionIndex.clear();
-        ctx->highlightIndex = this->highlighted?0:-1;
+        if(!this->highlighted)
+            ctx->highlightAll();
+        else
+            ctx->removeHighlight();
     }
 
 #ifdef NO_FRONTBUFFER
@@ -781,7 +787,10 @@ SoFCSelection::GLRenderInPath(SoGLRenderAction * action)
             ctx->selectAll();
         else
             ctx->selectionIndex.clear();
-        ctx->highlightIndex = this->highlighted?0:-1;
+        if(!this->highlighted)
+            ctx->highlightAll();
+        else
+            ctx->removeHighlight();
     }
 #ifdef NO_FRONTBUFFER
     // check if preselection is active

@@ -32,6 +32,7 @@
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 #include <vector>
 #include <memory>
 #include <set>
@@ -51,12 +52,11 @@ class PartGuiExport SoBrepEdgeSet : public SoIndexedLineSet {
 public:
     SoMFInt32 highlightIndices;
 
+
     static void initClass();
     SoBrepEdgeSet();
 
     void setSiblings(std::vector<SoNode*> &&);
-
-    void setHighlightIndices(const std::set<int> &edgeSet);
 
 protected:
     virtual ~SoBrepEdgeSet() {};
@@ -71,15 +71,15 @@ protected:
 
     virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
+    virtual void notify(SoNotList * list);
+
 private:
-    struct SelContext;
-    typedef std::shared_ptr<SelContext> SelContextPtr;
+    typedef Gui::SoFCSelectionContextEx SelContext;
+    typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
     
-    void renderShape(const SoGLCoordinateElement * const vertexlist,
-                     const int32_t *vertexindices, int num_vertexindices);
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
-    bool validIndexes(const SoCoordinateElement*, const std::vector<int32_t>&) const;
+    void _renderSelection(SoGLRenderAction *action, const SbColor &color, unsigned pattern, bool push);
 
     bool isSelected(SelContextPtr ctx);
 
@@ -88,7 +88,7 @@ private:
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     std::vector<SoNode*> siblings;
-    std::vector<int> highlightCoordIndices;
+    std::vector<int> segments;
 };
 
 } // namespace PartGui

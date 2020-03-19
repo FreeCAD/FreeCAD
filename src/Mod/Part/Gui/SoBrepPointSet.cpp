@@ -238,58 +238,44 @@ static inline void setupRendering(
     SoLazyElement::setPacked(state, node,1, color, false);
 }
 
+static FC_COIN_THREAD_LOCAL std::vector<int> RenderIndices;
+
 void SoBrepPointSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 {
     if(!ctx || !ctx->isHighlighted())
         return;
 
-    SoState * state = action->getState();
-    state->push();
+    RenderIndices.clear();
 
-    uint32_t color = ctx->highlightColor.getPackedValue(0.0);
-    setupRendering(state, this, &color);
-
-    const SoCoordinateElement * coords;
-    const SbVec3f * normals;
-
-    this->getVertexData(state, coords, normals, false);
-
-    SoMaterialBundle mb(action);
-    mb.sendFirst(); // make sure we have the correct material
-
-    int id = ctx->highlightIndex;
-    const SbVec3f * coords3d = coords->getArrayPtr3();
-    if(coords3d) {
-        glBegin(GL_POINTS);
-        if(id == INT_MAX) {
-            if(!highlightIndices.getNum()) {
-                for(int idx=startIndex.getValue();idx<coords->getNum();++idx)
-                    glVertex3fv((const GLfloat*) (coords3d + idx));
-            } else {
-                for(int i=0,num=highlightIndices.getNum();i<num;++i) {
-                    int idx = highlightIndices[i];
-                    if (idx >= startIndex.getValue() && idx < coords->getNum()) {
-                        glVertex3fv((const GLfloat*) (coords3d + idx));
-                    }
-                }
-            }
-        }else if (id < this->startIndex.getValue() || id >= coords->getNum()) {
-            SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
+    if(ctx->isHighlightAll()) {
+        if(highlightIndices.getNum()) {
+            auto indices = highlightIndices.getValues(0);
+            RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
         }
-        else 
-            glVertex3fv((const GLfloat*) (coords3d + id));
-        glEnd();
-    }
-    state->pop();
+    } else
+        RenderIndices.insert(RenderIndices.end(), ctx->highlightIndex.begin(), ctx->highlightIndex.end());
+
+    _renderSelection(action, ctx->highlightColor, true);
 }
 
 void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
+{
+    if(!ctx || !ctx->isSelected())
+        return;
+
+    RenderIndices.clear();
+    if(!ctx->isSelectAll())
+        RenderIndices.insert(RenderIndices.end(), ctx->selectionIndex.begin(), ctx->selectionIndex.end());
+    _renderSelection(action, ctx->selectionColor, push);
+}
+
+void SoBrepPointSet::_renderSelection(SoGLRenderAction *action, const SbColor &selectionColor, bool push)
 {
     SoState * state = action->getState();
     uint32_t color;
     if(push) {
         state->push();
-        color = ctx->selectionColor.getPackedValue(0.0);
+        color = selectionColor.getPackedValue(0.0);
         setupRendering(state,this,&color);
     }
 
@@ -301,26 +287,22 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
 
-    bool warn = false;
     int startIndex = this->startIndex.getValue();
     const SbVec3f * coords3d = coords->getArrayPtr3();
+
     if(coords3d) {
         glBegin(GL_POINTS);
-        if(ctx->isSelectAll()) {
+        if(RenderIndices.empty()) {
             for(int idx=startIndex;idx<coords->getNum();++idx)
                 glVertex3fv((const GLfloat*) (coords3d + idx));
-        }else{
-            for(auto idx : ctx->selectionIndex) {
+        } else {
+            for(int idx : RenderIndices) {
                 if(idx >= startIndex && idx < coords->getNum())
                     glVertex3fv((const GLfloat*) (coords3d + idx));
-                else
-                    warn = true;
             }
         }
         glEnd();
     }
-    if(warn)
-        SoDebugError::postWarning("SoBrepPointSet::renderSelection", "selectionIndex out of range");
     if(push) state->pop();
 }
 
@@ -332,7 +314,7 @@ void SoBrepPointSet::doAction(SoAction* action)
         if (!hlaction->isHighlighted()) {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
             if(ctx) {
-                ctx->highlightIndex = -1;
+                ctx->removeHighlight();
                 touch();
             }
             return;
@@ -340,22 +322,20 @@ void SoBrepPointSet::doAction(SoAction* action)
         SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
         const SoDetail* detail = hlaction->getElement();
         if (!detail) {
-            ctx->highlightIndex = INT_MAX;
+            ctx->highlightAll();
             ctx->highlightColor = hlaction->getColor();
             touch();
             return;
         }else if (!detail->isOfType(SoPointDetail::getClassTypeId())) {
-            ctx->highlightIndex = -1;
+            ctx->removeHighlight();
             touch();
             return;
         }
 
         int index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
-        if(index!=ctx->highlightIndex) {
-            ctx->highlightIndex = index;
-            ctx->highlightColor = hlaction->getColor();
+        ctx->highlightColor = hlaction->getColor();
+        if(ctx->highlightIndex.insert(index).second)
             touch();
-        }
         return;
     }
     else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {

@@ -297,7 +297,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
         if (!hlaction->isHighlighted()) {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
             if(ctx) {
-                ctx->highlightIndex = -1;
+                ctx->removeHighlight();
                 touch();
             }
             return;
@@ -306,22 +306,22 @@ void SoBrepFaceSet::doAction(SoAction* action)
         const SoDetail* detail = hlaction->getElement();
         if (!detail) {
             SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-            ctx->highlightIndex = INT_MAX;
+            ctx->highlightAll();
             ctx->highlightColor = hlaction->getColor();
             touch();
         }else {
             if (!detail->isOfType(SoFaceDetail::getClassTypeId())) {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
                 if(ctx) {
-                    ctx->highlightIndex = -1;
+                    ctx->removeHighlight();
                     touch();
                 }
             }else {
                 int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-                ctx->highlightIndex = index;
                 ctx->highlightColor = hlaction->getColor();
-                touch();
+                if(ctx->highlightIndex.insert(index).second)
+                    touch();
             }
         }
         return;
@@ -511,7 +511,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         ctx = selContext2;
         SoCacheElement::invalidate(state);
     }
-    if(ctx && (!ctx->selectionIndex.size() && ctx->highlightIndex<0))
+    if(ctx && !ctx->isSelected() && !ctx->isHighlighted())
         ctx.reset();
 
     if((!ctx2||ctx2->isSelectAll()) && isHighlightAll(ctx)) {
@@ -993,11 +993,15 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             }
         }
         if(ctx && ctx->isHighlighted()) {
-            if(ctx->highlightIndex>=0 && ctx->highlightIndex<partIndex.getNum()) {
-                packedColors.push_back(highlightColor);
-                makeDistinctColor(packedColors.back(),
-                        packedColors.back(), packedColors[matIndex[ctx->highlightIndex]]);
-                matIndex[ctx->highlightIndex] = packedColors.size()-1;
+            if(*ctx->highlightIndex.begin() >= 0) {
+                for(int idx : ctx->highlightIndex) {
+                    if(idx >= 0 && idx <= partIndex.getNum()) {
+                        packedColors.push_back(highlightColor);
+                        makeDistinctColor(packedColors.back(),
+                                packedColors.back(), packedColors[matIndex[idx]]);
+                        matIndex[idx] = packedColors.size()-1;
+                    }
+                }
             } else {
                 for(int i=0, count=highlightIndices.getNum(); i<count; ++i) {
                     int idx = highlightIndices[i];
@@ -1447,52 +1451,30 @@ void SoBrepFaceSet::generatePrimitivesRange(SoAction * action, int pstart, int f
 
 void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action, SelContextPtr ctx)
 {
-    if(!ctx || ctx->highlightIndex < 0)
+    if(!ctx || !ctx->isHighlighted())
         return;
 
-    SoState * state = action->getState();
-    state->push();
-
-    SbColor color = ctx->highlightColor;
-    if(!ctx->isHighlightAll()) {
-        switch(SoMaterialBindingElement::get(state)) {
-        case SoMaterialBindingElement::OVERALL:
-            makeDistinctColor(color,color,SoLazyElement::getDiffuse(state,0));
-            break;
-        case SoMaterialBindingElement::PER_PART:
-            if(SoLazyElement::getInstance(state)->getNumDiffuse() > ctx->highlightIndex)
-                makeDistinctColor(color,color,SoLazyElement::getDiffuse(state,ctx->highlightIndex));
-            break;
-        default:
-            break;
-        }
-    }
-
-    SoLazyElement::setEmissive(state, &color);
-    // if shading is disabled then set also the diffuse color
-    if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
-        packedColor = color.getPackedValue(0.0);
-        SoLazyElement::setPacked(state, this,1, &packedColor,false);
-    }
-    SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
-    SoOverrideElement::setMaterialBindingOverride(state,this,true);
-    SoTextureEnabledElement::set(state,this,false);
-
-    int id = ctx->highlightIndex;
+    RenderIndices.clear();
     if(ctx->isHighlightAll()) {
-        RenderIndices.clear();
-        for(int i=0, count=highlightIndices.getNum(); i<count; ++i) {
-            int idx = highlightIndices[i];
-            if(idx>=0 && idx<partIndex.getNum())
-                RenderIndices.push_back(idx);
+        if(highlightIndices.getNum()) {
+            for(int i=0, num=highlightIndices.getNum(); i<num; ++i) {
+                int id = highlightIndices[i];
+                if (id<0 || id>=partIndex.getNum())
+                    continue;
+                RenderIndices.push_back(id);
+            }
         }
-        renderShape(action, true);
-    } else if(id < partIndex.getNum()) {
-        RenderIndices.resize(1,id);
-        renderShape(action, true);
+    } else {
+        for(auto id : ctx->highlightIndex) {
+            if (id<0 || id>=partIndex.getNum())
+                continue;
+            RenderIndices.push_back(id);
+        }
+        if(RenderIndices.empty())
+            return;
     }
 
-    state->pop();
+    _renderSelection(action, ctx->highlightColor, true);
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx, bool push)
@@ -1512,16 +1494,19 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     } else if (!ctx->hasSelectionColor())
         push = false;
 
+    _renderSelection(action, ctx->selectionColor, push);
+}
+
+void SoBrepFaceSet::_renderSelection(SoGLRenderAction *action, SbColor color, bool push)
+{
     bool resetMatIndices = false;
     SoState * state = action->getState();
 
     if(push) {
         state->push();
 
-        SbColor color = ctx->selectionColor;
-
         auto mb = SoMaterialBindingElement::get(state);
-        if(ctx->isSelectAll())
+        if(RenderIndices.empty())
             mb = SoMaterialBindingElement::OVERALL;
         else {
             switch(mb) {
