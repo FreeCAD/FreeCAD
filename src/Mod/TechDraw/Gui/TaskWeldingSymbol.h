@@ -33,7 +33,6 @@
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
 class Ui_TaskWeldingSymbol;
-class Ui_TaskCL2Lines;
 
 namespace App {
 class DocumentObject;
