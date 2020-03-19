@@ -2088,9 +2088,6 @@ void Application::runApplication(void)
     }
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
-    QMdiArea* mdi = mw.findChild<QMdiArea*>();
-    mdi->setProperty("showImage", hGrp->GetBool("TiledBackground", false));
-
     std::string style = hGrp->GetASCII("StyleSheet");
     if (style.empty()) {
         // check the branding settings
@@ -2099,54 +2096,8 @@ void Application::runApplication(void)
         if (it != config.end())
             style = it->second;
     }
-    if (!style.empty()) {
-        // Search for stylesheet in user, system and resources location
-        QString user = QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str());
-        QString system = QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str());
-        QString resources = QLatin1String(":/stylesheets/");
 
-        QFile f;
-        if (QFile::exists(user + QLatin1String(style.c_str()))) {
-            f.setFileName(user + QLatin1String(style.c_str()));
-        }
-        else if (QFile::exists(system + QLatin1String(style.c_str()))) {
-            f.setFileName(system + QLatin1String(style.c_str()));
-        }
-        else if (QFile::exists(resources + QLatin1String(style.c_str()))) {
-            f.setFileName(resources + QLatin1String(style.c_str()));
-        }
-        else {
-        }
-
-        if (f.open(QFile::ReadOnly | QFile::Text)) {
-            mdi->setBackground(QBrush(Qt::NoBrush));
-            QTextStream str(&f);
-            qApp->setStyleSheet(str.readAll());
-
-            ActionStyleEvent e(ActionStyleEvent::Clear);
-            qApp->sendEvent(&mw, &e);
-        }
-    }
-    else {
-        if (hGrp->GetBool("TiledBackground", false)) {
-            mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
-        }
-#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
-        // Under Windows the tree indicator branch gets corrupted after a while.
-        // For more details see also https://bugreports.qt.io/browse/QTBUG-52230
-        // and https://codereview.qt-project.org/#/c/154357/2//ALL,unified
-        // A workaround for Qt 5.6.0 is to set a minimal style sheet.
-        QString qss = QString::fromLatin1(
-               "QTreeView::branch:closed:has-children  {\n"
-               "    image: url(:/icons/style/windows_branch_closed.png);\n"
-               "}\n"
-               "\n"
-               "QTreeView::branch:open:has-children  {\n"
-               "    image: url(:/icons/style/windows_branch_open.png);\n"
-               "}\n");
-        qApp->setStyleSheet(qss);
-#endif
-    }
+    app.setStyleSheet(QLatin1String(style.c_str()), hGrp->GetBool("TiledBackground", false));
 
     //initialize spaceball.
     mainApp.initSpaceball(&mw);
@@ -2208,6 +2159,78 @@ void Application::runApplication(void)
     }
 
     Base::Console().Log("Finish: Event loop left\n");
+}
+
+void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
+{
+    Gui::MainWindow* mw = getMainWindow();
+    QMdiArea* mdi = mw->findChild<QMdiArea*>();
+    mdi->setProperty("showImage", tiledBackground);
+
+    QString current = mw->property("fc_currentStyleSheet").toString();
+    mw->setProperty("fc_currentStyleSheet", qssFile);
+
+    if (!qssFile.isEmpty() && current != qssFile) {
+        // Search for stylesheet in user, system and resources location
+        QString user = QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str());
+        QString system = QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str());
+        QString resources = QLatin1String(":/stylesheets/");
+
+        QFile f;
+        if (QFile::exists(user + qssFile)) {
+            f.setFileName(user + qssFile);
+        }
+        else if (QFile::exists(system + qssFile)) {
+            f.setFileName(system + qssFile);
+        }
+        else if (QFile::exists(resources + qssFile)) {
+            f.setFileName(resources + qssFile);
+        }
+        else {
+        }
+
+        if (f.open(QFile::ReadOnly | QFile::Text)) {
+            mdi->setBackground(QBrush(Qt::NoBrush));
+            QTextStream str(&f);
+            qApp->setStyleSheet(str.readAll());
+
+            ActionStyleEvent e(ActionStyleEvent::Clear);
+            qApp->sendEvent(mw, &e);
+        }
+    }
+
+    if (qssFile.isEmpty()) {
+        if (tiledBackground) {
+            qApp->setStyleSheet(QString());
+            ActionStyleEvent e(ActionStyleEvent::Restore);
+            qApp->sendEvent(getMainWindow(), &e);
+            mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
+        }
+        else {
+            qApp->setStyleSheet(QString());
+            ActionStyleEvent e(ActionStyleEvent::Restore);
+            qApp->sendEvent(getMainWindow(), &e);
+            mdi->setBackground(QBrush(QColor(160,160,160)));
+        }
+#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
+        // Under Windows the tree indicator branch gets corrupted after a while.
+        // For more details see also https://bugreports.qt.io/browse/QTBUG-52230
+        // and https://codereview.qt-project.org/#/c/154357/2//ALL,unified
+        // A workaround for Qt 5.6.0 is to set a minimal style sheet.
+        QString qss = QString::fromLatin1(
+               "QTreeView::branch:closed:has-children  {\n"
+               "    image: url(:/icons/style/windows_branch_closed.png);\n"
+               "}\n"
+               "\n"
+               "QTreeView::branch:open:has-children  {\n"
+               "    image: url(:/icons/style/windows_branch_open.png);\n"
+               "}\n");
+        qApp->setStyleSheet(qss);
+#endif
+    }
+
+    if (mdi->style())
+        mdi->style()->unpolish(qApp);
 }
 
 void Application::checkForPreviousCrashes()
