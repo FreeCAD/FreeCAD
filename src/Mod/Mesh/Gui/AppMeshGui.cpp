@@ -26,6 +26,7 @@
 # include <Inventor/SoDB.h>
 # include <Inventor/SoInput.h>
 # include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 # include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
 #endif
 
