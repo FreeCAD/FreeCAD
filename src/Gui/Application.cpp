@@ -2171,25 +2171,19 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
     mw->setProperty("fc_currentStyleSheet", qssFile);
 
     if (!qssFile.isEmpty() && current != qssFile) {
-        // Search for stylesheet in user, system and resources location
-        QString user = QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str());
-        QString system = QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str());
-        QString resources = QLatin1String(":/stylesheets/");
+        // Search for stylesheet in user-defined search paths.
+        // For qss they are set-up in runApplication() with the prefix "qss"
+        QString prefix(QLatin1String("qss:"));
 
         QFile f;
-        if (QFile::exists(user + qssFile)) {
-            f.setFileName(user + qssFile);
+        if (QFile::exists(qssFile)) {
+            f.setFileName(qssFile);
         }
-        else if (QFile::exists(system + qssFile)) {
-            f.setFileName(system + qssFile);
-        }
-        else if (QFile::exists(resources + qssFile)) {
-            f.setFileName(resources + qssFile);
-        }
-        else {
+        else if (QFile::exists(prefix + qssFile)) {
+            f.setFileName(prefix + qssFile);
         }
 
-        if (f.open(QFile::ReadOnly | QFile::Text)) {
+        if (!f.fileName().isEmpty() && f.open(QFile::ReadOnly | QFile::Text)) {
             mdi->setBackground(QBrush(Qt::NoBrush));
             QTextStream str(&f);
             qApp->setStyleSheet(str.readAll());
