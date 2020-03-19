@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>607</width>
-    <height>820</height>
+    <height>837</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -230,32 +230,16 @@ This feature may slightly increase recomputation time.</string>
       <string>Storage</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefSaveTransaction">
-        <property name="enabled">
-         <bool>false</bool>
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefSaveThumbnail">
+        <property name="toolTip">
+         <string>A thumbnail will be stored when document is saved</string>
         </property>
         <property name="text">
-         <string>Saving transactions (Auto-save)</string>
+         <string>Save thumbnail into project file when saving document</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>SaveTransactions</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Document</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefDiscardTransaction">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Discard saved transaction after saving document</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>TransactionsDiscard</cstring>
+         <cstring>SaveThumbnail</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Document</cstring>
@@ -327,6 +311,38 @@ automatically run a file recovery when it is started.</string>
         </item>
        </layout>
       </item>
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefDiscardTransaction">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Discard saved transaction after saving document</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>TransactionsDiscard</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefSaveTransaction">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Saving transactions (Auto-save)</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SaveTransactions</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="4" column="0">
        <widget class="Line" name="line1_2_3">
         <property name="frameShape">
@@ -340,23 +356,26 @@ automatically run a file recovery when it is started.</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefSaveThumbnail">
+      <item row="10" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefAddLogo">
         <property name="toolTip">
-         <string>A thumbnail will be stored when document is saved</string>
+         <string>The program logo will be added to the thumbnail</string>
         </property>
         <property name="text">
-         <string>Save thumbnail into project file when saving document</string>
+         <string>Add the program logo to the generated thumbnail</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>SaveThumbnail</cstring>
+         <cstring>AddThumbnailLogo</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Document</cstring>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="11" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
@@ -423,7 +442,44 @@ automatically run a file recovery when it is started.</string>
         </item>
        </layout>
       </item>
-      <item row="8" column="0">
+      <item row="9" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>6</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Size of thumbnail</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="prefThumbnailSize">
+          <property name="toolTip">
+           <string>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</string>
+          </property>
+          <property name="minimum">
+           <number>128</number>
+          </property>
+          <property name="maximum">
+           <number>512</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThumbnailSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="12" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
          <number>6</number>
@@ -478,25 +534,6 @@ get date suffix according to the specified format</string>
          </widget>
         </item>
        </layout>
-      </item>
-      <item row="6" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefAddLogo">
-        <property name="toolTip">
-         <string>The program logo will be added to the thumbnail</string>
-        </property>
-        <property name="text">
-         <string>Add the program logo to the generated thumbnail</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>AddThumbnailLogo</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Document</cstring>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
