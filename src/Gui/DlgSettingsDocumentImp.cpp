@@ -77,6 +77,7 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefSaveTransaction->onSave();
     ui->prefDiscardTransaction->onSave();
     ui->prefSaveThumbnail->onSave();
+    ui->prefThumbnailSize->onSave();
     ui->prefAddLogo->onSave();
     ui->prefSaveBackupFiles->onSave();
     ui->prefCountBackupFiles->onSave();
@@ -110,6 +111,7 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefSaveTransaction->onRestore();
     ui->prefDiscardTransaction->onRestore();
     ui->prefSaveThumbnail->onRestore();
+    ui->prefThumbnailSize->onRestore();
     ui->prefAddLogo->onRestore();
     ui->prefSaveBackupFiles->onRestore();
     ui->prefCountBackupFiles->onRestore();
