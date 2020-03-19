@@ -1216,14 +1216,16 @@ void Document::Save (Base::Writer &writer) const
     if (writer.isForceXML() == false) {
         writer.addFile("GuiDocument.xml", this);
 
-        if (App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("SaveThumbnail",false)) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+        if (hGrp->GetBool("SaveThumbnail", false)) {
+            int size = hGrp->GetInt("ThumbnailSize", 128);
+            size = Base::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
             for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
                 if ((*it)->getTypeId().isDerivedFrom(View3DInventor::getClassTypeId())) {
                     View3DInventorViewer* view = static_cast<View3DInventor*>(*it)->getViewer();
                     d->thumb.setFileName(d->_pcDocument->FileName.getValue());
-                    d->thumb.setSize(128);
+                    d->thumb.setSize(size);
                     d->thumb.setViewer(view);
                     d->thumb.Save(writer);
                     break;

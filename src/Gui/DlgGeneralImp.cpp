@@ -162,60 +162,10 @@ void DlgGeneralImp::saveSettings()
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
-    QMdiArea* mdi = getMainWindow()->findChild<QMdiArea*>();
-    mdi->setProperty("showImage", ui->tiledBackground->isChecked());
 
     QVariant sheet = ui->StyleSheets->itemData(ui->StyleSheets->currentIndex());
-    if (this->selectedStyleSheet != sheet.toString()) {
-        this->selectedStyleSheet = sheet.toString();
-        hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
-
-        if (!sheet.toString().isEmpty()) {
-            QFile f(sheet.toString());
-            if (f.open(QFile::ReadOnly)) {
-                mdi->setBackground(QBrush(Qt::NoBrush));
-                QTextStream str(&f);
-                qApp->setStyleSheet(str.readAll());
-
-                ActionStyleEvent e(ActionStyleEvent::Clear);
-                qApp->sendEvent(getMainWindow(), &e);
-            }
-        }
-    }
-
-    if (sheet.toString().isEmpty()) {
-        if (ui->tiledBackground->isChecked()) {
-            qApp->setStyleSheet(QString());
-            ActionStyleEvent e(ActionStyleEvent::Restore);
-            qApp->sendEvent(getMainWindow(), &e);
-            mdi->setBackground(QPixmap(QLatin1String("images:background.png")));
-        }
-        else {
-            qApp->setStyleSheet(QString());
-            ActionStyleEvent e(ActionStyleEvent::Restore);
-            qApp->sendEvent(getMainWindow(), &e);
-            mdi->setBackground(QBrush(QColor(160,160,160)));
-        }
-
-#if QT_VERSION == 0x050600 && defined(Q_OS_WIN32)
-        // Under Windows the tree indicator branch gets corrupted after a while.
-        // For more details see also https://bugreports.qt.io/browse/QTBUG-52230
-        // and https://codereview.qt-project.org/#/c/154357/2//ALL,unified
-        // A workaround for Qt 5.6.0 is to set a minimal style sheet.
-        QString qss = QString::fromLatin1(
-               "QTreeView::branch:closed:has-children  {\n"
-               "    image: url(:/icons/style/windows_branch_closed.png);\n"
-               "}\n"
-               "\n"
-               "QTreeView::branch:open:has-children  {\n"
-               "    image: url(:/icons/style/windows_branch_open.png);\n"
-               "}\n");
-        qApp->setStyleSheet(qss);
-#endif
-    }
-
-    if (mdi->style())
-        mdi->style()->unpolish(qApp);
+    hGrp->SetASCII("StyleSheet", (const char*)sheet.toByteArray());
+    Application::Instance->setStyleSheet(sheet.toString(), ui->tiledBackground->isChecked());
 }
 
 void DlgGeneralImp::loadSettings()
@@ -307,7 +257,7 @@ void DlgGeneralImp::loadSettings()
         fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
         for (QFileInfoList::iterator jt = fileNames.begin(); jt != fileNames.end(); ++jt) {
             if (cssFiles.find(jt->baseName()) == cssFiles.end()) {
-                cssFiles[jt->baseName()] = jt->absoluteFilePath();
+                cssFiles[jt->baseName()] = jt->fileName();
             }
         }
     }
@@ -318,8 +268,8 @@ void DlgGeneralImp::loadSettings()
         ui->StyleSheets->addItem(it.key(), it.value());
     }
 
-    this->selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
-    index = ui->StyleSheets->findData(this->selectedStyleSheet);
+    QString selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
+    index = ui->StyleSheets->findData(selectedStyleSheet);
     if (index > -1) ui->StyleSheets->setCurrentIndex(index);
 }
 
