@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -392,15 +393,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.axialRapid = 360 / safeCircum * self.horizRapid # pylint: disable=attribute-defined-outside-init
 
         # Initiate depthparams and calculate operation heights for rotational operation
-        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-        self.depthparams = PathUtils.depth_params( # pylint: disable=attribute-defined-outside-init
-            clearance_height=obj.ClearanceHeight.Value,
-            safe_height=obj.SafeHeight.Value,
-            start_depth=obj.StartDepth.Value,
-            step_down=obj.StepDown.Value,
-            z_finish_step=finish_step,
-            final_depth=obj.FinalDepth.Value,
-            user_depths=None)
+        self.depthparams = self._customDepthParams(obj, obj.StartDepth.Value, obj.FinalDepth.Value)
 
         # Set start point
         if PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
@@ -446,15 +439,7 @@ class ObjectOp(PathOp.ObjectOp):
             else:
                 nextAxis = 'L'
 
-            finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
-            self.depthparams = PathUtils.depth_params( # pylint: disable=attribute-defined-outside-init
-                clearance_height=obj.ClearanceHeight.Value,
-                safe_height=obj.SafeHeight.Value,
-                start_depth=strDep,  # obj.StartDepth.Value,
-                step_down=obj.StepDown.Value,
-                z_finish_step=finish_step,
-                final_depth=finDep,  # obj.FinalDepth.Value,
-                user_depths=None)
+            self.depthparams = self._customDepthParams(obj, strDep, finDep)
 
             try:
                 if self.profileEdgesIsOpen is True:
@@ -475,19 +460,14 @@ class ObjectOp(PathOp.ObjectOp):
                         axisOfRot = 'A'
                     elif axis == 'Y':
                         axisOfRot = 'B'
-                        # Reverse angle temporarily to match model. Error in FreeCAD render of B axis rotations
-                        if obj.B_AxisErrorOverride is True:
-                            angle = -1 * angle
                     elif axis == 'Z':
                         axisOfRot = 'C'
                     else:
                         axisOfRot = 'A'
                     # Rotate Model to correct angle
-                    ppCmds.insert(0, Path.Command('G1', {axisOfRot: angle, 'F': self.axialFeed}))
-                    ppCmds.insert(0, Path.Command('N100', {}))
+                    ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
 
                     # Raise cutter to safe depth and return index to starting position
-                    ppCmds.append(Path.Command('N200', {}))
                     ppCmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
                     if axis != nextAxis:
                         ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
@@ -761,7 +741,7 @@ class ObjectOp(PathOp.ObjectOp):
             xAx = 'xAxCyl'
             yAx = 'yAxCyl'
             # zAx = 'zAxCyl'
-            FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
+            VA = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "visualAxis")
             if FreeCAD.GuiUp:
                 FreeCADGui.ActiveDocument.getObject('visualAxis').Visibility = False
             vaGrp = FreeCAD.ActiveDocument.getObject("visualAxis")
@@ -793,6 +773,7 @@ class ObjectOp(PathOp.ObjectOp):
                 cylGui.Transparency = 85
                 cylGui.Visibility = False
             vaGrp.addObject(cyl)
+            VA.purgeTouched()
 
     def useTempJobClones(self, cloneName):
         '''useTempJobClones(cloneName)
@@ -808,6 +789,8 @@ class ObjectOp(PathOp.ObjectOp):
                     for cln in FreeCAD.ActiveDocument.getObject('rotJobClones').Group:
                         FreeCAD.ActiveDocument.removeObject(cln.Name)
                     FreeCAD.ActiveDocument.removeObject('rotJobClones')
+                else:
+                    FreeCAD.ActiveDocument.getObject('rotJobClones').purgeTouched()
         else:
             FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "rotJobClones")
             if FreeCAD.GuiUp:
@@ -917,7 +900,7 @@ class ObjectOp(PathOp.ObjectOp):
         obj.AttemptInverseAngle = False
         angle = -1 * angle
 
-        PathLog.info(translate("Path", "Rotated to inverse angle."))
+        PathLog.debug(translate("Path", "Rotated to inverse angle."))
         return (clnBase, clnStock, angle)
 
     def sortTuplesByIndex(self, TupleList, tagIdx):
@@ -960,3 +943,28 @@ class ObjectOp(PathOp.ObjectOp):
             return True
         else:
             return False
+
+    def isFaceUp(self, base, face):
+        up = face.extrude(FreeCAD.Vector(0.0, 0.0, 5.0))
+        dwn = face.extrude(FreeCAD.Vector(0.0, 0.0, -5.0))
+        upCmn = base.Shape.common(up)
+        dwnCmn = base.Shape.common(dwn)
+        if upCmn.Volume == 0.0:
+            return True
+        elif dwnCmn.Volume == 0.0:
+            return False
+        if dwnCmn.Volume > upCmn.Volume:
+            return True
+        return False
+
+    def _customDepthParams(self, obj, strDep, finDep):
+        finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
+        cdp = PathUtils.depth_params(
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=strDep,
+            step_down=obj.StepDown.Value,
+            z_finish_step=finish_step,
+            final_depth=finDep,
+            user_depths=None)
+        return cdp
