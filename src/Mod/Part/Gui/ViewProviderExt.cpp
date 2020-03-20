@@ -690,30 +690,50 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
     const auto &shape = Part::Feature::getTopoShape(getObject());
-    std::string element = shape.getElementName(subelement);
-    std::string::size_type pos = element.find_first_of("0123456789");
-    int index = -1;
-    if (pos != std::string::npos) {
-        index = std::atoi(element.substr(pos).c_str());
-        element = element.substr(0,pos);
-    }
+    const char *name = shape.getElementName(subelement);
+    auto res = shape.shapeTypeAndIndex(name);
+    if(!res.second)
+        return nullptr;
 
-    SoDetail* detail = 0;
-    if (index < 0)
-        return detail;
-    if (element == "Face") {
+    int index = res.second;
+
+    Part::TopoShape subshape = shape.getSubTopoShape(name,true);
+    if(subshape.isNull())
+        return nullptr;
+
+    SoDetail *detail = nullptr;
+    switch(res.first) {
+    case TopAbs_FACE:
         detail = new SoFaceDetail();
         static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
-    }
-    else if (element == "Edge") {
+        break;
+    case TopAbs_EDGE:
         detail = new SoLineDetail();
         static_cast<SoLineDetail*>(detail)->setLineIndex(index - 1);
-    }
-    else if (element == "Vertex") {
+        break;
+    case TopAbs_VERTEX:
         detail = new SoPointDetail();
         static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
+        break;
+    default:
+        detail = new Gui::SoFCDetail;
+        for(auto &s : subshape.getSubShapes(TopAbs_FACE)) {
+            int index = shape.findShape(s);
+            if(index>0)
+                static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Face, index-1);
+        }
+        for(auto &s : subshape.getSubShapes(TopAbs_EDGE)) {
+            int index = shape.findShape(s);
+            if(index>0)
+                static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Edge, index-1);
+        }
+        for(auto &s : subshape.getSubShapes(TopAbs_VERTEX)) {
+            int index = shape.findShape(s);
+            if(index>0)
+                static_cast<Gui::SoFCDetail*>(detail)->addIndex(Gui::SoFCDetail::Vertex, index-1);
+        }
+        break;
     }
-
     return detail;
 }
 

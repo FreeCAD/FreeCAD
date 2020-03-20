@@ -31,12 +31,14 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/details/SoSubDetail.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SbViewportRegion.h>
 #include "InventorBase.h"
 #include "View3DInventorViewer.h"
 #include "SoFCSelectionContext.h"
+#include <array>
 #include <list>
 #include <unordered_set>
 #include <unordered_map>
@@ -345,6 +347,32 @@ private:
     static CacheEnabled CacheMode;
 };
 
+class GuiExport SoFCDetail : public SoDetail
+{
+    SO_DETAIL_HEADER(SoFCDetail);
+
+public:
+    SoFCDetail(void);
+    virtual ~SoFCDetail();
+
+    static void initClass(void);
+    virtual SoDetail * copy(void) const;
+
+    enum Type {
+        Vertex,
+        Edge,
+        Face,
+        TypeMax,
+    };
+    const std::set<int> &getIndices(Type type) const;
+    void setIndices(Type type, std::set<int> &&indices);
+    bool addIndex(Type type, int index);
+    bool removeIndex(Type type, int index);
+
+private:
+    std::array<std::set<int>, TypeMax> indexArray;
+};
+
 class GuiExport SoFCSelectionRoot : public SoFCSeparator {
     typedef SoFCSeparator inherited;
 
@@ -370,6 +398,11 @@ public:
     virtual void getBoundingBox(SoGetBoundingBoxAction * action);
     virtual void getMatrix(SoGetMatrixAction * action);
     virtual void callback(SoCallbackAction *action);
+
+    static bool handleSelectionAction(SoAction *action, SoNode *node,
+                                      SoFCDetail::Type detailType,
+                                      SoFCSelectionContextExPtr selContext,
+                                      SoFCSelectionCounter &counter);
 
     template<class T>
     static std::shared_ptr<T> getRenderContext(SoNode *node, std::shared_ptr<T> def = std::shared_ptr<T>()) {

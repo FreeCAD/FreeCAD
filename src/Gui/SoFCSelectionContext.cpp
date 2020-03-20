@@ -41,7 +41,7 @@ bool SoFCSelectionContext::checkGlobal(SoFCSelectionContextPtr ctx) {
     bool hl = false;
     SoFCSelectionRoot::checkSelection(sel,selectionColor,hl,highlightColor);
     if(sel) 
-        selectionIndex.insert(-1);
+        selectionIndex.emplace(-1,0);
     else if(ctx && hl) {
         selectionColor = ctx->selectionColor;
         selectionIndex = ctx->selectionIndex;
@@ -59,11 +59,15 @@ bool SoFCSelectionContext::checkGlobal(SoFCSelectionContextPtr ctx) {
 
 bool SoFCSelectionContext::removeIndex(int index) {
     auto it = selectionIndex.find(index);
-    if(it != selectionIndex.end()) {
+    if(it != selectionIndex.end() && --it->second <= 0) {
         selectionIndex.erase(it);
         return true;
     }
     return false;
+}
+
+bool SoFCSelectionContext::addIndex(int index) {
+    return ++selectionIndex[index] == 1;
 }
 
 int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output, 
@@ -98,9 +102,9 @@ int SoFCSelectionContext::merge(int status, SoFCSelectionContextBasePtr &output,
     }
 
     std::vector<int> remove;
-    for(auto idx : ret->selectionIndex) {
-        if(!ctx->selectionIndex.count(idx))
-            remove.push_back(idx);
+    for(auto &v : ret->selectionIndex) {
+        if(!ctx->selectionIndex.count(v.first))
+            remove.push_back(v.first);
     }
 
     for(auto idx : remove) {

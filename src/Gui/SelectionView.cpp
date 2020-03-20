@@ -628,44 +628,73 @@ SelectionMenu::SelectionMenu(QWidget *parent)
     :QMenu(parent),pSelList(0)
 {}
 
+struct ElementInfo {
+    QMenu *menu = nullptr;
+    std::vector<int> indices;
+};
+
+struct SubMenuInfo {
+    QMenu *menu = nullptr;
+
+    // Map from sub-object label to map from object path to element info The
+    // reason of the second map is to disambiguate sub-object with the same
+    // label, but different object or object path
+    std::map<std::string, std::map<std::string, ElementInfo> > items;
+};
+
 void SelectionMenu::doPick(const std::vector<App::SubObjectT> &sels) {
     clear();
     setStyleSheet(QLatin1String("* { menu-scrollable: 1 }"));
 
     pSelList = &sels;
     std::ostringstream ss;
+    std::map<std::string, SubMenuInfo> menus;
 
-    std::map<std::string,std::map<std::pair<std::string,int>, int> > objs;
     int i=0;
     for(auto &sel : sels) {
+        auto sobj = sel.getSubObject();
+        if(!sobj)
+            continue;
+
         ss.str("");
         int index = -1;
         std::string element = sel.getOldElementName(&index);
         if(index < 0)
             continue;
         ss << sel.getObjectName() << '.' << sel.getSubNameNoElement();
-        objs[ss.str()][std::make_pair(element,index)] = i++;
+        std::string key = ss.str();
+
+        menus[element].items[sobj->Label.getStrValue()][key].indices.push_back(i++);
     }
-    for(auto &v : objs) {
-        auto &sel = sels[v.second.begin()->second];
-        auto sobj = sel.getSubObject();
-        if(!sobj)
-            continue;
-        if(sels.size()>20) {
-            QMenu *sub = addMenu(QString::fromUtf8(sobj->Label.getValue()));
-            connect(sub,SIGNAL(aboutToShow()),this,SLOT(onSubMenu()));
-            for(auto &vv : v.second) {
-                int i = vv.second;
-                QAction *action = sub->addAction(QString::fromUtf8(sels[i].getOldElementName().c_str()));
-                action->setData(i);
-            }
-        } else {
-            for(auto &vv : v.second) {
-                int i = vv.second;
-                ss.str("");
-                ss << sobj->Label.getValue() << " (" << sels[i].getOldElementName() << ')';
-                QAction *action = this->addAction(QString::fromUtf8(ss.str().c_str()));
-                action->setData(i);
+
+    for(auto &v : menus) {
+        auto &info = v.second;
+        info.menu = addMenu(QLatin1String(v.first.c_str()));
+
+        for(auto &vv : info.items) {
+            const std::string &label = vv.first;
+
+            for(auto &vvv : vv.second) {
+                auto &elementInfo = vvv.second;
+
+                if(sels.size() <= 20) {
+                    for(int idx : elementInfo.indices) {
+                        ss.str("");
+                        ss << label << " (" << sels[idx].getOldElementName() << ")";
+                        QAction *action = info.menu->addAction(QString::fromUtf8(ss.str().c_str()));
+                        action->setData(idx);
+                    }
+                    continue;
+                }
+                if(!elementInfo.menu) {
+                    elementInfo.menu = info.menu->addMenu(QString::fromUtf8(label.c_str()));
+                    connect(elementInfo.menu, SIGNAL(aboutToShow()),this,SLOT(onSubMenu()));
+                }
+                for(int idx : elementInfo.indices) {
+                    QAction *action = elementInfo.menu->addAction(
+                            QString::fromUtf8(sels[idx].getOldElementName().c_str()));
+                    action->setData(idx);
+                }
             }
         }
     }
@@ -727,8 +756,30 @@ void SelectionMenu::leaveEvent(QEvent *event) {
 }
 
 void SelectionMenu::onTimer() {
+    bool needElement = tooltipIndex < 0;
+    if(needElement)
+        tooltipIndex = -tooltipIndex - 1;
+
     auto &sel = (*pSelList)[tooltipIndex];
-    QToolTip::showText(QCursor::pos(), QLatin1String(sel.getSubNameNoElement().c_str()));
+    auto sobj = sel.getSubObject();
+    QString tooltip;
+
+    QString element;
+    if(needElement)
+        element = QString::fromLatin1(sel.getOldElementName().c_str());
+
+    if(sobj)
+        tooltip = QString::fromLatin1("%1 (%2.%3%4)").arg(
+                        QString::fromUtf8(sobj->Label.getValue()),
+                        QString::fromLatin1(sel.getObjectName().c_str()),
+                        QString::fromLatin1(sel.getSubNameNoElement().c_str()),
+                        element);
+    else
+        tooltip = QString::fromLatin1("%1.%2%3").arg(
+                        QString::fromLatin1(sel.getObjectName().c_str()),
+                        QString::fromLatin1(sel.getSubNameNoElement().c_str()),
+                        element);
+    QToolTip::showText(QCursor::pos(), tooltip);
 }
 
 void SelectionMenu::onSubMenu() {
@@ -753,7 +804,7 @@ void SelectionMenu::onSubMenu() {
             sel.getObjectName().c_str(), subname.c_str(),0,0,0,2);
 
     timer.start(500);
-    tooltipIndex = idx;
+    tooltipIndex = -idx-1;
 }
 
 #include "moc_SelectionView.cpp"

@@ -50,7 +50,7 @@ typedef std::shared_ptr<SoFCSelectionContext> SoFCSelectionContextPtr;
 struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
 {
     std::set<int> highlightIndex;
-    std::set<int> selectionIndex;
+    std::map<int,int> selectionIndex; // map from index to reference count
     SbColor selectionColor;
     SbColor highlightColor;
 
@@ -68,11 +68,11 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
 
     void selectAll() {
         selectionIndex.clear();
-        selectionIndex.insert(-1);
+        selectionIndex.emplace(-1,0);
     }
 
     bool isSelectAll() const{
-        return selectionIndex.size() && *selectionIndex.begin()<0;
+        return selectionIndex.size() && selectionIndex.begin()->first<0;
     }
 
     bool isHighlighted() const {
@@ -95,6 +95,8 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     }
 
     bool removeIndex(int index);
+    bool addIndex(int index);
+
     bool checkGlobal(SoFCSelectionContextPtr ctx);
 
     virtual SoFCSelectionContextBasePtr copy() {

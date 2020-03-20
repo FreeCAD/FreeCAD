@@ -127,6 +127,7 @@ void Gui::SoFCDB::init()
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();
     SoFCPathAnnotation              ::initClass();
+    SoFCDetail                      ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();

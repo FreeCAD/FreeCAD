@@ -1620,7 +1620,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     delete view;
 
     QAction *pickAction = 0;
-    auto selList = viewer->getPickedList(position);
+    auto selList = viewer->getPickedList(position, true);
     if(selList.size()) {
         auto posAction = contextMenu.actions().front();
         pickAction = new QAction(QObject::tr("Pick geometries"),&contextMenu);
@@ -1647,7 +1647,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     }
 
     if(pickAction && used==pickAction) 
-        contextMenu.doPick(selList);
+        contextMenu.doPick(viewer->getPickedList(position,false));
 }
 
 // ----------------------------------------------------------------------------------

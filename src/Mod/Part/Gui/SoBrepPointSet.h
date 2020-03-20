@@ -64,8 +64,8 @@ protected:
     virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
 private:
-    typedef Gui::SoFCSelectionContext SelContext;
-    typedef Gui::SoFCSelectionContextPtr SelContextPtr;
+    typedef Gui::SoFCSelectionContextEx SelContext;
+    typedef Gui::SoFCSelectionContextExPtr SelContextPtr;
     void renderHighlight(SoGLRenderAction *action, SelContextPtr);
     void renderSelection(SoGLRenderAction *action, SelContextPtr, bool push=true);
     void _renderSelection(SoGLRenderAction *action, const SbColor &color, bool push);

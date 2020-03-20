@@ -289,7 +289,7 @@ public:
     SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
     SbBool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
-    std::vector<App::SubObjectT> getPickedList(const SbVec2s &pos) const;
+    std::vector<App::SubObjectT> getPickedList(const SbVec2s &pos, bool singlePick=false) const;
     //@}
 
     /**
@@ -472,6 +472,7 @@ private:
     SoFCSelectionRoot * pcGroupOnTopSel;
     SoFCSelectionRoot * pcGroupOnTopPreSel;
     SoPath            * pcGroupOnTopPath;
+    SoPath            * pCurrentHighlightPath;
 
     struct OnTopInfo {
         SoFCPathAnnotation *node;

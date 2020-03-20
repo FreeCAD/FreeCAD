@@ -291,128 +291,11 @@ void SoBrepFaceSet::buildPartIndexCache() {
 
 void SoBrepFaceSet::doAction(SoAction* action)
 {
-    if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
-        Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
-        selCounter.checkAction(hlaction);
-        if (!hlaction->isHighlighted()) {
-            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-            if(ctx) {
-                ctx->removeHighlight();
-                touch();
-            }
-            return;
-        }
+    if (Gui::SoFCSelectionRoot::handleSelectionAction(
+                action, this, Gui::SoFCDetail::Face, selContext, selCounter))
+        return;
 
-        const SoDetail* detail = hlaction->getElement();
-        if (!detail) {
-            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-            ctx->highlightAll();
-            ctx->highlightColor = hlaction->getColor();
-            touch();
-        }else {
-            if (!detail->isOfType(SoFaceDetail::getClassTypeId())) {
-                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(ctx) {
-                    ctx->removeHighlight();
-                    touch();
-                }
-            }else {
-                int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
-                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-                ctx->highlightColor = hlaction->getColor();
-                if(ctx->highlightIndex.insert(index).second)
-                    touch();
-            }
-        }
-        return;
-    }
-    else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
-        Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
-        switch(selaction->getType()) {
-        case Gui::SoSelectionElementAction::All: {
-            SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this,selContext);
-            selCounter.checkAction(selaction,ctx);
-            ctx->selectionColor = selaction->getColor();
-            ctx->selectionIndex.clear();
-            ctx->selectionIndex.insert(-1);
-            touch();
-            return;
-        } case Gui::SoSelectionElementAction::None:
-            if(selaction->isSecondary()) {
-                if(Gui::SoFCSelectionRoot::removeActionContext(action,this))
-                    touch();
-            }else {
-                SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(ctx) {
-                    ctx->selectionIndex.clear();
-                    ctx->colors.clear();
-                    touch();
-                }
-            }
-            return;
-        case Gui::SoSelectionElementAction::Color:
-            if(selaction->isSecondary()) {
-                const auto &colors = selaction->getColors();
-                auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(colors.empty()) {
-                    if(ctx) {
-                        ctx->colors.clear();
-                        if(ctx->isSelectAll())
-                            Gui::SoFCSelectionRoot::removeActionContext(action,this);
-                        touch();
-                    }
-                    return;
-                }
-                static std::string element("Face");
-                if(colors.begin()->first.empty() || colors.lower_bound(element)!=colors.end()) {
-                    if(!ctx) {
-                        ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this);
-                        selCounter.checkAction(selaction,ctx);
-                        ctx->selectAll();
-                    }
-                    if(ctx->setColors(selaction->getColors(),element))
-                        touch();
-                }
-            }
-            return;
-        case Gui::SoSelectionElementAction::Remove:
-        case Gui::SoSelectionElementAction::Append: {
-            const SoDetail* detail = selaction->getElement();
-            if (!detail || !detail->isOfType(SoFaceDetail::getClassTypeId())) {
-                if(selaction->isSecondary()) {
-                    // For secondary context, a detail of different type means
-                    // the user may want to partial render only other type of
-                    // geometry. So we call below to obtain a action context.
-                    // If no secondary context exist, it will create an empty
-                    // one, and an empty secondary context inhibites drawing
-                    // here.
-                    auto ctx = Gui::SoFCSelectionRoot::getActionContext<SelContext>(action,this);
-                    selCounter.checkAction(selaction,ctx);
-                    touch();
-                }
-                return;
-            }
-            int index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
-            if (selaction->getType() == Gui::SoSelectionElementAction::Append) {
-                auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-                selCounter.checkAction(selaction,ctx);
-                ctx->selectionColor = selaction->getColor();
-                if(ctx->isSelectAll())
-                    ctx->selectionIndex.clear();
-                if(ctx->selectionIndex.insert(index).second)
-                    touch();
-            }else{
-                auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(ctx && ctx->removeIndex(index))
-                    touch();
-            }
-            break;
-        } default:
-            break;
-        }
-        return;
-    }
-    else if (action->getTypeId() == Gui::SoVRMLAction::getClassTypeId()) {
+    if (action->getTypeId() == Gui::SoVRMLAction::getClassTypeId()) {
         // update the materialIndex field to match with the number of triangles if needed
         SoState * state = action->getState();
         Binding mbind = this->findMaterialBinding(state);
@@ -440,6 +323,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 }
             }
         }
+        return;
     }
     // The recommended way to set 'updateVbo' is to reimplement the method 'notify'
     // but the base class made this method private so that we can't override it.
@@ -450,6 +334,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
             v.second.vboLoaded = false;
         }
         onPartIndexChange();
+        return;
     }
 
     inherited::doAction(action);
@@ -742,7 +627,8 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
                 RenderIndices.clear();
                 int numparts = partIndex.getNum();
                 if(ctx2 && !ctx2->isSelectAll() && ctx2->isSelected()) {
-                    for(auto id : ctx2->selectionIndex) {
+                    for(auto &v : ctx2->selectionIndex) {
+                        int id = v.first;
                         if(id<0 || id>=numparts || !isOpaque(id,trans,numtrans,matIndex,packedColors))
                             continue;
                         RenderIndices.push_back(id);
@@ -784,7 +670,8 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction *action, SelContextPtr ctx2, bo
         }
     } else  if (ctx2 && !ctx2->isSelectAll() && ctx2->isSelected()) {
         RenderIndices.clear();
-        for(auto id : ctx2->selectionIndex) {
+        for(auto &v : ctx2->selectionIndex) {
+            int id = v.first;
             if(id>=0 && id<partIndex.getNum())
                 RenderIndices.push_back(id);
         }
@@ -926,7 +813,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             if(mb == SoMaterialBindingElement::OVERALL || singleColor) {
                 packedColors.push_back(diffuseColor);
                 auto cidx = packedColors.size()-1;
-                for(auto idx : ctx2->selectionIndex) {
+                for(auto &v : ctx2->selectionIndex) {
+                    int idx = v.first;
                     if(idx>=0 && idx<partIndex.getNum()) {
                         if(!singleColor && ctx2->applyColor(idx,packedColors,hasTransparency)) {
                             matIndex[idx] = packedColors.size()-1;
@@ -946,7 +834,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(
                 }
             }else{
                 assert(diffuse_size >= partIndex.getNum());
-                for(auto idx : ctx2->selectionIndex) {
+                for(auto &v : ctx2->selectionIndex) {
+                    int idx = v.first;
                     if(idx>=0 && idx<partIndex.getNum()) {
                         if(!ctx2->applyColor(idx,packedColors,hasTransparency)) {
                             auto t = idx<trans_size?trans[idx]:trans0;
@@ -983,7 +872,8 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         if(ctx && ctx->selectionIndex.size() && selectionColor) {
             packedColors.push_back(selectionColor);
             auto cidx = packedColors.size()-1;
-            for(auto idx : ctx->selectionIndex) {
+            for(auto &v : ctx->selectionIndex) {
+                int idx = v.first;
                 if(idx>=0 && idx<partIndex.getNum()) {
                     uint32_t c;
                     if(makeDistinctColor(c,packedColors[cidx],packedColors[matIndex[idx]]))
@@ -1053,7 +943,8 @@ void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction * action) {
     buildPartBBoxes(state);
 
     int numparts = this->partIndex.getNum();
-    for(auto id : ctx2->selectionIndex) {
+    for(auto &v : ctx2->selectionIndex) {
+        int id = v.first;
         if (id<0 || id >= numparts)
             break;
         if(!partBBoxes[id].isEmpty())
@@ -1121,7 +1012,8 @@ void SoBrepFaceSet::sortParts(SoState *state, SelContextPtr ctx2, const float *t
 
     SortedParts.reserve(partBBoxes.size());
     if(ctx2 && ctx2->isSelected() && !ctx2->isSelectAll()) {
-        for(auto id : ctx2->selectionIndex) {
+        for(auto &v : ctx2->selectionIndex) {
+            int id = v.first;
             if(id<0 || id>=partIndex.getNum())
                 continue;
             if(!isTranslucent(id,trans,numtrans,matIndex,packedColors))
@@ -1484,7 +1376,8 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
 
     RenderIndices.clear();
     if(!ctx->isSelectAll()) {
-        for(auto id : ctx->selectionIndex) {
+        for(auto &v : ctx->selectionIndex) {
+            int id = v.first;
             if (id<0 || id>=partIndex.getNum())
                 continue;
             RenderIndices.push_back(id);
@@ -2425,7 +2318,8 @@ void SoBrepFaceSet::rayPick(SoRayPickAction *action) {
     }
 
     if(ctx2 && !ctx2->isSelectAll()) {
-        for(auto id : ctx2->selectionIndex) {
+        for(auto &v : ctx2->selectionIndex) {
+            int id = v.first;
             if(id<0 || id>=numparts)
                 continue;
             auto &box = partBBoxes[id];

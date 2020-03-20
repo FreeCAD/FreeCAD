@@ -86,6 +86,7 @@
 #include <Gui/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
+#include <App/GeoFeature.h>
 #include <App/ComplexGeoData.h>
 
 #include "SoFCUnifiedSelection.h"
@@ -227,7 +228,10 @@ struct SoFCUnifiedSelection::PickedInfo {
     std::unique_ptr<SoPickedPoint> ppCopy;
     const SoPickedPoint *pp;
     ViewProviderDocumentObject *vpd;
-    std::string element;
+    // Subname path including the directly picked geometry elements (Vertex, Edge, Face)
+    std::string subname;
+    // Higher level geometry elements, like Wire, Solid
+    std::vector<std::string> elements;
 
     PickedInfo()
         :pp(0),vpd(0)
@@ -237,14 +241,16 @@ struct SoFCUnifiedSelection::PickedInfo {
         :ppCopy(std::move(other.ppCopy))
         ,pp(other.pp)
         ,vpd(other.vpd)
-        ,element(std::move(other.element))
+        ,subname(std::move(other.subname))
+        ,elements(std::move(other.elements))
     {}
 
     PickedInfo &operator=(PickedInfo &&other) {
         ppCopy = std::move(other.ppCopy);
         pp = other.pp;
         vpd = other.vpd;
-        element = std::move(other.element);
+        subname = std::move(other.subname);
+        elements = std::move(other.elements);
         return *this;
     }
 
@@ -289,13 +295,27 @@ void SoFCUnifiedSelection::getPickedInfo(std::vector<PickedInfo> &ret,
             }
             break;
         }
-        if(!info.vpd->getElementPicked(info.pp,info.element))
+
+        if(!info.vpd->getElementPicked(info.pp,info.subname))
             continue;
 
         if(singlePick) 
             last_vp = vp;
-        else if(!filter.emplace(info.vpd,info.element).second)
-            continue;
+        else {
+            if(!filter.emplace(info.vpd,info.subname).second)
+                continue;
+            
+            App::GeoFeature *geo = nullptr;
+            std::pair<std::string, std::string> elementName;
+            App::GeoFeature::resolveElement(info.vpd->getObject(),
+                    info.subname.c_str(), elementName, false,
+                    App::GeoFeature::Normal, nullptr, nullptr, &geo);
+            if(geo && geo->getPropertyOfGeometry()) {
+                auto data = geo->getPropertyOfGeometry()->getComplexData();
+                if(data)
+                    info.elements = data->getHigherElements(elementName.second.c_str());
+            }
+        }
         
         if(copy) info.copy();
         ret.push_back(std::move(info));
@@ -433,9 +453,26 @@ SoFCUnifiedSelection::getPickedSelections(const SbVec2s &pos,
     std::vector<App::SubObjectT> sels;
     auto infos = getPickedList(pos,viewport,singlePick);
     sels.reserve(infos.size());
+    std::set<std::pair<ViewProvider*, std::string> > objSet;
+    std::string prefix;
+    std::string subname;
     for(auto &info : infos) {
-        if(info.vpd)
-            sels.emplace_back(info.vpd->getObject(),info.element.c_str());
+        if(!info.vpd)
+            continue;
+        if(!objSet.insert(std::make_pair(info.vpd,info.subname)).second)
+            continue;
+        sels.emplace_back(info.vpd->getObject(),info.subname.c_str());
+        if(info.elements.empty())
+            continue;
+        const char *element = Data::ComplexGeoData::findElementName(info.subname.c_str());
+
+        prefix.assign(info.subname.c_str(), element);
+        for(const auto &element : info.elements) {
+            subname = prefix;
+            subname += element;
+            if(objSet.insert(std::make_pair(info.vpd,subname)).second)
+                sels.emplace_back(info.vpd->getObject(), subname.c_str());
+        }
     }
     return sels;
 }
@@ -632,7 +669,7 @@ bool SoFCUnifiedSelection::setHighlight(const PickedInfo &info) {
     }
     const auto &pt = info.pp->getPoint();
     return setHighlight(static_cast<SoFullPath*>(info.pp->getPath()), 
-            info.pp->getDetail(), info.vpd, info.element.c_str(), pt[0],pt[1],pt[2]);
+            info.pp->getDetail(), info.vpd, info.subname.c_str(), pt[0],pt[1],pt[2]);
 }
 
 bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det, 
@@ -702,21 +739,39 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     if(infos.empty() || !infos[0].vpd) return false;
 
     std::vector<SelectionSingleton::SelObj> sels;
+    std::set<std::pair<ViewProvider*, std::string> > objSet;
     if(infos.size()>1) {
+        std::string subname;
+        std::string prefix;
         for(auto &info : infos) {
-            if(!info.vpd) continue;
+            if(!info.vpd || !objSet.insert(std::make_pair(info.vpd, info.subname)).second)
+                continue;
             SelectionSingleton::SelObj sel;
             sel.pObject = info.vpd->getObject();
             sel.pDoc = sel.pObject->getDocument();
             sel.DocName = sel.pDoc->getName();
             sel.FeatName = sel.pObject->getNameInDocument();
             sel.TypeName = sel.pObject->getTypeId().getName();
-            sel.SubName = info.element.c_str();
+            sel.SubName = info.subname.c_str();
             const auto &pt = info.pp->getPoint();
             sel.x = pt[0];
             sel.y = pt[1];
             sel.z = pt[2];
             sels.push_back(sel);
+
+            if(info.elements.empty())
+                continue;
+            const char *element = Data::ComplexGeoData::findElementName(info.subname.c_str());
+            prefix.assign(info.subname.c_str(), element);
+            for(const auto &element : info.elements) {
+                subname = prefix;
+                subname += element;
+                auto res = objSet.insert(std::make_pair(info.vpd, subname));
+                if(res.second) {
+                    sel.SubName = res.first->second.c_str();
+                    sels.push_back(sel);
+                }
+            }
         }
     }
 
@@ -738,15 +793,15 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     char buf[513];
 
     if (ctrlDown && !shiftDown) {
-        if(Gui::Selection().isSelected(docname,objname,info.element.c_str(),0))
-            Gui::Selection().rmvSelection(docname,objname,info.element.c_str(),&sels);
+        if(Gui::Selection().isSelected(docname,objname,info.subname.c_str(),0))
+            Gui::Selection().rmvSelection(docname,objname,info.subname.c_str(),&sels);
         else {
             SelectionNoTopParentCheck guard;
             bool ok = Gui::Selection().addSelection(docname,objname,
-                    info.element.c_str(), pt[0] ,pt[1] ,pt[2], &sels);
+                    info.subname.c_str(), pt[0] ,pt[1] ,pt[2], &sels);
             if (ok && mymode == OFF) {
                 snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",
-                        docname,objname,info.element.c_str()
+                        docname,objname,info.subname.c_str()
                         ,fabs(pt[0])>1e-7?pt[0]:0.0
                         ,fabs(pt[1])>1e-7?pt[1]:0.0
                         ,fabs(pt[2])>1e-7?pt[2]:0.0);
@@ -769,7 +824,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos,
     // and select 'link.link2.'
     //
 
-    std::string subName = info.element;
+    std::string subName = info.subname;
     std::string objectName = objname;
 
     const char *subSelected = Gui::Selection().getSelectedElement(
@@ -2331,6 +2386,215 @@ int SoFCSelectionRoot::SelContext::merge(int status, SoFCSelectionContextBasePtr
     return status;
 }
 
+bool SoFCSelectionRoot::handleSelectionAction(SoAction *action,
+                                              SoNode *node,
+                                              SoFCDetail::Type detailType, 
+                                              SoFCSelectionContextExPtr selContext,
+                                              SoFCSelectionCounter &selCounter)
+{
+    if (action->getTypeId() == SoHighlightElementAction::getClassTypeId()) {
+        SoHighlightElementAction* hlaction = static_cast<SoHighlightElementAction*>(action);
+        selCounter.checkAction(hlaction);
+        if (!hlaction->isHighlighted()) {
+            auto ctx = getActionContext(action,node,selContext,false);
+            if(ctx) {
+                ctx->removeHighlight();
+                node->touch();
+            }
+            return true;
+        }
+
+        const SoDetail* detail = hlaction->getElement();
+        if (!detail) {
+            auto ctx = getActionContext(action,node,selContext);
+            ctx->highlightAll();
+            ctx->highlightColor = hlaction->getColor();
+            node->touch();
+        } else if (detail->isOfType(SoFCDetail::getClassTypeId())) {
+            const auto &indices = static_cast<const SoFCDetail*>(detail)->getIndices(detailType);
+
+            auto ctx = getActionContext(action,node,selContext,!indices.empty());
+
+            if(ctx && ctx->highlightIndex != indices) {
+                ctx->highlightColor = hlaction->getColor();
+                ctx->highlightIndex = indices;
+                node->touch();
+            }
+        } else {
+            int index = -1;
+            switch(detailType) {
+            case SoFCDetail::Face:
+                if (detail->isOfType(SoFaceDetail::getClassTypeId()))
+                    index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
+                break;
+            case SoFCDetail::Edge:
+                if (detail->isOfType(SoLineDetail::getClassTypeId()))
+                    index = static_cast<const SoLineDetail*>(detail)->getLineIndex();
+                break;
+            case SoFCDetail::Vertex:
+                if (detail->isOfType(SoPointDetail::getClassTypeId()))
+                    index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
+                break;
+            default:
+                break;
+            }
+            if(index>=0) {
+                auto ctx = getActionContext(action,node,selContext);
+                ctx->highlightColor = hlaction->getColor();
+                ctx->highlightIndex.clear();
+                ctx->highlightIndex.insert(index);
+                node->touch();
+            } else {
+                auto ctx = getActionContext(action,node,selContext,false);
+                if(ctx && ctx->isHighlighted()) {
+                    ctx->removeHighlight();
+                    node->touch();
+                }
+            }
+        }
+        return true;
+    }
+
+    if (action->getTypeId() != SoSelectionElementAction::getClassTypeId())
+        return false;
+
+    SoSelectionElementAction* selaction = static_cast<SoSelectionElementAction*>(action);
+    switch(selaction->getType()) {
+    case SoSelectionElementAction::All: {
+        auto ctx = getActionContext(action,node,selContext);
+        selCounter.checkAction(selaction,ctx);
+        ctx->selectionColor = selaction->getColor();
+        ctx->selectionIndex.clear();
+        ctx->selectionIndex.emplace(-1,0);
+        node->touch();
+        break;
+    } case SoSelectionElementAction::None:
+        if(selaction->isSecondary()) {
+            if(removeActionContext(action,node))
+                node->touch();
+        }else {
+            auto ctx = getActionContext(action,node,selContext,false);
+            if(ctx) {
+                ctx->selectionIndex.clear();
+                ctx->colors.clear();
+                node->touch();
+            }
+        }
+        break;
+    case SoSelectionElementAction::Color:
+        if(selaction->isSecondary() && detailType == SoFCDetail::Face) {
+            const auto &colors = selaction->getColors();
+            auto ctx = getActionContext(action,node,selContext,false);
+            if(colors.empty()) {
+                if(ctx) {
+                    ctx->colors.clear();
+                    if(ctx->isSelectAll())
+                        removeActionContext(action,node);
+                    node->touch();
+                }
+                return true;
+            }
+            static std::string element("Face");
+            if(colors.begin()->first.empty() || colors.lower_bound(element)!=colors.end()) {
+                if(!ctx) {
+                    ctx = getActionContext<SoFCSelectionContextEx>(action,node);
+                    selCounter.checkAction(selaction,ctx);
+                    ctx->selectAll();
+                }
+                if(ctx->setColors(selaction->getColors(),element))
+                    node->touch();
+            }
+        }
+        break;
+    case SoSelectionElementAction::Remove:
+    case SoSelectionElementAction::Append: {
+        const SoDetail* detail = selaction->getElement();
+        if (detail && detail->isOfType(SoFCDetail::getClassTypeId())) {
+            const auto &indices = static_cast<const SoFCDetail*>(detail)->getIndices(detailType);
+            if(indices.size()) {
+                bool touched = false;
+                if (selaction->getType() == SoSelectionElementAction::Append) {
+                    auto ctx = getActionContext(action,node,selContext);
+                    selCounter.checkAction(selaction,ctx);
+                    ctx->selectionColor = selaction->getColor();
+                    if(ctx->isSelectAll())
+                        ctx->selectionIndex.clear();
+                    for(int index : indices) {
+                        if(ctx->addIndex(index))
+                            touched = true;
+                    }
+                }else{
+                    auto ctx = getActionContext(action,node,selContext,false);
+                    if(ctx) {
+                        for(int index : indices) {
+                            if(ctx->removeIndex(index))
+                                touched = true;
+                        }
+                    }
+                }
+                if(touched)
+                    node->touch();
+                return true;
+            }
+            // NOTE! if indices is empty, we shall not return here, because
+            // we need to check if this is a secondary selection action. See
+            // comments below.
+
+        } else if(detail) {
+            int index = -1;
+            switch(detailType) {
+            case SoFCDetail::Face:
+                if (detail->isOfType(SoFaceDetail::getClassTypeId()))
+                    index = static_cast<const SoFaceDetail*>(detail)->getPartIndex();
+                break;
+            case SoFCDetail::Edge:
+                if (detail->isOfType(SoLineDetail::getClassTypeId()))
+                    index = static_cast<const SoLineDetail*>(detail)->getLineIndex();
+                break;
+            case SoFCDetail::Vertex:
+                if (detail->isOfType(SoPointDetail::getClassTypeId()))
+                    index = static_cast<const SoPointDetail*>(detail)->getCoordinateIndex();
+                break;
+            default:
+                break;
+            }
+            if(index >= 0) {
+                if (selaction->getType() == SoSelectionElementAction::Append) {
+                    auto ctx = getActionContext(action,node,selContext);
+                    selCounter.checkAction(selaction,ctx);
+                    ctx->selectionColor = selaction->getColor();
+                    if(ctx->isSelectAll())
+                        ctx->selectionIndex.clear();
+                    if(ctx->addIndex(index))
+                        node->touch();
+                }else{
+                    auto ctx = getActionContext(action,node,selContext,false);
+                    if(ctx && ctx->removeIndex(index))
+                        node->touch();
+                }
+                return true;
+            }
+        }
+
+        if(selaction->isSecondary()) {
+            // For secondary context, a detail of different type means the user
+            // may want to partial render only other type of geometry. So we
+            // call below to obtain a action context.  If no secondary context
+            // exist, it will create an empty one, and an empty secondary
+            // context inhibites drawing here.
+            auto ctx = getActionContext<SelContext>(action,node);
+            selCounter.checkAction(selaction,ctx);
+            node->touch();
+        }
+        break;
+
+    } default:
+        break;
+    }
+
+    return true;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 
 FCDepthFunc::FCDepthFunc(int32_t f)
@@ -2612,3 +2876,57 @@ void SoFCPathAnnotation::doAction(SoAction *action) {
     if(path)
         _SwitchStack.pop_back();
 }
+
+// ==========================================================
+
+SO_DETAIL_SOURCE(SoFCDetail);
+
+SoFCDetail::SoFCDetail(void)
+{
+}
+
+SoFCDetail::~SoFCDetail()
+{
+}
+
+void SoFCDetail::initClass(void)
+{
+    SO_DETAIL_INIT_CLASS(SoFCDetail, SoDetail);
+}
+
+SoDetail *SoFCDetail::copy(void) const
+{
+    SoFCDetail *copy = new SoFCDetail();
+    copy->indexArray = this->indexArray;
+    return copy;
+}
+
+void SoFCDetail::setIndices(Type type, std::set<int> &&indices)
+{
+    if(type >= 0 && type < TypeMax)
+        indexArray[type] = std::move(indices);
+}
+
+bool SoFCDetail::addIndex(Type type, int index)
+{
+    if(type >= 0 && type < TypeMax)
+        return indexArray[type].insert(index).second;
+    return false;
+}
+
+bool SoFCDetail::removeIndex(Type type, int index)
+{
+    if(type >= 0 && type < TypeMax)
+        return indexArray[type].erase(index);
+    return false;
+}
+
+const std::set<int> &SoFCDetail::getIndices(Type type) const
+{
+    if(type < 0 || type >= TypeMax) {
+        static std::set<int> none;
+        return none;
+    }
+    return indexArray[type];
+}
+
