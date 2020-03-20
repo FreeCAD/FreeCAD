@@ -83,18 +83,18 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     i = parent->dvBalloon->Shape.getValue();
     ui->comboSymbol->setCurrentIndex(i);
 
-    if (m_balloonVP != nullptr)
-        ui->textColor->setColor(m_balloonVP->Color.getValue().asValue<QColor>());
-
     ui->qsbFontSize->setUnit(Base::Unit::Length);
     ui->qsbLineWidth->setUnit(Base::Unit::Length);
     ui->qsbLineWidth->setSingleStep(0.100);
     ui->qsbBalloonKink->setUnit(Base::Unit::Length);
 
-    ui->qsbFontSize->setValue(m_balloonVP->Fontsize.getValue());
-    ui->qsbLineWidth->setValue(m_balloonVP->LineWidth.getValue());
+    if (balloonVP != nullptr) {
+        ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());
+        ui->qsbFontSize->setValue(balloonVP->Fontsize.getValue());
+        ui->qsbLineWidth->setValue(balloonVP->LineWidth.getValue());
+    }
     // new balloons have already the preferences BalloonKink length
-    ui->qsbBalloonKink->setValue(m_parent->dvBalloon->KinkLength.getValue());
+    ui->qsbBalloonKink->setValue(parent->dvBalloon->KinkLength.getValue());
 }
 
 TaskBalloon::~TaskBalloon()

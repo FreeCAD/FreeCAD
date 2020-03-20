@@ -51,7 +51,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Font Size:</string>
+        <string>Fontsize:</string>
        </property>
       </widget>
      </item>
