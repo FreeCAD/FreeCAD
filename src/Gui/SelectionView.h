@@ -31,8 +31,8 @@
 #include "DockWindow.h"
 #include "Selection.h"
 
-class QListWidget;
-class QListWidgetItem;
+class QTreeWidget;
+class QTreeWidgetItem;
 class QCheckBox;
 class QLabel;
 
@@ -76,11 +76,11 @@ public:
     /// get called when the document is changed or updated
     virtual void onUpdate(void) override;
 
-    QListWidget* selectionView;
+    QTreeWidget* selectionView;
     QLabel*      countLabel;
 
     QCheckBox *enablePickList;
-    QListWidget *pickList;
+    QTreeWidget *pickList;
 
 public Q_SLOTS:
     /// get called when text is entered in the search box
@@ -90,7 +90,7 @@ public Q_SLOTS:
     /// get called when the list is right-clicked
     void onItemContextMenu(const QPoint& point);
     /// different actions
-    void select(QListWidgetItem* item=0);
+    void select(QTreeWidgetItem* item=0);
     void deselect(void);
     void zoom(void);
     void treeSelect(void);
@@ -98,17 +98,12 @@ public Q_SLOTS:
     void touch(void);
     void showPart(void);
     void onEnablePickList();
-    void toggleSelect(QListWidgetItem* item=0);
-    void preselect(QListWidgetItem* item=0);
+    void toggleSelect(QTreeWidgetItem* item=0);
+    void preselect(QTreeWidgetItem* item=0);
 
 protected:
     void showEvent(QShowEvent *) override;
     void hideEvent(QHideEvent *) override;
-
-private:
-    QString getModule(const char* type) const;
-    QString getProperty(App::DocumentObject* obj) const;
-    bool supportPart(App::DocumentObject* obj, const QString& part) const;
 
 private:
     float x,y,z;

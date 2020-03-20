@@ -635,7 +635,7 @@ public:
     /// Check if there is any selection inside picked list
     bool hasPickedList() const;
     /// Return select objects inside picked list
-    std::vector<SelectionSingleton::SelObj> getPickedList(const char* pDocName) const;
+    std::vector<App::SubObjectT> getPickedList(const char* pDocName) const;
     /// Return selected object inside picked list grouped by top level parents
     std::vector<Gui::SelectionObject> getPickedListEx(
             const char* pDocName=0, Base::Type typeId=App::DocumentObject::getClassTypeId()) const;

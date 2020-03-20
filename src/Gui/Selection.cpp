@@ -494,35 +494,24 @@ bool SelectionSingleton::hasSubSelection(const char* doc, bool subElement) const
     return false;
 }
 
-std::vector<SelectionSingleton::SelObj> SelectionSingleton::getPickedList(const char* pDocName) const
+std::vector<App::SubObjectT> SelectionSingleton::getPickedList(const char* pDocName) const
 {
-    std::vector<SelObj> temp;
-    SelObj tempSelObj;
+    std::vector<App::SubObjectT> res;
 
     App::Document *pcDoc = 0;
     if(!pDocName || strcmp(pDocName,"*")!=0) {
         pcDoc = getDocument(pDocName);
         if (!pcDoc)
-            return temp;
+            return res;
     }
 
-    for(std::list<_SelObj>::const_iterator It = _PickedList.begin();It != _PickedList.end();++It) {
-        if (!pcDoc || It->pDoc == pcDoc) {
-            tempSelObj.DocName  = It->DocName.c_str();
-            tempSelObj.FeatName = It->FeatName.c_str();
-            tempSelObj.SubName  = It->SubName.c_str();
-            tempSelObj.TypeName = It->TypeName.c_str();
-            tempSelObj.pObject  = It->pObject;
-            tempSelObj.pResolvedObject  = It->pResolvedObject;
-            tempSelObj.pDoc     = It->pDoc;
-            tempSelObj.x        = It->x;
-            tempSelObj.y        = It->y;
-            tempSelObj.z        = It->z;
-            temp.push_back(tempSelObj);
+    res.reserve(_PickedList.size());
+    for(auto &sel : _PickedList) {
+        if (!pcDoc || sel.pDoc == pcDoc) {
+            res.emplace_back(sel.DocName.c_str(), sel.FeatName.c_str(), sel.SubName.c_str());
         }
     }
-
-    return temp;
+    return res;
 }
 
 std::vector<SelectionObject> SelectionSingleton::getSelectionEx(
