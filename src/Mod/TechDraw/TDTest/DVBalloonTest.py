@@ -51,7 +51,7 @@ def DVBalloonTest():
     print("Place balloon")
     balloon1 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewBalloon','Balloon1')
     balloon1.SourceView=view1
-    balloon1.OriginIsSet=1
+#    balloon1.OriginIsSet=1        ##OriginIsSet property removed March 2020
     balloon1.OriginX=view1.X + Units.Quantity(20.0,Units.Length)
     balloon1.OriginY=view1.Y + Units.Quantity(20.0,Units.Length)
     balloon1.Text="1"
@@ -63,7 +63,7 @@ def DVBalloonTest():
 
     balloon2 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewBalloon','Balloon2')
     balloon2.SourceView=view2
-    balloon2.OriginIsSet=1
+#    balloon2.OriginIsSet=1
     balloon2.OriginX=view2.X + Units.Quantity(20.0,Units.Length)
     balloon2.OriginY=view2.Y + Units.Quantity(20.0,Units.Length)
     balloon2.Text="2"
