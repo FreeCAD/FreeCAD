@@ -615,6 +615,9 @@ std::string DrawGeomHatch::prefGeomHatchFile(void)
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
     std::string defaultFileName = defaultDir + "FCPAT.pat";
     std::string result = hGrp->GetASCII("FilePattern", defaultFileName.c_str());
+    if (result.empty()) {
+        result = defaultFileName;
+    }
     return result;
 }
 
@@ -624,6 +627,9 @@ std::string DrawGeomHatch::prefGeomHatchName()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
     std::string defaultNamePattern = "Diamond";
     std::string result = hGrp->GetASCII("NamePattern",defaultNamePattern.c_str());
+    if (result.empty()) {
+        result = defaultNamePattern;
+    }
     return result;
 }
 
