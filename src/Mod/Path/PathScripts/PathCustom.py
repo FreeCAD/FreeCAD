@@ -52,27 +52,23 @@ class ObjectCustom:
         return None
 
     def execute(self, obj):
+        commands = []
+        newPath = Path.Path
         if obj.Gcode:
-            s = ""
             for l in obj.Gcode:
-                s += str(l)
-            if s:
-                path = Path.Path(s)
-                if obj.OperationPlacement:
-                    for x in range(len(path.Commands)):
-                        if path.Commands[x].Name in movecommands:
-                            base = copy(obj.Placement.Base)
-                            new = path.Commands[x]
-                            if 'X' not in path.Commands[x].Parameters:
-                                base[0] = 0.0
-                            if 'Y' not in path.Commands[x].Parameters:
-                                base[1] = 0.0
-                            if 'Z' not in path.Commands[x].Parameters:
-                                base[2] = 0.0
-                            new.Placement.translate(base)
-                            path.deleteCommand(x)
-                            path.insertCommand(new, x)
-                obj.Path = path
+                newcommand=Path.Command(str(l))
+                if newcommand.Name in movecommands and obj.OperationPlacement:
+                    if 'X' in newcommand.Parameters:
+                        newcommand.x += obj.Placement.Base.x
+                    if 'Y' in newcommand.Parameters:
+                        newcommand.y += obj.Placement.Base.y
+                    if 'Z' in newcommand.Parameters:
+                        newcommand.z += obj.Placement.Base.z
+
+                commands.append(newcommand)
+            newPath.addCommands(commands)
+
+        obj.Path = newPath
 
 
 class CommandPathCustom:
