@@ -441,11 +441,11 @@ void QGIViewPart::draw() {
 
 void QGIViewPart::drawViewPart()
 {
-//    Base::Console().Message("QGIVP::DVP()\n");
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
         return;
     }
+//    Base::Console().Message("QGIVP::DVP() - %s / %s\n", viewPart->getNameInDocument(), viewPart->Label.getValue());
     if (!viewPart->hasGeometry()) {
         removePrimitives();                      //clean the slate
         removeDecorations();
@@ -508,7 +508,7 @@ void QGIViewPart::drawViewPart()
                     }
                 }
             } else if (fHatch) {
-                if (!fHatch->HatchPattern.isEmpty()) {
+                if (!fHatch->SvgIncluded.isEmpty()) {
                     if (getExporting()) {
                         newFace->hideSvg(true);
                         newFace->isHatched(false);

@@ -270,6 +270,9 @@ std::string DrawHatch::prefSvgHatch(void)
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
     std::string result = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    if (result.empty()) {
+        result = defaultFileName;
+    }
     return result;
 }
 
