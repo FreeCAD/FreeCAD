@@ -52,26 +52,26 @@
 
 #include "DrawGuiUtil.h"
 #include "QGIViewBalloon.h"
+#include "ViewProviderBalloon.h"
 #include "TaskBalloon.h"
 
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-TaskBalloon::TaskBalloon(QGIViewBalloon *parent) :
+TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP) :
     ui(new Ui_TaskBalloon)
 {
     int i = 0;
-
     m_parent = parent;
+    m_balloonVP = balloonVP;
 
     ui->setupUi(this);
 
-    QString qs = QString::number(parent->dvBalloon->ShapeScale.getValue(), 'f', 2);
-    ui->inputScale->setText(qs);
+    ui->inputScale->setValue(parent->dvBalloon->ShapeScale.getValue());
 
     std::string value = parent->dvBalloon->Text.getValue();
-    qs = QString::fromUtf8(value.data(), value.size());
+    QString qs = QString::fromUtf8(value.data(), value.size());
     ui->inputValue->setText(qs);
     ui->inputValue->selectAll();
     QTimer::singleShot(0, ui->inputValue, SLOT(setFocus()));
@@ -82,6 +82,19 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent) :
 
     i = parent->dvBalloon->Shape.getValue();
     ui->comboSymbol->setCurrentIndex(i);
+
+    if (m_balloonVP != nullptr)
+        ui->textColor->setColor(m_balloonVP->Color.getValue().asValue<QColor>());
+
+    ui->qsbFontSize->setUnit(Base::Unit::Length);
+    ui->qsbLineWidth->setUnit(Base::Unit::Length);
+    ui->qsbLineWidth->setSingleStep(0.100);
+    ui->qsbBalloonKink->setUnit(Base::Unit::Length);
+
+    ui->qsbFontSize->setValue(m_balloonVP->Fontsize.getValue());
+    ui->qsbLineWidth->setValue(m_balloonVP->LineWidth.getValue());
+    // new balloons have already the preferences BalloonKink length
+    ui->qsbBalloonKink->setValue(m_parent->dvBalloon->KinkLength.getValue());
 }
 
 TaskBalloon::~TaskBalloon()
@@ -92,9 +105,15 @@ TaskBalloon::~TaskBalloon()
 bool TaskBalloon::accept()
 {
         m_parent->dvBalloon->Text.setValue(ui->inputValue->text().toUtf8().constData());
-        m_parent->dvBalloon->ShapeScale.setValue(ui->inputScale->text().toDouble());
+        App::Color ac;
+        ac.setValue<QColor>(ui->textColor->color());
+        m_balloonVP->Color.setValue(ac);
+        m_balloonVP->Fontsize.setValue(ui->qsbFontSize->value().getValue());
+        m_parent->dvBalloon->ShapeScale.setValue(ui->inputScale->value());
         m_parent->dvBalloon->EndType.setValue(ui->comboEndType->currentIndex());
         m_parent->dvBalloon->Shape.setValue(ui->comboSymbol->currentIndex());
+        m_balloonVP->LineWidth.setValue(ui->qsbLineWidth->value().getValue());
+        m_parent->dvBalloon->KinkLength.setValue(ui->qsbBalloonKink->value().getValue());
         m_parent->updateView(true);
 
     return true;
@@ -107,10 +126,10 @@ bool TaskBalloon::reject()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TaskDlgBalloon::TaskDlgBalloon(QGIViewBalloon *parent) :
+TaskDlgBalloon::TaskDlgBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP) :
     TaskDialog()
 {
-    widget  = new TaskBalloon(parent);
+    widget  = new TaskBalloon(parent, balloonVP);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Balloon"), widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);

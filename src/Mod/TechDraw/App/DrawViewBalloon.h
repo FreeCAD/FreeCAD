@@ -56,9 +56,7 @@ public:
     App::PropertyFloatConstraint ShapeScale;
     App::PropertyDistance    OriginX;
     App::PropertyDistance    OriginY;
-    App::PropertyBool        OriginIsSet;
     App::PropertyFloat       TextWrapLen;
-
     App::PropertyDistance    KinkLength;
 
     short mustExecute() const override;
