@@ -605,6 +605,8 @@ public:
 
     virtual std::string getElementMapVersion() const;
 
+    virtual std::vector<std::string> getHigherElements(const char *element, bool silent=false) const;
+
     const char *setElementComboName(const char *element, 
             const std::vector<std::string> &names, const char *marker=0, const char *op=0);
 

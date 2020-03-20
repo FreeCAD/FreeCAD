@@ -3377,3 +3377,37 @@ bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
     return pln1.Position().IsCoplanar(pln2.Position(),tol,tol);
 }
 
+std::vector<std::string> TopoShape::getHigherElements(const char *element, bool silent) const
+{
+    TopoShape shape = getSubTopoShape(element, silent);
+    if(shape.isNull())
+        return {};
+    
+    std::ostringstream ss;
+    std::vector<std::string> res;
+
+    switch(shape.shapeType()) {
+    case TopAbs_EDGE:
+        for(int idx : findAncestors(shape.getShape(), TopAbs_WIRE)) {
+            ss.str("");
+            ss << "Wire" << idx;
+            res.push_back(ss.str());
+        }
+        break;
+    case TopAbs_FACE:
+        for(int idx : findAncestors(shape.getShape(), TopAbs_SHELL)) {
+            ss.str("");
+            ss << "Shell" << idx;
+            res.push_back(ss.str());
+        }
+        for(int idx : findAncestors(shape.getShape(), TopAbs_SOLID)) {
+            ss.str("");
+            ss << "Solid" << idx;
+            res.push_back(ss.str());
+        }
+        break;
+    default:
+        return {};
+    }
+    return res;
+}

@@ -836,6 +836,11 @@ unsigned int ComplexGeoData::getMemSize(void) const {
     return 0;
 }
 
+std::vector<std::string> ComplexGeoData::getHigherElements(const char *, bool) const
+{
+    return {};
+}
+
 bool ElementNameComp::operator()(const std::string &a, const std::string &b) const {
     size_t size = std::min(a.size(),b.size());
     if(!size)

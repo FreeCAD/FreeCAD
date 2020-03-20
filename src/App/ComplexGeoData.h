@@ -308,6 +308,9 @@ public:
     /// Get the current element map size
     size_t getElementMapSize() const;
 
+    /// Return the higher level element names of the given element
+    virtual std::vector<std::string> getHigherElements(const char *element, bool silent=false) const;
+
     virtual std::string getElementMapVersion() const;
 
     /// Check if the given subname only contains an element name
