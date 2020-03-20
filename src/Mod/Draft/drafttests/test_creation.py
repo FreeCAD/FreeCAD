@@ -42,15 +42,15 @@ class DraftCreation(unittest.TestCase):
         to hold the objects.
         """
         aux._draw_header()
-        self.doc_name = self.__class__.__name__
+        doc_name = self.__class__.__name__
         if App.ActiveDocument:
-            if App.ActiveDocument.Name != self.doc_name:
-                App.newDocument(self.doc_name)
+            if App.ActiveDocument.Name != doc_name:
+                App.newDocument(doc_name)
         else:
-            App.newDocument(self.doc_name)
-        App.setActiveDocument(self.doc_name)
+            App.newDocument(doc_name)
+        App.setActiveDocument(doc_name)
         self.doc = App.ActiveDocument
-        _msg("  Temporary document '{}'".format(self.doc_name))
+        _msg("  Temporary document '{}'".format(self.doc.Name))
 
     def test_line(self):
         """Create a line."""
@@ -86,7 +86,7 @@ class DraftCreation(unittest.TestCase):
         _msg("  b={0}, c={1}".format(b, c))
         L1 = Draft.makeLine(a, b)
         L2 = Draft.makeLine(b, c)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         if not App.GuiUp:
             aux._no_gui("DraftFillet")
@@ -201,6 +201,8 @@ class DraftCreation(unittest.TestCase):
                                                      end_angle))
         circ = Draft.makeCircle(radius,
                                 startangle=start_angle, endangle=end_angle)
+        self.doc.recompute()
+
         obj1 = Draft.makeDimension(circ, 0,
                                    p3="radius", p4=Vector(1, 1, 0))
         obj2 = Draft.makeDimension(circ, 0,
@@ -267,7 +269,7 @@ class DraftCreation(unittest.TestCase):
 
         _msg("  Box")
         box = App.ActiveDocument.addObject("Part::Box")
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         # The facebinder function accepts a Gui selection set,
         # or a 'PropertyLinkSubList'
 
@@ -327,7 +329,7 @@ class DraftCreation(unittest.TestCase):
         obj = Draft.makeLabel(targetpoint=target_point,
                               distance=distance,
                               placement=placement)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def tearDown(self):
@@ -335,4 +337,4 @@ class DraftCreation(unittest.TestCase):
 
         This is executed after each test, so we close the document.
         """
-        App.closeDocument(self.doc_name)
+        App.closeDocument(self.doc.Name)

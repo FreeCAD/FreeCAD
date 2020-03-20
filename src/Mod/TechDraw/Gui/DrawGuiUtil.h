@@ -30,6 +30,8 @@
 #include <QComboBox>
 #include <Base/Vector3D.h>
 
+#include <App/DocumentObject.h>
+
 /*#include <Gui/PrefWidgets.h>*/
 
 namespace Part {
@@ -51,6 +53,11 @@ class TechDrawGuiExport DrawGuiUtil {
     Q_DECLARE_TR_FUNCTIONS(TechDrawGui::DrawGuiUtil)
     public:
     static TechDraw::DrawPage* findPage(Gui::Command* cmd);
+
+    static bool isDraftObject(App::DocumentObject* obj);
+    static bool isArchObject(App::DocumentObject* obj);
+    static bool isArchSection(App::DocumentObject* obj);
+
     static bool needPage(Gui::Command* cmd);
     static bool needView(Gui::Command* cmd, bool partOnly = true);
     static void dumpRectF(const char* text, const QRectF& r);

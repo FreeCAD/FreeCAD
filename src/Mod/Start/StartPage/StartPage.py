@@ -299,9 +299,32 @@ def handle():
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("UseStyleSheet",False):
         qssfile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet","")
         if qssfile:
-            with open(qssfile, 'r') as f:
-                ALTCSS = encode(f.read())
-            HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
+            # Search for stylesheet in user, system and resources locations
+            user = os.path.join(FreeCAD.getUserAppDataDir(), "Gui", "Stylesheets")
+            system = os.path.join(FreeCAD.getResourceDir(), "Gui", "Stylesheets")
+            resources = ":/stylesheets"
+
+            res = False
+            if QtCore.QFile.exists(os.path.join(user, qssfile)):
+                path = os.path.join(user, qssfile)
+            elif QtCore.QFile.exists(os.path.join(system, qssfile)):
+                path = os.path.join(system, qssfile)
+            elif QtCore.QFile.exists(os.path.join(resources, qssfile)):
+                res = True
+                path = os.path.join(resources, qssfile)
+            else:
+                path = None
+
+            if path:
+                if res:
+                    f = QtCore.QFile(path)
+                    if f.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
+                        ALTCSS = encode(QtCore.QTextStream(f).readAll())
+                else:
+                    with open(path, 'r') as f:
+                        ALTCSS = encode(f.read())
+
+                HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
     # turn tips off if needed
 

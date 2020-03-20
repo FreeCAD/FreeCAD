@@ -2181,21 +2181,24 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     shapes = []
 
     # Create layers
-    for table in drawing.tables.get_type("table"):
-        for layer in table.get_type("layer"):
-            name = layer.name
-            color = tuple(dxfColorMap.color_map[layer.color])
-            drawstyle = "Solid"
-            lt = rawValue(layer, 6)
-            if "DASHED" in lt.upper():
-                drawstyle = "Dashed"
-            elif "HIDDEN" in lt.upper():
-                drawstyle = "Dotted"
-            if ("DASHDOT" in lt.upper()) or ("CENTER" in lt.upper()):
-                drawstyle = "Dashdot"
-            locateLayer(name, color, drawstyle)
+    if hasattr(drawing, "tables"):
+        for table in drawing.tables.get_type("table"):
+            for layer in table.get_type("layer"):
+                name = layer.name
+                color = tuple(dxfColorMap.color_map[layer.color])
+                drawstyle = "Solid"
+                lt = rawValue(layer, 6)
+                if "DASHED" in lt.upper():
+                    drawstyle = "Dashed"
+                elif "HIDDEN" in lt.upper():
+                    drawstyle = "Dotted"
+                if ("DASHDOT" in lt.upper()) or ("CENTER" in lt.upper()):
+                    drawstyle = "Dashdot"
+                locateLayer(name, color, drawstyle)
+    else:
+        locateLayer("0", [0.0, 0.0, 0.0], "Solid")
 
-    # Draw lines
+     # Draw lines
     lines = drawing.entities.get_type("line")
     if lines:
         FCC.PrintMessage("drawing " + str(len(lines)) + " lines...\n")

@@ -48,6 +48,8 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
+#include <App/Property.h>
+#include <App/PropertyPythonObject.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
@@ -94,7 +96,6 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
     }
 }
 
-
 //===========================================================================
 // validate helper routines
 //===========================================================================
@@ -102,34 +103,21 @@ void DrawGuiUtil::loadArrowBox(QComboBox* qcb)
 //find a page in Selection, Document or CurrentWindow.
 TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
 {
-    TechDraw::DrawPage* page;
-    int failCase = 0;
+    TechDraw::DrawPage* page = nullptr;
 
-    //check Selection and/or Document for a DrawPage
-    std::vector<App::DocumentObject*> selPages = cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    if (selPages.empty()) {                                            //no page in selection
+    //check Selection for a page
+    std::vector<App::DocumentObject*> selPages = cmd->getSelection().
+                                                 getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+    if (selPages.empty()) {
+        //no page in selection, try document
         selPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-        if (selPages.empty()) {                                        //no page in document
-            page = nullptr; 
-            failCase = 1;
-        } else if (selPages.size() > 1) {                              //multiple pages in document, but none selected
-            page = nullptr;
-            failCase = 2;
-        } else {                                                       //only page in document - use it
-            page = static_cast<TechDraw::DrawPage*>(selPages.front());
-        }
-    } else if (selPages.size() > 1) {                                  //multiple pages in selection
-        page = nullptr;
-        failCase = 3;
-    } else {                                                           //use only page in selection
-        page = static_cast<TechDraw::DrawPage*>(selPages.front());
-    }
-
-    //if no page is selected
-    //default to currently displayed DrawPage is there is one         //code moved Coverity CID 174668
-    if (page == nullptr) { 
-        if ((failCase == 1) ||
-            (failCase == 2)) {
+        if (selPages.empty()) {
+            //no page in document
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                                 QObject::tr("No Drawing Pages in document."));
+        } else if (selPages.size() > 1) {       
+            //multiple pages in document, but none selected
+            //use active page if there is one
             Gui::MainWindow* w = Gui::getMainWindow();
             Gui::MDIView* mv = w->activeWindow();
             MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
@@ -138,28 +126,125 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
                 QGVPage* qp = mvp->getQGVPage();
                 page = qp->getDrawPage();
             } else {
-                failCase = 1;
-            }
-        }
-    }
-
-    if (page == nullptr) {
-        switch(failCase) {
-            case 1:
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
-                                    QObject::tr("Create/select a page first."));
-                break;
-            case 2:
+                // no active page
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Which page?"),
                                      QObject::tr("Can not determine correct page."));
-                break;
-            case 3:
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
-                                     QObject::tr("Select exactly 1 page."));
+            }
+        } else { 
+            //only 1 page in document - use it
+            page = static_cast<TechDraw::DrawPage*>(selPages.front());
         }
+    } else if (selPages.size() > 1) {
+        //multiple pages in selection
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Too many pages"),
+                             QObject::tr("Select only 1 page."));
+    } else {
+        //exactly 1 page in selection, use it
+        page = static_cast<TechDraw::DrawPage*>(selPages.front());
     }
 
     return page;
+}
+
+bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
+{
+    bool result = false;        
+    App::Property* proxy = obj->getPropertyByName("Proxy");
+
+    if (proxy != nullptr) {
+        //if no proxy, can not be Draft obj
+        //if has proxy, might be Draft obj
+        App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
+        std::stringstream ss;
+        if (proxyPy != nullptr) {
+            Py::Object proxyObj = proxyPy->getValue();
+            std::stringstream ss;
+            if (proxyPy != nullptr) {
+                Base::PyGILStateLocker lock;
+                try {
+                    if (proxyObj.hasAttr("__module__")) {
+                        Py::String mod(proxyObj.getAttr("__module__"));
+                        ss <<  (std::string)mod; 
+                        if (ss.str().find("Draft") != std::string::npos) {
+                            result = true;
+                        }
+                    }
+                }
+                catch (Py::Exception&) {
+                    Base::PyException e; // extract the Python error text
+                    e.ReportException();
+                    result = false;
+                }
+            }
+        }
+    }
+    return result;
+}
+
+bool DrawGuiUtil::isArchObject(App::DocumentObject* obj)
+{
+    bool result = false;        
+    App::Property* proxy = obj->getPropertyByName("Proxy");
+
+    if (proxy != nullptr) {
+        //if no proxy, can not be Arch obj
+        //if has proxy, might be Arch obj
+        App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
+        Py::Object proxyObj = proxyPy->getValue();
+        std::stringstream ss;
+        if (proxyPy != nullptr) {
+            Base::PyGILStateLocker lock;
+            try {
+                if (proxyObj.hasAttr("__module__")) {
+                    Py::String mod(proxyObj.getAttr("__module__"));
+                    ss <<  (std::string)mod; 
+                    //does this have to be an ArchSection, or can it be any Arch object?
+                    if (ss.str().find("Arch") != std::string::npos) {
+                        result = true;
+                    }
+                }
+            }
+            catch (Py::Exception&) {
+                Base::PyException e; // extract the Python error text
+                e.ReportException();
+                result = false;
+            }
+        }
+    }
+    return result;
+}
+
+bool DrawGuiUtil::isArchSection(App::DocumentObject* obj)
+{
+    bool result = false;        
+    App::Property* proxy = obj->getPropertyByName("Proxy");
+
+    if (proxy != nullptr) {
+        //if no proxy, can not be Arch obj
+        //if has proxy, might be Arch obj
+        App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
+        Py::Object proxyObj = proxyPy->getValue();
+        std::stringstream ss;
+        if (proxyPy != nullptr) {
+            Base::PyGILStateLocker lock;
+            try {
+                if (proxyObj.hasAttr("__module__")) {
+                    Py::String mod(proxyObj.getAttr("__module__"));
+                    ss <<  (std::string)mod; 
+                    //does this have to be an ArchSection, or can it be other Arch objects?
+                    if (ss.str().find("ArchSectionPlane") != std::string::npos) {
+                        result = true;
+                    }
+                }
+            }
+            catch (Py::Exception&) {
+                Base::PyException e; // extract the Python error text
+                e.ReportException();
+                result = false;
+            }
+        }
+    }
+    return result;
 }
 
 bool DrawGuiUtil::needPage(Gui::Command* cmd)

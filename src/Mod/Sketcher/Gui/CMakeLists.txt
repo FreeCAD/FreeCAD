@@ -26,6 +26,7 @@ set(SketcherGui_LIBS
 )
 
 set(SketcherGui_MOC_HDRS
+    EditDatumDialog.h
     TaskSketcherConstrains.h
     TaskSketcherElements.h
     TaskSketcherCreateCommands.h

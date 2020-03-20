@@ -52,8 +52,8 @@ public:
     App::PropertyLink        SourceView;
     App::PropertyString      Text;
     App::PropertyEnumeration EndType;
-    App::PropertyEnumeration Symbol;
-    App::PropertyFloatConstraint SymbolScale;
+    App::PropertyEnumeration Shape;
+    App::PropertyFloatConstraint ShapeScale;
     App::PropertyDistance    OriginX;
     App::PropertyDistance    OriginY;
     App::PropertyBool        OriginIsSet;
