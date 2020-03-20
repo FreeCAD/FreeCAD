@@ -39,6 +39,9 @@
      </item>
      <item row="1" column="1">
       <widget class="Gui::ColorButton" name="textColor">
+       <property name="toolTip">
+        <string>Color for 'Text'</string>
+       </property>
        <property name="color" stdset="0">
         <color>
          <red>0</red>
@@ -70,7 +73,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Length of balloon leader line kink</string>
+        <string>Fontsize for 'Text'</string>
        </property>
        <property name="value" stdset="0">
         <double>4.000000000000000</double>
@@ -219,7 +222,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Length of balloon leader line kink</string>
+        <string>Leader line width</string>
        </property>
        <property name="value" stdset="0">
         <double>0.350000000000000</double>
