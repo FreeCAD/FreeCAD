@@ -91,6 +91,7 @@ from draftguitools.gui_grid import ToggleGrid
 from draftguitools.gui_heal import Heal
 from draftguitools.gui_dimension_ops import Draft_FlipDimension
 from draftguitools.gui_lineslope import Draft_Slope
+from draftguitools.gui_arcs import Draft_Arc_3Points
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
@@ -5003,62 +5004,6 @@ class Draft_Label(Creator):
             self.create()
 
 
-class Draft_Arc_3Points:
-
-
-    def GetResources(self):
-
-        return {'Pixmap'  : "Draft_Arc_3Points.svg",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc 3 points"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates an arc by 3 points"),
-                'Accel'   : 'A,T'}
-
-    def IsActive(self):
-
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
-
-    def Activated(self):
-
-        self.points = []
-        self.normal = None
-        self.tracker = trackers.arcTracker()
-        self.tracker.autoinvert = False
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            FreeCAD.DraftWorkingPlane.setup()
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.drawArc)
-
-    def getPoint(self,point,info):
-        if not point: # cancelled
-            self.tracker.off()
-            return
-        if not(point in self.points): # avoid same point twice
-            self.points.append(point)
-        if len(self.points) < 3:
-            if len(self.points) == 2:
-                self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[-1],callback=self.getPoint,movecallback=self.drawArc)
-        else:
-            import draftobjects.arc_3points as arc3
-            if Draft.getParam("UsePartPrimitives",False):
-                arc3.make_arc_3points([self.points[0],
-                                       self.points[1],
-                                       self.points[2]], primitive=True)
-            else:
-                arc3.make_arc_3points([self.points[0],
-                                       self.points[1],
-                                       self.points[2]], primitive=False)
-            self.tracker.off()
-            FreeCAD.ActiveDocument.recompute()
-
-    def drawArc(self,point,info):
-        if len(self.points) == 2:
-            if point.sub(self.points[1]).Length > 0.001:
-                self.tracker.setBy3Points(self.points[0],self.points[1],point)
-
-
 #---------------------------------------------------------------------------
 # Snap tools
 #---------------------------------------------------------------------------
@@ -5098,7 +5043,6 @@ class CommandArcGroup:
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 FreeCADGui.addCommand('Draft_Arc',Arc())
-FreeCADGui.addCommand('Draft_Arc_3Points',Draft_Arc_3Points())
 FreeCADGui.addCommand('Draft_ArcTools', CommandArcGroup())
 FreeCADGui.addCommand('Draft_Text',Text())
 FreeCADGui.addCommand('Draft_Rectangle',Rectangle())
