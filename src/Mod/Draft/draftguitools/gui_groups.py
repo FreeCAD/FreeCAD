@@ -24,18 +24,22 @@
 # ***************************************************************************
 """Provides tools to do various operations with groups.
 
-For example, add objects to groups, and select objects inside groups.
+For example, add objects to groups, select objects inside groups,
+and set the automatic group in which to create objects.
 """
 ## @package gui_groups
 # \ingroup DRAFT
 # \brief Provides tools to do various operations with groups.
+
+import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import draftutils.utils as utils
 import draftguitools.gui_base as gui_base
-from draftutils.translate import _tr
+from draftutils.translate import _tr, translate
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -229,3 +233,98 @@ class SelectGroup(gui_base.GuiCommandNeedsSelection):
 
 
 Gui.addCommand('Draft_SelectGroup', SelectGroup())
+
+
+class SetAutoGroup(gui_base.GuiCommandSimplest):
+    """GuiCommand for the Draft_AutoGroup tool."""
+
+    def __init__(self):
+        super().__init__(name=_tr("Autogroup"))
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _tip = "Select a group to add all Draft and Arch objects to."
+
+        return {'Pixmap': 'Draft_AutoGroup',
+                'MenuText': QT_TRANSLATE_NOOP("Draft_AutoGroup", "Autogroup"),
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_AutoGroup", _tip)}
+
+    def Activated(self):
+        """Execute when the command is called.
+
+        It calls the `setAutogroup` method of the `DraftToolBar` class
+        installed inside the global `Gui` namespace.
+        """
+        super().Activated()
+
+        if not hasattr(Gui, "draftToolBar"):
+            return
+
+        # It uses the `DraftToolBar` class defined in the `DraftGui` module
+        # and globally initialized in the `Gui` namespace to run
+        # some actions.
+        # If there is only a group selected, it runs the `AutoGroup` method.
+        self.ui = Gui.draftToolBar
+        s = Gui.Selection.getSelection()
+        if len(s) == 1:
+            if (utils.get_type(s[0]) == "Layer") or \
+-               (App.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups", False)
+             and (s[0].isDerivedFrom("App::DocumentObjectGroup")
+                  or utils.get_type(s[0]) in ["Site", "Building",
+                                              "Floor", "BuildingPart"])):
+                self.ui.setAutoGroup(s[0].Name)
+                return
+
+        # Otherwise it builds a list of layers, with names and icons,
+        # including the options "None" and "Add new layer".
+        self.groups = ["None"]
+        gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
+        if App.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetBool("AutogroupAddGroups", False):
+            gn.extend(utils.get_group_names())
+        if gn:
+            self.groups.extend(gn)
+            self.labels = [translate("draft", "None")]
+            self.icons = [self.ui.getIcon(":/icons/button_invalid.svg")]
+            for g in gn:
+                o = self.doc.getObject(g)
+                if o:
+                    self.labels.append(o.Label)
+                    self.icons.append(o.ViewObject.Icon)
+            self.labels.append(translate("draft", "Add new Layer"))
+            self.icons.append(self.ui.getIcon(":/icons/document-new.svg"))
+
+            # With the lists created is uses the interface
+            # to pop up a menu with layer options.
+            # Once the desired option is chosen
+            # it launches the `proceed` method.
+            self.ui.sourceCmd = self
+            pos = self.ui.autoGroupButton.mapToGlobal(QtCore.QPoint(0, self.ui.autoGroupButton.geometry().height()))
+            self.ui.popupMenu(self.labels, self.icons, pos)
+
+    def proceed(self, labelname):
+        """Set the defined autogroup, or create a new layer.
+
+        Parameters
+        ----------
+        labelname: str
+            The passed string with the name of the group or layer.
+        """
+        # Deactivate the source command of the `DraftToolBar` class
+        # so that it doesn't do more with this command
+        # when it finishes.
+        self.ui.sourceCmd = None
+
+        if labelname in self.labels:
+            if labelname == self.labels[0]:
+                # First option "None" deactivates autogrouping
+                self.ui.setAutoGroup(None)
+            elif labelname == self.labels[-1]:
+                # Last option "Add new layer" creates new layer
+                Gui.runCommand("Draft_Layer")
+            else:
+                # Set autogroup to the chosen layer
+                i = self.labels.index(labelname)
+                self.ui.setAutoGroup(self.groups[i])
+
+
+Gui.addCommand('Draft_AutoGroup', SetAutoGroup())
