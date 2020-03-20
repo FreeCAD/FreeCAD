@@ -155,6 +155,7 @@ void ViewProviderBalloon::onChanged(const App::Property* p)
 {
     if ((p == &Font)  ||
         (p == &Fontsize) ||
+        (p == &Color) ||
         (p == &LineWidth)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
