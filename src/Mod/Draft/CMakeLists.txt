@@ -102,6 +102,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_grid.py
     draftguitools/gui_heal.py
     draftguitools/gui_dimension_ops.py
+    draftguitools/gui_lineslope.py
     draftguitools/README.md
 )
 
