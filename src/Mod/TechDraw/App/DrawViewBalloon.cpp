@@ -94,7 +94,6 @@ DrawViewBalloon::DrawViewBalloon(void)
     ADD_PROPERTY_TYPE(SourceView,(0),"",(App::PropertyType)(App::Prop_None),"Source view for balloon");
     ADD_PROPERTY_TYPE(OriginX,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin x");
     ADD_PROPERTY_TYPE(OriginY,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin y");
-    ADD_PROPERTY_TYPE(OriginIsSet, (false), "",(App::PropertyType)(App::Prop_None),"Balloon origin is set");
 
     EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndType,(prefEnd()));
@@ -109,9 +108,6 @@ DrawViewBalloon::DrawViewBalloon(void)
 
     ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
                                   "Distance from symbol to leader kink");
-
-    OriginIsSet.setStatus(App::Property::Hidden,false);
-    OriginIsSet.setStatus(App::Property::ReadOnly,true);
 
     SourceView.setScope(App::LinkScope::Global);
     Rotation.setStatus(App::Property::Hidden,true);
