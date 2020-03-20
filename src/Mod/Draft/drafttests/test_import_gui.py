@@ -48,7 +48,7 @@ class DraftGuiImport(unittest.TestCase):
 
     def test_import_gui_draft_snap(self):
         """Import Draft snapping."""
-        module = "DraftSnap"
+        module = "draftguitools.gui_snapper"
         if not App.GuiUp:
             aux._no_gui(module)
             self.assertTrue(True)

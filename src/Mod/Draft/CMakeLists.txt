@@ -10,7 +10,6 @@ SET(Draft_SRCS_base
     Draft.py
     DraftTools.py
     DraftGui.py
-    DraftSnap.py
     DraftTrackers.py
     DraftVecUtils.py
     DraftGeomUtils.py
@@ -84,6 +83,8 @@ SET(Draft_GUI_tools
     draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
     draftguitools/gui_arrays.py
+    draftguitools/gui_snaps.py
+    draftguitools/gui_snapper.py
     draftguitools/README.md
 )
 

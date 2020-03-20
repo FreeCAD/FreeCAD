@@ -193,7 +193,9 @@ void DrawViewSection::onChanged(const App::Property* prop)
                 dv->requestPaint();
             }
         } else if (prop == &CutSurfaceDisplay) {
-//            Base::Console().Message("DVS::onChanged(%s)\n",prop->getName());
+            if (CutSurfaceDisplay.isValue("PatHatch")) {
+                makeLineSets();
+            }
         }
 
         if ((prop == &FileHatchPattern) &&
@@ -219,36 +221,41 @@ void DrawViewSection::onChanged(const App::Property* prop)
 
     if (prop == &FileGeomPattern    ||
         prop == &NameGeomPattern ) {
-        if (!FileGeomPattern.isEmpty()) {
-            std::string fileSpec = FileGeomPattern.getValue();
-            Base::FileInfo fi(fileSpec);
-            std::string ext = fi.extension();
-            if (!fi.isReadable()) {
-                Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
-                Base::Console().Message("%s using included hatch file.\n", getNameInDocument());
-            } else {
-                if ( (ext == "pat") ||
-                     (ext == "PAT") ) {
-                    if ((!fileSpec.empty())  &&
-                        (!NameGeomPattern.isEmpty())) {
-                        std::vector<PATLineSpec> specs = 
-                                   DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
-                                                                          NameGeomPattern.getValue());
-                        m_lineSets.clear();
-                        for (auto& hl: specs) {
-                            //hl.dump("hl from section");
-                            LineSet ls;
-                            ls.setPATLineSpec(hl);
-                            m_lineSets.push_back(ls);
-                        }
+        makeLineSets();
+    }
+    DrawView::onChanged(prop);
+}
+
+void DrawViewSection::makeLineSets(void) 
+{
+//    Base::Console().Message("DVS::makeLineSets()\n");
+    if (!FileGeomPattern.isEmpty()) {
+        std::string fileSpec = FileGeomPattern.getValue();
+        Base::FileInfo fi(fileSpec);
+        std::string ext = fi.extension();
+        if (!fi.isReadable()) {
+            Base::Console().Message("%s can not read hatch file: %s\n", getNameInDocument(), fileSpec.c_str());
+            Base::Console().Message("%s using included hatch file.\n", getNameInDocument());
+        } else {
+            if ( (ext == "pat") ||
+                 (ext == "PAT") ) {
+                if ((!fileSpec.empty())  &&
+                    (!NameGeomPattern.isEmpty())) {
+                    std::vector<PATLineSpec> specs = 
+                               DrawGeomHatch::getDecodedSpecsFromFile(fileSpec,
+                                                                      NameGeomPattern.getValue());
+                    m_lineSets.clear();
+                    for (auto& hl: specs) {
+                        //hl.dump("hl from section");
+                        LineSet ls;
+                        ls.setPATLineSpec(hl);
+                        m_lineSets.push_back(ls);
                     }
                 }
             }
         }
     }
-    DrawView::onChanged(prop);
 }
-
 
 //this could probably always use FileHatchPattern as input?
 void DrawViewSection::replaceSvgIncluded(std::string newSvgFile)
@@ -907,6 +914,7 @@ void DrawViewSection::onDocumentRestored()
             if (PatIncluded.isEmpty()) {
                 setupPatIncluded();
             }
+        makeLineSets();
         }
     }
     DrawViewPart::onDocumentRestored();

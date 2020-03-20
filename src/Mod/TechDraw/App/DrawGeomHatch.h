@@ -23,9 +23,10 @@
 #ifndef _TechDraw_DrawGeomHatch_h_
 #define _TechDraw_DrawGeomHatch_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+#include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
+#include <App/Material.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
 
 class TopoDS_Edge;
@@ -80,6 +81,8 @@ public:
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
     static std::string prefGeomHatchFile(void);
     static std::string prefGeomHatchName();
+    static App::Color prefGeomHatchColor();
+
 
 protected:
     virtual void onDocumentRestored() override;
