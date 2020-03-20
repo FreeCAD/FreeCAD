@@ -25,7 +25,8 @@
 """Provides tools to do various operations with groups.
 
 For example, add objects to groups, select objects inside groups,
-and set the automatic group in which to create objects.
+set the automatic group in which to create objects, and add objects
+to the construction group.
 """
 ## @package gui_groups
 # \ingroup DRAFT
@@ -328,3 +329,68 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
 
 
 Gui.addCommand('Draft_AutoGroup', SetAutoGroup())
+
+
+class AddToConstruction(gui_base.GuiCommandSimplest):
+    """Gui Command for the AddToConstruction tool.
+
+    It adds the selected objects to the construction group
+    defined in the `DraftToolBar` class which is initialized
+    in the `Gui` namespace when the workbench loads.
+
+    It adds a construction group if it doesn't exist.
+
+    Added objects are also given the visual properties of the construction
+    group.
+    """
+
+    def __init__(self):
+        super().__init__(name=_tr("Add to construction group"))
+
+    def GetResources(self):
+        """Set icon, menu and tooltip."""
+        _menu = "Add to Construction group"
+        _tip = ("Adds the selected objects to the construction group,\n"
+                "and changes their appearance to the construction style.\n"
+                "It creates a construction group if it doesn't exist.")
+
+        d = {'Pixmap': 'Draft_AddConstruction',
+             'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", _menu),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_AddConstruction", _tip)}
+        return d
+
+    def Activated(self):
+        """Execute when the command is called."""
+        super().Activated()
+
+        if not hasattr(Gui, "draftToolBar"):
+            return
+
+        col = Gui.draftToolBar.getDefaultColor("constr")
+        col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
+
+        # Get the construction group or create it if it doesn't exist
+        gname = utils.get_param("constructiongroupname", "Construction")
+        grp = self.doc.getObject(gname)
+        if not grp:
+            grp = self.doc.addObject("App::DocumentObjectGroup", gname)
+
+        for obj in Gui.Selection.getSelection():
+            grp.addObject(obj)
+
+            # Change the appearance to the construction colors
+            vobj = obj.ViewObject
+            if "TextColor" in vobj.PropertiesList:
+                vobj.TextColor = col
+            if "PointColor" in vobj.PropertiesList:
+                vobj.PointColor = col
+            if "LineColor" in vobj.PropertiesList:
+                vobj.LineColor = col
+            if "ShapeColor" in vobj.PropertiesList:
+                vobj.ShapeColor = col
+            if hasattr(vobj, "Transparency"):
+                vobj.Transparency = 80
+
+
+Draft_AddConstruction = AddToConstruction
+Gui.addCommand('Draft_AddConstruction', AddToConstruction())

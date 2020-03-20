@@ -64,6 +64,7 @@ def get_draft_small_commands():
             "Draft_ToggleDisplayMode",
             "Draft_AddToGroup",
             "Draft_SelectGroup",
+            "Draft_AddConstruction",
             "Draft_Heal"]
 
 
