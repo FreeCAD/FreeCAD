@@ -387,8 +387,6 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         decltype(values) links;
         for(auto &v : values) {
             App::DocumentObject *obj = v.first;
-            if(obj == pcActiveBody)
-                continue;
             if(obj != binderParent) {
                 auto &subs = links[obj];
                 subs.insert(subs.end(),v.second.begin(),v.second.end());
