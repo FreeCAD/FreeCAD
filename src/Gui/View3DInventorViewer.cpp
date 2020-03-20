@@ -542,6 +542,8 @@ void View3DInventorViewer::init()
     assert(sceneNode->isOfType(SoGroup::getClassTypeId()));
     static_cast<SoGroup*>(sceneNode)->insertChild(pcGroupOnTop,path->getIndexFromTail(0));
 
+    pCurrentHighlightPath = nullptr;
+
     pcGroupOnTopPath = path->copy();
     pcGroupOnTopPath->ref();
     pcGroupOnTopPath->truncate(path->getLength()-1);
@@ -677,6 +679,9 @@ View3DInventorViewer::~View3DInventorViewer()
     this->pcViewProviderRoot = 0;
     this->backlight->unref();
     this->backlight = 0;
+
+    if(pCurrentHighlightPath)
+        pCurrentHighlightPath->unref();
 
     this->pcGroupOnTopPath->unref();
     this->pcGroupOnTopSwitch->unref();
@@ -947,6 +952,13 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
         auto &objs = preselect?objectsOnTopPreSel:objectsOnTopSel;
         auto pcGroup = preselect?pcGroupOnTopPreSel:pcGroupOnTopSel;
 
+        if(preselect && pCurrentHighlightPath) {
+            preselAction->setHighlighted(false);
+            preselAction->apply(pCurrentHighlightPath);
+            pCurrentHighlightPath->unref();
+            pCurrentHighlightPath = nullptr;
+        }
+
         auto it = objs.find(key.c_str());
         if(it == objs.end())
             return;
@@ -1167,6 +1179,13 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                     pcGroupOnTopSel->addChild(selInfo.node);
                 }
 
+                if(pCurrentHighlightPath) {
+                    preselAction->setHighlighted(false);
+                    preselAction->apply(pCurrentHighlightPath);
+                    pCurrentHighlightPath->unref();
+                    pCurrentHighlightPath = nullptr;
+                }
+
                 SoTempPath tmpPath2(path.getLength()+3);
                 tmpPath2.ref();
                 tmpPath2.append(pcGroupOnTopSwitch);
@@ -1177,6 +1196,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason, bool 
                 preselAction->setElement(det);
                 preselAction->apply(&tmpPath2);
                 preselAction->setElement(0);
+
+                pCurrentHighlightPath = tmpPath2.copy();
+                pCurrentHighlightPath->ref();
                 tmpPath2.unrefNoDelete();
             } else {
                 // NOTE: assuming preselect is only applicable to one single
