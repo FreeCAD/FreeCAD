@@ -131,7 +131,8 @@ public:
     virtual const std::vector<std::string>& searchElementCache(const std::string &element,
                                                                bool checkGeometry = true,
                                                                double tol = 1e-7,
-                                                               double atol = 1e-10) const;
+                                                               double atol = 1e-10) const override;
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute() override;
