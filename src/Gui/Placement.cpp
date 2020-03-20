@@ -560,6 +560,13 @@ void Placement::reject()
     /*emit*/ placementChanged(data, true, false);
 
     revertTransformation();
+
+    // One of the quantity spin boxes still can emit a signal when it has the focus
+    // but its content is not fully updated.
+    // In order to override again the placement the signalMapper is blocked
+    // See related forum thread:
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44341#p378659
+    QSignalBlocker block(signalMapper);
     QDialog::reject();
 }
 
