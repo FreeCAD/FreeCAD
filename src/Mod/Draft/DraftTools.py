@@ -86,6 +86,7 @@ from draftguitools.gui_togglemodes import ToggleDisplayMode
 from draftguitools.gui_groups import AddToGroup
 from draftguitools.gui_groups import SelectGroup
 from draftguitools.gui_groups import SetAutoGroup
+from draftguitools.gui_groups import Draft_AddConstruction
 from draftguitools.gui_grid import ToggleGrid
 from draftguitools.gui_heal import Heal
 from draftguitools.gui_dimension_ops import Draft_FlipDimension
@@ -5001,37 +5002,6 @@ class Draft_Label(Creator):
             self.create()
 
 
-class Draft_AddConstruction():
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Construction',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to Construction group"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the Construction group")}
-
-    def Activated(self):
-        import FreeCADGui
-        if hasattr(FreeCADGui,"draftToolBar"):
-            col = FreeCADGui.draftToolBar.getDefaultColor("constr")
-            col = (float(col[0]),float(col[1]),float(col[2]),0.0)
-            gname = Draft.getParam("constructiongroupname","Construction")
-            grp = FreeCAD.ActiveDocument.getObject(gname)
-            if not grp:
-                grp = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",gname)
-            for obj in FreeCADGui.Selection.getSelection():
-                grp.addObject(obj)
-                obrep = obj.ViewObject
-                if "TextColor" in obrep.PropertiesList:
-                    obrep.TextColor = col
-                if "PointColor" in obrep.PropertiesList:
-                    obrep.PointColor = col
-                if "LineColor" in obrep.PropertiesList:
-                    obrep.LineColor = col
-                if "ShapeColor" in obrep.PropertiesList:
-                    obrep.ShapeColor = col
-                if hasattr(obrep,"Transparency"):
-                    obrep.Transparency = 80
-
-
 class Draft_Arc_3Points:
 
 
@@ -5178,7 +5148,6 @@ FreeCADGui.addCommand('Draft_Stretch',Stretch())
 # context commands
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
 FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
-FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 
 # a global place to look for active draft Command
 FreeCAD.activeDraftCommand = None
