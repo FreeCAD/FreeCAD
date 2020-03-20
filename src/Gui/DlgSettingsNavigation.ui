@@ -122,24 +122,28 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="6" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
-          <property name="toolTip">
-           <string>Direction of zoom operations will be inverted</string>
-          </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="navigationLabel">
           <property name="text">
-           <string>Invert zoom</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>InvertZoom</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+           <string>3D Navigation</string>
           </property>
          </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item row="0" column="2">
          <widget class="QPushButton" name="mouseButton">
@@ -164,38 +168,25 @@ Select a set and then press the button to view said configurations.</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="navigationLabel">
-          <property name="text">
-           <string>3D Navigation</string>
+        <item row="0" column="3">
+         <widget class="QComboBox" name="comboNavigationStyle">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>New document scale</string>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
           <property name="toolTip">
-           <string>Prevents view tilting when pinch-zooming.
-Affects only gesture navigation style.
-Mouse tilting is not disabled by this setting.</string>
+           <string>Navigation settings set</string>
           </property>
-          <property name="text">
-           <string>Disable touchscreen tilt gesture</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DisableTouchTilt</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
+          <property name="currentIndex">
+           <number>-1</number>
           </property>
          </widget>
         </item>
@@ -203,6 +194,73 @@ Mouse tilting is not disabled by this setting.</string>
          <widget class="QLabel" name="orbitLabel">
           <property name="text">
            <string>Orbit style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QComboBox" name="comboOrbitStyle">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Rotation orbit style.
+Trackball: moving the mouse horizontally will rotate the part around the y-axis
+Turntable: the part will be rotated around the z-axis.</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>Turntable</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Trackball</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="newDocViewLabel">
+          <property name="text">
+           <string>New document camera orientation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QComboBox" name="comboNewDocView">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Camera orientation for new documents</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>New document scale</string>
           </property>
          </widget>
         </item>
@@ -241,6 +299,47 @@ The value is the diameter of the sphere to fit on the screen.</string>
           </property>
           <property name="rawValue" stdset="0">
            <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>Enable animated rotations</string>
+          </property>
+          <property name="text">
+           <string>Enable animation</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UseAutoRotation</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
+          <property name="toolTip">
+           <string>Zoom operations will be performed at position of mouse pointer</string>
+          </property>
+          <property name="text">
+           <string>Zoom at cursor</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ZoomAtCursor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
           </property>
          </widget>
         </item>
@@ -312,100 +411,43 @@ Zoom step of '1' means a factor of 7.5 for every zoom step. </string>
           </item>
          </layout>
         </item>
-        <item row="4" column="0">
-         <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
+        <item row="6" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
           <property name="toolTip">
-           <string>Enable animated rotations</string>
+           <string>Direction of zoom operations will be inverted</string>
           </property>
           <property name="text">
-           <string>Enable animation</string>
+           <string>Invert zoom</string>
           </property>
           <property name="checked">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>UseAutoRotation</cstring>
+           <cstring>InvertZoom</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="1" column="3">
-         <widget class="QComboBox" name="comboOrbitStyle">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
+        <item row="7" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
           <property name="toolTip">
-           <string>Rotation orbit style.
-Trackball: moving the mouse horizontally will rotate the part around the y-axis
-Turntable: the part will be rotated around the z-axis.</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <item>
-           <property name="text">
-            <string>Turntable</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Trackball</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
-          <property name="toolTip">
-           <string>Zoom operations will be performed at position of mouse pointer</string>
+           <string>Prevents view tilting when pinch-zooming.
+Affects only gesture navigation style.
+Mouse tilting is not disabled by this setting.</string>
           </property>
           <property name="text">
-           <string>Zoom at cursor</string>
+           <string>Disable touchscreen tilt gesture</string>
           </property>
           <property name="checked">
            <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>ZoomAtCursor</cstring>
+           <cstring>DisableTouchTilt</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QComboBox" name="comboNavigationStyle">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Navigation settings set</string>
-          </property>
-          <property name="currentIndex">
-           <number>-1</number>
           </property>
          </widget>
         </item>
@@ -427,48 +469,6 @@ Turntable: the part will be rotated around the z-axis.</string>
            <cstring>View</cstring>
           </property>
          </widget>
-        </item>
-        <item row="2" column="3">
-         <widget class="QComboBox" name="comboNewDocView">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Camera orientation for new documents</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="newDocViewLabel">
-          <property name="text">
-           <string>New document camera orientation</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::MinimumExpanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>
