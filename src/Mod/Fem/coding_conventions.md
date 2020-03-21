@@ -113,4 +113,4 @@ Python style is preferred over Doxygen style
 ## Icons
 ### Naming plicy
 - Command icons use the command name.
-- see [Forum topic] (https://forum.freecadweb.org/viewtopic.php?f=18&t=43379)
+- see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=18&t=43379)
