@@ -28,9 +28,35 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import FreeCADGui
+import FreeCADGui as Gui
+from PySide import QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+# UTILITIES -----------------------------------------------------------------
+
+def sync_snap_toolbar_button(button, status):
+    """set snap toolbar button to given state"""
+    snap_toolbar = Gui.Snapper.get_snap_toolbar()
+    #print(snap_toolbar)
+    if not snap_toolbar:
+        return
+    for a in snap_toolbar.actions():
+        if a.objectName() == button:
+            if button == "Draft_Snap_Lock_Button":
+                # for lock button
+                snap_toolbar.actions()[0].setChecked(status)
+                for a in snap_toolbar.actions()[1:]:
+                    a.setEnabled(status)
+            else:
+                # for every other button
+                a.setChecked(status)
+                if a.isChecked():
+                    a.setToolTip(a.toolTip().replace("OFF","ON"))
+                else:
+                    a.setToolTip(a.toolTip().replace("ON","OFF"))
+
+
+# SNAP GUI TOOLS ------------------------------------------------------------
 
 class Draft_Snap_Lock:
     """Command to activate or deactivate all snap commands."""
@@ -47,12 +73,14 @@ class Draft_Snap_Lock:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "masterbutton"):
-                FreeCADGui.Snapper.masterbutton.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Lock')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Lock"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Lock', Draft_Snap_Lock())
+Gui.addCommand('Draft_Snap_Lock', Draft_Snap_Lock())
 
 
 class Draft_Snap_Midpoint:
@@ -68,14 +96,14 @@ class Draft_Snap_Midpoint:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonmidpoint":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Midpoint')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Midpoint"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Midpoint', Draft_Snap_Midpoint())
+Gui.addCommand('Draft_Snap_Midpoint', Draft_Snap_Midpoint())
 
 
 class Draft_Snap_Perpendicular:
@@ -93,14 +121,14 @@ class Draft_Snap_Perpendicular:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonperpendicular":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Perpendicular')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Perpendicular"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Perpendicular', Draft_Snap_Perpendicular())
+Gui.addCommand('Draft_Snap_Perpendicular', Draft_Snap_Perpendicular())
 
 
 class Draft_Snap_Grid:
@@ -115,14 +143,14 @@ class Draft_Snap_Grid:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtongrid":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Grid')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Grid"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Grid', Draft_Snap_Grid())
+Gui.addCommand('Draft_Snap_Grid', Draft_Snap_Grid())
 
 
 class Draft_Snap_Intersection:
@@ -140,14 +168,14 @@ class Draft_Snap_Intersection:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonintersection":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Intersection')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Intersection"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Intersection', Draft_Snap_Intersection())
+Gui.addCommand('Draft_Snap_Intersection', Draft_Snap_Intersection())
 
 
 class Draft_Snap_Parallel:
@@ -163,14 +191,14 @@ class Draft_Snap_Parallel:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonparallel":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Parallel')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Parallel"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Parallel', Draft_Snap_Parallel())
+Gui.addCommand('Draft_Snap_Parallel', Draft_Snap_Parallel())
 
 
 class Draft_Snap_Endpoint:
@@ -186,14 +214,14 @@ class Draft_Snap_Endpoint:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonendpoint":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Endpoint')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Endpoint"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Endpoint', Draft_Snap_Endpoint())
+Gui.addCommand('Draft_Snap_Endpoint', Draft_Snap_Endpoint())
 
 
 class Draft_Snap_Angle:
@@ -208,14 +236,14 @@ class Draft_Snap_Angle:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonangle":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Angle')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Angle"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Angle', Draft_Snap_Angle())
+Gui.addCommand('Draft_Snap_Angle', Draft_Snap_Angle())
 
 
 class Draft_Snap_Center:
@@ -230,14 +258,14 @@ class Draft_Snap_Center:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtoncenter":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Center')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Center"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Center', Draft_Snap_Center())
+Gui.addCommand('Draft_Snap_Center', Draft_Snap_Center())
 
 
 class Draft_Snap_Extension:
@@ -253,14 +281,14 @@ class Draft_Snap_Extension:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonextension":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Extension')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Extension"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Extension', Draft_Snap_Extension())
+Gui.addCommand('Draft_Snap_Extension', Draft_Snap_Extension())
 
 
 class Draft_Snap_Near:
@@ -275,14 +303,14 @@ class Draft_Snap_Near:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonpassive":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Near')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Near"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Near', Draft_Snap_Near())
+Gui.addCommand('Draft_Snap_Near', Draft_Snap_Near())
 
 
 class Draft_Snap_Ortho:
@@ -297,14 +325,14 @@ class Draft_Snap_Ortho:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonortho":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Ortho')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Ortho"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Ortho', Draft_Snap_Ortho())
+Gui.addCommand('Draft_Snap_Ortho', Draft_Snap_Ortho())
 
 
 class Draft_Snap_Special:
@@ -320,14 +348,14 @@ class Draft_Snap_Special:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonspecial":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Special')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Special"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Special', Draft_Snap_Special())
+Gui.addCommand('Draft_Snap_Special', Draft_Snap_Special())
 
 
 class Draft_Snap_Dimensions:
@@ -343,14 +371,14 @@ class Draft_Snap_Dimensions:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonDimensions":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('Dimensions')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_Dimensions"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_Dimensions', Draft_Snap_Dimensions())
+Gui.addCommand('Draft_Snap_Dimensions', Draft_Snap_Dimensions())
 
 
 class Draft_Snap_WorkingPlane:
@@ -368,11 +396,11 @@ class Draft_Snap_WorkingPlane:
 
     def Activated(self):
         """Execute this when the command is called."""
-        if hasattr(FreeCADGui, "Snapper"):
-            if hasattr(FreeCADGui.Snapper, "toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonWorkingPlane":
-                        b.toggle()
+        if hasattr(Gui, "Snapper"):
+            # toggle the corresponding snap_index in Preferences/Mod/Draft/snapModes
+            status = Gui.Snapper.toggle_snap('WorkingPlane')
+            # change interface consistently
+            sync_snap_toolbar_button("Draft_Snap_WorkingPlane"+"_Button", status)
 
 
-FreeCADGui.addCommand('Draft_Snap_WorkingPlane', Draft_Snap_WorkingPlane())
+Gui.addCommand('Draft_Snap_WorkingPlane', Draft_Snap_WorkingPlane())
