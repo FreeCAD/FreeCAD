@@ -6,7 +6,7 @@
 using namespace FCS;
 using namespace FCS::G2D;
 
-TYPESYSTEM_SOURCE(FCS::G2D::ConstraintAngleLineLine, FCS::ConstraintAngle);
+TYPESYSTEM_SOURCE(FCS::G2D::ConstraintAngleLineLine, FCS::G2D::ConstraintAngle);
 
 
 ConstraintAngleLineLine::ConstraintAngleLineLine()

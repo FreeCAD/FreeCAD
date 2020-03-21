@@ -6,7 +6,7 @@
 using namespace FCS;
 using namespace FCS::G2D;
 
-TYPESYSTEM_SOURCE(FCS::G2D::ConstraintAngleAtXY, FCS::ConstraintAngle);
+TYPESYSTEM_SOURCE(FCS::G2D::ConstraintAngleAtXY, FCS::G2D::ConstraintAngle);
 
 
 ConstraintAngleAtXY::ConstraintAngleAtXY()
