@@ -59,6 +59,8 @@ generate_from_xml(G2D/ConstraintAngleAtXYPy)
 generate_from_xml(G2D/ConstraintAngleLineLinePy)
 generate_from_xml(G2D/ConstraintDistanceCirclePointPy)
 generate_from_xml(G2D/ConstraintDistanceLinePointPy)
+generate_from_xml(G2D/ConstraintTangentLineLinePy)
+generate_from_xml(G2D/ConstraintTangentCircleLinePy)
 
 SET(ConstraintSolver_G2D
     G2D/Vector.h
@@ -157,6 +159,14 @@ SET(ConstraintSolver_G2D
     G2D/ConstraintDistanceLinePoint.h
     G2D/ConstraintDistanceLinePointPy.xml
     G2D/ConstraintDistanceLinePointPyImp.cpp
+    G2D/ConstraintTangentLineLine.cpp
+    G2D/ConstraintTangentLineLine.h
+    G2D/ConstraintTangentLineLinePy.xml
+    G2D/ConstraintTangentLineLinePyImp.cpp
+    G2D/ConstraintTangentCircleLine.cpp
+    G2D/ConstraintTangentCircleLine.h
+    G2D/ConstraintTangentCircleLinePy.xml
+    G2D/ConstraintTangentCircleLinePyImp.cpp
 )
 
 SET(ConstraintSolver_Utils_SRCS
