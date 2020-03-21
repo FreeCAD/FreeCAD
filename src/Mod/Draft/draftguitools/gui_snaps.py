@@ -34,6 +34,15 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # UTILITIES -----------------------------------------------------------------
 
+def get_snap_statusbar_widget():
+    """retuns snap statusbar button"""
+    mw = Gui.getMainWindow()
+    if mw:
+        sb = mw.statusBar()
+        if sb:
+            return sb.findChild(QtGui.QToolBar,"draft_snap_widget")
+    return None
+
 def sync_snap_toolbar_button(button, status):
     """set snap toolbar button to given state"""
     snap_toolbar = Gui.Snapper.get_snap_toolbar()
@@ -55,6 +64,28 @@ def sync_snap_toolbar_button(button, status):
                 else:
                     a.setToolTip(a.toolTip().replace("ON","OFF"))
 
+def sync_snap_statusbar_button(button, status):
+    """set snap statusbar button to given state"""
+    ssw = get_snap_statusbar_widget()
+    if not ssw:
+        return
+    for child in ssw.children():
+        if child.objectName() == "Snap_Statusbutton":
+            ssb = child
+    actions = []
+    #print("actions:")
+    for a in ssb.menu().actions() + ssw.children()[-6:]:
+        #print(a.objectName())
+        actions.append(a)
+
+    if button == "Draft_Snap_Lock_Statusbutton":
+        ssb.setChecked(status)
+        for a in actions[1:]:
+            a.setEnabled(status)
+    else:
+        for a in actions:
+            if a.objectName() == button:
+                a.setChecked(status)
 
 # SNAP GUI TOOLS ------------------------------------------------------------
 
@@ -78,6 +109,7 @@ class Draft_Snap_Lock:
             status = Gui.Snapper.toggle_snap('Lock')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Lock"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Lock"+"_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Lock', Draft_Snap_Lock())
@@ -101,6 +133,7 @@ class Draft_Snap_Midpoint:
             status = Gui.Snapper.toggle_snap('Midpoint')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Midpoint"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Midpoint_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Midpoint', Draft_Snap_Midpoint())
@@ -126,6 +159,7 @@ class Draft_Snap_Perpendicular:
             status = Gui.Snapper.toggle_snap('Perpendicular')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Perpendicular"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Perpendicular_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Perpendicular', Draft_Snap_Perpendicular())
@@ -148,6 +182,7 @@ class Draft_Snap_Grid:
             status = Gui.Snapper.toggle_snap('Grid')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Grid"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Grid_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Grid', Draft_Snap_Grid())
@@ -173,6 +208,7 @@ class Draft_Snap_Intersection:
             status = Gui.Snapper.toggle_snap('Intersection')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Intersection"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Intersection_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Intersection', Draft_Snap_Intersection())
@@ -196,6 +232,7 @@ class Draft_Snap_Parallel:
             status = Gui.Snapper.toggle_snap('Parallel')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Parallel"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Parallel_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Parallel', Draft_Snap_Parallel())
@@ -219,6 +256,7 @@ class Draft_Snap_Endpoint:
             status = Gui.Snapper.toggle_snap('Endpoint')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Endpoint"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Endpoint_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Endpoint', Draft_Snap_Endpoint())
@@ -241,6 +279,7 @@ class Draft_Snap_Angle:
             status = Gui.Snapper.toggle_snap('Angle')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Angle"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Angle_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Angle', Draft_Snap_Angle())
@@ -263,6 +302,7 @@ class Draft_Snap_Center:
             status = Gui.Snapper.toggle_snap('Center')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Center"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Center_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Center', Draft_Snap_Center())
@@ -286,6 +326,7 @@ class Draft_Snap_Extension:
             status = Gui.Snapper.toggle_snap('Extension')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Extension"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Extension_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Extension', Draft_Snap_Extension())
@@ -308,6 +349,7 @@ class Draft_Snap_Near:
             status = Gui.Snapper.toggle_snap('Near')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Near"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Near_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Near', Draft_Snap_Near())
@@ -330,6 +372,7 @@ class Draft_Snap_Ortho:
             status = Gui.Snapper.toggle_snap('Ortho')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Ortho"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Ortho"+"_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Ortho', Draft_Snap_Ortho())
@@ -353,6 +396,7 @@ class Draft_Snap_Special:
             status = Gui.Snapper.toggle_snap('Special')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Special"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Special_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Special', Draft_Snap_Special())
@@ -376,6 +420,7 @@ class Draft_Snap_Dimensions:
             status = Gui.Snapper.toggle_snap('Dimensions')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_Dimensions"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_Dimensions"+"_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_Dimensions', Draft_Snap_Dimensions())
@@ -401,6 +446,7 @@ class Draft_Snap_WorkingPlane:
             status = Gui.Snapper.toggle_snap('WorkingPlane')
             # change interface consistently
             sync_snap_toolbar_button("Draft_Snap_WorkingPlane"+"_Button", status)
+            sync_snap_statusbar_button("Draft_Snap_WorkingPlane_Statusbutton", status)
 
 
 Gui.addCommand('Draft_Snap_WorkingPlane', Draft_Snap_WorkingPlane())
