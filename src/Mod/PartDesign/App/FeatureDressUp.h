@@ -62,9 +62,10 @@ public:
 
     std::vector<TopoShape> getFaces(const TopoShape &shape);
 
+    virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+
 protected:
     virtual void onChanged(const App::Property* prop);
-    virtual void setupObject();
 };
 
 } //namespace PartDesign

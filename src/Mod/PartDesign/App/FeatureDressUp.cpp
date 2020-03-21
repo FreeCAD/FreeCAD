@@ -55,9 +55,10 @@ DressUp::DressUp()
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,
-            "Enable support for transformed patterns");
+            "Include the base additive/subtractive shape when used in pattern features.\n"
+            "If disabled, only the dressed part of the shape is used for patterning.");
 
-    addSubType = Additive;
+    AddSubShape.setStatus(App::Property::Output, true);
 }
 
 short DressUp::mustExecute() const
@@ -65,11 +66,6 @@ short DressUp::mustExecute() const
     if (Base.getValue() && Base.getValue()->isTouched())
         return 1;
     return PartDesign::Feature::mustExecute();
-}
-
-void DressUp::setupObject() {
-    SupportTransform.setValue(true);
-    Feature::setupObject();
 }
 
 void DressUp::positionByBaseFeature(void)
@@ -200,40 +196,94 @@ void DressUp::onChanged(const App::Property* prop)
             BaseFeature.setValue (Base.getValue());
         }
     } else if (prop == &Shape || prop == &SupportTransform) {
-        if (!getDocument()->testStatus(App::Document::Restoring)
-                && !getDocument()->isPerformingTransaction())
+        if (!getDocument()->testStatus(App::Document::Restoring) &&
+            !getDocument()->isPerformingTransaction())
         {
-            Part::TopoShape s(0,getDocument()->getStringHasher());
-            auto base = Base::freecad_dynamic_cast<FeatureAddSub>(getBaseObject(true));
-            if(!base) {
-                addSubType = Additive;
-                if(!SupportTransform.getValue())
-                    s = getBaseShape();
-                else
-                    s = Shape.getShape();
-                s.setPlacement(Base::Placement());
-            } else if (!SupportTransform.getValue()) {
-                addSubType = base->getAddSubType();
-                s = base->AddSubShape.getShape();
-            } else {
-                addSubType = base->getAddSubType();
-                Part::TopoShape baseShape = base->getBaseShape(true);
-                baseShape.setPlacement(Base::Placement());
-                Part::TopoShape shape = Shape.getShape();
-                shape.setPlacement(Base::Placement());
-                if (baseShape.isNull() || !baseShape.hasSubShape(TopAbs_SOLID)) {
-                    s = shape;
-                    addSubType = Additive;
-                } else if (addSubType == Additive)
-                    s.makECut({shape,baseShape});
-                else
-                    s.makECut({baseShape,shape});
-            }
-            AddSubShape.setValue(s);
+            // AddSubShape in DressUp acts as a shape cache. And here we shall
+            // invalidate the cache upon changes in Shape. Other features
+            // (currently only feature Transformed) shall call getAddSubShape()
+            // to rebuild the cache. This allow us to perform expensive
+            // calculation of AddSubShape only when necessary.
+            AddSubShape.setValue(Part::TopoShape());
         }
     }
 
     Feature::onChanged(prop);
+}
+
+void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+{
+    Part::TopoShape res = AddSubShape.getShape();
+
+    if(res.isNull()) {
+        try {
+            std::vector<Part::TopoShape> shapes;
+            Part::TopoShape shape = Shape.getShape();
+            shape.setPlacement(Base::Placement());
+
+            FeatureAddSub *base = nullptr;
+            if(SupportTransform.getValue())
+                base = Base::freecad_dynamic_cast<FeatureAddSub>(getBaseObject(true));
+
+            Part::TopoShape baseShape;
+            if(base) {
+                baseShape = base->getBaseShape(true);
+                baseShape.setPlacement(Base::Placement());
+                if (base->getAddSubType() == Additive) {
+                    if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
+                        shapes.push_back(shape.makECut(baseShape));
+                    else
+                        shapes.push_back(shape);
+                } else {
+                    BRep_Builder builder;
+                    TopoDS_Compound comp;
+                    builder.MakeCompound(comp);
+                    // push an empty compound to indicate null additive shape
+                    shapes.emplace_back(comp);
+                    if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
+                        shapes.push_back(baseShape.makECut(shape));
+                    else
+                        shapes.push_back(shape);
+                }
+            } else {
+                baseShape = getBaseShape();
+                baseShape.setPlacement(Base::Placement());
+                shapes.push_back(shape.makECut(baseShape));
+                shapes.push_back(baseShape.makECut(shape));
+            }
+
+            // Make a compound to contain both additive and subtractive shape,
+            // bceause a dressing (e.g. a fillet) can either be additive or
+            // subtractive. And the dressup feature can contain mixture of both.
+            AddSubShape.setValue(Part::TopoShape().makECompound(shapes));
+
+        } catch (Standard_Failure &e) {
+            FC_THROWM(Base::CADKernelError, "Failed to calculate AddSub shape: "
+                    << e.GetMessageString());
+        }
+        res = AddSubShape.getShape();
+    }
+
+    if(res.isNull())
+        throw Part::NullShapeException("Null AddSub shape");
+
+    if(res.getShape().ShapeType() != TopAbs_COMPOUND) {
+        addShape = res;
+    } else {
+        int count = res.countSubShapes(TopAbs_SHAPE);
+        if(!count)
+            throw Part::NullShapeException("Null AddSub shape");
+        if(count) {
+            Part::TopoShape s = res.getSubTopoShape(TopAbs_SHAPE, 1);
+            if(!s.isNull() && s.hasSubShape(TopAbs_SOLID))
+                addShape = s;
+        }
+        if(count > 1) {
+            Part::TopoShape s = res.getSubTopoShape(TopAbs_SHAPE, 2);
+            if(!s.isNull() && s.hasSubShape(TopAbs_SOLID))
+                subShape = s;
+        }
+    }
 }
 
 }

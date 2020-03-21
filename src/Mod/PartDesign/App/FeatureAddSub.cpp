@@ -72,6 +72,14 @@ TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
     return oldShape;
 }
 
+void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape)
+{
+    if (addSubType == Additive)
+        addShape = AddSubShape.getShape();
+    else if (addSubType == Subtractive)
+        subShape = AddSubShape.getShape();
+}
+
 }
 
 namespace App {

@@ -220,17 +220,24 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 && obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
         {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(obj);
-            auto shape = feature->AddSubShape.getShape();
-            if (shape.isNull())
+            Part::TopoShape fuseShape, cutShape;
+            feature->getAddSubShape(fuseShape, cutShape);
+            if (fuseShape.isNull() && cutShape.isNull())
                 return new App::DocumentObjectExecReturn("Shape of add/sub feature is empty");
-            int count = shapeMap.Extent();
-            if(shapeMap.Add(shape.getShape())<=count)
-                continue;
-            shape.Tag = -shape.Tag;
-            auto trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
-            originalShapes.push_back(shape.makETransform(trsf));
-            originalSubs.push_back(feature->getFullName());
-            fuses.push_back((feature->getAddSubType() == FeatureAddSub::Additive) ? true : false);
+            auto addShape = [&](Part::TopoShape &shape, bool fuse) {
+                if(shape.isNull())
+                    return;
+                int count = shapeMap.Extent();
+                if(shapeMap.Add(shape.getShape())<=count)
+                    return;
+                shape.Tag = -shape.Tag;
+                auto trsf = feature->getLocation().Transformation().Multiplied(trsfInv);
+                originalShapes.push_back(shape.makETransform(trsf));
+                originalSubs.push_back(feature->getFullName());
+                fuses.push_back(fuse);
+            };
+            addShape(fuseShape, true);
+            addShape(cutShape, false);
             continue;
         } 
 
@@ -353,7 +360,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     for (TopoShape &shape : originalShapes) {
         auto &sub = originalSubs[i];
         bool fuse = fuses[i++];
-        bool failed = false;
 
         // Transform the add/subshape and collect the resulting shapes for overlap testing
         /*typedef std::vector<std::vector<gp_Trsf>::const_iterator> trsf_it_vec;
@@ -379,19 +385,21 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn(msg.c_str());
             }
 
-            // Check for intersection with support
             try {
+                // Intersection checking for additive shape is redundant.
+                // Because according to CheckIntersection() source code, it is
+                // implemented using fusion and counting of the resulting
+                // solid, which will be done in the following modeling step
+                // anyway.
+                //
+                // There is little reason for doing intersection checking on
+                // subtractive shape either, because it does not produce
+                // multiple solids.
+                //
+                // if (!Part::checkIntersection(support, mkTrf.Shape(), false, true)) 
 
-                if (!Part::checkIntersection(support.getShape(), shapeCopy.getShape(), false, true)) {
-#ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
-                    Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", sub.c_str());
-#endif
-                    if(!failed) {
-                        failed = true;
-                        rejected.emplace_back(shape,std::vector<gp_Trsf>());
-                    }
-                    rejected.back().second.push_back(*t);
-                } else {
+
+                if (fuse) {
                     // We cannot wait to fuse a transformation with the support until all the transformations are done,
                     // because the "support" potentially changes with every transformation, basically when checking intersection
                     // above you need:
@@ -404,7 +412,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     
                     /*v_transformations.push_back(t);
                     v_transformedShapes.push_back(mkTrf.Shape());*/
-
+    
                     // Note: Transformations that do not intersect the support are ignored in the overlap tests
                     
                     //insert scheme here.
@@ -415,43 +423,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                     // Fuse/Cut the compounded transformed shapes with the support
                     //TopoDS_Shape result;
                     
-                    if (fuse) {
-                        result.makEFuse({support,shapeCopy});
-                        // we have to get the solids (fuse sometimes creates compounds)
-                        support = this->getSolid(result);
-                        // lets check if the result is a solid
-                        if (support.isNull()) {
-                            std::string msg("Resulting shape is not a solid: ");
-                            msg += sub;
-                            return new App::DocumentObjectExecReturn(msg.c_str());
-                        }
-
-                        /*std::vector<TopoDS_Shape>::const_iterator individualIt;
-                        for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
-                        {
-                            BRepAlgoAPI_Fuse mkFuse2(current, *individualIt);
-                            if (!mkFuse2.IsDone())
-                                return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
-                            // we have to get the solids (fuse sometimes creates compounds)
-                            current = this->getSolid(mkFuse2.Shape());
-                            // lets check if the result is a solid
-                            if (current.IsNull())
-                                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
-                        }*/
-                    } else {
-                        result.makECut({support,shapeCopy});
-                        support = result;
-                        /*std::vector<TopoDS_Shape>::const_iterator individualIt;
-                        for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
-                        {
-                            BRepAlgoAPI_Cut mkCut2(current, *individualIt);
-                            if (!mkCut2.IsDone())
-                                return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
-                            current = this->getSolid(mkCut2.Shape());
-                            if (current.IsNull())
-                                return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
-                        }*/
+                    result.makEFuse({support,shapeCopy});
+                    // we have to get the solids (fuse sometimes creates compounds)
+                    support = this->getSolid(result);
+                    // lets check if the result is a solid
+                    if (support.isNull()) {
+                        std::string msg("Resulting shape is not a solid: ");
+                        msg += sub;
+                        return new App::DocumentObjectExecReturn(msg.c_str());
                     }
+
+                } else {
+                    result.makECut({support,shapeCopy});
+                    support = result;
                 }
             } catch (Standard_Failure& e) {
                 // Note: Ignoring this failure is probably pointless because if the intersection check fails, the later
@@ -599,14 +583,6 @@ void Transformed::onChanged(const App::Property *prop) {
 
 void Transformed::setupObject () {
     CopyShape.setValue(false);
-}
-
-std::string Transformed::getElementMapVersion(const App::Property *prop, bool restored) const
-{
-    std::string res = Feature::getElementMapVersion(prop,restored);
-    if(!restored) 
-        res = std::string("PDT0.") + res;
-    return res;
 }
 
 }
