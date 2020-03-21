@@ -131,7 +131,7 @@ int DlgPrefsTechDraw3Imp::prefBalloonArrow(void) const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Decorations");
-    int end = hGrp->GetInt("BalloonArrow", 1);
+    int end = hGrp->GetInt("BalloonArrow", 0);
     return end;
 }
 
@@ -140,7 +140,7 @@ int DlgPrefsTechDraw3Imp::prefArrowStyle(void) const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Dimensions");
-    int style = hGrp->GetInt("ArrowStyle", 1);
+    int style = hGrp->GetInt("ArrowStyle", 0);
     return style;
 }
 
