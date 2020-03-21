@@ -41,6 +41,7 @@
 #include <App/Range.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
+#include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/ExpressionCompleter.h>
 #include <App/DocumentObject.h>
@@ -357,7 +358,10 @@ void SheetView::editingFinished()
                     Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
                 }
             } else {
-                cell->setAlias(str.toStdString());
+                std::string address = CellAddress(i.row(), i.column()).toString();
+                Gui::cmdAppObjectArgs(sheet, "setAlias('%s', '%s')",
+                                      address, str.toStdString());
+                Gui::cmdAppDocument(sheet->getDocument(), "recompute()");
             }
         }
         ui->cells->setCurrentIndex(ui->cellContent->next());
