@@ -70,6 +70,16 @@ void  ConstraintPy::setWeight(Py::Float arg)
     getConstraintPtr()->setWeight(arg.as_double());
 }
 
+Py::Boolean ConstraintPy::getReversed(void) const
+{
+    return Py::Boolean(getConstraintPtr()->isReversed());
+}
+
+void  ConstraintPy::setReversed(Py::Boolean arg)
+{
+    getConstraintPtr()->setReversed(arg.as_bool());
+}
+
 Py::Float ConstraintPy::getNetError(void) const
 {
     try {

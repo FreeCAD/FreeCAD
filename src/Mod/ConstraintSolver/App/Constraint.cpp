@@ -17,6 +17,11 @@ void Constraint::setWeight(double weight)
     scale = weight;
 }
 
+void Constraint::setReversed(bool brev)
+{
+    _revers = brev ? -1.0 : 1.0;
+}
+
 void Constraint::setProblemSize(ProblemSizeInfo sz)
 {
     _sz = sz;
@@ -28,10 +33,12 @@ std::vector<ParameterRef> Constraint::datumParameters() const
     return std::vector<ParameterRef>();
 }
 
-std::vector<double> Constraint::caluclateDatum()
+std::vector<Base::DualNumber> Constraint::caluclateDatum(const ValueSet& vals)
 {
-    return std::vector<double>();
+    (void)vals;
+    throw Py::NotImplementedError("Constraint " + repr() + " doesn't support calculating datums");
 }
+
 
 Base::DualNumber Constraint::netError(const ValueSet& on) const
 {
@@ -66,6 +73,7 @@ HParaObject Constraint::copy() const
     HConstraint ret = ParaObject::copy();
     ret->_weight = _weight;
     ret->_sz =  _sz;
+    ret->_revers = _revers;
     ret->scale = scale;
     ret->priority = priority;
     return ret;

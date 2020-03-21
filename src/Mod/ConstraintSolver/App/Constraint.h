@@ -55,6 +55,8 @@ public: //enums
 protected://data members
     ///user-modified weight of the constraint
     double _weight = 1.0;
+    ///constraint reversal multiplier. 1.0 for nonreversed, -1.0 for reversed.
+    double _revers = 1.0;
     ProblemSizeInfo _sz;
 
 public://data members
@@ -91,11 +93,14 @@ public://main interface for overriding
     //optional
     virtual double maxStep(const ValueSet& vals, const ValueSet& dir) const;
     virtual void setWeight(double weight);
+    ///reversedness of the constraint. The meaning is constraint-dependent.
+    bool isReversed() const {return _revers < 0.0;}
+    virtual void setReversed(bool brev);
     virtual void setProblemSize(ProblemSizeInfo sz);
     ///datum parameters are usually numerals entered by user, such as the distance of distance constraint. The parameters are typically fixed.
     virtual std::vector<ParameterRef> datumParameters() const;
     ///returns calculated values for datum parameters for current state of geometry. Same order as returned by datumParameters.
-    virtual std::vector<double> caluclateDatum();
+    virtual std::vector<Base::DualNumber> caluclateDatum(const ValueSet& vals);
 
 public://methods
     const std::vector<ParameterRef>& parameters() const {return _parameters;}

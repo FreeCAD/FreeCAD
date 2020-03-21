@@ -37,6 +37,12 @@
 	  </Documentation>
 	  <Parameter Name="Rank" Type="Long" />
 	</Attribute>
+    <Attribute Name="Reversed" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns/sets if the constraint is reversed or not. The meaning is constraint dependent and may be ignored.</UserDocu>
+      </Documentation>
+      <Parameter Name="Reversed" Type="Boolean" />
+    </Attribute>
 
 	<Methode Name="netError">
 	  <Documentation>
