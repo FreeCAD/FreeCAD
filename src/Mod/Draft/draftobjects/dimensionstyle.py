@@ -28,13 +28,12 @@
 # \brief This module provides the object code for Draft DimensionStyle.
 
 import FreeCAD as App
-import Draft
-from Draft import _DraftObject
+from draftobjects.draft_annotation import DraftAnnotation
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from draftviewproviders.view_style_dimension import ViewProviderDraftDimensionStyle
+    from draftviewproviders.view_dimensionstyle import ViewProviderDraftDimensionStyle
 
 def make_dimension_style(existing_dimension = None):
     """
@@ -49,6 +48,6 @@ def make_dimension_style(existing_dimension = None):
         ViewProviderDraftDimensionStyle(obj.ViewObject, existing_dimension)
     return obj
 
-class DimensionStyle(_DraftObject):
+class DimensionStyle(DraftAnnotation):
     def __init__(self, obj):
-        _DraftObject.__init__(self, obj, "DimensionStyle")
+        DraftAnnotation.__init__(self, obj, "DimensionStyle")

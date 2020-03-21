@@ -28,10 +28,10 @@
 # \brief This module provides the view provider code for Draft DimensionStyle.
 
 import FreeCAD as App
-import Draft
 from Draft import _ViewProviderDraft
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import draftutils.utils as utils
+from pivy import coin
 
 class ViewProviderDraftDimensionStyle(_ViewProviderDraft):
     """
@@ -190,6 +190,9 @@ class ViewProviderDraftDimensionStyle(_ViewProviderDraft):
         if hasattr(vobj, "AutoUpdate"):
             if vobj.AutoUpdate:
                 self.update_related_dimensions(vobj)
+        if hasattr(vobj, "Visibility"):
+            if prop == "Visibility":
+                print(vobj.Visibility)
 
     def doubleClicked(self,vobj):
         self.set_current(vobj)
@@ -228,3 +231,19 @@ class ViewProviderDraftDimensionStyle(_ViewProviderDraft):
         from draftutils import gui_utils
         for dim in vobj.Object.InList:
             gui_utils.format_object(target = dim, origin = vobj.Object)
+
+    def getIcon(self):
+        import Draft_rc
+        return ":/icons/Draft_Dimension_Tree_Style.svg"
+
+    def attach(self, vobj):
+        self.standard = coin.SoGroup()
+        vobj.addDisplayMode(self.standard,"Standard")
+
+    def getDisplayModes(self,obj):
+        "'''Return a list of display modes.'''"
+        return ["Standard"]
+
+    def getDefaultDisplayMode(self):
+        "'''Return the name of the default display mode. It must be defined in getDisplayModes.'''"
+        return "Standard"
