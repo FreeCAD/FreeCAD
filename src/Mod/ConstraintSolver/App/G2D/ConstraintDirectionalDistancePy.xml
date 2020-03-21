@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="SimpleConstraintPy" 
+	  Name="ConstraintDirectionalDistancePy" 
+	  Twin="ConstraintDirectionalDistance" 
+	  TwinPointer="ConstraintDirectionalDistance" 
+	  Include="Mod/ConstraintSolver/App/G2D/ConstraintDirectionalDistance.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/SimpleConstraintPy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="true"
+	  Delete="false"
+	  FatherNamespace="FCS"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu></DeveloperDocu>
+	  <UserDocu>Constrains a distance between two points measured along a direction 
+      (e.g., Sketcher's horizontal distance and vertical distance constraints are covered by this constraint)</UserDocu>
+	</Documentation>
+
+    <Attribute Name="Direction" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns/sets direction the distance is measured along.</UserDocu>
+      </Documentation>
+      <Parameter Name="Direction" Type="Object" />
+    </Attribute>
+    
+  </PythonExport>
+</GenerateModel>
