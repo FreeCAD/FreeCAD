@@ -1198,7 +1198,7 @@ void QGIViewDimension::drawArrows(int count, const Base::Vector2d positions[], d
         arrow->setSize(QGIArrow::getPrefArrowSize());
         arrow->setFlipped(flipped);
 
-        if (QGIArrow::getPrefArrowStyle() != 0) { // if not "None"
+        if (QGIArrow::getPrefArrowStyle() != 7) { // if not "None"
             arrow->draw();
             arrow->show();
         }

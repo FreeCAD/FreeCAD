@@ -185,6 +185,7 @@ void TaskCenterLine::setUiPrimary()
         ui->rbAligned->setEnabled(false);
     else
         ui->rbAligned->setEnabled(true);
+
     if (m_type == 1) // only if line, feature is enabled
         ui->cbFlip->setEnabled(true);
     else
@@ -238,6 +239,7 @@ void TaskCenterLine::setUiEdit()
         ui->cbFlip->setChecked(true);
     else
         ui->cbFlip->setChecked(false);
+
     if (m_cl->m_type == 1) // only if line, feature is enabled
         ui->cbFlip->setEnabled(true);
     else
@@ -264,14 +266,16 @@ void TaskCenterLine::createCenterLine(void)
         m_mode = CenterLine::CLMODE::ALIGNED;
     }
 
+    bool flip = ui->cbFlip->isChecked();
     TechDraw::CenterLine* cl = CenterLine::CenterLineBuilder(m_partFeat,
                                                              m_subNames,
-                                                             m_mode);
+                                                             m_mode,
+                                                             flip);
     if (cl != nullptr) {
         cl->setShifts(hShift, vShift);
         cl->setExtend(extendBy);
         cl->setRotate(rotate);
-        cl->m_flip2Line = ui->cbFlip->checkState();
+        cl->m_flip2Line = ui->cbFlip->isChecked();
         App::Color ac;
         ac.setValue<QColor>(ui->cpLineColor->color());
         cl->m_format.m_color = ac;
@@ -310,7 +314,7 @@ void TaskCenterLine::updateCenterLine(void)
     m_cl->m_hShift = ui->qsbHorizShift->rawValue();
     m_cl->m_extendBy = ui->qsbExtend->rawValue();
     m_cl->m_type = m_type;
-    m_cl->m_flip2Line = ui->cbFlip->checkState();
+    m_cl->m_flip2Line = ui->cbFlip->isChecked();
     m_partFeat->replaceCenterLine(m_cl);
     m_partFeat->refreshCLGeoms();
     m_partFeat->requestPaint();

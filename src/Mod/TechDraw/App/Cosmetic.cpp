@@ -802,17 +802,24 @@ TechDraw::BaseGeom* CenterLine::scaledGeometry(TechDraw::DrawViewPart* partFeat)
     TechDraw::BaseGeom* newGeom = nullptr;
     Base::Vector3d p1 = ends.first;
     Base::Vector3d p2 = ends.second;
-    gp_Pnt gp1(p1.x,p1.y,p1.z);
-    gp_Pnt gp2(p2.x,p2.y,p2.z);
-    TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    TopoDS_Shape s = TechDraw::scaleShape(e, scale);
-    TopoDS_Edge newEdge = TopoDS::Edge(s);
-    newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
-    newGeom->classOfEdge = ecHARD;
-    newGeom->hlrVisible = true;
-    newGeom->cosmetic = true;
-    newGeom->source(CENTERLINE);
-    newGeom->setCosmeticTag(getTagAsString());
+    if (!p1.IsEqual(p2, 0.00001)) {
+        gp_Pnt gp1(p1.x,p1.y,p1.z);
+        gp_Pnt gp2(p2.x,p2.y,p2.z);
+        TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
+        TopoDS_Shape s = TechDraw::scaleShape(e, scale);
+        TopoDS_Edge newEdge = TopoDS::Edge(s);
+        newGeom = TechDraw::BaseGeom::baseFactory(newEdge);
+        newGeom->classOfEdge = ecHARD;
+        newGeom->hlrVisible = true;
+        newGeom->cosmetic = true;
+        newGeom->source(CENTERLINE);
+        newGeom->setCosmeticTag(getTagAsString());
+    } else { 
+        Base::Console().Warning("Centerline endpoints are equal. Could not draw.\n");
+        //what to do here?  //return current geom?
+        return m_geometry;  
+    }
+    
     return newGeom;
 }
 
