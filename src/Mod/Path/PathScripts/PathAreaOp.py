@@ -49,6 +49,7 @@ PathLog.setLevel(LOGLEVEL, PathLog.thisModule())
 if LOGLEVEL is PathLog.Level.DEBUG:
     PathLog.trackModule()
 
+
 # Qt translation handling
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
@@ -467,10 +468,14 @@ class ObjectOp(PathOp.ObjectOp):
                     # Rotate Model to correct angle
                     ppCmds.insert(0, Path.Command('G0', {axisOfRot: angle, 'F': self.axialRapid}))
 
-                    # Raise cutter to safe depth and return index to starting position
-                    ppCmds.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-                    if axis != nextAxis:
-                        ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
+                    # Raise cutter to safe height
+                    ppCmds.insert(0, Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
+
+                    # Return index to starting position if axis of rotation changes.
+                    if numShapes > 1:
+                        if ns != numShapes - 1:
+                            if axis != nextAxis:
+                                ppCmds.append(Path.Command('G0', {axisOfRot: 0.0, 'F': self.axialRapid}))
                 # Eif
 
                 # Save gcode commands to object command list
@@ -483,9 +488,43 @@ class ObjectOp(PathOp.ObjectOp):
 
         # Raise cutter to safe height and rotate back to original orientation
         if self.rotateFlag is True:
+            resetAxis = False
+            lastJobOp = None
+            nextJobOp = None
+            opIdx = 0
+            JOB = PathUtils.findParentJob(obj)
+            jobOps = JOB.Operations.Group
+            numJobOps = len(jobOps)
+
+            for joi in range(0, numJobOps):
+                jo = jobOps[joi]
+                if jo.Name == obj.Name:
+                    opIdx = joi
+            lastOpIdx = opIdx - 1
+            nextOpIdx = opIdx + 1
+            if lastOpIdx > -1:
+                lastJobOp = jobOps[lastOpIdx]
+            if nextOpIdx < numJobOps:
+                nextJobOp = jobOps[nextOpIdx]
+
+            if lastJobOp is not None:
+                if hasattr(lastJobOp, 'EnableRotation'):
+                    PathLog.debug('Last Op, {}, has `EnableRotation` set to {}'.format(lastJobOp.Label, lastJobOp.EnableRotation))
+                    if lastJobOp.EnableRotation != obj.EnableRotation:
+                        resetAxis = True
+            if ns == numShapes - 1:  # If last shape, check next op EnableRotation setting
+                if nextJobOp is not None:
+                    if hasattr(nextJobOp, 'EnableRotation'):
+                        PathLog.debug('Next Op, {}, has `EnableRotation` set to {}'.format(nextJobOp.Label, nextJobOp.EnableRotation))
+                        if nextJobOp.EnableRotation != obj.EnableRotation:
+                            resetAxis = True
+
+            # Raise to safe height if rotation activated
             self.commandlist.append(Path.Command('G0', {'Z': obj.SafeHeight.Value, 'F': self.vertRapid}))
-            self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
-            self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))
+            # reset rotational axises if necessary
+            if resetAxis is True:
+                self.commandlist.append(Path.Command('G0', {'A': 0.0, 'F': self.axialRapid}))
+                self.commandlist.append(Path.Command('G0', {'B': 0.0, 'F': self.axialRapid}))
 
         self.useTempJobClones('Delete')  # Delete temp job clone group and contents
         self.guiMessage('title', None, show=True)  # Process GUI messages to user
