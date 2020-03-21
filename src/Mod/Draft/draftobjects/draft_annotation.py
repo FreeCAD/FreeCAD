@@ -21,48 +21,58 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""This module provides the Draft Dimension Style tool.
+"""This module provides the object code for Draft DimensionStyle.
 """
-## @package gui_style_dimension
+## @package style_dimension
 # \ingroup DRAFT
-# \brief This module provides the Draft Dimension Style tool.
+# \brief This module provides the object code for Draft DimensionStyle.
 
 import FreeCAD as App
-import FreeCADGui as Gui
-from PySide import QtCore
-from . import gui_base
-from draftutils import utils
-from draftobjects.style_dimension import make_dimension_style
+from PySide.QtCore import QT_TRANSLATE_NOOP
+from draftutils import gui_utils
 
-class GuiCommandDimensionStyle(gui_base.GuiCommandBase):
-    """
-    The command creates a dimension style object
-    """
+class DraftAnnotation:
+    """The Draft Annotation Base object"""
+    def __init__(self,obj,tp="Unknown"):
+        if obj:
+            obj.Proxy = self
+        self.Type = tp
 
-    def GetResources(self):
-        _msg = ("Creates a new dimension style.\n"
-                "The object stores dimension preferences into the document."
-                )
-        return {'Pixmap'  : 'Draft_AutoGroup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft", "Dimension Style"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft", _msg)}
+    def __getstate__(self):
+        return self.Type
 
-    def IsActive(self):
-        if Gui.ActiveDocument:
-            return True
-        else:
-            return False
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
 
-    def Activated(self):
-        sel = Gui.Selection.getSelection()
+    def execute(self,obj):
+        pass
 
-        if len(sel) == 1:
-            if utils.get_type(sel[0]) == 'Dimension':
-                make_dimension_style(sel[0])
-                return self.finish()
+    def onChanged(self, obj, prop):
+        pass
+
+
+
+class DimensionBase(DraftAnnotation):
+    """The Draft Dimension Base object"""
+
+    def __init__(self, obj, tp = "Dimension"):
+        "Initialize common properties for dimension objects"
+        DraftAnnotation.__init__(self,obj, tp)
         
-        make_dimension_style()
-        return self.finish()
+        # Annotation
+        obj.addProperty("App::PropertyLink","DimensionStyle",
+                        "Annotation",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Link dimension style"))
+
+    def onChanged(self,obj,prop):
+        
+        if prop == "DimensionStyle":
+            if hasattr(obj, "DimensionStyle"):
+                gui_utils.format_object(target = obj, origin = obj.DimensionStyle)
 
 
-Gui.addCommand('Draft_DimensionStyle', GuiCommandDimensionStyle())
+    def execute(self, obj):
+        
+        return
