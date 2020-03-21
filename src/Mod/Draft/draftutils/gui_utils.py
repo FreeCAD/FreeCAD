@@ -2,6 +2,7 @@
 # *   (c) 2009, 2010                                                        *
 # *   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
 # *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
+# *   (c) 2020 Carlo Pavan <carlopa@gmail.com>                              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -37,14 +38,14 @@ import math
 import os
 import six
 
-import FreeCAD
+import FreeCAD as App
 from draftutils.messages import _msg, _wrn
 from draftutils.utils import getParam
 from draftutils.utils import get_type
 from draftutils.translate import _tr, translate
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
+if App.GuiUp:
+    import FreeCADGui as Gui
     from pivy import coin
     from PySide import QtGui
     # from PySide import QtSvg  # for load_texture
@@ -61,13 +62,13 @@ def get_3d_view():
 
         Return `None` if the graphical interface is not available.
     """
-    if FreeCAD.GuiUp:
-        v = FreeCADGui.ActiveDocument.ActiveView
+    if App.GuiUp:
+        v = Gui.ActiveDocument.ActiveView
         if "View3DInventor" in str(type(v)):
             return v
 
         # print("Debug: Draft: Warning, not working in active view")
-        v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
+        v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
         if v:
             return v[0]
 
@@ -82,7 +83,7 @@ def autogroup(obj):
     """Add a given object to the defined Draft autogroup, if applicable.
 
     This function only works if the graphical interface is available.
-    It checks that the `FreeCAD.draftToolBar` class is available,
+    It checks that the `App.draftToolBar` class is available,
     which contains the group to use to automatically store
     new created objects.
 
@@ -94,23 +95,22 @@ def autogroup(obj):
 
     Parameters
     ----------
-    obj : App::DocumentObject
+    obj: App::DocumentObject
         Any type of object that will be stored in the group.
     """
-    if not FreeCAD.GuiUp:
+    if not App.GuiUp:
         return
 
-    Gui = FreeCADGui
-    doc = FreeCAD.ActiveDocument
-    view = FreeCADGui.ActiveDocument.ActiveView
+    doc = App.ActiveDocument
+    view = Gui.ActiveDocument.ActiveView
 
     # Look for active Arch container
     active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
-    if hasattr(FreeCADGui, "draftToolBar"):
-        if (hasattr(FreeCADGui.draftToolBar, "autogroup")
-                and not FreeCADGui.draftToolBar.isConstructionMode()):
-            if FreeCADGui.draftToolBar.autogroup is not None:
-                active_group = doc.getObject(FreeCADGui.draftToolBar.autogroup)
+    if hasattr(Gui, "draftToolBar"):
+        if (hasattr(Gui.draftToolBar, "autogroup")
+                and not Gui.draftToolBar.isConstructionMode()):
+            if Gui.draftToolBar.autogroup is not None:
+                active_group = doc.getObject(Gui.draftToolBar.autogroup)
                 if active_group:
                     found = False
                     for o in active_group.Group:
@@ -134,18 +134,18 @@ def autogroup(obj):
                                    "Unable to insert new object into "
                                    "a scaled part"))
                     return
-                inverse_placement = FreeCAD.Placement(matrix.inverse())
+                inverse_placement = App.Placement(matrix.inverse())
                 if get_type(obj) == 'Point':
                     # point vector have a kind of placement, so should be
                     # processed before generic object with placement
-                    point_vector = FreeCAD.Vector(obj.X, obj.Y, obj.Z)
+                    point_vector = App.Vector(obj.X, obj.Y, obj.Z)
                     real_point = inverse_placement.multVec(point_vector)
                     obj.X = real_point.x
                     obj.Y = real_point.y
                     obj.Z = real_point.z
                 elif hasattr(obj, "Placement"):
                     place = inverse_placement.multiply(obj.Placement)
-                    obj.Placement = FreeCAD.Placement(place)
+                    obj.Placement = App.Placement(place)
                 p.addObject(obj)
 
 
@@ -154,7 +154,7 @@ def dim_symbol(symbol=None, invert=False):
 
     Parameters
     ----------
-    symbol : int, optional
+    symbol: int, optional
         It defaults to `None`, in which it gets the value from the parameter
         database, `get_param("dimsymbol", 0)`.
 
@@ -166,7 +166,7 @@ def dim_symbol(symbol=None, invert=False):
          * 4, `SoSeparator` with a `SoLineSet`, calling `dim_dash`
          * Otherwise, `SoSphere`
 
-    invert : bool, optional
+    invert: bool, optional
         It defaults to `False`.
         If it is `True` and `symbol=2`, the cone will be rotated
         -90 degrees around the Z axis, otherwise the rotation is positive,
@@ -186,7 +186,7 @@ def dim_symbol(symbol=None, invert=False):
         return coin.SoSphere()
     elif symbol == 1:
         marker = coin.SoMarkerSet()
-        marker.markerIndex = FreeCADGui.getMarkerIndex("circle", 9)
+        marker.markerIndex = Gui.getMarkerIndex("circle", 9)
         return marker
     elif symbol == 2:
         marker = coin.SoSeparator()
@@ -229,10 +229,10 @@ def dim_dash(p1, p2):
 
     Parameters
     ----------
-    p1 : tuple of three floats or Base::Vector3
+    p1: tuple of three floats or Base::Vector3
         A point to define a line vertex.
 
-    p2 : tuple of three floats or Base::Vector3
+    p2: tuple of three floats or Base::Vector3
         A point to define a line vertex.
 
     Returns
@@ -263,7 +263,7 @@ def remove_hidden(objectslist):
 
     Parameters
     ----------
-    objectslist : list of App::DocumentObject
+    objectslist: list of App::DocumentObject
         List of any type of object.
 
     Returns
@@ -296,19 +296,19 @@ def format_object(target, origin=None):
 
     Parameters
     ----------
-    target : App::DocumentObject
+    target: App::DocumentObject
         Any type of scripted object.
 
         This object will adopt the applicable visual properties,
         `FontSize`, `TextColor`, `LineWidth`, `PointColor`, `LineColor`,
         and `ShapeColor`, defined in the Draft toolbar
-        (`FreeCADGui.draftToolBar`) or will adopt
+        (`Gui.draftToolBar`) or will adopt
         the properties from the `origin` object.
 
         The `target` is also placed in the construction group
         if the construction mode in the Draft toolbar is active.
 
-    origin : App::DocumentObject, optional
+    origin: App::DocumentObject, optional
         It defaults to `None`.
         If it exists, it will provide the visual properties to assign
         to `target`, with the exception of `BoundingBox`, `Proxy`,
@@ -320,11 +320,11 @@ def format_object(target, origin=None):
     if not obrep:
         return
     ui = None
-    if FreeCAD.GuiUp:
-        if hasattr(FreeCADGui, "draftToolBar"):
-            ui = FreeCADGui.draftToolBar
+    if App.GuiUp:
+        if hasattr(Gui, "draftToolBar"):
+            ui = Gui.draftToolBar
     if ui:
-        doc = FreeCAD.ActiveDocument
+        doc = App.ActiveDocument
         if ui.isConstructionMode():
             col = fcol = ui.getDefaultColor("constr")
             gname = getParam("constructiongroupname", "Construction")
@@ -379,18 +379,18 @@ def format_object(target, origin=None):
 formatObject = format_object
 
 
-def get_selection(gui=FreeCAD.GuiUp):
+def get_selection(gui=App.GuiUp):
     """Return the current selected objects.
 
     This function only works if the graphical interface is available
     as the selection module only works on the 3D view.
 
-    It wraps around `FreeCADGui.Selection.getSelection`
+    It wraps around `Gui.Selection.getSelection`
 
     Parameters
     ----------
-    gui : bool, optional
-        It defaults to the value of `FreeCAD.GuiUp`, which is `True`
+    gui: bool, optional
+        It defaults to the value of `App.GuiUp`, which is `True`
         when the interface exists, and `False` otherwise.
 
         This value can be set to `False` to simulate
@@ -405,25 +405,25 @@ def get_selection(gui=FreeCAD.GuiUp):
         If the interface is not available, it returns `None`.
     """
     if gui:
-        return FreeCADGui.Selection.getSelection()
+        return Gui.Selection.getSelection()
     return None
 
 
 getSelection = get_selection
 
 
-def get_selection_ex(gui=FreeCAD.GuiUp):
+def get_selection_ex(gui=App.GuiUp):
     """Return the current selected objects together with their subelements.
 
     This function only works if the graphical interface is available
     as the selection module only works on the 3D view.
 
-    It wraps around `FreeCADGui.Selection.getSelectionEx`
+    It wraps around `Gui.Selection.getSelectionEx`
 
     Parameters
     ----------
-    gui : bool, optional
-        It defaults to the value of `FreeCAD.GuiUp`, which is `True`
+    gui: bool, optional
+        It defaults to the value of `App.GuiUp`, which is `True`
         when the interface exists, and `False` otherwise.
 
         This value can be set to `False` to simulate
@@ -453,14 +453,14 @@ def get_selection_ex(gui=FreeCAD.GuiUp):
     if `HasSubObjects` is `False`.
     """
     if gui:
-        return FreeCADGui.Selection.getSelectionEx()
+        return Gui.Selection.getSelectionEx()
     return None
 
 
 getSelectionEx = get_selection_ex
 
 
-def select(objs=None, gui=FreeCAD.GuiUp):
+def select(objs=None, gui=App.GuiUp):
     """Unselects everything and selects only the given list of objects.
 
     This function only works if the graphical interface is available
@@ -468,29 +468,29 @@ def select(objs=None, gui=FreeCAD.GuiUp):
 
     Parameters
     ----------
-    objs : list of App::DocumentObject, optional
+    objs: list of App::DocumentObject, optional
         It defaults to `None`.
         Any type of scripted object.
         It may be a list of objects or a single object.
 
-    gui : bool, optional
-        It defaults to the value of `FreeCAD.GuiUp`, which is `True`
+    gui: bool, optional
+        It defaults to the value of `App.GuiUp`, which is `True`
         when the interface exists, and `False` otherwise.
 
         This value can be set to `False` to simulate
         when the interface is not available.
     """
     if gui:
-        FreeCADGui.Selection.clearSelection()
+        Gui.Selection.clearSelection()
         if objs:
             if not isinstance(objs, list):
                 objs = [objs]
             for obj in objs:
                 if obj:
-                    FreeCADGui.Selection.addSelection(obj)
+                    Gui.Selection.addSelection(obj)
 
 
-def load_texture(filename, size=None, gui=FreeCAD.GuiUp):
+def load_texture(filename, size=None, gui=App.GuiUp):
     """Return a Coin.SoSFImage to use as a texture for a 2D plane.
 
     This function only works if the graphical interface is available
@@ -499,11 +499,11 @@ def load_texture(filename, size=None, gui=FreeCAD.GuiUp):
 
     Parameters
     ----------
-    filename : str
+    filename: str
         A path to a pixel image file (PNG) that can be used as a texture
         on the face of an object.
 
-    size : tuple of two int, or a single int, optional
+    size: tuple of two int, or a single int, optional
         It defaults to `None`.
         If a tuple is given, the two values define the width and height
         in pixels to which the loaded image will be scaled.
@@ -515,8 +515,8 @@ def load_texture(filename, size=None, gui=FreeCAD.GuiUp):
         CURRENTLY the input `size` parameter IS NOT USED.
         It always uses the `QImage` to determine this information.
 
-    gui : bool, optional
-        It defaults to the value of `FreeCAD.GuiUp`, which is `True`
+    gui: bool, optional
+        It defaults to the value of `App.GuiUp`, which is `True`
         when the interface exists, and `False` otherwise.
 
         This value can be set to `False` to simulate
