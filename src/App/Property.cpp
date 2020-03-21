@@ -138,8 +138,67 @@ ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
     return p;
 }
 
+namespace App {
+/*!
+ * \brief The PropertyCleaner struct
+ * Make deleting dynamic property safer by postponing its destruction.
+ *
+ * Dynamic property can be removed at any time, even during triggering of
+ * onChanged() signal of the removing property. This patch introduced
+ * static function Property::destroy() to make it safer by queueing any
+ * removed property, and only deleting them when no onChanged() call is
+ * active.
+ */
+struct PropertyCleaner {
+    PropertyCleaner(Property *p)
+        : prop(p)
+    {
+        ++_PropCleanerCounter;
+    }
+    ~PropertyCleaner() {
+        if(--_PropCleanerCounter)
+            return;
+        bool found = false;
+        while (_RemovedProps.size()) {
+            auto p = _RemovedProps.back();
+            _RemovedProps.pop_back();
+            if(p != prop)
+                delete p;
+            else
+                found = true;
+        }
+
+        if (found)
+            _RemovedProps.push_back(prop);
+    }
+    static void add(Property *prop) {
+        _RemovedProps.push_back(prop);
+    }
+
+    Property *prop;
+
+    static std::vector<Property*> _RemovedProps;
+    static int _PropCleanerCounter;
+};
+}
+
+std::vector<Property*> PropertyCleaner::_RemovedProps;
+int PropertyCleaner::_PropCleanerCounter = 0;
+
+void Property::destroy(Property *p) {
+    if (p) {
+        // Is it necessary to nullify the container? May cause crash if any
+        // onChanged() caller assumes a non-null container.
+        //
+        // p->setContainer(0);
+
+        PropertyCleaner::add(p);
+    }
+}
+
 void Property::touch()
 {
+    PropertyCleaner guard(this);
     if (father)
         father->onChanged(this);
     StatusBits.set(Touched);
@@ -152,6 +211,7 @@ void Property::setReadOnly(bool readOnly)
 
 void Property::hasSetValue(void)
 {
+    PropertyCleaner guard(this);
     if (father)
         father->onChanged(this);
     StatusBits.set(Touched);
