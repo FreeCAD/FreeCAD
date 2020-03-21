@@ -204,57 +204,95 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 
     // box
     connect(ui->boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
+    ui->boxLength->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Box.Length")));
     connect(ui->boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
+    ui->boxWidth->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Box.Width")));
     connect(ui->boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
+    ui->boxHeight->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Box.Height")));
 
     // cylinder
     connect(ui->cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
+    ui->cylinderRadius->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Cylinder.Radius")));
     connect(ui->cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
+    ui->cylinderHeight->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Cylinder.Height")));
     connect(ui->cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
+    ui->cylinderAngle->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Cylinder.Angle")));
 
     // cone
     connect(ui->coneRadius1, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius1Changed(double)));
+    ui->coneRadius1->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Cone.Radius1")));
     connect(ui->coneRadius2, SIGNAL(valueChanged(double)), this, SLOT(onConeRadius2Changed(double)));
+    ui->coneRadius2->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Cone.Radius2")));
     connect(ui->coneAngle, SIGNAL(valueChanged(double)), this, SLOT(onConeAngleChanged(double)));
+    ui->coneAngle->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Cone.Angle")));
     connect(ui->coneHeight, SIGNAL(valueChanged(double)), this, SLOT(onConeHeightChanged(double)));
+    ui->coneHeight->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Cone.Height")));
 
     // sphere
     connect(ui->sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
+    ui->sphereRadius->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Sphere.Radius")));
     connect(ui->sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
+    ui->sphereAngle1->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Sphere.Angle1")));
     connect(ui->sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
+    ui->sphereAngle2->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Sphere.Angle2")));
     connect(ui->sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
+    ui->sphereAngle3->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Sphere.Angle3")));
 
     // ellipsoid
     connect(ui->ellipsoidRadius1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius1Changed(double)));
+    ui->ellipsoidRadius1->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Ellipsoid.Radius1")));
     connect(ui->ellipsoidRadius2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius2Changed(double)));
+    ui->ellipsoidRadius2->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Ellipsoid.Radius2")));
     connect(ui->ellipsoidRadius3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidRadius3Changed(double)));
+    ui->ellipsoidRadius3->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Ellipsoid.Radius3")));
     connect(ui->ellipsoidAngle1, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle1Changed(double)));
+    ui->ellipsoidAngle1->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Ellipsoid.Angle1")));
     connect(ui->ellipsoidAngle2, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle2Changed(double)));
+    ui->ellipsoidAngle2->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Ellipsoid.Angle2")));
     connect(ui->ellipsoidAngle3, SIGNAL(valueChanged(double)), this, SLOT(onEllipsoidAngle3Changed(double)));
+    ui->ellipsoidAngle3->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Ellipsoid.Angle3")));
 
     // torus
     connect(ui->torusRadius1, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius1Changed(double)));
+    ui->torusRadius1->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Torus.Radius1")));
     connect(ui->torusRadius2, SIGNAL(valueChanged(double)), this, SLOT(onTorusRadius2Changed(double)));
+    ui->torusRadius2->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Torus.Radius2")));
     connect(ui->torusAngle1, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle1Changed(double)));
+    ui->torusAngle1->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Torus.Angle1")));
     connect(ui->torusAngle2, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle2Changed(double)));
+    ui->torusAngle2->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Torus.Angle2")));
     connect(ui->torusAngle3, SIGNAL(valueChanged(double)), this, SLOT(onTorusAngle3Changed(double)));
+    ui->torusAngle3->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Torus.Angle3")));
 
     //prism
     connect(ui->prismCircumradius, SIGNAL(valueChanged(double)), this, SLOT(onPrismCircumradiusChanged(double)));
+    ui->prismCircumradius->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Prism.Circumradius")));
     connect(ui->prismHeight, SIGNAL(valueChanged(double)), this, SLOT(onPrismHeightChanged(double)));
+    ui->prismHeight->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Prism.Height")));
     connect(ui->prismPolygon, SIGNAL(valueChanged(int)), this, SLOT(onPrismPolygonChanged(int)));
+    // prismPolygon cannot be bound because it is a QSpinBox and it would also make not much sense
 
     // wedge
     connect(ui->wedgeXmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXmaxChanged(double)));
+    ui->wedgeXmax->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.Xmax")));
     connect(ui->wedgeXmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeXinChanged(double)));
+    ui->wedgeXmin->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.Xmin")));
     connect(ui->wedgeYmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYmaxChanged(double)));
+    ui->wedgeYmax->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.Ymax")));
     connect(ui->wedgeYmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeYinChanged(double)));
+    ui->wedgeYmin->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.Ymin")));
     connect(ui->wedgeZmax, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZmaxChanged(double)));
+    ui->wedgeZmax->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.Zmax")));
     connect(ui->wedgeZmin, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZinChanged(double)));
+    ui->wedgeZmin->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.Zmin")));
     connect(ui->wedgeX2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2maxChanged(double)));
+    ui->wedgeX2max->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.X2max")));
     connect(ui->wedgeX2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeX2inChanged(double)));
+    ui->wedgeX2min->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.X2min")));
     connect(ui->wedgeZ2max, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2maxChanged(double)));
+    ui->wedgeZ2max->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.Z2max")));
     connect(ui->wedgeZ2min, SIGNAL(valueChanged(double)), this, SLOT(onWedgeZ2inChanged(double)));
+    ui->wedgeZ2min->bind(App::ObjectIdentifier::parse(vp->getObject(), std::string("Wedge.Z2min")));
 }
 
 /*
