@@ -968,3 +968,8 @@ class ObjectOp(PathOp.ObjectOp):
             final_depth=finDep,
             user_depths=None)
         return cdp
+
+
+def SetupProperties():
+    setup = ['EnableRotation']
+    return setup

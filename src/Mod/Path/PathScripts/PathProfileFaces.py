@@ -71,12 +71,11 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
 
         if not hasattr(obj, 'HandleMultipleFeatures'):
             obj.addProperty('App::PropertyEnumeration', 'HandleMultipleFeatures', 'Profile', QtCore.QT_TRANSLATE_NOOP('PathPocket', 'Choose how to process multiple Base Geometry features.'))
-        
+
         obj.HandleMultipleFeatures = ['Collectively', 'Individually']
 
         self.initRotationOp(obj)
         self.baseObject().initAreaOp(obj)
-        self.setOpEditorProperties(obj)
 
     def initRotationOp(self, obj):
         '''initRotationOp(obj) ... setup receiver for rotation'''

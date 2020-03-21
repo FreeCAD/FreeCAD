@@ -92,7 +92,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def areaOpOnDocumentRestored(self, obj):
         for prop in ['UseComp', 'JoinType']:
             self.areaOpOnChanged(obj, prop)
-        
+
         self.setOpEditorProperties(obj)
 
     def areaOpAreaParams(self, obj, isHole):
@@ -135,7 +135,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             params['orientation'] = 0
         else:
             params['orientation'] = 1
-        
+
         if not obj.UseComp:
             if direction == 'CCW':
                 params['orientation'] = 1
@@ -160,7 +160,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathAreaOp.SetupProperties()
     setup.append('Side')
     setup.append('OffsetExtra')
     setup.append('Direction')
