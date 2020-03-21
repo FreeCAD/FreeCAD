@@ -140,7 +140,7 @@ class DraftWorkbench(FreeCADGui.Workbench):
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
         import draftutils.init_draft_statusbar as dsb
-        dsb.hide_draft_statusbar()           
+        dsb.hide_draft_statusbar()
         FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
 
     def ContextMenu(self, recipient):
