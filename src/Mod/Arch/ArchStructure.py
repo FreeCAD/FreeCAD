@@ -665,21 +665,25 @@ class _Structure(ArchComponent.Component):
                 if i < len(ev):
                     evi = ev[i]
                 else:
-                    evi = FreeCAD.Vector(ev[-1])
+                    evi = ev[-1]
+                    if isinstance(evi, FreeCAD.Vector):
+                        evi = FreeCAD.Vector(evi)
+                    else:
+                        evi = evi.copy()
                 if i < len(pla):
                     pli = pla[i]
                 else:
                     pli = pla[-1].copy()
                 shi.Placement = pli.multiply(shi.Placement)
-                if not isinstance(evi, FreeCAD.Vector):
+                if isinstance(evi, FreeCAD.Vector):
+                    extv = pla[0].Rotation.multVec(evi)
+                    shi = shi.extrude(extv)
+                else:
                     try:
                         shi = evi.makePipe(shi)
                     except Part.OCCError:
                         FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
                         return
-                else:
-                    extv = pla[0].Rotation.multVec(evi)
-                    shi = shi.extrude(extv)
                 base.append(shi)
             if len(base) == 1:
                 base = base[0]
