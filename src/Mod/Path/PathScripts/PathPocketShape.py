@@ -42,7 +42,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 
-PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 # PathLog.trackModule(PathLog.thisModule())
 
 
@@ -435,7 +435,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if obj.Base:
             PathLog.debug('Processing... obj.Base')
             self.removalshapes = []  # pylint: disable=attribute-defined-outside-init
-            # ----------------------------------------------------------------------
+
             if obj.EnableRotation == 'Off':
                 stock = PathUtils.findParentJob(obj).Stock
                 for (base, subList) in obj.Base:
@@ -450,11 +450,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         (isLoop, norm, surf) = self.checkForFacesLoop(base, subsList)
 
                     if isLoop is True:
-                        PathLog.info("Common Surface.Axis or normalAt() value found for loop faces.")
+                        PathLog.debug("Common Surface.Axis or normalAt() value found for loop faces.")
                         rtn = False
                         subCount += 1
                         (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
-                        PathLog.info("angle: {};  axis: {}".format(angle, axis))
+                        PathLog.debug("angle: {};  axis: {}".format(angle, axis))
 
                         if rtn is True:
                             faceNums = ""
@@ -471,13 +471,15 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                         rtn = False
                                         PathLog.warning(translate("PathPocketShape", "Face appears to NOT be horizontal AFTER rotation applied."))
                                         break
+
                             if rtn is False:
+                                PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
                                 if obj.InverseAngle is False:
                                     if obj.AttemptInverseAngle is True:
-                                        PathLog.debug("Applying the inverse angle.")
                                         (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                                     else:
-                                        PathLog.warning(translate("Path", "Consider toggling the InverseAngle property and recomputing the operation."))
+                                        msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
+                                        PathLog.warning(msg)
 
                             if angle < -180.0:
                                 angle += 360.0
@@ -518,6 +520,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
                                 (norm, surf) = self.getFaceNormAndSurf(face)
                                 (rtn, angle, axis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
+                                PathLog.debug("initial {}".format(praInfo))
 
                                 if rtn is True:
                                     faceNum = sub.replace('Face', '')
@@ -525,20 +528,31 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                     # Verify faces are correctly oriented - InverseAngle might be necessary
                                     faceIA = clnBase.Shape.getElement(sub)
                                     (norm, surf) = self.getFaceNormAndSurf(faceIA)
-                                    (rtn, praAngle, praAxis, praInfo) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
+                                    (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
+                                    PathLog.debug("follow-up {}".format(praInfo2))
+
+                                    if praAxis == axis and abs(praAngle) == 180.0:
+                                        rtn = False
+                                        if self.isFaceUp(clnBase, faceIA) is False:
+                                            PathLog.debug('isFaceUp is False')
+                                            angle -= 180.0
 
                                     if rtn is True:
-                                        PathLog.debug("Face not aligned after initial rotation.")
+                                        PathLog.debug(translate("Path", "Face appears misaligned after initial rotation."))
                                         if obj.InverseAngle is False:
                                             if obj.AttemptInverseAngle is True:
-                                                PathLog.debug("Applying the inverse angle.")
                                                 (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
                                             else:
-                                                PathLog.warning(translate("Path", "Consider toggling the InverseAngle property and recomputing the operation."))
+                                                msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
+                                                PathLog.warning(msg)
+
+                                            if self.isFaceUp(clnBase, faceIA) is False:
+                                                PathLog.debug('isFaceUp is False')
+                                                angle += 180.0
                                     else:
                                         PathLog.debug("Face appears to be oriented correctly.")
 
-                                    if angle < -180.0:
+                                    if angle < 0.0:
                                         angle += 360.0
 
                                     tup = clnBase, [sub], angle, axis, clnStock
@@ -650,8 +664,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         if shpZMin > obj.FinalDepth.Value:
                             afD = shpZMin
                             if sD <= afD:
-                                PathLog.error('Start Depth is lower than face depth.')
                                 sD = afD + 1.0
+                                msg = translate('PathPocketShape', 'Start Depth is lower than face depth. Setting to ')
+                                PathLog.warning(msg + ' {} mm.'.format(sD))
                     else:
                         face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - shpZMin))
                     
