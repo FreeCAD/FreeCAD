@@ -1893,8 +1893,7 @@ class DraftToolBar:
         return str(a)
 
     def togglesnap(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.toggle()
+        FreeCADGui.doCommand('FreeCADGui.runCommand("Draft_Snap_Lock")')
 
     def togglenearsnap(self):
         if hasattr(FreeCADGui,"Snapper"):
