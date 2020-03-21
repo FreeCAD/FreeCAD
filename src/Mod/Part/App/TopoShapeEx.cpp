@@ -797,7 +797,7 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
             FC_THROWM(Base::ValueError,"Invalid shape index " << idx);
         return TopoShape();
     }
-    if(type<0 || type>=TopAbs_SHAPE) {
+    if(type<0 || type>TopAbs_SHAPE) {
         if(!silent)
             FC_THROWM(Base::ValueError,"Invalid shape type " << type);
         return TopoShape();
