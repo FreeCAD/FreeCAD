@@ -36,6 +36,8 @@ DlgPrefsTechDraw2Imp::DlgPrefsTechDraw2Imp( QWidget* parent )
     this->setupUi(this);
 
     this->pdsbTemplateMark->setUnit(Base::Unit::Length);
+    this->pdsbTemplateMark->setMinimum(0);
+
     connect(this->cbViewScaleType, SIGNAL(currentIndexChanged(int)),
         this, SLOT(onScaleTypeChanged(int)));
 }
@@ -74,6 +76,8 @@ void DlgPrefsTechDraw2Imp::saveSettings()
 
 void DlgPrefsTechDraw2Imp::loadSettings()
 {
+    double markDefault = 3.0;
+    pdsbTemplateMark->setValue(markDefault);
 
     pdsbToleranceScale->onRestore();
 

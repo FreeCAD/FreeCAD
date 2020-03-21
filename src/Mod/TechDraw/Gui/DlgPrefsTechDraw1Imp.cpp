@@ -35,6 +35,7 @@ DlgPrefsTechDraw1Imp::DlgPrefsTechDraw1Imp( QWidget* parent )
 {
     this->setupUi(this);
     plsb_LabelSize->setUnit(Base::Unit::Length);
+    plsb_LabelSize->setMinimum(0);
 }
 
 DlgPrefsTechDraw1Imp::~DlgPrefsTechDraw1Imp()
@@ -80,6 +81,9 @@ void DlgPrefsTechDraw1Imp::saveSettings()
 
 void DlgPrefsTechDraw1Imp::loadSettings()
 {
+    double labelDefault = 8.0;
+    plsb_LabelSize->setValue(labelDefault);
+
     pfc_DefTemp->onRestore();
     pfc_DefDir->onRestore();
     pfc_HatchFile->onRestore();
