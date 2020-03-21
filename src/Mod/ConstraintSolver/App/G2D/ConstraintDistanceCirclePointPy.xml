@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="SimpleConstraintPy" 
+	  Name="ConstraintDistanceCirclePointPy" 
+	  Twin="ConstraintDistanceCirclePoint" 
+	  TwinPointer="ConstraintDistanceCirclePoint" 
+	  Include="Mod/ConstraintSolver/App/G2D/ConstraintDistanceCirclePoint.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/SimpleConstraintPy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="true"
+	  Delete="false"
+	  FatherNamespace="FCS"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu></DeveloperDocu>
+	  <UserDocu>Constrains distance between a circle and a point. 
+      Positive for point outside of circle, negative for point inside of circle.</UserDocu>
+	</Documentation>
+    
+    
+  </PythonExport>
+</GenerateModel>

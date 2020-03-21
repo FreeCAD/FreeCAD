@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="SimpleConstraintPy" 
+	  Name="ConstraintDistanceLinePointPy" 
+	  Twin="ConstraintDistanceLinePoint" 
+	  TwinPointer="ConstraintDistanceLinePoint" 
+	  Include="Mod/ConstraintSolver/App/G2D/ConstraintDistanceLinePoint.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/SimpleConstraintPy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="true"
+	  Delete="false"
+	  FatherNamespace="FCS"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu></DeveloperDocu>
+	  <UserDocu>Constrains distance between a line and a point. 
+      The distance is positive when the point is on the right hand side to the line.</UserDocu>
+	</Documentation>
+    
+    
+  </PythonExport>
+</GenerateModel>

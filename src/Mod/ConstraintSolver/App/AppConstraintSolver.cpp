@@ -101,6 +101,10 @@
 #include "G2D/ConstraintAngleAtXYPy.h"
 #include "G2D/ConstraintAngleLineLine.h"
 #include "G2D/ConstraintAngleLineLinePy.h"
+#include "G2D/ConstraintDistanceCirclePoint.h"
+#include "G2D/ConstraintDistanceCirclePointPy.h"
+#include "G2D/ConstraintDistanceLinePoint.h"
+#include "G2D/ConstraintDistanceLinePointPy.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -224,6 +228,8 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintAnglePy               ::Type.tp_name = "ConstraintSolver.G2D.ConstraintAngle"              ;
     FCS::G2D::ConstraintAngleAtXYPy           ::Type.tp_name = "ConstraintSolver.G2D.ConstraintAngleAtXY"          ;
     FCS::G2D::ConstraintAngleLineLinePy       ::Type.tp_name = "ConstraintSolver.G2D.ConstraintAngleLineLine"      ;
+    FCS::G2D::ConstraintDistanceCirclePointPy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistanceCirclePoint";
+    FCS::G2D::ConstraintDistanceLinePointPy   ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDistanceLinePoint"  ;
 
     Base::Interpreter().addType(&FCS::G2D::VectorPy                   ::Type, submodG2D.ptr(), "Vector"                   );
     Base::Interpreter().addType(&FCS::G2D::ParaGeometry2DPy           ::Type, submodG2D.ptr(), "ParaGeometry2D"           );
@@ -246,6 +252,8 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::G2D::ConstraintAnglePy               ::Type, submodG2D.ptr(), "ConstraintAngle"               );
     Base::Interpreter().addType(&FCS::G2D::ConstraintAngleAtXYPy           ::Type, submodG2D.ptr(), "ConstraintAngleAtXY"           );
     Base::Interpreter().addType(&FCS::G2D::ConstraintAngleLineLinePy       ::Type, submodG2D.ptr(), "ConstraintAngleLineLine"       );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintDistanceCirclePointPy ::Type, submodG2D.ptr(), "ConstraintDistanceCirclePoint" );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintDistanceLinePointPy   ::Type, submodG2D.ptr(), "ConstraintDistanceLinePoint"   );
   //Base::Interpreter().addType(&FCS::G2D::                           ::Type, submodG2D.ptr(), ""                         );
 
     //fill type system
@@ -282,6 +290,8 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintAngle               ::init();
     FCS::G2D::ConstraintAngleAtXY           ::init();
     FCS::G2D::ConstraintAngleLineLine       ::init();
+    FCS::G2D::ConstraintDistanceCirclePoint ::init();
+    FCS::G2D::ConstraintDistanceLinePoint   ::init();
 
 
     { //import methods from ConstraintSolverPartGlue.py
