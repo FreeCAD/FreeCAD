@@ -54,6 +54,9 @@ generate_from_xml(G2D/ConstraintDistancePy)
 generate_from_xml(G2D/ConstraintPlacementRulesPy)
 generate_from_xml(G2D/ConstraintPointCoincidentPy)
 generate_from_xml(G2D/ConstraintPointSymmetryPy)
+generate_from_xml(G2D/ConstraintAnglePy)
+generate_from_xml(G2D/ConstraintAngleAtXYPy)
+generate_from_xml(G2D/ConstraintAngleLineLinePy)
 
 SET(ConstraintSolver_G2D
     G2D/Vector.h
@@ -132,6 +135,18 @@ SET(ConstraintSolver_G2D
     G2D/ConstraintPointCoincident.h
     G2D/ConstraintPointCoincidentPy.xml
     G2D/ConstraintPointCoincidentPyImp.cpp
+    G2D/ConstraintAngle.cpp
+    G2D/ConstraintAngle.h
+    G2D/ConstraintAnglePy.xml
+    G2D/ConstraintAnglePyImp.cpp
+    G2D/ConstraintAngleAtXY.cpp
+    G2D/ConstraintAngleAtXY.h
+    G2D/ConstraintAngleAtXYPy.xml
+    G2D/ConstraintAngleAtXYPyImp.cpp
+    G2D/ConstraintAngleLineLine.cpp
+    G2D/ConstraintAngleLineLine.h
+    G2D/ConstraintAngleLineLinePy.xml
+    G2D/ConstraintAngleLineLinePyImp.cpp
 )
 
 SET(ConstraintSolver_Utils_SRCS

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="SimpleConstraintPy" 
+	  Name="ConstraintAnglePy" 
+	  Twin="ConstraintAngle" 
+	  TwinPointer="ConstraintAngle" 
+	  Include="Mod/ConstraintSolver/App/G2D/ConstraintAngle.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/SimpleConstraintPy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="false"
+	  Delete="false"
+	  FatherNamespace="FCS"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu></DeveloperDocu>
+	  <UserDocu>Base class for angle constraints. Provides funtionality for supplementing and reversing angle value.</UserDocu>
+	</Documentation>
+    
+    <Attribute Name="SupplementAngle" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns/sets if the angle parameter is a supplementary angle. Together with Revers, it is possible to always have an angle value &lt;= 90deg.</UserDocu>
+      </Documentation>
+      <Parameter Name="SupplementAngle" Type="Boolean" />
+    </Attribute>
+    
+    <Methode Name="convertToSupplement">
+      <Documentation>
+        <UserDocu>convertToSupplement(values = None): Changes datum value and constraint parameters to use supplementary angle for value. 
+        values is a valueset object to change the value in.</UserDocu>
+      </Documentation>
+    </Methode>
+
+    <Methode Name="convertToReversed">
+      <Documentation>
+        <UserDocu>convertToReversed(values = None): Changes datum value and constraint parameters to change sign of angle. 
+        values is a valueset object to change the value in.</UserDocu>
+      </Documentation>
+    </Methode>
+
+    <Methode Name="calculateAngle">
+      <Documentation>
+        <UserDocu>calculateAngle(values): computes true angle between tangent vectors of edges. Supplement and Reversed are not accounted for (calculateDatum does).
+        values is a valueset object.</UserDocu>
+      </Documentation>
+    </Methode>
+
+  </PythonExport>
+</GenerateModel>

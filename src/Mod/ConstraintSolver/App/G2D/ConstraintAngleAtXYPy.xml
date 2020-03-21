@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+	  Father="ConstraintAnglePy" 
+	  Name="ConstraintAngleAtXYPy" 
+	  Twin="ConstraintAngleAtXY" 
+	  TwinPointer="ConstraintAngleAtXY" 
+	  Include="Mod/ConstraintSolver/App/G2D/ConstraintAngleAtXY.h" 
+	  FatherInclude="Mod/ConstraintSolver/App/G2D/ConstraintAnglePy.h" 
+	  Namespace="FCS::G2D" 
+	  Constructor="true"
+	  Delete="false"
+	  FatherNamespace="FCS::G2D"
+	  DisableNotify="true">
+	<Documentation>
+	  <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
+	  <DeveloperDocu></DeveloperDocu>
+	  <UserDocu>Constrains angle between two edges, given a point (x,y) of their intersection.
+      Edges being constrained must support tangentAtXY method.</UserDocu>
+	</Documentation>
+    
+  </PythonExport>
+</GenerateModel>
