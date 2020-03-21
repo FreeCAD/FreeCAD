@@ -28,12 +28,23 @@
 # \brief Provide the Draft_Snap commands used by the snapping mechanism
 # in Draft.
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
+import draftguitools.gui_base as gui_base
 import FreeCADGui as Gui
 import draftguitools.gui_base as gui_base
 from draftutils.translate import _tr
 
+from PySide.QtCore import QT_TRANSLATE_NOOP
+from draftutils.translate import _tr
+
+
+class Draft_Snap_Lock(gui_base.GuiCommandSimplest):
+    """GuiCommand for the Draft_Snap_Lock tool.
+
+    Activate or deactivate all snap methods at once.
+    """
+
+    def __init__(self):
+        super().__init__(name=_tr("Main toggle snap"))
 
 class Draft_Snap_Lock(gui_base.GuiCommandSimplest):
     """GuiCommand for the Draft_Snap_Lock tool.
@@ -63,6 +74,11 @@ class Draft_Snap_Lock(gui_base.GuiCommandSimplest):
             if hasattr(Gui.Snapper, "masterbutton"):
                 Gui.Snapper.masterbutton.toggle()
 
+        if hasattr(Gui, "Snapper"):
+            if hasattr(Gui.Snapper, "masterbutton"):
+                Gui.Snapper.masterbutton.toggle()
+
+Gui.addCommand('Draft_Snap_Lock', Draft_Snap_Lock())
 
 Gui.addCommand('Draft_Snap_Lock', Draft_Snap_Lock())
 
