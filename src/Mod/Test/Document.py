@@ -1358,6 +1358,21 @@ class DocumentPropertyCases(unittest.TestCase):
     self.Doc.recompute()
     self.assertTrue(not p2 in p1.InList)
 
+  def testRemovePropertyOnChange(self):
+    class Feature:
+      def __init__(self, fp):
+        fp.Proxy = self
+        fp.addProperty("App::PropertyString","Test")
+      def onBeforeChange(self, fp, prop):
+        if prop == "Test":
+          fp.removeProperty("Test")
+      def onChanged(self, fp, prop):
+        getattr(fp, prop)
+
+    obj = self.Doc.addObject("App::FeaturePython")
+    fea = Feature(obj)
+    obj.Test = "test"
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("PropertyTests")
