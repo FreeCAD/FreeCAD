@@ -56,9 +56,12 @@ Base::DualNumber ConstraintDistance::error1(const ValueSet& vals) const
     return vals[dist] - (pp1 - pp2).length();
 }
 
-std::vector<ParameterRef> ConstraintDistance::datumParameters() const
+std::vector<Base::DualNumber> ConstraintDistance::caluclateDatum(const ValueSet& vals)
 {
-    return {dist};
+    throwIfIncomplete();
+    Position pp1 = p1->placement->value(vals) * p1->tshape()(vals);
+    Position pp2 = p2->placement->value(vals) * p2->tshape()(vals);
+    return { (pp1 - pp2).length() };
 }
 
 PyObject* ConstraintDistance::getPyObject()
