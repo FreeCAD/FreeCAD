@@ -111,6 +111,8 @@
 #include "G2D/ConstraintTangentCircleLinePy.h"
 #include "G2D/ConstraintDirectionalDistance.h"
 #include "G2D/ConstraintDirectionalDistancePy.h"
+#include "G2D/ConstraintLength.h"
+#include "G2D/ConstraintLengthPy.h"
 
 namespace ConstraintSolver {
 class Module : public Py::ExtensionModule<Module>
@@ -239,6 +241,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintTangentLineLinePy     ::Type.tp_name = "ConstraintSolver.G2D.ConstraintTangentLineLine"    ;
     FCS::G2D::ConstraintTangentCircleLinePy   ::Type.tp_name = "ConstraintSolver.G2D.ConstraintTangentCircleLine"  ;
     FCS::G2D::ConstraintDirectionalDistancePy ::Type.tp_name = "ConstraintSolver.G2D.ConstraintDirectionalDistance";
+    FCS::G2D::ConstraintLengthPy              ::Type.tp_name = "ConstraintSolver.G2D.ConstraintLength"             ;
 
     Base::Interpreter().addType(&FCS::G2D::VectorPy                   ::Type, submodG2D.ptr(), "Vector"                   );
     Base::Interpreter().addType(&FCS::G2D::ParaGeometry2DPy           ::Type, submodG2D.ptr(), "ParaGeometry2D"           );
@@ -266,6 +269,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     Base::Interpreter().addType(&FCS::G2D::ConstraintTangentLineLinePy     ::Type, submodG2D.ptr(), "ConstraintTangentLineLine"     );
     Base::Interpreter().addType(&FCS::G2D::ConstraintTangentCircleLinePy   ::Type, submodG2D.ptr(), "ConstraintTangentCircleLine"   );
     Base::Interpreter().addType(&FCS::G2D::ConstraintDirectionalDistancePy ::Type, submodG2D.ptr(), "ConstraintDirectionalDistance" );
+    Base::Interpreter().addType(&FCS::G2D::ConstraintLengthPy              ::Type, submodG2D.ptr(), "ConstraintLength"              );
   //Base::Interpreter().addType(&FCS::G2D::                           ::Type, submodG2D.ptr(), ""                         );
 
     //fill type system
@@ -307,6 +311,7 @@ PyMOD_INIT_FUNC(ConstraintSolver)
     FCS::G2D::ConstraintTangentLineLine     ::init();
     FCS::G2D::ConstraintTangentCircleLine   ::init();
     FCS::G2D::ConstraintDirectionalDistance ::init();
+    FCS::G2D::ConstraintLength              ::init();
 
 
     { //import methods from ConstraintSolverPartGlue.py
