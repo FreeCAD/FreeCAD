@@ -3,7 +3,6 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -153,7 +152,6 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                     if obj.InverseAngle is False:
                                         if obj.AttemptInverseAngle is True:
                                             (clnBase, clnStock, angle) = self.applyInverseAngle(obj, clnBase, clnStock, axis, angle)
-                                            clnBase.recompute()
                                         else:
                                             msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
                                             PathLog.warning(msg)

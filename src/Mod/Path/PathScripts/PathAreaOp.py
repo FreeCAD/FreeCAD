@@ -3,7 +3,6 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -67,7 +66,6 @@ class ObjectOp(PathOp.ObjectOp):
         '''opFeatures(obj) ... returns the base features supported by all Path.Area based operations.
         The standard feature list is OR'ed with the return value of areaOpFeatures().
         Do not overwrite, implement areaOpFeatures(obj) instead.'''
-        # return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureRotation
         return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureStartPoint | self.areaOpFeatures(obj) | PathOp.FeatureCoolant
 
     def areaOpFeatures(self, obj):
@@ -305,8 +303,6 @@ class ObjectOp(PathOp.ObjectOp):
             pathParams['return_end'] = True
             # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
             pathParams['preamble'] = False
-            #if not self.areaOpRetractTool(obj):
-            #    pathParams['threshold'] = 2.001 * self.radius
 
             if self.endVector is None:
                 V = hWire.Wires[0].Vertexes
@@ -374,12 +370,6 @@ class ObjectOp(PathOp.ObjectOp):
 
             obj.ClearanceHeight.Value = strDep + self.clrOfset
             obj.SafeHeight.Value = strDep + self.safOfst
-
-            #if self.initWithRotation is False:
-            #    if obj.FinalDepth.Value == obj.OpFinalDepth.Value:
-            #        obj.FinalDepth.Value = finDep
-            #    if obj.StartDepth.Value == obj.OpStartDepth.Value:
-            #        obj.StartDepth.Value = strDep
 
             # Create visual axes when debugging.
             if PathLog.getLevel(PathLog.thisModule()) == 4:
@@ -570,10 +560,8 @@ class ObjectOp(PathOp.ObjectOp):
             Determine rotational radii for 4th-axis rotations, for clearance/safe heights '''
 
         parentJob = PathUtils.findParentJob(obj)
-        # bb = parentJob.Stock.Shape.BoundBox
         xlim = 0.0
         ylim = 0.0
-        # zlim = 0.0
 
         # Determine boundbox radius based upon xzy limits data
         if math.fabs(self.stockBB.ZMin) > math.fabs(self.stockBB.ZMax):
