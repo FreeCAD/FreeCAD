@@ -117,64 +117,101 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
         case PartDesign::FeaturePrimitive::Box:
             index = 1;
             ui->boxLength->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Length.getValue());
+            ui->boxLength->bind(static_cast<PartDesign::Box*>(vp->getObject())->Length);
             ui->boxHeight->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Height.getValue());
+            ui->boxHeight->bind(static_cast<PartDesign::Box*>(vp->getObject())->Height);
             ui->boxWidth->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Width.getValue());
+            ui->boxWidth->bind(static_cast<PartDesign::Box*>(vp->getObject())->Width);
             break;
         case PartDesign::FeaturePrimitive::Cylinder:
             index = 2;
             ui->cylinderAngle->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getValue());
+            ui->cylinderAngle->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle);
             ui->cylinderHeight->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height.getValue());
+            ui->cylinderHeight->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height);
             ui->cylinderRadius->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getValue());
+            ui->cylinderRadius->bind(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius);
             break;
         case PartDesign::FeaturePrimitive::Sphere:
             index = 4;
             ui->sphereAngle1->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle1.getValue());
+            ui->sphereAngle1->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle1);
             ui->sphereAngle2->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle2.getValue());
+            ui->sphereAngle2->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle2);
             ui->sphereAngle3->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getValue());
+            ui->sphereAngle3->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3);
             ui->sphereRadius->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius.getValue());
+            ui->sphereRadius->bind(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius);
             break;
         case PartDesign::FeaturePrimitive::Cone:
             index = 3;
             ui->coneAngle->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Angle.getValue());
+            ui->coneAngle->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Angle);
             ui->coneHeight->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Height.getValue());
+            ui->coneHeight->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Height);
             ui->coneRadius1->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1.getValue());
+            ui->coneRadius1->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Radius1);
             ui->coneRadius2->setValue(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2.getValue());
+            ui->coneRadius2->bind(static_cast<PartDesign::Cone*>(vp->getObject())->Radius2);
             break;
         case PartDesign::FeaturePrimitive::Ellipsoid:
             index = 5;
             ui->ellipsoidAngle1->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle1.getValue());
+            ui->ellipsoidAngle1->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle1);
             ui->ellipsoidAngle2->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle2.getValue());
+            ui->ellipsoidAngle2->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle2);
             ui->ellipsoidAngle3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3.getValue());
+            ui->ellipsoidAngle3->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Angle3);
             ui->ellipsoidRadius1->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius1.getValue());
+            ui->ellipsoidRadius1->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius1);
             ui->ellipsoidRadius2->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius2.getValue());
+            ui->ellipsoidRadius2->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius2);
             ui->ellipsoidRadius3->setValue(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3.getValue());
+            ui->ellipsoidRadius3->bind(static_cast<PartDesign::Ellipsoid*>(vp->getObject())->Radius3);
             break;
         case PartDesign::FeaturePrimitive::Torus:
             index = 6;
             ui->torusAngle1->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle1.getValue());
+            ui->torusAngle1->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Angle1);
             ui->torusAngle2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle2.getValue());
+            ui->torusAngle2->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Angle2);
             ui->torusAngle3->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3.getValue());
+            ui->torusAngle3->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Angle3);
             ui->torusRadius1->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius1.getValue());
+            ui->torusRadius1->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Radius1);
             ui->torusRadius2->setValue(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2.getValue());
+            ui->torusRadius2->bind(static_cast<PartDesign::Torus*>(vp->getObject())->Radius2);
             break;
         case PartDesign::FeaturePrimitive::Prism:
             index = 7;
             ui->prismPolygon->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Polygon.getValue());
             ui->prismCircumradius->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius.getValue());
+            ui->prismCircumradius->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Circumradius);
             ui->prismHeight->setValue(static_cast<PartDesign::Prism*>(vp->getObject())->Height.getValue());
+            ui->prismHeight->bind(static_cast<PartDesign::Prism*>(vp->getObject())->Height);
             break;
         case PartDesign::FeaturePrimitive::Wedge:
             index = 8;
             ui->wedgeXmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmax.getValue());
+            ui->wedgeXmax->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmax);
             ui->wedgeXmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmin.getValue());
+            ui->wedgeXmin->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Xmin);
             ui->wedgeX2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->X2max.getValue());
+            ui->wedgeX2max->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->X2max);
             ui->wedgeX2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->X2min.getValue());
+            ui->wedgeX2min->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->X2min);
             ui->wedgeYmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymax.getValue());
+            ui->wedgeYmax->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymax);
             ui->wedgeYmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymin.getValue());
+            ui->wedgeYmin->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Ymin);
             ui->wedgeZmax->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmax.getValue());
+            ui->wedgeZmax->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmax);
             ui->wedgeZmin->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmin.getValue());
+            ui->wedgeZmin->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Zmin);
             ui->wedgeZ2max->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2max.getValue());
+            ui->wedgeZ2max->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2max);
             ui->wedgeZ2min->setValue(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min.getValue());
+            ui->wedgeZ2min->bind(static_cast<PartDesign::Wedge*>(vp->getObject())->Z2min);
             break;
     }
 
