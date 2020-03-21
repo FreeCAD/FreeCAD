@@ -35,6 +35,7 @@ DlgPrefsTechDraw1Imp::DlgPrefsTechDraw1Imp( QWidget* parent )
 {
     this->setupUi(this);
     plsb_LabelSize->setUnit(Base::Unit::Length);
+    plsb_LabelSize->setMinimum(0);
 }
 
 DlgPrefsTechDraw1Imp::~DlgPrefsTechDraw1Imp()
