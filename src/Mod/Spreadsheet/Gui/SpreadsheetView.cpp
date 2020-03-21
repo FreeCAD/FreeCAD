@@ -357,7 +357,10 @@ void SheetView::editingFinished()
                     Base::Console().Error("Unable to set alias: %s\n", Base::Tools::toStdString(str).c_str());
                 }
             } else {
-                cell->setAlias(str.toStdString());
+                std::string address = CellAddress(i.row(), i.column()).toString();
+                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.setAlias('%s', '%s')",
+                                        sheet->getNameInDocument(), address.c_str(), str.toStdString().c_str());
+                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
         ui->cells->setCurrentIndex(ui->cellContent->next());
