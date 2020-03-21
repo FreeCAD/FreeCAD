@@ -81,6 +81,16 @@ void DlgPrefsTechDraw3Imp::saveSettings()
 
 void DlgPrefsTechDraw3Imp::loadSettings()
 {
+    //set defaults for Quantity widgets if property not found
+    //Quantity widgets do not use preset value since they are based on
+    //QAbstractSpinBox
+    double kinkDefault = 5.0;
+    pdsbBalloonKink->setValue(kinkDefault);
+    double arrowDefault = 5.0;
+    plsb_ArrowSize->setValue(arrowDefault);
+    double fontDefault = 4.0;
+    plsb_FontSize->setValue(fontDefault);
+
     cbAutoHoriz->onRestore();
     cbGlobalDecimals->onRestore();
     cbHiddenLineStyle->onRestore();
