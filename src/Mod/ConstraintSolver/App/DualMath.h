@@ -1,3 +1,24 @@
+/***************************************************************************
+ *   Copyright (c) 2019 Viktor Titov (DeepSOIC) <vv.titov@gmail.com>       *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
 #ifndef FREECAD_CONSTRAINTSOLVER_DUALMATH_H
 #define FREECAD_CONSTRAINTSOLVER_DUALMATH_H
@@ -64,6 +85,16 @@ inline DualNumber ln(DualNumber a){
 
 ///2*pi
 #define TURN 6.28318530717958647692528676655900576839434
+
+///returns an angle in [0..TURN) range
+inline DualNumber positiveAngle(DualNumber ang){
+    return ang - ::floor((ang.re + 1e-12) / TURN) * TURN;
+}
+
+///returns an angle in (-PI..PI] range
+inline DualNumber signedAngle(DualNumber ang){
+    return ang - ::floor(0.5 + (ang.re - 1e-12) / TURN) * TURN;
+}
 
 } //namespace
 
