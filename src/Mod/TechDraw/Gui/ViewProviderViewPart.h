@@ -52,8 +52,11 @@ public:
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
+    App::PropertyEnumeration   SectionLineStyle;
     App::PropertyFloat  HighlightAdjust;
     App::PropertyBool   ShowAllEdges;
+
+    static const char* LineStyleEnums[];
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
