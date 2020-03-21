@@ -131,6 +131,7 @@ public:
 
 
     HValueSet self() const;
+    PyObject* getPyObject();
     bool isPassThrough() const {return _passthru;}
 public://operators
     operator Eigen::VectorXd&() {return _values;}

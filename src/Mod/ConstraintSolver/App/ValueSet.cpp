@@ -275,6 +275,11 @@ HValueSet ValueSet::self() const
     return HValueSet(_twin, false);
 }
 
+PyObject* ValueSet::getPyObject()
+{
+    return Py::new_reference_to(_twin);
+}
+
 void ValueSet::operator=(const ValueSet& other)
 {
     checkSameSet(other);
