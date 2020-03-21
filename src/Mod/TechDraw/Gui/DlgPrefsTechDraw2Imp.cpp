@@ -74,6 +74,8 @@ void DlgPrefsTechDraw2Imp::saveSettings()
 
 void DlgPrefsTechDraw2Imp::loadSettings()
 {
+    double markDefault = 3.0;
+    pdsbTemplateMark->setValue(markDefault);
 
     pdsbToleranceScale->onRestore();
 
