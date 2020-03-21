@@ -60,9 +60,10 @@ public:
     /// all C0 continuous edges to the vector
     void getContiniusEdges(Part::TopoShape, std::vector< std::string >&);
 
+    virtual void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape);
+
 protected:
     virtual void onChanged(const App::Property* prop);
-    virtual void setupObject();
 };
 
 } //namespace PartDesign
