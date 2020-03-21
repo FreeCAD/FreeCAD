@@ -108,9 +108,9 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
-    int defLineStyle = hGrp->GetFloat("SectionLine", 2);
+    int defLineStyle = hGrp->GetInt("SectionLine", 2);
     SectionLineStyle.setEnums(LineStyleEnums);
-    ADD_PROPERTY_TYPE(SectionLineStyle, (defLineStyle), dgroup, App::Prop_None, "Show/hide section line if applicable");
+    ADD_PROPERTY_TYPE(SectionLineStyle, (defLineStyle), dgroup, App::Prop_None, "Set section line style if applicable");
     
     //properties that affect Detail Highlights
     ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
