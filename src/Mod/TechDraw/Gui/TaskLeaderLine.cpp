@@ -727,7 +727,7 @@ int TaskLeaderLine::getPrefArrowStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
-    int style = hGrp->GetInt("ArrowStyle", 1);
+    int style = hGrp->GetInt("ArrowStyle", 0);
     return style;
 }
 

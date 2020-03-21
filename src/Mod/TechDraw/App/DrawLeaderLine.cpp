@@ -47,7 +47,7 @@ using namespace TechDraw;
 PROPERTY_SOURCE(TechDraw::DrawLeaderLine, TechDraw::DrawView)
 
 //TODO: share this between DrawViewBalloon, DrawLeaderLine, QGIArrow, Prefs, etc
-//const char* DrawLeaderLine::ArrowTypeEnums[]= { "NONE",
+//const char* DrawLeaderLine::ArrowTypeEnums[]= { 
 //                               "FILLED_ARROW",
 //                               "OPEN_ARROW",
 //                               "TICK",
@@ -55,8 +55,9 @@ PROPERTY_SOURCE(TechDraw::DrawLeaderLine, TechDraw::DrawView)
 //                               "OPEN_CIRCLE",
 //                               "FORK",
 //                               "FILLED_TRIANGLE",
+//                               "NONE"
 //                               NULL};
-//const char* DrawLeaderLine::ArrowTypeEnums2[]= { "NONE",
+//const char* DrawLeaderLine::ArrowTypeEnums2[]= { 
 //                               "FILLED_ARROW",
 //                               "OPEN_ARROW",
 //                               "TICK",
@@ -64,6 +65,7 @@ PROPERTY_SOURCE(TechDraw::DrawLeaderLine, TechDraw::DrawView)
 //                               "OPEN_CIRCLE",
 //                               "FORK",
 //                               "FILLED_TRIANGLE",
+//                               "NONE"
 //                               NULL};
 
 DrawLeaderLine::DrawLeaderLine(void)
@@ -80,11 +82,11 @@ DrawLeaderLine::DrawLeaderLine(void)
 //    ADD_PROPERTY(EndType,(prefEnd()));
 
     StartSymbol.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY(StartSymbol,(1l));              //filled arrow
+    ADD_PROPERTY(StartSymbol,(0l));              //filled arrow
 
 //    ADD_PROPERTY_TYPE(StartSymbol, (0), group, App::Prop_None, "Symbol (arrowhead) for start of line");
     EndSymbol.setEnums(ArrowPropEnum::ArrowTypeEnums);
-    ADD_PROPERTY(EndSymbol,(0l));                //no symbol
+    ADD_PROPERTY(EndSymbol,(7l));                //no symbol
 //    ADD_PROPERTY_TYPE(EndSymbol, (0), group, App::Prop_None, "Symbol (arrowhead) for end of line");
 
 
