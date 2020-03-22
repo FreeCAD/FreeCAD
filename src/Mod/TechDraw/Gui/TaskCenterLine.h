@@ -94,7 +94,6 @@ public:
     void enableTaskButtons(bool b);
     void setFlipped(bool b);
 
-
 protected Q_SLOTS:
 
 protected:
@@ -116,6 +115,17 @@ protected:
     QColor getCenterColor();
     Qt::PenStyle getCenterStyle();
     double getExtendBy();
+
+private Q_SLOTS:
+    void onOrientationChanged();
+    void onShiftHorizChanged();
+    void onShiftVertChanged();
+    void onRotationChanged();
+    void onExtendChanged();
+    void onColorChanged();
+    void onWeightChanged();
+    void onStyleChanged();
+    void onFlipChanged();
 
 private:
     Ui_TaskCenterLine * ui;
