@@ -46,6 +46,7 @@
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/ArrowPropEnum.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
@@ -267,7 +268,7 @@ void TaskLeaderLine::setUiPrimary()
     ui->cboxStartSym->setCurrentIndex(aStyle);
 
     DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
-    ui->cboxEndSym->setCurrentIndex(0);
+    ui->cboxEndSym->setCurrentIndex(TechDraw::ArrowType::NONE);
 
     ui->dsbWeight->setUnit(Base::Unit::Length);
     ui->dsbWeight->setMinimum(0);

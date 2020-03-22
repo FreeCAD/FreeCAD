@@ -424,11 +424,11 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
     double  endAdjLength(0.0);
     if (qPoints.size() > 1) {
         //make path adjustment to hide leaderline ends behind arrowheads
-        if (featLeader->StartSymbol.getValue() > ArrowType::NONE) {
+        if (featLeader->StartSymbol.getValue() != ArrowType::NONE) {
             startAdjLength = QGIArrow::getOverlapAdjust(featLeader->StartSymbol.getValue(),
                                                             QGIArrow::getPrefArrowSize());
         }
-        if (featLeader->EndSymbol.getValue() > ArrowType::NONE) {
+        if (featLeader->EndSymbol.getValue() != ArrowType::NONE) {
             endAdjLength = QGIArrow::getOverlapAdjust(featLeader->EndSymbol.getValue(),
                                                       QGIArrow::getPrefArrowSize());
         }
@@ -499,7 +499,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
 
     QPointF lastOffset = (pathPoints.back() - pathPoints.front());
 
-    if (featLeader->StartSymbol.getValue() > ArrowType::NONE) {
+    if (featLeader->StartSymbol.getValue() != ArrowType::NONE) {
         m_arrow1->setStyle(featLeader->StartSymbol.getValue());
         m_arrow1->setWidth(getLineWidth());
 //        TODO: variable size arrow heads
@@ -521,7 +521,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
         m_arrow1->hide();
     }
     
-    if (featLeader->EndSymbol.getValue() > ArrowType::NONE) {
+    if (featLeader->EndSymbol.getValue() != ArrowType::NONE) {
         m_arrow2->setStyle(featLeader->EndSymbol.getValue());
         m_arrow2->setWidth(getLineWidth());
         m_arrow2->setDirMode(true);
