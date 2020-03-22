@@ -45,7 +45,7 @@ class Proxy(object):
         return self.Type
 
     def __setstate__(self, state):
-        # a few FEM objects had this attribut assignment before the move to this Python base obj class
+        # some objects had this attribute assignment before the move to this Python base obj class
         # these objects will give a setAttr failed error on document loading without this assignment
         if state:
             self.Type = state
