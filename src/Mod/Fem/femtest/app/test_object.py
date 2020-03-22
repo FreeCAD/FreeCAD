@@ -27,6 +27,7 @@ __url__ = "http://www.freecadweb.org"
 
 import sys
 import unittest
+from os.path import join
 
 import FreeCAD
 
@@ -59,8 +60,6 @@ class TestObjectCreate(unittest.TestCase):
     def test_femobjects_make(
         self
     ):
-        # TODO return document, see Part
-        # https://github.com/FreeCAD/FreeCAD/blob/565bdbbb3e/src/Mod/Part/parttests/part_test_objects.py#L260
         doc = self.document
         analysis = ObjectsFem.makeAnalysis(doc)
 
@@ -96,50 +95,69 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeMaterialReinforced(doc))
 
         msh = analysis.addObject(ObjectsFem.makeMeshGmsh(doc))[0]
-        analysis.addObject(ObjectsFem.makeMeshBoundaryLayer(doc, msh))
-        analysis.addObject(ObjectsFem.makeMeshGroup(doc, msh))
-        analysis.addObject(ObjectsFem.makeMeshRegion(doc, msh))
+        ObjectsFem.makeMeshBoundaryLayer(doc, msh)
+        ObjectsFem.makeMeshGroup(doc, msh)
+        ObjectsFem.makeMeshRegion(doc, msh)
         analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
-        analysis.addObject(ObjectsFem.makeMeshResult(doc))
+        ObjectsFem.makeMeshResult(doc)
 
         res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
         if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
             vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, res))[0]
-            analysis.addObject(ObjectsFem.makePostVtkFilterClipRegion(doc, vres))
-            analysis.addObject(ObjectsFem.makePostVtkFilterClipScalar(doc, vres))
-            analysis.addObject(ObjectsFem.makePostVtkFilterCutFunction(doc, vres))
-            analysis.addObject(ObjectsFem.makePostVtkFilterWarp(doc, vres))
+            ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
+            ObjectsFem.makePostVtkFilterClipScalar(doc, vres)
+            ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
+            ObjectsFem.makePostVtkFilterWarp(doc, vres)
 
         analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
         analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
         sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
         analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
-        analysis.addObject(ObjectsFem.makeEquationElasticity(doc, sol))
-        analysis.addObject(ObjectsFem.makeEquationElectrostatic(doc, sol))
-        analysis.addObject(ObjectsFem.makeEquationFlow(doc, sol))
-        analysis.addObject(ObjectsFem.makeEquationFluxsolver(doc, sol))
-        analysis.addObject(ObjectsFem.makeEquationHeat(doc, sol))
+        ObjectsFem.makeEquationElasticity(doc, sol)
+        ObjectsFem.makeEquationElectrostatic(doc, sol)
+        ObjectsFem.makeEquationFlow(doc, sol)
+        ObjectsFem.makeEquationFluxsolver(doc, sol)
+        ObjectsFem.makeEquationHeat(doc, sol)
 
         doc.recompute()
 
+        # count the def make in ObjectsFem module
         # if FEM VTK post processing is disabled, we are not able to create VTK post objects
         if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
-            fem_vtk_post = True
+            count_defmake = testtools.get_defmake_count()
         else:
-            fem_vtk_post = False
-        count_defmake = testtools.get_defmake_count(fem_vtk_post)
-        # because of the analysis itself count -1
-        self.assertEqual(len(analysis.Group), count_defmake - 1)
+            count_defmake = testtools.get_defmake_count(False)
+        # TODO if the children are added to the analysis, they show up twice on Tree
+        # thus they are not added to the analysis group ATM
+        # https://forum.freecadweb.org/viewtopic.php?t=25283
+        # thus they should not be counted
+        # solver children: equations --> 5
+        # gmsh mesh children: group, region, boundary layer --> 3
+        # resule children: mesh result --> 1
+        # post pipeline childeren: region, scalar, cut, wrap --> 4
+        # analysis itself is not in analysis group --> 1
+        # thus: -14
+
+        self.assertEqual(len(analysis.Group), count_defmake - 14)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print("doc objects count: {}, method: {}".format(
             len(doc.Objects),
             sys._getframe().f_code.co_name)
         )
-        # TODO if the equations and gmsh mesh children are added to the analysis,
-        # they show up twice on Tree (on solver resp. gmsh mesh obj and on analysis)
-        # https://forum.freecadweb.org/viewtopic.php?t=25283
+
+        # save the file
+        save_dir = testtools.get_unit_test_tmp_dir(
+            testtools.get_fem_test_tmp_dir(),
+            "FEM_all_objects"
+        )
+        save_fc_file = join(save_dir, "all_objects.FCStd")
+        fcc_print(
+            "Save FreeCAD all objects file to {}..."
+            .format(save_fc_file)
+        )
+        self.document.saveAs(save_fc_file)
 
     # ********************************************************************************************
     def tearDown(

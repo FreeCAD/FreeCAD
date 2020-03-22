@@ -59,6 +59,11 @@ False if FemTest10.__name__ else True
 
 """
 # examples from within FreeCAD:
+
+# create all objects test
+import Test, femtest.app.test_object
+Test.runTestsFromClass(femtest.app.test_object.TestObjectCreate)
+
 # all FEM tests
 import Test, TestFem
 Test.runTestsFromModule(TestFem)
