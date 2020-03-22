@@ -318,7 +318,7 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeMeshResult(doc))
         )
         self.assertEqual(
-            "Fem::FemResultMechanical",
+            "Fem::ResultMechanical",
             type_of_obj(ObjectsFem.makeResultMechanical(doc))
         )
         solverelmer = ObjectsFem.makeSolverElmer(doc)
@@ -518,7 +518,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeResultMechanical(doc),
-            "Fem::FemResultMechanical"
+            "Fem::ResultMechanical"
         ))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
         self.assertTrue(is_of_type(
@@ -1104,7 +1104,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             result_mechanical,
-            "Fem::FemResultMechanical"
+            "Fem::ResultMechanical"
         ))
 
         # FemSolverCalculixCcxTools

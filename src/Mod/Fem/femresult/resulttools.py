@@ -64,7 +64,7 @@ def reset_mesh_deformation(resultobj):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     """
 
@@ -78,7 +78,7 @@ def reset_mesh_color(resultobj):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     """
 
@@ -106,7 +106,7 @@ def show_result(resultobj, result_type="Sabs", limit=None):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     result_type : str, optional
         default is Sabs
@@ -142,7 +142,7 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     values : list of floats
         the values to be colored and cutoff
@@ -175,7 +175,7 @@ def get_stats(res_obj, result_type):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     result_type : str
         type of FEM result
@@ -227,7 +227,7 @@ def get_all_stats(res_obj):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
 
 
@@ -257,7 +257,7 @@ def fill_femresult_stats(res_obj):
 
     Parameters
     ----------
-    resultobj : Fem::FemResultMechanical
+    resultobj : Fem::ResultMechanical
         FreeCAD FEM mechanical result object
     """
 
