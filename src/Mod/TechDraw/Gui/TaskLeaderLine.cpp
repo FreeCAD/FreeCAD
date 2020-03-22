@@ -297,8 +297,10 @@ void TaskLeaderLine::setUiEdit()
 
         DrawGuiUtil::loadArrowBox(ui->cboxStartSym);
         ui->cboxStartSym->setCurrentIndex(m_lineFeat->StartSymbol.getValue());
+        connect(ui->cboxStartSym, SIGNAL(currentIndexChanged(int)), this, SLOT(onStartSymbolChanged()));
         DrawGuiUtil::loadArrowBox(ui->cboxEndSym);
         ui->cboxEndSym->setCurrentIndex(m_lineFeat->EndSymbol.getValue());
+        connect(ui->cboxEndSym, SIGNAL(currentIndexChanged(int)), this, SLOT(onEndSymbolChanged()));
 
         ui->pbTracker->setText(QString::fromUtf8("Edit points"));
         if (m_haveMdi) {
@@ -315,6 +317,49 @@ void TaskLeaderLine::setUiEdit()
         ui->dsbWeight->setValue(m_lineVP->LineWidth.getValue());
         ui->cboxStyle->setCurrentIndex(m_lineVP->LineStyle.getValue());
     }
+    connect(ui->cpLineColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
+    ui->dsbWeight->setMinimum(0);
+    connect(ui->dsbWeight, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
+    connect(ui->cboxStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(onLineStyleChanged()));
+}
+
+void TaskLeaderLine::recomputeFeature()
+{
+    App::DocumentObject* objVP = m_lineVP->getObject();
+    assert(objVP);
+    objVP->getDocument()->recomputeFeature(objVP);
+}
+
+void TaskLeaderLine::onStartSymbolChanged()
+{
+    m_lineFeat->StartSymbol.setValue(ui->cboxStartSym->currentIndex());
+    recomputeFeature();
+}
+
+void TaskLeaderLine::onEndSymbolChanged()
+{
+    m_lineFeat->EndSymbol.setValue(ui->cboxEndSym->currentIndex());
+    recomputeFeature();
+}
+
+void TaskLeaderLine::onColorChanged()
+{
+    App::Color ac;
+    ac.setValue<QColor>(ui->cpLineColor->color());
+    m_lineVP->Color.setValue(ac);
+    recomputeFeature();
+}
+
+void TaskLeaderLine::onLineWidthChanged()
+{
+    m_lineVP->LineWidth.setValue(ui->dsbWeight->rawValue());
+    recomputeFeature();
+}
+
+void TaskLeaderLine::onLineStyleChanged()
+{
+    m_lineVP->LineStyle.setValue(ui->cboxStyle->currentIndex());
+    recomputeFeature();
 }
 
 
