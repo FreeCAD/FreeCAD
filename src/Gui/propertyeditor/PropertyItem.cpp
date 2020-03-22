@@ -147,14 +147,8 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
         try {
             // Check for 'DocumentObject' as parent because otherwise 'ObjectIdentifier' raises an exception
             App::DocumentObject * docObj = Base::freecad_dynamic_cast<App::DocumentObject>(p.getContainer());
-            if (docObj && !docObj->isReadOnly(&p)) {
-                App::ObjectIdentifier id(p);
-                std::vector<App::ObjectIdentifier> paths;
-                p.getPaths(paths);
-
-                //there may be no paths available in this property (for example an empty constraint list)
-                if (id.getProperty() && !paths.empty())
-                    bind(id);
+            if (docObj && !docObj->isReadOnly(&p) && !p.testStatus(App::Property::ReadOnly)) {
+                bind(p);
             }
         }
         //it may happen that setting properties is not possible
