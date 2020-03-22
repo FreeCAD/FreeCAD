@@ -42,10 +42,7 @@ class Proxy(object):
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
     # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
     def __getstate__(self):
-        return self.Type
+        return None
 
     def __setstate__(self, state):
-        # some objects had this attribute assignment before the move to this Python base obj class
-        # these objects will give a setAttr failed error on document loading without this assignment
-        if state:
-            self.Type = state
+        return None
