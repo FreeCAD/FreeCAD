@@ -609,24 +609,12 @@ void TaskLeaderLine::startTracker(void)
 
 void TaskLeaderLine::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParent)
 {
+    //in this case, we already know who the parent is.  We don't need QGTracker to tell us. 
+    (void) qgParent;
 //    Base::Console().Message("TTL::onTrackerFinished() - parent: %X\n",qgParent);
     if (pts.empty()) {
         Base::Console().Error("TaskLeaderLine - no points available\n");
         return;
-    }
-
-    if (qgParent == nullptr) {
-        //do something;
-        m_qgParent = findParentQGIV();
-    } else {
-        QGIView* qgiv = dynamic_cast<QGIView*>(qgParent);
-        if (qgiv != nullptr) {
-            m_qgParent = qgiv;
-        } else {
-            Base::Console().Message("TTL::onTrackerFinished - can't find parent graphic!\n");
-            //blow up!?
-            throw Base::RuntimeError("TaskLeaderLine - can not find parent graphic");
-        }
     }
 
     if (m_qgParent != nullptr) {
