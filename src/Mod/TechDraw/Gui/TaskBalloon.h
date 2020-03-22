@@ -50,6 +50,17 @@ public:
 public:
     virtual bool accept();
     virtual bool reject();
+    void recomputeFeature();
+
+private Q_SLOTS:
+    void onTextChanged();
+    void onColorChanged();
+    void onFontsizeChanged();
+    void onShapeChanged();
+    void onShapeScaleChanged();
+    void onEndTypeChanged();
+    void onLineWidthChanged();
+    void onBalloonKinkChanged();  
 
 private:
     Ui_TaskBalloon *ui;
