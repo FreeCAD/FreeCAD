@@ -51,7 +51,7 @@ using namespace TechDrawGui;
 //                                                                  pow(10,- Base::UnitsApi::getDecimals())};
 App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {pow(10,- Base::UnitsApi::getDecimals()),
                                                                   1000.0,
-                                                                  pow(10,- Base::UnitsApi::getDecimals())};
+                                                                  0.1};
 
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderHatch, Gui::ViewProviderDocumentObject)
