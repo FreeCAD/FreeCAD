@@ -20,21 +20,24 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Annotations view provider base classes
+"""This module provides the Draft Annotations view provider base class
 """
 ## @package polararray
 # \ingroup DRAFT
-# \brief This module provides the view provider code for Draft PolarArray.
+# \brief This module provides the Draft Annotations view provider base class
 
 
 import FreeCAD as App
 import FreeCADGui as Gui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import draftutils.utils as utils
 
 
 class ViewProviderDraftAnnotation:
-    """The base class for Draft Annotation Viewproviders"""
+    """
+    The base class for Draft Annotation Viewproviders
+    This class is not used directly, but inherited by all annotation
+    view providers.
+    """
 
     def __init__(self, vobj):
         vobj.Proxy = self
@@ -110,154 +113,4 @@ class ViewProviderDraftAnnotation:
             objs.extend(self.Object.Group)
         return objs
 
-
-class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
-    """
-    A View Provider for the Draft Dimension object
-    
-    DIMENSION VIEW PROVIDER:
-    
-        |              txt               |       e
-    ----o--------------------------------o-----
-        |                                |
-        |                                |       d  
-        |                                |
-
-     a  b               c                b  a
-    
-    a = DimOvershoot (vobj)
-    b = Arrows (vobj)
-    c = Dimline (obj)
-    d = ExtLines (vobj)
-    e = ExtOvershoot (vobj)
-    txt = label (vobj)
-
-    STRUCTURE:
-    vobj.node.color
-             .drawstyle
-             .lineswitch1.coords
-                         .line
-                         .marks
-                         .marksDimOvershoot
-                         .marksExtOvershoot
-             .label.textpos
-                   .color
-                   .font
-                   .text
-             
-    vobj.node3d.color
-               .drawstyle
-               .lineswitch3.coords
-                           .line
-                           .marks
-                           .marksDimOvershoot
-                           .marksExtOvershoot
-               .label3d.textpos
-                       .color
-                       .font3d
-                       .text3d
-    
-    """
-    def __init__(self, vobj): 
-        # text properties
-        vobj.addProperty("App::PropertyFont","FontName",
-                         "Text",QT_TRANSLATE_NOOP("App::Property","Font name"))
-        vobj.addProperty("App::PropertyLength","FontSize",
-                         "Text",QT_TRANSLATE_NOOP("App::Property","Font size"))
-        vobj.addProperty("App::PropertyLength","TextSpacing",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The spacing between the text and the dimension line"))
-        vobj.addProperty("App::PropertyBool","FlipText",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "Rotate the dimension text 180 degrees"))
-        vobj.addProperty("App::PropertyVectorDistance","TextPosition",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The position of the text. Leave (0,0,0) for automatic position"))
-        vobj.addProperty("App::PropertyString","Override",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "Text override. Use $dim to insert the dimension length"))
-        # units properties
-        vobj.addProperty("App::PropertyInteger","Decimals",
-                         "Units",QT_TRANSLATE_NOOP("App::Property",
-                         "The number of decimals to show"))
-        vobj.addProperty("App::PropertyBool","ShowUnit",
-                         "Units",QT_TRANSLATE_NOOP("App::Property",
-                         "Show the unit suffix"))
-        vobj.addProperty("App::PropertyString","UnitOverride",
-                         "Units",QT_TRANSLATE_NOOP("App::Property",
-                         "A unit to express the measurement. Leave blank for system default"))
-        # graphics properties
-        vobj.addProperty("App::PropertyLength","ArrowSize",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
-        vobj.addProperty("App::PropertyEnumeration","ArrowType",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
-        vobj.addProperty("App::PropertyBool","FlipArrows",
-                        "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                        "Rotate the dimension arrows 180 degrees"))        
-        vobj.addProperty("App::PropertyDistance","DimOvershoot",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "The distance the dimension line is extended past the extension lines"))        
-        vobj.addProperty("App::PropertyDistance","ExtLines",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "Length of the extension lines"))
-        vobj.addProperty("App::PropertyDistance","ExtOvershoot",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "Length of the extension line above the dimension line"))
-        vobj.addProperty("App::PropertyBool","ShowLine",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "Shows the dimension line and arrows"))
-        
-        vobj.FontSize = utils.get_param("textheight",0.20)
-        vobj.TextSpacing = utils.get_param("dimspacing",0.05)
-        vobj.FontName = utils.get_param("textfont","")
-        vobj.ArrowSize = utils.get_param("arrowsize",0.1)
-        vobj.ArrowType = utils.ARROW_TYPES
-        vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol",0)]
-        vobj.ExtLines = utils.get_param("extlines",0.3)
-        vobj.DimOvershoot = utils.get_param("dimovershoot",0)
-        vobj.ExtOvershoot = utils.get_param("extovershoot",0)
-        vobj.Decimals = utils.get_param("dimPrecision",2)
-        vobj.ShowUnit = utils.get_param("showUnit",True)
-        vobj.ShowLine = True
-        ViewProviderDraftAnnotation.__init__(self,vobj)
-
-    def attach(self, vobj):
-        """called on object creation"""
-        return
-
-    def updateData(self, obj, prop):
-        """called when the base object is changed"""
-        return
-
-    def onChanged(self, vobj, prop):
-        """called when a view property has changed"""
-        return
-
-    def doubleClicked(self,vobj):
-        self.setEdit(vobj)
-
-    def getDisplayModes(self,vobj):
-        return ["2D","3D"]
-
-    def getDefaultDisplayMode(self):
-        if hasattr(self,"defaultmode"):
-            return self.defaultmode
-        else:
-            return ["2D","3D"][utils.get_param("dimstyle",0)]
-
-    def setDisplayMode(self,mode):
-        return mode
-
-    def getIcon(self):
-        if self.is_linked_to_circle():
-            return ":/icons/Draft_DimensionRadius.svg"
-        return ":/icons/Draft_Dimension_Tree.svg"
-
-    def __getstate__(self):
-        return self.Object.ViewObject.DisplayMode
-
-    def __setstate__(self,state):
-        if state:
-            self.defaultmode = state
-            self.setDisplayMode(state)
 

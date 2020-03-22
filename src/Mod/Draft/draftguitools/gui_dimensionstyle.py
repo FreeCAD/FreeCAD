@@ -96,8 +96,7 @@ class GuiCommandDimensionStyle(gui_base.GuiCommandSimplest):
     The command creates a dimension style object
     """
     def __init__(self):
-        super().__init__()
-        self.command_name = "DimensionStyle"
+        super().__init__(name="Dimension style")
 
     def GetResources(self):
         _msg = ("Creates a new dimension style.\n"

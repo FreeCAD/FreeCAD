@@ -153,7 +153,7 @@ class ViewProviderDraftDimensionStyle(_ViewProviderDraft):
 
         self.init_properties(vobj, existing_dimension)
             
-        _ViewProviderDraft.__init__(self,vobj)
+        super().__init__(vobj)
 
     def init_properties(self, vobj, existing_dimension):
         """
