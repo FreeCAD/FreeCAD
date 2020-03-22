@@ -95,7 +95,7 @@ Py::List ParaObjectPy::getNamedParameters(void) const
 {
     auto params = getParaObjectPtr()->_attrs;
     Py::List ret(params.size());
-    for(int i = 0; i < params.size(); ++i){
+    for(size_t i = 0; i < params.size(); ++i){
         Py::Tuple tup(2);
         tup[0] = Py::String(params[i].name);
         tup[1] = params[i].value->getPyHandle().getHandledObject();
@@ -108,7 +108,7 @@ Py::List ParaObjectPy::getNamedChildren(void) const
 {
     auto params = getParaObjectPtr()->_children;
     Py::List ret(params.size());
-    for(int i = 0; i < params.size(); ++i){
+    for(size_t i = 0; i < params.size(); ++i){
         Py::Tuple tup(2);
         tup[0] = Py::String(params[i].name);
         tup[1] = (*(params[i].value)).getHandledObject();

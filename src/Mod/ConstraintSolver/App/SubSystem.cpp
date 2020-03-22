@@ -39,7 +39,7 @@ void SubSystem::calcJacobi(ValueSet& vals, HParameterSubset params, Eigen::Matri
     // * ie: index of error value in error vector of _constraints[ic]
     // * ir + ie: index of subconstraint, aka row index
     // * ip: index of parameter in params
-    for(int ic = 0; ic < _constraints.size(); ++ic){
+    for(size_t ic = 0; ic < _constraints.size(); ++ic){
         Constraint& constr = *(_constraints[ic]);
         int rank = constr.rank();
         int ir = _constraint1stRow[ic];
@@ -98,7 +98,7 @@ void SubSystem::calcGrad(HValueSet vals, Eigen::VectorXd& output)
     // * ie: index of error value in error vector of _constraints[ic]
     // * ir + ie: index of subconstraint, aka row index
     // * ip: index of parameter in vals
-    for(int ic = 0; ic < _constraints.size(); ++ic){
+    for(size_t ic = 0; ic < _constraints.size(); ++ic){
         Constraint& constr = *(_constraints[ic]);
         int rank = constr.rank();
         //int ir = _constraint1stRow[ic]; //unused
@@ -155,7 +155,7 @@ void SubSystem::calcResidual(const ValueSet& vals, Eigen::VectorXd &output, doub
 
     err = 0;
     int ir = 0;
-    for(int ic = 0; ic < _constraints.size(); ++ic){
+    for(size_t ic = 0; ic < _constraints.size(); ++ic){
         Constraint& constr = *(_constraints[ic]);
         int rank = constr.rank();
         constr.error(vals, buf.data());
@@ -208,7 +208,7 @@ void SubSystem::update()
     _constraint1stRow.resize(_constraints.size());
     _maxConstraintRank = 0;
     int isc = 0;//index of subconstraint
-    for(int ic = 0; ic <  _constraints.size(); ++ic){
+    for(size_t ic = 0; ic <  _constraints.size(); ++ic){
         HConstraint& c = _constraints[ic];
         _constraint1stRow[ic] = isc;
         for(int ie = 0; ie < c->rank(); ++ie){
