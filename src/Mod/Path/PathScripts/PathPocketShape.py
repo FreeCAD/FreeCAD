@@ -3,7 +3,6 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
 # *   Copyright (c) 2020 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
@@ -481,7 +480,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                         msg = translate("Path", "Consider toggling the 'InverseAngle' property and recomputing.")
                                         PathLog.warning(msg)
 
-                            if angle < -180.0:
+                            if angle < 0.0:
                                 angle += 360.0
 
                             tup = clnBase, subsList, angle, axis, clnStock
@@ -531,7 +530,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                                     (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf)  # pylint: disable=unused-variable
                                     PathLog.debug("follow-up {}".format(praInfo2))
 
-                                    if praAxis == axis and abs(praAngle) == 180.0:
+                                    if abs(praAngle) == 180.0:
                                         rtn = False
                                         if self.isFaceUp(clnBase, faceIA) is False:
                                             PathLog.debug('isFaceUp is False')

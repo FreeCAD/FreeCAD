@@ -141,10 +141,10 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                 (rtn, praAngle, praAxis, praInfo2) = self.faceRotationAnalysis(obj, norm, surf) # pylint: disable=unused-variable
                                 PathLog.debug("follow-up faceRotationAnalysis: {}".format(praInfo2))
 
-                                if praAxis == axis and abs(praAngle) == 180.0:
+                                if abs(praAngle) == 180.0:
                                     rtn = False
                                     if self.isFaceUp(clnBase, faceIA) is False:
-                                        PathLog.debug('isFaceUp is False')
+                                        PathLog.debug('isFaceUp 1 is False')
                                         angle -= 180.0
 
                                 if rtn is True:
@@ -157,7 +157,7 @@ class ObjectProfile(PathProfileBase.ObjectProfile):
                                             PathLog.warning(msg)
 
                                     if self.isFaceUp(clnBase, faceIA) is False:
-                                        PathLog.debug('isFaceUp is False')
+                                        PathLog.debug('isFaceUp 2 is False')
                                         angle += 180.0
                                     else:
                                         PathLog.debug('  isFaceUp')
