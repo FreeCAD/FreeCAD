@@ -77,6 +77,7 @@ void TaskGeomHatch::initUi()
     ui->fcFile->setFileName(QString::fromUtf8(m_file.data(), m_file.size()));
     std::vector<std::string> names = PATLineSpec::getPatternList(m_file);
     QStringList qsNames = listToQ(names);
+
     ui->cbName->addItems(qsNames);
     int nameIndex = ui->cbName->findText(QString::fromUtf8(m_name.data(),m_name.size()));
     if (nameIndex > -1) {
@@ -84,9 +85,16 @@ void TaskGeomHatch::initUi()
     } else {
         Base::Console().Warning("Warning - Pattern name *%s* not found in current PAT File\n", m_name.c_str());
     }
+    connect(ui->cbName, SIGNAL(currentIndexChanged(int)), this, SLOT(onNameChanged()));
+
     ui->sbScale->setValue(m_scale);
+    ui->sbScale->setSingleStep(0.1);
+    connect(ui->sbScale, SIGNAL(valueChanged(double)), this, SLOT(onScaleChanged()));
     ui->sbWeight->setValue(m_weight);
+    ui->sbWeight->setSingleStep(0.1);
+    connect(ui->sbWeight, SIGNAL(valueChanged(double)), this, SLOT(onLineWeightChanged()));
     ui->ccColor->setColor(m_color.asValue<QColor>());
+    connect(ui->ccColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
 }
 
 //move values from screen to DocObjs
@@ -132,6 +140,34 @@ bool TaskGeomHatch::accept()
     m_source->getDocument()->recompute();          //TODO: this is only here to get graphics to update.
                                                    //      sb "redraw graphics" since m_source geom has not changed.
     return true;
+}
+
+void TaskGeomHatch::onNameChanged()
+{
+    QString cText = ui->cbName->currentText();
+    m_name = cText.toUtf8().constData();
+    m_hatch->NamePattern.setValue(m_name);
+    m_source->getDocument()->recompute();
+}
+
+void TaskGeomHatch::onScaleChanged()
+{
+    m_hatch->ScalePattern.setValue(ui->sbScale->value());
+    m_source->getDocument()->recompute();
+}
+
+void TaskGeomHatch::onLineWeightChanged()
+{
+    m_Vp->WeightPattern.setValue(ui->sbWeight->value());
+    m_source->getDocument()->recompute();
+}
+
+void TaskGeomHatch::onColorChanged()
+{
+    App::Color ac;
+    ac.setValue<QColor>(ui->ccColor->color());
+    m_Vp->ColorPattern.setValue(ac);
+    m_source->getDocument()->recompute();
 }
 
 bool TaskGeomHatch::reject()
