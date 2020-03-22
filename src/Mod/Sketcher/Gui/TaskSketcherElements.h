@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <boost/signals2.hpp>
 #include <QListWidget>
+#include <QIcon>
 
 namespace App {
 class Property;
@@ -87,6 +88,12 @@ protected Q_SLOTS:
 
 };
 
+struct multIcon {
+    QIcon norm;
+    QIcon ref;
+    QIcon ext;
+};
+
 class TaskSketcherElements : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
@@ -132,6 +139,8 @@ private:
     bool isautoSwitchBoxChecked;
 
     bool inhibitSelectionUpdate;
+    
+    multIcon tamperIcons(const char*);
 };
 
 } //namespace SketcherGui
