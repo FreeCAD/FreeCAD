@@ -21,8 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# constraint contact for solid to solid mesh
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
 # to run the example use:
 """
 from femexamples.constraint_contact_solid_solid import setup
@@ -30,6 +28,8 @@ setup()
 
 """
 
+# constraint contact for solid to solid mesh
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
 
 import FreeCAD
 from FreeCAD import Rotation

@@ -33,7 +33,6 @@ canti.setup_cantileverhexa20faceload()
 
 """
 
-
 import FreeCAD
 
 import Fem

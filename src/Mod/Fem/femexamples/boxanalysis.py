@@ -31,7 +31,6 @@ box.setup_frequency()
 
 """
 
-
 import FreeCAD
 
 import Fem

@@ -28,6 +28,8 @@ setup()
 
 """
 
+# example from Harry's epic topic: Concrete branch ready for testing
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=33106&start=80#p296469
 
 import FreeCAD
 from FreeCAD import Vector as vec

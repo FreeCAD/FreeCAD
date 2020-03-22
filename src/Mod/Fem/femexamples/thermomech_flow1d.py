@@ -28,6 +28,8 @@ setup()
 
 """
 
+# topic about the 1D flow analysis
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=20076
 
 import FreeCAD
 from FreeCAD import Vector as vec

@@ -21,17 +21,18 @@
 # *                                                                         *
 # ***************************************************************************
 
+"""
+from femexamples.thermomech_bimetall import setup
+setup()
+
+"""
+
 # thermomechanical bimetall
 # https://forum.freecadweb.org/viewtopic.php?f=18&t=43040&start=10#p366664
 # analytical solution 7.05 mm deflection in the invar material direction
 # see post in the forum link
 # this file has 7.15 mm max deflection
 # to run the example use:
-"""
-from femexamples.thermomech_bimetall import setup
-setup()
-
-"""
 
 import FreeCAD
 from FreeCAD import Rotation

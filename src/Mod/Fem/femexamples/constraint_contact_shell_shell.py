@@ -21,9 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# contact example shell to shell elements
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=42228
-# based on https://forum.freecadweb.org/viewtopic.php?f=18&t=42228#p359488
 # to run the example use:
 """
 from femexamples.constraint_contact_shell_shell import setup
@@ -31,6 +28,9 @@ setup()
 
 """
 
+# contact example shell to shell elements
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=42228
+# based on https://forum.freecadweb.org/viewtopic.php?f=18&t=42228#p359488
 
 import FreeCAD
 

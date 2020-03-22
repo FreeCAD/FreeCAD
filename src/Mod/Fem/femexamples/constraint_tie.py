@@ -21,8 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# constraint tie, bond two surfaces together (solid mesh only)
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=42783
 # to run the example use:
 """
 from femexamples.constraint_tie import setup
@@ -30,6 +28,8 @@ setup()
 
 """
 
+# constraint tie, bond two surfaces together (solid mesh only)
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=42783
 
 import FreeCAD
 from FreeCAD import Vector
