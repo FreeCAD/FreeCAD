@@ -26,45 +26,17 @@ __title__ = "FreeCAD FEM base constraint ViewProvider"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package _BaseViewProvider
+## @package _ConstraintViewProvider
 #  \ingroup FEM
-#  \brief FreeCAD _Base ViewProvider for FEM workbench
+#  \brief FreeCAD _Base Constraint ViewProvider for FEM workbench
 
 from pivy import coin
-from six import string_types
 
-import FreeCAD
-import FreeCADGui
-
-import FemGui  # needed to display the icons in TreeView
+from . import ViewProviderBaseObject
 
 
-False if FemGui.__name__ else True  # flake8, dummy FemGui usage
-
-
-class ViewProxy(object):
+class ViewProxy(ViewProviderBaseObject.ViewProxy):
     """Proxy View Provider for Pythons base constraint."""
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    # needs to be overwritten, if no standard icon name is used
-    # see constraint body heat source as an example
-    def getIcon(self):
-        """after load from FCStd file, self.icon does not exist, return constant path instead"""
-        # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
-        if (
-            hasattr(self.Object.Proxy, "Type")
-            and isinstance(self.Object.Proxy.Type, string_types)
-            and self.Object.Proxy.Type.startswith("Fem::")
-        ):
-            icon_path = "/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))
-            FreeCAD.Console.PrintLog("{} --> {}\n".format(self.Object.Name, icon_path))
-            return ":/{}".format(icon_path)
-        else:
-            FreeCAD.Console.PrintError("No icon returned for {}\n".format(self.Object.Name))
-            FreeCAD.Console.PrintMessage("{}\n".format(self.Object.Proxy.Type))
-            return ""
 
     def attach(self, vobj):
         default = coin.SoGroup()
@@ -82,54 +54,3 @@ class ViewProxy(object):
 
     def setDisplayMode(self, mode):
         return mode
-
-    def setEdit(self, vobj, mode=0, TaskPanel=None, hide_mesh=True):
-        if TaskPanel is None:
-            # avoid edit mode by return False
-            # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
-            return False
-        if hide_mesh is True:
-            # hide all FEM meshes and VTK FemPost* objects
-            for o in vobj.Object.Document.Objects:
-                if (
-                    o.isDerivedFrom("Fem::FemMeshObject")
-                    or o.isDerivedFrom("Fem::FemPostPipeline")
-                    or o.isDerivedFrom("Fem::FemPostClipFilter")
-                    or o.isDerivedFrom("Fem::FemPostScalarClipFilter")
-                    or o.isDerivedFrom("Fem::FemPostWarpVectorFilter")
-                    or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
-                    or o.isDerivedFrom("Fem::FemPostDataAtPointFilter")
-                    or o.isDerivedFrom("Fem::FemPostCutFilter")
-                    or o.isDerivedFrom("Fem::FemPostDataAlongLineFilter")
-                    or o.isDerivedFrom("Fem::FemPostPlaneFunction")
-                    or o.isDerivedFrom("Fem::FemPostSphereFunction")
-                ):
-                    o.ViewObject.hide()
-        # show task panel
-        task = TaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(task)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return True
-
-    def doubleClicked(self, vobj):
-        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode
-        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
-        if not guidoc.getInEdit():
-            guidoc.setEdit(vobj.Object.Name)
-        else:
-            from PySide.QtGui import QMessageBox
-            message = "Active Task Dialog found! Please close this one before opening  a new one!"
-            QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + "\n")
-        return True
-
-    # they are needed, see https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
