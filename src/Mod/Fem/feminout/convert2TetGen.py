@@ -342,8 +342,8 @@ def createMesh():
     # exportMeshToTetGenPoly(pnMesh.Mesh,filePath,beVerbose)
 
     if FreeCAD.GuiUp:
-        Gui.activeDocument().activeView().viewAxometric()
-        Gui.SendMsgToActiveView("ViewFit")
+        pnMesh.ViewObject.Document.activeView().viewAxonometric()
+        pnMesh.ViewObject.Document.activeView().fitAll()
 
     if beVerbose == 1:
         Console.PrintMessage("\nScript finished without errors.")
