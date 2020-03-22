@@ -51,7 +51,6 @@ class ViewProxy(object):
     # needs to be overwritten, if no standard icon name is used
     # see constraint body heat source as an example
     def getIcon(self):
-        # print(self.Object.Name)
         """after load from FCStd file, self.icon does not exist, return constant path instead"""
         # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
         if (
@@ -59,7 +58,9 @@ class ViewProxy(object):
             and isinstance(self.Object.Proxy.Type, string_types)
             and self.Object.Proxy.Type.startswith("Fem::")
         ):
-            return ":/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))
+            icon_path = "/icons/{}.svg".format(self.Object.Proxy.Type.replace("Fem::", "FEM_"))
+            FreeCAD.Console.PrintLog("{} --> {}\n".format(self.Object.Name, icon_path))
+            return ":/{}".format(icon_path)
         else:
             FreeCAD.Console.PrintError("No icon returned for {}\n".format(self.Object.Name))
             FreeCAD.Console.PrintMessage("{}\n".format(self.Object.Proxy.Type))
