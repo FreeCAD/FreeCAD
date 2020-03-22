@@ -37,7 +37,7 @@ class _FemMeshResult(FemConstraint.Proxy):
     The Fem::FemMeshObject's Proxy python type, add Result specific object type
     """
 
-    Type = "Fem::FemMeshResult"
+    Type = "Fem::MeshResult"
 
     def __init__(self, obj):
         super(_FemMeshResult, self).__init__(obj)

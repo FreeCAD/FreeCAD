@@ -45,7 +45,7 @@ def purge_results(analysis):
 
     for m in analysis.Group:
         if m.isDerivedFrom("Fem::FemResultObject"):
-            if m.Mesh and is_of_type(m.Mesh, "Fem::FemMeshResult"):
+            if m.Mesh and is_of_type(m.Mesh, "Fem::MeshResult"):
                 analysis.Document.removeObject(m.Mesh.Name)
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
@@ -54,7 +54,7 @@ def purge_results(analysis):
     # we could run into trouble in one loop because
     # we will delete objects and try to access them later
     for m in analysis.Group:
-        if is_of_type(m, "Fem::FemMeshResult"):
+        if is_of_type(m, "Fem::MeshResult"):
             analysis.Document.removeObject(m.Name)
     analysis.Document.recompute()
 

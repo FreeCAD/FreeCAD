@@ -166,7 +166,7 @@ class CommandManager(object):
         result_mesh = False
         analysis_members = FemGui.getActiveAnalysis().Group
         for o in analysis_members:
-            if is_of_type(o, "Fem::FemMeshResult"):
+            if is_of_type(o, "Fem::MeshResult"):
                 result_mesh = True
         return result_mesh
 

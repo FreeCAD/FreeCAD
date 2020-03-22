@@ -314,7 +314,7 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeMeshNetgen(doc))
         )
         self.assertEqual(
-            "Fem::FemMeshResult",
+            "Fem::MeshResult",
             type_of_obj(ObjectsFem.makeMeshResult(doc))
         )
         self.assertEqual(
@@ -514,7 +514,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMeshResult(doc),
-            "Fem::FemMeshResult"
+            "Fem::MeshResult"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeResultMechanical(doc),
@@ -1089,7 +1089,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             mesh_result,
-            "Fem::FemMeshResult"
+            "Fem::MeshResult"
         ))
 
         # FemResultMechanical
