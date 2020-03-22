@@ -164,6 +164,16 @@ Quantity Quantity::pow(double p) const
         );
 }
 
+Quantity Quantity::concat(const Quantity &p) const
+{
+    if (this->_Unit != p._Unit)
+        throw Base::UnitsMismatchError("Quantity: Unit mismatch in concat operation");
+    if(_Value >= 0.0)
+        return Quantity(this->_Value + p._Value,this->_Unit);
+    else
+        return Quantity(this->_Value - p._Value,this->_Unit);
+}
+
 Quantity Quantity::operator +(const Quantity &p) const
 {
     if (this->_Unit != p._Unit)

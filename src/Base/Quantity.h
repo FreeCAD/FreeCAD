@@ -137,6 +137,7 @@ public:
     Quantity& operator =(const Quantity&);
     Quantity pow(const Quantity&)const;
     Quantity pow(double)const;
+    Quantity concat(const Quantity &)const;
     //@}
 
     const QuantityFormat& getFormat() const {
