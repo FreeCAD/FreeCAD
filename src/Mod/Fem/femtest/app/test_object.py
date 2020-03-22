@@ -99,9 +99,10 @@ class TestObjectCreate(unittest.TestCase):
         ObjectsFem.makeMeshGroup(doc, msh)
         ObjectsFem.makeMeshRegion(doc, msh)
         analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
-        ObjectsFem.makeMeshResult(doc)
+        rm = ObjectsFem.makeMeshResult(doc)
 
         res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
+        res.Mesh = rm
         if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
             vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, res))[0]
             ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
@@ -154,7 +155,7 @@ class TestObjectCreate(unittest.TestCase):
         )
         save_fc_file = join(save_dir, "all_objects.FCStd")
         fcc_print(
-            "Save FreeCAD all objects file to {}..."
+            "Save FreeCAD all objects file to {} ..."
             .format(save_fc_file)
         )
         self.document.saveAs(save_fc_file)
