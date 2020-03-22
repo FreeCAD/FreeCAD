@@ -36,6 +36,7 @@ import Path
 import FreeCAD
 import PathScripts.PathUtils
 import PathScripts.PathLog as PathLog
+import re
 
 # LEVEL = PathLog.Level.DEBUG
 LEVEL = PathLog.Level.INFO
@@ -64,14 +65,20 @@ def insert(filename, docname):
     gfile = pythonopen(filename)
     gcode = gfile.read()
     gfile.close()
-    gcode = parse(gcode)
-    doc = FreeCAD.getDocument(docname)
-    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Custom")
-    PathScripts.PathCustom.ObjectCustom(obj)
-    obj.ViewObject.Proxy = 0
-    obj.Gcode = gcode
-    PathScripts.PathUtils.addToJob(obj)
-    obj.ToolController = PathScripts.PathUtils.findToolController(obj)
+    # split on tool changes
+    paths = re.split('(?=[mM]+\s?0?6)', gcode)
+    # if there are any tool changes combine the preamble with the default tool 
+    if len(paths) > 1:
+        paths = ["\n".join(paths[0:2])] +  paths[2:]
+    for path in paths:
+        gcode = parse(path)
+        doc = FreeCAD.getDocument(docname)
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Custom")
+        PathScripts.PathCustom.ObjectCustom(obj)
+        obj.ViewObject.Proxy = 0
+        obj.Gcode = gcode
+        PathScripts.PathUtils.addToJob(obj)
+        obj.ToolController = PathScripts.PathUtils.findToolController(obj)
     FreeCAD.ActiveDocument.recompute()
 
 
@@ -82,7 +89,7 @@ def parse(inputstring):
     # split the input by line
     lines = inputstring.split("\n")
     output = [] #""
-    lastcommand = None
+    lastcommand = None 
 
     for lin in lines:
         # remove any leftover trailing and preceding spaces
