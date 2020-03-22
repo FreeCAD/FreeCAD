@@ -104,7 +104,7 @@ UnsafePyHandle<ParameterRef> ParameterRef::getPyHandle() const
 
 PyObject* ParameterRef::getPyObject() const
 {
-    return Py::new_reference_to(getPyHandle()->getPyObject());
+    return Py::new_reference_to(getPyHandle().getHandledObject());
 }
 
 std::string ParameterRef::repr() const
