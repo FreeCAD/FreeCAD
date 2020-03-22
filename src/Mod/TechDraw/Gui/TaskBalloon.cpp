@@ -88,11 +88,14 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     connect(ui->comboSymbol, SIGNAL(currentIndexChanged(int)), this, SLOT(onShapeChanged()));
 
     ui->qsbFontSize->setUnit(Base::Unit::Length);
+    ui->qsbFontSize->setMinimum(0);
     connect(ui->qsbFontSize, SIGNAL(valueChanged(double)), this, SLOT(onFontsizeChanged()));
     ui->qsbLineWidth->setUnit(Base::Unit::Length);
     ui->qsbLineWidth->setSingleStep(0.100);
+    ui->qsbLineWidth->setMinimum(0);
     connect(ui->qsbLineWidth, SIGNAL(valueChanged(double)), this, SLOT(onLineWidthChanged()));
     ui->qsbBalloonKink->setUnit(Base::Unit::Length);
+    // negative kink length is allowed, thus no minimum
     connect(ui->qsbBalloonKink, SIGNAL(valueChanged(double)), this, SLOT(onBalloonKinkChanged()));
 
     if (balloonVP != nullptr) {
@@ -179,7 +182,7 @@ void TaskBalloon::onEndTypeChanged()
 
 void TaskBalloon::onLineWidthChanged()
 {
-    m_balloonVP->LineWidth.setValue(ui->qsbLineWidth->value().getValue());;
+    m_balloonVP->LineWidth.setValue(ui->qsbLineWidth->value().getValue());
     recomputeFeature();
 }
 
