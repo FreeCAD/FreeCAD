@@ -35,61 +35,6 @@ from draftutils import utils
 from draftobjects.dimensionstyle import make_dimension_style
 
 
-'''
-class AnnotationStylesContainer:
-    """The Layer Container"""
-
-    def __init__(self, obj):
-
-        self.Type = "AnnotationContainer"
-        obj.Proxy = self
-
-    def execute(self, obj):
-
-        g = obj.Group
-        g.sort(key=lambda o: o.Label)
-        obj.Group = g
-
-    def __getstate__(self):
-
-        if hasattr(self, "Type"):
-            return self.Type
-
-    def __setstate__(self, state):
-
-        if state:
-            self.Type = state
-
-
-class ViewProviderAnnotationStylesContainer:
-    """A View Provider for the Layer Container"""
-
-    def __init__(self, vobj):
-
-        vobj.Proxy = self
-
-    def getIcon(self):
-
-        return ":/icons/Draft_Annotation_Style.svg"
-
-    def attach(self, vobj):
-
-        self.Object = vobj.Object
-
-    def __getstate__(self):
-
-        return None
-
-    def __setstate__(self, state):
-
-        return None
-
-
-'''
-
-
-
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 class GuiCommandDimensionStyle(gui_base.GuiCommandSimplest):
     """
