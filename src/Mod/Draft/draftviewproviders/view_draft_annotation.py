@@ -32,6 +32,32 @@ import FreeCADGui as Gui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
+
+class ViewProviderAnnotationStylesContainer:
+    """A View Provider for the Layer Container"""
+
+    def __init__(self, vobj):
+
+        vobj.Proxy = self
+
+    def getIcon(self):
+
+        return ":/icons/Draft_Annotation_Style.svg"
+
+    def attach(self, vobj):
+
+        self.Object = vobj.Object
+
+    def __getstate__(self):
+
+        return None
+
+    def __setstate__(self, state):
+
+        return None
+
+
+
 class ViewProviderDraftAnnotation:
     """
     The base class for Draft Annotation Viewproviders

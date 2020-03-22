@@ -53,3 +53,27 @@ class DraftAnnotation:
 
     def onChanged(self, obj, prop):
         pass
+
+class AnnotationStylesContainer:
+    """The Annotation Container"""
+
+    def __init__(self, obj):
+
+        self.Type = "AnnotationContainer"
+        obj.Proxy = self
+
+    def execute(self, obj):
+
+        g = obj.Group
+        g.sort(key=lambda o: o.Label)
+        obj.Group = g
+
+    def __getstate__(self):
+
+        if hasattr(self, "Type"):
+            return self.Type
+
+    def __setstate__(self, state):
+
+        if state:
+            self.Type = state
