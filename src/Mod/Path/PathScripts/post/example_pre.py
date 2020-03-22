@@ -99,7 +99,7 @@ def parse(inputstring):
         if lin[0].upper() in ["G", "M"]:
             # found a G or M command: we store it
             #output += lin + "\n"
-            output.append(lin) # + "\n"
+            output.append(Path.Command(str(lin))) # + "\n"
             last = lin[0].upper()
             for c in lin[1:]:
                 if not c.isdigit():
@@ -109,7 +109,7 @@ def parse(inputstring):
             lastcommand = last
         elif lastcommand:
             # no G or M command: we repeat the last one
-            output.append(lastcommand + " " + lin) # + "\n"
+            output.append(Path.Command(str(lastcommand + " " + lin))) # + "\n"
 
     print("done preprocessing.")
     return output
