@@ -32,14 +32,14 @@ namespace TechDraw
 {
 
 //common definitions for line ends / arrows
-enum ArrowType { NONE = 0,
-                 FILLED_ARROW,
+enum ArrowType { FILLED_ARROW = 0,
                  OPEN_ARROW,
                  TICK,
                  DOT,
                  OPEN_CIRCLE,
                  FORK,
-                 FILLED_TRIANGLE };
+                 FILLED_TRIANGLE,
+                 NONE};
 
 class TechDrawExport ArrowPropEnum {
     Q_DECLARE_TR_FUNCTIONS(TechDraw::ArrowPropEnum)
