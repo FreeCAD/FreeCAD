@@ -122,6 +122,9 @@ public:
     static const double DefaultFontSizeInMM;
 
     MDIViewPage* getMDIViewPage(void) const;
+    virtual void removeChild(QGIView* child);
+
+    virtual void addArbitraryItem(QGraphicsItem* qgi);
 
     // Mouse handling
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
@@ -173,7 +176,7 @@ protected:
     double m_lockWidth;
     double m_lockHeight;
 
-/*    int m_selectState;*/
+//    std::vector<QGraphicsItem*> m_randomItems;
 };
 
 } // namespace

@@ -14,7 +14,7 @@
     <Documentation>
       <Author Licence="LGPL" Name="DeepSOIC" EMail="vv.titov@gmail.com" />
       <DeveloperDocu>AttachEngine abstract class</DeveloperDocu>
-      <UserDocu>AttachEngine abstract class - the functinality of AttachableObject, but outside of DocumentObject</UserDocu>
+      <UserDocu>AttachEngine abstract class - the functionality of AttachableObject, but outside of DocumentObject</UserDocu>
     </Documentation>
     <Attribute Name="AttacherType" ReadOnly="true">
       <Documentation>

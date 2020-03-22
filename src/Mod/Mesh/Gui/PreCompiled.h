@@ -82,6 +82,7 @@
 // Inventor
 #ifndef __InventorAll__
 # include <Gui/InventorAll.h>
+# include <Inventor/annex/ForeignFiles/SoSTLFileKit.h>
 #endif
 
 #elif defined(FC_OS_WIN32)

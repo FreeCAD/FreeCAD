@@ -37,7 +37,7 @@ class _FemMeshBoundaryLayer(FemConstraint.Proxy):
     The FemMeshBoundaryLayer object
     """
 
-    Type = "Fem::FemMeshBoundaryLayer"
+    Type = "Fem::MeshBoundaryLayer"
 
     def __init__(self, obj):
         super(_FemMeshBoundaryLayer, self).__init__(obj)

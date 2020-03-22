@@ -43,6 +43,11 @@ protected:
     void saveSettings();
     void loadSettings();
     void changeEvent(QEvent *e);
+    
+    int prefBalloonArrow(void) const;
+    int prefArrowStyle(void) const;
+
+
 };
 
 } // namespace TechDrawGui

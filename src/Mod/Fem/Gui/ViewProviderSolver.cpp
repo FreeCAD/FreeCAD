@@ -46,7 +46,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderSolver, Gui::ViewProviderDocumentObject)
 
 ViewProviderSolver::ViewProviderSolver()
 {
-    sPixmap = "fem-solver-standard";
+    sPixmap = "FEM_SolverStandard";
 }
 
 ViewProviderSolver::~ViewProviderSolver()

@@ -189,7 +189,18 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
                 && getObject() 
                 && getObject()->Visibility.getValue()!=Visibility.getValue())
         {
-            getObject()->Visibility.setValue(Visibility.getValue());
+            // Changing the visibility of a document object will automatically set
+            // the document modified but if the 'TouchDocument' flag is not set then
+            // this is undesired behaviour. So, if this change marks the document as
+            // modified then it must be be reversed.
+            if (!testStatus(Gui::ViewStatus::TouchDocument)) {
+                bool mod = pcDocument->isModified();
+                getObject()->Visibility.setValue(Visibility.getValue());
+                pcDocument->setModified(mod);
+            }
+            else {
+                getObject()->Visibility.setValue(Visibility.getValue());
+            }
         }
     }
     else if (prop == &SelectionStyle) {

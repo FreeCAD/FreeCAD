@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -34,6 +35,6 @@ from . import ViewProviderFemConstraint
 class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
     def getIcon(self):
-        return ":/icons/fem-constraint-heatflux.svg"
+        return ":/icons/FEM_ConstraintHeatflux.svg"  # the heatflux icon is used
 
 ##  @}

@@ -78,6 +78,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
         if obj.Direction != str(self.form.direction.currentText()):
             obj.Direction = str(self.form.direction.currentText())
+        if obj.EnableRotation != str(self.form.enableRotation.currentText()):
+            obj.EnableRotation = str(self.form.enableRotation.currentText())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -103,6 +105,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.Direction, self.form.direction)
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
+        self.selectInComboBox(obj.EnableRotation, self.form.enableRotation)
 
         if FeatureSide & self.profileFeatures():
             self.selectInComboBox(obj.Side, self.form.cutSide)
@@ -121,6 +124,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.enableRotation.currentIndexChanged)
 
         if FeatureSide & self.profileFeatures():
             signals.append(self.form.cutSide.currentIndexChanged)

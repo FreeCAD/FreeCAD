@@ -316,7 +316,7 @@ void CmdTechDrawView::activated(int iMsg)
         if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId()) ) {
             continue;
         }
-        if (obj != nullptr) {                       //can this happen?
+        if (obj != nullptr) {
             shapes.push_back(obj);
         }
         if(partObj != nullptr) {
@@ -333,7 +333,7 @@ void CmdTechDrawView::activated(int iMsg)
 
     if ((shapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No Shapes or Groups in this selection"));
+            QObject::tr("No Shapes, Groups or Links in this selection"));
         return;
     }
 
@@ -1095,26 +1095,36 @@ void CmdTechDrawDraftView::activated(int iMsg)
     if (!page) {
         return;
     }
+    std::string PageName = page->getNameInDocument();
 
-//TODO: shouldn't this be checking for a Draft object only?
-//      there is no obvious way of check for a Draft object.  Could be App::FeaturePython, Part::Part2DObject, ???
-    std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    std::vector<App::DocumentObject*> objects = getSelection().
+                                            getObjectsOfType(App::DocumentObject::getClassTypeId());
+
     if (objects.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select at least one object."));
         return;
     }
-    std::string PageName = page->getNameInDocument();
 
+    int draftItemsFound = 0;
     for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
-        std::string FeatName = getUniqueObjectName("DraftView");
-        std::string SourceName = (*it)->getNameInDocument();
-        openCommand("Create DraftView");
-        doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDraft','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-        updateActive();
-        commitCommand();
+        if (DrawGuiUtil::isDraftObject((*it)))  {
+            draftItemsFound++;
+            std::string FeatName = getUniqueObjectName("DraftView");
+            std::string SourceName = (*it)->getNameInDocument();
+            openCommand("Create DraftView");
+            doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDraft','%s')",FeatName.c_str());
+            doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",
+                            FeatName.c_str(),SourceName.c_str());
+            doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",
+                            PageName.c_str(),FeatName.c_str());
+            updateActive();
+            commitCommand();
+        }
+    }
+    if (draftItemsFound == 0) { 
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("There were no DraftWB objects in the selection."));
     }
 }
 
@@ -1147,56 +1157,34 @@ void CmdTechDrawArchView::activated(int iMsg)
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
     if (!page) {
         return;
-    }
-
-    const std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if (objects.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one object."));
-        return;
-    }
-    //if the docObj doesn't have a Proxy property, it definitely isn't an ArchSection
-    App::DocumentObject* frontObj = objects.front();
-    App::Property* proxy = frontObj->getPropertyByName("Proxy");
-    if (proxy == nullptr) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Selected object is not ArchSection."));
-        return;
-    }
-    App::PropertyPythonObject* proxyPy = dynamic_cast<App::PropertyPythonObject*>(proxy);
-    Py::Object proxyObj = proxyPy->getValue();
-    std::stringstream ss;
-    bool proceed = false;
-    if (proxyPy != nullptr) {
-        Base::PyGILStateLocker lock;
-        try {
-            if (proxyObj.hasAttr("__module__")) {
-                Py::String mod(proxyObj.getAttr("__module__"));
-                ss <<  (std::string)mod; 
-            }
-            if (ss.str() == "ArchSectionPlane") {
-                proceed = true;
-            }
-        }
-        catch (Py::Exception&) {
-            Base::PyException e; // extract the Python error text
-            e.ReportException();
-            proceed = false;
-        }
-    } else {
-        proceed = false;
-    }
-    
-    if (!proceed) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Selected object is not ArchSection."));
-        return;
-    }
-
+   }
     std::string PageName = page->getNameInDocument();
 
+
+    const std::vector<App::DocumentObject*> objects =  getSelection().
+                                                       getObjectsOfType(App::DocumentObject::getClassTypeId());
+    App::DocumentObject* archObject = nullptr;
+    int archCount = 0;
+    for (auto& obj : objects) {
+        if (DrawGuiUtil::isArchSection(obj) ) {
+            archCount++;
+            archObject = obj;
+        }
+    }
+    if ( archCount > 1 ) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Please select only 1 Arch Section."));
+        return;
+    }
+
+    if (archObject == nullptr) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("No Arch Sections in selection."));
+        return;
+    }
+
     std::string FeatName = getUniqueObjectName("ArchView");
-    std::string SourceName = objects.front()->getNameInDocument();
+    std::string SourceName = archObject->getNameInDocument();
     openCommand("Create ArchView");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewArch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());

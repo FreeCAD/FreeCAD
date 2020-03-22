@@ -301,7 +301,8 @@ int LinkBaseExtension::_getElementCountValue() const {
 }
 
 bool LinkBaseExtension::extensionHasChildElement() const {
-    if(_getElementListProperty() || _getElementCountValue())
+    if(_getElementListValue().size() 
+            || (_getElementCountValue() && _getShowElementValue()))
         return true;
     DocumentObject *linked = getTrueLinkedObject(false);
     if(linked) {
@@ -718,7 +719,7 @@ DocumentObject *LinkBaseExtension::getTrueLinkedObject(
     if(!ret) return 0;
     bool transform = linkTransform();
     const char *subname = getSubName();
-    if(subname) {
+    if(subname || (mat && transform)) {
         ret = ret->getSubObject(subname,0,mat,transform,depth+1);
         transform = false;
     }

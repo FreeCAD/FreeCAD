@@ -55,46 +55,29 @@
 #include "DrawViewBalloon.h"
 #include "DrawUtil.h"
 #include "LineGroup.h"
+#include "ArrowPropEnum.h"
 
 
 //#include <Mod/TechDraw/App/DrawViewBalloonPy.h>  // generated from DrawViewBalloonPy.xml
 
 using namespace TechDraw;
 
+App::PropertyFloatConstraint::Constraints DrawViewBalloon::SymbolScaleRange = { Precision::Confusion(),
+                                                                  std::numeric_limits<double>::max(),
+                                                                  (1.0) };
+
 //===========================================================================
 // DrawViewBalloon
 //===========================================================================
-//
+// Balloon coordinates are relative to the position of the SourceView
 // X,Y is the center of the balloon bubble
 // OriginX, OriginY is the tip of the arrow
-// these are in ???? coordinates
+// these are in unscaled SourceView coordinates
+// Note that if the SourceView coordinate system changes
+// (ie location changes or additional items added to the View
+// the location of the balloon may also change.
 
 PROPERTY_SOURCE(TechDraw::DrawViewBalloon, TechDraw::DrawView)
-
-//from Gui/QGIArrow.h
-//enum ArrowType {
-//        FILLED_TRIANGLE = 0,
-//        OPEN_ARROW,
-//        HASH_MARK,
-//        DOT,
-//        OPEN_CIRCLE,
-//        FORK,
-//        PYRAMID
-//    };
-
-const char* DrawViewBalloon::endTypeEnums[]= { "FILLED_TRIANGLE",
-                                               "OPEN_ARROW",
-                                               "HASH_MARK",
-                                               "DOT",
-                                               "OPEN_CIRCLE",
-                                               "FORK",
-                                               "PYRAMID",
-                                               "NONE",
-                                               NULL};
-
-//const char* DrawViewBalloon::endTypeEnums[]= {"Arrow",
-//                                              "Dot",
-//                                               NULL};
 
 const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
                                                   "None",
@@ -108,27 +91,23 @@ const char* DrawViewBalloon::balloonTypeEnums[]= {"Circular",
 DrawViewBalloon::DrawViewBalloon(void)
 {
     ADD_PROPERTY_TYPE(Text ,     (""),"",App::Prop_None,"The text to be displayed");
-//    ADD_PROPERTY_TYPE(SourceView,(0),"",(App::PropertyType)(App::Prop_None),"Source view for balloon");
     ADD_PROPERTY_TYPE(SourceView,(0),"",(App::PropertyType)(App::Prop_None),"Source view for balloon");
     ADD_PROPERTY_TYPE(OriginX,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin x");
     ADD_PROPERTY_TYPE(OriginY,(0),"",(App::PropertyType)(App::Prop_None),"Balloon origin y");
-    ADD_PROPERTY_TYPE(OriginIsSet, (false), "",(App::PropertyType)(App::Prop_None),"Balloon origin is set");
 
-    EndType.setEnums(endTypeEnums);
+    EndType.setEnums(ArrowPropEnum::ArrowTypeEnums);
     ADD_PROPERTY(EndType,(prefEnd()));
 
-    Symbol.setEnums(balloonTypeEnums);
-    ADD_PROPERTY(Symbol,(prefShape()));
+    Shape.setEnums(balloonTypeEnums);
+    ADD_PROPERTY(Shape,(prefShape()));
 
-    ADD_PROPERTY_TYPE(SymbolScale,(1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
+    ADD_PROPERTY_TYPE(ShapeScale,(1.0),"",(App::PropertyType)(App::Prop_None),"Balloon shape scale");
+    ShapeScale.setConstraints(&SymbolScaleRange);
 
-    ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Balloon symbol scale");
+    ADD_PROPERTY_TYPE(TextWrapLen,(-1),"",(App::PropertyType)(App::Prop_None),"Text wrap length; -1 means no wrap");
 
     ADD_PROPERTY_TYPE(KinkLength,(prefKinkLength()),"",(App::PropertyType)(App::Prop_None),
                                   "Distance from symbol to leader kink");
-
-    OriginIsSet.setStatus(App::Property::Hidden,false);
-    OriginIsSet.setStatus(App::Property::ReadOnly,true);
 
     SourceView.setScope(App::LinkScope::Global);
     Rotation.setStatus(App::Property::Hidden,true);
@@ -144,7 +123,7 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
         if ( (prop == &EndType) ||
-             (prop == &Symbol)  ||
+             (prop == &Shape)  ||
              (prop == &Text)    ||
              (prop == &KinkLength) ) {
             requestPaint();
@@ -155,14 +134,22 @@ void DrawViewBalloon::onChanged(const App::Property* prop)
 
 void DrawViewBalloon::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
 {
-    // was sourceView in the past, now is SourceView
     Base::Type type = Base::Type::fromName(TypeName);
-    if (SourceView.getClassTypeId() == type && strcmp(PropName, "sourceView") == 0) {
+    // was sourceView in the past, now is SourceView
+    if (SourceView.getClassTypeId() == type && strcmp(PropName, "sourceView") == 0)
         SourceView.Restore(reader);
-    }
-    else {
+    else
         DrawView::handleChangedPropertyName(reader, TypeName, PropName);
-    }
+    // was Symbol in the past, now is Shape
+    if (Shape.getClassTypeId() == type && strcmp(PropName, "Symbol") == 0)
+        Shape.Restore(reader);
+    else
+        DrawView::handleChangedPropertyName(reader, TypeName, PropName);
+    // was SymbolScale in the past, now is ShapeScale
+    if (ShapeScale.getClassTypeId() == type && strcmp(PropName, "SymbolScale") == 0)
+        ShapeScale.Restore(reader);
+    else
+        DrawView::handleChangedPropertyName(reader, TypeName, PropName);
 }
 
 void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
@@ -200,7 +187,6 @@ void DrawViewBalloon::handleChangedPropertyType(Base::XMLReader &reader, const c
         OriginY.setValue(OriginYProperty.getValue());
     }
 }
-
 
 short DrawViewBalloon::mustExecute() const
 {
@@ -261,6 +247,14 @@ App::DocumentObjectExecReturn *DrawViewBalloon::execute(void)
     return App::DocumentObject::execute();
 }
 
+void DrawViewBalloon::setOrigin(Base::Vector3d newOrigin)
+{
+    //suspend onChanged/recompute?
+    OriginX.setValue(newOrigin.x);
+    OriginY.setValue(newOrigin.y);
+    origin = QPointF(newOrigin.x, newOrigin.y);
+}
+
 double DrawViewBalloon::prefKinkLength(void) const
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
@@ -283,8 +277,20 @@ int DrawViewBalloon::prefEnd(void) const
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->
                                          GetGroup("Mod/TechDraw/Decorations");
-    int end = hGrp->GetInt("BalloonArrow", 0);
+    int end = hGrp->GetInt("BalloonArrow", 1);
     return end;
+}
+
+Base::Vector3d DrawViewBalloon::getOriginOffset() const
+{
+    double x = X.getValue();
+    double y = Y.getValue();
+    Base::Vector3d pos(x, y, 0.0);
+    double ox = OriginX.getValue();
+    double oy = OriginY.getValue();
+    Base::Vector3d org(ox, oy, 0.0);
+    Base::Vector3d offset = pos - org;
+    return  offset;
 }
 
 /*

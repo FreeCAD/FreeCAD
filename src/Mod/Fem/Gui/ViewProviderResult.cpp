@@ -37,7 +37,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderResult, Gui::ViewProviderDocumentObject)
 
 ViewProviderResult::ViewProviderResult()
 {
-    sPixmap = "fem-post-result-show";
+    sPixmap = "FEM_ResultShow";
 }
 
 ViewProviderResult::~ViewProviderResult()

@@ -383,36 +383,24 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         pcActiveBody = PartDesignGui::getBody(false,true,true,&binderParent,&binderSub);
         FeatName = getUniqueObjectName("Binder",pcActiveBody);
     }
-    Base::Matrix4D mat;
-    if(values.size()==1 && binderParent && binderParent!=binder) {
-        App::DocumentObject *obj = values.begin()->first;
-        auto subs = values.begin()->second;
-        App::DocumentObject *sobj = 0;
-        App::DocumentObject *parent = 0;
-        std::string parentSub = binderSub;
-        for(auto &sub : subs) {
-            auto link = obj;
-            auto linkSub = binderSub;
-            auto res = binderParent->resolveRelativeLink(linkSub,link,sub);
-            if(!sobj) {
-                sobj = link;
-                parent = res;
-                parentSub = linkSub;
-            }else if(sobj!=link || parent!=res) {
-                QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
-                        QObject::tr("Cannot link to more than one object"));
-                return;
+    if(binderParent && binderParent!=binder) {
+        decltype(values) links;
+        for(auto &v : values) {
+            App::DocumentObject *obj = v.first;
+            if(obj != binderParent) {
+                auto &subs = links[obj];
+                subs.insert(subs.end(),v.second.begin(),v.second.end());
+                continue;
+            }
+            for(auto &sub : v.second) {
+                auto link = obj;
+                auto linkSub = binderSub;
+                binderParent->resolveRelativeLink(linkSub,link,sub);
+                if(link && link != pcActiveBody)
+                    links[link].push_back(sub);
             }
         }
-        if(sobj) {
-            values.clear();
-            values[sobj] = std::move(subs);
-        }
-        if(parent) {
-            binderParent = parent;
-            binderSub = parentSub;
-            binderParent->getSubObject(binderSub.c_str(),0,&mat);
-        }
+        values = std::move(links);
     }
         
     try {
@@ -553,7 +541,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         return;
     }
 
-    Gui::SelectionFilter SketchFilter("SELECT Sketcher::SketchObject COUNT 1");
+    // Hint:
+    // The behaviour of this command has changed with respect to a selected sketch:
+    // It doesn't try any more to edit a selected sketch but always tries to create
+    // a new sketch.
+    // See https://forum.freecadweb.org/viewtopic.php?f=3&t=44070
+
     Gui::SelectionFilter FaceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 1");
     Gui::SelectionFilter PlaneFilter ("SELECT App::Plane COUNT 1");
     Gui::SelectionFilter PlaneFilter2("SELECT PartDesign::Plane COUNT 1");
@@ -561,12 +554,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     if (PlaneFilter2.match())
         PlaneFilter = PlaneFilter2;
 
-    if (SketchFilter.match()) {
-        Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(SketchFilter.Result[0][0].getObject());
-        // openCommand("Edit Sketch");
-        PartDesignGui::setEdit(Sketch,pcActiveBody);
-    }
-    else if ( FaceFilter.match() || PlaneFilter.match() ) {
+    if ( FaceFilter.match() || PlaneFilter.match() ) {
         if (!pcActiveBody) {
             // We shouldn't make a new Body in this case, because that means
             // the source shape of the face/plane would be outside the Body.
@@ -1013,7 +1001,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
 void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const std::string& which,
                         boost::function<void (Part::Feature*, App::DocumentObject*)> func)
 {
-    auto base_worker = [=](App::DocumentObject* feature, std::string sub) {
+    auto base_worker = [=](App::DocumentObject* feature, const std::vector<string> &subs) {
 
         if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
             return;
@@ -1032,11 +1020,14 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
         
         auto objCmd = Gui::Command::getObjectCmd(feature);
-        if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) || subs.empty()) {
             FCMD_OBJ_CMD(Feat,"Profile = " << objCmd);
         }
         else {
-            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", ['" << sub << "'])");   
+            std::ostringstream ss;
+            for(auto &s : subs)
+                ss << "'" << s << "',";
+            FCMD_OBJ_CMD(Feat,"Profile = (" << objCmd << ", [" << ss.str() << "])");   
         }         
 
         func(static_cast<Part::Feature*>(feature), Feat);
@@ -1044,8 +1035,8 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
     //if a profile is selected we can make our life easy and fast
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (!selection.empty() && selection.front().hasSubNames()) {
-        base_worker(selection.front().getObject(), selection.front().getSubNames().front());
+    if (!selection.empty()) {
+        base_worker(selection.front().getObject(), selection.front().getSubNames());
         return;
     }
 
@@ -1079,7 +1070,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
     };
 
     auto sketch_worker = [&, base_worker](std::vector<App::DocumentObject*> features) {
-        base_worker(features.front(), "");
+        base_worker(features.front(), {});
     };
 
     //if there is a sketch selected which is from another body or part we need to bring up the

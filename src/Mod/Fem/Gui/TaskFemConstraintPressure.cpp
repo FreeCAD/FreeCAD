@@ -59,7 +59,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintPressure */
 
 TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-pressure")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintPressure")
 { //Note change "pressure" in line above to new constraint name
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintPressure();

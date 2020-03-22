@@ -350,7 +350,7 @@ class _Space(ArchComponent.Component):
 
     def getShape(self,obj):
 
-        "computes a shape from a base shape and/or bounday faces"
+        "computes a shape from a base shape and/or boundary faces"
         import Part
         shape = None
         faces = []

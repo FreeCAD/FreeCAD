@@ -126,7 +126,9 @@ public:
   virtual void setPyObject( PyObject * pydict);
 
   /// returns the corresponding python exception type
-  virtual PyObject * getPyExceptionType() const {return 0;}
+  virtual PyObject * getPyExceptionType() const;
+  /// Sets the Python error indicator and an error message
+  virtual void setPyException() const;
 
 protected:
  /* sMessage may be:

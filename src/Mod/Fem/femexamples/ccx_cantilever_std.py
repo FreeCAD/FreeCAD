@@ -21,7 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 # to run the example use:
 """
 from femexamples import ccx_cantilever_std as canti
@@ -34,10 +33,10 @@ canti.setup_cantileverhexa20faceload()
 
 """
 
-
 import FreeCAD
-import ObjectsFem
+
 import Fem
+import ObjectsFem
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -54,16 +53,16 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # part
-    box_obj = doc.addObject("Part::Box", "Box")
-    box_obj.Height = box_obj.Width = 1000
-    box_obj.Length = 8000
+    # geometry object
+    # name is important because the other method in this module use obj name
+    geom_obj = doc.addObject("Part::Box", "Box")
+    geom_obj.Height = geom_obj.Width = 1000
+    geom_obj.Length = 8000
     doc.recompute()
 
     if FreeCAD.GuiUp:
-        import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().fitAll()
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -106,7 +105,7 @@ def setup_cantileverbase(doc=None, solvertype="ccxtools"):
     fixed_constraint = analysis.addObject(
         ObjectsFem.makeConstraintFixed(doc, name="ConstraintFixed")
     )[0]
-    fixed_constraint.References = [(doc.Box, "Face1")]
+    fixed_constraint.References = [(geom_obj, "Face1")]
 
     # mesh
     from .meshes.mesh_canticcx_tetra10 import create_nodes, create_elements

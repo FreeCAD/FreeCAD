@@ -63,8 +63,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.DropCutterExtraOffset.x = FreeCAD.Units.Quantity(self.form.boundBoxExtraOffsetX.text()).Value
         obj.DropCutterExtraOffset.y = FreeCAD.Units.Quantity(self.form.boundBoxExtraOffsetY.text()).Value
 
-        if obj.Optimize != self.form.optimizeEnabled.isChecked():
-            obj.Optimize = self.form.optimizeEnabled.isChecked()
+        if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
+            obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -81,7 +81,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.sampleInterval.setText(str(obj.SampleInterval))
         self.form.stepOver.setValue(obj.StepOver)
 
-        if obj.Optimize:
+        if obj.OptimizeLinearPaths:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Unchecked)

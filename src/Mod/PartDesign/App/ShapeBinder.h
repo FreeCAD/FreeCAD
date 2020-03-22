@@ -106,6 +106,9 @@ public:
 
     virtual bool canLinkProperties() const override {return false;}
 
+    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
+            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
+
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;
     virtual void onChanged(const App::Property *prop) override;

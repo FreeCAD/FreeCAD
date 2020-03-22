@@ -92,7 +92,7 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(UpToFace,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Face where feature will end");
-
+    ADD_PROPERTY_TYPE(AllowMultiFace,(false),"SketchBased", App::Prop_None, "Allow multiple faces in profile");
 }
 
 short ProfileBased::mustExecute() const
@@ -103,6 +103,11 @@ short ProfileBased::mustExecute() const
         UpToFace.isTouched())
         return 1;
     return PartDesign::FeatureAddSub::mustExecute();
+}
+
+void ProfileBased::setupObject()
+{
+    AllowMultiFace.setValue(true);
 }
 
 void ProfileBased::positionByPrevious(void)
@@ -173,13 +178,51 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const {
     return static_cast<Part::Feature*>(result);
 }
 
+Part::TopoShape ProfileBased::getProfileShape() const
+{
+    auto shape = getTopoShape(Profile.getValue());
+    if(!shape.isNull() && Profile.getSubValues().size()) {
+        std::vector<Part::TopoShape> shapes;
+        for(auto &sub : Profile.getSubValues(true))
+            shapes.emplace_back(shape.getSubShape(sub.c_str()));
+        shape = Part::TopoShape().makECompound(shapes);
+    }
+    return shape;
+}
+
 TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
 
     App::DocumentObject* result = Profile.getValue();
     const char* err = nullptr;
+    std::string _err;
 
     if (!result) {
         err = "No profile linked";
+    } else if (AllowMultiFace.getValue()) {
+        try {
+            auto shape = getProfileShape();
+            if(shape.isNull())
+                err = "Linked shape object is empty";
+            else {
+                auto faces = shape.getSubTopoShapes(TopAbs_FACE);
+                if(faces.empty()) {
+                    if(!shape.hasSubShape(TopAbs_WIRE))
+                        shape = shape.makEWires();
+                    if(shape.hasSubShape(TopAbs_WIRE)) 
+                        shape = shape.makEFace(0,"Part::FaceMakerCheese");
+                    else
+                        err = "Cannot make face from profile";
+                } else if (faces.size() == 1)
+                    shape = faces.front();
+                else
+                    shape = TopoShape().makECompound(faces);
+            }
+            if(!err)
+                return shape.getShape();
+        }catch (Standard_Failure &e) {
+            _err = e.GetMessageString();
+            err = _err.c_str();
+        }
     } else {
         if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
 

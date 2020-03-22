@@ -50,7 +50,7 @@ DressUp::DressUp()
     ADD_PROPERTY(Base,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY_TYPE(SupportTransform,(true),"Base", App::Prop_None,
+    ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,
             "Enable support for transformed patterns");
 
     addSubType = Additive;
@@ -63,6 +63,11 @@ short DressUp::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
+void DressUp::setupObject()
+{
+    SupportTransform.setValue(true);
+    Feature::setupObject();
+}
 
 void DressUp::positionByBaseFeature(void)
 {
@@ -191,19 +196,23 @@ void DressUp::onChanged(const App::Property* prop)
                     s = getBaseShape();
                 else
                     s = Shape.getShape();
+                s.setPlacement(Base::Placement());
             } else if (!SupportTransform.getValue()) {
                 addSubType = base->getAddSubType();
                 s = base->AddSubShape.getShape();
             } else {
                 addSubType = base->getAddSubType();
                 Part::TopoShape baseShape = base->getBaseTopoShape(true);
+                baseShape.setPlacement(Base::Placement());
+                Part::TopoShape shape = Shape.getShape();
+                shape.setPlacement(Base::Placement());
                 if (baseShape.isNull() || !baseShape.hasSubShape(TopAbs_SOLID)) {
-                    s = Shape.getShape();
+                    s = shape;
                     addSubType = Additive;
                 } else if (addSubType == Additive)
-                    s = Shape.getShape().cut(baseShape.getShape());
+                    s = shape.cut(baseShape.getShape());
                 else
-                    s = baseShape.cut(Shape.getValue());
+                    s = baseShape.cut(shape.getShape());
             }
             AddSubShape.setValue(s);
         }

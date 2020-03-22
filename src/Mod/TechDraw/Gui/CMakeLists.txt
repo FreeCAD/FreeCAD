@@ -98,7 +98,6 @@ set(TechDrawGui_UIC_SRCS
     TaskBalloon.ui
     TaskCosVertex.ui
     TaskCenterLine.ui
-    TaskCL2Lines.ui
     TaskLineDecor.ui
     TaskRestoreLines.ui
     TaskWeldingSymbol.ui
@@ -189,7 +188,6 @@ SET(TechDrawGui_SRCS
     TaskLineDecor.cpp
     TaskLineDecor.h
     TaskRestoreLines.ui
-    TaskCL2Lines.ui
     TaskWeldingSymbol.ui
     TaskWeldingSymbol.cpp
     TaskWeldingSymbol.h
@@ -365,7 +363,6 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskCenterLine.ui
     TaskLineDecor.ui
     TaskRestoreLines.ui
-    TaskCL2Lines.ui
     TaskWeldingSymbol.ui
     SymbolChooser.ui
     TaskActiveView.ui

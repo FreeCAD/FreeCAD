@@ -29,6 +29,7 @@
 #include <fstream>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
@@ -55,9 +56,14 @@ DrawTileWeld::DrawTileWeld(void)
                       "Text LHS");
     ADD_PROPERTY_TYPE(RightText, (0), group, App::Prop_None, "Text RHS");
     ADD_PROPERTY_TYPE(CenterText, (0), group, App::Prop_None, "Text above Symbol");
-    ADD_PROPERTY_TYPE(SymbolFile, (""), group, App::Prop_None, "Svg Symbol File");
+    ADD_PROPERTY_TYPE(SymbolFile, (prefSymbol()), group, App::Prop_None, "Symbol Symbol File");
+    ADD_PROPERTY_TYPE(SymbolIncluded, (""), group,App::Prop_None,
+                                            "Embedded Symbol. System use only.");   // n/a to end users
 
-    SymbolFile.setStatus(App::Property::ReadOnly,true);
+//    SymbolFile.setStatus(App::Property::ReadOnly,true);
+
+    std::string svgFilter("Symbol files (*.svg *.SVG);;All files (*)");
+    SymbolFile.setFilter(svgFilter);
 
 }
 
@@ -68,7 +74,16 @@ DrawTileWeld::~DrawTileWeld()
 void DrawTileWeld::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        //nothing in particular
+        App::Document* doc = getDocument();
+        if ((prop == &SymbolFile) &&
+            (doc != nullptr) ) {
+            if (!SymbolFile.isEmpty()) {
+                Base::FileInfo fi(SymbolFile.getValue());
+                if (fi.isReadable()) {
+                    replaceSymbolIncluded(SymbolFile.getValue());
+                }
+            }
+        }
     }
     DrawTile::onChanged(prop);
 
@@ -85,27 +100,74 @@ App::DocumentObjectExecReturn *DrawTileWeld::execute(void)
     return DrawTile::execute();
 }
 
-void DrawTileWeld::replaceSymbol(std::string newSymbolFile)
+void DrawTileWeld::replaceSymbolIncluded(std::string newSymbolFile)
 {
-//    Base::Console().Message("DTW::replaceSymbol(%s)\n", newSymbolFile.c_str());
-    std::string special = getNameInDocument();
-    special += "Symbol.svg";
-    std::string tempName = SymbolFile.getExchangeTempFile();
-    copyFile(newSymbolFile, tempName);
-    SymbolFile.setValue(tempName.c_str(), special.c_str());
+//    Base::Console().Message("DTW::replaceSymbolIncluded(%s)\n", newSymbolFile.c_str());
+    if (SymbolIncluded.isEmpty()) {
+        setupSymbolIncluded();
+    } else {
+        std::string tempName = SymbolIncluded.getExchangeTempFile();
+        DrawUtil::copyFile(newSymbolFile, tempName);
+        SymbolIncluded.setValue(tempName.c_str());
+    }
 }
 
-//copy whole text file from inSpec to outSpec
-void DrawTileWeld::copyFile(std::string inSpec, std::string outSpec)
+void DrawTileWeld::onDocumentRestored() 
 {
-//    Base::Console().Message("DTW::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
-    if (inSpec.empty()) {
-        std::ofstream  dst(outSpec);   //make an empty file
-    } else {
-        std::ifstream  src(inSpec);
-        std::ofstream  dst(outSpec);
-        dst << src.rdbuf();
+//    Base::Console().Message("DTW::onDocumentRestored()\n");
+    if (SymbolIncluded.isEmpty()) {
+        if (!SymbolFile.isEmpty()) {
+            std::string symbolFileName = SymbolFile.getValue();
+            Base::FileInfo tfi(symbolFileName);
+            if (tfi.isReadable()) {
+                if (SymbolIncluded.isEmpty()) {
+                    setupSymbolIncluded();
+                }
+            }
+        }
     }
+    DrawTile::onDocumentRestored();
+}
+
+void DrawTileWeld::setupObject()
+{
+    //by this point DTW should have a name and belong to a document
+    setupSymbolIncluded();
+
+    DrawTile::setupObject();
+}
+
+void DrawTileWeld::setupSymbolIncluded(void)
+{
+//    Base::Console().Message("DTW::setupSymbolIncluded()\n");
+    App::Document* doc = getDocument();
+    std::string special = getNameInDocument();
+    special += "Symbol.svg";
+    std::string dir = doc->TransientDir.getValue();
+    std::string symbolName = dir + special;
+
+    //first Time
+    std::string symbolIncluded = SymbolIncluded.getValue();
+    if (symbolIncluded.empty()) {
+        DrawUtil::copyFile(std::string(), symbolName);
+        SymbolIncluded.setValue(symbolName.c_str());
+    }
+
+    std::string symbolFile = SymbolFile.getValue();
+    if (!symbolFile.empty()) {
+        std::string exchName = SymbolIncluded.getExchangeTempFile();
+        DrawUtil::copyFile(symbolFile, exchName);
+        Base::FileInfo fi(exchName);
+        SymbolIncluded.setValue(exchName.c_str(), special.c_str());
+    }
+}
+
+//standard preference getter (really a default in this case)
+std::string DrawTileWeld::prefSymbol(void)
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Symbols/Welding/";
+    std::string defaultFileName = defaultDir + "blankTile.svg";
+    return defaultFileName;
 }
 
 PyObject *DrawTileWeld::getPyObject(void)

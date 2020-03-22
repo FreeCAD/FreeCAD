@@ -75,7 +75,7 @@ class Edit():
         self._mouseMovedCB      -> self._mouseMovedCB
         if self._mousePressedCB -> self.mousePressed
         when trackers are displayed for selected objects,
-        theese callbacks capture user events and forward 
+        these callbacks capture user events and forward 
         them to related functions
 
 
@@ -133,7 +133,7 @@ class Edit():
         populates the menu with custom actions
     
     evaluate_menu_action
-        evaluate user choosen action and launch corresponding
+        evaluate user chosen action and launch corresponding
         function.
 
 
@@ -160,7 +160,7 @@ class Edit():
         self.pl, self.invpl.
         Due to multiple object editing, i'm planning to keep
         just self.trackers. Any other object will be identified
-        and processed starting from editTracker informations.
+        and processed starting from editTracker information.
     
     editing : Int
         Index of the editTracker that has been clicked by the 
@@ -253,10 +253,17 @@ class Edit():
                                 "Part", "Part::Line", "Part::Box"]
 
     def GetResources(self):
+        
+        tooltip = ("Edits the active object.\n"
+                   "Press E or ALT+LeftClick to display context menu\n"
+                   "on supported nodes and on supported objects.")
+                  
         return {'Pixmap': 'Draft_Edit',
                 'Accel': "D, E",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edit"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", "Edits the active object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit", tooltip)
+                }
+
 
     #---------------------------------------------------------------------------
     # MAIN FUNCTIONS
@@ -363,7 +370,7 @@ class Edit():
 
     def unregister_selection_callback(self):
         """
-        remove selection callback if it exhists
+        remove selection callback if it exists
         """
         if self.selection_callback:
             self.view.removeEventCallback("SoEvent",self.selection_callback)
@@ -389,7 +396,7 @@ class Edit():
 
     def unregister_editing_callbacks(self):
         """
-        remove callbacks used during editing if they exhist
+        remove callbacks used during editing if they exist
         """
         view = Gui.ActiveDocument.ActiveView
         if self._keyPressedCB:
@@ -439,30 +446,6 @@ class Edit():
             event.getButton() == event.BUTTON1
             ):#left click
             if not event.wasAltDown():
-                if self.ui.addButton.isChecked():
-                    self.addPoint(event)
-                    return
-                if self.ui.delButton.isChecked():
-                    self.delPoint(event)
-                    return
-                if Draft.getType(self.obj) == "BezCurve" and (self.ui.sharpButton.isChecked()
-                                        or self.ui.tangentButton.isChecked() or
-                                        self.ui.symmetricButton.isChecked()):
-                    pos = event.getPosition()
-                    node = self.getEditNode(pos)
-                    ep = self.getEditNodeIndex(node)
-                    if ep is None:
-                        return
-                    doc = App.getDocument(str(node.documentName.getValue()))
-                    self.obj = doc.getObject(str(node.objectName.getValue()))
-                    if self.obj is None:
-                        return
-                    if self.ui.sharpButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Sharp')
-                    elif self.ui.tangentButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Tangent')
-                    elif self.ui.symmetricButton.isChecked():
-                        return self.smoothBezPoint(self.obj, ep, 'Symmetric')
                 if self.editing is None:
                     self.startEditing(event)
                 else:
@@ -633,7 +616,7 @@ class Edit():
         return node
     
     def sendRay(self, mouse_pos):
-        "sends a ray trough the scene and return the nearest entity"
+        "sends a ray through the scene and return the nearest entity"
         ray_pick = coin.SoRayPickAction(self.render_manager.getViewportRegion())
         ray_pick.setPoint(coin.SbVec2s(*mouse_pos))
         ray_pick.setRadius(self.pick_radius)

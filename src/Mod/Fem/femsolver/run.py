@@ -33,7 +33,7 @@ modules.
 """
 
 __title__ = "FreeCAD FEM solver run"
-__author__ = "Markus Hovorka"
+__author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 import os

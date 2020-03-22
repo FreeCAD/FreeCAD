@@ -7,26 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>607</width>
-    <height>820</height>
+    <height>859</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Document</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="4" column="0">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>429</width>
-       <height>37</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBox5">
      <property name="title">
@@ -48,6 +35,38 @@
       <property name="spacing">
        <number>6</number>
       </property>
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefCheckNewDoc">
+        <property name="toolTip">
+         <string>The application will create a new document when started</string>
+        </property>
+        <property name="text">
+         <string>Create new document at start up</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>CreateNewDoc</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="Line" name="line1">
+        <property name="frameShape">
+         <enum>QFrame::HLine</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
@@ -91,6 +110,38 @@
         </item>
        </layout>
       </item>
+      <item row="3" column="0">
+       <widget class="Line" name="line1_2">
+        <property name="frameShape">
+         <enum>QFrame::HLine</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefUndoRedo">
+        <property name="toolTip">
+         <string>All changes in documents are stored so that they can be undone/redone</string>
+        </property>
+        <property name="text">
+         <string>Using Undo/Redo on documents</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UsingUndo</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="5" column="0">
        <layout class="QHBoxLayout">
         <property name="spacing">
@@ -132,70 +183,6 @@
          </widget>
         </item>
        </layout>
-      </item>
-      <item row="0" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefCheckNewDoc">
-        <property name="toolTip">
-         <string>The application will create a new document when started</string>
-        </property>
-        <property name="text">
-         <string>Create new document at start up</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>CreateNewDoc</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Document</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="Line" name="line1">
-        <property name="frameShape">
-         <enum>QFrame::HLine</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="Line" name="line1_2">
-        <property name="frameShape">
-         <enum>QFrame::HLine</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefUndoRedo">
-        <property name="toolTip">
-         <string>All changes in documents are stored so that they can be undone/redone</string>
-        </property>
-        <property name="text">
-         <string>Using Undo/Redo on documents</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>UsingUndo</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Document</cstring>
-        </property>
-       </widget>
       </item>
       <item row="6" column="0">
        <widget class="Line" name="line">
@@ -341,15 +328,93 @@ automatically run a file recovery when it is started.</string>
        </widget>
       </item>
       <item row="5" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefSaveThumbnail">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="prefSaveThumbnail">
+          <property name="toolTip">
+           <string>A thumbnail will be stored when document is saved</string>
+          </property>
+          <property name="text">
+           <string>Save thumbnail into project file when saving document</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SaveThumbnail</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Maximum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>91</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="prefThumbnailSize">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Sets the size of the thumbnail that is stored in the document.
+Common sizes are 128, 256 and 512</string>
+          </property>
+          <property name="minimum">
+           <number>64</number>
+          </property>
+          <property name="maximum">
+           <number>512</number>
+          </property>
+          <property name="value">
+           <number>128</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ThumbnailSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="6" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefAddLogo">
         <property name="toolTip">
-         <string>A thumbnail will be stored when document is saved</string>
+         <string>The program logo will be added to the thumbnail</string>
         </property>
         <property name="text">
-         <string>Save thumbnail into project file when saving document</string>
+         <string>Add the program logo to the generated thumbnail</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>SaveThumbnail</cstring>
+         <cstring>AddThumbnailLogo</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Document</cstring>
@@ -442,6 +507,10 @@ automatically run a file recovery when it is started.</string>
         </property>
         <item>
          <widget class="Gui::PrefCheckBox" name="prefSaveBackupExtension">
+          <property name="toolTip">
+           <string>Backup files will get extension '.FCbak' and file names
+get date suffix according to the specified format</string>
+          </property>
           <property name="text">
            <string>Use date and FCBak extension</string>
           </property>
@@ -475,25 +544,6 @@ automatically run a file recovery when it is started.</string>
         </item>
        </layout>
       </item>
-      <item row="6" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefAddLogo">
-        <property name="toolTip">
-         <string>The program logo will be added to the thumbnail</string>
-        </property>
-        <property name="text">
-         <string>Add the program logo to the generated thumbnail</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>AddThumbnailLogo</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Document</cstring>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -522,12 +572,11 @@ automatically run a file recovery when it is started.</string>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="prefPartialLoading">
         <property name="toolTip">
-         <string>Enable partial loading of external linked document. When enabled, only
-the referenced objects and their dependencies will be loaded when a linked
-document is auto opened together with the main document.
+         <string>Enable partial loading of external linked documents.
+Then only referenced objects and their dependencies will be loaded
+when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
-icon in the tree view to reload it in full.
-         </string>
+icon in the tree view to fully reload it.</string>
         </property>
         <property name="text">
          <string>Disable partial loading of external linked objects</string>
@@ -712,18 +761,31 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
      </layout>
     </widget>
    </item>
+   <item row="4" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>429</width>
+       <height>37</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -737,15 +799,6 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>prefCheckNewDoc</tabstop>
-  <tabstop>prefCompression</tabstop>
-  <tabstop>prefUndoRedo</tabstop>
-  <tabstop>prefUndoRedoSize</tabstop>
-  <tabstop>prefSaveTransaction</tabstop>
-  <tabstop>prefDiscardTransaction</tabstop>
-  <tabstop>prefSaveThumbnail</tabstop>
- </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -755,12 +808,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>486</y>
+     <x>150</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
      <x>584</x>
-     <y>488</y>
+     <y>527</y>
     </hint>
    </hints>
   </connection>
@@ -787,12 +840,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>474</y>
+     <x>280</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
-     <x>182</x>
-     <y>519</y>
+     <x>204</x>
+     <y>559</y>
     </hint>
    </hints>
   </connection>
@@ -803,12 +856,28 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>304</x>
-     <y>477</y>
+     <x>326</x>
+     <y>525</y>
     </hint>
     <hint type="destinationlabel">
-     <x>380</x>
-     <y>499</y>
+     <x>584</x>
+     <y>560</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>prefSaveThumbnail</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>prefThumbnailSize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>313</x>
+     <y>412</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>398</x>
+     <y>452</y>
     </hint>
    </hints>
   </connection>

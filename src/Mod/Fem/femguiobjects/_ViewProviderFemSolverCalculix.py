@@ -32,7 +32,6 @@ __url__ = "http://www.freecadweb.org"
 import os
 import sys
 import time
-
 from PySide import QtCore
 from PySide import QtGui
 from PySide.QtCore import Qt
@@ -55,7 +54,7 @@ class _ViewProviderFemSolverCalculix(ViewProviderFemConstraint.ViewProxy):
     """
 
     def getIcon(self):
-        return ":/icons/fem-solver-standard.svg"
+        return ":/icons/FEM_SolverStandard.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

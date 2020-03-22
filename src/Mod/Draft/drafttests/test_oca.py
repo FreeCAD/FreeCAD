@@ -1,5 +1,3 @@
-"""Unit test for the Draft module, OCA import and export tests.
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -23,14 +21,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit test for the Draft Workbench, OCA import and export tests."""
 
 import os
 import unittest
 import FreeCAD as App
 import Draft
-from .auxiliary import _msg
-from .auxiliary import _draw_header
-from .auxiliary import _fake_function
+import drafttests.auxiliary as aux
+from draftutils.messages import _msg
 
 
 class DraftOCA(unittest.TestCase):
@@ -42,7 +40,7 @@ class DraftOCA(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        _draw_header()
+        aux._draw_header()
         self.doc_name = self.__class__.__name__
         if App.ActiveDocument:
             if App.ActiveDocument.Name != self.doc_name:
@@ -64,7 +62,7 @@ class DraftOCA(unittest.TestCase):
         _msg("  file={}".format(in_file))
         _msg("  exists={}".format(os.path.exists(in_file)))
 
-        Draft.import_OCA = _fake_function
+        Draft.import_OCA = aux._fake_function
         obj = Draft.import_OCA(in_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
@@ -78,7 +76,7 @@ class DraftOCA(unittest.TestCase):
         _msg("  file={}".format(out_file))
         _msg("  exists={}".format(os.path.exists(out_file)))
 
-        Draft.export_OCA = _fake_function
+        Draft.export_OCA = aux._fake_function
         obj = Draft.export_OCA(out_file)
         self.assertTrue(obj, "'{}' failed".format(operation))
 

@@ -143,6 +143,11 @@ public:
     virtual void apply() = 0;
 
     void setupTransaction();
+
+    int getTransactionID() const {
+        return transactionID;
+    }
+
 protected Q_SLOTS:
     /**
      * Returns the base transformation view provider
@@ -205,6 +210,7 @@ protected:
 protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;
+    int transactionID = 0;
 
     enum selectionModes { none, addFeature, removeFeature, reference };
     selectionModes selectionMode;

@@ -1019,7 +1019,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         bool isCountersink = (holeCutType == "Countersink" || holeCutType == "Countersink socket screw");
         bool isCounterbore = (holeCutType == "Counterbore" || holeCutType == "Cheesehead" || holeCutType == "Cap screw");
         double hasTaperedAngle = Tapered.getValue() ? Base::toRadians( TaperedAngle.getValue() ) : Base::toRadians(90.0);
-        double radiusBottom = Diameter.getValue() / 2.0 - length * cos( hasTaperedAngle );
+        double radiusBottom = Diameter.getValue() / 2.0 - length * 1.0 / tan( hasTaperedAngle );
         double radius = Diameter.getValue() / 2.0;
         double holeCutRadius = HoleCutDiameter.getValue() / 2.0;
         gp_Pnt firstPoint(0, 0, 0);

@@ -35,6 +35,7 @@
 #include "Control.h"
 #include "TaskView/TaskView.h"
 
+#include <App/AutoTransaction.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ComboView.h>
 #include <Gui/DockWindowManager.h>
@@ -108,6 +109,14 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg)
         }
         return;
     }
+
+    // Since the caller sets up a modeless task panel, it indicates intension
+    // for prolonged editing. So disable auto transaction in the current call
+    // stack.
+    // Do this before showing the dialog because its open() function is called
+    // which may open a transaction but fails when auto transaction is still active.
+    App::AutoTransaction::setEnable(false);
+
     Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     // should return the pointer to combo view

@@ -23,9 +23,10 @@
 #ifndef _TechDraw_DrawGeomHatch_h_
 #define _TechDraw_DrawGeomHatch_h_
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+#include <App/DocumentObject.h>
+#include <App/FeaturePython.h>
+#include <App/Material.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
 
 class TopoDS_Edge;
@@ -65,6 +66,8 @@ public:
         return "TechDrawGui::ViewProviderGeomHatch";
     }
     virtual PyObject *getPyObject(void) override;
+    virtual void unsetupObject(void) override;
+
 
     DrawViewPart* getSourceView(void) const;
 
@@ -76,13 +79,16 @@ public:
     static TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
     static std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
     static TopoDS_Face extractFace(DrawViewPart* source, int iface );
+    static std::string prefGeomHatchFile(void);
+    static std::string prefGeomHatchName();
+    static App::Color prefGeomHatchColor();
+
 
 protected:
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;
     void setupPatIncluded(void);
     void replacePatIncluded(std::string newPatFile);
-    void copyFile(std::string inSpec, std::string outSpec);
 
     void makeLineSets(void);
 

@@ -50,10 +50,6 @@ class _ViewProviderFemResultMechanical(ViewProviderFemConstraint.ViewProxy):
     A View Provider for the FemResultObject Python derived FemResult class
     """
 
-    def getIcon(self):
-        """after load from FCStd file, self.icon does not exist, return constant path instead"""
-        return ":/icons/fem-post-result-show.svg"
-
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
             self,
@@ -94,6 +90,8 @@ class _TaskPanel:
         # task panel should be started by use of setEdit of view provider
         # in view provider checks: Mesh, active analysis and
         # if Mesh and result are in active analysis
+        # activate the result mesh object
+        self.mesh_obj.ViewObject.show()
 
         ui_path = FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/"
         self.result_widget = FreeCADGui.PySideUic.loadUi(ui_path + "ResultShow.ui")

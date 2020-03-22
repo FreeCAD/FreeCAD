@@ -25,8 +25,9 @@ __title__ = "FreeCAD FEM base constraint object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
+## @package _BaseObject
+#  \ingroup FEM
+#  \brief FreeCAD _Base Object for FEM workbench
 
 
 class Proxy(object):
@@ -34,13 +35,14 @@ class Proxy(object):
     BaseType = "Fem::ConstraintPython"
 
     def __init__(self, obj):
-        self.Object = obj  # keep a ref to the DocObj for nonGui usage
+        # self.Object = obj  # keep a ref to the DocObj for nonGui usage
         obj.Proxy = self  # link between App::DocumentObject to this object
 
-    # a few objects had this method in their class before the move to this base class
-    # these objects will give a setAttr failed error on document loading without this method
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
+    # they are needed, see:
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44021
+    # https://forum.freecadweb.org/viewtopic.php?f=18&t=44009
+    def __getstate__(self):
+        return None
 
-##  @}
+    def __setstate__(self, state):
+        return None

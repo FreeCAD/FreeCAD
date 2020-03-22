@@ -110,6 +110,7 @@ public:
     TopoDS_Compound getSectionFaces() { return sectionFaces;};
     std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }
 
+    void makeLineSets(void) ;
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
@@ -132,9 +133,6 @@ protected:
     bool debugSection(void) const;
 
     TopoDS_Shape m_cutShape;
-
-    void copyFile(std::string inSpec, std::string outSpec);
-
 
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;

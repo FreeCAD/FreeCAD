@@ -30,10 +30,9 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD FEM _FemSolverCalculix
 
 import FreeCAD
-from femsolver.calculix.solver import ANALYSIS_TYPES
-from femsolver.calculix.solver import add_attributes
 
 from . import FemConstraint
+from femsolver.calculix.solver import add_attributes
 
 
 class _FemSolverCalculix(FemConstraint.Proxy):
@@ -57,4 +56,4 @@ class _FemSolverCalculix(FemConstraint.Proxy):
         # only used if the preferences working directory is left blank
 
         # add attributes from framework calculix solver
-        add_attributes(obj)
+        add_attributes(obj, ccx_prefs)

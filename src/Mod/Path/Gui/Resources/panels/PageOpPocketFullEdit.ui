@@ -131,6 +131,12 @@
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
+        <property name="locale">
+         <locale language="English" country="Germany"/>
+        </property>
+        <property name="currentText">
+         <string notr="true">ZigZag</string>
+        </property>
         <item>
          <property name="text">
           <string>ZigZag</string>
@@ -138,7 +144,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Offset</string>
+          <string notr="true">Offset</string>
          </property>
         </item>
         <item>
@@ -222,6 +228,37 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Enable Rotation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QComboBox" name="enableRotation">
+        <item>
+         <property name="text">
+          <string>Off</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>A(x)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>B(y)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>A &amp; B</string>
+         </property>
+        </item>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -252,6 +289,13 @@
         </property>
         <property name="text">
          <string>Use Start Point</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="clearEdges">
+        <property name="text">
+         <string>Clear Edges</string>
         </property>
        </widget>
       </item>

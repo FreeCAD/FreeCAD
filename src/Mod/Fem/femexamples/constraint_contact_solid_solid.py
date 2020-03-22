@@ -21,9 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-# connstraint contact for solid to solid mesh
-# https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
 # to run the example use:
 """
 from femexamples.constraint_contact_solid_solid import setup
@@ -31,13 +28,16 @@ setup()
 
 """
 
+# constraint contact for solid to solid mesh
+# https://forum.freecadweb.org/viewtopic.php?f=18&t=20276
 
 import FreeCAD
-import Part
-import ObjectsFem
-import Fem
-from FreeCAD import Vector, Rotation
+from FreeCAD import Rotation
+from FreeCAD import Vector
 
+import Fem
+import ObjectsFem
+import Part
 
 mesh_name = "Mesh"  # needs to be Mesh to work with unit tests
 
@@ -54,7 +54,7 @@ def setup(doc=None, solvertype="ccxtools"):
     if doc is None:
         doc = init_doc()
 
-    # parts
+    # geometry objects
     # bottom box
     bottom_box_obj = doc.addObject("Part::Box", "BottomBox")
     bottom_box_obj.Length = 100
@@ -82,17 +82,16 @@ def setup(doc=None, solvertype="ccxtools"):
     doc.recompute()
 
     # all geom fusion
-    all_geom_fusion_obj = doc.addObject("Part::MultiFuse", "AllGeomFusion")
-    all_geom_fusion_obj.Shapes = [bottom_box_obj, top_halfcyl_obj]
+    geom_obj = doc.addObject("Part::MultiFuse", "AllGeomFusion")
+    geom_obj.Shapes = [bottom_box_obj, top_halfcyl_obj]
     if FreeCAD.GuiUp:
         bottom_box_obj.ViewObject.hide()
         top_halfcyl_obj.ViewObject.hide()
     doc.recompute()
 
     if FreeCAD.GuiUp:
-        import FreeCADGui
-        FreeCADGui.ActiveDocument.activeView().viewAxonometric()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        geom_obj.ViewObject.Document.activeView().viewAxonometric()
+        geom_obj.ViewObject.Document.activeView().fitAll()
 
     # analysis
     analysis = ObjectsFem.makeAnalysis(doc, "Analysis")
@@ -142,17 +141,17 @@ def setup(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
     )[0]
     con_fixed.References = [
-        (all_geom_fusion_obj, "Face5"),
-        (all_geom_fusion_obj, "Face6"),
-        (all_geom_fusion_obj, "Face8"),
-        (all_geom_fusion_obj, "Face9"),
+        (geom_obj, "Face5"),
+        (geom_obj, "Face6"),
+        (geom_obj, "Face8"),
+        (geom_obj, "Face9"),
     ]
 
     # constraint pressure
     con_pressure = analysis.addObject(
         ObjectsFem.makeConstraintPressure(doc, name="ConstraintPressure")
     )[0]
-    con_pressure.References = [(all_geom_fusion_obj, "Face10")]
+    con_pressure.References = [(geom_obj, "Face10")]
     con_pressure.Pressure = 100.0  # Pa ? = 100 Mpa ?
     con_pressure.Reversed = False
 
@@ -161,8 +160,8 @@ def setup(doc=None, solvertype="ccxtools"):
         ObjectsFem.makeConstraintContact(doc, name="ConstraintContact")
     )[0]
     con_contact.References = [
-        (all_geom_fusion_obj, "Face7"),  # first seams slave face, TODO proof in writer code!
-        (all_geom_fusion_obj, "Face3"),  # second seams master face, TODO proof in writer code!
+        (geom_obj, "Face7"),  # first seams slave face, TODO proof in writer code!
+        (geom_obj, "Face3"),  # second seams master face, TODO proof in writer code!
     ]
     con_contact.Friction = 0.0
     con_contact.Slope = 1000000.0  # contact stiffness 1000000.0 kg/(mm*s^2)

@@ -276,20 +276,26 @@ PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 
 SubShapeBinder::SubShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_Hidden|App::Prop_None),
-            "Support of the geometry");
-    Support.setStatus(App::Property::Immutable,true);
-    ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fused linked solid shapes");
-    ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face for linked wires");
+    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
+    Support.setStatus(App::Property::ReadOnly, true);
+    ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
+    ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
-    ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object linking");
-    ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, "Binding mode");
-    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::Prop_None, "Enable partial loading");
+    ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object binding");
+    ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, 
+            "Synchronized: auto update binder shape on changed of bound object.\n"
+            "Frozen: disable auto update, but can be updated manually using context menu.\n"
+            "Detached: copy the shape of bound object and then remove the binding immediately.");
+    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::Prop_None,
+            "Enable partial loading, which disables auto loading of external document for"
+            "external bound object.");
     PartialLoad.setStatus(App::Property::PartialTrigger,true);
     static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
 
-    ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden, "Enable partial loading");
+    ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden,
+            "Stores the context of this binder. It is used for monitoring and auto updating\n"
+            "the relative placement of the bound shape");
     Context.setScope(App::LinkScope::Hidden);
 
     ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
@@ -299,6 +305,44 @@ SubShapeBinder::SubShapeBinder()
 void SubShapeBinder::setupObject() {
     _Version.setValue(2);
     checkPropertyStatus();
+}
+
+App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject **pyObj,
+        Base::Matrix4D *mat, bool transform, int depth) const
+{
+    auto sobj = Part::Feature::getSubObject(subname,pyObj,mat,transform,depth);
+    if(sobj)
+        return sobj;
+    if(Data::ComplexGeoData::findElementName(subname)==subname)
+        return nullptr;
+
+    const char *dot = strchr(subname, '.');
+    if(!dot)
+        return nullptr;
+
+    App::GetApplication().checkLinkDepth(depth);
+    std::string name(subname,dot-subname);
+    for(auto &l : Support.getSubListValues()) {
+        auto obj = l.getValue();
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        for(auto &sub : l.getSubValues()) {
+            auto sobj = obj->getSubObject(sub.c_str());
+            if(!sobj || !sobj->getNameInDocument())
+                continue;
+            if(subname[0] == '$') {
+                if(sobj->Label.getStrValue() != name.c_str()+1)
+                    continue;
+            } else if(!boost::equals(sobj->getNameInDocument(), name))
+                continue;
+            name = Data::ComplexGeoData::noElementName(sub.c_str());
+            name += dot+1;
+            if(mat && transform)
+                *mat *= Placement.getValue().toMatrix();
+            return obj->getSubObject(name.c_str(),pyObj,mat,true,depth+1);
+        }
+    }
+    return nullptr;
 }
 
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
@@ -477,7 +521,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             std::vector<TopoDS_Shape> solids;
             Part::TopoShape solid;
             for(auto &s : result.getSubTopoShapes(TopAbs_SOLID)) {
-                if(!solid.isNull())
+                if(solid.isNull())
                     solid = s;
                 else 
                     solids.push_back(s.getShape());
@@ -507,7 +551,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         Shape.setValue(result);
     }
 
-    // collect transformation matrix cache entires
+    // collect transformation matrix cache entries
     std::unordered_set<std::string> caches;
     for(const auto &name : getDynamicPropertyNames()) {
         if(boost::starts_with(name,"Cache_"))

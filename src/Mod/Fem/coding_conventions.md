@@ -24,7 +24,7 @@ These coding rules apply to FEM module code only. Other modules or the base syst
     - a .gitattributes file has been added to ensure line endings of text files are LF
     - use `?w=1` in link address to suppress line ending changes on github
 - never use mixed line endings on one file
-- 4 Spaces for indent
+- 4 Spaces for indent (in this file too ;-))
 - no trailing white spaces
 
 
@@ -78,15 +78,28 @@ find src/Mod/Fem/ -name "*\.py" | grep -v InitGui.py | xargs -I [] flake8 --igno
 
 ### Coding
 - print() vs. FreeCAD.Console.PrintMessage()
-  - `FreeCAD.Console.PrintMessage()` or Log or Error should be used
-  - `print()` should be used for debugging only
-  - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=39110) 
-  - BTW: Console prints need a new line where as print does not need one
-
+    - `FreeCAD.Console.PrintMessage()` or Log or Error should be used
+    - `print()` should be used for debugging only
+    - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=39110) 
+    - BTW: Console prints need a new line where as print does not need one
+- type checking:
+    - do not use hasattr(obj, "Proxy") and obj.Proxy.Type
+    - use method is_of_typ(obj, "TypeString") from module femtool.femutils
+- ActiveDocument
+    - try to avoid the use of App.ActiveDocument or FreeCAD.ActiveDocument
+    - instead try to use some_obj.Document instead
+    - try to avoid the use of Gui.ActiveDocument or FreeCADGui.ActiveDocument
+    - instead try to use some_obj.ViewObject.Document or some_view_obj.Document
+    - activeDocument() is more robust than ActiveDocument
+    - [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=44133)
+    - FreeCAD Python console
+        - in code examples which will be copied in FreeCAD Python console
+        - it is common to use App.ActiveDocument.some_obj or method
+    
 ### Documenting
 Python style is preferred over Doxygen style
-  - see `ccx` tools module in fem tools package
-  - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
+    - see `ccx` tools module in fem tools package
+    - see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=10&t=37094)
 
 ## C++
 ### Naming policy
@@ -96,3 +109,8 @@ Python style is preferred over Doxygen style
 - slashes
     - Do not use to many slashes in a row. This could cause trouble with Doxygen.
     - see [PR with comment](https://github.com/FreeCAD/FreeCAD/pull/2757#discussion_r355218913)
+
+## Icons
+### Naming plicy
+- Command icons use the command name.
+- see [forum topic](https://forum.freecadweb.org/viewtopic.php?f=18&t=43379)

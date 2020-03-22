@@ -42,7 +42,8 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Change the shape of ends of edges.  Used for 1:1 scale stencil making.</string>
+           <string>Shape of line end caps.
+Only change unless you know what you are doing!</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>EdgeCapStyle</cstring>
@@ -89,7 +90,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dump intermediate results during Detail processing</string>
+           <string>Dump intermediate results during Detail view processing</string>
           </property>
           <property name="text">
            <string>Debug Detail</string>
@@ -118,6 +119,9 @@ Then you need to increase the tile limit.</string>
           <property name="singleStep">
            <number>100</number>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
+          </property>
           <property name="value">
            <number>10000</number>
           </property>
@@ -144,6 +148,9 @@ when hatching a face with a PAT pattern</string>
           <property name="singleStep">
            <number>100</number>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight</set>
+          </property>
           <property name="value">
            <number>10000</number>
           </property>
@@ -169,7 +176,7 @@ when hatching a face with a PAT pattern</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Perform a fuse operation on the input shape(s) before Section processing</string>
+           <string>Perform a fuse operation on input shape(s) before Section view processing</string>
           </property>
           <property name="text">
            <string>Fuse Before Section</string>
@@ -191,7 +198,7 @@ when hatching a face with a PAT pattern</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Highlights the border of the section cut in section views</string>
+           <string>Highlights border of section cut in section views</string>
           </property>
           <property name="text">
            <string>Show Section Edges</string>
@@ -213,7 +220,7 @@ when hatching a face with a PAT pattern</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Dump intermediate results during Section processing</string>
+           <string>Dump intermediate results during Section view processing</string>
           </property>
           <property name="text">
            <string>Debug Section</string>
@@ -262,7 +269,7 @@ can be a performance penalty in complex models.</string>
            </font>
           </property>
           <property name="text">
-           <string>Edge End Cap</string>
+           <string>Line End Cap Shape</string>
           </property>
          </widget>
         </item>
@@ -276,7 +283,7 @@ can be a performance penalty in complex models.</string>
         <item row="6" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Max PAT Hatch Segs</string>
+           <string>Max PAT Hatch Segments</string>
           </property>
          </widget>
         </item>
@@ -289,7 +296,7 @@ can be a performance penalty in complex models.</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Include edges with unexpected geometry (zero length etc) to be included in results.</string>
+           <string>Include edges with unexpected geometry (zero length etc.) in results</string>
           </property>
           <property name="text">
            <string>Allow Crazy Edges</string>
@@ -305,7 +312,7 @@ can be a performance penalty in complex models.</string>
         <item row="3" column="0">
          <widget class="Gui::PrefCheckBox" name="cbShowLoose">
           <property name="toolTip">
-           <string>Include 2d Objects in projection</string>
+           <string>Include 2D Objects in projection</string>
           </property>
           <property name="text">
            <string>Show Loose 2D Geom</string>

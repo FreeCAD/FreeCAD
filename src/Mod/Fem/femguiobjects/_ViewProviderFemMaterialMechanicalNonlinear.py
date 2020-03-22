@@ -37,5 +37,4 @@ class _ViewProviderFemMaterialMechanicalNonlinear(ViewProviderFemConstraint.View
     A View Provider for the FemMaterialMechanicalNonlinear object
     """
 
-    def getIcon(self):
-        return ":/icons/fem-material-nonlinear.svg"
+    pass

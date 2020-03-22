@@ -55,7 +55,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTemperature, FemGui::ViewProvid
 
 ViewProviderFemConstraintTemperature::ViewProviderFemConstraintTemperature()
 {
-    sPixmap = "fem-constraint-temperature";
+    sPixmap = "FEM_ConstraintTemperature";
     ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
 }
 

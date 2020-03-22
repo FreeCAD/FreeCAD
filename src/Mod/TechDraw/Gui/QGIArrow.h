@@ -35,16 +35,16 @@ QT_END_NAMESPACE
 namespace TechDrawGui
 {
 
-enum ArrowType {
-    FILLED_TRIANGLE = 0,
-    OPEN_ARROW,
-    HASH_MARK,
-    DOT,
-    OPEN_CIRCLE,
-    FORK,
-    PYRAMID,
-    NONE
-};
+/*enum ArrowType {*/
+/*    FILLED_TRIANGLE = 0,*/
+/*    OPEN_ARROW,*/
+/*    HASH_MARK,*/
+/*    DOT,*/
+/*    OPEN_CIRCLE,*/
+/*    FORK,*/
+/*    PYRAMID,*/
+/*    NONE*/
+/*};*/
 
 class TechDrawGuiExport QGIArrow : public QGIPrimPath
 {

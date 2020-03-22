@@ -39,6 +39,13 @@ using namespace App;
 
 EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
+namespace App {
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
+
+// explicit template instantiation
+template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
+}
+
 GroupExtension::GroupExtension()
 {
     initExtensionType(GroupExtension::getExtensionClassTypeId());
@@ -291,11 +298,13 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 
 DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
-    //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups. 
+    //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups.
     //That is important as there are clear differences between groups/geofeature groups (e.g. an object
     //can be in only one group, and only one geofeaturegroup, however, it can be in both at the same time)
     for (auto o : obj->getInList()) {
-        if(o->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
+        if (o->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
+            return o;
+        if (o->hasExtension(App::GroupExtensionPython::getExtensionClassTypeId(), false))
             return o;
     }
 
@@ -427,11 +436,4 @@ void GroupExtension::getAllChildren(std::vector<App::DocumentObject*> &res,
         if(ext) 
             ext->getAllChildren(res,rset);
     }
-}
-
-namespace App {
-EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)
-
-// explicit template instantiation
-template class AppExport ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
 }

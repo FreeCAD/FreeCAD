@@ -203,7 +203,7 @@ bool ViewProviderPage::onDelete(const std::vector<std::string> &)
 
     // check if there is just a template
     // if there are several objects, the template is never the last one
-    // the ExportName of a template begines always with "Template"
+    // the ExportName of a template always begins with "Template"
     bool isTemplate = false;
     for (auto objsIterator : objs) {
         if (objsIterator->getExportName().substr(0, 8).compare(std::string("Template")) == 0)
@@ -463,7 +463,7 @@ void ViewProviderPage::setGraphicsView(QGVPage* gv)
 
 bool ViewProviderPage::canDelete(App::DocumentObject *obj) const
 {
-    // deletions from a page don't necesarily destroy anything
+    // deletions from a page don't necessarily destroy anything
     // thus we can pass this action
     // if an object could break something, like e.g. the template object
     // its ViewProvider handles this in the onDelete() function

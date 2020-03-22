@@ -312,6 +312,7 @@ set(Gui_MOC_HDRS
     DlgPropertyLink.h
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
+    DlgSettingsNavigation.h
     DlgSettingsViewColor.h
     DlgSettingsColorGradientImp.h
     DlgSettingsDocumentImp.h
@@ -436,6 +437,7 @@ SET(Gui_UIC_SRCS
     DlgPropertyLink.ui
     DlgReportView.ui
     DlgSettings3DView.ui
+    DlgSettingsNavigation.ui
     DlgSettingsUnits.ui
     DlgSettingsViewColor.ui
     DlgSettingsColorGradient.ui
@@ -660,6 +662,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgPreferencesImp.cpp
     DlgReportViewImp.cpp
     DlgSettings3DViewImp.cpp
+    DlgSettingsNavigation.cpp
     DlgSettingsUnitsImp.cpp
     DlgSettingsViewColor.cpp
     DlgSettingsColorGradientImp.cpp
@@ -674,6 +677,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgPreferencesImp.h
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
+    DlgSettingsNavigation.h
     DlgSettingsUnitsImp.h
     DlgSettingsViewColor.h
     DlgSettingsColorGradientImp.h
@@ -690,6 +694,7 @@ SET(Dialog_Settings_SRCS
     DlgPreferences.ui
     DlgReportView.ui
     DlgSettings3DView.ui
+    DlgSettingsNavigation.ui
     DlgSettingsUnits.ui
     DlgSettingsViewColor.ui
     DlgSettingsColorGradient.ui
@@ -1375,17 +1380,35 @@ set(FreeCADGui_Scripts
     RemoteDebugger.py
 )
 
+set(FreeCADGui_Configs
+    3Dconnexion/3DConnexion.xml
+)
+
 add_custom_target(FreeCADGui_Resources ALL
-    SOURCES ${FreeCADGui_Scripts}
+    SOURCES ${FreeCADGui_Scripts} ${FreeCADGui_Configs}
 )
 
 fc_copy_sources(FreeCADGui_Resources
     ${CMAKE_BINARY_DIR}/Ext/freecad/gui
-    ${FreeCADGui_Scripts})
+    ${FreeCADGui_Scripts}
+)
+
+fc_target_copy_resource(FreeCADGui_Resources
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}
+    ${FreeCADGui_Configs}
+)
 
 INSTALL(
     FILES
         ${FreeCADGui_Scripts}
     DESTINATION
         Ext/freecad/gui
+)
+
+INSTALL(
+    FILES
+        ${FreeCADGui_Configs}
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/3Dconnexion
 )

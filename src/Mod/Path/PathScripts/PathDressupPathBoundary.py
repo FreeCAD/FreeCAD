@@ -163,7 +163,7 @@ class DressupPathBoundary(object):
                                     flip = PathGeom.pointsCoincide(pos, ptL)
                                     newPos = e.valueAt(e.FirstParameter) if flip else ptL
                                     # outside edges are never taken at this point (see swap of
-                                    # inside/oustide above) - so just move along ...
+                                    # inside/outside above) - so just move along ...
                                     outside.remove(e)
                                     pos = newPos
                                 else:

@@ -37,7 +37,7 @@ class _FemMeshRegion(FemConstraint.Proxy):
     The FemMeshRegion object
     """
 
-    Type = "Fem::FemMeshRegion"
+    Type = "Fem::MeshRegion"
 
     def __init__(self, obj):
         super(_FemMeshRegion, self).__init__(obj)

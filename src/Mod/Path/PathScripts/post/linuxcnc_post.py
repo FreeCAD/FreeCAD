@@ -153,7 +153,6 @@ def processArguments(argstring):
 
     return True
 
-
 def export(objectslist, filename, argstring):
     # pylint: disable=global-statement
     if not processArguments(argstring):

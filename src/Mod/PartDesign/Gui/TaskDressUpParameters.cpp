@@ -68,6 +68,9 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
 {
+    // remember initial transaction ID
+    App::GetApplication().getActiveTransaction(&transactionID);
+
     selectionMode = none;
     showObject();
 }
@@ -78,13 +81,20 @@ TaskDressUpParameters::~TaskDressUpParameters()
     Gui::Selection().rmvSelectionGate();
 }
 
-void TaskDressUpParameters::setupTransaction() {
+void TaskDressUpParameters::setupTransaction()
+{
+    if (!DressUpView)
+        return;
+
     int tid = 0;
-    const char *name = App::GetApplication().getActiveTransaction(&tid);
+    App::GetApplication().getActiveTransaction(&tid);
+    if (tid && tid == transactionID)
+        return;
+
+    // open a transaction if none is active
     std::string n("Edit ");
     n += DressUpView->getObject()->Label.getValue();
-    if(!name || n != name)
-        App::GetApplication().setActiveTransaction(n.c_str());
+    transactionID = App::GetApplication().setActiveTransaction(n.c_str());
 }
 
 bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
@@ -173,7 +183,7 @@ void TaskDressUpParameters::doubleClicked(QListWidgetItem* item) {
 
     // assure the fillets are shown
     showObject();
-    // remove any highlights andd selections
+    // remove any highlights and selections
     DressUpView->highlightReferences(false);
     Gui::Selection().clearSelection();
 

@@ -50,7 +50,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintForce, FemGui::ViewProviderFemC
 
 ViewProviderFemConstraintForce::ViewProviderFemConstraintForce()
 {
-    sPixmap = "fem-constraint-force";
+    sPixmap = "FEM_ConstraintForce";
 }
 
 ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce()

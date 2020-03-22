@@ -38,7 +38,7 @@ class _FemResultMechanical(FemConstraint.Proxy):
     The Fem::_FemResultMechanical's Proxy python type, add result specific properties
     """
 
-    Type = "Fem::FemResultMechanical"
+    Type = "Fem::ResultMechanical"
 
     def __init__(self, obj):
         super(_FemResultMechanical, self).__init__(obj)

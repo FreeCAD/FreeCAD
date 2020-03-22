@@ -196,7 +196,7 @@ getParamType = get_param_type
 
 
 def get_param(param, default=None):
-    """Return a paramater value from the current parameter database.
+    """Return a parameter value from the current parameter database.
 
     The parameter database is located in the tree
     ::
@@ -318,7 +318,7 @@ setParam = set_param
 
 
 def precision():
-    """Return the precision value from the paramater database.
+    """Return the precision value from the parameter database.
 
     It is the number of decimal places that a float will have.
     Example
@@ -378,7 +378,7 @@ def epsilon():
 def get_real_name(name):
     """Strip the trailing numbers from a string to get only the letters.
 
-    Paramaters
+    Parameters
     ----------
     name : str
         A string that may have a number at the end, `Line001`.
@@ -402,7 +402,7 @@ getRealName = get_real_name
 def get_type(obj):
     """Return a string indicating the type of the given object.
 
-    Paramaters
+    Parameters
     ----------
     obj : App::DocumentObject
         Any type of scripted object created with Draft,

@@ -59,7 +59,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintHeatflux */
 
 TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHeatflux *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-heatflux")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintHeatflux")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintHeatflux();

@@ -42,7 +42,7 @@ using namespace Gui;
 
 
 TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("fem-analysis"),
+    : TaskBox(Gui::BitmapFactory().pixmap("FEM_Analysis"),
       tr("Nodes set"),
       true,
       parent),

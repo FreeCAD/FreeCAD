@@ -19,13 +19,19 @@
 # *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 # *   USA                                                                   *
 # *                                                                         *
-# ***************************************************************************/
+# ***************************************************************************
+
+__title__ = "Objects FEM unit tests"
+__author__ = "Bernd Hahnebach"
+__url__ = "http://www.freecadweb.org"
 
 import sys
+import unittest
+from os.path import join
 
 import FreeCAD
+
 import ObjectsFem
-import unittest
 from . import support_utils as testtools
 from .support_utils import fcc_print
 
@@ -38,15 +44,8 @@ class TestObjectCreate(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        # setting up a document to hold the tests
         self.doc_name = self.__class__.__name__
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != self.doc_name:
-                FreeCAD.newDocument(self.doc_name)
-        else:
-            FreeCAD.newDocument(self.doc_name)
-        FreeCAD.setActiveDocument(self.doc_name)
-        self.active_doc = FreeCAD.ActiveDocument
+        self.document = FreeCAD.newDocument(self.doc_name)
 
     def test_00print(
         self
@@ -61,13 +60,12 @@ class TestObjectCreate(unittest.TestCase):
     def test_femobjects_make(
         self
     ):
-        doc = self.active_doc
+        doc = self.document
         analysis = ObjectsFem.makeAnalysis(doc)
 
         analysis.addObject(ObjectsFem.makeConstraintBearing(doc))
         analysis.addObject(ObjectsFem.makeConstraintBodyHeatSource(doc))
         analysis.addObject(ObjectsFem.makeConstraintContact(doc))
-        analysis.addObject(ObjectsFem.makeConstraintTie(doc))
         analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
         analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
         analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
@@ -83,6 +81,7 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeConstraintPulley(doc))
         analysis.addObject(ObjectsFem.makeConstraintSelfWeight(doc))
         analysis.addObject(ObjectsFem.makeConstraintTemperature(doc))
+        analysis.addObject(ObjectsFem.makeConstraintTie(doc))
         analysis.addObject(ObjectsFem.makeConstraintTransform(doc))
 
         analysis.addObject(ObjectsFem.makeElementFluid1D(doc))
@@ -96,50 +95,70 @@ class TestObjectCreate(unittest.TestCase):
         analysis.addObject(ObjectsFem.makeMaterialReinforced(doc))
 
         msh = analysis.addObject(ObjectsFem.makeMeshGmsh(doc))[0]
-        analysis.addObject(ObjectsFem.makeMeshBoundaryLayer(doc, msh))
-        analysis.addObject(ObjectsFem.makeMeshGroup(doc, msh))
-        analysis.addObject(ObjectsFem.makeMeshRegion(doc, msh))
+        ObjectsFem.makeMeshBoundaryLayer(doc, msh)
+        ObjectsFem.makeMeshGroup(doc, msh)
+        ObjectsFem.makeMeshRegion(doc, msh)
         analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
-        analysis.addObject(ObjectsFem.makeMeshResult(doc))
+        rm = ObjectsFem.makeMeshResult(doc)
 
         res = analysis.addObject(ObjectsFem.makeResultMechanical(doc))[0]
+        res.Mesh = rm
         if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
             vres = analysis.addObject(ObjectsFem.makePostVtkResult(doc, res))[0]
-            analysis.addObject(ObjectsFem.makePostVtkFilterClipRegion(doc, vres))
-            analysis.addObject(ObjectsFem.makePostVtkFilterClipScalar(doc, vres))
-            analysis.addObject(ObjectsFem.makePostVtkFilterCutFunction(doc, vres))
-            analysis.addObject(ObjectsFem.makePostVtkFilterWarp(doc, vres))
+            ObjectsFem.makePostVtkFilterClipRegion(doc, vres)
+            ObjectsFem.makePostVtkFilterClipScalar(doc, vres)
+            ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
+            ObjectsFem.makePostVtkFilterWarp(doc, vres)
 
         analysis.addObject(ObjectsFem.makeSolverCalculixCcxTools(doc))
         analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
         sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
         analysis.addObject(ObjectsFem.makeSolverZ88(doc))
 
-        analysis.addObject(ObjectsFem.makeEquationElasticity(doc, sol))
-        analysis.addObject(ObjectsFem.makeEquationElectrostatic(doc, sol))
-        analysis.addObject(ObjectsFem.makeEquationFlow(doc, sol))
-        analysis.addObject(ObjectsFem.makeEquationFluxsolver(doc, sol))
-        analysis.addObject(ObjectsFem.makeEquationHeat(doc, sol))
+        ObjectsFem.makeEquationElasticity(doc, sol)
+        ObjectsFem.makeEquationElectrostatic(doc, sol)
+        ObjectsFem.makeEquationFlow(doc, sol)
+        ObjectsFem.makeEquationFluxsolver(doc, sol)
+        ObjectsFem.makeEquationHeat(doc, sol)
 
         doc.recompute()
 
+        # count the def make in ObjectsFem module
         # if FEM VTK post processing is disabled, we are not able to create VTK post objects
         if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
-            fem_vtk_post = True
+            count_defmake = testtools.get_defmake_count()
         else:
-            fem_vtk_post = False
-        count_defmake = testtools.get_defmake_count(fem_vtk_post)
-        # because of the analysis itself count -1
-        self.assertEqual(len(analysis.Group), count_defmake - 1)
+            count_defmake = testtools.get_defmake_count(False)
+        # TODO if the children are added to the analysis, they show up twice on Tree
+        # thus they are not added to the analysis group ATM
+        # https://forum.freecadweb.org/viewtopic.php?t=25283
+        # thus they should not be counted
+        # solver children: equations --> 5
+        # gmsh mesh children: group, region, boundary layer --> 3
+        # resule children: mesh result --> 1
+        # post pipeline childeren: region, scalar, cut, wrap --> 4
+        # analysis itself is not in analysis group --> 1
+        # thus: -14
+
+        self.assertEqual(len(analysis.Group), count_defmake - 14)
         self.assertEqual(len(doc.Objects), count_defmake)
 
         fcc_print("doc objects count: {}, method: {}".format(
             len(doc.Objects),
             sys._getframe().f_code.co_name)
         )
-        # TODO if the equations and gmsh mesh children are added to the analysis,
-        # they show up twice on Tree (on solver resp. gmsh mesh obj and on analysis)
-        # https://forum.freecadweb.org/viewtopic.php?t=25283
+
+        # save the file
+        save_dir = testtools.get_unit_test_tmp_dir(
+            testtools.get_fem_test_tmp_dir(),
+            "FEM_all_objects"
+        )
+        save_fc_file = join(save_dir, "all_objects.FCStd")
+        fcc_print(
+            "Save FreeCAD all objects file to {} ..."
+            .format(save_fc_file)
+        )
+        self.document.saveAs(save_fc_file)
 
     # ********************************************************************************************
     def tearDown(
@@ -158,15 +177,8 @@ class TestObjectType(unittest.TestCase):
         self
     ):
         # setUp is executed before every test
-        # setting up a document to hold the tests
         self.doc_name = self.__class__.__name__
-        if FreeCAD.ActiveDocument:
-            if FreeCAD.ActiveDocument.Name != self.doc_name:
-                FreeCAD.newDocument(self.doc_name)
-        else:
-            FreeCAD.newDocument(self.doc_name)
-        FreeCAD.setActiveDocument(self.doc_name)
-        self.active_doc = FreeCAD.ActiveDocument
+        self.document = FreeCAD.newDocument(self.doc_name)
 
     def test_00print(
         self
@@ -181,7 +193,7 @@ class TestObjectType(unittest.TestCase):
     def test_femobjects_type(
         self
     ):
-        doc = self.active_doc
+        doc = self.document
 
         from femtools.femutils import type_of_obj
         self.assertEqual(
@@ -305,15 +317,15 @@ class TestObjectType(unittest.TestCase):
             "Fem::FemMeshGmsh",
             type_of_obj(mesh))
         self.assertEqual(
-            "Fem::FemMeshBoundaryLayer",
+            "Fem::MeshBoundaryLayer",
             type_of_obj(ObjectsFem.makeMeshBoundaryLayer(doc, mesh))
         )
         self.assertEqual(
-            "Fem::FemMeshGroup",
+            "Fem::MeshGroup",
             type_of_obj(ObjectsFem.makeMeshGroup(doc, mesh))
         )
         self.assertEqual(
-            "Fem::FemMeshRegion",
+            "Fem::MeshRegion",
             type_of_obj(ObjectsFem.makeMeshRegion(doc, mesh))
         )
         self.assertEqual(
@@ -321,11 +333,11 @@ class TestObjectType(unittest.TestCase):
             type_of_obj(ObjectsFem.makeMeshNetgen(doc))
         )
         self.assertEqual(
-            "Fem::FemMeshResult",
+            "Fem::MeshResult",
             type_of_obj(ObjectsFem.makeMeshResult(doc))
         )
         self.assertEqual(
-            "Fem::FemResultMechanical",
+            "Fem::ResultMechanical",
             type_of_obj(ObjectsFem.makeResultMechanical(doc))
         )
         solverelmer = ObjectsFem.makeSolverElmer(doc)
@@ -378,7 +390,7 @@ class TestObjectType(unittest.TestCase):
     def test_femobjects_isoftype(
         self
     ):
-        doc = self.active_doc
+        doc = self.document
 
         from femtools.femutils import is_of_type
         self.assertTrue(is_of_type(
@@ -505,15 +517,15 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMeshBoundaryLayer(doc, mesh),
-            "Fem::FemMeshBoundaryLayer"
+            "Fem::MeshBoundaryLayer"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMeshGroup(doc, mesh),
-            "Fem::FemMeshGroup"
+            "Fem::MeshGroup"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMeshRegion(doc, mesh),
-            "Fem::FemMeshRegion"
+            "Fem::MeshRegion"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMeshNetgen(doc),
@@ -521,11 +533,11 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeMeshResult(doc),
-            "Fem::FemMeshResult"
+            "Fem::MeshResult"
         ))
         self.assertTrue(is_of_type(
             ObjectsFem.makeResultMechanical(doc),
-            "Fem::FemResultMechanical"
+            "Fem::ResultMechanical"
         ))
         solverelmer = ObjectsFem.makeSolverElmer(doc)
         self.assertTrue(is_of_type(
@@ -578,7 +590,7 @@ class TestObjectType(unittest.TestCase):
     ):
         # try to add all possible True types from inheritance chain see
         # https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
-        doc = self.active_doc
+        doc = self.document
 
         from femtools.femutils import is_derived_from
 
@@ -1040,7 +1052,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             mesh_boundarylayer,
-            "Fem::FemMeshBoundaryLayer"
+            "Fem::MeshBoundaryLayer"
         ))
 
         # FemMeshGroup
@@ -1055,7 +1067,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             mesh_group,
-            "Fem::FemMeshGroup"
+            "Fem::MeshGroup"
         ))
 
         # FemMeshRegion
@@ -1070,7 +1082,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             mesh_region,
-            "Fem::FemMeshRegion"
+            "Fem::MeshRegion"
         ))
 
         # FemMeshShapeNetgenObject
@@ -1096,7 +1108,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             mesh_result,
-            "Fem::FemMeshResult"
+            "Fem::MeshResult"
         ))
 
         # FemResultMechanical
@@ -1111,7 +1123,7 @@ class TestObjectType(unittest.TestCase):
         ))
         self.assertTrue(is_derived_from(
             result_mechanical,
-            "Fem::FemResultMechanical"
+            "Fem::ResultMechanical"
         ))
 
         # FemSolverCalculixCcxTools
@@ -1278,7 +1290,7 @@ class TestObjectType(unittest.TestCase):
         self
     ):
         # only the last True type is used
-        doc = self.active_doc
+        doc = self.document
 
         self.assertTrue(
             ObjectsFem.makeAnalysis(

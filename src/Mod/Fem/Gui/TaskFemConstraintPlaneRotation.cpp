@@ -70,7 +70,7 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraintPlaneRotation */
 
 TaskFemConstraintPlaneRotation::TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent)
-  : TaskFemConstraint(ConstraintView, parent, "fem-constraint-planerotation")
+  : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintPlaneRotation")
 { //Note change "planerotation" in line above to new constraint name
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintPlaneRotation();

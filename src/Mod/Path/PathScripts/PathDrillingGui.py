@@ -97,8 +97,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
         if obj.PeckEnabled != self.form.peckEnabled.isChecked():
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
-        if obj.AddTipLength != self.form.useTipLength.isChecked():
-            obj.AddTipLength = self.form.useTipLength.isChecked()
+        if obj.ExtraOffset != str(self.form.ExtraOffset.currentText()):
+            obj.ExtraOffset = str(self.form.ExtraOffset.currentText())
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -118,10 +118,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         else:
             self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
 
-        if obj.AddTipLength:
-            self.form.useTipLength.setCheckState(QtCore.Qt.Checked)
-        else:
-            self.form.useTipLength.setCheckState(QtCore.Qt.Unchecked)
+        self.selectInComboBox(obj.ExtraOffset, self.form.ExtraOffset)
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
@@ -136,10 +133,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.dwellTime.editingFinished)
         signals.append(self.form.dwellEnabled.stateChanged)
         signals.append(self.form.peckEnabled.stateChanged)
-        signals.append(self.form.useTipLength.stateChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.ExtraOffset.currentIndexChanged)
 
         return signals
     

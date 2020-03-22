@@ -142,6 +142,8 @@ DrawViewPart::DrawViewPart(void) :
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
     Source.setScope(App::LinkScope::Global);
+    Source.setAllowExternal(true);
+
     ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
                       group,App::Prop_None,"Projection Plane normal. The direction you are looking from.");
     ADD_PROPERTY_TYPE(XDirection ,(0.0,0.0,0.0),
@@ -244,6 +246,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         }
         return App::DocumentObject::StdReturn;
     }
+    std::vector<App::DocumentObject*> sources = Source.getValues();
 
     TopoDS_Shape shape = getSourceShape();
     if (shape.IsNull()) {
@@ -620,7 +623,8 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId())) {
+        if ( ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId())) && 
+             (!(*it)->isRemoving()) ) {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(*it);
             result.push_back(hatch);
         }
@@ -633,7 +637,8 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     std::vector<TechDraw::DrawGeomHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId())) {
+        if ( ((*it)->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId()))  &&
+             (!(*it)->isRemoving()) ) {
             TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(*it);
             result.push_back(geom);
         }
@@ -1457,7 +1462,7 @@ bool DrawViewPart::prefIsoViz(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("IsoViz", true); 
+    bool result = hGrp->GetBool("IsoViz", false); 
     return result;
 }
 
@@ -1465,7 +1470,7 @@ bool DrawViewPart::prefHardHid(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("HardHid", true); 
+    bool result = hGrp->GetBool("HardHid",  false); 
     return result;
 }
 
@@ -1473,7 +1478,7 @@ bool DrawViewPart::prefSeamHid(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SeamHid", true); 
+    bool result = hGrp->GetBool("SeamHid", false); 
     return result;
 }
 
@@ -1481,7 +1486,7 @@ bool DrawViewPart::prefSmoothHid(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("SmoothHid", true); 
+    bool result = hGrp->GetBool("SmoothHid", false); 
     return result;
 }
 
@@ -1489,7 +1494,7 @@ bool DrawViewPart::prefIsoHid(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
           .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/HLR");
-    bool result = hGrp->GetBool("IsoHid", true); 
+    bool result = hGrp->GetBool("IsoHid", false); 
     return result;
 }
 

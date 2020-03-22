@@ -54,6 +54,7 @@ public:
     void setDirection(double xDir,double yDir);
     void setDirection(Base::Vector3d dir);
     void setFont(QFont f, double fsize);
+    void setSectionStyle(int style);
     virtual void draw();
 
 protected:

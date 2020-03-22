@@ -337,6 +337,7 @@ SET(FemGuiScripts_SRCS
     femguiobjects/_ViewProviderFemResultMechanical.py
     femguiobjects/_ViewProviderFemSolverCalculix.py
     femguiobjects/FemSelectionWidgets.py
+    femguiobjects/ViewProviderBaseObject.py
     femguiobjects/ViewProviderFemConstraint.py
 )
 

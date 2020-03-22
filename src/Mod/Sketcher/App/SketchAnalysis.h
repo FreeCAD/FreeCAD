@@ -76,7 +76,7 @@ public:
     void analyseMissingPointOnPointCoincident(double angleprecision = M_PI/8);
     /// Point on Point constraint simple routine Get step (see constructor)
     std::vector<ConstraintIds> &getMissingPointOnPointConstraints(void) {return vertexConstraints;};
-    /// Vertical/Horinzontal constraints simple routine Set step (see constructor)
+    /// Vertical/Horizontal constraints simple routine Set step (see constructor)
     void setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl) {vertexConstraints = cl;};
     /// Point on Point constraint simple routine Make step (see constructor)
     /// if onebyone, then the sketch is solved after each individual constraint addition and any redundancy removed.
@@ -86,7 +86,7 @@ public:
     int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI/8);
     /// Vertical/Horizontal constraints simple routine Get step (see constructor)
     std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints(void) {return verthorizConstraints;};
-    /// Vertical/Horinzontal constraints simple routine Set step (see constructor)
+    /// Vertical/Horizontal constraints simple routine Set step (see constructor)
     void setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl) {verthorizConstraints = cl;};
     /// Vertical/Horizontal constraints simple routine Make step (see constructor)
     void makeMissingVerticalHorizontal(bool onebyone = false);

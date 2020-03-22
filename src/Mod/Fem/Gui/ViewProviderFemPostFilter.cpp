@@ -34,7 +34,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostClip, FemGui::ViewProviderFemPostObje
 
 ViewProviderFemPostClip::ViewProviderFemPostClip() {
 
-    sPixmap = "fem-post-filter-clip-region";
+    sPixmap = "FEM_PostFilterClipRegion";
 }
 
 ViewProviderFemPostClip::~ViewProviderFemPostClip() {
@@ -55,7 +55,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAlongLine, FemGui::ViewProviderFe
 
 ViewProviderFemPostDataAlongLine::ViewProviderFemPostDataAlongLine() {
 
-    sPixmap = "fem-post-filter-data-along-line";
+    sPixmap = "FEM_PostFilterDataAlongLine";
 }
 
 ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine() {
@@ -73,7 +73,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAtPoint, FemGui::ViewProviderFemP
 
 ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint() {
 
-    sPixmap = "fem-post-filter-data-at-point";
+    sPixmap = "FEM_PostFilterDataAtPoint";
 }
 
 ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() {
@@ -92,7 +92,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostScalarClip, FemGui::ViewProviderFemPo
 
 ViewProviderFemPostScalarClip::ViewProviderFemPostScalarClip() {
 
-    sPixmap = "fem-post-filter-clip-scalar";
+    sPixmap = "FEM_PostFilterClipScalar";
 }
 
 ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() {
@@ -112,7 +112,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostWarpVector, FemGui::ViewProviderFemPo
 
 ViewProviderFemPostWarpVector::ViewProviderFemPostWarpVector() {
 
-    sPixmap = "fem-post-filter-warp";
+    sPixmap = "FEM_PostFilterWarp";
 }
 
 ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() {
@@ -133,7 +133,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemPostCut, FemGui::ViewProviderFemPostObjec
 
 ViewProviderFemPostCut::ViewProviderFemPostCut() {
 
-    sPixmap = "fem-post-filter-cut-function";
+    sPixmap = "FEM_PostFilterCutFunction";
 }
 
 ViewProviderFemPostCut::~ViewProviderFemPostCut() {

@@ -441,11 +441,11 @@ void QGIViewPart::draw() {
 
 void QGIViewPart::drawViewPart()
 {
-//    Base::Console().Message("QGIVP::DVP()\n");
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
         return;
     }
+//    Base::Console().Message("QGIVP::DVP() - %s / %s\n", viewPart->getNameInDocument(), viewPart->Label.getValue());
     if (!viewPart->hasGeometry()) {
         removePrimitives();                      //clean the slate
         removeDecorations();
@@ -498,7 +498,7 @@ void QGIViewPart::drawViewPart()
                         if (hatchScale > 0.0) {
                             newFace->setHatchScale(fGeom->ScalePattern.getValue());
                         }
-                        newFace->setHatchFile(fGeom->FilePattern.getValue());
+                        newFace->setHatchFile(fGeom->PatIncluded.getValue());
                         Gui::ViewProvider* gvp = QGIView::getViewProvider(fGeom);
                         ViewProviderGeomHatch* geomVp = dynamic_cast<ViewProviderGeomHatch*>(gvp);
                         if (geomVp != nullptr) {
@@ -508,7 +508,7 @@ void QGIViewPart::drawViewPart()
                     }
                 }
             } else if (fHatch) {
-                if (!fHatch->HatchPattern.isEmpty()) {
+                if (!fHatch->SvgIncluded.isEmpty()) {
                     if (getExporting()) {
                         newFace->hideSvg(true);
                         newFace->isHatched(false);
@@ -517,7 +517,7 @@ void QGIViewPart::drawViewPart()
                         newFace->hideSvg(false);
                         newFace->isHatched(true);
                         newFace->setFillMode(QGIFace::FromFile);
-                        newFace->setHatchFile(fHatch->HatchPattern.getValue());
+                        newFace->setHatchFile(fHatch->SvgIncluded.getValue());
                         Gui::ViewProvider* gvp = QGIView::getViewProvider(fHatch);
                         ViewProviderHatch* hatchVp = dynamic_cast<ViewProviderHatch*>(gvp);
                         if (hatchVp != nullptr) {
@@ -843,11 +843,11 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         return;
     }
 
-
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroup(sectionLine);
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
+        sectionLine->setSectionStyle(vp->SectionLineStyle.getValue());
 
         //TODO: handle oblique section lines?
         //find smallest internal angle(normalDir,get?Dir()) and use -1*get?Dir() +/- angle
@@ -1288,6 +1288,6 @@ bool QGIViewPart::prefPrintCenters(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                          GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
-    bool   printCenters = hGrp->GetBool("PrintCenterMarks", true);   //true matches v0.18 behaviour
+    bool   printCenters = hGrp->GetBool("PrintCenterMarks", false);   //true matches v0.18 behaviour
     return printCenters;
 }

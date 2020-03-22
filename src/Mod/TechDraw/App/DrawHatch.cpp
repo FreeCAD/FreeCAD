@@ -62,31 +62,14 @@ DrawHatch::DrawHatch(void)
     ADD_PROPERTY_TYPE(DirProjection ,(0,0,1.0)    ,vgroup,App::Prop_None,"Projection direction when Hatch was defined");     //sb RO?
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be hatched");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(HatchPattern ,(""),vgroup,App::Prop_None,"The hatch pattern file for this area");
+    ADD_PROPERTY_TYPE(HatchPattern ,(prefSvgHatch()),vgroup,App::Prop_None,"The hatch pattern file for this area");
     ADD_PROPERTY_TYPE(SvgIncluded, (""), vgroup,App::Prop_None,
                                             "Embedded Svg hatch file. System use only.");   // n/a to end users
 
     DirProjection.setStatus(App::Property::ReadOnly,true);
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
-
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
-    std::string defaultFileName = defaultDir + "simple.svg";
-    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FileHatch",defaultFileName.c_str()));
-    if (patternFileName.isEmpty()) {
-        patternFileName = QString::fromStdString(defaultFileName);
-    }
-    QFileInfo tfi(patternFileName);
-    if (tfi.isReadable()) {
-        HatchPattern.setValue(patternFileName.toUtf8().constData());
-    }
-    
     std::string svgFilter("Svg files (*.svg *.SVG);;All files (*)");
     HatchPattern.setFilter(svgFilter);
-
-//    SvgIncluded.setStatus(App::Property::ReadOnly,true);
-
 }
 
 DrawHatch::~DrawHatch()
@@ -213,7 +196,7 @@ void DrawHatch::replaceSvgIncluded(std::string newSvgFile)
         setupSvgIncluded();
     } else {
         std::string tempName = SvgIncluded.getExchangeTempFile();
-        copyFile(newSvgFile, tempName);
+        DrawUtil::copyFile(newSvgFile, tempName);
         SvgIncluded.setValue(tempName.c_str());
     }
 }
@@ -256,28 +239,50 @@ void DrawHatch::setupSvgIncluded(void)
     std::string svgName = dir + special;
 
     if (SvgIncluded.isEmpty()) {
-        copyFile(std::string(), svgName);
+        DrawUtil::copyFile(std::string(), svgName);
         SvgIncluded.setValue(svgName.c_str());
     }
 
     if (!HatchPattern.isEmpty()) {
         std::string exchName = SvgIncluded.getExchangeTempFile();
-        copyFile(HatchPattern.getValue(), exchName);
+        DrawUtil::copyFile(HatchPattern.getValue(), exchName);
         SvgIncluded.setValue(exchName.c_str(), special.c_str());
     }
 }
 
-//copy whole text file from inSpec to outSpec
-void DrawHatch::copyFile(std::string inSpec, std::string outSpec)
+void DrawHatch::unsetupObject(void)
 {
-//    Base::Console().Message("DH::copyFile(%s, %s)\n", inSpec.c_str(), outSpec.c_str());
-    if (inSpec.empty()) {
-        std::ofstream  dst(outSpec);   //make an empty file
-    } else {
-        std::ifstream  src(inSpec);
-        std::ofstream  dst(outSpec);
-        dst << src.rdbuf();
+//    Base::Console().Message("DH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+    App::DocumentObject* source = Source.getValue();
+    DrawView* dv = dynamic_cast<DrawView*>(source);
+    if (dv != nullptr) {
+        dv->requestPaint();
     }
+    App::DocumentObject::unsetupObject();
+}
+
+//standard preference getters
+std::string DrawHatch::prefSvgHatch(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
+
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
+    std::string defaultFileName = defaultDir + "simple.svg";
+    std::string result = hGrp->GetASCII("FileHatch",defaultFileName.c_str());
+    if (result.empty()) {
+        result = defaultFileName;
+    }
+    return result;
+}
+
+App::Color DrawHatch::prefSvgHatchColor(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Hatch", 0x00FF0000));
+    return fcColor;
 }
 
 

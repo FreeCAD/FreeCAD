@@ -1227,7 +1227,7 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
     elif isinstance(wire, list):
         if isinstance(wire[0],Part.Edge):
             edges = wire.copy()
-            wire = Part.Wire( Part.__sortEdges__(edges) )			# How to avoid __sortEdges__ again?  Make getNormal direclty tackle edges ?
+            wire = Part.Wire( Part.__sortEdges__(edges) )			# How to avoid __sortEdges__ again?  Make getNormal directly tackle edges ?
     else:
         print ("Either Part.Wire or Part.Edges should be provided, returning None ")
         return None
@@ -1346,7 +1346,7 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
         if i == 0:
             if alignListC[0] == 'Center':
                 delta = DraftVecUtils.scaleTo(delta, delta.Length/2)
-            #No need to do anything for 'Left' and 'Rigtht' as orginal dvec have set both the direction and amount of offset correct
+            #No need to do anything for 'Left' and 'Rigtht' as original dvec have set both the direction and amount of offset correct
             #elif alignListC[i] == 'Left':  #elif alignListC[i] == 'Right':
         if i != 0:
             try:
@@ -1385,7 +1385,7 @@ def offsetWire(wire,dvec,bind=False,occ=False,widthList=None, offsetMode=None, a
                     delta = DraftVecUtils.scaleTo(delta, delta.Length+basewireOffset)
                 nedge = offset(curredge,delta,trim=True)
 
-            if curOrientation == "Reversed": # TODO arc alway in counter-clockwise directinon ... ( not necessarily 'reversed')
+            if curOrientation == "Reversed": # TODO arc always in counter-clockwise directinon ... ( not necessarily 'reversed')
                 if not isinstance(curredge.Curve,Part.Circle):  # need to test against Part.Circle, not Part.ArcOfCircle
                     # if not arc/circle, assume straight line, reverse it
                     nedge = Part.Edge(nedge.Vertexes[1],nedge.Vertexes[0])
@@ -2867,7 +2867,7 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
             # @todo Create 3 lines from the inner and 4 from the outer h. center.
             # @todo Calc. the 4 inversion poles of these lines for each circle.
             # @todo Calc. the radical center of the 3 circles.
-            # @todo Calc. the intersection points (max. 8) of 4 lines (trough each inversion pole and the radical center) with the circle.
+            # @todo Calc. the intersection points (max. 8) of 4 lines (through each inversion pole and the radical center) with the circle.
             #       This gives us all the tangent points.
         else:
             # Some circles are inside each other or an error has occurred.

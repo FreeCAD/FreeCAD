@@ -115,10 +115,10 @@ class Results(run.Results):
 
     def purge_results(self):
         for m in membertools.get_member(self.analysis, "Fem::FemResultObject"):
-            if femutils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
+            if femutils.is_of_type(m.Mesh, "Fem::MeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
-        FreeCAD.ActiveDocument.recompute()
+        self.analysis.Document.recompute()
 
     def load_results_ccxfrd(self):
         frd_result_file = os.path.join(

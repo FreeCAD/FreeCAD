@@ -26,30 +26,23 @@ __title__ = "FreeCAD FEM base constraint ViewProvider"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package _BaseViewProvider
+## @package _ConstraintViewProvider
 #  \ingroup FEM
-#  \brief FreeCAD _Base ViewProvider for FEM workbench
-
-import FreeCAD
-import FreeCADGui
-import FemGui  # needed to display the icons in TreeView
+#  \brief FreeCAD _Base Constraint ViewProvider for FEM workbench
 
 from pivy import coin
 
-False if FemGui.__name__ else True  # flake8, dummy FemGui usage
+from . import ViewProviderBaseObject
 
 
-class ViewProxy(object):
+class ViewProxy(ViewProviderBaseObject.ViewProxy):
     """Proxy View Provider for Pythons base constraint."""
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
 
     def attach(self, vobj):
         default = coin.SoGroup()
         vobj.addDisplayMode(default, "Default")
-        self.Object = vobj.Object
-        self.ViewObject = vobj
+        self.Object = vobj.Object  # used on various places, claim childreens, get icon, etc.
+        # self.ViewObject = vobj  # not used ATM
 
     def getDisplayModes(self, obj):
         "Return a list of display modes."
@@ -61,43 +54,3 @@ class ViewProxy(object):
 
     def setDisplayMode(self, mode):
         return mode
-
-    def setEdit(self, vobj, mode=0, TaskPanel=None, hide_mesh=True):
-        if TaskPanel is None:
-            # avoid edit mode by return False
-            # https://forum.freecadweb.org/viewtopic.php?t=12139&start=10#p161062
-            return False
-        if hide_mesh is True:
-            # hide all FEM meshes and VTK FemPostPipeline objects
-            for o in vobj.Object.Document.Objects:
-                if (
-                    o.isDerivedFrom("Fem::FemMeshObject")
-                    or o.isDerivedFrom("Fem::FemPostPipeline")
-                ):
-                    o.ViewObject.hide()
-        # show task panel
-        task = TaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(task)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return True
-
-    def doubleClicked(self, vobj):
-        guidoc = FreeCADGui.getDocument(vobj.Object.Document)
-        # check if another VP is in edit mode
-        # https://forum.freecadweb.org/viewtopic.php?t=13077#p104702
-        if not guidoc.getInEdit():
-            guidoc.setEdit(vobj.Object.Name)
-        else:
-            from PySide.QtGui import QMessageBox
-            message = "Active Task Dialog found! Please close this one before opening  a new one!"
-            QMessageBox.critical(None, "Error in tree view", message)
-            FreeCAD.Console.PrintError(message + "\n")
-        return True
-
-    # a few objects had this method in their class before the move to this base class
-    # these objects will give a setAttr failed error on document loading without this method
-    def __setstate__(self, state):
-        return None

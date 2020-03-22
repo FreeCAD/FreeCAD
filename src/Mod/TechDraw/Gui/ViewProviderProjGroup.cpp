@@ -48,6 +48,7 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
+#include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
@@ -180,12 +181,19 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
                 ViewList.push_back(DetIterator->Label.getValue());
             }
         }
+        // get its leader lines
+        auto viewLead = Item->getLeaders();
+        if (!viewLead.empty()) {
+            for (auto LeadIterator : viewLead) {
+                ViewList.push_back(LeadIterator->Label.getValue());
+            }
+        }
     }
 
     // if there are section or detail views we cannot delete because this would break them
     if (!ViewList.empty()) {
         bodyMessageStream << qApp->translate("Std_Delete",
-            "The group cannot be deleted because its items have the\n following section and detail views that would get broken:\n");
+            "The group cannot be deleted because its items have the following\n section or detail views, or leader lines that would get broken:\n");
         for (auto ListIterator : ViewList)
             bodyMessageStream << '\n' << QString::fromUtf8(ListIterator.c_str());
         QMessageBox::warning(Gui::getMainWindow(),
@@ -217,7 +225,7 @@ bool ViewProviderProjGroup::onDelete(const std::vector<std::string> &)
 
 bool ViewProviderProjGroup::canDelete(App::DocumentObject *obj) const
 {
-    // deletions of views from a ProjGroup don't necesarily destroy anything
+    // deletions of views from a ProjGroup don't necessarily destroy anything
     // thus we can pass this action
     // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
     Q_UNUSED(obj)

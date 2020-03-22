@@ -667,7 +667,7 @@ class Snapper:
         return point
 
     def snapToEndpoints(self,shape):
-        "returns a list of enpoints snap locations"
+        "returns a list of endpoints snap locations"
         snaps = []
         if self.isEnabled("endpoint"):
             if hasattr(shape,"Vertexes"):
@@ -1480,11 +1480,3 @@ class Snapper:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
-
-if not hasattr(FreeCADGui,"Snapper"):
-    FreeCADGui.Snapper = Snapper()
-if not hasattr(FreeCAD,"DraftWorkingPlane"):
-    import WorkingPlane, Draft_rc
-    FreeCAD.DraftWorkingPlane = WorkingPlane.plane()
-    #print(FreeCAD.DraftWorkingPlane)
-    FreeCADGui.addIconPath(":/icons")

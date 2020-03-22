@@ -1160,7 +1160,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             f.write("*DLOAD\n")
             for ref_shape in femobj["PressureFaces"]:
                 # the loop is needed for compatibility reason
-                # in depretiated method get_pressure_obj_faces_depreciated
+                # in deprecated method get_pressure_obj_faces_depreciated
                 # the face ids where per ref_shape
                 f.write("** " + ref_shape[0] + "\n")
                 for face, fno in ref_shape[1]:
@@ -1381,7 +1381,7 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
             time.ctime()
         ))
         f.write("**   file name     --> {}\n".format(
-            os.path.basename(FreeCAD.ActiveDocument.FileName)
+            os.path.basename(self.document.FileName)
         ))
         f.write("**   analysis name --> {}\n".format(
             self.analysis.Name

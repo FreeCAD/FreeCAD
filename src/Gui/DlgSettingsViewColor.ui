@@ -219,6 +219,9 @@ Larger value eases to pick things, but can make small features impossible to sel
    </item>
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBoxColor">
+     <property name="toolTip">
+      <string>Background color for the model view</string>
+     </property>
      <property name="title">
       <string>Background color</string>
      </property>
@@ -295,6 +298,9 @@ Larger value eases to pick things, but can make small features impossible to sel
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="toolTip">
+           <string>Background will have selected color</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -331,6 +337,9 @@ Larger value eases to pick things, but can make small features impossible to sel
         </item>
         <item row="2" column="1">
          <widget class="Gui::PrefColorButton" name="backgroundColorTo">
+          <property name="toolTip">
+           <string>Bottom color</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -354,6 +363,9 @@ Larger value eases to pick things, but can make small features impossible to sel
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="toolTip">
+           <string>Middle color</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -375,7 +387,7 @@ Larger value eases to pick things, but can make small features impossible to sel
         <item row="1" column="0">
          <widget class="Gui::PrefRadioButton" name="radioButtonGradient">
           <property name="toolTip">
-           <string>Background for parts will have selected color gradient</string>
+           <string>Background will have selected color gradient</string>
           </property>
           <property name="text">
            <string>Color gradient</string>
@@ -393,6 +405,9 @@ Larger value eases to pick things, but can make small features impossible to sel
         </item>
         <item row="1" column="1">
          <widget class="Gui::PrefColorButton" name="backgroundColorFrom">
+          <property name="toolTip">
+           <string>Top color</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -420,7 +435,7 @@ Larger value eases to pick things, but can make small features impossible to sel
            </size>
           </property>
           <property name="toolTip">
-           <string>Background for parts will have selected color</string>
+           <string>Background will have selected color</string>
           </property>
           <property name="text">
            <string>Simple color</string>

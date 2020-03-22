@@ -1348,7 +1348,14 @@ void NumberExpression::negate()
 
 void NumberExpression::_toString(std::ostream &ss, bool,int) const
 {
-    ss << std::setprecision(std::numeric_limits<double>::digits10 + 2) << getValue();
+    // Restore the old implementation because using digits10 + 2 causes
+    // undesired side-effects:
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=44057&p=375882#p375882
+    // See also:
+    // https://en.cppreference.com/w/cpp/types/numeric_limits/digits10
+    // https://en.cppreference.com/w/cpp/types/numeric_limits/max_digits10
+    // https://www.boost.org/doc/libs/1_63_0/libs/multiprecision/doc/html/boost_multiprecision/tut/limits/constants.html
+    ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << getValue();
 
     /* Trim of any extra spaces */
     //while (s.size() > 0 && s[s.size() - 1] == ' ')

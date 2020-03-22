@@ -54,7 +54,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintContact, FemGui::ViewProviderFe
 
 ViewProviderFemConstraintContact::ViewProviderFemConstraintContact()
 {
-    sPixmap = "fem-constraint-contact";
+    sPixmap = "FEM_ConstraintContact";
     //Note change "Contact" in line above to new constraint name, make sure it is the same as in taskFem* cpp file
     ADD_PROPERTY(FaceColor,(0.2f,0.3f,0.2f));
 }

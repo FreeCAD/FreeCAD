@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemElementRotation1D
 
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
-
-from PySide import QtCore
 
 from . import FemSelectionWidgets
 from . import ViewProviderFemConstraint
@@ -42,9 +42,6 @@ class _ViewProviderFemElementRotation1D(ViewProviderFemConstraint.ViewProxy):
     """
     A View Provider for the FemElementRotation1D object
     """
-
-    def getIcon(self):
-        return ":/icons/fem-element-rotation-1d.svg"
 
     """
     # do not activate the task panel, since rotation with reference shapes is not yet supported

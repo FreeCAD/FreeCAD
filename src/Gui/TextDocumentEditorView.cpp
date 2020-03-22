@@ -22,13 +22,19 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QAbstractTextDocumentLayout>
+# include <QApplication>
+# include <QClipboard>
+# include <QString>
+# include <QMessageBox>
+# include <QPushButton>
+# include <QTextBlock>
+#endif
 
 #include <iostream>
 #include <boost/bind.hpp>
 #include <boost/signals2.hpp>
-#include <QString>
-#include <QMessageBox>
-#include <QPushButton>
 
 #include <App/TextDocument.h>
 #include <Gui/Document.h>
@@ -53,11 +59,39 @@ TextDocumentEditorView::TextDocumentEditorView(
     setupEditor();
     setupConnection();
     setCentralWidget(editor);
+
+    // update editor actions on request
+    Gui::MainWindow* mw = Gui::getMainWindow();
+    connect(editor, SIGNAL(undoAvailable(bool)), mw, SLOT(updateEditorActions()));
+    connect(editor, SIGNAL(redoAvailable(bool)), mw, SLOT(updateEditorActions()));
+    connect(editor, SIGNAL(copyAvailable(bool)), mw, SLOT(updateEditorActions()));
 }
 
 TextDocumentEditorView::~TextDocumentEditorView()
 {
     textConnection.disconnect();
+}
+
+void TextDocumentEditorView::showEvent(QShowEvent* event)
+{
+    Gui::MainWindow* mw = Gui::getMainWindow();
+    mw->updateEditorActions();
+    MDIView::showEvent(event);
+}
+
+void TextDocumentEditorView::hideEvent(QHideEvent* event)
+{
+    MDIView::hideEvent(event);
+}
+
+void TextDocumentEditorView::closeEvent(QCloseEvent* event)
+{
+    MDIView::closeEvent(event);
+    if (event->isAccepted()) {
+        aboutToClose = true;
+        Gui::MainWindow* mw = Gui::getMainWindow();
+        mw->updateEditorActions();
+    }
 }
 
 bool TextDocumentEditorView::event(QEvent *event)
@@ -126,8 +160,32 @@ void TextDocumentEditorView::refresh()
 
 bool TextDocumentEditorView::onMsg(const char* msg, const char**)
 {
+    // don't allow any actions if the editor is being closed
+    if (aboutToClose)
+        return false;
+
     if (strcmp(msg,"Save") == 0) {
         saveToObject();
+        return true;
+    }
+    if (strcmp(msg,"Cut") == 0) {
+        getEditor()->cut();
+        return true;
+    }
+    if (strcmp(msg,"Copy") == 0) {
+        getEditor()->copy();
+        return true;
+    }
+    if (strcmp(msg,"Paste") == 0) {
+        getEditor()->paste();
+        return true;
+    }
+    if (strcmp(msg,"Undo") == 0) {
+        getEditor()->undo();
+        return true;
+    }
+    if (strcmp(msg,"Redo") == 0) {
+        getEditor()->redo();
         return true;
     }
     return false;
@@ -140,8 +198,33 @@ bool TextDocumentEditorView::isEditorModified() const
 
 bool TextDocumentEditorView::onHasMsg(const char* msg) const
 {
-    if (strcmp(msg,"Save") == 0)
+    // don't allow any actions if the editor is being closed
+    if (aboutToClose)
+        return false;
+
+    if (strcmp(msg,"Save") == 0) {
         return isEditorModified();
+    }
+    if (strcmp(msg,"Cut") == 0) {
+        return (!getEditor()->isReadOnly() &&
+                getEditor()->textCursor().hasSelection());
+    }
+    if (strcmp(msg,"Copy") == 0) {
+        return (getEditor()->textCursor().hasSelection());
+    }
+    if (strcmp(msg,"Paste") == 0) {
+        if (getEditor()->isReadOnly())
+            return false;
+        QClipboard *cb = QApplication::clipboard();
+        QString text = cb->text();
+        return !text.isEmpty();
+    }
+    if (strcmp(msg,"Undo") == 0) {
+        return (getEditor()->document()->isUndoAvailable());
+    }
+    if (strcmp(msg,"Redo") == 0) {
+        return (getEditor()->document()->isRedoAvailable());
+    }
     return false;
 }
 
@@ -203,5 +286,18 @@ void TextDocumentEditorView::saveToObject()
     getEditor()->document()->setModified(false);
 }
 
+QStringList TextDocumentEditorView::undoActions() const
+{
+    QStringList undo;
+    undo << tr("Edit text");
+    return undo;
+}
+
+QStringList TextDocumentEditorView::redoActions() const
+{
+    QStringList redo;
+    redo << tr("Edit text");
+    return redo;
+}
 
 #include "moc_TextDocumentEditorView.cpp"

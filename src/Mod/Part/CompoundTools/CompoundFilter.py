@@ -207,7 +207,7 @@ class _ViewProviderCompoundFilter:
         if not self.ViewObject.DontUnhideOnDelete:
             try:
                 if self.Object.Base:
-                    # the base object migt be deleted be the user
+                    # the base object might be deleted be the user
                     # https://forum.freecadweb.org/viewtopic.php?f=3&t=42242
                     self.Object.Base.ViewObject.show()
                 if self.Object.Stencil:

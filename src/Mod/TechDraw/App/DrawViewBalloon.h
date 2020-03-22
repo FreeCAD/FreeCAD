@@ -49,17 +49,14 @@ public:
     DrawViewBalloon();
     virtual ~DrawViewBalloon();
 
-/*    App::PropertyLink        sourceView;*/
     App::PropertyLink        SourceView;
     App::PropertyString      Text;
     App::PropertyEnumeration EndType;
-    App::PropertyEnumeration Symbol;
-    App::PropertyFloat       SymbolScale;
+    App::PropertyEnumeration Shape;
+    App::PropertyFloatConstraint ShapeScale;
     App::PropertyDistance    OriginX;
     App::PropertyDistance    OriginY;
-    App::PropertyBool        OriginIsSet;
     App::PropertyFloat       TextWrapLen;
-
     App::PropertyDistance    KinkLength;
 
     short mustExecute() const override;
@@ -76,13 +73,15 @@ public:
     }
 
     static const char* balloonTypeEnums[];
-    static const char* endTypeEnums[];
 
     void handleXYLock(void) override;
 
     double prefKinkLength(void) const;
     int prefShape(void) const;
     int prefEnd(void) const;
+    void setOrigin(Base::Vector3d newOrigin);
+
+    Base::Vector3d getOriginOffset() const;
 
 protected:
     void onChanged(const App::Property* prop) override;
@@ -94,6 +93,8 @@ protected:
                                            const char *PropName) override;
 
 private:
+    static App::PropertyFloatConstraint::Constraints SymbolScaleRange;
+
 };
 
 } //namespace TechDraw

@@ -385,7 +385,7 @@
             <rdf:li>arrows</rdf:li>
           </rdf:Bag>
         </dc:subject>
-        <dc:description>A line. Two arrows placed in the middle of the line, pointing at each othe.</dc:description>
+        <dc:description>A line. Two arrows placed in the middle of the line, pointing at each other.</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>

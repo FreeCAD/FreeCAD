@@ -30,12 +30,11 @@ __url__ = "http://www.freecadweb.org"
 #  \brief FreeCAD FEM _ViewProviderFemMaterialReinforced
 
 import sys
+from PySide import QtCore
+from PySide import QtGui
 
 import FreeCAD
 import FreeCADGui
-
-from PySide import QtCore
-from PySide import QtGui
 
 from . import ViewProviderFemConstraint
 
@@ -48,9 +47,6 @@ class _ViewProviderFemMaterialReinforced(ViewProviderFemConstraint.ViewProxy):
     """
     A View Provider for the FemMaterialReinfocement object
     """
-
-    def getIcon(self):
-        return ":/icons/fem-material-reinforced.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

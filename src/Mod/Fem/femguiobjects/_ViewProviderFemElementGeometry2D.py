@@ -29,10 +29,10 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemElementGeometry2D
 
+from PySide import QtCore
+
 import FreeCAD
 import FreeCADGui
-
-from PySide import QtCore
 
 from . import FemSelectionWidgets
 from . import ViewProviderFemConstraint
@@ -42,9 +42,6 @@ class _ViewProviderFemElementGeometry2D(ViewProviderFemConstraint.ViewProxy):
     """
     A View Provider for the FemElementGeometry2D object
     """
-
-    def getIcon(self):
-        return ":/icons/fem-element-geometry-2d.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(

@@ -1,5 +1,3 @@
-"""Unit test for the Draft module, object creation tests.
-"""
 # ***************************************************************************
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
@@ -23,15 +21,15 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Unit test for the Draft Workbench, object creation tests."""
 
 import unittest
+import math
 import FreeCAD as App
 import Draft
+import drafttests.auxiliary as aux
 from FreeCAD import Vector
-from .auxiliary import _msg
-from .auxiliary import _draw_header
-from .auxiliary import _no_gui
-from .auxiliary import _fake_function
+from draftutils.messages import _msg
 
 
 class DraftCreation(unittest.TestCase):
@@ -43,16 +41,16 @@ class DraftCreation(unittest.TestCase):
         This is executed before every test, so we create a document
         to hold the objects.
         """
-        _draw_header()
-        self.doc_name = self.__class__.__name__
+        aux._draw_header()
+        doc_name = self.__class__.__name__
         if App.ActiveDocument:
-            if App.ActiveDocument.Name != self.doc_name:
-                App.newDocument(self.doc_name)
+            if App.ActiveDocument.Name != doc_name:
+                App.newDocument(doc_name)
         else:
-            App.newDocument(self.doc_name)
-        App.setActiveDocument(self.doc_name)
+            App.newDocument(doc_name)
+        App.setActiveDocument(doc_name)
         self.doc = App.ActiveDocument
-        _msg("  Temporary document '{}'".format(self.doc_name))
+        _msg("  Temporary document '{}'".format(self.doc.Name))
 
     def test_line(self):
         """Create a line."""
@@ -88,10 +86,10 @@ class DraftCreation(unittest.TestCase):
         _msg("  b={0}, c={1}".format(b, c))
         L1 = Draft.makeLine(a, b)
         L2 = Draft.makeLine(b, c)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
 
         if not App.GuiUp:
-            _no_gui("DraftFillet")
+            aux._no_gui("DraftFillet")
             self.assertTrue(True)
             return
 
@@ -122,7 +120,7 @@ class DraftCreation(unittest.TestCase):
         _msg("  startangle={0}, endangle={1}".format(start_angle,
                                                      end_angle))
         obj = Draft.makeCircle(radius,
-                               start_angle, end_angle)
+                               startangle=start_angle, endangle=end_angle)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_arc_3points(self):
@@ -134,8 +132,9 @@ class DraftCreation(unittest.TestCase):
         c = Vector(0, 5, 0)
         _msg("  a={0}, b={1}".format(a, b))
         _msg("  c={}".format(c))
-        Draft.make_arc_3points = _fake_function
-        obj = Draft.make_arc_3points(a, b, c)
+
+        import draftobjects.arc_3points as arc3
+        obj = arc3.make_arc_3points([a, b, c])
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_ellipse(self):
@@ -181,7 +180,7 @@ class DraftCreation(unittest.TestCase):
         """Create a linear dimension."""
         operation = "Draft Dimension"
         _msg("  Test '{}'".format(operation))
-        _msg("  Occasionaly crashes")
+        _msg("  Occasionally crashes")
         a = Vector(0, 0, 0)
         b = Vector(9, 0, 0)
         c = Vector(4, -1, 0)
@@ -191,16 +190,39 @@ class DraftCreation(unittest.TestCase):
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_dimension_radial(self):
-        """Create a radial dimension. NOT IMPLEMENTED CURRENTLY."""
+        """Create a circle and then a radial dimension."""
         operation = "Draft Dimension Radial"
         _msg("  Test '{}'".format(operation))
-        a = Vector(5, 0, 0)
-        b = Vector(4, 3, 0)
-        c = Vector(0, 5, 0)
-        _msg("  a={0}, b={1}".format(a, b))
-        _msg("  c={}".format(c))
-        Draft.make_dimension_radial = _fake_function
-        obj = Draft.make_dimension_radial(a, b, c)
+        radius = 3
+        start_angle = 0
+        end_angle = 90
+        _msg("  radius={}".format(radius))
+        _msg("  startangle={0}, endangle={1}".format(start_angle,
+                                                     end_angle))
+        circ = Draft.makeCircle(radius,
+                                startangle=start_angle, endangle=end_angle)
+        self.doc.recompute()
+
+        obj1 = Draft.makeDimension(circ, 0,
+                                   p3="radius", p4=Vector(1, 1, 0))
+        obj2 = Draft.makeDimension(circ, 0,
+                                   p3="diameter", p4=Vector(3, 1, 0))
+        self.assertTrue(obj1 and obj2, "'{}' failed".format(operation))
+
+    def test_dimension_angular(self):
+        """Create an angular dimension between two lines at given angles."""
+        operation = "Draft Dimension Angular"
+        _msg("  Test '{}'".format(operation))
+        _msg("  Occasionally crashes")
+        center = Vector(0, 0, 0)
+        angle1 = math.radians(60)
+        angle2 = math.radians(10)
+        p3 = Vector(3, 1, 0)
+        _msg("  center={}".format(center))
+        _msg("  angle1={0}, angle2={1}".format(math.degrees(angle1),
+                                               math.degrees(angle2)))
+        _msg("  point={}".format(p3))
+        obj = Draft.makeAngularDimension(center, [angle1, angle2], p3)
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def test_bspline(self):
@@ -230,9 +252,10 @@ class DraftCreation(unittest.TestCase):
         _msg("  Test '{}'".format(operation))
         _msg("  In order to test this, a font file is needed.")
         text = "Testing Shapestring "
-        font = None  # TODO: get a font file here
+        # TODO: find a reliable way to always get a font file here
+        font = None
         _msg("  text='{0}', font='{1}'".format(text, font))
-        Draft.makeShapeString = _fake_function
+        Draft.makeShapeString = aux._fake_function
         obj = Draft.makeShapeString("Text", font)
         # Draft.makeShapeString("Text", FontFile="")
         self.assertTrue(obj, "'{}' failed".format(operation))
@@ -246,7 +269,7 @@ class DraftCreation(unittest.TestCase):
 
         _msg("  Box")
         box = App.ActiveDocument.addObject("Part::Box")
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         # The facebinder function accepts a Gui selection set,
         # or a 'PropertyLinkSubList'
 
@@ -296,7 +319,7 @@ class DraftCreation(unittest.TestCase):
         """Create a label."""
         operation = "Draft Label"
         _msg("  Test '{}'".format(operation))
-        _msg("  Occasionaly crashes")
+        _msg("  Occasionally crashes")
         target_point = Vector(0, 0, 0)
         distance = -25
         placement = App.Placement(Vector(50, 50, 0), App.Rotation())
@@ -306,7 +329,7 @@ class DraftCreation(unittest.TestCase):
         obj = Draft.makeLabel(targetpoint=target_point,
                               distance=distance,
                               placement=placement)
-        App.ActiveDocument.recompute()
+        self.doc.recompute()
         self.assertTrue(obj, "'{}' failed".format(operation))
 
     def tearDown(self):
@@ -314,4 +337,4 @@ class DraftCreation(unittest.TestCase):
 
         This is executed after each test, so we close the document.
         """
-        App.closeDocument(self.doc_name)
+        App.closeDocument(self.doc.Name)

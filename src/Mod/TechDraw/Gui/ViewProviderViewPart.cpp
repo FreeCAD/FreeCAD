@@ -56,6 +56,14 @@ using namespace TechDrawGui;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDrawingView)
 
+const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
+                                                  "Continuous",
+                                                  "Dash",
+                                                  "Dot",
+                                                  "DashDot",
+                                                  "DashDotDot",
+                                                  NULL };
+
 //**************************************************************************
 // Construction/Destruction
 
@@ -89,7 +97,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
                                                     GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
 
-    double defScale = hGrp->GetFloat("CenterMarkScale",2.0);
+    double defScale = hGrp->GetFloat("CenterMarkScale",0.50);
     bool   defShowCenters = hGrp->GetBool("ShowCenterMarks", false);
     
     //decorations
@@ -100,6 +108,9 @@ ViewProviderViewPart::ViewProviderViewPart()
 
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,dgroup,App::Prop_None,"Show/hide section line if applicable");
+    int defLineStyle = hGrp->GetInt("SectionLine", 2);
+    SectionLineStyle.setEnums(LineStyleEnums);
+    ADD_PROPERTY_TYPE(SectionLineStyle, (defLineStyle), dgroup, App::Prop_None, "Set section line style if applicable");
     
     //properties that affect Detail Highlights
     ADD_PROPERTY_TYPE(HighlightAdjust,(0.0),hgroup,App::Prop_None,"Adjusts the rotation of the Detail highlight");
@@ -127,6 +138,7 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(ArcCenterMarks) ||
         prop == &(CenterScale) ||
         prop == &(ShowSectionLine)  ||
+        prop == &(SectionLineStyle) ||
         prop == &(HorizCenterLine)  ||
         prop == &(VertCenterLine) ) {
         // redraw QGIVP

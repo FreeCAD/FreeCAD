@@ -39,6 +39,7 @@
 
 namespace TechDraw {
 class DrawViewBalloon;
+class DrawView;
 }
 
 namespace TechDraw {
@@ -109,10 +110,11 @@ protected:
 
     QGCustomText* m_labelText;
     QColor m_colNormal;
-    bool m_ctrl;
 
     double posX;
     double posY;
+    bool m_ctrl;
+    bool m_drag;
     
 private:
 };
@@ -139,7 +141,6 @@ public:
                         QWidget * widget = 0 ) override;
 
     QString getLabelText(void);
-    void draw_modifier(bool modifier);
     void placeBalloon(QPointF pos);
     TechDraw::DrawViewBalloon *dvBalloon;
     void setPrettyPre(void);
@@ -180,6 +181,12 @@ protected:
     void parentViewMousePressed(QGIView *view, QPointF pos);
     QPointF *oldLabelCenter;
     QGIView *parent;           //used to create edit dialog
+
+    TechDraw::DrawView* getSourceView() const;
+    bool m_dragInProgress;
+    bool m_ctrl;
+    Base::Vector3d m_saveOffset;
+
 
 };
 

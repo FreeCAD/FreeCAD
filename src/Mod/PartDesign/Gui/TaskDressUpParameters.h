@@ -57,7 +57,11 @@ public:
     void setupTransaction();
 
     /// Apply the changes made to the object to it
-    virtual void apply() {};
+    virtual void apply() {}
+
+    int getTransactionID() const {
+        return transactionID;
+    }
 
 protected Q_SLOTS:
     void onButtonRefAdd(const bool checked);

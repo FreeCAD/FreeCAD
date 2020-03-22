@@ -79,13 +79,13 @@ ViewProviderBalloon::ViewProviderBalloon()
     auto lg = TechDraw::LineGroup::lineGroupFactory(lgName);
     double weight = lg->getWeight("Thin");
     delete lg;                                   //Coverity CID 174670
-    ADD_PROPERTY_TYPE(LineWidth,(weight),group,(App::PropertyType)(App::Prop_None),"Balloon line width");
+    ADD_PROPERTY_TYPE(LineWidth,(weight),group,(App::PropertyType)(App::Prop_None),"Leader line width");
 
     hGrp = App::GetApplication().GetUserParameter()
                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
-    ADD_PROPERTY_TYPE(Color,(fcColor),group,App::Prop_None,"The color of the Dimension");
+    ADD_PROPERTY_TYPE(Color,(fcColor),group,App::Prop_None,"Color of the text");
 }
 
 ViewProviderBalloon::~ViewProviderBalloon()
@@ -121,7 +121,7 @@ bool ViewProviderBalloon::setEdit(int ModNum)
         Gui::Selection().clearSelection();
         auto qgivBalloon(dynamic_cast<QGIViewBalloon*>(getQView()));
         if (qgivBalloon) {
-            Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon));
+            Gui::Control().showDialog(new TaskDlgBalloon(qgivBalloon, this));
         }
         return true;
     } else {
@@ -155,6 +155,7 @@ void ViewProviderBalloon::onChanged(const App::Property* p)
 {
     if ((p == &Font)  ||
         (p == &Fontsize) ||
+        (p == &Color) ||
         (p == &LineWidth)) {
         QGIView* qgiv = getQView();
         if (qgiv) {

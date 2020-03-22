@@ -37,16 +37,13 @@ Report to Draft.py for info
 """
 
 import os
-import six
 import sys
-import traceback
 import math
-import platform
 import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
-from PySide import QtCore, QtGui, QtSvg
+from PySide import QtCore, QtGui
 
 
 import draftutils.translate
@@ -91,7 +88,6 @@ def getDefaultUnit(dim):
     '''return default Unit of Measure for a Dimension based on user preference
     Units Schema'''
     # only Length and Angle so far
-    from FreeCAD import Units
     if dim == 'Length':
         qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Length)
         UOM = qty.getUserPreferred()[2]
@@ -116,7 +112,6 @@ def makeFormatSpec(decimals=4,dim='Length'):
 def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=None):
     '''return an internal value (ie mm) Length or Angle converted for display according
     to Units Schema in use. Unit can be used to force the value to express in a certain unit'''
-    from FreeCAD import Units
     if dim == 'Length':
         q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
         if not unit:
@@ -403,14 +398,14 @@ class DraftToolBar:
         boldtxt.setBold(True)
         self.cmdlabel.setFont(boldtxt)
 
-        # subcommands
+        # subcommands for draft Edit, OBSOLETE
 
-        self.addButton = self._pushbutton("addButton", self.layout, icon="Draft_AddPoint", width=22, checkable=True)
-        self.delButton = self._pushbutton("delButton", self.layout, icon="Draft_DelPoint", width=22, checkable=True)
-        self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
-        self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
-        self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
-        self.arc3PtButton = self._pushbutton("arc3PtButton", self.layout, icon="Draft_Arc", width=22, checkable=True)
+        # self.addButton = self._pushbutton("addButton", self.layout, icon="Draft_AddPoint", width=22, checkable=True)
+        # self.delButton = self._pushbutton("delButton", self.layout, icon="Draft_DelPoint", width=22, checkable=True)
+        # self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
+        # self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
+        # self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
+        # self.arc3PtButton = self._pushbutton("arc3PtButton", self.layout, icon="Draft_Arc", width=22, checkable=True)
 
         # point
 
@@ -536,10 +531,11 @@ class DraftToolBar:
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
-        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("returnPressed()"),self.checkangle)
+        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("returnPressed()"),self.checklength)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
+        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.pointButton,QtCore.SIGNAL("clicked()"),self.validatePoint)
@@ -548,12 +544,13 @@ class DraftToolBar:
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged()"),self.checkEnterText)
         QtCore.QObject.connect(self.textOkButton,QtCore.SIGNAL("clicked()"),self.sendText)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.setFocus)
-        QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
-        QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
-        QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
-        QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
-        QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
-        QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.setArc3PtMode)
+        # Draft Edit UI obsolete due to introduction of incommand context menu
+        # QtCore.QObject.connect(self.addButton,QtCore.SIGNAL("toggled(bool)"),self.setAddMode)
+        # QtCore.QObject.connect(self.delButton,QtCore.SIGNAL("toggled(bool)"),self.setDelMode)
+        # QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
+        # QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
+        # QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
+        # QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.setArc3PtMode)
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
@@ -680,12 +677,12 @@ class DraftToolBar:
         self.continueCmd.setText(translate("draft", "Continue")+" ("+inCommandShortcuts["Continue"][0]+")")
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
-        self.addButton.setToolTip(translate("draft", "Add points to the current object"))
-        self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
-        self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
-        self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
-        self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
-        self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
+        # self.addButton.setToolTip(translate("draft", "Add points to the current object"))
+        # self.delButton.setToolTip(translate("draft", "Remove points from the current object"))
+        # self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
+        # self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
+        # self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
+        # self.arc3PtButton.setToolTip(translate("draft", "Toggle radius and angles arc editing"))
         self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
@@ -798,22 +795,29 @@ class DraftToolBar:
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         if p.GetBool("focusOnLength",False) and self.lengthValue.isVisible():
             self.lengthValue.setFocus()
-            self.lengthValue.selectAll()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
         elif self.angleLock.isVisible() and self.angleLock.isChecked():
             self.lengthValue.setFocus()
-            self.lengthValue.selectAll()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
         elif (f is None) or (f == "x"):
             self.xValue.setFocus()
-            self.xValue.selectAll()
+            self.xValue.setSelection(0,self.number_length(self.xValue.text()))
         elif f == "y":
             self.yValue.setFocus()
-            self.yValue.selectAll()
+            self.yValue.setSelection(0,self.number_length(self.yValue.text()))
         elif f == "z":
             self.zValue.setFocus()
-            self.zValue.selectAll()
+            self.zValue.setSelection(0,self.number_length(self.zValue.text()))
         elif f == "radius":
             self.radiusValue.setFocus()
-            self.radiusValue.selectAll()
+            self.radiusValue.setSelection(0,self.number_length(self.radiusValue.text()))
+
+    def number_length(self, str):
+        nl = 0
+        for char in str:
+            if char in "0123456789.,-":
+                nl += 1
+        return nl
 
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -964,12 +968,12 @@ class DraftToolBar:
             self.isRelative.hide()
             self.hasFill.hide()
             self.finishButton.hide()
-            self.addButton.hide()
-            self.delButton.hide()
-            self.sharpButton.hide()
-            self.tangentButton.hide()
-            self.symmetricButton.hide()
-            self.arc3PtButton.hide()
+            # self.addButton.hide()
+            # self.delButton.hide()
+            # self.sharpButton.hide()
+            # self.tangentButton.hide()
+            # self.symmetricButton.hide()
+            # self.arc3PtButton.hide()
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
@@ -1102,28 +1106,28 @@ class DraftToolBar:
         self.numFaces.hide()
         self.isRelative.hide()
         self.hasFill.hide()
-        self.addButton.show()
-        self.delButton.show()
-        if mode == 'Wire':
-            self.setEditButtons(True)
-            self.setBezEditButtons(False)
-        elif mode == 'Arc':
-            self.addButton.hide()
-            self.delButton.hide()
-            self.arc3PtButton.show()
-        elif mode == 'BezCurve':
-            self.sharpButton.show()
-            self.tangentButton.show()
-            self.symmetricButton.show()
+        # self.addButton.show()
+        # self.delButton.show()
+        # if mode == 'Wire':
+        #     self.setEditButtons(True)
+        #     self.setBezEditButtons(False)
+        # elif mode == 'Arc':
+        #     self.addButton.hide()
+        #     self.delButton.hide()
+        #     self.arc3PtButton.show()
+        # elif mode == 'BezCurve':
+        #     self.sharpButton.show()
+        #     self.tangentButton.show()
+        #     self.symmetricButton.show()
         self.closeButton.show()
-        self.finishButton.show()
+        # self.finishButton.show()
         # always start Edit with buttons unchecked
-        self.addButton.setChecked(False)
-        self.delButton.setChecked(False)
-        self.sharpButton.setChecked(False)
-        self.tangentButton.setChecked(False)
-        self.symmetricButton.setChecked(False)
-        self.arc3PtButton.setChecked(False)
+        # self.addButton.setChecked(False)
+        # self.delButton.setChecked(False)
+        # self.sharpButton.setChecked(False)
+        # self.tangentButton.setChecked(False)
+        # self.symmetricButton.setChecked(False)
+        # self.arc3PtButton.setChecked(False)
 
     def extUi(self):
         if Draft.getParam("UsePartPrimitives",False):
@@ -1141,9 +1145,9 @@ class DraftToolBar:
             self.isCopy.setChecked(p.GetBool("copymodeValue",False))
         self.continueCmd.show()
 
-    def vertUi(self,addmode=True):
-        self.addButton.setChecked(addmode)
-        self.delButton.setChecked(not(addmode))
+    # def vertUi(self,addmode=True):
+    #     self.addButton.setChecked(addmode)
+    #     self.delButton.setChecked(not(addmode))
 
     def checkLocal(self):
         """checks if x,y,z coords must be displayed as local or global"""
@@ -1156,14 +1160,14 @@ class DraftToolBar:
                 self.labely.setText(translate("draft", "Local Y"))
                 self.labelz.setText(translate("draft", "Local Z"))
 
-    def setEditButtons(self,mode):
-        self.addButton.setEnabled(mode)
-        self.delButton.setEnabled(mode)
+    # def setEditButtons(self,mode):
+    #     self.addButton.setEnabled(mode)
+    #     self.delButton.setEnabled(mode)
 
-    def setBezEditButtons(self,mode):
-        self.sharpButton.setEnabled(mode)
-        self.tangentButton.setEnabled(mode)
-        self.symmetricButton.setEnabled(mode)
+    # def setBezEditButtons(self,mode):
+    #     self.sharpButton.setEnabled(mode)
+    #     self.tangentButton.setEnabled(mode)
+    #     self.symmetricButton.setEnabled(mode)
 
     def setNextFocus(self):
         def isThere(widget):
@@ -1297,7 +1301,7 @@ class DraftToolBar:
     def checkx(self):
         if self.yValue.isEnabled():
             self.yValue.setFocus()
-            self.yValue.selectAll()
+            self.yValue.setSelection(0,self.number_length(self.yValue.text()))
             self.updateSnapper()
         else:
             self.checky()
@@ -1305,15 +1309,18 @@ class DraftToolBar:
     def checky(self):
         if self.zValue.isEnabled():
             self.zValue.setFocus()
-            self.zValue.selectAll()
+            self.zValue.setSelection(0,self.number_length(self.zValue.text()))
             self.updateSnapper()
         else:
             self.validatePoint()
 
-    def checkangle(self):
-        self.angleValue.setFocus()
-        self.angleValue.selectAll()
-        self.updateSnapper()
+    def checklength(self):
+        if self.angleValue.isEnabled():
+            self.angleValue.setFocus()
+            self.angleValue.setSelection(0,self.number_length(self.angleValue.text()))
+            self.updateSnapper()
+        else:
+            self.validatePoint()
 
     def validatePoint(self):
         """function for checking and sending numbers entered manually"""
@@ -1500,70 +1507,70 @@ class DraftToolBar:
         #SetWP
 
         spec = False
-        if txt.upper().endswith(inCommandShortcuts["Relative"][0]):
+        if txt.upper().startswith(inCommandShortcuts["Relative"][0]):
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Fill"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Fill"][0]):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Exit"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Exit"][0]):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Continue"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Continue"][0]):
             self.toggleContinue()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Wipe"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Wipe"][0]):
             self.wipeLine()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["SelectEdge"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["SelectEdge"][0]):
             self.selectEdge()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Snap"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Snap"][0]):
             self.togglesnap()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["NearSnap"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["NearSnap"][0]):
             self.togglenearsnap()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Increase"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Increase"][0]):
             self.toggleradius(1)
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Decrease"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Decrease"][0]):
             self.toggleradius(-1)
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["AddHold"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["AddHold"][0]):
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.addHoldPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["RestrictX"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["RestrictX"][0]):
             self.constrain("x")
             self.displayPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["RestrictY"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["RestrictY"][0]):
             self.constrain("y")
             self.displayPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["RestrictZ"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["RestrictZ"][0]):
             self.constrain("z")
             self.displayPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Length"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Length"][0]):
             self.constrain("angle")
             self.displayPoint()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Close"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Close"][0]):
             if self.closeButton.isVisible():
                 self.closeLine()
-        elif txt.upper().endswith(inCommandShortcuts["SetWP"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["SetWP"][0]):
             self.orientWP()
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["Copy"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["Copy"][0]):
             if self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
             spec = True
-        elif txt.upper().endswith(inCommandShortcuts["SubelementMode"][0]):
+        elif txt.upper().startswith(inCommandShortcuts["SubelementMode"][0]):
             if self.isSubelementMode.isVisible():
                 self.isSubelementMode.setChecked(not self.isSubelementMode.isChecked())
             spec = True
@@ -1655,10 +1662,11 @@ class DraftToolBar:
             if not self.angleLock.isChecked():
                 self.angleValue.setText(displayExternal(a,None,'Angle'))
             if not mask:
-                # automask
+                # automask, a is rounded to identify one of the below cases
+                a = round(a, Draft.getParam("precision"))
                 if a in [0,180,-180]:
                     mask = "x"
-                elif a in [90,270,-90]:
+                elif a in [90,270,-90,-270]:
                     mask = "y"
 
         # set masks
@@ -1666,21 +1674,25 @@ class DraftToolBar:
             self.xValue.setEnabled(True)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(False)
+            self.angleValue.setEnabled(False)
             self.setFocus()
         elif (mask == "y") or (self.mask == "y"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(True)
             self.zValue.setEnabled(False)
+            self.angleValue.setEnabled(False)
             self.setFocus("y")
         elif (mask == "z") or (self.mask == "z"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(True)
+            self.angleValue.setEnabled(False)
             self.setFocus("z")
         else:
             self.xValue.setEnabled(True)
             self.yValue.setEnabled(True)
             self.zValue.setEnabled(True)
+            self.angleValue.setEnabled(True)
             self.setFocus()
 
 
@@ -1782,44 +1794,44 @@ class DraftToolBar:
     def popupTriggered(self,action):
         self.sourceCmd.proceed(str(action.text()))
 
-    def setAddMode(self,bool):
-        if self.addButton.isChecked():
-            self.delButton.setChecked(False)
-            self.symmetricButton.setChecked(False)
-            self.sharpButton.setChecked(False)
-            self.tangentButton.setChecked(False)
+    # def setAddMode(self,bool):
+    #     if self.addButton.isChecked():
+    #         self.delButton.setChecked(False)
+    #         self.symmetricButton.setChecked(False)
+    #         self.sharpButton.setChecked(False)
+    #         self.tangentButton.setChecked(False)
 
-    def setDelMode(self,bool):
-        if self.delButton.isChecked():
-            self.addButton.setChecked(False)
-            self.symmetricButton.setChecked(False)
-            self.sharpButton.setChecked(False)
-            self.tangentButton.setChecked(False)
+    # def setDelMode(self,bool):
+    #     if self.delButton.isChecked():
+    #         self.addButton.setChecked(False)
+    #         self.symmetricButton.setChecked(False)
+    #         self.sharpButton.setChecked(False)
+    #         self.tangentButton.setChecked(False)
 
-    def setSharpMode(self,bool):
-        if self.sharpButton.isChecked():
-            self.tangentButton.setChecked(False)
-            self.symmetricButton.setChecked(False)
-            self.addButton.setChecked(False)
-            self.delButton.setChecked(False)
+    # def setSharpMode(self,bool):
+    #     if self.sharpButton.isChecked():
+    #         self.tangentButton.setChecked(False)
+    #         self.symmetricButton.setChecked(False)
+    #         self.addButton.setChecked(False)
+    #         self.delButton.setChecked(False)
 
-    def setTangentMode(self,bool):
-        if self.tangentButton.isChecked():
-            self.sharpButton.setChecked(False)
-            self.symmetricButton.setChecked(False)
-            self.addButton.setChecked(False)
-            self.delButton.setChecked(False)
+    # def setTangentMode(self,bool):
+    #     if self.tangentButton.isChecked():
+    #         self.sharpButton.setChecked(False)
+    #         self.symmetricButton.setChecked(False)
+    #         self.addButton.setChecked(False)
+    #         self.delButton.setChecked(False)
 
-    def setSymmetricMode(self,bool):
-        if self.symmetricButton.isChecked():
-            self.sharpButton.setChecked(False)
-            self.tangentButton.setChecked(False)
-            self.addButton.setChecked(False)
-            self.delButton.setChecked(False)
+    # def setSymmetricMode(self,bool):
+    #     if self.symmetricButton.isChecked():
+    #         self.sharpButton.setChecked(False)
+    #         self.tangentButton.setChecked(False)
+    #         self.addButton.setChecked(False)
+    #         self.delButton.setChecked(False)
 
-    def setArc3PtMode(self,bool):
-        if self.arc3PtButton.isChecked():
-            self.arc3PtButton.setChecked(True)
+    # def setArc3PtMode(self,bool):
+    #     if self.arc3PtButton.isChecked():
+    #         self.arc3PtButton.setChecked(True)
 
     def setRadiusValue(self,val,unit=None):
         #print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)
@@ -2440,6 +2452,3 @@ class ShapeStringTaskPanel:
 if not hasattr(FreeCADGui,"draftToolBar"):
     FreeCADGui.draftToolBar = DraftToolBar()
 #----End of Python Features Definitions----#
-
-if not hasattr(FreeCADGui,"Snapper"):
-    import DraftSnap

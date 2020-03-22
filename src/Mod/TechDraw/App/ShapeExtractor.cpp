@@ -39,12 +39,14 @@
 #include <App/Document.h>
 #include <App/GroupExtension.h>
 #include <App/Part.h>
+#include <App/Link.h>
 
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Placement.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
@@ -67,7 +69,6 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
     }
     for (auto& l:links) {
         const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
-//        App::Property* gProp = l->getPropertyByName("Group");
         if (gex != nullptr) {
             std::vector<App::DocumentObject*> objs = gex->Group.getValues();
             for (auto& d: objs) {
@@ -92,24 +93,34 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
 
 TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links)
 {
+//    Base::Console().Message("SE::getShapes() - links in: %d\n", links.size());
     TopoDS_Shape result;
     std::vector<TopoDS_Shape> sourceShapes;
 
     for (auto& l:links) {
-        auto shape = Part::Feature::getShape(l);
-        if(!shape.IsNull()) {
-//            BRepTools::Write(shape, "DVPgetShape.brep");            //debug
-            if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
-                sourceShapes.push_back(shape);
-            } else {                                                  //complex shape
-                std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
-                if (!drawable.empty()) {
-                    sourceShapes.insert(sourceShapes.end(),drawable.begin(),drawable.end());
-                }
+        if (l->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
+            App::Link* xLink = dynamic_cast<App::Link*>(l);
+            std::vector<TopoDS_Shape> xShapes = getXShapes(xLink);
+            if (!xShapes.empty()) {
+                sourceShapes.insert(sourceShapes.end(), xShapes.begin(), xShapes.end());
+                continue;
             }
         } else {
-            std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
-            sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+            auto shape = Part::Feature::getShape(l);
+            if(!shape.IsNull()) {
+    //            BRepTools::Write(shape, "DVPgetShape.brep");            //debug
+                if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
+                    sourceShapes.push_back(shape);
+                } else {                                                  //complex shape
+                    std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
+                    if (!drawable.empty()) {
+                        sourceShapes.insert(sourceShapes.end(),drawable.begin(),drawable.end());
+                    }
+                }
+            } else {
+                std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
+                sourceShapes.insert(sourceShapes.end(),shapeList.begin(),shapeList.end());
+            }
         }
     }
 
@@ -135,6 +146,81 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     }
     return result;
 }
+
+std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
+{
+//    Base::Console().Message("SE::getXShapes(%X) - %s\n", xLink, xLink->getNameInDocument());
+    std::vector<TopoDS_Shape> xSourceShapes;
+    if (xLink == nullptr) {
+        return xSourceShapes;
+    }
+
+    std::vector<App::DocumentObject*> children = xLink->getLinkedChildren();
+    Base::Placement linkPlm;
+    if (xLink->hasPlacement()) {
+        linkPlm = xLink->getLinkPlacementProperty()->getValue();
+    }
+
+    if (!children.empty()) {
+        for (auto& l:children) {
+//What to do with LinkGroup???
+//            if (l->getTypeId().isDerivedFrom(App::LinkGroup::getClassTypeId())) {
+//                Base::Console().Message("SE::getXShapes - found a LinkGroup\n");
+//            }
+            Base::Placement childPlm;
+            if (l->getTypeId().isDerivedFrom(App::LinkElement::getClassTypeId())) {
+                App::LinkElement* cLinkElem = dynamic_cast<App::LinkElement*>(l);
+                if (cLinkElem->hasPlacement()) {
+                    childPlm = cLinkElem->getLinkPlacementProperty()->getValue();
+                }
+            }            
+            auto shape = Part::Feature::getShape(l);
+            if(!shape.IsNull()) {
+                Base::Placement netPlm = linkPlm;
+                netPlm *= childPlm;
+                if (xLink->hasPlacement()) {
+                    Part::TopoShape ts(shape);
+                    ts.setPlacement(netPlm);
+                    shape = ts.getShape();
+                }
+                if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
+                    xSourceShapes.push_back(shape);
+                } else {                                                  //complex shape
+                    std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
+                    if (!drawable.empty()) {
+                        xSourceShapes.insert(xSourceShapes.end(),drawable.begin(),drawable.end());
+                    }
+                }
+            } else {
+                Base::Console().Message("SE::getXShapes - no shape from getXShape\n");
+            }
+        }
+    } else {
+        int depth = 1;   //0 is default value, related to recursion of Links???
+        App::DocumentObject* link = xLink->getLink(depth);
+        if (link != nullptr) {
+            auto shape = Part::Feature::getShape(link);
+            if(!shape.IsNull()) {
+                if (xLink->hasPlacement()) {
+                    Part::TopoShape ts(shape);
+                    ts.setPlacement(linkPlm);
+                    shape = ts.getShape();
+                }
+
+                if (shape.ShapeType() > TopAbs_COMPSOLID)  {              //simple shape
+                    xSourceShapes.push_back(shape);
+                } else {                                                  //complex shape
+                    std::vector<TopoDS_Shape> drawable = extractDrawableShapes(shape);
+                    if (!drawable.empty()) {
+                        xSourceShapes.insert(xSourceShapes.end(),drawable.begin(),drawable.end());
+                    }
+                }
+            }
+        }
+    }
+    return xSourceShapes;
+}
+
 
 std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::DocumentObject* docObj)
 {

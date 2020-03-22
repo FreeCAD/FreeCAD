@@ -96,7 +96,7 @@
      <item>
       <widget class="QCheckBox" name="checkSubObject">
        <property name="toolTip">
-        <string>If enabled, then 3D view selection will be syncrhonize with full object hierarchy.</string>
+        <string>If enabled, then 3D view selection will be sychronize with full object hierarchy.</string>
        </property>
        <property name="text">
         <string>Sync sub-object selection</string>

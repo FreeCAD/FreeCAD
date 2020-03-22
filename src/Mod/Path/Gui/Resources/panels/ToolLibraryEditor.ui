@@ -99,8 +99,8 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../../../../../Gui/Icons/resource.qrc">
-                  <normaloff>:/icons/FreeCAD-default/scalable/edit-edit.svg</normaloff>:/icons/FreeCAD-default/scalable/edit-edit.svg</iconset>
+                 <iconset theme="edit-edit.svg" resource="../../../../../Gui/Icons/resource.qrc">
+                  <normaloff>:/icons/edit-edit.svg</normaloff>:/icons/edit-edit.svg</iconset>
                 </property>
                </widget>
               </item>
@@ -117,7 +117,7 @@
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normalon>:/icons/FreeCAD-default/scalable/list-remove.svg</normalon>
+                  <normalon>:/icons/list-remove.svg</normalon>
                  </iconset>
                 </property>
                </widget>
@@ -135,7 +135,7 @@
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normalon>:/icons/FreeCAD-default/scalable/list-add.svg</normalon>
+                  <normalon>:/icons/list-add.svg</normalon>
                  </iconset>
                 </property>
                </widget>

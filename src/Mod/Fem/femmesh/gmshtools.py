@@ -366,23 +366,25 @@ class GmshTools():
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467
             # http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
             part = self.part_obj
-            if self.mesh_obj.MeshRegionList:
-                # other part obj might not have a Proxy, thus an exception would be raised
-                if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):
-                    if part.Proxy.Type == "FeatureBooleanFragments" \
-                            or part.Proxy.Type == "FeatureSlice" \
-                            or part.Proxy.Type == "FeatureXOR":
-                        error_message = (
-                            "  The mesh to shape is a boolean split tools Compound "
-                            "and the mesh has mesh region list. "
-                            "Gmsh could return unexpected meshes in such circumstances. "
-                            "It is strongly recommended to extract the shape to mesh "
-                            "from the Compound and use this one."
-                        )
-                        Console.PrintError(error_message + "\n")
-                        # TODO: no gui popup because FreeCAD will be in a endless output loop
-                        #       as long as the pop up is on --> maybe find a better solution for
-                        #       either of both --> thus the pop up is in task panel
+            if (
+                self.mesh_obj.MeshRegionList and part.Shape.ShapeType == "Compound"
+                and (
+                    femutils.is_of_type(part, "FeatureBooleanFragments")
+                    or femutils.is_of_type(part, "FeatureSlice")
+                    or femutils.is_of_type(part, "FeatureXOR")
+                )
+            ):
+                error_message = (
+                    "  The mesh to shape is a boolean split tools Compound "
+                    "and the mesh has mesh region list. "
+                    "Gmsh could return unexpected meshes in such circumstances. "
+                    "It is strongly recommended to extract the shape to mesh "
+                    "from the Compound and use this one."
+                )
+                Console.PrintError(error_message + "\n")
+                # TODO: no gui popup because FreeCAD will be in a endless output loop
+                #       as long as the pop up is on --> maybe find a better solution for
+                #       either of both --> thus the pop up is in task panel
             for mr_obj in self.mesh_obj.MeshRegionList:
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)

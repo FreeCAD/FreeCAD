@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <sstream>
-
 # include <gp_Trsf.hxx>
 # include <gp_Ax1.hxx>
 # include <BRepBuilderAPI_MakeShape.hxx>
@@ -36,6 +35,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
 # include <TopoDS_Face.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pln.hxx> // for Precision::Confusion()
@@ -179,16 +179,27 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         }
         *pyObj =  Py::new_reference_to(shape2pyshape(ts));
         return const_cast<Feature*>(this);
-    }catch(Standard_Failure &e) {
+    }
+    catch(Standard_Failure &e) {
+        // FIXME: Do not handle the exception here because it leads to a flood of irrelevant and
+        // annoying error messages.
+        // For example: https://forum.freecadweb.org/viewtopic.php?f=19&t=42216
+        // Instead either raise a sub-class of Base::Exception and let it handle by the calling
+        // instance or do simply nothing. For now the error message is degraded to a log message.
         std::ostringstream str;
         Standard_CString msg = e.GetMessageString();
+#if OCC_VERSION_HEX >= 0x070000
+        // Avoid name mangling
+        str << e.DynamicType()->get_type_name() << " ";
+#else
         str << typeid(e).name() << " ";
+#endif
         if (msg) {str << msg;}
         else     {str << "No OCCT Exception Message";}
         str << ": " << getFullName();
         if (subname) 
             str << '.' << subname;
-        FC_ERR(str.str());
+        FC_LOG(str.str());
         return 0;
     }
 }

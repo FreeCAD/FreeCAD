@@ -40,22 +40,13 @@ from femtools import membertools
 
 class ViewProxy(ViewProviderFemConstraint.ViewProxy):
 
-    def getIcon(self):
-        return ":/icons/fem-constraint-initial-flow-velocity.svg"
-
     def setEdit(self, vobj, mode=0):
-        # hide all meshes
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject"):
-                o.ViewObject.hide()
-        # show task panel
-        task = _TaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(task)
-        return True
-
-    def unsetEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        return True
+        ViewProviderFemConstraint.ViewProxy.setEdit(
+            self,
+            vobj,
+            mode,
+            _TaskPanel
+        )
 
 
 class _TaskPanel(object):

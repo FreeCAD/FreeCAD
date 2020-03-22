@@ -285,6 +285,12 @@ QColor QGISectionLine::getSectionColor()
 }
 
 //SectionLineStyle
+void QGISectionLine::setSectionStyle(int style)
+{
+    Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (style);
+    setStyle(sectStyle);
+}
+
 Qt::PenStyle QGISectionLine::getSectionStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->

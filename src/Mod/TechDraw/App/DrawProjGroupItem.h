@@ -56,7 +56,7 @@ public:
     virtual ~DrawProjGroupItem();
 
     App::PropertyEnumeration Type;
-    App::PropertyVector      RotationVector;    //this is superceded by dvp xdirection
+    App::PropertyVector      RotationVector;    //this is superseded by dvp xdirection
 
     short mustExecute() const override;
     virtual void onDocumentRestored() override;

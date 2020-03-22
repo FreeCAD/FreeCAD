@@ -29,11 +29,11 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemConstraintTie
 
-import FreeCAD
-import FreeCADGui
-
 from PySide import QtCore
 from PySide import QtGui
+
+import FreeCAD
+import FreeCADGui
 
 from . import FemSelectionWidgets
 from . import ViewProviderFemConstraint
@@ -43,9 +43,6 @@ class _ViewProviderFemConstraintTie(ViewProviderFemConstraint.ViewProxy):
     """
     A View Provider for the FemConstraintTie object
     """
-
-    def getIcon(self):
-        return ":/icons/fem-constraint-tie.svg"
 
     def setEdit(self, vobj, mode=0):
         ViewProviderFemConstraint.ViewProxy.setEdit(
