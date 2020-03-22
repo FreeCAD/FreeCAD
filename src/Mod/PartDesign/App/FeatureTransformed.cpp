@@ -585,4 +585,31 @@ void Transformed::setupObject () {
     CopyShape.setValue(false);
 }
 
+bool Transformed::isElementGenerated(const char *name) const
+{
+    bool res = false;
+    long tag = 0;
+    int depth = 2;
+    Shape.getShape().traceElement(name,
+        [&] (const std::string &, size_t, long tag2) {
+            if(tag && std::abs(tag2)!=tag) {
+                if(--depth == 0)
+                    return true;
+            }
+            if(tag2 < 0) {
+                tag2 = -tag2;
+                for(auto obj : this->OriginalSubs.getValues()) {
+                    if(tag2 == obj->getID()) {
+                        res = true;
+                        return true;
+                    }
+                }
+            }
+            tag = tag2;
+            return false;
+        });
+
+    return res;
+}
+
 }

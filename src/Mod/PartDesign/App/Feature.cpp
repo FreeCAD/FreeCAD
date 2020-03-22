@@ -234,6 +234,41 @@ Body* Feature::getFeatureBody() const {
     return nullptr;
 }
 
+void Feature::getGeneratedIndices(std::vector<int> &faces,
+                                  std::vector<int> &edges,
+                                  std::vector<int> &vertices) const
+{
+    Part::TopoShape shape = Shape.getShape();
+    std::string element("Face");
+    std::set<int> edgeSet;
+    std::set<int> vertexSet;
+    unsigned count = shape.countSubShapes(TopAbs_FACE);
+    for(unsigned i=1; i<=count; ++i) {
+        element.resize(4);
+        element += std::to_string(i);
+        auto mapped = shape.getElementName(element.c_str(),1);
+        if(mapped != element.c_str() && isElementGenerated(mapped)) {
+            faces.push_back(i-1);
+            Part::TopoShape face = shape.getSubTopoShape(TopAbs_FACE, i);
+            for(auto &s : face.getSubShapes(TopAbs_EDGE)) {
+                int idx = shape.findShape(s)-1;
+                if(idx >= 0 && edgeSet.insert(idx).second)
+                    edges.push_back(idx);
+            }
+            for(auto &s : face.getSubShapes(TopAbs_VERTEX)) {
+                int idx = shape.findShape(s)-1;
+                if(idx >= 0 && vertexSet.insert(idx).second)
+                    vertices.push_back(idx);
+            }
+        }
+    }
+}
+
+bool Feature::isElementGenerated(const char *name) const
+{
+    return Shape.getShape().isElementGenerated(name);
+}
+
 }//namespace PartDesign
 
 namespace App {

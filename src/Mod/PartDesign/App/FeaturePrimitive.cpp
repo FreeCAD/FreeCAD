@@ -50,6 +50,7 @@
 #include <App/Document.h>
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 using namespace PartDesign;
 
@@ -139,6 +140,15 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
     }
 
     return App::DocumentObject::StdReturn;
+}
+
+bool FeaturePrimitive::isElementGenerated(const char *name) const
+{
+    if(!getBaseObject(true))
+        return false;
+    long tag = 0;
+    Data::ComplexGeoData::findTagInElementName(name,&tag);
+    return tag == getID();
 }
 
 void FeaturePrimitive::onChanged(const App::Property* prop)

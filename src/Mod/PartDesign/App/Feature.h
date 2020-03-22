@@ -79,6 +79,12 @@ public:
         return "PartDesignGui::ViewProvider";
     }
 
+    virtual bool isElementGenerated(const char *name) const;
+
+    virtual void getGeneratedIndices(std::vector<int> &faces,
+                                     std::vector<int> &edges,
+                                     std::vector<int> &vertices) const;
+
 protected:
 
     /**

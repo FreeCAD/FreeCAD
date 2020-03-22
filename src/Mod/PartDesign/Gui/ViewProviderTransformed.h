@@ -58,8 +58,6 @@ protected:
     virtual bool setEdit(int ModNum) override;
     virtual void unsetEdit(int ModNum) override;
 
-    virtual int generatedShapeDepth() {return 2;}
-
     bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
 
     // node for the representation of rejected repetitions

@@ -190,43 +190,23 @@ void ViewProvider::updateData(const App::Property* prop)
         if(strcmp(prop->getName(),"Shape") != 0)
             return;
 
-        inherited::updateData(prop);
+        auto feature = Base::freecad_dynamic_cast<PartDesign::Feature>(getObject());
+        if(feature) {
+            inherited::updateData(prop);
 
-        Part::TopoShape shape = static_cast<const Part::PropertyPartShape*>(prop)->getShape();
-        std::string element("Face");
-        std::vector<int> indices;
-        std::set<int> edgeSet;
-        std::vector<int> edges;
-        std::set<int> pointSet;
-        std::vector<int> points;
-        int depth = generatedShapeDepth();
-        unsigned count = depth?shape.countSubShapes(TopAbs_FACE):0;
-        for(unsigned i=1; i<=count; ++i) {
-            element.resize(4);
-            element += std::to_string(i);
-            auto mapped = shape.getElementName(element.c_str(),1);
-            if(mapped != element.c_str() && shape.isElementGenerated(mapped, depth)) {
-                indices.push_back(i-1);
-                Part::TopoShape face = shape.getSubTopoShape(TopAbs_FACE, i);
-                for(auto &s : face.getSubShapes(TopAbs_EDGE)) {
-                    int idx = shape.findShape(s)-1;
-                    if(idx >= 0 && edgeSet.insert(idx).second)
-                        edges.push_back(idx);
-                }
-                for(auto &s : face.getSubShapes(TopAbs_VERTEX)) {
-                    int idx = shape.findShape(s)-1;
-                    if(idx >= 0 && pointSet.insert(idx).second)
-                        points.push_back(idx);
-                }
-            }
+            std::vector<int> faces;
+            std::vector<int> edges;
+            std::vector<int> vertices;
+            feature->getGeneratedIndices(faces,edges,vertices);
+
+            lineset->highlightIndices.setNum(edges.size());
+            lineset->highlightIndices.setValues(0,edges.size(),&edges[0]);
+            nodeset->highlightIndices.setNum(vertices.size());
+            nodeset->highlightIndices.setValues(0,vertices.size(),&vertices[0]);
+            faceset->highlightIndices.setNum(faces.size());
+            faceset->highlightIndices.setValues(0,faces.size(),&faces[0]);
+            return;
         }
-        lineset->highlightIndices.setNum(edges.size());
-        lineset->highlightIndices.setValues(0,edges.size(),&edges[0]);
-        nodeset->highlightIndices.setNum(points.size());
-        nodeset->highlightIndices.setValues(0,points.size(),&points[0]);
-        faceset->highlightIndices.setNum(indices.size());
-        faceset->highlightIndices.setValues(0,indices.size(),&indices[0]);
-        return;
     }
 
     inherited::updateData(prop);

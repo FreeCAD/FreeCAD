@@ -62,6 +62,9 @@ public:
     virtual App::DocumentObjectExecReturn* execute() override {
         return PartDesign::FeatureAddSub::execute();
     }
+
+    virtual bool isElementGenerated(const char *name) const override;
+
 protected:
     void handleChangedPropertyName(Base::XMLReader &reader, const char* TypeName, const char* PropName) override;
     //make the boolean ops with the primitives provided by the derived features
