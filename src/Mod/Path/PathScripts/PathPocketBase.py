@@ -135,7 +135,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
 
 def SetupProperties():
-    setup = []
+    setup = PathAreaOp.SetupProperties()
     setup.append('CutMode')
     setup.append('ExtraOffset')
     setup.append('StepOver')
