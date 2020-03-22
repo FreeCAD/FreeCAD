@@ -29,22 +29,13 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _ViewProviderFemMeshResult
 
-# from . import ViewProviderFemConstraint
+
+from . import ViewProviderBaseObject
 
 
-# class _ViewProviderFemMeshResult(ViewProviderFemConstraint.ViewProxy):
-class _ViewProviderFemMeshResult:
+class _ViewProviderFemMeshResult(ViewProviderBaseObject.ViewProxy):
     """
     A View Provider for the FemMeshResult object
     """
-    def __init__(self, vobj):
-        vobj.Proxy = self
 
-    def getIcon(self):
-        return ":/icons/FEM_MeshResult.svg"
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+    pass
