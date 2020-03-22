@@ -34,6 +34,7 @@ import draftutils.utils as utils
 from pivy import coin
 from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 from draftviewproviders.view_draft_annotation import ViewProviderAnnotationStylesContainer
+from draftviewproviders.view_dimension import ViewProviderDimensionBase
 
 
 class ViewProviderDimensionStylesContainer(ViewProviderAnnotationStylesContainer):
@@ -48,127 +49,23 @@ class ViewProviderDimensionStylesContainer(ViewProviderAnnotationStylesContainer
         return ":/icons/Draft_Annotation_Style.svg"
 
 
-class ViewProviderDraftDimensionStyle(_ViewProviderDraft):
+class ViewProviderDraftDimensionStyle(ViewProviderDimensionBase):
     """
     Dimension style dont have a proper object but just a viewprovider.
     It stores inside a document object dimension settings and restore them on demand.
     """
     def __init__(self, vobj, existing_dimension = None):
-        """
-        vobj properties         type                        parameter               type
-        ----------------------------------------------------------------------------------
-        vobj.ScaleMultiplier"   App::PropertyFloat          "DraftAnnotationScale"  Float
-
-        vobj.FontName           App::PropertyFont           "textfont"              Text
-        vobj.FontSize           App::PropertyLength         "textheight"            Float
-        vobj.TextSpacing        App::PropertyLength         "dimspacing"            Float
-
-        vobj.Decimals           App::PropertyInteger        "dimPrecision"          Integer
-        vobj.ShowUnit           App::PropertyBool
-        vobj.UnitOverride       App::PropertyString
-
-        vobj.LineWidth          App::PropertyFloat
-        vobj.LineColor          App::PropertyColor
-        vobj.ArrowSize          App::PropertyLength         "arrowsize"             Float
-        vobj.ArrowType          App::PropertyEnumeration    "dimsymbol"             Integer
-        vobj.FlipArrows         App::PropertyBool
-        vobj.DimOvershoot       App::PropertyDistance       "dimovershoot"          Float
-        vobj.ExtLines           App::PropertyDistance       "extlines"              Float
-        vobj.ExtOvershoot       App::PropertyDistance       "extovershoot"          Float
-        vobj.ShowLine           App::PropertyBool
-        """
-
-        # annotation properties
-        vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
-                         "Annotation",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Dimension size overall multiplier"))
+        super().__init__(vobj)
 
         vobj.addProperty("App::PropertyBool","AutoUpdate",
                          "Annotation",
                          QT_TRANSLATE_NOOP("App::Property",
                                            "Auto update associated dimensions"))
 
-        # text properties
-        vobj.addProperty("App::PropertyFont","FontName",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property","Font name"))
-
-        vobj.addProperty("App::PropertyLength","FontSize",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Font size"))
-
-        vobj.addProperty("App::PropertyLength","TextSpacing",
-                         "Text",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "The spacing between the text and "
-                                           "the dimension line"))
-
-        # units properties
-        vobj.addProperty("App::PropertyInteger","Decimals",
-                         "Units",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "The number of decimals to show"))
-
-        vobj.addProperty("App::PropertyBool","ShowUnit",
-                         "Units",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Show the unit suffix"))
-
-        vobj.addProperty("App::PropertyString","UnitOverride",
-                         "Units",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "A unit to express the measurement. "
-                                           "Leave blank for system default"))
-
-        # graphics properties
-        vobj.addProperty("App::PropertyFloat","LineWidth",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property","Line width"))
-
-        vobj.addProperty("App::PropertyColor","LineColor",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property","Line color"))
-
-        vobj.addProperty("App::PropertyLength","ArrowSize",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property","Arrow size"))
-
-        vobj.addProperty("App::PropertyEnumeration","ArrowType",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property","Arrow type"))
-
-        vobj.addProperty("App::PropertyBool","FlipArrows",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Rotate the dimension arrows 180 degrees"))
-
-        vobj.addProperty("App::PropertyDistance","DimOvershoot",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "The distance the dimension line is "
-                                           "extended past the extension lines"))
-
-        vobj.addProperty("App::PropertyDistance","ExtLines",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Length of the extension lines"))
-
-        vobj.addProperty("App::PropertyDistance","ExtOvershoot",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Length of the extension line above "
-                                           "the dimension line"))
-
-        vobj.addProperty("App::PropertyBool","ShowLine",
-                         "Graphics",
-                         QT_TRANSLATE_NOOP("App::Property",
-                                           "Shows dimension line and arrows"))
-
         self.init_properties(vobj, existing_dimension)
-            
-        super().__init__(vobj)
+
+        # Visibility is True only if the style is active
+        vobj.Visibility = False
 
     def init_properties(self, vobj, existing_dimension):
         """
@@ -205,9 +102,6 @@ class ViewProviderDraftDimensionStyle(_ViewProviderDraft):
         if hasattr(vobj, "AutoUpdate"):
             if vobj.AutoUpdate:
                 self.update_related_dimensions(vobj)
-        if hasattr(vobj, "Visibility"):
-            if prop == "Visibility":
-                print(vobj.Visibility)
 
     def doubleClicked(self,vobj):
         self.set_current(vobj)
@@ -238,6 +132,8 @@ class ViewProviderDraftDimensionStyle(_ViewProviderDraft):
         param.SetFloat("extovershoot", vobj.ExtOvershoot)
         
         App.Console.PrintMessage("Current dimension style set to " + str(vobj.Object.Label) + "\n")
+
+        vobj.Object.Proxy.set_current(vobj.Object)
 
     def update_related_dimensions(self, vobj):
         """
