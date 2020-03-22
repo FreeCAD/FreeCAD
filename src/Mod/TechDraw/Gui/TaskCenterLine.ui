@@ -2,16 +2,19 @@
 <ui version="4.0">
  <class>TechDrawGui::TaskCenterLine</class>
  <widget class="QWidget" name="TechDrawGui::TaskCenterLine">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>393</height>
+    <height>374</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -32,6 +35,13 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Base View</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="leBaseView">
        <property name="enabled">
@@ -48,13 +58,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Base View</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
@@ -67,10 +70,16 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>100</height>
+         <height>50</height>
         </size>
        </property>
       </widget>
@@ -78,50 +87,67 @@
     </layout>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QRadioButton" name="rbVertical">
-       <property name="toolTip">
-        <string>Top to Bottom line</string>
-       </property>
-       <property name="text">
-        <string>Vertical</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QRadioButton" name="rbHorizontal">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="toolTip">
-        <string>Left to Right line</string>
-       </property>
-       <property name="text">
-        <string>Horizontal</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QRadioButton" name="rbAligned">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="toolTip">
-        <string>centerline between
+    <widget class="QGroupBox" name="gbOrientation">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="title">
+      <string>Orientation</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QRadioButton" name="rbVertical">
+        <property name="toolTip">
+         <string>Top to Bottom line</string>
+        </property>
+        <property name="text">
+         <string>Vertical</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">bgOrientation</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbHorizontal">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Left to Right line</string>
+        </property>
+        <property name="text">
+         <string>Horizontal</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">bgOrientation</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbAligned">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>centerline between
 - lines: in equal distance to the lines and with
   half of the angle the lines have to each other
 - points: in equal distance to the points</string>
-       </property>
-       <property name="text">
-        <string>Aligned</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+        </property>
+        <property name="text">
+         <string>Aligned</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">bgOrientation</string>
+        </attribute>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,3,0,3">
@@ -359,4 +385,11 @@ see the FreeCAD Wiki '2LineCenterLine' for a description</string>
   <include location="Resources/TechDraw.qrc"/>
  </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="bgOrientation">
+   <property name="exclusive">
+    <bool>true</bool>
+   </property>
+  </buttongroup>
+ </buttongroups>
 </ui>

@@ -29,6 +29,7 @@
 
 #endif // #ifndef _PreComp_
 
+#include <QButtonGroup>
 #include <QStatusBar>
 #include <QGraphicsScene>
 
@@ -133,6 +134,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
         Base::Console().Error("TaskCenterLine - unknown geometry type: %s.  Can not proceed.\n", geomType.c_str());
         return;
     }
+
     setUiPrimary();
 }
 
@@ -181,6 +183,7 @@ void TaskCenterLine::setUiPrimary()
     ui->qsbRotate->setValue(qAngle);
     int precision = Base::UnitsApi::getDecimals();
     ui->qsbRotate->setDecimals(precision);
+
     if (m_type == 0) // if face, then aligned is not possible
         ui->rbAligned->setEnabled(false);
     else
@@ -202,8 +205,11 @@ void TaskCenterLine::setUiEdit()
         ui->lstSubList->addItem(listItem);
     }
     ui->cpLineColor->setColor(m_cl->m_format.m_color.asValue<QColor>());
+    connect(ui->cpLineColor, SIGNAL(changed()), this, SLOT(onColorChanged()));
     ui->dsbWeight->setValue(m_cl->m_format.m_weight);
+    connect(ui->dsbWeight, SIGNAL(valueChanged(double)), this, SLOT(onWeightChanged()));
     ui->cboxStyle->setCurrentIndex(m_cl->m_format.m_style - 1);
+    connect(ui->cboxStyle, SIGNAL(currentIndexChanged(int)), this, SLOT(onStyleChanged()));
 
     ui->rbVertical->setChecked(false);
     ui->rbHorizontal->setChecked(false);
@@ -223,10 +229,13 @@ void TaskCenterLine::setUiEdit()
     qVal.setUnit(Base::Unit::Length);
     qVal.setValue(m_cl->m_vShift);
     ui->qsbVertShift->setValue(qVal);
+    connect(ui->qsbVertShift, SIGNAL(valueChanged(double)), this, SLOT(onShiftVertChanged()));
     qVal.setValue(m_cl->m_hShift);
     ui->qsbHorizShift->setValue(qVal);
+    connect(ui->qsbHorizShift, SIGNAL(valueChanged(double)), this, SLOT(onShiftHorizChanged()));
     qVal.setValue(m_cl->m_extendBy);
     ui->qsbExtend->setValue(qVal);
+    connect(ui->qsbExtend, SIGNAL(valueChanged(double)), this, SLOT(onExtendChanged()));
 
     Base::Quantity qAngle;
     qAngle.setUnit(Base::Unit::Angle);
@@ -234,6 +243,7 @@ void TaskCenterLine::setUiEdit()
     int precision = Base::UnitsApi::getDecimals();
     ui->qsbRotate->setDecimals(precision);
     ui->qsbRotate->setValue(m_cl->m_rotate);
+    connect(ui->qsbRotate, SIGNAL(valueChanged(double)), this, SLOT(onRotationChanged()));
 
     if (m_cl->m_flip2Line)
         ui->cbFlip->setChecked(true);
@@ -244,7 +254,73 @@ void TaskCenterLine::setUiEdit()
         ui->cbFlip->setEnabled(true);
     else
         ui->cbFlip->setEnabled(false);
+    connect(ui->cbFlip, SIGNAL(toggled(bool)), this, SLOT(onFlipChanged()));
+
+    // connect the Orientation radio group box
+    connect(ui->bgOrientation, SIGNAL(buttonClicked(int)), this, SLOT(onOrientationChanged()));
 }
+
+void TaskCenterLine::onOrientationChanged()
+{
+    if (ui->rbVertical->isChecked())
+        m_cl->m_mode = CenterLine::CLMODE::VERTICAL;
+    else if (ui->rbHorizontal->isChecked())
+        m_cl->m_mode = CenterLine::CLMODE::HORIZONTAL;
+    else if (ui->rbAligned->isChecked())
+        m_cl->m_mode = CenterLine::CLMODE::ALIGNED;
+    m_partFeat->recomputeFeature();
+}
+
+void TaskCenterLine::onShiftHorizChanged()
+{
+    m_cl->m_hShift = ui->qsbHorizShift->rawValue();
+    m_partFeat->recomputeFeature();
+}
+
+void TaskCenterLine::onShiftVertChanged()
+{
+    m_cl->m_vShift = ui->qsbVertShift->rawValue();
+    m_partFeat->recomputeFeature();
+}
+
+void TaskCenterLine::onRotationChanged()
+{
+    m_cl->m_rotate = ui->qsbRotate->rawValue();
+    m_partFeat->recomputeFeature();
+}
+
+void TaskCenterLine::onExtendChanged()
+{
+    m_cl->m_extendBy = ui->qsbExtend->rawValue();
+    m_partFeat->recomputeFeature();
+}
+
+void TaskCenterLine::onColorChanged()
+{
+    App::Color ac;
+    ac.setValue<QColor>(ui->cpLineColor->color());
+    m_cl->m_format.m_color.setValue<QColor>(ui->cpLineColor->color());
+    m_partFeat->recomputeFeature();
+}
+
+void TaskCenterLine::onWeightChanged()
+{
+    m_cl->m_format.m_weight = ui->dsbWeight->value();
+    m_partFeat->recomputeFeature();
+}
+
+void TaskCenterLine::onStyleChanged()
+{
+    m_cl->m_format.m_style = ui->cboxStyle->currentIndex() + 1;
+    m_partFeat->recomputeFeature();
+}
+
+void TaskCenterLine::onFlipChanged()
+{
+    m_cl->m_flip2Line = ui->cbFlip->isChecked();
+    m_partFeat->recomputeFeature();
+}
+
 
 //******************************************************************************
 void TaskCenterLine::createCenterLine(void)
