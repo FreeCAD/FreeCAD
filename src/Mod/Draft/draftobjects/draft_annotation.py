@@ -32,8 +32,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 from draftutils import gui_utils
 
 class DraftAnnotation:
-    """The Draft Annotation Base object"""
-    def __init__(self,obj,tp="Unknown"):
+    """The Draft Annotation Base object
+    This class is not used directly, but inherited by all annotation
+    objects.
+    """
+    def __init__(self, obj, tp="Unknown"):
         if obj:
             obj.Proxy = self
         self.Type = tp
@@ -50,29 +53,3 @@ class DraftAnnotation:
 
     def onChanged(self, obj, prop):
         pass
-
-
-
-class DimensionBase(DraftAnnotation):
-    """The Draft Dimension Base object"""
-
-    def __init__(self, obj, tp = "Dimension"):
-        "Initialize common properties for dimension objects"
-        DraftAnnotation.__init__(self,obj, tp)
-        
-        # Annotation
-        obj.addProperty("App::PropertyLink","DimensionStyle",
-                        "Annotation",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Link dimension style"))
-
-    def onChanged(self,obj,prop):
-        
-        if prop == "DimensionStyle":
-            if hasattr(obj, "DimensionStyle"):
-                gui_utils.format_object(target = obj, origin = obj.DimensionStyle)
-
-
-    def execute(self, obj):
-        
-        return

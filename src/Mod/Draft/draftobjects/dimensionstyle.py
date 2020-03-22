@@ -30,10 +30,10 @@
 import FreeCAD as App
 from draftobjects.draft_annotation import DraftAnnotation
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from draftviewproviders.view_dimensionstyle import ViewProviderDraftDimensionStyle
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from draftviewproviders.view_dimensionstyle import ViewProviderDraftDimensionStyle
 
 def make_dimension_style(existing_dimension = None):
     """
@@ -50,4 +50,4 @@ def make_dimension_style(existing_dimension = None):
 
 class DimensionStyle(DraftAnnotation):
     def __init__(self, obj):
-        DraftAnnotation.__init__(self, obj, "DimensionStyle")
+        super().__init__(obj, "DimensionStyle")

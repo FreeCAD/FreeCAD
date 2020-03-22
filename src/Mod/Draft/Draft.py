@@ -260,7 +260,6 @@ _Dimension = LinearDimension
 from draftviewproviders.view_dimension import ViewProviderLinearDimension
 _ViewProviderDimension = ViewProviderLinearDimension
 
-    return obj
 
 def makeAngularDimension(center,angles,p3,normal=None):
     """makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension

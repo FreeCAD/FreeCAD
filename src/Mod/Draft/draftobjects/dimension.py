@@ -30,9 +30,11 @@
 import FreeCAD as App
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import DraftGeomUtils
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
-from draftobjects.draft_annotation import DimensionBase
+from draftobjects.draft_annotation import DraftAnnotation
+from draftviewproviders.view_dimension import ViewProviderDimensionBase
 from draftviewproviders.view_dimension import ViewProviderLinearDimension
 
 def make_dimension(p1,p2,p3=None,p4=None):
@@ -111,10 +113,40 @@ def make_dimension(p1,p2,p3=None,p4=None):
 
     return obj
 
+
+class DimensionBase(DraftAnnotation):
+    """
+    The Draft Dimension Base object
+    This class is not used directly, but inherited by all dimension
+    objects.
+    """
+
+    def __init__(self, obj, tp = "Dimension"):
+        "Initialize common properties for dimension objects"
+        DraftAnnotation.__init__(self,obj, tp)
+        
+        # Annotation
+        obj.addProperty("App::PropertyLink","DimensionStyle",
+                        "Annotation",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Link dimension style"))
+
+    def onChanged(self,obj,prop):
+        
+        if prop == "DimensionStyle":
+            if hasattr(obj, "DimensionStyle"):
+                gui_utils.format_object(target = obj, origin = obj.DimensionStyle)
+
+
+    def execute(self, obj):
+        
+        return
+
+
 class LinearDimension(DimensionBase):
-    """The Draft Dimension object"""
+    """The Draft Linear Dimension object"""
     def __init__(self, obj):
-        DimensionBase.__init__(self,obj,"Dimension")
+        super().__init__(obj, "Dimension")
         
         # Draft
         obj.addProperty("App::PropertyVectorDistance","Start",
@@ -179,7 +211,6 @@ class LinearDimension(DimensionBase):
 
 
     def execute(self, obj):
-        import DraftGeomUtils
         # set start point and end point according to the linked geometry
         if obj.LinkedGeometry:
             if len(obj.LinkedGeometry) == 1:
