@@ -36,7 +36,10 @@ import Path
 import FreeCAD
 import PathScripts.PathUtils
 import PathScripts.PathLog as PathLog
+<<<<<<< HEAD
 import re
+=======
+>>>>>>> fbb59ae712e3ebf2219f480f799f8c2e1f1ca006
 
 # LEVEL = PathLog.Level.DEBUG
 LEVEL = PathLog.Level.INFO
@@ -65,6 +68,7 @@ def insert(filename, docname):
     gfile = pythonopen(filename)
     gcode = gfile.read()
     gfile.close()
+<<<<<<< HEAD
     # split on tool changes
     paths = re.split('(?=[mM]+\s?0?6)', gcode)
     # if there are any tool changes combine the preamble with the default tool 
@@ -79,17 +83,37 @@ def insert(filename, docname):
         obj.Gcode = gcode
         PathScripts.PathUtils.addToJob(obj)
         obj.ToolController = PathScripts.PathUtils.findToolController(obj)
+=======
+    gcode = parse(gcode)
+    doc = FreeCAD.getDocument(docname)
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Custom")
+    PathScripts.PathCustom.ObjectCustom(obj)
+    obj.ViewObject.Proxy = 0
+    obj.Gcode = gcode
+    PathScripts.PathUtils.addToJob(obj)
+    obj.ToolController = PathScripts.PathUtils.findToolController(obj)
+>>>>>>> fbb59ae712e3ebf2219f480f799f8c2e1f1ca006
     FreeCAD.ActiveDocument.recompute()
 
 
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
     print("preprocessing...")
+<<<<<<< HEAD
     PathLog.track(inputstring)
     # split the input by line
     lines = inputstring.split("\n")
     output = [] #""
     lastcommand = None 
+=======
+    print(inputstring)
+    PathLog.track(inputstring)
+    # split the input by line
+    lines = inputstring.split("\n")
+    output = ""
+    lastcommand = None
+    print(lines)
+>>>>>>> fbb59ae712e3ebf2219f480f799f8c2e1f1ca006
 
     for lin in lines:
         # remove any leftover trailing and preceding spaces
@@ -101,7 +125,11 @@ def parse(inputstring):
             # remove line numbers
             lin = lin.split(" ", 1)
             if len(lin) >= 1:
+<<<<<<< HEAD
                 lin = lin[1].strip()
+=======
+                lin = lin[1]
+>>>>>>> fbb59ae712e3ebf2219f480f799f8c2e1f1ca006
             else:
                 continue
 
@@ -110,8 +138,12 @@ def parse(inputstring):
             continue
         if lin[0].upper() in ["G", "M"]:
             # found a G or M command: we store it
+<<<<<<< HEAD
             #output += lin + "\n"
             output.append(lin) # + "\n"
+=======
+            output += lin + "\n"
+>>>>>>> fbb59ae712e3ebf2219f480f799f8c2e1f1ca006
             last = lin[0].upper()
             for c in lin[1:]:
                 if not c.isdigit():
@@ -121,10 +153,18 @@ def parse(inputstring):
             lastcommand = last
         elif lastcommand:
             # no G or M command: we repeat the last one
+<<<<<<< HEAD
             output.append(lastcommand + " " + lin) # + "\n"
+=======
+            output += lastcommand + " " + lin + "\n"
+>>>>>>> fbb59ae712e3ebf2219f480f799f8c2e1f1ca006
 
     print("done preprocessing.")
     return output
 
 
+<<<<<<< HEAD
 print(__name__ + " gcode preprocessor loaded.")
+=======
+print(__name__ + " gcode preprocessor loaded.")
+>>>>>>> fbb59ae712e3ebf2219f480f799f8c2e1f1ca006
