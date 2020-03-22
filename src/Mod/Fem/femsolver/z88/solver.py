@@ -90,6 +90,6 @@ class Proxy(solverbase.Proxy):
 class ViewProxy(solverbase.ViewProxy):
 
     def getIcon(self):
-        return ":/icons/FEM_SolverZ88.ico"
+        return ":/icons/FEM_SolverZ88.svg"
 
 ##  @}
