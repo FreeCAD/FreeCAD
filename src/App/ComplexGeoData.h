@@ -26,6 +26,7 @@
 
 #include <memory>
 #include <cctype>
+#include <functional>
 #include <Base/Placement.h>
 #include <Base/Persistence.h>
 #include <Base/Handle.h>
@@ -317,6 +318,40 @@ public:
     static bool isElementName(const char *subname) {
         return subname && *subname && findElementName(subname)==subname;
     }
+
+    /** Extract tag and other information from a encoded element name
+     *
+     * @param name: encoded element name
+     * @param tag: optional pointer to receive the extracted tag
+     * @param len: optional pointer to receive the length field after the tag field.
+     *             This gives the length of the previous hashsed element name starting
+     *             from the begining of the give element name.
+     * @param postfix: optional pointer to receive the postfix starting at the found tag field.
+     * @param type: optional pointer to receive the element type character
+     * @param negative: return negative tag as it is. If disabled, then always return positive tag.
+     *                  Negative tag is sometimes used for element disambiguiation.
+     *
+     * @return Return the end poisition of the tag field, or return std::string::npos if not found.
+     */
+    static size_t findTagInElementName(const std::string &name, long *tag=0,
+            size_t *len=0, std::string *postfix=0, char *type=0, bool negative=false);
+
+    /** Element trace callback
+     * @sa traceElement()
+     */
+    typedef std::function<bool(const std::string &, size_t, long)> TraceCallback;
+
+    /** Iterate through the history of the give element name with a given callback
+     *
+     * @param name: the input element name
+     *
+     * @param cb: trace callback with call signature (const std::string &name,
+     *            size_t offset, long tag), where 'name' is the current element
+     *            name, 'offset' is the offset skipping the encoded element
+     *            name for the next iteration, 'tag' is the current geometry
+     *            tag. The callback can return 'true' to terminate the iteration.
+     */
+    void traceElement(const char *name, TraceCallback cb) const;
     //@}
 
     /** @name Save/restore */
@@ -336,9 +371,6 @@ public:
 protected:
     virtual std::string renameDuplicateElement(int index, const char *element, 
            const char *element2, const char *name, std::vector<App::StringIDRef> &sids);
-
-    static size_t findTagInElementName(const std::string &name, 
-            long *tag=0, size_t *len=0, std::string *postfix=0, char *type=0);
 
     void saveStream(std::ostream &s) const;
     void restoreStream(std::istream &s, std::size_t count);

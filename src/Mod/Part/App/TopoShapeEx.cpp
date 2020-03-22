@@ -3230,54 +3230,27 @@ TopoShape::getRelatedElements(const char *_name, bool sameType) const {
     return ret;
 }
 
-bool TopoShape::isElementGenerated(const char *_name, int depth) const
+long TopoShape::isElementGenerated(const char *_name, int depth) const
 {
+    long res = 0;
     long tag = 0;
-    size_t len = 0;
-    std::string name;
-    auto mapped = isMappedElement(_name);
-    if(mapped)
-        _name = mapped;
-    auto dot = strchr(_name,'.');
-    if(dot)
-        name = std::string(_name,dot-_name);
-    else
-        name = _name;
-    auto pos = findTagInElementName(name,&tag,&len);
-    if(pos == std::string::npos)
-        return false;
-
-    if(depth==1 && boost::starts_with(name.c_str()+len, genPostfix()))
-        return true;
-
-    std::string tmp;
-    bool first = true;
-    while(1) {
-        if(!len || len>pos)
+    traceElement(_name,
+        [&] (const std::string &name, size_t offset, long tag2) {
+            if(tag2 < 0)
+                tag2 = -tag2;
+            if(tag && tag2!=tag) {
+                if(--depth < 1)
+                    return true;
+            }
+            tag = tag2;
+            if(depth==1 && boost::starts_with(name.c_str()+offset, genPostfix())) {
+                res = tag;
+                return true;
+            }
             return false;
-        if(first) {
-            first = false;
-            size_t offset = 0;
-            if(boost::starts_with(name,elementMapPrefix()))
-                offset = elementMapPrefix().size();
-            tmp = name.substr(offset,len);
-        }else
-            tmp = tmp.substr(0,len);
-        tmp = dehashElementName(tmp.c_str());
-        long tag2 = 0;
-        pos = findTagInElementName(tmp,&tag2,&len);
-        if(pos==std::string::npos)
-            return false;
-        if(tag2!=tag && tag!=Tag) {
-           if(--depth < 1)
-               return false;
-        }
-        if(depth==1 && boost::starts_with(tmp.c_str()+len, genPostfix()))
-            return true;
-        tag = tag2;
-    }
+        });
 
-    return false;
+    return res;
 }
 
 void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char *postfix) {

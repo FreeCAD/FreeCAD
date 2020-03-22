@@ -567,7 +567,7 @@ bool ComplexGeoData::hasMissingElement(const char *subname) {
 }
 
 size_t ComplexGeoData::findTagInElementName(const std::string &name, 
-        long *tag, size_t *len, std::string *postfix, char *type) 
+        long *tag, size_t *len, std::string *postfix, char *type, bool negative) 
 {
     size_t pos = name.rfind(tagPostfix());
     if(pos==std::string::npos)
@@ -586,7 +586,7 @@ size_t ComplexGeoData::findTagInElementName(const std::string &name,
     if(type)
         *type = tp;
     if(tag) {
-        if(_tag>0)
+        if(_tag>0 || negative)
             *tag = _tag;
         else
             *tag = -_tag;
@@ -679,7 +679,7 @@ long ComplexGeoData::getElementHistory(const char *_name,
             return tag;
         tag = tag2;
         if(history)
-            history->push_back(std::move(ret));
+            history->push_back(ret);
     }
 }
 
@@ -839,6 +839,44 @@ unsigned int ComplexGeoData::getMemSize(void) const {
 std::vector<std::string> ComplexGeoData::getHigherElements(const char *, bool) const
 {
     return {};
+}
+
+void ComplexGeoData::traceElement(const char *_name, TraceCallback cb) const
+{
+    long tag = 0;
+    size_t len = 0;
+    std::string name;
+    auto mapped = isMappedElement(_name);
+    if(mapped)
+        _name = mapped;
+    auto dot = strchr(_name,'.');
+    if(dot)
+        name = std::string(_name,dot-_name);
+    else
+        name = _name;
+    auto pos = findTagInElementName(name,&tag,&len,nullptr,nullptr,true);
+    if(pos == std::string::npos || cb(name, len, tag))
+        return;
+
+    std::string tmp;
+    bool first = true;
+    while(1) {
+        if(!len || len>pos)
+            return;
+        if(first) {
+            first = false;
+            size_t offset = 0;
+            if(boost::starts_with(name,elementMapPrefix()))
+                offset = elementMapPrefix().size();
+            tmp = name.substr(offset,len);
+        }else
+            tmp = tmp.substr(0,len);
+        tmp = dehashElementName(tmp.c_str());
+        tag = 0;
+        pos = findTagInElementName(tmp,&tag,&len,nullptr,nullptr,true);
+        if(pos==std::string::npos || cb(tmp, len, tag))
+            return;
+    }
 }
 
 bool ElementNameComp::operator()(const std::string &a, const std::string &b) const {
