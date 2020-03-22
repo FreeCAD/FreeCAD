@@ -36,6 +36,7 @@ import draftutils.utils as utils
 from draftobjects.draft_annotation import DraftAnnotation
 from draftviewproviders.view_dimension import ViewProviderDimensionBase
 from draftviewproviders.view_dimension import ViewProviderLinearDimension
+from draftviewproviders.view_dimension import ViewProviderAngularDimension
 
 def make_dimension(p1,p2,p3=None,p4=None):
     """makeDimension(p1,p2,[p3]) or makeDimension(object,i1,i2,p3)
@@ -114,6 +115,43 @@ def make_dimension(p1,p2,p3=None,p4=None):
     return obj
 
 
+
+def make_angular_dimension(center,angles,p3,normal=None):
+    """makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension
+    from the given center, with the given list of angles, passing through p3.
+    """
+    if not App.ActiveDocument:
+        App.Console.PrintError("No active document. Aborting\n")
+        return
+    obj = App.ActiveDocument.addObject("App::FeaturePython","Dimension")
+    AngularDimension(obj)
+    obj.Center = center
+    for a in range(len(angles)):
+        if angles[a] > 2*math.pi:
+            angles[a] = angles[a]-(2*math.pi)
+    obj.FirstAngle = math.degrees(angles[1])
+    obj.LastAngle = math.degrees(angles[0])
+    obj.Dimline = p3
+    if not normal:
+        if hasattr(App,"DraftWorkingPlane"):
+            normal = App.DraftWorkingPlane.axis
+        else:
+            normal = App.Vector(0,0,1)
+    if App.GuiUp:
+        # invert the normal if we are viewing it from the back
+        vnorm = gui_utils.get3DView().getViewDirection()
+        if vnorm.getAngle(normal) < math.pi/2:
+            normal = normal.negative()
+    obj.Normal = normal
+    if App.GuiUp:
+        ViewProviderAngularDimension(obj.ViewObject)
+        gui_utils.format_object(obj)
+        gui_utils.select(obj)
+
+    return obj
+
+
+
 class DimensionBase(DraftAnnotation):
     """
     The Draft Dimension Base object
@@ -131,6 +169,32 @@ class DimensionBase(DraftAnnotation):
                         QT_TRANSLATE_NOOP("App::Property",
                                           "Link dimension style"))
 
+        # Draft
+        obj.addProperty("App::PropertyVector",
+                        "Normal",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The normal direction of this dimension"))
+
+        obj.addProperty("App::PropertyLink",
+                        "Support",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The object measured by this dimension"))
+
+        obj.addProperty("App::PropertyLinkSubList",
+                        "LinkedGeometry",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The geometry this dimension is linked to"))
+                                          
+        obj.addProperty("App::PropertyVectorDistance",
+                        "Dimline",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Point on which the dimension \n"
+                                          "line is placed."))
+
     def onChanged(self,obj,prop):
         
         if prop == "DimensionStyle":
@@ -143,56 +207,46 @@ class DimensionBase(DraftAnnotation):
         return
 
 
+
 class LinearDimension(DimensionBase):
-    """The Draft Linear Dimension object"""
+    """
+    The Draft Linear Dimension object
+    """
+
     def __init__(self, obj):
         super().__init__(obj, "Dimension")
         
         # Draft
-        obj.addProperty("App::PropertyVectorDistance","Start",
+        obj.addProperty("App::PropertyVectorDistance",
+                        "Start",
                         "Draft",
                         QT_TRANSLATE_NOOP("App::Property",
                                           "Startpoint of dimension"))
 
-        obj.addProperty("App::PropertyVectorDistance","End",
+        obj.addProperty("App::PropertyVectorDistance",
+                        "End",
                         "Draft",
                         QT_TRANSLATE_NOOP("App::Property",
                                           "Endpoint of dimension"))
 
-        obj.addProperty("App::PropertyVector","Normal",
+        obj.addProperty("App::PropertyVector",
+                        "Direction",
                         "Draft",
                         QT_TRANSLATE_NOOP("App::Property",
                                           "The normal direction of this dimension"))
 
-        obj.addProperty("App::PropertyVector","Direction",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The normal direction of this dimension"))
-
-        obj.addProperty("App::PropertyVectorDistance","Dimline",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "Point through which the dimension line passes"))
-
-        obj.addProperty("App::PropertyLink","Support",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The object measured by this dimension"))
-
-        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry",
-                        "Draft",
-                        QT_TRANSLATE_NOOP("App::Property",
-                                          "The geometry this dimension is linked to"))
-
-        obj.addProperty("App::PropertyLength","Distance",
+        obj.addProperty("App::PropertyLength",
+                        "Distance",
                         "Draft",
                         QT_TRANSLATE_NOOP("App::Property",
                                           "The measurement of this dimension"))
 
-        obj.addProperty("App::PropertyBool","Diameter",
+        obj.addProperty("App::PropertyBool",
+                        "Diameter",
                         "Draft",
                         QT_TRANSLATE_NOOP("App::Property",
                                           "For arc/circle measurements, false = radius, true = diameter"))
+
         obj.Start = App.Vector(0,0,0)
         obj.End = App.Vector(1,0,0)
         obj.Dimline = App.Vector(0,1,0)
@@ -264,3 +318,56 @@ class LinearDimension(DimensionBase):
         if App.GuiUp:
             if obj.ViewObject:
                 obj.ViewObject.update()
+
+
+
+class AngularDimension(DimensionBase):
+    """
+    The Draft AngularDimension object
+    """
+
+    def __init__(self, obj):
+
+        super().__init__(obj,"AngularDimension")
+
+        obj.addProperty("App::PropertyAngle",
+                        "FirstAngle",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "Start angle of the dimension"))
+
+        obj.addProperty("App::PropertyAngle",
+                        "LastAngle",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "End angle of the dimension"))
+
+        obj.addProperty("App::PropertyVectorDistance",
+                        "Center",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The center point of this dimension"))
+
+        obj.addProperty("App::PropertyAngle",
+                        "Angle",
+                        "Draft",
+                        QT_TRANSLATE_NOOP("App::Property",
+                                          "The measurement of this dimension"))
+
+        obj.FirstAngle = 0
+        obj.LastAngle = 90
+        obj.Dimline = App.Vector(0,1,0)
+        obj.Center = App.Vector(0,0,0)
+        obj.Normal = App.Vector(0,0,1)
+
+    def onChanged(self,obj,prop):
+        if hasattr(obj,"Angle"):
+            obj.setEditorMode('Angle',1)
+        if hasattr(obj,"Normal"):
+            obj.setEditorMode('Normal',2)
+        if hasattr(obj,"Support"):
+            obj.setEditorMode('Support',2)
+
+    def execute(self, fp):
+        if fp.ViewObject:
+            fp.ViewObject.update()
