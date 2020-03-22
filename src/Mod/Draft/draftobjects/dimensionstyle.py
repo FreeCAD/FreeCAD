@@ -82,3 +82,11 @@ class DimensionStylesContainer(AnnotationStylesContainer):
 class DimensionStyle(DraftAnnotation):
     def __init__(self, obj):
         super().__init__(obj, "DimensionStyle")
+    
+    def set_current(self, obj):
+        "turn non visible all the concurrent styles"
+        for o in get_dimension_style_container().Group:
+            if hasattr(o, "Visibility"):
+                o.Visibility = False
+        if hasattr(obj, "Visibility"):
+            obj.Visibility = True
