@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Import gui init module
 # (c) 2003 Jürgen Riegel
 #
