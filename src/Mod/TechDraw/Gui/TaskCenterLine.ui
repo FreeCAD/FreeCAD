@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>374</height>
+    <width>360</width>
+    <height>385</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -150,18 +150,50 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,3,0,3">
+    <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Shift Horiz</string>
+        <string>Shift Horizontal</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
+     <item row="0" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbHorizShift" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Move line -Left or +Right</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Shift Vert</string>
+        <string>Shift Vertical</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbVertShift" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Move line +Up or -Down</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -191,32 +223,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="Gui::QuantitySpinBox" name="qsbVertShift" native="true">
-       <property name="toolTip">
-        <string>Move line +Up or -Down</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbHorizShift" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Move line -Left or +Right</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true"/>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -227,18 +233,41 @@
     </widget>
    </item>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-     </property>
-     <item row="2" column="0">
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Extend By</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsbExtend" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Make the line a little longer.</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string>mm</string>
+       </property>
+       <property name="value" stdset="0">
+        <double>3.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Color</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="1" column="1">
       <widget class="Gui::ColorButton" name="cpLineColor">
        <property name="color" stdset="0">
         <color>
@@ -249,14 +278,14 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>Weight</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="2" column="1">
       <widget class="QDoubleSpinBox" name="dsbWeight">
        <property name="singleStep">
         <double>0.100000000000000</double>
@@ -266,14 +295,14 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
+     <item row="3" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Style</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
+     <item row="3" column="1">
       <widget class="QComboBox" name="cboxStyle">
        <property name="currentIndex">
         <number>1</number>
@@ -323,32 +352,6 @@
           <normaloff>:/icons/dashDotDot-line.svg</normaloff>:/icons/dashDotDot-line.svg</iconset>
         </property>
        </item>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Extend By</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="Gui::QuantitySpinBox" name="qsbExtend" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Make the line a little longer.</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string>mm</string>
-       </property>
-       <property name="value" stdset="0">
-        <double>3.000000000000000</double>
-       </property>
       </widget>
      </item>
     </layout>
