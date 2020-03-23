@@ -547,6 +547,8 @@ public:
         return TopoShape(0,Hasher).makEDraft(*this,faces,pullDirection,angle,neutralPlane,retry,op);
     }
 
+    TopoShape &makEShell(bool silent=true, const char *op=0);
+
     TopoShape &replacEShape(const TopoShape &shape, const std::vector<std::pair<TopoShape,TopoShape> > &s);
     TopoShape replacEShape(const std::vector<std::pair<TopoShape,TopoShape> > &s) const {
         return TopoShape(0,Hasher).replacEShape(*this,s);

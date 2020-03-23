@@ -185,7 +185,7 @@
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "Geometry.h"
 
-#define TOPOP_VERSION 14
+#define TOPOP_VERSION 15
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -1974,6 +1974,83 @@ TopoShape &TopoShape::makEShape(const char *maker,
     return makEShape(maker,std::vector<TopoShape>(1,shape),op,tol);
 }
 
+// topo naming conterpart of TopoShape::makeShell()
+TopoShape &TopoShape::makEShell(bool silent, const char *op) {
+    if(silent) {
+        if (isNull())
+            return *this;
+
+        if (shapeType(true) != TopAbs_COMPOUND)
+            return *this;
+
+        // we need a compound that consists of only faces
+        TopExp_Explorer it;
+        // no shells
+        if (hasSubShape(TopAbs_SHELL))
+            return *this;
+
+        // no wires outside a face
+        it.Init(_Shape, TopAbs_WIRE, TopAbs_FACE);
+        if (it.More())
+            return *this;
+
+        // no edges outside a wire
+        it.Init(_Shape, TopAbs_EDGE, TopAbs_WIRE);
+        if (it.More())
+            return *this;
+
+        // no vertexes outside an edge
+        it.Init(_Shape, TopAbs_VERTEX, TopAbs_EDGE);
+        if (it.More())
+            return *this;
+    } else if (!hasSubShape(TopAbs_FACE)) {
+        FC_THROWM(Base::CADKernelError,"Cannot make shell without face");
+    }
+
+    BRep_Builder builder;
+    TopoDS_Shape shape;
+    TopoDS_Shell shell;
+    builder.MakeShell(shell);
+
+    try {
+        for (const auto &face : getSubShapes(TopAbs_FACE))
+            builder.Add(shell, face);
+
+        TopoShape tmp(Tag, Hasher, shell);
+        tmp.mapSubElement(*this, op);
+
+        shape = shell;
+        BRepCheck_Analyzer check(shell);
+        if (!check.IsValid()) {
+            ShapeUpgrade_ShellSewing sewShell;
+            shape = sewShell.ApplySewing(shell);
+            // TODO confirm the above won't change OCCT topological naming
+        }
+
+        if (shape.IsNull()) {
+            if (silent)
+                return *this;
+            FC_THROWM(NullShapeException, "Failed to make shell");
+        }
+
+        if (shape.ShapeType() != TopAbs_SHELL) {
+            if (silent)
+                return *this;
+            FC_THROWM(Base::CADKernelError, "Failed to make shell: unexpected output shape type "
+                    << shapeType(shape.ShapeType(), true));
+        }
+
+        _Shape = shape;
+        _ElementMap = tmp._ElementMap;
+    }
+    catch (Standard_Failure &e) {
+        if(!silent)
+            FC_THROWM(Base::CADKernelError, "Failed to make shell: " << e.GetMessageString());
+    }
+
+    return *this;
+}
+
 TopoShape &TopoShape::makEShape(const char *maker, 
         const std::vector<TopoShape> &shapes, const char *op, double tol)
 {
@@ -2039,6 +2116,8 @@ TopoShape &TopoShape::makEShape(const char *maker,
         return *this;
     }
 
+    bool buildShell = true;
+
     std::vector<TopoShape> _shapes;
     if(strcmp(maker, TOPOP_FUSE)==0) {
         for(auto it=shapes.begin();it!=shapes.end();++it) {
@@ -2100,6 +2179,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
             resShape = makEShape(mk,{resShape,s},op);
         }
     } else if(strcmp(maker, TOPOP_SECTION)==0) {
+        buildShell = false;
         for(size_t i=1;i<inputs.size();++i) {
             const auto &s = inputs[i];
             if (s.isNull())
@@ -2111,6 +2191,9 @@ TopoShape &TopoShape::makEShape(const char *maker,
         }
     } else
         FC_THROWM(Base::CADKernelError,"Unknown maker");
+
+    if(buildShell)
+        makEShell();
     return *this;
 #else
 
@@ -2121,9 +2204,10 @@ TopoShape &TopoShape::makEShape(const char *maker,
         mk.reset(new BRepAlgoAPI_Cut);
     else if(strcmp(maker, TOPOP_COMMON)==0)
         mk.reset(new BRepAlgoAPI_Common);
-    else if(strcmp(maker, TOPOP_SECTION)==0)
+    else if(strcmp(maker, TOPOP_SECTION)==0) {
         mk.reset(new BRepAlgoAPI_Section);
-    else
+        buildShell = false;
+    } else
         FC_THROWM(Base::CADKernelError,"Unknown maker");
         
 # if OCC_VERSION_HEX >= 0x060900
@@ -2151,7 +2235,11 @@ TopoShape &TopoShape::makEShape(const char *maker,
     if (tol > 0.0)
         mk->SetFuzzyValue(tol);
     mk->Build();
-    return makEShape(*mk,shapes,op);
+    makEShape(*mk,shapes,op);
+
+    if(buildShell)
+        makEShell();
+    return *this;
 #endif
 }
 
