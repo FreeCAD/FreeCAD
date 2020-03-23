@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
-# *   (c) 2020 Carlo Pavan                                                  *
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -21,11 +23,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-"""This module provides the object code for Draft DimensionStyle.
+"""This module provides the object code for Draft Dimension.
 """
 ## @package style_dimension
 # \ingroup DRAFT
-# \brief This module provides the object code for Draft DimensionStyle.
+# \brief This module provides the object code for Draft Dimension.
 
 import FreeCAD as App
 import math

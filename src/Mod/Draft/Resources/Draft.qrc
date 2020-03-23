@@ -3,6 +3,7 @@
         <file>icons/Draft_2DShapeView.svg</file>
         <file>icons/Draft_AddPoint.svg</file>
         <file>icons/Draft_AddToGroup.svg</file>
+        <file>icons/Draft_Annotation_Style.svg</file>
         <file>icons/Draft_Apply.svg</file>
         <file>icons/Draft_Arc.svg</file>
         <file>icons/Draft_Arc_3Points.svg</file>
@@ -24,6 +25,8 @@
         <file>icons/Draft_DelPoint.svg</file>
         <file>icons/Draft_Dimension.svg</file>
         <file>icons/Draft_Dimension_Tree.svg</file>
+        <file>icons/Draft_Dimension_Style.svg</file>
+        <file>icons/Draft_Dimension_Style_Tree.svg</file>
         <file>icons/Draft_DimensionAngular.svg</file>
         <file>icons/Draft_DimensionRadius.svg</file>
         <file>icons/Draft_Dot.svg</file>

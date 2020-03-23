@@ -1,5 +1,6 @@
 # ***************************************************************************
-# *   (c) 2019 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
+# *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
+# *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -20,11 +21,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Annotations view provider base classes
+"""This module provides the Draft Dimensions view provider classes
 """
 ## @package polararray
 # \ingroup DRAFT
-# \brief This module provides the view provider code for Draft PolarArray.
+# \brief This module provides the view provider code for Draft Dimensions.
 
 
 import FreeCAD as App
