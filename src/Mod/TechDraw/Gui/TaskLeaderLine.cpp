@@ -494,7 +494,6 @@ void TaskLeaderLine::onTrackerClicked(bool b)
         if (m_tracker != nullptr) {
             m_tracker->terminateDrawing();
         }
-
         m_pbTrackerState = TRACKERPICK;
         ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
         ui->pbCancelEdit->setEnabled(false);
@@ -503,13 +502,12 @@ void TaskLeaderLine::onTrackerClicked(bool b)
         setEditCursor(Qt::ArrowCursor);
         return;
     } else  if ( (m_pbTrackerState == TRACKERSAVE) &&
-                 (!getCreateMode()) ) {
+                 (!getCreateMode()) ) {                //edit mode
         if (m_qgLine != nullptr) {
             m_qgLine->closeEdit();
         }
-
         m_pbTrackerState = TRACKERPICK;
-        ui->pbTracker->setText(QString::fromUtf8("Pick Points"));
+        ui->pbTracker->setText(QString::fromUtf8("Edit Points"));
         ui->pbCancelEdit->setEnabled(false);
         enableTaskButtons(true);
 
