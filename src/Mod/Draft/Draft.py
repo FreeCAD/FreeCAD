@@ -251,20 +251,67 @@ def makeRectangle(length, height, placement=None, face=None, support=None):
 
     return obj
 
-# Backward compatibility for annotation objects.
+# Backward compatibility for dimension objects.
 
 from draftobjects.dimension import make_dimension, make_angular_dimension
-makeDimension = make_dimension
-makeAngularDimension = make_angular_dimension
-
 from draftobjects.dimension import LinearDimension, AngularDimension
-_Dimension = LinearDimension
-_AngularDimension = AngularDimension
-
 from draftviewproviders.view_dimension import ViewProviderLinearDimension
 from draftviewproviders.view_dimension import ViewProviderAngularDimension
+
+makeDimension = make_dimension
+_Dimension = LinearDimension
 _ViewProviderDimension = ViewProviderLinearDimension
+
+makeAngularDimension = make_angular_dimension
+_AngularDimension = AngularDimension
 _ViewProviderAngularDimension = ViewProviderAngularDimension
+
+# Backward compatibility for label object.
+from draftobjects.label import make_label
+from draftobjects.label import Label
+from draftviewproviders.view_label import ViewProviderLabel
+
+makeLabel = make_label
+DraftLabel = Label
+ViewProviderDraftLabel = ViewProviderLabel
+
+# Backward compatibility for text object.
+# introduced when splitted text module from Draft.py in v 0.19
+from draftobjects.text import make_text
+from draftobjects.text import Text
+from draftviewproviders.view_text import ViewProviderText
+
+makeText = make_text
+DraftText = Text
+ViewProviderDraftText = ViewProviderText
+
+# already present at splitting time during v 0.19
+def convertDraftTexts(textslist=[]):
+    """
+    converts the given Draft texts (or all that is found
+    in the active document) to the new object
+    """
+    if not isinstance(textslist,list):
+        textslist = [textslist]
+    if not textslist:
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.TypeId == "App::Annotation":
+                textslist.append(o)
+    todelete = []
+    for o in textslist:
+        l = o.Label
+        o.Label = l+".old"
+        obj = makeText(o.LabelText,point=o.Position)
+        obj.Label = l
+        todelete.append(o.Name)
+        for p in o.InList:
+            if p.isDerivedFrom("App::DocumentObjectGroup"):
+                if o in p.Group:
+                    g = p.Group
+                    g.append(obj)
+                    p.Group = g
+    for n in todelete:
+        FreeCAD.ActiveDocument.removeObject(n)
 
 
 def makeWire(pointslist,closed=False,placement=None,face=None,support=None,bs2wire=False):
@@ -439,35 +486,6 @@ def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,d
         formatObject(obj)
         select(obj)
 
-    return obj
-
-def makeText(stringslist,point=Vector(0,0,0),screen=False):
-    """makeText(strings,[point],[screen]): Creates a Text object at the given point,
-    containing the strings given in the strings list, one string by line (strings
-    can also be one single string). The current color and text height and font
-    specified in preferences are used.
-    If screen is True, the text always faces the view direction."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    typecheck([(point,Vector)], "makeText")
-    if not isinstance(stringslist,list): stringslist = [stringslist]
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Text")
-    DraftText(obj)
-    obj.Text = stringslist
-    obj.Placement.Base = point
-    if FreeCAD.GuiUp:
-        ViewProviderDraftText(obj.ViewObject)
-        if screen:
-            obj.ViewObject.DisplayMode = "3D text"
-        h = getParam("textheight",0.20)
-        if screen:
-            h = h*10
-        obj.ViewObject.FontSize = h
-        obj.ViewObject.FontName = getParam("textfont","")
-        obj.ViewObject.LineSpacing = 1
-        formatObject(obj)
-        select(obj)
     return obj
 
 def makeCopy(obj,force=None,reparent=False):
@@ -5304,549 +5322,5 @@ class ViewProviderWorkingPlaneProxy:
     def __setstate__(self,state):
         return None
 
-
-def makeLabel(targetpoint=None,target=None,direction=None,distance=None,labeltype=None,placement=None):
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","dLabel")
-    DraftLabel(obj)
-    if FreeCAD.GuiUp:
-        ViewProviderDraftLabel(obj.ViewObject)
-    if targetpoint:
-        obj.TargetPoint = targetpoint
-    if target:
-        obj.Target = target
-    if direction:
-        obj.StraightDirection = direction
-    if distance:
-        obj.StraightDistance = distance
-    if labeltype:
-        obj.LabelType = labeltype
-    if placement:
-        obj.Placement = placement
-    return obj
-
-
-class DraftLabel:
-    """The Draft Label object"""
-
-    def __init__(self,obj):
-        obj.Proxy = self
-        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        obj.addProperty("App::PropertyDistance","StraightDistance","Base",QT_TRANSLATE_NOOP("App::Property","The length of the straight segment"))
-        obj.addProperty("App::PropertyVector","TargetPoint","Base",QT_TRANSLATE_NOOP("App::Property","The point indicated by this label"))
-        obj.addProperty("App::PropertyVectorList","Points","Base",QT_TRANSLATE_NOOP("App::Property","The points defining the label polyline"))
-        obj.addProperty("App::PropertyEnumeration","StraightDirection","Base",QT_TRANSLATE_NOOP("App::Property","The direction of the straight segment"))
-        obj.addProperty("App::PropertyEnumeration","LabelType","Base",QT_TRANSLATE_NOOP("App::Property","The type of information shown by this label"))
-        obj.addProperty("App::PropertyLinkSub","Target","Base",QT_TRANSLATE_NOOP("App::Property","The target object of this label"))
-        obj.addProperty("App::PropertyStringList","CustomText","Base",QT_TRANSLATE_NOOP("App::Property","The text to display when type is set to custom"))
-        obj.addProperty("App::PropertyStringList","Text","Base",QT_TRANSLATE_NOOP("App::Property","The text displayed by this label"))
-        self.Type = "Label"
-        obj.StraightDirection = ["Horizontal","Vertical","Custom"]
-        obj.LabelType = ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"]
-        obj.setEditorMode("Text",1)
-        obj.StraightDistance = 1
-        obj.TargetPoint = Vector(2,-1,0)
-        obj.CustomText = "Label"
-
-    def execute(self,obj):
-        if obj.StraightDirection != "Custom":
-            p1 = obj.Placement.Base
-            if obj.StraightDirection == "Horizontal":
-                p2 = Vector(obj.StraightDistance.Value,0,0)
-            else:
-                p2 = Vector(0,obj.StraightDistance.Value,0)
-            p2 = obj.Placement.multVec(p2)
-            # p3 = obj.Placement.multVec(obj.TargetPoint)
-            p3 = obj.TargetPoint
-            obj.Points = [p1,p2,p3]
-        if obj.LabelType == "Custom":
-            if obj.CustomText:
-                obj.Text = obj.CustomText
-        elif obj.Target and obj.Target[0]:
-            if obj.LabelType == "Name":
-                obj.Text = [obj.Target[0].Name]
-            elif obj.LabelType == "Label":
-                obj.Text = [obj.Target[0].Label]
-            elif obj.LabelType == "Tag":
-                if hasattr(obj.Target[0],"Tag"):
-                    obj.Text = [obj.Target[0].Tag]
-            elif obj.LabelType == "Material":
-                if hasattr(obj.Target[0],"Material"):
-                    if hasattr(obj.Target[0].Material,"Label"):
-                        obj.Text = [obj.Target[0].Material.Label]
-            elif obj.LabelType == "Position":
-                p = obj.Target[0].Placement.Base
-                if obj.Target[1]:
-                    if "Vertex" in obj.Target[1][0]:
-                        p = obj.Target[0].Shape.Vertexes[int(obj.Target[1][0][6:])-1].Point
-                obj.Text = [FreeCAD.Units.Quantity(x,FreeCAD.Units.Length).UserString for x in tuple(p)]
-            elif obj.LabelType == "Length":
-                if hasattr(obj.Target[0],'Shape'):
-                    if hasattr(obj.Target[0].Shape,"Length"):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Length,FreeCAD.Units.Length).UserString]
-                    if obj.Target[1] and ("Edge" in obj.Target[1][0]):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Edges[int(obj.Target[1][0][4:])-1].Length,FreeCAD.Units.Length).UserString]
-            elif obj.LabelType == "Area":
-                if hasattr(obj.Target[0],'Shape'):
-                    if hasattr(obj.Target[0].Shape,"Area"):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Area,FreeCAD.Units.Area).UserString.replace("^2","²")]
-                    if obj.Target[1] and ("Face" in obj.Target[1][0]):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Faces[int(obj.Target[1][0][4:])-1].Area,FreeCAD.Units.Area).UserString]
-            elif obj.LabelType == "Volume":
-                if hasattr(obj.Target[0],'Shape'):
-                    if hasattr(obj.Target[0].Shape,"Volume"):
-                        obj.Text = [FreeCAD.Units.Quantity(obj.Target[0].Shape.Volume,FreeCAD.Units.Volume).UserString.replace("^3","³")]
-
-    def onChanged(self,obj,prop):
-        pass
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self,state):
-        if state:
-            self.Type = state
-
-
-class ViewProviderDraftLabel:
-    """A View Provider for the Draft Label"""
-
-    def __init__(self,vobj):
-        # Annotation properties
-        vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
-                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
-                         "Dimension size overall multiplier"))
-        # Text properties
-        vobj.addProperty("App::PropertyLength","TextSize",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The size of the text"))
-        vobj.addProperty("App::PropertyFont","TextFont",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The font of the text"))
-        vobj.addProperty("App::PropertyEnumeration","TextAlignment",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The vertical alignment of the text"))
-        vobj.addProperty("App::PropertyColor","TextColor",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "Text color"))
-        vobj.addProperty("App::PropertyInteger","MaxChars",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The maximum number of characters on each line of the text box"))
-        # Graphics properties
-        vobj.addProperty("App::PropertyLength","ArrowSize",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "The size of the arrow"))
-        vobj.addProperty("App::PropertyEnumeration","ArrowType",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "The type of arrow of this label"))
-        vobj.addProperty("App::PropertyEnumeration","Frame",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "The type of frame around the text of this object"))
-        vobj.addProperty("App::PropertyBool","Line",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "Display a leader line or not"))
-        vobj.addProperty("App::PropertyFloat","LineWidth",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "Line width"))
-        vobj.addProperty("App::PropertyColor","LineColor",
-                         "Graphics",QT_TRANSLATE_NOOP("App::Property",
-                         "Line color")
-                         )
-
-        vobj.Proxy = self
-        self.Object = vobj.Object
-        vobj.TextAlignment = ["Top","Middle","Bottom"]
-        vobj.TextAlignment = "Middle"
-        vobj.LineWidth = getParam("linewidth",1)
-        vobj.TextFont = getParam("textfont")
-        vobj.TextSize = getParam("textheight",1)
-        vobj.ArrowSize = getParam("arrowsize",1)
-        vobj.ArrowType = arrowtypes
-        vobj.ArrowType = arrowtypes[getParam("dimsymbol")]
-        vobj.Frame = ["None","Rectangle"]
-        vobj.Line = True
-        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-        vobj.ScaleMultiplier = 1 / annotation_scale
-
-
-    def getIcon(self):
-        import Draft_rc
-        return ":/icons/Draft_Label.svg"
-
-    def claimChildren(self):
-        return []
-
-    def attach(self,vobj):
-        from pivy import coin
-        self.arrow = coin.SoSeparator()
-        self.arrowpos = coin.SoTransform()
-        self.arrow.addChild(self.arrowpos)
-        self.matline = coin.SoMaterial()
-        self.drawstyle = coin.SoDrawStyle()
-        self.drawstyle.style = coin.SoDrawStyle.LINES
-        self.lcoords = coin.SoCoordinate3()
-        self.line = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
-        self.mattext = coin.SoMaterial()
-        textdrawstyle = coin.SoDrawStyle()
-        textdrawstyle.style = coin.SoDrawStyle.FILLED
-        self.textpos = coin.SoTransform()
-        self.font = coin.SoFont()
-        self.text2d = coin.SoText2()
-        self.text3d = coin.SoAsciiText()
-        self.text2d.string = self.text3d.string = "Label" # need to init with something, otherwise, crash!
-        self.text2d.justification = coin.SoText2.RIGHT
-        self.text3d.justification = coin.SoAsciiText.RIGHT
-        self.fcoords = coin.SoCoordinate3()
-        self.frame = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
-        self.lineswitch = coin.SoSwitch()
-        switchnode = coin.SoSeparator()
-        switchnode.addChild(self.line)
-        switchnode.addChild(self.arrow)
-        self.lineswitch.addChild(switchnode)
-        self.lineswitch.whichChild = 0
-        self.node2d = coin.SoGroup()
-        self.node2d.addChild(self.matline)
-        self.node2d.addChild(self.arrow)
-        self.node2d.addChild(self.drawstyle)
-        self.node2d.addChild(self.lcoords)
-        self.node2d.addChild(self.lineswitch)
-        self.node2d.addChild(self.mattext)
-        self.node2d.addChild(textdrawstyle)
-        self.node2d.addChild(self.textpos)
-        self.node2d.addChild(self.font)
-        self.node2d.addChild(self.text2d)
-        self.node2d.addChild(self.fcoords)
-        self.node2d.addChild(self.frame)
-        self.node3d = coin.SoGroup()
-        self.node3d.addChild(self.matline)
-        self.node3d.addChild(self.arrow)
-        self.node3d.addChild(self.drawstyle)
-        self.node3d.addChild(self.lcoords)
-        self.node3d.addChild(self.lineswitch)
-        self.node3d.addChild(self.mattext)
-        self.node3d.addChild(textdrawstyle)
-        self.node3d.addChild(self.textpos)
-        self.node3d.addChild(self.font)
-        self.node3d.addChild(self.text3d)
-        self.node3d.addChild(self.fcoords)
-        self.node3d.addChild(self.frame)
-        vobj.addDisplayMode(self.node2d,"2D text")
-        vobj.addDisplayMode(self.node3d,"3D text")
-        self.onChanged(vobj,"LineColor")
-        self.onChanged(vobj,"TextColor")
-        self.onChanged(vobj,"ArrowSize")
-        self.onChanged(vobj,"Line")
-
-    def getDisplayModes(self,vobj):
-        return ["2D text","3D text"]
-
-    def getDefaultDisplayMode(self):
-        return "3D text"
-
-    def setDisplayMode(self,mode):
-        return mode
-
-    def updateData(self,obj,prop):
-        if prop == "Points":
-            from pivy import coin
-            if len(obj.Points) >= 2:
-                self.line.coordIndex.deleteValues(0)
-                self.lcoords.point.setValues(obj.Points)
-                self.line.coordIndex.setValues(0,len(obj.Points),range(len(obj.Points)))
-                self.onChanged(obj.ViewObject,"TextSize")
-                self.onChanged(obj.ViewObject,"ArrowType")
-            if obj.StraightDistance > 0:
-                self.text2d.justification = coin.SoText2.RIGHT
-                self.text3d.justification = coin.SoAsciiText.RIGHT
-            else:
-                self.text2d.justification = coin.SoText2.LEFT
-                self.text3d.justification = coin.SoAsciiText.LEFT
-        elif prop == "Text":
-            if obj.Text:
-                if sys.version_info.major >= 3:
-                    self.text2d.string.setValues([l for l in obj.Text if l])
-                    self.text3d.string.setValues([l for l in obj.Text if l])
-                else:
-                    self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                    self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                self.onChanged(obj.ViewObject,"TextAlignment")
-
-    def getTextSize(self,vobj):
-        from pivy import coin
-        if vobj.DisplayMode == "3D text":
-            text = self.text3d
-        else:
-            text = self.text2d
-        v = FreeCADGui.ActiveDocument.ActiveView.getViewer().getSoRenderManager().getViewportRegion()
-        b = coin.SoGetBoundingBoxAction(v)
-        text.getBoundingBox(b)
-        return b.getBoundingBox().getSize().getValue()
-
-    def onChanged(self,vobj,prop):
-        if prop == "ScaleMultiplier":
-            if not hasattr(vobj,"ScaleMultiplier"):
-                return
-            if hasattr(vobj,"TextSize") and hasattr(vobj,"TextAlignment"):
-                self.update_label(vobj)
-            if hasattr(vobj,"ArrowSize"):
-                s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
-                if s:
-                    self.arrowpos.scaleFactor.setValue((s,s,s))
-        elif prop == "LineColor":
-            if hasattr(vobj,"LineColor"):
-                l = vobj.LineColor
-                self.matline.diffuseColor.setValue([l[0],l[1],l[2]])
-        elif prop == "TextColor":
-            if hasattr(vobj,"TextColor"):
-                l = vobj.TextColor
-                self.mattext.diffuseColor.setValue([l[0],l[1],l[2]])
-        elif prop == "LineWidth":
-            if hasattr(vobj,"LineWidth"):
-                self.drawstyle.lineWidth = vobj.LineWidth
-        elif (prop == "TextFont"):
-            if hasattr(vobj,"TextFont"):
-                self.font.name = vobj.TextFont.encode("utf8")
-        elif prop in ["TextSize","TextAlignment"] and hasattr(vobj,"ScaleMultiplier"):
-            if hasattr(vobj,"TextSize") and hasattr(vobj,"TextAlignment"):
-                self.update_label(vobj)
-        elif prop == "Line":
-            if hasattr(vobj,"Line"):
-                if vobj.Line:
-                    self.lineswitch.whichChild = 0
-                else:
-                    self.lineswitch.whichChild = -1
-        elif prop == "ArrowType":
-            if hasattr(vobj,"ArrowType"):
-                if len(vobj.Object.Points) > 1:
-                    if hasattr(self,"symbol"):
-                        if self.arrow.findChild(self.symbol) != -1:
-                                self.arrow.removeChild(self.symbol)
-                    s = arrowtypes.index(vobj.ArrowType)
-                    self.symbol = dimSymbol(s)
-                    self.arrow.addChild(self.symbol)
-                    self.arrowpos.translation.setValue(vobj.Object.Points[-1])
-                    v1 = vobj.Object.Points[-2].sub(vobj.Object.Points[-1])
-                    if not DraftVecUtils.isNull(v1):
-                        v1.normalize()
-                        v2 = Vector(0,0,1)
-                        if round(v2.getAngle(v1),4) in [0,round(math.pi,4)]:
-                            v2 = Vector(0,1,0)
-                        v3 = v1.cross(v2).negative()
-                        q = FreeCAD.Placement(DraftVecUtils.getPlaneRotation(v1,v3,v2)).Rotation.Q
-                        self.arrowpos.rotation.setValue((q[0],q[1],q[2],q[3]))
-        elif prop == "ArrowSize":
-            if hasattr(vobj,"ArrowSize") and hasattr(vobj,"ScaleMultiplier"):
-                s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
-                if s:
-                    self.arrowpos.scaleFactor.setValue((s,s,s))
-        elif prop == "Frame":
-            if hasattr(vobj,"Frame"):
-                self.frame.coordIndex.deleteValues(0)
-                if vobj.Frame == "Rectangle":
-                    tsize = self.getTextSize(vobj)
-                    pts = []
-                    base = vobj.Object.Placement.Base.sub(Vector(self.textpos.translation.getValue().getValue()))
-                    pts.append(base.add(Vector(0,tsize[1]*3,0)))
-                    pts.append(pts[-1].add(Vector(-tsize[0]*6,0,0)))
-                    pts.append(pts[-1].add(Vector(0,-tsize[1]*6,0)))
-                    pts.append(pts[-1].add(Vector(tsize[0]*6,0,0)))
-                    pts.append(pts[0])
-                    self.fcoords.point.setValues(pts)
-                    self.frame.coordIndex.setValues(0,len(pts),range(len(pts)))
-
-
-    def update_label(self, vobj):
-        self.font.size = vobj.TextSize.Value * vobj.ScaleMultiplier
-        v = Vector(1,0,0)
-        if vobj.Object.StraightDistance > 0:
-            v = v.negative()
-        v.multiply(vobj.TextSize/10)
-        tsize = self.getTextSize(vobj)
-        if (tsize is not None) and (len(vobj.Object.Text) > 1):
-            v = v.add(Vector(0,(tsize[1]-1)*2,0))
-        if vobj.TextAlignment == "Top":
-            v = v.add(Vector(0,-tsize[1]*2,0))
-        elif vobj.TextAlignment == "Middle":
-            v = v.add(Vector(0,-tsize[1],0))
-        v = vobj.Object.Placement.Rotation.multVec(v)
-        pos = vobj.Object.Placement.Base.add(v)
-        self.textpos.translation.setValue(pos)
-        self.textpos.rotation.setValue(vobj.Object.Placement.Rotation.Q)
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self,state):
-        return None
-
-
-class DraftText:
-    """The Draft Text object"""
-
-    def __init__(self,obj):
-        obj.Proxy = self
-        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        obj.addProperty("App::PropertyStringList","Text","Base",QT_TRANSLATE_NOOP("App::Property","The text displayed by this object"))
-        self.Type = "DraftText"
-
-    def execute(self,obj):
-        pass
-
-
-class ViewProviderDraftText:
-    """A View Provider for the Draft Label"""
-
-    def __init__(self,vobj):
-        vobj.addProperty("App::PropertyFloat","ScaleMultiplier",
-                         "Annotation",QT_TRANSLATE_NOOP("App::Property",
-                         "Dimension size overall multiplier"))
-        vobj.addProperty("App::PropertyLength","FontSize",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The size of the text"))
-        vobj.addProperty("App::PropertyFont","FontName",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The font of the text"))
-        vobj.addProperty("App::PropertyEnumeration","Justification",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "The vertical alignment of the text"))
-        vobj.addProperty("App::PropertyColor","TextColor",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "Text color"))
-        vobj.addProperty("App::PropertyFloat","LineSpacing",
-                         "Text",QT_TRANSLATE_NOOP("App::Property",
-                         "Line spacing (relative to font size)"))
-        vobj.Proxy = self
-        self.Object = vobj.Object
-        
-        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-        vobj.ScaleMultiplier = 1 / annotation_scale
-
-        vobj.Justification = ["Left","Center","Right"]
-        vobj.FontName = getParam("textfont","sans")
-        vobj.FontSize = getParam("textheight",1)
-
-    def getIcon(self):
-        import Draft_rc
-        return ":/icons/Draft_Text.svg"
-
-    def claimChildren(self):
-        return []
-
-    def attach(self,vobj):
-        from pivy import coin
-        self.mattext = coin.SoMaterial()
-        textdrawstyle = coin.SoDrawStyle()
-        textdrawstyle.style = coin.SoDrawStyle.FILLED
-        self.trans = coin.SoTransform()
-        self.font = coin.SoFont()
-        self.text2d = coin.SoAsciiText()
-        self.text3d = coin.SoText2()
-        self.text2d.string = self.text3d.string = "Label" # need to init with something, otherwise, crash!
-        self.text2d.justification = coin.SoAsciiText.LEFT
-        self.text3d.justification = coin.SoText2.LEFT
-        self.node2d = coin.SoGroup()
-        self.node2d.addChild(self.trans)
-        self.node2d.addChild(self.mattext)
-        self.node2d.addChild(textdrawstyle)
-        self.node2d.addChild(self.font)
-        self.node2d.addChild(self.text2d)
-        self.node3d = coin.SoGroup()
-        self.node3d.addChild(self.trans)
-        self.node3d.addChild(self.mattext)
-        self.node3d.addChild(textdrawstyle)
-        self.node3d.addChild(self.font)
-        self.node3d.addChild(self.text3d)
-        vobj.addDisplayMode(self.node2d,"2D text")
-        vobj.addDisplayMode(self.node3d,"3D text")
-        self.onChanged(vobj,"TextColor")
-        self.onChanged(vobj,"FontSize")
-        self.onChanged(vobj,"FontName")
-        self.onChanged(vobj,"Justification")
-        self.onChanged(vobj,"LineSpacing")
-
-    def getDisplayModes(self,vobj):
-        return ["2D text","3D text"]
-
-    def setDisplayMode(self,mode):
-        return mode
-
-    def updateData(self,obj,prop):
-        if prop == "Text":
-            if obj.Text:
-                if sys.version_info.major >= 3:
-                    self.text2d.string.setValues([l for l in obj.Text if l])
-                    self.text3d.string.setValues([l for l in obj.Text if l])
-                else:
-                    self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                    self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-        elif prop == "Placement":
-            self.trans.translation.setValue(obj.Placement.Base)
-            self.trans.rotation.setValue(obj.Placement.Rotation.Q)
-
-    def onChanged(self,vobj,prop):
-        if prop == "ScaleMultiplier":
-            if "ScaleMultiplier" in vobj.PropertiesList:
-                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
-        elif prop == "TextColor":
-            if "TextColor" in vobj.PropertiesList:
-                l = vobj.TextColor
-                self.mattext.diffuseColor.setValue([l[0],l[1],l[2]])
-        elif (prop == "FontName"):
-            if "FontName" in vobj.PropertiesList:
-                self.font.name = vobj.FontName.encode("utf8")
-        elif prop  == "FontSize":
-            if "FontSize" in vobj.PropertiesList and "ScaleMultiplier" in vobj.PropertiesList:
-                self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
-        elif prop == "Justification":
-            from pivy import coin
-            try:
-                if getattr(vobj, "Justification", None) is not None:
-                    if vobj.Justification == "Left":
-                        self.text2d.justification = coin.SoAsciiText.LEFT
-                        self.text3d.justification = coin.SoText2.LEFT
-                    elif vobj.Justification == "Right":
-                        self.text2d.justification = coin.SoAsciiText.RIGHT
-                        self.text3d.justification = coin.SoText2.RIGHT
-                    else:
-                        self.text2d.justification = coin.SoAsciiText.CENTER
-                        self.text3d.justification = coin.SoText2.CENTER
-            except AssertionError:
-                pass # Race condition - Justification enum has not been set yet
-        elif prop == "LineSpacing":
-            if "LineSpacing" in vobj.PropertiesList:
-                self.text2d.spacing = vobj.LineSpacing
-                self.text3d.spacing = vobj.LineSpacing
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self,state):
-        return None
-
-
-def convertDraftTexts(textslist=[]):
-    """converts the given Draft texts (or all that are found in the active document) to the new object"""
-    if not isinstance(textslist,list):
-        textslist = [textslist]
-    if not textslist:
-        for o in FreeCAD.ActiveDocument.Objects:
-            if o.TypeId == "App::Annotation":
-                textslist.append(o)
-    todelete = []
-    for o in textslist:
-        l = o.Label
-        o.Label = l+".old"
-        obj = makeText(o.LabelText,point=o.Position)
-        obj.Label = l
-        todelete.append(o.Name)
-        for p in o.InList:
-            if p.isDerivedFrom("App::DocumentObjectGroup"):
-                if o in p.Group:
-                    g = p.Group
-                    g.append(obj)
-                    p.Group = g
-    for n in todelete:
-        FreeCAD.ActiveDocument.removeObject(n)
 
 ## @}
