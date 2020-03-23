@@ -34,7 +34,9 @@ from GCode.
 import os
 import Path
 import FreeCAD
+import PathScripts.PathUtils
 import PathScripts.PathLog as PathLog
+import re
 
 # LEVEL = PathLog.Level.DEBUG
 LEVEL = PathLog.Level.INFO
@@ -63,11 +65,21 @@ def insert(filename, docname):
     gfile = pythonopen(filename)
     gcode = gfile.read()
     gfile.close()
-    gcode = parse(gcode)
-    doc = FreeCAD.getDocument(docname)
-    obj = doc.addObject("Path::Feature", "Path")
-    path = Path.Path(gcode)
-    obj.Path = path
+    # split on tool changes
+    paths = re.split('(?=[mM]+\s?0?6)', gcode)
+    # if there are any tool changes combine the preamble with the default tool 
+    if len(paths) > 1:
+        paths = ["\n".join(paths[0:2])] +  paths[2:]
+    for path in paths:
+        gcode = parse(path)
+        doc = FreeCAD.getDocument(docname)
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Custom")
+        PathScripts.PathCustom.ObjectCustom(obj)
+        obj.ViewObject.Proxy = 0
+        obj.Gcode = gcode
+        PathScripts.PathUtils.addToJob(obj)
+        obj.ToolController = PathScripts.PathUtils.findToolController(obj)
+    FreeCAD.ActiveDocument.recompute()
 
 
 def parse(inputstring):
@@ -99,7 +111,7 @@ def parse(inputstring):
         if lin[0].upper() in ["G", "M"]:
             # found a G or M command: we store it
             #output += lin + "\n"
-            output.append(Path.Command(str(lin))) # + "\n"
+            output.append(lin) # + "\n"
             last = lin[0].upper()
             for c in lin[1:]:
                 if not c.isdigit():
@@ -109,10 +121,9 @@ def parse(inputstring):
             lastcommand = last
         elif lastcommand:
             # no G or M command: we repeat the last one
-            output.append(Path.Command(str(lastcommand + " " + lin))) # + "\n"
+            output.append(lastcommand + " " + lin) # + "\n"
 
     print("done preprocessing.")
     return output
-
 
 print(__name__ + " gcode preprocessor loaded.")

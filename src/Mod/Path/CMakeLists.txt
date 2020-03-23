@@ -128,6 +128,7 @@ SET(PathScripts_post_SRCS
     PathScripts/post/comparams_post.py
     PathScripts/post/dynapath_post.py
     PathScripts/post/example_pre.py
+    PathScripts/post/gcode_pre.py
     PathScripts/post/grbl_post.py
     PathScripts/post/jtech_post.py
     PathScripts/post/linuxcnc_post.py

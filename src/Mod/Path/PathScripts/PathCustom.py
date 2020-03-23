@@ -25,9 +25,12 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PySide import QtCore
+from copy import copy
+
 
 __doc__ = """Path Custom object and FreeCAD command"""
 
+movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 
 # Qt translation handling
 def translate(context, text, disambig=None):
@@ -35,10 +38,14 @@ def translate(context, text, disambig=None):
 
 
 class ObjectCustom:
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyStringList", "Gcode", "Path",
+                QtCore.QT_TRANSLATE_NOOP("PathCustom", "The gcode to be inserted"))
+        obj.addProperty("App::PropertyLink", "ToolController", "Path",
+                QtCore.QT_TRANSLATE_NOOP("PathCustom", "The tool controller that will be used to calculate the path"))
+        obj.addProperty("App::PropertyPlacement", "Offset", "Path",
+                "Placement Offset")
 
-    def __init__(self,obj):
-        obj.addProperty("App::PropertyStringList", "Gcode", "Path", QtCore.QT_TRANSLATE_NOOP("PathCustom", "The gcode to be inserted"))
-        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("PathCustom", "The tool controller that will be used to calculate the path"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -48,13 +55,22 @@ class ObjectCustom:
         return None
 
     def execute(self, obj):
+        newpath = Path.Path()
         if obj.Gcode:
-            s = ""
             for l in obj.Gcode:
-                s += str(l)
-            if s:
-                path = Path.Path(s)
-                obj.Path = path
+                newcommand = Path.Command(str(l))
+                if newcommand.Name in movecommands:
+                    if 'X' in newcommand.Parameters:
+                        newcommand.x += obj.Offset.Base.x
+                    if 'Y' in newcommand.Parameters:
+                        newcommand.y += obj.Offset.Base.y
+                    if 'Z' in newcommand.Parameters:
+                        newcommand.z += obj.Offset.Base.z
+
+                newpath.insertCommand(newcommand)
+
+        obj.Path=newpath
+
 
 
 class CommandPathCustom:
@@ -75,7 +91,7 @@ class CommandPathCustom:
         FreeCAD.ActiveDocument.openTransaction("Create Custom Path")
         FreeCADGui.addModule("PathScripts.PathCustom")
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Custom")')
+        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "Custom")')
         FreeCADGui.doCommand('PathScripts.PathCustom.ObjectCustom(obj)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
