@@ -111,7 +111,7 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.addProperty("App::PropertyPercent", "StepOver", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Step over percentage of the drop cutter path"))
 
         obj.addProperty("App::PropertyVectorDistance", "CircularCenterCustom", "Surface Cut Options", QtCore.QT_TRANSLATE_NOOP("PathOp", "The start point of this path"))
-        obj.addProperty("App::PropertyEnumeration", "CircularCenterAt", "Surface Cut Options", QtCore.QT_TRANSLATE_NOOP("PathOp", "Choose what point to start the ciruclar pattern: Center Of Mass, Center Of Boundbox, Xmin Ymin of boundbox, Custom."))
+        obj.addProperty("App::PropertyEnumeration", "CircularCenterAt", "Surface Cut Options", QtCore.QT_TRANSLATE_NOOP("PathOp", "Choose what point to start the circular pattern: Center Of Mass, Center Of Boundbox, Xmin Ymin of boundbox, Custom."))
         obj.addProperty("App::PropertyEnumeration", "CutMode", "Surface Cut Options", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part: Climb(ClockWise) or Conventional(CounterClockWise)"))
         obj.addProperty("App::PropertyEnumeration", "CutPattern", "Surface Cut Options", QtCore.QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"))
         obj.addProperty("App::PropertyFloat", "CutPatternAngle", "Surface Cut Options", QtCore.QT_TRANSLATE_NOOP("App::Property", "Yaw angle for certain clearing patterns"))
@@ -507,7 +507,7 @@ class ObjectSurface(PathOp.ObjectOp):
                     PathLog.error('No data for model base: {}'.format(JOB.Model.Group[m].Label))
                 else:
                     if m > 0:
-                        # Raise to clearance between moddels
+                        # Raise to clearance between models
                         CMDS.append(Path.Command('N (Transition to base: {}.)'.format(Mdl.Label)))
                         CMDS.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
                         PathLog.info('Working on Model.Group[{}]: {}'.format(m, Mdl.Label))
@@ -1171,7 +1171,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def _isPocket(self, b, f, w):
         '''_isPocket(b, f, w)... 
-        Attempts to determing if the wire(w) in face(f) of base(b) is a pocket or raised protrusion.
+        Attempts to determine if the wire(w) in face(f) of base(b) is a pocket or raised protrusion.
         Returns True if pocket, False if raised protrusion.'''
         e = w.Edges[0]
         for fi in range(0, len(b.Shape.Faces)):
@@ -1907,7 +1907,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def _planarPerformOclScan(self, obj, pdc, pathGeom, offsetPoints=False):
         '''_planarPerformOclScan(obj, pdc, pathGeom, offsetPoints=False)...
-        Switching fuction for calling the appropriate path-geometry to OCL points conversion fucntion
+        Switching function for calling the appropriate path-geometry to OCL points conversion function
         for the various cut patterns.'''
         PathLog.debug('_planarPerformOclScan()')
         SCANS = list()

@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # FreeCAD init script of the ReverseEngineering module
 # (c) 2001 Jürgen Riegel
 

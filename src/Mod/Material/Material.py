@@ -24,18 +24,18 @@ import sys
 import FreeCAD
 
 
-# here the usage description if you use this tool from the command line ("__main__")
+# The usage description if you use this tool from the command line ("__main__")
 CommandlineUsage = """Material - Tool to work with FreeCAD Material definition cards
 
 Usage:
    Material [Options] card-file-name
 
 Options:
- -c, --output-csv=file-name     write a comma separated grid with the material data
+ -c, --output-csv=filename     write a comma separated grid with the material data
 
 Exit:
  0      No Error or Warning found
- 1      Argument error, wrong or less Arguments given
+ 1      Argument error, wrong or too few Arguments given
 
 Tool to work with FreeCAD Material definition cards
 
