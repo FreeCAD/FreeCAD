@@ -351,6 +351,11 @@ bool SoBrepFaceSet::isHighlightAll(const SelContextPtr &ctx)
     return !highlightIndices.getNum() && (ctx && ctx->isHighlightAll());
 }
 
+bool SoBrepFaceSet::isSelectAll(const SelContextPtr &ctx)
+{
+    return !highlightIndices.getNum() && (ctx && ctx->isSelectAll());
+}
+
 void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 {
     //SoBase::staticDataLock();
@@ -492,7 +497,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         if(!action->isRenderingDelayedPaths())
             renderHighlight(action,ctx);
         if(ctx && ctx->isSelected()) {
-            if(ctx->isSelectAll()) {
+            if(isSelectAll(ctx)) {
                 if(ctx2 && !ctx2->isSelectAll()) {
                     ctx2->selectionColor = ctx->selectionColor;
                     renderSelection(action,ctx2); 
@@ -520,7 +525,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if(Gui::ViewParams::instance()->getShowSelectionOnTop()
             && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()
             && (!ctx2 || ctx2->isSelectAll())
-            && (!ctx || (!isHighlightAll(ctx) && (!ctx->isSelectAll()||!ctx->hasSelectionColor())))
+            && (!ctx || (!isHighlightAll(ctx) && (!isSelectAll(ctx)||!ctx->hasSelectionColor())))
             && action->isRenderingDelayedPaths())
     {
         // Perform a depth buffer only rendering so that we can draw the
@@ -778,7 +783,7 @@ bool SoBrepFaceSet::overrideMaterialBinding(
         if(isHighlightAll(ctx)) {
             singleColor = 1;
             diffuseColor = highlightColor;
-        }else if(ctx && ctx->isSelectAll() && selectionColor) {
+        }else if(isSelectAll(ctx) && selectionColor) {
             diffuseColor = selectionColor;
             singleColor = ctx->isHighlighted()?-1:1;
         } else if(ctx2 && ctx2->isSingleColor(diffuseColor,hasTransparency)) {
@@ -869,39 +874,35 @@ bool SoBrepFaceSet::overrideMaterialBinding(
             }
         }
 
-        if(ctx && ctx->selectionIndex.size() && selectionColor) {
+        auto setColor = [this](int idx, int cidx) {
+            if(idx>=0 && idx<partIndex.getNum()) {
+                uint32_t c;
+                if(makeDistinctColor(c,this->packedColors[cidx],this->packedColors[matIndex[idx]]))
+                    this->packedColors.push_back(c);
+                this->matIndex[idx] = this->packedColors.size()-1;
+            }
+        };
+
+        if(ctx && ctx->isSelected() && selectionColor) {
             packedColors.push_back(selectionColor);
             auto cidx = packedColors.size()-1;
-            for(auto &v : ctx->selectionIndex) {
-                int idx = v.first;
-                if(idx>=0 && idx<partIndex.getNum()) {
-                    uint32_t c;
-                    if(makeDistinctColor(c,packedColors[cidx],packedColors[matIndex[idx]]))
-                        packedColors.push_back(c);
-                    matIndex[idx] = packedColors.size()-1;
-                }
+            if(ctx->selectionIndex.begin()->first >= 0) {
+                for(auto &v : ctx->selectionIndex)
+                    setColor(v.first, cidx);
+            } else {
+                for(int i=0, count=highlightIndices.getNum(); i<count; ++i)
+                    setColor(highlightIndices[i], cidx);
             }
         }
         if(ctx && ctx->isHighlighted()) {
+            packedColors.push_back(highlightColor);
+            auto cidx = packedColors.size()-1;
             if(*ctx->highlightIndex.begin() >= 0) {
-                for(int idx : ctx->highlightIndex) {
-                    if(idx >= 0 && idx <= partIndex.getNum()) {
-                        packedColors.push_back(highlightColor);
-                        makeDistinctColor(packedColors.back(),
-                                packedColors.back(), packedColors[matIndex[idx]]);
-                        matIndex[idx] = packedColors.size()-1;
-                    }
-                }
+                for(int idx : ctx->highlightIndex)
+                    setColor(idx, cidx);
             } else {
-                for(int i=0, count=highlightIndices.getNum(); i<count; ++i) {
-                    int idx = highlightIndices[i];
-                    if(idx >= 0 && idx <= partIndex.getNum()) {
-                        packedColors.push_back(highlightColor);
-                        makeDistinctColor(packedColors.back(),
-                                packedColors.back(), packedColors[matIndex[idx]]);
-                        matIndex[idx] = packedColors.size()-1;
-                    }
-                }
+                for(int i=0, count=highlightIndices.getNum(); i<count; ++i)
+                    setColor(highlightIndices[i], cidx);
             }
         }
 
@@ -1384,7 +1385,14 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
         }
         if(RenderIndices.empty())
             return;
-    } else if (!ctx->hasSelectionColor())
+    } else if (ctx->hasSelectionColor()) {
+        for(int i=0, num=highlightIndices.getNum(); i<num; ++i) {
+            int id = highlightIndices[i];
+            if (id<0 || id>=partIndex.getNum())
+                continue;
+            RenderIndices.push_back(id);
+        }
+    } else
         push = false;
 
     _renderSelection(action, ctx->selectionColor, push);

@@ -170,7 +170,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
 
     if((!ctx2 || !ctx2->isSelectAll())
        && Gui::ViewParams::instance()->getShowSelectionOnTop()
-       && (!ctx || !ctx->isSelectAll())
+       && (!ctx || !ctx->isSelectAll() || highlightIndices.getNum())
        && !Gui::SoFCUnifiedSelection::getShowSelectionBoundingBox()) 
     {
         // If we are rendering on top, we shall perform a two pass rendering.
@@ -225,7 +225,7 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction *action) {
         }
 
         if(ctx && ctx->isSelected()) {
-            if(ctx->isSelectAll() && ctx->hasSelectionColor()) {
+            if(!highlightIndices.getNum() && ctx->isSelectAll() && ctx->hasSelectionColor()) {
                 if(ctx2 && !ctx2->isSelectAll()) {
                     ctx2->selectionColor = ctx->selectionColor;
                     renderSelection(action,ctx2); 
@@ -353,6 +353,9 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx,
     if(!ctx->isSelectAll()) {
         for(auto &v : ctx->selectionIndex)
             RenderIndices.push_back(v.first);
+    } else if(highlightIndices.getNum()) {
+        auto indices = highlightIndices.getValues(0);
+        RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
     }
     _renderSelection(action, ctx->selectionColor, 0, push);
 }

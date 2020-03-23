@@ -152,6 +152,7 @@ private:
     void buildPartIndexCache();
     int getPartFromFace(int index);
     bool isHighlightAll(const SelContextPtr &ctx);
+    bool isSelectAll(const SelContextPtr &ctx);
 
     void generatePrimitivesRange(SoAction * action, int pstart, int fstart, int vstart, int vend);
 

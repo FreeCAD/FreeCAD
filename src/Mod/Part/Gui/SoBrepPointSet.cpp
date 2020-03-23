@@ -171,7 +171,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction *action)
     }
 
     if(ctx && ctx->selectionIndex.size()) {
-        if(ctx->isSelectAll() && ctx->hasSelectionColor()) {
+        if(!highlightIndices.getNum() && ctx->isSelectAll() && ctx->hasSelectionColor()) {
             if(ctx2 && ctx2->selectionIndex.size()) {
                 ctx2->selectionColor = ctx->selectionColor;
                 renderSelection(action,ctx2); 
@@ -268,6 +268,9 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action, SelContextPtr ctx
     if(!ctx->isSelectAll()) {
         for(auto &v : ctx->selectionIndex)
             RenderIndices.push_back(v.first);
+    } else if(highlightIndices.getNum()) {
+        auto indices = highlightIndices.getValues(0);
+        RenderIndices.insert(RenderIndices.end(), indices, indices + highlightIndices.getNum());
     }
     _renderSelection(action, ctx->selectionColor, push);
 }
