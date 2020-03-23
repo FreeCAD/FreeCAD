@@ -167,7 +167,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         job = PathUtils.findParentJob(obj)
 
         obj.OptimizeLinearPaths = True
-        obj.ReleaseFromWaste = False
         obj.InternalFeaturesCut = True
         obj.OptimizeStepOverTransitions = False
         obj.CircularUseG2G3 = False
@@ -306,9 +305,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         # mark beginning of operation and identify parent Job
         PathLog.info('\nBegin Waterline operation...')
         startTime = time.time()
-
-        # Disable(ignore) ReleaseFromWaste option(input)
-        obj.ReleaseFromWaste = False
 
         # Identify parent Job
         JOB = PathUtils.findParentJob(obj)
