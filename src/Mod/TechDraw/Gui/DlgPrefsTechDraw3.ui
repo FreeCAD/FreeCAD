@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>448</width>
-    <height>856</height>
+    <height>952</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -231,7 +231,7 @@
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="value" stdset="0">
+          <property name="value">
            <double>4.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -256,7 +256,7 @@
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="value" stdset="0">
+          <property name="value">
            <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -379,7 +379,7 @@
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,0,1">
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_13">
           <property name="font">
            <font>
@@ -391,7 +391,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label">
           <property name="font">
            <font>
@@ -403,7 +403,22 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Length of horizontal portion of Balloon leader</string>
+          </property>
+          <property name="text">
+           <string>Ballon Leader Kink Length</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
          <widget class="Gui::PrefComboBox" name="pcbBalloonShape">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -485,22 +500,7 @@
           </item>
          </widget>
         </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="label_18">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Length of horizontal portion of Balloon leader</string>
-          </property>
-          <property name="text">
-           <string>Ballon Leader Kink Length</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="Gui::PrefCheckBox" name="cbAutoHoriz">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -525,7 +525,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="5" column="2">
          <widget class="Gui::PrefComboBox" name="pcbCenterStyle">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -601,7 +601,7 @@
           </item>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_3">
           <property name="font">
            <font>
@@ -613,7 +613,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="2">
+        <item row="7" column="2">
          <widget class="Gui::PrefComboBox" name="pcbBalloonArrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -632,7 +632,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
+        <item row="3" column="2">
          <widget class="Gui::PrefLineEdit" name="leLineGroup">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -745,7 +745,7 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="2">
+        <item row="8" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -770,7 +770,7 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="Gui::PrefCheckBox" name="cbPyramidOrtho">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -827,7 +827,7 @@
           </item>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -840,7 +840,7 @@
           </property>
          </spacer>
         </item>
-        <item row="3" column="2">
+        <item row="4" column="2">
          <widget class="Gui::PrefComboBox" name="pcbMatting">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -877,7 +877,7 @@
           </item>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="label_5">
           <property name="font">
            <font>
@@ -889,7 +889,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label_4">
           <property name="font">
            <font>
@@ -913,7 +913,7 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="Gui::PrefCheckBox" name="cbShowCenterMarks">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -940,7 +940,7 @@
           </property>
          </widget>
         </item>
-        <item row="11" column="0">
+        <item row="12" column="0">
          <widget class="Gui::PrefCheckBox" name="cbPrintCenterMarks">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -960,6 +960,54 @@
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/Decorations</cstring>
           </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_19">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Section Cut Surface</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefComboBox" name="cbCutSurface">
+          <property name="toolTip">
+           <string>Default appearance of cut surface in section view</string>
+          </property>
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CutSurfaceDisplay</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Hide</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Solid Color</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Svg Hatch</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>PAT Hatch</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
