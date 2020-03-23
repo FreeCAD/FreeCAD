@@ -1,5 +1,4 @@
 # ***************************************************************************
-# *   (c) 2020 Carlo Pavan                                                  *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *

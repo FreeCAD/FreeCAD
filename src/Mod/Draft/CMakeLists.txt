@@ -64,6 +64,9 @@ SET(Draft_objects
     draftobjects/orthoarray.py
     draftobjects/polararray.py
     draftobjects/arc_3points.py
+    draftobjects/draft_annotation.py
+    draftobjects/dimension.py
+    draftobjects/dimensionstyle.py
     draftobjects/README.md
 )
 
@@ -72,6 +75,9 @@ SET(Draft_view_providers
     draftviewproviders/view_circulararray.py
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
+    draftviewproviders/view_draft_annotation.py
+    draftviewproviders/view_dimension.py
+    draftviewproviders/view_dimensionstyle.py
     draftviewproviders/README.md
 )
 
@@ -79,6 +85,7 @@ SET(Draft_GUI_tools
     draftguitools/__init__.py
     draftguitools/gui_base.py
     draftguitools/gui_circulararray.py
+    draftguitools/gui_dimensionstyle.py
     draftguitools/gui_orthoarray.py
     draftguitools/gui_polararray.py
     draftguitools/gui_planeproxy.py
