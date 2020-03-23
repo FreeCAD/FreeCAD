@@ -221,7 +221,7 @@
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="pdsbTemplateMark" native="true">
+         <widget class="Gui::PrefUnitSpinBox" name="pdsbTemplateMark">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -245,6 +245,9 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/General</cstring>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
