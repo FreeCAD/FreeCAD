@@ -279,7 +279,7 @@ void QGISectionLine::setFont(QFont f, double fsize)
 QColor QGISectionLine::getSectionColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionColor", 0x00000000));
     return fcColor.asValue<QColor>();
 }
@@ -354,7 +354,11 @@ void QGISectionLine::setTools()
 //    m_arrow2->setPen(m_pen);
 //    m_arrow1->setBrush(m_brush);
 //    m_arrow2->setBrush(m_brush);
+    m_arrow1->setNormalColor(getSectionColor());
+    m_arrow1->setFillColor(getSectionColor());
     m_arrow1->setPrettyNormal();
+    m_arrow2->setNormalColor(getSectionColor());
+    m_arrow2->setFillColor(getSectionColor());
     m_arrow2->setPrettyNormal();
 
     m_symbol1->setDefaultTextColor(m_colCurrent);
