@@ -131,6 +131,7 @@ protected:
                                      
     void getParameters(void);
     bool debugSection(void) const;
+    int prefCutSurface(void) const;
 
     TopoDS_Shape m_cutShape;
 
