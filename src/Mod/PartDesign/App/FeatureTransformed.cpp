@@ -67,6 +67,8 @@ Transformed::Transformed()
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
+    Originals.setStatus(App::Property::Hidden, true);
+
     ADD_PROPERTY(OriginalSubs,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
 
