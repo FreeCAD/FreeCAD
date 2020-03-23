@@ -52,6 +52,7 @@ public:
         NoSyncSubObject = 8,
         AlwaysSyncSubObject = 16,
         AllowSubElement = 32,
+        NoSubObject = 64,
     };
     DlgPropertyLink(QWidget* parent = 0, int flags=0);
     ~DlgPropertyLink();
@@ -94,6 +95,8 @@ public:
     void selectionChanged(const Gui::SelectionChanges& msg);
     void detachObserver(Gui::SelectionObserver *);
     void attachObserver(Gui::SelectionObserver *);
+
+    void clearSelection(QTreeWidgetItem *);
 
     QTreeWidget *treeWidget();
 

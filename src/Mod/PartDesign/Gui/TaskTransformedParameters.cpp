@@ -206,7 +206,7 @@ void TaskTransformedParameters::setupUI() {
     linkEditor = new DlgPropertyLink(this, DlgPropertyLink::NoButton
                                           |DlgPropertyLink::NoSearchBox
                                           |DlgPropertyLink::NoTypeFilter
-                                          |DlgPropertyLink::NoSyncSubObject
+                                          |DlgPropertyLink::NoSubObject
                                           |DlgPropertyLink::AllowSubElement);
     auto treeWidget = linkEditor->treeWidget();
     if(treeWidget && treeWidget->header()) {

@@ -208,6 +208,14 @@ static inline bool isLinkSub(QList<App::SubObjectT> links)
     return true;
 }
 
+static inline void setItemLabel(QTreeWidgetItem *item, std::size_t idx=0) {
+    QString label = item->data(0, Qt::UserRole+4).toString();
+    if(!idx)
+        item->setText(0, label);
+    else
+        item->setText(0, QString::fromLatin1("%1: %2").arg(idx).arg(label));
+}
+
 QString DlgPropertyLink::formatLinks(App::Document *ownerDoc, QList<App::SubObjectT> links)
 {
     if(!ownerDoc || links.empty())
@@ -351,6 +359,9 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter)
         isLinkList = true;
         allowSubObject = false;
     } 
+
+    if(flags & NoSubObject)
+        allowSubObject = false;
 
     if(singleSelect) {
         singleParent = true; 
@@ -502,10 +513,7 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter)
 void DlgPropertyLink::onClicked(QAbstractButton *button) {
     if(button == resetButton) {
         QSignalBlocker blocker(ui->treeWidget);
-        ui->treeWidget->selectionModel()->clearSelection();
-        for(auto item : elementSels)
-            item->setText(1, QString());
-        elementSels.clear();
+        clearSelection(nullptr);
         Gui::Selection().clearSelection();
     } else if (button == refreshButton) {
         init(objProp);
@@ -675,6 +683,14 @@ void DlgPropertyLink::checkItemSelection()
             ++it;
     }
 
+    for(auto item : selections) {
+        if(!item->isSelected())
+            setItemLabel(item);
+    }
+    std::size_t i = 0;
+    for(auto item : newSelections)
+        setItemLabel(item, ++i);
+
     currentObj = obj;
     selections = newSelections;
     linkChanged();
@@ -798,19 +814,12 @@ void DlgPropertyLink::selectionChanged(const Gui::SelectionChanges& msg)
     if(!item->isSelected()) {
         QSignalBlocker blocker(ui->treeWidget);
         if(singleSelect || (singleParent && currentObj && currentObj!=selObj)) {
-            ui->treeWidget->selectionModel()->clearSelection();
-            for(auto it=elementSels.begin(); it!=elementSels.end();) {
-                if(*it!=item) {
-                    (*it)->setText(1,QString());
-                    it = elementSels.erase(it);
-                } else
-                    ++it;
-            }
-            selections.clear();
+            clearSelection(item);
         }
         currentObj = selObj;
         ui->treeWidget->setCurrentItem(item,0);
         selections.append(item);
+        setItemLabel(item, selections.size());
     }
 
     ui->treeWidget->scrollToItem(item);
@@ -832,6 +841,22 @@ void DlgPropertyLink::selectionChanged(const Gui::SelectionChanges& msg)
             linkChanged();
         }
     }
+}
+
+void DlgPropertyLink::clearSelection(QTreeWidgetItem *itemKeep) {
+    ui->treeWidget->selectionModel()->clearSelection();
+    for(auto it=elementSels.begin(); it!=elementSels.end();) {
+        if(*it!=itemKeep) {
+            (*it)->setText(1,QString());
+            it = elementSels.erase(it);
+        } else
+            ++it;
+    }
+    for(auto item : selections)
+        setItemLabel(item, item==itemKeep?1:0);
+    selections.clear();
+    if(itemKeep)
+        selections.append(itemKeep);
 }
 
 static QTreeWidgetItem *_getLinkFromItem(std::ostringstream &ss, QTreeWidgetItem *item, const char *objName) {
@@ -1122,7 +1147,9 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
     else
         item = new QTreeWidgetItem(ui->treeWidget);
     item->setIcon(0, vp->getIcon());
-    item->setText(0, QString::fromUtf8((obj)->Label.getValue()));
+    QString label = QString::fromUtf8((obj)->Label.getValue());
+    item->setText(0, label);
+    item->setData(0, Qt::UserRole+4, label);
     item->setData(0, Qt::UserRole, QByteArray(obj->getNameInDocument()));
     item->setData(0, Qt::UserRole+1, QByteArray(obj->getDocument()->getName()));
 
