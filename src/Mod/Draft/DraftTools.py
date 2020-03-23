@@ -92,6 +92,7 @@ from draftguitools.gui_heal import Heal
 from draftguitools.gui_dimension_ops import Draft_FlipDimension
 from draftguitools.gui_lineslope import Draft_Slope
 from draftguitools.gui_arcs import Draft_Arc_3Points
+import draftguitools.gui_arrays
 # import DraftFillet
 import drafttaskpanels.task_shapestring as task_shapestring
 import drafttaskpanels.task_scale as task_scale
