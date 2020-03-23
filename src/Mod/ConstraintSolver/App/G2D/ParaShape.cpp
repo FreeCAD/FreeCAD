@@ -32,8 +32,8 @@ void FCS::G2D::ParaShapeBase::initAttrs()
     ParaObject::initAttrs();
 
     //                                                            make , req., writeonce
-    tieAttr_Child(reinterpret_cast<HParaObject &>(placement), "placement", &ParaTransformPy::Type, false, true, true);
-    tieAttr_Child(reinterpret_cast<HParaObject &>(_tshape)  , "tshape"   , &ParaTransformPy::Type, false, true, true);
+    tieAttr_Child(placement.upcast<ParaObject>(), "placement", &ParaTransformPy::Type, false, true, true);
+    tieAttr_Child(_tshape.upcast<ParaObject>() , "tshape"   , &ParaTransformPy::Type, false, true, true);
 }
 
 std::string G2D::ParaShapeBase::repr() const

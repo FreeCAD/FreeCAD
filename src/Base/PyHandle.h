@@ -100,7 +100,7 @@ public:
     >
     UnsafePyHandle(const UnsafePyHandle< NewTypeT > &other) : pyobj(other.getHandledObject())
     {
-        cppptr = static_cast<CppType*>(other.cptr());
+        cppptr = other.cptr();
     }
     
 
@@ -120,6 +120,15 @@ public:
         return *this;
     }
     
+    template <  typename NewTypeT,
+                typename = typename std::enable_if<
+                    std::is_base_of<typename std::decay<NewTypeT>::type, CppType>::value
+             >::type
+    >
+    UnsafePyHandle<NewTypeT> & upcast() 
+    {
+        return reinterpret_cast<UnsafePyHandle<NewTypeT> &>(*this);
+    }
     
     /* Downcast */
     template <  typename NewTypeT,

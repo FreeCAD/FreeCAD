@@ -19,8 +19,8 @@ void ConstraintDistanceCirclePoint::initAttrs()
 {
     SimpleConstraint::initAttrs();
 
-    tieAttr_Shape(reinterpret_cast<HParaObject &>(circle), "circle", ParaCircle::getClassTypeId());
-    tieAttr_Shape(reinterpret_cast<HParaObject &>(point), "point", ParaPoint::getClassTypeId());
+    tieAttr_Shape(circle.upcast<ParaObject>(), "circle", ParaCircle::getClassTypeId());
+    tieAttr_Shape(point.upcast<ParaObject>(), "point", ParaPoint::getClassTypeId());
     tieAttr_Parameter(dist, "dist", true, true, 1.0);
 }
 

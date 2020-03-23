@@ -29,8 +29,8 @@ void ConstraintPointCoincident::initAttrs()
 {
     Constraint::initAttrs();
 
-    tieAttr_Shape(reinterpret_cast<HParaObject &>(p1), "p1", ParaPoint::getClassTypeId());
-    tieAttr_Shape(reinterpret_cast<HParaObject &>(p2), "p2", ParaPoint::getClassTypeId());
+    tieAttr_Shape(p1.upcast<ParaObject>(), "p1", ParaPoint::getClassTypeId());
+    tieAttr_Shape(p2.upcast<ParaObject>(), "p2", ParaPoint::getClassTypeId());
 }
 
 void ConstraintPointCoincident::error(const ValueSet& vals, Base::DualNumber* returnbuf) const

@@ -26,8 +26,8 @@ void FCS::G2D::ParaParabola::initAttrs()
 {
     ParaCurve::initAttrs();
 
-    tieAttr_Child(reinterpret_cast<HParaObject &>(p0), "p0", &ParaPointPy::Type, true);
-    tieAttr_Child(reinterpret_cast<HParaObject &>(p1), "p1", &ParaPointPy::Type, true);
+    tieAttr_Child(p0.upcast<ParaObject>(), "p0", &ParaPointPy::Type, true);
+    tieAttr_Child(p1.upcast<ParaObject>(), "p1", &ParaPointPy::Type, true);
 }
 
 std::vector<ParameterRef> ParaParabola::makeParameters(HParameterStore into)

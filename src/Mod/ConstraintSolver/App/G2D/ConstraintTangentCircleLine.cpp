@@ -22,8 +22,8 @@ void ConstraintTangentCircleLine::initAttrs()
 {
     SimpleConstraint::initAttrs();
 
-    tieAttr_Shape(reinterpret_cast<HParaObject &>(circle), "circle", ParaCircle::getClassTypeId());
-    tieAttr_Shape(reinterpret_cast<HParaObject &>(line), "line", ParaLine::getClassTypeId());
+    tieAttr_Shape(circle.upcast<ParaObject>(), "circle", ParaCircle::getClassTypeId());
+    tieAttr_Shape(line.upcast<ParaObject>(), "line", ParaLine::getClassTypeId());
 }
 
 Base::DualNumber ConstraintTangentCircleLine::error1(const ValueSet& vals) const

@@ -21,7 +21,7 @@ void FCS::G2D::ParaCircle::initAttrs()
 {
     ParaCurve::initAttrs();
 
-    tieAttr_Child(reinterpret_cast<HParaObject &>(center), "center", &ParaPointPy::Type, true);
+    tieAttr_Child(center.upcast<ParaObject>(), "center", &ParaPointPy::Type, true);
     //                                , make, req., defv
     tieAttr_Parameter(radius, "radius", true, true, 5.0);
 }

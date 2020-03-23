@@ -27,8 +27,8 @@ void FCS::G2D::ParaCurve::initAttrs()
     tieAttr_Parameter(u1, "u1", !isFull(), !isFull(), 0.0);
 
     //                                          make     , require
-    tieAttr_Child(reinterpret_cast<HParaObject &>(p0), "p0", &ParaPointPy::Type, !isFull(), !isFull());
-    tieAttr_Child(reinterpret_cast<HParaObject &>(p1), "p1", &ParaPointPy::Type, !isFull(), !isFull());
+    tieAttr_Child(p0.upcast<ParaObject>(), "p0", &ParaPointPy::Type, !isFull(), !isFull());
+    tieAttr_Child(p1.upcast<ParaObject>(), "p1", &ParaPointPy::Type, !isFull(), !isFull());
 }
 
 PyObject* ParaCurve::getPyObject()
