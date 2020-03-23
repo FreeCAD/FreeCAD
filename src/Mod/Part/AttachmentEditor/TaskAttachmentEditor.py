@@ -301,6 +301,9 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if button == QtGui.QDialogButtonBox.Apply:
             if self.obj_is_attachable:
                 self.writeParameters()
+            if self.create_transaction:
+                self.obj.Document.commitTransaction()
+                self.obj.Document.openTransaction(_translate('AttachmentEditor',"Edit attachment of {feat}",None).format(feat= self.obj.Name))
             self.updatePreview()
             if self.callback_Apply:
                 self.callback_Apply()
