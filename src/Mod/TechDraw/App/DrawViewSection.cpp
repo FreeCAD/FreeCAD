@@ -805,7 +805,7 @@ gp_Ax2 DrawViewSection::getSectionCS(void) const
                            gXDir);
     }
     catch (...) {
-        Base::Console().Warning("DVS::getSectionCS - %s - failed to create section CS\n", getNameInDocument());
+        Base::Console().Log("DVS::getSectionCS - %s - failed to create section CS\n", getNameInDocument());
     }
     return sectionCS;
 }
