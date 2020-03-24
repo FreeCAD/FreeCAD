@@ -95,7 +95,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def initOpProperties(self, obj):
         '''initOpProperties(obj) ... create operation specific properties'''
-        missing = list()
         PROPS = [
             ("App::PropertyEnumeration", "Algorithm", "Algorithm",
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "The library to use to generate the path")),
@@ -188,10 +187,11 @@ class ObjectSurface(PathOp.ObjectOp):
                 QtCore.QT_TRANSLATE_NOOP("App::Property", "If true, the temporary path construction objects will be shown."))
         ]
 
-        for (proto, name, group, tooltip) in PROPS:
-            if not hasattr(obj, name):
-                obj.addProperty(proto, name, group, tooltip)
-                missing.append(name)
+        missing = list()
+        for (prtyp, nm, grp, tt) in PROPS:
+            if not hasattr(obj, nm):
+                obj.addProperty(prtyp, nm, grp, tt)
+                missing.append(nm)
 
         # lists for App::PropertyEnumeration properties
         ENUMS = {
@@ -207,8 +207,9 @@ class ObjectSurface(PathOp.ObjectOp):
             'RotationAxis': ['X', 'Y'],
             'ScanType': ['Planar', 'Rotational']
         }
+        PathLog.info('missing: {}'.format(missing))
         for n in missing:
-            tObj = eval('obj.' + n)
+            exec('tObj = obj.' + n)
             tObj = ENUMS[n]
         self.ENUMS = ENUMS
 
