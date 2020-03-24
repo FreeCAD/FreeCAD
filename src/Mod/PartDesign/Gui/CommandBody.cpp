@@ -662,7 +662,8 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
         }
 
         // Adjust visibility of features
-        FCMD_OBJ_SHOW(newFeatures.back());
+        if (!newFeatures.empty())
+            FCMD_OBJ_SHOW(newFeatures.back());
     }
 
     updateActive();
